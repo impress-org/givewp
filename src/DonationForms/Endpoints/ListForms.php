@@ -2,22 +2,23 @@
 
 namespace Give\DonationForms\Endpoints;
 
-use Give\Framework\QueryBuilder\QueryBuilder;
-use Give_Donate_Form;
+use Give\Framework\Database\DB;
 use WP_REST_Request;
 use WP_REST_Response;
-use WP_Error;
 
 /**
  * @unreleased
  */
-
-
 class ListForms extends Endpoint
 {
-
+    /**
+     * @var string
+     */
     protected $endpoint = 'admin/forms';
 
+    /**
+     * @inheritDoc
+     */
     public function registerRoute()
     {
         register_rest_route(
@@ -25,30 +26,32 @@ class ListForms extends Endpoint
             $this->endpoint,
             [
                 [
-                    'methods' => 'GET',
-                    'callback' => [$this, 'handleRequest'],
+                    'methods'             => 'GET',
+                    'callback'            => [$this, 'handleRequest'],
                     'permission_callback' => [$this, 'permissionsCheck'],
                 ],
                 'args' => [
-                    'page' => [
-                        'type' => 'int',
-                        'required' => false,
+                    'page'    => [
+                        'type'              => 'int',
+                        'required'          => false,
                         'validate_callback' => [$this, 'validateInt'],
+                        'default'           => 1
                     ],
                     'perPage' => [
-                       'type' => 'int',
-                        'required' => false,
-                       'validate_callback' => [$this, 'validateInt'],
+                        'type'              => 'int',
+                        'required'          => false,
+                        'validate_callback' => [$this, 'validateInt'],
+                        'default'           => 30
                     ],
-                    'status' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'validate_callback' => [$this, 'validateStatus']
+                    'status'  => [
+                        'type'              => 'string',
+                        'required'          => false,
+                        'validate_callback' => [$this, 'validateStatus'],
+                        'default'           => 'any'
                     ],
-                    'search' => [
-                        'type' => 'string',
-                        'required' => 'false',
-                        'validate_callback' => [$this, 'validateSearch'],
+                    'search'  => [
+                        'type'              => 'string',
+                        'required'          => 'false',
                         'sanitize_callback' => [$this, 'sanitizeSearch']
                     ]
                 ],
@@ -56,193 +59,174 @@ class ListForms extends Endpoint
         );
     }
 
-    public function validateInt($param, $request, $key)
+    /**
+     * @param  WP_REST_Request  $request
+     *
+     * @return WP_REST_Response
+     */
+    public function handleRequest(WP_REST_Request $request)
     {
-        return is_numeric($param) && $param > 0;
-    }
+        $page    = $request->get_param('page');
+        $perPage = $request->get_param('perPage');
+        $search  = $request->get_param('search');
+        $status  = $request->get_param('status');
 
-    public function validateStatus($param, $request, $key)
-    {
-        return in_array($param, array(
-           'publish',
-           'future',
-           'draft',
-           'pending',
-           'trash',
-           'auto-draft',
-           'inherit',
-           'any'
-        ));
-    }
+        $forms = DB::table('posts')
+                   ->select(
+                       ['ID', 'id'],
+                       ['post_date', 'createdAt'],
+                       ['post_status', 'status'],
+                       ['post_title', 'title']
+                   )
+                   ->attachMeta('give_formmeta', 'id', 'form_id',
+                       ['_give_amount', 'amount'],
+                       ['_give_form_earnings', 'revenue'],
+                       ['_give_donation_levels', 'donationLevels'],
+                       ['_give_set_price', 'setPrice'],
+                       ['_give_goal_option', 'goalEnabled']
+                   )
+                   ->where('post_type', 'give_forms')
+                   ->limit($perPage)
+                   ->orderBy('id', 'DESC')
+                   ->offset(($page - 1) * $perPage);
 
-    public function validateSearch($param, $request, $key)
-    {
-        return is_int($param) || is_string($param);
-    }
-
-    public function sanitizeSearch($value, $request, $param)
-    {
-        if(is_int($param)){
-            return $param;
+        // Status
+        if ($status === 'any') {
+            $forms->whereIn('post_status', ['publish', 'draft', 'pending']);
+        } else {
+            $forms->where('post_status', $status);
         }
-        else
-        {
-            return sanitize_text_field($value);
-        }
-    }
 
-    public function handleRequest( WP_REST_Request $request )
-    {
-        $now = hrtime(true);
-        $parameters = $request->get_params();
-        $forms = $this->constructFormList( $parameters );
-        $then = hrtime(true);
-        error_log('took ' . ( ( $then - $now ) / 1000000) . 'ms');
+        // Search
+        if ($search) {
+            if (ctype_digit($search)) {
+                $forms->where('ID', $search);
+            } else {
+                $forms->whereLike('post_title', $search);
+            }
+        }
+
+        $forms = $forms->getAll();
+
+        // Get total forms count
+        $total = DB::table('posts')
+                   ->selectRaw('SELECT COUNT(ID) AS count')
+                   ->where('post_type', 'give_forms')
+                   ->get();
+
+        $data = [];
+
+        foreach ($forms as $form) {
+            // Get donations count
+            $donations = DB::table('posts')
+                           ->selectRaw('SELECT COUNT(ID) as count')
+                           ->leftJoin('give_donationmeta', 'ID', 'donation_id')
+                           ->where('meta_key', '_give_payment_form_id')
+                           ->where('meta_value', $form->id)
+                           ->get();
+
+            $data[] = [
+                'id'          => $form->id,
+                'name'        => $form->title,
+                'donations'   => $donations->count,
+                'status'      => $form->status,
+                'goal'        => $form->goalEnabled === 'enabled' ? $this->getGoal($form->id) : false,
+                'amount'      => $this->getFormAmount($form),
+                'revenue'     => $this->formatAmount($form->revenue),
+                'datetime'    => $this->getDateTime($form->createdAt),
+                'shortcode'   => sprintf('[give_form id="%d"]', $form->id),
+                'permalink'   => html_entity_decode(get_permalink($form->id)),
+                'edit'        => html_entity_decode(get_edit_post_link($form->id)),
+                'goalEnabled' => $form->goalEnabled
+            ];
+        }
+
         return new WP_REST_Response(
-            $forms
+            [
+                'forms'      => $data,
+                'totalPages' => ceil($total->count / $perPage),
+            ]
         );
     }
 
     /**
-     * Check user permissions
-     * @return bool|WP_Error
+     * @param  int  $formId
+     *
+     * @return array
      */
-    public function permissionsCheck()
+    private function getGoal($formId)
     {
-        if ( ! current_user_can('edit_posts')) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You dont have the right permissions to view Donation Forms', 'give'),
-                ['status' => $this->authorizationStatusCode()]
-            );
-        }
+        $goal = give_goal_progress_stats($formId);
 
-        return true;
+        $getFormatFromGoal = function ($goal) {
+            switch ($goal[ 'format' ]) {
+                case 'donation':
+                    return _n('donation', 'donations', $goal[ 'raw_goal' ], 'give');
+
+                case 'donors':
+                    return _n('donor', 'donors', $goal[ 'raw_goal' ], 'give');
+
+                default:
+                    return '';
+            }
+        };
+
+        return [
+            'actual'   => html_entity_decode($goal[ 'actual' ]),
+            'goal'     => html_entity_decode($goal[ 'goal' ]),
+            'progress' => html_entity_decode($goal[ 'progress' ]),
+            'format'   => $getFormatFromGoal($goal)
+        ];
     }
 
+    /**
+     * @param  string  $date
+     *
+     * @return string
+     */
+    private function getDateTime($date)
+    {
+        $date      = date_create($date);
+        $timestamp = $date->getTimestamp();
+        $time      = date_i18n(get_option('time_format'), $date);
 
-    protected function constructFormList( $parameters ) {
-        $per_page = $parameters['perPage'] ?: 30;
-        $page = $parameters['page'] ?: 1;
-        $search = $parameters['search'] ?: '';
-        $status = isset($parameters['status']) ? $parameters['status'] : 'any';
-        // basic query to get list of forms and form meta
-        global $wpdb;
-        $builder = new QueryBuilder();
-        $builder->from('posts', 'posts')
-            ->select(
-                ['ID', 'id'],
-                ['post_date', 'createdAt'],
-                ['post_modified', 'updatedAt'],
-                ['post_status', 'status'],
-                ['post_title', 'title'],
-            )
-            ->where('post_type', 'give_forms')
-            ->whereIn('post_status', ['publish', 'draft', 'pending'])
-            ->attachMeta('give_formmeta', 'id', 'form_id',
-                ['_give_form_earnings', 'revenue'],
-                ['_give_goal_option', 'goal_enabled'],
-                ['_give_levels_minimum_amount', 'level_min'],
-                ['_give_levels_maximum_amount', 'level_max'],
-                ['_give_goal_format', 'goal_format'],
-                ['_give_form_goal_progress', 'goal_progress']
-            )
-            ->limit($per_page)
-            ->orderBy('ID', 'DESC')
-            ->offset(($page-1)*$per_page);
-        $builder_form_query = $builder->getAll();
-        $found_ids = array_map(function($e) {
-            return $e->id;
-        }, $builder_form_query);
+        if ($timestamp >= strtotime('today')) {
+            return __('Today', 'give') . ' ' . __('at', 'give') . ' ' . $time;
+        }
 
-        // todo: add a query to get donation count from $found_ids (list of form IDs)
+        if ($timestamp >= strtotime('yesterday')) {
+            return __('Yesterday', 'give') . ' ' . __('at', 'give') . ' ' . $time;
+        }
 
-        $args = array(
-                'output'    => 'forms',
-                'post_type' => array( 'give_forms' ),
-                'update_post_meta_cache' => 'false',
-                'post_status' => $status,
-                'posts_per_page' => $per_page,
-        );
-        if(is_numeric($search))
-        {
-            $args['p'] = $search;
-        }
-        else
-        {
-            $args['title'] = $search;
-        }
-        $form_query = new \WP_Query( $args );
-        //make sure we're not asking for a non-existent page
-        if( $form_query->max_num_pages < $page )
-        {
-            $page = $form_query->max_num_pages;
-        }
-        $args['paged'] = $page;
-        $form_query = new \WP_Query( $args );
-        $results = array();
-        foreach( $form_query->posts as $index=>$form ) {
-            $result = new Give_Donate_Form($form->ID);
-            //if there are multiple prices, get the highest and lowest
-            if( is_array( $result->prices ) ) {
-                $all_prices = array_column($result->prices, '_give_amount');
-                $prices = $this->formatAmount(min($all_prices)) . ' - ' . $this->formatAmount(max($all_prices));
-            }
-            $results[] = (object) array();
-            $results[$index]->id = $form->ID;
-            $results[$index]->name = $result->post_title;
-            $results[$index]->amount = isset( $prices ) ? $prices : $this->formatAmount( $result->price );
-            if( give_is_setting_enabled( give_get_meta( $form->ID, '_give_goal_option', true ) ) )
-            {
-                $goal = give_goal_progress_stats( $form->ID );
-                $goal['actual'] = html_entity_decode($goal['actual']);
-                $goal['goal'] = html_entity_decode($goal['goal']);
-                if($goal['format'] == 'donation')
-                {
-                    $goal['format'] = ngettext(__('donation', 'give'), __('donations', 'give'), $goal['raw_goal']);
-                }
-                elseif ($goal['format'] == 'donors')
-                {
-                    $goal['format'] = ngettext(__('donor', 'give'), __('donors', 'give'), $goal['raw_goal']);
-                }
-                $results[$index]->goal = $goal;
-            }
-            else
-            {
-                $results[$index]->goal = '';
-            }
-            $results[$index]->donations = count( give_get_payments( ['give_forms' => $form->ID ] ) );
-            $results[$index]->revenue = $this->formatAmount( give_get_form_earnings_stats( $form->ID ) );
-            $date = date_create( $result->post_date );
-            $timestamp = $date->getTimestamp();
-            $date_string = '';
-            if($timestamp >= strtotime('today'))
-            {
-                $date_string .= __('Today', 'give');
-            }
-            elseif ($timestamp >= strtotime('yesterday'))
-            {
-                $date_string .= __('Yesterday', 'give');
-            }
-            else {
-                $date_string .= date_i18n('Y/m/d', $date );
-            }
-            $date_string .= date_i18n(' \a\t h:i a', $date);
-            $results[$index]->datetime = $date_string;
-            $results[$index]->shortcode = "[give_form id=\"$form->ID\"]";
-            $results[$index]->status = $form->post_status;
-            $results[$index]->permalink = html_entity_decode(get_permalink($form->ID));
-            $results[$index]->edit = html_entity_decode(get_edit_post_link($form->ID));
-        }
-        return (object) array(
-            'forms' => $results,
-            'total' => $form_query->found_posts,
-            'page' => (int)$page,
-            'trash' => ! defined('EMPTY_TRASH_DAYS') || constant('EMPTY_TRASH_DAYS'),
-        );
+        return date_i18n(get_option('date_format'), $date);
     }
 
-    protected function formatAmount ($amount) {
-        return html_entity_decode( give_currency_filter( give_format_amount( $amount ) ) );
+    /**
+     * @param  object  $form
+     *
+     *
+     * @return string
+     */
+    private function getFormAmount($form)
+    {
+        $donationLevels = unserialize($form->donationLevels);
+
+        if (is_array($donationLevels)) {
+            $amount = array_column($donationLevels, '_give_amount');
+
+            return $this->formatAmount(min($amount)) . ' - ' . $this->formatAmount(max($amount));
+        }
+
+        return $this->formatAmount($form->setPrice);
+    }
+
+    /**
+     * @param  string  $amount
+     *
+     * @return string
+     */
+    private function formatAmount($amount)
+    {
+        return html_entity_decode(give_currency_filter(give_format_amount($amount)));
     }
 }
