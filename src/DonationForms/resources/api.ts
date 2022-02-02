@@ -29,12 +29,7 @@ export const fetchWithArgs = (endpoint, args, method = 'GET') => {
 
 
 const Fetcher = (params) => {
-    return fetchWithArgs('', {
-        page: params.split(',')[0],
-        perPage: params.split(',')[1],
-        status: params.split(',')[2],
-        search: params.split(',')[3]
-    });
+    return fetchWithArgs('', JSON.parse(params));
 }
 // SWR Fetcher
 export function useDonationForms({page, perPage, status, search}) {
@@ -43,6 +38,6 @@ export function useDonationForms({page, perPage, status, search}) {
     return {data, error};
 }
 
-export const keyFunction = ({page, perPage, status, search}) => {
-    return `${page},${perPage},${status},${search}`
+export const keyFunction = (keys) => {
+    return JSON.stringify(keys);
 }
