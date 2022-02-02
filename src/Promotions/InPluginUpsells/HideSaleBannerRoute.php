@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\InPluginUpsells;
+namespace Give\Promotions\InPluginUpsells;
 
 use Give\API\RestRoute;
 use WP_REST_Request;

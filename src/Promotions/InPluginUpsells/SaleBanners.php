@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\InPluginUpsells;
+namespace Give\Promotions\InPluginUpsells;
 
 use DateTimeImmutable;
 use DateTimeZone;

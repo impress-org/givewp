@@ -48,7 +48,6 @@ use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvide
 use Give\Form\Templates;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Framework\Migrations\MigrationsServiceProvider;
-use Give\InPluginUpsells\ServiceProvider as InPluginUpsellsServiceProvider;
 use Give\License\LicenseServiceProvider;
 use Give\Log\LogServiceProvider;
 use Give\MigrationLog\MigrationLogServiceProvider;
@@ -157,7 +156,6 @@ final class Give
         RevenueServiceProvider::class,
         MultiFormGoalsServiceProvider::class,
         DonorDashboardsServiceProvider::class,
-        InPluginUpsellsServiceProvider::class,
         TrackingServiceProvider::class,
         TestDataServiceProvider::class,
         MigrationLogServiceProvider::class,

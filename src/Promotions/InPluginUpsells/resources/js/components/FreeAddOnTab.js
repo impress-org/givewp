@@ -2,6 +2,8 @@ import {useRef, useState} from 'react';
 import axios from 'axios';
 import cx from 'classnames';
 
+import GreenButton from '@givewp/promotions/shared/GreenButton';
+
 import styles from './FreeAddOnTab.module.css';
 import {Hero} from './Hero';
 import {Card} from './Card';
@@ -121,7 +123,7 @@ export const FreeAddOnTab = () => {
                                     <input type="email" name="email" required ref={emailInput} />
                                 </label>
                             </div>
-                            <input type="submit" value="👉 Get my Free Add-on" />
+                            <GreenButton as="input" text="👉 Get my Free Add-on" shadow />
                         </form>
                         <em className={styles.disclosure}>
                             * By submitting this form, you agree to be subscribed to our GiveWP Newsletter (you can

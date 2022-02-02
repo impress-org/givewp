@@ -11,7 +11,7 @@ import styles from './AddonsAdminPage.module.css';
 
 export function AddonsAdminPage() {
     // We control the tabs only so we can use `tabIndex` to change the decor.
-    const [tabIndex, setTabIndex] = useState(3);
+    const [tabIndex, setTabIndex] = useState(0);
     const addonDecorAssets = useMemo(
         () =>
             [
