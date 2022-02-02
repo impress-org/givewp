@@ -4,7 +4,7 @@ namespace Give\Subscriptions\DataTransferObjects;
 
 /**
  * Class SubscriptionArgs
- * @unreleased
+ * @since 2.18.0
  */
 class SubscriptionArgs {
 	/**
@@ -75,7 +75,7 @@ class SubscriptionArgs {
 	/**
 	 * Convert data from request into DTO
 	 *
-	 * @unreleased
+	 * @since 2.18.0
 	 *
 	 * @return self
 	 */
@@ -103,7 +103,7 @@ class SubscriptionArgs {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.18.0
 	 *
 	 * @return array
 	 */
@@ -132,7 +132,7 @@ class SubscriptionArgs {
 	/**
 	 * Gets interval length and interval unit for Authorize.net based on Give subscription period.
 	 *
-	 * @unreleased
+	 * @since 2.18.0
 	 *
 	 * @param int    $frequency
 	 *
@@ -154,7 +154,7 @@ class SubscriptionArgs {
 	/**
 	 * Gets interval length and interval unit for Authorize.net based on Give subscription period.
 	 *
-	 * @unreleased
+	 * @since 2.18.0
 	 *
 	 * @param int    $frequency
 	 *

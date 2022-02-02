@@ -10,7 +10,7 @@ use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
 
 /**
  * Class TestGateway
- * @unreleased
+ * @since 2.18.0
  */
 class TestGateway extends PaymentGateway
 {
@@ -49,7 +49,7 @@ class TestGateway extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getLegacyFormFieldMarkup($formId)
+    public function getLegacyFormFieldMarkup($formId, $args)
     {
         if (FormUtils::isLegacyForm($formId)) {
             return false;

@@ -1,0 +1,67 @@
+@mixin give-input {
+    inline-size: 100%;
+    padding: 1.1875rem;
+    border: 0.078rem solid #666;
+    border-radius: 0.25rem;
+    box-shadow: inset 0 0.08em 0.4em rgba(0, 0, 0, 0.15);
+    background-color: #fff;
+    color: #828382;
+    font-size: 1rem;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.2;
+
+    &:focus,
+    &.focus {
+        outline: 0.125rem solid var(--give-primary-color);
+    }
+}
+
+.give-label {
+    display: flex;
+    padding-block: 10px;
+    padding-inline: 0;
+
+    .give-required-indicator {
+        margin-inline-start: 5px;
+        color: #a00;
+    }
+}
+
+// prettier-ignore
+.give-square-cc-fields,
+.give-stripe-single-cc-field-wrap,
+.give-input-field-wrapper,
+.give-select,
+:where(
+    .form-row,
+    .give-gateway-details
+)
+    :where(
+        input[type='text'],
+        input[type='tel'],
+        input[type='email'],
+        input[type='url'],
+        input[type='password'],
+        textarea,
+        select,
+        .give-select,
+        .give-stripe-cc-field
+    ):not(#give-amount)
+{
+    @include give-input;
+}
+
+.form-row select,
+.give-select,
+.give-gateway-details select {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #fff;
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg width='13' height='8' viewBox='0 0 13 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.66016 7.19531C5.90625 7.44141 6.31641 7.44141 6.5625 7.19531L11.8945 1.89062C12.1406 1.61719 12.1406 1.20703 11.8945 0.960938L11.2656 0.332031C11.0195 0.0859375 10.6094 0.0859375 10.3359 0.332031L6.125 4.54297L1.88672 0.332031C1.61328 0.0859375 1.20312 0.0859375 0.957031 0.332031L0.328125 0.960938C0.0820312 1.20703 0.0820312 1.61719 0.328125 1.89062L5.66016 7.19531Z' fill='%23A2A3A2'/%3E%3C/svg%3E"),
+        linear-gradient(to bottom, #fff 0%, #fff 100%);
+    background-repeat: no-repeat, repeat;
+    background-position: right 0.7em top 50%, 0 0;
+    background-size: 0.65em auto, 100%;
+}

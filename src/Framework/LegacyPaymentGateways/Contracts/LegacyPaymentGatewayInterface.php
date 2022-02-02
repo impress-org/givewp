@@ -2,16 +2,16 @@
 namespace Give\Framework\LegacyPaymentGateways\Contracts;
 
 /**
- * @unreleased
+ * @since 2.18.0
  */
 interface LegacyPaymentGatewayInterface {
 
 	/**
 	 * Returns form fields for donation form to render
 	 *
-	 * @unreleased
+	 * @since 2.18.0
 	 *
 	 * @return string|bool
 	 */
-	public function getLegacyFormFieldMarkup( $formId );
+	public function getLegacyFormFieldMarkup( $formId, $args );
 }

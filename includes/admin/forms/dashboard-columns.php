@@ -491,7 +491,7 @@ function give_forms_advanced_filter( $which ) {
 	?>
 	<div id="give-forms-advanced-filter" class="give-filters">
 		<div class="give-filter give-filter-search">
-			<input type="text" id="give-forms-search-input" placeholder="<?php _e( 'Form Name or ID', 'give' ); ?>" name="s" value="<?php echo $search; ?>">
+			<input type="text" id="give-forms-search-input" placeholder="<?php _e( 'Form Name or ID', 'give' ); ?>" name="s" value="<?php echo esc_attr( $search ); ?>">
 			<?php
 			submit_button(
 				__( 'Search', 'give' ),

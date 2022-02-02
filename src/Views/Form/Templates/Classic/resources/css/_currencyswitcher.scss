@@ -1,0 +1,69 @@
+@use 'fn';
+
+.give-donation-amount {
+    position: relative;
+}
+
+.give-cs-mini-dropdown {
+    appearance: none;
+    cursor: pointer;
+    position: absolute;
+    inline-size: calc(var(--currency-text-width, auto) + 2.75rem);
+    block-size: fn.scaleBetween(2.625rem, 3.125rem);
+    border-width: 0;
+    border-style: dotted;
+    border-color: #c1c1c1;
+    background: none;
+    color: transparent;
+    inset-inline-end: 0.625rem;
+    margin-inline-end: 0.625rem;
+    border-inline-start-width: 0.125rem;
+
+    option {
+        color: #333;
+    }
+
+    &:first-child {
+        inset-inline-end: 0;
+        inset-inline-start: 0.625rem;
+        margin-inline-start: 0.625rem;
+        margin-inline-end: 0;
+        border-inline-start-width: 0;
+        border-inline-end-width: 0.125rem;
+    }
+
+    &:focus {
+        padding: 1.25rem;
+        border-radius: 0.3125rem;
+        border: 0.0625rem solid var(--give-primary-color);
+        outline: none;
+    }
+
+    + span.give-currency-position-after {
+        padding: 0;
+    }
+
+    ~ span.give-currency-symbol {
+        padding-inline-end: 1.875rem;
+        display: inline-flex;
+        column-gap: 0.5em;
+        align-items: center;
+        white-space: nowrap;
+
+        &::after {
+            display: inline;
+            content: '\f0d7';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            font-size: 0.75em;
+            color: #6f6f6f;
+        }
+    }
+}
+
+// We move the message outside of the wrap and then the only contents are hidden
+// fields. This is important since gateway changes add display: block as an
+// inline style.
+.give-currency-switcher-wrap {
+    display: none !important;
+}

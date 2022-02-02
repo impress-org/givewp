@@ -19,7 +19,7 @@ class Legacy extends Template
      */
     public function getName()
     {
-        return __('Legacy Donation Form', 'give');
+        return __('Legacy Form', 'give');
     }
 
     /**
@@ -27,7 +27,7 @@ class Legacy extends Template
      */
     public function getImage()
     {
-        return GIVE_PLUGIN_URL . 'assets/dist/images/admin/LegacyForm.jpg';
+        return GIVE_PLUGIN_URL . 'assets/dist/images/admin/template-preview-legacy.png';
     }
 
     /**

@@ -1,0 +1,125 @@
+@use 'sass:string';
+
+.give-stripe-checkout-modal {
+    display: none;
+
+    &.give-stripe-checkout-show-modal {
+        position: fixed;
+        inset-block-start: 0;
+        inset-inline-start: 0;
+        // High enough to be shown above everything. Feel free to increase if necessary.
+        z-index: 10;
+        block-size: 100%;
+        min-block-size: max-content;
+        inline-size: 100%;
+        overflow: auto;
+        overscroll-behavior: contain;
+        display: flex;
+        align-items: safe center; // Safe alignment in Firefox
+        justify-content: center;
+        background-color: rgb(0 0 0 / 0.5);
+
+        // For the future...
+        body:has(&) {
+            overflow: hidden;
+        }
+    }
+
+    &-content {
+        block-size: max-content;
+        inline-size: min(100%, 32rem);
+        margin: auto; // Fallback for `align-items: safe center` on parent
+    }
+
+    &-container {
+        background-color: #fff;
+        font-size: 1rem;
+
+        @media screen and (min-width: $desktopMinWidth) {
+            border-radius: 0.5rem;
+        }
+
+        & > :first-child {
+            border-start-start-radius: inherit;
+            border-start-end-radius: inherit;
+        }
+
+        & > :last-child {
+            border-end-start-radius: inherit;
+            border-end-end-radius: inherit;
+        }
+
+        & > * {
+            padding: 1rem;
+        }
+    }
+
+    &-header {
+        position: relative;
+        --tint-color: rgba(var(--give-header-background-color--for-rgb), 0.75);
+        --tint: linear-gradient(to right, var(--tint-color), var(--tint-color));
+        background-color: rgb(var(--give-header-background-color--for-rgb)) !important;
+        /* translucent tint gradient over image */
+        background-image: var(--tint, linear-gradient(transparent, transparent)), var(--give-header-background-image);
+        background-size: cover;
+        background-position: center;
+        color: #fff;
+        text-shadow: 0 0.07em 0.14em rgb(0 0 0 / 0.15);
+        text-align: center;
+        font-family: var(--give-font);
+    }
+
+    &-close {
+        position: absolute;
+        inset-block-start: 0;
+        inset-inline-end: 0;
+        margin: 1rem;
+        border: 0;
+        border-radius: 9999px;
+        background-color: transparent;
+        opacity: 0.75;
+        font-size: 1.2em;
+        transition: opacity 0.2s ease-in-out;
+
+        &:hover {
+            opacity: 1;
+        }
+
+        &:focus {
+            opacity: 1;
+            outline: 0.125em solid fff;
+        }
+
+        &::before {
+            content: 'Close';
+            @include visually-hidden;
+        }
+
+        &::after {
+            content: '\f057';
+            color: #fff;
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            block-size: 1em;
+            aspect-ratio: 1;
+            @supports not (aspect-ratio: 1) {
+                inline-size: 1em;
+            }
+        }
+
+        & > svg {
+            display: none;
+        }
+    }
+
+    &-body {
+        display: grid;
+        grid-auto-flow: row;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 1rem;
+    }
+
+    &-sequoia-donate-button {
+        inline-size: 100%;
+    }
+}

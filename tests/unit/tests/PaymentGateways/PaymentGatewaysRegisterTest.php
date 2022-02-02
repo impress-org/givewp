@@ -136,7 +136,7 @@ class MockStripe extends PaymentGateway
         return 'Credit Card';
     }
 
-    public function getLegacyFormFieldMarkup($formId)
+    public function getLegacyFormFieldMarkup($formId, $args)
     {
         // TODO: Implement getLegacyFormFieldMarkup() method.
     }
@@ -181,7 +181,7 @@ class MockPaypal extends PaymentGateway
         return 'PayPal';
     }
 
-    public function getLegacyFormFieldMarkup($formId)
+    public function getLegacyFormFieldMarkup($formId, $args)
     {
         // TODO: Implement getLegacyFormFieldMarkup() method.
     }
@@ -226,7 +226,7 @@ class MockPaypalOffsite extends PaymentGateway implements OffsiteGatewayInterfac
         return 'PayPal';
     }
 
-    public function getLegacyFormFieldMarkup($formId)
+    public function getLegacyFormFieldMarkup($formId, $args)
     {
         // TODO: Implement getLegacyFormFieldMarkup() method.
     }
@@ -241,7 +241,7 @@ class MockPaypalOffsite extends PaymentGateway implements OffsiteGatewayInterfac
         // TODO: Implement handleReturnFromOffsiteRedirect() method.
     }
 
-    public function returnFromOffsiteRedirect()
+    public function returnFromOffsiteRedirect($donationId)
     {
         // TODO: Implement returnFromOffsiteRedirect() method.
     }
