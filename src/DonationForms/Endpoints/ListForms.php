@@ -136,8 +136,7 @@ class ListForms extends Endpoint
                 'datetime'    => $this->getDateTime($form->createdAt),
                 'shortcode'   => sprintf('[give_form id="%d"]', $form->id),
                 'permalink'   => html_entity_decode(get_permalink($form->id)),
-                'edit'        => html_entity_decode(get_edit_post_link($form->id)),
-                'goalEnabled' => $form->goalEnabled
+                'edit'        => html_entity_decode(get_edit_post_link($form->id))
             ];
         }
 
