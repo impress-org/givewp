@@ -11,12 +11,17 @@ use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
  */
 class ServiceProvider implements ServiceProviderInterface
 {
-
+    /**
+     * @inheritDoc
+     */
     public function register()
     {
         give()->singleton('donationFormsRepository', DonationFormsRepository::class);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function boot()
     {
         Hooks::addAction('admin_menu', DonationFormsAdminPage::class, 'register');
