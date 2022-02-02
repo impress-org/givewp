@@ -126,17 +126,17 @@ class ListForms extends Endpoint
                            ->get();
 
             $data[] = [
-                'id'          => $form->id,
-                'name'        => $form->title,
-                'donations'   => $donations->count,
-                'status'      => $form->status,
-                'goal'        => $form->goalEnabled === 'enabled' ? $this->getGoal($form->id) : false,
-                'amount'      => $this->getFormAmount($form),
-                'revenue'     => $this->formatAmount($form->revenue),
-                'datetime'    => $this->getDateTime($form->createdAt),
-                'shortcode'   => sprintf('[give_form id="%d"]', $form->id),
-                'permalink'   => html_entity_decode(get_permalink($form->id)),
-                'edit'        => html_entity_decode(get_edit_post_link($form->id))
+                'id'        => $form->id,
+                'name'      => $form->title,
+                'donations' => $donations->count,
+                'status'    => $form->status,
+                'goal'      => $form->goalEnabled === 'enabled' ? $this->getGoal($form->id) : false,
+                'amount'    => $this->getFormAmount($form),
+                'revenue'   => $this->formatAmount($form->revenue),
+                'datetime'  => $this->getDateTime($form->createdAt),
+                'shortcode' => sprintf('[give_form id="%d"]', $form->id),
+                'permalink' => html_entity_decode(get_permalink($form->id)),
+                'edit'      => html_entity_decode(get_edit_post_link($form->id))
             ];
         }
 
