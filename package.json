@@ -96,7 +96,7 @@
         "react-router-dom": "^5.1.2",
         "react-select": "^3.1.0",
         "styled-components": "^5.2.1",
-        "swr": "^0.4.1",
+        "swr": "^1.2.0",
         "uiblocker": "latest",
         "vhtml": "^2.2.0"
     },
