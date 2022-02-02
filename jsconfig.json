@@ -2,7 +2,8 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
-            "@givewp/components": ["./src/Views/Components/index.js"]
+            "@givewp/components": ["./src/Views/Components/index.js"],
+            "@givewp/promotions/shared/*": ["./src/Promotions/sharedResources/components/*"]
         }
     }
 }
