@@ -44,7 +44,7 @@ class PayPalStandardWebhook
         $txnType = $eventData['txn_type'];
 
         // ipn verification can be disabled in GiveWP (<=2.15.0).
-        // This check will prevent anonymous requests to edit donation.
+        // This check will prevent anonymous requests from editing donation, if ipn verification disabled.
         if ( ! $this->verifyDonationId($donationId)) {
             wp_die('Forbidden', 404);
         }
