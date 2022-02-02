@@ -73,6 +73,8 @@ class GatewayRoute
 
             // Navigate to our payment gateway api to handle calling the gateway's method
             $this->handleGatewayRouteMethod($gateway, $data->gatewayMethod, $data->queryParams);
+
+            exit;
         }
     }
 
