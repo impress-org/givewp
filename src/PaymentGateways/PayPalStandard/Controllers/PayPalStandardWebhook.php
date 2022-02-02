@@ -45,7 +45,7 @@ class PayPalStandardWebhook
 
         // ipn verification can be disabled in GiveWP (<=2.15.0).
         // This check will prevent anonymous requests to edit donation.
-        if( ! $this->verifyDonationId( $donationId ) ) {
+        if ( ! $this->verifyDonationId($donationId)) {
             wp_die('Forbidden', 404);
         }
 
@@ -120,35 +120,37 @@ class PayPalStandardWebhook
         $donation = new Give_Payment($donationId);
         $donationStatus = strtolower($eventData['payment_status']);
 
-        // Process refunds & reversed.
-        if (in_array($donationStatus, ['refunded', 'reversed'])) {
-            Call::invoke(ProcessIpnDonationRefund::class, $eventData, $donationId);
+        switch (true) {
+            // Process refunds & reversed.
+            case in_array($donationStatus, ['refunded', 'reversed']):
+                if ('refunded' !== $donation->status) {
+                    Call::invoke(ProcessIpnDonationRefund::class, $eventData, $donationId);
+                }
 
-            return;
-        }
+                return;
 
-        // Only complete payments once.
-        if ('publish' === get_post_status($donationId)) {
-            return;
-        }
+            // Process completed donations.
+            case 'completed' === $donationStatus:
+                if ('publish' !== $donation->status) {
+                    $donation->add_note(
+                        sprintf( /* translators: %s: Paypal transaction ID */
+                            __('PayPal Transaction ID: %s', 'give'),
+                            $eventData['txn_id']
+                        )
+                    );
+                    $donation->transaction_id = $eventData['txn_id'];
+                    $donation->status = 'publish';
 
-        // Process completed donations.
-        if ('completed' === $donationStatus) {
-            give_insert_payment_note(
-                $donation->ID,
-                sprintf( /* translators: %s: Paypal transaction ID */
-                    __('PayPal Transaction ID: %s', 'give'),
-                    $eventData['txn_id']
-                )
-            );
-            give_set_payment_transaction_id($donation->ID, $eventData['txn_id']);
-            give_update_payment_status($donation->ID, 'publish');
-        } elseif ('pending' === $donationStatus) {
-            // Look for possible pending reasons, such as an eCheck.
-            if (isset($eventData['pending_reason'])) {
-                $note = give_paypal_get_pending_donation_note($eventData['pending_reason']);
-                give_insert_payment_note($donation->ID, $note);
-            }
+                    $donation->save();
+                }
+                break;
+
+            // Add note about pending payment.
+            case 'pending' === $donationStatus:
+                if (isset($eventData['pending_reason'])) {
+                    $donation->add_note(give_paypal_get_pending_donation_note($eventData['pending_reason']));
+                }
+                break;
         }
     }
 
