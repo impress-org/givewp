@@ -29,15 +29,11 @@ export const fetchWithArgs = (endpoint, args, method = 'GET') => {
 
 
 const Fetcher = (params) => {
-    return fetchWithArgs('', JSON.parse(params));
+    return fetchWithArgs('', params);
 }
 // SWR Fetcher
 export function useDonationForms({page, perPage, status, search}) {
-    const {data, error} = useSWR(keyFunction({page, perPage, status, search}), Fetcher);
+    const {data, error} = useSWR({page, perPage, status, search}, Fetcher);
 
     return {data, error};
-}
-
-export const keyFunction = (keys) => {
-    return JSON.stringify(keys);
 }

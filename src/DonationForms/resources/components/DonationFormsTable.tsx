@@ -7,7 +7,7 @@ import styles from '../admin-donation-forms.module.scss';
 import Shortcode from './Shortcode';
 import Pagination from './Pagination.js';
 import loadingForms from '../loadingForms.json';
-import {fetchWithArgs, keyFunction, useDonationForms} from '../api';
+import {fetchWithArgs, useDonationForms} from '../api';
 
 type DonationForm = {
     id: number;
@@ -54,15 +54,11 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
         try {
             const response = await fetchWithArgs(endpoint, {ids}, method);
             // revalidate current page
-            const currentKey = keyFunction(listParams);
-            await mutate(currentKey, data);
+            await mutate(listParams, data);
             //revalidate all pages after the current page and null their data
             const mutations = [];
             for (let i = response.page + 1; i <= Math.ceil(data.total / perPage); i++) {
-                const invalidKey = keyFunction({...listParams, page: i});
-                if (invalidKey != currentKey) {
-                    mutations.push(mutate(invalidKey, null));
-                }
+                mutations.push(mutate({...listParams, page: i}, null));
             }
             setErrors(response.errors);
             setSuccesses(response.successes);
