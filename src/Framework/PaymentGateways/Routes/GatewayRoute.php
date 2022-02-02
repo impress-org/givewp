@@ -7,8 +7,7 @@ use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\Framework\PaymentGateways\Traits\ResponseHelpers;
-
+use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use function Give\Framework\Http\Response\response;
 
 /**
@@ -16,12 +15,16 @@ use function Give\Framework\Http\Response\response;
  */
 class GatewayRoute
 {
-    use ResponseHelpers;
+    use HandleHttpResponses;
 
     /**
      * This is our entry point into the Gateway Routing system.
      *
+     * @unreleased - validate secureRouteMethods
+     * @since 2.18.0
+     *
      * @return void
+     *
      * @throws PaymentGatewayException
      * @since 2.18.0
      * @unreleased - validate secureRouteMethods
@@ -45,7 +48,7 @@ class GatewayRoute
             }
 
             // create DTO from GET request
-            $data = GatewayRouteData::fromRequest($_GET);
+            $data = GatewayRouteData::fromRequest(give_clean($_GET));
 
             /**
              * Get the PaymentGateway instance
@@ -72,17 +75,21 @@ class GatewayRoute
 
             // Navigate to our payment gateway api to handle calling the gateway's method
             $this->handleGatewayRouteMethod($gateway, $data->gatewayMethod, $data->queryParams);
+
+            exit;
         }
     }
 
     /**
      * Check if the request is valid
      *
+     * @unreleased remove required check give-donation-id
+     *
+     * @since 2.18.0
+     *
      * @param  array  $gatewayIds
      *
      * @return bool
-     * @since 2.18.0
-     * @unreleased remove required check give-donation-id
      *
      * @example ?give-listener=give-gateway&give-gateway-id=test-gateway&give-donation-id=1&give-gateway-method=returnFromOffsiteRedirect
      *
@@ -118,14 +125,14 @@ class GatewayRoute
      */
     private function validateSignature($routeSignature, GatewayRouteData $data)
     {
-        $action = RouteSignature::make($data->gatewayId, $data->gatewayMethod, $data->queryParams);
+        $action = new RouteSignature($data->gatewayId, $data->gatewayMethod, $data->queryParams);
 
         if (!wp_verify_nonce($routeSignature, $action->toString())) {
             PaymentGatewayLog::error(
                 'Invalid Secure Route',
                 ['routeSignature' => $routeSignature, 'action' => $action->toString(), 'data' => $data]
             );
-            
+
             wp_die('Forbidden', 403);
         }
     }
@@ -134,6 +141,7 @@ class GatewayRoute
      * Handle gateway route method
      *
      * @since 2.18.0
+     *
      * @unreleased - replace $donationId with $queryParams array
      *
      * @param  PaymentGateway  $gateway
