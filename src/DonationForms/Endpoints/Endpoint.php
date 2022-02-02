@@ -8,7 +8,6 @@ use WP_Error;
 /**
  * @unreleased
  */
-
 abstract class Endpoint implements RestRoute
 {
 
@@ -18,7 +17,7 @@ abstract class Endpoint implements RestRoute
     protected $endpoint;
 
     /**
-     * @param string $value
+     * @param  string  $value
      *
      * @return bool
      */
@@ -28,7 +27,7 @@ abstract class Endpoint implements RestRoute
     }
 
     /**
-     * @param string $param
+     * @param  string  $param
      *
      * @return bool
      */
@@ -47,7 +46,7 @@ abstract class Endpoint implements RestRoute
     }
 
     /**
-     * @param string $value
+     * @param  string  $value
      *
      * @return string
      */
