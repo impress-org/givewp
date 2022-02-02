@@ -114,7 +114,6 @@ class ListForms extends Endpoint
                        ['post_title', 'title']
                    )
                    ->attachMeta('give_formmeta', 'id', 'form_id',
-                       ['_give_amount', 'amount'],
                        ['_give_form_earnings', 'revenue'],
                        ['_give_donation_levels', 'donationLevels'],
                        ['_give_set_price', 'setPrice'],
@@ -181,7 +180,7 @@ class ListForms extends Endpoint
     /**
      * @param  int  $formId
      *
-     * @return int mixed
+     * @return int
      */
     private function getFormDonationsCount($formId)
     {
