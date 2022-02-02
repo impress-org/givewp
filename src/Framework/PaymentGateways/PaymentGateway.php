@@ -4,8 +4,6 @@ namespace Give\Framework\PaymentGateways;
 
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
-use Give\Framework\Http\Response\Types\JsonResponse;
-use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Actions\GenerateGatewayRouteUrl;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentCompleteHandler;
@@ -23,6 +21,8 @@ use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
+use Give\Framework\PaymentGateways\Routes\RouteSignature;
+use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
@@ -34,15 +34,27 @@ use function Give\Framework\Http\Response\response;
  */
 abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentGatewayInterface
 {
+    use HandleHttpResponses;
+
     /**
      * Route methods are used to extend the gateway api.
-     * By adding a custom route method, you are effectively
-     * registering a new route url that will resolve itself and
+     * By adding a custom routeMethod, you are effectively
+     * registering a new public route url that will resolve itself and
      * call your method.
      *
      * @var string[]
      */
     public $routeMethods = [];
+
+    /**
+     * Secure Route methods are used to extend the gateway api with an additional wp_nonce.
+     * By adding a custom secureRouteMethod, you are effectively
+     * registering a new route url that will resolve itself and
+     * call your method after validating the nonce.
+     *
+     * @var string[]
+     */
+    public $secureRouteMethods = [];
 
     /**
      * @var SubscriptionModuleInterface $subscriptionModule
@@ -126,7 +138,6 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         return $this->subscriptionModule->createSubscription($paymentData, $subscriptionData);
     }
 
-
     /**
      * Handle gateway command
      *
@@ -134,6 +145,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      *
      * @param  GatewayCommand  $command
      * @param  GatewayPaymentData  $gatewayPaymentData
+     *
      * @throws TypeNotSupported
      */
     public function handleGatewayPaymentCommand(GatewayCommand $command, GatewayPaymentData $gatewayPaymentData)
@@ -215,62 +227,44 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     }
 
     /**
-     * Handle gateway route method
-     *
-     * @param  int  $donationId
-     * @param  string  $method
-     *
-     * @since 2.18.0
-     *
-     * @return void
-     */
-    public function handleGatewayRouteMethod($donationId, $method)
-    {
-        try {
-            $this->handleResponse( $this->$method( $donationId ) );
-        } catch (PaymentGatewayException $paymentGatewayException) {
-            $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
-        } catch (Exception $exception) {
-            PaymentGatewayLog::error($exception->getMessage());
-            $this->handleResponse(response()->json(
-                __( 'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.', 'give' )
-            ));
-        }
-    }
-
-    /**
      * Generate gateway route url
      *
      * @since 2.18.0
+     * @unreleased remove $donationId param in favor of args
      *
      * @param  string  $gatewayMethod
-     * @param  int  $donationId
      * @param  array|null  $args
      *
      * @return string
+     *
      */
-    public function generateGatewayRouteUrl($gatewayMethod, $donationId, $args = null)
+    public function generateGatewayRouteUrl($gatewayMethod, $args = null)
     {
-        return Call::invoke(GenerateGatewayRouteUrl::class, $this->getId(), $gatewayMethod, $donationId, $args);
+        return Call::invoke(GenerateGatewayRouteUrl::class, $this->getId(), $gatewayMethod, $args);
     }
 
-
     /**
-     * Handle Response
+     * Generate secure gateway route url
      *
-     * @since 2.18.0
+     * @unreleased
      *
-     * @param  RedirectResponse|JsonResponse  $type
+     * @param  string  $gatewayMethod
+     * @param  array|null  $args
+     *
+     * @return string
+     *
      */
-    public function handleResponse($type)
+    public function generateSecureGatewayRouteUrl($gatewayMethod, $args = null)
     {
-        if ($type instanceof RedirectResponse) {
-            wp_redirect($type->getTargetUrl());
-            exit;
-        }
+        $nonce = new RouteSignature($this->getId(), $gatewayMethod, $args);
 
-        if ($type instanceof JsonResponse) {
-            wp_send_json(['data' => $type->getData()]);
-        }
+        return Call::invoke(
+            GenerateGatewayRouteUrl::class,
+            $this->getId(),
+            $gatewayMethod,
+            array_merge($args, [
+                'give-route-signature' => $nonce->toNonce()
+            ])
+        );
     }
 }
