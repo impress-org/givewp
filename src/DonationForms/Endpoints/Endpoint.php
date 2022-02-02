@@ -51,7 +51,7 @@ abstract class Endpoint implements RestRoute
      *
      * @return string
      */
-    public function sanitizeSearch($value)
+    public function sanitizeString($value)
     {
         return filter_var($value, FILTER_SANITIZE_STRING);
     }
