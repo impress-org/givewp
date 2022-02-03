@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 4.9
 Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 2.18.0
+Stable tag: 2.18.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -251,6 +251,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.18.1: February 2nd, 2022 =
+* Fix: On Classic template the payment fields didn't show up when there was only one active gateway, and now they do!
+
 = 2.18.0: January 19th, 2022 =
 * New: Shiny new Classic Form Template! Check it out!
 * New: New Gateway API under the hood for integrating with payment gateways. Developer docs to come!

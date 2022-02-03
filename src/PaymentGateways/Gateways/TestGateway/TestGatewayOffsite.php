@@ -2,9 +2,9 @@
 
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
-use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
-use Give\Framework\PaymentGateways\Types\OffSitePaymentGateway;
+use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
+use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
@@ -15,13 +15,20 @@ use function Give\Framework\Http\Response\response;
  * Class TestGatewayOffsite
  * @since 2.18.0
  */
-class TestGatewayOffsite extends OffSitePaymentGateway
+class TestGatewayOffsite extends PaymentGateway
 {
     /**
      * @inheritDoc
      */
     public $routeMethods = [
-        'testGatewayMethod'
+        'returnFromOffsiteRedirect'
+    ];
+
+    /**
+     * @inheritDoc
+     */
+    public $secureRouteMethods = [
+        'securelyReturnFromOffsiteRedirect'
     ];
 
     /**
@@ -76,35 +83,55 @@ class TestGatewayOffsite extends OffSitePaymentGateway
      */
     public function createPayment(GatewayPaymentData $paymentData)
     {
-        // This will allow you to overload returnFromOffsiteRedirect($donationId)
-        $redirectUrl = $this->generateReturnUrlFromRedirectOffsite($paymentData->donationId);
+        $redirectUrl = $this->generateSecureGatewayRouteUrl(
+            'securelyReturnFromOffsiteRedirect',
+            ['give-donation-id' => $paymentData->donationId]
+        );
 
         return new RedirectOffsite($redirectUrl);
     }
 
     /**
-     * An example of using the provided offsite method of returning from a redirect.
+     * An example of using a routeMethod for extending the Gateway API to handle a redirect.
      *
-     * @inheritDoc
+     * @unreleased
+     *
+     * @param  array  $queryParams
+     * @throws PaymentGatewayException
      */
-    public function returnFromOffsiteRedirect($donationId)
+    public function returnFromOffsiteRedirect($queryParams)
     {
+        $donationId = $queryParams['give-donation-id'];
+
+        if (!get_post($donationId)) {
+            throw new PaymentGatewayException('Donation does not exist');
+        }
+
         $this->updateDonation($donationId);
 
         return response()->redirectTo(give_get_success_page_uri());
     }
 
+
     /**
-     * An example gateway method for extending the Gateway API for a given gateway.
+     * An example of using a secureRouteMethod for extending the Gateway API to handle a redirect.
      *
-     * @param  int  $donationId
-     * @return JsonResponse
+     * @unreleased
+     *
+     * @param  array  $queryParams
+     * @throws PaymentGatewayException
      */
-    public function testGatewayMethod($donationId)
+    public function securelyReturnFromOffsiteRedirect($queryParams)
     {
+        $donationId = $queryParams['give-donation-id'];
+
+        if (!get_post($donationId)) {
+            throw new PaymentGatewayException('Donation does not exist');
+        }
+
         $this->updateDonation($donationId);
 
-        return response()->json();
+        return response()->redirectTo(give_get_success_page_uri());
     }
 
     /**
