@@ -2,8 +2,8 @@ import {useState} from 'react';
 import type {ChangeEventHandler} from 'react';
 import {__} from '@wordpress/i18n';
 
-import useDebounce from "./useDebounce";
-import styles from '../admin-donation-forms.module.scss';
+import useDebounce from './useDebounce';
+import styles from './AdminDonationFormsPage.module.scss';
 import DonationFormsTable, {DonationStatus} from './DonationFormsTable';
 
 function getDonationStatusText(donationStatus: DonationStatus): string {
@@ -27,21 +27,25 @@ export default function AdminDonationFormsPage() {
     const debouncedSearch = useDebounce(search, 400);
     const handleStatusFilterChange: ChangeEventHandler<HTMLSelectElement> = (event) =>
         setStatusFilter(event.target.value as DonationStatus);
-    const handleSearchChange: ChangeEventHandler<HTMLInputElement> = event => setSearch(event.target.value);
+    const handleSearchChange: ChangeEventHandler<HTMLInputElement> = (event) => setSearch(event.target.value);
 
     return (
         <article>
             <div className={styles.pageHeader}>
                 <h1 className={styles.pageTitle}>{__('Donation Forms', 'give')}</h1>
-                <a href="post-new.php?post_type=give_forms" className={styles.button}>
+                <a href="post-new.php?post_type=give_forms" className={styles.addFormButton}>
                     {__('Add Form', 'give')}
                 </a>
             </div>
             <div className={styles.searchContainer}>
-                <input className={styles.textInput} name='searchInput' type='text' onChange={handleSearchChange}
-                       placeholder={__('Search by name or ID', 'give')}
+                <input
+                    type="search"
+                    aria-label={__('Search donation forms', 'give')}
+                    placeholder={__('Search by name or ID', 'give')}
+                    onChange={handleSearchChange}
+                    className={styles.searchInput}
                 />
-                <select onChange={handleStatusFilterChange}>
+                <select aria-label={__('Filter donation forms by status', 'give')} onChange={handleStatusFilterChange}>
                     {Object.values(DonationStatus).map((donationStatus) => (
                         <option key={donationStatus} value={donationStatus}>
                             {getDonationStatusText(donationStatus)}
