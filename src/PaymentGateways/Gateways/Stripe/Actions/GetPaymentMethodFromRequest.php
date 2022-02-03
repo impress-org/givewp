@@ -9,11 +9,20 @@ use Give\PaymentGateways\Gateways\Stripe\WorkflowAction;
 
 class GetPaymentMethodFromRequest extends WorkflowAction
 {
+    /**
+     * @unreleased
+     * @param GatewayPaymentData $paymentData
+     * @throws PaymentMethodException
+     */
     public function __invoke( GatewayPaymentData $paymentData )
     {
-        $paymentMethod = new PaymentMethod( give_clean(
-            isset( $_POST['give_stripe_payment_method'] ) ? $_POST['give_stripe_payment_method'] : 0
-        ) );
+        if( ! isset( $_POST['give_stripe_payment_method'] ) ) {
+            throw new PaymentMethodException('Payment Method Not Found');
+        }
+
+        $paymentMethod = new PaymentMethod(
+            give_clean( $_POST['give_stripe_payment_method'] )
+        );
 
         if( $paymentMethod->id() ) {
             give_update_meta($paymentData->donationId, '_give_stripe_source_id', $paymentMethod->id());

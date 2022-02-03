@@ -10,9 +10,9 @@ use Give_Stripe_Customer;
 
 class GetOrCreateStripeCustomer extends WorkflowAction
 {
-    public function __invoke( GatewayPaymentData $paymentData, PaymentMethod $paymentMethod )
+    public function __invoke( GatewayPaymentData $paymentData )
     {
-        $giveStripeCustomer = new Give_Stripe_Customer($paymentData->donorInfo->email, $paymentMethod->id());
+        $giveStripeCustomer = new Give_Stripe_Customer($paymentData->donorInfo->email);
 
         if ( ! $giveStripeCustomer->get_id() ) {
             throw new StripeCustomerException(__('Unable to find or create stripe customer object.', 'give'));
