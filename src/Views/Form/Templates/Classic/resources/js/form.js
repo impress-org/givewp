@@ -61,7 +61,11 @@ function moveTestModeMessage() {
     const testModeMessage = document.querySelector('#give_error_test_mode');
 
     if (testModeMessage) {
-        document.querySelector('.give-payment-mode-label').after(testModeMessage);
+        if (hasSingleGateway()) {
+            document.querySelector('#give_secure_site_wrapper').before(testModeMessage);
+        } else {
+            document.querySelector('.give-payment-mode-label').after(testModeMessage);
+        }
     }
 }
 
@@ -237,6 +241,10 @@ function addTooltipToLevel(node) {
 }
 
 function moveDefaultGatewayDataIntoActiveGatewaySection() {
+    if (hasSingleGateway()) {
+        return;
+    }
+
     addSelectedGatewayDetails(createGatewayDetails());
 
     document
@@ -490,4 +498,8 @@ function setStripeElementStyles() {
         fontFamily: window.getComputedStyle(document.body).fontFamily,
         fontWeight: 400,
     });
+}
+
+function hasSingleGateway() {
+    return document.getElementById('give-gateway-radio-list').children.length === 1;
 }
