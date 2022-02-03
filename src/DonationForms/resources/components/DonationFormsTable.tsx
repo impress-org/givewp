@@ -3,7 +3,7 @@ import {__, _n} from '@wordpress/i18n';
 import {mutate} from 'swr';
 import cx from 'classnames';
 
-import styles from '../admin-donation-forms.module.scss';
+import styles from './DonationFormsTable.module.scss';
 import Pagination from './Pagination.js';
 import loadingForms from '../loadingForms.json';
 import {fetchWithArgs, useDonationForms} from '../api';
