@@ -185,7 +185,7 @@ class DonationRepository
 
         DB::query('COMMIT');
 
-        return Donation::find($donationId);
+        return $this->getById($donationId);
     }
 
     /**
