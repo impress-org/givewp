@@ -56,7 +56,7 @@ class ProcessIpnDonationRefundTest extends TestCase
         Call::invoke(
             MockProcessIpnDonationRefund::class,
             [
-                'mc_gross' => '19.05', // Actual donation amount is 20.00
+                'mc_gross' => '-19.05', // Actual donation amount is 20.00
                 'parent_txn_id' => 'abc123',
             ],
             $this->donation
