@@ -195,7 +195,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                     </a>
                 </td>
                 <td className={styles.tableCell}>
-                    <input type="text" aria-label="Copy shortcode" readOnly value={form.shortcode} />
+                    <input type="text" aria-label={__('Copy shortcode', 'give')} readOnly value={form.shortcode} />
                 </td>
                 <td className={styles.tableCell}>{form.datetime}</td>
                 <td className={styles.tableCell}>
