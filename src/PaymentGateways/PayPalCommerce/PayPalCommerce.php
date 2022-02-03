@@ -2,11 +2,16 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Exception;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
+use Give\Framework\PaymentGateways\Commands\PaymentComplete;
+use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Hooks;
+use Give\Log\Log;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
+use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalOrder;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookChecker;
 
 /**
@@ -84,10 +89,30 @@ class PayPalCommerce extends PaymentGateway
      *
      * @param GatewayPaymentData $paymentData
      *
-     * @return GatewayCommand|void
+     * @return GatewayCommand
+     * @throws Exception
      */
     public function createPayment(GatewayPaymentData $paymentData)
     {
+        $paypalOrderId = give_clean($_POST['payPalOrderId']);
+        $paypalOrder = give(PayPalOrder::class)->getOrder($paypalOrderId);
+
+        $command = PaymentComplete::make($paypalOrder->payment->id);
+        $command->paymentNotes = [
+            sprintf(
+                __('Transaction Successful. PayPal Transaction ID: %1$s    PayPal Order ID: %2$s', 'give'),
+                $paypalOrder->payment->id,
+                $paypalOrder->id
+            )
+        ];
+
+        give('payment_meta')->update_meta(
+            $paymentData->donationId,
+            '_give_order_id',
+            $paypalOrder->id
+        );
+
+        return $command;
     }
 
     /**
@@ -223,7 +248,6 @@ class PayPalCommerce extends PaymentGateway
         Hooks::addAction('give_pre_form_output', DonationFormPaymentMethod::class, 'handle');
 
         Hooks::addAction('give_paypal_commerce_refresh_token', RefreshToken::class, 'refreshToken');
-        Hooks::addAction('give_gateway_paypal-commerce', DonationProcessor::class, 'handle');
 
         Hooks::addAction('admin_init', AccountAdminNotices::class, 'displayNotices');
         Hooks::addFilter(
