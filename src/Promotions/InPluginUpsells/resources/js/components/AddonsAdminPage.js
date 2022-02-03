@@ -9,9 +9,9 @@ import {FreeAddOnTab} from './FreeAddOnTab';
 import {assetUrl} from '../utils';
 import styles from './AddonsAdminPage.module.css';
 
-export function AddonsAdminPage() {
+export function AddonsAdminPage({startingTab = 0}) {
     // We control the tabs only so we can use `tabIndex` to change the decor.
-    const [tabIndex, setTabIndex] = useState(0);
+    const [tabIndex, setTabIndex] = useState(startingTab);
     const addonDecorAssets = useMemo(
         () =>
             [

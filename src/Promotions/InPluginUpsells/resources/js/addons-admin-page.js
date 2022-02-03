@@ -1,4 +1,7 @@
 import {render} from 'react-dom';
 import {AddonsAdminPage} from './components/AddonsAdminPage';
 
-render(<AddonsAdminPage />, document.getElementById(window.GiveAddons.containerId));
+const searchParams = new URLSearchParams(window.location.search);
+const startingTab = parseInt(searchParams.get('tab')) || 0;
+
+render(<AddonsAdminPage startingTab={startingTab} />, document.getElementById(window.GiveAddons.containerId));
