@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {__, _n} from '@wordpress/i18n';
 import {mutate} from 'swr';
 import cx from 'classnames';
@@ -48,6 +48,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
     };
     const {data, error} = useDonationForms(listParams);
     const isEmpty = !error && data?.forms.length === 0;
+    useEffect(() => setPage(1), [status, search]);
 
     async function mutateForm(ids, endpoint, method) {
         try {
