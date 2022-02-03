@@ -38,12 +38,13 @@ const Fetcher = (params) => {
 // SWR Fetcher
 export function useDonationForms({page, perPage, status, search}) {
     const {data, error} = useSWR({page, perPage, status, search}, Fetcher, {
-        onErrorRetry: (error, key, config, revalidate) => {
+        onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
             //don't retry if we cancelled the initial request
             if(error.name == 'AbortError') return;
-            revalidate();
+            if (retryCount >= 5) return
+            const retryAfter = (retryCount + 1) * 500;
+            setTimeout(() => revalidate({ retryCount }), retryAfter);
         }
-
     });
 
     return {data, error};
