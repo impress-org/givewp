@@ -36,6 +36,7 @@ class PayPalCommerce extends PaymentGateway
      */
     public function getLegacyFormFieldMarkup($formId, $args)
     {
+        give(AdvancedCardFields::class)->addCreditCardForm($formId);
     }
 
     /**
@@ -222,7 +223,6 @@ class PayPalCommerce extends PaymentGateway
         Hooks::addAction('give_pre_form_output', DonationFormPaymentMethod::class, 'handle');
 
         Hooks::addAction('give_paypal_commerce_refresh_token', RefreshToken::class, 'refreshToken');
-        Hooks::addAction('give_paypal-commerce_cc_form', AdvancedCardFields::class, 'addCreditCardForm');
         Hooks::addAction('give_gateway_paypal-commerce', DonationProcessor::class, 'handle');
 
         Hooks::addAction('admin_init', AccountAdminNotices::class, 'displayNotices');
