@@ -5,21 +5,21 @@ namespace Give\Framework\PaymentGateways\Actions;
 class GenerateGatewayRouteUrl
 {
     /**
-     * @since 2.18.0
-     *
      * @param  string  $gatewayId
      * @param  string  $gatewayMethod
-     * @param  int  $donationId
      * @param  array|null  $args
      * @return string
+     * @since 2.18.0
+     *
+     * @unreleased remove $donationId param in favor of args
+     *
      */
-    public function __invoke($gatewayId, $gatewayMethod, $donationId, $args = null)
+    public function __invoke($gatewayId, $gatewayMethod, $args = null)
     {
         $queryArgs = [
             'give-listener' => 'give-gateway',
             'give-gateway-id' => $gatewayId,
             'give-gateway-method' => $gatewayMethod,
-            'give-donation-id' => $donationId,
         ];
 
         if ($args) {
