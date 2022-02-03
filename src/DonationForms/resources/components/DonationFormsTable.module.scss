@@ -136,9 +136,10 @@
     text-align: start;
     vertical-align: top;
     font-size: 0.875em;
+    font-weight: 600;
+    color: #333;
 
     & > a:not([class]) {
-        font-weight: 600;
         text-decoration: none;
     }
 }
