@@ -171,14 +171,11 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                                     }}
                                 />
                             </div>
-                            <a href={`${form.edit}&give_tab=donation_goal_options`}>{form.goal.actual}</a>
+                            {form.goal.actual} {__('of', 'give')}{' '}
                             {form.goal.goal ? (
-                                <span>
-                                    {' '}
-                                    {__('of', 'give')} {form.goal.goal}{' '}
-                                    {form.goal.format != 'amount' ? form.goal.format : null}
-                                </span>
+                                <a href={`${form.edit}&give_tab=donation_goal_options`}>{form.goal.goal}</a>
                             ) : null}
+                            {form.goal.format != 'amount' ? ` ${form.goal.format}` : null}
                         </>
                     ) : (
                         <span>{__('No Goal Set', 'give')}</span>
