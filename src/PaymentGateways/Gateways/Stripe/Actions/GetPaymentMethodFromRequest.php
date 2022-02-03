@@ -24,10 +24,8 @@ class GetPaymentMethodFromRequest extends WorkflowAction
             give_clean( $_POST['give_stripe_payment_method'] )
         );
 
-        if( $paymentMethod->id() ) {
-            give_update_meta($paymentData->donationId, '_give_stripe_source_id', $paymentMethod->id());
-            give_insert_payment_note($paymentData->donationId, sprintf(__('Stripe Source/Payment Method ID: %s', 'give'), $paymentMethod->id()));
-        }
+        give_update_meta($paymentData->donationId, '_give_stripe_source_id', $paymentMethod->id());
+        give_insert_payment_note($paymentData->donationId, sprintf(__('Stripe Source/Payment Method ID: %s', 'give'), $paymentMethod->id()));
 
         $this->bind( $paymentMethod );
     }
