@@ -58,7 +58,12 @@ class ProcessIpnDonationRefund
     private function isPartialRefund($ipnEventData, Give_Payment $donation)
     {
         $donationAmount = Money::of($donation->total, $donation->currency);
-        $refundedAmountOnPayPal = Money::of($ipnEventData['payment_gross'], $donation->currency);
+        $refundedAmountOnPayPal = Money::of(
+            // PayPal Standard send negative amount when refund payment.
+            // Check details https://developer.paypal.com/api/nvp-soap/ipn/IPNandPDTVariables/
+            abs( $ipnEventData['mc_gross'] ),
+            $donation->currency
+        );
 
         return $refundedAmountOnPayPal->getMinorAmount() < $donationAmount->getMinorAmount();
     }
