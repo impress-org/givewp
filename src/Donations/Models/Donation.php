@@ -6,6 +6,7 @@ use DateTime;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
+use Give\Framework\Models\Model;
 use Give\Subscriptions\Models\Subscription;
 
 /**
@@ -13,7 +14,7 @@ use Give\Subscriptions\Models\Subscription;
  *
  * @unreleased
  */
-class Donation
+class Donation extends Model
 {
     /**
      * @var int
@@ -85,6 +86,7 @@ class Donation
         $this->lastName = $lastName;
         $this->email = $email;
         $this->status = DonationStatus::PENDING();
+        $this->createdAt = $this->getCurrentDateTime();
     }
 
     /**
@@ -162,5 +164,4 @@ class Donation
     {
         return give()->donationRepository->getSequentialId($this->id);
     }
-
 }

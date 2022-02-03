@@ -5,6 +5,7 @@ namespace Give\Donations\DataTransferObjects;
 use DateTime;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Framework\Models\Traits\InteractsWithTime;
 
 /**
  * Class DonationData
@@ -13,6 +14,7 @@ use Give\Donations\ValueObjects\DonationStatus;
  */
 class DonationQueryData
 {
+    use InteractsWithTime;
     /**
      * @var int
      */
@@ -121,16 +123,5 @@ class DonationQueryData
         $donation->subscriptionId = $this->subscriptionId ?: null;
 
         return $donation;
-    }
-
-    /**
-     * @param  string  $date
-     * @return DateTime
-     */
-    private function toDateTime($date)
-    {
-        $timezone = wp_timezone();
-
-        return date_create_from_format('Y-m-d H:i:s', $date, $timezone)->setTimezone($timezone);
     }
 }
