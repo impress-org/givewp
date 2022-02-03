@@ -8,20 +8,6 @@ import Pagination from './Pagination.js';
 import loadingForms from '../loadingForms.json';
 import {fetchWithArgs, useDonationForms} from '../api';
 
-type DonationForm = {
-    id: number;
-    name: string;
-    amount: string;
-    goal: string | {progress: number; format: string; actual: string; goal: string};
-    donations: number;
-    revenue: string;
-    datetime: string;
-    shortcode: string;
-    status: string;
-    permalink: string;
-    edit: string;
-};
-
 export enum DonationStatus {
     Any = 'any',
     Publish = 'publish',
