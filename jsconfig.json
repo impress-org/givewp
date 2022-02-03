@@ -3,7 +3,7 @@
         "baseUrl": ".",
         "paths": {
             "@givewp/components": ["./src/Views/Components/index.js"],
-            "@givewp/promotions/shared/*": ["./src/Promotions/sharedResources/components/*"]
+            "@givewp/promotions/*": ["./src/Promotions/sharedResources/*"]
         }
     }
 }

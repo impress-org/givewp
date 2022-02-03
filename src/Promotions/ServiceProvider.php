@@ -3,7 +3,8 @@
 namespace Give\Promotions;
 
 use Give\Helpers\Hooks;
-use Give\Promotions\FreeAddonModal\Controller as FreeAddonModalController;
+use Give\Promotions\FreeAddonModal\Controllers\EnqueueModal;
+use Give\Promotions\FreeAddonModal\Controllers\CompleteRestApiEndpoint;
 use Give\Promotions\InPluginUpsells\AddonsAdminPage;
 use Give\Promotions\InPluginUpsells\HideSaleBannerRoute;
 use Give\Promotions\InPluginUpsells\RecurringDonationsTab;
@@ -62,6 +63,7 @@ class ServiceProvider implements ServiceProviderContract
      */
     private function bootFreeAddonModal()
     {
-        Hooks::addAction('admin_enqueue_scripts', FreeAddonModalController::class, 'enqueueScripts');
+        Hooks::addAction('admin_enqueue_scripts', EnqueueModal::class, 'enqueueScripts');
+        Hooks::addAction('rest_api_init', CompleteRestApiEndpoint::class);
     }
 }

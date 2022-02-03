@@ -1,8 +1,8 @@
-import {useRef, useState} from 'react';
-import axios from 'axios';
+import {useRef} from 'react';
 import cx from 'classnames';
 
-import GreenButton from '@givewp/promotions/shared/GreenButton';
+import GreenButton from '@givewp/promotions/components/GreenButton';
+import useFreeAddonSubscription from '@givewp/promotions/hooks/useFreeAddonSubscription';
 
 import styles from './FreeAddOnTab.module.css';
 import {Hero} from './Hero';
@@ -33,28 +33,14 @@ const description = [
 const {siteUrl, siteName} = window.GiveAddons;
 
 export const FreeAddOnTab = () => {
-    const [userSubscribed, setUserSubscribed] = useState(false);
-    const [hasSubmissionError, setHasSubmissionError] = useState(false);
+    const {userSubscribed, hasSubscriptionError, subscribeUser} = useFreeAddonSubscription();
     const firstNameInput = useRef();
     const emailInput = useRef();
 
     const handleSubscribe = async (event) => {
         event.preventDefault();
 
-        try {
-            const response = await axios.post('https://givewp-gateway.local/activecampaign/subscribe/free-add-on', {
-                first_name: firstNameInput.current.value,
-                email: emailInput.current.value,
-                website_url: siteUrl,
-                website_name: siteName,
-            });
-
-            setUserSubscribed(true);
-            console.log(response);
-        } catch (error) {
-            setHasSubmissionError(true);
-            console.error(error);
-        }
+        await subscribeUser(firstNameInput.current.value, emailInput.current.value, siteUrl, siteName);
     };
 
     return (
@@ -103,7 +89,7 @@ export const FreeAddOnTab = () => {
                     </span>
                 ) : (
                     <>
-                        {hasSubmissionError && (
+                        {hasSubscriptionError && (
                             <div className={styles.submissionError}>
                                 There was an issue submitting your information. Please try again. If the problem
                                 persists, try refreshing the page. If it still doesn't work, please{' '}

@@ -1,10 +1,14 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 
-import GreenButton from '@givewp/promotions/shared/GreenButton';
+import GreenButton from '@givewp/promotions/components/GreenButton';
+import useFreeAddonSubscription from '@givewp/promotions/hooks/useFreeAddonSubscription';
 
 import styles from './Modal.module.scss';
 
+const {siteUrl, siteName} = window.giveFreeAddonModal;
+
 const Modal = () => {
+    const {userSubscribed, hasSubscriptionError, subscribeUser, rejectOffer} = useFreeAddonSubscription();
     const [isOpen, setIsOpen] = useState(true);
     const firstNameInput = useRef();
     const emailInput = useRef();
@@ -13,12 +17,25 @@ const Modal = () => {
         return null;
     }
 
-    const handleSubscribe = () => {
+    const handleSubscribe = (event) => {
+        event.preventDefault();
+        subscribeUser(firstNameInput.current.value, emailInput.current.value, siteUrl, siteName);
+    };
+
+    const handleOffClick = (event) => {
+        if (event.target.className === styles.giveModalContainer) {
+            setIsOpen(false);
+        }
+    };
+
+    const handleDismiss = (event) => {
+        event.preventDefault();
         setIsOpen(false);
+        rejectOffer();
     };
 
     return (
-        <div className={styles.giveModalContainer} onClick={(event) => console.log(event)}>
+        <div className={styles.giveModalContainer} onClick={handleOffClick}>
             <div className={styles.modal}>
                 <h2>🎉 Congratulations!</h2>
                 <p>You've just updated to version 2.19 of GiveWP</p>
@@ -49,7 +66,7 @@ const Modal = () => {
                         file. It does not include a license or access to priority support.
                     </em>
                 </form>
-                <a onClick={() => setIsOpen(false)} href="#">
+                <a onClick={handleDismiss} href="#">
                     No thanks!
                 </a>
             </div>

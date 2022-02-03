@@ -62,7 +62,7 @@ mix.webpackConfig({
             '@givewp/components': path.resolve(__dirname, 'src/Views/Components/'),
             '@givewp/fontawesome': path.resolve(__dirname, 'assets/src/css/icons/fa/'),
             '@givewp/hint.css': path.resolve(__dirname, 'assets/src/css/plugins/hint.min.scss'),
-            '@givewp/promotions/shared': path.resolve(__dirname, 'src/Promotions/sharedResources/components'),
+            '@givewp/promotions': path.resolve(__dirname, 'src/Promotions/sharedResources/'),
         },
     },
 });
