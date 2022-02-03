@@ -2,8 +2,10 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Give\Framework\PaymentGateways\Commands\GatewayCommand;
+use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Hooks;
-use Give\PaymentGateways\PaymentGateway;
+use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookChecker;
 
@@ -14,20 +16,52 @@ use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookChecker;
  *
  * @since 2.9.0
  */
-class PayPalCommerce implements PaymentGateway
+class PayPalCommerce extends PaymentGateway
 {
+    /**
+     * @deprecated
+     *
+     * Use getId or id function to access payment gateway id.
+     *
+     */
     const GATEWAY_ID = 'paypal-commerce';
 
     /**
-     * @inheritDoc
+     * @unreleased
+     *
+     * @param int $formId
+     * @param array $args
+     *
+     * @return void
      */
-    public function getId()
+    public function getLegacyFormFieldMarkup($formId, $args)
     {
-        return self::GATEWAY_ID;
     }
 
     /**
-     * @inheritDoc
+     * @unreleased
+     *
+     * @return string
+     */
+    public static function id()
+    {
+        return 'paypal-commerce';
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return string
+     */
+    public function getId()
+    {
+        return self::id();
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return string
      */
     public function getName()
     {
@@ -35,7 +69,9 @@ class PayPalCommerce implements PaymentGateway
     }
 
     /**
-     * @inheritDoc
+     * @unreleased
+     *
+     * @return string
      */
     public function getPaymentMethodLabel()
     {
@@ -43,7 +79,17 @@ class PayPalCommerce implements PaymentGateway
     }
 
     /**
-     * @inheritDoc
+     * @unreleased
+     *
+     * @param GatewayPaymentData $paymentData
+     *
+     * @return GatewayCommand|void
+     */
+    public function createPayment(GatewayPaymentData $paymentData)
+    {
+    }
+
+    /**
      * @since 2.16.2 Add setting "Transaction type".
      */
     public function getOptions()
@@ -136,7 +182,9 @@ class PayPalCommerce implements PaymentGateway
     }
 
     /**
-     * @inheritDoc
+     * Setup hook for payment gateway.
+     *
+     * @since 2.9.0
      */
     public function boot()
     {
