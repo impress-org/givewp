@@ -53,8 +53,17 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
     async function mutateForm(ids, endpoint, method) {
         try {
             const response = await fetchWithArgs(endpoint, {ids}, method);
-            // revalidate current page
-            await mutate(listParams, data);
+            // if we just removed the last entry from the page and we're not on the first page, go back a page
+            if( !response.errors && data.forms.length == 1 && data.forms.totalPages > 1
+                && (endpoint == '/delete' || endpoint == '/trash' || endpoint == '/restore') )
+            {
+                setPage(page - 1);
+            }
+            // otherwise, revalidate current page
+            else
+            {
+                await mutate(listParams, data);
+            }
             //revalidate all pages after the current page and null their data
             const mutations = [];
             for (let i = response.page + 1; i <= Math.ceil(data.total / perPage); i++) {
