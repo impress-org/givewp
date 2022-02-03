@@ -2,7 +2,7 @@ import {useState} from 'react';
 import type {ChangeEventHandler} from 'react';
 import {__} from '@wordpress/i18n';
 
-import useDebounce from './useDebounce';
+import useDebounce from '../hooks/useDebounce';
 import styles from './AdminDonationFormsPage.module.scss';
 import DonationFormsTable, {DonationStatus} from './DonationFormsTable';
 
