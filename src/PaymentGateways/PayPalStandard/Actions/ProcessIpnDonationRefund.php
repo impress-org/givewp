@@ -61,7 +61,7 @@ class ProcessIpnDonationRefund
         $refundedAmountOnPayPal = Money::of(
             // PayPal Standard sends negative amount when refund payment.
             // Check details https://developer.paypal.com/api/nvp-soap/ipn/IPNandPDTVariables/
-            abs( $ipnEventData['mc_gross'] ),
+            $ipnEventData['mc_gross'] * -1,
             $donation->currency
         );
 
