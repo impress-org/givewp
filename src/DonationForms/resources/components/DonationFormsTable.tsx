@@ -4,7 +4,6 @@ import {mutate} from 'swr';
 import cx from 'classnames';
 
 import styles from '../admin-donation-forms.module.scss';
-import Shortcode from './Shortcode';
 import Pagination from './Pagination.js';
 import loadingForms from '../loadingForms.json';
 import {fetchWithArgs, useDonationForms} from '../api';
@@ -196,7 +195,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                     </a>
                 </td>
                 <td className={styles.tableCell}>
-                    <Shortcode code={form.shortcode} />
+                    <input type="text" aria-label="Copy shortcode" readOnly value={form.shortcode} />
                 </td>
                 <td className={styles.tableCell}>{form.datetime}</td>
                 <td className={styles.tableCell}>
