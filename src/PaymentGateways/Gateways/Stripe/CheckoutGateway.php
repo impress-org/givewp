@@ -34,24 +34,34 @@ class CheckoutGateway extends PaymentGateway
         $workflow = new Workflow();
         $workflow->bind( $paymentData );
 
-        $workflow->action( new Actions\GetPaymentMethodFromRequest );
         $workflow->action( new Actions\SaveDonationSummary );
         $workflow->action( new Actions\GetOrCreateStripeCustomer );
 
         switch( give_stripe_get_checkout_type() ) {
             case 'modal':
-                $workflow->action( new Actions\CreatePaymentIntent() );
-                $paymentIntent = $workflow->resolve( PaymentIntent::class );
-                return $this->handlePaymentIntentStatus( $paymentIntent );
+                return $this->createPaymentModal( $workflow );
             case 'redirect':
-                $workflow->action( new Actions\CreateCheckoutSession() );
-                $session = $workflow->resolve( CheckoutSession::class );
-                return new RedirectOffsite(
-                    CheckoutHelper::getRedirectUrl( $session->id(), give_get_payment_form_id( $paymentData->donationId ) )
-                );
+                return $this->createPaymentRedierct( $workflow );
             default:
                 throw new CheckoutException( 'Invalid Checkout Error' );
         }
+    }
+
+    protected function createPaymentModal( $workflow )
+    {
+        $workflow->action( new Actions\GetPaymentMethodFromRequest );
+        $workflow->action( new Actions\CreatePaymentIntent() );
+        $paymentIntent = $workflow->resolve( PaymentIntent::class );
+        return $this->handlePaymentIntentStatus( $paymentIntent );
+    }
+
+    protected function createPaymentRedierct( $workflow )
+    {
+        $workflow->action( new Actions\CreateCheckoutSession() );
+        $session = $workflow->resolve( CheckoutSession::class );
+        return new RedirectOffsite(
+            CheckoutHelper::getRedirectUrl( $session->id(), give_get_payment_form_id( $paymentData->donationId ) )
+        );
     }
 
     /**
