@@ -20,7 +20,7 @@ class ProcessIpnDonationRefund
      */
     public function __invoke(array $ipnEventData, Give_Payment $donation)
     {
-        if ($this->isPartialRefund($ipnEventData, $donation)) {
+        if ($this->isPartialRefund($ipnEventData['mc_gross'], $donation->currency, $donation->total)) {
             $donation->add_note(
                 sprintf( /* translators: %s: Paypal parent transaction ID */
                     __('Partial PayPal refund processed: %s', 'give'),
@@ -50,19 +50,20 @@ class ProcessIpnDonationRefund
     /**
      * @unreleased
      *
-     * @param array $ipnEventData
-     * @param Give_Payment $donation
+     * @param string $refundedAmount
+     * @param $currency
+     * @param $donationAmount
      *
      * @return bool
      */
-    private function isPartialRefund($ipnEventData, Give_Payment $donation)
+    protected function isPartialRefund($refundedAmount, $currency, $donationAmount)
     {
-        $donationAmount = Money::of($donation->total, $donation->currency);
+        $donationAmount = Money::of($donationAmount, $currency);
         $refundedAmountOnPayPal = Money::of(
-            // PayPal Standard sends negative amount when refund payment.
-            // Check details https://developer.paypal.com/api/nvp-soap/ipn/IPNandPDTVariables/
-            $ipnEventData['mc_gross'] * -1,
-            $donation->currency
+        // PayPal Standard sends negative amount when refund payment.
+        // Check details https://developer.paypal.com/api/nvp-soap/ipn/IPNandPDTVariables/
+            $refundedAmount * -1,
+            $currency
         );
 
         return $refundedAmountOnPayPal->getMinorAmount() < $donationAmount->getMinorAmount();
