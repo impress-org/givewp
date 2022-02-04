@@ -59,7 +59,8 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
             setErrors(response.errors);
             setSuccesses(response.successes);
         } catch (error) {
-            return error;
+            setErrors(ids.split(',').length);
+            setSuccesses(0);
         }
     }
 
