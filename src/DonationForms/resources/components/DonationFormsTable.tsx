@@ -7,7 +7,6 @@ import styles from './DonationFormsTable.module.scss';
 import Pagination from './Pagination.js';
 import loadingForms from '../loadingForms.json';
 import {fetchWithArgs, useDonationForms} from '../api';
-import lagData from '../hooks/lagData';
 
 export enum DonationStatus {
     Any = 'any',
@@ -33,7 +32,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
         status,
         search,
     };
-    const {data, error, isValidating} = useDonationForms(listParams, [lagData]);
+    const {data, error, isValidating} = useDonationForms(listParams);
     const isEmpty = !error && data?.forms.length === 0;
     useEffect(() => setPage(1), [status, search]);
 

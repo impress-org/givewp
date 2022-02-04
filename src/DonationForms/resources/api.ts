@@ -1,4 +1,5 @@
 import useSWR from 'swr';
+import lagData from './hooks/lagData';
 
 declare global {
     interface Window {
@@ -36,9 +37,9 @@ const Fetcher = (params) => {
 }
 
 // SWR Fetcher
-export function useDonationForms({page, perPage, status, search}, [middleware]) {
+export function useDonationForms({page, perPage, status, search}) {
     const {data, error, isValidating} = useSWR({page, perPage, status, search}, Fetcher, {
-        use: [middleware],
+        use: [lagData],
         onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
             //don't retry if we cancelled the initial request
             if(error.name == 'AbortError') return;
