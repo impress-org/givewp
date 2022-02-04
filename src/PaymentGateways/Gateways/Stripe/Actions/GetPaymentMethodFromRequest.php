@@ -11,13 +11,14 @@ class GetPaymentMethodFromRequest extends WorkflowAction
 {
     public function __invoke( GatewayPaymentData $paymentData )
     {
-        if (empty($_POST['give_stripe_payment_method'])) {
-            throw new PaymentMethodException('Payment Method Not Found');
-        }
+        $paymentMethod = new PaymentMethod( give_clean(
+            isset( $_POST['give_stripe_payment_method'] ) ? $_POST['give_stripe_payment_method'] : 0
+        ) );
 
-        $paymentMethod = new PaymentMethod( give_clean( $_POST['give_stripe_payment_method'] ) );
-        give_update_meta($paymentData->donationId, '_give_stripe_source_id', $paymentMethod->id());
-        give_insert_payment_note($paymentData->donationId, sprintf( __( 'Stripe Source/Payment Method ID: %s', 'give' ), $paymentMethod->id()));
+        if( $paymentMethod->id() ) {
+            give_update_meta($paymentData->donationId, '_give_stripe_source_id', $paymentMethod->id());
+            give_insert_payment_note($paymentData->donationId, sprintf(__('Stripe Source/Payment Method ID: %s', 'give'), $paymentMethod->id()));
+        }
 
         $this->bind( $paymentMethod );
     }

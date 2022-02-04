@@ -6,6 +6,7 @@ use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\PaymentGateways\Gateways\Stripe\BECSGateway;
+use Give\PaymentGateways\Gateways\Stripe\CheckoutGateway;
 use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway;
 
 class RegisterPaymentGateways
@@ -21,6 +22,7 @@ class RegisterPaymentGateways
         //TestGatewayOffsite::class,
         CreditCardGateway::class,
         BECSGateway::class,
+        CheckoutGateway::class,
     ];
 
     /**
