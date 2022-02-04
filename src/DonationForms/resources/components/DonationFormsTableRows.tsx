@@ -55,7 +55,8 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
             styles.tableRow,
             {
                 [styles.loading]: !data,
-                [styles.deleted]: deleted.indexOf(form.id) > -1
+                [styles.deleted]: deleted.indexOf(form.id) > -1,
+                [styles.unclickable]: isValidating
             }
         )}>
             <td className={styles.tableCell}>

@@ -182,7 +182,6 @@
     padding-block: 2em;
 }
 
-
 .goalProgress {
     width: 100%;
     height: 0.5rem;
@@ -200,4 +199,8 @@
         position: relative;
         overflow: hidden;
     }
+}
+
+.unclickable {
+    pointer-events: none;
 }

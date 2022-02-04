@@ -6,6 +6,7 @@ import cx from 'classnames';
 import styles from './DonationFormsTable.module.scss';
 import Pagination from './Pagination.js';
 import DonationFormTableRows from './DonationFormsTableRows';
+import {Spinner} from "../../../Views/Components";
 import {fetchWithArgs, useDonationForms} from '../api';
 
 export enum DonationStatus {
@@ -32,7 +33,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
         status,
         search,
     };
-    const {data, error} = useDonationForms(listParams);
+    const {data, error, isValidating} = useDonationForms(listParams);
     const { mutate } = useSWRConfig();
     const isEmpty = !error && data?.forms.length === 0;
     useEffect(() => setPage(1), [status, search]);
@@ -153,11 +154,16 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                         </tr>
                     </thead>
                     <tbody className={styles.tableContent}>
-                        <DonationFormTableRows
-                            listParams={listParams}
-                            mutateForm={mutateForm}
-                            status={status}
-                        />
+                    <DonationFormTableRows
+                        listParams={listParams}
+                        mutateForm={mutateForm}
+                        status={status}
+                    />
+                    {isValidating &&
+                        <div className={styles.loadingOverlay}>
+                            <Spinner size={'medium'}/>
+                        </div>
+                    }
                     </tbody>
                 </table>
                 <div id="giveDonationFormsTableMessage">

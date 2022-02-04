@@ -95,3 +95,17 @@
     padding-inline: 2.5em;
     padding-block: 2em;
 }
+
+.loadingOverlay {
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    z-index: 899;
+    border-radius: inherit;
+    overflow: hidden;
+}
