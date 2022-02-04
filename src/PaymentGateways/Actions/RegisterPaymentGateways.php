@@ -5,9 +5,9 @@ namespace Give\PaymentGateways\Actions;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\PaymentGateways\Gateways\Stripe\BECSGateway;
-use Give\PaymentGateways\Gateways\Stripe\CheckoutGateway;
-use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway;
+use Give\PaymentGateways\Gateways\Stripe\BECSGateway as StripeBECSGateway;
+use Give\PaymentGateways\Gateways\Stripe\CheckoutGateway as StripeCheckoutGateway;
+use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway as StripeCreditCardGateway;
 
 class RegisterPaymentGateways
 {
@@ -20,9 +20,9 @@ class RegisterPaymentGateways
         // When complete, the Test Gateway will eventually replace The legacy Manual Gateway.
         //TestGateway::class,
         //TestGatewayOffsite::class,
-        CreditCardGateway::class,
-        BECSGateway::class,
-        CheckoutGateway::class,
+        StripeBECSGateway::class,
+        StripeCheckoutGateway::class,
+        StripeCreditCardGateway::class,
     ];
 
     /**
