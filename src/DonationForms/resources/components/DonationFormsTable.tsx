@@ -233,10 +233,10 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
             )}
             <div className={styles.pageActions}>
                 <Pagination
-                    currentPage={data ? data.page : page}
-                    totalPages={data ? Math.ceil(data.total / perPage) : 1}
-                    disabled={false}
-                    totalItems={data ? data.total : -1}
+                    currentPage={page}
+                    totalPages={data ? data.totalPages : 1}
+                    disabled={!data}
+                    totalItems={data ? data.totalForms : -1}
                     setPage={setPage}
                 />
             </div>
