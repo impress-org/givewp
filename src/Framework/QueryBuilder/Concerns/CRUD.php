@@ -10,6 +10,8 @@ use Give\Framework\Database\DB;
 trait CRUD
 {
     /**
+     * @unreleased
+     *
      * @param  array  $data
      * @param  array|string  $format
      *
@@ -28,6 +30,8 @@ trait CRUD
     }
 
     /**
+     * @unreleased
+     *
      * @param  array  $data
      * @param  null  $format
      *
@@ -48,6 +52,8 @@ trait CRUD
     }
 
     /**
+     * @unreleased
+     *
      * @return false|int
      *
      * @see https://developer.wordpress.org/reference/classes/wpdb/delete/
@@ -64,6 +70,8 @@ trait CRUD
     /**
      * Get results
      *
+     * @unreleased
+     *
      * @param  string ARRAY_A|ARRAY_N|OBJECT|OBJECT_K $output
      *
      * @return array|object|null
@@ -76,6 +84,8 @@ trait CRUD
     /**
      * Get row
      *
+     * @unreleased
+     *
      * @param  string ARRAY_A|ARRAY_N|OBJECT|OBJECT_K $output
      *
      * @return array|object|null
@@ -86,6 +96,8 @@ trait CRUD
     }
 
     /**
+     * @unreleased
+     *
      * @return string
      */
     private function getTable()
@@ -94,6 +106,8 @@ trait CRUD
     }
 
     /**
+     * @unreleased
+     *
      * @return array[]
      */
     private function getWhere()
