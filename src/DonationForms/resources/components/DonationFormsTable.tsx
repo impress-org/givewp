@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {__, _n} from '@wordpress/i18n';
-import {mutate} from 'swr';
+import { useSWRConfig } from 'swr';
 import cx from 'classnames';
 
 import styles from './DonationFormsTable.module.scss';
@@ -33,6 +33,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
         search,
     };
     const {data, error, isValidating} = useDonationForms(listParams);
+    const { mutate } = useSWRConfig();
     const isEmpty = !error && data?.forms.length === 0;
     useEffect(() => setPage(1), [status, search]);
 
@@ -40,7 +41,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
         try {
             const response = await fetchWithArgs(endpoint, {ids}, method);
             // if we just removed the last entry from the page and we're not on the first page, go back a page
-            if( !response.errors && data.forms.length == 1 && data.forms.totalPages > 1
+            if( !response.errors && data.forms.length == 1 && data.totalPages > 1
                 && (endpoint == '/delete' || endpoint == '/trash' || endpoint == '/restore') )
             {
                 setPage(page - 1);
@@ -48,12 +49,12 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
             // otherwise, revalidate current page
             else
             {
-                await mutate(listParams, data);
+                await mutate(listParams);
             }
-            //revalidate all pages after the current page and null their data
+            //revalidate all pages after the current page
             const mutations = [];
-            for (let i = response.page + 1; i <= Math.ceil(data.total / perPage); i++) {
-                mutations.push(mutate({...listParams, page: i}, null));
+            for (let i = page + 1; i <= data.totalPages; i++) {
+                mutations.push(mutate({...listParams, page: i}));
             }
             setErrors(response.errors);
             setSuccesses(response.successes);
