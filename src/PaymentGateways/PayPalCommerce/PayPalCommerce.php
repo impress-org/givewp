@@ -35,11 +35,14 @@ class PayPalCommerce extends PaymentGateway
      * @param int $formId
      * @param array $args
      *
-     * @return void
+     * @return string
      */
     public function getLegacyFormFieldMarkup($formId, $args)
     {
+        ob_start();
         give(AdvancedCardFields::class)->addCreditCardForm($formId);
+
+        return ob_get_clean();
     }
 
     /**

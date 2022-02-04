@@ -42,6 +42,7 @@ class AdvancedCardFields
         if ( ! $this->payPalDonationsSettings->canCollectBillingInformation()) {
             $this->removeBillingField();
         }
+
         give_get_cc_form($formId);
     }
 
