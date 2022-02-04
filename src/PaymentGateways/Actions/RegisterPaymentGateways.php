@@ -5,7 +5,7 @@ namespace Give\PaymentGateways\Actions;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\PaymentGateways\PayPalStandard\PayPalStandard;
+use Give\PaymentGateways\PayPalStandard\Gateways\PayPalStandard;
 
 class RegisterPaymentGateways
 {

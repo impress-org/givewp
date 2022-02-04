@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways\PayPalStandard\Actions;
+namespace Give\PaymentGateways\PayPalStandard\Gateways\Actions;
 
 use Give\Helpers\Form\Utils;
 use Give\Session\SessionDonation\DonationAccessor;

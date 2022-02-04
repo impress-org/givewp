@@ -1,12 +1,12 @@
 <?php
 
-namespace Give\PaymentGateways\PayPalStandard\Migrations;
+namespace Give\PaymentGateways\PayPalStandard\Gateways\Migrations;
 
 use Give\Framework\Migrations\Contracts\Migration;
 
 /**
  * Class SetPayPalStandardGatewayId
- * @package Give\PaymentGateways\PayPalStandard\Migrations
+ * @package Give\PaymentGateways\PayPalStandard\Gateways\Migrations
  *
  * This migration fixes a bug that was introduced in 2.9.0 wherein the PayPal Standard gateway ID was changed from
  * paypal to paypal-standard. This caused problems on existing sites using PayPal Standard. The purpose of this

@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways\PayPalStandard\Webhooks;
+namespace Give\PaymentGateways\PayPalStandard\Gateways\Webhooks;
 
 use Give\Log\Log;
 

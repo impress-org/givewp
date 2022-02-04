@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways\PayPalStandard\Actions;
+namespace Give\PaymentGateways\PayPalStandard\Gateways\Actions;
 
 use Give\ValueObjects\Money;
 use Give_Payment;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways\PayPalStandard\Views;
+namespace Give\PaymentGateways\PayPalStandard\Gateways\Views;
 
 use Give\Helpers\Form\Utils;
 

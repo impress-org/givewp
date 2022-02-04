@@ -1,12 +1,12 @@
 <?php
 
-namespace Give\PaymentGateways\PayPalStandard\Controllers;
+namespace Give\PaymentGateways\PayPalStandard\Gateways\Controllers;
 
 use Give\Helpers\Call;
-use Give\PaymentGateways\PayPalStandard\Actions\ProcessIpnDonationRefund;
-use Give\PaymentGateways\PayPalStandard\PayPalStandard;
-use Give\PaymentGateways\PayPalStandard\Webhooks\WebhookRegister;
-use Give\PaymentGateways\PayPalStandard\Webhooks\WebhookValidator;
+use Give\PaymentGateways\PayPalStandard\Gateways\Actions\ProcessIpnDonationRefund;
+use Give\PaymentGateways\PayPalStandard\Gateways\PayPalStandard;
+use Give\PaymentGateways\PayPalStandard\Gateways\Webhooks\WebhookRegister;
+use Give\PaymentGateways\PayPalStandard\Gateways\Webhooks\WebhookValidator;
 use Give_Payment;
 
 /**

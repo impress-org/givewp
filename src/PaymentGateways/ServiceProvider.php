@@ -7,8 +7,8 @@ use Give\Framework\PaymentGateways\Routes\GatewayRoute;
 use Give\Helpers\Hooks;
 use Give\LegacyPaymentGateways\Actions\RegisterPaymentGatewaySettingsList;
 use Give\PaymentGateways\Actions\RegisterPaymentGateways;
-use Give\PaymentGateways\PayPalStandard\Controllers\PayPalStandardWebhook;
-use Give\PaymentGateways\PayPalStandard\Webhooks\WebhookRegister;
+use Give\PaymentGateways\PayPalStandard\Gateways\Controllers\PayPalStandardWebhook;
+use Give\PaymentGateways\PayPalStandard\Gateways\Webhooks\WebhookRegister;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
