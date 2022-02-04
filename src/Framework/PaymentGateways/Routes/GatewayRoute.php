@@ -41,7 +41,7 @@ class GatewayRoute
             $gatewayIds = array_keys($paymentGateways);
 
             // make sure required params are valid
-            if (!$this->isValidRequest($gatewayIds)) {
+            if ( ! $this->isValidRequest($gatewayIds)) {
                 throw new PaymentGatewayException('This route is not valid.');
             }
 
@@ -60,8 +60,8 @@ class GatewayRoute
 
             // Make sure the method being called is defined in the gateway.
             if (
-                !method_exists($gateway, $data->gatewayMethod) ||
-                !in_array($data->gatewayMethod, $allGatewayMethods, true)
+                ! method_exists($gateway, $data->gatewayMethod) ||
+                ! in_array($data->gatewayMethod, $allGatewayMethods, true)
             ) {
                 throw new PaymentGatewayException('The gateway method does not exist.');
             }
@@ -85,7 +85,7 @@ class GatewayRoute
      *
      * @since 2.18.0
      *
-     * @param  array  $gatewayIds
+     * @param array $gatewayIds
      *
      * @return bool
      *
@@ -117,15 +117,16 @@ class GatewayRoute
      *
      * @unreleased
      *
-     * @param  string  $routeSignature
-     * @param  GatewayRouteData  $data
+     * @param string $routeSignature
+     * @param GatewayRouteData $data
+     *
      * @return void
      */
     private function validateSignature($routeSignature, GatewayRouteData $data)
     {
         $action = new RouteSignature($data->gatewayId, $data->gatewayMethod, $data->queryParams);
 
-        if (!wp_verify_nonce($routeSignature, $action->toString())) {
+        if ( ! wp_verify_nonce($routeSignature, $action->toString())) {
             PaymentGatewayLog::error(
                 'Invalid Secure Route',
                 ['routeSignature' => $routeSignature, 'action' => $action->toString(), 'data' => $data]
@@ -142,9 +143,9 @@ class GatewayRoute
      *
      * @unreleased - replace $donationId with $queryParams array
      *
-     * @param  PaymentGateway  $gateway
-     * @param  string  $method
-     * @param  array  $queryParams
+     * @param PaymentGateway $gateway
+     * @param string $method
+     * @param array $queryParams
      *
      * @return void
      *
@@ -156,7 +157,14 @@ class GatewayRoute
         } catch (PaymentGatewayException $paymentGatewayException) {
             $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
         } catch (\Exception $exception) {
-            PaymentGatewayLog::error($exception->getMessage());
+            PaymentGatewayLog::error(
+                $exception->getMessage(),
+                [
+                    'Payment Gateway' => $gateway->getId(),
+                    'Payment Gateway Method' => $method,
+                    'Query Params' => $queryParams
+                ]
+            );
             $this->handleResponse(
                 response()->json(
                     __(

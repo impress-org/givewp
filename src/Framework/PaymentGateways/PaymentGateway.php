@@ -64,7 +64,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * @since 2.18.0
      *
-     * @param  SubscriptionModuleInterface|null  $subscriptionModule
+     * @param SubscriptionModuleInterface|null $subscriptionModule
      */
     public function __construct(SubscriptionModuleInterface $subscriptionModule = null)
     {
@@ -91,7 +91,10 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
             $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
             exit;
         } catch (Exception $exception) {
-            PaymentGatewayLog::error($exception->getMessage());
+            PaymentGatewayLog::error(
+                $exception->getMessage(),
+                ['Donation Data' => $gatewayPaymentData]
+            );
 
             $message = __(
                 'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.',
@@ -143,8 +146,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      *
      * @since 2.18.0
      *
-     * @param  GatewayCommand  $command
-     * @param  GatewayPaymentData  $gatewayPaymentData
+     * @param GatewayCommand $command
+     * @param GatewayPaymentData $gatewayPaymentData
      *
      * @throws TypeNotSupported
      */
@@ -195,9 +198,10 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      *
      * @since 2.18.0
      *
-     * @param  GatewayCommand  $command
-     * @param  GatewayPaymentData  $gatewayPaymentData
-     * @param  GatewaySubscriptionData  $gatewaySubscriptionData
+     * @param GatewayCommand $command
+     * @param GatewayPaymentData $gatewayPaymentData
+     * @param GatewaySubscriptionData $gatewaySubscriptionData
+     *
      * @throws TypeNotSupported
      */
     public function handleGatewaySubscriptionCommand(
@@ -232,8 +236,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      * @since 2.18.0
      * @unreleased remove $donationId param in favor of args
      *
-     * @param  string  $gatewayMethod
-     * @param  array|null  $args
+     * @param string $gatewayMethod
+     * @param array|null $args
      *
      * @return string
      *
@@ -248,8 +252,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      *
      * @unreleased
      *
-     * @param  string  $gatewayMethod
-     * @param  array|null  $args
+     * @param string $gatewayMethod
+     * @param array|null $args
      *
      * @return string
      *
