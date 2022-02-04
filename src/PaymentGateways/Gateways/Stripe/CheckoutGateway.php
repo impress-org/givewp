@@ -124,7 +124,8 @@ class CheckoutGateway extends PaymentGateway
 
         switch( give_stripe_get_checkout_type() ) {
             case 'modal':
-                return $this->getCheckoutModalHTML( $formId, $args );
+                return $this->getCheckoutInstructions()
+                     . $this->getCheckoutModalHTML( $formId, $args );
             case 'redirect':
                 return $this->getCheckoutInstructions();
         }
