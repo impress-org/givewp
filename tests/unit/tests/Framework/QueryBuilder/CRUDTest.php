@@ -1,12 +1,22 @@
 <?php
 
+namespace unit\tests\Framework\QueryBuilder;
+
 use Give\Framework\Database\DB;
+use Give\Framework\QueryBuilder\Concerns\CRUD;
 use PHPUnit\Framework\TestCase;
 
-final class CRUD_Test extends TestCase
+/**
+ * @unreleased
+ *
+ * @covers CRUD
+ */
+final class CRUDTest extends TestCase
 {
     /**
      * Truncate posts table to avoid duplicate records
+     *
+     * @unreleased
      *
      * @return void
      */
@@ -19,12 +29,16 @@ final class CRUD_Test extends TestCase
         DB::query("TRUNCATE TABLE $posts");
     }
 
-
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
     public function testInsertShouldAddRowToDatabase()
     {
         $data = [
-            'post_title'   => 'Query Builder CRUD test',
-            'post_type'    => 'crud_test',
+            'post_title' => 'Query Builder CRUD test',
+            'post_type' => 'crud_test',
             'post_content' => 'Hello World!',
         ];
 
@@ -42,12 +56,16 @@ final class CRUD_Test extends TestCase
         $this->assertEquals($data['post_content'], $post->post_content);
     }
 
-
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
     public function testUpdateShouldUpdateRowValuesInDatabase()
     {
         $data = [
-            'post_title'   => 'Query Builder CRUD test',
-            'post_type'    => 'crud_test',
+            'post_title' => 'Query Builder CRUD test',
+            'post_type' => 'crud_test',
             'post_content' => 'Hello World!',
         ];
 
@@ -62,11 +80,11 @@ final class CRUD_Test extends TestCase
         ];
 
         DB::table('posts')
-          ->where('ID', $id)
-          ->update($updated);
+            ->where('ID', $id)
+            ->update($updated);
 
         $post = DB::table('posts')
-            ->select( 'ID', 'post_title', 'post_type', 'post_content')
+            ->select('ID', 'post_title', 'post_type', 'post_content')
             ->where('ID', $id)
             ->get();
 
@@ -76,12 +94,16 @@ final class CRUD_Test extends TestCase
         $this->assertEquals($updated['post_content'], $post->post_content);
     }
 
-
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
     public function testDeleteShouldDeleteRowInDatabase()
     {
         $data = [
-            'post_title'   => 'Query Builder CRUD test',
-            'post_type'    => 'crud_test',
+            'post_title' => 'Query Builder CRUD test',
+            'post_type' => 'crud_test',
             'post_content' => 'Hello World!',
         ];
 
@@ -104,7 +126,6 @@ final class CRUD_Test extends TestCase
             ->get();
 
         $this->assertNull($post);
-
     }
 
 }
