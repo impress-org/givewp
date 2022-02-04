@@ -20,9 +20,9 @@ class CreatePaymentIntent extends WorkflowAction
 
     /**
      * @unreleased
-     * @param $paymentIntentArgs
+     * @param array $paymentIntentArgs
      */
-    public function __construct( $paymentIntentArgs )
+    public function __construct( $paymentIntentArgs = [] )
     {
         $this->paymentIntentArgs = $paymentIntentArgs;
     }
