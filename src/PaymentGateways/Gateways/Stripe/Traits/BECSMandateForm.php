@@ -7,118 +7,76 @@ namespace Give\PaymentGateways\Gateways\Stripe\Traits;
  */
 trait BECSMandateForm
 {
-		public function getMandateFormHTML( $form_id, $args ) {
-			ob_start();
+    use MandateForm;
 
-			$id_prefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
+    public function getMandateFormHTML( $form_id, $args ) {
+        ob_start();
 
-			do_action( 'give_before_cc_fields', $form_id ); ?>
+        $id_prefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
 
-			<fieldset id="give_cc_fields" class="give-do-validate">
-				<legend>
-					<?php esc_attr_e( 'Bank Account Info', 'give' ); ?>
-				</legend>
+        do_action( 'give_before_cc_fields', $form_id ); ?>
 
-				<?php
-				if ( is_ssl() ) {
-					?>
-					<div id="give_secure_site_wrapper">
-						<span class="give-icon padlock"></span>
-						<span><?php esc_attr_e( 'This is a secure SSL encrypted payment.', 'give' ); ?></span>
-					</div>
-					<?php
-				}
+        <fieldset id="give_cc_fields" class="give-do-validate">
+            <legend>
+                <?php esc_attr_e( 'Bank Account Info', 'give' ); ?>
+            </legend>
 
-				if ( $this->canShowFields() ) {
-					?>
-					<div id="give-bank-account-number-wrap" class="form-row form-row-responsive give-stripe-cc-field-wrap">
-						<label for="give-bank-account-number-field-<?php echo $id_prefix; ?>" class="give-label">
-							<?php esc_html_e( 'Bank Account', 'give' ); ?>
-							<span class="give-required-indicator">*</span>
-							<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'BSB Number and Account Number of your bank account.', 'give' ); ?>"></span>
-						</label>
-						<div
-							id="give-stripe-becs-fields-<?php echo $id_prefix; ?>"
-							class="give-stripe-becs-bank-account-field give-stripe-cc-field"
-							data-hide_icon="<?php echo give_stripe_becs_hide_icon( $form_id ); ?>"
-							data-icon_style="<?php echo give_stripe_get_becs_icon_style( $form_id ); ?>"
-						></div>
-					</div>
-					<div class="form-row form-row-responsive give-stripe-becs-mandate-acceptance-text">
-						<?php
-						if ( give_is_setting_enabled( give_get_option( 'stripe_becs_mandate_acceptance_option', 'enabled' ) ) ) {
-							echo give_stripe_get_mandate_acceptance_text( 'becs' );
-						}
-						?>
-					</div>
-					<?php
-					/**
-					 * This action hook is used to display content after the Stripe BECS field.
-					 *
-					 * @param int   $form_id Donation Form ID.
-					 * @param array $args    List of additional arguments.
-					 *
-					 * @since 2.6.3
-					 */
-					do_action( 'give_stripe_after_becs_fields', $form_id, $args );
-				}
-				?>
-			</fieldset>
-			<?php
-			// Remove Address Fields if user has option enabled.
-			$billing_fields_enabled = give_get_option( 'stripe_collect_billing' );
-			if ( ! $billing_fields_enabled ) {
-				remove_action( 'give_after_cc_fields', 'give_default_cc_address_fields' );
-			}
+            <?php
+            if ( is_ssl() ) {
+                ?>
+                <div id="give_secure_site_wrapper">
+                    <span class="give-icon padlock"></span>
+                    <span><?php esc_attr_e( 'This is a secure SSL encrypted payment.', 'give' ); ?></span>
+                </div>
+                <?php
+            }
 
-			do_action( 'give_after_cc_fields', $form_id, $args );
-
-			$form = ob_get_clean();
-
-			return $form;
-		}
-
-        public function canShowFields() {
-
-        $status       = true;
-        $isConfigured = \Give\Helpers\Gateways\Stripe::isAccountConfigured();
-        $isTestMode   = give_is_test_mode();
-        $isSslActive  = is_ssl();
-
-        if ( ! $isConfigured && ! $isSslActive && ! $isTestMode ) {
-            // Account not configured, No SSL scenario.
-            \Give_Notices::print_frontend_notice(
-                sprintf(
-                    '<strong>%1$s</strong> %2$s',
-                    esc_html__( 'Notice:', 'give' ),
-                    $this->errorMessages['accountNotConfiguredNoSsl']
-                )
-            );
-            $status = false;
-
-        } elseif ( ! $isConfigured ) {
-            // Account not configured scenario.
-            \Give_Notices::print_frontend_notice(
-                sprintf(
-                    '<strong>%1$s</strong> %2$s',
-                    esc_html__( 'Notice:', 'give' ),
-                    $this->errorMessages['accountNotConfigured']
-                )
-            );
-            $status = false;
-
-        } elseif ( ! $isTestMode && ! $isSslActive ) {
-            // Account configured, No SSL scenario.
-            \Give_Notices::print_frontend_notice(
-                sprintf(
-                    '<strong>%1$s</strong> %2$s',
-                    esc_html__( 'Notice:', 'give' ),
-                    $this->errorMessages['accountConfiguredNoSsl']
-                )
-            );
-            $status = false;
+            if ( $this->canShowFields() ) {
+                ?>
+                <div id="give-bank-account-number-wrap" class="form-row form-row-responsive give-stripe-cc-field-wrap">
+                    <label for="give-bank-account-number-field-<?php echo $id_prefix; ?>" class="give-label">
+                        <?php esc_html_e( 'Bank Account', 'give' ); ?>
+                        <span class="give-required-indicator">*</span>
+                        <span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'BSB Number and Account Number of your bank account.', 'give' ); ?>"></span>
+                    </label>
+                    <div
+                        id="give-stripe-becs-fields-<?php echo $id_prefix; ?>"
+                        class="give-stripe-becs-bank-account-field give-stripe-cc-field"
+                        data-hide_icon="<?php echo give_stripe_becs_hide_icon( $form_id ); ?>"
+                        data-icon_style="<?php echo give_stripe_get_becs_icon_style( $form_id ); ?>"
+                    ></div>
+                </div>
+                <div class="form-row form-row-responsive give-stripe-becs-mandate-acceptance-text">
+                    <?php
+                    if ( give_is_setting_enabled( give_get_option( 'stripe_becs_mandate_acceptance_option', 'enabled' ) ) ) {
+                        echo give_stripe_get_mandate_acceptance_text( 'becs' );
+                    }
+                    ?>
+                </div>
+                <?php
+                /**
+                 * This action hook is used to display content after the Stripe BECS field.
+                 *
+                 * @param int   $form_id Donation Form ID.
+                 * @param array $args    List of additional arguments.
+                 *
+                 * @since 2.6.3
+                 */
+                do_action( 'give_stripe_after_becs_fields', $form_id, $args );
+            }
+            ?>
+        </fieldset>
+        <?php
+        // Remove Address Fields if user has option enabled.
+        $billing_fields_enabled = give_get_option( 'stripe_collect_billing' );
+        if ( ! $billing_fields_enabled ) {
+            remove_action( 'give_after_cc_fields', 'give_default_cc_address_fields' );
         }
 
-        return $status;
+        do_action( 'give_after_cc_fields', $form_id, $args );
+
+        $form = ob_get_clean();
+
+        return $form;
     }
     }

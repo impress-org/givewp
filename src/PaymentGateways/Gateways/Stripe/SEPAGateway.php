@@ -1,0 +1,109 @@
+<?php
+
+namespace Give\PaymentGateways\Gateways\Stripe;
+
+use Give\Framework\PaymentGateways\Commands\GatewayCommand;
+use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
+use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Helpers\Form\Utils as FormUtils;
+use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
+use Give\PaymentGateways\Gateways\Stripe\Traits\HandlePaymentIntentStatus;
+use Give\PaymentGateways\Gateways\Stripe\Traits\SEPAMandateForm;
+use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
+
+/**
+ * @unreleased
+ */
+class SEPAGateway extends PaymentGateway
+{
+    use SEPAMandateForm;
+    use HandlePaymentIntentStatus;
+
+    /**
+     * @inheritDoc
+     * @unreleased
+     * @return GatewayCommand
+     * @throws PaymentGatewayException
+     */
+    public function createPayment( GatewayPaymentData $paymentData )
+    {
+        $workflow = new Workflow();
+        $workflow->bind( $paymentData );
+
+        $workflow->action( new Actions\SaveDonationSummary );
+        $workflow->action( new Actions\GetPaymentMethodFromRequest );
+        $workflow->action( new Actions\GetOrCreateStripeCustomer );
+        $workflow->action( new Actions\CreatePaymentIntent(
+            $this->getPaymentIntentArgs()
+        ));
+
+        return $this->handlePaymentIntentStatus(
+            $workflow->resolve( PaymentIntent::class )
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function id()
+    {
+        return 'stripe_sepa';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getId()
+    {
+        return self::id();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getName()
+    {
+        return __('Stripe - SEPA Direct Debit', 'give');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPaymentMethodLabel()
+    {
+        return __('Stripe - SEPA Direct Debit', 'give');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getLegacyFormFieldMarkup($formId, $args)
+    {
+        if (FormUtils::isLegacyForm($formId)) {
+            return false;
+        }
+
+        return $this->getMandateFormHTML( $formId, $args );
+    }
+
+    /**
+     * @unreleased
+     * @return array
+     */
+    protected function getPaymentIntentArgs()
+    {
+        return [
+            'payment_method_types' => [ 'sepa_debit' ],
+            'setup_future_usage'   => 'on_session',
+            'mandate_data'         => [
+                'customer_acceptance' => [
+                    'type'   => 'online',
+                    'online' => [
+                        'ip_address' => give_stripe_get_ip_address(),
+                        'user_agent' => give_get_user_agent(),
+                    ],
+                ],
+            ],
+        ];
+    }
+}
