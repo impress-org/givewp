@@ -2,14 +2,13 @@
 
 namespace Give\Promotions\FreeAddonModal\Controllers;
 
-use Give\Promotions\FreeAddonModal\CheckModalState;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 
 class CompleteRestApiEndpoint
 {
-    use CheckModalState;
+    use CheckOfferStatus;
 
     public function __invoke()
     {

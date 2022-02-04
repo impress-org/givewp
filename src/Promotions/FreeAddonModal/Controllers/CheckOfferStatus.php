@@ -1,8 +1,8 @@
 <?php
 
-namespace Give\Promotions\FreeAddonModal;
+namespace Give\Promotions\FreeAddonModal\Controllers;
 
-trait CheckModalState
+trait CheckOfferStatus
 {
     /**
      * Whether the modal should be displayed.
@@ -38,5 +38,10 @@ trait CheckModalState
 
         // Display if the version has changed since the last display
         return GIVE_VERSION !== $version;
+    }
+
+    public function displayOffer()
+    {
+
     }
 }

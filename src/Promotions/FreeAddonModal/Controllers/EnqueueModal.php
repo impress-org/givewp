@@ -2,11 +2,9 @@
 
 namespace Give\Promotions\FreeAddonModal\Controllers;
 
-use Give\Promotions\FreeAddonModal\CheckModalState;
-
 class EnqueueModal
 {
-    use CheckModalState;
+    use CheckOfferStatus;
 
     public function enqueueScripts()
     {
