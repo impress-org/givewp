@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\Gateways\Stripe;
 
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
+use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
@@ -18,6 +19,18 @@ class SEPAGateway extends PaymentGateway
 {
     use SEPAMandateForm;
     use HandlePaymentIntentStatus;
+
+    /** @var array */
+    protected $errorMessages = [];
+
+    public function __construct(SubscriptionModuleInterface $subscriptionModule = null)
+    {
+        parent::__construct($subscriptionModule);
+
+        $this->errorMessages['accountConfiguredNoSsl']    = esc_html__( 'IBAN fields are disabled because your site is not running securely over HTTPS.', 'give' );
+        $this->errorMessages['accountNotConfiguredNoSsl'] = esc_html__( 'IBAN fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
+        $this->errorMessages['accountNotConfigured']      = esc_html__( 'IBAN fields are disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
+    }
 
     /**
      * @inheritDoc
