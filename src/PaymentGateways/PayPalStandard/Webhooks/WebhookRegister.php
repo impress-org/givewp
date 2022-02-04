@@ -12,7 +12,7 @@ class WebhookRegister
      * Array of the PayPal webhook event handlers. Add-ons can use the registerEventHandler method
      * to add additional events/handlers.
      *
-     * Structure: PayPalEventName => EventHandlerClass
+     * Structure: PayPalTractionType => EventHandlerClass
      *
      * @unreleased
      *
