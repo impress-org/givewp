@@ -24,12 +24,7 @@ const highlights = [
     },
 ];
 
-const description = [
-    'Send informative email reports to your team, how you like, when you like.',
-    '**Normally $79**',
-    'You get it today for free!',
-];
-
+const {heading, description, reports, form} = window.GiveAddons.freeAddon;
 const {siteUrl, siteName} = window.GiveAddons;
 
 export const FreeAddOnTab = () => {
@@ -45,48 +40,35 @@ export const FreeAddOnTab = () => {
 
     return (
         <article className={styles.freeAddonSection}>
-            <Hero
-                heading="Join our GiveWP Fundraising Newsletter and get the Email Reports Add-on for FREE"
-                description="Our newsletter is full of resources and insights to help you do better online fundraising with GiveWP."
-            />
+            <Hero heading={heading} description={description} />
             <Card as="article" className={cx(styles.card, styles.emailReports)}>
                 <div>
                     <div className={styles.nameAndFlag}>
                         <h3 className={styles.title}>
-                            <img
-                                className={styles.icon}
-                                src="https://givewp.com/downloads/upsells/images/email-icon.svg"
-                                alt="Email Icon"
-                            />
-                            Email Reports
+                            <img className={styles.icon} src={reports.icon} alt={reports.heading} />
+                            {reports.heading}
                         </h3>
                     </div>
                     <div className={styles.description}>
-                        {description.map((text) => (
+                        {reports.description.map((text) => (
                             <p dangerouslySetInnerHTML={{__html: transformStrong(text)}}></p>
                         ))}
                     </div>
                 </div>
                 <aside className={styles.includes}>
-                    <h4>Add-On Highlights</h4>
-                    {highlights.map(({icon, text}) => (
+                    <h4>{reports.highlights.heading}</h4>
+                    {reports.highlights.items.map(({icon, text}) => (
                         <div className={styles.nameAndFlag}>
-                            <img className={styles.icon} src={icon} alt="Clock Icon" />
+                            <img className={styles.icon} src={icon} alt="Icon" />
                             <strong>{text}</strong>
                         </div>
                     ))}
                 </aside>
             </Card>
-            <Hero
-                heading="Enter your information below to receive a link in your inbox"
-                className={styles.informationHero}
-            />
+            <Hero heading={form.heading} className={styles.informationHero} />
             <Card className={cx(styles.card, styles.formCard)}>
                 {userSubscribed ? (
-                    <span className={styles.formCard__thankYou}>
-                        Excellent! We have sent you an email to confirm your submission. Please confirm the email and
-                        we'll send you your free add-on!
-                    </span>
+                    <span className={styles.formCard__thankYou}>{form.submissionConfirmation}</span>
                 ) : (
                     <>
                         {hasSubscriptionError && (
@@ -109,13 +91,9 @@ export const FreeAddOnTab = () => {
                                     <input type="email" name="email" required ref={emailInput} />
                                 </label>
                             </div>
-                            <GreenButton as="input" text="👉 Get my Free Add-on" shadow />
+                            <GreenButton as="input" text={form.submitButton} shadow />
                         </form>
-                        <em className={styles.disclosure}>
-                            * By submitting this form, you agree to be subscribed to our GiveWP Newsletter (you can
-                            unsubscribe at any time. The free Email Reports add-on is only the open source installable
-                            zip file. It does not include a license or access to priority support.
-                        </em>
+                        <em className={styles.disclosure}>{form.disclaimer}</em>
                     </>
                 )}
             </Card>
