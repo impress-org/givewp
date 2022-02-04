@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways\PayPalStandard\Gateways\Webhooks\Listeners;
+namespace Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\Listeners;
 
 interface EventListener
 {

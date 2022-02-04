@@ -3,7 +3,7 @@
 namespace unit\tests\PaymentGateways\PayPalStandard\Actions;
 
 use Give\Helpers\Call;
-use Give\PaymentGateways\PayPalStandard\Gateways\Actions\ProcessIpnDonationRefund;
+use Give\PaymentGateways\Gateways\PayPalStandard\Actions\ProcessIpnDonationRefund;
 use Give_Payment;
 use PHPUnit\Framework\TestCase;
 

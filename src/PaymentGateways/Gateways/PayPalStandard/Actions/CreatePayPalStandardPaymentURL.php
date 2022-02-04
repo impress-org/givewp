@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways\PayPalStandard\Gateways\Actions;
+namespace Give\PaymentGateways\Gateways\PayPalStandard\Actions;
 
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 

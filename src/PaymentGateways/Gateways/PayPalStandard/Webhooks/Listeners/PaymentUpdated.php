@@ -1,9 +1,9 @@
 <?php
 
-namespace Give\PaymentGateways\PayPalStandard\Gateways\Webhooks\Listeners;
+namespace Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\Listeners;
 
 use Give\Helpers\Call;
-use Give\PaymentGateways\PayPalStandard\Gateways\Actions\ProcessIpnDonationRefund;
+use Give\PaymentGateways\Gateways\PayPalStandard\Actions\ProcessIpnDonationRefund;
 use Give_Payment;
 
 /**

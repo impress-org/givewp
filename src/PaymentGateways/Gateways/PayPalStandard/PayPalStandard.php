@@ -1,17 +1,17 @@
 <?php
 
-namespace Give\PaymentGateways\PayPalStandard\Gateways;
+namespace Give\PaymentGateways\Gateways\PayPalStandard;
 
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
-use Give\PaymentGateways\PayPalStandard\Gateways\Actions\CreatePayPalStandardPaymentURL;
-use Give\PaymentGateways\PayPalStandard\Gateways\Actions\GenerateDonationFailedPageUrl;
-use Give\PaymentGateways\PayPalStandard\Gateways\Actions\GenerateDonationReceiptPageUrl;
-use Give\PaymentGateways\PayPalStandard\Gateways\Controllers\PayPalStandardWebhook;
-use Give\PaymentGateways\PayPalStandard\Gateways\Views\PayPalStandardBillingFields;
+use Give\PaymentGateways\Gateways\PayPalStandard\Actions\CreatePayPalStandardPaymentURL;
+use Give\PaymentGateways\Gateways\PayPalStandard\Actions\GenerateDonationFailedPageUrl;
+use Give\PaymentGateways\Gateways\PayPalStandard\Actions\GenerateDonationReceiptPageUrl;
+use Give\PaymentGateways\Gateways\PayPalStandard\Controllers\PayPalStandardWebhook;
+use Give\PaymentGateways\Gateways\PayPalStandard\Views\PayPalStandardBillingFields;
 use Give_Payment;
 
 class PayPalStandard extends PaymentGateway

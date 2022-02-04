@@ -1,10 +1,10 @@
 <?php
 
-namespace Give\PaymentGateways\PayPalStandard\Gateways\Webhooks;
+namespace Give\PaymentGateways\Gateways\PayPalStandard\Webhooks;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\PaymentGateways\PayPalStandard\Gateways\Webhooks\Listeners\EventListener;
-use Give\PaymentGateways\PayPalStandard\Gateways\Webhooks\Listeners\PaymentUpdated;
+use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\Listeners\EventListener;
+use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\Listeners\PaymentUpdated;
 
 class WebhookRegister
 {

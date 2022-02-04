@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways\PayPalStandard\Gateways\Migrations;
+namespace Give\PaymentGateways\Gateways\PayPalStandard\Migrations;
 
 use Give\Framework\Migrations\Contracts\Migration;
 
