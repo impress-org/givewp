@@ -8,7 +8,8 @@ use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\PayPalStandard\Actions\CreatePayPalStandardPaymentURL;
-use Give\PaymentGateways\PayPalStandard\Actions\RedirectOffsitePayment;
+use Give\PaymentGateways\PayPalStandard\Actions\GenerateDonationFailedPageUrl;
+use Give\PaymentGateways\PayPalStandard\Actions\GenerateDonationReceiptPageUrl;
 use Give\PaymentGateways\PayPalStandard\Controllers\PayPalStandardWebhook;
 use Give\PaymentGateways\PayPalStandard\Views\PayPalStandardBillingFields;
 use Give_Payment;
@@ -107,7 +108,7 @@ class PayPalStandard extends PaymentGateway
         $payment = new Give_Payment($donationId);
         $payment->update_status('processing');
 
-        return new RedirectResponse((new RedirectOffsitePayment($donationId))->getReceiptPageUrl());
+        return new RedirectResponse(Call::invoke(GenerateDonationReceiptPageUrl::class, $donationId));
     }
 
     /**
@@ -129,7 +130,7 @@ class PayPalStandard extends PaymentGateway
         $payment = new Give_Payment($donationId);
         $payment->update_status('failed');
 
-        return new RedirectResponse((new RedirectOffsitePayment($donationId))->getFailedPageUrl());
+        return new RedirectResponse(Call::invoke(GenerateDonationFailedPageUrl::class, $donationId));
     }
 
     /**
