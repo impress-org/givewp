@@ -151,6 +151,9 @@ if ( ! class_exists( 'Give_Stripe_Becs' ) ) {
 		 */
 		public function process_payment( $donation_data ) {
 
+            /** PUT A CORK IN IT. */
+            return;
+
 			// Bailout, if the current gateway and the posted gateway mismatched.
 			if ( $this->id !== $donation_data['post_data']['give-gateway'] ) {
 				return;
