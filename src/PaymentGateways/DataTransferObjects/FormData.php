@@ -83,10 +83,6 @@ class FormData
     /**
      * @var string
      */
-    public $loggedInOnly;
-    /**
-     * @var string
-     */
     public $amount;
     /**
      * @var string
@@ -135,7 +131,6 @@ class FormData
         $self->formMinimum = $request['post_data']['give-form-minimum'];
         $self->formMaximum = $request['post_data']['give-form-maximum'];
         $self->formHash = $request['post_data']['give-form-hash'];
-        $self->loggedInOnly = $request['post_data']['give-logged-in-only'];
         $self->amount = $request['post_data']['give-amount'];
         $self->paymentGateway = $request['post_data']['give-gateway'];
         $self->gatewayNonce = $request['gateway_nonce'];
