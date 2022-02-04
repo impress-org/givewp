@@ -1,12 +1,12 @@
 <?php
 
-namespace Give\PaymentGateways\Gateways\Stripe\Helpers;
+namespace Give\PaymentGateways\Gateways\Stripe\Traits;
 
 /**
  * @unreleased
  * @TODO We should eventually migrate this client-side redirect to a server-side redirect using the url property of the session.
  */
-class CheckoutHelper
+trait CheckoutRedirect
 {
     /**
      * @unreleased
@@ -31,7 +31,7 @@ class CheckoutHelper
      * @unreleased Migrated from the legacy Give_Stripe_Checkout::redirect_to_checkout implementation of the Stripe Checkout Gateway.
      * @return void
      */
-    public function maybeHandleRedirect()
+    public static function maybeHandleRedirect()
     {
         $get_data          = give_clean( $_GET );
         $form_id           = ! empty( $get_data['id'] ) ? absint( $get_data['id'] ) : false;

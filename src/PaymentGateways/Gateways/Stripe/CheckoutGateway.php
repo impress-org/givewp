@@ -10,7 +10,6 @@ use Give\Helpers\Form\Utils as FormUtils;
 use Give\Helpers\Gateways\Stripe;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\Stripe\Exceptions\CheckoutException;
-use Give\PaymentGateways\Gateways\Stripe\Helpers\CheckoutHelper;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\CheckoutSession;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
 
@@ -21,6 +20,7 @@ class CheckoutGateway extends PaymentGateway
 {
     use Traits\CheckoutInstructions;
     use Traits\CheckoutModal;
+    use Traits\CheckoutRedirect;
     use Traits\HandlePaymentIntentStatus;
 
     /**
@@ -59,8 +59,9 @@ class CheckoutGateway extends PaymentGateway
     {
         $workflow->action( new Actions\CreateCheckoutSession() );
         $session = $workflow->resolve( CheckoutSession::class );
+        $paymentData = $workflow->resolve( GatewayPaymentData::class );
         return new RedirectOffsite(
-            CheckoutHelper::getRedirectUrl( $session->id(), give_get_payment_form_id( $paymentData->donationId ) )
+            $this->getRedirectUrl( $session->id(), give_get_payment_form_id( $paymentData->donationId ) )
         );
     }
 

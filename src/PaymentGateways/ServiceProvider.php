@@ -7,7 +7,7 @@ use Give\Framework\PaymentGateways\Routes\GatewayRoute;
 use Give\Helpers\Hooks;
 use Give\LegacyPaymentGateways\Actions\RegisterPaymentGatewaySettingsList;
 use Give\PaymentGateways\Actions\RegisterPaymentGateways;
-use Give\PaymentGateways\Gateways\Stripe\Helpers\CheckoutHelper;
+use Give\PaymentGateways\Gateways\Stripe\CheckoutGateway;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
@@ -39,7 +39,7 @@ class ServiceProvider implements ServiceProviderInterface
         /**
          * Stripe Checkout Redirect Handler
          */
-        Hooks::addAction('wp_footer', CheckoutHelper::class, 'maybeHandleRedirect', 99999);
-        Hooks::addAction('give_embed_footer', CheckoutHelper::class, 'maybeHandleRedirect', 99999);
+        Hooks::addAction('wp_footer', CheckoutGateway::class, 'maybeHandleRedirect', 99999);
+        Hooks::addAction('give_embed_footer', CheckoutGateway::class, 'maybeHandleRedirect', 99999);
     }
 }
