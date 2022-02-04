@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\Gateways\Stripe;
 
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
+use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
@@ -37,30 +38,43 @@ class CheckoutGateway extends PaymentGateway
         $workflow->action( new Actions\SaveDonationSummary );
         $workflow->action( new Actions\GetOrCreateStripeCustomer );
 
-        switch( give_stripe_get_checkout_type() ) {
+        switch (give_stripe_get_checkout_type()) {
             case 'modal':
-                return $this->createPaymentModal( $workflow );
+                return $this->createPaymentModal($workflow);
             case 'redirect':
-                return $this->createPaymentRedierct( $workflow );
+                return $this->createPaymentRedirect($workflow);
             default:
-                throw new CheckoutException( 'Invalid Checkout Error' );
+                throw new CheckoutException('Invalid Checkout Error');
         }
     }
 
-    protected function createPaymentModal( $workflow )
+    /**
+     * @unreleased
+     *
+     * @param $workflow
+     * @return PaymentProcessing|RedirectOffsite
+     * @throws Exceptions\PaymentIntentException
+     */
+    protected function createPaymentModal($workflow)
     {
-        $workflow->action( new Actions\GetPaymentMethodFromRequest );
-        $workflow->action( new Actions\CreatePaymentIntent() );
-        $paymentIntent = $workflow->resolve( PaymentIntent::class );
-        return $this->handlePaymentIntentStatus( $paymentIntent );
+        $workflow->action(new Actions\GetPaymentMethodFromRequest);
+        $workflow->action(new Actions\CreatePaymentIntent());
+        $paymentIntent = $workflow->resolve(PaymentIntent::class);
+        return $this->handlePaymentIntentStatus($paymentIntent);
     }
 
-    protected function createPaymentRedierct( $workflow )
+    /**
+     * @unreleased
+     *
+     * @param $workflow
+     * @return RedirectOffsite
+     */
+    protected function createPaymentRedirect($workflow)
     {
-        $workflow->action( new Actions\CreateCheckoutSession() );
-        $session = $workflow->resolve( CheckoutSession::class );
+        $workflow->action(new Actions\CreateCheckoutSession());
+        $session = $workflow->resolve(CheckoutSession::class);
         return new RedirectOffsite(
-            CheckoutHelper::getRedirectUrl( $session->id(), give_get_payment_form_id( $paymentData->donationId ) )
+            CheckoutHelper::getRedirectUrl($session->id(), give_get_payment_form_id($paymentData->donationId))
         );
     }
 
