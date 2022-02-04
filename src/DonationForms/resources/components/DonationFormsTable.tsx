@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {__, _n} from '@wordpress/i18n';
-import { useSWRConfig } from 'swr';
+import { useSWRConfig, unstable_serialize } from 'swr';
 import cx from 'classnames';
 
 import styles from './DonationFormsTable.module.scss';
@@ -27,6 +27,8 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
     const [perPage, setPerPage] = useState<number>(10);
     const [errors, setErrors] = useState<number>(0);
     const [successes, setSuccesses] = useState<number>(0);
+    const [initialLoad, setInitialLoad] = useState<boolean>(true);
+    const [overlay, setOverlay] = useState<any>(false);
     const listParams = {
         page,
         perPage,
@@ -34,9 +36,24 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
         search,
     };
     const {data, error, isValidating} = useDonationForms(listParams);
-    const { mutate } = useSWRConfig();
+    const { mutate, cache } = useSWRConfig();
     const isEmpty = !error && data?.forms.length === 0;
-    useEffect(() => setPage(1), [status, search]);
+    useEffect(() => {
+        setPage(1)
+    }, [status, search]);
+    useEffect(() => {
+        initialLoad && data && setInitialLoad(false)
+    }, [data]);
+    useEffect( () => {
+        if(isValidating && !cache.get(unstable_serialize(listParams))){
+            setOverlay(styles.appear);
+        }
+        if(!isValidating && overlay){
+            setOverlay(styles.disappear);
+            const timeoutId = setTimeout(() => setOverlay(false), 100);
+            return () => clearTimeout(timeoutId);
+        }
+    }, [isValidating])
 
     async function mutateForm(ids, endpoint, method) {
         try {
@@ -107,17 +124,25 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                     setPage={setPage}
                 />
             </div>
-            <div
-                role="group"
-                aria-labelledby="giveDonationFormsTableCaption"
-                aria-describedby="giveDonationFormsTableMessage"
-                className={styles.tableGroup}
-            >
-                <table className={styles.table}>
-                    <caption id="giveDonationFormsTableCaption" className={styles.tableCaption}>
-                        {__('Donation Forms', 'give')}
-                    </caption>
-                    <thead>
+            {initialLoad ?
+                <div className={styles.initialLoad}>
+                    <div className={cx(styles.tableGroup)}>
+                        <Spinner size={'large'}/>
+                        <h2>Loading donation forms</h2>
+                    </div>
+                </div>
+                :
+                <div
+                    role="group"
+                    aria-labelledby="giveDonationFormsTableCaption"
+                    aria-describedby="giveDonationFormsTableMessage"
+                    className={styles.tableGroup}
+                >
+                    <table className={styles.table}>
+                        <caption id="giveDonationFormsTableCaption" className={styles.tableCaption}>
+                            {__('Donation Forms', 'give')}
+                        </caption>
+                        <thead>
                         <tr>
                             <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
                                 {__('ID', 'give')}
@@ -152,24 +177,26 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                                 {__('Status', 'give')}
                             </th>
                         </tr>
-                    </thead>
-                    <tbody className={styles.tableContent}>
-                    <DonationFormTableRows
-                        listParams={listParams}
-                        mutateForm={mutateForm}
-                        status={status}
-                    />
-                    {isValidating &&
-                        <div className={styles.loadingOverlay}>
-                            <Spinner size={'medium'}/>
-                        </div>
-                    }
-                    </tbody>
-                </table>
-                <div id="giveDonationFormsTableMessage">
-                    {isEmpty && <div className={styles.statusMessage}>{__('No donation forms found.', 'give')}</div>}
+                        </thead>
+                        <tbody className={styles.tableContent}>
+                        <DonationFormTableRows
+                            listParams={listParams}
+                            mutateForm={mutateForm}
+                            status={status}
+                        />
+                        {overlay &&
+                            <tr className={cx(styles.loadingOverlay, overlay)}>
+                                <Spinner size={'medium'} />
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                    <div id="giveDonationFormsTableMessage">
+                        {isEmpty &&
+                            <div className={styles.statusMessage}>{__('No donation forms found.', 'give')}</div>}
+                    </div>
                 </div>
-            </div>
+            }
         </>
     );
 }

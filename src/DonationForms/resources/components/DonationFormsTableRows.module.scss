@@ -1,13 +1,10 @@
 .deleted {
-    animation-name: deleted;
-    animation-duration: 0.3s;
-    animation-timing-function: ease-in;
-    animation-iteration-count: 1;
+    animation: disappear 0.3s ease-in;
     animation-fill-mode: forwards;
     pointer-events: none;
 }
 
-@keyframes deleted {
+@keyframes disappear {
     0% {
         opacity: 1;
     }
@@ -71,30 +68,6 @@
 
     &:is(:hover, :focus) .tableRowActions {
         opacity: 1;
-    }
-
-    &.loading {
-        opacity: 50%;
-        background-image: linear-gradient(to right, #eee 20%, #ccc 50%, #eee 80%);
-        background-size: 50% 30%;
-        background-repeat: repeat-x;
-        animation-name: moving-gradient;
-        animation-duration: 1s;
-        animation-iteration-count: infinite;
-        animation-timing-function: ease-in-out;
-        animation-fill-mode: forwards;
-        @keyframes moving-gradient {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
-        }
-
-        & > th > *, & > td > * {
-            display: none;
-        }
-
-        &:nth-child(odd) {
-            animation-delay: -0.5s;
-        }
     }
 }
 

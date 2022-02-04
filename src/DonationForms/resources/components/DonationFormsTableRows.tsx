@@ -1,4 +1,3 @@
-import loadingForms from "../loadingForms.json";
 import styles from "./DonationFormsTableRows.module.scss";
 import {__} from "@wordpress/i18n";
 import cx from "classnames";
@@ -27,7 +26,6 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
         setDeleted([]);
     }
 
-    const forms = data ? data.forms : loadingForms;
     const trash = data ? data.trash : false;
 
     //general error state
@@ -50,11 +48,10 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
         );
     }
 
-    return forms.map((form) => (
+    return data.forms.map((form) => (
         <tr key={form.id} className={cx(
             styles.tableRow,
             {
-                [styles.loading]: !data,
                 [styles.deleted]: deleted.indexOf(form.id) > -1,
                 [styles.unclickable]: isValidating
             }
