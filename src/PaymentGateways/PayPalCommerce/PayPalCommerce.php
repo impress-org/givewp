@@ -5,6 +5,7 @@ namespace Give\PaymentGateways\PayPalCommerce;
 use Exception;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
+use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Hooks;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
@@ -96,8 +97,12 @@ class PayPalCommerce extends PaymentGateway
     public function createPayment(GatewayPaymentData $paymentData)
     {
         $paypalOrderId = give_clean($_POST['payPalOrderId']);
-        $paypalOrder = give(PayPalOrder::class)->getOrder($paypalOrderId);
 
+        if ( ! $paypalOrderId) {
+            throw new PaymentGatewayException(esc_html('PayPal order id is missing.', 'give'));
+        }
+
+        $paypalOrder = give(PayPalOrder::class)->getOrder($paypalOrderId);
         $command = PaymentComplete::make($paypalOrder->payment->id);
         $command->paymentNotes = [
             sprintf(
