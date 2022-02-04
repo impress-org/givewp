@@ -55,11 +55,11 @@ class ProcessIpnDonationRefundTest extends TestCase
 
         Call::invoke(
             MockProcessIpnDonationRefund::class,
-            [
+            (object) [
                 'mc_gross' => '-19.05', // Actual donation amount is 20.00
                 'parent_txn_id' => 'abc123',
             ],
-            $this->donation
+            $this->donation->ID
         );
 
         $notes = give_get_payment_notes($this->donation->ID);
@@ -78,13 +78,13 @@ class ProcessIpnDonationRefundTest extends TestCase
 
         Call::invoke(
             MockProcessIpnDonationRefund::class,
-            [
+            (object) [
                 'mc_gross' => '20.00',
                 'parent_txn_id' => 'abc456',
                 'reason_code' => 'abc',
                 'txn_id' => 'abs123'
             ],
-            $this->donation
+            $this->donation->ID
         );
 
         $notes = give_get_payment_notes($this->donation->ID);
