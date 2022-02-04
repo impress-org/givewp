@@ -8,11 +8,9 @@ use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Call;
-use Give\Helpers\Hooks;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\PayPalCommerce\Actions\GetPayPalOrderFromRequest;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
-use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookChecker;
 
 /**
  * Class PayPalCommerce
@@ -210,65 +208,5 @@ class PayPalCommerce extends PaymentGateway
          * @since 2.9.6
          */
         return apply_filters('give_get_settings_paypal_commerce', $settings);
-    }
-
-    /**
-     * Setup hook for payment gateway.
-     *
-     * @since 2.9.0
-     */
-    public function boot()
-    {
-        Hooks::addAction(
-            'wp_ajax_give_paypal_commerce_user_on_boarded',
-            AjaxRequestHandler::class,
-            'onBoardedUserAjaxRequestHandler'
-        );
-        Hooks::addAction(
-            'wp_ajax_give_paypal_commerce_get_partner_url',
-            AjaxRequestHandler::class,
-            'onGetPartnerUrlAjaxRequestHandler'
-        );
-        Hooks::addAction(
-            'wp_ajax_give_paypal_commerce_disconnect_account',
-            AjaxRequestHandler::class,
-            'removePayPalAccount'
-        );
-        Hooks::addAction('wp_ajax_give_paypal_commerce_create_order', AjaxRequestHandler::class, 'createOrder');
-        Hooks::addAction(
-            'wp_ajax_give_paypal_commerce_onboarding_trouble_notice',
-            AjaxRequestHandler::class,
-            'onBoardingTroubleNotice'
-        );
-        Hooks::addAction('wp_ajax_nopriv_give_paypal_commerce_create_order', AjaxRequestHandler::class, 'createOrder');
-        Hooks::addAction('wp_ajax_give_paypal_commerce_approve_order', AjaxRequestHandler::class, 'approveOrder');
-        Hooks::addAction(
-            'wp_ajax_nopriv_give_paypal_commerce_approve_order',
-            AjaxRequestHandler::class,
-            'approveOrder'
-        );
-
-        Hooks::addAction('admin_enqueue_scripts', ScriptLoader::class, 'loadAdminScripts');
-        Hooks::addAction('wp_enqueue_scripts', ScriptLoader::class, 'loadPublicAssets');
-        Hooks::addAction('give_pre_form_output', DonationFormPaymentMethod::class, 'handle');
-
-        Hooks::addAction('give_paypal_commerce_refresh_token', RefreshToken::class, 'refreshToken');
-
-        Hooks::addAction('admin_init', AccountAdminNotices::class, 'displayNotices');
-        Hooks::addFilter(
-            'give_payment_details_transaction_id-paypal-commerce',
-            DonationDetailsPage::class,
-            'getPayPalPaymentUrl'
-        );
-
-        Hooks::addAction('give_update_edited_donation', RefundPaymentHandler::class, 'refundPayment');
-        Hooks::addAction('admin_notices', RefundPaymentHandler::class, 'showPaymentRefundFailureNotice');
-        Hooks::addAction(
-            'give_view_donation_details_totals_after',
-            RefundPaymentHandler::class,
-            'optInForRefundFormField'
-        );
-
-        Hooks::addAction('admin_init', WebhookChecker::class, 'checkWebhookCriteria');
     }
 }
