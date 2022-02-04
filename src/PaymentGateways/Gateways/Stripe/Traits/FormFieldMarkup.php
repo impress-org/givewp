@@ -2,7 +2,7 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe\Traits;
 
-trait MandateForm
+trait FormFieldMarkup
 {
     public function canShowFields() {
         $status       = true;

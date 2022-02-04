@@ -4,7 +4,7 @@ namespace Give\PaymentGateways\Gateways\Stripe\Traits;
 
 trait SEPAMandateForm
 {
-    use MandateForm;
+    use FormFieldMarkup;
 
     public function getMandateFormHTML( $form_id, $args )
     {
