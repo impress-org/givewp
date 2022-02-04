@@ -12,9 +12,7 @@ use Give\Helpers\Hooks;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\PayPalCommerce\Actions\GetPayPalOrderFromRequest;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
-use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalOrder;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookChecker;
-use RuntimeException;
 
 /**
  * Class PayPalCommerce
