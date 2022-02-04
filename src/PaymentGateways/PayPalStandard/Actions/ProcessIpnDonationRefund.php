@@ -4,6 +4,7 @@ namespace Give\PaymentGateways\PayPalStandard\Actions;
 
 use Give\ValueObjects\Money;
 use Give_Payment;
+use stdClass;
 
 /**
  * @unreleased
@@ -13,33 +14,34 @@ class ProcessIpnDonationRefund
     /**
      * @unreleased
      *
-     * @param array $ipnEventData
-     * @param Give_Payment $donation
+     * @param stdClass $ipnEventData
+     * @param int $donationId
      *
      * @return void
      */
-    public function __invoke(array $ipnEventData, Give_Payment $donation)
+    public function __invoke(stdClass $ipnEventData, $donationId)
     {
-        if ($this->isPartialRefund($ipnEventData['mc_gross'], $donation->currency, $donation->total)) {
+        $donation = new Give_Payment($donationId);
+        if ($this->isPartialRefund($ipnEventData->mc_gross, $donation->currency, $donation->total)) {
             $donation->add_note(
                 sprintf( /* translators: %s: Paypal parent transaction ID */
                     __('Partial PayPal refund processed: %s', 'give'),
-                    $ipnEventData['parent_txn_id']
+                    $ipnEventData->parent_txn_id
                 )
             );
         } else {
             $donation->add_note(
                 sprintf( /* translators: 1: Paypal parent transaction ID 2. Paypal reason code */
                     __('PayPal Payment #%1$s Refunded for reason: %2$s', 'give'),
-                    $ipnEventData['parent_txn_id'],
-                    $ipnEventData['reason_code']
+                    $ipnEventData->parent_txn_id,
+                    $ipnEventData->reason_code
                 )
             );
 
             $donation->add_note(
                 sprintf( /* translators: %s: Paypal transaction ID */
                     __('PayPal Refund Transaction ID: %s', 'give'),
-                    $ipnEventData['txn_id']
+                    $ipnEventData->txn_id
                 )
             );
 

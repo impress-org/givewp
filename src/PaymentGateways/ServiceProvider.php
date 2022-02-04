@@ -8,6 +8,7 @@ use Give\Helpers\Hooks;
 use Give\LegacyPaymentGateways\Actions\RegisterPaymentGatewaySettingsList;
 use Give\PaymentGateways\Actions\RegisterPaymentGateways;
 use Give\PaymentGateways\PayPalStandard\Controllers\PayPalStandardWebhook;
+use Give\PaymentGateways\PayPalStandard\Webhooks\WebhookRegister;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
@@ -25,6 +26,7 @@ class ServiceProvider implements ServiceProviderInterface
     public function register()
     {
         give()->singleton(PaymentGatewayRegister::class);
+        give()->singleton(WebhookRegister::class);
     }
 
     /**
@@ -35,15 +37,5 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addFilter('give_register_gateway', RegisterPaymentGateways::class);
         Hooks::addFilter('give_payment_gateways', RegisterPaymentGatewaySettingsList::class);
         Hooks::addAction('template_redirect', GatewayRoute::class);
-
-        // We are adding event listener to this action hook.
-        // This hook fires for PayPal Standard ipn for onetime donation.
-        Hooks::addAction(
-            'give_paypal_web_accept',
-            PayPalStandardWebhook::class,
-            'handleIpnForOneTimeDonation',
-            10,
-            2
-        );
     }
 }

@@ -5,6 +5,7 @@ namespace Give\PaymentGateways\PayPalStandard\Controllers;
 use Give\Helpers\Call;
 use Give\PaymentGateways\PayPalStandard\Actions\ProcessIpnDonationRefund;
 use Give\PaymentGateways\PayPalStandard\PayPalStandard;
+use Give\PaymentGateways\PayPalStandard\Webhooks\WebhookRegister;
 use Give\PaymentGateways\PayPalStandard\Webhooks\WebhookValidator;
 use Give_Payment;
 
@@ -52,33 +53,14 @@ class PayPalStandardWebhook
         $this->recordIpn($eventData, $donationId);
         $this->recordIpnInDonation($donationId);
 
-        if (has_action('give_paypal_' . $txnType)) {
-            /**
-             * Fires while processing PayPal IPN $txnType.
-             *
-             * Allow PayPal IPN types to be processed separately.
-             *
-             * @since 1.0
-             *
-             * @param int $donationId donation id.
-             *
-             * @param array $eventData Encoded data.
-             */
-            do_action("give_paypal_{$txnType}", $eventData, $donationId);
+        /* @var WebhookRegister $webhookRegisterer */
+        $webhookRegisterer = give(WebhookRegister::class);
+        if (in_array($txnType, $webhookRegisterer->getRegisteredEvents(), true)) {
+            $webhookRegisterer->getEventHandler($txnType)->processEvent((object)$eventData);
         } else {
-            /**
-             * Fires while process PayPal IPN.
-             *
-             * Fallback to web accept just in case the txn_type isn't present.
-             *
-             * @since 1.0
-             *
-             * @param int $donationId donation id.
-             *
-             * @param array $eventData Encoded data.
-             */
-            do_action('give_paypal_web_accept', $eventData, $donationId);
+            $this->supportLegacyActions($txnType, $eventData, $donationId);
         }
+
         exit;
     }
 
@@ -99,59 +81,6 @@ class PayPalStandardWebhook
             ],
             false
         );
-    }
-
-    /**
-     * Handle web_accept & cart txt_type PayPal Standard ipn.
-     *
-     * @unreleased
-     *
-     * @param array $eventData
-     * @param int $donationId
-     */
-    public function handleIpnForOneTimeDonation(array $eventData, $donationId)
-    {
-        // Only allow through these transaction types.
-        if ( ! in_array($eventData['txn_type'], ['web_accept', 'cart'])) {
-            return;
-        }
-
-        // Collect donation payment details.
-        $donation = new Give_Payment($donationId);
-        $donationStatus = strtolower($eventData['payment_status']);
-
-        switch (true) {
-            // Process refunds & reversed.
-            case in_array($donationStatus, ['refunded', 'reversed']):
-                if ('refunded' !== $donation->status) {
-                    Call::invoke(ProcessIpnDonationRefund::class, $eventData, $donation);
-                }
-
-                return;
-
-            // Process completed donations.
-            case 'completed' === $donationStatus:
-                if ('publish' !== $donation->status) {
-                    $donation->add_note(
-                        sprintf( /* translators: %s: Paypal transaction ID */
-                            __('PayPal Transaction ID: %s', 'give'),
-                            $eventData['txn_id']
-                        )
-                    );
-                    $donation->transaction_id = $eventData['txn_id'];
-                    $donation->status = 'publish';
-
-                    $donation->save();
-                }
-                break;
-
-            // Add note about pending payment.
-            case 'pending' === $donationStatus:
-                if (isset($eventData['pending_reason'])) {
-                    $donation->add_note(give_paypal_get_pending_donation_note($eventData['pending_reason']));
-                }
-                break;
-        }
     }
 
     /**
@@ -183,5 +112,45 @@ class PayPalStandardWebhook
     private function verifyDonationId($donationId)
     {
         return $donationId && PayPalStandard::id() === give_get_payment_gateway($donationId);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param string $txnType
+     * @param array $eventData
+     * @param int $donationId
+     *
+     * @return void
+     */
+    private function supportLegacyActions($txnType, array $eventData, $donationId)
+    {
+        if (has_action('give_paypal_' . $txnType)) {
+            /**
+             * Fires while processing PayPal IPN $txnType.
+             *
+             * Allow PayPal IPN types to be processed separately.
+             *
+             * @since 1.0
+             *
+             * @param int $donationId donation id.
+             *
+             * @param array $eventData Encoded data.
+             */
+            do_action("give_paypal_{$txnType}", $eventData, $donationId);
+        } else {
+            /**
+             * Fires while process PayPal IPN.
+             *
+             * Fallback to web accept just in case the txn_type isn't present.
+             *
+             * @since 1.0
+             *
+             * @param int $donationId donation id.
+             *
+             * @param array $eventData Encoded data.
+             */
+            do_action('give_paypal_web_accept', $eventData, $donationId);
+        }
     }
 }
