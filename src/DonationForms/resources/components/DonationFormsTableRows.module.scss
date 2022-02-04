@@ -1,3 +1,21 @@
+.deleted {
+    animation-name: deleted;
+    animation-duration: 0.3s;
+    animation-timing-function: ease-in;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    pointer-events: none;
+}
+
+@keyframes deleted {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
 .action {
     &:is(button) {
         appearance: none;

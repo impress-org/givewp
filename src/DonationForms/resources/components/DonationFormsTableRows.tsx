@@ -3,13 +3,18 @@ import styles from "./DonationFormsTableRows.module.scss";
 import {__} from "@wordpress/i18n";
 import cx from "classnames";
 import { useDonationForms } from "../api";
+import { useState } from "react";
+
 
 export default function DonationFormsTableRows({listParams, mutateForm, status}) {
     const {data, error, isValidating} = useDonationForms(listParams);
+    const [deleted, setDeleted] = useState([]);
 
     async function deleteForm(event) {
         const endpoint = data.trash ? '/trash' : '/delete';
+        setDeleted([event.target.dataset.formid]);
         await mutateForm(event.target.dataset.formid, endpoint, 'DELETE');
+        setDeleted([]);
     }
 
     async function duplicateForm(event) {
@@ -17,7 +22,9 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
     }
 
     async function restoreForm(event) {
+        setDeleted([event.target.dataset.formid]);
         await mutateForm(event.target.dataset.formid, '/restore', 'POST');
+        setDeleted([]);
     }
 
     const forms = data ? data.forms : loadingForms;
@@ -48,6 +55,7 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
             styles.tableRow,
             {
                 [styles.loading]: !data,
+                [styles.deleted]: deleted.indexOf(form.id) > -1
             }
         )}>
             <td className={styles.tableCell}>
