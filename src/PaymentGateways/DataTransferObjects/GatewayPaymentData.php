@@ -2,7 +2,6 @@
 
 namespace Give\PaymentGateways\DataTransferObjects;
 
-use Give\PaymentGateways\Repositories\GatewayPaymentRepository;
 use Give\ValueObjects\Address;
 use Give\ValueObjects\CardInfo;
 use Give\ValueObjects\DonorInfo;
@@ -62,10 +61,6 @@ class GatewayPaymentData
      */
     public $redirectUrl;
     /**
-     * @var string
-     */
-    public $donationTitle;
-    /**
      * We are using this property internally to gracefully deprecate filter and action hooks.
      * We do not recommend using this property in logic. This will be removed in the future.
      *
@@ -100,25 +95,6 @@ class GatewayPaymentData
         $self->billingAddress = $array['billingAddress'];
         $self->redirectUrl = give_get_success_page_uri();
 
-        $self->donationTitle = give(GatewayPaymentRepository::class)->getDonationTitle($self);
-
         return $self;
-    }
-
-    /**
-     * @unreleased
-     *
-     * @param int|null $titleLength
-     *
-     * @return string
-     */
-    public function getDonationTitle($titleLength = null)
-    {
-        // Cut the length
-        if ($titleLength) {
-            return substr($this->donationTitle, 0, $titleLength);
-        }
-
-        return $this->donationTitle;
     }
 }

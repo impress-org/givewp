@@ -3,7 +3,6 @@
 namespace Give\PaymentGateways\PayPalStandard\Gateways\Actions;
 
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
-use Give\ValueObjects\Address;
 
 /**
  * This class create PayPal Standard payment gateway one time payment url on basis of donor donation query.
@@ -20,7 +19,7 @@ class CreatePayPalStandardPaymentURL
     )
     {
         $paypalPaymentRedirectUrl = trailingslashit(give_get_paypal_redirect()) . '?';
-        $itemName = $paymentData->getDonationTitle();
+        $itemName = give_payment_gateway_item_title($paymentData->legacyPaymentData);
         $payPalPartnerCode = 'givewp_SP';
 
         // Setup PayPal API params.
