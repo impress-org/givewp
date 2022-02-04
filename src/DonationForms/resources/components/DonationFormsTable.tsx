@@ -5,7 +5,7 @@ import cx from 'classnames';
 
 import styles from './DonationFormsTable.module.scss';
 import Pagination from './Pagination.js';
-import loadingForms from '../loadingForms.json';
+import DonationFormTableRows from './DonationFormsTableRows';
 import {fetchWithArgs, useDonationForms} from '../api';
 
 export enum DonationStatus {
@@ -24,15 +24,15 @@ interface DonationFormsTableProps {
 export default function DonationFormsTable({statusFilter: status, search}: DonationFormsTableProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(10);
-    const [errors, setErrors] = useState(0);
-    const [successes, setSuccesses] = useState(0);
+    const [errors, setErrors] = useState<number>(0);
+    const [successes, setSuccesses] = useState<number>(0);
     const listParams = {
         page,
         perPage,
         status,
         search,
     };
-    const {data, error, isValidating} = useDonationForms(listParams);
+    const {data, error} = useDonationForms(listParams);
     const { mutate } = useSWRConfig();
     const isEmpty = !error && data?.forms.length === 0;
     useEffect(() => setPage(1), [status, search]);
@@ -62,145 +62,9 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
             setErrors(ids.split(',').length);
             setSuccesses(0);
         }
+
     }
 
-    function deleteForm(event) {
-        const endpoint = data.trash ? '/trash' : '/delete';
-        mutateForm(event.target.dataset.formid, endpoint, 'DELETE');
-    }
-
-    function duplicateForm(event) {
-        mutateForm(event.target.dataset.formid, '/duplicate', 'POST');
-    }
-
-    function restoreForm(event) {
-        mutateForm(event.target.dataset.formid, '/restore', 'POST');
-    }
-
-    function TableRows({data}) {
-        const forms = data ? data.forms : loadingForms;
-        const trash = data ? data.trash : false;
-
-        //general error state
-        if (error && !isValidating) {
-            return (
-                <>
-                    <tr className={styles.tableRow}>
-                        <td colSpan={9} className={styles.statusMessage}>
-                            {__('There was a problem retrieving the donation forms.', 'give')}
-                        </td>
-                    </tr>
-                    <tr className={styles.tableRow}>
-                        <td colSpan={9} className={styles.statusMessage}>
-                            {__('Click', 'give') + ' '}
-                            <a href={'edit.php?post_type=give_forms&page=give-forms'}>{__('here', 'give')}</a>
-                            {' ' + __('to reload the page.')}
-                        </td>
-                    </tr>
-                </>
-            );
-        }
-
-        return forms.map((form) => (
-            <tr key={form.id} className={cx(styles.tableRow, !data && styles.loading)}>
-                <td className={styles.tableCell}>
-                    <div className={styles.idBadge}>{form.id}</div>
-                </td>
-                <th className={cx(styles.tableCell, styles.tableRowHeader)} scope="row">
-                    <a href={form.edit}>{form.name}</a>
-                    <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
-                        {status == 'trash' ? (
-                            <>
-                                <button
-                                    type="button"
-                                    onClick={restoreForm}
-                                    data-formid={form.id}
-                                    className={styles.action}
-                                >
-                                    {__('Restore', 'give')} <span className="give-visually-hidden">{form.name}</span>
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={deleteForm}
-                                    data-formid={form.id}
-                                    className={cx(styles.action, styles.delete)}
-                                >
-                                    {__('Delete Permanently', 'give')}{' '}
-                                    <span className="give-visually-hidden">{form.name}</span>
-                                </button>{' '}
-                            </>
-                        ) : (
-                            <>
-                                <a href={form.edit} className={styles.action}>
-                                    {__('Edit', 'give')} <span className="give-visually-hidden">{form.name}</span>
-                                </a>
-                                <button
-                                    type="button"
-                                    onClick={deleteForm}
-                                    data-formid={form.id}
-                                    className={cx(styles.action, {[styles.delete]: !trash})}
-                                >
-                                    {trash ? __('Trash', 'give') : __('Delete', 'give')}{' '}
-                                    <span className="give-visually-hidden">{form.name}</span>
-                                </button>
-                                <a href={form.permalink}>{__('View', 'give')}</a>
-                                <button
-                                    type="button"
-                                    onClick={duplicateForm}
-                                    data-formid={form.id}
-                                    className={styles.action}
-                                >
-                                    {__('Duplicate', 'give')}
-                                </button>
-                            </>
-                        )}
-                    </div>
-                </th>
-                <td className={styles.tableCell} style={{textAlign: 'end'}}>
-                    {form.amount}
-                </td>
-                <td className={styles.tableCell}>
-                    {form.goal ? (
-                        <>
-                            <div className={styles.goalProgress}>
-                                <span
-                                    style={{
-                                        width: Math.max(Math.min(form.goal.progress, 100), 0) + '%',
-                                    }}
-                                />
-                            </div>
-                            {form.goal.actual} {__('of', 'give')}{' '}
-                            {form.goal.goal ? (
-                                <a href={`${form.edit}&give_tab=donation_goal_options`}>
-                                    {form.goal.goal}
-                                    {form.goal.format != 'amount' ? ` ${form.goal.format}` : null}
-                                </a>
-                            ) : null}
-                        </>
-                    ) : (
-                        <span>{__('No Goal Set', 'give')}</span>
-                    )}
-                </td>
-                <td className={styles.tableCell}>
-                    <a href={`edit.php?post_type=give_forms&page=give-payment-history&form_id=${form.id}`}>
-                        {form.donations}
-                    </a>
-                </td>
-                <td className={styles.tableCell}>
-                    <a href={`edit.php?post_type=give_forms&page=give-reports&tab=forms&form-id=${form.id}`}>
-                        {form.revenue}
-                    </a>
-                </td>
-                <td className={styles.tableCell}>
-                    <input type="text" aria-label={__('Copy shortcode', 'give')} readOnly value={form.shortcode} />
-                </td>
-                <td className={styles.tableCell}>{form.datetime}</td>
-                <td className={styles.tableCell}>
-                    <div className={cx(styles.statusBadge, styles[form.status])}>{form.status}</div>
-                </td>
-            </tr>
-        ));
-    }
 
     return (
         <>
@@ -289,7 +153,11 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                         </tr>
                     </thead>
                     <tbody className={styles.tableContent}>
-                        <TableRows data={data} />
+                        <DonationFormTableRows
+                            listParams={listParams}
+                            mutateForm={mutateForm}
+                            status={status}
+                        />
                     </tbody>
                 </table>
                 <div id="giveDonationFormsTableMessage">
