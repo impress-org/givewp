@@ -37,7 +37,7 @@ const Fetcher = (params) => {
 
 // SWR Fetcher
 export function useDonationForms({page, perPage, status, search}, [middleware]) {
-    const {data, error} = useSWR({page, perPage, status, search}, Fetcher, {
+    const {data, error, isValidating} = useSWR({page, perPage, status, search}, Fetcher, {
         use: [middleware],
         onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
             //don't retry if we cancelled the initial request
@@ -48,5 +48,5 @@ export function useDonationForms({page, perPage, status, search}, [middleware]) 
         }
     });
 
-    return {data, error};
+    return {data, error, isValidating};
 }

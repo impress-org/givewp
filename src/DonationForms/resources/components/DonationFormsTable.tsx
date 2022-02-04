@@ -33,7 +33,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
         status,
         search,
     };
-    const {data, error} = useDonationForms(listParams, [lagData]);
+    const {data, error, isValidating} = useDonationForms(listParams, [lagData]);
     const isEmpty = !error && data?.forms.length === 0;
     useEffect(() => setPage(1), [status, search]);
 
@@ -81,7 +81,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
         const trash = data ? data.trash : false;
 
         //general error state
-        if (error) {
+        if (error && !isValidating) {
             return (
                 <>
                     <tr className={styles.tableRow}>
