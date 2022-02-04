@@ -16,22 +16,19 @@ class PayPalStandardBillingFields
      *
      * @param int $formId
      *
-     * @return bool|void
+     * @return string
      */
     public function __invoke($formId)
     {
+        ob_start();
+
         if (give_is_setting_enabled(give_get_option('paypal_standard_billing_details'))) {
             give_default_cc_address_fields($formId);
-
-            return true;
-        }
-
-        if (Utils::isLegacyForm($formId)) {
-            return false;
-        }
-
-        printf(
-            '
+        } elseif (Utils::isLegacyForm($formId)) {
+            echo '';
+        } else {
+            printf(
+                '
             <fieldset class="no-fields">
                 <div style="display: flex; justify-content: center; margin-top: 20px;">
                     <svg width="250" height="66" viewBox="0 0 250 66" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -43,12 +40,15 @@ class PayPalStandardBillingFields
                 <p style="text-align: center;"><b>%2$s</b> %3$s</p>
             </fieldset>
             ',
-            esc_html__('Make your donation quickly and securely with PayPal', 'give'),
-            esc_html__('How it works:', 'give'),
-            esc_html__(
-                'You will be redirected to PayPal to pay using your PayPal account, or with a credit or debit card. You will then be brought back to this page to view your receipt.',
-                'give'
-            )
-        );
+                esc_html__('Make your donation quickly and securely with PayPal', 'give'),
+                esc_html__('How it works:', 'give'),
+                esc_html__(
+                    'You will be redirected to PayPal to pay using your PayPal account, or with a credit or debit card. You will then be brought back to this page to view your receipt.',
+                    'give'
+                )
+            );
+        }
+
+        return ob_get_clean();
     }
 }

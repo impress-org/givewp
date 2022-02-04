@@ -30,7 +30,7 @@ class PayPalStandard extends PaymentGateway
      */
     public function getLegacyFormFieldMarkup($formId, $args)
     {
-        Call::invoke(PayPalStandardBillingFields::class, $formId);
+        return Call::invoke(PayPalStandardBillingFields::class, $formId);
     }
 
     /**
