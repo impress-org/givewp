@@ -87,19 +87,15 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         try {
             $command = $this->createPayment($gatewayPaymentData);
             $this->handleGatewayPaymentCommand($command, $gatewayPaymentData);
-        } catch (PaymentGatewayException $paymentGatewayException) {
-            PaymentGatewayLog::error(
-                $paymentGatewayException->getMessage(),
-                ['Donation Data' => $gatewayPaymentData]
-            );
-
-            $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
-            exit;
         } catch (Exception $exception) {
             PaymentGatewayLog::error(
                 $exception->getMessage(),
                 ['Donation Data' => $gatewayPaymentData]
             );
+
+            if ($exception instanceof PaymentGatewayException) {
+                $this->handleResponse(response()->json($exception->getMessage()));
+            }
 
             $message = __(
                 'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.',
