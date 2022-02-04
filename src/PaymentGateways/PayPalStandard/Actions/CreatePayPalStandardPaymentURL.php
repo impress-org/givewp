@@ -32,6 +32,12 @@ class CreatePayPalStandardPaymentURL
             'first_name' => $paymentData->donorInfo->firstName,
             'last_name' => $paymentData->donorInfo->lastName,
             'email' => $paymentData->donorInfo->email,
+            'address1' => $paymentData->billingAddress->line1,
+            'address2' => $paymentData->billingAddress->line2,
+            'city' => $paymentData->billingAddress->city,
+            'state' => $paymentData->billingAddress->state,
+            'zip' => $paymentData->billingAddress->postalCode,
+            'country' => $paymentData->billingAddress->country,
 
             // Donation information.
             'invoice' => $paymentData->purchaseKey,
@@ -54,17 +60,6 @@ class CreatePayPalStandardPaymentURL
             'cbt' => get_bloginfo('name'),
             'bn' => $payPalPartnerCode,
         ];
-
-        if ($paymentData->donorInfo->address instanceof Address) {
-            // Donor address
-            $paypalPaymentArguments['address1'] = $paymentData->donorInfo->address->line1;
-            $paypalPaymentArguments['address2'] = $paymentData->donorInfo->address->line2;
-            $paypalPaymentArguments['city'] = $paymentData->donorInfo->address->city;
-            $paypalPaymentArguments['state'] = $paymentData->donorInfo->address->state;
-            $paypalPaymentArguments['zip'] = $paymentData->donorInfo->address->postalCode;
-            $paypalPaymentArguments['country'] = $paymentData->donorInfo->address->country;
-        }
-
 
         // Donations or regular transactions?
         $paypalPaymentArguments['cmd'] = give_get_paypal_button_type();
