@@ -7,11 +7,14 @@ use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Helpers\Call;
 use Give\Helpers\Hooks;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
+use Give\PaymentGateways\PayPalCommerce\Actions\GetPayPalOrderFromRequest;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalOrder;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookChecker;
+use RuntimeException;
 
 /**
  * Class PayPalCommerce
@@ -92,33 +95,31 @@ class PayPalCommerce extends PaymentGateway
      * @param GatewayPaymentData $paymentData
      *
      * @return GatewayCommand
-     * @throws Exception
+     * @throws PaymentGatewayException
      */
     public function createPayment(GatewayPaymentData $paymentData)
     {
-        $paypalOrderId = give_clean($_POST['payPalOrderId']);
+        try {
+            $paypalOrder = Call::invoke(GetPayPalOrderFromRequest::class);
+            $command = PaymentComplete::make($paypalOrder->payment->id);
+            $command->paymentNotes = [
+                sprintf(
+                    __('Transaction Successful. PayPal Transaction ID: %1$s    PayPal Order ID: %2$s', 'give'),
+                    $paypalOrder->payment->id,
+                    $paypalOrder->id
+                )
+            ];
 
-        if ( ! $paypalOrderId) {
-            throw new PaymentGatewayException(esc_html('PayPal order id is missing.', 'give'));
-        }
-
-        $paypalOrder = give(PayPalOrder::class)->getOrder($paypalOrderId);
-        $command = PaymentComplete::make($paypalOrder->payment->id);
-        $command->paymentNotes = [
-            sprintf(
-                __('Transaction Successful. PayPal Transaction ID: %1$s    PayPal Order ID: %2$s', 'give'),
-                $paypalOrder->payment->id,
+            give('payment_meta')->update_meta(
+                $paymentData->donationId,
+                '_give_order_id',
                 $paypalOrder->id
-            )
-        ];
+            );
 
-        give('payment_meta')->update_meta(
-            $paymentData->donationId,
-            '_give_order_id',
-            $paypalOrder->id
-        );
-
-        return $command;
+            return $command;
+        } catch (Exception $e) {
+            throw new PaymentGatewayException($e->getMessage());
+        }
     }
 
     /**
