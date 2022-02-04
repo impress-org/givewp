@@ -28,19 +28,17 @@ trait InteractsWithTime
      * @unreleased
      *
      * @return DateTime
-     *
-     * @throws Exception
      */
     public function getCurrentDateTime()
     {
-        return (new DateTime('now', wp_timezone()));
+        return date_create('now', wp_timezone());
     }
 
     /**
      * @unreleased
      *
      * @param  DateTime  $dateTime
-     * 
+     *
      * @return string
      */
     public function getFormattedDateTime(DateTime $dateTime)
