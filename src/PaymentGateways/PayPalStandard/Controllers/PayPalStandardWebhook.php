@@ -55,11 +55,11 @@ class PayPalStandardWebhook
 
         /* @var WebhookRegister $webhookRegisterer */
         $webhookRegisterer = give(WebhookRegister::class);
-        if (in_array($txnType, $webhookRegisterer->getRegisteredEvents(), true)) {
+        if ($webhookRegisterer->hasEventRegistered($txnType)) {
             $webhookRegisterer->getEventHandler($txnType)->processEvent((object)$eventData);
-        } else {
-            $this->supportLegacyActions($txnType, $eventData, $donationId);
         }
+
+        $this->supportLegacyActions($txnType, $eventData, $donationId);
 
         exit;
     }

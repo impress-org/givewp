@@ -53,7 +53,8 @@ class WebhookRegister
      *
      * @unreleased
      *
-     * @param array $handlers = [ 'PAYPAL.EVENT' => EventHandler::class ]
+     * @param array $handlers = [ 'web_accept' => EventHandler::class ]
+     *                          https://developer.paypal.com/api/nvp-soap/ipn/IPNandPDTVariables/#link-ipntransactiontypes
      */
     public function registerEventHandlers(array $handlers)
     {
