@@ -29,6 +29,8 @@
 }
 
 .tableRowActions {
+    position: absolute;
+    inset-block-end: 1rem;
     opacity: 0;
     transition: opacity 180ms ease-in;
 
@@ -42,7 +44,7 @@
         line-height: 1;
     }
 
-    > * + *::before {
+    > * + ::before {
         position: absolute;
         content: "";
         inset-block: auto;
@@ -58,6 +60,8 @@
 }
 
 .tableRow {
+    position: relative;
+
     &:nth-child(odd) {
         background-color: #f6f7f7;
     }
