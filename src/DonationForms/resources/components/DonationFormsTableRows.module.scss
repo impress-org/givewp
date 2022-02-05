@@ -57,6 +57,10 @@
     > a {
         text-decoration: none;
     }
+
+    &:focus-within {
+        opacity: 1;
+    }
 }
 
 .tableRow {
@@ -70,7 +74,7 @@
         background-color: #fff;
     }
 
-    &:is(:hover, :focus) .tableRowActions {
+    &:is(:hover) .tableRowActions {
         opacity: 1;
     }
 }
