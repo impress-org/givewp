@@ -41,7 +41,7 @@ class GatewayRoute
             $gatewayIds = array_keys($paymentGateways);
 
             // make sure required params are valid
-            if ( ! $this->isValidRequest($gatewayIds)) {
+            if (!$this->isValidRequest($gatewayIds)) {
                 throw new PaymentGatewayException('This route is not valid.');
             }
 
@@ -60,8 +60,8 @@ class GatewayRoute
 
             // Make sure the method being called is defined in the gateway.
             if (
-                ! method_exists($gateway, $data->gatewayMethod) ||
-                ! in_array($data->gatewayMethod, $allGatewayMethods, true)
+                !method_exists($gateway, $data->gatewayMethod) ||
+                !in_array($data->gatewayMethod, $allGatewayMethods, true)
             ) {
                 throw new PaymentGatewayException('The gateway method does not exist.');
             }
@@ -126,7 +126,7 @@ class GatewayRoute
     {
         $action = new RouteSignature($data->gatewayId, $data->gatewayMethod, $data->queryParams);
 
-        if ( ! wp_verify_nonce($routeSignature, $action->toString())) {
+        if (!wp_verify_nonce($routeSignature, $action->toString())) {
             PaymentGatewayLog::error(
                 'Invalid Secure Route',
                 ['routeSignature' => $routeSignature, 'action' => $action->toString(), 'data' => $data]
