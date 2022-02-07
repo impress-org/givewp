@@ -2,12 +2,9 @@
 
 namespace Give\PaymentGateways\Gateways\PayPalStandard\Controllers;
 
-use Give\Helpers\Call;
-use Give\PaymentGateways\Gateways\PayPalStandard\Actions\ProcessIpnDonationRefund;
-use Give\PaymentGateways\Gateways\PayPalStandard;
+use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\WebhookRegister;
 use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\WebhookValidator;
-use Give_Payment;
 
 /**
  * This class use to handle PayPal ipn.

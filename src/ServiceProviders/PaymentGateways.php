@@ -22,7 +22,6 @@ use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookRegister;
 use Give\PaymentGateways\PaypalSettingPage;
 use Give\PaymentGateways\Gateways\PayPalStandard\Migrations\RemovePayPalIPNVerificationSetting;
 use Give\PaymentGateways\Gateways\PayPalStandard\Migrations\SetPayPalStandardGatewayId;
-use Give\PaymentGateways\Gateways\PayPalStandard;
 use Give\PaymentGateways\Stripe\Admin\AccountManagerSettingField;
 use Give\PaymentGateways\Stripe\Admin\CreditCardSettingField;
 use Give\PaymentGateways\Stripe\ApplicationFee;

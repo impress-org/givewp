@@ -9,7 +9,7 @@
  * @subpackage  Gateways
  */
 
-use Give\PaymentGateways\Gateways\PayPalStandard;
+use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 
 if ( ! defined('ABSPATH')) {
     exit;

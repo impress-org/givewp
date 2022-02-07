@@ -2,9 +2,9 @@
 
 namespace Give\PaymentGateways;
 
+use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\PayPalCommerce\AdminSettingFields;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
-use Give\PaymentGateways\Gateways\PayPalStandard;
 
 use function give_get_current_setting_section as getCurrentSettingSection;
 
