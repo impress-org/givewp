@@ -1,26 +1,31 @@
-import styles from "./DonationFormsTableRows.module.scss";
-import {__} from "@wordpress/i18n";
-import cx from "classnames";
-import { useDonationForms } from "../api";
-import { useState } from "react";
-
+import styles from './DonationFormsTableRows.module.scss';
+import {__} from '@wordpress/i18n';
+import cx from 'classnames';
+import {useDonationForms} from '../api';
+import {useState} from 'react';
 
 export default function DonationFormsTableRows({listParams, mutateForm, status}) {
-    const {data, error, isValidating} = useDonationForms(listParams);
+    const {data, isValidating} = useDonationForms(listParams);
     const [deleted, setDeleted] = useState([]);
+    const [busy, setBusy] = useState(false);
 
     async function deleteForm(event) {
         const endpoint = data.trash ? '/trash' : '/delete';
+        setBusy(true);
         setDeleted([event.target.dataset.formid]);
         await mutateForm(event.target.dataset.formid, endpoint, 'DELETE');
+        setBusy(false);
         setDeleted([]);
     }
 
     async function duplicateForm(event) {
+        setBusy(true);
         await mutateForm(event.target.dataset.formid, '/duplicate', 'POST');
+        setBusy(false);
     }
 
     async function restoreForm(event) {
+        setBusy(true);
         setDeleted([event.target.dataset.formid]);
         await mutateForm(event.target.dataset.formid, '/restore', 'POST');
         setDeleted([]);
@@ -29,13 +34,13 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
     const trash = data ? data.trash : false;
 
     return data.forms.map((form) => (
-        <tr key={form.id} className={cx(
-            styles.tableRow,
-            {
+        <tr
+            key={form.id}
+            className={cx(styles.tableRow, {
                 [styles.deleted]: deleted.indexOf(form.id) > -1,
-                [styles.unclickable]: isValidating
-            }
-        )}>
+                [styles.unclickable]: isValidating,
+            })}
+        >
             <td className={styles.tableCell}>
                 <div className={styles.idBadge}>{form.id}</div>
             </td>
@@ -49,6 +54,7 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
                                 onClick={restoreForm}
                                 data-formid={form.id}
                                 className={styles.action}
+                                disabled={busy}
                             >
                                 {__('Restore', 'give')} <span className="give-visually-hidden">{form.name}</span>
                             </button>
@@ -57,6 +63,7 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
                                 onClick={deleteForm}
                                 data-formid={form.id}
                                 className={cx(styles.action, styles.delete)}
+                                disabled={busy}
                             >
                                 {__('Delete Permanently', 'give')}{' '}
                                 <span className="give-visually-hidden">{form.name}</span>
@@ -72,6 +79,7 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
                                 onClick={deleteForm}
                                 data-formid={form.id}
                                 className={cx(styles.action, {[styles.delete]: !trash})}
+                                disabled={busy}
                             >
                                 {trash ? __('Trash', 'give') : __('Delete', 'give')}{' '}
                                 <span className="give-visually-hidden">{form.name}</span>
@@ -82,6 +90,7 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
                                 onClick={duplicateForm}
                                 data-formid={form.id}
                                 className={styles.action}
+                                disabled={busy}
                             >
                                 {__('Duplicate', 'give')}
                             </button>
@@ -107,19 +116,20 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
                         </span>
                         {form.goal.format != 'percentage' && (
                             <>
-                                {' '}{__('of', 'give')}{' '}
+                                {' '}
+                                {__('of', 'give')}{' '}
                                 <a href={`${form.edit}&give_tab=donation_goal_options`}>
                                     {form.goal.goal}
                                     {form.goal.format != __('amount', 'give') ? ` ${form.goal.format}` : null}
                                 </a>
                             </>
                         )}
-                        {form.goal.progress >= 100 &&
+                        {form.goal.progress >= 100 && (
                             <p>
-                                <span className={cx("dashicons dashicons-star-filled", styles.star)}></span>
-                                 Goal achieved!
+                                <span className={cx('dashicons dashicons-star-filled', styles.star)}></span>
+                                Goal achieved!
                             </p>
-                        }
+                        )}
                     </>
                 ) : (
                     <span>{__('No Goal Set', 'give')}</span>
