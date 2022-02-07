@@ -112,6 +112,12 @@ class ListForms extends Endpoint
                 case 'donors':
                     return _n('donor', 'donors', $goal[ 'raw_goal' ], 'give');
 
+                case 'amount':
+                    return __('amount', 'give');
+
+                case 'percentage':
+                    return __('percentage', 'give');
+
                 default:
                     return '';
             }
