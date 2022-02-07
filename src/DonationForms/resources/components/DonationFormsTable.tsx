@@ -28,7 +28,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
     const [errors, setErrors] = useState<number>(0);
     const [successes, setSuccesses] = useState<number>(0);
     const [initialLoad, setInitialLoad] = useState<boolean>(true);
-    const [overlay, setOverlay] = useState<any>(false);
+    const [loadingOverlay, setLoadingOverlay] = useState<any>(false);
     const listParams = {
         page,
         perPage,
@@ -46,11 +46,11 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
     }, [data]);
     useEffect( () => {
         if(isValidating && !cache.get(unstable_serialize(listParams))){
-            setOverlay(styles.appear);
+            setLoadingOverlay(styles.appear);
         }
-        if(!isValidating && overlay){
-            setOverlay(styles.disappear);
-            const timeoutId = setTimeout(() => setOverlay(false), 100);
+        if(!isValidating && loadingOverlay){
+            setLoadingOverlay(styles.disappear);
+            const timeoutId = setTimeout(() => setLoadingOverlay(false), 100);
             return () => clearTimeout(timeoutId);
         }
     }, [isValidating])
@@ -184,13 +184,13 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                             mutateForm={mutateForm}
                             status={status}
                         />
-                        {overlay &&
-                            <tr className={cx(styles.loadingOverlay, overlay)}>
-                                <Spinner size={'medium'} />
-                            </tr>
-                        }
                         </tbody>
                     </table>
+                    {loadingOverlay &&
+                        <div className={cx(styles.overlay, loadingOverlay)}>
+                            <Spinner size={'medium'} />
+                        </div>
+                    }
                     <div id="giveDonationFormsTableMessage">
                         {isEmpty &&
                             <div className={styles.statusMessage}>{__('No donation forms found.', 'give')}</div>
