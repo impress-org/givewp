@@ -84,7 +84,6 @@
 }
 
 .tableRowHeader > a {
-    color: var(--give-primary-color);
     font-size: 1.125rem;
     font-weight: 700;
     text-decoration: none;
@@ -165,6 +164,10 @@
     font-size: 1.2em;
     padding-inline: 2.5em;
     padding-block: 2em;
+}
+
+.monetary {
+    color: var(--give-primary-color);
 }
 
 .goalProgress {

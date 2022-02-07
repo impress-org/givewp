@@ -109,7 +109,7 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
                     )}
                 </div>
             </th>
-            <td className={styles.tableCell} style={{textAlign: 'end'}}>
+            <td className={cx(styles.tableCell, styles.monetary)} style={{textAlign: 'end'}}>
                 {form.amount}
             </td>
             <td className={styles.tableCell}>
@@ -122,11 +122,18 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
                                 }}
                             />
                         </div>
-                        {form.goal.actual} {__('of', 'give')}{' '}
-                        <a href={`${form.edit}&give_tab=donation_goal_options`}>
-                            {form.goal.goal}
-                            {form.goal.format != 'amount' ? ` ${form.goal.format}` : null}
-                        </a>
+                        <span className={cx({[styles.monetary]: form.goal.format == __('amount', 'give')})}>
+                            {form.goal.actual}
+                        </span>
+                        {form.goal.format != 'percentage' && (
+                            <>
+                                {' '}{__('of', 'give')}{' '}
+                                <a href={`${form.edit}&give_tab=donation_goal_options`}>
+                                    {form.goal.goal}
+                                    {form.goal.format != __('amount', 'give') ? ` ${form.goal.format}` : null}
+                                </a>
+                            </>
+                        )}
                         {form.goal.progress >= 100 &&
                             <p>
                                 <span className={cx("dashicons dashicons-star-filled", styles.star)}></span>
