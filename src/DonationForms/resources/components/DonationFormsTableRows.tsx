@@ -116,19 +116,23 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
                 {form.goal ? (
                     <>
                         <div className={styles.goalProgress}>
-                                <span
-                                    style={{
-                                        width: Math.max(Math.min(form.goal.progress, 100), 0) + '%',
-                                    }}
-                                />
+                            <span
+                                style={{
+                                    width: Math.max(Math.min(form.goal.progress, 100), 0) + '%',
+                                }}
+                            />
                         </div>
                         {form.goal.actual} {__('of', 'give')}{' '}
-                        {form.goal.goal ? (
-                            <a href={`${form.edit}&give_tab=donation_goal_options`}>
-                                {form.goal.goal}
-                                {form.goal.format != 'amount' ? ` ${form.goal.format}` : null}
-                            </a>
-                        ) : null}
+                        <a href={`${form.edit}&give_tab=donation_goal_options`}>
+                            {form.goal.goal}
+                            {form.goal.format != 'amount' ? ` ${form.goal.format}` : null}
+                        </a>
+                        {form.goal.progress >= 100 &&
+                            <p>
+                                <span className={cx("dashicons dashicons-star-filled", styles.star)}></span>
+                                 Goal achieved!
+                            </p>
+                        }
                     </>
                 ) : (
                     <span>{__('No Goal Set', 'give')}</span>
