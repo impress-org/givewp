@@ -6,7 +6,6 @@ use Give\Container\Container;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\LegacyPaymentGateways\Adapters\LegacyPaymentGatewayRegisterAdapter;
-use Give\Framework\PaymentGateways\Contracts\OffsiteGatewayInterface;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewaysIterator;
 use Give\Framework\PaymentGateways\Exceptions\OverflowException;
 
@@ -27,20 +26,6 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
     public function getPaymentGateways()
     {
         return $this->gateways;
-    }
-
-    /**
-     * Get Offsite Gateways
-     *
-     * @since 2.18.0
-     *
-     * @return array
-     */
-    public function getOffsitePaymentGateways()
-    {
-        return array_filter($this->gateways, static function ($gateway) {
-            return in_array(OffsiteGatewayInterface::class, class_implements($gateway), true);
-        });
     }
 
     /**
