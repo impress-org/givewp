@@ -109,6 +109,12 @@
         font-size: 0.73rem;
     }
 
+    :is(.submissionError, .submissionError a) {
+        color: red;
+        font-size: 0.9rem;
+        text-align: center;
+    }
+
     @media (max-width: 428px) {
         padding: 0;
 
