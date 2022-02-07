@@ -65,7 +65,7 @@
     margin-block-start: 0.5rem;
 }
 
-.updateError {
+#updateError {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -83,6 +83,7 @@
 
 .dismiss {
     background: none;
+    border: none;
     color: #787c82;
     display: block;
     position: absolute;
@@ -91,9 +92,9 @@
     top: 0;
     font: normal 16px/20px dashicons;
     speak: never;
-    height: 20px;
+    height: 1.5rem;
     text-align: center;
-    width: 20px;
+    width: 1.5rem;
     -webkit-font-smoothing: antialiased;
 
     &:hover {

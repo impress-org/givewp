@@ -1,12 +1,12 @@
 import {useEffect, useState} from 'react';
 import {__, _n} from '@wordpress/i18n';
-import { useSWRConfig, unstable_serialize } from 'swr';
+import {useSWRConfig, unstable_serialize} from 'swr';
 import cx from 'classnames';
 
 import styles from './DonationFormsTable.module.scss';
 import Pagination from './Pagination.js';
 import DonationFormTableRows from './DonationFormsTableRows';
-import {Spinner} from "../../../Views/Components";
+import {Spinner} from '../../../Views/Components';
 import {fetchWithArgs, useDonationForms} from '../api';
 
 export enum DonationStatus {
@@ -29,6 +29,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
     const [successes, setSuccesses] = useState<number>(0);
     const [initialLoad, setInitialLoad] = useState<boolean>(true);
     const [loadingOverlay, setLoadingOverlay] = useState<any>(false);
+    const [errorOverlay, setErrorOverlay] = useState<any>(false);
     const listParams = {
         page,
         perPage,
@@ -36,37 +37,53 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
         search,
     };
     const {data, error, isValidating} = useDonationForms(listParams);
-    const { mutate, cache } = useSWRConfig();
+    const {mutate, cache} = useSWRConfig();
     const isEmpty = !error && data?.forms.length === 0;
     useEffect(() => {
-        setPage(1)
+        setPage(1);
     }, [status, search]);
     useEffect(() => {
-        initialLoad && data && setInitialLoad(false)
+        initialLoad && data && setInitialLoad(false);
     }, [data]);
-    useEffect( () => {
-        if(isValidating && !cache.get(unstable_serialize(listParams))){
+    useEffect(() => {
+        if (isValidating && !cache.get(unstable_serialize(listParams))) {
             setLoadingOverlay(styles.appear);
         }
-        if(!isValidating && loadingOverlay){
+        if (!isValidating && loadingOverlay) {
             setLoadingOverlay(styles.disappear);
             const timeoutId = setTimeout(() => setLoadingOverlay(false), 100);
             return () => clearTimeout(timeoutId);
         }
-    }, [isValidating])
+    }, [isValidating]);
+    useEffect(() => {
+        let timeoutId;
+        if (errors) {
+            setErrorOverlay(styles.appear);
+            timeoutId = setTimeout(
+                () => document.getElementById(styles.updateError).scrollIntoView({behavior: 'smooth', block: 'center'}),
+                100
+            );
+        } else {
+            setErrorOverlay(styles.disappear);
+            timeoutId = setTimeout(() => setErrorOverlay(false), 100);
+        }
+        return () => clearTimeout(timeoutId);
+    }, [errors]);
 
     async function mutateForm(ids, endpoint, method) {
         try {
             const response = await fetchWithArgs(endpoint, {ids}, method);
             // if we just removed the last entry from the page and we're not on the first page, go back a page
-            if( !response.errors && data.forms.length == 1 && data.totalPages > 1
-                && (endpoint == '/delete' || endpoint == '/trash' || endpoint == '/restore') )
-            {
+            if (
+                !response.errors &&
+                data.forms.length == 1 &&
+                data.totalPages > 1 &&
+                (endpoint == '/delete' || endpoint == '/trash' || endpoint == '/restore')
+            ) {
                 setPage(page - 1);
             }
             // otherwise, revalidate current page
-            else
-            {
+            else {
                 await mutate(listParams);
             }
             //revalidate all pages after the current page
@@ -80,41 +97,10 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
             setErrors(ids.split(',').length);
             setSuccesses(0);
         }
-
     }
-
 
     return (
         <>
-            {!!errors && (
-                <div className={styles.updateError}>
-                    {!!successes && (
-                        <span>
-                            {successes +
-                                ' ' +
-                                _n(
-                                    'form was updated successfully',
-                                    'forms were updated successfully.',
-                                    successes,
-                                    'give'
-                                )}
-                        </span>
-                    )}
-                    <span>
-                        {errors + ' ' + _n("form couldn't be updated.", "forms couldn't be updated.", errors, 'give')}
-                    </span>
-                    <button
-                        type="button"
-                        className={cx('dashicons dashicons-dismiss', styles.dismiss)}
-                        onClick={() => {
-                            setErrors(0);
-                            setSuccesses(0);
-                        }}
-                    >
-                        <span className="give-visually-hidden">dismiss</span>
-                    </button>
-                </div>
-            )}
             <div className={styles.pageActions}>
                 <Pagination
                     currentPage={page}
@@ -124,14 +110,14 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                     setPage={setPage}
                 />
             </div>
-            {initialLoad ?
+            {initialLoad ? (
                 <div className={styles.initialLoad}>
                     <div className={cx(styles.tableGroup)}>
-                        <Spinner size={'large'}/>
+                        <Spinner size={'large'} />
                         <h2>Loading donation forms</h2>
                     </div>
                 </div>
-                :
+            ) : (
                 <div
                     role="group"
                     aria-labelledby="giveDonationFormsTableCaption"
@@ -143,70 +129,102 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                             {__('Donation Forms', 'give')}
                         </caption>
                         <thead>
-                        <tr>
-                            <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
-                                {__('ID', 'give')}
-                            </th>
-                            <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
-                                {__('Name', 'give')}
-                            </th>
-                            <th
-                                scope="col"
-                                aria-sort="none"
-                                className={styles.tableColumnHeader}
-                                style={{textAlign: 'end'}}
-                            >
-                                {__('Amount', 'give')}
-                            </th>
-                            <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
-                                {__('Goal', 'give')}
-                            </th>
-                            <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
-                                {__('Donations', 'give')}
-                            </th>
-                            <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
-                                {__('Revenue', 'give')}
-                            </th>
-                            <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
-                                {__('Shortcode', 'give')}
-                            </th>
-                            <th scope="col" aria-sort="ascending" className={styles.tableColumnHeader}>
-                                {__('Date', 'give')}
-                            </th>
-                            <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
-                                {__('Status', 'give')}
-                            </th>
-                        </tr>
+                            <tr>
+                                <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
+                                    {__('ID', 'give')}
+                                </th>
+                                <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
+                                    {__('Name', 'give')}
+                                </th>
+                                <th
+                                    scope="col"
+                                    aria-sort="none"
+                                    className={styles.tableColumnHeader}
+                                    style={{textAlign: 'end'}}
+                                >
+                                    {__('Amount', 'give')}
+                                </th>
+                                <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
+                                    {__('Goal', 'give')}
+                                </th>
+                                <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
+                                    {__('Donations', 'give')}
+                                </th>
+                                <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
+                                    {__('Revenue', 'give')}
+                                </th>
+                                <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
+                                    {__('Shortcode', 'give')}
+                                </th>
+                                <th scope="col" aria-sort="ascending" className={styles.tableColumnHeader}>
+                                    {__('Date', 'give')}
+                                </th>
+                                <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
+                                    {__('Status', 'give')}
+                                </th>
+                            </tr>
                         </thead>
                         <tbody className={styles.tableContent}>
-                        <DonationFormTableRows
-                            listParams={listParams}
-                            mutateForm={mutateForm}
-                            status={status}
-                        />
+                            <DonationFormTableRows listParams={listParams} mutateForm={mutateForm} status={status} />
                         </tbody>
                     </table>
-                    {loadingOverlay &&
+                    {loadingOverlay && (
                         <div className={cx(styles.overlay, loadingOverlay)}>
                             <Spinner size={'medium'} />
                         </div>
-                    }
+                    )}
+                    {errorOverlay && (
+                        <div className={cx(styles.overlay, errorOverlay)}>
+                            <div id={styles.updateError}>
+                                {!!successes && (
+                                    <span>
+                                        {successes +
+                                            ' ' +
+                                            _n(
+                                                'form was updated successfully',
+                                                'forms were updated successfully.',
+                                                successes,
+                                                'give'
+                                            )}
+                                    </span>
+                                )}
+                                <span>
+                                    {errors +
+                                        ' ' +
+                                        _n("form couldn't be updated.", "forms couldn't be updated.", errors, 'give')}
+                                </span>
+                                <button
+                                    type="button"
+                                    className={cx('dashicons dashicons-dismiss', styles.dismiss)}
+                                    onClick={() => {
+                                        setErrors(0);
+                                        setSuccesses(0);
+                                    }}
+                                >
+                                    <span className="give-visually-hidden">dismiss</span>
+                                </button>
+                            </div>
+                        </div>
+                    )}
                     <div id="giveDonationFormsTableMessage">
-                        {isEmpty &&
+                        {isEmpty && (
                             <div className={styles.statusMessage}>{__('No donation forms found.', 'give')}</div>
-                        }
-                        {(error && !isValidating) &&
+                        )}
+                        {error && !isValidating && (
                             <>
-                                <div className={styles.statusMessage}>{__('There was a problem retrieving the donation forms.', 'give')}</div>
-                                <div className={styles.statusMessage}>{__('Click', 'give') + ' '}
+                                <div className={styles.statusMessage}>
+                                    {__('There was a problem retrieving the donation forms.', 'give')}
+                                </div>
+                                <div className={styles.statusMessage}>
+                                    {__('Click', 'give') + ' '}
                                     <a href={'edit.php?post_type=give_forms&page=give-forms'}>{__('here', 'give')}</a>
                                     {' ' + __('to reload the page.')}
                                 </div>
                             </>
-                        }
+                        )}
                     </div>
                 </div>
-            }
+            )}
         </>
     );
 }
