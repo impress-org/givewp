@@ -39,10 +39,14 @@
         transition-duration: .05s;
         transition-timing-function: ease-in-out;
 
-        &:not(:disabled):hover {
-            background: rgba(240, 240, 241);
-            border-color: rgba(10, 75, 120);
-            color: rgba(10, 75, 120);
+        &:not(:disabled) {
+            cursor: pointer;
+
+            &:hover {
+                background: rgba(240, 240, 241);
+                border-color: rgba(10, 75, 120);
+                color: rgba(10, 75, 120);
+            }
         }
     }
 
