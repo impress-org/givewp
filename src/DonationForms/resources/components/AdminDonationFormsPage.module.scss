@@ -76,8 +76,12 @@ input.searchInput {
     padding-inline: 1.5em;
     padding-block: 1em;
     border-bottom: 0.0625rem solid #dbdbdb;
+
     & > * {
-      margin-inline-end: 1.5em;
+        margin-inline-end: 1.5em;
     }
 }
 
+select.statusFilter {
+    border: 1px solid #dddddd;
+}

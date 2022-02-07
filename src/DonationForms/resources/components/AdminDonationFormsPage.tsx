@@ -45,7 +45,7 @@ export default function AdminDonationFormsPage() {
                     onChange={handleSearchChange}
                     className={styles.searchInput}
                 />
-                <select aria-label={__('Filter donation forms by status', 'give')} onChange={handleStatusFilterChange}>
+                <select className={styles.statusFilter} aria-label={__('Filter donation forms by status', 'give')} onChange={handleStatusFilterChange}>
                     {Object.values(DonationStatus).map((donationStatus) => (
                         <option key={donationStatus} value={donationStatus}>
                             {getDonationStatusText(donationStatus)}
