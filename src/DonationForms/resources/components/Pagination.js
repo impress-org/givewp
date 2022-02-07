@@ -50,9 +50,13 @@ const Pagination = ({currentPage, totalPages, totalItems = -1, disabled, setPage
                             {__('Current Page', 'give')}
                         </label>
                         <input className={styles.navElement} id={styles.currentPage} name={'currentPageSelector'}
-                            type="number" min={0} max={totalPages} value={pageInput}
+                            type="number" min={1} max={totalPages} value={pageInput}
                             onChange={(e) => {
-                                setPageInput(e.target.value);
+                                const page = parseInt(e.target.value);
+                                setPageInput(page);
+                                if(totalPages >= page > 0){
+                                    setPage(page);
+                                }
                             }}
                         />
                         <span>
