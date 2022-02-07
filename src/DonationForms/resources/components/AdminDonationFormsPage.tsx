@@ -5,6 +5,7 @@ import {__} from '@wordpress/i18n';
 import useDebounce from '../hooks/useDebounce';
 import styles from './AdminDonationFormsPage.module.scss';
 import DonationFormsTable, {DonationStatus} from './DonationFormsTable';
+import GiveIcon from "../../../Views/Components/GiveIcon";
 
 function getDonationStatusText(donationStatus: DonationStatus): string {
     switch (donationStatus) {
@@ -32,6 +33,7 @@ export default function AdminDonationFormsPage() {
     return (
         <article>
             <div className={styles.pageHeader}>
+                <GiveIcon size={'1.875rem'}/>
                 <h1 className={styles.pageTitle}>{__('Donation Forms', 'give')}</h1>
                 <a href="post-new.php?post_type=give_forms" className={styles.addFormButton}>
                     {__('Add Form', 'give')}
