@@ -28,26 +28,6 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
 
     const trash = data ? data.trash : false;
 
-    //general error state
-    if (error && !isValidating) {
-        return (
-            <>
-                <tr className={styles.tableRow}>
-                    <td colSpan={9} className={styles.statusMessage}>
-                        {__('There was a problem retrieving the donation forms.', 'give')}
-                    </td>
-                </tr>
-                <tr className={styles.tableRow}>
-                    <td colSpan={9} className={styles.statusMessage}>
-                        {__('Click', 'give') + ' '}
-                        <a href={'edit.php?post_type=give_forms&page=give-forms'}>{__('here', 'give')}</a>
-                        {' ' + __('to reload the page.')}
-                    </td>
-                </tr>
-            </>
-        );
-    }
-
     return data.forms.map((form) => (
         <tr key={form.id} className={cx(
             styles.tableRow,

@@ -111,7 +111,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                             setSuccesses(0);
                         }}
                     >
-                        <span className="give-visually-hidden">Dismiss</span>
+                        <span className="give-visually-hidden">dismiss</span>
                     </button>
                 </div>
             )}
@@ -193,7 +193,17 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                     </table>
                     <div id="giveDonationFormsTableMessage">
                         {isEmpty &&
-                            <div className={styles.statusMessage}>{__('No donation forms found.', 'give')}</div>}
+                            <div className={styles.statusMessage}>{__('No donation forms found.', 'give')}</div>
+                        }
+                        {(error && !isValidating) &&
+                            <>
+                                <div className={styles.statusMessage}>{__('There was a problem retrieving the donation forms.', 'give')}</div>
+                                <div className={styles.statusMessage}>{__('Click', 'give') + ' '}
+                                    <a href={'edit.php?post_type=give_forms&page=give-forms'}>{__('here', 'give')}</a>
+                                    {' ' + __('to reload the page.')}
+                                </div>
+                            </>
+                        }
                     </div>
                 </div>
             }
