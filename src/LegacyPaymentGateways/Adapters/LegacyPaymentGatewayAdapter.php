@@ -37,6 +37,7 @@ class LegacyPaymentGatewayAdapter
      * First we create a payment, then move on to the gateway processing
      *
      * @since 2.18.0
+     * @unreleased Replace is_recurring with is_donation_recurring to detect recurring donations.
      *
      * @param  array  $legacyDonationData  Legacy Donation Data
      * @param  PaymentGatewayInterface  $registeredGateway

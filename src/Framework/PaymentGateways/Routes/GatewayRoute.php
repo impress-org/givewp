@@ -8,7 +8,6 @@ use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
-
 use function Give\Framework\Http\Response\response;
 
 /**
@@ -27,6 +26,9 @@ class GatewayRoute
      * @return void
      *
      * @throws PaymentGatewayException
+     * @since 2.18.0
+     * @unreleased - validate secureRouteMethods
+     *
      */
     public function __invoke()
     {

@@ -5,7 +5,6 @@ namespace Give\ServiceProviders;
 use Give\Controller\PayPalWebhooks;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
-use Give\PaymentGateways\PaymentGateway;
 use Give\PaymentGateways\PayPalCommerce\AccountAdminNotices;
 use Give\PaymentGateways\PayPalCommerce\AdvancedCardFields;
 use Give\PaymentGateways\PayPalCommerce\AjaxRequestHandler;
@@ -23,9 +22,8 @@ use Give\PaymentGateways\PayPalCommerce\ScriptLoader;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookChecker;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookRegister;
 use Give\PaymentGateways\PaypalSettingPage;
-use Give\PaymentGateways\PayPalStandard\Migrations\RemovePayPalIPNVerificationSetting;
-use Give\PaymentGateways\PayPalStandard\Migrations\SetPayPalStandardGatewayId;
-use Give\PaymentGateways\PayPalStandard\PayPalStandard;
+use Give\PaymentGateways\Gateways\PayPalStandard\Migrations\RemovePayPalIPNVerificationSetting;
+use Give\PaymentGateways\Gateways\PayPalStandard\Migrations\SetPayPalStandardGatewayId;
 use Give\PaymentGateways\Stripe\Admin\AccountManagerSettingField;
 use Give\PaymentGateways\Stripe\Admin\CreditCardSettingField;
 use Give\PaymentGateways\Stripe\ApplicationFee;
@@ -46,15 +44,6 @@ use Give\PaymentGateways\Stripe\Repositories\AccountDetail as AccountDetailRepos
  */
 class PaymentGateways implements ServiceProvider
 {
-    /**
-     * Array of PaymentGateway classes to be bootstrapped
-     *
-     * @var string[]
-     */
-    public $gateways = [
-        PayPalStandard::class,
-    ];
-
     /**
      * Array of SettingPage classes to be bootstrapped
      *
@@ -98,7 +87,6 @@ class PaymentGateways implements ServiceProvider
      */
     public function boot()
     {
-        add_filter('give_register_gateway', [$this, 'bootGateways']);
         add_action('admin_init', [$this, 'handleSellerOnBoardingRedirect']);
         add_action('give-settings_start', [$this, 'registerPayPalSettingPage']);
         Hooks::addFilter('give_form_html_tags', DonationFormElements::class, 'addFormHtmlTags', 99);
@@ -133,32 +121,6 @@ class PaymentGateways implements ServiceProvider
         foreach ($this->gatewaySettingsPages as $page) {
             give()->make($page)->boot();
         }
-    }
-
-    /**
-     * Registers all of the payment gateways with GiveWP
-     *
-     * @since 2.8.0
-     *
-     * @param array $gateways
-     *
-     * @return array
-     */
-    public function bootGateways(array $gateways)
-    {
-        foreach ($this->gateways as $gateway) {
-            /** @var PaymentGateway $gateway */
-            $gateway = give($gateway);
-
-            $gateways[$gateway->getId()] = [
-                'admin_label' => $gateway->getName(),
-                'checkout_label' => $gateway->getPaymentMethodLabel(),
-            ];
-
-            $gateway->boot();
-        }
-
-        return $gateways;
     }
 
     /**

@@ -139,7 +139,7 @@ class FormData
             'firstName' => $request['user_info']['first_name'],
             'lastName' => $request['user_info']['last_name'],
             'email' => $request['user_info']['email'],
-            'honorific' => !empty($request['user_info']['title']) ? $request['user_info']['title'] : '',
+            'honorific' => ! empty($request['user_info']['title']) ? $request['user_info']['title'] : '',
             'address' => $request['user_info']['address']
         ]);
         $self->cardInfo = CardInfo::fromArray([
@@ -182,12 +182,14 @@ class FormData
     }
 
     /**
-     * @param  int  $donationId
+     * @param int $donationId
+     *
      * @return GatewayPaymentData
      */
     public function toGatewayPaymentData($donationId)
     {
         return GatewayPaymentData::fromArray([
+            'legacyPaymentData' => $this->legacyDonationData,
             'amount' => $this->amount,
             'currency' => $this->currency,
             'date' => $this->date,
