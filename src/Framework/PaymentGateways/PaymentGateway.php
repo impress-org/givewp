@@ -81,6 +81,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
 
     /**
      * @inheritDoc
+     * @unreleased Record gateway id and payment data in log.
      */
     public function handleCreatePayment(GatewayPaymentData $gatewayPaymentData)
     {
@@ -112,6 +113,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
 
     /**
      * @inheritDoc
+     * @unreleased Record gateway id, payment data and subscription data in log.
      */
     public function handleCreateSubscription(GatewayPaymentData $paymentData, GatewaySubscriptionData $subscriptionData)
     {

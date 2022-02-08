@@ -142,6 +142,7 @@ class GatewayRoute
      * @since 2.18.0
      *
      * @unreleased - replace $donationId with $queryParams array
+     * @unreleased Record gateway id, callback method name and query params in log.
      *
      * @param PaymentGateway $gateway
      * @param string $method
