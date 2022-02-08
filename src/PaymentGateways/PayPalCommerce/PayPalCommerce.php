@@ -2,10 +2,15 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
-use Give\Helpers\Hooks;
-use Give\PaymentGateways\PaymentGateway;
+use Exception;
+use Give\Framework\PaymentGateways\Commands\GatewayCommand;
+use Give\Framework\PaymentGateways\Commands\PaymentComplete;
+use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
+use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Helpers\Call;
+use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
+use Give\PaymentGateways\PayPalCommerce\Actions\GetPayPalOrderFromRequest;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
-use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookChecker;
 
 /**
  * Class PayPalCommerce
@@ -14,20 +19,53 @@ use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookChecker;
  *
  * @since 2.9.0
  */
-class PayPalCommerce implements PaymentGateway
+class PayPalCommerce extends PaymentGateway
 {
+    /**
+     * @deprecated
+     *
+     * Use getId or id function to access payment gateway id.
+     *
+     */
     const GATEWAY_ID = 'paypal-commerce';
 
     /**
-     * @inheritDoc
+     * @unreleased
+     *
+     * @param int $formId
+     * @param array $args
+     *
+     * @return string
      */
-    public function getId()
+    public function getLegacyFormFieldMarkup($formId, $args)
     {
-        return self::GATEWAY_ID;
+        return give(AdvancedCardFields::class)->addCreditCardForm($formId);
     }
 
     /**
-     * @inheritDoc
+     * @unreleased
+     *
+     * @return string
+     */
+    public static function id()
+    {
+        return 'paypal-commerce';
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return string
+     */
+    public function getId()
+    {
+        return self::id();
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return string
      */
     public function getName()
     {
@@ -35,7 +73,9 @@ class PayPalCommerce implements PaymentGateway
     }
 
     /**
-     * @inheritDoc
+     * @unreleased
+     *
+     * @return string
      */
     public function getPaymentMethodLabel()
     {
@@ -43,7 +83,35 @@ class PayPalCommerce implements PaymentGateway
     }
 
     /**
-     * @inheritDoc
+     * @unreleased
+     *
+     * @param GatewayPaymentData $paymentData
+     *
+     * @return GatewayCommand
+     * @throws PaymentGatewayException
+     */
+    public function createPayment(GatewayPaymentData $paymentData)
+    {
+        $paypalOrder = Call::invoke(GetPayPalOrderFromRequest::class);
+        $command = PaymentComplete::make($paypalOrder->payment->id);
+        $command->paymentNotes = [
+            sprintf(
+                __('Transaction Successful. PayPal Transaction ID: %1$s    PayPal Order ID: %2$s', 'give'),
+                $paypalOrder->payment->id,
+                $paypalOrder->id
+            )
+        ];
+
+        give('payment_meta')->update_meta(
+            $paymentData->donationId,
+            '_give_order_id',
+            $paypalOrder->id
+        );
+
+        return $command;
+    }
+
+    /**
      * @since 2.16.2 Add setting "Transaction type".
      */
     public function getOptions()
@@ -133,65 +201,5 @@ class PayPalCommerce implements PaymentGateway
          * @since 2.9.6
          */
         return apply_filters('give_get_settings_paypal_commerce', $settings);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function boot()
-    {
-        Hooks::addAction(
-            'wp_ajax_give_paypal_commerce_user_on_boarded',
-            AjaxRequestHandler::class,
-            'onBoardedUserAjaxRequestHandler'
-        );
-        Hooks::addAction(
-            'wp_ajax_give_paypal_commerce_get_partner_url',
-            AjaxRequestHandler::class,
-            'onGetPartnerUrlAjaxRequestHandler'
-        );
-        Hooks::addAction(
-            'wp_ajax_give_paypal_commerce_disconnect_account',
-            AjaxRequestHandler::class,
-            'removePayPalAccount'
-        );
-        Hooks::addAction('wp_ajax_give_paypal_commerce_create_order', AjaxRequestHandler::class, 'createOrder');
-        Hooks::addAction(
-            'wp_ajax_give_paypal_commerce_onboarding_trouble_notice',
-            AjaxRequestHandler::class,
-            'onBoardingTroubleNotice'
-        );
-        Hooks::addAction('wp_ajax_nopriv_give_paypal_commerce_create_order', AjaxRequestHandler::class, 'createOrder');
-        Hooks::addAction('wp_ajax_give_paypal_commerce_approve_order', AjaxRequestHandler::class, 'approveOrder');
-        Hooks::addAction(
-            'wp_ajax_nopriv_give_paypal_commerce_approve_order',
-            AjaxRequestHandler::class,
-            'approveOrder'
-        );
-
-        Hooks::addAction('admin_enqueue_scripts', ScriptLoader::class, 'loadAdminScripts');
-        Hooks::addAction('wp_enqueue_scripts', ScriptLoader::class, 'loadPublicAssets');
-        Hooks::addAction('give_pre_form_output', DonationFormPaymentMethod::class, 'handle');
-
-        Hooks::addAction('give_paypal_commerce_refresh_token', RefreshToken::class, 'refreshToken');
-        Hooks::addAction('give_paypal-commerce_cc_form', AdvancedCardFields::class, 'addCreditCardForm');
-        Hooks::addAction('give_gateway_paypal-commerce', DonationProcessor::class, 'handle');
-
-        Hooks::addAction('admin_init', AccountAdminNotices::class, 'displayNotices');
-        Hooks::addFilter(
-            'give_payment_details_transaction_id-paypal-commerce',
-            DonationDetailsPage::class,
-            'getPayPalPaymentUrl'
-        );
-
-        Hooks::addAction('give_update_edited_donation', RefundPaymentHandler::class, 'refundPayment');
-        Hooks::addAction('admin_notices', RefundPaymentHandler::class, 'showPaymentRefundFailureNotice');
-        Hooks::addAction(
-            'give_view_donation_details_totals_after',
-            RefundPaymentHandler::class,
-            'optInForRefundFormField'
-        );
-
-        Hooks::addAction('admin_init', WebhookChecker::class, 'checkWebhookCriteria');
     }
 }

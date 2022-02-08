@@ -83,10 +83,6 @@ class FormData
     /**
      * @var string
      */
-    public $loggedInOnly;
-    /**
-     * @var string
-     */
     public $amount;
     /**
      * @var string
@@ -135,7 +131,6 @@ class FormData
         $self->formMinimum = $request['post_data']['give-form-minimum'];
         $self->formMaximum = $request['post_data']['give-form-maximum'];
         $self->formHash = $request['post_data']['give-form-hash'];
-        $self->loggedInOnly = $request['post_data']['give-logged-in-only'];
         $self->amount = $request['post_data']['give-amount'];
         $self->paymentGateway = $request['post_data']['give-gateway'];
         $self->gatewayNonce = $request['gateway_nonce'];
@@ -144,7 +139,7 @@ class FormData
             'firstName' => $request['user_info']['first_name'],
             'lastName' => $request['user_info']['last_name'],
             'email' => $request['user_info']['email'],
-            'honorific' => !empty($request['user_info']['title']) ? $request['user_info']['title'] : '',
+            'honorific' => ! empty($request['user_info']['title']) ? $request['user_info']['title'] : '',
             'address' => $request['user_info']['address']
         ]);
         $self->cardInfo = CardInfo::fromArray([
@@ -187,12 +182,14 @@ class FormData
     }
 
     /**
-     * @param  int  $donationId
+     * @param int $donationId
+     *
      * @return GatewayPaymentData
      */
     public function toGatewayPaymentData($donationId)
     {
         return GatewayPaymentData::fromArray([
+            'legacyPaymentData' => $this->legacyDonationData,
             'amount' => $this->amount,
             'currency' => $this->currency,
             'date' => $this->date,

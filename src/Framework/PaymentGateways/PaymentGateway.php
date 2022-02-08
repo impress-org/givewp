@@ -64,7 +64,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * @since 2.18.0
      *
-     * @param  SubscriptionModuleInterface|null  $subscriptionModule
+     * @param SubscriptionModuleInterface|null $subscriptionModule
      */
     public function __construct(SubscriptionModuleInterface $subscriptionModule = null)
     {
@@ -81,49 +81,64 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
 
     /**
      * @inheritDoc
+     * @unreleased Record gateway id and payment data in log.
      */
     public function handleCreatePayment(GatewayPaymentData $gatewayPaymentData)
     {
         try {
             $command = $this->createPayment($gatewayPaymentData);
             $this->handleGatewayPaymentCommand($command, $gatewayPaymentData);
-        } catch (PaymentGatewayException $paymentGatewayException) {
-            $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
-            exit;
         } catch (Exception $exception) {
-            PaymentGatewayLog::error($exception->getMessage());
+            PaymentGatewayLog::error(
+                $exception->getMessage(),
+                [
+                    'Payment Gateway' => $this->getId(),
+                    'Donation Data' => $gatewayPaymentData
+                ]
+            );
 
             $message = __(
                 'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.',
                 'give'
             );
 
+            if ($exception instanceof PaymentGatewayException) {
+                $message = $exception->getMessage();
+            }
+
             $this->handleResponse(response()->json($message));
-            exit;
         }
     }
 
     /**
      * @inheritDoc
+     * @unreleased Record gateway id, payment data and subscription data in log.
      */
     public function handleCreateSubscription(GatewayPaymentData $paymentData, GatewaySubscriptionData $subscriptionData)
     {
         try {
             $command = $this->createSubscription($paymentData, $subscriptionData);
             $this->handleGatewaySubscriptionCommand($command, $paymentData, $subscriptionData);
-        } catch (PaymentGatewayException $paymentGatewayException) {
-            $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
-            exit;
         } catch (Exception $exception) {
-            PaymentGatewayLog::error($exception->getMessage());
+            PaymentGatewayLog::error(
+                $exception->getMessage(),
+                [
+                    'Payment Gateway' => $this->getId(),
+                    'Donation Data' => $paymentData,
+                    'Subscription Data' => $subscriptionData
+                ]
+            );
 
             $message = __(
-                'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.',
+                'An unexpected error occurred while processing your subscription.  Please try again or contact us to help resolve.',
                 'give'
             );
 
+            if ($exception instanceof PaymentGatewayException) {
+                $message = $exception->getMessage();
+            }
+
             $this->handleResponse(response()->json($message));
-            exit;
         }
     }
 
@@ -143,8 +158,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      *
      * @since 2.18.0
      *
-     * @param  GatewayCommand  $command
-     * @param  GatewayPaymentData  $gatewayPaymentData
+     * @param GatewayCommand $command
+     * @param GatewayPaymentData $gatewayPaymentData
      *
      * @throws TypeNotSupported
      */
@@ -195,9 +210,10 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      *
      * @since 2.18.0
      *
-     * @param  GatewayCommand  $command
-     * @param  GatewayPaymentData  $gatewayPaymentData
-     * @param  GatewaySubscriptionData  $gatewaySubscriptionData
+     * @param GatewayCommand $command
+     * @param GatewayPaymentData $gatewayPaymentData
+     * @param GatewaySubscriptionData $gatewaySubscriptionData
+     *
      * @throws TypeNotSupported
      */
     public function handleGatewaySubscriptionCommand(
@@ -232,8 +248,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      * @since 2.18.0
      * @unreleased remove $donationId param in favor of args
      *
-     * @param  string  $gatewayMethod
-     * @param  array|null  $args
+     * @param string $gatewayMethod
+     * @param array|null $args
      *
      * @return string
      *
@@ -248,8 +264,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      *
      * @unreleased
      *
-     * @param  string  $gatewayMethod
-     * @param  array|null  $args
+     * @param string $gatewayMethod
+     * @param array|null $args
      *
      * @return string
      *
