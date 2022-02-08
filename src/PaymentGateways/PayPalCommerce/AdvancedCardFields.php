@@ -35,15 +35,21 @@ class AdvancedCardFields
      * @since 2.11.1 Show billing fields conditionally.
      *
      * @param int $formId Donation Form ID.
+     *
+     * @return string
      */
     public function addCreditCardForm($formId)
     {
+        ob_start();
+
         $this->registerCustomBillingFieldsSectionLabel();
-        if ( ! $this->payPalDonationsSettings->canCollectBillingInformation()) {
+        if (!$this->payPalDonationsSettings->canCollectBillingInformation()) {
             $this->removeBillingField();
         }
 
         give_get_cc_form($formId);
+
+        return ob_get_clean();
     }
 
     /**
