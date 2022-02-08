@@ -95,27 +95,23 @@ class PayPalCommerce extends PaymentGateway
      */
     public function createPayment(GatewayPaymentData $paymentData)
     {
-        try {
-            $paypalOrder = Call::invoke(GetPayPalOrderFromRequest::class);
-            $command = PaymentComplete::make($paypalOrder->payment->id);
-            $command->paymentNotes = [
-                sprintf(
-                    __('Transaction Successful. PayPal Transaction ID: %1$s    PayPal Order ID: %2$s', 'give'),
-                    $paypalOrder->payment->id,
-                    $paypalOrder->id
-                )
-            ];
-
-            give('payment_meta')->update_meta(
-                $paymentData->donationId,
-                '_give_order_id',
+        $paypalOrder = Call::invoke(GetPayPalOrderFromRequest::class);
+        $command = PaymentComplete::make($paypalOrder->payment->id);
+        $command->paymentNotes = [
+            sprintf(
+                __('Transaction Successful. PayPal Transaction ID: %1$s    PayPal Order ID: %2$s', 'give'),
+                $paypalOrder->payment->id,
                 $paypalOrder->id
-            );
+            )
+        ];
 
-            return $command;
-        } catch (Exception $e) {
-            throw new PaymentGatewayException($e->getMessage());
-        }
+        give('payment_meta')->update_meta(
+            $paymentData->donationId,
+            '_give_order_id',
+            $paypalOrder->id
+        );
+
+        return $command;
     }
 
     /**
