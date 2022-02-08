@@ -83,12 +83,15 @@
     }
 }
 
-.tableRowHeader > a {
-    font-size: 1.125rem;
-    font-weight: 700;
-    text-decoration: none;
-}
+.tableRowHeader {
+    z-index: 1;
 
+    > a {
+        font-size: 1.125rem;
+        font-weight: 700;
+        text-decoration: none;
+    }
+}
 .tableCell {
     position: relative;
     padding-block-start: 1em;
