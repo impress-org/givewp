@@ -82,6 +82,9 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * @inheritDoc
      * @unreleased Record gateway id and payment data in log.
+     * @unreleased Handle response on basis of request mode when exception occurs:
+     *             1. Redirect to donation form if donation form submit.
+     *             2. Return json response if processing payment on ajax.
      */
     public function handleCreatePayment(GatewayPaymentData $gatewayPaymentData)
     {
@@ -118,6 +121,9 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * @inheritDoc
      * @unreleased Record gateway id, payment data and subscription data in log.
+     * @unreleased Handle response on basis of request mode when exception occurs:
+     *             1. Redirect to donation form if donation form submit.
+     *             2. Return json response if processing payment on ajax.
      */
     public function handleCreateSubscription(GatewayPaymentData $paymentData, GatewaySubscriptionData $subscriptionData)
     {
