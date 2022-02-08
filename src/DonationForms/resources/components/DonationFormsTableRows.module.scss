@@ -6,15 +6,19 @@
 
 @keyframes disappear {
     0% {
-        filter: grayscale(1);
+        filter: grayscale(0);
     }
     50% {
         opacity: 1;
     }
     100% {
-        filter: grayscale(0);
+        filter: grayscale(1);
         opacity: 0;
     }
+}
+
+tr.duplicated {
+    animation: disappear 0.5s ease-in reverse;
 }
 
 .action {

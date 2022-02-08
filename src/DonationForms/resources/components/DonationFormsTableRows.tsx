@@ -2,12 +2,30 @@ import styles from './DonationFormsTableRows.module.scss';
 import {__} from '@wordpress/i18n';
 import cx from 'classnames';
 import {useDonationForms} from '../api';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 
 export default function DonationFormsTableRows({listParams, mutateForm, status}) {
     const {data, isValidating} = useDonationForms(listParams);
     const [deleted, setDeleted] = useState([]);
+    const [duplicated, setDuplicated] = useState([]);
     const [busy, setBusy] = useState(false);
+    useEffect(() => {
+        if (duplicated.length) {
+            const timeouts = [];
+            timeouts[0] = setTimeout(() => {
+                const duplicateForm = document.getElementsByClassName(styles.duplicated);
+                if (duplicateForm.length == 1) {
+                    duplicateForm[0].scrollIntoView({behavior: 'smooth', block: 'center'});
+                }
+            }, 100);
+            timeouts[1] = setTimeout(() => {
+                setDuplicated([]);
+            }, 600);
+            return () => {
+                timeouts.forEach((timeout) => clearTimeout(timeout));
+            };
+        }
+    }, [duplicated]);
 
     async function deleteForm(event) {
         const endpoint = data.trash ? '/trash' : '/delete';
@@ -19,8 +37,10 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
     }
 
     async function duplicateForm(event) {
+        const id = event.target.dataset.formid;
         setBusy(true);
-        await mutateForm(event.target.dataset.formid, '/duplicate', 'POST');
+        const response = await mutateForm(id, '/duplicate', 'POST');
+        setDuplicated([...response.successes]);
         setBusy(false);
     }
 
@@ -38,6 +58,7 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
             key={form.id}
             className={cx(styles.tableRow, {
                 [styles.deleted]: deleted.indexOf(form.id) > -1,
+                [styles.duplicated]: duplicated.indexOf(parseInt(form.id)) > -1,
                 [styles.unclickable]: isValidating,
             })}
         >
