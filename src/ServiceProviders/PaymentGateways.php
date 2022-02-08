@@ -87,7 +87,6 @@ class PaymentGateways implements ServiceProvider
      */
     public function boot()
     {
-        add_filter('give_register_gateway', [$this, 'bootGateways']);
         add_action('admin_init', [$this, 'handleSellerOnBoardingRedirect']);
         add_action('give-settings_start', [$this, 'registerPayPalSettingPage']);
         Hooks::addFilter('give_form_html_tags', DonationFormElements::class, 'addFormHtmlTags', 99);
