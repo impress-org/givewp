@@ -2,7 +2,8 @@
 
 namespace Give\Framework\QueryBuilder;
 
-use Give\Framework\Database\DB;
+use Give\Framework\QueryBuilder\Concerns\Aggregate;
+use Give\Framework\QueryBuilder\Concerns\CRUD;
 use Give\Framework\QueryBuilder\Concerns\FromClause;
 use Give\Framework\QueryBuilder\Concerns\GroupByStatement;
 use Give\Framework\QueryBuilder\Concerns\HavingClause;
@@ -21,6 +22,8 @@ use Give\Framework\QueryBuilder\Concerns\WhereClause;
  */
 class QueryBuilder
 {
+    use Aggregate;
+    use CRUD;
     use FromClause;
     use GroupByStatement;
     use HavingClause;
@@ -52,35 +55,11 @@ class QueryBuilder
             $this->getUnionSQL()
         );
 
-        // Trim triple doubles spaces added by DB::prepare
+        // Trim double spaces added by DB::prepare
         return str_replace(
             ['   ', '  '],
             ' ',
             implode(' ', $sql)
         );
-    }
-
-    /**
-     * Get results
-     *
-     * @param  string ARRAY_A|ARRAY_N|OBJECT|OBJECT_K $output
-     *
-     * @return array|object|null
-     */
-    public function getAll($output = OBJECT)
-    {
-        return DB::get_results($this->getSQL(), $output);
-    }
-
-    /**
-     * Get row
-     *
-     * @param  string ARRAY_A|ARRAY_N|OBJECT|OBJECT_K $output
-     *
-     * @return array|object|null
-     */
-    public function get($output = OBJECT)
-    {
-        return DB::get_row($this->getSQL(), $output);
     }
 }

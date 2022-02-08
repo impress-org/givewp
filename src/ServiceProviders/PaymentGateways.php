@@ -5,19 +5,21 @@ namespace Give\ServiceProviders;
 use Give\Controller\PayPalWebhooks;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
-use Give\PaymentGateways\PaymentGateway;
+use Give\PaymentGateways\PayPalCommerce\AccountAdminNotices;
 use Give\PaymentGateways\PayPalCommerce\AdvancedCardFields;
 use Give\PaymentGateways\PayPalCommerce\AjaxRequestHandler;
-use Give\PaymentGateways\PayPalCommerce\DonationProcessor;
+use Give\PaymentGateways\PayPalCommerce\DonationDetailsPage;
+use Give\PaymentGateways\PayPalCommerce\DonationFormPaymentMethod;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\onBoardingRedirectHandler;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
-use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\PaymentGateways\PayPalCommerce\RefreshToken;
+use Give\PaymentGateways\PayPalCommerce\RefundPaymentHandler;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
 use Give\PaymentGateways\PayPalCommerce\ScriptLoader;
+use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookChecker;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookRegister;
 use Give\PaymentGateways\PaypalSettingPage;
 use Give\PaymentGateways\Gateways\PayPalStandard\Migrations\RemovePayPalIPNVerificationSetting;
@@ -40,18 +42,8 @@ use Give\PaymentGateways\Stripe\Repositories\AccountDetail as AccountDetailRepos
  *
  * @since 2.8.0
  */
-
 class PaymentGateways implements ServiceProvider
 {
-    /**
-     * Array of PaymentGateway classes to be bootstrapped
-     *
-     * @var string[]
-     */
-    public $gateways = [
-        PayPalCommerce::class,
-    ];
-
     /**
      * Array of SettingPage classes to be bootstrapped
      *
@@ -107,6 +99,7 @@ class PaymentGateways implements ServiceProvider
 
         $this->registerMigrations();
         $this->registerStripeCustomFields();
+        $this->registerPayPalCommerceHooks();
     }
 
     /**
@@ -132,32 +125,6 @@ class PaymentGateways implements ServiceProvider
     }
 
     /**
-     * Registers all of the payment gateways with GiveWP
-     *
-     * @since 2.8.0
-     *
-     * @param array $gateways
-     *
-     * @return array
-     */
-    public function bootGateways(array $gateways)
-    {
-        foreach ($this->gateways as $gateway) {
-            /** @var PaymentGateway $gateway */
-            $gateway = give($gateway);
-
-            $gateways[$gateway->getId()] = [
-                'admin_label' => $gateway->getName(),
-                'checkout_label' => $gateway->getPaymentMethodLabel(),
-            ];
-
-            $gateway->boot();
-        }
-
-        return $gateways;
-    }
-
-    /**
      * Registers the classes for the PayPal Commerce gateway
      *
      * @since 2.8.0
@@ -165,7 +132,6 @@ class PaymentGateways implements ServiceProvider
     private function registerPayPalCommerceClasses()
     {
         give()->singleton(AdvancedCardFields::class);
-        give()->singleton(DonationProcessor::class);
         give()->singleton(PayPalClient::class);
         give()->singleton(RefreshToken::class);
         give()->singleton(AjaxRequestHandler::class);
@@ -221,5 +187,65 @@ class PaymentGateways implements ServiceProvider
     {
         Hooks::addAction('give_admin_field_stripe_account_manager', AccountManagerSettingField::class, 'handle');
         Hooks::addAction('give_admin_field_stripe_credit_card_format', CreditCardSettingField::class, 'handle', 10, 2);
+    }
+
+    /**
+     * Register action/filter hooks for paypal commerce.
+     *
+     * @unreleased
+     */
+    private function registerPayPalCommerceHooks()
+    {
+        Hooks::addAction(
+            'wp_ajax_give_paypal_commerce_user_on_boarded',
+            AjaxRequestHandler::class,
+            'onBoardedUserAjaxRequestHandler'
+        );
+        Hooks::addAction(
+            'wp_ajax_give_paypal_commerce_get_partner_url',
+            AjaxRequestHandler::class,
+            'onGetPartnerUrlAjaxRequestHandler'
+        );
+        Hooks::addAction(
+            'wp_ajax_give_paypal_commerce_disconnect_account',
+            AjaxRequestHandler::class,
+            'removePayPalAccount'
+        );
+        Hooks::addAction('wp_ajax_give_paypal_commerce_create_order', AjaxRequestHandler::class, 'createOrder');
+        Hooks::addAction(
+            'wp_ajax_give_paypal_commerce_onboarding_trouble_notice',
+            AjaxRequestHandler::class,
+            'onBoardingTroubleNotice'
+        );
+        Hooks::addAction('wp_ajax_nopriv_give_paypal_commerce_create_order', AjaxRequestHandler::class, 'createOrder');
+        Hooks::addAction('wp_ajax_give_paypal_commerce_approve_order', AjaxRequestHandler::class, 'approveOrder');
+        Hooks::addAction(
+            'wp_ajax_nopriv_give_paypal_commerce_approve_order',
+            AjaxRequestHandler::class,
+            'approveOrder'
+        );
+
+        Hooks::addAction('admin_enqueue_scripts', ScriptLoader::class, 'loadAdminScripts');
+        Hooks::addAction('wp_enqueue_scripts', ScriptLoader::class, 'loadPublicAssets');
+        Hooks::addAction('give_pre_form_output', DonationFormPaymentMethod::class, 'handle');
+
+        Hooks::addAction('give_paypal_commerce_refresh_token', RefreshToken::class, 'refreshToken');
+
+        Hooks::addAction('admin_init', AccountAdminNotices::class, 'displayNotices');
+        Hooks::addFilter(
+            'give_payment_details_transaction_id-paypal-commerce',
+            DonationDetailsPage::class,
+            'getPayPalPaymentUrl'
+        );
+
+        Hooks::addAction('give_update_edited_donation', RefundPaymentHandler::class, 'refundPayment');
+        Hooks::addAction('admin_notices', RefundPaymentHandler::class, 'showPaymentRefundFailureNotice');
+        Hooks::addAction(
+            'give_view_donation_details_totals_after',
+            RefundPaymentHandler::class,
+            'optInForRefundFormField'
+        );
+
+        Hooks::addAction('admin_init', WebhookChecker::class, 'checkWebhookCriteria');
     }
 }

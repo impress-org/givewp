@@ -56,7 +56,7 @@ trait SelectStatement
      */
     public function selectRaw($sql, ...$args)
     {
-        $this->selects = array_merge($this->selects, [new RawSQL($sql, $args)]);
+        $this->selects[] = new RawSQL($sql, $args);
 
         return $this;
     }

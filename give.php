@@ -49,6 +49,7 @@ use Give\Form\Templates;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\InPluginUpsells\ServiceProvider as InPluginUpsellsServiceProvider;
+use Give\LegacySubscriptions\ServiceProvider as LegacySubscriptionsServiceProvider;
 use Give\License\LicenseServiceProvider;
 use Give\Log\LogServiceProvider;
 use Give\MigrationLog\MigrationLogServiceProvider;
@@ -77,28 +78,29 @@ if (!defined('ABSPATH')) {
  * @since 2.8.0 build in a service container
  * @since 1.0
  *
- * @property-read Give_API                        $api
- * @property-read Give_Async_Process              $async_process
- * @property-read Give_Comment                    $comment
- * @property-read Give_DB_Donors                  $donors
- * @property-read Give_DB_Donor_Meta              $donor_meta
- * @property-read Give_Emails                     $emails
- * @property-read Give_Email_Template_Tags        $email_tags
- * @property-read Give_DB_Form_Meta               $form_meta
- * @property-read Give_Admin_Settings             $give_settings
- * @property-read Give_HTML_Elements              $html
- * @property-read Give_Logging                    $logs
- * @property-read Give_Notices                    $notices
- * @property-read Give_DB_Payment_Meta            $payment_meta
- * @property-read Give_Roles                      $roles
- * @property-read FormRoute                       $routeForm
- * @property-read Templates                       $templates
- * @property-read Give_Scripts                    $scripts
- * @property-read Give_DB_Sequential_Ordering     $sequential_donation_db
+ * @property-read Give_API $api
+ * @property-read Give_Async_Process $async_process
+ * @property-read Give_Comment $comment
+ * @property-read Give_DB_Donors $donors
+ * @property-read Give_DB_Donor_Meta $donor_meta
+ * @property-read Give_Emails $emails
+ * @property-read Give_Email_Template_Tags $email_tags
+ * @property-read Give_DB_Form_Meta $form_meta
+ * @property-read Give_Admin_Settings $give_settings
+ * @property-read Give_HTML_Elements $html
+ * @property-read Give_Logging $logs
+ * @property-read Give_Notices $notices
+ * @property-read Give_DB_Payment_Meta $payment_meta
+ * @property-read Give_Roles $roles
+ * @property-read FormRoute $routeForm
+ * @property-read Templates $templates
+ * @property-read Give_Scripts $scripts
+ * @property-read Give_DB_Sequential_Ordering $sequential_donation_db
  * @property-read Give_Sequential_Donation_Number $seq_donation_number
- * @property-read Give_Session                    $session
- * @property-read Give_DB_Sessions                $session_db
- * @property-read Give_Tooltips                   $tooltips
+ * @property-read Give_Session $session
+ * @property-read Give_DB_Sessions $session_db
+ * @property-read Give_Tooltips $tooltips
+ * @property-read Give_Recurring_DB_Subscription_Meta $subscription_meta
  *
  * @mixin Container
  */
@@ -167,6 +169,7 @@ final class Give
         Give\Email\ServiceProvider::class,
         DonationSummaryServiceProvider::class,
         PaymentGatewaysServiceProvider::class,
+        LegacySubscriptionsServiceProvider::class
     ];
 
     /**
