@@ -25,8 +25,8 @@ interface DonationFormsTableProps {
 export default function DonationFormsTable({statusFilter: status, search}: DonationFormsTableProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(10);
-    const [errors, setErrors] = useState<number>(0);
-    const [successes, setSuccesses] = useState<number>(0);
+    const [errors, setErrors] = useState<[]>([]);
+    const [successes, setSuccesses] = useState<[]>([]);
     const [initialLoad, setInitialLoad] = useState<boolean>(true);
     const [loadingOverlay, setLoadingOverlay] = useState<any>(false);
     const [errorOverlay, setErrorOverlay] = useState<any>(false);
@@ -57,13 +57,14 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
     }, [isValidating]);
     useEffect(() => {
         let timeoutId;
-        if (errors) {
+        if (errors.length) {
             setErrorOverlay(styles.appear);
             timeoutId = setTimeout(
-                () => document.getElementById(styles.updateError).scrollIntoView({behavior: 'smooth', block: 'center'}),
+                () =>
+                    document.getElementById(styles.updateError).scrollIntoView?.({behavior: 'smooth', block: 'center'}),
                 100
             );
-        } else {
+        } else if (errorOverlay) {
             setErrorOverlay(styles.disappear);
             timeoutId = setTimeout(() => setErrorOverlay(false), 100);
         }
@@ -75,7 +76,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
             const response = await fetchWithArgs(endpoint, {ids}, method);
             // if we just removed the last entry from the page and we're not on the first page, go back a page
             if (
-                !response.errors &&
+                !response.errors.length &&
                 data.forms.length == 1 &&
                 data.totalPages > 1 &&
                 (endpoint == '/delete' || endpoint == '/trash' || endpoint == '/restore')
@@ -93,9 +94,11 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
             }
             setErrors(response.errors);
             setSuccesses(response.successes);
+            return response;
         } catch (error) {
-            setErrors(ids.split(',').length);
-            setSuccesses(0);
+            setErrors(ids.split(','));
+            setSuccesses([]);
+            return {errors: ids.split(','), successes: []};
         }
     }
 
@@ -176,29 +179,34 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                     {errorOverlay && (
                         <div className={cx(styles.overlay, errorOverlay)}>
                             <div id={styles.updateError}>
-                                {!!successes && (
+                                {!!successes.length && (
                                     <span>
-                                        {successes +
+                                        {successes.length +
                                             ' ' +
                                             _n(
                                                 'form was updated successfully',
                                                 'forms were updated successfully.',
-                                                successes,
+                                                successes.length,
                                                 'give'
                                             )}
                                     </span>
                                 )}
                                 <span>
-                                    {errors +
+                                    {errors.length +
                                         ' ' +
-                                        _n("form couldn't be updated.", "forms couldn't be updated.", errors, 'give')}
+                                        _n(
+                                            "form couldn't be updated.",
+                                            "forms couldn't be updated.",
+                                            errors.length,
+                                            'give'
+                                        )}
                                 </span>
                                 <button
                                     type="button"
                                     className={cx('dashicons dashicons-dismiss', styles.dismiss)}
                                     onClick={() => {
-                                        setErrors(0);
-                                        setSuccesses(0);
+                                        setErrors([]);
+                                        setSuccesses([]);
                                     }}
                                 >
                                     <span className="give-visually-hidden">dismiss</span>

@@ -63,20 +63,23 @@ class FormActions extends Endpoint
     public function handleRequest(WP_REST_Request $request)
     {
         $ids = $this->splitString($request->get_param('ids'));
-        $errors = 0;
-        $successes = 0;
+        $errors = [];
+        $successes = [];
+        $form = false;
 
         switch ($request->get_param('action')) {
             case 'trash':
                 foreach ($ids as $id) {
-                    wp_trash_post($id) ? $successes++ : $errors++;
+                    $form = wp_trash_post($id);
+                    $form ? $successes[] = $form : $errors[] = $form;
                 }
 
                 break;
 
             case 'restore':
                 foreach ($ids as $id) {
-                    wp_untrash_post($id) ? $successes++ : $errors++;
+                    $form = wp_untrash_post($id);
+                    $form ? $successes[] = $form : $errors[] = $form;
                 }
 
                 break;
@@ -84,7 +87,8 @@ class FormActions extends Endpoint
 
             case 'delete':
                 foreach ($ids as $id) {
-                    wp_delete_post($id, true) ? $successes++ : $errors++;
+                    $form = wp_delete_post($id);
+                    $form ? $successes[] = $form : $errors[] = $form;
                 }
 
                 break;
@@ -93,7 +97,8 @@ class FormActions extends Endpoint
                 require_once(GIVE_PLUGIN_DIR . '/includes/admin/forms/class-give-form-duplicator.php');
 
                 foreach ($ids as $id) {
-                    \Give_Form_Duplicator::handler($id) ? $successes++ : $errors++;
+                    $form = \Give_Form_Duplicator::handler($id);
+                    $form ? $successes[] = $form : $errors[] = $form;
                 }
 
                 break;
