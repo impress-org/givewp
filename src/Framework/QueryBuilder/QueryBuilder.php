@@ -2,6 +2,7 @@
 
 namespace Give\Framework\QueryBuilder;
 
+use Give\Framework\QueryBuilder\Concerns\Aggregate;
 use Give\Framework\QueryBuilder\Concerns\CRUD;
 use Give\Framework\QueryBuilder\Concerns\FromClause;
 use Give\Framework\QueryBuilder\Concerns\GroupByStatement;
@@ -21,6 +22,7 @@ use Give\Framework\QueryBuilder\Concerns\WhereClause;
  */
 class QueryBuilder
 {
+    use Aggregate;
     use CRUD;
     use FromClause;
     use GroupByStatement;

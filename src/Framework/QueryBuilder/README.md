@@ -42,6 +42,12 @@ Query Builder helper class is used to write SQL queries
   - [Delete](#delete)
   - [Get](#get)
 
+- [Aggregate Functions](#aggregate-functions)
+    - [Count](#count)
+    - [Sum](#sum)
+    - [Avg](#avg)
+    - [Min](#min)
+    - [Max](#max)
 
 ## DB
 
@@ -731,4 +737,57 @@ Get all rows
 
 ```php
 $posts = DB::table('posts')->where('post_status', 'published')->getAll();
+```
+
+
+
+
+## Aggregate Functions
+
+The Query Builder also provides a variety of methods for retrieving aggregate values like `count`, `sum`, `avg`, `min` and `max`.
+
+### Count
+
+```php
+$count = DB::table('posts')
+    ->where('post_type', 'published')
+    ->count();
+```
+
+Count rows where provided column is not null.
+
+```php
+$count = DB::table('donations')->count('not_null_value_column');
+```
+
+### Sum
+
+```php
+$sum = DB::table('give_donationmeta')
+    ->where('meta_key', 'donation_amount')
+    ->sum('meta_value');
+```
+
+### Avg
+
+```php
+$avg = DB::table('give_donationmeta')
+    ->where('meta_key', 'donation_amount')
+    ->avg('meta_value');
+```
+
+### Min
+
+```php
+$min = DB::table('give_donationmeta')
+    ->where('meta_key', 'donation_amount')
+    ->min('meta_value');
+```
+
+### Max
+
+```php
+$max = DB::table('give_donationmeta')
+    ->where('meta_key', 'donation_amount')
+    ->max('meta_value');
 ```
