@@ -44,10 +44,10 @@ Query Builder helper class is used to write SQL queries
 
 - [Aggregate Functions](#aggregate-functions)
     - [Count](#count)
-    - [SUM](#sum)
-    - [AVG](#avg)
-    - [MIN](#min)
-    - [MAX](#max)
+    - [Sum](#sum)
+    - [Avg](#avg)
+    - [Min](#min)
+    - [Max](#max)
 
 ## DB
 
@@ -760,7 +760,7 @@ Count rows where provided column is not null.
 $count = DB::table('donations')->count('not_null_value_column');
 ```
 
-### SUM
+### Sum
 
 ```php
 $sum = DB::table('give_donationmeta')
@@ -768,7 +768,7 @@ $sum = DB::table('give_donationmeta')
     ->sum('meta_value');
 ```
 
-### AVG
+### Avg
 
 ```php
 $avg = DB::table('give_donationmeta')
@@ -776,7 +776,7 @@ $avg = DB::table('give_donationmeta')
     ->avg('meta_value');
 ```
 
-### MIN
+### Min
 
 ```php
 $min = DB::table('give_donationmeta')
@@ -784,7 +784,7 @@ $min = DB::table('give_donationmeta')
     ->min('meta_value');
 ```
 
-### MAX
+### Max
 
 ```php
 $max = DB::table('give_donationmeta')
