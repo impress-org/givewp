@@ -8,7 +8,13 @@ use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
 use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
+use PayPalCheckoutSdk\Orders\OrdersGetRequest;
 use PayPalCheckoutSdk\Payments\CapturesRefundRequest;
+use Give\PaymentGateways\PayPalCommerce\Models\PayPalOrder as PayPalOrderModel;
+
+use PayPalHttp\HttpException;
+
+use PayPalHttp\IOException;
 
 use function give_record_gateway_error as logError;
 
@@ -235,5 +241,23 @@ class PayPalOrder
                 )
             );
         }
+    }
+
+    /**
+     * Get order details from paypal commerce.
+     *
+     * @unreleased
+     *
+     * @param string $orderId
+     *
+     * @return PayPalOrderModel
+     * @throws HttpException | IOException
+     */
+    public function getOrder($orderId)
+    {
+        $orderDetailRequest = new OrdersGetRequest($orderId);
+        $orderDetails = (array)$this->paypalClient->getHttpClient()->execute($orderDetailRequest)->result;
+
+        return PayPalOrderModel::fromArray($orderDetails);
     }
 }
