@@ -39,6 +39,7 @@
     transition: opacity 180ms ease-in;
 
     display: flex;
+    align-items: center;
     column-gap: 2rem;
 
     > * {
@@ -68,7 +69,6 @@
 }
 
 .tableRow {
-    position: relative;
 
     &:nth-child(odd) {
         background-color: #f6f7f7;
@@ -78,7 +78,7 @@
         background-color: #fff;
     }
 
-    &:is(:hover) .tableRowActions {
+    &:hover .tableRowActions {
         opacity: 1;
     }
 }
@@ -90,6 +90,7 @@
 }
 
 .tableCell {
+    position: relative;
     padding-block-start: 1em;
     padding-block-end: 2.5em;
     padding-inline: 1em;
