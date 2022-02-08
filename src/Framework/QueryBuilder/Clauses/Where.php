@@ -62,6 +62,7 @@ class Where
             '>',
             '>=',
             '<>',
+            '!=',
             '=',
             Operator::LIKE,
             Operator::NOTLIKE,
