@@ -85,7 +85,7 @@ class GatewayRoute
      *
      * @since 2.18.0
      *
-     * @param  array  $gatewayIds
+     * @param array $gatewayIds
      *
      * @return bool
      *
@@ -117,8 +117,9 @@ class GatewayRoute
      *
      * @unreleased
      *
-     * @param  string  $routeSignature
-     * @param  GatewayRouteData  $data
+     * @param string $routeSignature
+     * @param GatewayRouteData $data
+     *
      * @return void
      */
     private function validateSignature($routeSignature, GatewayRouteData $data)
@@ -141,10 +142,11 @@ class GatewayRoute
      * @since 2.18.0
      *
      * @unreleased - replace $donationId with $queryParams array
+     * @unreleased Record gateway id, callback method name and query params in log.
      *
-     * @param  PaymentGateway  $gateway
-     * @param  string  $method
-     * @param  array  $queryParams
+     * @param PaymentGateway $gateway
+     * @param string $method
+     * @param array $queryParams
      *
      * @return void
      *
@@ -156,7 +158,14 @@ class GatewayRoute
         } catch (PaymentGatewayException $paymentGatewayException) {
             $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
         } catch (\Exception $exception) {
-            PaymentGatewayLog::error($exception->getMessage());
+            PaymentGatewayLog::error(
+                $exception->getMessage(),
+                [
+                    'Payment Gateway' => $gateway->getId(),
+                    'Payment Gateway Method' => $method,
+                    'Query Params' => $queryParams
+                ]
+            );
             $this->handleResponse(
                 response()->json(
                     __(
