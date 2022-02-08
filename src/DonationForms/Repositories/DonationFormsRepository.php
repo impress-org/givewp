@@ -88,6 +88,8 @@ class DonationFormsRepository
             }
         }
 
+        $query->limit($perPage);
+
         $total = $query->get();
 
         return $total->count;
