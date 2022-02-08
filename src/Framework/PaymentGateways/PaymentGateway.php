@@ -107,7 +107,6 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
             }
 
             $this->handleResponse(response()->json($message));
-            exit;
         }
     }
 
@@ -140,7 +139,6 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
             }
 
             $this->handleResponse(response()->json($message));
-            exit;
         }
     }
 
