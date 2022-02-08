@@ -112,7 +112,6 @@ class TestGatewayOffsite extends PaymentGateway
         return response()->redirectTo(give_get_success_page_uri());
     }
 
-
     /**
      * An example of using a secureRouteMethod for extending the Gateway API to handle a redirect.
      *

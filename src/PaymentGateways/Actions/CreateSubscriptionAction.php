@@ -5,7 +5,7 @@ namespace Give\PaymentGateways\Actions;
 use Give\PaymentGateways\DataTransferObjects\FormData;
 use Give\PaymentGateways\DataTransferObjects\SubscriptionData;
 use Give\Subscriptions\DataTransferObjects\SubscriptionArgs;
-use Give\Subscriptions\Models\Subscriber;
+use Give\Subscriptions\Models\LegacySubscriber;
 use Give\ValueObjects\DonorInfo;
 use Give_Donor;
 
@@ -110,7 +110,7 @@ class CreateSubscriptionAction
         give_update_meta($donationId, '_give_subscription_payment', true);
 
         // Now create the subscription record.
-        $subscriber = new Subscriber($donorId);
+        $subscriber = new LegacySubscriber($donorId);
 
         $args = [
             'form_id' => $subscriptionArgs->formId,

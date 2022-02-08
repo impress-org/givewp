@@ -60,6 +60,15 @@ class GatewayPaymentData
      * @var string
      */
     public $redirectUrl;
+    /**
+     * We are using this property internally to gracefully deprecate filter and action hooks.
+     * We do not recommend using this property in logic. This will be removed in the future.
+     *
+     * @deprecated
+     *
+     * @var array
+     */
+    public $legacyPaymentData;
 
     /**
      * Convert data from array into DTO
@@ -72,6 +81,7 @@ class GatewayPaymentData
     {
         $self = new static();
 
+        $self->legacyPaymentData = $array['legacyPaymentData'];
         $self->price = $array['price'];
         $self->priceId = $array['priceId'];
         $self->currency = $array['currency'];
