@@ -90,7 +90,10 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         } catch (Exception $exception) {
             PaymentGatewayLog::error(
                 $exception->getMessage(),
-                ['Donation Data' => $gatewayPaymentData]
+                [
+                    'Payment Gateway' => $this->getId(),
+                    'Donation Data' => $gatewayPaymentData
+                ]
             );
 
             if ($exception instanceof PaymentGatewayException) {
@@ -115,14 +118,23 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         try {
             $command = $this->createSubscription($paymentData, $subscriptionData);
             $this->handleGatewaySubscriptionCommand($command, $paymentData, $subscriptionData);
-        } catch (PaymentGatewayException $paymentGatewayException) {
-            $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
-            exit;
         } catch (Exception $exception) {
-            PaymentGatewayLog::error($exception->getMessage());
+            PaymentGatewayLog::error(
+                $exception->getMessage(),
+                [
+                    'Payment Gateway' => $this->getId(),
+                    'Donation Data' => $paymentData,
+                    'Subscription Data' => $subscriptionData
+                ]
+            );
+
+
+            if ($exception instanceof PaymentGatewayException) {
+                $this->handleResponse(response()->json($exception->getMessage()));
+            }
 
             $message = __(
-                'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.',
+                'An unexpected error occurred while processing your subscription.  Please try again or contact us to help resolve.',
                 'give'
             );
 
