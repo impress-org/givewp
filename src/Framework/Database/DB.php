@@ -16,7 +16,7 @@ use WP_Error;
  * @method static int|bool query(string $query)
  * @method static int|false insert(string $table, array $data, array|string $format)
  * @method static int|false delete(string $table, array $where, array|string $where_format)
- * @method static int|false update(string $table, array $where, array|string $where_format)
+ * @method static int|false update(string $table, array $data, array $where, array|string $format, array|string $where_format)
  * @method static int|false replace(string $table, array $data, array|string $format)
  * @method static null|string get_var(string $query = null, int $x = 0, int $y = 0)
  * @method static array|object|null|void get_row(string $query = null, string $output = OBJECT, int $y = 0)
