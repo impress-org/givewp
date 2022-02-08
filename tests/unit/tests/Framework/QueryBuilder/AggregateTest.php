@@ -31,11 +31,12 @@ final class AggregateTest extends TestCase
     }
 
     /**
+     *
      * @unreleased
      *
      * @return void
      */
-    public function testCount()
+    public function testCountShouldReturnTheTotalNumberOfRecords()
     {
         $data = [
             [
@@ -53,15 +54,15 @@ final class AggregateTest extends TestCase
             DB::table('posts')->insert($row);
         }
 
-        $count = DB::table('posts')->count();
+        $postsCount = DB::table('posts')->count();
 
-        $this->assertEquals(3, $count);
+        $this->assertEquals(3, $postsCount);
 
-        $count = DB::table('posts')
+        $nonExistentPostTypeCount = DB::table('posts')
             ->where('post_type', 'dummy')
             ->count();
 
-        $this->assertEquals(0, $count);
+        $this->assertEquals(0, $nonExistentPostTypeCount);
     }
 
 
@@ -70,7 +71,7 @@ final class AggregateTest extends TestCase
      *
      * @return void
      */
-    public function testCountByColumn()
+    public function testCountByColumnShouldReturnTheTotalNumberOfRecords()
     {
         $data = [
             [
@@ -94,13 +95,13 @@ final class AggregateTest extends TestCase
             DB::table('give_donationmeta')->insert($row);
         }
 
-        $count = DB::table('give_donationmeta')->count('meta_key');
+        $postsCount = DB::table('give_donationmeta')->count('meta_key');
 
-        $this->assertEquals(3, $count);
+        $this->assertEquals(3, $postsCount);
 
-        $count = DB::table('give_donationmeta')->count('meta_value');
+        $postsCountWithNullColumn = DB::table('give_donationmeta')->count('meta_value');
 
-        $this->assertEquals(2, $count);
+        $this->assertEquals(2, $postsCountWithNullColumn);
     }
 
     /**
@@ -108,7 +109,7 @@ final class AggregateTest extends TestCase
      *
      * @return void
      */
-    public function testSum()
+    public function testSumShouldReturnTheSumOfColumns()
     {
         $data = [
             [
@@ -132,11 +133,11 @@ final class AggregateTest extends TestCase
             DB::table('give_donationmeta')->insert($row);
         }
 
-        $count = DB::table('give_donationmeta')
+        $totalSum = DB::table('give_donationmeta')
             ->where('meta_key', 'donation_amount')
             ->sum('meta_value');
 
-        $this->assertEquals(60, $count);
+        $this->assertEquals(60, $totalSum);
     }
 
 
@@ -145,7 +146,7 @@ final class AggregateTest extends TestCase
      *
      * @return void
      */
-    public function testAvg()
+    public function testAvgShouldReturnTheAvgColumnValue()
     {
         $data = [
             [
@@ -169,11 +170,11 @@ final class AggregateTest extends TestCase
             DB::table('give_donationmeta')->insert($row);
         }
 
-        $count = DB::table('give_donationmeta')
+        $avgValue = DB::table('give_donationmeta')
             ->where('meta_key', 'donation_amount')
             ->avg('meta_value');
 
-        $this->assertEquals(20, $count);
+        $this->assertEquals(20, $avgValue);
     }
 
     /**
@@ -181,7 +182,7 @@ final class AggregateTest extends TestCase
      *
      * @return void
      */
-    public function testMin()
+    public function testMinShouldReturnTheMinimumColumnValue()
     {
         $data = [
             [
@@ -205,11 +206,11 @@ final class AggregateTest extends TestCase
             DB::table('give_donationmeta')->insert($row);
         }
 
-        $count = DB::table('give_donationmeta')
+        $minValue = DB::table('give_donationmeta')
             ->where('meta_key', 'donation_amount')
             ->min('meta_value');
 
-        $this->assertEquals(10, $count);
+        $this->assertEquals(10, $minValue);
     }
 
     /**
@@ -217,7 +218,7 @@ final class AggregateTest extends TestCase
      *
      * @return void
      */
-    public function testMax()
+    public function testMaxShouldReturnTheMaximumColumnValue()
     {
         $data = [
             [
@@ -241,10 +242,10 @@ final class AggregateTest extends TestCase
             DB::table('give_donationmeta')->insert($row);
         }
 
-        $count = DB::table('give_donationmeta')
+        $maxValue = DB::table('give_donationmeta')
             ->where('meta_key', 'donation_amount')
             ->max('meta_value');
 
-        $this->assertEquals(30, $count);
+        $this->assertEquals(30, $maxValue);
     }
 }
