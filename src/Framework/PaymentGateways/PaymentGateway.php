@@ -106,8 +106,12 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
                 $message = $exception->getMessage();
             }
 
-            $this->handleResponse(response()->json($message));
-            exit;
+            if (wp_doing_ajax()) {
+                $this->handleResponse(response()->json($message));
+            }
+
+            give_set_error('PaymentGatewayException', $message);
+            give_send_back_to_checkout();
         }
     }
 
@@ -139,8 +143,12 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
                 $message = $exception->getMessage();
             }
 
-            $this->handleResponse(response()->json($message));
-            exit;
+            if (wp_doing_ajax()) {
+                $this->handleResponse(response()->json($message));
+            }
+
+            give_set_error('PaymentGatewayException', $message);
+            give_send_back_to_checkout();
         }
     }
 
