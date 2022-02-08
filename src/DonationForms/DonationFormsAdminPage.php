@@ -12,13 +12,15 @@ class DonationFormsAdminPage
      */
     public function register()
     {
+        remove_submenu_page('edit.php?post_type=give_forms', 'edit.php?post_type=give_forms');
         add_submenu_page(
             'edit.php?post_type=give_forms',
-            esc_html__('All Forms', 'give'),
+            esc_html__('Donation Forms', 'give'),
             esc_html__('All Forms', 'give'),
             'edit_give_forms',
             'give-forms',
-            [$this, 'render']
+            [$this, 'render'],
+            1
         );
     }
 
