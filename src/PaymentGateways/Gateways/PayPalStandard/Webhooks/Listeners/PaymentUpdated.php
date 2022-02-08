@@ -24,7 +24,7 @@ class PaymentUpdated implements EventListener
         $donation = new Give_Payment($eventData->custom);
         $donationStatus = strtolower($eventData->payment_status);
 
-        // Process refunds & reversed.
+        // Process refunds & reversed for donation.
         if (in_array($donationStatus, ['refunded', 'reversed'])) {
             if ('refunded' !== $donation->status) {
                 Call::invoke(ProcessIpnDonationRefund::class, $eventData, $donation->ID);
@@ -33,7 +33,7 @@ class PaymentUpdated implements EventListener
             return;
         }
 
-        // Process completed donations.
+        // Process donation only if not already completed.
         if ('completed' === $donationStatus && 'publish' !== $donation->status) {
             $donation->add_note(
                 sprintf( /* translators: %s: Paypal transaction ID */
