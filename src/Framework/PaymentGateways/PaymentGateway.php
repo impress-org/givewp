@@ -97,14 +97,14 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
                 ]
             );
 
-            if ($exception instanceof PaymentGatewayException) {
-                $this->handleResponse(response()->json($exception->getMessage()));
-            }
-
             $message = __(
                 'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.',
                 'give'
             );
+
+            if ($exception instanceof PaymentGatewayException) {
+                $message = $exception->getMessage();
+            }
 
             $this->handleResponse(response()->json($message));
             exit;
@@ -130,15 +130,14 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
                 ]
             );
 
-
-            if ($exception instanceof PaymentGatewayException) {
-                $this->handleResponse(response()->json($exception->getMessage()));
-            }
-
             $message = __(
                 'An unexpected error occurred while processing your subscription.  Please try again or contact us to help resolve.',
                 'give'
             );
+
+            if ($exception instanceof PaymentGatewayException) {
+                $message = $exception->getMessage();
+            }
 
             $this->handleResponse(response()->json($message));
             exit;
