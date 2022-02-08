@@ -10,6 +10,9 @@ use Give\Framework\QueryBuilder\Clauses\RawSQL;
 trait Aggregate
 {
     /**
+     * Returns the number of rows returned by a query
+     *
+     * @unreleased
      * @param  null|string  $column
      *
      * @return string
@@ -24,6 +27,9 @@ trait Aggregate
     }
 
     /**
+     * Returns the total sum in a set of values
+     *
+     * @unreleased
      * @param  string  $column
      *
      * @return string
@@ -37,6 +43,9 @@ trait Aggregate
 
 
     /**
+     * Get the average value in a set of values
+     *
+     * @unreleased
      * @param  string  $column
      *
      * @return string
@@ -49,6 +58,9 @@ trait Aggregate
     }
 
     /**
+     * Returns the minimum value in a set of values
+     *
+     * @unreleased
      * @param  string  $column
      *
      * @return string
@@ -61,6 +73,9 @@ trait Aggregate
     }
 
     /**
+     * Returns the maximum value in a set of values
+     *
+     * @unreleased
      * @param  string  $column
      *
      * @return string
