@@ -21,7 +21,7 @@ class BECSGateway extends PaymentGateway
     use HandlePaymentIntentStatus;
 
     /** @var array */
-    protected $errors = [];
+    protected $errorMessages = [];
 
     public function __construct(SubscriptionModuleInterface $subscriptionModule = null)
     {
