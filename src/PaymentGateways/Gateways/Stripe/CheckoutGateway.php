@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\Gateways\Stripe;
 
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
+use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
@@ -21,6 +22,7 @@ class CheckoutGateway extends PaymentGateway
 {
     use Traits\CheckoutInstructions;
     use Traits\CheckoutModal;
+    use Traits\CheckoutRedirect;
     use Traits\HandlePaymentIntentStatus;
 
     /**
@@ -34,24 +36,48 @@ class CheckoutGateway extends PaymentGateway
         $workflow = new Workflow();
         $workflow->bind( $paymentData );
 
-        $workflow->action( new Actions\GetPaymentMethodFromRequest );
         $workflow->action( new Actions\SaveDonationSummary );
         $workflow->action( new Actions\GetOrCreateStripeCustomer );
 
-        switch( give_stripe_get_checkout_type() ) {
+        switch (give_stripe_get_checkout_type()) {
             case 'modal':
-                $workflow->action( new Actions\CreatePaymentIntent() );
-                $paymentIntent = $workflow->resolve( PaymentIntent::class );
-                return $this->handlePaymentIntentStatus( $paymentIntent );
+                return $this->createPaymentModal($workflow);
             case 'redirect':
-                $workflow->action( new Actions\CreateCheckoutSession() );
-                $session = $workflow->resolve( CheckoutSession::class );
-                return new RedirectOffsite(
-                    CheckoutHelper::getRedirectUrl( $session->id(), give_get_payment_form_id( $paymentData->donationId ) )
-                );
+                return $this->createPaymentRedirect($workflow);
             default:
-                throw new CheckoutException( 'Invalid Checkout Error' );
+                throw new CheckoutException('Invalid Checkout Error');
         }
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param $workflow
+     * @return PaymentProcessing|RedirectOffsite
+     * @throws Exceptions\PaymentIntentException
+     */
+    protected function createPaymentModal($workflow)
+    {
+        $workflow->action(new Actions\GetPaymentMethodFromRequest);
+        $workflow->action(new Actions\CreatePaymentIntent());
+        $paymentIntent = $workflow->resolve(PaymentIntent::class);
+        return $this->handlePaymentIntentStatus($paymentIntent);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param $workflow
+     * @return RedirectOffsite
+     */
+    protected function createPaymentRedirect($workflow)
+    {
+        $workflow->action( new Actions\CreateCheckoutSession() );
+        $session = $workflow->resolve( CheckoutSession::class );
+        $paymentData = $workflow->resolve( GatewayPaymentData::class );
+        return new RedirectOffsite(
+            $this->getRedirectUrl( $session->id(), give_get_payment_form_id( $paymentData->donationId ) )
+        );
     }
 
     /**
@@ -99,7 +125,8 @@ class CheckoutGateway extends PaymentGateway
 
         switch( give_stripe_get_checkout_type() ) {
             case 'modal':
-                return $this->getCheckoutModalHTML( $formId, $args );
+                return $this->getCheckoutInstructions()
+                     . $this->getCheckoutModalHTML( $formId, $args );
             case 'redirect':
                 return $this->getCheckoutInstructions();
         }
