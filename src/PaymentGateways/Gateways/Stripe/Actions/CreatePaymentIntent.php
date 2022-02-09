@@ -10,6 +10,9 @@ use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
 use Give\PaymentGateways\Gateways\Stripe\WorkflowAction;
 use Give\ValueObjects\Money;
 
+/**
+ * @unreleased
+ */
 class CreatePaymentIntent extends WorkflowAction
 {
     /** @var array */

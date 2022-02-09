@@ -4,11 +4,13 @@ namespace Give\PaymentGateways\Gateways\Stripe\Actions;
 
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\Stripe\Exceptions\StripeCustomerException;
+use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
 use Give\PaymentGateways\Gateways\Stripe\WorkflowAction;
 use Give_Stripe_Customer;
 
 class GetOrCreateStripeCustomer extends WorkflowAction
 {
+
     /**
      * @unreleased
      *
@@ -24,7 +26,7 @@ class GetOrCreateStripeCustomer extends WorkflowAction
 
         $this->saveStripeCustomerId($paymentData->donationId, $giveStripeCustomer->get_id());
 
-        $this->bind($giveStripeCustomer);
+        $this->bind( $giveStripeCustomer );
     }
 
     /**

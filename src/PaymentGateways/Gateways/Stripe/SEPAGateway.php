@@ -8,16 +8,16 @@ use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
-use Give\PaymentGateways\Gateways\Stripe\Traits\BECSMandateForm;
 use Give\PaymentGateways\Gateways\Stripe\Traits\HandlePaymentIntentStatus;
+use Give\PaymentGateways\Gateways\Stripe\Traits\SEPAMandateForm;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
 
 /**
  * @unreleased
  */
-class BECSGateway extends PaymentGateway
+class SEPAGateway extends PaymentGateway
 {
-    use BECSMandateForm;
+    use SEPAMandateForm;
     use HandlePaymentIntentStatus;
 
     /** @var array */
@@ -27,9 +27,9 @@ class BECSGateway extends PaymentGateway
     {
         parent::__construct($subscriptionModule);
 
-        $this->errorMessages['accountConfiguredNoSsl']    = esc_html__( 'Mandate form fields are disabled because your site is not running securely over HTTPS.', 'give' );
-        $this->errorMessages['accountNotConfiguredNoSsl'] = esc_html__( 'Mandate form fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
-        $this->errorMessages['accountNotConfigured']      = esc_html__( 'Mandate form fields are disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
+        $this->errorMessages['accountConfiguredNoSsl']    = esc_html__( 'IBAN fields are disabled because your site is not running securely over HTTPS.', 'give' );
+        $this->errorMessages['accountNotConfiguredNoSsl'] = esc_html__( 'IBAN fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
+        $this->errorMessages['accountNotConfigured']      = esc_html__( 'IBAN fields are disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
     }
 
     /**
@@ -60,7 +60,7 @@ class BECSGateway extends PaymentGateway
      */
     public static function id()
     {
-        return 'stripe_becs';
+        return 'stripe_sepa';
     }
 
     /**
@@ -76,7 +76,7 @@ class BECSGateway extends PaymentGateway
      */
     public function getName()
     {
-        return __('Stripe - BECS Direct Debit', 'give');
+        return __('Stripe - SEPA Direct Debit', 'give');
     }
 
     /**
@@ -84,7 +84,7 @@ class BECSGateway extends PaymentGateway
      */
     public function getPaymentMethodLabel()
     {
-        return __('Stripe - BECS Direct Debit', 'give');
+        return __('Stripe - SEPA Direct Debit', 'give');
     }
 
     /**
@@ -106,8 +106,8 @@ class BECSGateway extends PaymentGateway
     protected function getPaymentIntentArgs()
     {
         return [
-            'payment_method_types' => [ 'au_becs_debit' ],
-            'setup_future_usage'   => 'off_session', // @TODO Is this correct? Maybe should be `on_session` - need to confirm.
+            'payment_method_types' => [ 'sepa_debit' ],
+            'setup_future_usage'   => 'on_session',
             'mandate_data'         => [
                 'customer_acceptance' => [
                     'type'   => 'online',

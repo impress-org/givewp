@@ -6,6 +6,8 @@ use Give_Notices;
 
 trait CreditCardForm
 {
+    use FormFieldMarkup;
+
     /**
      * @note Stripe uses its own credit card form to tokenize card details.
      * @note Input fields for credit cards should NOT be posted with the donation data.

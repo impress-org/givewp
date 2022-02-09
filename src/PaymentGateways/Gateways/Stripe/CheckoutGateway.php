@@ -11,6 +11,7 @@ use Give\Helpers\Form\Utils as FormUtils;
 use Give\Helpers\Gateways\Stripe;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\Stripe\Exceptions\CheckoutException;
+use Give\PaymentGateways\Gateways\Stripe\Helpers\CheckoutHelper;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\CheckoutSession;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
 
