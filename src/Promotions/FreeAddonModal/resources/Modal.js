@@ -22,12 +22,6 @@ const Modal = () => {
         subscribeUser(firstNameInput.current.value, emailInput.current.value, siteUrl, siteName);
     };
 
-    const handleOffClick = (event) => {
-        if (event.target.className === styles.giveModalContainer) {
-            setIsOpen(false);
-        }
-    };
-
     const handleDismiss = (event) => {
         event.preventDefault();
         setIsOpen(false);
@@ -35,7 +29,7 @@ const Modal = () => {
     };
 
     return (
-        <div className={styles.giveModalContainer} onClick={handleOffClick}>
+        <div className={styles.giveModalContainer}>
             <div className={styles.modal}>
                 <h2>🎉 Congratulations!</h2>
                 <p>You've just updated to version 2.19 of GiveWP</p>
