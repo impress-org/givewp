@@ -11,8 +11,7 @@ trait CheckOfferStatus
      */
     protected function displayModal()
     {
-        // Only display the modal if the user is an admin
-        if ( ! current_user_can('manage_options')) {
+        if ( !$this->displayOffer() ) {
             return false;
         }
 
@@ -42,6 +41,12 @@ trait CheckOfferStatus
 
     public function displayOffer()
     {
+        // Only display the modal if the user is an admin
+        if ( ! current_user_can('manage_options')) {
+            return false;
+        }
 
+        $licenses = get_option('give_licenses');
+        return empty($licenses);
     }
 }
