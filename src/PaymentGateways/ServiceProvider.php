@@ -7,8 +7,12 @@ use Give\Framework\PaymentGateways\Routes\GatewayRoute;
 use Give\Helpers\Hooks;
 use Give\LegacyPaymentGateways\Actions\RegisterPaymentGatewaySettingsList;
 use Give\PaymentGateways\Actions\RegisterPaymentGateways;
+<<<<<<< HEAD
 use Give\PaymentGateways\Gateways\PayPalStandard\Controllers\PayPalStandardWebhook;
 use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\WebhookRegister;
+=======
+use Give\PaymentGateways\Gateways\Stripe\CheckoutGateway;
+>>>>>>> scope/stripe-checkout-gateway-api
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
@@ -37,5 +41,11 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addFilter('give_register_gateway', RegisterPaymentGateways::class);
         Hooks::addFilter('give_payment_gateways', RegisterPaymentGatewaySettingsList::class);
         Hooks::addAction('template_redirect', GatewayRoute::class);
+
+        /**
+         * Stripe Checkout Redirect Handler
+         */
+        Hooks::addAction('wp_footer', CheckoutGateway::class, 'maybeHandleRedirect', 99999);
+        Hooks::addAction('give_embed_footer', CheckoutGateway::class, 'maybeHandleRedirect', 99999);
     }
 }
