@@ -5,14 +5,11 @@ namespace Give\PaymentGateways\Actions;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\PaymentGateways\Gateways\Stripe\BECSGateway as StripeBECSGateway;
-use Give\PaymentGateways\Gateways\Stripe\CheckoutGateway as StripeCheckoutGateway;
-use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway as StripeCreditCardGateway;
-use Give\PaymentGateways\Gateways\Stripe\SEPAGateway as StripeSEPAGateway;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\Gateways\Stripe\BECSGateway as StripeBECSGateway;
 use Give\PaymentGateways\Gateways\Stripe\CheckoutGateway as StripeCheckoutGateway;
 use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway as StripeCreditCardGateway;
+use Give\PaymentGateways\Gateways\Stripe\SEPAGateway as StripeSEPAGateway;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 
 class RegisterPaymentGateways
