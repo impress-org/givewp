@@ -12,6 +12,26 @@ use Give\ValueObjects\Money;
 
 class CreatePaymentIntent extends WorkflowAction
 {
+    /** @var array */
+    protected $paymentIntentArgs;
+
+    /**
+     * @unreleased
+     * @param array $paymentIntentArgs
+     */
+    public function __construct( $paymentIntentArgs = [] )
+    {
+        $this->paymentIntentArgs = $paymentIntentArgs;
+    }
+
+    /**
+     * @unreleased
+     * @param GatewayPaymentData $paymentData
+     * @param DonationSummary $donationSummary
+     * @param \Give_Stripe_Customer $giveStripeCustomer
+     * @param PaymentMethod $paymentMethod
+     * @return void
+     */
     public function __invoke(
         GatewayPaymentData $paymentData,
         DonationSummary $donationSummary,
@@ -26,10 +46,10 @@ class CreatePaymentIntent extends WorkflowAction
          */
         $intent_args = apply_filters(
             'give_stripe_create_intent_args',
-            [
+            array_merge( [
                 'amount' => Money::of($paymentData->price, $paymentData->currency)->getMinorAmount(),
                 'currency' => $paymentData->currency,
-                'payment_method_types' => ['card'],
+                'payment_method_types' => [ 'card' ],
                 'statement_descriptor' => give_stripe_get_statement_descriptor(),
                 'description' => $donationSummary->getSummary(),
                 'metadata' => give_stripe_prepare_metadata($paymentData->donationId, new LegacyDonationData( $paymentData, $paymentMethod->id() ) ),
@@ -37,7 +57,7 @@ class CreatePaymentIntent extends WorkflowAction
                 'payment_method' => $paymentMethod->id(),
                 'confirm' => true,
                 'return_url' => $paymentData->redirectUrl,
-            ]
+            ], $this->paymentIntentArgs )
         );
 
         // Send Stripe Receipt emails when enabled.

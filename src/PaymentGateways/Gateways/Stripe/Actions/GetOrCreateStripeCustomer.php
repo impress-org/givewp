@@ -23,11 +23,6 @@ class GetOrCreateStripeCustomer extends WorkflowAction
         }
 
         $this->saveStripeCustomerId($paymentData->donationId, $giveStripeCustomer->get_id());
-        give_insert_payment_note(
-            $paymentData->donationId,
-            sprintf(__('Stripe Customer ID: %s', 'give'), $giveStripeCustomer->get_id())
-        );
-        give_update_meta($paymentData->donationId, '_give_stripe_customer_id', $giveStripeCustomer->get_id());
 
         $this->bind($giveStripeCustomer);
     }
@@ -35,15 +30,23 @@ class GetOrCreateStripeCustomer extends WorkflowAction
     /**
      * @unreleased
      *
-     * @param $paymentId
-     * @param $stripeCustomerId
+     * @param  int  $donationId
+     * @param  string  $stripeCustomerId
      * @return void
      */
-    protected function saveStripeCustomerId($paymentId, $stripeCustomerId)
+    protected function saveStripeCustomerId($donationId, $stripeCustomerId)
     {
         $donor = new \Give_Donor(
-            give_get_payment_donor_id($paymentId)
+            give_get_payment_donor_id($donationId)
         );
+
         $donor->update_meta(give_stripe_get_customer_key(), $stripeCustomerId);
+
+        give_insert_payment_note(
+            $donationId,
+            sprintf(__('Stripe Customer ID: %s', 'give'), $stripeCustomerId)
+        );
+        
+        give_update_meta($donationId, give_stripe_get_customer_key(), $stripeCustomerId);
     }
 }

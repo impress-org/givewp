@@ -7,12 +7,9 @@ use Give\Framework\PaymentGateways\Routes\GatewayRoute;
 use Give\Helpers\Hooks;
 use Give\LegacyPaymentGateways\Actions\RegisterPaymentGatewaySettingsList;
 use Give\PaymentGateways\Actions\RegisterPaymentGateways;
-<<<<<<< HEAD
 use Give\PaymentGateways\Gateways\PayPalStandard\Controllers\PayPalStandardWebhook;
 use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\WebhookRegister;
-=======
 use Give\PaymentGateways\Gateways\Stripe\CheckoutGateway;
->>>>>>> scope/stripe-checkout-gateway-api
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**

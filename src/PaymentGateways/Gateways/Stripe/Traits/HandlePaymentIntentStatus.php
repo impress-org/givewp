@@ -20,6 +20,7 @@ trait HandlePaymentIntentStatus
             case 'requires_action':
                 return new RedirectOffsite( $paymentIntent->nextActionRedirectUrl() );
             case 'succeeded':
+            case 'processing':
                 return new PaymentProcessing( $paymentIntent->id() );
             default:
                 throw new PaymentIntentException( sprintf( __( 'Unhandled payment intent status: %s', 'give' ), $paymentIntent->status() ) );

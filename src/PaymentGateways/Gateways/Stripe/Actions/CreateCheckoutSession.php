@@ -5,6 +5,7 @@ namespace Give\PaymentGateways\Gateways\Stripe\Actions;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\CheckoutSession;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\DonationSummary;
+use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
 use Give\PaymentGateways\Gateways\Stripe\WorkflowAction;
 use Give\ValueObjects\Money;
 use Give_Stripe_Customer;
@@ -16,15 +17,17 @@ class CreateCheckoutSession extends WorkflowAction
 {
     /**
      * @unreleased
-     * @param  GatewayPaymentData  $paymentData
-     * @param  DonationSummary  $donationSummary
-     * @param  Give_Stripe_Customer  $giveStripeCustomer
+     * @param GatewayPaymentData $paymentData
+     * @param DonationSummary $donationSummary
+     * @param Give_Stripe_Customer $giveStripeCustomer
+     * @param PaymentMethod $paymentMethod
      * @return void
      */
     public function __invoke(
         GatewayPaymentData $paymentData,
         DonationSummary $donationSummary,
-        Give_Stripe_Customer $giveStripeCustomer
+        Give_Stripe_Customer $giveStripeCustomer,
+        PaymentMethod $paymentMethod
     )
     {
 
