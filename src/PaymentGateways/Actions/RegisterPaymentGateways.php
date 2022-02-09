@@ -10,9 +10,10 @@ use Give\PaymentGateways\Gateways\Stripe\CheckoutGateway as StripeCheckoutGatewa
 use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway as StripeCreditCardGateway;
 use Give\PaymentGateways\Gateways\Stripe\SEPAGateway as StripeSEPAGateway;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
-use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
+use Give\PaymentGateways\Gateways\Stripe\BECSGateway as StripeBECSGateway;
 use Give\PaymentGateways\Gateways\Stripe\CheckoutGateway as StripeCheckoutGateway;
 use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway as StripeCreditCardGateway;
+use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 
 class RegisterPaymentGateways
 {
@@ -31,8 +32,6 @@ class RegisterPaymentGateways
         StripeSEPAGateway::class,
         PayPalStandard::class,
         PayPalCommerce::class,
-        StripeCheckoutGateway::class,
-        StripeCreditCardGateway::class,
     ];
 
     /**

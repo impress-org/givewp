@@ -4,7 +4,7 @@ namespace Give\PaymentGateways\Gateways\Stripe\Actions;
 
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\CheckoutSession;
-use Give\PaymentGateways\Gateways\Stripe\ValueObjects\DonationSummary;\
+use Give\PaymentGateways\Gateways\Stripe\ValueObjects\DonationSummary;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
 use Give\PaymentGateways\Gateways\Stripe\WorkflowAction;
 use Give\ValueObjects\Money;

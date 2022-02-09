@@ -79,4 +79,4 @@ trait BECSMandateForm
 
         return $form;
     }
-    }
+}
