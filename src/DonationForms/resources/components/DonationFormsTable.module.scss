@@ -29,6 +29,7 @@
     border-spacing: 0;
     inline-size: 100%;
     font-size: 1em;
+    table-layout: fixed;
 }
 
 /* Visually hidden class omitting position: absolute since that breaks the table
@@ -50,6 +51,42 @@
     font-weight: 700;
     padding: 1em;
     text-align: start;
+
+    &[data-column="id"] {
+        inline-size: 4rem;
+    }
+
+    &[data-column="name"] {
+        inline-size: 20rem;
+    }
+
+    &[data-column="amount"] {
+        inline-size: 10rem;
+    }
+
+    &[data-column="goal"] {
+        inline-size: 12rem;
+    }
+
+    &[data-column="donations"] {
+        inline-size: 8rem;
+    }
+
+    &[data-column="revenue"] {
+        inline-size: 8rem;
+    }
+
+    &[data-column="shortcode"] {
+        inline-size: 12rem;
+    }
+
+    &[data-column="date"] {
+        inline-size: 8rem;
+    }
+
+    &[data-column="status"] {
+        inline-size: 12rem;
+    }
 }
 
 .tableContent {

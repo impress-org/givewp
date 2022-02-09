@@ -133,10 +133,15 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                         </caption>
                         <thead>
                             <tr>
-                                <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
+                                <th scope="col" aria-sort="none" className={styles.tableColumnHeader} data-column="id">
                                     {__('ID', 'give')}
                                 </th>
-                                <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
+                                <th
+                                    scope="col"
+                                    aria-sort="none"
+                                    className={styles.tableColumnHeader}
+                                    data-column="name"
+                                >
                                     {__('Name', 'give')}
                                 </th>
                                 <th
@@ -144,25 +149,56 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                                     aria-sort="none"
                                     className={styles.tableColumnHeader}
                                     style={{textAlign: 'end'}}
+                                    data-column="amount"
                                 >
                                     {__('Amount', 'give')}
                                 </th>
-                                <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
+                                <th
+                                    scope="col"
+                                    aria-sort="none"
+                                    className={styles.tableColumnHeader}
+                                    data-column="goal"
+                                >
                                     {__('Goal', 'give')}
                                 </th>
-                                <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
+                                <th
+                                    scope="col"
+                                    aria-sort="none"
+                                    className={styles.tableColumnHeader}
+                                    data-column="donations"
+                                >
                                     {__('Donations', 'give')}
                                 </th>
-                                <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
+                                <th
+                                    scope="col"
+                                    aria-sort="none"
+                                    className={styles.tableColumnHeader}
+                                    data-column="revenue"
+                                >
                                     {__('Revenue', 'give')}
                                 </th>
-                                <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
+                                <th
+                                    scope="col"
+                                    aria-sort="none"
+                                    className={styles.tableColumnHeader}
+                                    data-column="shortcode"
+                                >
                                     {__('Shortcode', 'give')}
                                 </th>
-                                <th scope="col" aria-sort="ascending" className={styles.tableColumnHeader}>
+                                <th
+                                    scope="col"
+                                    aria-sort="ascending"
+                                    className={styles.tableColumnHeader}
+                                    data-column="date"
+                                >
                                     {__('Date', 'give')}
                                 </th>
-                                <th scope="col" aria-sort="none" className={styles.tableColumnHeader}>
+                                <th
+                                    scope="col"
+                                    aria-sort="none"
+                                    className={styles.tableColumnHeader}
+                                    data-column="status"
+                                >
                                     {__('Status', 'give')}
                                 </th>
                             </tr>

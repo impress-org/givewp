@@ -167,7 +167,13 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
                 </a>
             </td>
             <td className={styles.tableCell}>
-                <input type="text" aria-label={__('Copy shortcode', 'give')} readOnly value={form.shortcode} />
+                <input
+                    type="text"
+                    aria-label={__('Copy shortcode', 'give')}
+                    readOnly
+                    value={form.shortcode}
+                    className={styles.shortcode}
+                />
             </td>
             <td className={styles.tableCell}>{form.datetime}</td>
             <td className={styles.tableCell}>
