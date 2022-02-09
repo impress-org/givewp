@@ -80,8 +80,9 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     }
 
     /**
+     * @unreleased
+     *
      * @inheritDoc
-     * @unreleased Record gateway id and payment data in log.
      */
     public function handleCreatePayment(GatewayPaymentData $gatewayPaymentData)
     {
@@ -102,17 +103,14 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
                 'give'
             );
 
-            if ($exception instanceof PaymentGatewayException) {
-                $message = $exception->getMessage();
-            }
-
-            $this->handleResponse(response()->json($message));
+            $this->handleExceptionResponse($exception, $message);
         }
     }
 
     /**
+     * @unreleased
+     *
      * @inheritDoc
-     * @unreleased Record gateway id, payment data and subscription data in log.
      */
     public function handleCreateSubscription(GatewayPaymentData $paymentData, GatewaySubscriptionData $subscriptionData)
     {
@@ -134,11 +132,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
                 'give'
             );
 
-            if ($exception instanceof PaymentGatewayException) {
-                $message = $exception->getMessage();
-            }
-
-            $this->handleResponse(response()->json($message));
+            $this->handleExceptionResponse($exception, $message);
         }
     }
 
@@ -282,5 +276,30 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
                 'give-route-signature' => $nonce->toNonce()
             ])
         );
+    }
+
+    /**
+     * Handle response on basis of request mode when exception occurs:
+     * 1. Redirect to donation form if donation form submit.
+     * 2. Return json response if processing payment on ajax.
+     *
+     * @unreleased
+     *
+     * @param  Exception|PaymentGatewayException  $exception
+     * @param  string  $message
+     * @return void
+     */
+    private function handleExceptionResponse($exception, $message)
+    {
+        if ($exception instanceof PaymentGatewayException) {
+            $message = $exception->getMessage();
+        }
+
+        if (wp_doing_ajax()) {
+            $this->handleResponse(response()->json($message));
+        }
+
+        give_set_error('PaymentGatewayException', $message);
+        give_send_back_to_checkout();
     }
 }
