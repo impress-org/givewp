@@ -53,7 +53,14 @@ class DonationFormsRepository
             if (ctype_digit($search)) {
                 $query->where('ID', $search);
             } else {
-                $query->whereLike('post_title', $search);
+                $searchTerms = array_map('trim', explode(' ', $search));
+                foreach ($searchTerms as $term)
+                {
+                    if ($term)
+                    {
+                        $query->whereLike('post_title', $term);
+                    }
+                }
             }
         }
 
