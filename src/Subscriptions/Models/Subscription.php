@@ -5,6 +5,7 @@ namespace Give\Subscriptions\Models;
 use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
 use Give\Framework\Models\Model;
+use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
@@ -31,11 +32,11 @@ class Subscription extends Model
      */
     public $donorId;
     /**
-     * @var string
+     * @var SubscriptionPeriod
      */
     public $period;
     /**
-     * @var string
+     * @var int
      */
     public $frequency;
     /**
@@ -71,8 +72,8 @@ class Subscription extends Model
      * @unreleased
      *
      * @param  int  $amount
-     * @param  string  $period  // TODO: Make VO
-     * @param  string  $frequency  // TODO: Make VO
+     * @param  SubscriptionPeriod  $period
+     * @param  string  $frequency
      * @param  int  $donorId
      */
     public function __construct($amount, $period, $frequency, $donorId)

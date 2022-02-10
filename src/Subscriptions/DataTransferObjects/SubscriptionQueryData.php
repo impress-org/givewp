@@ -3,6 +3,7 @@
 namespace Give\Subscriptions\DataTransferObjects;
 
 use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
@@ -37,7 +38,7 @@ class SubscriptionQueryData
      */
     private $donorId;
     /**
-     * @var string
+     * @var SubscriptionPeriod
      */
     private $period;
     /**
@@ -76,23 +77,23 @@ class SubscriptionQueryData
      *
      * @return self
      */
-    public static function fromObject($object)
+    public static function fromObject($subscriptionQueryObject)
     {
         $self = new static();
 
-        $self->id = (int)$object->id;
-        $self->createdAt = $object->created;
-        $self->expiresAt = $object->expiration;
-        $self->donorId = (int)$object->customer_id;
-        $self->period = $object->period;
-        $self->frequency = (int)$object->frequency;
-        $self->times = (int)$object->bill_times;
-        $self->transactionId = $object->transaction_id;
-        $self->amount = (int)$object->recurring_amount;
-        $self->feeAmount = (int)$object->recurring_fee_amount;
-        $self->status = new SubscriptionStatus($object->status);
-        $self->gatewaySubscriptionId = $object->profile_id;
-        $self->notes = $object->notes;
+        $self->id = (int)$subscriptionQueryObject->id;
+        $self->createdAt = $subscriptionQueryObject->created;
+        $self->expiresAt = $subscriptionQueryObject->expiration;
+        $self->donorId = (int)$subscriptionQueryObject->customer_id;
+        $self->period = new SubscriptionPeriod($subscriptionQueryObject->period);
+        $self->frequency = (int)$subscriptionQueryObject->frequency;
+        $self->times = (int)$subscriptionQueryObject->bill_times;
+        $self->transactionId = $subscriptionQueryObject->transaction_id;
+        $self->amount = (int)$subscriptionQueryObject->recurring_amount;
+        $self->feeAmount = (int)$subscriptionQueryObject->recurring_fee_amount;
+        $self->status = new SubscriptionStatus($subscriptionQueryObject->status);
+        $self->gatewaySubscriptionId = $subscriptionQueryObject->profile_id;
+        $self->notes = $subscriptionQueryObject->notes;
 
         return $self;
     }
