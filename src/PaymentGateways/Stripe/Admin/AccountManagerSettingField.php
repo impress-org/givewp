@@ -284,9 +284,8 @@ class AccountManagerSettingField
                 <span class="give-stripe-label"><?php
                     esc_html_e('Account name:', 'give'); ?></span>
                 <span class="give-stripe-connect-data-field">
-						<?php
-                        echo esc_html($accountName); ?>
-					</span>
+                    <?php echo esc_html($accountName); ?>
+                </span>
             </div>
 
             <?php
