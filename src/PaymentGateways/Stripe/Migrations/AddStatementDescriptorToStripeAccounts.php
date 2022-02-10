@@ -47,4 +47,13 @@ class AddStatementDescriptorToStripeAccounts extends Migration
     {
         return strtotime('10-02-2022');
     }
+
+    /**
+     * @inerhitDoc
+     * @unreleased
+     */
+    public static function title()
+    {
+        return 'Add Statement Descriptor To StripeAccounts';
+    }
 }
