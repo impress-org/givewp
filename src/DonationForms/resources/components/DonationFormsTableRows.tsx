@@ -4,6 +4,15 @@ import cx from 'classnames';
 import {useDonationForms} from '../api';
 import {useEffect, useState} from 'react';
 
+const statusMap = {
+    publish: __('published', 'give'),
+    future: __('future', 'give'),
+    draft: __('draft', 'give'),
+    pending: __('pending', 'give'),
+    trash: __('trash', 'give'),
+    inherit: __('inherit', 'give'),
+}
+
 export default function DonationFormsTableRows({listParams, mutateForm, status}) {
     const {data, isValidating} = useDonationForms(listParams);
     const [deleted, setDeleted] = useState([]);
@@ -177,7 +186,9 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
             </td>
             <td className={styles.tableCell}>{form.datetime}</td>
             <td className={styles.tableCell}>
-                <div className={cx(styles.statusBadge, styles[form.status])}>{form.status}</div>
+                <div className={cx(styles.statusBadge, styles[form.status])}>
+                    {statusMap[form.status] || __('none', 'give')}
+                </div>
             </td>
         </tr>
     ));
