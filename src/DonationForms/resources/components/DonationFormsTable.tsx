@@ -148,7 +148,6 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                                     scope="col"
                                     aria-sort="none"
                                     className={styles.tableColumnHeader}
-                                    style={{textAlign: 'end'}}
                                     data-column="amount"
                                 >
                                     {__('Amount', 'give')}

@@ -119,7 +119,7 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
                     )}
                 </div>
             </th>
-            <td className={cx(styles.tableCell, styles.monetary)} style={{textAlign: 'end'}}>
+            <td className={cx(styles.tableCell, styles.monetary)}>
                 {form.amount}
             </td>
             <td className={styles.tableCell}>
