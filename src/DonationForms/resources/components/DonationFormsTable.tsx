@@ -269,6 +269,15 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                     </div>
                 </div>
             )}
+            <div className={styles.pageActions}>
+                <Pagination
+                    currentPage={page}
+                    totalPages={data ? data.totalPages : 1}
+                    disabled={!data}
+                    totalItems={data ? parseInt(data.totalForms) : -1}
+                    setPage={setPage}
+                />
+            </div>
         </>
     );
 }
