@@ -27,35 +27,6 @@ abstract class Endpoint implements RestRoute
     }
 
     /**
-     * @param  string  $param
-     *
-     * @return bool
-     */
-    public function validateStatus($param)
-    {
-        return in_array($param, [
-            'publish',
-            'future',
-            'draft',
-            'pending',
-            'trash',
-            'auto-draft',
-            'inherit',
-            'any'
-        ], true);
-    }
-
-    /**
-     * @param  string  $value
-     *
-     * @return string
-     */
-    public function sanitizeString($value)
-    {
-        return filter_var($value, FILTER_SANITIZE_STRING);
-    }
-
-    /**
      * Check user permissions
      * @return bool|WP_Error
      */

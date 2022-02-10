@@ -33,9 +33,12 @@ class FormActions extends Endpoint
                     'action' => [
                         'type'              => 'string',
                         'required'          => true,
-                        'validate_callback' => function ($action) {
-                            return in_array($action, ['trash', 'restore', 'delete', 'duplicate'], true);
-                        },
+                        'enum'              => [
+                            'trash',
+                            'restore',
+                            'delete',
+                            'duplicate'
+                        ],
                     ],
                     'ids'    => [
                         'type'              => 'string',

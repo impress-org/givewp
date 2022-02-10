@@ -31,27 +31,35 @@ class ListForms extends Endpoint
                 ],
                 'args' => [
                     'page'    => [
-                        'type'              => 'int',
+                        'type'              => 'integer',
                         'required'          => false,
-                        'validate_callback' => [$this, 'validateInt'],
-                        'default'           => 1
+                        'default'           => 1,
+                        'minimum'           => 1
                     ],
                     'perPage' => [
-                        'type'              => 'int',
+                        'type'              => 'integer',
                         'required'          => false,
-                        'validate_callback' => [$this, 'validateInt'],
-                        'default'           => 30
+                        'default'           => 30,
+                        'minimum'           => 1
                     ],
                     'status'  => [
                         'type'              => 'string',
                         'required'          => false,
-                        'validate_callback' => [$this, 'validateStatus'],
-                        'default'           => 'any'
+                        'default'           => 'any',
+                        'enum'              => [
+                            'publish',
+                            'future',
+                            'draft',
+                            'pending',
+                            'trash',
+                            'auto-draft',
+                            'inherit',
+                            'any'
+                        ]
                     ],
                     'search'  => [
                         'type'              => 'string',
-                        'required'          => false,
-                        'sanitize_callback' => [$this, 'sanitizeString']
+                        'required'          => false
                     ]
                 ],
             ]
