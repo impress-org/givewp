@@ -117,7 +117,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                 <div className={styles.initialLoad}>
                     <div className={cx(styles.tableGroup)}>
                         <Spinner size={'large'} />
-                        <h2>Loading donation forms</h2>
+                        <h2>{__('Loading donation forms', 'give')}</h2>
                     </div>
                 </div>
             ) : (

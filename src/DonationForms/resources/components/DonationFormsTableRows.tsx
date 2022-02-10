@@ -157,7 +157,7 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
                         {form.goal.progress >= 100 && (
                             <p>
                                 <span className={cx('dashicons dashicons-star-filled', styles.star)}></span>
-                                Goal achieved!
+                                {__('Goal achieved!', 'give')}
                             </p>
                         )}
                     </>
