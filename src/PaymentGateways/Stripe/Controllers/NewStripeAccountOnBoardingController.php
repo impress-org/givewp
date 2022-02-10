@@ -101,8 +101,8 @@ class NewStripeAccountOnBoardingController
             $this->settings->addNewStripeAccount($accountDetailModel);
 
             if ($requestedData->formId) {
-                if ( ! $this->settings->getDefaultStripeAccountSlugForDonationForm($requestedData->formId)) {
-                    $this->settings->setDefaultStripeAccountSlugForDonationForm(
+                if ( ! Settings::getDefaultStripeAccountSlugForDonationForm($requestedData->formId)) {
+                    Settings::setDefaultStripeAccountSlugForDonationForm(
                         $requestedData->formId,
                         $accountDetailModel->accountSlug
                     );
