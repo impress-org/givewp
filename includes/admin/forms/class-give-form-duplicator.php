@@ -37,6 +37,7 @@ class Give_Form_Duplicator {
                 'ping_status'    => $post_data->ping_status,
                 'post_author'    => $current_user->ID,
                 'post_content'   => $post_data->post_content,
+                'post_date_gmt'  => current_time('mysql', true),
                 'post_excerpt'   => $post_data->post_excerpt,
                 'post_name'      => $post_data->post_name,
                 'post_parent'    => $post_data->post_parent,
