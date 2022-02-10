@@ -79,7 +79,7 @@ class ListForms extends Endpoint
                 'donations' => give()->donationFormsRepository->getFormDonationsCount($form->id),
                 'amount'    => $this->getFormAmount($form),
                 'revenue'   => $this->formatAmount($form->revenue),
-                'datetime'  => $this->getDateTime($form->createdAt),
+                'datetime'  => $this->getDateTime($form->createdAt, $form->createdAtGmt),
                 'shortcode' => sprintf('[give_form id="%d"]', $form->id),
                 'permalink' => html_entity_decode(get_permalink($form->id)),
                 'edit'      => html_entity_decode(get_edit_post_link($form->id))
@@ -136,9 +136,16 @@ class ListForms extends Endpoint
      *
      * @return string
      */
-    private function getDateTime($date)
+    private function getDateTime($date, $dateGmt = false)
     {
-        $date      = date_create($date);
+        if((int)$dateGmt)
+        {
+            $date  = date_create($dateGmt, new \DateTimeZone(get_option('timezone_string')));
+        }
+        else
+        {
+            $date  = date_create($date);
+        }
         $timestamp = $date->getTimestamp();
         $time      = date_i18n(get_option('time_format'), $timestamp);
 

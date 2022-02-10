@@ -26,6 +26,7 @@ class DonationFormsRepository
                    ->select(
                        ['ID', 'id'],
                        ['post_date', 'createdAt'],
+                       ['post_date_gmt', 'createdAtGmt'],
                        ['post_status', 'status'],
                        ['post_title', 'title']
                    )
