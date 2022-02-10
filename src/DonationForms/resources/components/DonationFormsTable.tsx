@@ -109,7 +109,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                     currentPage={page}
                     totalPages={data ? data.totalPages : 1}
                     disabled={!data}
-                    totalItems={data ? data.totalForms : -1}
+                    totalItems={data ? parseInt(data.totalForms) : -1}
                     setPage={setPage}
                 />
             </div>
