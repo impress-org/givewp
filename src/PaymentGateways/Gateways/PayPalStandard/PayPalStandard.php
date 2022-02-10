@@ -1,17 +1,52 @@
 <?php
 
-namespace Give\PaymentGateways\PayPalStandard;
+namespace Give\PaymentGateways\Gateways\PayPalStandard;
 
-use Give\PaymentGateways\PaymentGateway;
+use Give\Framework\Http\Response\Types\RedirectResponse;
+use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
+use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Helpers\Call;
+use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
+use Give\PaymentGateways\Gateways\PayPalStandard\Actions\CreatePayPalStandardPaymentURL;
+use Give\PaymentGateways\Gateways\PayPalStandard\Actions\GenerateDonationFailedPageUrl;
+use Give\PaymentGateways\Gateways\PayPalStandard\Actions\GenerateDonationReceiptPageUrl;
+use Give\PaymentGateways\Gateways\PayPalStandard\Controllers\PayPalStandardWebhook;
+use Give\PaymentGateways\Gateways\PayPalStandard\Views\PayPalStandardBillingFields;
+use Give_Payment;
 
-class PayPalStandard implements PaymentGateway
+class PayPalStandard extends PaymentGateway
 {
+    public $routeMethods = [
+        'handleIpnNotification'
+    ];
+
+    public $secureRouteMethods = [
+        'handleSuccessPaymentReturn',
+        'handleFailedPaymentReturn'
+    ];
+
     /**
      * @inheritDoc
      */
-    public function getId()
+    public function getLegacyFormFieldMarkup($formId, $args)
+    {
+        return Call::invoke(PayPalStandardBillingFields::class, $formId);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function id()
     {
         return 'paypal';
+    }
+
+    /**
+     * @inerhitDoc
+     */
+    public function getId()
+    {
+        return self::id();
     }
 
     /**
@@ -32,6 +67,88 @@ class PayPalStandard implements PaymentGateway
 
     /**
      * @inheritDoc
+     */
+    public function createPayment(GatewayPaymentData $paymentData)
+    {
+        return new RedirectOffsite(
+            Call::invoke(
+                CreatePayPalStandardPaymentURL::class,
+                $paymentData,
+                $this->generateSecureGatewayRouteUrl(
+                    'handleSuccessPaymentReturn',
+                    ['donation-id' => $paymentData->donationId]
+                ),
+                $this->generateSecureGatewayRouteUrl(
+                    'handleFailedPaymentReturn',
+                    ['donation-id' => $paymentData->donationId]
+                ),
+                $this->generateGatewayRouteUrl(
+                    'handleIpnNotification'
+                )
+            )
+        );
+    }
+
+    /**
+     * Handle payment redirect after successful payment on PayPal standard.
+     *
+     * @unreleased
+     *
+     * @param array $queryParams Query params in gateway route. {
+     *
+     * @type string "donation-id" Donation id.
+     *
+     * }
+     *
+     * @return RedirectResponse
+     */
+    public function handleSuccessPaymentReturn($queryParams)
+    {
+        $donationId = (int)$queryParams['donation-id'];
+        $payment = new Give_Payment($donationId);
+        $payment->update_status('processing');
+
+        return new RedirectResponse(Call::invoke(GenerateDonationReceiptPageUrl::class, $donationId));
+    }
+
+    /**
+     * Handle payment redirect after failed payment on PayPal standard.
+     *
+     * @unreleased
+     *
+     * @param array $queryParams Query params in gateway route. {
+     *
+     * @type string "donation-id" Donation id.
+     *
+     * }
+     *
+     * @return RedirectResponse
+     */
+    public function handleFailedPaymentReturn($queryParams)
+    {
+        $donationId = (int)$queryParams['donation-id'];
+        $payment = new Give_Payment($donationId);
+        $payment->update_status('failed');
+
+        return new RedirectResponse(Call::invoke(GenerateDonationFailedPageUrl::class, $donationId));
+    }
+
+    /**
+     * Handle PayPal IPN notification.
+     *
+     * @unreleased
+     */
+    public function handleIpnNotification()
+    {
+        give(PayPalStandardWebhook::class)->handle();
+    }
+
+    /**
+     * This function returns payment gateway settings.
+     *
+     * @unreleased
+     *
+     * @return array
      */
     public function getOptions()
     {
@@ -116,12 +233,5 @@ class PayPalStandard implements PaymentGateway
          * @since 2.9.6
          */
         return apply_filters('give_get_settings_paypal_standard', $setting);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function boot()
-    {
     }
 }

@@ -5,6 +5,7 @@ namespace Give\Subscriptions\Models;
 use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
 use Give\Framework\Models\Model;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
  * Class Subscription
@@ -54,7 +55,7 @@ class Subscription extends Model
      */
     public $feeAmount;
     /**
-     * @var string
+     * @var SubscriptionStatus
      */
     public $status;
     /**
@@ -81,6 +82,7 @@ class Subscription extends Model
         $this->frequency = $frequency;
         $this->donorId = $donorId;
         $this->createdAt = $this->getCurrentDateTime();
+        $this->status = SubscriptionStatus::PENDING();
     }
 
     /**

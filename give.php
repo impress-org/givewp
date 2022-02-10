@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.18.0
+ * Version: 2.18.1
  * Requires at least: 4.9
  * Requires PHP: 5.6
  * Text Domain: give
@@ -53,6 +53,7 @@ use Give\Form\Templates;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\InPluginUpsells\ServiceProvider as InPluginUpsellsServiceProvider;
+use Give\LegacySubscriptions\ServiceProvider as LegacySubscriptionsServiceProvider;
 use Give\License\LicenseServiceProvider;
 use Give\Log\LogServiceProvider;
 use Give\MigrationLog\MigrationLogServiceProvider;
@@ -108,6 +109,7 @@ if (!defined('ABSPATH')) {
  * @property-read DonationRepository $donationRepository
  * @property-read DonorRepository $donorRepository
  * @property-read SubscriptionRepository $subscriptionRepository
+ * @property-read Give_Recurring_DB_Subscription_Meta $subscription_meta
  *
  * @mixin Container
  */
@@ -178,7 +180,8 @@ final class Give
         PaymentGatewaysServiceProvider::class,
         DonationServiceProvider::class,
         DonorsServiceProvider::class,
-        SubscriptionServiceProvider::class
+        SubscriptionServiceProvider::class,
+        LegacySubscriptionsServiceProvider::class
     ];
 
     /**
@@ -294,7 +297,7 @@ final class Give
     {
         // Plugin version.
         if ( ! defined('GIVE_VERSION')) {
-            define('GIVE_VERSION', '2.18.0');
+            define('GIVE_VERSION', '2.18.1');
         }
 
         // Plugin Root File.

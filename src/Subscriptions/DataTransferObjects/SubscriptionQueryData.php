@@ -3,6 +3,7 @@
 namespace Give\Subscriptions\DataTransferObjects;
 
 use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
  * Class SubscriptionObjectData
@@ -89,7 +90,7 @@ class SubscriptionQueryData
         $self->transactionId = $object->transaction_id;
         $self->amount = (int)$object->recurring_amount;
         $self->feeAmount = (int)$object->recurring_fee_amount;
-        $self->status = $object->status;
+        $self->status = new SubscriptionStatus($object->status);
         $self->gatewaySubscriptionId = $object->profile_id;
         $self->notes = $object->notes;
 
@@ -103,17 +104,13 @@ class SubscriptionQueryData
      */
     public function toSubscription()
     {
-        $subscription = new Subscription();
+        $subscription = new Subscription($this->amount, $this->period, $this->frequency, $this->donorId);
 
         $subscription->id = $this->id;
         $subscription->createdAt = $this->createdAt;
         $subscription->expiresAt = $this->expiresAt;
-        $subscription->donorId = $this->donorId;
-        $subscription->period = $this->period;
-        $subscription->frequency = $this->frequency;
         $subscription->times = $this->times;
         $subscription->transactionId = $this->transactionId;
-        $subscription->amount = $this->amount;
         $subscription->feeAmount = $this->feeAmount;
         $subscription->status = $this->status;
         $subscription->gatewaySubscriptionId = $this->gatewaySubscriptionId;

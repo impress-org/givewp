@@ -7,6 +7,8 @@ use Give\Framework\PaymentGateways\Routes\GatewayRoute;
 use Give\Helpers\Hooks;
 use Give\LegacyPaymentGateways\Actions\RegisterPaymentGatewaySettingsList;
 use Give\PaymentGateways\Actions\RegisterPaymentGateways;
+use Give\PaymentGateways\Gateways\PayPalStandard\Controllers\PayPalStandardWebhook;
+use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\WebhookRegister;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
@@ -24,6 +26,7 @@ class ServiceProvider implements ServiceProviderInterface
     public function register()
     {
         give()->singleton(PaymentGatewayRegister::class);
+        give()->singleton(WebhookRegister::class);
     }
 
     /**
