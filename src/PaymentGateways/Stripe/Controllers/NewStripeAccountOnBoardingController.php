@@ -94,6 +94,7 @@ class NewStripeAccountOnBoardingController
                     'test_secret_key' => $requestedData->stripeAccessTokenTest,
                     'live_publishable_key' => $requestedData->stripePublishableKey,
                     'test_publishable_key' => $requestedData->stripePublishableKeyTest,
+                    'statement_descriptor' => $account_details->settings->payments->statement_descriptor,
                 ]
             );
 
