@@ -9,6 +9,7 @@ use MyCLabs\Enum\Enum;
  *
  * @method static DAY()
  * @method static WEEK()
+ * @method static MONTH()
  * @method static QUARTER()
  * @method static YEAR()
  */
