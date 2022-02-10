@@ -55,7 +55,7 @@ const Pagination = ({currentPage, totalPages, totalItems = -1, disabled, setPage
                                    const cleanValue = e.target.value.replace(/[^0-9]/, '');
                                    const page = Number(cleanValue);
                                    setPageInput(cleanValue);
-                                   if (Number.isInteger(cleanValue) && totalPages >= page > 0) {
+                                   if (totalPages >= page && page > 0) {
                                        setPage(page);
                                    }
                                }}
