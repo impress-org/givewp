@@ -4,13 +4,14 @@ namespace Give\Subscriptions\Models;
 
 use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
+use Give\Framework\Models\Model;
 
 /**
  * Class Subscription
  *
  * @unreleased
  */
-class Subscription
+class Subscription extends Model
 {
     /**
      * @var int
@@ -64,6 +65,23 @@ class Subscription
      * @var array
      */
     public $notes;
+
+    /**
+     * @unreleased
+     *
+     * @param  int  $amount
+     * @param  string  $period  // TODO: Make VO
+     * @param  string  $frequency  // TODO: Make VO
+     * @param  int  $donorId
+     */
+    public function __construct($amount, $period, $frequency, $donorId)
+    {
+        $this->amount = $amount;
+        $this->period = $period;
+        $this->frequency = $frequency;
+        $this->donorId = $donorId;
+        $this->createdAt = $this->getCurrentDateTime();
+    }
 
     /**
      * Find subscription by ID

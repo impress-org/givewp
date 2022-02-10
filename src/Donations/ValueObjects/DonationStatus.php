@@ -5,7 +5,7 @@ namespace Give\Donations\ValueObjects;
 use MyCLabs\Enum\Enum;
 
 /**
- * @unreleased 
+ * @unreleased
  *
  * @method static PENDING()
  * @method static COMPLETE()
@@ -16,6 +16,7 @@ use MyCLabs\Enum\Enum;
  * @method static PREAPPROVAL()
  * @method static PROCESSING()
  * @method static REVOKED()
+ * @method static RENEWAL()
  */
 class DonationStatus extends Enum {
     const PENDING = 'pending';
@@ -27,4 +28,5 @@ class DonationStatus extends Enum {
     const ABANDONED = 'abandoned';
     const PREAPPROVAL = 'preapproval';
     const REVOKED = 'revoked';
+    const RENEWAL = 'give_subscription';
 }
