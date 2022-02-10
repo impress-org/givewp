@@ -367,19 +367,17 @@ class AccountManagerSettingField
                         esc_html_e('Connected', 'give'); ?>
 					</span>
                     <?php
-                    if ($stripeAccountSlug !== $this->defaultStripeAccountSlug || 1 === count(
-                            $this->stripeAccounts
-                        )) : ?>
+                    if (
+                        $stripeAccountSlug !== $this->defaultStripeAccountSlug ||
+                        1 === count($this->stripeAccounts)
+                    ) :?>
                         <span class="give-stripe-account-disconnect">
-							<a
-                                class="give-stripe-disconnect-account-btn"
-                                href="<?php
-                                echo $disconnectUrl; ?>"
-                            ><span class="dashicons dashicons-editor-unlink"></span><?php
-                                esc_html_e('Remove', 'give'); ?></a>
-						</span>
-                    <?php
-                    endif; ?>
+                            <a class="give-stripe-disconnect-account-btn" href="<?php echo $disconnectUrl; ?>">
+                                <span class="dashicons dashicons-editor-unlink"></span>
+                                <?php esc_html_e('Disconnect', 'give'); ?>
+                            </a>
+                        </span>
+                    <?php endif; ?>
                 </div>
             </div>
 
