@@ -21,6 +21,7 @@ use Give\PaymentGateways\Exceptions\InvalidPropertyName;
  * @property-read  string $livePublishableKey
  * @property-read  string $testSecretKey
  * @property-read  string $testPublishableKey
+ * @property-read  string $statementDescriptor
  */
 class AccountDetail
 {
@@ -37,6 +38,7 @@ class AccountDetail
         'live_publishable_key',
         'test_secret_key',
         'test_publishable_key',
+         'statement_descriptor',
     ];
 
     /**
@@ -82,6 +84,7 @@ class AccountDetail
             'test_secret_key' => $this->testSecretKey,
             'live_publishable_key' => $this->livePublishableKey,
             'test_publishable_key' => $this->testPublishableKey,
+            'statement_descriptor' => $this->statementDescriptor,
         ];
     }
 
