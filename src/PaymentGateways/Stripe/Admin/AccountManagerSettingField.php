@@ -325,6 +325,16 @@ class AccountManagerSettingField
                 </div>
             </div>
 
+            <div class="give-stripe-account-fieldset give-stripe-statment-desciptor">
+                <span class="give-stripe-label">
+                        <?php
+                        esc_html_e('Statement Descriptor:', 'give'); ?>
+                    </span>
+                <div class="give-stripe-connect-data-field">
+                    <?php echo $stripeAccount['statement_descriptor']; ?>
+                </div>
+            </div>
+
             <?php
             /**
              * Filter fire.
