@@ -121,16 +121,13 @@ class SummaryView
     }
 
     /**
-     * @since 2.17.0
+     * @unreleased - remove check for Give_Recurring
      * @return bool
+     * @since 2.17.0
      */
     protected function isRecurringEnabled()
     {
-        if (class_exists('\Give_Recurring')) {
-            return Give_Recurring()->is_recurring($this->formID);
-        }
-
-        return false;
+        return give_recurring_is_recurring($this->formID);
     }
 
     /**
