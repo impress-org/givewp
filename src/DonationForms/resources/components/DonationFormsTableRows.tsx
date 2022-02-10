@@ -171,7 +171,7 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
                 </a>
             </td>
             <td className={styles.tableCell}>
-                <a href={`edit.php?post_type=give_forms&page=give-reports&tab=forms&form-id=${form.id}`}>
+                <a href={`edit.php?post_type=give_forms&page=give-reports&tab=forms&legacy=true&form-id=${form.id}`}>
                     {form.revenue}
                 </a>
             </td>
