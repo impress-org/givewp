@@ -20,14 +20,12 @@ class CreateCheckoutSession extends WorkflowAction
      * @param GatewayPaymentData $paymentData
      * @param DonationSummary $donationSummary
      * @param Give_Stripe_Customer $giveStripeCustomer
-     * @param PaymentMethod $paymentMethod
      * @return void
      */
     public function __invoke(
         GatewayPaymentData $paymentData,
         DonationSummary $donationSummary,
-        Give_Stripe_Customer $giveStripeCustomer,
-        PaymentMethod $paymentMethod
+        Give_Stripe_Customer $giveStripeCustomer
     )
     {
 
