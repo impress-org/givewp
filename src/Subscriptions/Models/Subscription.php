@@ -20,6 +20,10 @@ class Subscription extends Model
      */
     public $id;
     /**
+     * @var int
+     */
+    public $donationFormId;
+    /**
      * @var string
      */
     public $createdAt;
@@ -42,7 +46,7 @@ class Subscription extends Model
     /**
      * @var int
      */
-    public $times;
+    public $installments;
     /**
      * @var string
      */

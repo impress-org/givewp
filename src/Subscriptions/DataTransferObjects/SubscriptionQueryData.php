@@ -48,7 +48,7 @@ class SubscriptionQueryData
     /**
      * @var int
      */
-    private $times;
+    private $installments;
     /**
      * @var string
      */
@@ -69,6 +69,10 @@ class SubscriptionQueryData
      * @var string[]
      */
     private $notes;
+    /**
+     * @var int
+     */
+    private $donationFormId;
 
     /**
      * Convert data from Subscription Object to Subscription Model
@@ -87,13 +91,14 @@ class SubscriptionQueryData
         $self->donorId = (int)$subscriptionQueryObject->customer_id;
         $self->period = new SubscriptionPeriod($subscriptionQueryObject->period);
         $self->frequency = (int)$subscriptionQueryObject->frequency;
-        $self->times = (int)$subscriptionQueryObject->bill_times;
+        $self->installments = (int)$subscriptionQueryObject->bill_times;
         $self->transactionId = $subscriptionQueryObject->transaction_id;
         $self->amount = (int)$subscriptionQueryObject->recurring_amount;
         $self->feeAmount = (int)$subscriptionQueryObject->recurring_fee_amount;
         $self->status = new SubscriptionStatus($subscriptionQueryObject->status);
         $self->gatewaySubscriptionId = $subscriptionQueryObject->profile_id;
         $self->notes = $subscriptionQueryObject->notes;
+        $self->donationFormId = (int)$subscriptionQueryObject->product_id;
 
         return $self;
     }
@@ -110,12 +115,13 @@ class SubscriptionQueryData
         $subscription->id = $this->id;
         $subscription->createdAt = $this->createdAt;
         $subscription->expiresAt = $this->expiresAt;
-        $subscription->times = $this->times;
+        $subscription->installments = $this->installments;
         $subscription->transactionId = $this->transactionId;
         $subscription->feeAmount = $this->feeAmount;
         $subscription->status = $this->status;
         $subscription->gatewaySubscriptionId = $this->gatewaySubscriptionId;
         $subscription->notes = $this->notes;
+        $subscription->donationFormId = $this->donationFormId;
 
         return $subscription;
     }

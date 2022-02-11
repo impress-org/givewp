@@ -54,7 +54,7 @@ class TestSubscription extends TestCase
         $this->assertInstanceOf(DateTime::class, $subscription->createdAt);
     }
 
-    /**
+      /**
      * @unreleased
      *
      * @return Subscription
