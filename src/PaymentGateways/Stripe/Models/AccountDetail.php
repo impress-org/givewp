@@ -38,7 +38,7 @@ class AccountDetail
         'live_publishable_key',
         'test_secret_key',
         'test_publishable_key',
-         'statement_descriptor',
+        'statement_descriptor',
     ];
 
     /**
@@ -98,7 +98,7 @@ class AccountDetail
      */
     public function __get($key)
     {
-        if ( ! array_key_exists($key, $this->propertiesArgs)) {
+        if (!array_key_exists($key, $this->propertiesArgs)) {
             throw new InvalidPropertyName(
                 sprintf(
                     '$1%s property does not exist in %2$s class',
