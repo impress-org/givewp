@@ -11,7 +11,7 @@ trait CheckOfferStatus
      */
     protected function displayModal()
     {
-        if ( !$this->displayOffer() ) {
+        if (!$this->displayOffer()) {
             return false;
         }
 
@@ -39,14 +39,29 @@ trait CheckOfferStatus
         return GIVE_VERSION !== $version;
     }
 
-    public function displayOffer()
+    protected function displayOffer()
     {
         // Only display the modal if the user is an admin
-        if ( ! current_user_can('manage_options')) {
+        if (!current_user_can('manage_options')) {
             return false;
         }
 
         $licenses = get_option('give_licenses');
-        return empty($licenses);
+        if (!empty($licenses)) {
+            return false;
+        }
+
+        // Only display if the user did not dismiss or subscribe
+        $status = get_option('give_free_addon_modal_displayed');
+
+        if (empty($status)) {
+            return true;
+        }
+
+        // The value will be something like rejected:1:1.18.0. The first number is the number of versions the modal has appeared
+        // in, and the second number is the version number of the plugin at the time of last display.
+        list($status, $iteration, $version) = explode(':', $status);
+
+        return !in_array($status, ['subscribed', 'prevent'], true);
     }
 }

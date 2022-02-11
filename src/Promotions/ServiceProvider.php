@@ -6,6 +6,7 @@ use Give\Helpers\Hooks;
 use Give\Promotions\FreeAddonModal\Controllers\DisplaySettingsButton;
 use Give\Promotions\FreeAddonModal\Controllers\EnqueueModal;
 use Give\Promotions\FreeAddonModal\Controllers\CompleteRestApiEndpoint;
+use Give\Promotions\FreeAddonModal\Controllers\PreventFreshInstallPromotion;
 use Give\Promotions\InPluginUpsells\AddonsAdminPage;
 use Give\Promotions\InPluginUpsells\HideSaleBannerRoute;
 use Give\Promotions\InPluginUpsells\RecurringDonationsTab;
@@ -64,6 +65,7 @@ class ServiceProvider implements ServiceProviderContract
      */
     private function bootFreeAddonModal()
     {
+        Hooks::addAction('admin_init', PreventFreshInstallPromotion::class);
         Hooks::addAction('admin_enqueue_scripts', EnqueueModal::class, 'enqueueScripts');
         Hooks::addAction('rest_api_init', CompleteRestApiEndpoint::class);
         Hooks::addAction('give_settings_page_header', DisplaySettingsButton::class);
