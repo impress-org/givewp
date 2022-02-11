@@ -336,12 +336,14 @@ class AccountManagerSettingField
                 <span class="give-stripe-label"><?php esc_html_e('Statement Descriptor:', 'give'); ?></span>
                 <div class="give-stripe-connect-data-field">
                     <?php echo $stripeAccount['statement_descriptor']; ?>
-                    <span class="give-stripe-edit-statement-descriptor">
-                        <a class="give-stripe-edit-statement-descriptor-btn" href="#">
-                            <span class="dashicons dashicons-edit-page"></span>
-                            <?php esc_html_e('Edit', 'give'); ?>
-                        </a
-                    </span>
+                    <?php if( $this->isGlobalSettingPage() ):  ?>
+                        <span class="give-stripe-edit-statement-descriptor">
+                            <a class="give-stripe-edit-statement-descriptor-btn" href="#">
+                                <span class="dashicons dashicons-edit-page"></span>
+                                <?php esc_html_e('Edit', 'give'); ?>
+                            </a
+                        </span>
+                    <?php endif; ?>
                 </div>
             </div>
 
