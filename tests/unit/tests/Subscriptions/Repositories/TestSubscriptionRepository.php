@@ -71,6 +71,39 @@ class TestSubscriptionRepository extends Give_Unit_Test_Case
     /**
      * @unreleased
      *
+     * @return void
+     * @throws Exception
+     */
+    public function testInsertShouldAddSubscriptionToDatabase()
+    {
+        $subscriptionInstance = $this->createSubscriptionInstance();
+        $repository = new SubscriptionRepository();
+
+        /** @var Subscription $insertedSubscription */
+        $insertedSubscription = $repository->insert($subscriptionInstance);
+
+        $subscriptionQuery = DB::table('give_subscriptions')
+            ->where('id', $insertedSubscription->id)
+            ->get();
+
+        $this->assertInstanceOf(Subscription::class, $insertedSubscription);
+        $this->assertEquals($this->toDateTime($subscriptionQuery->created), $insertedSubscription->createdAt);
+        $this->assertEquals($subscriptionQuery->customer_id, $insertedSubscription->donorId);
+        $this->assertEquals($subscriptionQuery->profile_id, $insertedSubscription->gatewaySubscriptionId);
+        $this->assertEquals($subscriptionQuery->product_id, $insertedSubscription->donationFormId);
+        $this->assertEquals($subscriptionQuery->period, $insertedSubscription->period->getValue());
+        $this->assertEquals($subscriptionQuery->frequency, $insertedSubscription->frequency);
+        $this->assertEquals($subscriptionQuery->initial_amount, $insertedSubscription->amount);
+        $this->assertEquals($subscriptionQuery->recurring_amount, $insertedSubscription->amount);
+        $this->assertEquals($subscriptionQuery->recurring_fee_amount, $insertedSubscription->feeAmount);
+        $this->assertEquals($subscriptionQuery->bill_times, $insertedSubscription->installments);
+        $this->assertEquals($subscriptionQuery->transaction_id, $insertedSubscription->transactionId);
+        $this->assertEquals($subscriptionQuery->status, $insertedSubscription->status->getValue());
+    }
+
+    /**
+     * @unreleased
+     *
      * @return Subscription
      */
     private function createSubscriptionInstance()

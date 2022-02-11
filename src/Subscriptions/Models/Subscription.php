@@ -2,6 +2,7 @@
 
 namespace Give\Subscriptions\Models;
 
+use DateTime;
 use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
 use Give\Framework\Models\Model;
@@ -24,7 +25,7 @@ class Subscription extends Model
      */
     public $donationFormId;
     /**
-     * @var string
+     * @var DateTime
      */
     public $createdAt;
     /**
