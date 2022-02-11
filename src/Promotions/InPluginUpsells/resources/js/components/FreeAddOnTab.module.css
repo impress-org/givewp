@@ -50,7 +50,7 @@
 
 .nameAndFlag {
     display: flex;
-    gap: 2rem;
+    gap: 1rem;
     align-items: center;
     margin-bottom: 0.875rem;
 }
@@ -128,6 +128,7 @@
 .formCard input[type="submit"] {
     padding: 1rem 0;
     width: 100%;
+    text-transform: uppercase;
 }
 
 @media screen and (max-width: 64rem) {
