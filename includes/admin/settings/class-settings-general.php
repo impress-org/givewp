@@ -564,6 +564,8 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 			<?php
 		}
 
+
+
 		/**
 		 * Render give_unlock_all_settings field type
 		 *
