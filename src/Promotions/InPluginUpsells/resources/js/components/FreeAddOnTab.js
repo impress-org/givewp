@@ -9,21 +9,6 @@ import {Hero} from './Hero';
 import {Card} from './Card';
 import {transformStrong} from '../utils';
 
-const highlights = [
-    {
-        icon: 'https://givewp.com/downloads/upsells/images/time-icon.svg',
-        text: 'Flexible Delivery Times',
-    },
-    {
-        icon: 'https://givewp.com/downloads/upsells/images/trend-icon.svg',
-        text: 'Pack your Reports with Stats',
-    },
-    {
-        icon: 'https://givewp.com/downloads/upsells/images/people-icon.svg',
-        text: 'Customize the Content & Recipients',
-    },
-];
-
 const {heading, description, reports, form} = window.GiveAddons.freeAddon;
 const {siteUrl, siteName} = window.GiveAddons;
 
