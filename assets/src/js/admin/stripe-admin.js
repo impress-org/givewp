@@ -274,7 +274,22 @@ window.addEventListener( 'DOMContentLoaded', function() {
                             container.style.display = containerDisplayStylePropertyValue;
 
                             e.preventDefault();
-                        })
+                        });
+
+                    saveButton.addEventListener(
+                        'click',
+                        (e) => {
+                            e.preventDefault();
+
+                            if( ! inputField.value ) {
+                                new Give.modal.GiveErrorAlert({
+                                    modalContent:{
+                                        title: __( 'Invalid Stripe Statement Descriptor', 'give'),
+                                        desc: __( 'Please enter a valid stripe statement descriptor.', 'give'),
+                                    }
+                                }).render();
+                            }
+                        });
 
                     function getStripeStatementDescriptorText() {
                         return container.childNodes[0].nodeValue.trim()
