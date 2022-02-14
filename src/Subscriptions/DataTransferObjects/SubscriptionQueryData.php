@@ -66,10 +66,6 @@ class SubscriptionQueryData
      */
     private $gatewaySubscriptionId;
     /**
-     * @var string[]
-     */
-    private $notes;
-    /**
      * @var int
      */
     private $donationFormId;
@@ -97,7 +93,6 @@ class SubscriptionQueryData
         $self->feeAmount = (int)$subscriptionQueryObject->recurring_fee_amount;
         $self->status = new SubscriptionStatus($subscriptionQueryObject->status);
         $self->gatewaySubscriptionId = $subscriptionQueryObject->profile_id;
-        $self->notes = $subscriptionQueryObject->notes;
         $self->donationFormId = (int)$subscriptionQueryObject->product_id;
 
         return $self;
@@ -120,7 +115,6 @@ class SubscriptionQueryData
         $subscription->feeAmount = $this->feeAmount;
         $subscription->status = $this->status;
         $subscription->gatewaySubscriptionId = $this->gatewaySubscriptionId;
-        $subscription->notes = $this->notes;
         $subscription->donationFormId = $this->donationFormId;
 
         return $subscription;

@@ -68,10 +68,6 @@ class Subscription extends Model
      * @var string
      */
     public $gatewaySubscriptionId;
-    /**
-     * @var array
-     */
-    public $notes;
 
     /**
      * @unreleased
