@@ -31,6 +31,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const perFormOptions = Array.from( document.querySelectorAll( 'input[name="give_stripe_per_form_accounts"]' ) );
 	const perFormAccount = document.querySelector( '.give-stripe-manage-account-options' );
 	const creditCardFieldFormatOptions = document.querySelectorAll('#give-settings-section-group-credit-card .give-stripe-cc-option-field')
+	const editStripeStatementDescriptor = document.querySelectorAll('#give-settings-section-group-accounts .give-stripe-edit-statement-descriptor-btn')
 
 	// These fn calls will JSON format the text areas for Stripe fields stylings under Advanced tab.
 	giveStripeJsonFormattedTextarea( stripeStylesBase );
@@ -232,6 +233,55 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			})
 		})
 	}
+
+    if (editStripeStatementDescriptor.length) {
+        let formTemplate = `
+            <input type="text">
+            <button class="button-primary">${__('Save', 'give')}</button>
+            <button class="button-secondary">${__('Cancel', 'give')}</button>`;
+
+        editStripeStatementDescriptor.forEach((actionLink) => {
+            actionLink.addEventListener(
+                'click',
+                (e) => {
+                    e.preventDefault();
+
+                    let container = actionLink.closest('.give-stripe-connect-data-field'),
+                        containerDisplayStylePropertyValue = container.style.display;
+
+                    // Enable statement descriptor editing mode.
+                    container.insertAdjacentHTML('afterend', formTemplate);
+                    container.style.display = 'none';
+
+                    let inputField = container.nextElementSibling,
+                        saveButton = inputField.nextElementSibling,
+                        cancelButton = saveButton.nextElementSibling;
+
+                    // Add style.
+                    inputField.value = getStripeStatementDescriptorText();
+                    inputField.style.display = 'block';
+                    inputField.style.marginBottom = '10px';
+                    saveButton.style.marginRight = '5px';
+
+                    // Add events.
+                    cancelButton.addEventListener(
+                        'click',
+                        (e) => {
+                            inputField.remove();
+                            saveButton.remove();
+                            cancelButton.remove();
+
+                            container.style.display = containerDisplayStylePropertyValue;
+
+                            e.preventDefault();
+                        })
+
+                    function getStripeStatementDescriptorText() {
+                        return container.childNodes[0].nodeValue.trim()
+                    }
+                })
+        })
+    }
 } );
 
 /**
