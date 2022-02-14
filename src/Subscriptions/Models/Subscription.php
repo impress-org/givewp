@@ -29,7 +29,7 @@ class Subscription extends Model
      */
     public $createdAt;
     /**
-     * @var string
+     * @var DateTime
      */
     public $expiresAt;
     /**

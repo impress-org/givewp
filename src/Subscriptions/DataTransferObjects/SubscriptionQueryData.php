@@ -2,6 +2,7 @@
 
 namespace Give\Subscriptions\DataTransferObjects;
 
+use DateTime;
 use Give\Framework\Models\Traits\InteractsWithTime;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
@@ -21,21 +22,17 @@ class SubscriptionQueryData
      */
     private $id;
     /**
-     * @var string
+     * @var DateTime
      */
     private $createdAt;
     /**
-     * @var string
+     * @var DateTime
      */
-    private $updatedAt;
+    private $expiresAt;
     /**
      * @var string
      */
     private $status;
-    /**
-     * @var string
-     */
-    private $expiresAt;
     /**
      * @var int
      */
@@ -90,7 +87,7 @@ class SubscriptionQueryData
 
         $self->id = (int)$subscriptionQueryObject->id;
         $self->createdAt = $self->toDateTime($subscriptionQueryObject->created);
-        $self->expiresAt = $subscriptionQueryObject->expiration;
+        $self->expiresAt = $self->toDateTime($subscriptionQueryObject->expiration);
         $self->donorId = (int)$subscriptionQueryObject->customer_id;
         $self->period = new SubscriptionPeriod($subscriptionQueryObject->period);
         $self->frequency = (int)$subscriptionQueryObject->frequency;

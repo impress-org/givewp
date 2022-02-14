@@ -88,6 +88,7 @@ class TestSubscriptionRepository extends Give_Unit_Test_Case
 
         $this->assertInstanceOf(Subscription::class, $insertedSubscription);
         $this->assertEquals($this->toDateTime($subscriptionQuery->created), $insertedSubscription->createdAt);
+        $this->assertEquals($this->toDateTime($subscriptionQuery->expiration), $insertedSubscription->expiresAt);
         $this->assertEquals($subscriptionQuery->customer_id, $insertedSubscription->donorId);
         $this->assertEquals($subscriptionQuery->profile_id, $insertedSubscription->gatewaySubscriptionId);
         $this->assertEquals($subscriptionQuery->product_id, $insertedSubscription->donationFormId);
