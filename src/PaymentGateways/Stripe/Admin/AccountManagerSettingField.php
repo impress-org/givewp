@@ -258,10 +258,10 @@ class AccountManagerSettingField
 
         $editStatementDescriptorUrl = add_query_arg(
             [
-                'action' => 'disconnect_stripe_account',
+                'action' => 'edit_stripe_account_statement_descriptor',
                 'account_slug' => $stripeAccountSlug,
             ],
-            wp_nonce_url(admin_url('admin-ajax.php'), 'give_edit_statement_descriptor_stripe_account_' . $stripeAccountSlug)
+            admin_url('admin-ajax.php')
         );
 
         $classes = $stripeAccountSlug === $this->defaultStripeAccountSlug ? ' give-stripe-boxshadow-option-wrap__selected' : '';
@@ -333,10 +333,15 @@ class AccountManagerSettingField
             </div>
 
             <div class="give-stripe-account-fieldset give-stripe-statement-descriptor">
-                <span class="give-stripe-label"><?php esc_html_e('Statement Descriptor:', 'give'); ?></span>
-                <div class="give-stripe-connect-data-field">
+                <span class="give-stripe-label">
+                    <?php esc_html_e('Statement Descriptor:', 'give'); ?>
+                </span>
+                <div
+                    class="give-stripe-connect-data-field"
+                    data-action-url="<?php echo $editStatementDescriptorUrl; ?>"
+                >
                     <?php echo $stripeAccount['statement_descriptor']; ?>
-                    <?php if( $this->isGlobalSettingPage() ):  ?>
+                    <?php if ($this->isGlobalSettingPage()): ?>
                         <span class="give-stripe-edit-statement-descriptor">
                             <a class="give-stripe-edit-statement-descriptor-btn" href="#">
                                 <span class="dashicons dashicons-edit-page"></span>
