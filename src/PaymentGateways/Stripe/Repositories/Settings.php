@@ -7,6 +7,8 @@ use Give\PaymentGateways\Stripe\Exceptions\DuplicateStripeAccountName;
 use Give\PaymentGateways\Stripe\Exceptions\StripeAccountAlreadyConnected;
 use Give\PaymentGateways\Stripe\Models\AccountDetail as AccountDetailModel;
 
+use Stripe\Account;
+
 use function esc_html__;
 use function give_stripe_get_all_accounts;
 use function give_update_option;
@@ -26,6 +28,22 @@ class Settings
     public function getAllStripeAccounts()
     {
         return give_stripe_get_all_accounts();
+    }
+
+    /**
+     * @param string $stripeAccountId
+     *
+     * @return AccountDetailModel|null
+     * @throws InvalidPropertyName
+     */
+    public function getStripeAccountById($stripeAccountId)
+    {
+        $stripeAccounts = give_stripe_get_all_accounts();
+
+        if (array_key_exists($stripeAccountId, $stripeAccounts)) {
+            return AccountDetailModel::fromArray($stripeAccounts[$stripeAccountId]);
+        }
+        return null;
     }
 
     /**
