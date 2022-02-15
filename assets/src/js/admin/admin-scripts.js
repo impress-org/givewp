@@ -2987,19 +2987,6 @@ const gravatar = require( 'gravatar' );
                     } );
 
                     // Rebuild the dropdown
-                    dropdown.innerHTML = '';
-                    orderedOptions.map( option => {
-                        const newOption = document.createElement('option')
-                        newOption.value = option.value;
-                        newOption.textContent = option.text;
-                        if ( option.selected ) {
-                            newOption.setAttribute('selected', true);
-                        }
-
-                        dropdown.add(newOption)
-                    } );
-
-                    // Rebuild the dropdown
                     GiveMultiSelectOptions.rebuildDropDown(dropdown, orderedOptions);
 
                     $(this).trigger('chosen:updated')
