@@ -217,9 +217,13 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 			'number'     => 30,
 			'paged'      => $this->step,
 			'status'     => 'publish',
-			'meta_key'   => '_give_payment_form_id',
-			'meta_value' => absint( $this->form ),
 		];
+
+        if( !empty( $this->form ) )
+        {
+            $args['meta_key'] = '_give_payment_form_id';
+            $args['meta_value'] = absint( $this->form );
+        }
 
 		// Check for date option filter.
 		if ( ! empty( $this->data['donor_export_start_date'] ) || ! empty( $this->data['donor_export_end_date'] ) ) {
@@ -262,9 +266,10 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 		$i = 0;
 
 		$data             = [];
-		$cached_donor_ids = Give_Cache::get( $this->query_id, true );
+		$cached_donor_ids = !empty( $this->query_id ) ? Give_Cache::get( $this->query_id, true ) : [];
 
-		if ( ! empty( $this->form ) ) {
+		if ( ! empty( $this->form ) || ! empty( $this->data['donor_export_start_date'] )
+        				|| ! empty( $this->data['donor_export_end_date'] ) ) {
 			$args = $this->get_donation_query_args();
 
 			$payments_query = new Give_Payments_Query( $args );
@@ -308,7 +313,10 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 					}
 
 					// Cache donor ids only if admin export donor for specific form.
-					$this->cache_donor_ids();
+                    if( ! empty( $this->form ) )
+                    {
+                        $this->cache_donor_ids();
+                    }
 				}
 			} // End if().
 		} else {
@@ -320,28 +328,6 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 				'number' => 30,
 				'offset' => $offset,
 			];
-
-			// Check for date option filter.
-			if (
-				! empty( $this->data['donor_export_start_date'] )
-				|| ! empty( $this->data['donor_export_end_date'] )
-			) {
-
-				// Start date.
-				$start_date = ! empty( $this->data['donor_export_start_date'] ) ? sanitize_text_field( $this->data['donor_export_start_date'] ) : '';
-				if ( ! empty( $start_date ) ) {
-					$start_date            = date( 'Y-m-d', strtotime( $start_date ) );
-					$args['date']['start'] = $start_date;
-				}
-
-				// End date.
-				$end_date            = ! empty( $this->data['donor_export_end_date'] )
-					? date( 'Y-m-d', strtotime( sanitize_text_field( $this->data['donor_export_end_date'] ) ) )
-					: date( 'Y-m-d', current_time( 'timestamp' ) );
-				$end_date            = "{$end_date} 23:59:59";
-				$args['date']['end'] = $end_date;
-
-			}
 
 			$donors = Give()->donors->get_donors( $args );
 
