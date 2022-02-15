@@ -39,6 +39,12 @@ class UpdateStatementDescriptorAjaxRequestController
             wp_send_json_error(['errorCode' => 'INVALID_STRIPE_ACCOUNT_ID']);
         }
 
+        if( $stripeStatementDescriptor === $stripeAccount->statementDescriptor ) {
+            wp_send_json_success([
+                'newStatementDescriptor' => $stripeStatementDescriptor
+            ]);
+        }
+
         $newStripeAccount = AccountDetail::fromArray(
             array_merge(
                 $stripeAccount->toArray(),
