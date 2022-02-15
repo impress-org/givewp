@@ -9,6 +9,7 @@ use Give\Helpers\Hooks;
 use Give\LegacyPaymentGateways\Actions\RegisterPaymentGatewaySettingsList;
 use Give\PaymentGateways\Actions\RegisterPaymentGateways;
 use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\WebhookRegister;
+use Give\PaymentGateways\Stripe\Controllers\UpdateStatementDescriptorAjaxRequestController;
 use Give\PaymentGateways\Stripe\Migrations\AddStatementDescriptorToStripeAccounts;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -38,6 +39,7 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addFilter('give_register_gateway', RegisterPaymentGateways::class);
         Hooks::addFilter('give_payment_gateways', RegisterPaymentGatewaySettingsList::class);
         Hooks::addAction('template_redirect', GatewayRoute::class);
+        Hooks::addAction('wp_ajax_edit_stripe_account_statement_descriptor', UpdateStatementDescriptorAjaxRequestController::class);
 
         give(MigrationsRegister::class)
             ->addMigration(AddStatementDescriptorToStripeAccounts::class);
