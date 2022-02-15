@@ -169,7 +169,8 @@ final class Give
         Give\Email\ServiceProvider::class,
         DonationSummaryServiceProvider::class,
         PaymentGatewaysServiceProvider::class,
-        LegacySubscriptionsServiceProvider::class
+        LegacySubscriptionsServiceProvider::class,
+        Give\Exports\ServiceProvider::class,
     ];
 
     /**

@@ -165,6 +165,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 						</td>
 					</tr>
 
+                    <?php
+                    /**
+                     * @unreleased
+                     */
+                    do_action( 'give_tools_tab_export_after_donors' );
+                    ?>
+
 					<tr class="give-export-core-settings">
 						<td scope="row" class="row-title">
 							<h3>
