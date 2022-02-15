@@ -67,7 +67,6 @@ class UpdateStatementDescriptorAjaxRequestController
         $statementDescriptor = str_replace($unsupportedCharacters, '', $statementDescriptor);
         $statementDescriptor = give_clean($statementDescriptor);
 
-
         return $minLength > strlen($statementDescriptor) ? '' : give_clean($statementDescriptor);
     }
 }
