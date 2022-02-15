@@ -24,7 +24,7 @@ class UpdateStatementDescriptorAjaxRequestController
 
         $settingRepository = give(Settings::class);
         $stripeAccountId = give_clean($_GET['account_slug']);
-        $stripeStatementDescriptor = give_clean($_GET['statement-descriptor']);
+        $stripeStatementDescriptor = $this->getStatementDescriptor();
 
         if (empty($stripeStatementDescriptor)) {
             wp_send_json_error(['errorCode' => 'INVALID_STRIPE_STATEMENT_DESCRIPTOR']);
@@ -48,5 +48,26 @@ class UpdateStatementDescriptorAjaxRequestController
         }
 
         wp_send_json_error();
+    }
+
+    /**
+     * Check Stripe statement descriptor requirements: https://stripe.com/docs/statement-descriptors#requirements
+     *
+     * @unreleased
+     * @return string
+     */
+    private function getStatementDescriptor()
+    {
+        $maxLength = 22;
+        $minLength = 5;
+        $statementDescriptor = urldecode($_GET['statement-descriptor']);
+
+        $unsupportedCharacters = ['<', '>', '"', '\\', '\'', '*']; // Reserve keywords.
+        $statementDescriptor = mb_substr($statementDescriptor, 0, $maxLength);
+        $statementDescriptor = str_replace($unsupportedCharacters, '', $statementDescriptor);
+        $statementDescriptor = give_clean($statementDescriptor);
+
+
+        return $minLength > strlen($statementDescriptor) ? '' : give_clean($statementDescriptor);
     }
 }
