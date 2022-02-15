@@ -10,6 +10,8 @@
  * @license    https://opensource.org/licenses/gpl-license GNU Public License
  */
 
+use Give\Log\Log;
+use Give\PaymentGateways\Stripe\Models\AccountDetail;
 use Give\ValueObjects\Money;
 
 // Exit, if accessed directly.
@@ -414,17 +416,24 @@ function give_stripe_is_zero_decimal_currency() {
  *
  * @return mixed
  */
-function give_stripe_get_statement_descriptor( $data = [] ) {
+function give_stripe_get_statement_descriptor($data = [])
+{
+    try {
+        $stripeAccountFormPayment = AccountDetail::fromArray(give_stripe_get_connected_account_options());
+        $text = $stripeAccountFormPayment->statementDescriptor;
+    } catch (Exception $e) {
+        $text = get_bloginfo('name');
 
-	$descriptor_option = give_get_option( 'stripe_statement_descriptor', get_bloginfo( 'name' ) );
+        Log::error(
+            'Stripe Statement Descriptor Error',
+            [
+                'Error Message' => $e->getMessage(),
+                'Data' => $data
+            ]
+        );
+    }
 
-	// Clean the statement descriptor.
-	$unsupported_characters = [ '<', '>', '"', '\'' ];
-	$statement_descriptor   = mb_substr( $descriptor_option, 0, 22 );
-	$statement_descriptor   = str_replace( $unsupported_characters, '', $statement_descriptor );
-
-	return apply_filters( 'give_stripe_statement_descriptor', $statement_descriptor, $data );
-
+    return apply_filters('give_stripe_statement_descriptor', $text, $data);
 }
 
 /**
