@@ -237,7 +237,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
     if (editStripeStatementDescriptor.length) {
         let formTemplate = `
             <input type="text">
-            <button class="button-primary">${__('Save', 'give')}</button>
+            <button class="button-primary" disabled>${__('Save', 'give')}</button>
             <button class="button-secondary">${__('Cancel', 'give')}</button>`;
 
         editStripeStatementDescriptor.forEach((actionLink) => {
@@ -264,22 +264,33 @@ window.addEventListener( 'DOMContentLoaded', function() {
                     saveButton.style.marginRight = '5px';
 
                     // Add events.
+                    inputField.addEventListener(
+                        'keyup',
+                        (e) => {
+                            let newStatementDescriptor = inputField.value.trim();
+
+                            if (!newStatementDescriptor || newStatementDescriptor === getStripeStatementDescriptorText()) {
+                                saveButton.disabled = true;
+                                return;
+                            }
+
+                            saveButton.disabled = false;
+                        }
+                    );
+
                     cancelButton.addEventListener(
                         'click',
                         (e) => {
-                            inputField.remove();
-                            saveButton.remove();
-                            cancelButton.remove();
-
-                            container.style.display = containerDisplayStylePropertyValue;
-
                             e.preventDefault();
+                            exitStatementDescriptorEditingMode()
                         });
 
                     saveButton.addEventListener(
                         'click',
                         (e) => {
                             e.preventDefault();
+
+                            let actionUrl = `${container.getAttribute('data-action-url')}&statement-descriptor=${encodeURIComponent(getNewStatementDescriptor())}`
 
                             if( ! inputField.value ) {
                                 new Give.modal.GiveErrorAlert({
@@ -289,10 +300,44 @@ window.addEventListener( 'DOMContentLoaded', function() {
                                     }
                                 }).render();
                             }
+
+                            fetch(actionUrl)
+                                .then(response => response.json())
+                                .then(data => {
+                                    if( ! data.success ){
+                                        new Give.modal.GiveErrorAlert({
+                                            modalContent:{
+                                                title: __( 'Unable To Update Stripe Statement Descriptor', 'give'),
+                                                desc: __( 'We are unable to update Stripe statement descriptor. Please try later.', 'give'),
+                                            }
+                                        }).render();
+
+                                        return;
+                                    }
+
+                                    setStripeStatementDescriptorText();
+                                    exitStatementDescriptorEditingMode();
+                                });
                         });
 
                     function getStripeStatementDescriptorText() {
                         return container.childNodes[0].nodeValue.trim()
+                    }
+
+                    function setStripeStatementDescriptorText() {
+                        return container.childNodes[0].nodeValue = getNewStatementDescriptor();
+                    }
+
+                    function exitStatementDescriptorEditingMode(){
+                        inputField.remove();
+                        saveButton.remove();
+                        cancelButton.remove();
+
+                        container.style.display = containerDisplayStylePropertyValue;
+                    }
+
+                    function getNewStatementDescriptor(){
+                        return inputField.value.trim();
                     }
                 })
         })
