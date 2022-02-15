@@ -308,7 +308,12 @@ window.addEventListener( 'DOMContentLoaded', function() {
                                         new Give.modal.GiveErrorAlert({
                                             modalContent:{
                                                 title: __( 'Unable To Update Stripe Statement Descriptor', 'give'),
-                                                desc: __( 'We are unable to update Stripe statement descriptor. Please try later.', 'give'),
+                                                desc: sprintf(
+                                                    '%s <br><a href="%s" target="_blank">%s</a>',
+                                                    __( 'We are unable to update Stripe statement descriptor. Please try later.', 'give'),
+                                                    'https://stripe.com/docs/statement-descriptors#requirements',
+                                                    __( 'Read more about stripe statement descriptor text requirements.', 'give'),
+                                                ),
                                             }
                                         }).render();
 
