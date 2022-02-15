@@ -12,82 +12,42 @@ use Give\Subscriptions\Models\Subscription;
 /**
  * Class Donation
  *
+ * @property int $id
+ * @property DateTime $createdAt
+ * @property DateTime $updatedAt
+ * @property DonationStatus $status
+ * @property int $amount
+ * @property string $currency
+ * @property string $gateway
+ * @property int $donorId
+ * @property string $firstName
+ * @property string $lastName
+ * @property string $email
+ * @property int $parentId
+ * @property int $subscriptionId
+ *
  * @unreleased
  */
 class Donation extends Model
 {
     /**
-     * @var int
+     * @var string[]
      */
-    public $id;
-    /**
-     * @var DateTime
-     */
-    public $createdAt;
-    /**
-     * @var DateTime
-     */
-    public $updatedAt;
-    /**
-     * @var DonationStatus
-     */
-    public $status;
-    /**
-     * @var int
-     */
-    public $amount;
-    /**
-     * @var string
-     */
-    public $currency;
-    /**
-     * @var string
-     */
-    public $gateway;
-    /**
-     * @var int
-     */
-    public $donorId;
-    /**
-     * @var string
-     */
-    public $firstName;
-    /**
-     * @var string
-     */
-    public $lastName;
-    /**
-     * @var string
-     */
-    public $email;
-    /**
-     * @var int
-     */
-    public $parentId = 0;
-    /**
-     * @var int
-     */
-    public $subscriptionId;
-
-    /**
-     * @param  int  $amount
-     * @param  string  $currency
-     * @param  int  $donorId
-     * @param  string  $firstName
-     * @param  string  $lastName
-     * @param  string  $email
-     */
-    public function __construct($amount, $currency, $donorId, $firstName, $lastName, $email)
-    {
-        $this->amount = $amount;
-        $this->currency = $currency;
-        $this->donorId = $donorId;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->email = $email;
-        $this->status = DonationStatus::PENDING();
-        $this->createdAt = $this->getCurrentDateTime();
-    }
+    protected $properties = [
+        'id' => 'int',
+        'createdAt' => DateTime::class,
+        'updatedAt' => DateTime::class,
+        'status' => DonationStatus::class,
+        'amount' => 'int',
+        'currency' => 'string',
+        'gateway' => 'string',
+        'donorId' => 'int',
+        'firstName' => 'string',
+        'lastName' => 'string',
+        'email' => 'string',
+        'parentId' => 'int',
+        'subscriptionId' => 'int',
+    ];
 
     /**
      * Find donation by ID
