@@ -3,7 +3,7 @@
 use PHPUnit\Framework\TestCase;
 use Give\ValueObjects\Money;
 
-final class MoneyTest extends TestCase {
+final class MoneyTest extends WP_UnitTestCase {
 
 	public function testOfAmount() {
 		$money = Money::of( 250, 'USD' );
