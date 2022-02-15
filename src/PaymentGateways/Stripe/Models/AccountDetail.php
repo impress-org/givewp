@@ -150,7 +150,7 @@ class AccountDetail
     private function addSupportFormNewStatementDescriptorParam(&$args)
     {
         $propertyName = 'statement_descriptor';
-        if (!array_key_exists($propertyName, $args) && empty($args[$propertyName])) {
+        if (!array_key_exists($propertyName, $args) || empty($args[$propertyName])) {
             $args[$propertyName] = $this->filterStatementDescriptor(get_bloginfo('name'));
         }
     }
