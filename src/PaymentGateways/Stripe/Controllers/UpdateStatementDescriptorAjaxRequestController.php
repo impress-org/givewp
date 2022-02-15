@@ -47,7 +47,9 @@ class UpdateStatementDescriptorAjaxRequestController
         );
 
         if ($settingRepository->updateStripeAccount($newStripeAccount)) {
-            wp_send_json_success();
+            wp_send_json_success([
+                'newStatementDescriptor' => $stripeStatementDescriptor
+            ]);
         }
 
         wp_send_json_error();
