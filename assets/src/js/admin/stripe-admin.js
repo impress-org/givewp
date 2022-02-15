@@ -292,15 +292,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 
                             let actionUrl = `${container.getAttribute('data-action-url')}&statement-descriptor=${encodeURIComponent(getNewStatementDescriptor())}`
 
-                            if( ! inputField.value ) {
-                                new Give.modal.GiveErrorAlert({
-                                    modalContent:{
-                                        title: __( 'Invalid Stripe Statement Descriptor', 'give'),
-                                        desc: __( 'Please enter a valid stripe statement descriptor.', 'give'),
-                                    }
-                                }).render();
-                            }
-
                             fetch(actionUrl)
                                 .then(response => response.json())
                                 .then(response => {
