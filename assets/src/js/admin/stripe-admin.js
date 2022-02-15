@@ -303,8 +303,8 @@ window.addEventListener( 'DOMContentLoaded', function() {
 
                             fetch(actionUrl)
                                 .then(response => response.json())
-                                .then(data => {
-                                    if( ! data.success ){
+                                .then(response => {
+                                    if( ! response.success ){
                                         new Give.modal.GiveErrorAlert({
                                             modalContent:{
                                                 title: __( 'Unable To Update Stripe Statement Descriptor', 'give'),
@@ -315,7 +315,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
                                         return;
                                     }
 
-                                    setStripeStatementDescriptorText();
+                                    updateStripeStatementDescriptorText( response.data.newStatementDescriptor );
                                     exitStatementDescriptorEditingMode();
                                 });
                         });
@@ -324,8 +324,8 @@ window.addEventListener( 'DOMContentLoaded', function() {
                         return container.childNodes[0].nodeValue.trim()
                     }
 
-                    function setStripeStatementDescriptorText() {
-                        return container.childNodes[0].nodeValue = getNewStatementDescriptor();
+                    function updateStripeStatementDescriptorText(newStatementDescriptor) {
+                        return container.childNodes[0].nodeValue = newStatementDescriptor;
                     }
 
                     function exitStatementDescriptorEditingMode(){
