@@ -4,6 +4,7 @@ namespace Give\PaymentGateways\Stripe\Models;
 
 use Give\Helpers\ArrayDataSet;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
+use Give\PaymentGateways\Stripe\Traits\HasStripeStatementDescriptorText;
 
 /**
  * Class AccountDetail
@@ -25,6 +26,8 @@ use Give\PaymentGateways\Exceptions\InvalidPropertyName;
  */
 class AccountDetail
 {
+    use HasStripeStatementDescriptorText;
+
     protected $args;
     protected $propertiesArgs;
     protected $requiredArgs = [
@@ -53,6 +56,7 @@ class AccountDetail
     public function __construct(array $args)
     {
         $this->args = $args;
+        $this->addSupportFormNewStatementDescriptorParam($args);
         $this->propertiesArgs = ArrayDataSet::camelCaseKeys($args);
         $this->validate($args);
     }
@@ -130,6 +134,24 @@ class AccountDetail
                     implode(' , ', $this->requiredArgs)
                 )
             );
+        }
+    }
+
+    /**
+     * We decided to define statement descriptor per stripe account.
+     * @see: https://github.com/impress-org/givewp/issues/6021
+     *
+     * @unreleased
+     *
+     * @param array $args
+     *
+     * @return void
+     */
+    private function addSupportFormNewStatementDescriptorParam(&$args)
+    {
+        $propertyName = 'statement_descriptor';
+        if (!array_key_exists($propertyName, $args) && empty($args[$propertyName])) {
+            $args[$propertyName] = $this->filterStatementDescriptor(get_bloginfo('name'));
         }
     }
 }

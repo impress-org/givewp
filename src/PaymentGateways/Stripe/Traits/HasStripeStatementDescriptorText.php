@@ -12,17 +12,19 @@ trait HasStripeStatementDescriptorText
      * Check Stripe statement descriptor requirements: https://stripe.com/docs/statement-descriptors#requirements
      *
      * @unreleased
+     *
+     * @param string $statementDescriptor
+     *
      * @return string
      */
-    private function filterStatementDescriptor( $statementDescriptor )
+    protected function filterStatementDescriptor($statementDescriptor)
     {
         $maxLength = 22;
         $minLength = 5;
         $unsupportedCharacters = ['<', '>', '"', '\\', '\'', '*']; // Reserve keywords.
-        $statementDescriptor = mb_substr($statementDescriptor, 0, $maxLength);
+        $statementDescriptor = substr($statementDescriptor, 0, $maxLength);
         $statementDescriptor = str_replace($unsupportedCharacters, '', $statementDescriptor);
-        $statementDescriptor = give_clean($statementDescriptor);
 
-        return $minLength > strlen($statementDescriptor) ? '' : $statementDescriptor;
+        return $minLength > strlen($statementDescriptor) ? '' : trim($statementDescriptor);
     }
 }
