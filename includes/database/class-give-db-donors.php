@@ -514,7 +514,6 @@ class Give_DB_Donors extends Give_DB {
 	public function get_donors( $args = array() ) {
 		$this->bc_1814_params( $args );
 
-        ray( $args );
 		$donors = new Give_Donors_Query( $args );
 
 		return $donors->get_donors();
