@@ -2,7 +2,6 @@
 
 namespace Give\Framework\Models;
 
-use DateTime;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Traits\InteractsWithTime;
 use RuntimeException;
@@ -177,8 +176,6 @@ abstract class Model
                 return is_string($value);
             case 'bool':
                 return is_bool($value);
-            case DateTime::class:
-                return $value instanceof DateTime;
             default:
                 return $value instanceof $type;
         }

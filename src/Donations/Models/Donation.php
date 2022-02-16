@@ -62,29 +62,6 @@ class Donation extends Model
         return give()->donations->getById($id);
     }
 
-    /**
-     * @unreleased
-     *
-     * @return Donor
-     */
-    public function donor()
-    {
-        return give()->donorRepository->getById($this->donorId);
-    }
-
-    /**
-     * @unreleased
-     *
-     * @return Subscription
-     */
-    public function subscription()
-    {
-        if ($this->subscriptionId) {
-            return give()->subscriptions->getById($this->subscriptionId);
-        }
-
-        return give()->subscriptions->getByDonationId($this->id);
-    }
 
     /**
      * @param  Donation  $donation
@@ -107,6 +84,30 @@ class Donation extends Model
         }
 
         return give()->donations->update($this);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return Donor
+     */
+    public function donor()
+    {
+        return give()->donorRepository->getById($this->donorId);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return Subscription
+     */
+    public function subscription()
+    {
+        if ($this->subscriptionId) {
+            return give()->subscriptions->getById($this->subscriptionId);
+        }
+
+        return give()->subscriptions->getByDonationId($this->id);
     }
 
     /**
