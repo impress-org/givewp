@@ -163,9 +163,8 @@ abstract class Model
      * @param  mixed  $value
      *
      * @return bool
-     * @throws InvalidArgumentException
      */
-    private function isPropertyTypeValid($key, $value)
+    public function isPropertyTypeValid($key, $value)
     {
         if (!$value) {
             return true;
@@ -197,7 +196,7 @@ abstract class Model
      *
      * @throws InvalidArgumentException
      */
-    private function validatePropertyType($key, $value)
+    protected function validatePropertyType($key, $value)
     {
         if (!$this->isPropertyTypeValid($key, $value)) {
             $type = $this->getPropertyType($key);
@@ -214,17 +213,9 @@ abstract class Model
      * @param $key
      * @return string
      */
-    private function getPropertyType($key)
+    protected function getPropertyType($key)
     {
         return strtolower(trim($this->properties[$key]));
-    }
-
-    /**
-     * @return array
-     */
-    public function toArray()
-    {
-        return $this->attributes;
     }
 
     /**
@@ -234,7 +225,18 @@ abstract class Model
      *
      * @return void
      */
-    abstract protected function setDefaultProperties();
+    protected function setDefaultProperties()
+    {
+        // $this->createdAt = $this->getCurrentDateTime();
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return $this->attributes;
+    }
 
     /**
      * Dynamically retrieve attributes on the model.
