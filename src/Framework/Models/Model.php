@@ -49,8 +49,6 @@ abstract class Model
 
         $this->syncOriginal();
 
-        $this->setDefaultProperties();
-
         $this->fill($attributes);
     }
 
@@ -216,18 +214,6 @@ abstract class Model
     protected function getPropertyType($key)
     {
         return strtolower(trim($this->properties[$key]));
-    }
-
-    /**
-     * Set default model properties
-     *
-     * @unreleased
-     *
-     * @return void
-     */
-    protected function setDefaultProperties()
-    {
-        // $this->createdAt = $this->getCurrentDateTime();
     }
 
     /**

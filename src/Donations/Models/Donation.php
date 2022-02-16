@@ -12,6 +12,8 @@ use Give\Subscriptions\Models\Subscription;
 /**
  * Class Donation
  *
+ * @unreleased
+ *
  * @property int $id
  * @property DateTime $createdAt
  * @property DateTime $updatedAt
@@ -25,8 +27,6 @@ use Give\Subscriptions\Models\Subscription;
  * @property string $email
  * @property int $parentId
  * @property int $subscriptionId
- *
- * @unreleased
  */
 class Donation extends Model
 {
@@ -48,16 +48,6 @@ class Donation extends Model
         'parentId' => 'int',
         'subscriptionId' => 'int',
     ];
-
-    /**
-     * @unreleased
-     *
-     * @return void
-     */
-    protected function setDefaultProperties()
-    {
-        $this->createdAt = $this->getCurrentDateTime();
-    }
 
     /**
      * Find donation by ID
