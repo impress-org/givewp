@@ -13,79 +13,39 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
  * Class Subscription
  *
  * @unreleased
+ *
+ * @property int $id
+ * @property int $donationFormId
+ * @property DateTime $createdAt
+ * @property int $donorId
+ * @property SubscriptionPeriod $period
+ * @property int $frequency
+ * @property int $installments
+ * @property string $transactionId
+ * @property int $amount
+ * @property int $feeAmount
+ * @property SubscriptionStatus $status
+ * @property string $gatewaySubscriptionId
  */
 class Subscription extends Model
 {
     /**
-     * @var int
+     * @var string[]
      */
-    public $id;
-    /**
-     * @var int
-     */
-    public $donationFormId;
-    /**
-     * @var DateTime
-     */
-    public $createdAt;
-    /**
-     * @var DateTime
-     */
-    public $expiresAt;
-    /**
-     * @var int
-     */
-    public $donorId;
-    /**
-     * @var SubscriptionPeriod
-     */
-    public $period;
-    /**
-     * @var int
-     */
-    public $frequency;
-    /**
-     * @var int
-     */
-    public $installments;
-    /**
-     * @var string
-     */
-    public $transactionId;
-    /**
-     * @var int
-     */
-    public $amount;
-    /**
-     * @var int
-     */
-    public $feeAmount;
-    /**
-     * @var SubscriptionStatus
-     */
-    public $status;
-    /**
-     * @var string
-     */
-    public $gatewaySubscriptionId;
-
-    /**
-     * @unreleased
-     *
-     * @param  int  $amount
-     * @param  SubscriptionPeriod  $period
-     * @param  string  $frequency
-     * @param  int  $donorId
-     */
-    public function __construct($amount, $period, $frequency, $donorId)
-    {
-        $this->amount = $amount;
-        $this->period = $period;
-        $this->frequency = $frequency;
-        $this->donorId = $donorId;
-        $this->createdAt = $this->getCurrentDateTime();
-        $this->status = SubscriptionStatus::PENDING();
-    }
+    protected $properties = [
+        'id' => 'int',
+        'donationFormId' => 'int',
+        'createdAt' => DateTime::class,
+        'donorId' => 'int',
+        'period' => SubscriptionPeriod::class,
+        'frequency' => 'int',
+        'installments' => 'int',
+        'transactionId' => 'string',
+        'amount' => 'int',
+        'feeAmount' => 'int',
+        'status' => SubscriptionStatus::class,
+        'gatewaySubscriptionId' => 'string',
+    ];
 
     /**
      * Find subscription by ID

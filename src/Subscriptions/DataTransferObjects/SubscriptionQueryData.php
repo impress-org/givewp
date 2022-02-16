@@ -105,18 +105,19 @@ class SubscriptionQueryData
      */
     public function toSubscription()
     {
-        $subscription = new Subscription($this->amount, $this->period, $this->frequency, $this->donorId);
-
-        $subscription->id = $this->id;
-        $subscription->createdAt = $this->createdAt;
-        $subscription->expiresAt = $this->expiresAt;
-        $subscription->installments = $this->installments;
-        $subscription->transactionId = $this->transactionId;
-        $subscription->feeAmount = $this->feeAmount;
-        $subscription->status = $this->status;
-        $subscription->gatewaySubscriptionId = $this->gatewaySubscriptionId;
-        $subscription->donationFormId = $this->donationFormId;
-
-        return $subscription;
+        return new Subscription([
+            'id' => $this->id,
+            'createdAt' => $this->createdAt,
+            'amount' => $this->amount,
+            'period' => $this->period,
+            'frequency' => $this->frequency,
+            'donorId' => $this->donorId,
+            'installments' => $this->installments,
+            'transactionId' => $this->transactionId,
+            'feeAmount' => $this->feeAmount,
+            'status' => $this->status,
+            'gatewaySubscriptionId' => $this->gatewaySubscriptionId,
+            'donationFormId' => $this->donationFormId
+        ]);
     }
 }

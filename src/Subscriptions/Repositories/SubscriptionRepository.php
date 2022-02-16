@@ -4,6 +4,7 @@ namespace Give\Subscriptions\Repositories;
 
 use Exception;
 use Give\Framework\Database\DB;
+use Give\Framework\Models\Traits\InteractsWithTime;
 use Give\Log\Log;
 use Give\Subscriptions\DataTransferObjects\SubscriptionQueryData;
 use Give\Subscriptions\Models\Subscription;
@@ -13,6 +14,8 @@ use Give\Subscriptions\Models\Subscription;
  */
 class SubscriptionRepository
 {
+    use InteractsWithTime;
+
     /**
      * @unreleased
      *
@@ -104,14 +107,15 @@ class SubscriptionRepository
      */
     public function insert(Subscription $subscription)
     {
-        $date = current_datetime()->format('Y-m-d H:i:s');
+        $date = $subscription->createdAt ? $this->getFormattedDateTime(
+            $subscription->createdAt
+        ) : $this->getCurrentFormattedDateForDatabase();
 
         DB::query('START TRANSACTION');
 
         try {
             DB::table('give_subscriptions')->insert([
                 'created' => $date,
-                // TODO: add expiration
                 'status' => $subscription->status->getValue(),
                 'profile_id' => $subscription->gatewaySubscriptionId,
                 'customer_id' => $subscription->donorId,
