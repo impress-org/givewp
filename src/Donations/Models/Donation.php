@@ -114,7 +114,7 @@ class Donation extends Model
      */
     public function getMeta()
     {
-        return give()->donations->getMeta($this);
+        return give()->donations->getCoreDonationMeta($this);
     }
 
     /**

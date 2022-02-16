@@ -7,11 +7,14 @@ use Give\Donations\DataTransferObjects\DonationQueryData;
 use Give\Donations\Models\Donation;
 use Give\Framework\Database\DB;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
+use Give\Framework\Models\Traits\InteractsWithTime;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Log\Log;
 
 class DonationRepository
 {
+    use InteractsWithTime;
+
     /**
      * Get Donation By ID
      *
@@ -154,7 +157,7 @@ class DonationRepository
      */
     public function insert(Donation $donation)
     {
-        $date = current_datetime()->format('Y-m-d H:i:s');
+        $date = $donation->createdAt ?: $this->getCurrentFormattedDateForDatabase();
 
         DB::query('START TRANSACTION');
 
@@ -196,7 +199,7 @@ class DonationRepository
      */
     public function update(Donation $donation)
     {
-        $date = current_datetime()->format('Y-m-d H:i:s');
+        $date = $this->getCurrentFormattedDateForDatabase();
 
         DB::query('START TRANSACTION');
 
@@ -234,7 +237,7 @@ class DonationRepository
      *
      * @return array
      */
-    public function getMeta(Donation $donation)
+    public function getCoreDonationMeta(Donation $donation)
     {
         return [
             '_give_payment_total' => $donation->amount,

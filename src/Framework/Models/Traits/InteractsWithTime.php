@@ -3,7 +3,6 @@
 namespace Give\Framework\Models\Traits;
 
 use DateTime;
-use Exception;
 
 /**
  * @unreleased
@@ -43,6 +42,16 @@ trait InteractsWithTime
      */
     public function getFormattedDateTime(DateTime $dateTime)
     {
-        return $dateTime->format( 'Y-m-d H:i:s' );
+        return $dateTime->format('Y-m-d H:i:s');
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return string
+     */
+    public function getCurrentFormattedDateForDatabase()
+    {
+        return current_datetime()->format('Y-m-d H:i:s');
     }
 }
