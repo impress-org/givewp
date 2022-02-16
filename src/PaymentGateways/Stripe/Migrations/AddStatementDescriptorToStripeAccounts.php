@@ -58,6 +58,6 @@ class AddStatementDescriptorToStripeAccounts extends Migration
      */
     public static function title()
     {
-        return 'Add Statement Descriptor To StripeAccounts';
+        return 'Add Statement Descriptor To Stripe Accounts';
     }
 }
