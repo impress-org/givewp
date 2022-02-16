@@ -12,7 +12,7 @@
             echo Give()->html->date_field(
                 [
                     'id'           => 'give_donors_by_donation_export_donation_start_date',
-                    'name'         => 'donors_by_donation_export_donation_start_date',
+                    'name'         => 'start_date',
                     'placeholder'  => esc_attr__( 'Donation Start Date', 'give' ),
                     'autocomplete' => 'off',
                 ]
@@ -21,17 +21,9 @@
             echo Give()->html->date_field(
                 [
                     'id'           => 'give_donors_by_donation_export_donation_end_date',
-                    'name'         => 'donors_by_donation_export_donation_end_date',
+                    'name'         => 'end_date',
                     'placeholder'  => esc_attr__( 'Donation End Date', 'give' ),
                     'autocomplete' => 'off',
-                ]
-            );
-
-            echo Give()->html->forms_dropdown(
-                [
-                    'id'     => 'give_donors_by_donation_export_form',
-                    'chosen' => true,
-                    'class'  => 'give-width-25em',
                 ]
             );
             ?>
