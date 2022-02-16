@@ -236,7 +236,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 
     if (editStripeStatementDescriptor.length) {
         let formTemplate = `
-            <input type="text">
+            <input type="text" minlength="5" maxlength="22">
             <button class="button-primary" disabled>${__('Save', 'give')}</button>
             <button class="button-secondary">${__('Cancel', 'give')}</button>`;
 
