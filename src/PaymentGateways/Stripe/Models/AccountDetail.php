@@ -143,6 +143,7 @@ class AccountDetail
      * @see: https://github.com/impress-org/givewp/issues/6021
      *
      * @unreleased
+     * @deprecated
      *
      * @param array $args
      *
