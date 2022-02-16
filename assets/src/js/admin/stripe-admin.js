@@ -291,9 +291,9 @@ window.addEventListener( 'DOMContentLoaded', function() {
                             e.preventDefault();
 
                             let newStatementDescriptorText = getNewStatementDescriptor();
-                            let actionUrl = `${container.getAttribute('data-action-url')}&statement-descriptor=${encodeURIComponent(getNewStatementDescriptor())}`
+                            let actionUrl = `${container.getAttribute('data-action-url')}&statement-descriptor=${encodeURIComponent(newStatementDescriptorText)}`
 
-                            if( newStatementDescriptorText ) {
+                            if( ! isValidaStatementDescriptor(newStatementDescriptorText) ) {
                                 new Give.modal.GiveErrorAlert({
                                     modalContent:{
                                         title: __( 'Invalid Statement Descriptor Text', 'give'),
@@ -305,6 +305,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
                                         ),
                                     }
                                 }).render();
+                                return;
                             }
 
                             fetch(actionUrl)
