@@ -61,7 +61,7 @@ abstract class Model
      *
      * @return $this
      */
-    public function syncOriginal()
+    protected function syncOriginal()
     {
         $this->original = $this->attributes;
 
@@ -112,11 +112,7 @@ abstract class Model
     public function fill(array $attributes)
     {
         foreach ($attributes as $key => $value) {
-            if (!$this->validatePropertyType($key, $value)) {
-                $type = $this->getPropertyType($key);
-
-                throw new InvalidArgumentException("Invalid attribute assignment. '$key' should be of type: '$type'");
-            }
+            $this->validatePropertyType($key, $value);
 
             $this->setAttribute($key, $value);
         }
@@ -169,7 +165,7 @@ abstract class Model
      * @return bool
      * @throws InvalidArgumentException
      */
-    protected function validatePropertyType($key, $value)
+    private function isPropertyTypeValid($key, $value)
     {
         if (!$value) {
             return true;
@@ -188,6 +184,25 @@ abstract class Model
                 return $value instanceof DateTime;
             default:
                 return $value instanceof $type;
+        }
+    }
+
+    /**
+     * Validate property type
+     *
+     * @param  string  $key
+     * @param  mixed  $value
+     *
+     * @return void
+     *
+     * @throws InvalidArgumentException
+     */
+    private function validatePropertyType($key, $value)
+    {
+        if (!$this->isPropertyTypeValid($key, $value)) {
+            $type = $this->getPropertyType($key);
+
+            throw new InvalidArgumentException("Invalid attribute assignment. '$key' should be of type: '$type'");
         }
     }
 
@@ -245,11 +260,7 @@ abstract class Model
      */
     public function __set($key, $value)
     {
-        if (!$this->validatePropertyType($key, $value)) {
-            $type = $this->getPropertyType($key);
-
-            throw new InvalidArgumentException("Invalid attribute assignment. '$key' should be of type: '$type'");
-        }
+        $this->validatePropertyType($key, $value);
 
         $this->setAttribute($key, $value);
     }
