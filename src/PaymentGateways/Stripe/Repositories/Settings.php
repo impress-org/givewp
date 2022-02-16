@@ -31,6 +31,8 @@ class Settings
     }
 
     /**
+     * @unreleased
+     *
      * @param string $stripeAccountId
      *
      * @return AccountDetailModel|null
@@ -111,7 +113,7 @@ class Settings
         $allAccounts = give_stripe_get_all_accounts();
         $accountSlug = $stripeAccount->accountSlug;
 
-        if ( ! $this->isUniqueAccountName($stripeAccount->accountName, $allAccounts)) {
+        if (!$this->isUniqueAccountName($stripeAccount->accountName, $allAccounts)) {
             throw new DuplicateStripeAccountName(esc_html__('Stripe account already exist with same name.', 'give'));
         }
 
@@ -154,7 +156,7 @@ class Settings
      * @since 2.13.0
      *
      * @param AccountDetailModel $stripeAccount
-     * @param array              $allAccounts
+     * @param array $allAccounts
      *
      * @return bool
      * @throws InvalidPropertyName
@@ -181,7 +183,7 @@ class Settings
      * @since 2.13.0
      *
      * @param string $stripeAccountName
-     * @param array  $allAccounts
+     * @param array $allAccounts
      *
      * @return bool
      * @throws InvalidPropertyName
