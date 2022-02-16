@@ -139,6 +139,7 @@ class AccountDetail
 
     /**
      * We decided to define statement descriptor per stripe account.
+     * Statement descriptor default text for each account will be set to blog title.
      * @see: https://github.com/impress-org/givewp/issues/6021
      *
      * @unreleased
