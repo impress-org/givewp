@@ -2,36 +2,34 @@
 
 namespace Give\Donors\Models;
 
+use DateTime;
 use Give\Donations\Models\Donation;
+use Give\Framework\Models\Model;
 use Give\Subscriptions\Models\Subscription;
 
 /**
  * Class Donor
  *
  * @unreleased
+ *
+ * @property int $id
+ * @property int $userId
+ * @property DateTime $createdAt
+ * @property string $name
+ * @property string $email
  */
-class Donor
+class Donor extends Model
 {
     /**
-     * @var int
+     * @var string[]
      */
-    public $id;
-    /**
-     * @var int
-     */
-    public $userId;
-    /**
-     * @var string
-     */
-    public $createdAt;
-    /**
-     * @var string
-     */
-    public $name;
-    /**
-     * @var string
-     */
-    public $email;
+    protected $properties = [
+        'id' => 'int',
+        'userId' => 'int',
+        'createdAt' => DateTime::class,
+        'name' => 'string',
+        'email' => 'string',
+    ];
 
     /**
      * @unreleased

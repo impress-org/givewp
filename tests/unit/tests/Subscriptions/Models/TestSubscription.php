@@ -2,18 +2,13 @@
 
 namespace unit\tests\Subscriptions\Models;
 
-use Give\Framework\Models\Traits\InteractsWithTime;
-use PHPUnit\Framework\TestCase;
-
 /**
  * @unreleased
  *
  * @coversDefaultClass \Give\Subscriptions\Models\Subscription
  */
-class TestSubscription extends TestCase
+class TestSubscription extends \Give_Unit_Test_Case
 {
-    use InteractsWithTime;
-
     /**
      * @return void
      */

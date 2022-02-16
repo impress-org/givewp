@@ -2,8 +2,9 @@
 
 namespace Give\Donors\Repositories;
 
-use Give\Donors\DataTransferObjects\DonorObjectData;
+use Give\Donors\DataTransferObjects\DonorQueryData;
 use Give\Donors\Models\Donor;
+use Give\Framework\Database\DB;
 
 class DonorRepository
 {
@@ -17,8 +18,8 @@ class DonorRepository
      */
     public function getById($donorId)
     {
-        $donorObject = give()->donors->get($donorId);
+        $donorObject = DB::table('give_donors')->where('id', $donorId)->get();
 
-        return DonorObjectData::fromObject($donorObject)->toDonor();
+        return DonorQueryData::fromObject($donorObject)->toDonor();
     }
 }

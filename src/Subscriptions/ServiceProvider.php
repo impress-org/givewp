@@ -12,7 +12,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register()
     {
-        give()->singleton('subscriptionRepository',SubscriptionRepository::class);
+        give()->singleton('subscriptions', SubscriptionRepository::class);
     }
 
     /**

@@ -3,14 +3,17 @@
 namespace Give\Donors\DataTransferObjects;
 
 use Give\Donors\Models\Donor;
+use Give\Framework\Models\Traits\InteractsWithTime;
 
 /**
  * Class DonorObjectData
  *
  * @unreleased
  */
-class DonorObjectData
+class DonorQueryData
 {
+    use InteractsWithTime;
+
     /**
      * @var int
      */
@@ -43,11 +46,11 @@ class DonorObjectData
     {
         $self = new static();
 
-        $self->id = $object->id;
-        $self->userId = $object->user_id;
+        $self->id = (int)$object->id;
+        $self->userId = (int)$object->user_id;
         $self->email = $object->email;
         $self->name = $object->name;
-        $self->createdAt = $object->date_created;
+        $self->createdAt = $self->toDateTime($object->date_created);
 
         return $self;
     }
@@ -59,14 +62,12 @@ class DonorObjectData
      */
     public function toDonor()
     {
-        $donor = new Donor();
-
-        $donor->id = $this->id;
-        $donor->userId = $this->userId;
-        $donor->createdAt = $this->createdAt;
-        $donor->name = $this->name;
-        $donor->email = $this->email;
-
-        return $donor;
+        return new Donor([
+            'id' => $this->id,
+            'userId' => $this->userId,
+            'createdAt' => $this->createdAt,
+            'name' => $this->name,
+            'email' => $this->email
+        ]);
     }
 }
