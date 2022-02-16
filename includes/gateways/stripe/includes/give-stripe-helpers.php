@@ -13,6 +13,7 @@
 use Give\Log\Log;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Stripe\Models\AccountDetail;
+use Give\PaymentGateways\Stripe\Repositories\Settings;
 use Give\ValueObjects\Money;
 
 // Exit, if accessed directly.
@@ -422,7 +423,8 @@ function give_stripe_is_zero_decimal_currency() {
  */
 function give_stripe_get_statement_descriptor($data = [])
 {
-    $stripeAccountFormPayment = AccountDetail::fromArray(give_stripe_get_connected_account_options());
+    $stripeAccountFormPayment = give(Settings::class)
+        ->getStripeAccountById(give_stripe_get_connected_account_options()['stripe_account']);
     $text = $stripeAccountFormPayment->statementDescriptor;
 
     return apply_filters('give_stripe_statement_descriptor', $text, $data);
