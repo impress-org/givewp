@@ -152,7 +152,9 @@ class AccountDetail
     {
         $propertyName = 'statement_descriptor';
         if (!array_key_exists($propertyName, $args) || empty($args[$propertyName])) {
-            $args[$propertyName] = $this->filterStatementDescriptor(get_bloginfo('name'));
+            $args[$propertyName] = $this->filterStatementDescriptor(
+                give_get_option('stripe_statement_descriptor', get_bloginfo('name'))
+            );
         }
     }
 }
