@@ -157,26 +157,31 @@ class DonationRepository
      */
     public function insert(Donation $donation)
     {
-        $date = $donation->createdAt ?: $this->getCurrentFormattedDateForDatabase();
+        $date = $donation->createdAt ? $this->getFormattedDateTime(
+            $donation->createdAt
+        ) : $this->getCurrentFormattedDateForDatabase();
 
         DB::query('START TRANSACTION');
 
         try {
-            DB::insert(DB::prefix('posts'), [
-                'post_date' => $date,
-                'post_date_gmt' => get_gmt_from_date($date),
-                'post_status' => $donation->status->getValue(),
-                'post_type' => 'give_payment'
-            ], null);
+            DB::table('posts')
+                ->insert([
+                    'post_date' => $date,
+                    'post_date_gmt' => get_gmt_from_date($date),
+                    'post_status' => $donation->status->getValue(),
+                    'post_type' => 'give_payment',
+                    'post_parent' => $donation->parentId
+                ]);
 
             $donationId = DB::last_insert_id();
 
-            foreach ($donation->getMeta() as $metaKey => $metaValue) {
-                DB::insert(DB::prefix('give_donationmeta'), [
-                    'donation_id' => $donationId,
-                    'meta_key' => $metaKey,
-                    'meta_value' => $metaValue,
-                ], null);
+            foreach ($this->getCoreDonationMeta($donation) as $metaKey => $metaValue) {
+                DB::table('give_donationmeta')
+                    ->insert([
+                        'donation_id' => $donationId,
+                        'meta_key' => $metaKey,
+                        'meta_value' => $metaValue,
+                    ]);
             }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -204,20 +209,23 @@ class DonationRepository
         DB::query('START TRANSACTION');
 
         try {
-            DB::update(DB::prefix('posts'), [
-                'post_modified' => $date,
-                'post_modified_gmt' => get_gmt_from_date($date),
-                'post_status' => $donation->status->getValue(),
-                'post_type' => 'give_payment'
-            ], ['id' => $donation->id]);
-
-            foreach ($donation->getMeta() as $metaKey => $metaValue) {
-                DB::update(DB::prefix('give_donationmeta'), [
-                    'meta_value' => $metaValue,
-                ], [
-                    'donation_id' => $donation->id,
-                    'meta_key' => $metaKey
+            DB::table('posts')
+                ->where('id', $donation->id)
+                ->update([
+                    'post_modified' => $date,
+                    'post_modified_gmt' => get_gmt_from_date($date),
+                    'post_status' => $donation->status->getValue(),
+                    'post_type' => 'give_payment',
+                    'post_parent' => $donation->parentId
                 ]);
+
+            foreach ($this->getCoreDonationMeta($donation) as $metaKey => $metaValue) {
+                DB::table('give_donationmeta')
+                    ->where('donation_id', $donation->id)
+                    ->where('meta_key', $metaKey)
+                    ->update([
+                        'meta_value' => $metaValue,
+                    ]);
             }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');

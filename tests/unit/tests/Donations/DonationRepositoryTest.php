@@ -4,9 +4,11 @@ namespace unit\tests\Donations;
 
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationRepository;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Models\Traits\InteractsWithTime;
+use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 
 final class DonationRepositoryTest extends \Give_Unit_Test_Case
 {
@@ -56,7 +58,6 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
     {
         $donation = $this->createDonationInstance();
         $repository = new DonationRepository();
-        $donation->gateway = 'manual';
 
         $newDonation = $repository->insert($donation);
 
@@ -149,6 +150,18 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
      */
     private function createDonationInstance()
     {
-        return new Donation(50, 'USD', 1, 'Bill', 'Murray', 'billMurray@givewp.com');
+        return new Donation([
+            'createdAt' => $this->getCurrentDateTime(),
+            'status' => DonationStatus::PENDING(),
+            'gateway' => TestGateway::id(),
+            'amount' => 50,
+            'currency' => 'USD',
+            'donorId' => 1,
+            'firstName' => 'Bill',
+            'lastName' => 'Murray',
+            'email' => 'billMurray@givewp.com',
+            'parentId' => 0,
+            'subscriptionId' => null
+        ]);
     }
 }

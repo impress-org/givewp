@@ -118,8 +118,8 @@ class DonationQueryData
                 'firstName' => $this->firstName,
                 'lastName' => $this->lastName,
                 'email' => $this->email,
-                'parentId' => $this->parentId ?: null,
-                'subscriptionId' => $this->subscriptionId ?: null
+                'parentId' => $this->parentId,
+                'subscriptionId' => $this->subscriptionId
             ]
         );
     }
