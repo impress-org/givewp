@@ -260,13 +260,22 @@ class DonationRepository
     }
 
     /**
-     * @param int $id
      *
-     * @return int
+     * @unreleased
+     *
+     * @param  int  $donationId
+     *
+     * @return int|null
      */
-    public function getSequentialId($id)
+    public function getSequentialId($donationId)
     {
-        return (int)give()->seq_donation_number->get_serial_number($id);
+        $query = DB::table('give_sequential_ordering')->where('payment_id', $donationId)->get();
+
+        if (!$query) {
+            return null;
+        }
+
+        return (int)$query->id;
     }
 }
 
