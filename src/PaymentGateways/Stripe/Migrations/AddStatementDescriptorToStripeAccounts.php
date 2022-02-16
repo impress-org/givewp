@@ -25,13 +25,17 @@ class AddStatementDescriptorToStripeAccounts extends Migration
         if ($allStripeAccount) {
             $statementDescriptor = give_get_option('stripe_statement_descriptor');
             foreach ($allStripeAccount as $index => $stripAccount) {
-                if( ! isset( $stripAccount['statement_descriptor'] ) ) {
-                    $allStripeAccount[$index]['statement_descriptor'] = $this->filterStatementDescriptor($statementDescriptor);
+                if (!isset($stripAccount['statement_descriptor'])) {
+                    $allStripeAccount[$index]['statement_descriptor'] = $this->filterStatementDescriptor(
+                        $statementDescriptor
+                    );
                 }
             }
 
             give_update_option('_give_stripe_get_all_accounts', $allStripeAccount);
         }
+
+        give_delete_option('stripe_statement_descriptor');
     }
 
     /**
