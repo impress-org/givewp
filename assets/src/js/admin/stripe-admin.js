@@ -359,7 +359,8 @@ window.addEventListener( 'DOMContentLoaded', function() {
                             return false;
                         }
 
-                        return ! text.split('').filter( (char) => ['*', '\'', '"', '\\', '<', '>'].includes(char) )
+                        return 0 === text.split('')
+                            .filter( (char) => ['*', '\'', '"', '\\', '<', '>'].includes(char) ).length
                     }
                 })
         })
