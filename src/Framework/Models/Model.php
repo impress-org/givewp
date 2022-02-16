@@ -129,11 +129,11 @@ abstract class Model
      */
     public function getAttribute($key)
     {
-        if (!array_key_exists($key, $this->attributes)) {
-            throw new RuntimeException("Attribute '$key' does not exist.");
+        if (!$key) {
+            return null;
         }
 
-        return $this->attributes[$key];
+        return array_key_exists($key, $this->attributes) ? $this->attributes[$key] : null;
     }
 
     /**
@@ -214,9 +214,21 @@ abstract class Model
     }
 
     /**
+     * @unreleased
+     *
      * @return array
      */
     public function toArray()
+    {
+        return $this->attributes;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return array
+     */
+    public function getAttributes()
     {
         return $this->attributes;
     }

@@ -6,14 +6,31 @@ use Exception;
 use Give\Donations\DataTransferObjects\DonationQueryData;
 use Give\Donations\Models\Donation;
 use Give\Framework\Database\DB;
-use Give\Framework\Database\Exceptions\DatabaseQueryException;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Traits\InteractsWithTime;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Log\Log;
 
+/**
+ * @unreleased
+ */
 class DonationRepository
 {
     use InteractsWithTime;
+
+    /**
+     * @var string[]
+     */
+    private $requiredDonationProperties = [
+        'status',
+        'gateway',
+        'amount',
+        'currency',
+        'donorId',
+        'firstName',
+        'lastName',
+        'email'
+    ];
 
     /**
      * Get Donation By ID
@@ -57,6 +74,8 @@ class DonationRepository
     }
 
     /**
+     * @unreleased
+     *
      * @param  int  $subscriptionId
      *
      * @return Donation[]
@@ -102,7 +121,9 @@ class DonationRepository
     }
 
     /**
-     * @param  int donorId
+     * @unreleased
+     *
+     * @param  int  $donorId
      *
      * @return Donation[]
      */
@@ -150,16 +171,21 @@ class DonationRepository
     }
 
     /**
+     * @unreleased
+     *
      * @param  Donation  $donation
      *
      * @return Donation
-     * @throws Exception|DatabaseQueryException
+     * @throws Exception|InvalidArgumentException
      */
     public function insert(Donation $donation)
     {
+        $this->validateDonation($donation);
+
         $date = $donation->createdAt ? $this->getFormattedDateTime(
             $donation->createdAt
         ) : $this->getCurrentFormattedDateForDatabase();
+
 
         DB::query('START TRANSACTION');
 
@@ -170,7 +196,7 @@ class DonationRepository
                     'post_date_gmt' => get_gmt_from_date($date),
                     'post_status' => $donation->status->getValue(),
                     'post_type' => 'give_payment',
-                    'post_parent' => $donation->parentId
+                    'post_parent' => isset($donation->parentId) ? $donation->parentId : 0
                 ]);
 
             $donationId = DB::last_insert_id();
@@ -197,13 +223,17 @@ class DonationRepository
     }
 
     /**
+     * @unreleased
+     *
      * @param  Donation  $donation
      *
      * @return Donation
-     * @throws Exception|DatabaseQueryException
+     * @throws Exception|InvalidArgumentException
      */
     public function update(Donation $donation)
     {
+        $this->validateDonation($donation);
+
         $date = $this->getCurrentFormattedDateForDatabase();
 
         DB::query('START TRANSACTION');
@@ -216,7 +246,7 @@ class DonationRepository
                     'post_modified_gmt' => get_gmt_from_date($date),
                     'post_status' => $donation->status->getValue(),
                     'post_type' => 'give_payment',
-                    'post_parent' => $donation->parentId
+                    'post_parent' => isset($donation->parentId) ? $donation->parentId : 0
                 ]);
 
             foreach ($this->getCoreDonationMeta($donation) as $metaKey => $metaValue) {
@@ -241,22 +271,29 @@ class DonationRepository
     }
 
     /**
+     * @unreleased
+     *
      * @param  Donation  $donation
      *
      * @return array
      */
     public function getCoreDonationMeta(Donation $donation)
     {
-        return [
+        $meta = [
             '_give_payment_total' => $donation->amount,
             '_give_payment_currency' => $donation->currency,
             '_give_payment_gateway' => $donation->gateway,
             '_give_payment_donor_id' => $donation->donorId,
             '_give_donor_billing_first_name' => $donation->firstName,
             '_give_donor_billing_last_name' => $donation->lastName,
-            '_give_payment_donor_email' => $donation->email,
-            'subscription_id' => $donation->subscriptionId
+            '_give_payment_donor_email' => $donation->email
         ];
+
+        if (isset($donation->subscriptionId)) {
+            $meta['subscription_id'] = $donation->subscriptionId;
+        }
+
+        return $meta;
     }
 
     /**
@@ -276,6 +313,21 @@ class DonationRepository
         }
 
         return (int)$query->id;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  Donation  $donation
+     * @return void
+     */
+    private function validateDonation(Donation $donation)
+    {
+        foreach ($this->requiredDonationProperties as $key) {
+            if (!isset($donation->$key)) {
+                throw new InvalidArgumentException("'$key' is required.");
+            }
+        }
     }
 }
 

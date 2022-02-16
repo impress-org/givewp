@@ -2,11 +2,13 @@
 
 namespace unit\tests\Donations;
 
+use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Traits\InteractsWithTime;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 
@@ -52,7 +54,7 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
      *
      * @return void
      *
-     * @throws DatabaseQueryException
+     * @throws Exception
      */
     public function testInsertShouldAddDonationToDatabase()
     {
@@ -101,7 +103,61 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
      *
      * @return void
      *
-     * @throws DatabaseQueryException
+     * @throws Exception
+     */
+    public function testInsertShouldFailValidationAndThrowException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $donationMissingAmount = new Donation([
+            'createdAt' => $this->getCurrentDateTime(),
+            'status' => DonationStatus::PENDING(),
+            'gateway' => TestGateway::id(),
+            'currency' => 'USD',
+            'donorId' => 1,
+            'firstName' => 'Bill',
+            'lastName' => 'Murray',
+            'email' => 'billMurray@givewp.com',
+        ]);
+
+        $repository = new DonationRepository();
+
+        $repository->insert($donationMissingAmount);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     *
+     * @throws Exception
+     */
+    public function testUpdateShouldFailValidationAndThrowException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $donationMissingAmount = new Donation([
+            'createdAt' => $this->getCurrentDateTime(),
+            'status' => DonationStatus::PENDING(),
+            'gateway' => TestGateway::id(),
+            'currency' => 'USD',
+            'donorId' => 1,
+            'firstName' => 'Bill',
+            'lastName' => 'Murray',
+            'email' => 'billMurray@givewp.com',
+        ]);
+
+        $repository = new DonationRepository();
+
+        $repository->update($donationMissingAmount);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     *
+     * @throws Exception
      */
     public function testUpdateShouldUpdateDonationValuesInTheDatabase()
     {
