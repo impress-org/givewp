@@ -26,7 +26,7 @@ class UpdateStatementDescriptorAjaxRequestController
         }
 
         $settingRepository = give(Settings::class);
-        $stripeAccountId = give_clean($_GET['account_slug']);
+        $stripeAccountId = give_clean($_GET['account-slug']);
         $stripeStatementDescriptor = give_clean($this->filterStatementDescriptor(urldecode($_GET['statement-descriptor'])));
 
         if (empty($stripeStatementDescriptor)) {

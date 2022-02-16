@@ -9,7 +9,7 @@ class UpdateStatementDescriptorAjaxRequestControllerTest extends WP_Ajax_UnitTes
     {
         $this->_setRole('administrator');
         $_GET['statement-descriptor'] = '';
-        $_GET['account_slug'] = 'abc';
+        $_GET['account-slug'] = 'abc';
 
         try {
             $this->_handleAjax('edit_stripe_account_statement_descriptor');

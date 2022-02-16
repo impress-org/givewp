@@ -259,7 +259,7 @@ class AccountManagerSettingField
         $editStatementDescriptorUrl = add_query_arg(
             [
                 'action' => 'edit_stripe_account_statement_descriptor',
-                'account_slug' => $stripeAccountSlug,
+                'account-slug' => $stripeAccountSlug,
             ],
             admin_url('admin-ajax.php')
         );
