@@ -1,5 +1,10 @@
 <?php
 
+namespace unit\tests\PaymentGateways\Stripe\Controllers;
+
+use WP_Ajax_UnitTestCase;
+use WPAjaxDieContinueException;
+
 /**
  * @unreleased
  */
