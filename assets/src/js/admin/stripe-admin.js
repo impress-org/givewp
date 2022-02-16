@@ -290,7 +290,22 @@ window.addEventListener( 'DOMContentLoaded', function() {
                         (e) => {
                             e.preventDefault();
 
+                            let newStatementDescriptorText = getNewStatementDescriptor();
                             let actionUrl = `${container.getAttribute('data-action-url')}&statement-descriptor=${encodeURIComponent(getNewStatementDescriptor())}`
+
+                            if( newStatementDescriptorText ) {
+                                new Give.modal.GiveErrorAlert({
+                                    modalContent:{
+                                        title: __( 'Invalid Statement Descriptor Text', 'give'),
+                                        desc: sprintf(
+                                            '%s <br><a href="%s" target="_blank">%s</a>',
+                                            __( 'Please enter a valid Stripe statement descriptor..', 'give'),
+                                            'https://stripe.com/docs/statement-descriptors#requirements',
+                                            __( 'Read more about stripe statement descriptor text requirements.', 'give'),
+                                        ),
+                                    }
+                                }).render();
+                            }
 
                             fetch(actionUrl)
                                 .then(response => response.json())
@@ -334,6 +349,16 @@ window.addEventListener( 'DOMContentLoaded', function() {
 
                     function getNewStatementDescriptor(){
                         return inputField.value.trim();
+                    }
+
+                    // Statement descriptor text will be validate on basis of Stripe requirements.
+                    // Remove more about requirements: https://stripe.com/docs/statement-descriptors#requirements
+                    function isValidaStatementDescriptor( text ){
+                        if( 22 < text.length || text.length < 5 ){
+                            return false;
+                        }
+
+                        return ! text.split('').filter( (char) => ['*', '\'', '"', '\\', '<', '>'].includes(char) )
                     }
                 })
         })
