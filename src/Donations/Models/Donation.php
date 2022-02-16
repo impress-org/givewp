@@ -59,7 +59,7 @@ class Donation extends Model
      */
     public static function find($id)
     {
-        return give()->donationRepository->getById($id);
+        return give()->donations->getById($id);
     }
 
     /**
@@ -80,10 +80,10 @@ class Donation extends Model
     public function subscription()
     {
         if ($this->subscriptionId) {
-            return give()->subscriptionRepository->getById($this->subscriptionId);
+            return give()->subscriptions->getById($this->subscriptionId);
         }
 
-        return give()->subscriptionRepository->getByDonationId($this->id);
+        return give()->subscriptions->getByDonationId($this->id);
     }
 
     /**
@@ -93,7 +93,7 @@ class Donation extends Model
      */
     public static function create(Donation $donation)
     {
-        return give()->donationRepository->insert($donation);
+        return give()->donations->insert($donation);
     }
 
     /**
@@ -103,10 +103,10 @@ class Donation extends Model
     public function save()
     {
         if (!$this->id) {
-            return give()->donationRepository->insert($this);
+            return give()->donations->insert($this);
         }
 
-        return give()->donationRepository->update($this);
+        return give()->donations->update($this);
     }
 
     /**
@@ -114,7 +114,7 @@ class Donation extends Model
      */
     public function getMeta()
     {
-        return give()->donationRepository->getMeta($this);
+        return give()->donations->getMeta($this);
     }
 
     /**
@@ -122,6 +122,6 @@ class Donation extends Model
      */
     public function getSequentialId()
     {
-        return give()->donationRepository->getSequentialId($this->id);
+        return give()->donations->getSequentialId($this->id);
     }
 }

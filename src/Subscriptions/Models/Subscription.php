@@ -97,7 +97,7 @@ class Subscription extends Model
      */
     public static function find($id)
     {
-        return give()->subscriptionRepository->getById($id);
+        return give()->subscriptions->getById($id);
     }
 
     /**
@@ -113,7 +113,7 @@ class Subscription extends Model
      */
     public function donations()
     {
-        return give()->donationRepository->getBySubscriptionId($this->id);
+        return give()->donations->getBySubscriptionId($this->id);
     }
 
     /**
@@ -123,7 +123,7 @@ class Subscription extends Model
      */
     public function getNotes()
     {
-        return give()->subscriptionRepository->getNotesBySubscriptionId($this->id);
+        return give()->subscriptions->getNotesBySubscriptionId($this->id);
     }
 
 }

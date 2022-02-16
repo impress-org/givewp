@@ -51,7 +51,7 @@ class Donor
      */
     public function donations()
     {
-        return give()->donationRepository->getByDonorId($this->id);
+        return give()->donations->getByDonorId($this->id);
     }
 
     /**
@@ -61,7 +61,7 @@ class Donor
      */
     public function subscriptions()
     {
-        return give()->subscriptionRepository->getByDonorId($this->id);
+        return give()->subscriptions->getByDonorId($this->id);
     }
 
 }

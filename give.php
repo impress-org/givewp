@@ -106,9 +106,9 @@ if (!defined('ABSPATH')) {
  * @property-read Give_Session $session
  * @property-read Give_DB_Sessions $session_db
  * @property-read Give_Tooltips $tooltips
- * @property-read DonationRepository $donationRepository
+ * @property-read DonationRepository $donations
  * @property-read DonorRepository $donorRepository
- * @property-read SubscriptionRepository $subscriptionRepository
+ * @property-read SubscriptionRepository $subscriptions
  * @property-read Give_Recurring_DB_Subscription_Meta $subscription_meta
  *
  * @mixin Container
