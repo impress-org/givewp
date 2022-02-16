@@ -2947,49 +2947,12 @@ const gravatar = require( 'gravatar' );
             const selectChosen = document.querySelectorAll('.give-select-chosen[multiple]') ?? [];
 
             Array.from(selectChosen).forEach( dropdown => {
-                const id = dropdown.id + '_chosen';
-                const options = dropdown.options;
-                const orderedOptions = [];
                 const order = dropdown.dataset.order
                     ? dropdown.dataset.order.split('|')
                     : [];
 
                 if (order.length > 0) {
-
-                    order.forEach( (value, i) => {
-                        const items = document.querySelectorAll(`#${id} li.search-choice`) ?? [];
-
-                        items.forEach((item, j) => {
-                            if (i === j) {
-                                const option = Object.values(options).find( option => option.value === value );
-
-                                item.querySelector('span').textContent = option.text;
-
-                                orderedOptions.push( {
-                                    value: option.value,
-                                    text: option.text,
-                                    selected: true
-                                } );
-                            }
-                        })
-                    });
-
-                    // Fill in rest of the options
-                    Object.values(options).map( option => {
-                        const included = orderedOptions.filter( orderedOption => orderedOption.value === option.value ).length;
-                        if ( ! included ) {
-                            orderedOptions.push( {
-                                value: option.value,
-                                text: option.textContent,
-                                selected: option.selected,
-                            } );
-                        }
-                    } );
-
-                    // Rebuild the dropdown
-                    GiveMultiSelectOptions.rebuildDropDown(dropdown, orderedOptions);
-
-                    $(this).trigger('chosen:updated')
+                    GiveMultiSelectOptions.reorderItems(dropdown, order);
                 }
 
                 // Update order on change
@@ -3001,7 +2964,7 @@ const gravatar = require( 'gravatar' );
                         $(this).trigger('chosen:updated');
                     }
 
-                    const items = document.querySelectorAll(`#${id} li.search-choice`) ?? [];
+                    const items = document.querySelectorAll(`#${dropdown.id}_chosen li.search-choice`) ?? [];
 
                     items.forEach((item) => {
                         const text = item.querySelector('span').textContent;
@@ -3032,10 +2995,48 @@ const gravatar = require( 'gravatar' );
                     GiveMultiSelectOptions.rebuildDropDown(dropdown, orderedOptions);
                 } );
 
-
-
             });
 		},
+
+        reorderItems: function(dropdown, order) {
+            const options = dropdown.options;
+            const orderedOptions = [];
+
+            order.forEach( (value, i) => {
+                const items = document.querySelectorAll(`#${dropdown.id}_chosen li.search-choice`) ?? [];
+
+                items.forEach((item, j) => {
+                    if (i === j) {
+                        const option = Object.values(options).find( option => option.value === value );
+
+                        item.querySelector('span').textContent = option.text;
+
+                        orderedOptions.push( {
+                            value: option.value,
+                            text: option.text,
+                            selected: true
+                        } );
+                    }
+                })
+            });
+
+            // Fill in rest of the options
+            Object.values(options).map( option => {
+                const included = orderedOptions.filter( orderedOption => orderedOption.value === option.value ).length;
+                if ( ! included ) {
+                    orderedOptions.push( {
+                        value: option.value,
+                        text: option.textContent,
+                        selected: option.selected,
+                    } );
+                }
+            } );
+
+            // Rebuild the dropdown
+            GiveMultiSelectOptions.rebuildDropDown(dropdown, orderedOptions);
+
+            $(this).trigger('chosen:updated')
+        },
 
         rebuildDropDown: function(dropdown, options) {
             dropdown.innerHTML = '';
@@ -3044,7 +3045,7 @@ const gravatar = require( 'gravatar' );
                 newOption.value = option.value;
                 newOption.textContent = option.text;
                 if ( option.selected ) {
-                    newOption.setAttribute('selected', true);
+                    newOption.setAttribute('selected', 'true');
                 }
                 dropdown.add(newOption)
             } );
