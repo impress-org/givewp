@@ -45,7 +45,11 @@ abstract class Model
      */
     public function __construct(array $attributes = [])
     {
+        $this->attributes = $attributes;
+
         $this->syncOriginal();
+
+        $this->setDefaultProperties();
 
         $this->fill($attributes);
     }
@@ -167,6 +171,10 @@ abstract class Model
      */
     protected function validatePropertyType($key, $value)
     {
+        if (!$value) {
+            return true;
+        }
+
         $type = $this->getPropertyType($key);
 
         switch ($type) {
@@ -177,7 +185,7 @@ abstract class Model
             case 'bool':
                 return is_bool($value);
             case DateTime::class:
-                return is_date($value);
+                return $value instanceof DateTime;
             default:
                 return $value instanceof $type;
         }
@@ -195,6 +203,23 @@ abstract class Model
     {
         return strtolower(trim($this->properties[$key]));
     }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return $this->attributes;
+    }
+
+    /**
+     * Set default model properties
+     *
+     * @unreleased
+     *
+     * @return void
+     */
+    abstract protected function setDefaultProperties();
 
     /**
      * Dynamically retrieve attributes on the model.

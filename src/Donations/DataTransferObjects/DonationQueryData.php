@@ -105,23 +105,22 @@ class DonationQueryData
      */
     public function toDonation()
     {
-        $donation = new Donation(
-            $this->amount,
-            $this->currency,
-            $this->donorId,
-            $this->firstName,
-            $this->lastName,
-            $this->email
+        return new Donation(
+            [
+                'id' => $this->id,
+                'createdAt' => $this->createdAt,
+                'updatedAt' => $this->updatedAt,
+                'status' => $this->status,
+                'gateway' => $this->gateway,
+                'amount' => $this->amount,
+                'currency' => $this->currency,
+                'donorId' => $this->donorId,
+                'firstName' => $this->firstName,
+                'lastName' => $this->lastName,
+                'email' => $this->email,
+                'parentId' => $this->parentId ?: null,
+                'subscriptionId' => $this->subscriptionId ?: null
+            ]
         );
-
-        $donation->id = $this->id;
-        $donation->createdAt = $this->createdAt;
-        $donation->updatedAt = $this->updatedAt;
-        $donation->status = $this->status;
-        $donation->gateway = $this->gateway;
-        $donation->parentId = $this->parentId ?: 0;
-        $donation->subscriptionId = $this->subscriptionId ?: null;
-
-        return $donation;
     }
 }

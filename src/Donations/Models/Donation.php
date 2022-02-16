@@ -50,6 +50,16 @@ class Donation extends Model
     ];
 
     /**
+     * @unreleased
+     *
+     * @return void
+     */
+    protected function setDefaultProperties()
+    {
+        $this->createdAt = $this->getCurrentDateTime();
+    }
+
+    /**
      * Find donation by ID
      *
      * @unreleased
