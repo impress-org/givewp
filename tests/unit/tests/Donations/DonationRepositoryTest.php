@@ -7,7 +7,6 @@ use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
-use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Traits\InteractsWithTime;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
@@ -34,7 +33,7 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
      *
      * @return void
      *
-     * @throws DatabaseQueryException
+     * @throws Exception
      */
     public function testGetByIdShouldReturnDonation()
     {
@@ -76,7 +75,6 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
                 '_give_donor_billing_first_name',
                 '_give_donor_billing_last_name',
                 '_give_payment_donor_email',
-                'subscription_id'
             )
             ->where('ID', $newDonation->id)
             ->get();
@@ -217,7 +215,6 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
             'lastName' => 'Murray',
             'email' => 'billMurray@givewp.com',
             'parentId' => 0,
-            'subscriptionId' => null
         ]);
     }
 }
