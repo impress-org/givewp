@@ -1,9 +1,5 @@
 <?php
-
-namespace unit\tests\PaymentGateways\Stripe\Controllers;
-
 use Give\PaymentGateways\Stripe\Repositories\Settings;
-use WP_Ajax_UnitTestCase;
 
 /**
  * @unreleased
