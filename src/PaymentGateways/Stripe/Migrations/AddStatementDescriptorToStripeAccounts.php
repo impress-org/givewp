@@ -4,12 +4,14 @@ namespace Give\PaymentGateways\Stripe\Migrations;
 
 use Give\Framework\Migrations\Contracts\Migration;
 use Give\PaymentGateways\Stripe\Repositories\Settings;
+use Give\PaymentGateways\Stripe\Traits\HasStripeStatementDescriptorText;
 
 /**
  * @unreleased
  */
 class AddStatementDescriptorToStripeAccounts extends Migration
 {
+    use HasStripeStatementDescriptorText;
 
     /**
      * @inerhitDoc
@@ -24,7 +26,7 @@ class AddStatementDescriptorToStripeAccounts extends Migration
             $statementDescriptor = give_get_option('stripe_statement_descriptor');
             foreach ($allStripeAccount as $index => $stripAccount) {
                 if( ! isset( $stripAccount['statement_descriptor'] ) ) {
-                    $allStripeAccount[$index]['statement_descriptor'] = $statementDescriptor;
+                    $allStripeAccount[$index]['statement_descriptor'] = $this->filterStatementDescriptor($statementDescriptor);
                 }
             }
 
