@@ -11,6 +11,7 @@
  */
 
 use Give\Log\Log;
+use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Stripe\Models\AccountDetail;
 use Give\ValueObjects\Money;
 
@@ -415,23 +416,12 @@ function give_stripe_is_zero_decimal_currency() {
  * @param array $data List of posted variable while submitting donation.
  *
  * @return mixed
+ * @throws InvalidPropertyName
  */
 function give_stripe_get_statement_descriptor($data = [])
 {
-    try {
-        $stripeAccountFormPayment = AccountDetail::fromArray(give_stripe_get_connected_account_options());
-        $text = $stripeAccountFormPayment->statementDescriptor;
-    } catch (Exception $e) {
-        $text = get_bloginfo('name');
-
-        Log::error(
-            'Stripe Statement Descriptor Error',
-            [
-                'Error Message' => $e->getMessage(),
-                'Data' => $data
-            ]
-        );
-    }
+    $stripeAccountFormPayment = AccountDetail::fromArray(give_stripe_get_connected_account_options());
+    $text = $stripeAccountFormPayment->statementDescriptor;
 
     return apply_filters('give_stripe_statement_descriptor', $text, $data);
 }
