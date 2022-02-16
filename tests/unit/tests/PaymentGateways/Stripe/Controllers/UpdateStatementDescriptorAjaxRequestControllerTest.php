@@ -6,7 +6,7 @@ use Give\PaymentGateways\Stripe\Repositories\Settings;
  */
 class UpdateStatementDescriptorAjaxRequestControllerTest extends WP_Ajax_UnitTestCase
 {
-    protected function setUp()
+    public function setUp()
     {
         parent::setUp();
     }
