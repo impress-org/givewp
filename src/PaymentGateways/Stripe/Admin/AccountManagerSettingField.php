@@ -335,6 +335,20 @@ class AccountManagerSettingField
             <div class="give-stripe-account-fieldset give-stripe-statement-descriptor">
                 <span class="give-stripe-label">
                     <?php esc_html_e('Statement Descriptor:', 'give'); ?>
+                    <?php
+                    echo sprintf(
+                        '<a href="%s" target="_blank">%s</a>',
+                        'https://stripe.com/docs/statement-descriptors#requirements',
+                        Give()->tooltips->render_help([
+                                'label' => esc_html__(
+                                    'This is the text that appears on your donor\'s bank statements. This is typically the name of your website or organization. Click on this icon to read more about Stripe statement text requirements.',
+                                    'give'
+                                ),
+                                'size' => 'medium'
+                            ]
+                        )
+                    );
+                    ?>
                 </span>
                 <div
                     class="give-stripe-connect-data-field"
@@ -346,7 +360,7 @@ class AccountManagerSettingField
                             <a class="give-stripe-edit-statement-descriptor-btn" href="#">
                                 <span class="dashicons dashicons-edit-page"></span>
                                 <?php esc_html_e('Edit', 'give'); ?>
-                            </a
+                            </a>
                         </span>
                     <?php endif; ?>
                 </div>
