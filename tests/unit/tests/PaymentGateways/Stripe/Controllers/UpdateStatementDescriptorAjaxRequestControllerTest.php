@@ -20,7 +20,7 @@ class UpdateStatementDescriptorAjaxRequestControllerTest extends WP_Ajax_UnitTes
 
         try {
             $this->_handleAjax('edit_stripe_account_statement_descriptor');
-        } catch (\WPAjaxDieContinueException $e) {
+        } catch (WPAjaxDieContinueException $e) {
         }
 
         $this->assertEquals(
@@ -37,7 +37,7 @@ class UpdateStatementDescriptorAjaxRequestControllerTest extends WP_Ajax_UnitTes
 
         try {
             $this->_handleAjax('edit_stripe_account_statement_descriptor');
-        } catch (\WPAjaxDieContinueException $e) {
+        } catch (WPAjaxDieContinueException $e) {
         }
 
         $this->assertEquals(
@@ -46,7 +46,7 @@ class UpdateStatementDescriptorAjaxRequestControllerTest extends WP_Ajax_UnitTes
         );
     }
 
-    public function testStatementDescriptorWillUpdateWhenPAssCorrectData()
+    public function testStatementDescriptorWillUpdateWhenPassCorrectData()
     {
         $this->_setRole('administrator');
         $this->setUpStripeAccounts();
@@ -56,7 +56,7 @@ class UpdateStatementDescriptorAjaxRequestControllerTest extends WP_Ajax_UnitTes
 
         try {
             $this->_handleAjax('edit_stripe_account_statement_descriptor');
-        } catch (\WPAjaxDieContinueException $e) {
+        } catch (WPAjaxDieContinueException $e) {
         }
 
         $this->assertEquals(
