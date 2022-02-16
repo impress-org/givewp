@@ -647,7 +647,7 @@ class Give_Donate_Form {
 			}
 		}
 
-		return apply_filters( 'give_get_set_goal', $this->goal, $this->ID );
+		return apply_filters( 'give_get_set_goal', $this->goal ?: 0, $this->ID );
 
 	}
 
