@@ -92,10 +92,6 @@ class SEPAGateway extends PaymentGateway
      */
     public function getLegacyFormFieldMarkup($formId, $args)
     {
-        if (FormUtils::isLegacyForm($formId)) {
-            return false;
-        }
-
         return $this->getMandateFormHTML( $formId, $args );
     }
 

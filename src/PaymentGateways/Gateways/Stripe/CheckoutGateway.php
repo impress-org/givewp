@@ -119,10 +119,6 @@ class CheckoutGateway extends PaymentGateway
     {
         Stripe::canShowBillingAddress( $formId, $args );
 
-        if (FormUtils::isLegacyForm($formId)) {
-            return false;
-        }
-
         switch( give_stripe_get_checkout_type() ) {
             case 'modal':
                 return $this->getCheckoutInstructions()

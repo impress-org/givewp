@@ -88,10 +88,6 @@ class CreditCardGateway extends PaymentGateway
      */
     public function getLegacyFormFieldMarkup($formId, $args)
     {
-        if (FormUtils::isLegacyForm($formId)) {
-            return false;
-        }
-
         return $this->getCreditCardFormHTML( $formId, $args );
     }
 }
