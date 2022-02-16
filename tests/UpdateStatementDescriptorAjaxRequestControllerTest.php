@@ -1,8 +1,5 @@
 <?php
 
-use Give\Helpers\Call;
-use Give\PaymentGateways\Stripe\Controllers\UpdateStatementDescriptorAjaxRequestController;
-
 /**
  * @unreleased
  */
