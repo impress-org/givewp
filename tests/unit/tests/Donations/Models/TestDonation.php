@@ -6,6 +6,7 @@ use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Traits\InteractsWithTime;
@@ -16,7 +17,7 @@ class TestDonation extends \Give_Unit_Test_Case
     use InteractsWithTime;
 
     /**
-     * @unreleased - truncate donationMetaTable to avoid duplicate records
+     * @unreleased
      *
      * @return void
      */
@@ -24,7 +25,11 @@ class TestDonation extends \Give_Unit_Test_Case
     {
         parent::tearDown();
         $donationMetaTable = DB::prefix('give_donationmeta');
+        $donorTable = DB::prefix('give_donors');
+        $donorMetaTable = DB::prefix('give_donormeta');
 
+        DB::query("TRUNCATE TABLE $donorTable");
+        DB::query("TRUNCATE TABLE $donorMetaTable");
         DB::query("TRUNCATE TABLE $donationMetaTable");
     }
 
@@ -104,10 +109,15 @@ class TestDonation extends \Give_Unit_Test_Case
 
     /**
      * @return void
+     * @throws Exception
      */
     public function testDonationShouldGetDonor()
     {
-        $this->markTestIncomplete();
+        $donor = $this->createDonor();
+        $donation = $this->createDonation(['donorId' => $donor->id]);
+
+        $this->assertInstanceOf(Donor::class, $donation->donor());
+        $this->assertEquals($donor, $donation->donor());
     }
 
     /**
@@ -129,19 +139,47 @@ class TestDonation extends \Give_Unit_Test_Case
     /**
      * @unreleased
      *
+     * @param  array  $attributes
+     *
+     * @return Donation
+     *
      * @throws Exception
      */
-    private function createDonation()
+    private function createDonation(array $attributes = [])
     {
-        return Donation::create([
-            'status' => DonationStatus::PENDING(),
-            'gateway' => TestGateway::id(),
-            'amount' => 50,
-            'currency' => 'USD',
-            'donorId' => 1,
-            'firstName' => 'Bill',
-            'lastName' => 'Murray',
-            'email' => 'billMurray@givewp.com',
-        ]);
+        return Donation::create(
+            array_merge([
+                'status' => DonationStatus::PENDING(),
+                'gateway' => TestGateway::id(),
+                'amount' => 50,
+                'currency' => 'USD',
+                'donorId' => 1,
+                'firstName' => 'Bill',
+                'lastName' => 'Murray',
+                'email' => 'billMurray@givewp.com',
+            ], $attributes)
+        );
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  array  $attributes
+     *
+     * @return Donor
+     *
+     * @throws Exception
+     */
+    private function createDonor(array $attributes = [])
+    {
+        return Donor::create(
+            array_merge([
+                'createdAt' => $this->getCurrentDateTime(),
+                'name' => 'Bill Murray',
+                'firstName' => 'Bill',
+                'lastName' => 'Bill Murray',
+                'email' => 'billMurray@givewp.com'
+            ], $attributes)
+        );
     }
 }
