@@ -3,7 +3,9 @@
 namespace Give\Donors\Models;
 
 use DateTime;
+use Exception;
 use Give\Donations\Models\Donation;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Model;
 use Give\Subscriptions\Models\Subscription;
 
@@ -16,6 +18,8 @@ use Give\Subscriptions\Models\Subscription;
  * @property int $userId
  * @property DateTime $createdAt
  * @property string $name
+ * @property string $firstName
+ * @property string $lastName
  * @property string $email
  */
 class Donor extends Model
@@ -28,6 +32,8 @@ class Donor extends Model
         'userId' => 'int',
         'createdAt' => DateTime::class,
         'name' => 'string',
+        'firstName' => 'string',
+        'lastName' => 'string',
         'email' => 'string',
     ];
 
@@ -41,6 +47,22 @@ class Donor extends Model
     public static function find($id)
     {
         return give()->donorRepository->getById($id);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  array  $attributes
+     *
+     * @return Donor
+     *
+     * @throws Exception|InvalidArgumentException
+     */
+    public static function create(array $attributes)
+    {
+        $donor = new static($attributes);
+
+        return give()->donorRepository->insert($donor);
     }
 
     /**

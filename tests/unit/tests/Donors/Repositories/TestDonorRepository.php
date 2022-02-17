@@ -27,8 +27,10 @@ class TestDonorRepository extends Give_Unit_Test_Case
     public function tearDown()
     {
         parent::tearDown();
+        $donorTable = DB::prefix('give_donors');
         $donorMetaTable = DB::prefix('give_donormeta');
 
+        DB::query("TRUNCATE TABLE $donorTable");
         DB::query("TRUNCATE TABLE $donorMetaTable");
     }
 
@@ -41,25 +43,53 @@ class TestDonorRepository extends Give_Unit_Test_Case
      */
     public function testGetByIdShouldReturnDonor()
     {
-        $donorInstance = $this->createDonorInstance();
+        $donor = $this->createDonor();
+
         $repository = new DonorRepository();
 
-        DB::table('give_donors')
-            ->insert([
-                'id' => $donorInstance->id,
-                'user_id' => $donorInstance->id,
-                'email' => $donorInstance->email,
-                'name' => $donorInstance->email,
-                'date_created' => $this->getFormattedDateTime($donorInstance->createdAt)
-            ]);
-
-        $donor = $repository->getById($donorInstance->id);
+        $donorFromRepository = $repository->getById($donor->id);
 
         $donorQuery = DB::table('give_donors')
-            ->where('id', $donorInstance->id)
+            ->where('id', $donorFromRepository->id)
             ->get();
 
         $this->assertEquals($donor->id, $donorQuery->id);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     *
+     * @throws Exception
+     */
+    public function testInsertShouldAddDonorToDatabase()
+    {
+        $donor = $this->createDonorInstance();
+        $repository = new DonorRepository();
+
+        $newDonor = $repository->insert($donor);
+
+        $query = DB::table('give_donors')
+            ->select('*')
+            ->attachMeta('give_donormeta',
+                'ID',
+                'donor_id',
+                ['_give_donor_first_name', 'firstName'],
+                ['_give_donor_last_name', 'lastName']
+            )
+            ->where('id', $newDonor->id)
+            ->get();
+
+
+        // simulate asserting database has values
+        $this->assertInstanceOf(Donor::class, $newDonor);
+        $this->assertEquals($this->toDateTime($query->date_created), $newDonor->createdAt);
+        $this->assertEquals($query->id, $newDonor->id);
+        $this->assertEquals($query->name, $newDonor->name);
+        $this->assertEquals($query->firstName, $newDonor->firstName);
+        $this->assertEquals($query->lastName, $newDonor->lastName);
+        $this->assertEquals($query->email, $newDonor->email);
     }
 
     /**
@@ -70,10 +100,28 @@ class TestDonorRepository extends Give_Unit_Test_Case
     private function createDonorInstance()
     {
         return new Donor([
-            'id' => 2,
-            'userId' => 2,
             'createdAt' => $this->getCurrentDateTime(),
             'name' => 'Bill Murray',
+            'firstName' => 'Bill',
+            'lastName' => 'Bill Murray',
+            'email' => 'billMurray@givewp.com'
+        ]);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return Donor
+     *
+     * @throws Exception
+     */
+    private function createDonor()
+    {
+        return Donor::create([
+            'createdAt' => $this->getCurrentDateTime(),
+            'name' => 'Bill Murray',
+            'firstName' => 'Bill',
+            'lastName' => 'Bill Murray',
             'email' => 'billMurray@givewp.com'
         ]);
     }

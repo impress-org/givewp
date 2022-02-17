@@ -34,6 +34,14 @@ class DonorQueryData
      * @var string
      */
     private $name;
+    /**
+     * @var string
+     */
+    private $firstName;
+    /**
+     * @var string
+     */
+    private $lastName;
 
     /**
      * Convert data from donor object to Donor Model
@@ -50,6 +58,8 @@ class DonorQueryData
         $self->userId = (int)$object->user_id;
         $self->email = $object->email;
         $self->name = $object->name;
+        $self->firstName = $object->firstName;
+        $self->lastName = $object->lastName;
         $self->createdAt = $self->toDateTime($object->date_created);
 
         return $self;
@@ -67,6 +77,8 @@ class DonorQueryData
             'userId' => $this->userId,
             'createdAt' => $this->createdAt,
             'name' => $this->name,
+            'firstName' => $this->firstName,
+            'lastName' => $this->lastName,
             'email' => $this->email
         ]);
     }
