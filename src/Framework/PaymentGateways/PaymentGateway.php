@@ -99,7 +99,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
             );
 
             $message = __(
-                'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.',
+                'An unexpected error occurred while processing the donation.  Please try again or contact a site administrator.',
                 'give'
             );
 
@@ -128,7 +128,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
             );
 
             $message = __(
-                'An unexpected error occurred while processing your subscription.  Please try again or contact us to help resolve.',
+                'An unexpected error occurred while processing the subscription.  Please try again or contact the site administrator.',
                 'give'
             );
 

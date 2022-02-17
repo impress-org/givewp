@@ -75,7 +75,7 @@ class CreatePaymentIntent extends WorkflowAction
         give_update_meta( $paymentData->donationId, '_give_stripe_payment_intent_client_secret', $intent->clientSecret() );
 
         if( 'requires_action' == $intent->status() ) {
-            give_insert_payment_note($paymentData->donationId, __( 'Stripe requires additional action to be fulfilled.', 'give' ));
+            give_insert_payment_note($paymentData->donationId, __( 'Stripe requires additional action to be fulfilled. Check your Stripe account.', 'give' ));
             give_update_meta($paymentData->donationId, '_give_stripe_payment_intent_require_action_url', $intent->nextActionRedirectUrl());
         }
 
