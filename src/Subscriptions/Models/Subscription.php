@@ -53,6 +53,7 @@ class Subscription extends Model
      * @unreleased
      *
      * @param  int  $id
+     *
      * @return Subscription|null
      */
     public static function find($id)
@@ -61,6 +62,8 @@ class Subscription extends Model
     }
 
     /**
+     * @unreleased
+     *
      * @return Donor|null
      */
     public function donor()
@@ -69,6 +72,8 @@ class Subscription extends Model
     }
 
     /**
+     * @unreleased
+     *
      * @return Donation[]
      */
     public function donations()
@@ -78,6 +83,8 @@ class Subscription extends Model
 
     /**
      * Get Subscription notes
+     *
+     * @unreleased
      *
      * @return object[]
      */

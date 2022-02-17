@@ -56,6 +56,7 @@ class Donation extends Model
      * @unreleased
      *
      * @param  int  $id
+     *
      * @return Donation
      */
     public static function find($id)
@@ -65,8 +66,12 @@ class Donation extends Model
 
 
     /**
+     * @unreleased
+     *
      * @param  Donation  $donation
+     *
      * @return Donation
+     *
      * @throws Exception|InvalidArgumentException
      */
     public static function create(Donation $donation)
@@ -75,7 +80,10 @@ class Donation extends Model
     }
 
     /**
+     * @unreleased
+     *
      * @return Donation
+     *
      * @throws Exception|InvalidArgumentException
      */
     public function save()
@@ -124,15 +132,9 @@ class Donation extends Model
     }
 
     /**
-     * @return array
-     */
-    public function getMeta()
-    {
-        return give()->donations->getCoreDonationMeta($this);
-    }
-
-    /**
-     * @return int
+     * @unreleased
+     *
+     * @return int|null
      */
     public function getSequentialId()
     {
