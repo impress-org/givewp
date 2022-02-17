@@ -25,7 +25,6 @@ class UpdateStatementDescriptorAjaxRequestControllerTest extends WP_Ajax_UnitTes
 
         global $wp_roles;
         var_dump( get_option( $wp_roles->role_key )[ 'administrator' ][ 'capabilities' ][ 'manage_give_settings' ] );
-        die();
 
         try {
             $this->_handleAjax('edit_stripe_account_statement_descriptor');
