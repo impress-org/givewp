@@ -24,7 +24,7 @@ class UpdateStatementDescriptorAjaxRequestControllerTest extends WP_Ajax_UnitTes
         $_GET['account-slug'] = 'abc';
 
         global $wp_roles;
-        var_dump( get_option( $wp_roles->role_key )[ 'administrator' ][ 'capabilities' ][ 'manage_give_settings' ] );
+        $this->assertTrue( get_option( $wp_roles->role_key )[ 'administrator' ][ 'capabilities' ][ 'manage_give_settings' ] );
 
         try {
             $this->_handleAjax('edit_stripe_account_statement_descriptor');
@@ -42,6 +42,9 @@ class UpdateStatementDescriptorAjaxRequestControllerTest extends WP_Ajax_UnitTes
         $this->_setRole('administrator');
         $_GET['statement-descriptor'] = 'edfhij';
         $_GET['account-slug'] = 'abc';
+
+        global $wp_roles;
+        $this->assertTrue( get_option( $wp_roles->role_key )[ 'administrator' ][ 'capabilities' ][ 'manage_give_settings' ] );
 
         try {
             $this->_handleAjax('edit_stripe_account_statement_descriptor');
@@ -61,6 +64,9 @@ class UpdateStatementDescriptorAjaxRequestControllerTest extends WP_Ajax_UnitTes
 
         $_GET['statement-descriptor'] = 'edfhij';
         $_GET['account-slug'] = 'account_1';
+
+        global $wp_roles;
+        $this->assertTrue( get_option( $wp_roles->role_key )[ 'administrator' ][ 'capabilities' ][ 'manage_give_settings' ] );
 
         try {
             $this->_handleAjax('edit_stripe_account_statement_descriptor');
