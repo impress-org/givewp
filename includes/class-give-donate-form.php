@@ -623,6 +623,7 @@ class Give_Donate_Form {
 	 * Retrieve the goal
 	 *
 	 * @since  1.0
+     * @unreleased Set default goal value to zero to prevent fatal error on PHP8.0.
 	 * @access public
 	 *
 	 * @return float  Goal.
@@ -647,7 +648,7 @@ class Give_Donate_Form {
 			}
 		}
 
-		return apply_filters( 'give_get_set_goal', $this->goal, $this->ID );
+		return apply_filters( 'give_get_set_goal', $this->goal ?: 0, $this->ID );
 
 	}
 

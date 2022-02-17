@@ -37,14 +37,16 @@ mix.setPublicPath('assets/dist')
     .js('src/DonorDashboards/resources/js/block/index.js', 'js/donor-dashboards-block.js')
     .js('src/Log/Admin/index.js', 'js/give-log-list-table-app.js')
     .js('src/MigrationLog/Admin/index.js', 'js/give-migrations-list-table-app.js')
-    .js('src/InPluginUpsells/resources/js/addons-admin-page.js', 'js/admin-upsell-addons-page.js')
+    .js('src/DonationSummary/resources/js/summary.js', 'js/give-donation-summary.js')
+    .js('src/Promotions/InPluginUpsells/resources/js/addons-admin-page.js', 'js/admin-upsell-addons-page.js')
     .js(
-        'src/InPluginUpsells/resources/js/recurring-donations-settings-tab.js',
+        'src/Promotions/InPluginUpsells/resources/js/recurring-donations-settings-tab.js',
         'js/admin-upsell-recurring-donations-settings-tab.js'
     )
     .js('src/InPluginUpsells/resources/js/sale-banner.js', 'js/admin-upsell-sale-banner.js')
-    .js('src/DonationSummary/resources/js/summary.js', 'js/give-donation-summary.js')
     .ts('src/DonationForms/resources/admin-donation-forms.tsx', 'js/give-admin-donation-forms.js')
+    .js('src/Promotions/InPluginUpsells/resources/js/sale-banner.js', 'js/admin-upsell-sale-banner.js')
+    .js('src/Promotions/FreeAddonModal/resources/App.js', 'js/admin-free-addon-modal.js')
     .react()
     .sourceMaps(false, 'source-map')
 
@@ -56,13 +58,13 @@ mix.webpackConfig({
         $: 'jQuery',
         jquery: 'jQuery',
         lodash: 'lodash',
-        '@wordpress/i18n': 'wp.i18n',
     },
     resolve: {
         alias: {
             '@givewp/components': path.resolve(__dirname, 'src/Views/Components/'),
             '@givewp/fontawesome': path.resolve(__dirname, 'assets/src/css/icons/fa/'),
             '@givewp/hint.css': path.resolve(__dirname, 'assets/src/css/plugins/hint.min.scss'),
+            '@givewp/promotions': path.resolve(__dirname, 'src/Promotions/sharedResources/'),
         },
     },
 });

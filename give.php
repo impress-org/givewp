@@ -50,13 +50,13 @@ use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvide
 use Give\Form\Templates;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Framework\Migrations\MigrationsServiceProvider;
-use Give\InPluginUpsells\ServiceProvider as InPluginUpsellsServiceProvider;
 use Give\LegacySubscriptions\ServiceProvider as LegacySubscriptionsServiceProvider;
 use Give\License\LicenseServiceProvider;
 use Give\Log\LogServiceProvider;
 use Give\MigrationLog\MigrationLogServiceProvider;
 use Give\MultiFormGoals\ServiceProvider as MultiFormGoalsServiceProvider;
 use Give\PaymentGateways\ServiceProvider as PaymentGatewaysServiceProvider;
+use Give\Promotions\ServiceProvider as PromotionsServiceProvider;
 use Give\Revenue\RevenueServiceProvider;
 use Give\Route\Form as FormRoute;
 use Give\ServiceProviders\LegacyServiceProvider;
@@ -161,7 +161,6 @@ final class Give
         RevenueServiceProvider::class,
         MultiFormGoalsServiceProvider::class,
         DonorDashboardsServiceProvider::class,
-        InPluginUpsellsServiceProvider::class,
         TrackingServiceProvider::class,
         TestDataServiceProvider::class,
         MigrationLogServiceProvider::class,
@@ -173,6 +172,7 @@ final class Give
         DonationSummaryServiceProvider::class,
         PaymentGatewaysServiceProvider::class,
         DonationFormsServiceProvider::class,
+        PromotionsServiceProvider::class,
         LegacySubscriptionsServiceProvider::class
     ];
 

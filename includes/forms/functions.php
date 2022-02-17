@@ -1245,6 +1245,8 @@ function give_set_form_closed_status( $form_id ) {
 /**
  * Show Form Goal Stats in Admin ( Listing and Detail page )
  *
+ * @unreleased Prevent divide by zero issue in goal percentage calculation logic.
+ *
  * @param int $form_id Form ID.
  *
  * @since 2.1.0
@@ -1255,7 +1257,7 @@ function give_admin_form_goal_stats( $form_id ) {
 
 	$html             = '';
 	$goal_stats       = give_goal_progress_stats( $form_id );
-	$percent_complete = round( ( $goal_stats['raw_actual'] / $goal_stats['raw_goal'] ), 3 ) * 100;
+	$percent_complete = $goal_stats['raw_goal'] ? round( ( $goal_stats['raw_actual'] / $goal_stats['raw_goal'] ), 3 ) * 100 : 0;
 
 	$html .= sprintf(
 		'<div class="give-admin-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="%1$s">
