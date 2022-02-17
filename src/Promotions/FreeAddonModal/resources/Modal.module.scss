@@ -1,0 +1,129 @@
+.giveModalContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.64);
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: safe center;
+    box-sizing: border-box;
+    padding: 1rem 0;
+
+    .modal {
+        overscroll-behavior: none;
+        font-family: "Open Sans", system-ui;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        row-gap: 1.2rem;
+        width: 100%;
+        margin: auto;
+        max-width: 40.125rem;
+        max-height: 100%;
+        box-sizing: border-box;
+        background-color: white;
+        padding: 2rem 4rem;
+        box-shadow: 0 0 24px 4px rgba(0, 0, 0, 0.25);
+        border-top: rgba(105, 184, 107, 1) solid 0.5rem;
+        overflow-y: auto;
+
+        h2 {
+            font-weight: bold;
+            font-size: 2.375rem;
+            text-transform: uppercase;
+            line-height: 3.25rem;
+            color: #556E79;
+            margin: 0;
+        }
+
+        p {
+            text-align: center;
+            font-size: 1.375rem;
+            font-weight: 300;
+            color: #5C5C5C;
+            margin: 0;
+
+            span {
+                color: rgba(105, 184, 107, 1);
+                font-weight: bold;
+            }
+        }
+
+        a {
+            font-size: 1rem;
+            font-style: italic;
+            text-decoration: underline;
+            color: rgba(85, 110, 121, 1);
+        }
+
+        .icon {
+            width: 8rem;
+        }
+    }
+
+    .form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        row-gap: 2rem;
+
+        label {
+            display: flex;
+            flex-direction: column;
+            font-size: 1rem;
+            font-weight: 400;
+
+            span {
+                padding-left: 0.3rem;
+                margin-bottom: 0.2rem;
+            }
+        }
+
+        .fields {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            row-gap: 2rem;
+            justify-content: space-between;
+            align-items: center;
+
+            input[type="submit"] {
+                padding: 1rem 2rem;
+            }
+
+            input:where([type="text"], [type="email"]) {
+                width: 22rem;
+                height: 3.1rem;
+                border: #c5c5c5 solid 0.15rem;
+                background-color: white;
+                box-shadow: inset 0 4px 4px rgba(0, 0, 0, 0.1);
+                padding: 0 0.5rem;
+            }
+        }
+    }
+
+    .disclosure {
+        font-size: 0.73rem;
+    }
+
+    :is(.submissionError, .submissionError a) {
+        color: red;
+        font-size: 0.9rem;
+        text-align: center;
+    }
+
+    @media (max-width: 428px) {
+        padding: 0;
+
+        .modal {
+            padding: 1rem 0.5rem;
+
+            h2 {
+                font-size: 1.9rem;
+            }
+        }
+    }
+}

@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\InPluginUpsells;
+namespace Give\Promotions\InPluginUpsells;
 
 /**
  * @since 2.17.0

@@ -5,18 +5,20 @@ import {__} from '@wordpress/i18n';
 import {MustHaveAddons} from './MustHaveAddons';
 import {AdditionalAddons} from './AdditionalAddons';
 import {PricingPlans} from './PricingPlans';
+import {FreeAddOnTab} from './FreeAddOnTab';
 import {assetUrl} from '../utils';
 import styles from './AddonsAdminPage.module.css';
 
-export function AddonsAdminPage() {
+export function AddonsAdminPage({startingTab = 0}) {
     // We control the tabs only so we can use `tabIndex` to change the decor.
-    const [tabIndex, setTabIndex] = useState(0);
+    const [tabIndex, setTabIndex] = useState(startingTab);
     const addonDecorAssets = useMemo(
         () =>
             [
                 'images/addons-admin-page-decor-1.png',
                 'images/addons-admin-page-decor-2.png',
                 'images/addons-admin-page-decor-3.png',
+                'images/addons-admin-page-decor-4.png',
             ].map(assetUrl),
         []
     );
@@ -52,6 +54,7 @@ export function AddonsAdminPage() {
                         <Tab>{__('Must Have Add-ons', 'give')}</Tab>
                         <Tab>{__('View Pricing Plans', 'give')}</Tab>
                         <Tab>{__('Additional Add-ons', 'give')}</Tab>
+                        <Tab>{__('Get a Free Add-on!', 'give')}</Tab>
                     </TabList>
                 </div>
             </div>
@@ -64,6 +67,9 @@ export function AddonsAdminPage() {
                 </TabPanel>
                 <TabPanel>
                     <AdditionalAddons />
+                </TabPanel>
+                <TabPanel>
+                    <FreeAddOnTab />
                 </TabPanel>
             </TabPanels>
         </Tabs>
