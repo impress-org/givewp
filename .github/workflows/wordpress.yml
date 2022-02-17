@@ -93,3 +93,6 @@ jobs:
                 run: php -d memory_limit=-1 vendor/bin/phpunit
                 env:
                     DB_PORT: ${{ env.mysql_port }}
+
+            -   name: Setup tmate session
+                uses: mxschmitt/action-tmate@v3
