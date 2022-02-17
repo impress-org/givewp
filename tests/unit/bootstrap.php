@@ -43,19 +43,6 @@ if( file_exists( $testConfig[ 'workflow' ] ) ) {
     tests_add_filter('setup_theme', function() {
         echo 'Installing GiveWP.....' . PHP_EOL;
         give()->install();
-
-        echo 'Updating current user capabilities.....' . PHP_EOL;
-        // reload capabilities after install, see https://core.trac.wordpress.org/ticket/28374
-        $current_user = new WP_User( 1 );
-        $current_user->set_role( 'editor' );
-        $current_user->set_role( 'administrator' );
-        wp_update_user(
-            array(
-                'ID'         => 1,
-                'first_name' => 'Admin',
-                'last_name'  => 'User',
-            )
-        );
     });
     require_once __DIR__ . '/../../vendor/wordpress/wordpress/tests/phpunit/includes/bootstrap.php';
 
