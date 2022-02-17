@@ -17,12 +17,11 @@ if( file_exists( $testConfig[ 'workflow' ] ) ) {
     require_once WP_TESTS_CONFIG_FILE_PATH;
     require_once '/tmp/wordpress-tests-lib/includes/functions.php';
 
-    var_dump( file_exists( require_once __DIR__ . '/../../give.php' ) );
     tests_add_filter('muplugins_loaded', function() {
-        var_dump( 'muplugins_loaded' );
         require_once __DIR__ . '/../../give.php';
     });
     tests_add_filter('setup_theme', function() {
+        echo 'Installing GiveWP.....' . PHP_EOL;
         give()->install();
     });
     require_once '/tmp/wordpress-tests-lib/includes/bootstrap.php';
