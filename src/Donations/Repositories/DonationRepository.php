@@ -274,6 +274,41 @@ class DonationRepository
      * @unreleased
      *
      * @param  Donation  $donation
+     * @return bool
+     * @throws Exception
+     */
+    public function delete(Donation $donation)
+    {
+        DB::query('START TRANSACTION');
+
+        try {
+            DB::table('posts')
+                ->where('id', $donation->id)
+                ->delete();
+
+            foreach ($this->getCoreDonationMeta($donation) as $metaKey => $metaValue) {
+                DB::table('give_donationmeta')
+                    ->where('donation_id', $donation->id)
+                    ->where('meta_key', $metaKey)
+                    ->delete();
+            }
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed deleting a donation');
+
+            throw new $exception('Failed deleting a donation');
+        }
+
+        DB::query('COMMIT');
+
+        return true;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  Donation  $donation
      *
      * @return array
      */

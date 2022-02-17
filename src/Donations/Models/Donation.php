@@ -3,9 +3,10 @@
 namespace Give\Donations\Models;
 
 use DateTime;
+use Exception;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
-use Give\Framework\Database\Exceptions\DatabaseQueryException;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Model;
 use Give\Subscriptions\Models\Subscription;
 
@@ -66,7 +67,7 @@ class Donation extends Model
     /**
      * @param  Donation  $donation
      * @return Donation
-     * @throws DatabaseQueryException
+     * @throws Exception|InvalidArgumentException
      */
     public static function create(Donation $donation)
     {
@@ -75,7 +76,7 @@ class Donation extends Model
 
     /**
      * @return Donation
-     * @throws DatabaseQueryException
+     * @throws Exception|InvalidArgumentException
      */
     public function save()
     {
@@ -84,6 +85,18 @@ class Donation extends Model
         }
 
         return give()->donations->update($this);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return bool
+     *
+     * @throws Exception|InvalidArgumentException
+     */
+    public function delete()
+    {
+        return give()->donations->delete($this);
     }
 
     /**

@@ -11,6 +11,9 @@ use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Traits\InteractsWithTime;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 
+/**
+ * @coversDefaultClass DonationRepository
+ */
 final class DonationRepositoryTest extends \Give_Unit_Test_Case
 {
     use InteractsWithTime;
@@ -74,7 +77,7 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
                 '_give_payment_donor_id',
                 '_give_donor_billing_first_name',
                 '_give_donor_billing_last_name',
-                '_give_payment_donor_email',
+                '_give_payment_donor_email'
             )
             ->where('ID', $newDonation->id)
             ->get();
@@ -193,6 +196,35 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
         $this->assertEquals("Ron", $query->_give_donor_billing_first_name);
         $this->assertEquals("Swanson", $query->_give_donor_billing_last_name);
         $this->assertEquals("ron@swanson.com", $query->_give_payment_donor_email);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     *
+     * @throws Exception
+     */
+    public function testDeleteShouldRemoveDonationFromTheDatabase()
+    {
+        $donation = $this->createDonationInstance();
+        $repository = new DonationRepository();
+
+        $newDonation = $repository->insert($donation);
+
+        $repository->delete($newDonation);
+
+        $donationQuery = DB::table('posts')
+            ->where('ID', $newDonation->id)
+            ->get();
+
+        $donationCoreMetaQuery =
+            DB::table('give_donationmeta')
+                ->where('donation_id', $newDonation->id)
+                ->getAll();
+
+        $this->assertNull($donationQuery);
+        $this->assertEmpty($donationCoreMetaQuery);
     }
 
     /**
