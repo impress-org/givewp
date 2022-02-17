@@ -2944,39 +2944,113 @@ const gravatar = require( 'gravatar' );
 	 */
 	const GiveMultiSelectOptions = {
 		init: function() {
-			$( '.give-select-chosen[multiple]' ).each( function( i, selectDropdown ) {
-				$( selectDropdown ).chosen().change( function( e, currentOption ) {
-					const $dropdown = $( this );
-					const dropDownId = $dropdown.attr( 'id' );
-					const orderedOptions = [];
+            const selectChosen = document.querySelectorAll('.give-select-chosen[multiple]') ?? [];
 
-					$( `#${ dropDownId }_chosen li.search-choice span` ).each( function( j, element ) {
-						const value = element.textContent;
-						if ( value !== currentOption.deselected ) {
-							orderedOptions.push( { value, selected: true } );
-						}
-					} );
+            Array.from(selectChosen).forEach( dropdown => {
+                const order = dropdown.dataset.order
+                    ? dropdown.dataset.order.split('|')
+                    : [];
 
-					Array.from( e.target.options ).map( option => {
-						const included = orderedOptions.filter( orderedOption => orderedOption.value === option.value ).length;
-						if ( ! included ) {
-							orderedOptions.push( {
-								value: option.value,
-								selected: option.selected,
-							} );
-						}
-					} );
+                if (order.length > 0) {
+                    GiveMultiSelectOptions.reorderItems(dropdown, order);
+                }
 
-					// Rebuild the dropdown
-					$dropdown.empty();
-					orderedOptions.map( option => $dropdown.append( $( '<option>', {
-						value: option.value,
-						text: option.value,
-						selected: option.selected,
-					} ) ) );
-				} );
-			} );
+                // Update order on change
+                $( dropdown ).chosen().change( function( e, currentOption ) {
+                    const dropdown = e.target;
+                    const orderedOptions = [];
+
+                    if (currentOption.deselected) {
+                        $(this).trigger('chosen:updated');
+                    }
+
+                    const items = document.querySelectorAll(`#${dropdown.id}_chosen li.search-choice`) ?? [];
+
+                    items.forEach((item) => {
+                        const text = item.querySelector('span').textContent;
+                        const option = Object.values(dropdown.options).find( option => option.textContent === text );
+
+                        if ( option ) {
+                            orderedOptions.push( {
+                                text: option.textContent,
+                                value: option.value,
+                                selected: true
+                            } );
+                        }
+                    });
+
+                    // Fill in rest of the options
+                    Object.values(dropdown.options).map( option => {
+                        const included = orderedOptions.filter( orderedOption => orderedOption.text === option.textContent ).length;
+                        if ( ! included ) {
+                            orderedOptions.push( {
+                                text: option.textContent,
+                                value: option.value,
+                                selected: false
+                            } );
+                        }
+                    } );
+
+                    // Rebuild the dropdown
+                    GiveMultiSelectOptions.rebuildDropDown(dropdown, orderedOptions);
+                } );
+
+            });
 		},
+
+        reorderItems: function(dropdown, order) {
+            const options = dropdown.options;
+            const orderedOptions = [];
+
+            order.forEach( (value, i) => {
+                const items = document.querySelectorAll(`#${dropdown.id}_chosen li.search-choice`) ?? [];
+
+                items.forEach((item, j) => {
+                    if (i === j) {
+                        const option = Object.values(options).find( option => option.value === value );
+
+                        item.querySelector('span').textContent = option.text;
+
+                        orderedOptions.push( {
+                            value: option.value,
+                            text: option.text,
+                            selected: true
+                        } );
+                    }
+                })
+            });
+
+            // Fill in rest of the options
+            Object.values(options).map( option => {
+                const included = orderedOptions.filter( orderedOption => orderedOption.value === option.value ).length;
+                if ( ! included ) {
+                    orderedOptions.push( {
+                        value: option.value,
+                        text: option.textContent,
+                        selected: option.selected,
+                    } );
+                }
+            } );
+
+            // Rebuild the dropdown
+            GiveMultiSelectOptions.rebuildDropDown(dropdown, orderedOptions);
+
+            $(this).trigger('chosen:updated')
+        },
+
+        rebuildDropDown: function(dropdown, options) {
+            dropdown.innerHTML = '';
+            options.map( option => {
+                const newOption = document.createElement('option')
+                newOption.value = option.value;
+                newOption.textContent = option.text;
+                if ( option.selected ) {
+                    newOption.setAttribute('selected', 'true');
+                }
+                dropdown.add(newOption)
+            } );
+
+        }
 	};
 
 	// On DOM Ready.
