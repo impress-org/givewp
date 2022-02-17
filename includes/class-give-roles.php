@@ -152,9 +152,6 @@ class Give_Roles {
 			$wp_roles->add_cap( 'administrator', 'manage_give_settings' );
 			$wp_roles->add_cap( 'administrator', 'view_give_payments' );
 
-            var_dump( get_option( $wp_roles->role_key, array() ) );
-
-
 			// Add the main post type capabilities.
 			$capabilities = $this->get_core_caps();
 			foreach ( $capabilities as $cap_group ) {
