@@ -11,6 +11,7 @@ use Give\PaymentGateways\Actions\RegisterPaymentGateways;
 use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\WebhookRegister;
 use Give\PaymentGateways\Stripe\Controllers\UpdateStatementDescriptorAjaxRequestController;
 use Give\PaymentGateways\Stripe\Migrations\AddStatementDescriptorToStripeAccounts;
+use Give\PaymentGateways\Gateways\Stripe\CheckoutGateway;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
@@ -43,5 +44,11 @@ class ServiceProvider implements ServiceProviderInterface
 
         give(MigrationsRegister::class)
             ->addMigration(AddStatementDescriptorToStripeAccounts::class);
+
+        /**
+         * Stripe Checkout Redirect Handler
+         */
+        Hooks::addAction('wp_footer', CheckoutGateway::class, 'maybeHandleRedirect', 99999);
+        Hooks::addAction('give_embed_footer', CheckoutGateway::class, 'maybeHandleRedirect', 99999);
     }
 }
