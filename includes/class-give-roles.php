@@ -133,13 +133,18 @@ class Give_Roles {
 	public function add_caps() {
 		global $wp_roles;
 
+        var_dump( $wp_roles );
+
 		if ( class_exists( 'WP_Roles' ) ) {
+            var_dump( 'WP_Roles class exists.' );
 			if ( ! isset( $wp_roles ) ) {
+                var_dump( 'new WP_Roles' );
 				$wp_roles = new WP_Roles();
 			}
 		}
 
 		if ( is_object( $wp_roles ) ) {
+            var_dump( '$wp_roles is object' );
 			$wp_roles->add_cap( 'give_manager', 'view_give_reports' );
 			$wp_roles->add_cap( 'give_manager', 'view_give_sensitive_data' );
 			$wp_roles->add_cap( 'give_manager', 'export_give_reports' );
@@ -151,6 +156,8 @@ class Give_Roles {
 			$wp_roles->add_cap( 'administrator', 'export_give_reports' );
 			$wp_roles->add_cap( 'administrator', 'manage_give_settings' );
 			$wp_roles->add_cap( 'administrator', 'view_give_payments' );
+            var_dump( 'Admin capabilities added.' );
+
 
 			// Add the main post type capabilities.
 			$capabilities = $this->get_core_caps();
