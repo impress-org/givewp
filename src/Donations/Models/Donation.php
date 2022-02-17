@@ -68,14 +68,16 @@ class Donation extends Model
     /**
      * @unreleased
      *
-     * @param  Donation  $donation
+     * @param  array  $attributes
      *
      * @return Donation
      *
      * @throws Exception|InvalidArgumentException
      */
-    public static function create(Donation $donation)
+    public static function create(array $attributes)
     {
+        $donation = new static($attributes);
+
         return give()->donations->insert($donation);
     }
 
