@@ -21,7 +21,7 @@ class UpdateStatementDescriptorAjaxRequestController
      */
     public function __invoke()
     {
-        if (!current_user_can('manage_give_settings')) {
+        if (!current_user_can('manage_options')) {
             wp_die('Forbidden', 403);
         }
 
