@@ -13,7 +13,7 @@ class UpdateStatementDescriptorAjaxRequestControllerTest extends WP_Ajax_UnitTes
 
     public function testUnAuthorizedUserCanNotProcessAction()
     {
-        $this->expectException(\WPAjaxDieStopException::class);
+        $this->expectException(WPAjaxDieStopException::class);
         $this->_handleAjax('edit_stripe_account_statement_descriptor');
     }
 
