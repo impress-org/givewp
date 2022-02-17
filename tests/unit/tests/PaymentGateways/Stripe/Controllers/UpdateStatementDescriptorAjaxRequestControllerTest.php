@@ -20,7 +20,6 @@ class UpdateStatementDescriptorAjaxRequestControllerTest extends WP_Ajax_UnitTes
     public function testReturnErrorOnEmptyStatementDescriptor()
     {
         $this->_setRole('administrator');
-        var_export(wp_get_current_user());
         $_GET['statement-descriptor'] = '';
         $_GET['account-slug'] = 'abc';
 
