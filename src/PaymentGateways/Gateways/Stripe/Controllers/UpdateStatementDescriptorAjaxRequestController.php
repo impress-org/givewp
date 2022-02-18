@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\Gateways\Stripe\Controllers;
 
 use Give\Helpers\Call;
+use Give\PaymentGateways\Gateways\Stripe\Actions\AddSaveStatementDescriptorToStripeAccount;
 use Give\PaymentGateways\Gateways\Stripe\Migrations\AddStatementDescriptorToStripeAccounts;
 use Give\PaymentGateways\Stripe\Traits\HasStripeStatementDescriptorText;
 
@@ -36,7 +37,7 @@ class UpdateStatementDescriptorAjaxRequestController
                 $this->filterStatementDescriptor($stripeStatementDescriptorText)
             );
             Call::invoke(
-                AddStatementDescriptorToStripeAccounts::class,
+                AddSaveStatementDescriptorToStripeAccount::class,
                 $stripeAccountId,
                 $stripeStatementDescriptorText
             );
