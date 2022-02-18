@@ -3,6 +3,7 @@
 namespace Give\Subscriptions\Models;
 
 use DateTime;
+use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
 use Give\Framework\Models\Contracts\ModelCrud;
@@ -94,10 +95,15 @@ class Subscription extends Model implements ModelCrud
         return give()->subscriptions->getNotesBySubscriptionId($this->id);
     }
 
-    
+
+    /**
+     * @throws Exception
+     */
     public static function create(array $attributes)
     {
-        // TODO: Implement create() method.
+        $subscription = new static($attributes);
+
+        return give()->subscriptions->insert($subscription);
     }
 
     public function save()

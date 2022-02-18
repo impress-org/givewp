@@ -4,6 +4,7 @@ namespace unit\tests\Subscriptions\Repositories;
 
 use Exception;
 use Give\Framework\Database\DB;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Traits\InteractsWithTime;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
@@ -40,10 +41,10 @@ class TestSubscriptionRepository extends Give_Unit_Test_Case
     {
         parent::tearDown();
         $donationMetaTable = DB::prefix('give_donationmeta');
-        //$subscriptionMetaTable = DB::prefix('give_subscriptionmeta');
+        $subscriptionsTable = DB::prefix('give_subscriptions');
 
         DB::query("TRUNCATE TABLE $donationMetaTable");
-        //DB::query("TRUNCATE TABLE $subscriptionMetaTable");
+        DB::query("TRUNCATE TABLE $subscriptionsTable");
     }
 
     /**
@@ -55,18 +56,13 @@ class TestSubscriptionRepository extends Give_Unit_Test_Case
      */
     public function testGetByIdShouldReturnSubscription()
     {
-        $subscriptionInstance = $this->createSubscriptionInstance();
+        $subscription = $this->createSubscription();
         $repository = new SubscriptionRepository();
 
-        /** @var Subscription $insertedSubscription */
-        $insertedSubscription = $repository->insert($subscriptionInstance);
+        $subscriptionById = $repository->getById($subscription->id);
 
-        $subscriptionQuery = DB::table('give_subscriptions')
-            ->where('id', $insertedSubscription->id)
-            ->get();
-
-        $this->assertInstanceOf(Subscription::class, $insertedSubscription);
-        $this->assertEquals($insertedSubscription->id, $subscriptionQuery->id);
+        $this->assertInstanceOf(Subscription::class, $subscription);
+        $this->assertEquals($subscriptionById, $subscription);
     }
 
     /**
@@ -105,11 +101,60 @@ class TestSubscriptionRepository extends Give_Unit_Test_Case
     /**
      * @unreleased
      *
+     * @return void
+     *
+     * @throws Exception
+     */
+    public function testInsertShouldFailValidationAndThrowException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $subscriptionMissingAmount = new Subscription([
+            'period' => SubscriptionPeriod::MONTH(),
+            'frequency' => 1,
+            'donorId' => 1,
+            'transactionId' => 'transaction-id',
+            'status' => SubscriptionStatus::PENDING(),
+            'donationFormId' => 1
+        ]);
+
+        $repository = new SubscriptionRepository();
+
+        $repository->insert($subscriptionMissingAmount);
+    }
+
+    /**
+     * @unreleased
+     *
      * @return Subscription
      */
     private function createSubscriptionInstance()
     {
         return new Subscription([
+            'id' => 1,
+            'createdAt' => $this->getCurrentDateTime(),
+            'amount' => 50,
+            'period' => SubscriptionPeriod::MONTH(),
+            'frequency' => 1,
+            'donorId' => 1,
+            'installments' => 0,
+            'transactionId' => 'transaction-id',
+            'feeAmount' => 0,
+            'status' => SubscriptionStatus::PENDING(),
+            'gatewaySubscriptionId' => 'gateway-subscription-id',
+            'donationFormId' => 1
+        ]);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return Subscription
+     * @throws Exception
+     */
+    private function createSubscription()
+    {
+        return Subscription::create([
             'id' => 1,
             'createdAt' => $this->getCurrentDateTime(),
             'amount' => 50,

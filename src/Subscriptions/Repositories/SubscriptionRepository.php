@@ -4,6 +4,7 @@ namespace Give\Subscriptions\Repositories;
 
 use Exception;
 use Give\Framework\Database\DB;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Traits\InteractsWithTime;
 use Give\Log\Log;
 use Give\Subscriptions\DataTransferObjects\SubscriptionQueryData;
@@ -15,6 +16,18 @@ use Give\Subscriptions\Models\Subscription;
 class SubscriptionRepository
 {
     use InteractsWithTime;
+
+    /**
+     * @var string[]
+     */
+    private $requiredSubscriptionProperties = [
+        'donorId',
+        'period',
+        'frequency',
+        'amount',
+        'status',
+        'donationFormId'
+    ];
 
     /**
      * @unreleased
@@ -107,6 +120,8 @@ class SubscriptionRepository
      */
     public function insert(Subscription $subscription)
     {
+        $this->validateSubscription($subscription);
+        
         $date = $subscription->createdAt ? $this->getFormattedDateTime(
             $subscription->createdAt
         ) : $this->getCurrentFormattedDateForDatabase();
@@ -123,8 +138,8 @@ class SubscriptionRepository
                 'frequency' => $subscription->frequency,
                 'initial_amount' => $subscription->amount,
                 'recurring_amount' => $subscription->amount,
-                'recurring_fee_amount' => $subscription->feeAmount ?: 0,
-                'bill_times' => $subscription->installments ?: 0,
+                'recurring_fee_amount' => isset($subscription->feeAmount) ? $subscription->feeAmount : 0,
+                'bill_times' => isset($subscription->installments) ? $subscription->installments : 0,
                 'transaction_id' => $subscription->transactionId,
                 'product_id' => $subscription->donationFormId
             ]);
@@ -141,6 +156,21 @@ class SubscriptionRepository
         $subscriptionId = DB::last_insert_id();
 
         return $this->getById($subscriptionId);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  Subscription  $subscription
+     * @return void
+     */
+    private function validateSubscription(Subscription $subscription)
+    {
+        foreach ($this->requiredSubscriptionProperties as $key) {
+            if (!isset($donation->$key)) {
+                throw new InvalidArgumentException("'$key' is required.");
+            }
+        }
     }
 
 }
