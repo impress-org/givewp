@@ -31,6 +31,12 @@ trait HasStripeStatementDescriptorText
             );
         }
 
+        if (is_numeric($statementDescriptor)) {
+            throw new InvalidArgumentException(
+                esc_html__('Stripe statement descriptor text should contain at least one letter.', 'give')
+            );
+        }
+
         if (array_intersect($unsupportedCharacters, str_split($statementDescriptor))) {
             throw new InvalidArgumentException(
                 __(
