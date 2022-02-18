@@ -27,7 +27,7 @@ trait HasStripeStatementDescriptorText
 
         if ($minLength > strlen($statementDescriptor) || $maxLength < strlen($statementDescriptor)) {
             throw new InvalidArgumentException(
-                esc_html__('Stripe statement descriptor text contain between 5 - 22 letters, inclusive.', 'give')
+                esc_html__('Stripe statement descriptor text should contain between 5 - 22 letters, inclusive.', 'give')
             );
         }
 
