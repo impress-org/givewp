@@ -23,9 +23,6 @@ class UpdateStatementDescriptorAjaxRequestControllerTest extends WP_Ajax_UnitTes
         $_GET['statement-descriptor'] = '';
         $_GET['account-slug'] = 'abc';
 
-        global $wp_roles;
-
-        var_dump( $wp_roles );
         $this->assertTrue( wp_get_current_user()->allcaps['manage_give_settings'] );
 
         try {

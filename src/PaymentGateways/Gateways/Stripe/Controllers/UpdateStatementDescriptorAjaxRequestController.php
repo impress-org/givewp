@@ -1,11 +1,18 @@
 <?php
 
-namespace Give\PaymentGateways\Stripe\Controllers;
+namespace Give\PaymentGateways\Gateways\Stripe\Controllers;
 
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Stripe\Models\AccountDetail;
 use Give\PaymentGateways\Stripe\Repositories\Settings;
 use Give\PaymentGateways\Stripe\Traits\HasStripeStatementDescriptorText;
+
+use function current_user_can;
+use function give;
+use function give_clean;
+use function wp_die;
+use function wp_send_json_error;
+use function wp_send_json_success;
 
 /**
  * @unreleased
