@@ -128,6 +128,33 @@ class TestDonorRepository extends Give_Unit_Test_Case
     /**
      * @unreleased
      *
+     * @return void
+     *
+     * @throws Exception
+     */
+    public function testDeleteShouldRemoveDonorFromTheDatabase()
+    {
+        $donor = $this->createDonor();
+        $repository = new DonorRepository();
+
+        $repository->delete($donor);
+
+        $donorQuery = DB::table('give_donors')
+            ->where('id', $donor->id)
+            ->get();
+
+        $donorMetaQuery =
+            DB::table('give_donormeta')
+                ->where('donor_id', $donor->id)
+                ->getAll();
+
+        $this->assertNull($donorQuery);
+        $this->assertEmpty($donorMetaQuery);
+    }
+
+    /**
+     * @unreleased
+     *
      * @return Donor
      */
     private function createDonorInstance()

@@ -84,6 +84,16 @@ class Donor extends Model
     /**
      * @unreleased
      *
+     * @throws Exception
+     */
+    public function delete()
+    {
+        return give()->donorRepository->delete($this);
+    }
+
+    /**
+     * @unreleased
+     *
      * @return Donation[]
      */
     public function donations()
