@@ -44,6 +44,10 @@ if( file_exists( $testConfig[ 'workflow' ] ) ) {
     tests_add_filter('setup_theme', function() {
         echo 'Installing GiveWP.....' . PHP_EOL;
         give()->install();
+
+        // Re-initiate role.
+        global $wp_roles;
+        $wp_roles = new WP_Roles();
     });
     require_once __DIR__ . '/../../vendor/wordpress/wordpress/tests/phpunit/includes/bootstrap.php';
 
