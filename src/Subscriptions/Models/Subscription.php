@@ -106,9 +106,14 @@ class Subscription extends Model implements ModelCrud
         return give()->subscriptions->insert($subscription);
     }
 
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
     public function save()
     {
-        // TODO: Implement save() method.
+        return give()->subscriptions->update($this);
     }
 
     public function delete()

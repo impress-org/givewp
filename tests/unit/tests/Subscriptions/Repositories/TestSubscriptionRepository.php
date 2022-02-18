@@ -126,6 +126,56 @@ class TestSubscriptionRepository extends Give_Unit_Test_Case
     /**
      * @unreleased
      *
+     * @return void
+     *
+     * @throws Exception
+     */
+    public function testUpdateShouldFailValidationAndThrowException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $subscriptionMissingAmount = new Subscription([
+            'period' => SubscriptionPeriod::MONTH(),
+            'frequency' => 1,
+            'donorId' => 1,
+            'transactionId' => 'transaction-id',
+            'status' => SubscriptionStatus::PENDING(),
+            'donationFormId' => 1
+        ]);
+
+        $repository = new SubscriptionRepository();
+
+        $repository->update($subscriptionMissingAmount);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     *
+     * @throws Exception
+     */
+    public function testUpdateShouldUpdateValuesInTheDatabase()
+    {
+        $subscription = $this->createSubscription();
+        $repository = new SubscriptionRepository();
+
+        $subscription->amount = 200;
+        $subscription->period = SubscriptionPeriod::YEAR();
+
+        $repository->update($subscription);
+
+        $subscriptionQuery = DB::table('give_subscriptions')
+            ->where('id', $subscription->id)
+            ->get();
+
+        $this->assertEquals(200, $subscriptionQuery->recurring_amount);
+        $this->assertEquals(SubscriptionPeriod::YEAR, $subscriptionQuery->period);
+    }
+
+    /**
+     * @unreleased
+     *
      * @return Subscription
      */
     private function createSubscriptionInstance()
@@ -155,7 +205,6 @@ class TestSubscriptionRepository extends Give_Unit_Test_Case
     private function createSubscription()
     {
         return Subscription::create([
-            'id' => 1,
             'createdAt' => $this->getCurrentDateTime(),
             'amount' => 50,
             'period' => SubscriptionPeriod::MONTH(),
