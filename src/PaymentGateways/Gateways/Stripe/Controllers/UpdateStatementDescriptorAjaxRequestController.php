@@ -6,12 +6,6 @@ use Give\Helpers\Call;
 use Give\PaymentGateways\Gateways\Stripe\Migrations\AddStatementDescriptorToStripeAccounts;
 use Give\PaymentGateways\Stripe\Traits\HasStripeStatementDescriptorText;
 
-use function current_user_can;
-use function give_clean;
-use function wp_die;
-use function wp_send_json_error;
-use function wp_send_json_success;
-
 /**
  * @unreleased
  */
