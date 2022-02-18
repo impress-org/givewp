@@ -31,9 +31,12 @@ trait HasStripeStatementDescriptorText
             );
         }
 
-        if (array_intersect( $unsupportedCharacters, explode( '', $statementDescriptor ) )) {
+        if (array_intersect($unsupportedCharacters, str_split($statementDescriptor))) {
             throw new InvalidArgumentException(
-                esc_html__('Stripe statement descriptor text should not contain any of the special characters < > \ \' " *.', 'give')
+                __(
+                    'Stripe statement descriptor text should not contain any of the special characters <code>< > \ \' " *</code>.',
+                    'give'
+                )
             );
         }
 
