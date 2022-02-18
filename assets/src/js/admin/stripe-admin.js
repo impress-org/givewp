@@ -298,8 +298,12 @@ window.addEventListener( 'DOMContentLoaded', function() {
                                     modalContent:{
                                         title: __( 'Invalid Statement Descriptor Text', 'give'),
                                         desc: sprintf(
-                                            '%s <br><a href="%s" target="_blank">%s</a>',
+                                            '%s <br>%s <br>- %s<br>- %s<br>- %s<br><br><a href="%s" target="_blank">%s</a>',
                                             __( 'Please enter a valid Stripe statement descriptor.', 'give'),
+                                            __( 'List of important Stripe statement descriptor text requirements:', 'give'),
+                                            __( 'Contains between 5 and 22 characters, inclusive.', 'give'),
+                                            __( 'Contains at least one letter.', 'give'),
+                                            __( 'Does not contain any of the special characters < > \\ \' " *.', 'give'),
                                             'https://stripe.com/docs/statement-descriptors#requirements',
                                             __( 'Read more about stripe statement descriptor text requirements.', 'give'),
                                         ),
@@ -314,7 +318,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
                                     if( ! response.success ){
                                         new Give.modal.GiveErrorAlert({
                                             modalContent:{
-                                                title: __( 'Invalid Stripe Statement Descriptor', 'give'),
+                                                title: __( 'Invalid Stripe Statement Descriptor Text', 'give'),
                                                 desc: sprintf(
                                                     '%s %s<br><br><a href="%s" target="_blank">%s</a>',
                                                     __( 'We are unable to update Stripe statement descriptor.', 'give'),
