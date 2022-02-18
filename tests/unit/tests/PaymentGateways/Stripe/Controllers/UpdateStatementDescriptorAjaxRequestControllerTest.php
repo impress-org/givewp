@@ -24,8 +24,10 @@ class UpdateStatementDescriptorAjaxRequestControllerTest extends WP_Ajax_UnitTes
         $_GET['account-slug'] = 'abc';
 
         global $wp_roles;
+
         $this->assertTrue( get_option( $wp_roles->role_key )[ 'administrator' ][ 'capabilities' ][ 'manage_give_settings' ] );
 
+        var_dump( $wp_roles->get_role('administrator') );
         var_dump( wp_get_current_user()->data );
         var_dump( wp_get_current_user()->caps );
         $this->assertTrue( wp_get_current_user()->allcaps['manage_give_settings'] );
