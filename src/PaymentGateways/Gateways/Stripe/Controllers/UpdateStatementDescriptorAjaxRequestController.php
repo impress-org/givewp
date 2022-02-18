@@ -27,13 +27,14 @@ class UpdateStatementDescriptorAjaxRequestController
         $stripeStatementDescriptorText = urldecode(trim($_GET['statement-descriptor']));
 
         // Valid data?
-        if (!$stripeAccountId || ! $stripeStatementDescriptorText) {
+        if (!$stripeAccountId || !$stripeStatementDescriptorText) {
             wp_die('Forbidden', 403);
         }
 
-        $stripeStatementDescriptorText = give_clean($this->filterStatementDescriptor($stripeStatementDescriptorText));
-
         try {
+            $stripeStatementDescriptorText = give_clean(
+                $this->filterStatementDescriptor($stripeStatementDescriptorText)
+            );
             Call::invoke(
                 AddStatementDescriptorToStripeAccounts::class,
                 $stripeAccountId,
