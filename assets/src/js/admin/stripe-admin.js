@@ -299,7 +299,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
                                         title: __( 'Invalid Statement Descriptor Text', 'give'),
                                         desc: sprintf(
                                             '%s <br><a href="%s" target="_blank">%s</a>',
-                                            __( 'Please enter a valid Stripe statement descriptor..', 'give'),
+                                            __( 'Please enter a valid Stripe statement descriptor.', 'give'),
                                             'https://stripe.com/docs/statement-descriptors#requirements',
                                             __( 'Read more about stripe statement descriptor text requirements.', 'give'),
                                         ),
@@ -314,10 +314,11 @@ window.addEventListener( 'DOMContentLoaded', function() {
                                     if( ! response.success ){
                                         new Give.modal.GiveErrorAlert({
                                             modalContent:{
-                                                title: __( 'Unable To Update Stripe Statement Descriptor', 'give'),
+                                                title: __( 'Invalid Stripe Statement Descriptor', 'give'),
                                                 desc: sprintf(
-                                                    '%s <br><a href="%s" target="_blank">%s</a>',
-                                                    __( 'We are unable to update Stripe statement descriptor. Please try later.', 'give'),
+                                                    '%s %s<br><br><a href="%s" target="_blank">%s</a>',
+                                                    __( 'We are unable to update Stripe statement descriptor.', 'give'),
+                                                    response.data.errorMessage,
                                                     'https://stripe.com/docs/statement-descriptors#requirements',
                                                     __( 'Read more about stripe statement descriptor text requirements.', 'give'),
                                                 ),
@@ -327,7 +328,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
                                         return;
                                     }
 
-                                    updateStripeStatementDescriptorText( response.data.newStatementDescriptor );
+                                    updateStripeStatementDescriptorText( newStatementDescriptorText );
                                     exitStatementDescriptorEditingMode();
                                 });
                         });
