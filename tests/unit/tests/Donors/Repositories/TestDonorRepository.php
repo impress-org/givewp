@@ -6,6 +6,7 @@ use Exception;
 use Give\Donors\Models\Donor;
 use Give\Donors\Repositories\DonorRepository;
 use Give\Framework\Database\DB;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Traits\InteractsWithTime;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
 use Give_Unit_Test_Case;
@@ -99,6 +100,28 @@ class TestDonorRepository extends Give_Unit_Test_Case
      *
      * @throws Exception
      */
+    public function testInsertShouldFailValidationAndThrowException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $donorMissingFirstName = new Donor([
+            'name' => 'Bill Murray',
+            'lastName' => 'Murray',
+            'email' => 'billMurray@givewp.com',
+        ]);
+
+        $repository = new DonorRepository();
+
+        $repository->insert($donorMissingFirstName);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     *
+     * @throws Exception
+     */
     public function testUpdateShouldUpdateDonorValuesInTheDatabase()
     {
         $donor = $this->createDonor();
@@ -123,6 +146,28 @@ class TestDonorRepository extends Give_Unit_Test_Case
         // assert updated values from the database
         $this->assertEquals("Chris", $query->firstName);
         $this->assertEquals("Farley", $query->lastName);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     *
+     * @throws Exception
+     */
+    public function testUpdateShouldFailValidationAndThrowException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $donorMissingFirstName = new Donor([
+            'name' => 'Bill Murray',
+            'lastName' => 'Murray',
+            'email' => 'billMurray@givewp.com',
+        ]);
+
+        $repository = new DonorRepository();
+
+        $repository->update($donorMissingFirstName);
     }
 
     /**

@@ -6,12 +6,24 @@ use Exception;
 use Give\Donors\DataTransferObjects\DonorQueryData;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Traits\InteractsWithTime;
 use Give\Log\Log;
 
 class DonorRepository
 {
     use InteractsWithTime;
+
+    /**
+     * @var string[]
+     */
+    private $requiredDonorProperties = [
+        // TODO: name should be an accessor
+        'name',
+        'firstName',
+        'lastName',
+        'email',
+    ];
 
     /**
      * Get Donor By ID
@@ -47,6 +59,8 @@ class DonorRepository
      */
     public function insert(Donor $donor)
     {
+        $this->validateDonor($donor);
+
         $date = $donor->createdAt ? $this->getFormattedDateTime(
             $donor->createdAt
         ) : $this->getCurrentFormattedDateForDatabase();
@@ -94,6 +108,8 @@ class DonorRepository
      */
     public function update(Donor $donor)
     {
+        $this->validateDonor($donor);
+        
         DB::query('START TRANSACTION');
 
         try {
@@ -169,5 +185,20 @@ class DonorRepository
             '_give_donor_first_name' => $donor->firstName,
             '_give_donor_last_name' => $donor->lastName,
         ];
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  Donor  $donor
+     * @return void
+     */
+    private function validateDonor(Donor $donor)
+    {
+        foreach ($this->requiredDonorProperties as $key) {
+            if (!isset($donor->$key)) {
+                throw new InvalidArgumentException("'$key' is required.");
+            }
+        }
     }
 }
