@@ -2,6 +2,8 @@
 
 namespace Give\PaymentGateways\Stripe\Traits;
 
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+
 /**
  * @unreleased
  */
@@ -21,10 +23,20 @@ trait HasStripeStatementDescriptorText
     {
         $maxLength = 22;
         $minLength = 5;
-        $unsupportedCharacters = ['<', '>', '"', '\\', '\'', '*']; // Reserve keywords.
-        $statementDescriptor = substr($statementDescriptor, 0, $maxLength);
-        $statementDescriptor = str_replace($unsupportedCharacters, '', $statementDescriptor);
+        $unsupportedCharacters = ['<', '>', '"', '\\', '\'', '*']; // Stripe reserve keywords.
 
-        return $minLength > strlen($statementDescriptor) ? '' : trim($statementDescriptor);
+        if ($minLength > strlen($statementDescriptor) || $maxLength < strlen($statementDescriptor)) {
+            throw new InvalidArgumentException(
+                esc_html__('Stripe statement descriptor text contain between 5 - 22 letters, inclusive.', 'give')
+            );
+        }
+
+        if (array_intersect( $unsupportedCharacters, explode( '', $statementDescriptor ) )) {
+            throw new InvalidArgumentException(
+                esc_html__('Stripe statement descriptor text should not contain any of the special characters < > \ \' " *.', 'give')
+            );
+        }
+
+        return $statementDescriptor;
     }
 }

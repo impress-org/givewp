@@ -11,7 +11,7 @@ use Give\PaymentGateways\Actions\RegisterPaymentGateways;
 use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\WebhookRegister;
 use Give\PaymentGateways\Gateways\Stripe\CheckoutGateway;
 use Give\PaymentGateways\Gateways\Stripe\Controllers\UpdateStatementDescriptorAjaxRequestController;
-use Give\PaymentGateways\Stripe\Migrations\AddStatementDescriptorToStripeAccounts;
+use Give\PaymentGateways\Gateways\Stripe\Migrations\AddStatementDescriptorToStripeAccounts;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**

@@ -1,10 +1,15 @@
 <?php
 
-namespace Give\PaymentGateways\Stripe\Migrations;
+namespace Give\PaymentGateways\Gateways\Stripe\Migrations;
 
 use Give\Framework\Migrations\Contracts\Migration;
 use Give\PaymentGateways\Stripe\Repositories\Settings;
 use Give\PaymentGateways\Stripe\Traits\HasStripeStatementDescriptorText;
+
+use function give;
+use function give_delete_option;
+use function give_get_option;
+use function give_update_option;
 
 /**
  * @unreleased
@@ -27,7 +32,7 @@ class AddStatementDescriptorToStripeAccounts extends Migration
             foreach ($allStripeAccount as $index => $stripAccount) {
                 if (!isset($stripAccount['statement_descriptor'])) {
                     $allStripeAccount[$index]['statement_descriptor'] = $this->filterStatementDescriptor(
-                        $statementDescriptor
+                        trim($statementDescriptor)
                     );
                 }
             }
