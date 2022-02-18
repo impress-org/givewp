@@ -356,7 +356,11 @@ window.addEventListener( 'DOMContentLoaded', function() {
                     // Statement descriptor text will be validate on basis of Stripe requirements.
                     // Read more about requirements: https://stripe.com/docs/statement-descriptors#requirements
                     function isValidaStatementDescriptor( text ){
-                        if( 22 < text.length || text.length < 5 ){
+                        if(
+                            22 < text.length ||
+                            text.length < 5 ||
+                            ! isNaN(text)
+                        ){
                             return false;
                         }
 
