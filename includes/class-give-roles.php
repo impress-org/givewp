@@ -131,7 +131,13 @@ class Give_Roles {
 	 * @return void
 	 */
 	public function add_caps() {
-		$wp_roles = wp_roles();
+		global $wp_roles;
+
+		if ( class_exists( 'WP_Roles' ) ) {
+			if ( ! isset( $wp_roles ) ) {
+				$wp_roles = new WP_Roles();
+			}
+		}
 
 		if ( is_object( $wp_roles ) ) {
 			$wp_roles->add_cap( 'give_manager', 'view_give_reports' );
