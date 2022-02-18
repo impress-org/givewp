@@ -4,12 +4,13 @@ namespace Give\Framework\Models;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Traits\InteractsWithTime;
+use Give\Framework\Support\Contracts\Arrayable;
 use RuntimeException;
 
 /**
  * @unreleased
  */
-abstract class Model
+abstract class Model implements Arrayable
 {
     use InteractsWithTime;
 

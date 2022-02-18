@@ -5,6 +5,7 @@ namespace Give\Subscriptions\Models;
 use DateTime;
 use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
+use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Model;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
@@ -27,7 +28,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
  * @property SubscriptionStatus $status
  * @property string $gatewaySubscriptionId
  */
-class Subscription extends Model
+class Subscription extends Model implements ModelCrud
 {
     /**
      * @var string[]
@@ -93,4 +94,19 @@ class Subscription extends Model
         return give()->subscriptions->getNotesBySubscriptionId($this->id);
     }
 
+    
+    public static function create(array $attributes)
+    {
+        // TODO: Implement create() method.
+    }
+
+    public function save()
+    {
+        // TODO: Implement save() method.
+    }
+
+    public function delete()
+    {
+        // TODO: Implement delete() method.
+    }
 }

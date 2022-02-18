@@ -6,6 +6,7 @@ use DateTime;
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Model;
 use Give\Subscriptions\Models\Subscription;
 
@@ -23,7 +24,7 @@ use Give\Subscriptions\Models\Subscription;
  * @property string $lastName
  * @property string $email
  */
-class Donor extends Model
+class Donor extends Model implements ModelCrud
 {
     /**
      * @var string[]

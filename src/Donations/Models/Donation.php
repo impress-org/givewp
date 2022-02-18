@@ -7,6 +7,7 @@ use Exception;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Model;
 use Give\Subscriptions\Models\Subscription;
 
@@ -29,7 +30,7 @@ use Give\Subscriptions\Models\Subscription;
  * @property int $parentId
  * @property int $subscriptionId
  */
-class Donation extends Model
+class Donation extends Model implements ModelCrud
 {
     /**
      * @var string[]
@@ -67,6 +68,8 @@ class Donation extends Model
 
     /**
      * @unreleased
+     *
+     * TODO: add sequential ID
      *
      * @param  array  $attributes
      *
