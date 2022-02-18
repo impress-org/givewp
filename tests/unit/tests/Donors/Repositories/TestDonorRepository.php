@@ -95,6 +95,39 @@ class TestDonorRepository extends Give_Unit_Test_Case
     /**
      * @unreleased
      *
+     * @return void
+     *
+     * @throws Exception
+     */
+    public function testUpdateShouldUpdateDonorValuesInTheDatabase()
+    {
+        $donor = $this->createDonor();
+        $repository = new DonorRepository();
+
+        $donor->firstName = "Chris";
+        $donor->lastName = "Farley";
+
+        $repository->update($donor);
+
+        $query = DB::table('give_donors')
+            ->select('*')
+            ->attachMeta('give_donormeta',
+                'ID',
+                'donor_id',
+                ['_give_donor_first_name', 'firstName'],
+                ['_give_donor_last_name', 'lastName']
+            )
+            ->where('id', $donor->id)
+            ->get();
+
+        // assert updated values from the database
+        $this->assertEquals("Chris", $query->firstName);
+        $this->assertEquals("Farley", $query->lastName);
+    }
+
+    /**
+     * @unreleased
+     *
      * @return Donor
      */
     private function createDonorInstance()

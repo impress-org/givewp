@@ -85,7 +85,54 @@ class DonorRepository
         return $this->getById($donorId);
     }
 
-    private function getCoreDonorMeta($donor)
+    /**
+     * @unreleased
+     *
+     * @param  Donor  $donor
+     * @return Donor
+     * @throws Exception
+     */
+    public function update(Donor $donor)
+    {
+        DB::query('START TRANSACTION');
+
+        try {
+            DB::table('give_donors')
+                ->where('id', $donor->id)
+                ->update([
+                    'user_id' => $donor->userId,
+                    'email' => $donor->email,
+                    'name' => $donor->name
+                ]);
+
+            foreach ($this->getCoreDonorMeta($donor) as $metaKey => $metaValue) {
+                DB::table('give_donormeta')
+                    ->where('donor_id', $donor->id)
+                    ->where('meta_key', $metaKey)
+                    ->update([
+                        'meta_value' => $metaValue,
+                    ]);
+            }
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed updating a donor');
+
+            throw new $exception('Failed updating a donor');
+        }
+
+        DB::query('COMMIT');
+
+        return $donor;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  Donor  $donor
+     * @return array
+     */
+    private function getCoreDonorMeta(Donor $donor)
     {
         return [
             '_give_donor_first_name' => $donor->firstName,

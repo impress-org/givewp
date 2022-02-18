@@ -68,6 +68,22 @@ class Donor extends Model
     /**
      * @unreleased
      *
+     * @return Donor
+     *
+     * @throws Exception|InvalidArgumentException
+     */
+    public function save()
+    {
+        if (!$this->id) {
+            return give()->donorRepository->insert($this);
+        }
+
+        return give()->donorRepository->update($this);
+    }
+
+    /**
+     * @unreleased
+     *
      * @return Donation[]
      */
     public function donations()
