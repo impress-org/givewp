@@ -176,6 +176,27 @@ class TestSubscriptionRepository extends Give_Unit_Test_Case
     /**
      * @unreleased
      *
+     * @return void
+     *
+     * @throws Exception
+     */
+    public function testDeleteShouldRemoveSubscriptionFromTheDatabase()
+    {
+        $subscription = $this->createSubscription();
+        $repository = new SubscriptionRepository();
+
+        $repository->delete($subscription);
+
+        $subscriptionQuery = DB::table('give_subscriptions')
+            ->where('id', $subscription->id)
+            ->get();
+
+        $this->assertNull($subscriptionQuery);
+    }
+
+    /**
+     * @unreleased
+     *
      * @return Subscription
      */
     private function createSubscriptionInstance()

@@ -89,7 +89,9 @@ class SubscriptionRepository
     }
 
     /**
-     * @param int $id
+     * @unreleased
+     *
+     * @param  int  $id
      *
      * @return object[]
      */
@@ -113,6 +115,8 @@ class SubscriptionRepository
     }
 
     /**
+     * @unreleased
+     *
      * @param  Subscription  $subscription
      *
      * @return Subscription
@@ -159,6 +163,8 @@ class SubscriptionRepository
     }
 
     /**
+     * @unreleased
+     *
      * @param  Subscription  $subscription
      *
      * @return Subscription
@@ -199,6 +205,36 @@ class SubscriptionRepository
         $subscriptionId = DB::last_insert_id();
 
         return $this->getById($subscriptionId);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  Subscription  $subscription
+     *
+     * @return bool
+     *
+     * @throws Exception
+     */
+    public function delete(Subscription $subscription)
+    {
+        DB::query('START TRANSACTION');
+
+        try {
+            DB::table('give_subscriptions')
+                ->where('id', $subscription->id)
+                ->delete();
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed deleting a subscription');
+
+            throw new $exception('Failed deleting a subscription');
+        }
+
+        DB::query('COMMIT');
+
+        return true;
     }
 
     /**

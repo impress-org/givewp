@@ -97,6 +97,8 @@ class Subscription extends Model implements ModelCrud
 
 
     /**
+     * @unreleased
+     *
      * @throws Exception
      */
     public static function create(array $attributes)
@@ -116,8 +118,14 @@ class Subscription extends Model implements ModelCrud
         return give()->subscriptions->update($this);
     }
 
+    /**
+     * @unreleased
+     *
+     * @return bool
+     * @throws Exception
+     */
     public function delete()
     {
-        // TODO: Implement delete() method.
+        return give()->subscriptions->delete($this);
     }
 }
