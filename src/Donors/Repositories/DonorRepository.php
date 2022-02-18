@@ -109,7 +109,7 @@ class DonorRepository
     public function update(Donor $donor)
     {
         $this->validateDonor($donor);
-        
+
         DB::query('START TRANSACTION');
 
         try {
@@ -184,6 +184,7 @@ class DonorRepository
         return [
             '_give_donor_first_name' => $donor->firstName,
             '_give_donor_last_name' => $donor->lastName,
+            '_give_donor_title_prefix' => isset($donor->prefix) ? $donor->prefix : null,
         ];
     }
 

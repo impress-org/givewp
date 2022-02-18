@@ -17,7 +17,8 @@ use Give\Subscriptions\Models\Subscription;
  * @property int $id
  * @property int $userId
  * @property DateTime $createdAt
- * @property string $name
+ * @property string $name // TODO: name should be an accessor
+ * @property string $prefix
  * @property string $firstName
  * @property string $lastName
  * @property string $email
@@ -35,6 +36,7 @@ class Donor extends Model
         'firstName' => 'string',
         'lastName' => 'string',
         'email' => 'string',
+        'prefix' => 'string',
     ];
 
     /**
