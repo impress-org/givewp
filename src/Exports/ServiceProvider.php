@@ -2,10 +2,8 @@
 
 namespace Give\Exports;
 
-use Give\Helpers\Hooks;
-
 /**
- * @since 1.3.0
+ * @unreleased
  */
 class ServiceProvider implements \Give\ServiceProviders\ServiceProvider {
 
@@ -24,11 +22,11 @@ class ServiceProvider implements \Give\ServiceProviders\ServiceProvider {
     {
         /** @note GiveWP Batch Exporting expects an un-namespaced class name. */
         add_action( 'give_batch_export_class_include', function() {
-            class_alias(DonorsByDonationExport::class, 'Give_Donors_By_Donation_Export');
+            class_alias(DonorsExport::class, 'Give_Donors_Export');
         });
 
-        add_action( 'give_tools_tab_export_after_donors', static function() {
-            include 'resources/views/donors-by-donation-table-row.php';
+        add_action( 'give_tools_tab_export_after_donation_history', static function() {
+            include 'resources/views/export-donors-table-row.php';
         });
     }
 }
