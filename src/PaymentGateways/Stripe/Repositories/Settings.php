@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\Stripe\Repositories;
 
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Stripe\Exceptions\DuplicateStripeAccountName;
 use Give\PaymentGateways\Stripe\Exceptions\StripeAccountAlreadyConnected;
@@ -35,8 +36,8 @@ class Settings
      *
      * @param string $stripeAccountId
      *
-     * @return AccountDetailModel|null
-     * @throws InvalidPropertyName
+     * @return AccountDetailModel
+     * @throws InvalidPropertyName|InvalidArgumentException
      */
     public function getStripeAccountById($stripeAccountId)
     {
@@ -45,7 +46,9 @@ class Settings
         if (array_key_exists($stripeAccountId, $stripeAccounts)) {
             return AccountDetailModel::fromArray($stripeAccounts[$stripeAccountId]);
         }
-        return null;
+
+
+        throw new InvalidArgumentException( esc_html__( 'Invalid Stripe account id.', 'give') );
     }
 
     /**
