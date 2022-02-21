@@ -321,9 +321,10 @@ window.addEventListener( 'DOMContentLoaded', function() {
                                     modalContent:{
                                         title: __( 'Invalid Statement Descriptor Text', 'give'),
                                         desc: sprintf(
-                                            '%s <br>%s <br>- %s<br>- %s<br>- %s<br><br><a href="%s" target="_blank">%s</a>',
+                                            '%s <br>%s <br>- %s<br>- %s<br>- %s<br>- %s<br><br><a href="%s" target="_blank">%s</a>',
                                             __( 'Please enter a valid Stripe statement descriptor.', 'give'),
                                             __( 'List of important Stripe statement descriptor text requirements:', 'give'),
+                                            __( 'Contains only Latin characters.', 'give'),
                                             __( 'Contains between 5 and 22 characters, inclusive.', 'give'),
                                             __( 'Contains at least one letter.', 'give'),
                                             __( 'Does not contain any of the special characters < > \\ \' " *.', 'give'),
