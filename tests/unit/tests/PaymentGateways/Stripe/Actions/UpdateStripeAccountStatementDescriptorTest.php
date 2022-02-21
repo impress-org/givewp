@@ -17,14 +17,13 @@ class UpdateStripeAccountStatementDescriptorTest extends TestCase
 
     public function testReturnErrorOnInValidStripeAccount()
     {
-        $this->expectExceptionMessage('Stripe account id does not match to any saved account ids.');
+        $this->expectExceptionMessage('Invalid Stripe account id.');
         Call::invoke(UpdateStripeAccountStatementDescriptor::class, 'abc', '');
     }
 
     public function testReturnErrorOAlreadySavedStatementDescriptor()
     {
-        $this->expectExceptionMessage('This Stripe statement descriptor text is already saved in Stripe account.');
-        Call::invoke(UpdateStripeAccountStatementDescriptor::class, 'account_1', get_bloginfo('name'));
+        $this->assertTrue(Call::invoke(UpdateStripeAccountStatementDescriptor::class, 'account_1', get_bloginfo('name')));
     }
 
     public function testTrueWhenNewStatementDescriptorAddedToStripeAccount()
