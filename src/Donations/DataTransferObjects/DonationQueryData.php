@@ -4,6 +4,7 @@ namespace Give\Donations\DataTransferObjects;
 
 use DateTime;
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Models\Traits\InteractsWithTime;
 
@@ -67,6 +68,10 @@ class DonationQueryData
      * @var string
      */
     private $gateway;
+    /**
+     * @var DonationMode
+     */
+    private $mode;
 
     /**
      * Convert data from object to Donation
@@ -94,6 +99,7 @@ class DonationQueryData
         $self->status = new DonationStatus($donationQueryObject->status);
         $self->parentId = (int)$donationQueryObject->parentId;
         $self->subscriptionId = (int)$donationQueryObject->subscriptionId;
+        $self->mode = new DonationMode($donationQueryObject->mode);
 
         return $self;
     }
@@ -111,6 +117,7 @@ class DonationQueryData
                 'createdAt' => $this->createdAt,
                 'updatedAt' => $this->updatedAt,
                 'status' => $this->status,
+                'mode' => $this->mode,
                 'gateway' => $this->gateway,
                 'amount' => $this->amount,
                 'currency' => $this->currency,

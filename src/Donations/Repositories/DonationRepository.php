@@ -30,7 +30,7 @@ class DonationRepository
         'donorId',
         'firstName',
         'lastName',
-        'email'
+        'email',
     ];
 
     /**
@@ -52,7 +52,8 @@ class DonationRepository
                 ['post_status', 'status'],
                 ['post_parent', 'parentId']
             )
-            ->attachMeta('give_donationmeta',
+            ->attachMeta(
+                'give_donationmeta',
                 'ID',
                 'donation_id',
                 ['_give_payment_total', 'amount'],
@@ -62,7 +63,8 @@ class DonationRepository
                 ['_give_donor_billing_first_name', 'firstName'],
                 ['_give_donor_billing_last_name', 'lastName'],
                 ['_give_payment_donor_email', 'email'],
-                ['subscription_id', 'subscriptionId']
+                ['subscription_id', 'subscriptionId'],
+                ['_give_payment_mode', 'mode']
             )
             ->where('ID', $donationId)
             ->get();
@@ -333,7 +335,8 @@ class DonationRepository
             '_give_payment_donor_id' => $donation->donorId,
             '_give_donor_billing_first_name' => $donation->firstName,
             '_give_donor_billing_last_name' => $donation->lastName,
-            '_give_payment_donor_email' => $donation->email
+            '_give_payment_donor_email' => $donation->email,
+            '_give_payment_mode' => isset($donation->mode) ? $donation->mode : $this->getDefaultDonationMode()
         ];
 
         if (isset($donation->subscriptionId)) {
@@ -418,6 +421,14 @@ class DonationRepository
         do_action('give_update_payment_status', $donationId, $newStatus, $originalStatus);
 
         Log::notice('Donation Status Updated', compact('donationId', 'originalStatus', 'newStatus'));
+    }
+
+    /**
+     * @return string
+     */
+    private function getDefaultDonationMode()
+    {
+        return give_is_test_mode() ? 'test' : 'live';
     }
 }
 

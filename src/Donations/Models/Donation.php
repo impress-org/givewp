@@ -4,6 +4,7 @@ namespace Give\Donations\Models;
 
 use DateTime;
 use Exception;
+use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -20,6 +21,7 @@ use Give\Subscriptions\Models\Subscription;
  * @property DateTime $createdAt
  * @property DateTime $updatedAt
  * @property DonationStatus $status
+ * @property DonationMode $mode
  * @property int $amount
  * @property string $currency
  * @property string $gateway
@@ -40,6 +42,7 @@ class Donation extends Model implements ModelCrud
         'createdAt' => DateTime::class,
         'updatedAt' => DateTime::class,
         'status' => DonationStatus::class,
+        'mode' => DonationMode::class,
         'amount' => 'int',
         'currency' => 'string',
         'gateway' => 'string',
@@ -49,6 +52,7 @@ class Donation extends Model implements ModelCrud
         'email' => 'string',
         'parentId' => 'int',
         'subscriptionId' => 'int',
+
     ];
 
     /**
