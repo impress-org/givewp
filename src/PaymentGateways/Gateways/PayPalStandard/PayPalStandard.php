@@ -208,7 +208,7 @@ class PayPalStandard extends PaymentGateway
                 'id' => 'paypal_invoice_prefix',
                 'name' => esc_html__('Invoice ID Prefix', 'give'),
                 'desc' => esc_html__(
-                    'Please enter a prefix for your invoice numbers. If you use your PayPal account for multiple fundraising platforms or ecommerce stores, ensure this prefix is unique. PayPal will not allow orders or donations with the same invoice number.',
+                    'Enter a prefix for your invoice numbers. If you use your PayPal account for multiple fundraising platforms or ecommerce stores, ensure this prefix is unique. PayPal will not allow orders or donations with the same invoice number.',
                     'give'
                 ),
                 'type' => 'text',

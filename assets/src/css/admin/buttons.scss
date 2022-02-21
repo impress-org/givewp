@@ -60,3 +60,48 @@
     content: "\f463";
   }
 }
+
+.give-green-button {
+    appearance: none;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.3rem 0.8rem;
+    border-radius: 9999px;
+    border-width: 0.125rem;
+    border-style: solid;
+    border-color: #66bb6a;
+    background-color: #66bb6a;
+    color: #fff;
+    font-family: Montserrat, system-ui;
+    font-weight: 400;
+    font-size: 0.8rem;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    line-height: 1;
+    letter-spacing: 0.15em;
+    transition-duration: 200ms;
+    transition-property: filter, color, background-color, text-shadow, box-shadow;
+    transition-timing-function: ease;
+    box-shadow: 0 2px 10px 0 rgba(105, 184, 107, 0.6);
+
+    // add icon svg url before text
+    &.i-crown::before {
+        content: '';
+        display: inline-block;
+        width: 1.5rem;
+        height: 1.5rem;
+        background-image: url('../images/crown.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        margin-right:0.5rem;
+    }
+
+    &:hover, &:active, &:focus {
+        text-shadow: 0 0 0.125em rgba(0, 0, 0, 0.3);
+        filter: brightness(115%);
+        color: #fff;
+    }
+}
