@@ -6,11 +6,6 @@ use Give\Framework\Migrations\Contracts\Migration;
 use Give\PaymentGateways\Stripe\Repositories\Settings;
 use Give\PaymentGateways\Stripe\Traits\HasStripeStatementDescriptorText;
 
-use function give;
-use function give_delete_option;
-use function give_get_option;
-use function give_update_option;
-
 /**
  * @unreleased
  */
