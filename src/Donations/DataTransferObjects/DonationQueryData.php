@@ -4,6 +4,7 @@ namespace Give\Donations\DataTransferObjects;
 
 use DateTime;
 use Give\Donations\Models\Donation;
+use Give\Donations\Properties\BillingAddress;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Models\Traits\InteractsWithTime;
@@ -76,6 +77,10 @@ class DonationQueryData
      * @var int
      */
     private $formId;
+    /**
+     * @var BillingAddress
+     */
+    private $billingAddress;
 
     /**
      * Convert data from object to Donation
@@ -105,6 +110,14 @@ class DonationQueryData
         $self->parentId = (int)$donationQueryObject->parentId;
         $self->subscriptionId = (int)$donationQueryObject->subscriptionId;
         $self->mode = new DonationMode($donationQueryObject->mode);
+        $self->billingAddress = BillingAddress::fromArray([
+            'country' => $donationQueryObject->billingCountry,
+            'city' => $donationQueryObject->billingCity,
+            'state' => $donationQueryObject->billingState,
+            'zip' => $donationQueryObject->billingZip,
+            'address1' => $donationQueryObject->billingAddress1,
+            'address2' => $donationQueryObject->billingAddress2,
+        ]);
 
         return $self;
     }
@@ -132,7 +145,8 @@ class DonationQueryData
                 'lastName' => $this->lastName,
                 'email' => $this->email,
                 'parentId' => $this->parentId,
-                'subscriptionId' => $this->subscriptionId
+                'subscriptionId' => $this->subscriptionId,
+                'billingAddress' => $this->billingAddress
             ]
         );
     }

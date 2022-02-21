@@ -4,6 +4,7 @@ namespace Give\Donations\Models;
 
 use DateTime;
 use Exception;
+use Give\Donations\Properties\BillingAddress;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
@@ -32,6 +33,7 @@ use Give\Subscriptions\Models\Subscription;
  * @property string $email
  * @property int $parentId
  * @property int $subscriptionId
+ * @property BillingAddress $billingAddress
  */
 class Donation extends Model implements ModelCrud
 {
@@ -54,7 +56,7 @@ class Donation extends Model implements ModelCrud
         'email' => 'string',
         'parentId' => 'int',
         'subscriptionId' => 'int',
-
+        'billingAddress' => BillingAddress::class
     ];
 
     /**

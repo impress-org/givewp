@@ -306,8 +306,19 @@ class DonationRepository
             '_give_donor_billing_last_name' => $donation->lastName,
             '_give_payment_donor_email' => $donation->email,
             '_give_payment_form_id' => $donation->formId,
-            '_give_payment_mode' => isset($donation->mode) ? $donation->mode : $this->getDefaultDonationMode()
+            '_give_payment_mode' => isset($donation->mode) ? $donation->mode : $this->getDefaultDonationMode(),
         ];
+
+        if (isset($donation->billingAddress)) {
+            $meta[] = [
+                '_give_donor_billing_country' => $donation->billingAddress->country,
+                '_give_donor_billing_address2' => $donation->billingAddress->address2,
+                '_give_donor_billing_city' => $donation->billingAddress->city,
+                '_give_donor_billing_address1' => $donation->billingAddress->address1,
+                '_give_donor_billing_state' => $donation->billingAddress->state,
+                '_give_donor_billing_zip' => $donation->billingAddress->zip,
+            ];
+        }
 
         if (isset($donation->subscriptionId)) {
             $meta['subscription_id'] = $donation->subscriptionId;
@@ -402,7 +413,13 @@ class DonationRepository
             ['_give_payment_donor_email', 'email'],
             ['subscription_id', 'subscriptionId'],
             ['_give_payment_mode', 'mode'],
-            ['_give_payment_form_id', 'formId']
+            ['_give_payment_form_id', 'formId'],
+            ['_give_donor_billing_country', 'billingCountry'],
+            ['_give_donor_billing_address2', 'billingAddress2'],
+            ['_give_donor_billing_city', 'billingCity'],
+            ['_give_donor_billing_address1', 'billingAddress1'],
+            ['_give_donor_billing_state', 'billingState'],
+            ['_give_donor_billing_zip', 'billingZip']
         ];
     }
 }
