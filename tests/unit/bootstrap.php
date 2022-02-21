@@ -21,6 +21,7 @@ if( file_exists( $testConfig[ 'workflow' ] ) ) {
         require_once __DIR__ . '/../../give.php';
     });
     tests_add_filter('setup_theme', function() {
+        echo 'Installing GiveWP.....' . PHP_EOL;
         give()->install();
     });
     require_once '/tmp/wordpress-tests-lib/includes/bootstrap.php';
@@ -41,6 +42,7 @@ if( file_exists( $testConfig[ 'workflow' ] ) ) {
         require_once __DIR__ . '/../../give.php';
     });
     tests_add_filter('setup_theme', function() {
+        echo 'Installing GiveWP.....' . PHP_EOL;
         give()->install();
     });
     require_once __DIR__ . '/../../vendor/wordpress/wordpress/tests/phpunit/includes/bootstrap.php';
