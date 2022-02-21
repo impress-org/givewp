@@ -10,7 +10,7 @@ use Give\PaymentGateways\Stripe\Repositories\Settings;
 /**
  * @unreleased
  */
-class AddSaveStatementDescriptorToStripeAccount
+class UpdateStripeAccountStatementDescriptor
 {
     /**
      *

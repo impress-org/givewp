@@ -1,14 +1,14 @@
 <?php
 
 use Give\Helpers\Call;
-use Give\PaymentGateways\Gateways\Stripe\Actions\AddSaveStatementDescriptorToStripeAccount;
+use Give\PaymentGateways\Gateways\Stripe\Actions\UpdateStripeAccountStatementDescriptor;
 use Give\PaymentGateways\Stripe\Repositories\Settings;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @unreleased
  */
-class AddSaveStatementDescriptorToStripeAccountTest extends TestCase
+class UpdateStripeAccountStatementDescriptorTest extends TestCase
 {
     protected function setUp()
     {
@@ -18,13 +18,13 @@ class AddSaveStatementDescriptorToStripeAccountTest extends TestCase
     public function testReturnErrorOnInValidStripeAccount()
     {
         $this->expectExceptionMessage('Stripe account id does not match to any saved account ids.');
-        Call::invoke(AddSaveStatementDescriptorToStripeAccount::class, 'abc', '');
+        Call::invoke(UpdateStripeAccountStatementDescriptor::class, 'abc', '');
     }
 
     public function testReturnErrorOAlreadySavedStatementDescriptor()
     {
         $this->expectExceptionMessage('This Stripe statement descriptor text is already saved in Stripe account.');
-        Call::invoke(AddSaveStatementDescriptorToStripeAccount::class, 'account_1', get_bloginfo('name'));
+        Call::invoke(UpdateStripeAccountStatementDescriptor::class, 'account_1', get_bloginfo('name'));
     }
 
     public function testTrueWhenNewStatementDescriptorAddedToStripeAccount()
@@ -32,7 +32,7 @@ class AddSaveStatementDescriptorToStripeAccountTest extends TestCase
         $newStatementDescriptorText = 'New Name';
         $stripeAccountId = 'account_1';
         $updated = Call::invoke(
-            AddSaveStatementDescriptorToStripeAccount::class,
+            UpdateStripeAccountStatementDescriptor::class,
             $stripeAccountId,
             $newStatementDescriptorText
         );
