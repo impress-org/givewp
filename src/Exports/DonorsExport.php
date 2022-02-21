@@ -106,8 +106,6 @@ class DonorsExport extends Give_Batch_Export
         $exportData = array_map([$this, 'filterIncludedColumns'], $exportData );
         $exportData = array_map([$this, 'flattenAddressColumn'], $exportData );
 
-        ray( $exportData );
-
         return $this->filterExportData( $exportData );
     }
 
