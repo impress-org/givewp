@@ -56,7 +56,7 @@ class AccountDetail
     public function __construct(array $args)
     {
         $this->args = $args;
-        $this->addSupportFormNewStatementDescriptorParam($args);
+        $args = $this->addSupportFormNewStatementDescriptorParam($args);
         $this->propertiesArgs = ArrayDataSet::camelCaseKeys($args);
         $this->validate($args);
     }
@@ -147,9 +147,9 @@ class AccountDetail
      *
      * @param array $args
      *
-     * @return void
+     * @return array
      */
-    private function addSupportFormNewStatementDescriptorParam(&$args)
+    private function addSupportFormNewStatementDescriptorParam($args)
     {
         $propertyName = 'statement_descriptor';
         if (!array_key_exists($propertyName, $args) || empty($args[$propertyName])) {
@@ -157,5 +157,7 @@ class AccountDetail
                 give_get_option('stripe_statement_descriptor', get_bloginfo('name'))
             );
         }
+
+        return $args;
     }
 }
