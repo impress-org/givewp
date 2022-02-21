@@ -5,6 +5,7 @@ namespace Give\Donations\Repositories;
 use Exception;
 use Give\Donations\DataTransferObjects\DonationQueryData;
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Traits\InteractsWithTime;
@@ -266,6 +267,17 @@ class DonationRepository
         }
 
         DB::query('COMMIT');
+        
+        if ($donation->isDirty('status')) {
+            /** @var DonationStatus $originalStatus */
+            $originalStatus = $donation->getOriginal('status');
+
+            $this->dispatchUpdatePaymentStatus(
+                $donation->id,
+                $donation->status->getValue(),
+                $originalStatus->getValue()
+            );
+        }
 
         return $donation;
     }
@@ -363,6 +375,23 @@ class DonationRepository
                 throw new InvalidArgumentException("'$key' is required.");
             }
         }
+    }
+
+    /**
+     * Fires after changing donation status.
+     *
+     * @unreleased
+     *
+     * @param  int  $donationId
+     * @param  string  $newStatus
+     * @param  string  $originalStatus
+     * @return void
+     */
+    private function dispatchUpdatePaymentStatus($donationId, $newStatus, $originalStatus)
+    {
+        do_action('give_update_payment_status', $donationId, $newStatus, $originalStatus);
+
+        Log::notice('Donation Status Updated', compact('donationId', 'originalStatus', 'newStatus'));
     }
 }
 
