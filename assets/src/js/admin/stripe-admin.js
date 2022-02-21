@@ -240,6 +240,21 @@ window.addEventListener( 'DOMContentLoaded', function() {
             <button class="button-primary" disabled>${__('Save', 'give')}</button>
             <button class="button-secondary">${__('Cancel', 'give')}</button>`;
 
+        // Statement descriptor text will be validate on basis of Stripe requirements.
+        // Read more about requirements: https://stripe.com/docs/statement-descriptors#requirements
+        let isValidaStatementDescriptor =  ( text ) => {
+            if(
+                22 < text.length ||
+                text.length < 5 ||
+                ! isNaN(text)
+            ){
+                return false;
+            }
+
+            return 0 === text.split('')
+                .filter( (char) => ['*', '\'', '"', '\\', '<', '>'].includes(char) ).length
+        }
+
         editStripeStatementDescriptor.forEach((actionLink) => {
             actionLink.addEventListener(
                 'click',
@@ -258,7 +273,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
                         cancelButton = saveButton.nextElementSibling;
 
                     // Add style.
-                    inputField.value = getStripeStatementDescriptorText();
+                    inputField.value = container.childNodes[0].nodeValue.trim();
                     inputField.style.display = 'block';
                     inputField.style.marginBottom = '10px';
                     saveButton.style.marginRight = '5px';
@@ -267,9 +282,12 @@ window.addEventListener( 'DOMContentLoaded', function() {
                     inputField.addEventListener(
                         'keyup',
                         (e) => {
-                            let newStatementDescriptor = inputField.value.trim();
+                            let newStatementDescriptor = inputField.value.trim(),
+                                savedStatementDescriptor = container.childNodes[0].nodeValue.trim();
 
-                            if (!newStatementDescriptor || newStatementDescriptor === getStripeStatementDescriptorText()) {
+                            if (
+                                !newStatementDescriptor ||
+                                newStatementDescriptor === savedStatementDescriptor) {
                                 saveButton.disabled = true;
                                 return;
                             }
@@ -282,7 +300,12 @@ window.addEventListener( 'DOMContentLoaded', function() {
                         'click',
                         (e) => {
                             e.preventDefault();
-                            exitStatementDescriptorEditingMode()
+
+                            inputField.remove();
+                            saveButton.remove();
+                            cancelButton.remove();
+
+                            container.style.display = containerDisplayStylePropertyValue;
                         });
 
                     saveButton.addEventListener(
@@ -290,7 +313,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
                         (e) => {
                             e.preventDefault();
 
-                            let newStatementDescriptorText = getNewStatementDescriptor();
+                            let newStatementDescriptorText = inputField.value.trim();
                             let actionUrl = `${container.getAttribute('data-action-url')}&statement-descriptor=${encodeURIComponent(newStatementDescriptorText)}`
 
                             if( ! isValidaStatementDescriptor(newStatementDescriptorText) ) {
@@ -332,45 +355,11 @@ window.addEventListener( 'DOMContentLoaded', function() {
                                         return;
                                     }
 
-                                    updateStripeStatementDescriptorText( newStatementDescriptorText );
-                                    exitStatementDescriptorEditingMode();
+                                    // Update complete. Add new text for display and exit editing mode.
+                                    container.childNodes[0].nodeValue = newStatementDescriptorText
+                                    cancelButton.click();
                                 });
                         });
-
-                    function getStripeStatementDescriptorText() {
-                        return container.childNodes[0].nodeValue.trim()
-                    }
-
-                    function updateStripeStatementDescriptorText(newStatementDescriptor) {
-                        return container.childNodes[0].nodeValue = newStatementDescriptor;
-                    }
-
-                    function exitStatementDescriptorEditingMode(){
-                        inputField.remove();
-                        saveButton.remove();
-                        cancelButton.remove();
-
-                        container.style.display = containerDisplayStylePropertyValue;
-                    }
-
-                    function getNewStatementDescriptor(){
-                        return inputField.value.trim();
-                    }
-
-                    // Statement descriptor text will be validate on basis of Stripe requirements.
-                    // Read more about requirements: https://stripe.com/docs/statement-descriptors#requirements
-                    function isValidaStatementDescriptor( text ){
-                        if(
-                            22 < text.length ||
-                            text.length < 5 ||
-                            ! isNaN(text)
-                        ){
-                            return false;
-                        }
-
-                        return 0 === text.split('')
-                            .filter( (char) => ['*', '\'', '"', '\\', '<', '>'].includes(char) ).length
-                    }
                 })
         })
     }
