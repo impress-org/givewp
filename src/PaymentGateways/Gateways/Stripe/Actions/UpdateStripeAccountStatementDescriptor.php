@@ -35,12 +35,7 @@ class UpdateStripeAccountStatementDescriptor
         }
 
         if ($stripeStatementDescriptorText === $stripeAccount->statementDescriptor) {
-            throw new InvalidArgumentException(
-                esc_html__(
-                    'This Stripe statement descriptor text is already saved in Stripe account.',
-                    'give'
-                )
-            );
+            return true;
         }
 
         $newStripeAccount = AccountDetail::fromArray(
