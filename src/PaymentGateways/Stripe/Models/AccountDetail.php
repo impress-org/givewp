@@ -153,9 +153,9 @@ class AccountDetail
     {
         $propertyName = 'statement_descriptor';
         if (!array_key_exists($propertyName, $args) || empty($args[$propertyName])) {
-            $args[$propertyName] = $this->filterStatementDescriptor(
-                give_get_option('stripe_statement_descriptor', get_bloginfo('name'))
-            );
+            $statementDescriptor = give_get_option('stripe_statement_descriptor', get_bloginfo('name'));
+            $this->validateStatementDescriptor($statementDescriptor);
+            $args[$propertyName] = $statementDescriptor;
         }
 
         return $args;

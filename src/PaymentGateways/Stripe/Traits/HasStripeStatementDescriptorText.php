@@ -16,10 +16,8 @@ trait HasStripeStatementDescriptorText
      * @unreleased
      *
      * @param string $statementDescriptor
-     *
-     * @return string
      */
-    protected function filterStatementDescriptor($statementDescriptor)
+    protected function validateStatementDescriptor($statementDescriptor)
     {
         $maxLength = 22;
         $minLength = 5;
@@ -45,7 +43,5 @@ trait HasStripeStatementDescriptorText
                 )
             );
         }
-
-        return $statementDescriptor;
     }
 }

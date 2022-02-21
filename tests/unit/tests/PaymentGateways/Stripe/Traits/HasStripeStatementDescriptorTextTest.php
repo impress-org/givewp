@@ -15,7 +15,7 @@ class HasStripeStatementDescriptorTextTest extends TestCase
         $this->expectExceptionMessage(
             'Stripe statement descriptor text should contain between 5 - 22 letters, inclusive.'
         );
-        $this->filterStatementDescriptor('demo');
+        $this->validateStatementDescriptor('demo');
     }
 
     public function testTextGreaterThenTwentyTwoLetter()
@@ -23,7 +23,7 @@ class HasStripeStatementDescriptorTextTest extends TestCase
         $this->expectExceptionMessage(
             'Stripe statement descriptor text should contain between 5 - 22 letters, inclusive.'
         );
-        $this->filterStatementDescriptor('This is a long stripe statement descriptor.');
+        $this->validateStatementDescriptor('This is a long stripe statement descriptor.');
     }
 
     public function testTextWithNumericLetters()
@@ -31,7 +31,7 @@ class HasStripeStatementDescriptorTextTest extends TestCase
         $this->expectExceptionMessage(
             'Stripe statement descriptor text should contain at least one letter.'
         );
-        $this->filterStatementDescriptor('123456');
+        $this->validateStatementDescriptor('123456');
     }
 
     public function testTextWithReserveWords()
@@ -39,11 +39,6 @@ class HasStripeStatementDescriptorTextTest extends TestCase
         $this->expectExceptionMessage(
             'Stripe statement descriptor text should not contain any of the special characters <code>< > \ \' " *</code>.'
         );
-        $this->filterStatementDescriptor('* < > " \' \\');
-    }
-
-    public function testTextWithText()
-    {
-        $this->assertSame(get_bloginfo('name'), $this->filterStatementDescriptor(get_bloginfo('name')));
+        $this->validateStatementDescriptor('* < > " \' \\');
     }
 }

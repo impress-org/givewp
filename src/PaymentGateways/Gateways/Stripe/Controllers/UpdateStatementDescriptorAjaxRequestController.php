@@ -33,9 +33,8 @@ class UpdateStatementDescriptorAjaxRequestController
         }
 
         try {
-            $stripeStatementDescriptorText = give_clean(
-                $this->filterStatementDescriptor($stripeStatementDescriptorText)
-            );
+            $this->validateStatementDescriptor($stripeStatementDescriptorText);
+            $stripeStatementDescriptorText = give_clean($stripeStatementDescriptorText);
             Call::invoke(
                 UpdateStripeAccountStatementDescriptor::class,
                 $stripeAccountId,
