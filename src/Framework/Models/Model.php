@@ -67,6 +67,19 @@ abstract class Model implements Arrayable
     }
 
     /**
+     * Get the model's original attribute values.
+     *
+     * @unreleased
+     *
+     * @param  string|null  $key
+     * @return mixed|array
+     */
+    public function getOriginal($key = null)
+    {
+        return $key ? $this->original[$key] : $this->original;
+    }
+
+    /**
      * Determine if a given attribute is dirty.
      *
      * @unreleased
