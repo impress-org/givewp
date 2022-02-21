@@ -267,7 +267,7 @@ class DonationRepository
         }
 
         DB::query('COMMIT');
-        
+
         if ($donation->isDirty('status')) {
             /** @var DonationStatus $originalStatus */
             $originalStatus = $donation->getOriginal('status');
@@ -360,6 +360,32 @@ class DonationRepository
         }
 
         return (int)$query->id;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  int  $id
+     *
+     * @return object[]
+     */
+    public function getNotesByDonationId($id)
+    {
+        $notes = DB::table('give_comments')
+            ->select(
+                ['comment_content', 'note'],
+                ['comment_date', 'date']
+            )
+            ->where('comment_parent', $id)
+            ->where('comment_type', 'donation')
+            ->orderBy('comment_date', 'DESC')
+            ->getAll();
+
+        if (!$notes) {
+            return [];
+        }
+
+        return $notes;
     }
 
     /**

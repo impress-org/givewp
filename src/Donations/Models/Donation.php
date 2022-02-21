@@ -145,4 +145,14 @@ class Donation extends Model implements ModelCrud
     {
         return give()->donations->getSequentialId($this->id);
     }
+
+    /**
+     * @unreleased
+     *
+     * @return object[]
+     */
+    public function getNotes()
+    {
+        return give()->donations->getNotesByDonationId($this->id);
+    }
 }
