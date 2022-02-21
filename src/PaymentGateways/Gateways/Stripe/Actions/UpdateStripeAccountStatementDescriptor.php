@@ -25,15 +25,6 @@ class UpdateStripeAccountStatementDescriptor
         $settingRepository = give(Settings::class);
         $stripeAccount = $settingRepository->getStripeAccountById($stripeAccountId);
 
-        if ($stripeAccount === null) {
-            throw new InvalidArgumentException(
-                esc_html__(
-                    'Stripe account id does not match to any saved account ids.',
-                    'give'
-                )
-            );
-        }
-
         if ($stripeStatementDescriptorText === $stripeAccount->statementDescriptor) {
             return true;
         }
