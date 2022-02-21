@@ -22,6 +22,7 @@ class DonationRepository
      * @var string[]
      */
     private $requiredDonationProperties = [
+        'formId',
         'status',
         'gateway',
         'amount',
@@ -51,20 +52,7 @@ class DonationRepository
                 ['post_status', 'status'],
                 ['post_parent', 'parentId']
             )
-            ->attachMeta(
-                'give_donationmeta',
-                'ID',
-                'donation_id',
-                ['_give_payment_total', 'amount'],
-                ['_give_payment_currency', 'currency'],
-                ['_give_payment_gateway', 'gateway'],
-                ['_give_payment_donor_id', 'donorId'],
-                ['_give_donor_billing_first_name', 'firstName'],
-                ['_give_donor_billing_last_name', 'lastName'],
-                ['_give_payment_donor_email', 'email'],
-                ['subscription_id', 'subscriptionId'],
-                ['_give_payment_mode', 'mode']
-            )
+            ->attachMeta(...$this->getDonationAttachMeta())
             ->where('ID', $donationId)
             ->get();
 
@@ -92,19 +80,7 @@ class DonationRepository
                 ['post_status', 'status'],
                 ['post_parent', 'parentId']
             )
-            ->attachMeta(
-                'give_donationmeta',
-                'ID',
-                'donation_id',
-                ['_give_payment_total', 'amount'],
-                ['_give_payment_currency', 'currency'],
-                ['_give_payment_gateway', 'gateway'],
-                ['_give_payment_donor_id', 'donorId'],
-                ['_give_donor_billing_first_name', 'firstName'],
-                ['_give_donor_billing_last_name', 'lastName'],
-                ['_give_payment_donor_email', 'email'],
-                ['subscription_id', 'subscriptionId']
-            )
+            ->attachMeta(...$this->getDonationAttachMeta())
             ->leftJoin('give_donationmeta', 'ID', 'donationMeta.donation_id', 'donationMeta')
             ->where('post_type', 'give_payment')
             ->where('post_status', 'give_subscription')
@@ -150,6 +126,7 @@ class DonationRepository
                 ['_give_donor_billing_first_name', 'firstName'],
                 ['_give_donor_billing_last_name', 'lastName'],
                 ['_give_payment_donor_email', 'email'],
+                ['_give_payment_form_id', 'formId'],
                 ['subscription_id', 'subscriptionId']
             )
             ->where('post_type', 'give_payment')
@@ -328,6 +305,7 @@ class DonationRepository
             '_give_donor_billing_first_name' => $donation->firstName,
             '_give_donor_billing_last_name' => $donation->lastName,
             '_give_payment_donor_email' => $donation->email,
+            '_give_payment_form_id' => $donation->formId,
             '_give_payment_mode' => isset($donation->mode) ? $donation->mode : $this->getDefaultDonationMode()
         ];
 
@@ -404,6 +382,28 @@ class DonationRepository
     private function getDefaultDonationMode()
     {
         return give_is_test_mode() ? 'test' : 'live';
+    }
+
+    /**
+     * @return array
+     */
+    private function getDonationAttachMeta()
+    {
+        return [
+            'give_donationmeta',
+            'ID',
+            'donation_id',
+            ['_give_payment_total', 'amount'],
+            ['_give_payment_currency', 'currency'],
+            ['_give_payment_gateway', 'gateway'],
+            ['_give_payment_donor_id', 'donorId'],
+            ['_give_donor_billing_first_name', 'firstName'],
+            ['_give_donor_billing_last_name', 'lastName'],
+            ['_give_payment_donor_email', 'email'],
+            ['subscription_id', 'subscriptionId'],
+            ['_give_payment_mode', 'mode'],
+            ['_give_payment_form_id', 'formId']
+        ];
     }
 }
 

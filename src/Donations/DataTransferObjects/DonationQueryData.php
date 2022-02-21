@@ -72,6 +72,10 @@ class DonationQueryData
      * @var DonationMode
      */
     private $mode;
+    /**
+     * @var int
+     */
+    private $formId;
 
     /**
      * Convert data from object to Donation
@@ -86,13 +90,14 @@ class DonationQueryData
     {
         $self = new static();
 
+        $self->id = (int)$donationQueryObject->id;
+        $self->formId = (int)$donationQueryObject->formId;
         $self->amount = (int)$donationQueryObject->amount;
         $self->currency = $donationQueryObject->currency;
         $self->donorId = (int)$donationQueryObject->donorId;
         $self->firstName = $donationQueryObject->firstName;
         $self->lastName = $donationQueryObject->lastName;
         $self->email = $donationQueryObject->email;
-        $self->id = (int)$donationQueryObject->id;
         $self->gateway = $donationQueryObject->gateway;
         $self->createdAt = $self->toDateTime($donationQueryObject->createdAt);
         $self->updatedAt = $self->toDateTime($donationQueryObject->updatedAt);
@@ -114,6 +119,7 @@ class DonationQueryData
         return new Donation(
             [
                 'id' => $this->id,
+                'formId' => $this->formId,
                 'createdAt' => $this->createdAt,
                 'updatedAt' => $this->updatedAt,
                 'status' => $this->status,

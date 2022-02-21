@@ -18,6 +18,7 @@ use Give\Subscriptions\Models\Subscription;
  * @unreleased
  *
  * @property int $id
+ * @property int $formId
  * @property DateTime $createdAt
  * @property DateTime $updatedAt
  * @property DonationStatus $status
@@ -39,6 +40,7 @@ class Donation extends Model implements ModelCrud
      */
     protected $properties = [
         'id' => 'int',
+        'formId' => 'int',
         'createdAt' => DateTime::class,
         'updatedAt' => DateTime::class,
         'status' => DonationStatus::class,
