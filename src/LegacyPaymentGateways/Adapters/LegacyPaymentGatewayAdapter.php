@@ -54,6 +54,8 @@ class LegacyPaymentGatewayAdapter
 
         $donation = $formData->toDonation()->save();
 
+        $this->setSession($donation->id);
+
         $gatewayPaymentData = $formData->toGatewayPaymentData($donation->id);
 
         if (give_recurring_is_donation_recurring($formData->legacyDonationData)) {
@@ -122,6 +124,24 @@ class LegacyPaymentGatewayAdapter
                 esc_html__('Error', 'give'),
                 ['response' => 403]
             );
+        }
+    }
+
+    /**
+     * Set donation id to purchase session only donor session for donation exist.
+     *
+     * @unreleased
+     *
+     * @param $donationId
+     * @return void
+     */
+    private function setSession($donationId)
+    {
+        $purchaseSession = (array)Give()->session->get('give_purchase');
+
+        if ($purchaseSession && array_key_exists('purchase_key', $purchaseSession)) {
+            $purchaseSession['donation_id'] = $donationId;
+            Give()->session->set('give_purchase', $purchaseSession);
         }
     }
 }
