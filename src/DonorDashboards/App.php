@@ -134,7 +134,7 @@ class App
     public function loadAssets()
     {
         // Load assets only if rendering donor dashboard.
-        if ( ! isset($_GET['give-embed']) || 'donor-dashboard' !== $_GET['give-embed']) {
+        if (!isset($_GET['give-embed']) || 'donor-dashboard' !== $_GET['give-embed']) {
             return;
         }
 
@@ -150,13 +150,13 @@ class App
          * @link https://make.wordpress.org/core/2018/11/09/new-javascript-i18n-support-in-wordpress/
          * "...this is to allow WordPress to selectively load only the necessary translations to ensure everything is as fast as can be"
          */
-        wp_set_script_translations('give-donor-dashboards-app', 'give');
+        wp_set_script_translations('give-donor-dashboards-app', 'give', GIVE_PLUGIN_DIR . 'languages');
 
         $recaptcha_key = give_get_option('recaptcha_key');
         $recaptcha_secret = give_get_option('recaptcha_secret');
         $recaptcha_enabled = (give_is_setting_enabled(
             give_get_option('enable_recaptcha')
-        )) && ! empty($recaptcha_key) && ! empty($recaptcha_secret) ? true : false;
+        )) && !empty($recaptcha_key) && !empty($recaptcha_secret) ? true : false;
 
         wp_localize_script(
             'give-donor-dashboards-app',
@@ -183,7 +183,6 @@ class App
             [],
             null
         );
-
     }
 
     /**

@@ -60,7 +60,7 @@ class Reports
             '0.0.2',
             true
         );
-        wp_set_script_translations('give-admin-reports-v3-js', 'give');
+        wp_set_script_translations('give-admin-reports-v3-js', 'give', GIVE_PLUGIN_DIR . 'languages');
 
         wp_localize_script(
             'give-admin-reports-v3-js',

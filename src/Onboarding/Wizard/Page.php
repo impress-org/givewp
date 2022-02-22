@@ -140,7 +140,7 @@ class Page
             true
         );
 
-        wp_set_script_translations('give-admin-onboarding-wizard-app', 'give');
+        wp_set_script_translations('give-admin-onboarding-wizard-app', 'give', GIVE_PLUGIN_DIR . 'languages');
 
         $formID = $this->formRepository->getDefaultFormID();
         $featureGoal = get_post_meta($formID, '_give_goal_option', true);
@@ -201,7 +201,7 @@ class Page
     public function redirect()
     {
         // Bail if no activation redirect
-        if ( ! \Give_Cache::get('_give_activation_redirect', true) || wp_doing_ajax()) {
+        if (!\Give_Cache::get('_give_activation_redirect', true) || wp_doing_ajax()) {
             return;
         }
 
@@ -217,7 +217,7 @@ class Page
 
         $upgrade = get_option('give_version_upgraded_from');
 
-        if ( ! $upgrade) {
+        if (!$upgrade) {
             // First time install
             wp_safe_redirect($redirect);
             exit;
