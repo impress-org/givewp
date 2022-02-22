@@ -43,6 +43,8 @@ mix.setPublicPath('assets/dist')
         'src/Promotions/InPluginUpsells/resources/js/recurring-donations-settings-tab.js',
         'js/admin-upsell-recurring-donations-settings-tab.js'
     )
+    .js('src/InPluginUpsells/resources/js/sale-banner.js', 'js/admin-upsell-sale-banner.js')
+    .ts('src/DonationForms/resources/admin-donation-forms.tsx', 'js/give-admin-donation-forms.js')
     .js('src/Promotions/InPluginUpsells/resources/js/sale-banner.js', 'js/admin-upsell-sale-banner.js')
     .js('src/Promotions/FreeAddonModal/resources/App.js', 'js/admin-free-addon-modal.js')
     .react()

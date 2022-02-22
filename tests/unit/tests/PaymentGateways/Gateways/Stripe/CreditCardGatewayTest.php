@@ -10,6 +10,14 @@ use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway;
  */
 class CreditCardGatewayTest extends Give_Unit_Test_Case
 {
+    public function setUp()
+    {
+        parent::setUp();$this->setUpStripeAccounts();
+
+        $this->form = Give_Helper_Form::create_simple_form();
+        $_POST['give-form-id'] = $this->form->get_ID();
+    }
+
     /** @test */
     public function it_creates_a_payment_that_is_processing()
     {
@@ -45,6 +53,44 @@ class CreditCardGatewayTest extends Give_Unit_Test_Case
         $paymentData->donorInfo = new \Give\ValueObjects\DonorInfo();
         $paymentData->donorInfo->email = 'tester@test.test';
         return $paymentData;
+    }
+
+    private function setUpStripeAccounts()
+    {
+        give_update_option(
+            '_give_stripe_get_all_accounts',
+            [
+                'account_1' => [
+                    'type' => 'manual',
+                    'account_name' => 'Account 1',
+                    'account_slug' => 'account_1',
+                    'account_email' => '',
+                    'account_country' => 'BR',
+                    'account_id' => 'account_1',
+                    'live_secret_key' => 'dummy',
+                    'test_secret_key' => 'dummy',
+                    'live_publishable_key' => 'dummy',
+                    'test_publishable_key' => 'dummy',
+                    'statement_descriptor' => get_bloginfo('name'),
+                ],
+                'account_2' => [
+                    'type' => 'manual',
+                    'account_name' => 'Account 2',
+                    'account_slug' => 'account_2',
+                    'account_email' => '',
+                    'account_country' => 'US',
+                    'account_id' => 'account_2',
+                    'live_secret_key' => 'dummy',
+                    'test_secret_key' => 'dummy',
+                    'live_publishable_key' => 'dummy',
+                    'test_publishable_key' => 'dummy',
+                    'statement_descriptor' => get_bloginfo('name'),
+                ],
+            ]
+        );
+
+        // Set default account globally.
+        give_update_option( '_give_stripe_default_account', 'account_1' );
     }
 }
 

@@ -43,7 +43,7 @@
         position: absolute !important;
     }
 
-    input[type='radio'] + label {
+    input[type='radio'] + label:not(.give-tribute-type-button) {
         padding: 0 10px 0 28px;
         width: 100%;
         color: #696969;
@@ -82,7 +82,27 @@
         }
     }
 
-    input[type='radio']:checked + label::after {
+    // Adjust layout to avoid overlapping text.
+    .give-tributes-type-button-list {
+        margin-top: 20px;
+        margin-bottom: 70px;
+    }
+
+    .give-tribute-type-button {
+        // Match style of payment level buttons.
+        font-size: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
+
+        // Support overflow for multiple buttons or long text labels
+        display: flex;
+        flex-wrap: wrap;
+        & li {
+            height: 60px;
+        }
+    }
+
+    input[type='radio']:checked + label:not(.give-tribute-type-button)::after {
         transform: scale3d(1, 1, 1);
     }
 
@@ -114,4 +134,8 @@ html[dir='rtl'] {
             }
         }
     }
+}
+
+.give-section.choose-amount .give-tributes-dedicate-donation {
+    margin: 24px 30px 0 30px;
 }

@@ -4,6 +4,7 @@ namespace Give\PaymentGateways\Stripe\Models;
 
 use Give\Helpers\ArrayDataSet;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
+use Give\PaymentGateways\Stripe\Traits\HasStripeStatementDescriptorText;
 
 /**
  * Class AccountDetail
@@ -21,9 +22,12 @@ use Give\PaymentGateways\Exceptions\InvalidPropertyName;
  * @property-read  string $livePublishableKey
  * @property-read  string $testSecretKey
  * @property-read  string $testPublishableKey
+ * @property-read  string $statementDescriptor
  */
 class AccountDetail
 {
+    use HasStripeStatementDescriptorText;
+
     protected $args;
     protected $propertiesArgs;
     protected $requiredArgs = [
@@ -37,6 +41,7 @@ class AccountDetail
         'live_publishable_key',
         'test_secret_key',
         'test_publishable_key',
+        'statement_descriptor',
     ];
 
     /**
@@ -51,6 +56,7 @@ class AccountDetail
     public function __construct(array $args)
     {
         $this->args = $args;
+        $args = $this->addSupportFormNewStatementDescriptorParam($args);
         $this->propertiesArgs = ArrayDataSet::camelCaseKeys($args);
         $this->validate($args);
     }
@@ -82,6 +88,7 @@ class AccountDetail
             'test_secret_key' => $this->testSecretKey,
             'live_publishable_key' => $this->livePublishableKey,
             'test_publishable_key' => $this->testPublishableKey,
+            'statement_descriptor' => $this->statementDescriptor,
         ];
     }
 
@@ -95,7 +102,7 @@ class AccountDetail
      */
     public function __get($key)
     {
-        if ( ! array_key_exists($key, $this->propertiesArgs)) {
+        if (!array_key_exists($key, $this->propertiesArgs)) {
             throw new InvalidPropertyName(
                 sprintf(
                     '$1%s property does not exist in %2$s class',
@@ -128,5 +135,29 @@ class AccountDetail
                 )
             );
         }
+    }
+
+    /**
+     * We decided to define statement descriptor per stripe account.
+     * Statement descriptor default text for each account will be set to blog title.
+     * @see: https://github.com/impress-org/givewp/issues/6021
+     *
+     * @unreleased
+     * @deprecated
+     *
+     * @param array $args
+     *
+     * @return array
+     */
+    private function addSupportFormNewStatementDescriptorParam($args)
+    {
+        $propertyName = 'statement_descriptor';
+        if (!array_key_exists($propertyName, $args) || empty($args[$propertyName])) {
+            $statementDescriptor = give_get_option('stripe_statement_descriptor', get_bloginfo('name'));
+            $this->validateStatementDescriptor($statementDescriptor);
+            $args[$propertyName] = $statementDescriptor;
+        }
+
+        return $args;
     }
 }
