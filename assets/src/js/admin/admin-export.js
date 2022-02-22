@@ -67,6 +67,40 @@ jQuery( document ).ready( function( $ ) {
 		} );
 	}
 
+    /**
+     * Show/hide Donor Export 'Search By' option if the date inputs change
+     *
+     * @unreleased
+     */
+    let startDate, endDate;
+    //wait a bit before binding events so datepicker can initialize
+    setTimeout( () => {
+        $('#give_donors_export #start_date').datepicker('option', 'onSelect', (dateString, datepicker) => {
+            startDate = dateString;
+            showHideSearchBy();
+        });
+        $('#give_donors_export #start_date').on('keyup', (event) => {
+            startDate = event.originalEvent.target.value;
+            showHideSearchBy();
+        });
+        $('#give_donors_export #end_date').datepicker('option', 'onSelect', (dateString, datepicker) => {
+            endDate = dateString;
+            showHideSearchBy();
+        });
+        $('#give_donors_export #end_date').on('keyup', (event) => {
+            endDate = event.originalEvent.target.value;
+            showHideSearchBy();
+        });
+    }, 200);
+
+    function showHideSearchBy(){
+        if (startDate || endDate) {
+            $('#give_donors_export_donation_search_by').show();
+        } else {
+            $('#give_donors_export_donation_search_by').hide();
+        }
+    }
+
 	/**
 	 * Update export Donation Form when cat or tag are change
 	 *
