@@ -148,7 +148,16 @@ class ListForms extends Endpoint
     {
         if((int)$dateGmt)
         {
-            $date  = date_create($dateGmt, new \DateTimeZone(get_option('timezone_string')));
+            $timezone = get_option('timezone_string');
+            $timezone = $timezone ?: get_option('gmt_offset');
+            if($timezone = timezone_open($timezone))
+            {
+                $date  = date_create($dateGmt, $timezone);
+            }
+            else
+            {
+                $date  = date_create($date);
+            }
         }
         else
         {
