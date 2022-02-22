@@ -143,7 +143,7 @@ class DonationRepository
                 $builder
                     ->select('donation_id')
                     ->from('give_donationmeta')
-                    ->where('meta_key', '_give_payment_donor_id')
+                    ->where('meta_key', DonationMetaKeys::DONOR_ID)
                     ->where('meta_value', $donorId);
             })
             ->orderBy('post_date', 'DESC')
