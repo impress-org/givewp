@@ -9,6 +9,7 @@ use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Traits\InteractsWithTime;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Helpers\Hooks;
 use Give\Log\Log;
 
 /**
@@ -115,20 +116,7 @@ class DonationRepository
                 ['post_status', 'status'],
                 ['post_parent', 'parentId']
             )
-            ->attachMeta(
-                'give_donationmeta',
-                'ID',
-                'donation_id',
-                ['_give_payment_total', 'amount'],
-                ['_give_payment_currency', 'currency'],
-                ['_give_payment_gateway', 'gateway'],
-                ['_give_payment_donor_id', 'donorId'],
-                ['_give_donor_billing_first_name', 'firstName'],
-                ['_give_donor_billing_last_name', 'lastName'],
-                ['_give_payment_donor_email', 'email'],
-                ['_give_payment_form_id', 'formId'],
-                ['subscription_id', 'subscriptionId']
-            )
+            ->attachMeta(...$this->getDonationAttachMeta())
             ->where('post_type', 'give_payment')
             ->whereIn('ID', function (QueryBuilder $builder) use ($donorId) {
                 $builder
@@ -160,6 +148,8 @@ class DonationRepository
     public function insert(Donation $donation)
     {
         $this->validateDonation($donation);
+
+        Hooks::dispatch('give_donation_inserting', $donation);
 
         $date = $donation->createdAt ? $this->getFormattedDateTime(
             $donation->createdAt
@@ -198,7 +188,11 @@ class DonationRepository
 
         DB::query('COMMIT');
 
-        return $this->getById($donationId);
+        $donation = $this->getById($donationId);
+
+        Hooks::dispatch('give_donation_inserted', $donation);
+
+        return $donation;
     }
 
     /**
@@ -213,7 +207,7 @@ class DonationRepository
     {
         $this->validateDonation($donation);
 
-        do_action('donation_updating', $donation);
+        Hooks::dispatch('give_donation_updating', $donation);
 
         $date = $this->getCurrentFormattedDateForDatabase();
 
@@ -248,7 +242,7 @@ class DonationRepository
 
         DB::query('COMMIT');
 
-        do_action('donation_updated', $donation);
+        Hooks::dispatch('give_donation_updated', $donation);
 
         return $donation;
     }
@@ -306,6 +300,9 @@ class DonationRepository
             '_give_donor_billing_last_name' => $donation->lastName,
             '_give_payment_donor_email' => $donation->email,
             '_give_payment_form_id' => $donation->formId,
+            '_give_payment_form_title' => isset($donation->formTitle) ? $donation->formTitle : $this->getFormTitle(
+                $donation->formId
+            ),
             '_give_payment_mode' => isset($donation->mode) ? $donation->mode : $this->getDefaultDonationMode(),
         ];
 
@@ -398,7 +395,7 @@ class DonationRepository
     /**
      * @return array
      */
-    private function getDonationAttachMeta()
+    public function getDonationAttachMeta()
     {
         return [
             'give_donationmeta',
@@ -414,6 +411,7 @@ class DonationRepository
             ['subscription_id', 'subscriptionId'],
             ['_give_payment_mode', 'mode'],
             ['_give_payment_form_id', 'formId'],
+            ['_give_payment_form_title', 'formTitle'],
             ['_give_donor_billing_country', 'billingCountry'],
             ['_give_donor_billing_address2', 'billingAddress2'],
             ['_give_donor_billing_city', 'billingCity'],
@@ -421,6 +419,21 @@ class DonationRepository
             ['_give_donor_billing_state', 'billingState'],
             ['_give_donor_billing_zip', 'billingZip']
         ];
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  int  $formId
+     * @return string
+     */
+    public function getFormTitle($formId)
+    {
+        $form = DB::table('posts')
+            ->where('id', $formId)
+            ->get();
+
+        return $form->post_title;
     }
 }
 

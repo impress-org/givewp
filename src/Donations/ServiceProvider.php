@@ -2,6 +2,7 @@
 
 namespace Give\Donations;
 
+use Give\Donations\Listeners\DonationInserted;
 use Give\Donations\Listeners\DonationUpdated;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Helpers\Hooks;
@@ -22,6 +23,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot()
     {
-        Hooks::addAction('donation_updated', DonationUpdated::class);
+        Hooks::addAction('give_donation_updated', DonationUpdated::class);
+        Hooks::addAction('give_donation_inserted', DonationInserted::class);
     }
 }

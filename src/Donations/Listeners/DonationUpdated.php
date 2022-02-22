@@ -4,7 +4,7 @@ namespace Give\Donations\Listeners;
 
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\Log\Log;
+use Give\Helpers\Hooks;
 
 class DonationUpdated {
     /**
@@ -39,8 +39,14 @@ class DonationUpdated {
      */
     private function dispatchDonationStatusUpdated($donationId, $newStatus, $originalStatus)
     {
-        do_action('give_update_payment_status', $donationId, $newStatus, $originalStatus);
+        /**
+         * @unreleased
+         */
+        Hooks::dispatch('give_donation_status_updated', $donationId, $newStatus, $originalStatus);
 
-        Log::notice('Donation Status Updated', compact('donationId', 'originalStatus', 'newStatus'));
+        /**
+         * @deprecated
+         */
+        Hooks::dispatch('give_update_payment_status', $donationId, $newStatus, $originalStatus);
     }
 }

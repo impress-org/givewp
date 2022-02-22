@@ -81,6 +81,10 @@ class DonationQueryData
      * @var BillingAddress
      */
     private $billingAddress;
+    /**
+     * @var string
+     */
+    private $formTitle;
 
     /**
      * Convert data from object to Donation
@@ -97,6 +101,7 @@ class DonationQueryData
 
         $self->id = (int)$donationQueryObject->id;
         $self->formId = (int)$donationQueryObject->formId;
+        $self->formTitle = $donationQueryObject->formTitle;
         $self->amount = (int)$donationQueryObject->amount;
         $self->currency = $donationQueryObject->currency;
         $self->donorId = (int)$donationQueryObject->donorId;
@@ -133,6 +138,7 @@ class DonationQueryData
             [
                 'id' => $this->id,
                 'formId' => $this->formId,
+                'formTitle' => $this->formTitle,
                 'createdAt' => $this->createdAt,
                 'updatedAt' => $this->updatedAt,
                 'status' => $this->status,
@@ -146,7 +152,7 @@ class DonationQueryData
                 'email' => $this->email,
                 'parentId' => $this->parentId,
                 'subscriptionId' => $this->subscriptionId,
-                'billingAddress' => $this->billingAddress
+                'billingAddress' => $this->billingAddress,
             ]
         );
     }

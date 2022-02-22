@@ -247,6 +247,7 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
             'lastName' => 'Murray',
             'email' => 'billMurray@givewp.com',
             'parentId' => 0,
+            'formId' => 1
         ]);
     }
 }

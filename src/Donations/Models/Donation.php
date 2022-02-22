@@ -12,6 +12,7 @@ use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Model;
 use Give\Subscriptions\Models\Subscription;
+use Give\ValueObjects\Money;
 
 /**
  * Class Donation
@@ -20,6 +21,7 @@ use Give\Subscriptions\Models\Subscription;
  *
  * @property int $id
  * @property int $formId
+ * @property string $formTitle
  * @property DateTime $createdAt
  * @property DateTime $updatedAt
  * @property DonationStatus $status
@@ -43,6 +45,7 @@ class Donation extends Model implements ModelCrud
     protected $properties = [
         'id' => 'int',
         'formId' => 'int',
+        'formTitle' => 'string',
         'createdAt' => DateTime::class,
         'updatedAt' => DateTime::class,
         'status' => DonationStatus::class,
@@ -162,5 +165,15 @@ class Donation extends Model implements ModelCrud
     public function getNotes()
     {
         return give()->donations->getNotesByDonationId($this->id);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return Money
+     */
+    public function getMinorAmount()
+    {
+        return Money::ofMinor($this->amount, $this->currency);
     }
 }
