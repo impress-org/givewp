@@ -37,7 +37,6 @@ class DonationRepository
         'currency',
         'donorId',
         'firstName',
-        'lastName',
         'email',
     ];
 

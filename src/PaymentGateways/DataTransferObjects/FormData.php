@@ -2,6 +2,11 @@
 
 namespace Give\PaymentGateways\DataTransferObjects;
 
+use Exception;
+use Give\Donations\Models\Donation;
+use Give\Donations\Properties\BillingAddress;
+use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donors\Models\Donor;
 use Give\ValueObjects\Address;
 use Give\ValueObjects\CardInfo;
 use Give\ValueObjects\DonorInfo;
@@ -159,6 +164,52 @@ class FormData
         ]);
 
         return $self;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return Donation
+     * @throws Exception
+     */
+    public function toDonation()
+    {
+        $firstName = $this->donorInfo->firstName ?: $this->postData['give_first'];
+        $lastName = $this->donorInfo->lastName ?: $this->postData['give_last'];
+
+        $donorId = $this->donorInfo->wpUserId;
+
+        if (!$donorId) {
+            $donor = Donor::create([
+                'name' => trim("$firstName $lastName"),
+                'firstName' => $firstName,
+                'lastName' => $lastName,
+                'email' => $this->donorInfo->email
+            ]);
+
+            $donorId = $donor->id;
+        }
+
+        return new Donation([
+            'status' => DonationStatus::PENDING(),
+            'gateway' => $this->paymentGateway,
+            'amount' => (int)$this->price,
+            'currency' => $this->currency,
+            'donorId' => (int)$donorId,
+            'firstName' => $firstName,
+            'lastName' => $lastName,
+            'email' => $this->donorInfo->email,
+            'formId' => $this->formId,
+            'formTitle' => $this->formTitle,
+            'billingAddress' => BillingAddress::fromArray([
+                'country' => $this->billingAddress->country,
+                'city' => $this->billingAddress->city,
+                'state' => $this->billingAddress->state,
+                'zip' => $this->billingAddress->postalCode,
+                'address1' => $this->billingAddress->line1,
+                'address2' => $this->billingAddress->line2
+            ]),
+        ]);
     }
 
     /**

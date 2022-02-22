@@ -2,6 +2,7 @@
 
 namespace Give\LegacyPaymentGateways\Adapters;
 
+use Exception;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\PaymentGateways\Actions\CreatePaymentAction;
 use Give\PaymentGateways\Actions\CreateSubscriptionAction;
@@ -43,6 +44,7 @@ class LegacyPaymentGatewayAdapter
      * @param  PaymentGatewayInterface  $registeredGateway
      *
      * @return void
+     * @throws Exception
      */
     public function handleBeforeGateway($legacyDonationData, $registeredGateway)
     {
@@ -50,13 +52,13 @@ class LegacyPaymentGatewayAdapter
 
         $this->validateGatewayNonce($formData->gatewayNonce);
 
-        $donationId = $this->createPayment($formData->toGiveInsertPaymentData());
+        $donation = $formData->toDonation()->save();
 
-        $gatewayPaymentData = $formData->toGatewayPaymentData($donationId);
+        $gatewayPaymentData = $formData->toGatewayPaymentData($donation->id);
 
         if (give_recurring_is_donation_recurring($formData->legacyDonationData)) {
             $subscriptionData = SubscriptionData::fromRequest($legacyDonationData);
-            $subscriptionId = $this->createSubscription($donationId, $formData, $subscriptionData);
+            $subscriptionId = $this->createSubscription($donation->id, $formData, $subscriptionData);
 
             $gatewaySubscriptionData = $subscriptionData->toGatewaySubscriptionData($subscriptionId);
 
