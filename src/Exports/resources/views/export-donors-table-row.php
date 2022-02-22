@@ -26,7 +26,16 @@
                     'autocomplete' => 'off',
                 ]
             );
+            ?>
 
+            <p id="give_donors_export_donation_search_by" style="display: none">Search by:
+                    <input type=radio id="give_donors_export_donation_search_by_donation" name="search_by" value="donation" checked/>
+                    <label>Donation date</label>
+                    <input type=radio id="give_donors_export_donation_search_by_donor" name="search_by" value="donor"/>
+                    <label>Donor creation date</label>
+            </p>
+
+            <?php
             echo Give()->html->forms_dropdown(
                 [
                     'name'   => 'forms',
