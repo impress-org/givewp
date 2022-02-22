@@ -42,6 +42,8 @@
  */
 
 use Give\Container\Container;
+use Give\DonationForms\Repositories\DonationFormsRepository;
+use Give\DonationForms\ServiceProvider as DonationFormsServiceProvider;
 use Give\DonationSummary\ServiceProvider as DonationSummaryServiceProvider;
 use Give\DonorDashboards\ServiceProvider as DonorDashboardsServiceProvider;
 use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
@@ -97,9 +99,10 @@ if (!defined('ABSPATH')) {
  * @property-read Give_Scripts $scripts
  * @property-read Give_DB_Sequential_Ordering $sequential_donation_db
  * @property-read Give_Sequential_Donation_Number $seq_donation_number
- * @property-read Give_Session $session
- * @property-read Give_DB_Sessions $session_db
- * @property-read Give_Tooltips $tooltips
+ * @property-read Give_Session                    $session
+ * @property-read Give_DB_Sessions                $session_db
+ * @property-read Give_Tooltips                   $tooltips
+ * @property-read DonationFormsRepository         $donationFormsRepository
  * @property-read Give_Recurring_DB_Subscription_Meta $subscription_meta
  *
  * @mixin Container
@@ -168,6 +171,7 @@ final class Give
         Give\Email\ServiceProvider::class,
         DonationSummaryServiceProvider::class,
         PaymentGatewaysServiceProvider::class,
+        DonationFormsServiceProvider::class,
         PromotionsServiceProvider::class,
         LegacySubscriptionsServiceProvider::class
     ];
