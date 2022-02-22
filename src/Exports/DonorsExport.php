@@ -24,6 +24,9 @@ class DonorsExport extends Give_Batch_Export
     /** @var DateTime */
     protected $endDate;
 
+    /** @var String */
+    protected $searchBy;
+
     /**
      * @inheritdoc
      */
@@ -31,12 +34,16 @@ class DonorsExport extends Give_Batch_Export
         $this->posted_data = $posted_data;
         ray( $this->posted_data );
 
-        if( ! $this->posted_data['start_date'] ) {
+        if( $this->posted_data['start_date'] ) {
             $this->startDate = date('Y-m-d', strtotime($this->posted_data['start_date']));
         }
 
         if( $this->posted_data['end_date'] ) {
             $this->endDate = date('Y-m-d', strtotime($this->posted_data['end_date']));
+        }
+
+        if( $this->posted_data['search_by'] ) {
+            $this->searchBy = $this->posted_data['search_by'];
         }
     }
 
@@ -81,16 +88,23 @@ class DonorsExport extends Give_Batch_Export
             })
             ->where('donations.post_type', 'give_payment');
 
-        /*
-         * @TODO Toggle filter by donor registration date and donor's donation dates.
-         */
-
-        if( $this->startDate && $this->endDate ) {
-            $donationQuery->whereBetween('donations.post_date', $this->startDate, $this->endDate );
-        } elseif( $this->startDate ) {
-            $donationQuery->where('donations.post_date', $this->startDate, '>=');
-        } elseif( $this->endDate ) {
-            $donationQuery->where('donations.post_date', $this->endDate, '<');
+        if($this->searchBy === 'donor') {
+            if( $this->startDate && $this->endDate ) {
+                $donorQuery->whereBetween('donors.date_created', $this->startDate, $this->endDate );
+            } elseif( $this->startDate ) {
+                $donorQuery->where('donors.date_created', $this->startDate, '>=');
+            } elseif( $this->endDate ) {
+                $donorQuery->where('donors.date_created', $this->endDate, '<');
+            }
+        }
+        else {
+            if( $this->startDate && $this->endDate ) {
+                $donationQuery->whereBetween('donations.post_date', $this->startDate, $this->endDate );
+            } elseif( $this->startDate ) {
+                $donationQuery->where('donations.post_date', $this->startDate, '>=');
+            } elseif( $this->endDate ) {
+                $donationQuery->where('donations.post_date', $this->endDate, '<');
+            }
         }
 
         $donorQuery->joinRaw( "JOIN ({$donationQuery->getSQL()}) AS sub ON donors.id = sub.donorId" );
