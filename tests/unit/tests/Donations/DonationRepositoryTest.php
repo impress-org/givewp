@@ -5,7 +5,10 @@ namespace unit\tests\Donations;
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationRepository;
+use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Traits\InteractsWithTime;
@@ -27,8 +30,14 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
     {
         parent::tearDown();
         $donationMetaTable = DB::prefix('give_donationmeta');
+        $donationsTable = DB::prefix('posts');
+        $donorsTable = DB::prefix('give_donors');
+        $donorMetaTable = DB::prefix('give_donormeta');
 
         DB::query("TRUNCATE TABLE $donationMetaTable");
+        DB::query("TRUNCATE TABLE $donationsTable");
+        DB::query("TRUNCATE TABLE $donorsTable");
+        DB::query("TRUNCATE TABLE $donorMetaTable");
     }
 
     /**
@@ -40,6 +49,7 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
      */
     public function testGetByIdShouldReturnDonation()
     {
+        $donor = $this->createDonor();
         $donationFactory = $this->createDonationInstance();
         $repository = new DonationRepository();
 
@@ -60,6 +70,7 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
      */
     public function testInsertShouldAddDonationToDatabase()
     {
+        $donor = $this->createDonor();
         $donation = $this->createDonationInstance();
         $repository = new DonationRepository();
 
@@ -162,19 +173,18 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
      */
     public function testUpdateShouldUpdateDonationValuesInTheDatabase()
     {
-        $donation = $this->createDonationInstance();
+        $donor = $this->createDonor();
+        $donation = $this->createDonation();
         $repository = new DonationRepository();
 
-        $newDonation = $repository->insert($donation);
-
         // update donation values
-        $newDonation->amount = 100;
-        $newDonation->firstName = "Ron";
-        $newDonation->lastName = "Swanson";
-        $newDonation->email = "ron@swanson.com";
+        $donation->amount = 100;
+        $donation->firstName = "Ron";
+        $donation->lastName = "Swanson";
+        $donation->email = "ron@swanson.com";
 
         // call update method
-        $repository->update($newDonation);
+        $repository->update($donation);
 
         $query = DB::table('posts')
             ->select('ID')
@@ -182,20 +192,20 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
                 'give_donationmeta',
                 'ID',
                 'donation_id',
-                '_give_payment_total',
-                '_give_donor_billing_first_name',
-                '_give_donor_billing_last_name',
-                '_give_payment_donor_email'
+                DonationMetaKeys::TOTAL,
+                DonationMetaKeys::BILLING_FIRST_NAME,
+                DonationMetaKeys::BILLING_LAST_NAME,
+                DonationMetaKeys::DONOR_EMAIL
             )
-            ->where('ID', $newDonation->id)
+            ->where('ID', $donation->id)
             ->get();
 
         // assert updated values from the database
-        $this->assertNotEquals(50, $query->_give_payment_total);
-        $this->assertEquals(100, $query->_give_payment_total);
-        $this->assertEquals("Ron", $query->_give_donor_billing_first_name);
-        $this->assertEquals("Swanson", $query->_give_donor_billing_last_name);
-        $this->assertEquals("ron@swanson.com", $query->_give_payment_donor_email);
+        $this->assertNotEquals(50, $query->{DonationMetaKeys::TOTAL});
+        $this->assertEquals(100, $query->{DonationMetaKeys::TOTAL});
+        $this->assertEquals("Ron", $query->{DonationMetaKeys::BILLING_FIRST_NAME});
+        $this->assertEquals("Swanson", $query->{DonationMetaKeys::BILLING_LAST_NAME});
+        $this->assertEquals("ron@swanson.com", $query->{DonationMetaKeys::DONOR_EMAIL});
     }
 
     /**
@@ -207,20 +217,19 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
      */
     public function testDeleteShouldRemoveDonationFromTheDatabase()
     {
-        $donation = $this->createDonationInstance();
+        $donor = $this->createDonor();
+        $donation = $this->createDonation();
         $repository = new DonationRepository();
 
-        $newDonation = $repository->insert($donation);
-
-        $repository->delete($newDonation);
+        $repository->delete($donation);
 
         $donationQuery = DB::table('posts')
-            ->where('ID', $newDonation->id)
+            ->where('ID', $donation->id)
             ->get();
 
         $donationCoreMetaQuery =
             DB::table('give_donationmeta')
-                ->where('donation_id', $newDonation->id)
+                ->where('donation_id', $donation->id)
                 ->getAll();
 
         $this->assertNull($donationQuery);
@@ -247,7 +256,53 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
             'lastName' => 'Murray',
             'email' => 'billMurray@givewp.com',
             'parentId' => 0,
-            'formId' => 1
+            'formId' => 1,
+            'formTitle' => 'Form Title'
+        ]);
+    }
+
+    /**
+     * Local donation factory
+     *
+     * @unreleased
+     *
+     * @return Donation
+     * @throws Exception
+     */
+    private function createDonation()
+    {
+        return Donation::create([
+            'createdAt' => $this->getCurrentDateTime(),
+            'status' => DonationStatus::PENDING(),
+            'gateway' => TestGateway::id(),
+            'amount' => 50,
+            'currency' => 'USD',
+            'donorId' => 1,
+            'firstName' => 'Bill',
+            'lastName' => 'Murray',
+            'email' => 'billMurray@givewp.com',
+            'parentId' => 0,
+            'formId' => 1,
+            'formTitle' => 'Form Title',
+            'mode' => DonationMode::TEST()
+        ]);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return Donor
+     *
+     * @throws Exception
+     */
+    private function createDonor()
+    {
+        return Donor::create([
+            'createdAt' => $this->getCurrentDateTime(),
+            'name' => 'Bill Murray',
+            'firstName' => 'Bill',
+            'lastName' => 'Bill Murray',
+            'email' => 'billMurray@givewp.com'
         ]);
     }
 }

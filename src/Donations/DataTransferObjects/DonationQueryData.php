@@ -5,6 +5,7 @@ namespace Give\Donations\DataTransferObjects;
 use DateTime;
 use Give\Donations\Models\Donation;
 use Give\Donations\Properties\BillingAddress;
+use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Models\Traits\InteractsWithTime;
@@ -93,6 +94,10 @@ class DonationQueryData
      * @var string
      */
     private $donorIp;
+    /**
+     * @var bool
+     */
+    private $anonymous;
 
     /**
      * Convert data from object to Donation
@@ -108,31 +113,32 @@ class DonationQueryData
         $self = new static();
 
         $self->id = (int)$donationQueryObject->id;
-        $self->formId = (int)$donationQueryObject->formId;
-        $self->formTitle = $donationQueryObject->formTitle;
-        $self->amount = (int)$donationQueryObject->amount;
-        $self->currency = $donationQueryObject->currency;
-        $self->donorId = (int)$donationQueryObject->donorId;
-        $self->firstName = $donationQueryObject->firstName;
-        $self->lastName = $donationQueryObject->lastName;
-        $self->email = $donationQueryObject->email;
-        $self->gateway = $donationQueryObject->gateway;
+        $self->formId = (int)$donationQueryObject->{DonationMetaKeys::FORM_ID};
+        $self->formTitle = $donationQueryObject->{DonationMetaKeys::FORM_TITLE};
+        $self->amount = (int)$donationQueryObject->{DonationMetaKeys::TOTAL};
+        $self->currency = $donationQueryObject->{DonationMetaKeys::CURRENCY};
+        $self->donorId = (int)$donationQueryObject->{DonationMetaKeys::DONOR_ID};
+        $self->firstName = $donationQueryObject->{DonationMetaKeys::BILLING_FIRST_NAME};
+        $self->lastName = $donationQueryObject->{DonationMetaKeys::BILLING_LAST_NAME};
+        $self->email = $donationQueryObject->{DonationMetaKeys::DONOR_EMAIL};
+        $self->gateway = $donationQueryObject->{DonationMetaKeys::GATEWAY};
         $self->createdAt = $self->toDateTime($donationQueryObject->createdAt);
         $self->updatedAt = $self->toDateTime($donationQueryObject->updatedAt);
         $self->status = new DonationStatus($donationQueryObject->status);
         $self->parentId = (int)$donationQueryObject->parentId;
-        $self->subscriptionId = (int)$donationQueryObject->subscriptionId;
-        $self->mode = new DonationMode($donationQueryObject->mode);
+        $self->subscriptionId = (int)$donationQueryObject->{DonationMetaKeys::SUBSCRIPTION_ID};
+        $self->mode = new DonationMode($donationQueryObject->{DonationMetaKeys::PAYMENT_MODE});
         $self->billingAddress = BillingAddress::fromArray([
-            'country' => $donationQueryObject->billingCountry,
-            'city' => $donationQueryObject->billingCity,
-            'state' => $donationQueryObject->billingState,
-            'zip' => $donationQueryObject->billingZip,
-            'address1' => $donationQueryObject->billingAddress1,
-            'address2' => $donationQueryObject->billingAddress2,
+            'country' => $donationQueryObject->{DonationMetaKeys::BILLING_COUNTRY},
+            'city' => $donationQueryObject->{DonationMetaKeys::BILLING_CITY},
+            'state' => $donationQueryObject->{DonationMetaKeys::BILLING_STATE},
+            'zip' => $donationQueryObject->{DonationMetaKeys::BILLING_ZIP},
+            'address1' => $donationQueryObject->{DonationMetaKeys::BILLING_ADDRESS1},
+            'address2' => $donationQueryObject->{DonationMetaKeys::BILLING_ADDRESS2},
         ]);
-        $self->purchaseKey = $donationQueryObject->purchaseKey;
-        $self->donorIp = $donationQueryObject->donorIp;
+        $self->purchaseKey = $donationQueryObject->{DonationMetaKeys::PURCHASE_KEY};
+        $self->donorIp = $donationQueryObject->{DonationMetaKeys::DONOR_IP};
+        $self->anonymous = (bool)$donationQueryObject->{DonationMetaKeys::ANONYMOUS_DONATION};
 
         return $self;
     }

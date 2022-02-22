@@ -6,6 +6,8 @@ use Exception;
 use Give\Donations\Actions\GeneratePurchaseKey;
 use Give\Donations\DataTransferObjects\DonationQueryData;
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Donations\ValueObjects\DonationMode;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Traits\InteractsWithTime;
@@ -22,6 +24,8 @@ class DonationRepository
     use InteractsWithTime;
 
     /**
+     * @unreleased
+     *
      * @var string[]
      */
     private $requiredDonationProperties = [
@@ -55,7 +59,12 @@ class DonationRepository
                 ['post_status', 'status'],
                 ['post_parent', 'parentId']
             )
-            ->attachMeta(...$this->getDonationAttachMeta())
+            ->attachMeta(
+                'give_donationmeta',
+                'ID',
+                'donation_id',
+                ...DonationMetaKeys::getAllKeys()
+            )
             ->where('ID', $donationId)
             ->get();
 
@@ -83,7 +92,12 @@ class DonationRepository
                 ['post_status', 'status'],
                 ['post_parent', 'parentId']
             )
-            ->attachMeta(...$this->getDonationAttachMeta())
+            ->attachMeta(
+                'give_donationmeta',
+                'ID',
+                'donation_id',
+                ...DonationMetaKeys::getAllKeys()
+            )
             ->leftJoin('give_donationmeta', 'ID', 'donationMeta.donation_id', 'donationMeta')
             ->where('post_type', 'give_payment')
             ->where('post_status', 'give_subscription')
@@ -118,7 +132,12 @@ class DonationRepository
                 ['post_status', 'status'],
                 ['post_parent', 'parentId']
             )
-            ->attachMeta(...$this->getDonationAttachMeta())
+            ->attachMeta(
+                'give_donationmeta',
+                'ID',
+                'donation_id',
+                ...DonationMetaKeys::getAllKeys()
+            )
             ->where('post_type', 'give_payment')
             ->whereIn('ID', function (QueryBuilder $builder) use ($donorId) {
                 $builder
@@ -172,7 +191,7 @@ class DonationRepository
 
             $donationId = DB::last_insert_id();
 
-            foreach ($this->getCoreDonationMeta($donation) as $metaKey => $metaValue) {
+            foreach ($this->getCoreDonationMetaForDatabase($donation) as $metaKey => $metaValue) {
                 DB::table('give_donationmeta')
                     ->insert([
                         'donation_id' => $donationId,
@@ -217,7 +236,7 @@ class DonationRepository
 
         try {
             DB::table('posts')
-                ->where('id', $donation->id)
+                ->where('ID', $donation->id)
                 ->update([
                     'post_modified' => $date,
                     'post_modified_gmt' => get_gmt_from_date($date),
@@ -226,7 +245,7 @@ class DonationRepository
                     'post_parent' => isset($donation->parentId) ? $donation->parentId : 0
                 ]);
 
-            foreach ($this->getCoreDonationMeta($donation) as $metaKey => $metaValue) {
+            foreach ($this->getCoreDonationMetaForDatabase($donation) as $metaKey => $metaValue) {
                 DB::table('give_donationmeta')
                     ->where('donation_id', $donation->id)
                     ->where('meta_key', $metaKey)
@@ -265,7 +284,7 @@ class DonationRepository
                 ->where('id', $donation->id)
                 ->delete();
 
-            foreach ($this->getCoreDonationMeta($donation) as $metaKey => $metaValue) {
+            foreach ($this->getCoreDonationMetaForDatabase($donation) as $metaKey => $metaValue) {
                 DB::table('give_donationmeta')
                     ->where('donation_id', $donation->id)
                     ->where('meta_key', $metaKey)
@@ -291,43 +310,46 @@ class DonationRepository
      *
      * @return array
      */
-    public function getCoreDonationMeta(Donation $donation)
+    public function getCoreDonationMetaForDatabase(Donation $donation)
     {
         $meta = [
-            '_give_payment_total' => $donation->amount,
-            '_give_payment_currency' => $donation->currency,
-            '_give_payment_gateway' => $donation->gateway,
-            '_give_payment_donor_id' => $donation->donorId,
-            '_give_donor_billing_first_name' => $donation->firstName,
-            '_give_donor_billing_last_name' => $donation->lastName,
-            '_give_payment_donor_email' => $donation->email,
-            '_give_payment_form_id' => $donation->formId,
-            '_give_payment_form_title' => isset($donation->formTitle) ? $donation->formTitle : $this->getFormTitle(
+            DonationMetaKeys::TOTAL => $donation->amount,
+            DonationMetaKeys::CURRENCY => $donation->currency,
+            DonationMetaKeys::GATEWAY => $donation->gateway,
+            DonationMetaKeys::DONOR_ID => $donation->donorId,
+            DonationMetaKeys::BILLING_FIRST_NAME => $donation->firstName,
+            DonationMetaKeys::BILLING_LAST_NAME => $donation->lastName,
+            DonationMetaKeys::DONOR_EMAIL => $donation->email,
+            DonationMetaKeys::FORM_ID => $donation->formId,
+            DonationMetaKeys::FORM_TITLE => isset($donation->formTitle) ? $donation->formTitle : $this->getFormTitle(
                 $donation->formId
             ),
-            '_give_payment_mode' => isset($donation->mode) ? $donation->mode : $this->getDefaultDonationMode(),
-            '_give_payment_purchase_key' => isset($donation->purchaseKey)
+            DonationMetaKeys::PAYMENT_MODE => isset($donation->mode) ? $donation->mode->getValue(
+            ) : $this->getDefaultDonationMode()->getValue(),
+            DonationMetaKeys::PURCHASE_KEY => isset($donation->purchaseKey)
                 ? $donation->purchaseKey
                 : Call::invoke(
                     GeneratePurchaseKey::class,
                     $donation->email
                 ),
-            '_give_payment_donor_ip' => isset($donation->donorIp) ? $donation->donorIp : give_get_ip()
+            DonationMetaKeys::DONOR_IP => isset($donation->donorIp) ? $donation->donorIp : give_get_ip()
         ];
 
         if (isset($donation->billingAddress)) {
-            $meta[] = [
-                '_give_donor_billing_country' => $donation->billingAddress->country,
-                '_give_donor_billing_address2' => $donation->billingAddress->address2,
-                '_give_donor_billing_city' => $donation->billingAddress->city,
-                '_give_donor_billing_address1' => $donation->billingAddress->address1,
-                '_give_donor_billing_state' => $donation->billingAddress->state,
-                '_give_donor_billing_zip' => $donation->billingAddress->zip,
-            ];
+            $meta[DonationMetaKeys::BILLING_COUNTRY] = $donation->billingAddress->country;
+            $meta[DonationMetaKeys::BILLING_ADDRESS2] = $donation->billingAddress->address2;
+            $meta[DonationMetaKeys::BILLING_CITY] = $donation->billingAddress->city;
+            $meta[DonationMetaKeys::BILLING_ADDRESS1] = $donation->billingAddress->address1;
+            $meta[DonationMetaKeys::BILLING_STATE] = $donation->billingAddress->state;
+            $meta[DonationMetaKeys::BILLING_ZIP] = $donation->billingAddress->zip;
         }
 
         if (isset($donation->subscriptionId)) {
-            $meta['subscription_id'] = $donation->subscriptionId;
+            $meta[DonationMetaKeys::SUBSCRIPTION_ID] = $donation->subscriptionId;
+        }
+
+        if (isset($donation->anonymous)) {
+            $meta[DonationMetaKeys::ANONYMOUS_DONATION] = $donation->anonymous;
         }
 
         return $meta;
@@ -394,42 +416,15 @@ class DonationRepository
     }
 
     /**
-     * @return string
+     * @unreleased
+     *
+     * @return DonationMode
      */
     private function getDefaultDonationMode()
     {
-        return give_is_test_mode() ? 'test' : 'live';
-    }
+        $mode = give_is_test_mode() ? 'test' : 'live';
 
-    /**
-     * @return array
-     */
-    public function getDonationAttachMeta()
-    {
-        return [
-            'give_donationmeta',
-            'ID',
-            'donation_id',
-            ['_give_payment_total', 'amount'],
-            ['_give_payment_currency', 'currency'],
-            ['_give_payment_gateway', 'gateway'],
-            ['_give_payment_donor_id', 'donorId'],
-            ['_give_donor_billing_first_name', 'firstName'],
-            ['_give_donor_billing_last_name', 'lastName'],
-            ['_give_payment_donor_email', 'email'],
-            ['subscription_id', 'subscriptionId'],
-            ['_give_payment_mode', 'mode'],
-            ['_give_payment_form_id', 'formId'],
-            ['_give_payment_form_title', 'formTitle'],
-            ['_give_donor_billing_country', 'billingCountry'],
-            ['_give_donor_billing_address2', 'billingAddress2'],
-            ['_give_donor_billing_city', 'billingCity'],
-            ['_give_donor_billing_address1', 'billingAddress1'],
-            ['_give_donor_billing_state', 'billingState'],
-            ['_give_donor_billing_zip', 'billingZip'],
-            ['_give_payment_purchase_key', 'purchaseKey'],
-            ['_give_payment_donor_ip', 'donorIp'],
-        ];
+        return new DonationMode($mode);
     }
 
     /**
@@ -443,6 +438,10 @@ class DonationRepository
         $form = DB::table('posts')
             ->where('id', $formId)
             ->get();
+
+        if (!$form) {
+            return '';
+        }
 
         return $form->post_title;
     }
