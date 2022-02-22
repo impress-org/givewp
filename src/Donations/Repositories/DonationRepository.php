@@ -15,6 +15,7 @@ use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Helpers\Call;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
+use Give\ValueObjects\Money;
 
 /**
  * @unreleased
@@ -313,7 +314,7 @@ class DonationRepository
     public function getCoreDonationMetaForDatabase(Donation $donation)
     {
         $meta = [
-            DonationMetaKeys::TOTAL => $donation->amount,
+            DonationMetaKeys::TOTAL => Money::of($donation->amount, $donation->currency)->getAmount(),
             DonationMetaKeys::CURRENCY => $donation->currency,
             DonationMetaKeys::GATEWAY => $donation->gateway,
             DonationMetaKeys::DONOR_ID => $donation->donorId,
