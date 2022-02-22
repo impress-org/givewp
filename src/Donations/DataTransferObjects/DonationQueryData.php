@@ -85,6 +85,14 @@ class DonationQueryData
      * @var string
      */
     private $formTitle;
+    /**
+     * @var string
+     */
+    private $purchaseKey;
+    /**
+     * @var string
+     */
+    private $donorIp;
 
     /**
      * Convert data from object to Donation
@@ -123,6 +131,8 @@ class DonationQueryData
             'address1' => $donationQueryObject->billingAddress1,
             'address2' => $donationQueryObject->billingAddress2,
         ]);
+        $self->purchaseKey = $donationQueryObject->purchaseKey;
+        $self->donorIp = $donationQueryObject->donorIp;
 
         return $self;
     }
@@ -134,26 +144,8 @@ class DonationQueryData
      */
     public function toDonation()
     {
-        return new Donation(
-            [
-                'id' => $this->id,
-                'formId' => $this->formId,
-                'formTitle' => $this->formTitle,
-                'createdAt' => $this->createdAt,
-                'updatedAt' => $this->updatedAt,
-                'status' => $this->status,
-                'mode' => $this->mode,
-                'gateway' => $this->gateway,
-                'amount' => $this->amount,
-                'currency' => $this->currency,
-                'donorId' => $this->donorId,
-                'firstName' => $this->firstName,
-                'lastName' => $this->lastName,
-                'email' => $this->email,
-                'parentId' => $this->parentId,
-                'subscriptionId' => $this->subscriptionId,
-                'billingAddress' => $this->billingAddress,
-            ]
-        );
+        $attributes = get_object_vars($this);
+
+        return new Donation($attributes);
     }
 }

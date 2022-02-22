@@ -18,13 +18,13 @@ class DonationInserted {
         $donor = $donation->donor();
 
         $giveInsertPaymentData = GiveInsertPaymentData::fromArray([
-            'price' =>  $donation->getMinorAmount(),
+            'price' => $donation->getMinorAmount(),
             'formTitle' => $donation->formTitle,
             'formId' => $donation->formId,
-            'priceId' => give_get_price_id( $donation->formId, $donation->getMinorAmount()->getAmount() ),
+            'priceId' => give_get_price_id($donation->formId, $donation->getMinorAmount()->getAmount()),
             'date' => $donation->createdAt,
             'donorEmail' => $donor->email,
-            'purchaseKey' => $this->getPurchaseKey( $donation->email ),
+            'purchaseKey' => $donation->purchaseKey,
             'currency' => $donation->currency,
             'paymentGateway' => $donation->gateway,
             'userInfo' => [
@@ -41,17 +41,4 @@ class DonationInserted {
          */
         Hooks::dispatch('give_insert_payment', $donation->id, $giveInsertPaymentData->toArray());
     }
-
-    /**
-	 * @since 1.0.0
-	 *
-	 * @param  string  $email
-	 *
-	 * @return string
-	 */
-	private function getPurchaseKey( $email ) {
-		$auth_key = defined( 'AUTH_KEY' ) ? AUTH_KEY : '';
-
-		return strtolower( md5( $email . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) );
-	}
 }

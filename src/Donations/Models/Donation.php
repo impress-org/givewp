@@ -36,6 +36,8 @@ use Give\ValueObjects\Money;
  * @property int $parentId
  * @property int $subscriptionId
  * @property BillingAddress $billingAddress
+ * @property string $purchaseKey
+ * @property string $donorIp
  */
 class Donation extends Model implements ModelCrud
 {
@@ -46,6 +48,8 @@ class Donation extends Model implements ModelCrud
         'id' => 'int',
         'formId' => 'int',
         'formTitle' => 'string',
+        'purchaseKey' => 'string',
+        'donorIp' => 'string',
         'createdAt' => DateTime::class,
         'updatedAt' => DateTime::class,
         'status' => DonationStatus::class,

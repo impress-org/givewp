@@ -3,12 +3,14 @@
 namespace Give\Donations\Repositories;
 
 use Exception;
+use Give\Donations\Actions\GeneratePurchaseKey;
 use Give\Donations\DataTransferObjects\DonationQueryData;
 use Give\Donations\Models\Donation;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Traits\InteractsWithTime;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Helpers\Call;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
 
@@ -235,9 +237,9 @@ class DonationRepository
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
-            Log::error('Failed creating a donation');
+            Log::error('Failed updating a donation');
 
-            throw new $exception('Failed creating a donation');
+            throw new $exception('Failed updating a donation');
         }
 
         DB::query('COMMIT');
@@ -304,6 +306,13 @@ class DonationRepository
                 $donation->formId
             ),
             '_give_payment_mode' => isset($donation->mode) ? $donation->mode : $this->getDefaultDonationMode(),
+            '_give_payment_purchase_key' => isset($donation->purchaseKey)
+                ? $donation->purchaseKey
+                : Call::invoke(
+                    GeneratePurchaseKey::class,
+                    $donation->email
+                ),
+            '_give_payment_donor_ip' => isset($donation->donorIp) ? $donation->donorIp : give_get_ip()
         ];
 
         if (isset($donation->billingAddress)) {
@@ -417,7 +426,9 @@ class DonationRepository
             ['_give_donor_billing_city', 'billingCity'],
             ['_give_donor_billing_address1', 'billingAddress1'],
             ['_give_donor_billing_state', 'billingState'],
-            ['_give_donor_billing_zip', 'billingZip']
+            ['_give_donor_billing_zip', 'billingZip'],
+            ['_give_payment_purchase_key', 'purchaseKey'],
+            ['_give_payment_donor_ip', 'donorIp'],
         ];
     }
 
