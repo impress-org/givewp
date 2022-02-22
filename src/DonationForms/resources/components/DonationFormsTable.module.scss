@@ -57,27 +57,27 @@
     }
 
     &[data-column="name"] {
-        inline-size: 20rem;
-    }
-
-    &[data-column="amount"] {
         inline-size: 10rem;
     }
 
+    &[data-column="amount"] {
+        inline-size: 8rem;
+    }
+
     &[data-column="goal"] {
-        inline-size: 12rem;
+        inline-size: 8rem;
     }
 
     &[data-column="donations"] {
-        inline-size: 8rem;
+        inline-size: 6rem;
     }
 
     &[data-column="revenue"] {
-        inline-size: 8rem;
+        inline-size: 6rem;
     }
 
     &[data-column="shortcode"] {
-        inline-size: 12rem;
+        inline-size: 10rem;
     }
 
     &[data-column="date"] {
