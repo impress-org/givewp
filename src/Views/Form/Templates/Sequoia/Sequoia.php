@@ -322,6 +322,14 @@ class Sequoia extends Template implements Hookable, Scriptable
 			";
         }
 
+        if (Utils::isPluginActive('give-tributes/give-tributes.php')) {
+            $dynamicCss .= "
+				.give-tributes-type-button-list input[type='radio']:checked + label.give-tribute-type-button {
+				    color: {$primaryColor} !important;
+				}
+			";
+        }
+
         if ($isGoogleFontEnabled) {
             $dynamicCss .= "body, button, input, select{font-family: 'Montserrat', sans-serif;}";
         }

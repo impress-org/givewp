@@ -82,11 +82,6 @@
         }
     }
 
-    // Match style of payment level buttons.
-    input[type='radio']:checked + label.give-tribute-type-button {
-        color: #28C77B !important;
-    }
-
     // Adjust layout to avoid overlapping text.
     .give-tributes-type-button-list {
         margin-top: 20px;
