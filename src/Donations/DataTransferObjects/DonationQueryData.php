@@ -143,7 +143,7 @@ class DonationQueryData
         $self->purchaseKey = $donationQueryObject->{DonationMetaKeys::PURCHASE_KEY};
         $self->donorIp = $donationQueryObject->{DonationMetaKeys::DONOR_IP};
         $self->anonymous = (bool)$donationQueryObject->{DonationMetaKeys::ANONYMOUS_DONATION};
-        $self->levelId = (bool)$donationQueryObject->{DonationMetaKeys::PAYMENT_PRICE_ID};
+        $self->levelId = (int)$donationQueryObject->{DonationMetaKeys::PAYMENT_PRICE_ID};
 
         return $self;
     }

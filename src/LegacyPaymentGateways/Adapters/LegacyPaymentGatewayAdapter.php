@@ -52,10 +52,8 @@ class LegacyPaymentGatewayAdapter
 
         $this->validateGatewayNonce($formData->gatewayNonce);
 
-        $donation = $formData->toDonation();
-
-        $donation->save();
-
+        $donation = $formData->toDonation()->save();
+        
         $this->setSession($donation->id);
 
         $gatewayPaymentData = $formData->toGatewayPaymentData($donation->id);
