@@ -114,4 +114,12 @@ class Donor extends Model implements ModelCrud
         return give()->subscriptions->getByDonorId($this->id);
     }
 
+    /**
+     * @return array
+     */
+    public function getAdditionalEmails()
+    {
+        return give()->donorRepository->getAdditionalEmails($this->id);
+    }
+
 }

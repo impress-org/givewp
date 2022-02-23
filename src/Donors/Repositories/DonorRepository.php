@@ -52,6 +52,27 @@ class DonorRepository
     /**
      * @unreleased
      *
+     * @param  int  $donorId
+     * @return array|bool
+     */
+    public function getAdditionalEmails($donorId)
+    {
+        $additionalEmails = DB::table('give_donormeta')
+            ->select(['meta_value', 'email'])
+            ->where('meta_key', 'additional_email')
+            ->where('donor_id', $donorId)
+            ->getAll();
+
+        if (!$additionalEmails) {
+            return null;
+        }
+
+        return array_column($additionalEmails, 'email');
+    }
+
+    /**
+     * @unreleased
+     *
      * @param  Donor  $donor
      *
      * @return Donor

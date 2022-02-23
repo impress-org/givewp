@@ -28,6 +28,7 @@ class DonationMetaKeys extends Enum {
     const PURCHASE_KEY = '_give_payment_purchase_key';
     const DONOR_IP = '_give_payment_donor_ip';
     const ANONYMOUS_DONATION = '_give_anonymous_donation';
+    const PAYMENT_PRICE_ID = '_give_payment_price_id';
 
     /**
      * @return array

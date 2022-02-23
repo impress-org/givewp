@@ -332,7 +332,7 @@ class DonationRepository
                     GeneratePurchaseKey::class,
                     $donation->email
                 ),
-            DonationMetaKeys::DONOR_IP => isset($donation->donorIp) ? $donation->donorIp : give_get_ip()
+            DonationMetaKeys::DONOR_IP => isset($donation->donorIp) ? $donation->donorIp : give_get_ip(),
         ];
 
         if (isset($donation->billingAddress)) {
@@ -350,6 +350,10 @@ class DonationRepository
 
         if (isset($donation->anonymous)) {
             $meta[DonationMetaKeys::ANONYMOUS_DONATION] = $donation->anonymous;
+        }
+
+        if (isset($donation->levelId)) {
+            $meta[DonationMetaKeys::PAYMENT_PRICE_ID] = $donation->levelId;
         }
 
         return $meta;

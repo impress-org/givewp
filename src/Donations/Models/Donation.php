@@ -39,6 +39,7 @@ use Give\ValueObjects\Money;
  * @property string $purchaseKey
  * @property string $donorIp
  * @property bool $anonymous
+ * @property int $levelId
  */
 class Donation extends Model implements ModelCrud
 {
@@ -65,7 +66,8 @@ class Donation extends Model implements ModelCrud
         'parentId' => 'int',
         'subscriptionId' => 'int',
         'billingAddress' => BillingAddress::class,
-        'anonymous' => 'bool'
+        'anonymous' => 'bool',
+        'levelId' => 'int'
     ];
 
     /**

@@ -209,6 +209,7 @@ class FormData
                 'address1' => $this->billingAddress->line1,
                 'address2' => $this->billingAddress->line2
             ]),
+            'levelId' => (int)$this->priceId
         ]);
     }
 
