@@ -87,7 +87,7 @@ class ListForms extends Endpoint
                 'donations' => give()->donationFormsRepository->getFormDonationsCount($form->id),
                 'amount'    => $this->getFormAmount($form),
                 'revenue'   => $this->formatAmount($form->revenue),
-                'datetime'  => $this->getDateTime($form->createdAt, $form->createdAtGmt),
+                'datetime'  => $this->getDateTime($form->createdAt),
                 'shortcode' => sprintf('[give_form id="%d"]', $form->id),
                 'permalink' => html_entity_decode(get_permalink($form->id)),
                 'edit'      => html_entity_decode(get_edit_post_link($form->id))
@@ -140,41 +140,38 @@ class ListForms extends Endpoint
     }
 
     /**
-     * @param  string  $date
+     * Returns human readable date.
+     *
+     * @param  string  $date Date in mysql format.
      *
      * @return string
      */
-    private function getDateTime($date, $dateGmt = false)
+    private function getDateTime($date)
     {
-        if((int)$dateGmt)
-        {
-            $timezone = get_option('timezone_string');
-            $timezone = $timezone ?: get_option('gmt_offset');
-            if($timezone = timezone_open($timezone))
-            {
-                $date  = date_create($dateGmt, $timezone);
-            }
-            else
-            {
-                $date  = date_create($date);
-            }
-        }
-        else
-        {
-            $date  = date_create($date);
-        }
-        $timestamp = $date->getTimestamp();
-        $time      = date_i18n(get_option('time_format'), $timestamp);
+        $dateTimestamp = strtotime($date);
+        $currentTimestamp = current_time('timestamp');
+        $todayTimestamp = strtotime('today', $currentTimestamp);
+        $yesterdayTimestamp = strtotime('yesterday', $currentTimestamp);
 
-        if ($timestamp >= strtotime('today')) {
-            return __('Today', 'give') . ' ' . __('at', 'give') . ' ' . $time;
+        if ($dateTimestamp >= $todayTimestamp) {
+            return sprintf(
+                '%1$s %2$s %3$s',
+                esc_html__('Today', 'give'),
+                esc_html__('at', 'give'),
+                date_i18n(get_option('time_format'), $dateTimestamp)
+            );
         }
 
-        if ($timestamp >= strtotime('yesterday')) {
-            return __('Yesterday', 'give') . ' ' . __('at', 'give') . ' ' . $time;
+        if ($dateTimestamp < $todayTimestamp && $dateTimestamp >= $yesterdayTimestamp) {
+            return sprintf(
+                '%1$s %2$s %3$s',
+                esc_html__('Yesterday', 'give'),
+                esc_html__('at', 'give'),
+                date_i18n(get_option('time_format'), $dateTimestamp)
+            );
         }
 
-        return date_i18n(get_option('date_format'), $timestamp);
+        return date_i18n(get_option('date_format'), $dateTimestamp);
     }
 
     /**
