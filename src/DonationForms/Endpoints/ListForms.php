@@ -148,18 +148,27 @@ class ListForms extends Endpoint
      */
     private function getDateTime($date)
     {
-        $dateTimestamp = strtotime( $date );
-        $currentTimestamp  = current_time('timestamp' );
-        $todayTimestamp  = strtotime( 'today', $currentTimestamp );
-        $yesterdayTimestamp  = strtotime( 'yesterday', $currentTimestamp );
-        $time      = date_i18n(get_option('time_format'), $dateTimestamp);
+        $dateTimestamp = strtotime($date);
+        $currentTimestamp = current_time('timestamp');
+        $todayTimestamp = strtotime('today', $currentTimestamp);
+        $yesterdayTimestamp = strtotime('yesterday', $currentTimestamp);
 
         if ($dateTimestamp >= $todayTimestamp) {
-            return __('Today', 'give') . ' ' . __('at', 'give') . ' ' . $time;
+            return sprintf(
+                '%1$s %2$s %3$s',
+                esc_html__('Today', 'give'),
+                esc_html__('at', 'give'),
+                date_i18n(get_option('time_format'), $dateTimestamp)
+            );
         }
 
-        if ( $dateTimestamp < $todayTimestamp && $dateTimestamp >= $yesterdayTimestamp) {
-            return __('Yesterday', 'give') . ' ' . __('at', 'give') . ' ' . $time;
+        if ($dateTimestamp < $todayTimestamp && $dateTimestamp >= $yesterdayTimestamp) {
+            return sprintf(
+                '%1$s %2$s %3$s',
+                esc_html__('Yesterday', 'give'),
+                esc_html__('at', 'give'),
+                date_i18n(get_option('time_format'), $dateTimestamp)
+            );
         }
 
         return date_i18n(get_option('date_format'), $dateTimestamp);
