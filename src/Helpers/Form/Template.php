@@ -111,7 +111,7 @@ class Template
                 $settings['payment_amount']['decimals_enabled'] = $settings['visual_appearance']['decimals_enabled'];
             }
             $settings['introduction']['primary_color'] = $settings['visual_appearance']['primary_color'];
-        } elseif (isset($settings['payment_amount'], $settings['introduction'])) {
+        } elseif (isset($settings['payment_amount']['decimals_enabled'], $settings['introduction']['primary_color'])) {
             $settings['visual_appearance']['decimals_enabled'] = $settings['payment_amount']['decimals_enabled'];
             $settings['visual_appearance']['primary_color'] = $settings['introduction']['primary_color'];
         }
