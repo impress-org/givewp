@@ -52,7 +52,9 @@ class LegacyPaymentGatewayAdapter
 
         $this->validateGatewayNonce($formData->gatewayNonce);
 
-        $donation = $formData->toDonation()->save();
+        $donation = $formData->toDonation();
+
+        $donation->save();
 
         $this->setSession($donation->id);
 
@@ -137,11 +139,11 @@ class LegacyPaymentGatewayAdapter
      */
     private function setSession($donationId)
     {
-        $purchaseSession = (array)Give()->session->get('give_purchase');
+        $purchaseSession = (array)give()->session->get('give_purchase');
 
         if ($purchaseSession && array_key_exists('purchase_key', $purchaseSession)) {
             $purchaseSession['donation_id'] = $donationId;
-            Give()->session->set('give_purchase', $purchaseSession);
+            give()->session->set('give_purchase', $purchaseSession);
         }
     }
 }
