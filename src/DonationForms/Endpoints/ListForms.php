@@ -140,6 +140,8 @@ class ListForms extends Endpoint
     }
 
     /**
+     * Returns human readable date.
+     *
      * @param  string  $date Date in mysql format.
      *
      * @return string
