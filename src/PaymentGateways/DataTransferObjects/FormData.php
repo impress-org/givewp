@@ -174,10 +174,10 @@ class FormData
      */
     public function toDonation()
     {
-        $firstName = $this->donorInfo->firstName ?: $this->postData['give_first'];
-        $lastName = $this->donorInfo->lastName ?: $this->postData['give_last'];
+        $firstName = $this->donorInfo->firstName;
+        $lastName = $this->donorInfo->lastName;
 
-        $donorId = $this->getOrCreateDonor($this->donorInfo->wpUserId, $firstName, $lastName, $this->donorInfo->email);
+        $donorId = $this->getOrCreateDonor($this->donorInfo->email, $firstName, $lastName);
 
         return new Donation([
             'status' => DonationStatus::PENDING(),
@@ -248,23 +248,24 @@ class FormData
     /**
      * @unreleased
      *
-     * @param  int|null  $donorId
      * @param  string  $donorEmail
+     * @param  string  $firstName
+     * @param  string  $lastName
      * @return int
      * @throws Exception
      */
-    private function getOrCreateDonor($donorId, $firstName, $lastName, $donorEmail)
+    private function getOrCreateDonor($donorEmail, $firstName, $lastName)
     {
-        if ($donorId) {
-            return $donorId;
-        }
+        $donor = Donor::whereEmail($donorEmail);
 
-        $donor = Donor::create([
-            'name' => trim("$firstName $lastName"),
-            'firstName' => $firstName,
-            'lastName' => $lastName,
-            'email' => $donorEmail
-        ]);
+        if (!$donor) {
+            $donor = Donor::create([
+                'name' => trim("$firstName $lastName"),
+                'firstName' => $firstName,
+                'lastName' => $lastName,
+                'email' => $donorEmail
+            ]);
+        }
 
         return $donor->id;
     }

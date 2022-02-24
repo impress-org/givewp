@@ -223,4 +223,47 @@ class DonorRepository
             }
         }
     }
+
+    /**
+     * @param  string  $email
+     * @return Donor
+     */
+    public function getByEmail($email)
+    {
+        $donorObjectByPrimaryEmail = DB::table('give_donors')
+            ->select('*')
+            ->attachMeta('give_donormeta',
+                'ID',
+                'donor_id',
+                ['_give_donor_first_name', 'firstName'],
+                ['_give_donor_last_name', 'lastName']
+            )
+            ->where('email', $email)
+            ->get();
+
+        if (!$donorObjectByPrimaryEmail) {
+            return $this->getByAdditionalEmail($email);
+        }
+
+        return DonorQueryData::fromObject($donorObjectByPrimaryEmail)->toDonor();
+    }
+
+    /**
+     * @param  string  $email
+     * @return Donor
+     */
+    public function getByAdditionalEmail($email)
+    {
+        $donorMetaObject = DB::table('give_donormeta')
+            ->select(['donor_id', 'id'])
+            ->where('meta_key', 'additional_email')
+            ->where('meta_value', $email)
+            ->get();
+
+        if (!$donorMetaObject) {
+            return null;
+        }
+
+        return $this->getById($donorMetaObject->id);
+    }
 }

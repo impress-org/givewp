@@ -55,6 +55,17 @@ class Donor extends Model implements ModelCrud
     /**
      * @unreleased
      *
+     * @param  string  $email
+     * @return Donor
+     */
+    public static function whereEmail($email)
+    {
+        return give()->donorRepository->getByEmail($email);
+    }
+
+    /**
+     * @unreleased
+     *
      * @param  array  $attributes
      *
      * @return Donor

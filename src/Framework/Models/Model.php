@@ -177,7 +177,7 @@ abstract class Model implements Arrayable
      */
     public function isPropertyTypeValid($key, $value)
     {
-        if (!$value) {
+        if (is_null($value)) {
             return true;
         }
 
