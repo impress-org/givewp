@@ -3,6 +3,7 @@
 namespace Give\LegacyPaymentGateways\Adapters;
 
 use Exception;
+use Give\Donors\Models\Donor;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\PaymentGateways\Actions\CreatePaymentAction;
 use Give\PaymentGateways\Actions\CreateSubscriptionAction;
@@ -52,8 +53,15 @@ class LegacyPaymentGatewayAdapter
 
         $this->validateGatewayNonce($formData->gatewayNonce);
 
-        $donation = $formData->toDonation()->save();
-        
+        $donor = $this->getOrCreateDonor(
+            $formData->donorInfo->wpUserId,
+            $formData->donorInfo->firstName,
+            $formData->donorInfo->lastName,
+            $formData->donorInfo->email
+        );
+
+        $donation = $formData->toDonation($donor->id)->save();
+
         $this->setSession($donation->id);
 
         $gatewayPaymentData = $formData->toGatewayPaymentData($donation->id);
@@ -143,5 +151,41 @@ class LegacyPaymentGatewayAdapter
             $purchaseSession['donation_id'] = $donationId;
             give()->session->set('give_purchase', $purchaseSession);
         }
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  int|null  $userId
+     * @param  string  $donorEmail
+     * @param  string  $firstName
+     * @param  string  $lastName
+     * @return Donor
+     * @throws Exception
+     */
+    private function getOrCreateDonor($userId, $donorEmail, $firstName, $lastName)
+    {
+        //if user is logged in, and they made it this far then the email does not belong to a donor yet.
+        // If this is the case then find the donor via userID and add this email to their additional emails
+        if ($userId) {
+            $donor = Donor::whereUserId($userId);
+
+            if ($donor && !$donor->hasEmail($donorEmail)) {
+                $donor->addAdditionalEmail($donorEmail);
+            }
+        } else {
+            $donor = Donor::whereEmail($donorEmail);
+        }
+
+        if (!$donor) {
+            $donor = Donor::create([
+                'name' => trim("$firstName $lastName"),
+                'firstName' => $firstName,
+                'lastName' => $lastName,
+                'email' => $donorEmail
+            ]);
+        }
+
+        return $donor;
     }
 }

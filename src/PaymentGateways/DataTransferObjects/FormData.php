@@ -6,7 +6,6 @@ use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\Properties\BillingAddress;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\Donors\Models\Donor;
 use Give\ValueObjects\Address;
 use Give\ValueObjects\CardInfo;
 use Give\ValueObjects\DonorInfo;
@@ -172,21 +171,16 @@ class FormData
      * @return Donation
      * @throws Exception
      */
-    public function toDonation()
+    public function toDonation($donorId)
     {
-        $firstName = $this->donorInfo->firstName;
-        $lastName = $this->donorInfo->lastName;
-
-        $donorId = $this->getOrCreateDonor($this->donorInfo->wpUserId, $this->donorInfo->email, $firstName, $lastName);
-
         return new Donation([
             'status' => DonationStatus::PENDING(),
             'gateway' => $this->paymentGateway,
             'amount' => (int)$this->price,
             'currency' => $this->currency,
             'donorId' => $donorId,
-            'firstName' => $firstName,
-            'lastName' => $lastName,
+            'firstName' => $this->donorInfo->firstName,
+            'lastName' => $this->donorInfo->lastName,
             'email' => $this->donorInfo->email,
             'formId' => $this->formId,
             'formTitle' => $this->formTitle,
@@ -243,41 +237,5 @@ class FormData
             'cardInfo' => $this->cardInfo,
             'billingAddress' => $this->billingAddress,
         ]);
-    }
-
-    /**
-     * @unreleased
-     *
-     * @param  int|null  $userId
-     * @param  string  $donorEmail
-     * @param  string  $firstName
-     * @param  string  $lastName
-     * @return int
-     * @throws Exception
-     */
-    private function getOrCreateDonor($userId, $donorEmail, $firstName, $lastName)
-    {
-        //if user is logged in, and they made it this far then the email does not belong to a donor yet.
-        // If this is the case then find the donor via userID and add this email to their additional emails
-        if ($userId) {
-            $donor = Donor::whereUserId($userId);
-
-            if ($donor && !$donor->hasEmail($donorEmail)) {
-                $donor->addAdditionalEmail($donorEmail);
-            }
-        } else {
-            $donor = Donor::whereEmail($donorEmail);
-        }
-
-        if (!$donor) {
-            $donor = Donor::create([
-                'name' => trim("$firstName $lastName"),
-                'firstName' => $firstName,
-                'lastName' => $lastName,
-                'email' => $donorEmail
-            ]);
-        }
-
-        return $donor->id;
     }
 }
