@@ -6,7 +6,8 @@ use Give\Donations\Models\Donation;
 use Give\Helpers\Hooks;
 use Give\PaymentGateways\DataTransferObjects\GiveInsertPaymentData;
 
-class DonationInserted {
+class DonationCreated
+{
     /**
      * @unreleased
      *

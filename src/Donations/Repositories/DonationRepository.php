@@ -170,7 +170,7 @@ class DonationRepository
     {
         $this->validateDonation($donation);
 
-        Hooks::dispatch('give_donation_inserting', $donation);
+        Hooks::dispatch('give_donation_creating', $donation);
 
         $date = $donation->createdAt ? $this->getFormattedDateTime(
             $donation->createdAt
@@ -211,7 +211,7 @@ class DonationRepository
 
         $donation = $this->getById($donationId);
 
-        Hooks::dispatch('give_donation_inserted', $donation);
+        Hooks::dispatch('give_donation_created', $donation);
 
         return $donation;
     }
@@ -279,6 +279,8 @@ class DonationRepository
     {
         DB::query('START TRANSACTION');
 
+        Hooks::dispatch('give_donation_deleting', $donation);
+
         try {
             DB::table('posts')
                 ->where('id', $donation->id)
@@ -299,6 +301,8 @@ class DonationRepository
         }
 
         DB::query('COMMIT');
+
+        Hooks::dispatch('give_donation_deleted', $donation);
 
         return true;
     }

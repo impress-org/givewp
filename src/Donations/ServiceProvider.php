@@ -2,8 +2,10 @@
 
 namespace Give\Donations;
 
-use Give\Donations\Listeners\DonationInserted;
-use Give\Donations\Listeners\DonationUpdated;
+use Give\Donations\LegacyListeners\DispatchGiveInsertPayment;
+use Give\Donations\LegacyListeners\DispatchGiveUpdatePaymentStatus;
+use Give\Donations\LegacyListeners\RemoveSequentialId;
+use Give\Donations\LegacyListeners\SaveOrUpdateSequentialNumberingForDonation;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -23,7 +25,20 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot()
     {
-        Hooks::addAction('give_donation_updated', DonationUpdated::class);
-        Hooks::addAction('give_donation_inserted', DonationInserted::class);
+        $this->bootLegacyListeners();
+    }
+
+    /**
+     * Legacy Listeners
+     *
+     * @unreleased
+     */
+    private function bootLegacyListeners()
+    {
+        Hooks::addAction('give_donation_updated', DispatchGiveUpdatePaymentStatus::class);
+        Hooks::addAction('give_donation_updated', SaveOrUpdateSequentialNumberingForDonation::class);
+        Hooks::addAction('give_donation_created', SaveOrUpdateSequentialNumberingForDonation::class);
+        Hooks::addAction('give_donation_created', DispatchGiveInsertPayment::class);
+        Hooks::addAction('give_donation_deleted', RemoveSequentialId::class);
     }
 }
