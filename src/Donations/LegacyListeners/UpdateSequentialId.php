@@ -4,7 +4,7 @@ namespace Give\Donations\LegacyListeners;
 
 use Give\Donations\Models\Donation;
 
-class SaveOrUpdateSequentialNumberingForDonation
+class UpdateSequentialId
 {
     /**
      * @unreleased
