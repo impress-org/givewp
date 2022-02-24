@@ -47,6 +47,7 @@ domIsReady(() => {
     moveTestModeMessage();
     IS_CURRENCY_SWITCHING_ACTIVE && moveCurrencySwitcherMessageOutsideOfWrapper();
     addFancyBorderWhenChecked();
+    updateDonationSummaryAmountOnChange();
 });
 
 /**
@@ -290,6 +291,13 @@ function updateRecurringDonationFrequency() {
 function updateDonationSummaryAmount() {
     document.querySelector('[data-tag="amount"]').innerHTML = document.querySelector('#give-amount').value;
 }
+
+function updateDonationSummaryAmountOnChange() {
+    document.querySelector('#give-amount').addEventListener('change', function(e){
+        document.querySelector('[data-tag="amount"]').innerHTML = GiveDonationSummary.format_amount(e.target.value, jQuery('.give-form'));
+    } );
+}
+
 
 function attachFeeEvents() {
     const coverFeesCheckbox = document.querySelector('.give_fee_mode_checkbox');
