@@ -604,5 +604,14 @@ class Give_Scripts {
 			],
 			GIVE_VERSION
 		);
+
+		// Enqueue the bundled block css file
+		wp_enqueue_style(
+			'give-blocks-css',
+			GIVE_PLUGIN_URL . 'assets/dist/css/gutenberg.css',
+			[ 'give-styles' ],
+			GIVE_VERSION
+		);
+
 	}
 }
