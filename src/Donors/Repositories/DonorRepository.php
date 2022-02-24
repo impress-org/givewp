@@ -50,6 +50,39 @@ class DonorRepository
     }
 
     /**
+     * Get Donor By WP User ID
+     *
+     * @unreleased
+     *
+     * @param  int  $userId
+     * @return Donor
+     */
+    public function getByWpUserId($userId)
+    {
+        // user_id can technically be 0 so make sure to return null
+        if (!$userId) {
+            return null;
+        }
+
+        $donorObject = DB::table('give_donors')
+            ->select('*')
+            ->attachMeta('give_donormeta',
+                'ID',
+                'donor_id',
+                ['_give_donor_first_name', 'firstName'],
+                ['_give_donor_last_name', 'lastName']
+            )
+            ->where('user_id', $userId)
+            ->get();
+
+        if (!$donorObject) {
+            return null;
+        }
+
+        return DonorQueryData::fromObject($donorObject)->toDonor();
+    }
+
+    /**
      * @unreleased
      *
      * @param  int  $donorId
@@ -265,5 +298,37 @@ class DonorRepository
         }
 
         return $this->getById($donorMetaObject->id);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  int  $donorId
+     * @param  string  $additionalEmail
+     * @return bool
+     * @throws Exception
+     */
+    public function insertAdditionalEmail($donorId, $additionalEmail)
+    {
+        DB::query('START TRANSACTION');
+
+        try {
+            DB::table('give_donormeta')
+                ->insert([
+                    'donor_id' => $donorId,
+                    'meta_key' => 'additional_email',
+                    'meta_value' => $additionalEmail,
+                ]);
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed adding additional donor email');
+
+            throw new $exception('Failed adding additional donor email');
+        }
+
+        DB::query('COMMIT');
+
+        return true;
     }
 }

@@ -177,7 +177,7 @@ class FormData
         $firstName = $this->donorInfo->firstName;
         $lastName = $this->donorInfo->lastName;
 
-        $donorId = $this->getOrCreateDonor($this->donorInfo->email, $firstName, $lastName);
+        $donorId = $this->getOrCreateDonor($this->donorInfo->wpUserId, $this->donorInfo->email, $firstName, $lastName);
 
         return new Donation([
             'status' => DonationStatus::PENDING(),
@@ -248,15 +248,26 @@ class FormData
     /**
      * @unreleased
      *
+     * @param  int|null  $userId
      * @param  string  $donorEmail
      * @param  string  $firstName
      * @param  string  $lastName
      * @return int
      * @throws Exception
      */
-    private function getOrCreateDonor($donorEmail, $firstName, $lastName)
+    private function getOrCreateDonor($userId, $donorEmail, $firstName, $lastName)
     {
-        $donor = Donor::whereEmail($donorEmail);
+        //if user is logged in, and they made it this far then the email does not belong to a donor yet.
+        // If this is the case then find the donor via userID and add this email to their additional emails
+        if ($userId) {
+            $donor = Donor::whereUserId($userId);
+
+            if ($donor && !$donor->hasEmail($donorEmail)) {
+                $donor->addAdditionalEmail($donorEmail);
+            }
+        } else {
+            $donor = Donor::whereEmail($donorEmail);
+        }
 
         if (!$donor) {
             $donor = Donor::create([
