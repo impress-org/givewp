@@ -28,29 +28,29 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_add_options_links() {
-	global $give_settings_page, $give_payments_page, $give_reports_page, $give_donors_page, $give_tools_page;
+    global $give_settings_page, $give_payments_page, $give_reports_page, $give_donors_page, $give_tools_page;
 
-	// Payments
-	/* @var WP_Post_Type $give_payment */
-	$give_payment       = get_post_type_object( 'give_payment' );
-	$give_payments_page = add_submenu_page(
-		'edit.php?post_type=give_forms',
-		$give_payment->labels->name,
-		$give_payment->labels->menu_name,
-		'edit_give_payments',
-		'give-payment-history',
-		'give_payment_history_page'
-	);
+    // Payments
+    /* @var WP_Post_Type $give_payment */
+    $give_payment = get_post_type_object('give_payment');
+    $give_payments_page = add_submenu_page(
+    	'edit.php?post_type=give_forms',
+    	$give_payment->labels->name,
+    	$give_payment->labels->menu_name,
+    	'edit_give_payments',
+    	'give-payment-history',
+    	'give_payment_history_page'
+    );
 
-	// Donors
-	$give_donors_page = add_submenu_page(
-		'edit.php?post_type=give_forms',
-		esc_html__( 'Donors', 'give' ),
-		esc_html__( 'Donors', 'give' ),
-		'view_give_reports',
-		'give-donors',
-		'give_donors_page'
-	);
+    // Donors
+    $give_donors_page = add_submenu_page(
+        'edit.php?post_type=give_forms',
+        esc_html__('Donors', 'give'),
+        esc_html__('Donors', 'give'),
+        'view_give_reports',
+        'give-donors',
+        'give_donors_page'
+    );
 
 	// Settings
 	$give_settings_page = add_submenu_page(
@@ -203,17 +203,17 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 		default:
 			global $give_payments_page, $give_settings_page, $give_reports_page, $give_system_info_page, $give_settings_export, $give_donors_page, $give_tools_page;
 			$admin_pages = apply_filters(
-				'give_admin_pages',
-				[
-					$give_payments_page,
-					$give_settings_page,
-					$give_reports_page,
-					$give_system_info_page,
-					$give_settings_export,
-					$give_donors_page,
-					$give_tools_page,
-				]
-			);
+                'give_admin_pages',
+                [
+                    //$give_payments_page,
+                    $give_settings_page,
+                    $give_reports_page,
+                    $give_system_info_page,
+                    $give_settings_export,
+                    $give_donors_page,
+                    $give_tools_page,
+                ]
+            );
 
 			$found = ( 'give_forms' === $typenow || in_array( $pagenow, array_merge( $admin_pages, [ 'index.php', 'post-new.php', 'post.php', 'widgets.php', 'customize.php' ] ), true ) ) ? true : false;
 	}

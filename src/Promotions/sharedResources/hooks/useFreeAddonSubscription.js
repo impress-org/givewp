@@ -8,13 +8,13 @@ import {useState, useCallback} from 'react';
  * @returns {boolean} Whether the request was successful.
  */
 async function markSubscriptionComplete(reason) {
-    const response = await fetch('/wp-json/give/v1/promotions/free-addon-modal/complete', {
+    const response = await fetch(giveFreeAddonModal.apiRoot, {
         method: 'POST',
         credentials: 'same-origin',
         headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json',
-            'X-WP-Nonce': wpApiSettings.nonce,
+            'X-WP-Nonce': giveFreeAddonModal.nonce,
         },
         body: JSON.stringify({reason}),
     });
