@@ -5,10 +5,8 @@ namespace Give\LegacyPaymentGateways\Adapters;
 use Exception;
 use Give\Donors\Models\Donor;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
-use Give\PaymentGateways\Actions\CreatePaymentAction;
 use Give\PaymentGateways\Actions\CreateSubscriptionAction;
 use Give\PaymentGateways\DataTransferObjects\FormData;
-use Give\PaymentGateways\DataTransferObjects\GiveInsertPaymentData;
 use Give\PaymentGateways\DataTransferObjects\SubscriptionData;
 
 /**
@@ -40,6 +38,7 @@ class LegacyPaymentGatewayAdapter
      *
      * @since 2.18.0
      * @unreleased Replace is_recurring with is_donation_recurring to detect recurring donations.
+     * @unreleased Replace give_insert_payment with donation model.
      *
      * @param  array  $legacyDonationData  Legacy Donation Data
      * @param  PaymentGatewayInterface  $registeredGateway
@@ -79,24 +78,7 @@ class LegacyPaymentGatewayAdapter
     }
 
     /**
-     * Create the payment
-     *
-     * @since 2.18.0
-     *
-     * @param  GiveInsertPaymentData  $giveInsertPaymentData
-     *
-     * @return int
-     */
-    private function createPayment(GiveInsertPaymentData $giveInsertPaymentData)
-    {
-        /** @var CreatePaymentAction $createPaymentAction */
-        $createPaymentAction = give(CreatePaymentAction::class);
-
-        return $createPaymentAction($giveInsertPaymentData);
-    }
-
-    /**
-     * Create the payment
+     * Create the subscription
      *
      * @since 2.18.0
      *
@@ -136,7 +118,7 @@ class LegacyPaymentGatewayAdapter
     }
 
     /**
-     * Set donation id to purchase session only donor session for donation exist.
+     * Set donation id to purchase session for use in the donation receipt.
      *
      * @unreleased
      *
@@ -165,18 +147,21 @@ class LegacyPaymentGatewayAdapter
      */
     private function getOrCreateDonor($userId, $donorEmail, $firstName, $lastName)
     {
-        //if user is logged in, and they made it this far then the email does not belong to a donor yet.
-        // If this is the case then find the donor via userID and add this email to their additional emails
+        // if user is logged in, and they made it this far, then the email should not belong to any donor yet.
+        // If this is the case then find the donor via $userId.
         if ($userId) {
             $donor = Donor::whereUserId($userId);
 
+            // If they exist as a donor then make sure they don't already own this email before adding to their additional emails list..
             if ($donor && !$donor->hasEmail($donorEmail)) {
                 $donor->addAdditionalEmail($donorEmail);
             }
         } else {
+            // If not user is logged in then see if donor exists.
             $donor = Donor::whereEmail($donorEmail);
         }
 
+        // if no donor exists then create a new one using their personal information from the form.
         if (!$donor) {
             $donor = Donor::create([
                 'name' => trim("$firstName $lastName"),
