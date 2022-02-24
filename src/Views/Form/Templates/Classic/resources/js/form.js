@@ -47,7 +47,7 @@ domIsReady(() => {
     moveTestModeMessage();
     IS_CURRENCY_SWITCHING_ACTIVE && moveCurrencySwitcherMessageOutsideOfWrapper();
     addFancyBorderWhenChecked();
-    updateDonationSummaryAmountOnChange();
+    IS_DONATION_SUMMARY_ACTIVE && updateDonationSummaryAmountOnChange();
 });
 
 /**
