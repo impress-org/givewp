@@ -11,12 +11,12 @@ use Give\ValueObjects\Money;
 use Give_Stripe_Customer;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class CreateCheckoutSession extends WorkflowAction
 {
     /**
-     * @unreleased
+     * @since 2.19.0
      * @param GatewayPaymentData $paymentData
      * @param DonationSummary $donationSummary
      * @param Give_Stripe_Customer $giveStripeCustomer

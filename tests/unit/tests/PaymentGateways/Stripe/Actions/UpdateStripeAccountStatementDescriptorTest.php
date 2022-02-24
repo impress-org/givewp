@@ -6,7 +6,7 @@ use Give\PaymentGateways\Stripe\Repositories\Settings;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class UpdateStripeAccountStatementDescriptorTest extends TestCase
 {

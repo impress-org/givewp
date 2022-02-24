@@ -8,7 +8,7 @@ use Give_Payment;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class ProcessIpnDonationRefundTest extends TestCase
 {

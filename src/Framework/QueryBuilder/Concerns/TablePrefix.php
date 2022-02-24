@@ -5,7 +5,7 @@ namespace Give\Framework\QueryBuilder\Concerns;
 use Give\Framework\QueryBuilder\Clauses\RawSQL;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 trait TablePrefix
 {

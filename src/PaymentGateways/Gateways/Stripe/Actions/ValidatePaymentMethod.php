@@ -8,12 +8,12 @@ use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
 use Give\PaymentGateways\Gateways\Stripe\WorkflowAction;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class ValidatePaymentMethod extends WorkflowAction
 {
     /**
-     * @unreleased
+     * @since 2.19.0
      * @param PaymentMethod $paymentMethod
      * @throws PaymentMethodException
      */

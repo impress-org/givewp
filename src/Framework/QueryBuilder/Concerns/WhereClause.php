@@ -12,7 +12,7 @@ use Give\Framework\QueryBuilder\WhereQueryBuilder;
 
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 trait WhereClause
 {

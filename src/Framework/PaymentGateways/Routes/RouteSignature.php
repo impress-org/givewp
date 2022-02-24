@@ -5,7 +5,7 @@ namespace Give\Framework\PaymentGateways\Routes;
 /**
  * Route signature for creating secure gateway route methods
  *
- * @unreleased
+ * @since 2.19.0
  */
 class RouteSignature {
     /**
@@ -14,7 +14,7 @@ class RouteSignature {
     private $signature;
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @param  int  $gatewayId
      * @param  string  $gatewayMethod
@@ -28,7 +28,7 @@ class RouteSignature {
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return string
      */
@@ -38,7 +38,7 @@ class RouteSignature {
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return false|string
      */

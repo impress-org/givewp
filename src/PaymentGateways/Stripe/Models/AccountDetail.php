@@ -142,7 +142,7 @@ class AccountDetail
      * Statement descriptor default text for each account will be set to blog title.
      * @see: https://github.com/impress-org/givewp/issues/6021
      *
-     * @unreleased
+     * @since 2.19.0
      * @deprecated
      *
      * @param array $args

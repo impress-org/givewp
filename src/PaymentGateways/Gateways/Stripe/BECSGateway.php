@@ -13,7 +13,7 @@ use Give\PaymentGateways\Gateways\Stripe\Traits\HandlePaymentIntentStatus;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class BECSGateway extends PaymentGateway
 {
@@ -34,7 +34,7 @@ class BECSGateway extends PaymentGateway
 
     /**
      * @inheritDoc
-     * @unreleased
+     * @since 2.19.0
      * @return GatewayCommand
      * @throws PaymentGatewayException
      */
@@ -96,7 +96,7 @@ class BECSGateway extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @return array
      */
     protected function getPaymentIntentArgs()

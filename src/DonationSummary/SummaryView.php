@@ -121,7 +121,7 @@ class SummaryView
     }
 
     /**
-     * @unreleased - remove check for Give_Recurring
+     * @since 2.19.0 - remove check for Give_Recurring
      * @return bool
      * @since 2.17.0
      */

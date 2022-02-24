@@ -6,7 +6,7 @@ use Give\API\RestRoute;
 use WP_Error;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 abstract class Endpoint implements RestRoute
 {

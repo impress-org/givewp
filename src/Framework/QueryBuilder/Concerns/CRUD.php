@@ -5,12 +5,12 @@ namespace Give\Framework\QueryBuilder\Concerns;
 use Give\Framework\Database\DB;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 trait CRUD
 {
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @param  array  $data
      * @param  array|string  $format
@@ -30,7 +30,7 @@ trait CRUD
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @param  array  $data
      * @param  null  $format
@@ -52,7 +52,7 @@ trait CRUD
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return false|int
      *
@@ -70,7 +70,7 @@ trait CRUD
     /**
      * Get results
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @param  string ARRAY_A|ARRAY_N|OBJECT|OBJECT_K $output
      *
@@ -84,7 +84,7 @@ trait CRUD
     /**
      * Get row
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @param  string ARRAY_A|ARRAY_N|OBJECT|OBJECT_K $output
      *
@@ -96,7 +96,7 @@ trait CRUD
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return string
      */
@@ -106,7 +106,7 @@ trait CRUD
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return array[]
      */

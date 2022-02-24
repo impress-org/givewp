@@ -11,7 +11,7 @@ use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class CreditCardGateway extends PaymentGateway
 {
@@ -32,7 +32,7 @@ class CreditCardGateway extends PaymentGateway
 
     /**
      * @inheritDoc
-     * @unreleased
+     * @since 2.19.0
      * @return GatewayCommand
      * @throws PaymentGatewayException
      */

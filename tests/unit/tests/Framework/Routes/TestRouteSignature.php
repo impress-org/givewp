@@ -8,14 +8,14 @@ use PHPUnit\Framework\TestCase;
 use function wp_verify_nonce;
 
 /**
- * @unreleased
+ * @since 2.19.0
  *
  * @coversDefaultClass RouteSignature
  */
 class TestRouteSignature extends TestCase
 {
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return void
      */
@@ -35,7 +35,7 @@ class TestRouteSignature extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return void
      */

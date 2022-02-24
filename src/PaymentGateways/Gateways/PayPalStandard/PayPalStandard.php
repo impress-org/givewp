@@ -92,7 +92,7 @@ class PayPalStandard extends PaymentGateway
     /**
      * Handle payment redirect after successful payment on PayPal standard.
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @param array $queryParams Query params in gateway route. {
      *
@@ -114,7 +114,7 @@ class PayPalStandard extends PaymentGateway
     /**
      * Handle payment redirect after failed payment on PayPal standard.
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @param array $queryParams Query params in gateway route. {
      *
@@ -136,7 +136,7 @@ class PayPalStandard extends PaymentGateway
     /**
      * Handle PayPal IPN notification.
      *
-     * @unreleased
+     * @since 2.19.0
      */
     public function handleIpnNotification()
     {
@@ -146,7 +146,7 @@ class PayPalStandard extends PaymentGateway
     /**
      * This function returns payment gateway settings.
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @return array
      */

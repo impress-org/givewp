@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.19.0-alpha.2
+ * Version: 2.19.0
  * Requires at least: 4.9
  * Requires PHP: 5.6
  * Text Domain: give
@@ -513,7 +513,7 @@ final class Give
     /**
      * Sets up the Exception Handler to catch and handle uncaught exceptions
      *
-     * @unreleased
+     * @since 2.11.1
      */
     private function setupExceptionHandler()
     {

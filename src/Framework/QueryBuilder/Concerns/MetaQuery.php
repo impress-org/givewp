@@ -8,7 +8,7 @@ use Give\Framework\QueryBuilder\Clauses\RawSQL;
 use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 trait MetaQuery
 {

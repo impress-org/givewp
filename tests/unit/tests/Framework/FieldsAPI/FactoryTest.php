@@ -7,7 +7,7 @@ use Give\Framework\FieldsAPI\Text;
 class FactoryTest extends Give_Unit_Test_Case {
 
 	/**
-	 * @unreleased
+	 * @since 2.19.0
 	 */
 	public function testReturnExceptionWhenMakeFieldWithEmptyName() {
 		$this->expectException( EmptyNameException::class );
@@ -15,7 +15,7 @@ class FactoryTest extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.19.0
 	 */
 	public function testReturnExceptionWhenMakeFieldWithNullName() {
 		$this->expectException( EmptyNameException::class );
@@ -23,7 +23,7 @@ class FactoryTest extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.19.0
 	 */
 	public function testReturnExceptionWhenMakeFieldWithEmptyNameWithMakeFunction() {
 		$this->expectException( EmptyNameException::class );
@@ -31,7 +31,7 @@ class FactoryTest extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * @unreleased
+	 * @since 2.19.0
 	 */
 	public function testReturnExceptionWhenMakeFieldWithNullNameWithMakeFunction() {
 		$this->expectException( EmptyNameException::class );

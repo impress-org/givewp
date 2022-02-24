@@ -1245,7 +1245,7 @@ function give_set_form_closed_status( $form_id ) {
 /**
  * Show Form Goal Stats in Admin ( Listing and Detail page )
  *
- * @unreleased Prevent divide by zero issue in goal percentage calculation logic.
+ * @since 2.19.0 Prevent divide by zero issue in goal percentage calculation logic.
  *
  * @param int $form_id Form ID.
  *

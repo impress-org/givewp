@@ -7,12 +7,12 @@ use Give_Payment;
 use stdClass;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class ProcessIpnDonationRefund
 {
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @param stdClass $ipnEventData
      * @param int $donationId
@@ -50,7 +50,7 @@ class ProcessIpnDonationRefund
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @param string $refundedAmount
      * @param $currency

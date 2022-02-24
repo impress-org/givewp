@@ -16,7 +16,7 @@ use Give\ServiceProviders\ServiceProvider as ServiceProviderContract;
 class ServiceProvider implements ServiceProviderContract
 {
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @inheritDoc
      */
@@ -25,7 +25,7 @@ class ServiceProvider implements ServiceProviderContract
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @inheritDoc
      */
@@ -38,7 +38,7 @@ class ServiceProvider implements ServiceProviderContract
     /**
      * Boots the Plugin Upsell promotional page
      *
-     * @unreleased
+     * @since 2.19.0
      */
     private function bootPluginUpsells() {
         Hooks::addAction('admin_menu', AddonsAdminPage::class, 'register');
@@ -61,7 +61,7 @@ class ServiceProvider implements ServiceProviderContract
     /**
      * Boots the free addon modal promotion
      *
-     * @unreleased
+     * @since 2.19.0
      */
     private function bootFreeAddonModal()
     {

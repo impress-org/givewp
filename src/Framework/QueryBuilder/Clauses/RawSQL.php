@@ -5,7 +5,7 @@ namespace Give\Framework\QueryBuilder\Clauses;
 use Give\Framework\Database\DB;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class RawSQL
 {

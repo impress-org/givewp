@@ -12,7 +12,7 @@ class GetOrCreateStripeCustomer extends WorkflowAction
 {
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @throws StripeCustomerException
      */
@@ -30,7 +30,7 @@ class GetOrCreateStripeCustomer extends WorkflowAction
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @param  int  $donationId
      * @param  string  $stripeCustomerId
@@ -48,7 +48,7 @@ class GetOrCreateStripeCustomer extends WorkflowAction
             $donationId,
             sprintf(__('Stripe Customer ID: %s', 'give'), $stripeCustomerId)
         );
-        
+
         give_update_meta($donationId, give_stripe_get_customer_key(), $stripeCustomerId);
     }
 }

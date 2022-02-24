@@ -7,7 +7,7 @@ use Give\PaymentGateways\Stripe\Repositories\Settings;
 use Give\PaymentGateways\Stripe\Traits\HasStripeStatementDescriptorText;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class AddStatementDescriptorToStripeAccounts extends Migration
 {
@@ -15,7 +15,7 @@ class AddStatementDescriptorToStripeAccounts extends Migration
 
     /**
      * @inerhitDoc
-     * @unreleased
+     * @since 2.19.0
      */
     public function run()
     {
@@ -41,7 +41,7 @@ class AddStatementDescriptorToStripeAccounts extends Migration
 
     /**
      * @inerhitDoc
-     * @unreleased
+     * @since 2.19.0
      */
     public static function id()
     {
@@ -50,7 +50,7 @@ class AddStatementDescriptorToStripeAccounts extends Migration
 
     /**
      * @inerhitDoc
-     * @unreleased
+     * @since 2.19.0
      */
     public static function timestamp()
     {
@@ -59,7 +59,7 @@ class AddStatementDescriptorToStripeAccounts extends Migration
 
     /**
      * @inerhitDoc
-     * @unreleased
+     * @since 2.19.0
      */
     public static function title()
     {

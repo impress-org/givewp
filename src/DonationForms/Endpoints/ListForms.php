@@ -6,7 +6,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class ListForms extends Endpoint
 {

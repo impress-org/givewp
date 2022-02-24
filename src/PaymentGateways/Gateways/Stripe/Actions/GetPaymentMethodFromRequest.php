@@ -10,7 +10,7 @@ use Give\PaymentGateways\Gateways\Stripe\WorkflowAction;
 class GetPaymentMethodFromRequest extends WorkflowAction
 {
     /**
-     * @unreleased
+     * @since 2.19.0
      * @param GatewayPaymentData $paymentData
      * @throws PaymentMethodException
      */

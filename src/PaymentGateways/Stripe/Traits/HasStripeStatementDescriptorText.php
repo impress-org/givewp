@@ -5,7 +5,7 @@ namespace Give\PaymentGateways\Stripe\Traits;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 trait HasStripeStatementDescriptorText
 {
@@ -13,7 +13,7 @@ trait HasStripeStatementDescriptorText
      * Return filtered stripe statement descriptor text.
      * Check Stripe statement descriptor requirements: https://stripe.com/docs/statement-descriptors#requirements
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @param string $statementDescriptor
      */

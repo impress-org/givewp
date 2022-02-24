@@ -3,7 +3,7 @@
 namespace Give\DonationForms;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class DonationFormsAdminPage
 {

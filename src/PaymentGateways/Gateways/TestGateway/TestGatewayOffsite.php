@@ -94,7 +94,7 @@ class TestGatewayOffsite extends PaymentGateway
     /**
      * An example of using a routeMethod for extending the Gateway API to handle a redirect.
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @param  array  $queryParams
      * @throws PaymentGatewayException
@@ -115,7 +115,7 @@ class TestGatewayOffsite extends PaymentGateway
     /**
      * An example of using a secureRouteMethod for extending the Gateway API to handle a redirect.
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @param  array  $queryParams
      * @throws PaymentGatewayException
