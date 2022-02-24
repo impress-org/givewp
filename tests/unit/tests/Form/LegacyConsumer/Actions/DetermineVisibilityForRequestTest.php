@@ -8,12 +8,12 @@ final class DetermineVisibilityForRequestTest extends Give_Unit_Test_Case
     public function testItDeterminesAFieldIsVisibleComparedToString()
     {
         $form = Give_Helper_Form::create_simple_form();
-        $requestData = new ArrayObject([
+        $requestData = [
             'give-form-id' => $form->ID,
             'give-amount' => '10.00',
             'my_field' => 'test',
             'my_other_field' => 'test'
-        ]);
+        ];
 
         $field = new Text( 'my_field' );
         $field->showIf('my_other_field', '=', 'test');
@@ -26,15 +26,15 @@ final class DetermineVisibilityForRequestTest extends Give_Unit_Test_Case
     public function testItDeterminesAFieldIsNotVisibleComparedToString()
     {
         $form = Give_Helper_Form::create_simple_form();
-        $requestData = new ArrayObject([
+        $requestData = [
             'give-form-id' => $form->ID,
             'give-amount' => '10.00',
             'my_field' => 'test',
             'my_other_field' => 'nottest'
-        ]);
+        ];
 
         $field = new Text( 'my_field' );
-        $field->showIf('my_other_field', '<', 'test');
+        $field->showIf('my_other_field', '=', 'test');
 
         $action = new DetermineVisibilityForRequest( $field, $requestData );
 
@@ -44,14 +44,14 @@ final class DetermineVisibilityForRequestTest extends Give_Unit_Test_Case
     public function testItDeterminesAFieldIsVisibleComparedToGiveAmount()
     {
         $form = Give_Helper_Form::create_simple_form();
-        $requestData = new ArrayObject([
+        $requestData = [
             'give-form-id' => $form->ID,
             'give-amount' => '10.00',
             'my_field' => 'test',
-        ]);
+        ];
 
         $field = new Text( 'my_field' );
-        $field->showIf('give-amount', '>=', '100');
+        $field->showIf('give-amount', '<', '100');
 
         $action = new DetermineVisibilityForRequest( $field, $requestData );
 
@@ -61,14 +61,14 @@ final class DetermineVisibilityForRequestTest extends Give_Unit_Test_Case
     public function testItDeterminesAFieldIsNotVisibleComparedToGiveAmount()
     {
         $form = Give_Helper_Form::create_simple_form();
-        $requestData = new ArrayObject([
+        $requestData = [
             'give-form-id' => $form->ID,
             'give-amount' => '10.00',
             'my_field' => 'test',
-        ]);
+        ];
 
         $field = new Text( 'my_field' );
-        $field->showIf('give-amount', '<', '100');
+        $field->showIf('give-amount', '>=', '100');
 
         $action = new DetermineVisibilityForRequest( $field, $requestData );
 
