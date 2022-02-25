@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\Stripe\Models;
 
+use Exception;
 use Give\Helpers\ArrayDataSet;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Stripe\Traits\HasStripeStatementDescriptorText;
@@ -154,7 +155,12 @@ class AccountDetail
         $propertyName = 'statement_descriptor';
         if (!array_key_exists($propertyName, $args) || empty($args[$propertyName])) {
             $statementDescriptor = give_get_option('stripe_statement_descriptor', get_bloginfo('name'));
-            $this->validateStatementDescriptor($statementDescriptor);
+            try {
+                $this->validateStatementDescriptor($statementDescriptor);
+            } catch ( Exception $e ) {
+                $statementDescriptor = preg_replace('/[^a-zA-Z0-9\s]/', '', $statementDescriptor);
+                $statementDescriptor = substr($statementDescriptor, 0, 22 );
+            }
             $args[$propertyName] = $statementDescriptor;
         }
 
