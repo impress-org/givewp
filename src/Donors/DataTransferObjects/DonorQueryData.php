@@ -55,12 +55,12 @@ class DonorQueryData
         $self = new static();
 
         $self->id = (int)$object->id;
-        $self->userId = (int)$object->user_id;
+        $self->userId = (int)$object->userId;
         $self->email = $object->email;
         $self->name = $object->name;
         $self->firstName = $object->firstName;
         $self->lastName = $object->lastName;
-        $self->createdAt = $self->toDateTime($object->date_created);
+        $self->createdAt = $self->toDateTime($object->createdAt);
 
         return $self;
     }
@@ -72,14 +72,8 @@ class DonorQueryData
      */
     public function toDonor()
     {
-        return new Donor([
-            'id' => $this->id,
-            'userId' => $this->userId,
-            'createdAt' => $this->createdAt,
-            'name' => $this->name,
-            'firstName' => $this->firstName,
-            'lastName' => $this->lastName,
-            'email' => $this->email
-        ]);
+        $attributes = get_object_vars($this);
+
+        return new Donor($attributes);
     }
 }

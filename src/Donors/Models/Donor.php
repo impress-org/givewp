@@ -8,6 +8,7 @@ use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Model;
+use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Subscriptions\Models\Subscription;
 
 /**
@@ -167,6 +168,14 @@ class Donor extends Model implements ModelCrud
     public function getAdditionalEmails()
     {
         return give()->donorRepository->getAdditionalEmails($this->id);
+    }
+
+    /**
+     * @return QueryBuilder
+     */
+    public static function query()
+    {
+        return give()->donorRepository->prepareQuery();
     }
 
 }

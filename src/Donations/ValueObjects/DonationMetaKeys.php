@@ -2,7 +2,8 @@
 
 namespace Give\Donations\ValueObjects;
 
-use MyCLabs\Enum\Enum;
+use Give\Framework\Support\ValueObjects\Enum;
+use Give\Framework\Support\ValueObjects\InteractsWithQueryBuilder;
 
 /**
  * @unreleased
@@ -29,10 +30,11 @@ use MyCLabs\Enum\Enum;
  * @method static ANONYMOUS()
  * @method static LEVEL_ID()
  * @method static COMPANY()
- * @method public getKeyAsCamelCase()
  */
 class DonationMetaKeys extends Enum
 {
+    use InteractsWithQueryBuilder;
+    
     const AMOUNT = '_give_payment_total';
     const CURRENCY = '_give_payment_currency';
     const GATEWAY = '_give_payment_gateway';
@@ -55,55 +57,4 @@ class DonationMetaKeys extends Enum
     const ANONYMOUS = '_give_anonymous_donation';
     const LEVEL_ID = '_give_payment_price_id';
     const COMPANY = '_give_donation_company';
-
-    /**
-     * @unreleased
-     *
-     * @return array
-     */
-    public static function getAllKeys()
-    {
-        return array_values(static::toArray());
-    }
-
-    /**
-     * @unreleased
-     *
-     * Returns array of meta aliases to be used with attachMeta
-     *
-     * [ ['_give_payment_total', 'amount'], etc. ]
-     *
-     * @return array
-     */
-    public static function getColumnsForQuery()
-    {
-        $columns = [];
-
-        foreach (static::toArray() as $key => $value) {
-            $keyFormatted = static::camelCaseConstant($key);
-
-            $columns[] = [$value, $keyFormatted];
-        }
-
-        return $columns;
-    }
-
-    /**
-     * @unreleased
-     *
-     * @param  string  $name
-     * @return string
-     */
-    public static function camelCaseConstant($name)
-    {
-        return lcfirst(str_replace('_', '', ucwords(strtolower($name), '_')));;
-    }
-
-    /**
-     * @return string
-     */
-    public function getKeyAsCamelCase()
-    {
-        return static::camelCaseConstant($this->getKey());
-    }
 }

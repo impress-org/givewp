@@ -436,7 +436,7 @@ class DonationRepository
                 'give_donationmeta',
                 'ID',
                 'donation_id',
-                ...DonationMetaKeys::getColumnsForQuery()
+                ...DonationMetaKeys::getColumnsForAttachMetaQuery()
             );
     }
 }

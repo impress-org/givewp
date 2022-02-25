@@ -5,9 +5,11 @@ namespace Give\Donors\Repositories;
 use Exception;
 use Give\Donors\DataTransferObjects\DonorQueryData;
 use Give\Donors\Models\Donor;
+use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Traits\InteractsWithTime;
+use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Log\Log;
 
 class DonorRepository
@@ -35,14 +37,7 @@ class DonorRepository
      */
     public function getById($donorId)
     {
-        $donorObject = DB::table('give_donors')
-            ->select('*')
-            ->attachMeta('give_donormeta',
-                'ID',
-                'donor_id',
-                ['_give_donor_first_name', 'firstName'],
-                ['_give_donor_last_name', 'lastName']
-            )
+        $donorObject = $this->prepareQuery()
             ->where('id', $donorId)
             ->get();
 
@@ -68,14 +63,7 @@ class DonorRepository
             return null;
         }
 
-        $donorObject = DB::table('give_donors')
-            ->select('*')
-            ->attachMeta('give_donormeta',
-                'ID',
-                'donor_id',
-                ['_give_donor_first_name', 'firstName'],
-                ['_give_donor_last_name', 'lastName']
-            )
+        $donorObject = $this->prepareQuery()
             ->where('user_id', $userId)
             ->get();
 
@@ -334,5 +322,32 @@ class DonorRepository
         DB::query('COMMIT');
 
         return true;
+    }
+
+    /**
+     * @return QueryBuilder
+     */
+    public function prepareQuery()
+    {
+        return DB::table('give_donors')
+            ->select(
+                ['id', 'id'],
+                ['user_id', 'userId'],
+                ['email', 'email'],
+                ['name', 'name'],
+                ['purchase_value', 'purchaseValue'],
+                ['purchase_count', 'purchaseCount'],
+                ['payment_ids', 'paymentIds'],
+                ['date_created', 'createdAt'],
+                ['token', 'token'],
+                ['verify_key', 'verifyKey'],
+                ['verify_throttle', 'verifyThrottle']
+            )
+            ->attachMeta(
+                'give_donormeta',
+                'ID',
+                'donor_id',
+                ...DonorMetaKeys::getColumnsForAttachMetaQuery()
+            );
     }
 }

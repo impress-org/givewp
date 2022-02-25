@@ -76,37 +76,24 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
 
         $newDonation = $repository->insert($donation);
 
-        $query = DB::table('posts')
-            ->select('ID', 'post_date', 'post_modified', 'post_status', 'post_parent')
-            ->attachMeta(
-                'give_donationmeta',
-                'ID',
-                'donation_id',
-                '_give_payment_total',
-                '_give_payment_currency',
-                '_give_payment_gateway',
-                '_give_payment_donor_id',
-                '_give_donor_billing_first_name',
-                '_give_donor_billing_last_name',
-                '_give_payment_donor_email'
-            )
+        $query = $repository->prepareQuery()
             ->where('ID', $newDonation->id)
             ->get();
 
 
         // simulate asserting database has values
         $this->assertInstanceOf(Donation::class, $newDonation);
-        $this->assertEquals($query->ID, $newDonation->id);
-        $this->assertEquals($query->post_status, $newDonation->status->getValue());
-        $this->assertEquals($query->_give_payment_total, $newDonation->amount);
-        $this->assertEquals($query->_give_payment_currency, $newDonation->currency);
-        $this->assertEquals($query->_give_payment_gateway, $newDonation->gateway);
-        $this->assertEquals($query->_give_payment_donor_id, $newDonation->donorId);
-        $this->assertEquals($query->_give_donor_billing_first_name, $newDonation->firstName);
-        $this->assertEquals($query->_give_donor_billing_last_name, $newDonation->lastName);
-        $this->assertEquals($query->_give_payment_donor_email, $newDonation->email);
-        $this->assertEquals($this->toDateTime($query->post_date), $newDonation->createdAt);
-        $this->assertEquals($query->post_parent, $newDonation->parentId);
+        $this->assertEquals($query->id, $newDonation->id);
+        $this->assertEquals($query->status, $newDonation->status->getValue());
+        $this->assertEquals($query->{DonationMetaKeys::AMOUNT()->getKeyAsCamelCase()}, $newDonation->amount);
+        $this->assertEquals($query->{DonationMetaKeys::CURRENCY()->getKeyAsCamelCase()}, $newDonation->currency);
+        $this->assertEquals($query->{DonationMetaKeys::GATEWAY()->getKeyAsCamelCase()}, $newDonation->gateway);
+        $this->assertEquals($query->{DonationMetaKeys::DONOR_ID()->getKeyAsCamelCase()}, $newDonation->donorId);
+        $this->assertEquals($query->{DonationMetaKeys::FIRST_NAME()->getKeyAsCamelCase()}, $newDonation->firstName);
+        $this->assertEquals($query->{DonationMetaKeys::LAST_NAME()->getKeyAsCamelCase()}, $newDonation->lastName);
+        $this->assertEquals($query->{DonationMetaKeys::DONOR_EMAIL()->getKeyAsCamelCase()}, $newDonation->email);
+        $this->assertEquals($this->toDateTime($query->createdAt), $newDonation->createdAt);
+        $this->assertEquals($query->parentId, $newDonation->parentId);
     }
 
     /**

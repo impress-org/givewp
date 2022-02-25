@@ -11,6 +11,7 @@ use Give\Donors\Models\Donor;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Model;
+use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Subscriptions\Models\Subscription;
 use Give\ValueObjects\Money;
 
@@ -183,5 +184,13 @@ class Donation extends Model implements ModelCrud
     public function getMinorAmount()
     {
         return Money::ofMinor($this->amount, $this->currency);
+    }
+
+    /**
+     * @return QueryBuilder
+     */
+    public static function query()
+    {
+        return give()->donations->prepareQuery();
     }
 }
