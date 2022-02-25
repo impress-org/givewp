@@ -44,4 +44,24 @@ trait HasStripeStatementDescriptorText
             );
         }
     }
+
+    /**
+     * Return filtered statement descriptor.
+     * This function should be used to filter statement description
+     * which was storing in stripe_statement_descriptor give setting prior to Giver 2.19.
+     *
+     * @unreleased
+     * @deprecated
+     *
+     * @param string $text
+     *
+     * @return false|string
+     */
+    protected function filterOldStatementDescriptor($text)
+    {
+        $statementDescriptor = trim($text);
+        $unsupportedCharacters = ['<', '>', '"', '\''];
+        $statementDescriptor = str_replace($unsupportedCharacters, '', $statementDescriptor);
+        return substr($statementDescriptor, 0, 22);
+    }
 }

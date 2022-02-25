@@ -29,17 +29,9 @@ class AddStatementDescriptorToStripeAccounts extends Migration
             $statementDescriptor = give_get_option('stripe_statement_descriptor', get_bloginfo('name'));
             foreach ($allStripeAccount as $index => $stripAccount) {
                 if (!isset($stripAccount['statement_descriptor'])) {
-                    $statementDescriptor = trim($statementDescriptor);
-
-                    try {
-                        $this->validateStatementDescriptor($statementDescriptor);
-                    } catch (Exception $e) {
-                        $unsupportedCharacters = ['<', '>', '"', '\''];
-                        $statementDescriptor = str_replace($unsupportedCharacters, '', $statementDescriptor);
-                        $statementDescriptor = substr($statementDescriptor, 0, 22);
-                    }
-
-                    $allStripeAccount[$index]['statement_descriptor'] = $statementDescriptor;
+                    $allStripeAccount[$index]['statement_descriptor'] = $this->filterOldStatementDescriptor(
+                        $statementDescriptor
+                    );
                 }
             }
 

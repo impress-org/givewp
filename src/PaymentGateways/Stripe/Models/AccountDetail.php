@@ -157,14 +157,7 @@ class AccountDetail
         $propertyName = 'statement_descriptor';
         if (!array_key_exists($propertyName, $args) || empty($args[$propertyName])) {
             $statementDescriptor = give_get_option('stripe_statement_descriptor', get_bloginfo('name'));
-            try {
-                $this->validateStatementDescriptor($statementDescriptor);
-            } catch (Exception $e) {
-                $unsupportedCharacters = ['<', '>', '"', '\''];
-                $statementDescriptor = str_replace($unsupportedCharacters, '', $statementDescriptor);
-                $statementDescriptor = substr($statementDescriptor, 0, 22);
-            }
-            $args[$propertyName] = $statementDescriptor;
+            $args[$propertyName] = $this->filterOldStatementDescriptor($statementDescriptor);
         }
 
         return $args;
