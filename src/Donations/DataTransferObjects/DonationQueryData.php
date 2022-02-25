@@ -119,11 +119,11 @@ class DonationQueryData
         $self->id = (int)$donationQueryObject->id;
         $self->formId = (int)$donationQueryObject->{DonationMetaKeys::FORM_ID};
         $self->formTitle = $donationQueryObject->{DonationMetaKeys::FORM_TITLE};
-        $self->amount = (int)$donationQueryObject->{DonationMetaKeys::TOTAL};
+        $self->amount = (int)$donationQueryObject->{DonationMetaKeys::AMOUNT};
         $self->currency = $donationQueryObject->{DonationMetaKeys::CURRENCY};
         $self->donorId = (int)$donationQueryObject->{DonationMetaKeys::DONOR_ID};
-        $self->firstName = $donationQueryObject->{DonationMetaKeys::BILLING_FIRST_NAME};
-        $self->lastName = $donationQueryObject->{DonationMetaKeys::BILLING_LAST_NAME};
+        $self->firstName = $donationQueryObject->{DonationMetaKeys::FIRST_NAME};
+        $self->lastName = $donationQueryObject->{DonationMetaKeys::LAST_NAME};
         $self->email = $donationQueryObject->{DonationMetaKeys::DONOR_EMAIL};
         $self->gateway = $donationQueryObject->{DonationMetaKeys::GATEWAY};
         $self->createdAt = $self->toDateTime($donationQueryObject->createdAt);
@@ -131,7 +131,7 @@ class DonationQueryData
         $self->status = new DonationStatus($donationQueryObject->status);
         $self->parentId = (int)$donationQueryObject->parentId;
         $self->subscriptionId = (int)$donationQueryObject->{DonationMetaKeys::SUBSCRIPTION_ID};
-        $self->mode = new DonationMode($donationQueryObject->{DonationMetaKeys::PAYMENT_MODE});
+        $self->mode = new DonationMode($donationQueryObject->{DonationMetaKeys::DONATION_MODE});
         $self->billingAddress = BillingAddress::fromArray([
             'country' => $donationQueryObject->{DonationMetaKeys::BILLING_COUNTRY},
             'city' => $donationQueryObject->{DonationMetaKeys::BILLING_CITY},
@@ -143,7 +143,7 @@ class DonationQueryData
         $self->purchaseKey = $donationQueryObject->{DonationMetaKeys::PURCHASE_KEY};
         $self->donorIp = $donationQueryObject->{DonationMetaKeys::DONOR_IP};
         $self->anonymous = (bool)$donationQueryObject->{DonationMetaKeys::ANONYMOUS_DONATION};
-        $self->levelId = (int)$donationQueryObject->{DonationMetaKeys::PAYMENT_PRICE_ID};
+        $self->levelId = (int)$donationQueryObject->{DonationMetaKeys::LEVEL_ID};
 
         return $self;
     }

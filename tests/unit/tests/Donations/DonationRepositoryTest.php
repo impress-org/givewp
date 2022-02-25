@@ -192,19 +192,19 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
                 'give_donationmeta',
                 'ID',
                 'donation_id',
-                DonationMetaKeys::TOTAL,
-                DonationMetaKeys::BILLING_FIRST_NAME,
-                DonationMetaKeys::BILLING_LAST_NAME,
+                DonationMetaKeys::AMOUNT,
+                DonationMetaKeys::FIRST_NAME,
+                DonationMetaKeys::LAST_NAME,
                 DonationMetaKeys::DONOR_EMAIL
             )
             ->where('ID', $donation->id)
             ->get();
 
         // assert updated values from the database
-        $this->assertNotEquals(50, $query->{DonationMetaKeys::TOTAL});
-        $this->assertEquals(100, $query->{DonationMetaKeys::TOTAL});
-        $this->assertEquals("Ron", $query->{DonationMetaKeys::BILLING_FIRST_NAME});
-        $this->assertEquals("Swanson", $query->{DonationMetaKeys::BILLING_LAST_NAME});
+        $this->assertNotEquals(50, $query->{DonationMetaKeys::AMOUNT});
+        $this->assertEquals(100, $query->{DonationMetaKeys::AMOUNT});
+        $this->assertEquals("Ron", $query->{DonationMetaKeys::FIRST_NAME});
+        $this->assertEquals("Swanson", $query->{DonationMetaKeys::LAST_NAME});
         $this->assertEquals("ron@swanson.com", $query->{DonationMetaKeys::DONOR_EMAIL});
     }
 
