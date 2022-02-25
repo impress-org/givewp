@@ -32,7 +32,8 @@ class AddStatementDescriptorToStripeAccounts extends Migration
                     try {
                         $this->validateStatementDescriptor($statementDescriptor);
                     } catch ( Exception $e ) {
-                        $statementDescriptor = preg_replace('/[^a-zA-Z0-9\s]/', '', $statementDescriptor);
+                        $unsupportedCharacters = [ '<', '>', '"', '\'' ];
+                        $statementDescriptor   = str_replace( $unsupportedCharacters, '', $statementDescriptor );
                         $statementDescriptor = substr($statementDescriptor, 0, 22 );
                     }
 
