@@ -317,18 +317,18 @@ class DonationRepository
     public function getCoreDonationMetaForDatabase(Donation $donation)
     {
         $meta = [
-            DonationMetaKeys::TOTAL => Money::of($donation->amount, $donation->currency)->getAmount(),
+            DonationMetaKeys::AMOUNT => Money::of($donation->amount, $donation->currency)->getAmount(),
             DonationMetaKeys::CURRENCY => $donation->currency,
             DonationMetaKeys::GATEWAY => $donation->gateway,
             DonationMetaKeys::DONOR_ID => $donation->donorId,
-            DonationMetaKeys::BILLING_FIRST_NAME => $donation->firstName,
-            DonationMetaKeys::BILLING_LAST_NAME => $donation->lastName,
+            DonationMetaKeys::FIRST_NAME => $donation->firstName,
+            DonationMetaKeys::LAST_NAME => $donation->lastName,
             DonationMetaKeys::DONOR_EMAIL => $donation->email,
             DonationMetaKeys::FORM_ID => $donation->formId,
             DonationMetaKeys::FORM_TITLE => isset($donation->formTitle) ? $donation->formTitle : $this->getFormTitle(
                 $donation->formId
             ),
-            DonationMetaKeys::PAYMENT_MODE => isset($donation->mode) ? $donation->mode->getValue(
+            DonationMetaKeys::DONATION_MODE => isset($donation->mode) ? $donation->mode->getValue(
             ) : $this->getDefaultDonationMode()->getValue(),
             DonationMetaKeys::PURCHASE_KEY => isset($donation->purchaseKey)
                 ? $donation->purchaseKey
@@ -357,7 +357,7 @@ class DonationRepository
         }
 
         if (isset($donation->levelId)) {
-            $meta[DonationMetaKeys::PAYMENT_PRICE_ID] = $donation->levelId;
+            $meta[DonationMetaKeys::LEVEL_ID] = $donation->levelId;
         }
 
         return $meta;
