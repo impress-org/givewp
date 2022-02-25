@@ -17,6 +17,8 @@ class AddStatementDescriptorToStripeAccounts extends Migration
     /**
      * @inerhitDoc
      * @since 2.19.0
+     * @unreleased Use old stripe statement descriptor requirements to filter text.
+     *             https://github.com/impress-org/givewp/pull/6269
      */
     public function run()
     {
@@ -31,10 +33,10 @@ class AddStatementDescriptorToStripeAccounts extends Migration
 
                     try {
                         $this->validateStatementDescriptor($statementDescriptor);
-                    } catch ( Exception $e ) {
-                        $unsupportedCharacters = [ '<', '>', '"', '\'' ];
-                        $statementDescriptor   = str_replace( $unsupportedCharacters, '', $statementDescriptor );
-                        $statementDescriptor = substr($statementDescriptor, 0, 22 );
+                    } catch (Exception $e) {
+                        $unsupportedCharacters = ['<', '>', '"', '\''];
+                        $statementDescriptor = str_replace($unsupportedCharacters, '', $statementDescriptor);
+                        $statementDescriptor = substr($statementDescriptor, 0, 22);
                     }
 
                     $allStripeAccount[$index]['statement_descriptor'] = $statementDescriptor;
