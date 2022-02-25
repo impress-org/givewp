@@ -20,21 +20,24 @@ class LegacyPaymentGatewayAdapter
      * Get legacy form field markup to display gateway specific payment fields
      *
      * @since 2.18.0
+     * @since 2.19.0 Added missing $args parameter for ID prefixing and general backwards compatibility.
      *
-     * @param  int  $formId
-     * @param  PaymentGatewayInterface  $registeredGateway
+     * @param int $formId
+     * @param array $args
+     * @param PaymentGatewayInterface  $registeredGateway
      *
      * @return string|bool
      */
-    public function getLegacyFormFieldMarkup($formId, $registeredGateway)
+    public function getLegacyFormFieldMarkup($formId, $args, $registeredGateway)
     {
-        return $registeredGateway->getLegacyFormFieldMarkup($formId);
+        return $registeredGateway->getLegacyFormFieldMarkup($formId, $args);
     }
 
     /**
      * First we create a payment, then move on to the gateway processing
      *
      * @since 2.18.0
+     * @since 2.19.0 Replace is_recurring with is_donation_recurring to detect recurring donations.
      *
      * @param  array  $legacyDonationData  Legacy Donation Data
      * @param  PaymentGatewayInterface  $registeredGateway
@@ -51,10 +54,7 @@ class LegacyPaymentGatewayAdapter
 
         $gatewayPaymentData = $formData->toGatewayPaymentData($donationId);
 
-        if (
-            function_exists('Give_Recurring') &&
-            Give_Recurring()->is_donation_recurring($formData->legacyDonationData)
-        ) {
+        if (give_recurring_is_donation_recurring($formData->legacyDonationData)) {
             $subscriptionData = SubscriptionData::fromRequest($legacyDonationData);
             $subscriptionId = $this->createSubscription($donationId, $formData, $subscriptionData);
 

@@ -184,12 +184,6 @@ class App
             null
         );
 
-        wp_enqueue_style(
-            'give-donor-dashboards-app',
-            GIVE_PLUGIN_URL . 'assets/dist/css/donor-dashboards-app.css',
-            ['give-google-font-montserrat'],
-            GIVE_VERSION
-        );
     }
 
     /**

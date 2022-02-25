@@ -2,7 +2,6 @@
 
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\PaymentGateways\Contracts\OffsiteGatewayInterface;
 use Give\Framework\PaymentGateways\Exceptions\OverflowException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
@@ -10,7 +9,7 @@ use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class PaymentGatewaysRegisterTest extends TestCase
 {
@@ -25,7 +24,7 @@ class PaymentGatewaysRegisterTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      */
     public function testPaymentGatewayRegistererIsTraversable()
     {
@@ -33,7 +32,7 @@ class PaymentGatewaysRegisterTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @throws Exception
      * @throws OverflowException
      */
@@ -44,7 +43,7 @@ class PaymentGatewaysRegisterTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      */
     public function testRegisterGateways()
     {
@@ -54,7 +53,7 @@ class PaymentGatewaysRegisterTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @throws Exception
      * @throws OverflowException
      */
@@ -66,7 +65,7 @@ class PaymentGatewaysRegisterTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @throws Exception
      * @throws OverflowException
      */
@@ -81,20 +80,6 @@ class PaymentGatewaysRegisterTest extends TestCase
             MockStripe::id() => MockStripe::class,
             MockPaypal::id() => MockPaypal::class
         ], $gateways);
-    }
-
-    /**
-     * @unreleased
-     * @throws Exception
-     */
-    public function testShouldGetRegisteredOffsitePaymentGateways()
-    {
-        $this->paymentGatewayRegister->registerGateway(MockPaypal::class);
-        $this->paymentGatewayRegister->registerGateway(MockPaypalOffsite::class);
-
-        $gateways = $this->paymentGatewayRegister->getOffsitePaymentGateways();
-
-        $this->assertEquals([MockPaypalOffsite::id() => MockPaypalOffsite::class], $gateways);
     }
 }
 
@@ -136,7 +121,7 @@ class MockStripe extends PaymentGateway
         return 'Credit Card';
     }
 
-    public function getLegacyFormFieldMarkup($formId)
+    public function getLegacyFormFieldMarkup($formId, $args)
     {
         // TODO: Implement getLegacyFormFieldMarkup() method.
     }
@@ -181,7 +166,7 @@ class MockPaypal extends PaymentGateway
         return 'PayPal';
     }
 
-    public function getLegacyFormFieldMarkup($formId)
+    public function getLegacyFormFieldMarkup($formId, $args)
     {
         // TODO: Implement getLegacyFormFieldMarkup() method.
     }
@@ -189,60 +174,5 @@ class MockPaypal extends PaymentGateway
     public function createPayment(GatewayPaymentData $paymentData)
     {
         // TODO: Implement createPayment() method.
-    }
-}
-
-class MockPaypalOffsite extends PaymentGateway implements OffsiteGatewayInterface
-{
-    /**
-     * @return string
-     */
-    public static function id()
-    {
-        return 'mock-paypal-offsite';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getId()
-    {
-        return self::id();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getName()
-    {
-        return 'PayPal Payment Method';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getPaymentMethodLabel()
-    {
-        return 'PayPal';
-    }
-
-    public function getLegacyFormFieldMarkup($formId)
-    {
-        // TODO: Implement getLegacyFormFieldMarkup() method.
-    }
-
-    public function createPayment(GatewayPaymentData $paymentData)
-    {
-        // TODO: Implement createPayment() method.
-    }
-
-    public function handleReturnFromOffsiteRedirect($paymentId)
-    {
-        // TODO: Implement handleReturnFromOffsiteRedirect() method.
-    }
-
-    public function returnFromOffsiteRedirect($donationId)
-    {
-        // TODO: Implement returnFromOffsiteRedirect() method.
     }
 }

@@ -20,7 +20,7 @@ function give_blocks_category( $categories, $post ) {
 }
 
 /**
- * @unreleased The `block_categories` filter is deprecated as of WordPress 5.8
+ * @since 2.19.0 The `block_categories` filter is deprecated as of WordPress 5.8
  */
 if ( version_compare( get_bloginfo( 'version' ), '5.8', '>=' ) ) {
 	add_filter( 'block_categories_all', 'give_blocks_category', 10, 2 );

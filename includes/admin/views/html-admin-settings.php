@@ -63,6 +63,8 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 			}
 
 			self::show_messages();
+
+            do_action('give_settings_page_header');
 			?>
 
 		</div>

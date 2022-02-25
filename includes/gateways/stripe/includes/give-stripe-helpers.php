@@ -10,6 +10,10 @@
  * @license    https://opensource.org/licenses/gpl-license GNU Public License
  */
 
+use Give\Log\Log;
+use Give\PaymentGateways\Exceptions\InvalidPropertyName;
+use Give\PaymentGateways\Stripe\Models\AccountDetail;
+use Give\PaymentGateways\Stripe\Repositories\Settings;
 use Give\ValueObjects\Money;
 
 // Exit, if accessed directly.
@@ -409,22 +413,21 @@ function give_stripe_is_zero_decimal_currency() {
  * @see https://stripe.com/docs/api/php#create_charge-statement_descriptor
  *
  * @since 2.5.0
+ * @since 2.19.0 Previously stripe accounts have single global statement descriptor.
+ *             Now each stripe account will have their own statement descriptor.
  *
  * @param array $data List of posted variable while submitting donation.
  *
  * @return mixed
+ * @throws InvalidPropertyName
  */
-function give_stripe_get_statement_descriptor( $data = [] ) {
+function give_stripe_get_statement_descriptor($data = [])
+{
+    $stripeAccountFormPayment = give(Settings::class)
+        ->getStripeAccountById(give_stripe_get_connected_account_options()['stripe_account']);
+    $text = $stripeAccountFormPayment->statementDescriptor;
 
-	$descriptor_option = give_get_option( 'stripe_statement_descriptor', get_bloginfo( 'name' ) );
-
-	// Clean the statement descriptor.
-	$unsupported_characters = [ '<', '>', '"', '\'' ];
-	$statement_descriptor   = mb_substr( $descriptor_option, 0, 22 );
-	$statement_descriptor   = str_replace( $unsupported_characters, '', $statement_descriptor );
-
-	return apply_filters( 'give_stripe_statement_descriptor', $statement_descriptor, $data );
-
+    return apply_filters('give_stripe_statement_descriptor', $text, $data);
 }
 
 /**

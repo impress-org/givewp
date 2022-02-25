@@ -58,12 +58,6 @@ class Reports
             return;
         }
 
-        wp_enqueue_style(
-            'give-admin-reports-widget-style',
-            GIVE_PLUGIN_URL . 'assets/dist/css/admin-reports-widget.css',
-            [],
-            GIVE_VERSION
-        );
         wp_enqueue_script(
             'give-admin-reports-widget-js',
             GIVE_PLUGIN_URL . 'assets/dist/js/admin-reports-widget.js',

@@ -98,7 +98,7 @@ ob_start();
                         <div class="details-row details-row--<?= $lineItem->id ?>">
                         <?= $lineItem->icon ?>
                             <dt class="detail"><?= $lineItem->label ?></dt>
-                            <dd class="value"><?= $lineItem->value ?></dd>
+                            <dd class="value" data-value="<?= esc_attr($lineItem->value) ?>"><?= $lineItem->value ?></dd>
                         </div>
                 <?php endforeach; ?>
 
