@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe\Migrations;
 
+use Exception;
 use Give\Framework\Migrations\Contracts\Migration;
 use Give\PaymentGateways\Stripe\Repositories\Settings;
 use Give\PaymentGateways\Stripe\Traits\HasStripeStatementDescriptorText;
@@ -16,6 +17,8 @@ class AddStatementDescriptorToStripeAccounts extends Migration
     /**
      * @inerhitDoc
      * @since 2.19.0
+     * @unreleased Use old stripe statement descriptor requirements to filter text.
+     *             https://github.com/impress-org/givewp/pull/6269
      */
     public function run()
     {
@@ -27,7 +30,14 @@ class AddStatementDescriptorToStripeAccounts extends Migration
             foreach ($allStripeAccount as $index => $stripAccount) {
                 if (!isset($stripAccount['statement_descriptor'])) {
                     $statementDescriptor = trim($statementDescriptor);
-                    $this->validateStatementDescriptor($statementDescriptor);
+
+                    try {
+                        $this->validateStatementDescriptor($statementDescriptor);
+                    } catch (Exception $e) {
+                        $unsupportedCharacters = ['<', '>', '"', '\''];
+                        $statementDescriptor = str_replace($unsupportedCharacters, '', $statementDescriptor);
+                        $statementDescriptor = substr($statementDescriptor, 0, 22);
+                    }
 
                     $allStripeAccount[$index]['statement_descriptor'] = $statementDescriptor;
                 }

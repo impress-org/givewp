@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\Stripe\Models;
 
+use Exception;
 use Give\Helpers\ArrayDataSet;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Stripe\Traits\HasStripeStatementDescriptorText;
@@ -143,6 +144,8 @@ class AccountDetail
      * @see: https://github.com/impress-org/givewp/issues/6021
      *
      * @since 2.19.0
+     * @unreleased Use old stripe statement descriptor requirements to filter text.
+     *             https://github.com/impress-org/givewp/pull/6269
      * @deprecated
      *
      * @param array $args
@@ -154,7 +157,13 @@ class AccountDetail
         $propertyName = 'statement_descriptor';
         if (!array_key_exists($propertyName, $args) || empty($args[$propertyName])) {
             $statementDescriptor = give_get_option('stripe_statement_descriptor', get_bloginfo('name'));
-            $this->validateStatementDescriptor($statementDescriptor);
+            try {
+                $this->validateStatementDescriptor($statementDescriptor);
+            } catch (Exception $e) {
+                $unsupportedCharacters = ['<', '>', '"', '\''];
+                $statementDescriptor = str_replace($unsupportedCharacters, '', $statementDescriptor);
+                $statementDescriptor = substr($statementDescriptor, 0, 22);
+            }
             $args[$propertyName] = $statementDescriptor;
         }
 
