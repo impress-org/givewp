@@ -159,10 +159,10 @@ class AccountDetail
             $statementDescriptor = give_get_option('stripe_statement_descriptor', get_bloginfo('name'));
             try {
                 $this->validateStatementDescriptor($statementDescriptor);
-            } catch ( Exception $e ) {
-                $unsupportedCharacters = [ '<', '>', '"', '\'' ];
-                $statementDescriptor   = str_replace( $unsupportedCharacters, '', $statementDescriptor );
-                $statementDescriptor = substr($statementDescriptor, 0, 22 );
+            } catch (Exception $e) {
+                $unsupportedCharacters = ['<', '>', '"', '\''];
+                $statementDescriptor = str_replace($unsupportedCharacters, '', $statementDescriptor);
+                $statementDescriptor = substr($statementDescriptor, 0, 22);
             }
             $args[$propertyName] = $statementDescriptor;
         }
