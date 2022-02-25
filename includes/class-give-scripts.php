@@ -586,7 +586,7 @@ class Give_Scripts {
 	/**
 	 * Gutenberg admin scripts.
      *
-     * @unreleased Remove undefined gutenberg.css
+     * @since 2.19.0 Remove undefined gutenberg.css
 	 */
 	public function gutenberg_admin_scripts() {
 

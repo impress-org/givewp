@@ -50,7 +50,7 @@ trait HasStripeStatementDescriptorText
      * This function should be used to filter statement description
      * which was storing in stripe_statement_descriptor give setting prior to Giver 2.19.
      *
-     * @unreleased
+     * @since 2.19.1
      * @deprecated
      *
      * @param string $text

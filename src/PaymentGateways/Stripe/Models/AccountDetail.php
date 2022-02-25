@@ -144,7 +144,7 @@ class AccountDetail
      * @see: https://github.com/impress-org/givewp/issues/6021
      *
      * @since 2.19.0
-     * @unreleased Use old stripe statement descriptor requirements to filter text.
+     * @since 2.19.1 Use old stripe statement descriptor requirements to filter text.
      *             https://github.com/impress-org/givewp/pull/6269
      * @deprecated
      *
