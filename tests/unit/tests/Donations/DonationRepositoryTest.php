@@ -106,7 +106,6 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
         $this->assertEquals($query->_give_donor_billing_last_name, $newDonation->lastName);
         $this->assertEquals($query->_give_payment_donor_email, $newDonation->email);
         $this->assertEquals($this->toDateTime($query->post_date), $newDonation->createdAt);
-        $this->assertEquals($this->toDateTime($query->post_modified), $newDonation->updatedAt);
         $this->assertEquals($query->post_parent, $newDonation->parentId);
     }
 
@@ -117,7 +116,7 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
      *
      * @throws Exception
      */
-    public function testInsertShouldFailValidationAndThrowException()
+    public function testInsertShouldFailValidationWhenMissingKeyAndThrowException()
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -135,6 +134,35 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
         $repository = new DonationRepository();
 
         $repository->insert($donationMissingAmount);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     *
+     * @throws Exception
+     */
+    public function testInsertShouldFailValidationWhenDonorDoesNotExistAndThrowException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $donationWithInvalidDonor = new Donation([
+            'createdAt' => $this->getCurrentDateTime(),
+            'status' => DonationStatus::PENDING(),
+            'gateway' => TestGateway::id(),
+            'currency' => 'USD',
+            'amount' => 50,
+            'formId' => 1,
+            'donorId' => 2,
+            'firstName' => 'Bill',
+            'lastName' => 'Murray',
+            'email' => 'billMurray@givewp.com',
+        ]);
+
+        $repository = new DonationRepository();
+
+        $repository->insert($donationWithInvalidDonor);
     }
 
     /**

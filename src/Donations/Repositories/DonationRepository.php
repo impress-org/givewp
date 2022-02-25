@@ -421,6 +421,10 @@ class DonationRepository
                 throw new InvalidArgumentException("'$key' is required.");
             }
         }
+
+        if (!$donation->donor()) {
+            throw new InvalidArgumentException("Invalid donorId, Donor does not exist");
+        }
     }
 
     /**

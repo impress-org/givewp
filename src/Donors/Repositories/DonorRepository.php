@@ -46,6 +46,10 @@ class DonorRepository
             ->where('id', $donorId)
             ->get();
 
+        if (!$donorObject) {
+            return null;
+        }
+
         return DonorQueryData::fromObject($donorObject)->toDonor();
     }
 
