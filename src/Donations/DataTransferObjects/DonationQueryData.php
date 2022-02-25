@@ -117,33 +117,33 @@ class DonationQueryData
         $self = new static();
 
         $self->id = (int)$donationQueryObject->id;
-        $self->formId = (int)$donationQueryObject->{DonationMetaKeys::FORM_ID};
-        $self->formTitle = $donationQueryObject->{DonationMetaKeys::FORM_TITLE};
-        $self->amount = (int)$donationQueryObject->{DonationMetaKeys::AMOUNT};
-        $self->currency = $donationQueryObject->{DonationMetaKeys::CURRENCY};
-        $self->donorId = (int)$donationQueryObject->{DonationMetaKeys::DONOR_ID};
-        $self->firstName = $donationQueryObject->{DonationMetaKeys::FIRST_NAME};
-        $self->lastName = $donationQueryObject->{DonationMetaKeys::LAST_NAME};
-        $self->email = $donationQueryObject->{DonationMetaKeys::DONOR_EMAIL};
-        $self->gateway = $donationQueryObject->{DonationMetaKeys::GATEWAY};
+        $self->formId = (int)$donationQueryObject->{DonationMetaKeys::FORM_ID()->getKeyAsCamelCase()};
+        $self->formTitle = $donationQueryObject->{DonationMetaKeys::FORM_TITLE()->getKeyAsCamelCase()};
+        $self->amount = (int)$donationQueryObject->{DonationMetaKeys::AMOUNT()->getKeyAsCamelCase()};
+        $self->currency = $donationQueryObject->{DonationMetaKeys::CURRENCY()->getKeyAsCamelCase()};
+        $self->donorId = (int)$donationQueryObject->{DonationMetaKeys::DONOR_ID()->getKeyAsCamelCase()};
+        $self->firstName = $donationQueryObject->{DonationMetaKeys::FIRST_NAME()->getKeyAsCamelCase()};
+        $self->lastName = $donationQueryObject->{DonationMetaKeys::LAST_NAME()->getKeyAsCamelCase()};
+        $self->email = $donationQueryObject->{DonationMetaKeys::DONOR_EMAIL()->getKeyAsCamelCase()};
+        $self->gateway = $donationQueryObject->{DonationMetaKeys::GATEWAY()->getKeyAsCamelCase()};
         $self->createdAt = $self->toDateTime($donationQueryObject->createdAt);
         $self->updatedAt = $self->toDateTime($donationQueryObject->updatedAt);
         $self->status = new DonationStatus($donationQueryObject->status);
         $self->parentId = (int)$donationQueryObject->parentId;
-        $self->subscriptionId = (int)$donationQueryObject->{DonationMetaKeys::SUBSCRIPTION_ID};
-        $self->mode = new DonationMode($donationQueryObject->{DonationMetaKeys::DONATION_MODE});
+        $self->subscriptionId = (int)$donationQueryObject->{DonationMetaKeys::SUBSCRIPTION_ID()->getKeyAsCamelCase()};
+        $self->mode = new DonationMode($donationQueryObject->{DonationMetaKeys::MODE()->getKeyAsCamelCase()});
         $self->billingAddress = BillingAddress::fromArray([
-            'country' => $donationQueryObject->{DonationMetaKeys::BILLING_COUNTRY},
-            'city' => $donationQueryObject->{DonationMetaKeys::BILLING_CITY},
-            'state' => $donationQueryObject->{DonationMetaKeys::BILLING_STATE},
-            'zip' => $donationQueryObject->{DonationMetaKeys::BILLING_ZIP},
-            'address1' => $donationQueryObject->{DonationMetaKeys::BILLING_ADDRESS1},
-            'address2' => $donationQueryObject->{DonationMetaKeys::BILLING_ADDRESS2},
+            'country' => $donationQueryObject->{DonationMetaKeys::BILLING_COUNTRY()->getKeyAsCamelCase()},
+            'city' => $donationQueryObject->{DonationMetaKeys::BILLING_CITY()->getKeyAsCamelCase()},
+            'state' => $donationQueryObject->{DonationMetaKeys::BILLING_STATE()->getKeyAsCamelCase()},
+            'zip' => $donationQueryObject->{DonationMetaKeys::BILLING_ZIP()->getKeyAsCamelCase()},
+            'address1' => $donationQueryObject->{DonationMetaKeys::BILLING_ADDRESS1()->getKeyAsCamelCase()},
+            'address2' => $donationQueryObject->{DonationMetaKeys::BILLING_ADDRESS2()->getKeyAsCamelCase()},
         ]);
-        $self->purchaseKey = $donationQueryObject->{DonationMetaKeys::PURCHASE_KEY};
-        $self->donorIp = $donationQueryObject->{DonationMetaKeys::DONOR_IP};
-        $self->anonymous = (bool)$donationQueryObject->{DonationMetaKeys::ANONYMOUS_DONATION};
-        $self->levelId = (int)$donationQueryObject->{DonationMetaKeys::LEVEL_ID};
+        $self->purchaseKey = $donationQueryObject->{DonationMetaKeys::PURCHASE_KEY()->getKeyAsCamelCase()};
+        $self->donorIp = $donationQueryObject->{DonationMetaKeys::DONOR_IP()->getKeyAsCamelCase()};
+        $self->anonymous = (bool)$donationQueryObject->{DonationMetaKeys::ANONYMOUS()->getKeyAsCamelCase()};
+        $self->levelId = (int)$donationQueryObject->{DonationMetaKeys::LEVEL_ID()->getKeyAsCamelCase()};
 
         return $self;
     }

@@ -51,20 +51,7 @@ class DonationRepository
      */
     public function getById($donationId)
     {
-        $donation = DB::table('posts')
-            ->select(
-                ['ID', 'id'],
-                ['post_date', 'createdAt'],
-                ['post_modified', 'updatedAt'],
-                ['post_status', 'status'],
-                ['post_parent', 'parentId']
-            )
-            ->attachMeta(
-                'give_donationmeta',
-                'ID',
-                'donation_id',
-                ...DonationMetaKeys::getAllKeys()
-            )
+        $donation = $this->prepareQuery()
             ->where('ID', $donationId)
             ->get();
 
@@ -84,20 +71,7 @@ class DonationRepository
      */
     public function getBySubscriptionId($subscriptionId)
     {
-        $donations = DB::table('posts')
-            ->select(
-                ['ID', 'id'],
-                ['post_date', 'createdAt'],
-                ['post_modified', 'updatedAt'],
-                ['post_status', 'status'],
-                ['post_parent', 'parentId']
-            )
-            ->attachMeta(
-                'give_donationmeta',
-                'ID',
-                'donation_id',
-                ...DonationMetaKeys::getAllKeys()
-            )
+        $donations = $this->prepareQuery()
             ->leftJoin('give_donationmeta', 'ID', 'donationMeta.donation_id', 'donationMeta')
             ->where('post_type', 'give_payment')
             ->where('post_status', 'give_subscription')
@@ -124,20 +98,7 @@ class DonationRepository
      */
     public function getByDonorId($donorId)
     {
-        $donations = DB::table('posts')
-            ->select(
-                ['ID', 'id'],
-                ['post_date', 'createdAt'],
-                ['post_modified', 'updatedAt'],
-                ['post_status', 'status'],
-                ['post_parent', 'parentId']
-            )
-            ->attachMeta(
-                'give_donationmeta',
-                'ID',
-                'donation_id',
-                ...DonationMetaKeys::getAllKeys()
-            )
+        $donations = $this->prepareQuery()
             ->where('post_type', 'give_payment')
             ->whereIn('ID', function (QueryBuilder $builder) use ($donorId) {
                 $builder
@@ -328,7 +289,7 @@ class DonationRepository
             DonationMetaKeys::FORM_TITLE => isset($donation->formTitle) ? $donation->formTitle : $this->getFormTitle(
                 $donation->formId
             ),
-            DonationMetaKeys::DONATION_MODE => isset($donation->mode) ? $donation->mode->getValue(
+            DonationMetaKeys::MODE => isset($donation->mode) ? $donation->mode->getValue(
             ) : $this->getDefaultDonationMode()->getValue(),
             DonationMetaKeys::PURCHASE_KEY => isset($donation->purchaseKey)
                 ? $donation->purchaseKey
@@ -353,7 +314,7 @@ class DonationRepository
         }
 
         if (isset($donation->anonymous)) {
-            $meta[DonationMetaKeys::ANONYMOUS_DONATION] = $donation->anonymous;
+            $meta[DonationMetaKeys::ANONYMOUS] = $donation->anonymous;
         }
 
         if (isset($donation->levelId)) {
@@ -456,5 +417,26 @@ class DonationRepository
         }
 
         return $form->post_title;
+    }
+
+    /**
+     * @return QueryBuilder
+     */
+    public function prepareQuery()
+    {
+        return DB::table('posts')
+            ->select(
+                ['ID', 'id'],
+                ['post_date', 'createdAt'],
+                ['post_modified', 'updatedAt'],
+                ['post_status', 'status'],
+                ['post_parent', 'parentId']
+            )
+            ->attachMeta(
+                'give_donationmeta',
+                'ID',
+                'donation_id',
+                ...DonationMetaKeys::getColumnsForQuery()
+            );
     }
 }
