@@ -31,13 +31,9 @@ class AddStatementDescriptorToStripeAccounts extends Migration
                 if (!isset($stripAccount['statement_descriptor'])) {
                     $statementDescriptor = trim($statementDescriptor);
 
-                    try {
-                        $this->validateStatementDescriptor($statementDescriptor);
-                    } catch (Exception $e) {
-                        $unsupportedCharacters = ['<', '>', '"', '\''];
-                        $statementDescriptor = str_replace($unsupportedCharacters, '', $statementDescriptor);
-                        $statementDescriptor = substr($statementDescriptor, 0, 22);
-                    }
+                    $unsupportedCharacters = ['<', '>', '"', '\''];
+                    $statementDescriptor = str_replace($unsupportedCharacters, '', $statementDescriptor);
+                    $statementDescriptor = substr($statementDescriptor, 0, 22);
 
                     $allStripeAccount[$index]['statement_descriptor'] = $statementDescriptor;
                 }
