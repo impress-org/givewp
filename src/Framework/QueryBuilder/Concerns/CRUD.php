@@ -2,13 +2,22 @@
 
 namespace Give\Framework\QueryBuilder\Concerns;
 
+use Give\Donations\Models\Donation;
+use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
+use Give\Framework\Models\Model;
+use Give\Subscriptions\Models\Subscription;
 
 /**
  * @unreleased
  */
 trait CRUD
 {
+    /**
+     * @var Model
+     */
+    private $model;
+
     /**
      * @unreleased
      *
@@ -102,7 +111,7 @@ trait CRUD
      */
     private function getTable()
     {
-        return $this->froms[ 0 ]->table;
+        return $this->froms[0]->table;
     }
 
     /**
@@ -115,9 +124,61 @@ trait CRUD
         $wheres = [];
 
         foreach ($this->wheres as $where) {
-            $wheres[ $where->column ] = $where->value;
+            $wheres[$where->column] = $where->value;
         }
 
         return $wheres;
+    }
+
+    /**
+     * Set the model to be used for returning formatted query
+     *
+     * @param  Model  $model
+     * @return $this
+     */
+    public function setModel(Model $model)
+    {
+        $this->model = $model;
+
+        return $this;
+    }
+
+
+    /**
+     * Get row as model
+     *
+     * @unreleased
+     *
+     * @return Donation|Subscription|Donor|null
+     */
+    public function getAsModel()
+    {
+        $row = $this->get();
+
+        if (isset($this->model) && method_exists($this->model, 'fromQueryObject')) {
+            return $row ? $this->model->fromQueryObject($row) : null;
+        }
+
+        return null;
+    }
+
+    /**
+     * Get results as models
+     *
+     * @unreleased
+     *
+     * @return Donation[]|Subscription[]|Donor[]|null
+     */
+    public function getAllAsModel()
+    {
+        $results = $this->getAll();
+
+        if (isset($this->model) && method_exists($this->model, 'fromQueryObject')) {
+            return $results ? array_map(function ($object) {
+                return $this->model->fromQueryObject($object);
+            }, $results) : null;
+        }
+
+        return null;
     }
 }

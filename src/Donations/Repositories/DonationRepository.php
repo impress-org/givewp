@@ -4,7 +4,6 @@ namespace Give\Donations\Repositories;
 
 use Exception;
 use Give\Donations\Actions\GeneratePurchaseKey;
-use Give\Donations\DataTransferObjects\DonationQueryData;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
@@ -51,15 +50,9 @@ class DonationRepository
      */
     public function getById($donationId)
     {
-        $donation = $this->prepareQuery()
+        return $this->prepareQuery()
             ->where('ID', $donationId)
-            ->get();
-
-        if ( ! $donation) {
-            return null;
-        }
-
-        return DonationQueryData::fromObject($donation)->toDonation();
+            ->getAsModel();
     }
 
     /**
@@ -67,26 +60,18 @@ class DonationRepository
      *
      * @param  int  $subscriptionId
      *
-     * @return Donation[]
+     * @return Donation[]|null
      */
     public function getBySubscriptionId($subscriptionId)
     {
-        $donations = $this->prepareQuery()
+        return $this->prepareQuery()
             ->leftJoin('give_donationmeta', 'ID', 'donationMeta.donation_id', 'donationMeta')
             ->where('post_type', 'give_payment')
             ->where('post_status', 'give_subscription')
             ->where('donationMeta.meta_key', 'subscription_id')
             ->where('donationMeta.meta_value', $subscriptionId)
             ->orderBy('post_date', 'DESC')
-            ->getAll();
-
-        if ( ! $donations) {
-            return [];
-        }
-
-        return array_map(static function ($donation) {
-            return DonationQueryData::fromObject($donation)->toDonation();
-        }, $donations);
+            ->getAllAsModel();
     }
 
     /**
@@ -94,11 +79,11 @@ class DonationRepository
      *
      * @param  int  $donorId
      *
-     * @return Donation[]
+     * @return Donation[]|null
      */
     public function getByDonorId($donorId)
     {
-        $donations = $this->prepareQuery()
+        return $this->prepareQuery()
             ->where('post_type', 'give_payment')
             ->whereIn('ID', function (QueryBuilder $builder) use ($donorId) {
                 $builder
@@ -108,15 +93,7 @@ class DonationRepository
                     ->where('meta_value', $donorId);
             })
             ->orderBy('post_date', 'DESC')
-            ->getAll();
-
-        if ( ! $donations) {
-            return [];
-        }
-
-        return array_map(static function ($donation) {
-            return DonationQueryData::fromObject($donation)->toDonation();
-        }, $donations);
+            ->getAllAsModel();
     }
 
     /**
@@ -284,7 +261,7 @@ class DonationRepository
             DonationMetaKeys::DONOR_ID => $donation->donorId,
             DonationMetaKeys::FIRST_NAME => $donation->firstName,
             DonationMetaKeys::LAST_NAME => $donation->lastName,
-            DonationMetaKeys::DONOR_EMAIL => $donation->email,
+            DonationMetaKeys::EMAIL => $donation->email,
             DonationMetaKeys::FORM_ID => $donation->formId,
             DonationMetaKeys::FORM_TITLE => isset($donation->formTitle) ? $donation->formTitle : $this->getFormTitle(
                 $donation->formId
@@ -425,6 +402,7 @@ class DonationRepository
     public function prepareQuery()
     {
         return DB::table('posts')
+            ->setModel(new Donation())
             ->select(
                 ['ID', 'id'],
                 ['post_date', 'createdAt'],

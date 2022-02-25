@@ -8,6 +8,8 @@ use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Model;
+use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Subscriptions\DataTransferObjects\SubscriptionQueryData;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
@@ -127,5 +129,26 @@ class Subscription extends Model implements ModelCrud
     public function delete()
     {
         return give()->subscriptions->delete($this);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return QueryBuilder
+     */
+    public static function query()
+    {
+        return give()->subscriptions->prepareQuery()->setModel(new static());
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  object  $object
+     * @return Subscription
+     */
+    public function fromQueryObject($object)
+    {
+        return SubscriptionQueryData::fromObject($object)->toSubscription();
     }
 }

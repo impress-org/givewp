@@ -5,7 +5,6 @@ namespace unit\tests\Donations;
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationRepository;
-use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
@@ -78,21 +77,21 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
 
         $query = $repository->prepareQuery()
             ->where('ID', $newDonation->id)
-            ->get();
+            ->getAsModel();
 
 
         // simulate asserting database has values
         $this->assertInstanceOf(Donation::class, $newDonation);
         $this->assertEquals($query->id, $newDonation->id);
         $this->assertEquals($query->status, $newDonation->status->getValue());
-        $this->assertEquals($query->{DonationMetaKeys::AMOUNT()->getKeyAsCamelCase()}, $newDonation->amount);
-        $this->assertEquals($query->{DonationMetaKeys::CURRENCY()->getKeyAsCamelCase()}, $newDonation->currency);
-        $this->assertEquals($query->{DonationMetaKeys::GATEWAY()->getKeyAsCamelCase()}, $newDonation->gateway);
-        $this->assertEquals($query->{DonationMetaKeys::DONOR_ID()->getKeyAsCamelCase()}, $newDonation->donorId);
-        $this->assertEquals($query->{DonationMetaKeys::FIRST_NAME()->getKeyAsCamelCase()}, $newDonation->firstName);
-        $this->assertEquals($query->{DonationMetaKeys::LAST_NAME()->getKeyAsCamelCase()}, $newDonation->lastName);
-        $this->assertEquals($query->{DonationMetaKeys::DONOR_EMAIL()->getKeyAsCamelCase()}, $newDonation->email);
-        $this->assertEquals($this->toDateTime($query->createdAt), $newDonation->createdAt);
+        $this->assertEquals($query->amount, $newDonation->amount);
+        $this->assertEquals($query->currency, $newDonation->currency);
+        $this->assertEquals($query->gateway, $newDonation->gateway);
+        $this->assertEquals($query->donorId, $newDonation->donorId);
+        $this->assertEquals($query->firstName, $newDonation->firstName);
+        $this->assertEquals($query->lastName, $newDonation->lastName);
+        $this->assertEquals($query->email, $newDonation->email);
+        $this->assertEquals($query->createdAt, $newDonation->createdAt);
         $this->assertEquals($query->parentId, $newDonation->parentId);
     }
 
@@ -201,26 +200,16 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
         // call update method
         $repository->update($donation);
 
-        $query = DB::table('posts')
-            ->select('ID')
-            ->attachMeta(
-                'give_donationmeta',
-                'ID',
-                'donation_id',
-                DonationMetaKeys::AMOUNT,
-                DonationMetaKeys::FIRST_NAME,
-                DonationMetaKeys::LAST_NAME,
-                DonationMetaKeys::DONOR_EMAIL
-            )
+        $query = $repository->prepareQuery()
             ->where('ID', $donation->id)
-            ->get();
+            ->getAsModel();
 
         // assert updated values from the database
-        $this->assertNotEquals(50, $query->{DonationMetaKeys::AMOUNT});
-        $this->assertEquals(100, $query->{DonationMetaKeys::AMOUNT});
-        $this->assertEquals("Ron", $query->{DonationMetaKeys::FIRST_NAME});
-        $this->assertEquals("Swanson", $query->{DonationMetaKeys::LAST_NAME});
-        $this->assertEquals("ron@swanson.com", $query->{DonationMetaKeys::DONOR_EMAIL});
+        $this->assertNotEquals(50, $query->amount);
+        $this->assertEquals(100, $query->amount);
+        $this->assertEquals("Ron", $query->firstName);
+        $this->assertEquals("Swanson", $query->lastName);
+        $this->assertEquals("ron@swanson.com", $query->email);
     }
 
     /**
@@ -238,9 +227,9 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
 
         $repository->delete($donation);
 
-        $donationQuery = DB::table('posts')
+        $donationQuery = $repository->prepareQuery()
             ->where('ID', $donation->id)
-            ->get();
+            ->getAsModel();
 
         $donationCoreMetaQuery =
             DB::table('give_donationmeta')

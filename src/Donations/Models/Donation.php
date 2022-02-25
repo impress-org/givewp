@@ -4,6 +4,7 @@ namespace Give\Donations\Models;
 
 use DateTime;
 use Exception;
+use Give\Donations\DataTransferObjects\DonationQueryData;
 use Give\Donations\Properties\BillingAddress;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
@@ -187,10 +188,23 @@ class Donation extends Model implements ModelCrud
     }
 
     /**
+     * @unreleased
+     *
      * @return QueryBuilder
      */
     public static function query()
     {
         return give()->donations->prepareQuery();
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  object  $object
+     * @return Donation
+     */
+    public function fromQueryObject($object)
+    {
+        return DonationQueryData::fromObject($object)->toDonation();
     }
 }

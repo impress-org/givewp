@@ -6,8 +6,8 @@ use Exception;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Traits\InteractsWithTime;
+use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Log\Log;
-use Give\Subscriptions\DataTransferObjects\SubscriptionQueryData;
 use Give\Subscriptions\Models\Subscription;
 
 /**
@@ -33,59 +33,39 @@ class SubscriptionRepository
      * @unreleased
      *
      * @param  int  $subscriptionId
-     * @return Subscription|null
+     * @return Subscription
      */
     public function getById($subscriptionId)
     {
-        $subscription = DB::table('give_subscriptions')
+        return $this->prepareQuery()
             ->where('id', $subscriptionId)
             ->get();
-
-        if ( ! $subscription) {
-            return null;
-        }
-
-        return SubscriptionQueryData::fromObject($subscription)->toSubscription();
     }
 
     /**
      * @unreleased
      *
      * @param  int  $donationId
-     * @return Subscription|null
+     * @return Subscription
      */
     public function getByDonationId($donationId)
     {
-        $subscription = DB::table('give_subscriptions')
+        return $this->prepareQuery()
             ->where('parent_payment_id', $donationId)
             ->get();
-
-        if ( ! $subscription) {
-            return null;
-        }
-
-        return SubscriptionQueryData::fromObject($subscription)->toSubscription();
     }
 
     /**
      * @unreleased
      *
      * @param  int  $donorId
-     * @return Subscription[]
+     * @return Subscription
      */
     public function getByDonorId($donorId)
     {
-        $subscriptions = DB::table('give_subscriptions')
+        return $this->prepareQuery()
             ->where('customer_id', $donorId)
             ->getAll();
-
-        if ( ! $subscriptions) {
-            return [];
-        }
-
-        return array_map(static function ($object) {
-            return SubscriptionQueryData::fromObject($object)->toSubscription();
-        }, $subscriptions);
     }
 
     /**
@@ -250,6 +230,32 @@ class SubscriptionRepository
                 throw new InvalidArgumentException("'$key' is required.");
             }
         }
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return QueryBuilder
+     */
+    public function prepareQuery()
+    {
+        return DB::table('give_subscriptions')
+            ->setModel(new Subscription())
+            ->select(
+                ['id', 'id'],
+                ['created', 'createdAt'],
+                ['expiration', 'expiresAt'],
+                ['customer_id', 'donorId'],
+                ['period', 'period'],
+                ['frequency', 'frequency'],
+                ['bill_times', 'installments'],
+                ['transaction_id', 'transactionId'],
+                ['recurring_amount', 'amount'],
+                ['recurring_fee_amount', 'feeAmount'],
+                ['status', 'status'],
+                ['profile_id', 'gatewaySubscriptionId'],
+                ['product_id', 'donationFormId']
+            );
     }
 
 }

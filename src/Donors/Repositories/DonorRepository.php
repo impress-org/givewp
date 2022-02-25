@@ -3,7 +3,6 @@
 namespace Give\Donors\Repositories;
 
 use Exception;
-use Give\Donors\DataTransferObjects\DonorQueryData;
 use Give\Donors\Models\Donor;
 use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Framework\Database\DB;
@@ -33,19 +32,13 @@ class DonorRepository
      * @unreleased
      *
      * @param  int  $donorId
-     * @return Donor
+     * @return Donor|null
      */
     public function getById($donorId)
     {
-        $donorObject = $this->prepareQuery()
+        return $this->prepareQuery()
             ->where('id', $donorId)
-            ->get();
-
-        if (!$donorObject) {
-            return null;
-        }
-
-        return DonorQueryData::fromObject($donorObject)->toDonor();
+            ->getAsModel();
     }
 
     /**
@@ -54,7 +47,7 @@ class DonorRepository
      * @unreleased
      *
      * @param  int  $userId
-     * @return Donor
+     * @return Donor|null
      */
     public function getByWpUserId($userId)
     {
@@ -63,15 +56,9 @@ class DonorRepository
             return null;
         }
 
-        $donorObject = $this->prepareQuery()
+        return $this->prepareQuery()
             ->where('user_id', $userId)
-            ->get();
-
-        if (!$donorObject) {
-            return null;
-        }
-
-        return DonorQueryData::fromObject($donorObject)->toDonor();
+            ->getAsModel();
     }
 
     /**
@@ -228,9 +215,9 @@ class DonorRepository
     private function getCoreDonorMeta(Donor $donor)
     {
         return [
-            '_give_donor_first_name' => $donor->firstName,
-            '_give_donor_last_name' => $donor->lastName,
-            '_give_donor_title_prefix' => isset($donor->prefix) ? $donor->prefix : null,
+            DonorMetaKeys::FIRST_NAME => $donor->firstName,
+            DonorMetaKeys::LAST_NAME => $donor->lastName,
+            DonorMetaKeys::PREFIX => isset($donor->prefix) ? $donor->prefix : null,
         ];
     }
 
@@ -255,22 +242,15 @@ class DonorRepository
      */
     public function getByEmail($email)
     {
-        $donorObjectByPrimaryEmail = DB::table('give_donors')
-            ->select('*')
-            ->attachMeta('give_donormeta',
-                'ID',
-                'donor_id',
-                ['_give_donor_first_name', 'firstName'],
-                ['_give_donor_last_name', 'lastName']
-            )
+        $donorObjectByPrimaryEmail = $this->prepareQuery()
             ->where('email', $email)
-            ->get();
+            ->getAsModel();
 
         if (!$donorObjectByPrimaryEmail) {
             return $this->getByAdditionalEmail($email);
         }
 
-        return DonorQueryData::fromObject($donorObjectByPrimaryEmail)->toDonor();
+        return $donorObjectByPrimaryEmail;
     }
 
     /**
@@ -330,6 +310,7 @@ class DonorRepository
     public function prepareQuery()
     {
         return DB::table('give_donors')
+            ->setModel(new Donor())
             ->select(
                 ['id', 'id'],
                 ['user_id', 'userId'],

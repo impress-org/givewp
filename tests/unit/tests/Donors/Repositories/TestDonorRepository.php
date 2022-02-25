@@ -48,11 +48,13 @@ class TestDonorRepository extends Give_Unit_Test_Case
 
         $repository = new DonorRepository();
 
+        /** @var Donor $donorFromRepository */
         $donorFromRepository = $repository->getById($donor->id);
 
-        $donorQuery = DB::table('give_donors')
+        /** @var Donor $donorQuery */
+        $donorQuery = $repository->prepareQuery()
             ->where('id', $donorFromRepository->id)
-            ->get();
+            ->getAsModel();
 
         $this->assertEquals($donor->id, $donorQuery->id);
     }
@@ -69,23 +71,18 @@ class TestDonorRepository extends Give_Unit_Test_Case
         $donor = $this->createDonorInstance();
         $repository = new DonorRepository();
 
+        /** @var Donor $newDonor */
         $newDonor = $repository->insert($donor);
 
-        $query = DB::table('give_donors')
-            ->select('*')
-            ->attachMeta('give_donormeta',
-                'ID',
-                'donor_id',
-                ['_give_donor_first_name', 'firstName'],
-                ['_give_donor_last_name', 'lastName']
-            )
+        /** @var Donor $query */
+        $query = $repository->prepareQuery()
             ->where('id', $newDonor->id)
-            ->get();
+            ->getAsModel();
 
 
         // simulate asserting database has values
         $this->assertInstanceOf(Donor::class, $newDonor);
-        $this->assertEquals($this->toDateTime($query->date_created), $newDonor->createdAt);
+        $this->assertEquals($query->createdAt, $newDonor->createdAt);
         $this->assertEquals($query->id, $newDonor->id);
         $this->assertEquals($query->name, $newDonor->name);
         $this->assertEquals($query->firstName, $newDonor->firstName);
@@ -184,9 +181,9 @@ class TestDonorRepository extends Give_Unit_Test_Case
 
         $repository->delete($donor);
 
-        $donorQuery = DB::table('give_donors')
+        $donorQuery = $repository->prepareQuery()
             ->where('id', $donor->id)
-            ->get();
+            ->getAsModel();
 
         $donorMetaQuery =
             DB::table('give_donormeta')

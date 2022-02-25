@@ -14,7 +14,7 @@ use Give\Framework\Support\ValueObjects\InteractsWithQueryBuilder;
  * @method static DONOR_ID()
  * @method static FIRST_NAME()
  * @method static LAST_NAME()
- * @method static DONOR_EMAIL()
+ * @method static EMAIL()
  * @method static SUBSCRIPTION_ID()
  * @method static MODE()
  * @method static FORM_ID()
@@ -34,14 +34,14 @@ use Give\Framework\Support\ValueObjects\InteractsWithQueryBuilder;
 class DonationMetaKeys extends Enum
 {
     use InteractsWithQueryBuilder;
-    
+
     const AMOUNT = '_give_payment_total';
     const CURRENCY = '_give_payment_currency';
     const GATEWAY = '_give_payment_gateway';
     const DONOR_ID = '_give_payment_donor_id';
     const FIRST_NAME = '_give_donor_billing_first_name';
     const LAST_NAME = '_give_donor_billing_last_name';
-    const DONOR_EMAIL = '_give_payment_donor_email';
+    const EMAIL = '_give_payment_donor_email';
     const SUBSCRIPTION_ID = 'subscription_id';
     const MODE = '_give_payment_mode';
     const FORM_ID = '_give_payment_form_id';

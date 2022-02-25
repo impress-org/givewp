@@ -124,7 +124,7 @@ class DonationQueryData
         $self->donorId = (int)$donationQueryObject->{DonationMetaKeys::DONOR_ID()->getKeyAsCamelCase()};
         $self->firstName = $donationQueryObject->{DonationMetaKeys::FIRST_NAME()->getKeyAsCamelCase()};
         $self->lastName = $donationQueryObject->{DonationMetaKeys::LAST_NAME()->getKeyAsCamelCase()};
-        $self->email = $donationQueryObject->{DonationMetaKeys::DONOR_EMAIL()->getKeyAsCamelCase()};
+        $self->email = $donationQueryObject->{DonationMetaKeys::EMAIL()->getKeyAsCamelCase()};
         $self->gateway = $donationQueryObject->{DonationMetaKeys::GATEWAY()->getKeyAsCamelCase()};
         $self->createdAt = $self->toDateTime($donationQueryObject->createdAt);
         $self->updatedAt = $self->toDateTime($donationQueryObject->updatedAt);

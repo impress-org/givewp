@@ -5,6 +5,7 @@ namespace Give\Donors\Models;
 use DateTime;
 use Exception;
 use Give\Donations\Models\Donation;
+use Give\Donors\DataTransferObjects\DonorQueryData;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Model;
@@ -175,7 +176,18 @@ class Donor extends Model implements ModelCrud
      */
     public static function query()
     {
-        return give()->donorRepository->prepareQuery();
+        return give()->donorRepository->prepareQuery()->setModel(new static());
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  object  $object
+     * @return Donor
+     */
+    public function fromQueryObject($object)
+    {
+        return DonorQueryData::fromObject($object)->toDonor();
     }
 
 }

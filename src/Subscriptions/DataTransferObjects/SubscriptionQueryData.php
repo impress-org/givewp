@@ -82,18 +82,20 @@ class SubscriptionQueryData
         $self = new static();
 
         $self->id = (int)$subscriptionQueryObject->id;
-        $self->createdAt = $self->toDateTime($subscriptionQueryObject->created);
-        $self->expiresAt = $self->toDateTime($subscriptionQueryObject->expiration);
-        $self->donorId = (int)$subscriptionQueryObject->customer_id;
+        $self->createdAt = $self->toDateTime($subscriptionQueryObject->createdAt);
+        $self->expiresAt = isset($subscriptionQueryObject->expiration) ? $self->toDateTime(
+            $subscriptionQueryObject->expiration
+        ) : null;
+        $self->donorId = (int)$subscriptionQueryObject->donorId;
         $self->period = new SubscriptionPeriod($subscriptionQueryObject->period);
         $self->frequency = (int)$subscriptionQueryObject->frequency;
-        $self->installments = (int)$subscriptionQueryObject->bill_times;
-        $self->transactionId = $subscriptionQueryObject->transaction_id;
-        $self->amount = (int)$subscriptionQueryObject->recurring_amount;
-        $self->feeAmount = (int)$subscriptionQueryObject->recurring_fee_amount;
+        $self->installments = (int)$subscriptionQueryObject->installments;
+        $self->transactionId = $subscriptionQueryObject->transactionId;
+        $self->amount = (int)$subscriptionQueryObject->amount;
+        $self->feeAmount = (int)$subscriptionQueryObject->feeAmount;
         $self->status = new SubscriptionStatus($subscriptionQueryObject->status);
-        $self->gatewaySubscriptionId = $subscriptionQueryObject->profile_id;
-        $self->donationFormId = (int)$subscriptionQueryObject->product_id;
+        $self->gatewaySubscriptionId = $subscriptionQueryObject->gatewaySubscriptionId;
+        $self->donationFormId = (int)$subscriptionQueryObject->donationFormId;
 
         return $self;
     }
@@ -105,19 +107,8 @@ class SubscriptionQueryData
      */
     public function toSubscription()
     {
-        return new Subscription([
-            'id' => $this->id,
-            'createdAt' => $this->createdAt,
-            'amount' => $this->amount,
-            'period' => $this->period,
-            'frequency' => $this->frequency,
-            'donorId' => $this->donorId,
-            'installments' => $this->installments,
-            'transactionId' => $this->transactionId,
-            'feeAmount' => $this->feeAmount,
-            'status' => $this->status,
-            'gatewaySubscriptionId' => $this->gatewaySubscriptionId,
-            'donationFormId' => $this->donationFormId
-        ]);
+        $attributes = get_object_vars($this);
+
+        return new Subscription($attributes);
     }
 }
