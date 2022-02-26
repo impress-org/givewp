@@ -310,7 +310,7 @@ class DonorRepository
     public function prepareQuery()
     {
         return DB::table('give_donors')
-            ->setModel(new Donor())
+            ->setModel(Donor::class)
             ->select(
                 ['id', 'id'],
                 ['user_id', 'userId'],

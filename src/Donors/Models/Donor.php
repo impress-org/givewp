@@ -176,7 +176,7 @@ class Donor extends Model implements ModelCrud
      */
     public static function query()
     {
-        return give()->donorRepository->prepareQuery()->setModel(new static());
+        return give()->donorRepository->prepareQuery();
     }
 
     /**
@@ -185,7 +185,7 @@ class Donor extends Model implements ModelCrud
      * @param  object  $object
      * @return Donor
      */
-    public function fromQueryObject($object)
+    public static function fromQueryBuilderObject($object)
     {
         return DonorQueryData::fromObject($object)->toDonor();
     }

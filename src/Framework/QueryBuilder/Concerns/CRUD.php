@@ -5,6 +5,8 @@ namespace Give\Framework\QueryBuilder\Concerns;
 use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Model;
 use Give\Subscriptions\Models\Subscription;
 
@@ -14,7 +16,7 @@ use Give\Subscriptions\Models\Subscription;
 trait CRUD
 {
     /**
-     * @var Model
+     * @var string
      */
     private $model;
 
@@ -133,11 +135,14 @@ trait CRUD
     /**
      * Set the model to be used for returning formatted query
      *
-     * @param  Model  $model
+     * @param  string  $model
      * @return $this
      */
-    public function setModel(Model $model)
+    public function setModel($model)
     {
+        if (!is_subclass_of($model, Model::class)) {
+            throw new InvalidArgumentException("$model must be an instance of " . Model::class);
+        }
         $this->model = $model;
 
         return $this;
@@ -149,14 +154,17 @@ trait CRUD
      *
      * @unreleased
      *
-     * @return Donation|Subscription|Donor|null
+     * @return Model|Donation|Subscription|Donor|null
      */
     public function getAsModel()
     {
         $row = $this->get();
 
-        if (isset($this->model) && method_exists($this->model, 'fromQueryObject')) {
-            return $row ? $this->model->fromQueryObject($row) : null;
+        /** @var Model $model */
+        $model = $this->model;
+
+        if (isset($model) && method_exists($model, 'fromQueryBuilderObject')) {
+            return $row ? $model::fromQueryBuilderObject($row) : null;
         }
 
         return null;
@@ -167,15 +175,18 @@ trait CRUD
      *
      * @unreleased
      *
-     * @return Donation[]|Subscription[]|Donor[]|null
+     * @return Model[]|Donation[]|Subscription[]|Donor[]|null
      */
     public function getAllAsModel()
     {
         $results = $this->getAll();
 
-        if (isset($this->model) && method_exists($this->model, 'fromQueryObject')) {
-            return $results ? array_map(function ($object) {
-                return $this->model->fromQueryObject($object);
+        /** @var ModelCrud $model */
+        $model = $this->model;
+
+        if (isset($model) && method_exists($model, 'fromQueryBuilderObject')) {
+            return $results ? array_map(static function ($object) use ($model) {
+                return $model::fromQueryBuilderObject($object);
             }, $results) : null;
         }
 

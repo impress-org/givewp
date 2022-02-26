@@ -240,7 +240,7 @@ class SubscriptionRepository
     public function prepareQuery()
     {
         return DB::table('give_subscriptions')
-            ->setModel(new Subscription())
+            ->setModel(Subscription::class)
             ->select(
                 ['id', 'id'],
                 ['created', 'createdAt'],

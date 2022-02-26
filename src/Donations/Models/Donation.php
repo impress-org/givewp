@@ -203,7 +203,7 @@ class Donation extends Model implements ModelCrud
      * @param  object  $object
      * @return Donation
      */
-    public function fromQueryObject($object)
+    public static function fromQueryBuilderObject($object)
     {
         return DonationQueryData::fromObject($object)->toDonation();
     }

@@ -402,7 +402,7 @@ class DonationRepository
     public function prepareQuery()
     {
         return DB::table('posts')
-            ->setModel(new Donation())
+            ->setModel(Donation::class)
             ->select(
                 ['ID', 'id'],
                 ['post_date', 'createdAt'],

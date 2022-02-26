@@ -53,5 +53,5 @@ interface ModelCrud
      * @param $object
      * @return Model
      */
-    public function fromQueryObject($object);
+    public static function fromQueryBuilderObject($object);
 }

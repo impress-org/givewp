@@ -138,7 +138,7 @@ class Subscription extends Model implements ModelCrud
      */
     public static function query()
     {
-        return give()->subscriptions->prepareQuery()->setModel(new static());
+        return give()->subscriptions->prepareQuery();
     }
 
     /**
@@ -147,7 +147,7 @@ class Subscription extends Model implements ModelCrud
      * @param  object  $object
      * @return Subscription
      */
-    public function fromQueryObject($object)
+    public static function fromQueryBuilderObject($object)
     {
         return SubscriptionQueryData::fromObject($object)->toSubscription();
     }
