@@ -3,6 +3,7 @@
 namespace Give\Framework\Models\Contracts;
 
 use Give\Framework\Models\Model;
+use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
  * @unreleased
@@ -38,4 +39,19 @@ interface ModelCrud
      * @return bool
      */
     public function delete();
+
+    /**
+     * @unreleased
+     *
+     * @return QueryBuilder
+     */
+    public static function query();
+
+    /**
+     * @unreleased
+     *
+     * @param $object
+     * @return Model
+     */
+    public function fromQueryObject($object);
 }
