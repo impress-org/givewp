@@ -47,12 +47,13 @@ class DonationRepository
      * @param  int  $donationId
      *
      * @return Donation|null
+     * @throws \Give\Framework\Exceptions\Primitives\Exception
      */
     public function getById($donationId)
     {
         return $this->prepareQuery()
             ->where('ID', $donationId)
-            ->getAsModel();
+            ->get();
     }
 
     /**
@@ -71,7 +72,7 @@ class DonationRepository
             ->where('donationMeta.meta_key', 'subscription_id')
             ->where('donationMeta.meta_value', $subscriptionId)
             ->orderBy('post_date', 'DESC')
-            ->getAllAsModel();
+            ->getAll();
     }
 
     /**
@@ -93,7 +94,7 @@ class DonationRepository
                     ->where('meta_value', $donorId);
             })
             ->orderBy('post_date', 'DESC')
-            ->getAllAsModel();
+            ->getAll();
     }
 
     /**

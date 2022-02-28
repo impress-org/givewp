@@ -77,7 +77,7 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
 
         $query = $repository->prepareQuery()
             ->where('ID', $newDonation->id)
-            ->getAsModel();
+            ->get();
 
 
         // simulate asserting database has values
@@ -202,7 +202,7 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
 
         $query = $repository->prepareQuery()
             ->where('ID', $donation->id)
-            ->getAsModel();
+            ->get();
 
         // assert updated values from the database
         $this->assertNotEquals(50, $query->amount);
@@ -229,7 +229,7 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
 
         $donationQuery = $repository->prepareQuery()
             ->where('ID', $donation->id)
-            ->getAsModel();
+            ->get();
 
         $donationCoreMetaQuery =
             DB::table('give_donationmeta')

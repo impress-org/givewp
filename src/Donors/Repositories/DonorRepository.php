@@ -38,7 +38,7 @@ class DonorRepository
     {
         return $this->prepareQuery()
             ->where('id', $donorId)
-            ->getAsModel();
+            ->get();
     }
 
     /**
@@ -58,7 +58,7 @@ class DonorRepository
 
         return $this->prepareQuery()
             ->where('user_id', $userId)
-            ->getAsModel();
+            ->get();
     }
 
     /**
@@ -244,7 +244,7 @@ class DonorRepository
     {
         $donorObjectByPrimaryEmail = $this->prepareQuery()
             ->where('email', $email)
-            ->getAsModel();
+            ->get();
 
         if (!$donorObjectByPrimaryEmail) {
             return $this->getByAdditionalEmail($email);

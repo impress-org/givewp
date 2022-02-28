@@ -54,7 +54,7 @@ class TestDonorRepository extends Give_Unit_Test_Case
         /** @var Donor $donorQuery */
         $donorQuery = $repository->prepareQuery()
             ->where('id', $donorFromRepository->id)
-            ->getAsModel();
+            ->get();
 
         $this->assertEquals($donor->id, $donorQuery->id);
     }
@@ -77,7 +77,7 @@ class TestDonorRepository extends Give_Unit_Test_Case
         /** @var Donor $query */
         $query = $repository->prepareQuery()
             ->where('id', $newDonor->id)
-            ->getAsModel();
+            ->get();
 
 
         // simulate asserting database has values
@@ -183,7 +183,7 @@ class TestDonorRepository extends Give_Unit_Test_Case
 
         $donorQuery = $repository->prepareQuery()
             ->where('id', $donor->id)
-            ->getAsModel();
+            ->get();
 
         $donorMetaQuery =
             DB::table('give_donormeta')

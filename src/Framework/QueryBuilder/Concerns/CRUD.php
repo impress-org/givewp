@@ -5,6 +5,7 @@ namespace Give\Framework\QueryBuilder\Concerns;
 use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Model;
@@ -83,12 +84,15 @@ trait CRUD
      *
      * @unreleased
      *
-     * @param  string ARRAY_A|ARRAY_N|OBJECT|OBJECT_K $output
-     *
-     * @return array|object|null
+     * @param  string  $output  ARRAY_A|ARRAY_N|OBJECT|OBJECT_K
+     * @return array|Donation[]|Donor[]|Model[]|Subscription[]|object|null
      */
     public function getAll($output = OBJECT)
     {
+        if (isset($this->model)) {
+            return $this->getAllAsModel();
+        }
+
         return DB::get_results($this->getSQL(), $output);
     }
 
@@ -97,12 +101,16 @@ trait CRUD
      *
      * @unreleased
      *
-     * @param  string ARRAY_A|ARRAY_N|OBJECT|OBJECT_K $output
-     *
-     * @return array|object|null
+     * @param  string  $output  ARRAY_A|ARRAY_N|OBJECT|OBJECT_K
+     * @return object|Model|Donation|Donor|Subscription|null
+     * @throws Exception
      */
     public function get($output = OBJECT)
     {
+        if (isset($this->model)) {
+            return $this->getRowAsModel();
+        }
+
         return DB::get_row($this->getSQL(), $output);
     }
 
@@ -143,6 +151,7 @@ trait CRUD
         if (!is_subclass_of($model, Model::class)) {
             throw new InvalidArgumentException("$model must be an instance of " . Model::class);
         }
+
         $this->model = $model;
 
         return $this;
@@ -155,19 +164,19 @@ trait CRUD
      * @unreleased
      *
      * @return Model|Donation|Subscription|Donor|null
+     * @throws Exception
      */
-    public function getAsModel()
+    protected function getRowAsModel()
     {
-        $row = $this->get();
+        $row = DB::get_row($this->getSQL(), OBJECT);
 
-        /** @var Model $model */
         $model = $this->model;
 
-        if (isset($model) && method_exists($model, 'fromQueryBuilderObject')) {
-            return $row ? $model::fromQueryBuilderObject($row) : null;
+        if (!method_exists($model, 'fromQueryBuilderObject')) {
+            throw new InvalidArgumentException("fromQueryBuilderObject missing from $model");
         }
 
-        return null;
+        return $row ? $model::fromQueryBuilderObject($row) : null;
     }
 
     /**
@@ -177,19 +186,19 @@ trait CRUD
      *
      * @return Model[]|Donation[]|Subscription[]|Donor[]|null
      */
-    public function getAllAsModel()
+    protected function getAllAsModel()
     {
-        $results = $this->getAll();
+        $results = DB::get_results($this->getSQL(), OBJECT);
 
         /** @var ModelCrud $model */
         $model = $this->model;
 
-        if (isset($model) && method_exists($model, 'fromQueryBuilderObject')) {
-            return $results ? array_map(static function ($object) use ($model) {
-                return $model::fromQueryBuilderObject($object);
-            }, $results) : null;
+        if (!method_exists($model, 'fromQueryBuilderObject')) {
+            throw new InvalidArgumentException("fromQueryBuilderObject missing from $model");
         }
 
-        return null;
+        return $results ? array_map(static function ($object) use ($model) {
+            return $model::fromQueryBuilderObject($object);
+        }, $results) : null;
     }
 }
