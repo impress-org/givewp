@@ -59,7 +59,7 @@ class SubscriptionRepository
      * @unreleased
      *
      * @param  int  $donorId
-     * @return Subscription
+     * @return Subscription[]
      */
     public function getByDonorId($donorId)
     {

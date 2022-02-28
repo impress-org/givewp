@@ -2,8 +2,9 @@
 
 namespace Give\Framework\Support\ValueObjects;
 
-trait InteractsWithQueryBuilder {
-      /**
+trait EnumInteractsWithQueryBuilder
+{
+    /**
      * @unreleased
      *
      * Returns array of meta aliases to be used with attachMeta

@@ -5,7 +5,6 @@ namespace Give\Framework\QueryBuilder\Concerns;
 use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
-use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Model;
@@ -103,7 +102,6 @@ trait CRUD
      *
      * @param  string  $output  ARRAY_A|ARRAY_N|OBJECT|OBJECT_K
      * @return object|Model|Donation|Donor|Subscription|null
-     * @throws Exception
      */
     public function get($output = OBJECT)
     {
@@ -164,7 +162,6 @@ trait CRUD
      * @unreleased
      *
      * @return Model|Donation|Subscription|Donor|null
-     * @throws Exception
      */
     protected function getRowAsModel()
     {

@@ -5,6 +5,7 @@ namespace Give\Donors\Models;
 use DateTime;
 use Exception;
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\DataTransferObjects\DonorQueryData;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
@@ -40,6 +41,8 @@ class Donor extends Model implements ModelCrud
         'lastName' => 'string',
         'email' => 'string',
         'prefix' => 'string',
+        'totalAmountDonated' => 'int',
+        'totalDonations' => 'int',
     ];
 
     /**
@@ -166,9 +169,25 @@ class Donor extends Model implements ModelCrud
     /**
      * @return array
      */
-    public function getAdditionalEmails()
+    public function additionalEmails()
     {
         return give()->donorRepository->getAdditionalEmails($this->id);
+    }
+
+    /**
+     * @return int
+     */
+    public function totalDonations()
+    {
+        return count($this->donations());
+    }
+
+    /**
+     * @return int
+     */
+    public function totalAmountDonated()
+    {
+        return array_sum(array_column($this->donations(), DonationMetaKeys::AMOUNT()->getKeyAsCamelCase()));
     }
 
     /**

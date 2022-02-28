@@ -15,7 +15,7 @@ class Enum extends \MyCLabs\Enum\Enum
      */
     public static function camelCaseConstant($name)
     {
-        return lcfirst(str_replace('_', '', ucwords(strtolower($name), '_')));;
+        return lcfirst(str_replace('_', '', ucwords(strtolower($name), '_')));
     }
 
     /**

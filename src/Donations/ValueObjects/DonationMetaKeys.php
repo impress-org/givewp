@@ -3,7 +3,7 @@
 namespace Give\Donations\ValueObjects;
 
 use Give\Framework\Support\ValueObjects\Enum;
-use Give\Framework\Support\ValueObjects\InteractsWithQueryBuilder;
+use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
 
 /**
  * @unreleased
@@ -33,7 +33,7 @@ use Give\Framework\Support\ValueObjects\InteractsWithQueryBuilder;
  */
 class DonationMetaKeys extends Enum
 {
-    use InteractsWithQueryBuilder;
+    use EnumInteractsWithQueryBuilder;
 
     const AMOUNT = '_give_payment_total';
     const CURRENCY = '_give_payment_currency';

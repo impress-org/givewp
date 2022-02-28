@@ -47,7 +47,6 @@ class DonationRepository
      * @param  int  $donationId
      *
      * @return Donation|null
-     * @throws \Give\Framework\Exceptions\Primitives\Exception
      */
     public function getById($donationId)
     {
