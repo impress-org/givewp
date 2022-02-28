@@ -669,7 +669,7 @@ GROUP BY id
 
 Returned result:
 
-Instances with the same key, in this case `additional_email`, will be concatenated and separated by a comma.
+Instances with the same key, in this case `additional_email`, will be concatenated into JSON array string.
 
 ```php
 Array
@@ -679,7 +679,7 @@ Array
             [id] => 1
             [email] => bill@flywheel.local
             [name] => Bill Murray
-            [additionalEmails] => email1@lywheel.local,email2@lywheel.local
+            [additionalEmails] => ["email1@lywheel.local","email2@lywheel.local"]
         )
 
     [1] => stdClass Object
@@ -687,7 +687,7 @@ Array
             [id] => 2
             [email] => jon@flywheel.local
             [name] => Jon Waldstein
-            [additionalEmails] => email3@lywheel.local,email4@lywheel.local,email5@lywheel.local
+            [additionalEmails] => ["email3@lywheel.local","email4@lywheel.local","email5@lywheel.local"]
         )
 
     [2] => stdClass Object
