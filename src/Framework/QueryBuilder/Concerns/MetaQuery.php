@@ -108,11 +108,15 @@ trait MetaQuery
             // Set dynamic alias
             $tableAlias = sprintf('%s_%s_%d', ($table instanceof RawSQL) ? $table->sql : $table, 'attach_meta', $i);
 
-            $columnName = ($concat)
-                ? "GROUP_CONCAT(DISTINCT {$tableAlias}.{$metaTable->valueColumnName})"
-                : "{$tableAlias}.{$metaTable->valueColumnName}";
-
-            $this->select([$columnName, $columnAlias ?: $column]);
+            if ($concat) {
+                $this->selectRaw(
+                    "CONCAT('[',GROUP_CONCAT(DISTINCT CONCAT('\"',%1s,'\"')),']') AS %2s",
+                    $tableAlias . '.' . $metaTable->valueColumnName,
+                    $columnAlias ?: $column
+                );
+            } else {
+                $this->select(["{$tableAlias}.{$metaTable->valueColumnName}", $columnAlias ?: $column]);
+            }
 
             $this->join(
                 function (JoinQueryBuilder $builder) use ($table, $foreignKey, $primaryKey, $tableAlias, $column, $metaTable) {
