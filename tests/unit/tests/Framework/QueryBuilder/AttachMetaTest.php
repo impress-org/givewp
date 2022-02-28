@@ -65,7 +65,7 @@ final class AttachMetaTest extends TestCase
             );
 
         $this->assertContains(
-            "SELECT id, email, name, GROUP_CONCAT(DISTINCT wp_give_donormeta_attach_meta_0.meta_value) AS additionalEmails FROM wp_give_donors LEFT JOIN wp_give_donormeta wp_give_donormeta_attach_meta_0 ON id = wp_give_donormeta_attach_meta_0.donor_id AND wp_give_donormeta_attach_meta_0.meta_key = 'additional_email' GROUP BY id",
+            "SELECT id, email, name, CONCAT('[',GROUP_CONCAT(DISTINCT CONCAT('\"',wp_give_donormeta_attach_meta_0.meta_value,'\"')),']') AS additionalEmails FROM wp_give_donors LEFT JOIN wp_give_donormeta wp_give_donormeta_attach_meta_0 ON id = wp_give_donormeta_attach_meta_0.donor_id AND wp_give_donormeta_attach_meta_0.meta_key = 'additional_email' GROUP BY id",
             $builder->getSQL()
         );
     }
