@@ -28,7 +28,7 @@ trait GroupByStatement
     protected function getGroupBySQL()
     {
         return ! empty($this->groupByColumns)
-            ? ['GROUP BY ' . implode(',', $this->groupByColumns)]
+            ? ['GROUP BY ' . implode(',', array_unique($this->groupByColumns))]
             : [];
     }
 }
