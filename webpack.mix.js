@@ -1,6 +1,7 @@
 const mix = require('laravel-mix');
 const path = require('path');
 const WebpackRTLPlugin = require('webpack-rtl-plugin');
+const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extraction-webpack-plugin');
 
 mix.setPublicPath('assets/dist')
     .sass('assets/src/css/frontend/give-frontend.scss', 'css/give.css')
@@ -66,13 +67,34 @@ mix.webpackConfig({
             '@givewp/promotions': path.resolve(__dirname, 'src/Promotions/sharedResources/'),
         },
     },
+    plugins: [
+        new DependencyExtractionWebpackPlugin({
+            useDefaults: false,
+            requestToExternal: (request) => {
+                const WORDPRESS_NAMESPACE = '@wordpress/';
+
+                if (request.startsWith(WORDPRESS_NAMESPACE)) {
+                    return [
+                        'wp',
+
+                        /* Transform @wordpress dependencies:
+                        * - request @wordpress/api-fetch becomes [ 'wp', 'apiFetch' ]
+                        * - request @wordpress/i18n becomes [ 'wp', 'i18n' ]
+                        */
+                        request.substring(WORDPRESS_NAMESPACE.length)
+                            .replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()),
+                    ];
+                }
+            }
+        })
+    ]
 });
 
 mix.options({
-    // Don't perform any css url rewriting by default
+// Don't perform any css url rewriting by default
     processCssUrls: false,
 
-    // Prevent LICENSE files from showing up in JS builds
+// Prevent LICENSE files from showing up in JS builds
     terser: {
         extractComments: (astNode, comment) => false,
         terserOptions: {
@@ -84,12 +106,15 @@ mix.options({
 });
 
 if (mix.inProduction()) {
-    mix.webpackConfig({
-        plugins: [
-            new WebpackRTLPlugin({
-                suffix: '-rtl',
-                minify: true,
-            }),
-        ],
+    mix.webpackConfig(webpack => {
+        return {
+            plugins: [
+                new WebpackRTLPlugin({
+                    suffix: '-rtl',
+                    minify: true,
+                }),
+                ...webpack.plugins
+            ],
+        }
     });
 }
