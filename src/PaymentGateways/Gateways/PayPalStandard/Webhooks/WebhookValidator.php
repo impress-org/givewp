@@ -8,12 +8,12 @@ use Give\Log\Log;
  * This class use to validate PayPal Standard ipn.
  * Validate the IPN: https://developer.paypal.com/docs/api-basics/notifications/ipn/IPNImplementation/
  *
- * @unreleased
+ * @since 2.19.0
  */
 class WebhookValidator
 {
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @param array $eventData PayPal ipn body data.
      *

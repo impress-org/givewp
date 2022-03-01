@@ -16,7 +16,7 @@ use Give\PaymentGateways\Gateways\Stripe\ValueObjects\CheckoutSession;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class CheckoutGateway extends PaymentGateway
 {
@@ -27,7 +27,7 @@ class CheckoutGateway extends PaymentGateway
 
     /**
      * @inheritDoc
-     * @unreleased
+     * @since 2.19.0
      * @return GatewayCommand
      * @throws PaymentGatewayException
      */
@@ -50,7 +50,7 @@ class CheckoutGateway extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @param $workflow
      * @return PaymentProcessing|RedirectOffsite
@@ -65,7 +65,7 @@ class CheckoutGateway extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @param $workflow
      * @return RedirectOffsite

@@ -246,7 +246,7 @@ class PayPalOrder
     /**
      * Get order details from paypal commerce.
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @param string $orderId
      *

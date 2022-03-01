@@ -20,7 +20,7 @@ class LegacyPaymentGatewayAdapter
      * Get legacy form field markup to display gateway specific payment fields
      *
      * @since 2.18.0
-     * @unreleased Added missing $args parameter for ID prefixing and general backwards compatibility.
+     * @since 2.19.0 Added missing $args parameter for ID prefixing and general backwards compatibility.
      *
      * @param int $formId
      * @param array $args
@@ -37,7 +37,7 @@ class LegacyPaymentGatewayAdapter
      * First we create a payment, then move on to the gateway processing
      *
      * @since 2.18.0
-     * @unreleased Replace is_recurring with is_donation_recurring to detect recurring donations.
+     * @since 2.19.0 Replace is_recurring with is_donation_recurring to detect recurring donations.
      *
      * @param  array  $legacyDonationData  Legacy Donation Data
      * @param  PaymentGatewayInterface  $registeredGateway

@@ -413,7 +413,7 @@ function give_stripe_is_zero_decimal_currency() {
  * @see https://stripe.com/docs/api/php#create_charge-statement_descriptor
  *
  * @since 2.5.0
- * @unreleased Previously stripe accounts have single global statement descriptor.
+ * @since 2.19.0 Previously stripe accounts have single global statement descriptor.
  *             Now each stripe account will have their own statement descriptor.
  *
  * @param array $data List of posted variable while submitting donation.

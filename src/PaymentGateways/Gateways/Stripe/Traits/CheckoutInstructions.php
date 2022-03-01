@@ -3,12 +3,12 @@
 namespace Give\PaymentGateways\Gateways\Stripe\Traits;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 trait CheckoutInstructions
 {
     /**
-     * @unreleased Migrated from the legacy Give_Stripe_Checkout::output_redirect_notice implementation of the Stripe Checkout Gateway.
+     * @since 2.19.0 Migrated from the legacy Give_Stripe_Checkout::output_redirect_notice implementation of the Stripe Checkout Gateway.
      */
     public function getCheckoutInstructions()
     {

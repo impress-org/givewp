@@ -191,7 +191,7 @@ class PaymentGateways implements ServiceProvider
     /**
      * Register action/filter hooks for paypal commerce.
      *
-     * @unreleased
+     * @since 2.19.0
      */
     private function registerPayPalCommerceHooks()
     {

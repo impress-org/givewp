@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Extends the Give_API to make the /subscriptions endpoint
  *
  * @class Give_Subscriptions_API
- * @unreleased - migrated from give-recurring
+ * @since 2.19.0 - migrated from give-recurring
  * @since 1.4
  */
 class Give_Subscriptions_API extends Give_API {

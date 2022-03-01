@@ -3,7 +3,7 @@
 namespace Give\PaymentGateways\Gateways\Stripe\ValueObjects;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class PaymentMethod
 {
@@ -11,7 +11,7 @@ class PaymentMethod
     protected $paymentMethodId;
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @param $paymentMethodId
      */
     public function __construct( $paymentMethodId )
@@ -20,7 +20,7 @@ class PaymentMethod
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @return string
      */
     public function id()

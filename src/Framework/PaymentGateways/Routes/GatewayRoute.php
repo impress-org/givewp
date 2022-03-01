@@ -20,14 +20,14 @@ class GatewayRoute
     /**
      * This is our entry point into the Gateway Routing system.
      *
-     * @unreleased - validate secureRouteMethods
+     * @since 2.19.0 - validate secureRouteMethods
      * @since 2.18.0
      *
      * @return void
      *
      * @throws PaymentGatewayException
      * @since 2.18.0
-     * @unreleased - validate secureRouteMethods
+     * @since 2.19.0 - validate secureRouteMethods
      *
      */
     public function __invoke()
@@ -83,7 +83,7 @@ class GatewayRoute
     /**
      * Check if the request is valid
      *
-     * @unreleased remove required check give-donation-id
+     * @since 2.19.0 remove required check give-donation-id
      *
      * @since 2.18.0
      *
@@ -117,7 +117,7 @@ class GatewayRoute
     /**
      * Validate signature using nonces
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @param string $routeSignature
      * @param GatewayRouteData $data
@@ -143,8 +143,8 @@ class GatewayRoute
      *
      * @since 2.18.0
      *
-     * @unreleased - replace $donationId with $queryParams array
-     * @unreleased Record gateway id, callback method name and query params in log.
+     * @since 2.19.0 - replace $donationId with $queryParams array
+     * @since 2.19.0 Record gateway id, callback method name and query params in log.
      *
      * @param PaymentGateway $gateway
      * @param string $method

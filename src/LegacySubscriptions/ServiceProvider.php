@@ -12,7 +12,7 @@ use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
  * DO NOT EXTEND THIS WITH NEW CODE as it is intended to shrink over time as we migrate over
  * to the new ways of doing things.
  *
- * @unreleased
+ * @since 2.19.0
  */
 class ServiceProvider implements ServiceProviderInterface
 {
@@ -42,7 +42,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Load all the legacy class files since they don't have autoloading
      *
-     * @unreleased
+     * @since 2.19.0
      */
     private function includeLegacyFiles()
     {
@@ -58,7 +58,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Load all the legacy helpers
      *
-     * @unreleased
+     * @since 2.19.0
      */
     private function includeLegacyHelpers()
     {
@@ -68,7 +68,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Binds the legacy classes to the service provider
      *
-     * @unreleased
+     * @since 2.19.0
      */
     private function bindClasses()
     {
@@ -83,7 +83,7 @@ class ServiceProvider implements ServiceProviderInterface
      * A helper for loading legacy classes that do not use autoloading, then binding their instance
      * to the container.
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @param string $alias
      * @param string|Closure $class

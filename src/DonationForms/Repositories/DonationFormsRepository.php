@@ -6,7 +6,7 @@ use Give\Framework\Database\DB;
 use WP_REST_Request;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class DonationFormsRepository
 {

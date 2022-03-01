@@ -9,7 +9,7 @@ use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\WebhookValidator;
 /**
  * This class use to handle PayPal ipn.
  *
- * @unreleased
+ * @since 2.19.0
  */
 class PayPalStandardWebhook
 {
@@ -27,7 +27,7 @@ class PayPalStandardWebhook
     /**
      * Handle PayPal ipn
      *
-     * @unreleased
+     * @since 2.19.0
      */
     public function handle()
     {
@@ -65,7 +65,7 @@ class PayPalStandardWebhook
      * @param array $eventData
      * @param int $donationId
      *
-     * @unreleased
+     * @since 2.19.0
      */
     private function recordIpn(array $eventData, $donationId)
     {
@@ -81,7 +81,7 @@ class PayPalStandardWebhook
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @param int $donationId
      */
@@ -112,7 +112,7 @@ class PayPalStandardWebhook
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @param string $txnType
      * @param array $eventData

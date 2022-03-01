@@ -3,7 +3,7 @@
 namespace Give\PaymentGateways\Gateways\Stripe\Traits;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 trait BECSMandateForm
 {

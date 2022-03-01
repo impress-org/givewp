@@ -11,7 +11,7 @@ class GenerateGatewayRouteUrl
      * @return string
      * @since 2.18.0
      *
-     * @unreleased remove $donationId param in favor of args
+     * @since 2.19.0 remove $donationId param in favor of args
      *
      */
     public function __invoke($gatewayId, $gatewayMethod, $args = null)

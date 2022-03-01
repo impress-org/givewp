@@ -5,7 +5,7 @@ namespace Give\PaymentGateways\Gateways\Stripe\ValueObjects;
 use Give_Stripe_Payment_Intent;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class PaymentIntent
 {
@@ -13,7 +13,7 @@ class PaymentIntent
     protected $paymentIntentObject;
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @param $paymentIntentArgs
      * @return PaymentIntent
      */
@@ -25,7 +25,7 @@ class PaymentIntent
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @return string
      */
     public function id()
@@ -34,7 +34,7 @@ class PaymentIntent
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @return string
      */
     public function status()
@@ -43,7 +43,7 @@ class PaymentIntent
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @return string
      */
     public function clientSecret()
@@ -52,7 +52,7 @@ class PaymentIntent
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @return string
      */
     public function nextActionRedirectUrl()

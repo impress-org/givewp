@@ -5,7 +5,7 @@ use Give\PaymentGateways\Gateways\Stripe\ValueObjects\DonationSummary;
 use Give\ValueObjects\DonorInfo;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class DonationSummaryTest extends Give_Unit_Test_Case
 {

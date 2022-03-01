@@ -5,7 +5,7 @@ namespace Give\Framework\QueryBuilder;
 use Give\Framework\QueryBuilder\Concerns\WhereClause;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class WhereQueryBuilder
 {

@@ -6,7 +6,7 @@ use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class CreditCardGatewayTest extends Give_Unit_Test_Case
 {

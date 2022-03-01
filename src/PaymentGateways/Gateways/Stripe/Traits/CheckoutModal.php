@@ -6,7 +6,7 @@ use Give\Helpers\Form\Utils as FormUtils;
 use Give\Helpers\Gateways\Stripe;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 trait CheckoutModal
 {
@@ -14,7 +14,7 @@ trait CheckoutModal
      * @param int   $formId Donation Form ID.
      * @param array $args   Donation Form Arguments.
      *
-     * @unreleased Migrated from the legacy Give_Stripe_Checkout::showCheckoutModal implementation of the Stripe Checkout Gateway.
+     * @since 2.19.0 Migrated from the legacy Give_Stripe_Checkout::showCheckoutModal implementation of the Stripe Checkout Gateway.
      *
      * @return string
      */

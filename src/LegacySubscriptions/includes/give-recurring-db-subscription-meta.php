@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class Give_Recurring_DB_Subscription_Meta
  *
  * This class is for interacting with the subscription meta database table.
- * @unreleased - migrated from give-recurring
+ * @since 2.19.0 - migrated from give-recurring
  * @since 1.8
  */
 class Give_Recurring_DB_Subscription_Meta extends Give_DB_Meta {

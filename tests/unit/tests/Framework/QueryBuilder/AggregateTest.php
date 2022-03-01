@@ -6,7 +6,7 @@ use Give\Framework\Database\DB;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @unreleased
+ * @since 2.19.0
  *
  * @covers Aggregate
  */
@@ -15,7 +15,7 @@ final class AggregateTest extends TestCase
     /**
      * Truncate posts and give_donationmeta table to avoid duplicate records
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @return void
      */
@@ -32,7 +32,7 @@ final class AggregateTest extends TestCase
 
     /**
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @return void
      */
@@ -67,7 +67,7 @@ final class AggregateTest extends TestCase
 
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return void
      */
@@ -105,7 +105,7 @@ final class AggregateTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return void
      */
@@ -142,7 +142,7 @@ final class AggregateTest extends TestCase
 
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return void
      */
@@ -178,7 +178,7 @@ final class AggregateTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return void
      */
@@ -214,7 +214,7 @@ final class AggregateTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return void
      */

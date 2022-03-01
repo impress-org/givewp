@@ -5,7 +5,7 @@ namespace Give\Framework\PaymentGateways;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class DonationSummary
 {
@@ -16,7 +16,7 @@ class DonationSummary
     protected $paymentData;
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @param GatewayPaymentData $paymentData
      */
     public function __construct( GatewayPaymentData $paymentData )
@@ -25,7 +25,7 @@ class DonationSummary
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @param $length
      */
     public function setLength( $length )
@@ -34,7 +34,7 @@ class DonationSummary
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @return string
      */
     public function getSummaryWithDonor()
@@ -46,7 +46,7 @@ class DonationSummary
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @return string
      */
     public function getSummary()
@@ -58,7 +58,7 @@ class DonationSummary
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @param $property
      * @return mixed|void
      */
@@ -70,7 +70,7 @@ class DonationSummary
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @return string
      */
     protected function getLabel()
@@ -80,7 +80,7 @@ class DonationSummary
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @return string
      */
     protected function getPriceLabel()
@@ -92,7 +92,7 @@ class DonationSummary
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @return string
      */
     protected function getDonorLabel()
@@ -106,7 +106,7 @@ class DonationSummary
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @param string $text
      * @return string
      */
