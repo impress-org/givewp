@@ -429,4 +429,22 @@ class DonationRepository
                 ...DonationMetaKeys::getColumnsForAttachMetaQuery()
             );
     }
+
+    /**
+     * @param $donorId
+     * @return string
+     */
+    public function getTotalDonationsByDonorId($donorId)
+    {
+        return DB::table('posts')
+            ->where('post_type', 'give_payment')
+            ->whereIn('ID', function (QueryBuilder $builder) use ($donorId) {
+                $builder
+                    ->select('donation_id')
+                    ->from('give_donationmeta')
+                    ->where('meta_key', DonationMetaKeys::DONOR_ID)
+                    ->where('meta_value', $donorId);
+            })
+            ->count();
+    }
 }

@@ -177,7 +177,7 @@ class Donor extends Model implements ModelCrud
      */
     public function totalDonations()
     {
-        return count($this->donations());
+        return (int)give()->donations->getTotalDonationsByDonorId($this->id);
     }
 
     /**
@@ -185,7 +185,7 @@ class Donor extends Model implements ModelCrud
      */
     public function totalAmountDonated()
     {
-        return array_sum(array_column($this->donations(), DonationMetaKeys::AMOUNT()->getKeyAsCamelCase()));
+        return array_sum(array_column($this->donations()->getAll(), DonationMetaKeys::AMOUNT()->getKeyAsCamelCase()));
     }
 
     /**
