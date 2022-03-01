@@ -147,17 +147,16 @@ class LegacyPaymentGatewayAdapter
      */
     private function getOrCreateDonor($userId, $donorEmail, $firstName, $lastName)
     {
-        // if user is logged in, and they made it this far, then the email should not belong to any donor yet.
-        // If this is the case then find the donor via $userId.
-        if ($userId) {
-            $donor = Donor::whereUserId($userId);
+        // first check if donor exists as a user
+        $donor = Donor::whereUserId($userId);
 
-            // If they exist as a donor then make sure they don't already own this email before adding to their additional emails list..
-            if ($donor && !$donor->hasEmail($donorEmail)) {
-                $donor->addAdditionalEmail($donorEmail);
-            }
-        } else {
-            // If not user is logged in then see if donor exists.
+        // If they exist as a donor & user then make sure they don't already own this email before adding to their additional emails list..
+        if ($donor && !$donor->hasEmail($donorEmail)) {
+            $donor->addAdditionalEmail($donorEmail);
+        }
+
+        // if donor is not a user than check for any donor matching this email
+        if (!$donor) {
             $donor = Donor::whereEmail($donorEmail);
         }
 
@@ -167,7 +166,8 @@ class LegacyPaymentGatewayAdapter
                 'name' => trim("$firstName $lastName"),
                 'firstName' => $firstName,
                 'lastName' => $lastName,
-                'email' => $donorEmail
+                'email' => $donorEmail,
+                'userId' => $userId ?: null
             ]);
         }
 
