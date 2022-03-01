@@ -84,6 +84,10 @@ mix.webpackConfig({
                         request.substring(WORDPRESS_NAMESPACE.length)
                             .replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()),
                     ];
+                } else if( ['lodash', 'lodash-es' ].includes( request ) ) {
+                    return 'lodash';
+                }else if( request === 'jquery' ) {
+                    return 'jQuery';
                 }
             }
         })
