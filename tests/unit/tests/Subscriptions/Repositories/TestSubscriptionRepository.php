@@ -59,7 +59,7 @@ class TestSubscriptionRepository extends Give_Unit_Test_Case
         $subscription = $this->createSubscription();
         $repository = new SubscriptionRepository();
 
-        $subscriptionById = $repository->getById($subscription->id);
+        $subscriptionById = $repository->queryById($subscription->id);
 
         $this->assertInstanceOf(Subscription::class, $subscription);
         $this->assertEquals($subscriptionById, $subscription);

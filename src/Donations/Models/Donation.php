@@ -8,12 +8,10 @@ use Give\Donations\DataTransferObjects\DonationQueryData;
 use Give\Donations\Properties\BillingAddress;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\Donors\Models\Donor;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Model;
 use Give\Framework\QueryBuilder\QueryBuilder;
-use Give\Subscriptions\Models\Subscription;
 use Give\ValueObjects\Money;
 
 /**
@@ -136,25 +134,25 @@ class Donation extends Model implements ModelCrud
     /**
      * @unreleased
      *
-     * @return Donor
+     * @return QueryBuilder
      */
     public function donor()
     {
-        return give()->donorRepository->getById($this->donorId);
+        return give()->donorRepository->queryById($this->donorId);
     }
 
     /**
      * @unreleased
      *
-     * @return Subscription
+     * @return QueryBuilder
      */
     public function subscription()
     {
         if ($this->subscriptionId) {
-            return give()->subscriptions->getById($this->subscriptionId);
+            return give()->subscriptions->queryById($this->subscriptionId);
         }
 
-        return give()->subscriptions->getByDonationId($this->id);
+        return give()->subscriptions->queryByDonationId($this->id);
     }
 
     /**

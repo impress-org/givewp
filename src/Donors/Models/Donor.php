@@ -4,14 +4,12 @@ namespace Give\Donors\Models;
 
 use DateTime;
 use Exception;
-use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\DataTransferObjects\DonorQueryData;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Model;
 use Give\Framework\QueryBuilder\QueryBuilder;
-use Give\Subscriptions\Models\Subscription;
 
 /**
  * Class Donor
@@ -149,21 +147,21 @@ class Donor extends Model implements ModelCrud
     /**
      * @unreleased
      *
-     * @return Donation[]
+     * @return QueryBuilder
      */
     public function donations()
     {
-        return give()->donations->getByDonorId($this->id);
+        return give()->donations->queryByDonorId($this->id);
     }
 
     /**
      * @unreleased
      *
-     * @return Subscription[]
+     * @return QueryBuilder
      */
     public function subscriptions()
     {
-        return give()->subscriptions->getByDonorId($this->id);
+        return give()->subscriptions->queryByDonorId($this->id);
     }
 
     /**

@@ -27,6 +27,20 @@ class DonorRepository
     ];
 
     /**
+     * Query Donor By ID
+     *
+     * @unreleased
+     *
+     * @param  int  $donorId
+     * @return QueryBuilder
+     */
+    public function queryById($donorId)
+    {
+        return $this->prepareQuery()
+            ->where('id', $donorId);
+    }
+
+    /**
      * Get Donor By ID
      *
      * @unreleased
@@ -36,9 +50,7 @@ class DonorRepository
      */
     public function getById($donorId)
     {
-        return $this->prepareQuery()
-            ->where('id', $donorId)
-            ->get();
+        return $this->queryById($donorId)->get();
     }
 
     /**

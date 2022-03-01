@@ -24,6 +24,7 @@ class TestDonation extends \Give_Unit_Test_Case
     public function tearDown()
     {
         parent::tearDown();
+        $donationsTable = DB::prefix('posts');
         $donationMetaTable = DB::prefix('give_donationmeta');
         $donorTable = DB::prefix('give_donors');
         $donorMetaTable = DB::prefix('give_donormeta');
@@ -31,6 +32,7 @@ class TestDonation extends \Give_Unit_Test_Case
         DB::query("TRUNCATE TABLE $donorTable");
         DB::query("TRUNCATE TABLE $donorMetaTable");
         DB::query("TRUNCATE TABLE $donationMetaTable");
+        DB::query("TRUNCATE TABLE $donationsTable");
     }
 
     /**
@@ -42,16 +44,19 @@ class TestDonation extends \Give_Unit_Test_Case
      */
     public function testCreateShouldInsertDonation()
     {
+        $donor = $this->createDonor();
+
         // TODO: have this mock repository and expect insert method
         $donation = Donation::create([
             'status' => DonationStatus::PENDING(),
             'gateway' => TestGateway::id(),
             'amount' => 50,
             'currency' => 'USD',
-            'donorId' => 1,
+            'donorId' => $donor->id,
             'firstName' => 'Bill',
             'lastName' => 'Murray',
             'email' => 'billMurray@givewp.com',
+            'formId' => 1
         ]);
 
         $repository = new DonationRepository();
@@ -116,8 +121,8 @@ class TestDonation extends \Give_Unit_Test_Case
         $donor = $this->createDonor();
         $donation = $this->createDonation(['donorId' => $donor->id]);
 
-        $this->assertInstanceOf(Donor::class, $donation->donor());
-        $this->assertEquals($donor, $donation->donor());
+        $this->assertInstanceOf(Donor::class, $donation->donor()->get());
+        $this->assertEquals($donor, $donation->donor()->get());
     }
 
     /**
@@ -157,6 +162,7 @@ class TestDonation extends \Give_Unit_Test_Case
                 'firstName' => 'Bill',
                 'lastName' => 'Murray',
                 'email' => 'billMurray@givewp.com',
+                'formId' => 1
             ], $attributes)
         );
     }

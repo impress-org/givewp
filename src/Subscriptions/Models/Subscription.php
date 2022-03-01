@@ -4,8 +4,6 @@ namespace Give\Subscriptions\Models;
 
 use DateTime;
 use Exception;
-use Give\Donations\Models\Donation;
-use Give\Donors\Models\Donor;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Model;
 use Give\Framework\QueryBuilder\QueryBuilder;
@@ -68,21 +66,21 @@ class Subscription extends Model implements ModelCrud
     /**
      * @unreleased
      *
-     * @return Donor|null
+     * @return QueryBuilder
      */
     public function donor()
     {
-        return give()->donorRepository->getById($this->donorId);
+        return give()->donorRepository->queryById($this->donorId);
     }
 
     /**
      * @unreleased
      *
-     * @return Donation[]
+     * @return QueryBuilder
      */
     public function donations()
     {
-        return give()->donations->getBySubscriptionId($this->id);
+        return give()->donations->queryBySubscriptionId($this->id);
     }
 
     /**

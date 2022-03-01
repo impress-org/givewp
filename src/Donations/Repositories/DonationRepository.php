@@ -64,14 +64,25 @@ class DonationRepository
      */
     public function getBySubscriptionId($subscriptionId)
     {
+        return $this->queryBySubscriptionId($subscriptionId)->getAll();
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  int  $subscriptionId
+     *
+     * @return QueryBuilder
+     */
+    public function queryBySubscriptionId($subscriptionId)
+    {
         return $this->prepareQuery()
             ->leftJoin('give_donationmeta', 'ID', 'donationMeta.donation_id', 'donationMeta')
             ->where('post_type', 'give_payment')
             ->where('post_status', 'give_subscription')
             ->where('donationMeta.meta_key', 'subscription_id')
             ->where('donationMeta.meta_value', $subscriptionId)
-            ->orderBy('post_date', 'DESC')
-            ->getAll();
+            ->orderBy('post_date', 'DESC');
     }
 
     /**
@@ -79,9 +90,9 @@ class DonationRepository
      *
      * @param  int  $donorId
      *
-     * @return Donation[]|null
+     * @return QueryBuilder
      */
-    public function getByDonorId($donorId)
+    public function queryByDonorId($donorId)
     {
         return $this->prepareQuery()
             ->where('post_type', 'give_payment')
@@ -92,8 +103,7 @@ class DonationRepository
                     ->where('meta_key', DonationMetaKeys::DONOR_ID)
                     ->where('meta_value', $donorId);
             })
-            ->orderBy('post_date', 'DESC')
-            ->getAll();
+            ->orderBy('post_date', 'DESC');
     }
 
     /**
@@ -122,6 +132,8 @@ class DonationRepository
                 ->insert([
                     'post_date' => $date,
                     'post_date_gmt' => get_gmt_from_date($date),
+                    'post_modified' => $date,
+                    'post_modified_gmt' => get_gmt_from_date($date),
                     'post_status' => $donation->status->getValue(),
                     'post_type' => 'give_payment',
                     'post_parent' => isset($donation->parentId) ? $donation->parentId : 0

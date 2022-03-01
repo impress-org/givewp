@@ -49,7 +49,7 @@ class TestDonorRepository extends Give_Unit_Test_Case
         $repository = new DonorRepository();
 
         /** @var Donor $donorFromRepository */
-        $donorFromRepository = $repository->getById($donor->id);
+        $donorFromRepository = $repository->queryById($donor->id);
 
         /** @var Donor $donorQuery */
         $donorQuery = $repository->prepareQuery()

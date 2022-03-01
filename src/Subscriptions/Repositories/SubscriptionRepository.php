@@ -37,35 +37,43 @@ class SubscriptionRepository
      */
     public function getById($subscriptionId)
     {
+        return $this->queryById($subscriptionId)->get();
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  int  $subscriptionId
+     * @return QueryBuilder
+     */
+    public function queryById($subscriptionId)
+    {
         return $this->prepareQuery()
-            ->where('id', $subscriptionId)
-            ->get();
+            ->where('id', $subscriptionId);
     }
 
     /**
      * @unreleased
      *
      * @param  int  $donationId
-     * @return Subscription
+     * @return QueryBuilder
      */
-    public function getByDonationId($donationId)
+    public function queryByDonationId($donationId)
     {
         return $this->prepareQuery()
-            ->where('parent_payment_id', $donationId)
-            ->get();
+            ->where('parent_payment_id', $donationId);
     }
 
     /**
      * @unreleased
      *
      * @param  int  $donorId
-     * @return Subscription[]
+     * @return QueryBuilder
      */
-    public function getByDonorId($donorId)
+    public function queryByDonorId($donorId)
     {
         return $this->prepareQuery()
-            ->where('customer_id', $donorId)
-            ->getAll();
+            ->where('customer_id', $donorId);
     }
 
     /**
