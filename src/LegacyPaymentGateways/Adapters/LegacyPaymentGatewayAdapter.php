@@ -54,9 +54,9 @@ class LegacyPaymentGatewayAdapter
 
         $donor = $this->getOrCreateDonor(
             $formData->donorInfo->wpUserId,
+            $formData->donorInfo->email,
             $formData->donorInfo->firstName,
-            $formData->donorInfo->lastName,
-            $formData->donorInfo->email
+            $formData->donorInfo->lastName
         );
 
         $donation = $formData->toDonation($donor->id)->save();
