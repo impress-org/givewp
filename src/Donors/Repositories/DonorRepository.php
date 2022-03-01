@@ -188,6 +188,35 @@ class DonorRepository
     }
 
     /**
+     * @unreleased
+     *
+     * @param  int  $donorId
+     * @param  array  $columns
+     * @return bool
+     * @throws Exception
+     */
+    public function updateLegacyColumns($donorId, $columns)
+    {
+        DB::query('START TRANSACTION');
+
+        try {
+            DB::table('give_donors')
+                ->where('id', $donorId)
+                ->update($columns);
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed updating a donor');
+
+            throw new $exception('Failed updating a donor');
+        }
+
+        DB::query('COMMIT');
+
+        return true;
+    }
+
+    /**
      * @throws Exception
      */
     public function delete(Donor $donor)
@@ -324,15 +353,15 @@ class DonorRepository
         return DB::table('give_donors')
             ->setModel(Donor::class)
             ->select(
-                ['id', 'id'],
+                'id',
                 ['user_id', 'userId'],
-                ['email', 'email'],
-                ['name', 'name'],
+                'email',
+                'name',
                 ['purchase_value', 'totalAmountDonated'],
                 ['purchase_count', 'totalDonations'],
                 ['payment_ids', 'paymentIds'],
                 ['date_created', 'createdAt'],
-                ['token', 'token'],
+                'token',
                 ['verify_key', 'verifyKey'],
                 ['verify_throttle', 'verifyThrottle']
             )

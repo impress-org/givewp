@@ -9,6 +9,12 @@ use Give\Helpers\Hooks;
 class DispatchGiveUpdatePaymentStatus
 {
     /**
+     * Dispatching this action also ensures additional actions are triggered in legacy files.
+     * Increasing Donor purchase_value and purchase_count is included.
+     * @see * includes/payments/actions.php
+     * add_action( 'give_update_payment_status', 'give_complete_purchase', 100, 3 );
+     * add_action( 'give_update_payment_status', 'give_record_status_change', 100, 3 );
+     *
      * @unreleased
      *
      * @param  Donation  $donation

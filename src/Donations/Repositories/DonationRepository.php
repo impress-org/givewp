@@ -431,10 +431,12 @@ class DonationRepository
     }
 
     /**
+     * @unreleased
+     *
      * @param $donorId
      * @return string
      */
-    public function getTotalDonationsByDonorId($donorId)
+    public function getTotalDonationCountByDonorId($donorId)
     {
         return DB::table('posts')
             ->where('post_type', 'give_payment')
@@ -446,5 +448,23 @@ class DonationRepository
                     ->where('meta_value', $donorId);
             })
             ->count();
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param $donorId
+     * @return array|bool|null
+     */
+    public function getAllDonationIdsByDonorId($donorId)
+    {
+        return array_column(
+            DB::table('give_donationmeta')
+                ->select('donation_id')
+                ->where('meta_key', DonationMetaKeys::DONOR_ID)
+                ->where('meta_value', $donorId)
+                ->getAll(),
+            'donation_id'
+        );
     }
 }

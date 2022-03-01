@@ -39,8 +39,6 @@ class Donor extends Model implements ModelCrud
         'lastName' => 'string',
         'email' => 'string',
         'prefix' => 'string',
-        'totalAmountDonated' => 'int',
-        'totalDonations' => 'int',
     ];
 
     /**
@@ -165,6 +163,8 @@ class Donor extends Model implements ModelCrud
     }
 
     /**
+     * @unreleased
+     *
      * @return array
      */
     public function additionalEmails()
@@ -173,14 +173,18 @@ class Donor extends Model implements ModelCrud
     }
 
     /**
+     * @unreleased
+     *
      * @return int
      */
     public function totalDonations()
     {
-        return (int)give()->donations->getTotalDonationsByDonorId($this->id);
+        return (int)give()->donations->getTotalDonationCountByDonorId($this->id);
     }
 
     /**
+     * @unreleased
+     *
      * @return int
      */
     public function totalAmountDonated()
@@ -189,6 +193,8 @@ class Donor extends Model implements ModelCrud
     }
 
     /**
+     * @unreleased
+     *
      * @return QueryBuilder
      */
     public static function query()

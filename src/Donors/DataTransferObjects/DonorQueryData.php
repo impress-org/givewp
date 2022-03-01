@@ -42,14 +42,6 @@ class DonorQueryData
      * @var string
      */
     private $lastName;
-    /**
-     * @var int
-     */
-    private $totalAmountDonated;
-    /**
-     * @var int
-     */
-    private $totalDonations;
 
     /**
      * Convert data from donor object to Donor Model
@@ -69,8 +61,6 @@ class DonorQueryData
         $self->firstName = $object->firstName;
         $self->lastName = $object->lastName;
         $self->createdAt = $self->toDateTime($object->createdAt);
-        $self->totalAmountDonated = (int)$object->totalAmountDonated;
-        $self->totalDonations = (int)$object->totalDonations;
 
         return $self;
     }
