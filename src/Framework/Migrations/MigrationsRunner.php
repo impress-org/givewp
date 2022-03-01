@@ -146,13 +146,13 @@ class MigrationsRunner
                 );
             }
 
-            // Commit transaction if successful
-            $wpdb->query('COMMIT');
-
             // Stop Migration Runner if migration has failed
             if ($migrationLog->getStatus() === MigrationLogStatus::FAILED) {
                 break;
             }
+
+            // Commit transaction if successful
+            $wpdb->query('COMMIT');
         }
     }
 
