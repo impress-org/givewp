@@ -228,6 +228,33 @@ class SubscriptionRepository
     /**
      * @unreleased
      *
+     * @param  int  $subscriptionId
+     * @param  array  $columns
+     * @return bool
+     * @throws Exception
+     */
+    public function updateLegacyColumns($subscriptionId, $columns)
+    {
+        DB::query('START TRANSACTION');
+
+        try {
+            DB::table('give_subscriptions')
+                ->where('id', $subscriptionId)
+                ->update($columns);
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed updating a subscription');
+
+            throw new $exception('Failed updating a subscription');
+        }
+
+        DB::query('COMMIT');
+
+        return true;
+    }
+
+    /**
      * @param  Subscription  $subscription
      * @return void
      */
@@ -237,6 +264,10 @@ class SubscriptionRepository
             if (!isset($subscription->$key)) {
                 throw new InvalidArgumentException("'$key' is required.");
             }
+        }
+
+        if (!$subscription->donor()->get()) {
+            throw new InvalidArgumentException("Invalid donorId, Donor does not exist");
         }
     }
 
