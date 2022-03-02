@@ -46,12 +46,22 @@ class DetermineVisibilityForRequest
         return array_reduce( $conditions, [$this, 'reduceVisibility'], self::IS_VISIBLE );
     }
 
+    /**
+     * @unreleased
+     * @return bool
+     */
     protected function fieldHasVisibilityConditions()
     {
         return method_exists( $this->field, 'hasVisibilityConditions' )
             && $this->field->hasVisibilityConditions();
     }
 
+    /**
+     * @unreleased
+     * @param bool $visibility
+     * @param Condition $condition
+     * @return bool
+     */
     protected function reduceVisibility( $visibility, Condition $condition )
     {
         $result = $this->compareConditionWithOperator( $condition );
@@ -61,6 +71,11 @@ class DetermineVisibilityForRequest
             : $visibility || $result;
     }
 
+    /**
+     * @unreleased
+     * @param Condition $condition
+     * @return bool
+     */
     protected function compareConditionWithOperator( Condition $condition )
     {
         if( is_a( $condition, BasicCondition::class ) ) {
@@ -71,6 +86,11 @@ class DetermineVisibilityForRequest
         return self::IS_VISIBLE;
     }
 
+    /**
+     * @unreleased
+     * @param BasicCondition $condition
+     * @return bool
+     */
     protected function compareBasicConditionWithOperator( BasicCondition $condition )
     {
         $conditionValue = $condition->value;
@@ -100,6 +120,7 @@ class DetermineVisibilityForRequest
     }
 
     /**
+     * @unreleased
      * @param $amount
      * @return int
      */
