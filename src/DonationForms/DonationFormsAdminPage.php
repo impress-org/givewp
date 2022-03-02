@@ -2,6 +2,8 @@
 
 namespace Give\DonationForms;
 
+use Give\Helpers\EnqueueScript;
+
 /**
  * @since 2.19.0
  */
@@ -29,21 +31,17 @@ class DonationFormsAdminPage
      */
     public function loadScripts()
     {
-        wp_enqueue_script(
-            'give-admin-donation-forms',
-            GIVE_PLUGIN_URL . 'assets/dist/js/give-admin-donation-forms.js',
-            ['wp-element', 'wp-i18n', 'wp-hooks'],
-            GIVE_VERSION,
-            true
-        );
-        wp_localize_script(
-            'give-admin-donation-forms',
-            'GiveDonationForms',
-            [
-                'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/forms')),
-                'apiNonce' => wp_create_nonce('wp_rest'),
-            ]
-        );
+        EnqueueScript::make('give-admin-donation-forms', 'assets/dist/js/give-admin-donation-forms.js')
+            ->loadInFooter()
+            ->enqueue()
+            ->registerTranslations()
+            ->registerLocalizeData(
+                'GiveDonationForms',
+                [
+                    'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/forms')),
+                    'apiNonce' => wp_create_nonce('wp_rest'),
+                ]
+            );
 
         wp_enqueue_style(
             'give-admin-ui-font',
