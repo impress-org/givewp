@@ -94,6 +94,8 @@ class DetermineVisibilityForRequest
                 return $comparisonValue < $conditionValue;
             case '<=':
                 return $comparisonValue <= $conditionValue;
+            default:
+                return false;
         }
     }
 
