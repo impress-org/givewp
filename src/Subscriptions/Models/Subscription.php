@@ -149,4 +149,22 @@ class Subscription extends Model implements ModelCrud
     {
         return SubscriptionQueryData::fromObject($object)->toSubscription();
     }
+
+
+    /**
+     * @return string
+     */
+    public function expiration()
+    {
+        $frequency = $this->frequency;
+        $period = $this->period;
+
+        // Calculate the quarter as times 3 months
+        if ($period->equals(SubscriptionPeriod::QUARTER())) {
+            $frequency *= 3;
+            $period = SubscriptionPeriod::MONTH();
+        }
+
+        return date('Y-m-d H:i:s', strtotime('+ ' . $frequency . $period->getValue() . ' 23:59:59'));
+    }
 }
