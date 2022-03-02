@@ -235,6 +235,12 @@ class SubscriptionRepository
      */
     public function updateLegacyColumns($subscriptionId, $columns)
     {
+        foreach (Subscription::propertyKeys() as $key) {
+            if (array_key_exists($key, $columns)) {
+                throw new InvalidArgumentException("'$key' is not a legacy column.");
+            }
+        }
+
         DB::query('START TRANSACTION');
 
         try {

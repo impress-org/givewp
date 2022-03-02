@@ -199,6 +199,12 @@ class DonorRepository
     {
         DB::query('START TRANSACTION');
 
+        foreach (Donor::propertyKeys() as $key) {
+            if (array_key_exists($key, $columns)) {
+                throw new InvalidArgumentException("'$key' is not a legacy column.");
+            }
+        }
+
         try {
             DB::table('give_donors')
                 ->where('id', $donorId)

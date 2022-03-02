@@ -248,6 +248,14 @@ abstract class Model implements Arrayable
     }
 
     /**
+     * @return int[]|string[]
+     */
+    public static function propertyKeys()
+    {
+        return array_keys((new static)->properties);
+    }
+
+    /**
      * Dynamically retrieve attributes on the model.
      *
      * @unreleased
