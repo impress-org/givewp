@@ -2,7 +2,6 @@
 
 namespace Give\Subscriptions\LegacyListeners;
 
-use Give\Framework\Database\DB;
 use Give\Helpers\Hooks;
 use Give\Subscriptions\Models\Subscription;
 
@@ -16,23 +15,21 @@ class DispatchGiveSubscriptionPostCreate
      */
     public function __invoke(Subscription $subscription)
     {
-        $query = DB::table('give_subscriptions')->where('id', $subscription->id)->select('parent_payment_id')->get();
-
 		$args = [
-			'customer_id'          => $subscription->donorId,
-			'period'               => $subscription->period->getValue(),
-			'frequency'            => $subscription->frequency,
-			'initial_amount'       => $subscription->amount,
-			'recurring_amount'     => $subscription->amount,
-			'recurring_fee_amount' => $subscription->feeAmount,
-			'bill_times'           => $subscription->installments,
-			'parent_payment_id'    => $query ? $query->parent_payment_id : 0,
-			'form_id'              => $subscription->donationFormId,
-			'created'              => $subscription->getFormattedDateTime($subscription->createdAt),
-			'expiration'           => $subscription->expiration(),
-			'status'               => $subscription->status->getValue(),
-			'profile_id'           => $subscription->gatewaySubscriptionId,
-		];
+            'customer_id' => $subscription->donorId,
+            'period' => $subscription->period->getValue(),
+            'frequency' => $subscription->frequency,
+            'initial_amount' => $subscription->amount,
+            'recurring_amount' => $subscription->amount,
+            'recurring_fee_amount' => $subscription->feeAmount,
+            'bill_times' => $subscription->installments,
+            'parent_payment_id' => give()->subscriptions->getInitialDonationId($subscription->id),
+            'form_id' => $subscription->donationFormId,
+            'created' => $subscription->getFormattedDateTime($subscription->createdAt),
+            'expiration' => $subscription->expiration(),
+            'status' => $subscription->status->getValue(),
+            'profile_id' => $subscription->gatewaySubscriptionId,
+        ];
 
         Hooks::dispatch('give_subscription_post_create', $subscription->id, $args);
     }

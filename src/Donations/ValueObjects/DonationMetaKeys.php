@@ -30,6 +30,7 @@ use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
  * @method static ANONYMOUS()
  * @method static LEVEL_ID()
  * @method static COMPANY()
+ * @method static GATEWAY_TRANSACTION_ID()
  */
 class DonationMetaKeys extends Enum
 {
@@ -57,4 +58,5 @@ class DonationMetaKeys extends Enum
     const ANONYMOUS = '_give_anonymous_donation';
     const LEVEL_ID = '_give_payment_price_id';
     const COMPANY = '_give_donation_company';
+    const GATEWAY_TRANSACTION_ID = '_give_payment_transaction_id';
 }

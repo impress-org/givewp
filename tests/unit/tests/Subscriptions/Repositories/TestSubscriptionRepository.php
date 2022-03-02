@@ -3,9 +3,13 @@
 namespace unit\tests\Subscriptions\Repositories;
 
 use Exception;
+use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationMode;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Traits\InteractsWithTime;
+use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
@@ -237,6 +241,69 @@ class TestSubscriptionRepository extends Give_Unit_Test_Case
             'status' => SubscriptionStatus::PENDING(),
             'gatewaySubscriptionId' => 'gateway-subscription-id',
             'donationFormId' => 1
+        ]);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  array  $attributes
+     *
+     * @return Donation
+     *
+     * @throws Exception
+     */
+    private function createDonation(array $attributes = [])
+    {
+        return Donation::create(
+            array_merge([
+                'status' => DonationStatus::PENDING(),
+                'gateway' => TestGateway::id(),
+                'mode' => DonationMode::TEST(),
+                'amount' => 50,
+                'currency' => 'USD',
+                'donorId' => 1,
+                'firstName' => 'Bill',
+                'lastName' => 'Murray',
+                'email' => 'billMurray@givewp.com',
+                'formId' => 1,
+                'formTitle' => 'Form Title',
+            ], $attributes)
+        );
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return Subscription
+     * @throws Exception
+     */
+    private function createSubscriptionAndInitialDonation()
+    {
+        $subscription = $this->createSubscription();
+
+        $donation = $this->createDonation();
+
+        $repository = new SubscriptionRepository();
+
+        $repository->updateLegacyColumns($subscription->id, ['parent_payment_id' => $donation->id]);
+
+        return $subscription;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return Donation
+     * @throws Exception
+     */
+    private function createRenewal(Subscription $subscription)
+    {
+        return $this->createDonation([
+            'status' => DonationStatus::RENEWAL(),
+            'subscriptionId' => $subscription->id,
+            // initial donation ID 'parent_payment_id'
+            'parentId' => give()->subscriptions->getInitialDonationId($subscription->id),
         ]);
     }
 }

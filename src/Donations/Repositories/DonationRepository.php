@@ -76,13 +76,20 @@ class DonationRepository
      */
     public function queryBySubscriptionId($subscriptionId)
     {
-        return $this->prepareQuery()
-            ->leftJoin('give_donationmeta', 'ID', 'donationMeta.donation_id', 'donationMeta')
+        $initialDonationId = give()->subscriptions->getInitialDonationId($subscriptionId);
+
+        $renewals = $this->prepareQuery()
             ->where('post_type', 'give_payment')
             ->where('post_status', 'give_subscription')
-            ->where('donationMeta.meta_key', 'subscription_id')
-            ->where('donationMeta.meta_value', $subscriptionId)
-            ->orderBy('post_date', 'DESC');
+            ->whereIn('ID', function (QueryBuilder $builder) use ($subscriptionId) {
+                $builder
+                    ->select('donation_id')
+                    ->from('give_donationmeta')
+                    ->where('meta_key', DonationMetaKeys::SUBSCRIPTION_ID)
+                    ->where('meta_value', $subscriptionId);
+            });
+        
+        return $renewals->orWhere('ID', $initialDonationId)->orderBy('post_date', 'DESC');
     }
 
     /**

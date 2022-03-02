@@ -278,6 +278,26 @@ class SubscriptionRepository
     }
 
     /**
+     * @unreleased
+     *
+     * @param  int  $subscriptionId
+     * @return int|null
+     */
+    public function getInitialDonationId($subscriptionId)
+    {
+        $query = DB::table('give_subscriptions')
+            ->where('id', $subscriptionId)
+            ->select(['parent_payment_id', 'initialDonationId'])
+            ->get();
+
+        if (!$query) {
+            return null;
+        }
+
+        return (int)$query->initialDonationId;
+    }
+
+    /**
      * @param  Subscription  $subscription
      * @return void
      */

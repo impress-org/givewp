@@ -102,6 +102,10 @@ class DonationQueryData
      * @var int
      */
     private $levelId;
+    /**
+     * @var string
+     */
+    private $gatewayTransactionId;
 
     /**
      * Convert data from object to Donation
@@ -144,6 +148,8 @@ class DonationQueryData
         $self->donorIp = $donationQueryObject->{DonationMetaKeys::DONOR_IP()->getKeyAsCamelCase()};
         $self->anonymous = (bool)$donationQueryObject->{DonationMetaKeys::ANONYMOUS()->getKeyAsCamelCase()};
         $self->levelId = (int)$donationQueryObject->{DonationMetaKeys::LEVEL_ID()->getKeyAsCamelCase()};
+        $self->gatewayTransactionId = $donationQueryObject->{DonationMetaKeys::GATEWAY_TRANSACTION_ID(
+        )->getKeyAsCamelCase()};
 
         return $self;
     }
