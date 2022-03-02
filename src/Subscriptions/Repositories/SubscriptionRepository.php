@@ -7,6 +7,7 @@ use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Traits\InteractsWithTime;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Helpers\Hooks;
 use Give\Log\Log;
 use Give\Subscriptions\Models\Subscription;
 
@@ -114,6 +115,8 @@ class SubscriptionRepository
     {
         $this->validateSubscription($subscription);
 
+        Hooks::dispatch('give_subscription_creating', $subscription);
+
         $date = $subscription->createdAt ? $this->getFormattedDateTime(
             $subscription->createdAt
         ) : $this->getCurrentFormattedDateForDatabase();
@@ -147,7 +150,11 @@ class SubscriptionRepository
 
         $subscriptionId = DB::last_insert_id();
 
-        return $this->getById($subscriptionId);
+        $subscription = $this->getById($subscriptionId);
+
+        Hooks::dispatch('give_subscription_created', $subscription);
+
+        return $subscription;
     }
 
     /**
@@ -161,6 +168,8 @@ class SubscriptionRepository
     public function update(Subscription $subscription)
     {
         $this->validateSubscription($subscription);
+
+        Hooks::dispatch('give_subscription_updating', $subscription);
 
         DB::query('START TRANSACTION');
 
@@ -192,7 +201,11 @@ class SubscriptionRepository
 
         $subscriptionId = DB::last_insert_id();
 
-        return $this->getById($subscriptionId);
+        $subscription = $this->getById($subscriptionId);
+
+        Hooks::dispatch('give_subscription_updating', $subscription);
+
+        return $subscription;
     }
 
     /**
@@ -206,6 +219,8 @@ class SubscriptionRepository
      */
     public function delete(Subscription $subscription)
     {
+        Hooks::dispatch('give_subscription_deleting', $subscription);
+
         DB::query('START TRANSACTION');
 
         try {
@@ -221,6 +236,8 @@ class SubscriptionRepository
         }
 
         DB::query('COMMIT');
+
+        Hooks::dispatch('give_subscription_deleted', $subscription);
 
         return true;
     }
@@ -302,5 +319,4 @@ class SubscriptionRepository
                 ['product_id', 'donationFormId']
             );
     }
-
 }
