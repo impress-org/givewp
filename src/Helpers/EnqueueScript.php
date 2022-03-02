@@ -181,10 +181,9 @@ class EnqueueScript
      */
     public function getAssetFileData()
     {
-        $scriptAssetPath = trailingslashit(dirname($this->absoluteScriptPath)) . basename(
-                $this->absoluteScriptPath,
-                '.js'
-            ) . '.asset.php';
+        $scriptAssetPath = trailingslashit(dirname($this->absoluteScriptPath))
+            . basename($this->absoluteScriptPath, '.js')
+            . '.asset.php';
         $scriptAsset = file_exists($scriptAssetPath)
             ? require($scriptAssetPath)
             : ['dependencies' => [], 'version' => filemtime($scriptAssetPath)];
