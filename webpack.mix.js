@@ -68,6 +68,12 @@ mix.webpackConfig({
         },
     },
     plugins: [
+        /*
+         * Transform script dependencies only for following external libraries:
+         * - @wordpress/
+         * - jquery
+         * - lodash, lodash-es
+         */
         new DependencyExtractionWebpackPlugin({
             useDefaults: false,
             requestToExternal: (request) => {
