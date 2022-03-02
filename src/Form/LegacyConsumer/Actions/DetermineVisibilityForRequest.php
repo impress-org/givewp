@@ -130,8 +130,11 @@ class DetermineVisibilityForRequest
         $allCurrencyData = give_get_currencies('all');
         $currencyData = $allCurrencyData[$currency];
 
-        $amount = str_replace($currencyData['setting']['thousands_separator'], '', $amount);
-        $amount = str_replace($currencyData['setting']['decimal_separator'], '.', $amount);
+        $amount = str_replace(
+            [$currencyData['setting']['thousands_separator'], $currencyData['setting']['decimal_separator']],
+            ['', '.'],
+            $amount
+        );
 
         return Money::of($amount, $currency)->getMinorAmount();
     }
