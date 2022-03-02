@@ -3,6 +3,7 @@
 namespace Give\DonorDashboards;
 
 use Give\DonorDashboards\Helpers\LocationList;
+use Give\Helpers\EnqueueScript;
 
 /**
  * Class App
@@ -138,28 +139,20 @@ class App
             return;
         }
 
-        wp_enqueue_script(
+        $donorDashboardScript = EnqueueScript::make(
             'give-donor-dashboards-app',
-            GIVE_PLUGIN_URL . 'assets/dist/js/donor-dashboards-app.js',
-            ['wp-i18n'],
-            GIVE_VERSION,
-            true
-        );
-
-        /**
-         * @link https://make.wordpress.org/core/2018/11/09/new-javascript-i18n-support-in-wordpress/
-         * "...this is to allow WordPress to selectively load only the necessary translations to ensure everything is as fast as can be"
-         */
-        wp_set_script_translations('give-donor-dashboards-app', 'give', GIVE_PLUGIN_DIR . 'languages');
+            'assets/dist/js/donor-dashboards-app.js'
+        )
+            ->loadInFooter()
+            ->enqueue()
+            ->registerTranslations();
 
         $recaptcha_key = give_get_option('recaptcha_key');
         $recaptcha_secret = give_get_option('recaptcha_secret');
-        $recaptcha_enabled = (give_is_setting_enabled(
-            give_get_option('enable_recaptcha')
-        )) && !empty($recaptcha_key) && !empty($recaptcha_secret) ? true : false;
+        $recaptcha_enabled = (give_is_setting_enabled(give_get_option('enable_recaptcha'))) &&
+            !empty($recaptcha_key) && !empty($recaptcha_secret);
 
-        wp_localize_script(
-            'give-donor-dashboards-app',
+        $donorDashboardScript->registerLocalizeData(
             'giveDonorDashboardData',
             [
                 'apiRoot' => esc_url_raw(rest_url()),
@@ -171,8 +164,7 @@ class App
                 'emailAccessEnabled' => give_is_setting_enabled(give_get_option('email_access')),
                 'loginEnabled' => $this->loginEnabled(),
                 'registeredTabs' => give()->donorDashboardTabs->getRegisteredIds(),
-                'loggedInWithoutDonor' => get_current_user_id() !== 0 && give()->donorDashboard->getId(
-                ) === null ? true : false,
+                'loggedInWithoutDonor' => get_current_user_id() !== 0 && give()->donorDashboard->getId() === null,
                 'recaptchaKey' => $recaptcha_enabled ? $recaptcha_key : '',
             ]
         );
