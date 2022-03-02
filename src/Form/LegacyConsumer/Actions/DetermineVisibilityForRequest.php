@@ -27,10 +27,10 @@ class DetermineVisibilityForRequest
      * @param Field $field
      * @param array $postData
      */
-    public function __construct(Field $field, array $postData )
+    public function __construct(Field $field, array $postData)
     {
         $this->field = $field;
-        $this->postData = new ArrayObject( $postData );
+        $this->postData = new ArrayObject($postData);
     }
 
     /**
@@ -38,12 +38,12 @@ class DetermineVisibilityForRequest
      */
     public function __invoke()
     {
-        if( ! $this->fieldHasVisibilityConditions() ) {
+        if (!$this->fieldHasVisibilityConditions()) {
             return self::IS_VISIBLE;
         }
 
         $conditions = $this->field->getVisibilityConditions();
-        return array_reduce( $conditions, [$this, 'reduceVisibility'], self::IS_VISIBLE );
+        return array_reduce($conditions, [$this, 'reduceVisibility'], self::IS_VISIBLE);
     }
 
     /**
@@ -52,7 +52,7 @@ class DetermineVisibilityForRequest
      */
     protected function fieldHasVisibilityConditions()
     {
-        return method_exists( $this->field, 'hasVisibilityConditions' )
+        return method_exists($this->field, 'hasVisibilityConditions')
             && $this->field->hasVisibilityConditions();
     }
 
@@ -62,9 +62,9 @@ class DetermineVisibilityForRequest
      * @param Condition $condition
      * @return bool
      */
-    protected function reduceVisibility( $visibility, Condition $condition )
+    protected function reduceVisibility($visibility, Condition $condition)
     {
-        $result = $this->compareConditionWithOperator( $condition );
+        $result = $this->compareConditionWithOperator($condition);
 
         return 'and' === $condition->boolean
             ? $visibility && $result
@@ -76,10 +76,10 @@ class DetermineVisibilityForRequest
      * @param Condition $condition
      * @return bool
      */
-    protected function compareConditionWithOperator( Condition $condition )
+    protected function compareConditionWithOperator(Condition $condition)
     {
-        if( is_a( $condition, BasicCondition::class ) ) {
-            return $this->compareBasicConditionWithOperator( $condition );
+        if (is_a($condition, BasicCondition::class)) {
+            return $this->compareBasicConditionWithOperator($condition);
         }
 
         // @TODO Implement nested conditions.
@@ -91,17 +91,17 @@ class DetermineVisibilityForRequest
      * @param BasicCondition $condition
      * @return bool
      */
-    protected function compareBasicConditionWithOperator( BasicCondition $condition )
+    protected function compareBasicConditionWithOperator(BasicCondition $condition)
     {
         $conditionValue = $condition->value;
-        $comparisonValue = $this->postData[ $condition->field ];
+        $comparisonValue = $this->postData[$condition->field];
 
-        if( 'give-amount' === $condition->field ) {
-            $conditionValue = $this->normalizeMinorAmount( $conditionValue );
-            $comparisonValue = $this->normalizeMinorAmount( $comparisonValue );
+        if ('give-amount' === $condition->field) {
+            $conditionValue = $this->normalizeMinorAmount($conditionValue);
+            $comparisonValue = $this->normalizeMinorAmount($comparisonValue);
         }
 
-        switch( $condition->operator ) {
+        switch ($condition->operator) {
             case '=':
                 return $comparisonValue === $conditionValue;
             case '!=':
@@ -124,15 +124,15 @@ class DetermineVisibilityForRequest
      * @param $amount
      * @return int
      */
-    protected function normalizeMinorAmount( $amount )
+    protected function normalizeMinorAmount($amount)
     {
-        $currency = give_get_currency($this->postData[ 'give-form-id' ]);
+        $currency = give_get_currency($this->postData['give-form-id']);
         $allCurrencyData = give_get_currencies('all');
-        $currencyData = $allCurrencyData[ $currency ];
+        $currencyData = $allCurrencyData[$currency];
 
-        $amount = str_replace( $currencyData['setting']['thousands_separator'], '', $amount );
-        $amount = str_replace( $currencyData['setting']['decimal_separator'], '.', $amount );
+        $amount = str_replace($currencyData['setting']['thousands_separator'], '', $amount);
+        $amount = str_replace($currencyData['setting']['decimal_separator'], '.', $amount);
 
-        return Money::of( $amount, $currency )->getMinorAmount();
+        return Money::of($amount, $currency)->getMinorAmount();
     }
 }
