@@ -89,6 +89,17 @@ mix.webpackConfig({
                 } else if (request === 'jquery') {
                     return 'jQuery';
                 }
+            },
+            requestToHandle: (request) => {
+                const WORDPRESS_NAMESPACE = '@wordpress/';
+
+                if (request === 'lodash-es') {
+                    return 'lodash';
+                }
+
+                if (request.startsWith(WORDPRESS_NAMESPACE)) {
+                    return 'wp-' + request.substring(WORDPRESS_NAMESPACE.length);
+                }
             }
         })
     ]
