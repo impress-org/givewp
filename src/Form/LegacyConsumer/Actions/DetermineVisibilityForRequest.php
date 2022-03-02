@@ -127,11 +127,10 @@ class DetermineVisibilityForRequest
     protected function normalizeMinorAmount($amount)
     {
         $currency = give_get_currency($this->postData['give-form-id']);
-        $allCurrencyData = give_get_currencies('all');
-        $currencyData = $allCurrencyData[$currency];
+        $settings = give_get_currencies('all')[$currency]['setting'];
 
         $amount = str_replace(
-            [$currencyData['setting']['thousands_separator'], $currencyData['setting']['decimal_separator']],
+            [$settings['thousands_separator'], $settings['decimal_separator']],
             ['', '.'],
             $amount
         );
