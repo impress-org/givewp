@@ -415,7 +415,7 @@ function give_stripe_is_zero_decimal_currency() {
  * @since 2.5.0
  * @since 2.19.0 Previously stripe accounts have single global statement descriptor.
  *             Now each stripe account will have their own statement descriptor.
- * @unreleased give_stripe_get_connected_account_options function returns empty string as account id for stripe account connected with api keys.
+ * @since 2.19.2 give_stripe_get_connected_account_options function returns empty string as account id for stripe account connected with api keys.
  *             For this return an exception throws. Internal logic update to get donation form stripe account on basis of account type
  *
  * @param array $donation_data List of posted variable while submitting donation.
