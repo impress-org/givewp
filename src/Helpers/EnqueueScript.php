@@ -124,7 +124,7 @@ class EnqueueScript
     public function registerTranslations()
     {
         wp_set_script_translations(
-            $this->relativeScriptPath,
+            $this->scriptId,
             'give',
             GIVE_PLUGIN_DIR . 'languages'
         );
