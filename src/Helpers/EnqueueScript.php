@@ -19,7 +19,12 @@ class EnqueueScript
     /**
      * @var string
      */
-    private $scriptPath;
+    private $relativeScriptPath;
+
+    /**
+     * @var string
+     */
+    private $absoluteScriptPath;
 
     /**
      * @var array
@@ -48,7 +53,8 @@ class EnqueueScript
     {
         $self = new static();
         $self->scriptId = $scriptId;
-        $self->scriptPath = $scriptPath;
+        $self->relativeScriptPath = $scriptPath;
+        $self->absoluteScriptPath = GIVE_PLUGIN_DIR . $self->relativeScriptPath;
 
         return $self;
     }
@@ -95,19 +101,8 @@ class EnqueueScript
      */
     public function register()
     {
-        $scriptUrl = plugins_url($this->scriptPath, __FILE__);
-        $scriptAssetPath = dir($this->scriptPath) . basename($this->scriptPath, '.js') . '.asset.php';
-        $scriptAsset = file_exists($scriptAssetPath)
-            ? require($scriptAssetPath)
-            : ['dependencies' => [], 'version' => filemtime($this->scriptPath)];
-
-        if ($this->scriptDependencies) {
-            $scriptAsset['dependencies'] = array_merge($this->scriptDependencies, $scriptAsset['dependencies']);
-        }
-
-        if ($this->version) {
-            $scriptAsset['version'] = $this->version;
-        }
+        $scriptUrl = plugins_url($this->relativeScriptPath, GIVE_PLUGIN_FILE);
+        $scriptAsset = $this->getAssetFileData();
 
         wp_register_script(
             $this->scriptId,
@@ -129,7 +124,7 @@ class EnqueueScript
     public function registerTranslations()
     {
         wp_set_script_translations(
-            $this->scriptPath,
+            $this->relativeScriptPath,
             'give',
             GIVE_PLUGIN_DIR . 'languages'
         );
@@ -177,5 +172,31 @@ class EnqueueScript
     public function getScriptId()
     {
         return $this->scriptId;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return array
+     */
+    public function getAssetFileData()
+    {
+        $scriptAssetPath = trailingslashit(dirname($this->absoluteScriptPath)) . basename(
+                $this->absoluteScriptPath,
+                '.js'
+            ) . '.asset.php';
+        $scriptAsset = file_exists($scriptAssetPath)
+            ? require($scriptAssetPath)
+            : ['dependencies' => [], 'version' => filemtime($scriptAssetPath)];
+
+        if ($this->scriptDependencies) {
+            $scriptAsset['dependencies'] = array_merge($this->scriptDependencies, $scriptAsset['dependencies']);
+        }
+
+        if ($this->version) {
+            $scriptAsset['version'] = $this->version;
+        }
+
+        return $scriptAsset;
     }
 }
