@@ -152,6 +152,10 @@ class Subscription extends Model implements ModelCrud
 
 
     /**
+     * Expiration / End Date / Renewal
+     *
+     * @unreleased
+     *
      * @return string
      */
     public function expiration()

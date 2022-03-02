@@ -8,6 +8,9 @@ use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\PaymentGateways\Actions\CreateSubscriptionAction;
 use Give\PaymentGateways\DataTransferObjects\FormData;
 use Give\PaymentGateways\DataTransferObjects\SubscriptionData;
+use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
  * Class LegacyPaymentGatewayAdapter
@@ -67,9 +70,26 @@ class LegacyPaymentGatewayAdapter
 
         if (give_recurring_is_donation_recurring($formData->legacyDonationData)) {
             $subscriptionData = SubscriptionData::fromRequest($legacyDonationData);
-            $subscriptionId = $this->createSubscription($donation->id, $formData, $subscriptionData);
 
-            $gatewaySubscriptionData = $subscriptionData->toGatewaySubscriptionData($subscriptionId);
+            $subscription = Subscription::create([
+                'amount' => (int)$gatewayPaymentData->amount,
+                'period' => new SubscriptionPeriod($subscriptionData->period),
+                'frequency' => (int)$subscriptionData->frequency,
+                'donorId' => $donor->id,
+                'installments' => (int)$subscriptionData->times,
+                'status' => SubscriptionStatus::PENDING(),
+                'donationFormId' => $formData->formId
+            ]);
+
+            give()->subscriptions->updateLegacyColumns(
+                $subscription->id,
+                [
+                    'parent_payment_id' => $donation->id,
+                    'expiration' => $subscription->expiration()
+                ]
+            );
+
+            $gatewaySubscriptionData = $subscriptionData->toGatewaySubscriptionData($subscription->id);
 
             $registeredGateway->handleCreateSubscription($gatewayPaymentData, $gatewaySubscriptionData);
         }

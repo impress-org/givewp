@@ -88,7 +88,7 @@ class DonationRepository
                     ->where('meta_key', DonationMetaKeys::SUBSCRIPTION_ID)
                     ->where('meta_value', $subscriptionId);
             });
-        
+
         return $renewals->orWhere('ID', $initialDonationId)->orderBy('post_date', 'DESC');
     }
 

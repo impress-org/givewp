@@ -127,7 +127,7 @@ class SubscriptionRepository
             DB::table('give_subscriptions')->insert([
                 'created' => $date,
                 'status' => $subscription->status->getValue(),
-                'profile_id' => $subscription->gatewaySubscriptionId,
+                'profile_id' => isset($subscription->gatewaySubscriptionId) ? $subscription->gatewaySubscriptionId : '',
                 'customer_id' => $subscription->donorId,
                 'period' => $subscription->period->getValue(),
                 'frequency' => $subscription->frequency,
@@ -135,13 +135,14 @@ class SubscriptionRepository
                 'recurring_amount' => $subscription->amount,
                 'recurring_fee_amount' => isset($subscription->feeAmount) ? $subscription->feeAmount : 0,
                 'bill_times' => isset($subscription->installments) ? $subscription->installments : 0,
-                'transaction_id' => $subscription->transactionId,
+                'transaction_id' => isset($subscription->transactionId) ? $subscription->transactionId : '',
                 'product_id' => $subscription->donationFormId
             ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
-            Log::error('Failed creating a subscription');
+
+            Log::error('Failed creating a subscription', compact('subscription'));
 
             throw new $exception('Failed creating a subscription');
         }
@@ -192,7 +193,7 @@ class SubscriptionRepository
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
-            Log::error('Failed updating a subscription');
+            Log::error('Failed updating a subscription', compact('subscription'));
 
             throw new $exception('Failed updating a subscription');
         }
@@ -230,7 +231,7 @@ class SubscriptionRepository
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
-            Log::error('Failed deleting a subscription');
+            Log::error('Failed deleting a subscription', compact('subscription'));
 
             throw new $exception('Failed deleting a subscription');
         }
@@ -267,7 +268,7 @@ class SubscriptionRepository
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
-            Log::error('Failed updating a subscription');
+            Log::error('Failed updating a subscription', compact('subscriptionId', 'columns'));
 
             throw new $exception('Failed updating a subscription');
         }
