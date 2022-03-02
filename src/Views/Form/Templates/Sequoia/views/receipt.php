@@ -34,7 +34,7 @@ ob_start();
                     <?= __('Donation Failed', 'give') ?>
                 </h2>
                 <p class="message">
-                    <?= __("We're sorry, your donation failed to process. Please try again or contact site support.", 'give') ?>
+                    <?= esc_html__('We\'re sorry, your donation failed to process. Please try again or contact site support.', 'give') ?>
                 </p>
             <?php
             // Donation completed

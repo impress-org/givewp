@@ -37,7 +37,7 @@ $data = $hasDonationFailed()
         'badgeIcon' => '#give-icon-cross',
         'badgeText' => esc_html__('Failed', 'give'),
         'title' => esc_html__('Donation Failed', 'give'),
-        'description' => esc_html__("We're sorry, your donation failed to process. Please try again or contact site support.", 'give'),
+        'description' => esc_html__('We\'re sorry, your donation failed to process. Please try again or contact site support.', 'give'),
     ]
     : [
         'badgeIcon' => '#give-icon-checkmark',
