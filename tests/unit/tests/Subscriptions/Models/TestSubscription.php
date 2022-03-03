@@ -2,6 +2,7 @@
 
 namespace unit\tests\Subscriptions\Models;
 
+use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
@@ -50,7 +51,7 @@ class TestSubscription extends \Give_Unit_Test_Case
 
     /**
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function testSubscriptionShouldGetDonations()
     {
@@ -70,10 +71,17 @@ class TestSubscription extends \Give_Unit_Test_Case
 
     /**
      * @return void
+     * @throws Exception
      */
     public function testSubscriptionShouldGetDonor()
     {
-        $this->markTestIncomplete();
+        /** @var Donor $donor */
+        $donor = Donor::factory()->create();
+
+        /** @var Subscription $subscription */
+        $subscription = Subscription::factory()->create(['donorId' => $donor->id]);
+
+        $this->assertEquals($donor, $subscription->donor()->get());
     }
 
     /**

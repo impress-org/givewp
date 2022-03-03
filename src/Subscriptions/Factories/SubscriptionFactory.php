@@ -5,7 +5,6 @@ namespace Give\Subscriptions\Factories;
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\Framework\Database\DB;
 use Give\Framework\Models\Factories\ModelFactory;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
@@ -61,13 +60,11 @@ class SubscriptionFactory extends ModelFactory
         /** @var Subscription $subscription */
         $subscription = $model;
 
-        $query = DB::table('give_subscriptions')
-            ->where('id', $subscription->id)
-            ->select(['parent_payment_id', 'initialDonationId'])
-            ->get();
+        // check if initial donation ID (parent_payment_id has been recorded
+        $initialDonationId = give()->subscriptions->getInitialDonationId($subscription->id);
 
         // for backwards compatability update the subscription parent_payment_id column
-        if ($query && !$query->initialDonationId) {
+        if (!$initialDonationId) {
             $donation = Donation::factory()->create(['donorId' => $subscription->donorId]);
             give()->subscriptions->updateLegacyColumns($subscription->id, ['parent_payment_id' => $donation->id]);
         }
