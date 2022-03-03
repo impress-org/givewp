@@ -65,6 +65,7 @@
         "@stripe/react-stripe-js": "^1.2.2",
         "@stripe/stripe-js": "^1.12.1",
         "@wordpress/components": "^19.2.3",
+        "@wordpress/hooks": "^3.3.1",
         "@wordpress/i18n": "^3.19.0",
         "accounting": "latest",
         "axios": "^0.21.2",
