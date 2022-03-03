@@ -35,7 +35,7 @@ class PayPalStandardWebhook
         $eventData = wp_parse_args($eventData);
 
         if ( ! $this->webhookValidator->verifyEventSignature($eventData)) {
-            wp_die('Forbidden', 404);
+            wp_die('Forbidden', 403);
         }
 
         $donationId = isset($eventData['custom']) ? absint($eventData['custom']) : 0;
@@ -44,7 +44,7 @@ class PayPalStandardWebhook
         // ipn verification can be disabled in GiveWP (<=2.15.0).
         // This check will prevent anonymous requests from editing donation, if ipn verification disabled.
         if ( ! $this->verifyDonationId($donationId)) {
-            wp_die('Forbidden', 404);
+            wp_die('Forbidden', 403);
         }
 
         $this->recordIpn($eventData, $donationId);
