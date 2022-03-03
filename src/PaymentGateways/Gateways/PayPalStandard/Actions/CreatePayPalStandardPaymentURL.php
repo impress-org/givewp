@@ -107,7 +107,7 @@ class CreatePayPalStandardPaymentURL
                 $paymentData->donationId,
                 $paymentData->legacyPaymentData
             ],
-            '' // TODO: add plugin version: @since 2.19.0
+            '2.19.0'
         );
     }
 }
