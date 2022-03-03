@@ -4,11 +4,11 @@ namespace unit\tests\Donors\Models;
 
 use Exception;
 use Give\Donations\Models\Donation;
-use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
 use Give\Framework\Models\Traits\InteractsWithTime;
-use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
+use Give\Subscriptions\Models\Subscription;
+use Give_Subscriptions_DB;
 
 /**
  * @unreleased
@@ -19,6 +19,15 @@ class TestDonor extends \Give_Unit_Test_Case
 {
     use InteractsWithTime;
 
+    public function setUp()
+    {
+        parent::setUp();
+
+        /** @var Give_Subscriptions_DB $legacySubscriptionDb */
+        $legacySubscriptionDb = give(Give_Subscriptions_DB::class);
+
+        $legacySubscriptionDb->create_table();
+    }
 
     /**
      * @unreleased
@@ -32,11 +41,15 @@ class TestDonor extends \Give_Unit_Test_Case
         $donationMetaTable = DB::prefix('give_donationmeta');
         $donorTable = DB::prefix('give_donors');
         $donorMetaTable = DB::prefix('give_donormeta');
+        $subscriptionsTable = DB::prefix('give_subscriptions');
+        $sequentialOrderingTable = DB::prefix('give_sequential_ordering');
 
         DB::query("TRUNCATE TABLE $donorTable");
         DB::query("TRUNCATE TABLE $donorMetaTable");
         DB::query("TRUNCATE TABLE $donationMetaTable");
         DB::query("TRUNCATE TABLE $donationsTable");
+        DB::query("TRUNCATE TABLE $subscriptionsTable");
+        DB::query("TRUNCATE TABLE $sequentialOrderingTable");
     }
 
     /**
@@ -45,67 +58,42 @@ class TestDonor extends \Give_Unit_Test_Case
      */
     public function testShouldGetDonations()
     {
-        $donor = $this->createDonor();
+        /** @var Donor $donor */
+        $donor = Donor::factory()->create();
 
-        $donation1 = $this->createDonation(['donorId' => $donor->id, 'amount' => 100]);
-        $donation2 = $this->createDonation(['donorId' => $donor->id, 'amount' => 200]);
+        $donation1 = Donation::factory()->create(['donorId' => $donor->id, 'amount' => 100]);
+        $donation2 = Donation::factory()->create(['donorId' => $donor->id, 'amount' => 200]);
 
         $this->assertEquals($donor->donations()->getAll(), [$donation1, $donation2]);
     }
 
     /**
      * @return void
+     * @throws Exception
+     */
+    public function testShouldGetTotalDonations()
+    {
+        /** @var Donor $donor */
+        $donor = Donor::factory()->create();
+
+        $donation1 = Donation::factory()->create(['donorId' => $donor->id, 'amount' => 100]);
+        $donation2 = Donation::factory()->create(['donorId' => $donor->id, 'amount' => 200]);
+
+        $this->assertEquals(2, $donor->totalDonations());
+    }
+
+    /**
+     * @return void
+     * @throws Exception
      */
     public function testShouldGetSubscriptions()
     {
-        $this->markTestIncomplete();
-    }
+        /** @var Donor $donor */
+        $donor = Donor::factory()->create();
 
-    /**
-     * @unreleased
-     *
-     * @param  array  $attributes
-     *
-     * @return Donation
-     *
-     * @throws Exception
-     */
-    private function createDonation(array $attributes = [])
-    {
-        return Donation::create(
-            array_merge([
-                'status' => DonationStatus::PENDING(),
-                'gateway' => TestGateway::id(),
-                'amount' => 50,
-                'currency' => 'USD',
-                'donorId' => 1,
-                'firstName' => 'Bill',
-                'lastName' => 'Murray',
-                'email' => 'billMurray@givewp.com',
-                'formId' => 1
-            ], $attributes)
-        );
-    }
+        $subscription1 = Subscription::factory()->create(['donorId' => $donor->id]);
+        $subscription2 = Subscription::factory()->create(['donorId' => $donor->id]);
 
-    /**
-     * @unreleased
-     *
-     * @param  array  $attributes
-     *
-     * @return Donor
-     *
-     * @throws Exception
-     */
-    private function createDonor(array $attributes = [])
-    {
-        return Donor::create(
-            array_merge([
-                'createdAt' => $this->getCurrentDateTime(),
-                'name' => 'Bill Murray',
-                'firstName' => 'Bill',
-                'lastName' => 'Bill Murray',
-                'email' => 'billMurray@givewp.com'
-            ], $attributes)
-        );
+        $this->assertEquals($donor->subscriptions()->getAll(), [$subscription1, $subscription2]);
     }
 }
