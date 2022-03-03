@@ -12,7 +12,7 @@ import { useStoreValue } from '../../store';
 import { setDates, setRange } from '../../store/actions';
 
 import './style.scss';
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
 
 const PeriodSelector = () => {
 	// Get 'period' object from the store

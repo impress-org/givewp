@@ -8,6 +8,8 @@
 
 namespace Give\Views\Admin\Pages;
 
+use Give\Helpers\EnqueueScript;
+
 defined('ABSPATH') || exit;
 
 /**
@@ -38,41 +40,36 @@ class Reports
 
         if (isset($_GET['legacy'])) {
             $script = "
-				jQuery(document).ready(() => {
-					const anchors = [].slice.call(document.querySelectorAll('a[href*=give-reports]'));
-					anchors.forEach((anchor) => {
-						if (anchor.getAttribute('id') === 'new-reports-link') {
-							return;
-						}
-						anchor.setAttribute('href', anchor.getAttribute('href') + '&legacy=true');
-					});
-				});
-			";
+                jQuery(document).ready(() => {
+                    const anchors = [].slice.call(document.querySelectorAll('a[href*=give-reports]'));
+                    anchors.forEach((anchor) => {
+                        if (anchor.getAttribute('id') === 'new-reports-link') {
+                            return;
+                        }
+                        anchor.setAttribute('href', anchor.getAttribute('href') + '&legacy=true');
+                    });
+                });
+            ";
             wp_add_inline_script('jquery', $script);
 
             return;
         }
 
-        wp_enqueue_script(
-            'give-admin-reports-v3-js',
-            GIVE_PLUGIN_URL . 'assets/dist/js/admin-reports.js',
-            ['wp-element', 'wp-api', 'wp-i18n', 'wp-hooks'],
-            '0.0.2',
-            true
-        );
-        wp_set_script_translations('give-admin-reports-v3-js', 'give', GIVE_PLUGIN_DIR . 'languages');
-
-        wp_localize_script(
-            'give-admin-reports-v3-js',
-            'giveReportsData',
-            [
-                'legacyReportsUrl' => admin_url('/edit.php?post_type=give_forms&page=give-reports&legacy=true'),
-                'allTimeStart' => $this->get_all_time_start(),
-                'currencies' => array_keys(give_get_currencies_list()),
-                'currency' => give_get_currency(),
-                'testMode' => give_is_test_mode(),
-            ]
-        );
+        EnqueueScript::make('give-admin-reports-v3-js', 'assets/dist/js/admin-reports.js')
+            ->loadInFooter()
+            ->dependencies(['wp-api'])
+            ->enqueue()
+            ->registerTranslations()
+            ->registerLocalizeData(
+                'giveReportsData',
+                [
+                    'legacyReportsUrl' => admin_url('/edit.php?post_type=give_forms&page=give-reports&legacy=true'),
+                    'allTimeStart' => $this->get_all_time_start(),
+                    'currencies' => array_keys(give_get_currencies_list()),
+                    'currency' => give_get_currency(),
+                    'testMode' => give_is_test_mode(),
+                ]
+            );
     }
 
     // Add Reports submenu page to admin menu
