@@ -57,7 +57,7 @@ class WebhookValidator
         }
 
         if ('VERIFIED' !== $apiResponse['body']) {
-            Log::error(
+            Log::warning(
                 'PayPal Standard IPN Error',
                 [
                     'Message' => 'This is not a verified IPN.',
