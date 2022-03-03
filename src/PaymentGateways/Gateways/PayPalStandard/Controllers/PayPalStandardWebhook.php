@@ -46,7 +46,7 @@ class PayPalStandardWebhook
         // ipn verification can be disabled in GiveWP (<=2.15.0).
         // This check will prevent anonymous requests from editing donation, if ipn verification disabled.
         if (!$this->verifyDonationId($donationId)) {
-            Log::info(
+            Log::error(
                 'PayPal Standard IPN Error',
                 [
                     'Message' => 'Donation id (from IPN) does not exist.',
