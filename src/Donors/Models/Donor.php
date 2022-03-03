@@ -6,8 +6,11 @@ use DateTime;
 use Exception;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\DataTransferObjects\DonorQueryData;
+use Give\Donors\Factories\DonorFactory;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
+use Give\Framework\Models\Contracts\ModelHasFactory;
+use Give\Framework\Models\Factories\ModelFactory;
 use Give\Framework\Models\Model;
 use Give\Framework\QueryBuilder\QueryBuilder;
 
@@ -25,7 +28,7 @@ use Give\Framework\QueryBuilder\QueryBuilder;
  * @property string $lastName
  * @property string $email
  */
-class Donor extends Model implements ModelCrud
+class Donor extends Model implements ModelCrud, ModelHasFactory
 {
     /**
      * @var string[]
@@ -211,6 +214,14 @@ class Donor extends Model implements ModelCrud
     public static function fromQueryBuilderObject($object)
     {
         return DonorQueryData::fromObject($object)->toDonor();
+    }
+
+    /**
+     * @return ModelFactory
+     */
+    public static function factory()
+    {
+        return new DonorFactory(static::class);
     }
 
 }

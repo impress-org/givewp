@@ -5,11 +5,13 @@ namespace Give\Donations\Models;
 use DateTime;
 use Exception;
 use Give\Donations\DataTransferObjects\DonationQueryData;
+use Give\Donations\Factories\DonationFactory;
 use Give\Donations\Properties\BillingAddress;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
+use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Model;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\ValueObjects\Money;
@@ -42,7 +44,7 @@ use Give\ValueObjects\Money;
  * @property int $levelId
  * @property string $gatewayTransactionId
  */
-class Donation extends Model implements ModelCrud
+class Donation extends Model implements ModelCrud, ModelHasFactory
 {
     /**
      * @var string[]
@@ -89,8 +91,6 @@ class Donation extends Model implements ModelCrud
 
     /**
      * @unreleased
-     *
-     * TODO: add sequential ID
      *
      * @param  array  $attributes
      *
@@ -206,5 +206,13 @@ class Donation extends Model implements ModelCrud
     public static function fromQueryBuilderObject($object)
     {
         return DonationQueryData::fromObject($object)->toDonation();
+    }
+
+    /**
+     * @return DonationFactory
+     */
+    public static function factory()
+    {
+        return new DonationFactory(static::class);
     }
 }

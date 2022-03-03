@@ -5,9 +5,11 @@ namespace Give\Subscriptions\Models;
 use DateTime;
 use Exception;
 use Give\Framework\Models\Contracts\ModelCrud;
+use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Model;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Subscriptions\DataTransferObjects\SubscriptionQueryData;
+use Give\Subscriptions\Factories\SubscriptionFactory;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
@@ -29,7 +31,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
  * @property SubscriptionStatus $status
  * @property string $gatewaySubscriptionId
  */
-class Subscription extends Model implements ModelCrud
+class Subscription extends Model implements ModelCrud, ModelHasFactory
 {
     /**
      * @var string[]
@@ -170,5 +172,13 @@ class Subscription extends Model implements ModelCrud
         }
 
         return date('Y-m-d H:i:s', strtotime('+ ' . $frequency . $period->getValue() . ' 23:59:59'));
+    }
+
+    /**
+     * @return SubscriptionFactory
+     */
+    public static function factory()
+    {
+        return new SubscriptionFactory(static::class);
     }
 }

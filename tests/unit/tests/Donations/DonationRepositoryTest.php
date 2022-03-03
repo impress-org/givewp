@@ -48,16 +48,14 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
      */
     public function testGetByIdShouldReturnDonation()
     {
-        $donor = $this->createDonor();
-        $donationFactory = $this->createDonationInstance();
+        $donor = Donor::factory()->create();
+        $donationFactory = Donation::factory()->create();
         $repository = new DonationRepository();
 
-        $insertedDonation = $repository->insert($donationFactory);
-
-        $donation = $repository->getById($insertedDonation->id);
+        $donation = $repository->getById($donationFactory->id);
 
         $this->assertInstanceOf(Donation::class, $donation);
-        $this->assertEquals($insertedDonation->id, $donation->id);
+        $this->assertEquals($donationFactory->id, $donation->id);
     }
 
     /**
@@ -69,8 +67,9 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
      */
     public function testInsertShouldAddDonationToDatabase()
     {
-        $donor = $this->createDonor();
-        $donation = $this->createDonationInstance();
+        $donor = Donor::factory()->create();
+        $donation = new Donation(Donation::factory()->definition());
+
         $repository = new DonationRepository();
 
         $newDonation = $repository->insert($donation);
