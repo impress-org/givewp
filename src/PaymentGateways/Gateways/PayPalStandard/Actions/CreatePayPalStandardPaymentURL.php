@@ -40,7 +40,7 @@ class CreatePayPalStandardPaymentURL
 
             // Donation information.
             'invoice' => $paymentData->purchaseKey,
-            'amount' => $paymentData->amount,
+            'amount' => $paymentData->price,
             'item_name' => stripslashes($itemName),
             'currency_code' => give_get_currency($paymentData->donationId),
 
@@ -107,7 +107,7 @@ class CreatePayPalStandardPaymentURL
                 $paymentData->donationId,
                 $paymentData->legacyPaymentData
             ],
-            '' // TODO: add plugin version: @since 2.19.0
+            '2.19.0'
         );
     }
 }
