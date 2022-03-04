@@ -137,12 +137,14 @@ class Give_Subscription {
 	}
 
 	/**
-	 * Setup the subscription object.
-	 *
-	 * @param int $id_or_object
-	 *
-	 * @return Give_Subscription|bool
-	 */
+     * Setup the subscription object.
+     *
+     * @since 2.19.3 - cast bill_times to integer
+     *
+     * @param  int  $id_or_object
+     *
+     * @return Give_Subscription|bool
+     */
 	private function setup_subscription( $id_or_object = 0 ) {
 
 		if ( empty( $id_or_object ) ) {
@@ -163,18 +165,22 @@ class Give_Subscription {
 		}
 
 		foreach ( $sub as $key => $value ) {
+            // Backwards compatibility:
+            // Ensure product_id get sent to new form_id.
+            if ('product_id' === $key) {
+                $this->form_id = $value;
+            }
 
-			// Backwards compatibility:
-			// Ensure product_id get sent to new form_id.
-			if ( 'product_id' === $key ) {
-				$this->form_id = $value;
-			}
-			if ( 'customer_id' === $key ) {
-				$this->donor_id = $value;
-			}
+            if ('customer_id' === $key) {
+                $this->donor_id = $value;
+            }
 
-			$this->$key = $value;
-		}
+            if ('bill_times' === $key) {
+                $value = (int)$value;
+            }
+
+            $this->$key = $value;
+        }
 
 		$this->donor   = new Give_Donor( $this->donor_id );
 		$this->gateway = give_get_payment_gateway( $this->parent_payment_id );
