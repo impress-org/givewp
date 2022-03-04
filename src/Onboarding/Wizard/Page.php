@@ -4,6 +4,7 @@ namespace Give\Onboarding\Wizard;
 
 defined('ABSPATH') || exit;
 
+use Give\Helpers\EnqueueScript;
 use Give\Onboarding\FormRepository;
 use Give\Onboarding\Helpers\FormatList;
 use Give\Onboarding\Helpers\LocationList;
@@ -120,16 +121,6 @@ class Page
             'https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap',
             [],
             null
-        );
-
-        wp_enqueue_style(
-            'give-admin-onboarding-wizard',
-            GIVE_PLUGIN_URL . 'assets/dist/css/admin-onboarding-wizard.css',
-            [
-                'give-google-font-montserrat',
-                'give-google-font-open-sans',
-            ],
-            GIVE_VERSION
         );
 
         wp_enqueue_script(
