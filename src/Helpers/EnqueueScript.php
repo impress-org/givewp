@@ -42,6 +42,21 @@ class EnqueueScript
     private $loadScriptInFooter = false;
 
     /**
+     * @var bool
+     */
+    private $registerTranslations = false;
+
+    /**
+     * @var string
+     */
+    private $localizeScriptParamName;
+
+    /**
+     * @var mixed
+     */
+    private $localizeScriptParamData;
+
+    /**
      * @unreleased
      *
      * @param string $scriptId
@@ -112,6 +127,22 @@ class EnqueueScript
             $this->loadScriptInFooter
         );
 
+        if ($this->registerTranslations) {
+            wp_set_script_translations(
+                $this->scriptId,
+                'give',
+                GIVE_PLUGIN_DIR . 'languages'
+            );
+        }
+
+        if ($this->localizeScriptParamData && $this->localizeScriptParamName) {
+            wp_localize_script(
+                $this->scriptId,
+                $this->localizeScriptParamName,
+                $this->localizeScriptParamData
+            );
+        }
+
         return $this;
     }
 
@@ -123,11 +154,7 @@ class EnqueueScript
      */
     public function registerTranslations()
     {
-        wp_set_script_translations(
-            $this->scriptId,
-            'give',
-            GIVE_PLUGIN_DIR . 'languages'
-        );
+        $this->registerTranslations = true;
 
         return $this;
     }
@@ -142,11 +169,8 @@ class EnqueueScript
      */
     public function registerLocalizeData($jsVariableName, $data)
     {
-        wp_localize_script(
-            $this->scriptId,
-            $jsVariableName,
-            $data
-        );
+        $this->localizeScriptParamName = $jsVariableName;
+        $this->localizeScriptParamData = $data;
 
         return $this;
     }

@@ -144,8 +144,8 @@ class App
             'assets/dist/js/donor-dashboards-app.js'
         )
             ->loadInFooter()
-            ->enqueue()
-            ->registerTranslations();
+            ->registerTranslations()
+            ->enqueue();
 
         $recaptcha_key = give_get_option('recaptcha_key');
         $recaptcha_secret = give_get_option('recaptcha_secret');

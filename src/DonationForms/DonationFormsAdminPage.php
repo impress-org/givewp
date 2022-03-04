@@ -33,7 +33,6 @@ class DonationFormsAdminPage
     {
         EnqueueScript::make('give-admin-donation-forms', 'assets/dist/js/give-admin-donation-forms.js')
             ->loadInFooter()
-            ->enqueue()
             ->registerTranslations()
             ->registerLocalizeData(
                 'GiveDonationForms',
@@ -41,7 +40,7 @@ class DonationFormsAdminPage
                     'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/forms')),
                     'apiNonce' => wp_create_nonce('wp_rest'),
                 ]
-            );
+            )->enqueue();
 
         wp_enqueue_style(
             'give-admin-ui-font',

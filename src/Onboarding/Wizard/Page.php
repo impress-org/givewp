@@ -141,7 +141,6 @@ class Page
             'give-admin-onboarding-wizard-app',
             'assets/dist/js/admin-onboarding-wizard.js'
         )->loadInFooter()
-            ->enqueue()
             ->registerTranslations()
             ->registerLocalizeData(
                 'giveOnboardingWizardData',
@@ -181,7 +180,7 @@ class Page
                     'websiteName' => get_bloginfo('sitename'),
                     'addons' => $this->onboardingSettingsRepository->get('addons') ?: [],
                 ]
-            );
+            )->enqueue();
     }
 
     public function redirect()

@@ -58,7 +58,6 @@ class Reports
         EnqueueScript::make('give-admin-reports-v3-js', 'assets/dist/js/admin-reports.js')
             ->loadInFooter()
             ->dependencies(['wp-api'])
-            ->enqueue()
             ->registerTranslations()
             ->registerLocalizeData(
                 'giveReportsData',
@@ -69,7 +68,7 @@ class Reports
                     'currency' => give_get_currency(),
                     'testMode' => give_is_test_mode(),
                 ]
-            );
+            )->enqueue();
     }
 
     // Add Reports submenu page to admin menu
