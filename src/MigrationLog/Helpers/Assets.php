@@ -19,6 +19,7 @@ class Assets
     {
         EnqueueScript::make('give-migrations-list-table-app', 'assets/dist/js/give-migrations-list-table-app.js')
             ->loadInFooter()
+            ->registerTranslations()
             ->registerLocalizeData(
                 'GiveMigrations',
                 [
