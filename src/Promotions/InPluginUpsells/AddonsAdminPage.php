@@ -2,6 +2,8 @@
 
 namespace Give\Promotions\InPluginUpsells;
 
+use Give\Helpers\EnqueueScript;
+
 /**
  * @since 2.17.0
  */
@@ -29,33 +31,28 @@ class AddonsAdminPage
      */
     public function loadScripts()
     {
-        wp_enqueue_script(
-            'give-in-plugin-upsells-addons',
-            GIVE_PLUGIN_URL . 'assets/dist/js/admin-upsell-addons-page.js',
-            ['wp-element', 'wp-i18n', 'wp-hooks'],
-            GIVE_VERSION,
-            true
-        );
+        EnqueueScript::make('give-in-plugin-upsells-addons', 'assets/dist/js/admin-upsell-addons-page.js')
+            ->loadInFooter()
+            ->registerTranslations()
+            ->registerLocalizeData(
+                'GiveAddons',
+                array_merge(
+                    (new AddonsRepository())->getAddons(),
+                    [
+                        'assetsUrl' => GIVE_PLUGIN_URL . 'assets/dist/',
+                        'containerId' => $this->containerId,
+                        'siteUrl' => site_url(),
+                        'siteName' => get_bloginfo('name'),
+                    ]
+                )
+            )
+            ->enqueue();
 
         wp_enqueue_style(
             'give-in-plugin-upsells-addons-font',
             'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap',
             [],
             null
-        );
-
-        wp_localize_script(
-            'give-in-plugin-upsells-addons',
-            'GiveAddons',
-            array_merge(
-                (new AddonsRepository())->getAddons(),
-                [
-                    'assetsUrl' => GIVE_PLUGIN_URL . 'assets/dist/',
-                    'containerId' => $this->containerId,
-                    'siteUrl' => site_url(),
-                    'siteName' => get_bloginfo('name'),
-                ]
-            )
         );
     }
 
