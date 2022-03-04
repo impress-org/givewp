@@ -82,6 +82,7 @@
         "iframe-resizer": "^4.2.10",
         "jquery-chosen": "latest",
         "jquery.payment": "latest",
+        "lodash": "^4.17.21",
         "magnific-popup": "latest",
         "moment": "^2.24.0",
         "prop-types": "^15.7.2",
