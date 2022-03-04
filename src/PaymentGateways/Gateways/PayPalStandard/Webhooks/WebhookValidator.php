@@ -14,7 +14,7 @@ class WebhookValidator
 {
     /**
      * @since 2.19.0
-     * @unreleased Update log message.
+     * @since 2.19.3 Update log message.
      *
      * @param array $eventData PayPal ipn body data.
      *

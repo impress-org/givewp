@@ -139,7 +139,7 @@ class Give_Subscription {
 	/**
      * Setup the subscription object.
      *
-     * @unreleased - cast bill_times to integer
+     * @since 2.19.3 - cast bill_times to integer
      *
      * @param  int  $id_or_object
      *
