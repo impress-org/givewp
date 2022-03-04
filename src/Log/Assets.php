@@ -2,6 +2,7 @@
 
 namespace Give\Log;
 
+use Give\Helpers\EnqueueScript;
 use Give\Log\ValueObjects\LogType;
 
 /**
@@ -17,22 +18,19 @@ class Assets
      */
     public function enqueueScripts()
     {
-        wp_enqueue_script(
+        EnqueueScript::make(
             'give-admin-log-list-table-app',
-            GIVE_PLUGIN_URL . 'assets/dist/js/give-log-list-table-app.js',
-            ['wp-element', 'wp-i18n'],
-            GIVE_VERSION,
-            true
-        );
-
-        wp_localize_script(
-            'give-admin-log-list-table-app',
-            'GiveLogs',
-            [
-                'apiRoot' => esc_url_raw(rest_url('give-api/v2/logs')),
-                'apiNonce' => wp_create_nonce('wp_rest'),
-                'logTypes' => LogType::getTypesTranslated(),
-            ]
-        );
+            'assets/dist/js/give-log-list-table-app.js'
+        )->loadInFooter()
+            ->registerTranslations()
+            ->registerLocalizeData(
+                'GiveLogs',
+                [
+                    'apiRoot' => esc_url_raw(rest_url('give-api/v2/logs')),
+                    'apiNonce' => wp_create_nonce('wp_rest'),
+                    'logTypes' => LogType::getTypesTranslated(),
+                ]
+            )
+            ->enqueue();
     }
 }
