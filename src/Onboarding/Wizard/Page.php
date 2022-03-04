@@ -123,16 +123,6 @@ class Page
             null
         );
 
-        wp_enqueue_script(
-            'give-admin-onboarding-wizard-app',
-            GIVE_PLUGIN_URL . 'assets/dist/js/admin-onboarding-wizard.js',
-            ['wp-element', 'wp-api', 'wp-i18n'],
-            GIVE_VERSION,
-            true
-        );
-
-        wp_set_script_translations('give-admin-onboarding-wizard-app', 'give', GIVE_PLUGIN_DIR . 'languages');
-
         $formID = $this->formRepository->getDefaultFormID();
         $featureGoal = get_post_meta($formID, '_give_goal_option', true);
         $featureComments = get_post_meta($formID, '_give_donor_comment', true);
@@ -147,46 +137,51 @@ class Page
 
         global $current_user;
 
-        wp_localize_script(
+        EnqueueScript::make(
             'give-admin-onboarding-wizard-app',
-            'giveOnboardingWizardData',
-            [
-                'apiRoot' => esc_url_raw(rest_url()),
-                'apiNonce' => wp_create_nonce('wp_rest'),
-                'setupUrl' => SetupPage::getSetupPageEnabledOrDisabled() === SetupPage::ENABLED ? admin_url(
-                    'edit.php?post_type=give_forms&page=give-setup'
-                ) : admin_url('edit.php?post_type=give_forms'),
-                'formPreviewUrl' => admin_url('?page=give-form-preview'),
-                'localeCurrency' => $this->localeCollection->pluck('currency_code'),
-                'currencies' => FormatList::fromKeyValue(give_get_currencies_list()),
-                'currencySelected' => $currency,
-                'countries' => LocationList::getCountries(),
-                'countrySelected' => $baseCountry,
-                'states' => LocationList::getStates($baseCountry),
-                'stateSelected' => $baseState,
-                'features' => FormatList::fromValueKey(
-                    [
-                        'donation-goal' => ('enabled' == $featureGoal),
-                        'donation-comments' => ('enabled' == $featureComments),
-                        'terms-conditions' => ('enabled' == $featureTerms),
-                        'offline-donations' => ('enabled' == $offlineDonations),
-                        'anonymous-donations' => ('enabled' == $featureAnonymous),
-                        'company-donations' => in_array($featureCompany, ['required', 'optional']),
-                        // Note: The company field has two values for enabled, "required" and "optional".
-                    ]
-                ),
-                'causeTypes' => FormatList::fromKeyValue(
-                    include GIVE_PLUGIN_DIR . 'src/Onboarding/Config/CauseTypes.php'
-                ),
-                'adminEmail' => $current_user->user_email,
-                'adminFirstName' => $current_user->first_name,
-                'adminLastName' => $current_user->last_name,
-                'adminUserID' => $current_user->ID,
-                'websiteUrl' => get_bloginfo('url'),
-                'websiteName' => get_bloginfo('sitename'),
-                'addons' => $this->onboardingSettingsRepository->get('addons') ?: [],
-            ]
-        );
+            'assets/dist/js/admin-onboarding-wizard.js'
+        )->loadInFooter()
+            ->enqueue()
+            ->registerTranslations()
+            ->registerLocalizeData(
+                'giveOnboardingWizardData',
+                [
+                    'apiRoot' => esc_url_raw(rest_url()),
+                    'apiNonce' => wp_create_nonce('wp_rest'),
+                    'setupUrl' => SetupPage::getSetupPageEnabledOrDisabled() === SetupPage::ENABLED ?
+                        admin_url('edit.php?post_type=give_forms&page=give-setup') :
+                        admin_url('edit.php?post_type=give_forms'),
+                    'formPreviewUrl' => admin_url('?page=give-form-preview'),
+                    'localeCurrency' => $this->localeCollection->pluck('currency_code'),
+                    'currencies' => FormatList::fromKeyValue(give_get_currencies_list()),
+                    'currencySelected' => $currency,
+                    'countries' => LocationList::getCountries(),
+                    'countrySelected' => $baseCountry,
+                    'states' => LocationList::getStates($baseCountry),
+                    'stateSelected' => $baseState,
+                    'features' => FormatList::fromValueKey(
+                        [
+                            'donation-goal' => ('enabled' === $featureGoal),
+                            'donation-comments' => ('enabled' === $featureComments),
+                            'terms-conditions' => ('enabled' === $featureTerms),
+                            'offline-donations' => ('enabled' === $offlineDonations),
+                            'anonymous-donations' => ('enabled' === $featureAnonymous),
+                            'company-donations' => in_array($featureCompany, ['required', 'optional']),
+                            // Note: The company field has two values for enabled, "required" and "optional".
+                        ]
+                    ),
+                    'causeTypes' => FormatList::fromKeyValue(
+                        include GIVE_PLUGIN_DIR . 'src/Onboarding/Config/CauseTypes.php'
+                    ),
+                    'adminEmail' => $current_user->user_email,
+                    'adminFirstName' => $current_user->first_name,
+                    'adminLastName' => $current_user->last_name,
+                    'adminUserID' => $current_user->ID,
+                    'websiteUrl' => get_bloginfo('url'),
+                    'websiteName' => get_bloginfo('sitename'),
+                    'addons' => $this->onboardingSettingsRepository->get('addons') ?: [],
+                ]
+            );
     }
 
     public function redirect()
