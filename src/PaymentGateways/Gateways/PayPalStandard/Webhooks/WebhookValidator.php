@@ -14,6 +14,7 @@ class WebhookValidator
 {
     /**
      * @since 2.19.0
+     * @unreleased Update log message.
      *
      * @param array $eventData PayPal ipn body data.
      *
@@ -56,9 +57,12 @@ class WebhookValidator
         }
 
         if ('VERIFIED' !== $apiResponse['body']) {
-            Log::error(
+            Log::warning(
                 'PayPal Standard IPN Error',
-                ['IPN Data' => $apiResponse]
+                [
+                    'Message' => 'This is not a verified IPN.',
+                    'IPN Data' => $apiResponse
+                ]
             );
 
             return false;
