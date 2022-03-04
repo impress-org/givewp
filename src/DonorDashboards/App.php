@@ -139,35 +139,34 @@ class App
             return;
         }
 
-        $donorDashboardScript = EnqueueScript::make(
-            'give-donor-dashboards-app',
-            'assets/dist/js/donor-dashboards-app.js'
-        )
-            ->loadInFooter()
-            ->registerTranslations()
-            ->enqueue();
-
         $recaptcha_key = give_get_option('recaptcha_key');
         $recaptcha_secret = give_get_option('recaptcha_secret');
         $recaptcha_enabled = (give_is_setting_enabled(give_get_option('enable_recaptcha'))) &&
             !empty($recaptcha_key) && !empty($recaptcha_secret);
 
-        $donorDashboardScript->registerLocalizeData(
-            'giveDonorDashboardData',
-            [
-                'apiRoot' => esc_url_raw(rest_url()),
-                'apiNonce' => wp_create_nonce('wp_rest'),
-                'profile' => give()->donorDashboard->getProfileData(),
-                'countries' => LocationList::getCountries(),
-                'states' => LocationList::getStates(give()->donorDashboard->getCountry()),
-                'id' => give()->donorDashboard->getId(),
-                'emailAccessEnabled' => give_is_setting_enabled(give_get_option('email_access')),
-                'loginEnabled' => $this->loginEnabled(),
-                'registeredTabs' => give()->donorDashboardTabs->getRegisteredIds(),
-                'loggedInWithoutDonor' => get_current_user_id() !== 0 && give()->donorDashboard->getId() === null,
-                'recaptchaKey' => $recaptcha_enabled ? $recaptcha_key : '',
-            ]
-        );
+        EnqueueScript::make(
+            'give-donor-dashboards-app',
+            'assets/dist/js/donor-dashboards-app.js'
+        )
+            ->loadInFooter()
+            ->registerTranslations()
+            ->registerLocalizeData(
+                'giveDonorDashboardData',
+                [
+                    'apiRoot' => esc_url_raw(rest_url()),
+                    'apiNonce' => wp_create_nonce('wp_rest'),
+                    'profile' => give()->donorDashboard->getProfileData(),
+                    'countries' => LocationList::getCountries(),
+                    'states' => LocationList::getStates(give()->donorDashboard->getCountry()),
+                    'id' => give()->donorDashboard->getId(),
+                    'emailAccessEnabled' => give_is_setting_enabled(give_get_option('email_access')),
+                    'loginEnabled' => $this->loginEnabled(),
+                    'registeredTabs' => give()->donorDashboardTabs->getRegisteredIds(),
+                    'loggedInWithoutDonor' => get_current_user_id() !== 0 && give()->donorDashboard->getId() === null,
+                    'recaptchaKey' => $recaptcha_enabled ? $recaptcha_key : '',
+                ]
+            )
+            ->enqueue();
 
         wp_enqueue_style(
             'give-google-font-montserrat',
