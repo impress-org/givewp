@@ -1,5 +1,7 @@
 <?php
 
+use Give\Helpers\EnqueueScript;
+
 /**
  * Loads the plugin's scripts and styles.
  *
@@ -583,28 +585,19 @@ class Give_Scripts {
 
 	}
 
-	/**
-	 * Gutenberg admin scripts.
+    /**
+     * Gutenberg admin scripts.
      *
      * @since 2.19.0 Remove undefined gutenberg.css
-	 */
-	public function gutenberg_admin_scripts() {
-
-		// Enqueue the bundled block JS file
-		// @todo: Update dependencies on 5.0 Stable release
-		wp_enqueue_script(
-			'give-blocks-js',
-			GIVE_PLUGIN_URL . 'assets/dist/js/gutenberg.js',
-			[
-				'wp-i18n',
-				'wp-element',
-				'wp-blocks',
-				'wp-components',
-				'wp-api',
-				'wp-editor',
-				'give-admin-scripts',
-			],
-			GIVE_VERSION
-		);
-	}
+     * @unreleased Load script with EnqueueScript.
+     */
+    public function gutenberg_admin_scripts()
+    {
+        // Enqueue the bundled block JS file
+        // @todo: Update dependencies on 5.0 Stable release
+        EnqueueScript::make('give-blocks-js', 'assets/dist/js/gutenberg.js')
+            ->dependencies(['give-admin-scripts'])
+            ->registerTranslations()
+            ->enqueue();
+    }
 }
