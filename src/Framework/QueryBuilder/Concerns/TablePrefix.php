@@ -28,21 +28,6 @@ trait TablePrefix
             return $table->sql;
         }
 
-        $prefixRegex = sprintf('/^%s/', preg_quote($wpdb->prefix));
-        //remove the first instance of the table prefix
-        error_log('prefix: ' . $prefixRegex);
-        error_log('before: ' . $table);
-        if(strpos($table, $prefixRegex) === 0)
-        {
-            $table = preg_replace(
-                $prefixRegex,
-                '',
-                $table,
-                1
-            );
-        }
-        error_log('after: ' . $table);
-
         if (array_key_exists($table, $sharedTables)) {
             return $sharedTables[ $table ];
         }
