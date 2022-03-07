@@ -26,16 +26,27 @@
                     'autocomplete' => 'off',
                 ]
             );
-            ?>
 
-            <p id="give_donors_export_donation_search_by" style="display: none">Search by:
-                    <input type=radio id="give_donors_export_donation_search_by_donation" name="search_by" value="donation" checked/>
-                    <label>Donation date</label>
+            printf(
+                '<fieldset id="give_donors_export_donation_search_by" style="display: none">
+                    <label for="give_donors_export_donation_search_by">
+                        %s
+                    </label>
+                    <input type=radio id="give_donors_export_donation_search_by_donation"
+                        name="search_by" value="donation" checked/>
+                    <label for="give_donors_export_donation_search_by_donation">
+                        %s
+                    </label>
                     <input type=radio id="give_donors_export_donation_search_by_donor" name="search_by" value="donor"/>
-                    <label>Donor creation date</label>
-            </p>
+                    <label for="give_donors_export_donation_search_by_donor">
+                        %s
+                    </label>
+                </fieldset>',
+                __('Search by:', 'give'),
+                __('Donation date', 'give'),
+                __('Donor creation date', 'give')
+            );
 
-            <?php
             echo Give()->html->forms_dropdown(
                 [
                     'name'   => 'forms',
