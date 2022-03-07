@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 4.9
 Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 2.19.2
+Stable tag: 2.19.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -251,6 +251,11 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.19.3: March 4th, 2022 =
+* Fix: PayPal Standard donations above 1000 dollars are now working again
+* Fix: PayPal IPN URL is now working again
+* Fix: Stripe subscriptions with no end were being canceled upon the next renewal when using GiveWP Recurring 1.15.0. This resolves that issue. Please update!
+
 = 2.19.2: March 2nd, 2022 =
 * Fix: Resolved issue with connecting to Stripe with API Keys
 
