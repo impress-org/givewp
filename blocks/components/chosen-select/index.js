@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-const { Component } = wp.element;
-const { BaseControl } = wp.components;
+import { Component } from '@wordpress/element';
+import { BaseControl } from '@wordpress/components';
 
 /**
  * Render ChosenSelect Control

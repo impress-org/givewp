@@ -1,11 +1,11 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
-const { InspectorControls } = wp.blockEditor;
-const { Dashicon, Button, PanelBody, SelectControl, ToggleControl, TextControl } = wp.components;
-const { Component } = wp.element;
-const { withSelect } = wp.data;
+import { __ } from '@wordpress/i18n'
+import { InspectorControls } from '@wordpress/blocks';
+import { Dashicon, Button, PanelBody, SelectControl, ToggleControl, TextControl } from '@wordpress/components';
+import { Component } from '@wordpress/element';
+import withSelect from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -54,17 +54,17 @@ class Inspector extends Component {
 
 		return (
 			<InspectorControls key="inspector">
-				<PanelBody title={ __( 'Donation Form Settings' ) }>
+				<PanelBody title={ __( 'Donation Form Settings', 'give' ) }>
 					<Button isDefault onClick={ () => this.saveSetting( 'id', 0 ) } className={ 'give-change-donation-form-btn' }>
-						<Dashicon icon="edit" /> { __( 'Change Donation Form' ) }
+						<Dashicon icon="edit" /> { __( 'Change Donation Form', 'give' ) }
 					</Button>
 				</PanelBody>
 				{
 					isLegacyForm( forms, id ) && (
 						<div>
-							<PanelBody title={ __( 'Display' ) }>
+							<PanelBody title={ __( 'Display', 'give' ) }>
 								<SelectControl
-									label={ __( 'Form Format' ) }
+									label={ __( 'Form Format', 'give' ) }
 									name="displayStyle"
 									value={ displayStyle }
 									options={ giveFormOptions.displayStyles }
@@ -73,33 +73,33 @@ class Inspector extends Component {
 									'reveal' === displayStyle && (
 										<TextControl
 											name="continueButtonTitle"
-											label={ __( 'Continue Button Title' ) }
+											label={ __( 'Continue Button Title', 'give' ) }
 											value={ this.state.continueButtonTitle }
 											onChange={ ( value ) => this.saveState( 'continueButtonTitle', value ) }
 											onBlur={ ( event ) => this.saveSetting( 'continueButtonTitle', event.target.value ) } />
 									)
 								}
 							</PanelBody>
-							<PanelBody title={ __( 'Settings' ) }>
+							<PanelBody title={ __( 'Settings', 'give' ) }>
 								<ToggleControl
-									label={ __( 'Title' ) }
+									label={ __( 'Title', 'give' ) }
 									name="showTitle"
 									checked={ !! showTitle }
 									onChange={ ( value ) => this.saveSetting( 'showTitle', value ) } />
 								<ToggleControl
-									label={ __( 'Goal' ) }
+									label={ __( 'Goal', 'give' ) }
 									name="showGoal"
 									checked={ !! showGoal }
 									onChange={ ( value ) => this.saveSetting( 'showGoal', value ) } />
 								<ToggleControl
-									label={ __( 'Content' ) }
+									label={ __( 'Content', 'give' ) }
 									name="contentDisplay"
 									checked={ !! contentDisplay }
 									onChange={ ( value ) => this.saveSetting( 'contentDisplay', value ) } />
 								{
 									contentDisplay && (
 										<SelectControl
-											label={ __( 'Content Position' ) }
+											label={ __( 'Content Position', 'give' ) }
 											name="showContent"
 											value={ showContent }
 											options={ giveFormOptions.contentPosition }

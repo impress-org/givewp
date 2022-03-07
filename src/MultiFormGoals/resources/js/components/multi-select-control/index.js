@@ -9,7 +9,7 @@ import Select from 'react-select';
  */
 const {useInstanceId} = wp.compose;
 const {BaseControl} = wp.components;
-const {__} = wp.i18n;
+import { __ } from '@wordpress/i18n'
 
 /**
  * Styles

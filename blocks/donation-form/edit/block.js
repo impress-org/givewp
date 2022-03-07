@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const ServerSideRender = wp.serverSideRender;
+import ServerSideRender from '@wordpress/server-side-render';
 
 /**
  * Internal dependencies

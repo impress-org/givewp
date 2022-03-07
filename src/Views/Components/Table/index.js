@@ -5,7 +5,7 @@ import {LoadingOverlay, Spinner} from '@givewp/components';
 
 import styles from './style.module.scss';
 
-const {__} = wp.i18n;
+import { __ } from '@wordpress/i18n'
 
 const Table = ({title, columns, data, columnFilters, stripped, isLoading, isSorting, ...rest}) => {
     const [state, setState] = useState({});

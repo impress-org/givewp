@@ -1,6 +1,6 @@
 // Import vendor dependencies
 import PropTypes from 'prop-types';
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n'
 
 // Import store dependencies
 import { useStoreValue } from '../../app/store';

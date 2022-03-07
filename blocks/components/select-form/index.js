@@ -1,9 +1,9 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
-const { withSelect } = wp.data;
-const { Placeholder, Spinner } = wp.components;
+import { __ } from '@wordpress/i18n'
+import withSelect from '@wordpress/data';
+import { Placeholder, Spinner } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -28,7 +28,7 @@ const SelectForm = ( { forms, setAttributes } ) => {
 		componentUI = <NoForms />;
 	} else {
 		componentUI = (
-			<GiveBlankSlate title={ __( 'Donation Form' ) }>
+			<GiveBlankSlate title={ __( 'Donation Form', 'give' ) }>
 				<ChosenSelect
 					className="give-blank-slate__select"
 					options={ getFormOptions( forms ) }
