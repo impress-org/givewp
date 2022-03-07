@@ -109,7 +109,7 @@ class DonorsExport extends Give_Batch_Export
 
         $donorQuery->joinRaw( "JOIN ({$donationQuery->getSQL()}) AS sub ON donors.id = sub.donorId" );
 
-        $results = DB::get_results($donorQuery->getSQL(), ARRAY_A );
+        $results = $donorQuery->getAll(ARRAY_A);
 
         $exportData = array_map([$this, 'mapDonorColumnNames'], $results);
 
