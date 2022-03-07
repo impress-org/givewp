@@ -3,7 +3,7 @@
 namespace Give\Framework\QueryBuilder\Types;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class Math extends Type
 {

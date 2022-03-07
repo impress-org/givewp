@@ -5,7 +5,7 @@ namespace Give\LegacyPaymentGateways\DataTransferObjects;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class LegacyDonationData
 {
@@ -16,7 +16,7 @@ class LegacyDonationData
     protected $paymentMethodId;
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @param GatewayPaymentData $paymentData
      * @param $paymentMethodId
      */
@@ -27,7 +27,7 @@ class LegacyDonationData
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @return array
      */
     public function toArray()
@@ -49,7 +49,7 @@ class LegacyDonationData
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @return array
      */
     public function toArrayWithDescription()

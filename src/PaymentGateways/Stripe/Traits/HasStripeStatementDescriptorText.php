@@ -5,7 +5,7 @@ namespace Give\PaymentGateways\Stripe\Traits;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 trait HasStripeStatementDescriptorText
 {
@@ -13,7 +13,7 @@ trait HasStripeStatementDescriptorText
      * Return filtered stripe statement descriptor text.
      * Check Stripe statement descriptor requirements: https://stripe.com/docs/statement-descriptors#requirements
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @param string $statementDescriptor
      */
@@ -43,5 +43,25 @@ trait HasStripeStatementDescriptorText
                 )
             );
         }
+    }
+
+    /**
+     * Return filtered statement descriptor.
+     * This function should be used to filter statement description
+     * which was storing in stripe_statement_descriptor give setting prior to Giver 2.19.
+     *
+     * @since 2.19.1
+     * @deprecated
+     *
+     * @param string $text
+     *
+     * @return false|string
+     */
+    protected function filterOldStatementDescriptor($text)
+    {
+        $statementDescriptor = trim($text);
+        $unsupportedCharacters = ['<', '>', '"', '\''];
+        $statementDescriptor = str_replace($unsupportedCharacters, '', $statementDescriptor);
+        return substr($statementDescriptor, 0, 22);
     }
 }

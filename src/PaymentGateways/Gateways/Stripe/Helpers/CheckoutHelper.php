@@ -3,13 +3,13 @@
 namespace Give\PaymentGateways\Gateways\Stripe\Helpers;
 
 /**
- * @unreleased
+ * @since 2.19.0
  * @TODO We should eventually migrate this client-side redirect to a server-side redirect using the url property of the session.
  */
 class CheckoutHelper
 {
     /**
-     * @unreleased
+     * @since 2.19.0
      * @param $sessionId
      * @param $formId
      * @return string
@@ -28,7 +28,7 @@ class CheckoutHelper
 
     /**
      * @since  2.5.5
-     * @unreleased Migrated from the legacy Give_Stripe_Checkout::redirect_to_checkout implementation of the Stripe Checkout Gateway.
+     * @since 2.19.0 Migrated from the legacy Give_Stripe_Checkout::redirect_to_checkout implementation of the Stripe Checkout Gateway.
      * @return void
      */
     public function maybeHandleRedirect()

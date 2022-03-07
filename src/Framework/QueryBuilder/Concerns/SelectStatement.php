@@ -7,7 +7,7 @@ use Give\Framework\QueryBuilder\Clauses\RawSQL;
 use Give\Framework\QueryBuilder\Clauses\Select;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 trait SelectStatement
 {

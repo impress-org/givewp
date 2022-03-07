@@ -13,7 +13,7 @@ use Give\PaymentGateways\Gateways\Stripe\Traits\SEPAMandateForm;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class SEPAGateway extends PaymentGateway
 {
@@ -34,7 +34,7 @@ class SEPAGateway extends PaymentGateway
 
     /**
      * @inheritDoc
-     * @unreleased
+     * @since 2.19.0
      * @return GatewayCommand
      * @throws PaymentGatewayException
      */
@@ -96,7 +96,7 @@ class SEPAGateway extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @return array
      */
     protected function getPaymentIntentArgs()

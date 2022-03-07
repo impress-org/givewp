@@ -9,7 +9,7 @@ use Give_Helper_Payment;
 use Give_Unit_Test_Case;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class DonationSummaryTest extends Give_Unit_Test_Case
 {

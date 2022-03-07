@@ -8,14 +8,14 @@ use Give\PaymentGateways\Gateways\Stripe\Migrations\AddStatementDescriptorToStri
 use Give\PaymentGateways\Stripe\Traits\HasStripeStatementDescriptorText;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class UpdateStatementDescriptorAjaxRequestController
 {
     use HasStripeStatementDescriptorText;
 
     /**
-     * @unreleased
+     * @since 2.19.0
      */
     public function __invoke()
     {

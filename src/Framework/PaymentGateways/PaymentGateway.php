@@ -80,7 +80,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @inheritDoc
      */
@@ -108,7 +108,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @inheritDoc
      */
@@ -240,7 +240,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      * Generate gateway route url
      *
      * @since 2.18.0
-     * @unreleased remove $donationId param in favor of args
+     * @since 2.19.0 remove $donationId param in favor of args
      *
      * @param string $gatewayMethod
      * @param array|null $args
@@ -256,7 +256,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * Generate secure gateway route url
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @param string $gatewayMethod
      * @param array|null $args
@@ -283,7 +283,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      * 1. Redirect to donation form if donation form submit.
      * 2. Return json response if processing payment on ajax.
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @param  Exception|PaymentGatewayException  $exception
      * @param  string  $message

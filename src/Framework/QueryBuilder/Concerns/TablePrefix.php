@@ -5,7 +5,7 @@ namespace Give\Framework\QueryBuilder\Concerns;
 use Give\Framework\QueryBuilder\Clauses\RawSQL;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 trait TablePrefix
 {
@@ -27,12 +27,6 @@ trait TablePrefix
         if ($table instanceof RawSQL) {
             return $table->sql;
         }
-
-        $table = preg_replace(
-            sprintf('/^%s/', preg_quote($wpdb->prefix)),
-            '',
-            $table
-        );
 
         if (array_key_exists($table, $sharedTables)) {
             return $sharedTables[ $table ];

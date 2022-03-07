@@ -585,6 +585,8 @@ class Give_Scripts {
 
 	/**
 	 * Gutenberg admin scripts.
+     *
+     * @since 2.19.0 Remove undefined gutenberg.css
 	 */
 	public function gutenberg_admin_scripts() {
 
@@ -604,14 +606,5 @@ class Give_Scripts {
 			],
 			GIVE_VERSION
 		);
-
-		// Enqueue the bundled block css file
-		wp_enqueue_style(
-			'give-blocks-css',
-			GIVE_PLUGIN_URL . 'assets/dist/css/gutenberg.css',
-			[ 'give-styles' ],
-			GIVE_VERSION
-		);
-
 	}
 }

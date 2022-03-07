@@ -4,7 +4,7 @@ use Give\PaymentGateways\Stripe\Traits\HasStripeStatementDescriptorText;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class HasStripeStatementDescriptorTextTest extends TestCase
 {

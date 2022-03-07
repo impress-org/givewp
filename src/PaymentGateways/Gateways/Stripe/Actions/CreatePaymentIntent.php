@@ -11,7 +11,7 @@ use Give\PaymentGateways\Gateways\Stripe\WorkflowAction;
 use Give\ValueObjects\Money;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class CreatePaymentIntent extends WorkflowAction
 {
@@ -19,7 +19,7 @@ class CreatePaymentIntent extends WorkflowAction
     protected $paymentIntentArgs;
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @param array $paymentIntentArgs
      */
     public function __construct( $paymentIntentArgs = [] )
@@ -28,7 +28,7 @@ class CreatePaymentIntent extends WorkflowAction
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @param GatewayPaymentData $paymentData
      * @param DonationSummary $donationSummary
      * @param \Give_Stripe_Customer $giveStripeCustomer

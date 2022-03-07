@@ -8,7 +8,7 @@ use Give\PaymentGateways\Stripe\Models\AccountDetail;
 use Give\PaymentGateways\Stripe\Repositories\Settings;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class UpdateStripeAccountStatementDescriptor
 {

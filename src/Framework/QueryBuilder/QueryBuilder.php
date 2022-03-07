@@ -18,7 +18,7 @@ use Give\Framework\QueryBuilder\Concerns\UnionOperator;
 use Give\Framework\QueryBuilder\Concerns\WhereClause;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class QueryBuilder
 {

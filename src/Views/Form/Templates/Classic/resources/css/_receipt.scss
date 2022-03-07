@@ -140,6 +140,10 @@
                     &[data-value='Pending'] {
                         --status-color: #ffba00;
                     }
+
+                    &[data-value='Failed'] {
+                        --status-color: red;
+                    }
                 }
 
                 .details-row--totalAmount {

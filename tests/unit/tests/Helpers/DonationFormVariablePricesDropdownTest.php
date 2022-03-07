@@ -5,7 +5,7 @@
  *
  * Test give_get_form_variable_price_dropdown function output
  *
- * @unreleased
+ * @since 2.19.0
  */
 class DonationFormVariablePricesDropdownTest extends Give_Unit_Test_Case {
 	/**

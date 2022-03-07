@@ -5,14 +5,14 @@ namespace unit\tests\Framework\Routes;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @unreleased
+ * @since 2.19.0
  *
  * @coversDefaultClass \Give\Framework\PaymentGateways\Routes\GatewayRoute
  */
 class TestGatewayRoute extends TestCase
 {
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return void
      */
@@ -22,7 +22,7 @@ class TestGatewayRoute extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return void
      */
@@ -32,7 +32,7 @@ class TestGatewayRoute extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return void
      */
@@ -42,7 +42,7 @@ class TestGatewayRoute extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return void
      */
@@ -52,7 +52,7 @@ class TestGatewayRoute extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return void
      */
