@@ -28,14 +28,14 @@ export function getFormOptions( forms ) {
 			( { id, title: { rendered: title } } ) => {
 				return {
 					value: id,
-					label: title === '' ? `${ id } : ${ __( 'No form title' ) }` : title,
+					label: title === '' ? `${ id } : ${ __( 'No form title', 'give' ) }` : title,
 				};
 			}
 		);
 	}
 
 	// Add Default option
-	formOptions.unshift( { value: '0', label: __( '-- Select Form --' ) } );
+	formOptions.unshift( { value: '0', label: __( '-- Select Form --', 'give' ) } );
 
 	return formOptions;
 }
