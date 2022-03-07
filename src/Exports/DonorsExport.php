@@ -32,7 +32,6 @@ class DonorsExport extends Give_Batch_Export
      */
     public function set_properties( $posted_data ) {
         $this->posted_data = $posted_data;
-        ray( $this->posted_data );
 
         if( $this->posted_data['start_date'] ) {
             $this->startDate = date('Y-m-d', strtotime($this->posted_data['start_date']));
