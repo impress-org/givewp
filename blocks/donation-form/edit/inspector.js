@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n'
 import { InspectorControls } from '@wordpress/blocks';
 import { Dashicon, Button, PanelBody, SelectControl, ToggleControl, TextControl } from '@wordpress/components';
 import { Component } from '@wordpress/element';
-import withSelect from '@wordpress/data';
+import {withSelect} from '@wordpress/data';
 
 /**
  * Internal dependencies

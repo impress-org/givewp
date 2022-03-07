@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n'
-import withSelect from '@wordpress/data';
+import {withSelect} from '@wordpress/data';
 import { Placeholder, Spinner } from '@wordpress/components';
 
 /**

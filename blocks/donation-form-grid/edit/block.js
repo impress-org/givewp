@@ -3,7 +3,7 @@
  */
 import { Fragment } from '@wordpress/element';
 import ServerSideRender from '@wordpress/server-side-render';
-import withSelect from '@wordpress/data';
+import {withSelect} from '@wordpress/data';
 
 /**
  * Internal dependencies
