@@ -54,7 +54,7 @@ mix.setPublicPath('assets/dist')
     .copyDirectory('assets/src/fonts', 'assets/dist/fonts');
 
 mix.webpackConfig({
-    resolve: {
+   resolve: {
         alias: {
             '@givewp/components': path.resolve(__dirname, 'src/Views/Components/'),
             '@givewp/fontawesome': path.resolve(__dirname, 'assets/src/css/icons/fa/'),
