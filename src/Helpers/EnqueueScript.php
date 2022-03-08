@@ -61,17 +61,25 @@ class EnqueueScript
      *
      * @param string $scriptId
      * @param string $scriptPath
+     */
+    public function __construct($scriptId, $scriptPath)
+    {
+        $this->scriptId = $scriptId;
+        $this->relativeScriptPath = $scriptPath;
+        $this->absoluteScriptPath = GIVE_PLUGIN_DIR . $this->relativeScriptPath;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param string $scriptId
+     * @param string $scriptPath
      *
      * @return static
      */
     public static function make($scriptId, $scriptPath)
     {
-        $self = new static();
-        $self->scriptId = $scriptId;
-        $self->relativeScriptPath = $scriptPath;
-        $self->absoluteScriptPath = GIVE_PLUGIN_DIR . $self->relativeScriptPath;
-
-        return $self;
+        return new static($scriptId, $scriptPath);
     }
 
     /**
