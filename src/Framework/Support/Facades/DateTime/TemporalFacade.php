@@ -1,13 +1,13 @@
 <?php
 
-namespace Give\Framework\Models\Traits;
+namespace Give\Framework\Support\Facades\DateTime;
 
 use DateTime;
 
 /**
  * @unreleased
  */
-trait InteractsWithTime
+class TemporalFacade
 {
     /**
      * @unreleased

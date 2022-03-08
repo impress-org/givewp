@@ -2,6 +2,7 @@
 
 namespace Give\Subscriptions\LegacyListeners;
 
+use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Hooks;
 use Give\Subscriptions\Models\Subscription;
 
@@ -15,7 +16,7 @@ class DispatchGiveSubscriptionPostCreate
      */
     public function __invoke(Subscription $subscription)
     {
-		$args = [
+        $args = [
             'customer_id' => $subscription->donorId,
             'period' => $subscription->period->getValue(),
             'frequency' => $subscription->frequency,
@@ -25,7 +26,7 @@ class DispatchGiveSubscriptionPostCreate
             'bill_times' => $subscription->installments,
             'parent_payment_id' => give()->subscriptions->getInitialDonationId($subscription->id),
             'form_id' => $subscription->donationFormId,
-            'created' => $subscription->getFormattedDateTime($subscription->createdAt),
+            'created' => Temporal::getFormattedDateTime($subscription->createdAt),
             'expiration' => $subscription->expiration(),
             'status' => $subscription->status->getValue(),
             'profile_id' => $subscription->gatewaySubscriptionId,

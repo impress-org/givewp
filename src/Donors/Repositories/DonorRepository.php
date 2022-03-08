@@ -7,13 +7,12 @@ use Give\Donors\Models\Donor;
 use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\Models\Traits\InteractsWithTime;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Log\Log;
 
 class DonorRepository
 {
-    use InteractsWithTime;
 
     /**
      * @var string[]
@@ -106,9 +105,9 @@ class DonorRepository
     {
         $this->validateDonor($donor);
 
-        $date = $donor->createdAt ? $this->getFormattedDateTime(
+        $date = $donor->createdAt ? Temporal::getFormattedDateTime(
             $donor->createdAt
-        ) : $this->getCurrentFormattedDateForDatabase();
+        ) : Temporal::getCurrentFormattedDateForDatabase();
 
         DB::query('START TRANSACTION');
 

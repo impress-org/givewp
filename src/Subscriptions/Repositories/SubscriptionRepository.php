@@ -5,8 +5,8 @@ namespace Give\Subscriptions\Repositories;
 use Exception;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\Models\Traits\InteractsWithTime;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
 use Give\Subscriptions\Models\Subscription;
@@ -16,7 +16,6 @@ use Give\Subscriptions\Models\Subscription;
  */
 class SubscriptionRepository
 {
-    use InteractsWithTime;
 
     /**
      * @var string[]
@@ -117,9 +116,9 @@ class SubscriptionRepository
 
         Hooks::dispatch('give_subscription_creating', $subscription);
 
-        $date = $subscription->createdAt ? $this->getFormattedDateTime(
+        $date = $subscription->createdAt ? Temporal::getFormattedDateTime(
             $subscription->createdAt
-        ) : $this->getCurrentFormattedDateForDatabase();
+        ) : Temporal::getCurrentFormattedDateForDatabase();
 
         DB::query('START TRANSACTION');
 

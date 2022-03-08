@@ -9,8 +9,8 @@ use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\Models\Traits\InteractsWithTime;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Call;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
@@ -21,7 +21,6 @@ use Give\ValueObjects\Money;
  */
 class DonationRepository
 {
-    use InteractsWithTime;
 
     /**
      * @unreleased
@@ -127,9 +126,9 @@ class DonationRepository
 
         Hooks::dispatch('give_donation_creating', $donation);
 
-        $date = $donation->createdAt ? $this->getFormattedDateTime(
+        $date = $donation->createdAt ? Temporal::getFormattedDateTime(
             $donation->createdAt
-        ) : $this->getCurrentFormattedDateForDatabase();
+        ) : Temporal::getCurrentFormattedDateForDatabase();
 
 
         DB::query('START TRANSACTION');
@@ -187,7 +186,7 @@ class DonationRepository
 
         Hooks::dispatch('give_donation_updating', $donation);
 
-        $date = $this->getCurrentFormattedDateForDatabase();
+        $date = Temporal::getCurrentFormattedDateForDatabase();
 
         DB::query('START TRANSACTION');
 

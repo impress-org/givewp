@@ -3,7 +3,7 @@
 namespace Give\Subscriptions\DataTransferObjects;
 
 use DateTime;
-use Give\Framework\Models\Traits\InteractsWithTime;
+use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
@@ -15,8 +15,6 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
  */
 class SubscriptionQueryData
 {
-    use InteractsWithTime;
-
     /**
      * @var int
      */
@@ -82,8 +80,8 @@ class SubscriptionQueryData
         $self = new static();
 
         $self->id = (int)$subscriptionQueryObject->id;
-        $self->createdAt = $self->toDateTime($subscriptionQueryObject->createdAt);
-        $self->expiresAt = isset($subscriptionQueryObject->expiration) ? $self->toDateTime(
+        $self->createdAt = Temporal::toDateTime($subscriptionQueryObject->createdAt);
+        $self->expiresAt = isset($subscriptionQueryObject->expiration) ? Temporal::toDateTime(
             $subscriptionQueryObject->expiration
         ) : null;
         $self->donorId = (int)$subscriptionQueryObject->donorId;

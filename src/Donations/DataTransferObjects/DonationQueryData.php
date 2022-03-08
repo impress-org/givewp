@@ -8,7 +8,7 @@ use Give\Donations\Properties\BillingAddress;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\Framework\Models\Traits\InteractsWithTime;
+use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
  * Class DonationData
@@ -17,7 +17,6 @@ use Give\Framework\Models\Traits\InteractsWithTime;
  */
 class DonationQueryData
 {
-    use InteractsWithTime;
     /**
      * @var int
      */
@@ -130,8 +129,8 @@ class DonationQueryData
         $self->lastName = $donationQueryObject->{DonationMetaKeys::LAST_NAME()->getKeyAsCamelCase()};
         $self->email = $donationQueryObject->{DonationMetaKeys::EMAIL()->getKeyAsCamelCase()};
         $self->gateway = $donationQueryObject->{DonationMetaKeys::GATEWAY()->getKeyAsCamelCase()};
-        $self->createdAt = $self->toDateTime($donationQueryObject->createdAt);
-        $self->updatedAt = $self->toDateTime($donationQueryObject->updatedAt);
+        $self->createdAt = Temporal::toDateTime($donationQueryObject->createdAt);
+        $self->updatedAt = Temporal::toDateTime($donationQueryObject->updatedAt);
         $self->status = new DonationStatus($donationQueryObject->status);
         $self->parentId = (int)$donationQueryObject->parentId;
         $self->subscriptionId = (int)$donationQueryObject->{DonationMetaKeys::SUBSCRIPTION_ID()->getKeyAsCamelCase()};

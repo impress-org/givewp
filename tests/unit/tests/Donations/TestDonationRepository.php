@@ -5,20 +5,18 @@ namespace unit\tests\Donations;
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationRepository;
-use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\Models\Traits\InteractsWithTime;
+use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 
 /**
  * @coversDefaultClass DonationRepository
  */
-final class DonationRepositoryTest extends \Give_Unit_Test_Case
+final class TestDonationRepository extends \Give_Unit_Test_Case
 {
-    use InteractsWithTime;
 
     /**
      * @unreleased - truncate donationMetaTable to avoid duplicate records
@@ -72,8 +70,10 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
 
         $repository = new DonationRepository();
 
+        /** @var Donation $newDonation */
         $newDonation = $repository->insert($donation);
 
+        /** @var object $query */
         $query = $repository->prepareQuery()
             ->where('ID', $newDonation->id)
             ->get();
@@ -106,7 +106,7 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
         $this->expectException(InvalidArgumentException::class);
 
         $donationMissingAmount = new Donation([
-            'createdAt' => $this->getCurrentDateTime(),
+            'createdAt' => Temporal::getCurrentDateTime(),
             'status' => DonationStatus::PENDING(),
             'gateway' => TestGateway::id(),
             'currency' => 'USD',
@@ -133,7 +133,7 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
         $this->expectException(InvalidArgumentException::class);
 
         $donationWithInvalidDonor = new Donation([
-            'createdAt' => $this->getCurrentDateTime(),
+            'createdAt' => Temporal::getCurrentDateTime(),
             'status' => DonationStatus::PENDING(),
             'gateway' => TestGateway::id(),
             'currency' => 'USD',
@@ -162,7 +162,7 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
         $this->expectException(InvalidArgumentException::class);
 
         $donationMissingAmount = new Donation([
-            'createdAt' => $this->getCurrentDateTime(),
+            'createdAt' => Temporal::getCurrentDateTime(),
             'status' => DonationStatus::PENDING(),
             'gateway' => TestGateway::id(),
             'currency' => 'USD',
@@ -186,8 +186,12 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
      */
     public function testUpdateShouldUpdateDonationValuesInTheDatabase()
     {
-        $donor = $this->createDonor();
-        $donation = $this->createDonation();
+        /** @var Donor $donor */
+        $donor = Donor::factory()->create();
+
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create(['donorId' => $donor->id]);
+        
         $repository = new DonationRepository();
 
         // update donation values
@@ -199,6 +203,7 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
         // call update method
         $repository->update($donation);
 
+        /** @var object $query */
         $query = $repository->prepareQuery()
             ->where('ID', $donation->id)
             ->get();
@@ -220,8 +225,12 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
      */
     public function testDeleteShouldRemoveDonationFromTheDatabase()
     {
-        $donor = $this->createDonor();
-        $donation = $this->createDonation();
+        /** @var Donor $donor */
+        $donor = Donor::factory()->create();
+
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create(['donorId' => $donor->id]);
+
         $repository = new DonationRepository();
 
         $repository->delete($donation);
@@ -237,75 +246,5 @@ final class DonationRepositoryTest extends \Give_Unit_Test_Case
 
         $this->assertNull($donationQuery);
         $this->assertEmpty($donationCoreMetaQuery);
-    }
-
-    /**
-     * Local donation factory
-     *
-     * @unreleased
-     *
-     * @return Donation
-     */
-    private function createDonationInstance()
-    {
-        return new Donation([
-            'createdAt' => $this->getCurrentDateTime(),
-            'status' => DonationStatus::PENDING(),
-            'gateway' => TestGateway::id(),
-            'amount' => 50,
-            'currency' => 'USD',
-            'donorId' => 1,
-            'firstName' => 'Bill',
-            'lastName' => 'Murray',
-            'email' => 'billMurray@givewp.com',
-            'parentId' => 0,
-            'formId' => 1,
-            'formTitle' => 'Form Title'
-        ]);
-    }
-
-    /**
-     * Local donation factory
-     *
-     * @unreleased
-     *
-     * @return Donation
-     * @throws Exception
-     */
-    private function createDonation()
-    {
-        return Donation::create([
-            'createdAt' => $this->getCurrentDateTime(),
-            'status' => DonationStatus::PENDING(),
-            'gateway' => TestGateway::id(),
-            'amount' => 50,
-            'currency' => 'USD',
-            'donorId' => 1,
-            'firstName' => 'Bill',
-            'lastName' => 'Murray',
-            'email' => 'billMurray@givewp.com',
-            'parentId' => 0,
-            'formId' => 1,
-            'formTitle' => 'Form Title',
-            'mode' => DonationMode::TEST()
-        ]);
-    }
-
-    /**
-     * @unreleased
-     *
-     * @return Donor
-     *
-     * @throws Exception
-     */
-    private function createDonor()
-    {
-        return Donor::create([
-            'createdAt' => $this->getCurrentDateTime(),
-            'name' => 'Bill Murray',
-            'firstName' => 'Bill',
-            'lastName' => 'Bill Murray',
-            'email' => 'billMurray@givewp.com'
-        ]);
     }
 }

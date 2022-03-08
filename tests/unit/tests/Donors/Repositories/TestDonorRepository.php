@@ -7,7 +7,6 @@ use Give\Donors\Models\Donor;
 use Give\Donors\Repositories\DonorRepository;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\Models\Traits\InteractsWithTime;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
 use Give_Unit_Test_Case;
 
@@ -18,7 +17,6 @@ use Give_Unit_Test_Case;
  */
 class TestDonorRepository extends Give_Unit_Test_Case
 {
-    use InteractsWithTime;
 
     /**
      * @unreleased
@@ -44,12 +42,13 @@ class TestDonorRepository extends Give_Unit_Test_Case
      */
     public function testGetByIdShouldReturnDonor()
     {
-        $donor = $this->createDonor();
+        /** @var Donor $donor */
+        $donor = Donor::factory()->create();
 
         $repository = new DonorRepository();
 
         /** @var Donor $donorFromRepository */
-        $donorFromRepository = $repository->queryById($donor->id);
+        $donorFromRepository = $repository->queryById($donor->id)->get();
 
         /** @var Donor $donorQuery */
         $donorQuery = $repository->prepareQuery()
@@ -68,7 +67,8 @@ class TestDonorRepository extends Give_Unit_Test_Case
      */
     public function testInsertShouldAddDonorToDatabase()
     {
-        $donor = $this->createDonorInstance();
+        $donor = new Donor(Donor::factory()->definition());
+
         $repository = new DonorRepository();
 
         /** @var Donor $newDonor */
@@ -121,7 +121,8 @@ class TestDonorRepository extends Give_Unit_Test_Case
      */
     public function testUpdateShouldUpdateDonorValuesInTheDatabase()
     {
-        $donor = $this->createDonor();
+        /** @var Donor $donor */
+        $donor = Donor::factory()->create();
         $repository = new DonorRepository();
 
         $donor->firstName = "Chris";
@@ -129,6 +130,7 @@ class TestDonorRepository extends Give_Unit_Test_Case
 
         $repository->update($donor);
 
+        /** @var object $query */
         $query = DB::table('give_donors')
             ->select('*')
             ->attachMeta('give_donormeta',
@@ -176,7 +178,9 @@ class TestDonorRepository extends Give_Unit_Test_Case
      */
     public function testDeleteShouldRemoveDonorFromTheDatabase()
     {
-        $donor = $this->createDonor();
+        /** @var Donor $donor */
+        $donor = Donor::factory()->create();
+        
         $repository = new DonorRepository();
 
         $repository->delete($donor);
@@ -192,39 +196,5 @@ class TestDonorRepository extends Give_Unit_Test_Case
 
         $this->assertNull($donorQuery);
         $this->assertEmpty($donorMetaQuery);
-    }
-
-    /**
-     * @unreleased
-     *
-     * @return Donor
-     */
-    private function createDonorInstance()
-    {
-        return new Donor([
-            'createdAt' => $this->getCurrentDateTime(),
-            'name' => 'Bill Murray',
-            'firstName' => 'Bill',
-            'lastName' => 'Bill Murray',
-            'email' => 'billMurray@givewp.com'
-        ]);
-    }
-
-    /**
-     * @unreleased
-     *
-     * @return Donor
-     *
-     * @throws Exception
-     */
-    private function createDonor()
-    {
-        return Donor::create([
-            'createdAt' => $this->getCurrentDateTime(),
-            'name' => 'Bill Murray',
-            'firstName' => 'Bill',
-            'lastName' => 'Bill Murray',
-            'email' => 'billMurray@givewp.com'
-        ]);
     }
 }

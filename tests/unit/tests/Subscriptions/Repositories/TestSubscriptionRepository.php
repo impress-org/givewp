@@ -3,13 +3,10 @@
 namespace unit\tests\Subscriptions\Repositories;
 
 use Exception;
-use Give\Donations\Models\Donation;
-use Give\Donations\ValueObjects\DonationMode;
-use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\Models\Traits\InteractsWithTime;
-use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
+use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
@@ -24,7 +21,6 @@ use Give_Unit_Test_Case;
  */
 class TestSubscriptionRepository extends Give_Unit_Test_Case
 {
-    use InteractsWithTime;
 
     public function setUp()
     {
@@ -60,10 +56,11 @@ class TestSubscriptionRepository extends Give_Unit_Test_Case
      */
     public function testGetByIdShouldReturnSubscription()
     {
-        $subscription = $this->createSubscription();
+        $donor = Donor::factory()->create();
+        $subscription = Subscription::factory()->create(['donorId' => $donor->id]);
         $repository = new SubscriptionRepository();
 
-        $subscriptionById = $repository->queryById($subscription->id);
+        $subscriptionById = $repository->getById($subscription->id);
 
         $this->assertInstanceOf(Subscription::class, $subscription);
         $this->assertEquals($subscriptionById, $subscription);
@@ -77,18 +74,18 @@ class TestSubscriptionRepository extends Give_Unit_Test_Case
      */
     public function testInsertShouldAddSubscriptionToDatabase()
     {
-        $subscriptionInstance = $this->createSubscriptionInstance();
+        $subscriptionInstance = new Subscription(Subscription::factory()->definition());
         $repository = new SubscriptionRepository();
 
-        /** @var Subscription $insertedSubscription */
         $insertedSubscription = $repository->insert($subscriptionInstance);
 
+        /** @var object $subscriptionQuery */
         $subscriptionQuery = DB::table('give_subscriptions')
             ->where('id', $insertedSubscription->id)
             ->get();
 
         $this->assertInstanceOf(Subscription::class, $insertedSubscription);
-        $this->assertEquals($this->toDateTime($subscriptionQuery->created), $insertedSubscription->createdAt);
+        $this->assertEquals(Temporal::toDateTime($subscriptionQuery->created), $insertedSubscription->createdAt);
         $this->assertEquals($subscriptionQuery->customer_id, $insertedSubscription->donorId);
         $this->assertEquals($subscriptionQuery->profile_id, $insertedSubscription->gatewaySubscriptionId);
         $this->assertEquals($subscriptionQuery->product_id, $insertedSubscription->donationFormId);
@@ -161,7 +158,8 @@ class TestSubscriptionRepository extends Give_Unit_Test_Case
      */
     public function testUpdateShouldUpdateValuesInTheDatabase()
     {
-        $subscription = $this->createSubscription();
+        /** @var Subscription $subscription */
+        $subscription = Subscription::factory()->create();
         $repository = new SubscriptionRepository();
 
         $subscription->amount = 200;
@@ -169,6 +167,7 @@ class TestSubscriptionRepository extends Give_Unit_Test_Case
 
         $repository->update($subscription);
 
+        /** @var object $subscriptionQuery */
         $subscriptionQuery = DB::table('give_subscriptions')
             ->where('id', $subscription->id)
             ->get();
@@ -186,7 +185,8 @@ class TestSubscriptionRepository extends Give_Unit_Test_Case
      */
     public function testDeleteShouldRemoveSubscriptionFromTheDatabase()
     {
-        $subscription = $this->createSubscription();
+        /** @var Subscription $subscription */
+        $subscription = Subscription::factory()->create();
         $repository = new SubscriptionRepository();
 
         $repository->delete($subscription);
@@ -196,114 +196,5 @@ class TestSubscriptionRepository extends Give_Unit_Test_Case
             ->get();
 
         $this->assertNull($subscriptionQuery);
-    }
-
-    /**
-     * @unreleased
-     *
-     * @return Subscription
-     */
-    private function createSubscriptionInstance()
-    {
-        return new Subscription([
-            'id' => 1,
-            'createdAt' => $this->getCurrentDateTime(),
-            'amount' => 50,
-            'period' => SubscriptionPeriod::MONTH(),
-            'frequency' => 1,
-            'donorId' => 1,
-            'installments' => 0,
-            'transactionId' => 'transaction-id',
-            'feeAmount' => 0,
-            'status' => SubscriptionStatus::PENDING(),
-            'gatewaySubscriptionId' => 'gateway-subscription-id',
-            'donationFormId' => 1
-        ]);
-    }
-
-    /**
-     * @unreleased
-     *
-     * @return Subscription
-     * @throws Exception
-     */
-    private function createSubscription()
-    {
-        return Subscription::create([
-            'createdAt' => $this->getCurrentDateTime(),
-            'amount' => 50,
-            'period' => SubscriptionPeriod::MONTH(),
-            'frequency' => 1,
-            'donorId' => 1,
-            'installments' => 0,
-            'transactionId' => 'transaction-id',
-            'feeAmount' => 0,
-            'status' => SubscriptionStatus::PENDING(),
-            'gatewaySubscriptionId' => 'gateway-subscription-id',
-            'donationFormId' => 1
-        ]);
-    }
-
-    /**
-     * @unreleased
-     *
-     * @param  array  $attributes
-     *
-     * @return Donation
-     *
-     * @throws Exception
-     */
-    private function createDonation(array $attributes = [])
-    {
-        return Donation::create(
-            array_merge([
-                'status' => DonationStatus::PENDING(),
-                'gateway' => TestGateway::id(),
-                'mode' => DonationMode::TEST(),
-                'amount' => 50,
-                'currency' => 'USD',
-                'donorId' => 1,
-                'firstName' => 'Bill',
-                'lastName' => 'Murray',
-                'email' => 'billMurray@givewp.com',
-                'formId' => 1,
-                'formTitle' => 'Form Title',
-            ], $attributes)
-        );
-    }
-
-    /**
-     * @unreleased
-     *
-     * @return Subscription
-     * @throws Exception
-     */
-    private function createSubscriptionAndInitialDonation()
-    {
-        $subscription = $this->createSubscription();
-
-        $donation = $this->createDonation();
-
-        $repository = new SubscriptionRepository();
-
-        $repository->updateLegacyColumns($subscription->id, ['parent_payment_id' => $donation->id]);
-
-        return $subscription;
-    }
-
-    /**
-     * @unreleased
-     *
-     * @return Donation
-     * @throws Exception
-     */
-    private function createRenewal(Subscription $subscription)
-    {
-        return $this->createDonation([
-            'status' => DonationStatus::RENEWAL(),
-            'subscriptionId' => $subscription->id,
-            // initial donation ID 'parent_payment_id'
-            'parentId' => give()->subscriptions->getInitialDonationId($subscription->id),
-        ]);
     }
 }

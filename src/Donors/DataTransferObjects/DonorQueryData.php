@@ -3,7 +3,7 @@
 namespace Give\Donors\DataTransferObjects;
 
 use Give\Donors\Models\Donor;
-use Give\Framework\Models\Traits\InteractsWithTime;
+use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
  * Class DonorObjectData
@@ -12,7 +12,6 @@ use Give\Framework\Models\Traits\InteractsWithTime;
  */
 class DonorQueryData
 {
-    use InteractsWithTime;
 
     /**
      * @var int
@@ -60,7 +59,7 @@ class DonorQueryData
         $self->name = $object->name;
         $self->firstName = $object->firstName;
         $self->lastName = $object->lastName;
-        $self->createdAt = $self->toDateTime($object->createdAt);
+        $self->createdAt = Temporal::toDateTime($object->createdAt);
 
         return $self;
     }

@@ -6,7 +6,6 @@ use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
-use Give\Framework\Models\Traits\InteractsWithTime;
 use Give\Subscriptions\Models\Subscription;
 use Give_Subscriptions_DB;
 
@@ -17,7 +16,6 @@ use Give_Subscriptions_DB;
  */
 class TestDonor extends \Give_Unit_Test_Case
 {
-    use InteractsWithTime;
 
     public function setUp()
     {
