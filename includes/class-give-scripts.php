@@ -603,7 +603,6 @@ class Give_Scripts {
     public function gutenberg_admin_scripts()
     {
         // Enqueue the bundled block JS file
-        // @todo: Update dependencies on 5.0 Stable release
         EnqueueScript::make('give-blocks-js', 'assets/dist/js/gutenberg.js')
             ->dependencies(['give-admin-scripts'])
             ->registerTranslations()
