@@ -55,20 +55,19 @@ class Reports
             return;
         }
 
+        $data = [
+            'legacyReportsUrl' => admin_url('/edit.php?post_type=give_forms&page=give-reports&legacy=true'),
+            'allTimeStart' => $this->get_all_time_start(),
+            'currencies' => array_keys(give_get_currencies_list()),
+            'currency' => give_get_currency(),
+            'testMode' => give_is_test_mode(),
+        ];
+
         EnqueueScript::make('give-admin-reports-v3-js', 'assets/dist/js/admin-reports.js')
             ->loadInFooter()
             ->dependencies(['wp-api'])
             ->registerTranslations()
-            ->registerLocalizeData(
-                'giveReportsData',
-                [
-                    'legacyReportsUrl' => admin_url('/edit.php?post_type=give_forms&page=give-reports&legacy=true'),
-                    'allTimeStart' => $this->get_all_time_start(),
-                    'currencies' => array_keys(give_get_currencies_list()),
-                    'currency' => give_get_currency(),
-                    'testMode' => give_is_test_mode(),
-                ]
-            )->enqueue();
+            ->registerLocalizeData('giveReportsData', $data)->enqueue();
     }
 
     // Add Reports submenu page to admin menu

@@ -17,16 +17,15 @@ class Assets
      */
     public function enqueueScripts()
     {
+        $data = [
+            'apiRoot' => esc_url_raw(rest_url('give-api/v2/migrations')),
+            'apiNonce' => wp_create_nonce('wp_rest'),
+        ];
+
         EnqueueScript::make('give-migrations-list-table-app', 'assets/dist/js/give-migrations-list-table-app.js')
             ->loadInFooter()
             ->registerTranslations()
-            ->registerLocalizeData(
-                'GiveMigrations',
-                [
-                    'apiRoot' => esc_url_raw(rest_url('give-api/v2/migrations')),
-                    'apiNonce' => wp_create_nonce('wp_rest'),
-                ]
-            )
+            ->registerLocalizeData('GiveMigrations', $data)
             ->enqueue();
     }
 }

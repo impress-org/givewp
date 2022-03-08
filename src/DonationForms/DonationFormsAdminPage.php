@@ -31,16 +31,15 @@ class DonationFormsAdminPage
      */
     public function loadScripts()
     {
+        $data =  [
+            'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/forms')),
+            'apiNonce' => wp_create_nonce('wp_rest'),
+        ];
+
         EnqueueScript::make('give-admin-donation-forms', 'assets/dist/js/give-admin-donation-forms.js')
             ->loadInFooter()
             ->registerTranslations()
-            ->registerLocalizeData(
-                'GiveDonationForms',
-                [
-                    'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/forms')),
-                    'apiNonce' => wp_create_nonce('wp_rest'),
-                ]
-            )->enqueue();
+            ->registerLocalizeData('GiveDonationForms', $data)->enqueue();
 
         wp_enqueue_style(
             'give-admin-ui-font',

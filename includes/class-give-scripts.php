@@ -123,11 +123,11 @@ class Give_Scripts {
         )
             ->dependencies(
                 [
-                         'jquery',
-                         'jquery-ui-datepicker',
-                         'wp-color-picker',
-                         'jquery-query',
-                     ]
+                    'jquery',
+                    'jquery-ui-datepicker',
+                    'wp-color-picker',
+                    'jquery-query',
+                ]
             )
             ->registerTranslations()
             ->register();
