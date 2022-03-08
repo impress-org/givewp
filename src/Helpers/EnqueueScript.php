@@ -143,7 +143,7 @@ class EnqueueScript
             );
         }
 
-        if ($this->localizeScriptParamData && $this->localizeScriptParamName) {
+        if ($this->localizeScriptParamData ) {
             wp_localize_script(
                 $this->scriptId,
                 $this->localizeScriptParamName,
