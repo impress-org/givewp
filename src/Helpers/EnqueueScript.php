@@ -143,7 +143,7 @@ class EnqueueScript
             );
         }
 
-        if ($this->localizeScriptParamData ) {
+        if ($this->localizeScriptParamData) {
             wp_localize_script(
                 $this->scriptId,
                 $this->localizeScriptParamName,
@@ -218,7 +218,7 @@ class EnqueueScript
             . '.asset.php';
         $scriptAsset = file_exists($scriptAssetPath)
             ? require($scriptAssetPath)
-            : ['dependencies' => [], 'version' => filemtime($scriptAssetPath)];
+            : ['dependencies' => [], 'version' => GIVE_VERSION];
 
         if ($this->scriptDependencies) {
             $scriptAsset['dependencies'] = array_merge($this->scriptDependencies, $scriptAsset['dependencies']);
