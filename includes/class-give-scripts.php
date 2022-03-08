@@ -116,19 +116,21 @@ class Give_Scripts {
 	 * @since 2.1.0
 	 */
 	public function register_scripts() {
-
-		// WP-Admin.
-		wp_register_script(
-			'give-admin-scripts',
-			GIVE_PLUGIN_URL . 'assets/dist/js/admin.js',
-			[
-				'jquery',
-				'jquery-ui-datepicker',
-				'wp-color-picker',
-				'jquery-query',
-			],
-			GIVE_VERSION
-		);
+        // WP-Admin.
+        EnqueueScript::make(
+            'give-admin-scripts',
+            'assets/dist/js/admin.js'
+        )
+            ->dependencies(
+                [
+                         'jquery',
+                         'jquery-ui-datepicker',
+                         'wp-color-picker',
+                         'jquery-query',
+                     ]
+            )
+            ->registerTranslations()
+            ->register();
 
 		// WP-admin: plugin page.
 		wp_register_script(
