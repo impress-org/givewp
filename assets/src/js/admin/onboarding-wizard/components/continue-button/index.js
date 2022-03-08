@@ -39,7 +39,7 @@ const ContinueButton = ( { label, testId, clickCallback } ) => {
 ContinueButton.propTypes = {
 	label: PropTypes.string,
 	testId: PropTypes.string,
-	clickCallback: PropTypes.IsCallable,
+	clickCallback: PropTypes.func,
 };
 
 ContinueButton.defaultProps = {
