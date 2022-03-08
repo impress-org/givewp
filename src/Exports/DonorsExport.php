@@ -51,7 +51,7 @@ class DonorsExport extends Give_Batch_Export
      */
     public function csv_cols() {
         return $this->flattenAddressColumn(
-            $this->filterIncludedColumns([
+            array_intersect_key([
                 'full_name' => __( 'Name', 'give' ),
                 'email' => __( 'Email', 'give' ),
                 'address' => [
@@ -65,7 +65,7 @@ class DonorsExport extends Give_Batch_Export
                 'userid' => __( 'User ID', 'give' ),
                 'donations' => __( 'Number of donations', 'give' ),
                 'donation_sum' => __( 'Total Donated', 'give' ),
-        ]));
+        ], $this->posted_data[ 'give_export_columns' ] ));
     }
 
     /**
@@ -75,7 +75,13 @@ class DonorsExport extends Give_Batch_Export
     {
         $donorQuery = DB::table('give_donors', 'donors')
             ->distinct()
-            ->select('donors.*');
+            ->select(
+                [ 'donors.name', 'full_name' ],
+                [ 'donors.email', 'email' ],
+                [ 'donors.user_id', 'userid' ],
+                [ 'donors.purchase_count', 'donations' ],
+                [ 'donors.purchase_value', 'donation_sum' ]
+            );
 
         $donationQuery = DB::table('posts', 'donations')
             ->select('donations.ID', [ 'meta.meta_value', 'donorId'])
@@ -108,33 +114,24 @@ class DonorsExport extends Give_Batch_Export
 
         $donorQuery->joinRaw( "JOIN ({$donationQuery->getSQL()}) AS sub ON donors.id = sub.donorId" );
 
-        $results = $donorQuery->getAll(ARRAY_A);
-
-        $exportData = array_map([$this, 'mapDonorColumnNames'], $results);
-
         if( $this->shouldIncludeAddress() ) {
-            $exportData = array_map([$this, 'mapDonorAddress'], $exportData);
+            $donorQuery->attachMeta('give_donormeta',
+                'donors.ID',
+                'donor_id',
+                [ '_give_donor_address_billing_line1_0', 'address_line1' ],
+                [ '_give_donor_address_billing_line2_0', 'address_line2' ],
+                [ '_give_donor_address_billing_city_0', 'address_city' ],
+                [ '_give_donor_address_billing_state_0', 'address_state' ],
+                [ '_give_donor_address_billing_country_0', 'address_country' ],
+                [ '_give_donor_address_billing_zip_0', 'address_zip' ]
+            );
         }
 
-        $exportData = array_map([$this, 'filterIncludedColumns'], $exportData );
-        $exportData = array_map([$this, 'flattenAddressColumn'], $exportData );
-
-        return $this->filterExportData( $exportData );
-    }
-
-    /**
-     * @param array $donorData
-     * @return array
-     */
-    protected function mapDonorColumnNames( $donorData )
-    {
-        return [
-            'full_name'          => $donorData[ 'name' ],
-            'email'              => $donorData[ 'email' ],
-            'userid'             => $donorData[ 'user_id' ],
-            'donations'          => $donorData[ 'purchase_count' ],
-            'donation_sum'       => $donorData[ 'purchase_value' ],
-        ];
+        return $this->filterExportData(
+            array_map(function( $row ) {
+                return array_intersect_key( $row, $this->csv_cols() );
+            }, $donorQuery->getAll(ARRAY_A) )
+        );
     }
 
     /**
@@ -166,35 +163,6 @@ class DonorsExport extends Give_Batch_Export
             unset( $columnarData[ $columnName ] );
         }
         return $columnarData;
-    }
-
-    /**
-     * @TODO N+1 when querying for each donor's address.
-     * @param array $donorData
-     * @return array
-     */
-    protected function mapDonorAddress( $donorData )
-    {
-        $addressData = give_get_donor_address( $donorData[ 'id' ] );
-        return array_merge( $donorData, [
-            'address' => [
-                'address_line1'      => $addressData[ 'line1' ],
-                'address_line2'      => $addressData[ 'line2' ],
-                'address_city'       => $addressData[ 'city' ],
-                'address_state'      => $addressData[ 'state' ],
-                'address_zip'        => $addressData[ 'zip' ],
-                'address_country'    => $addressData[ 'country' ],
-            ]
-        ]);
-    }
-
-    /**
-     * @param array $columnarData
-     * @return array
-     */
-    protected function filterIncludedColumns( $columnarData )
-    {
-        return array_intersect_key( $columnarData, $this->posted_data[ 'give_export_columns' ] );
     }
 
     /**
