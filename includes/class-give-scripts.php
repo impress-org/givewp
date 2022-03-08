@@ -150,8 +150,15 @@ class Give_Scripts {
 			true
 		);
 
-		// Frontend.
-		wp_register_script( 'give', GIVE_PLUGIN_URL . 'assets/dist/js/give.js', [ 'jquery' ], GIVE_VERSION, self::$scripts_footer );
+        // Frontend.
+        $giveScript = EnqueueScript::make('give', 'assets/dist/js/give.js')
+                                   ->registerTranslations();
+
+        if (self::$scripts_footer) {
+            $giveScript->loadInFooter();
+        }
+
+        $giveScript->register();
 	}
 
 	/**
