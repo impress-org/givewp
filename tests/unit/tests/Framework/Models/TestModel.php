@@ -84,15 +84,15 @@ class TestModel extends \Give_Unit_Test_Case {
     /**
      * @unreleased
      *
-     * @coversDefaultClass
+     * @dataProvider invalidTypeProvider
      *
      * @return void
      */
-    public function testIsPropertyTypeValidShouldReturnFalseWhenPropertyIsInValid()
+    public function testIsPropertyTypeValidShouldReturnFalseWhenPropertyIsInValid($key, $value)
     {
         $model = new MockModel();
 
-        $this->assertFalse($model->isPropertyTypeValid('id', 'Not an int'));
+        $this->assertFalse($model->isPropertyTypeValid($key, $value));
     }
 
     /**
@@ -102,7 +102,14 @@ class TestModel extends \Give_Unit_Test_Case {
      */
     public function testModelShouldHaveDirtyAttributes()
     {
-        $model = new MockModel(['id' => 1, 'firstName' => 'Bill', 'lastName' => 'Murray']);
+        $model = new MockModel(
+            [
+                'id' => 1,
+                'firstName' => 'Bill',
+                'lastName' => 'Murray',
+                'emails' => ['billMurray@givewp.com']
+            ]
+        );
 
         $model->lastName = 'Gates';
 
@@ -113,13 +120,27 @@ class TestModel extends \Give_Unit_Test_Case {
     /**
      * @unreleased
      *
+     * @dataProvider invalidTypeProvider
+     *
      * @return void
      */
-    public function testModelShouldThrowExceptionForAssigningInvalidPropertyType()
+    public function testModelShouldThrowExceptionForAssigningInvalidPropertyType($key, $value)
     {
         $this->expectException(InvalidArgumentException::class);
 
-        new MockModel(['id' => 'Not an integer']);
+        new MockModel([$key => $value]);
+    }
+
+    /**
+     * @return array
+     */
+    public function invalidTypeProvider()
+    {
+        return [
+            ['id', 'Not an integer'],
+            ['firstName', 100],
+            ['emails', 'Not an array'],
+        ];
     }
 }
 
@@ -134,6 +155,7 @@ class MockModel extends Model {
     protected $properties = [
         'id' => 'int',
         'firstName' => 'string',
-        'lastName' => 'string'
+        'lastName' => 'string',
+        'emails' => 'array'
     ];
 }
