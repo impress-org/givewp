@@ -188,6 +188,8 @@ abstract class Model implements Arrayable
                 return is_string($value);
             case 'bool':
                 return is_bool($value);
+            case 'array':
+                return is_array($value);
             default:
                 return $value instanceof $type;
         }
