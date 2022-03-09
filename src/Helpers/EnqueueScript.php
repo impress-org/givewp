@@ -218,7 +218,7 @@ class EnqueueScript
             . '.asset.php';
         $scriptAsset = file_exists($scriptAssetPath)
             ? require($scriptAssetPath)
-            : ['dependencies' => [], 'version' => GIVE_VERSION];
+            : ['dependencies' => [], 'version' => filemtime($this->absoluteScriptPath)];
 
         if ($this->scriptDependencies) {
             $scriptAsset['dependencies'] = array_merge($this->scriptDependencies, $scriptAsset['dependencies']);
