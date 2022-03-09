@@ -14,17 +14,16 @@ class RouteSignature {
     private $signature;
 
     /**
+     * @unreleased - remove args from RouteSignature
+     *
      * @since 2.19.0
      *
      * @param  int  $gatewayId
      * @param  string  $gatewayMethod
-     * @param  string[]  $args
      */
-    public function __construct($gatewayId, $gatewayMethod, $args)
+    public function __construct($gatewayId, $gatewayMethod)
     {
-        $secureArgs = md5(implode('|', $args));
-
-        $this->signature = "$gatewayId@$gatewayMethod:$secureArgs";
+        $this->signature = "$gatewayId@$gatewayMethod";
     }
 
     /**

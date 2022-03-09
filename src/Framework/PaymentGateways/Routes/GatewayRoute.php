@@ -8,6 +8,7 @@ use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
+
 use function Give\Framework\Http\Response\response;
 
 /**
@@ -117,16 +118,17 @@ class GatewayRoute
     /**
      * Validate signature using nonces
      *
+     * @unreleased - remove args from RouteSignature
      * @since 2.19.0
      *
-     * @param string $routeSignature
-     * @param GatewayRouteData $data
+     * @param  string  $routeSignature
+     * @param  GatewayRouteData  $data
      *
      * @return void
      */
     private function validateSignature($routeSignature, GatewayRouteData $data)
     {
-        $action = new RouteSignature($data->gatewayId, $data->gatewayMethod, $data->queryParams);
+        $action = new RouteSignature($data->gatewayId, $data->gatewayMethod);
 
         if (!wp_verify_nonce($routeSignature, $action->toString())) {
             PaymentGatewayLog::error(
