@@ -66,6 +66,7 @@ class SubscriptionFactory extends ModelFactory
         // for backwards compatability update the subscription parent_payment_id column
         if (!$initialDonationId) {
             $donation = Donation::factory()->create(['donorId' => $subscription->donorId]);
+            give()->donations->updateLegacyDonationMetaAsInitialSubscriptionDonation($donation->id);
             give()->subscriptions->updateLegacyColumns($subscription->id, ['parent_payment_id' => $donation->id]);
         }
     }
