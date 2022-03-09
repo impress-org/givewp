@@ -481,11 +481,13 @@ trait WhereClause
             case Operator::LIKE:
             case Operator::NOTLIKE:
                 return DB::prepare(
-                    "%1s %2s %3s '%%%s%%'",
+                    "%1s %2s %3s %s",
                     $where->logicalOperator,
                     $where->column,
                     $where->comparisonOperator,
-                    DB::esc_like($where->value)
+                    strpos($where->value, '%') !== false
+                        ? $where->value
+                        : sprintf('%%%s%%', $where->value )
                 );
 
             // Handle NULL conditions
