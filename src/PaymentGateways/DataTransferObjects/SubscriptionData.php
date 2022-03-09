@@ -14,12 +14,12 @@ class SubscriptionData
     public $period;
 
     /**
-     * @var string
+     * @var int
      */
     public $times;
 
     /**
-     * @var string
+     * @var int
      */
     public $frequency;
 
@@ -35,8 +35,8 @@ class SubscriptionData
         $self = new static();
 
         $self->period = $request['period'];
-        $self->times = $request['times'];
-        $self->frequency = $request['frequency'];
+        $self->times = (int)$request['times'];
+        $self->frequency = (int)$request['frequency'];
 
         return $self;
     }
