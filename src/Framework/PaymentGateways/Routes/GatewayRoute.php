@@ -118,7 +118,7 @@ class GatewayRoute
     /**
      * Validate signature using nonces
      *
-     * @unreleased - remove args from RouteSignature
+     * @since 2.19.4 - remove args from RouteSignature
      * @since 2.19.0
      *
      * @param  string  $routeSignature

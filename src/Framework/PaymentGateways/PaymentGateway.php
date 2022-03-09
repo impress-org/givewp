@@ -256,7 +256,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * Generate secure gateway route url
      *
-     * @unreleased - remove args from RouteSignature
+     * @since 2.19.4 - remove args from RouteSignature
      * @since 2.19.0
      *
      * @param  string  $gatewayMethod
