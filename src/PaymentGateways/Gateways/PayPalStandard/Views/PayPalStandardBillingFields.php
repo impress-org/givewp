@@ -54,6 +54,7 @@ class PayPalStandardBillingFields
      * Return paypal logo.
      *
      * @since 2.19.0
+     * @unreleased Use correct logo path.
      *
      * @return string
      */
