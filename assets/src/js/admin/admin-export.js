@@ -68,9 +68,10 @@ jQuery( document ).ready( function( $ ) {
 	}
 
 
-    let startDate, endDate;
+    let donorExportStartDate, donorExportEndDate;
     $.datepicker.setDefaults({
-        onSelect: showHideSearchBy
+        onSelect: showHideSearchBy,
+        onClose: showHideSearchBy,
     });
 
     /**
@@ -80,10 +81,10 @@ jQuery( document ).ready( function( $ ) {
      */
     function showHideSearchBy(dateText, instance){
         if(instance.id === 'giveDonorExport-startDate'){
-            startDate = dateText;
+            donorExportStartDate = dateText;
         }
         if(instance.id === 'giveDonorExport-endDate'){
-            endDate = dateText;
+            donorExportEndDate = dateText;
         }
         if (startDate || endDate) {
             $('#give_donors_export_donation_search_by').show();
