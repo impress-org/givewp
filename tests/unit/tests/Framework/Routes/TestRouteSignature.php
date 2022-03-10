@@ -15,7 +15,7 @@ use function wp_verify_nonce;
 class TestRouteSignature extends TestCase
 {
     /**
-     * @@since 2.19.4 - replace RouteSignature args with unique donationId
+     * @@since 2.19.4 replace RouteSignature args with unique donationId
      * @since 2.19.0
      *
      * @return void
@@ -34,7 +34,7 @@ class TestRouteSignature extends TestCase
     }
 
     /**
-     * @@since 2.19.4 - replace RouteSignature args with unique donationId
+     * @@since 2.19.4 replace RouteSignature args with unique donationId
      * @since 2.19.0
      *
      * @return void

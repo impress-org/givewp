@@ -14,7 +14,7 @@ class RouteSignature {
     private $signature;
 
     /**
-     * @since 2.19.4 - replace RouteSignature args with unique donationId
+     * @since 2.19.4 replace RouteSignature args with unique donationId
      *
      * @since 2.19.0
      *
