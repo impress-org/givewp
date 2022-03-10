@@ -72,7 +72,7 @@ class TestRouteSignature extends TestCase
         $suppliedSignature = wp_hash("$gatewayId@$gatewayMethod:$donationId|$expiration");
 
         $this->assertTrue(
-            $signature->isValid($suppliedSignature, $expiration)
+            $signature->isValid($suppliedSignature)
         );
     }
 
@@ -93,7 +93,7 @@ class TestRouteSignature extends TestCase
         $suppliedSignature = wp_hash("$gatewayId@$gatewayMethod:$donationId|$yesterday");
 
         $this->assertFalse(
-            $signature->isValid($suppliedSignature, $yesterday)
+            $signature->isValid($suppliedSignature)
         );
     }
 
@@ -114,7 +114,7 @@ class TestRouteSignature extends TestCase
         $suppliedSignature = wp_hash("$gatewayId@$gatewayMethod:2|$expiration");
 
         $this->assertFalse(
-            $signature->isValid($suppliedSignature, $expiration)
+            $signature->isValid($suppliedSignature)
         );
     }
 }

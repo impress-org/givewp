@@ -136,7 +136,7 @@ class GatewayRoute
             $data->routeSignatureExpiration
         );
 
-        if (!$signature->isValid($routeSignature, $data->routeSignatureExpiration)) {
+        if (!$signature->isValid($routeSignature)) {
             PaymentGatewayLog::error(
                 'Invalid Secure Route',
                 [

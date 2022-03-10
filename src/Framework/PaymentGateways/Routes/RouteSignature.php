@@ -86,10 +86,9 @@ class RouteSignature
      * @unreleased
      *
      * @param  string  $suppliedSignature
-     * @param  string  $expiration
      * @return bool
      */
-    public function isValid($suppliedSignature, $expiration)
+    public function isValid($suppliedSignature)
     {
         $isSignatureValid = hash_equals(
             $suppliedSignature,
@@ -97,7 +96,7 @@ class RouteSignature
         );
 
         // expiration should be in the future
-        $isNotExpired = ((int)$expiration) >= current_datetime()->getTimestamp();
+        $isNotExpired = ((int)$this->expiration) >= current_datetime()->getTimestamp();
 
         return $isSignatureValid && $isNotExpired;
     }
