@@ -1,6 +1,6 @@
 <?php
 
-namespace unit\tests\Framework\Routes;
+namespace unit\tests\Framework\PaymentGateways\Routes;
 
 use Give\Framework\PaymentGateways\Routes\RouteSignature;
 use PHPUnit\Framework\TestCase;
@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @coversDefaultClass RouteSignature
  */
-class TestRouteSignature extends TestCase
+class RouteSignatureTest extends TestCase
 {
     /**
      * @unreleased add expiration
