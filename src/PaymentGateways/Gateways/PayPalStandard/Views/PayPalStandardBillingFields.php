@@ -60,7 +60,7 @@ class PayPalStandardBillingFields
     private function getLogo()
     {
         return file_get_contents(
-            GIVE_PLUGIN_DIR . '/src/PaymentGateways/PayPalStandard/resources/templates/paypal-standard-logo.svg'
+            GIVE_PLUGIN_DIR . 'src/PaymentGateways/Gateways/PayPalStandard/resources/templates/paypal-standard-logo.svg'
         );
     }
 }
