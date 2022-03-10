@@ -76,7 +76,7 @@ class DonationSummary
     protected function getLabel()
     {
         $formId = give_get_payment_form_id( $this->get( 'donationId' ) );
-        return wp_sprintf( __( 'Donation Form ID: %d', 'give' ), $formId );
+        return sprintf( __( 'Donation Form ID: %d', 'give' ), $formId );
     }
 
     /**
