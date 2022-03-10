@@ -76,10 +76,12 @@ class PayPalStandard extends PaymentGateway
                 $paymentData,
                 $this->generateSecureGatewayRouteUrl(
                     'handleSuccessPaymentReturn',
+                    $paymentData->donationId,
                     ['donation-id' => $paymentData->donationId]
                 ),
                 $this->generateSecureGatewayRouteUrl(
                     'handleFailedPaymentReturn',
+                    $paymentData->donationId,
                     ['donation-id' => $paymentData->donationId]
                 ),
                 $this->generateGatewayRouteUrl(
@@ -93,8 +95,9 @@ class PayPalStandard extends PaymentGateway
      * Handle payment redirect after successful payment on PayPal standard.
      *
      * @since 2.19.0
+     * @since 2.19.4 Only pending PayPal Standard donation set to processing.
      *
-     * @param array $queryParams Query params in gateway route. {
+     * @param  array  $queryParams  Query params in gateway route. {
      *
      * @type string "donation-id" Donation id.
      *
@@ -106,7 +109,10 @@ class PayPalStandard extends PaymentGateway
     {
         $donationId = (int)$queryParams['donation-id'];
         $payment = new Give_Payment($donationId);
-        $payment->update_status('processing');
+
+        if( 'pending' === $payment->status ) {
+            $payment->update_status('processing');
+        }
 
         return new RedirectResponse(Call::invoke(GenerateDonationReceiptPageUrl::class, $donationId));
     }
