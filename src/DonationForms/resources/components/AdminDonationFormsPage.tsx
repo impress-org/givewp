@@ -32,15 +32,15 @@ export default function AdminDonationFormsPage() {
 
     return (
         <article>
-            <div className={styles.pageHeader}>
+            <header className={styles.pageHeader}>
                 <GiveIcon size={'1.875rem'}/>
                 <h1 className={styles.pageTitle}>{__('Donation Forms', 'give')}</h1>
                 <a href="post-new.php?post_type=give_forms" className={styles.addFormButton}>
                     {__('Add Form', 'give')}
                 </a>
-                <hr className="wp-header-end" style={{display: 'none'}}/>
-            </div>
-            <div className={styles.searchContainer}>
+                <div className={"wp-header-end"} style={{display: 'none'}}/>
+            </header>
+            <section role={"search"} className={styles.searchContainer}>
                 <input
                     type="search"
                     aria-label={__('Search donation forms', 'give')}
@@ -55,7 +55,7 @@ export default function AdminDonationFormsPage() {
                         </option>
                     ))}
                 </select>
-            </div>
+            </section>
             <div className={styles.pageContent}>
                 <DonationFormsTable statusFilter={statusFilter} search={debouncedSearch} />
             </div>
