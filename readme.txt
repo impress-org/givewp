@@ -251,8 +251,10 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
-= 2.19.4: March 9th, 2022 =
-* Fix: Resolved issue with PayPal Standard failing to validate route after donating
+= 2.19.4: March 10th, 2022 =
+* Fix: Resolved issue with PayPal failing to validate route after donating
+* Fix: Resolved issue with PayPal logo not loading
+* Fix: Resolved issue with PayPal donation statuses being set to processing
 
 = 2.19.3: March 4th, 2022 =
 * Fix: PayPal Standard donations above 1000 dollars are now working again
