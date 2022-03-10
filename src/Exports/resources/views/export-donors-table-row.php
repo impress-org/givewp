@@ -11,8 +11,8 @@
             <?php
             echo Give()->html->date_field(
                 [
-                    'id'           => 'give_donors_export_donation_start_date',
-                    'name'         => 'start_date',
+                    'id'           => 'giveDonorExport-startDate',
+                    'name'         => 'giveDonorExport-startDate',
                     'placeholder'  => esc_attr__( 'Start Date', 'give' ),
                     'autocomplete' => 'off',
                 ]
@@ -20,8 +20,8 @@
 
             echo Give()->html->date_field(
                 [
-                    'id'           => 'give_donors_export_donation_end_date',
-                    'name'         => 'end_date',
+                    'id'           => 'giveDonorExport-endDate',
+                    'name'         => 'giveDonorExport-endDate',
                     'placeholder'  => esc_attr__( 'End Date', 'give' ),
                     'autocomplete' => 'off',
                 ]
