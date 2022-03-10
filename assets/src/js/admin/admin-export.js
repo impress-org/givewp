@@ -67,33 +67,24 @@ jQuery( document ).ready( function( $ ) {
 		} );
 	}
 
+
+    let startDate, endDate;
+    $.datepicker.setDefaults({
+        onSelect: showHideSearchBy
+    });
+
     /**
      * Show/hide Donor Export 'Search By' option if the date inputs change
      *
      * @unreleased
      */
-    let startDate, endDate;
-    //wait a bit before binding events so datepicker can initialize
-    setTimeout( () => {
-        $('#give_donors_export #start_date').datepicker('option', 'onSelect', (dateString, datepicker) => {
-            startDate = dateString;
-            showHideSearchBy();
-        });
-        $('#give_donors_export #start_date').on('keyup', (event) => {
-            startDate = event.originalEvent.target.value;
-            showHideSearchBy();
-        });
-        $('#give_donors_export #end_date').datepicker('option', 'onSelect', (dateString, datepicker) => {
-            endDate = dateString;
-            showHideSearchBy();
-        });
-        $('#give_donors_export #end_date').on('keyup', (event) => {
-            endDate = event.originalEvent.target.value;
-            showHideSearchBy();
-        });
-    }, 200);
-
-    function showHideSearchBy(){
+    function showHideSearchBy(dateText, instance){
+        if(instance.id === 'giveDonorExport-startDate'){
+            startDate = dateText;
+        }
+        if(instance.id === 'giveDonorExport-endDate'){
+            endDate = dateText;
+        }
         if (startDate || endDate) {
             $('#give_donors_export_donation_search_by').show();
         } else {
