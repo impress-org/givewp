@@ -7,11 +7,16 @@ namespace Give\Framework\PaymentGateways\Routes;
  *
  * @since 2.19.0
  */
-class RouteSignature {
+class RouteSignature
+{
     /**
      * @var string
      */
     private $signature;
+    /**
+     * @var string
+     */
+    public $expiration;
 
     /**
      * @since 2.19.4 replace RouteSignature args with unique donationId
@@ -21,10 +26,27 @@ class RouteSignature {
      * @param  int  $gatewayId
      * @param  string  $gatewayMethod
      * @param  int  $donationId
+     * @param  string  $expiration
      */
-    public function __construct($gatewayId, $gatewayMethod, $donationId)
+    public function __construct($gatewayId, $gatewayMethod, $donationId, $expiration = null)
     {
-        $this->signature = "$gatewayId@$gatewayMethod:$donationId";
+        $this->expiration = $expiration ?: self::createExpirationTimestamp();
+        $this->signature = $this->generateSignatureString($gatewayId, $gatewayMethod, $donationId, $this->expiration);
+    }
+
+
+    /**
+     * @unreleased
+     *
+     * @param  string  $gatewayId
+     * @param  string  $gatewayMethod
+     * @param  int  $donationId
+     * @param  string  $expiration
+     * @return string
+     */
+    private function generateSignatureString($gatewayId, $gatewayMethod, $donationId, $expiration)
+    {
+        return "$gatewayId@$gatewayMethod:$donationId|$expiration";
     }
 
     /**
@@ -38,12 +60,45 @@ class RouteSignature {
     }
 
     /**
-     * @since 2.19.0
+     * @unreleased
      *
-     * @return false|string
+     * @return string
      */
-    public function toNonce()
+    public function toHash()
     {
-        return wp_create_nonce($this->signature);
+        return wp_hash($this->signature);
+    }
+
+    /**
+     * Create expiration timestamp
+     *
+     * @unreleased
+     *
+     * @return string
+     */
+    public static function createExpirationTimestamp()
+    {
+        return (string)current_datetime()->modify('+1 day')->getTimestamp();
+    }
+
+
+    /**
+     * @unreleased
+     *
+     * @param  string  $suppliedSignature
+     * @param  string  $expiration
+     * @return bool
+     */
+    public function isValid($suppliedSignature, $expiration)
+    {
+        $isSignatureValid = hash_equals(
+            $suppliedSignature,
+            $this->toHash()
+        );
+
+        // expiration should be in the future
+        $isNotExpired = ((int)$expiration) >= current_datetime()->getTimestamp();
+
+        return $isSignatureValid && $isNotExpired;
     }
 }
