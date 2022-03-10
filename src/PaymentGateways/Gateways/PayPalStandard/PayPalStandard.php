@@ -95,9 +95,9 @@ class PayPalStandard extends PaymentGateway
      * Handle payment redirect after successful payment on PayPal standard.
      *
      * @since 2.19.0
-     * @unreleased Only pending PayPal Standard donation set to processing.
+     * @since 2.19.4 Only pending PayPal Standard donation set to processing.
      *
-     * @param array $queryParams Query params in gateway route. {
+     * @param  array  $queryParams  Query params in gateway route. {
      *
      * @type string "donation-id" Donation id.
      *
