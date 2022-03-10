@@ -19,8 +19,8 @@ class RouteSignature
     public $expiration;
 
     /**
+     * @unreleased replace wp_create_nonce with wp_hash and timestamp expiration
      * @since 2.19.4 replace RouteSignature args with unique donationId
-     *
      * @since 2.19.0
      *
      * @param  int  $gatewayId
@@ -94,8 +94,7 @@ class RouteSignature
             $suppliedSignature,
             $this->toHash()
         );
-
-        // expiration should be in the future
+        
         $isNotExpired = ((int)$this->expiration) >= current_datetime()->getTimestamp();
 
         return $isSignatureValid && $isNotExpired;
