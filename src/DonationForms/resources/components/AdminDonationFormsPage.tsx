@@ -38,6 +38,7 @@ export default function AdminDonationFormsPage() {
                 <a href="post-new.php?post_type=give_forms" className={styles.addFormButton}>
                     {__('Add Form', 'give')}
                 </a>
+                <hr className="wp-header-end" style={{display: 'none'}}/>
             </div>
             <div className={styles.searchContainer}>
                 <input
