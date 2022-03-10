@@ -14,16 +14,17 @@ class RouteSignature {
     private $signature;
 
     /**
-     * @since 2.19.4 - remove args from RouteSignature
+     * @since 2.19.4 - replace RouteSignature args with unique donationId
      *
      * @since 2.19.0
      *
      * @param  int  $gatewayId
      * @param  string  $gatewayMethod
+     * @param  int  $donationId
      */
-    public function __construct($gatewayId, $gatewayMethod)
+    public function __construct($gatewayId, $gatewayMethod, $donationId)
     {
-        $this->signature = "$gatewayId@$gatewayMethod";
+        $this->signature = "$gatewayId@$gatewayMethod:$donationId";
     }
 
     /**

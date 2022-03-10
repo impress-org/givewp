@@ -118,7 +118,7 @@ class GatewayRoute
     /**
      * Validate signature using nonces
      *
-     * @since 2.19.4 - remove args from RouteSignature
+     * @@since 2.19.4 - replace RouteSignature args with unique donationId
      * @since 2.19.0
      *
      * @param  string  $routeSignature
@@ -128,7 +128,7 @@ class GatewayRoute
      */
     private function validateSignature($routeSignature, GatewayRouteData $data)
     {
-        $action = new RouteSignature($data->gatewayId, $data->gatewayMethod);
+        $action = new RouteSignature($data->gatewayId, $data->gatewayMethod, $data->routeSignatureId);
 
         if (!wp_verify_nonce($routeSignature, $action->toString())) {
             PaymentGatewayLog::error(

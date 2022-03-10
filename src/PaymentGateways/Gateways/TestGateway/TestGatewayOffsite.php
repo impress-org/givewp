@@ -85,6 +85,7 @@ class TestGatewayOffsite extends PaymentGateway
     {
         $redirectUrl = $this->generateSecureGatewayRouteUrl(
             'securelyReturnFromOffsiteRedirect',
+            $paymentData->donationId,
             ['give-donation-id' => $paymentData->donationId]
         );
 

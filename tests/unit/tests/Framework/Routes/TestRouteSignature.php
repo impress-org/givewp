@@ -15,7 +15,7 @@ use function wp_verify_nonce;
 class TestRouteSignature extends TestCase
 {
     /**
-     * @unreleased - remove args from RouteSignature
+     * @@since 2.19.4 - replace RouteSignature args with unique donationId
      * @since 2.19.0
      *
      * @return void
@@ -24,16 +24,17 @@ class TestRouteSignature extends TestCase
     {
         $gatewayId = 'test-gateway';
         $gatewayMethod = 'secureMethod';
+        $donationId = 1;
 
-        $action = new RouteSignature($gatewayId, $gatewayMethod);
+        $action = new RouteSignature($gatewayId, $gatewayMethod, 1);
 
-        $signature = "$gatewayId@$gatewayMethod";
+        $signature = "$gatewayId@$gatewayMethod:$donationId";
 
         $this->assertEquals($action->toString(), $signature);
     }
 
     /**
-     * @unreleased - remove args from RouteSignature
+     * @@since 2.19.4 - replace RouteSignature args with unique donationId
      * @since 2.19.0
      *
      * @return void
@@ -42,10 +43,11 @@ class TestRouteSignature extends TestCase
     {
         $gatewayId = 'test-gateway';
         $gatewayMethod = 'secureMethod';
+        $donationId = 1;
 
-        $action = new RouteSignature($gatewayId, $gatewayMethod);
+        $action = new RouteSignature($gatewayId, $gatewayMethod, $donationId);
 
-        $signature = "$gatewayId@$gatewayMethod";
+        $signature = "$gatewayId@$gatewayMethod:$donationId";
 
         $this->assertEquals(1, wp_verify_nonce($action->toNonce(), $signature));
     }

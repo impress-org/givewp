@@ -76,10 +76,12 @@ class PayPalStandard extends PaymentGateway
                 $paymentData,
                 $this->generateSecureGatewayRouteUrl(
                     'handleSuccessPaymentReturn',
+                    $paymentData->donationId,
                     ['donation-id' => $paymentData->donationId]
                 ),
                 $this->generateSecureGatewayRouteUrl(
                     'handleFailedPaymentReturn',
+                    $paymentData->donationId,
                     ['donation-id' => $paymentData->donationId]
                 ),
                 $this->generateGatewayRouteUrl(
