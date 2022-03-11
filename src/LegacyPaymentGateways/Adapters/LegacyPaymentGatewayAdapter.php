@@ -69,7 +69,7 @@ class LegacyPaymentGatewayAdapter
 
         if (give_recurring_is_donation_recurring($formData->legacyDonationData)) {
             $subscriptionData = SubscriptionData::fromRequest($legacyDonationData);
-
+            
             $subscription = Subscription::create([
                 'amount' => (int)$gatewayPaymentData->amount,
                 'period' => new SubscriptionPeriod($subscriptionData->period),
@@ -79,6 +79,8 @@ class LegacyPaymentGatewayAdapter
                 'status' => SubscriptionStatus::PENDING(),
                 'donationFormId' => $formData->formId
             ]);
+
+            give()->donations->updateLegacyDonationMetaAsInitialSubscriptionDonation($donation->id);
 
             give()->subscriptions->updateLegacyColumns(
                 $subscription->id,
