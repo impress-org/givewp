@@ -10,12 +10,11 @@ if( ! function_exists( 'current_datetime' ) )
     /**
      * Retrieves the current time as an object using the site’s timezone.
      *
-     * @return DateTimeImmutable
-     * @throws Exception
+     * @return DateTimeImmutable|false
      */
     function current_datetime()
     {
-        return new DateTimeImmutable('now', wp_timezone());
+        return date_create_immutable('now', wp_timezone());
     }
 }
 
