@@ -64,7 +64,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * @since 2.18.0
      *
-     * @param  SubscriptionModuleInterface|null  $subscriptionModule
+     * @param SubscriptionModuleInterface|null $subscriptionModule
      */
     public function __construct(SubscriptionModuleInterface $subscriptionModule = null)
     {
@@ -80,6 +80,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     }
 
     /**
+     * @since 2.19.0
+     *
      * @inheritDoc
      */
     public function handleCreatePayment(GatewayPaymentData $gatewayPaymentData)
@@ -87,23 +89,27 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         try {
             $command = $this->createPayment($gatewayPaymentData);
             $this->handleGatewayPaymentCommand($command, $gatewayPaymentData);
-        } catch (PaymentGatewayException $paymentGatewayException) {
-            $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
-            exit;
         } catch (Exception $exception) {
-            PaymentGatewayLog::error($exception->getMessage());
+            PaymentGatewayLog::error(
+                $exception->getMessage(),
+                [
+                    'Payment Gateway' => $this->getId(),
+                    'Donation Data' => $gatewayPaymentData
+                ]
+            );
 
             $message = __(
-                'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.',
+                'An unexpected error occurred while processing the donation.  Please try again or contact a site administrator.',
                 'give'
             );
 
-            $this->handleResponse(response()->json($message));
-            exit;
+            $this->handleExceptionResponse($exception, $message);
         }
     }
 
     /**
+     * @since 2.19.0
+     *
      * @inheritDoc
      */
     public function handleCreateSubscription(GatewayPaymentData $paymentData, GatewaySubscriptionData $subscriptionData)
@@ -111,19 +117,22 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         try {
             $command = $this->createSubscription($paymentData, $subscriptionData);
             $this->handleGatewaySubscriptionCommand($command, $paymentData, $subscriptionData);
-        } catch (PaymentGatewayException $paymentGatewayException) {
-            $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
-            exit;
         } catch (Exception $exception) {
-            PaymentGatewayLog::error($exception->getMessage());
+            PaymentGatewayLog::error(
+                $exception->getMessage(),
+                [
+                    'Payment Gateway' => $this->getId(),
+                    'Donation Data' => $paymentData,
+                    'Subscription Data' => $subscriptionData
+                ]
+            );
 
             $message = __(
-                'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.',
+                'An unexpected error occurred while processing the subscription.  Please try again or contact the site administrator.',
                 'give'
             );
 
-            $this->handleResponse(response()->json($message));
-            exit;
+            $this->handleExceptionResponse($exception, $message);
         }
     }
 
@@ -143,8 +152,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      *
      * @since 2.18.0
      *
-     * @param  GatewayCommand  $command
-     * @param  GatewayPaymentData  $gatewayPaymentData
+     * @param GatewayCommand $command
+     * @param GatewayPaymentData $gatewayPaymentData
      *
      * @throws TypeNotSupported
      */
@@ -195,9 +204,10 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      *
      * @since 2.18.0
      *
-     * @param  GatewayCommand  $command
-     * @param  GatewayPaymentData  $gatewayPaymentData
-     * @param  GatewaySubscriptionData  $gatewaySubscriptionData
+     * @param GatewayCommand $command
+     * @param GatewayPaymentData $gatewayPaymentData
+     * @param GatewaySubscriptionData $gatewaySubscriptionData
+     *
      * @throws TypeNotSupported
      */
     public function handleGatewaySubscriptionCommand(
@@ -230,10 +240,10 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      * Generate gateway route url
      *
      * @since 2.18.0
-     * @unreleased remove $donationId param in favor of args
+     * @since 2.19.0 remove $donationId param in favor of args
      *
-     * @param  string  $gatewayMethod
-     * @param  array|null  $args
+     * @param string $gatewayMethod
+     * @param array|null $args
      *
      * @return string
      *
@@ -246,25 +256,53 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * Generate secure gateway route url
      *
-     * @unreleased
+     * @since 2.19.4 replace RouteSignature args with unique donationId
+     * @since 2.19.0
      *
      * @param  string  $gatewayMethod
+     * @param  int  $donationId
      * @param  array|null  $args
      *
      * @return string
      *
      */
-    public function generateSecureGatewayRouteUrl($gatewayMethod, $args = null)
+    public function generateSecureGatewayRouteUrl($gatewayMethod, $donationId, $args = null)
     {
-        $nonce = new RouteSignature($this->getId(), $gatewayMethod, $args);
+        $nonce = new RouteSignature($this->getId(), $gatewayMethod, $donationId);
 
         return Call::invoke(
             GenerateGatewayRouteUrl::class,
             $this->getId(),
             $gatewayMethod,
             array_merge($args, [
+                'give-route-signature-id' => $donationId,
                 'give-route-signature' => $nonce->toNonce()
             ])
         );
+    }
+
+    /**
+     * Handle response on basis of request mode when exception occurs:
+     * 1. Redirect to donation form if donation form submit.
+     * 2. Return json response if processing payment on ajax.
+     *
+     * @since 2.19.0
+     *
+     * @param  Exception|PaymentGatewayException  $exception
+     * @param  string  $message
+     * @return void
+     */
+    private function handleExceptionResponse($exception, $message)
+    {
+        if ($exception instanceof PaymentGatewayException) {
+            $message = $exception->getMessage();
+        }
+
+        if (wp_doing_ajax()) {
+            $this->handleResponse(response()->json($message));
+        }
+
+        give_set_error('PaymentGatewayException', $message);
+        give_send_back_to_checkout();
     }
 }

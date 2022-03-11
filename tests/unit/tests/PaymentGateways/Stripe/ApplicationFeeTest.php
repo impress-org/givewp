@@ -40,6 +40,7 @@ final class ApplicationFeeTest extends TestCase {
 					'test_secret_key'      => 'dummy',
 					'live_publishable_key' => 'dummy',
 					'test_publishable_key' => 'dummy',
+					'statement_descriptor' => get_bloginfo('name'),
 				],
 				'account_2' => [
 					'type'                 => 'manual',
@@ -52,6 +53,7 @@ final class ApplicationFeeTest extends TestCase {
 					'test_secret_key'      => 'dummy',
 					'live_publishable_key' => 'dummy',
 					'test_publishable_key' => 'dummy',
+					'statement_descriptor' => get_bloginfo('name'),
 				],
 			]
 		);

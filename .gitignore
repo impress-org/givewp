@@ -60,4 +60,5 @@ vendor
 phpcs.xml
 
 # POT File
-languages/give.pot
+languages/*
+!languages/README.md

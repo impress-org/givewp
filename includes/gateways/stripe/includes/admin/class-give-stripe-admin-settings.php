@@ -194,18 +194,6 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 					];
 
 					$settings['general'][] = [
-						'name'       => esc_html__( 'Statement Descriptor', 'give' ),
-						'desc'       => __( 'This is the text that appears on your donor\'s bank statements. Statement descriptors are limited to 22 characters, cannot use the special characters <code><</code>, <code>></code>, <code>\'</code>, or <code>"</code>, and must not consist solely of numbers. This is typically the name of your website or organization.', 'give' ),
-						'id'         => 'stripe_statement_descriptor',
-						'type'       => 'text',
-						'attributes' => [
-							'maxlength'   => '22',
-							'placeholder' => get_bloginfo( 'name' ),
-						],
-						'default'    => get_bloginfo( 'name' ),
-					];
-
-					$settings['general'][] = [
 						'name' => esc_html__( 'Collect Billing Details', 'give' ),
 						'desc' => esc_html__( 'This option enables the billing details section for Stripe, requiring the donor\'s address to complete the donation. These fields are not required by Stripe to process the transaction, but you may have the need to collect the data.', 'give' ),
 						'id'   => 'stripe_collect_billing',

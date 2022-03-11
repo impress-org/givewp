@@ -293,7 +293,7 @@ class Settings
      */
     public function overrideLegacyDonationManagementPageSettings($settings)
     {
-        // Only override settings if the the override legacy donation management pages setting is enabled
+        // Only override settings if the override legacy donation management pages setting is enabled
         if ($this->donorDashboardPageIsPublished() && give_is_setting_enabled(
                 give_get_option('override_legacy_donation_management_pages', 'enabled')
             )) {

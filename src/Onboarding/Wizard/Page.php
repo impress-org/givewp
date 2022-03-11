@@ -4,6 +4,7 @@ namespace Give\Onboarding\Wizard;
 
 defined('ABSPATH') || exit;
 
+use Give\Helpers\EnqueueScript;
 use Give\Onboarding\FormRepository;
 use Give\Onboarding\Helpers\FormatList;
 use Give\Onboarding\Helpers\LocationList;
@@ -104,6 +105,8 @@ class Page
      **/
     public function enqueue_scripts()
     {
+        global $current_user;
+
         if (empty($_GET['page']) || $this->slug !== $_GET['page']) { // WPCS: CSRF ok, input var ok.
             return;
         }
@@ -122,26 +125,6 @@ class Page
             null
         );
 
-        wp_enqueue_style(
-            'give-admin-onboarding-wizard',
-            GIVE_PLUGIN_URL . 'assets/dist/css/admin-onboarding-wizard.css',
-            [
-                'give-google-font-montserrat',
-                'give-google-font-open-sans',
-            ],
-            GIVE_VERSION
-        );
-
-        wp_enqueue_script(
-            'give-admin-onboarding-wizard-app',
-            GIVE_PLUGIN_URL . 'assets/dist/js/admin-onboarding-wizard.js',
-            ['wp-element', 'wp-api', 'wp-i18n'],
-            GIVE_VERSION,
-            true
-        );
-
-        wp_set_script_translations('give-admin-onboarding-wizard-app', 'give');
-
         $formID = $this->formRepository->getDefaultFormID();
         $featureGoal = get_post_meta($formID, '_give_goal_option', true);
         $featureComments = get_post_meta($formID, '_give_donor_comment', true);
@@ -153,55 +136,56 @@ class Page
         $currency = $this->settingsRepository->get('currency') ?: 'USD';
         $baseCountry = $this->settingsRepository->get('base_country') ?: 'US';
         $baseState = $this->settingsRepository->get('base_state') ?: '';
+        $data = [
+            'apiRoot' => esc_url_raw(rest_url()),
+            'apiNonce' => wp_create_nonce('wp_rest'),
+            'setupUrl' => SetupPage::getSetupPageEnabledOrDisabled() === SetupPage::ENABLED ?
+                admin_url('edit.php?post_type=give_forms&page=give-setup') :
+                admin_url('edit.php?post_type=give_forms'),
+            'formPreviewUrl' => admin_url('?page=give-form-preview'),
+            'localeCurrency' => $this->localeCollection->pluck('currency_code'),
+            'currencies' => FormatList::fromKeyValue(give_get_currencies_list()),
+            'currencySelected' => $currency,
+            'countries' => LocationList::getCountries(),
+            'countrySelected' => $baseCountry,
+            'states' => LocationList::getStates($baseCountry),
+            'stateSelected' => $baseState,
+            'features' => FormatList::fromValueKey(
+                [
+                    'donation-goal' => ('enabled' === $featureGoal),
+                    'donation-comments' => ('enabled' === $featureComments),
+                    'terms-conditions' => ('enabled' === $featureTerms),
+                    'offline-donations' => ('enabled' === $offlineDonations),
+                    'anonymous-donations' => ('enabled' === $featureAnonymous),
+                    'company-donations' => in_array($featureCompany, ['required', 'optional']),
+                    // Note: The company field has two values for enabled, "required" and "optional".
+                ]
+            ),
+            'causeTypes' => FormatList::fromKeyValue(
+                include GIVE_PLUGIN_DIR . 'src/Onboarding/Config/CauseTypes.php'
+            ),
+            'adminEmail' => $current_user->user_email,
+            'adminFirstName' => $current_user->first_name,
+            'adminLastName' => $current_user->last_name,
+            'adminUserID' => $current_user->ID,
+            'websiteUrl' => get_bloginfo('url'),
+            'websiteName' => get_bloginfo('sitename'),
+            'addons' => $this->onboardingSettingsRepository->get('addons') ?: [],
+        ];
 
-        global $current_user;
-
-        wp_localize_script(
+        EnqueueScript::make(
             'give-admin-onboarding-wizard-app',
-            'giveOnboardingWizardData',
-            [
-                'apiRoot' => esc_url_raw(rest_url()),
-                'apiNonce' => wp_create_nonce('wp_rest'),
-                'setupUrl' => SetupPage::getSetupPageEnabledOrDisabled() === SetupPage::ENABLED ? admin_url(
-                    'edit.php?post_type=give_forms&page=give-setup'
-                ) : admin_url('edit.php?post_type=give_forms'),
-                'formPreviewUrl' => admin_url('?page=give-form-preview'),
-                'localeCurrency' => $this->localeCollection->pluck('currency_code'),
-                'currencies' => FormatList::fromKeyValue(give_get_currencies_list()),
-                'currencySelected' => $currency,
-                'countries' => LocationList::getCountries(),
-                'countrySelected' => $baseCountry,
-                'states' => LocationList::getStates($baseCountry),
-                'stateSelected' => $baseState,
-                'features' => FormatList::fromValueKey(
-                    [
-                        'donation-goal' => ('enabled' == $featureGoal),
-                        'donation-comments' => ('enabled' == $featureComments),
-                        'terms-conditions' => ('enabled' == $featureTerms),
-                        'offline-donations' => ('enabled' == $offlineDonations),
-                        'anonymous-donations' => ('enabled' == $featureAnonymous),
-                        'company-donations' => in_array($featureCompany, ['required', 'optional']),
-                        // Note: The company field has two values for enabled, "required" and "optional".
-                    ]
-                ),
-                'causeTypes' => FormatList::fromKeyValue(
-                    include GIVE_PLUGIN_DIR . 'src/Onboarding/Config/CauseTypes.php'
-                ),
-                'adminEmail' => $current_user->user_email,
-                'adminFirstName' => $current_user->first_name,
-                'adminLastName' => $current_user->last_name,
-                'adminUserID' => $current_user->ID,
-                'websiteUrl' => get_bloginfo('url'),
-                'websiteName' => get_bloginfo('sitename'),
-                'addons' => $this->onboardingSettingsRepository->get('addons') ?: [],
-            ]
-        );
+            'assets/dist/js/admin-onboarding-wizard.js'
+        )->loadInFooter()
+            ->registerTranslations()
+            ->registerLocalizeData('giveOnboardingWizardData', $data)
+            ->enqueue();
     }
 
     public function redirect()
     {
         // Bail if no activation redirect
-        if ( ! \Give_Cache::get('_give_activation_redirect', true) || wp_doing_ajax()) {
+        if (!\Give_Cache::get('_give_activation_redirect', true) || wp_doing_ajax()) {
             return;
         }
 
@@ -217,7 +201,7 @@ class Page
 
         $upgrade = get_option('give_version_upgraded_from');
 
-        if ( ! $upgrade) {
+        if (!$upgrade) {
             // First time install
             wp_safe_redirect($redirect);
             exit;

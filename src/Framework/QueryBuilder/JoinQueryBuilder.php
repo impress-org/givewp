@@ -9,7 +9,7 @@ use Give\Framework\QueryBuilder\Types\JoinType;
 use Give\Framework\QueryBuilder\Types\Operator;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class JoinQueryBuilder
 {

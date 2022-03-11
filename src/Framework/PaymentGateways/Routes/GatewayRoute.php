@@ -21,12 +21,15 @@ class GatewayRoute
     /**
      * This is our entry point into the Gateway Routing system.
      *
-     * @unreleased - validate secureRouteMethods
+     * @since 2.19.0 - validate secureRouteMethods
      * @since 2.18.0
      *
      * @return void
      *
      * @throws PaymentGatewayException
+     * @since 2.18.0
+     * @since 2.19.0 - validate secureRouteMethods
+     *
      */
     public function __invoke()
     {
@@ -81,11 +84,11 @@ class GatewayRoute
     /**
      * Check if the request is valid
      *
-     * @unreleased remove required check give-donation-id
+     * @since 2.19.0 remove required check give-donation-id
      *
      * @since 2.18.0
      *
-     * @param  array  $gatewayIds
+     * @param array $gatewayIds
      *
      * @return bool
      *
@@ -115,15 +118,17 @@ class GatewayRoute
     /**
      * Validate signature using nonces
      *
-     * @unreleased
+     * @@since 2.19.4 replace RouteSignature args with unique donationId
+     * @since 2.19.0
      *
      * @param  string  $routeSignature
      * @param  GatewayRouteData  $data
+     *
      * @return void
      */
     private function validateSignature($routeSignature, GatewayRouteData $data)
     {
-        $action = new RouteSignature($data->gatewayId, $data->gatewayMethod, $data->queryParams);
+        $action = new RouteSignature($data->gatewayId, $data->gatewayMethod, $data->routeSignatureId);
 
         if (!wp_verify_nonce($routeSignature, $action->toString())) {
             PaymentGatewayLog::error(
@@ -140,11 +145,12 @@ class GatewayRoute
      *
      * @since 2.18.0
      *
-     * @unreleased - replace $donationId with $queryParams array
+     * @since 2.19.0 - replace $donationId with $queryParams array
+     * @since 2.19.0 Record gateway id, callback method name and query params in log.
      *
-     * @param  PaymentGateway  $gateway
-     * @param  string  $method
-     * @param  array  $queryParams
+     * @param PaymentGateway $gateway
+     * @param string $method
+     * @param array $queryParams
      *
      * @return void
      *
@@ -156,7 +162,14 @@ class GatewayRoute
         } catch (PaymentGatewayException $paymentGatewayException) {
             $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
         } catch (\Exception $exception) {
-            PaymentGatewayLog::error($exception->getMessage());
+            PaymentGatewayLog::error(
+                $exception->getMessage(),
+                [
+                    'Payment Gateway' => $gateway->getId(),
+                    'Payment Gateway Method' => $method,
+                    'Query Params' => $queryParams
+                ]
+            );
             $this->handleResponse(
                 response()->json(
                     __(

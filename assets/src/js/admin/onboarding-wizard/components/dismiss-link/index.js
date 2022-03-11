@@ -1,5 +1,5 @@
 // Import vendor dependencies
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n'
 
 // Import utilities
 import { getWindowData } from '../../utils';

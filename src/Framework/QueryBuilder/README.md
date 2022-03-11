@@ -36,6 +36,18 @@ Query Builder helper class is used to write SQL queries
   - [attachMeta](#attachmeta)
   - [configureMetaTable](#configuremetatable)
 
+- [CRUD](#crud)
+  - [Insert](#insert)
+  - [Update](#update)
+  - [Delete](#delete)
+  - [Get](#get)
+
+- [Aggregate Functions](#aggregate-functions)
+    - [Count](#count)
+    - [Sum](#sum)
+    - [Avg](#avg)
+    - [Min](#min)
+    - [Max](#max)
 
 ## DB
 
@@ -671,3 +683,111 @@ WHERE post_type = 'give_payment'
   AND donationMeta.custom_meta_value = '1'
 ```
 
+## CRUD
+
+### Insert
+
+The QueryBuilder also provides `QueryBuilder::insert` method that may be used to insert records into the database table.
+
+```php
+DB::table('posts')
+    ->insert([
+        'post_title'   => 'Post Title',
+        'post_author'  => 1,
+        'post_content' => 'Post Content'
+    ]);
+```
+
+
+### Update
+
+In addition to inserting records into the database, the QueryBuilder can also update existing records using the `QueryBuilder::update` method.
+
+```php
+DB::table('posts')
+    ->where('post_author', 1)
+    ->update([
+        'post_title'   => 'Post Title 2',
+        'post_content' => 'Post Content 2'
+    ]);
+```
+
+### Delete
+
+The `QueryBuilder::delete` method may be used to delete records from the table.
+
+```php
+DB::table('posts')
+    ->where('post_author', 1)
+    ->delete();
+```
+
+
+### Get
+
+#### Available methods - get / getAll
+
+Get single row
+
+```php
+$post = DB::table('posts')->where('post_author', 1)->get();
+```
+
+Get all rows
+
+```php
+$posts = DB::table('posts')->where('post_status', 'published')->getAll();
+```
+
+
+
+
+## Aggregate Functions
+
+The Query Builder also provides a variety of methods for retrieving aggregate values like `count`, `sum`, `avg`, `min` and `max`.
+
+### Count
+
+```php
+$count = DB::table('posts')
+    ->where('post_type', 'published')
+    ->count();
+```
+
+Count rows where provided column is not null.
+
+```php
+$count = DB::table('donations')->count('not_null_value_column');
+```
+
+### Sum
+
+```php
+$sum = DB::table('give_donationmeta')
+    ->where('meta_key', 'donation_amount')
+    ->sum('meta_value');
+```
+
+### Avg
+
+```php
+$avg = DB::table('give_donationmeta')
+    ->where('meta_key', 'donation_amount')
+    ->avg('meta_value');
+```
+
+### Min
+
+```php
+$min = DB::table('give_donationmeta')
+    ->where('meta_key', 'donation_amount')
+    ->min('meta_value');
+```
+
+### Max
+
+```php
+$max = DB::table('give_donationmeta')
+    ->where('meta_key', 'donation_amount')
+    ->max('meta_value');
+```

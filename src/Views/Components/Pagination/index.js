@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const {__} = wp.i18n;
+import { __ } from '@wordpress/i18n'
 
 const Pagination = ({currentPage, totalPages, disabled, setPage}) => {
     if (1 >= totalPages) {

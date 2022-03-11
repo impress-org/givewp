@@ -7,7 +7,7 @@ use Give\Framework\QueryBuilder\Clauses\RawSQL;
 use Give\Framework\QueryBuilder\Clauses\Select;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 trait SelectStatement
 {
@@ -56,7 +56,7 @@ trait SelectStatement
      */
     public function selectRaw($sql, ...$args)
     {
-        $this->selects = array_merge($this->selects, [new RawSQL($sql, $args)]);
+        $this->selects[] = new RawSQL($sql, $args);
 
         return $this;
     }

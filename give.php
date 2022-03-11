@@ -5,8 +5,8 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.18.1
- * Requires at least: 4.9
+ * Version: 2.19.4
+ * Requires at least: 5.0
  * Requires PHP: 5.6
  * Text Domain: give
  * Domain Path: /languages
@@ -42,18 +42,21 @@
  */
 
 use Give\Container\Container;
+use Give\DonationForms\Repositories\DonationFormsRepository;
+use Give\DonationForms\ServiceProvider as DonationFormsServiceProvider;
 use Give\DonationSummary\ServiceProvider as DonationSummaryServiceProvider;
 use Give\DonorDashboards\ServiceProvider as DonorDashboardsServiceProvider;
 use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
 use Give\Form\Templates;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Framework\Migrations\MigrationsServiceProvider;
-use Give\InPluginUpsells\ServiceProvider as InPluginUpsellsServiceProvider;
+use Give\LegacySubscriptions\ServiceProvider as LegacySubscriptionsServiceProvider;
 use Give\License\LicenseServiceProvider;
 use Give\Log\LogServiceProvider;
 use Give\MigrationLog\MigrationLogServiceProvider;
 use Give\MultiFormGoals\ServiceProvider as MultiFormGoalsServiceProvider;
 use Give\PaymentGateways\ServiceProvider as PaymentGatewaysServiceProvider;
+use Give\Promotions\ServiceProvider as PromotionsServiceProvider;
 use Give\Revenue\RevenueServiceProvider;
 use Give\Route\Form as FormRoute;
 use Give\ServiceProviders\LegacyServiceProvider;
@@ -77,28 +80,30 @@ if (!defined('ABSPATH')) {
  * @since 2.8.0 build in a service container
  * @since 1.0
  *
- * @property-read Give_API                        $api
- * @property-read Give_Async_Process              $async_process
- * @property-read Give_Comment                    $comment
- * @property-read Give_DB_Donors                  $donors
- * @property-read Give_DB_Donor_Meta              $donor_meta
- * @property-read Give_Emails                     $emails
- * @property-read Give_Email_Template_Tags        $email_tags
- * @property-read Give_DB_Form_Meta               $form_meta
- * @property-read Give_Admin_Settings             $give_settings
- * @property-read Give_HTML_Elements              $html
- * @property-read Give_Logging                    $logs
- * @property-read Give_Notices                    $notices
- * @property-read Give_DB_Payment_Meta            $payment_meta
- * @property-read Give_Roles                      $roles
- * @property-read FormRoute                       $routeForm
- * @property-read Templates                       $templates
- * @property-read Give_Scripts                    $scripts
- * @property-read Give_DB_Sequential_Ordering     $sequential_donation_db
+ * @property-read Give_API $api
+ * @property-read Give_Async_Process $async_process
+ * @property-read Give_Comment $comment
+ * @property-read Give_DB_Donors $donors
+ * @property-read Give_DB_Donor_Meta $donor_meta
+ * @property-read Give_Emails $emails
+ * @property-read Give_Email_Template_Tags $email_tags
+ * @property-read Give_DB_Form_Meta $form_meta
+ * @property-read Give_Admin_Settings $give_settings
+ * @property-read Give_HTML_Elements $html
+ * @property-read Give_Logging $logs
+ * @property-read Give_Notices $notices
+ * @property-read Give_DB_Payment_Meta $payment_meta
+ * @property-read Give_Roles $roles
+ * @property-read FormRoute $routeForm
+ * @property-read Templates $templates
+ * @property-read Give_Scripts $scripts
+ * @property-read Give_DB_Sequential_Ordering $sequential_donation_db
  * @property-read Give_Sequential_Donation_Number $seq_donation_number
  * @property-read Give_Session                    $session
  * @property-read Give_DB_Sessions                $session_db
  * @property-read Give_Tooltips                   $tooltips
+ * @property-read DonationFormsRepository         $donationFormsRepository
+ * @property-read Give_Recurring_DB_Subscription_Meta $subscription_meta
  *
  * @mixin Container
  */
@@ -156,7 +161,6 @@ final class Give
         RevenueServiceProvider::class,
         MultiFormGoalsServiceProvider::class,
         DonorDashboardsServiceProvider::class,
-        InPluginUpsellsServiceProvider::class,
         TrackingServiceProvider::class,
         TestDataServiceProvider::class,
         MigrationLogServiceProvider::class,
@@ -167,6 +171,9 @@ final class Give
         Give\Email\ServiceProvider::class,
         DonationSummaryServiceProvider::class,
         PaymentGatewaysServiceProvider::class,
+        DonationFormsServiceProvider::class,
+        PromotionsServiceProvider::class,
+        LegacySubscriptionsServiceProvider::class
     ];
 
     /**
@@ -282,7 +289,7 @@ final class Give
     {
         // Plugin version.
         if ( ! defined('GIVE_VERSION')) {
-            define('GIVE_VERSION', '2.18.1');
+            define('GIVE_VERSION', '2.19.4');
         }
 
         // Plugin Root File.
@@ -506,7 +513,7 @@ final class Give
     /**
      * Sets up the Exception Handler to catch and handle uncaught exceptions
      *
-     * @unreleased
+     * @since 2.11.1
      */
     private function setupExceptionHandler()
     {

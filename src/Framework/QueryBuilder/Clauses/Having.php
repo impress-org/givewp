@@ -7,7 +7,7 @@ use Give\Framework\QueryBuilder\Types\Operator;
 use InvalidArgumentException;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class Having
 {
@@ -92,6 +92,7 @@ class Having
             '>',
             '>=',
             '<>',
+            '!=',
             '='
         ];
 

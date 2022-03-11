@@ -3,7 +3,7 @@
  *
  * @since 2.5.0
  */
-const { __, sprintf } = wp.i18n;
+import { __, sprintf } from '@wordpress/i18n'
 
 import '../../../../src/PaymentGateways/resources/js/stripe-account-manager/set-default-account-action'
 import '../../../../src/PaymentGateways/resources/js/stripe-account-manager/disconnect-stripe-account-action'
@@ -31,6 +31,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const perFormOptions = Array.from( document.querySelectorAll( 'input[name="give_stripe_per_form_accounts"]' ) );
 	const perFormAccount = document.querySelector( '.give-stripe-manage-account-options' );
 	const creditCardFieldFormatOptions = document.querySelectorAll('#give-settings-section-group-credit-card .give-stripe-cc-option-field')
+	const editStripeStatementDescriptor = document.querySelectorAll('#give-settings-section-group-accounts .give-stripe-edit-statement-descriptor-btn')
 
 	// These fn calls will JSON format the text areas for Stripe fields stylings under Advanced tab.
 	giveStripeJsonFormattedTextarea( stripeStylesBase );
@@ -232,6 +233,137 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			})
 		})
 	}
+
+    if (editStripeStatementDescriptor.length) {
+        let formTemplate = `
+            <input type="text" minlength="5" maxlength="22">
+            <button class="button-primary" disabled>${__('Save', 'give')}</button>
+            <button class="button-secondary">${__('Cancel', 'give')}</button>`;
+
+        // Statement descriptor text will be validate on basis of Stripe requirements.
+        // Read more about requirements: https://stripe.com/docs/statement-descriptors#requirements
+        let isValidaStatementDescriptor =  ( text ) => {
+            if(
+                22 < text.length ||
+                text.length < 5 ||
+                ! isNaN(text)
+            ){
+                return false;
+            }
+
+            return 0 === text.split('')
+                .filter( (char) => ['*', '\'', '"', '\\', '<', '>'].includes(char) ).length
+        }
+
+        editStripeStatementDescriptor.forEach((actionLink) => {
+            actionLink.addEventListener(
+                'click',
+                (e) => {
+                    e.preventDefault();
+
+                    let container = actionLink.closest('.give-stripe-connect-data-field'),
+                        containerDisplayStylePropertyValue = container.style.display;
+
+                    // Enable statement descriptor editing mode.
+                    container.insertAdjacentHTML('afterend', formTemplate);
+                    container.style.display = 'none';
+
+                    let inputField = container.nextElementSibling,
+                        saveButton = inputField.nextElementSibling,
+                        cancelButton = saveButton.nextElementSibling;
+
+                    // Add style.
+                    inputField.value = container.childNodes[0].nodeValue.trim();
+                    inputField.style.display = 'block';
+                    inputField.style.marginBottom = '10px';
+                    saveButton.style.marginRight = '5px';
+
+                    // Add events.
+                    inputField.addEventListener(
+                        'keyup',
+                        (e) => {
+                            let newStatementDescriptor = inputField.value.trim(),
+                                savedStatementDescriptor = container.childNodes[0].nodeValue.trim();
+
+                            if (
+                                !newStatementDescriptor ||
+                                newStatementDescriptor === savedStatementDescriptor) {
+                                saveButton.disabled = true;
+                                return;
+                            }
+
+                            saveButton.disabled = false;
+                        }
+                    );
+
+                    cancelButton.addEventListener(
+                        'click',
+                        (e) => {
+                            e.preventDefault();
+
+                            inputField.remove();
+                            saveButton.remove();
+                            cancelButton.remove();
+
+                            container.style.display = containerDisplayStylePropertyValue;
+                        });
+
+                    saveButton.addEventListener(
+                        'click',
+                        (e) => {
+                            e.preventDefault();
+
+                            let newStatementDescriptorText = inputField.value.trim();
+                            let actionUrl = `${container.getAttribute('data-action-url')}&statement-descriptor=${encodeURIComponent(newStatementDescriptorText)}`
+
+                            if( ! isValidaStatementDescriptor(newStatementDescriptorText) ) {
+                                new Give.modal.GiveErrorAlert({
+                                    modalContent:{
+                                        title: __( 'Invalid Statement Descriptor Text', 'give'),
+                                        desc: sprintf(
+                                            '%s <br>%s <br>- %s<br>- %s<br>- %s<br>- %s<br><br><a href="%s" target="_blank">%s</a>',
+                                            __( 'Please enter a valid Stripe statement descriptor.', 'give'),
+                                            __( 'List of important Stripe statement descriptor text requirements:', 'give'),
+                                            __( 'Contains only Latin characters.', 'give'),
+                                            __( 'Contains between 5 and 22 characters, inclusive.', 'give'),
+                                            __( 'Contains at least one letter.', 'give'),
+                                            __( 'Does not contain any of the special characters < > \\ \' " *.', 'give'),
+                                            'https://stripe.com/docs/statement-descriptors#requirements',
+                                            __( 'Read more about stripe statement descriptor text requirements.', 'give'),
+                                        ),
+                                    }
+                                }).render();
+                                return;
+                            }
+
+                            fetch(actionUrl)
+                                .then(response => response.json())
+                                .then(response => {
+                                    if( ! response.success ){
+                                        new Give.modal.GiveErrorAlert({
+                                            modalContent:{
+                                                title: __( 'Invalid Stripe Statement Descriptor Text', 'give'),
+                                                desc: sprintf(
+                                                    '%s %s<br><br><a href="%s" target="_blank">%s</a>',
+                                                    __( 'We are unable to update Stripe statement descriptor.', 'give'),
+                                                    response.data.errorMessage,
+                                                    'https://stripe.com/docs/statement-descriptors#requirements',
+                                                    __( 'Read more about stripe statement descriptor text requirements.', 'give'),
+                                                ),
+                                            }
+                                        }).render();
+
+                                        return;
+                                    }
+
+                                    // Update complete. Add new text for display and exit editing mode.
+                                    container.childNodes[0].nodeValue = newStatementDescriptorText
+                                    cancelButton.click();
+                                });
+                        });
+                })
+        })
+    }
 } );
 
 /**

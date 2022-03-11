@@ -3,6 +3,7 @@
 namespace Give\DonorDashboards;
 
 use Give\DonorDashboards\Helpers\LocationList;
+use Give\Helpers\EnqueueScript;
 
 /**
  * Class App
@@ -134,61 +135,43 @@ class App
     public function loadAssets()
     {
         // Load assets only if rendering donor dashboard.
-        if ( ! isset($_GET['give-embed']) || 'donor-dashboard' !== $_GET['give-embed']) {
+        if (!isset($_GET['give-embed']) || 'donor-dashboard' !== $_GET['give-embed']) {
             return;
         }
 
-        wp_enqueue_script(
-            'give-donor-dashboards-app',
-            GIVE_PLUGIN_URL . 'assets/dist/js/donor-dashboards-app.js',
-            ['wp-i18n'],
-            GIVE_VERSION,
-            true
-        );
-
-        /**
-         * @link https://make.wordpress.org/core/2018/11/09/new-javascript-i18n-support-in-wordpress/
-         * "...this is to allow WordPress to selectively load only the necessary translations to ensure everything is as fast as can be"
-         */
-        wp_set_script_translations('give-donor-dashboards-app', 'give');
-
         $recaptcha_key = give_get_option('recaptcha_key');
         $recaptcha_secret = give_get_option('recaptcha_secret');
-        $recaptcha_enabled = (give_is_setting_enabled(
-            give_get_option('enable_recaptcha')
-        )) && ! empty($recaptcha_key) && ! empty($recaptcha_secret) ? true : false;
+        $recaptcha_enabled = (give_is_setting_enabled(give_get_option('enable_recaptcha'))) &&
+            !empty($recaptcha_key) && !empty($recaptcha_secret);
 
-        wp_localize_script(
+        $data = [
+            'apiRoot' => esc_url_raw(rest_url()),
+            'apiNonce' => wp_create_nonce('wp_rest'),
+            'profile' => give()->donorDashboard->getProfileData(),
+            'countries' => LocationList::getCountries(),
+            'states' => LocationList::getStates(give()->donorDashboard->getCountry()),
+            'id' => give()->donorDashboard->getId(),
+            'emailAccessEnabled' => give_is_setting_enabled(give_get_option('email_access')),
+            'loginEnabled' => $this->loginEnabled(),
+            'registeredTabs' => give()->donorDashboardTabs->getRegisteredIds(),
+            'loggedInWithoutDonor' => get_current_user_id() !== 0 && give()->donorDashboard->getId() === null,
+            'recaptchaKey' => $recaptcha_enabled ? $recaptcha_key : '',
+        ];
+
+        EnqueueScript::make(
             'give-donor-dashboards-app',
-            'giveDonorDashboardData',
-            [
-                'apiRoot' => esc_url_raw(rest_url()),
-                'apiNonce' => wp_create_nonce('wp_rest'),
-                'profile' => give()->donorDashboard->getProfileData(),
-                'countries' => LocationList::getCountries(),
-                'states' => LocationList::getStates(give()->donorDashboard->getCountry()),
-                'id' => give()->donorDashboard->getId(),
-                'emailAccessEnabled' => give_is_setting_enabled(give_get_option('email_access')),
-                'loginEnabled' => $this->loginEnabled(),
-                'registeredTabs' => give()->donorDashboardTabs->getRegisteredIds(),
-                'loggedInWithoutDonor' => get_current_user_id() !== 0 && give()->donorDashboard->getId(
-                ) === null ? true : false,
-                'recaptchaKey' => $recaptcha_enabled ? $recaptcha_key : '',
-            ]
-        );
+            'assets/dist/js/donor-dashboards-app.js'
+        )
+            ->loadInFooter()
+            ->registerTranslations()
+            ->registerLocalizeData('giveDonorDashboardData', $data)
+            ->enqueue();
 
         wp_enqueue_style(
             'give-google-font-montserrat',
             'https://fonts.googleapis.com/css?family=Montserrat:500,500i,600,600i,700,700i&display=swap',
             [],
             null
-        );
-
-        wp_enqueue_style(
-            'give-donor-dashboards-app',
-            GIVE_PLUGIN_URL . 'assets/dist/css/donor-dashboards-app.css',
-            ['give-google-font-montserrat'],
-            GIVE_VERSION
         );
     }
 

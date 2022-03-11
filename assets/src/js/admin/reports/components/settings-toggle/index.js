@@ -5,7 +5,7 @@ import { toggleSettingsPanel, setCurrency, toggleTestMode } from '../../store/ac
 import { useStoreValue } from '../../store';
 import './style.scss';
 import { useEffect, useRef } from 'react';
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
 
 // Utils
 import { getWindowData } from '../../utils';

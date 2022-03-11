@@ -225,6 +225,8 @@ class Classic extends Template implements Hookable, Scriptable
     /**
      * Render donation form header
      *
+     * @since 2.19.0 use trinary operator instead of Coalesce operator to make code php 5.6 compatible.
+     *
      * @param  int  $formId
      * @param  array  $args
      * @param  Give_Donate_Form  $form
@@ -234,7 +236,7 @@ class Classic extends Template implements Hookable, Scriptable
         $hasGoal = $form->has_goal();
 
         echo $this->loadFile('views/header.php', [
-            'title'                => $this->options[ 'visual_appearance' ][ 'main_heading' ] ?? $form->post_title,
+            'title'                => isset($this->options['visual_appearance']['main_heading']) ? $this->options['visual_appearance']['main_heading'] : $form->post_title,
             'description'          => $this->options[ 'visual_appearance' ][ 'description' ],
             'isSecureBadgeEnabled' => $this->options[ 'visual_appearance' ][ 'secure_badge' ] === 'enabled',
             'secureBadgeContent'   => $this->options[ 'visual_appearance' ][ 'secure_badge_text' ],

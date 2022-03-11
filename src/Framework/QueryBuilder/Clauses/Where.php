@@ -6,7 +6,7 @@ use Give\Framework\QueryBuilder\Types\Operator;
 use InvalidArgumentException;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class Where
 {
@@ -62,6 +62,7 @@ class Where
             '>',
             '>=',
             '<>',
+            '!=',
             '=',
             Operator::LIKE,
             Operator::NOTLIKE,

@@ -9,7 +9,7 @@ use Give\Framework\QueryBuilder\Clauses\Join;
 use Give\Framework\QueryBuilder\Clauses\RawSQL;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 trait JoinClause
 {

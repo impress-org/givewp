@@ -104,9 +104,13 @@
 
 	// White bg header.
 	.give-settings-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
 		background: #fff;
 		padding: 10px 20px;
 		margin: 0 -20px 0 -22px;
+        column-gap: 2rem;
 	}
 
 	.give-settings-heading-sep {

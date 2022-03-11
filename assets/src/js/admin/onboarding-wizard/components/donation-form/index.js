@@ -1,6 +1,6 @@
 // Import vendor dependencies
 import { useState, useEffect } from 'react';
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n'
 
 // Import utilities
 import { getWindowData } from '../../utils';

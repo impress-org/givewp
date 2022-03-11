@@ -2,10 +2,13 @@
 
 namespace Give\PaymentGateways\Stripe\Repositories;
 
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Stripe\Exceptions\DuplicateStripeAccountName;
 use Give\PaymentGateways\Stripe\Exceptions\StripeAccountAlreadyConnected;
 use Give\PaymentGateways\Stripe\Models\AccountDetail as AccountDetailModel;
+
+use Stripe\Account;
 
 use function esc_html__;
 use function give_stripe_get_all_accounts;
@@ -26,6 +29,26 @@ class Settings
     public function getAllStripeAccounts()
     {
         return give_stripe_get_all_accounts();
+    }
+
+    /**
+     * @since 2.19.0
+     *
+     * @param string $stripeAccountId
+     *
+     * @return AccountDetailModel
+     * @throws InvalidPropertyName|InvalidArgumentException
+     */
+    public function getStripeAccountById($stripeAccountId)
+    {
+        $stripeAccounts = give_stripe_get_all_accounts();
+
+        if (array_key_exists($stripeAccountId, $stripeAccounts)) {
+            return AccountDetailModel::fromArray($stripeAccounts[$stripeAccountId]);
+        }
+
+
+        throw new InvalidArgumentException( esc_html__( 'Invalid Stripe account id.', 'give') );
     }
 
     /**
@@ -93,7 +116,7 @@ class Settings
         $allAccounts = give_stripe_get_all_accounts();
         $accountSlug = $stripeAccount->accountSlug;
 
-        if ( ! $this->isUniqueAccountName($stripeAccount->accountName, $allAccounts)) {
+        if (!$this->isUniqueAccountName($stripeAccount->accountName, $allAccounts)) {
             throw new DuplicateStripeAccountName(esc_html__('Stripe account already exist with same name.', 'give'));
         }
 
@@ -136,7 +159,7 @@ class Settings
      * @since 2.13.0
      *
      * @param AccountDetailModel $stripeAccount
-     * @param array              $allAccounts
+     * @param array $allAccounts
      *
      * @return bool
      * @throws InvalidPropertyName
@@ -163,7 +186,7 @@ class Settings
      * @since 2.13.0
      *
      * @param string $stripeAccountName
-     * @param array  $allAccounts
+     * @param array $allAccounts
      *
      * @return bool
      * @throws InvalidPropertyName

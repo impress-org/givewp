@@ -5,7 +5,7 @@ import LoadingOverlay from '@givewp/components/LoadingOverlay';
 
 import styles from './styles.module.scss';
 
-const {__} = wp.i18n;
+import { __ } from '@wordpress/i18n'
 
 const Modal = ({visible, type, children, isLoading, handleClose, ...rest}) => {
     const closeModal = useCallback((event) => {

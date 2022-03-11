@@ -2,10 +2,10 @@
 Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, jason_the_adams, henryholtgeerts, kbjohnson90, alaca, benmeredithgmailcom
 Donate link: https://go.givewp.com/home
 Tags: donation, donate, recurring donations, fundraising, crowdfunding
-Requires at least: 4.9
+Requires at least: 5.0
 Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 2.18.1
+Stable tag: 2.19.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -251,6 +251,36 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.19.4: March 10th, 2022 =
+* Fix: Resolved issue with PayPal failing to validate route after donating
+* Fix: Resolved issue with PayPal logo not loading
+* Fix: Resolved issue with PayPal donation statuses being set to processing
+
+= 2.19.3: March 4th, 2022 =
+* Fix: PayPal Standard donations above 1000 dollars are now working again
+* Fix: PayPal IPN URL is now working again
+* Fix: Stripe subscriptions with no end were being canceled upon the next renewal when using GiveWP Recurring 1.15.0. This resolves that issue. Please update!
+
+= 2.19.2: March 2nd, 2022 =
+* Fix: Resolved issue with connecting to Stripe with API Keys
+
+= 2.19.1: February 25th, 2022 =
+* Fix: Added backwards compatibility for Stripe statement descriptors that do not yet meet the new requirements.
+
+= 2.19.0: February 24th, 2022 =
+* New: New reactive form table interface. The new forms table responds to your clicks instantly.
+* New: Stripe statement descriptors can now be set on a per account basis.
+* New: Free add-on offer for folks using the free version of GiveWP without premium add-ons.
+* New: More detailed logs are now stored during the donation process. A powerful tool to help you troubleshoot any issues your donors might have with donating.
+* New: A refactored Payment Gateway API. The makes integrating custom gateways with GiveWP easier than ever before.
+* Change: Added subscription logic to allow gateways to support recurring in a more consistent manner. Make sure to update to the latest version of Recurring Donations as well.
+* Change: Updated Stripe and PayPal gateways to use the new Payment Gateway API.
+* Fix: Prevent fatal error on PHP 8 when a form's goal is empty
+* Fix: Ensured translation domains were consistent
+* Fix: Resolved console error for missing admin CSS files
+* Fix: Tributes using "button" display now show up correctly on Multi-Step and Classic templates
+* Fix: The "Payment Amount" section consistently reflect the amount when the donor changes to a custom amount
+
 = 2.18.1: February 2nd, 2022 =
 * Fix: On Classic template the payment fields didn't show up when there was only one active gateway, and now they do!
 

@@ -15,7 +15,7 @@ import {isEqual, debounce} from 'lodash';
  * WordPress dependencies
  */
 const {Component, RawHTML, Fragment} = wp.element;
-const {__, sprintf} = wp.i18n;
+import { __ } from '@wordpress/i18n'
 const apiFetch = wp.apiFetch;
 const {addQueryArgs} = wp.url;
 const {Placeholder} = wp.components;

@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const {__} = wp.i18n;
+import { __ } from '@wordpress/i18n'
 const {InnerBlocks} = wp.blockEditor;
 const {useEffect} = wp.element;
 const {select, dispatch} = wp.data;

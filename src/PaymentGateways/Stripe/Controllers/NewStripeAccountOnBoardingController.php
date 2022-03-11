@@ -94,14 +94,15 @@ class NewStripeAccountOnBoardingController
                     'test_secret_key' => $requestedData->stripeAccessTokenTest,
                     'live_publishable_key' => $requestedData->stripePublishableKey,
                     'test_publishable_key' => $requestedData->stripePublishableKeyTest,
+                    'statement_descriptor' => $account_details->settings->payments->statement_descriptor,
                 ]
             );
 
             $this->settings->addNewStripeAccount($accountDetailModel);
 
             if ($requestedData->formId) {
-                if ( ! $this->settings->getDefaultStripeAccountSlugForDonationForm($requestedData->formId)) {
-                    $this->settings->setDefaultStripeAccountSlugForDonationForm(
+                if ( ! Settings::getDefaultStripeAccountSlugForDonationForm($requestedData->formId)) {
+                    Settings::setDefaultStripeAccountSlugForDonationForm(
                         $requestedData->formId,
                         $accountDetailModel->accountSlug
                     );

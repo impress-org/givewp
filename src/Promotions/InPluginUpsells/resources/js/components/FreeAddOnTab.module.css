@@ -1,0 +1,152 @@
+.freeAddonSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card {
+    display: grid;
+    row-gap: 1.25rem;
+    max-width: 51rem;
+    padding: 1.5rem 2rem;
+}
+
+@media screen and (min-width: 64rem) {
+    .card {
+        column-gap: 5.25rem;
+        grid-auto-flow: column;
+        grid-template-columns: 5fr 4fr;
+    }
+}
+
+.emailReports {
+    background-color: #F6F9FC;
+}
+
+.description p {
+    font-size: 1rem;
+}
+
+.description strong {
+    color: #D75A4B;
+    font-style: italic;
+    font-weight: 800;
+}
+
+.icon {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.title {
+    display: inline-flex;
+    gap: 1.1em;
+    align-items: flex-end;
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.4375rem;
+    line-height: 1.36;
+}
+
+.nameAndFlag {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 0.875rem;
+}
+
+.includes {
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 1.36;
+}
+
+.includes > h4 {
+    text-transform: uppercase;
+}
+
+.informationHero {
+    display: block;
+    padding-top: 3rem;
+    padding-bottom: 1.5rem;
+}
+
+.informationHero h2 {
+    font-size: 1.65rem;
+}
+
+.formCard {
+    background-color: #F3F2EC;
+    display: flex;
+    flex-direction: column;
+    row-gap: 2.75rem;
+    padding: 3rem 4rem;
+    width: 100%;
+    max-width: 50.875rem;
+}
+
+.formCard form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 2rem;
+}
+
+.formCard__thankYou {
+    font-size: 1rem;
+    text-align: center;
+}
+
+.formCard__inputs {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.formCard label {
+    display: flex;
+    flex-direction: column;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.formCard label span {
+    padding-left: 0.3rem;
+    margin-bottom: 0.2rem;
+}
+
+.formCard input:where([type="text"], [type="email"]) {
+    width: 20rem;
+    height: 3.1rem;
+    border: 0;
+    background-color: white;
+    box-shadow: inset 0 4px 4px rgba(0, 0, 0, 0.1);
+    padding: 0 0.5rem;
+}
+
+.formCard input[type="submit"] {
+    padding: 1rem 0;
+    width: 100%;
+    text-transform: uppercase;
+}
+
+@media screen and (max-width: 64rem) {
+    .formCard__inputs {
+        flex-direction: column;
+        row-gap: 2rem;
+    }
+
+    .formCard input:where([type="text"], [type="email"]) {
+        width: 100%;
+    }
+}
+
+.disclosure {
+    font-size: 0.73rem;
+}
+
+.submissionError {
+    color: red;
+    font-size: 1rem;
+}
