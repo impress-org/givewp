@@ -49,7 +49,8 @@
             "Give\\": "src/"
         },
         "files": [
-            "src/Framework/Http/Response/functions.php"
+            "src/Framework/Http/Response/functions.php",
+            "src/Framework/PaymentGateways/Routes/current-datetime-shim.php"
         ]
     },
     "config": {
