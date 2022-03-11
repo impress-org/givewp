@@ -16,7 +16,7 @@ class DonationSummaryTest extends Give_Unit_Test_Case
     /** @test */
     public function it_summarizes_a_simple_donation()
     {
-        $paymentData = new GatewayPaymentData;
+        $paymentData = new GatewayPaymentData();
         $paymentData->donorInfo = new DonorInfo();
         $paymentData->donationId = Give_Helper_Payment::create_simple_payment();
 
@@ -31,7 +31,7 @@ class DonationSummaryTest extends Give_Unit_Test_Case
     /** @test */
     public function it_summarizes_a_multilevel_donation()
     {
-        $paymentData = new GatewayPaymentData;
+        $paymentData = new GatewayPaymentData();
         $paymentData->donorInfo = new DonorInfo();
         $paymentData->donationId = Give_Helper_Payment::create_multilevel_payment(['result_type' => 'object']);
         $paymentData->priceId = 2;
@@ -47,7 +47,7 @@ class DonationSummaryTest extends Give_Unit_Test_Case
     /** @test */
     public function it_summarizes_a_donation_with_donor_name_and_email()
     {
-        $paymentData = new GatewayPaymentData;
+        $paymentData = new GatewayPaymentData();
         $paymentData->donorInfo = new DonorInfo();
         $paymentData->donorInfo->firstName = 'Tester';
         $paymentData->donorInfo->lastName = 'Test';
@@ -65,7 +65,7 @@ class DonationSummaryTest extends Give_Unit_Test_Case
     /** @test */
     public function it_summarizes_a_donation_with_filter()
     {
-        $paymentData = new GatewayPaymentData;
+        $paymentData = new GatewayPaymentData();
         $paymentData->donorInfo = new DonorInfo();
         $paymentData->donationId = Give_Helper_Payment::create_simple_payment();
 
@@ -85,7 +85,7 @@ class DonationSummaryTest extends Give_Unit_Test_Case
     public function it_summarizes_a_simple_donation_truncated()
     {
         $length = 10;
-        $paymentData = new GatewayPaymentData;
+        $paymentData = new GatewayPaymentData();
         $paymentData->donorInfo = new DonorInfo();
         $paymentData->donationId = Give_Helper_Payment::create_simple_payment();
 
