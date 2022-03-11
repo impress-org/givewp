@@ -1,5 +1,6 @@
 import useSWR from 'swr';
 import lagData from './hooks/lagData';
+import apiFetch from '@wordpress/api-fetch';
 
 declare global {
     interface Window {
@@ -19,16 +20,17 @@ export const fetchWithArgs = (endpoint, args, method = 'GET', signal = null) => 
     for (const [param, value] of Object.entries(args)) {
         url.searchParams.set(param, value as string);
     }
-    return fetch(url.href, {
+    console.log(apiFetch);
+    return apiFetch({
+        url: url.href,
         method: method,
         signal: signal,
         //headers: headers,
-    }).then((res) => {
-        if(!res.ok){
-            throw new Error();
-        }
-        return res.json();
-    });
+    })
+        .then((res) => res)
+        .catch((err) => {
+            throw new Error()
+        });
 }
 
 const Fetcher = (params) => {
@@ -44,7 +46,7 @@ export function useDonationForms({page, perPage, status, search}) {
         onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
             //don't retry if we cancelled the initial request
             if(error.name == 'AbortError') return;
-            if (retryCount >= 5) return
+            if (retryCount >= 5) return;
             const retryAfter = (retryCount + 1) * 500;
             setTimeout(() => revalidate({ retryCount }), retryAfter);
         }
