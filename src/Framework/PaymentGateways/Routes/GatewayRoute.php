@@ -118,7 +118,8 @@ class GatewayRoute
     /**
      * Validate signature using nonces
      *
-     * @@since 2.19.4 replace RouteSignature args with unique donationId
+     * @unreleased replace nonce with hash
+     * @since 2.19.4 replace RouteSignature args with unique donationId
      * @since 2.19.0
      *
      * @param  string  $routeSignature
@@ -128,12 +129,24 @@ class GatewayRoute
      */
     private function validateSignature($routeSignature, GatewayRouteData $data)
     {
-        $action = new RouteSignature($data->gatewayId, $data->gatewayMethod, $data->routeSignatureId);
+        $signature = new RouteSignature(
+            $data->gatewayId,
+            $data->gatewayMethod,
+            $data->routeSignatureId,
+            $data->routeSignatureExpiration
+        );
 
-        if (!wp_verify_nonce($routeSignature, $action->toString())) {
+        if (!$signature->isValid($routeSignature)) {
             PaymentGatewayLog::error(
                 'Invalid Secure Route',
-                ['routeSignature' => $routeSignature, 'action' => $action->toString(), 'data' => $data]
+                [
+                    'routeSignature' => $routeSignature,
+                    'signature' => $signature,
+                    'signatureString' => $signature->toString(),
+                    'signatureHash' => $signature->toHash(),
+                    'signatureExpiration' => $signature->expiration,
+                    'data' => $data
+                ]
             );
 
             wp_die('Forbidden', 403);
