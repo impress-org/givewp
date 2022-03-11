@@ -320,6 +320,49 @@ class DonationRepository
     }
 
     /**
+     * In Legacy terms, the Initial Donation acts as the parent ID for subscription renewals.
+     * This function inserts those specific meta columns that accompany this concept.
+     *
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function updateLegacyDonationMetaAsInitialSubscriptionDonation($donationId)
+    {
+        DB::query('START TRANSACTION');
+
+        try {
+            DB::table('give_donationmeta')
+                ->insert(
+                    [
+                        'donation_id' => $donationId,
+                        'meta_key' => '_give_subscription_payment',
+                        'meta_value' => true,
+                    ]
+                );
+
+            DB::table('give_donationmeta')
+                ->insert(
+                    [
+                        'donation_id' => $donationId,
+                        'meta_key' => '_give_is_donation_recurring',
+                        'meta_value' => true,
+                    ]
+                );
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed updating a donation as initial legacy subscription donation', $donationId);
+
+            throw new $exception('Failed updating a donation as initial legacy subscription donation');
+        }
+
+        DB::query('COMMIT');
+
+        return true;
+    }
+
+    /**
      *
      * @unreleased
      *
