@@ -7,6 +7,15 @@ namespace Give\DonationForms;
  */
 class DonationFormsAdminPage
 {
+    protected $apiRoot;
+    protected $apiNonce;
+
+    public function __construct()
+    {
+        $this->apiRoot = esc_url_raw(rest_url('give-api/v2/admin/forms'));
+        $this->apiNonce = wp_create_nonce('wp_rest');
+    }
+
     /**
      * Register menu item
      */
@@ -40,8 +49,8 @@ class DonationFormsAdminPage
             'give-admin-donation-forms',
             'GiveDonationForms',
             [
-                'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/forms')),
-                'apiNonce' => wp_create_nonce('wp_rest'),
+                'apiRoot' => $this->apiRoot,
+                'apiNonce' => $this->apiNonce,
             ]
         );
 
@@ -59,6 +68,25 @@ class DonationFormsAdminPage
     public function render()
     {
         echo '<div id="give-admin-donation-forms-root"></div>';
+    }
+
+    /**
+     * Print preload tag for donation forms API request
+     * @unreleased
+     */
+    public function preloadForms()
+    {
+        $url = add_query_arg(
+            [
+                '_wpnonce' => $this->apiNonce,
+                'page' => 1,
+                'perPage' => 10,
+                'status' => 'any',
+                'search' => ''
+            ],
+            $this->apiRoot
+        );
+        printf('<link rel="preload" href="%s" as="fetch" crossorigin="anonymous"/>', $url);
     }
 
     /**

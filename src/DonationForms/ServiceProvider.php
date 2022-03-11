@@ -28,6 +28,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         if (DonationFormsAdminPage::isShowing()) {
             Hooks::addAction('admin_enqueue_scripts', DonationFormsAdminPage::class, 'loadScripts');
+            Hooks::addAction('admin_head', DonationFormsAdminPage::class, 'preloadForms', 1);
         }
     }
 }

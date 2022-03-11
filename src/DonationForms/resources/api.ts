@@ -15,13 +15,14 @@ const headers = {
 
 export const fetchWithArgs = (endpoint, args, method = 'GET', signal = null) => {
     const url = new URL(window.GiveDonationForms.apiRoot + endpoint);
+    url.searchParams.set('_wpnonce', window.GiveDonationForms.apiNonce);
     for (const [param, value] of Object.entries(args)) {
         url.searchParams.set(param, value as string);
     }
     return fetch(url.href, {
         method: method,
         signal: signal,
-        headers: headers,
+        //headers: headers,
     }).then((res) => {
         if(!res.ok){
             throw new Error();
