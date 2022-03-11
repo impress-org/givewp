@@ -36,7 +36,7 @@ class GatewayRouteData
     /**
      * Convert data from request into DTO
      *
-     * @unreleased add routeSignatureExpiration
+     * @since 2.19.5 add routeSignatureExpiration
      * @since 2.19.4 add give-route-signature-id
      * @since 2.18.0
      *

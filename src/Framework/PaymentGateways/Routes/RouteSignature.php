@@ -21,7 +21,7 @@ class RouteSignature
     public $expiration;
 
     /**
-     * @unreleased replace wp_create_nonce with wp_hash and timestamp expiration
+     * @since 2.19.5 replace wp_create_nonce with wp_hash and timestamp expiration
      * @since 2.19.4 replace RouteSignature args with unique donationId
      * @since 2.19.0
      *
@@ -38,7 +38,7 @@ class RouteSignature
 
 
     /**
-     * @unreleased
+     * @since 2.19.5
      *
      * @param  string  $gatewayId
      * @param  string  $gatewayMethod
@@ -62,7 +62,7 @@ class RouteSignature
     }
 
     /**
-     * @unreleased
+     * @since 2.19.5
      *
      * @return string
      */
@@ -74,7 +74,7 @@ class RouteSignature
     /**
      * Create expiration timestamp
      *
-     * @unreleased
+     * @since 2.19.5
      *
      * @return string
      */
@@ -86,7 +86,7 @@ class RouteSignature
 
 
     /**
-     * @unreleased
+     * @since 2.19.5
      *
      * @param  string  $suppliedSignature
      * @return bool
