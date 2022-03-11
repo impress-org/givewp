@@ -28,12 +28,6 @@ trait TablePrefix
             return $table->sql;
         }
 
-        $table = preg_replace(
-            sprintf('/^%s/', preg_quote($wpdb->prefix)),
-            '',
-            $table
-        );
-
         if (array_key_exists($table, $sharedTables)) {
             return $sharedTables[ $table ];
         }

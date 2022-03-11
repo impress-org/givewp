@@ -60,6 +60,10 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
         setDeleted([]);
     }
 
+    if(!data?.forms) {
+        return false;
+    }
+
     const trash = data ? data.trash : false;
 
     return data.forms.map((form) => (

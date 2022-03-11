@@ -15,41 +15,39 @@ use function wp_verify_nonce;
 class TestRouteSignature extends TestCase
 {
     /**
+     * @@since 2.19.4 replace RouteSignature args with unique donationId
      * @since 2.19.0
      *
      * @return void
      */
     public function testRouteSignatureReturnsValidString()
     {
-        $args = ['give-donation-id' => 1];
         $gatewayId = 'test-gateway';
         $gatewayMethod = 'secureMethod';
+        $donationId = 1;
 
-        $action = new RouteSignature($gatewayId, $gatewayMethod, $args);
+        $action = new RouteSignature($gatewayId, $gatewayMethod, 1);
 
-        $secureArgs = md5(implode('|', $args));
-
-        $signature = "$gatewayId@$gatewayMethod:$secureArgs";
+        $signature = "$gatewayId@$gatewayMethod:$donationId";
 
         $this->assertEquals($action->toString(), $signature);
     }
 
     /**
+     * @@since 2.19.4 replace RouteSignature args with unique donationId
      * @since 2.19.0
      *
      * @return void
      */
     public function testRouteSignatureReturnsValidNonce()
     {
-        $args = ['give-donation-id' => 1];
         $gatewayId = 'test-gateway';
         $gatewayMethod = 'secureMethod';
+        $donationId = 1;
 
-        $action = new RouteSignature($gatewayId, $gatewayMethod, $args);
+        $action = new RouteSignature($gatewayId, $gatewayMethod, $donationId);
 
-        $secureArgs = md5(implode('|', $args));
-
-        $signature = "$gatewayId@$gatewayMethod:$secureArgs";
+        $signature = "$gatewayId@$gatewayMethod:$donationId";
 
         $this->assertEquals(1, wp_verify_nonce($action->toNonce(), $signature));
     }
