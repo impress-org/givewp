@@ -4,7 +4,6 @@ namespace Give\PaymentGateways\Gateways\PayPalStandard\Controllers;
 
 use Give\Log\Log;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
-use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\Listeners\PaymentUpdated;
 use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\WebhookRegister;
 use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\WebhookValidator;
 
@@ -60,12 +59,11 @@ class PayPalStandardWebhook
         $this->recordIpn($eventData, $donationId);
         $this->recordIpnInDonation($donationId);
 
-        // Process payment.
-        // @todo use webhook event register to lookup for registered event and process it.
-        // Note: We can not use webhook event register to run event listener because recurring depend upon core to make
-        // Changes to the donation. Recurring add-on only handle subscription changes.
-        // https://github.com/impress-org/givewp/pull/6298
-        give( PaymentUpdated::class)->processEvent( $eventData );
+        /* @var WebhookRegister $webhookRegisterer */
+        $webhookRegisterer = give(WebhookRegister::class);
+        if ($webhookRegisterer->hasEventRegistered($txnType)) {
+            $webhookRegisterer->getEventHandler($txnType)->processEvent((object)$eventData);
+        }
 
         $this->supportLegacyActions($txnType, $eventData, $donationId);
 
