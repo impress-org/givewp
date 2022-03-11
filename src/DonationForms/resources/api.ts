@@ -1,6 +1,7 @@
 import useSWR from 'swr';
 import lagData from './hooks/lagData';
 import apiFetch from '@wordpress/api-fetch';
+import useFallbackAsInitial from "./hooks/useFallbackAsInitial";
 
 declare global {
     interface Window {
@@ -23,7 +24,7 @@ export const fetchWithArgs = (endpoint, args, method = 'GET', signal = null) => 
     })
         .then((res) => res)
         .catch((err) => {
-            throw new Error()
+            throw new Error();
         });
 }
 
@@ -35,18 +36,21 @@ const Fetcher = (params) => {
 
 // SWR Fetcher
 export function useDonationForms({page, perPage, status, search}) {
-    const {data, error, isValidating} = useSWR({page, perPage, status, search}, Fetcher, {
-        use: [lagData],
-        fallbackData: window.GiveDonationForms.preload,
-        revalidateOnMount: false,
-        onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
-            //don't retry if we cancelled the initial request
-            if(error.name == 'AbortError') return;
-            if (retryCount >= 5) return;
-            const retryAfter = (retryCount + 1) * 500;
-            setTimeout(() => revalidate({ retryCount }), retryAfter);
+    const {data, error, isValidating} = useSWR(
+        {page, perPage, status, search},
+        Fetcher,
+        {
+            use: [useFallbackAsInitial, lagData],
+            fallbackData: window.GiveDonationForms.preload,
+            onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+                //don't retry if we cancelled the initial request
+                if(error.name == 'AbortError') return;
+                if (retryCount >= 5) return;
+                const retryAfter = (retryCount + 1) * 500;
+                setTimeout(() => revalidate({ retryCount }), retryAfter);
+            }
         }
-    });
+    );
 
     return {data, error, isValidating};
 }
