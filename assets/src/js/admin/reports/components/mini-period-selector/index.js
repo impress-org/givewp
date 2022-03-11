@@ -2,7 +2,7 @@
 import { useStoreValue } from '../../store';
 import { setRange } from '../../store/actions';
 import './style.scss';
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
 
 const MiniPeriodSelector = () => {
 	// Get 'period' object from the store

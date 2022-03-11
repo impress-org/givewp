@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n'
 
 /**
  * Block Attributes
@@ -74,11 +74,11 @@ const blockAttributes = {
 	},
 	readMoreText: {
 		type: 'string',
-		default: __( 'Read more' ),
+		default: __( 'Read more', 'give' ),
 	},
 	loadMoreText: {
 		type: 'string',
-		default: __( 'Load more' ),
+		default: __( 'Load more', 'give' ),
 	},
 	avatarSize: {
 		type: 'string',

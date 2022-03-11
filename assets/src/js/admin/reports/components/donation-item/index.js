@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { getIcon, getLabel, getColor } from './utils';
 import './style.scss';
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
 
 const DonationItem = ( { status, amount, time, donor, source, url } ) => {
 	const icon = getIcon( status );

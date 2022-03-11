@@ -1,6 +1,6 @@
 import {useMemo, useState} from 'react';
 import {Tabs, TabList, Tab, TabPanels, TabPanel} from '@reach/tabs';
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 
 import {MustHaveAddons} from './MustHaveAddons';
 import {AdditionalAddons} from './AdditionalAddons';
@@ -45,8 +45,13 @@ export function AddonsAdminPage({startingTab = 0}) {
                     <aside
                         className={styles.sourceNotice}
                         dangerouslySetInnerHTML={{
-                            __html: __(
-                                'This page is loaded from <a href="https://givewp.com" rel="noopener" target="_blank">GiveWP.com</a>'
+                            __html: sprintf(
+                                /* translators: 1: Text before anchor html tag 2: Open anchor html tag 3: Website name 4: Close anchor tag*/
+                                '%1$s %2$s%3$s%4$s',
+                                __('This page is loaded from', 'give'),
+                                '<a href="https://givewp.com" rel="noopener" target="_blank">',
+                                __('GiveWP.com', 'give'),
+                                '</a>'
                             ),
                         }}
                     />
@@ -60,16 +65,16 @@ export function AddonsAdminPage({startingTab = 0}) {
             </div>
             <TabPanels className={styles.container}>
                 <TabPanel>
-                    <MustHaveAddons />
+                    <MustHaveAddons/>
                 </TabPanel>
                 <TabPanel>
-                    <PricingPlans />
+                    <PricingPlans/>
                 </TabPanel>
                 <TabPanel>
-                    <AdditionalAddons />
+                    <AdditionalAddons/>
                 </TabPanel>
                 <TabPanel>
-                    <FreeAddOnTab />
+                    <FreeAddOnTab/>
                 </TabPanel>
             </TabPanels>
         </Tabs>

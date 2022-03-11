@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-const { Fragment } = wp.element;
-const ServerSideRender = wp.serverSideRender;
+import { Fragment } from '@wordpress/element';
+import ServerSideRender from '@wordpress/server-side-render';
 
 /**
  * Internal dependencies

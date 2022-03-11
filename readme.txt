@@ -2,7 +2,7 @@
 Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, jason_the_adams, henryholtgeerts, kbjohnson90, alaca, benmeredithgmailcom
 Donate link: https://go.givewp.com/home
 Tags: donation, donate, recurring donations, fundraising, crowdfunding
-Requires at least: 4.9
+Requires at least: 5.0
 Tested up to: 5.9
 Requires PHP: 5.6
 Stable tag: 2.19.4
