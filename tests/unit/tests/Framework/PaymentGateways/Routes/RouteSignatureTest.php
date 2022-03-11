@@ -1,6 +1,6 @@
 <?php
 
-namespace unit\tests\Framework\Routes;
+namespace unit\tests\Framework\PaymentGateways\Routes;
 
 use Give\Framework\PaymentGateways\Routes\RouteSignature;
 use PHPUnit\Framework\TestCase;
@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @coversDefaultClass RouteSignature
  */
-class TestRouteSignature extends TestCase
+class RouteSignatureTest extends TestCase
 {
     /**
      * @unreleased add expiration
@@ -24,7 +24,7 @@ class TestRouteSignature extends TestCase
         $gatewayId = 'test-gateway';
         $gatewayMethod = 'secureMethod';
         $donationId = 1;
-        $expiration = RouteSignature::createExpirationTimestamp();
+        $expiration = $this->createExpirationTimestamp();
 
         $signature = new RouteSignature($gatewayId, $gatewayMethod, $donationId, $expiration);
 
@@ -43,7 +43,7 @@ class TestRouteSignature extends TestCase
         $gatewayId = 'test-gateway';
         $gatewayMethod = 'secureMethod';
         $donationId = 1;
-        $expiration = RouteSignature::createExpirationTimestamp();
+        $expiration = $this->createExpirationTimestamp();
 
         $signature = new RouteSignature($gatewayId, $gatewayMethod, $donationId, $expiration);
 
@@ -65,7 +65,7 @@ class TestRouteSignature extends TestCase
         $gatewayId = 'test-gateway';
         $gatewayMethod = 'secureMethod';
         $donationId = 1;
-        $expiration = RouteSignature::createExpirationTimestamp();
+        $expiration = $this->createExpirationTimestamp();
 
         $signature = new RouteSignature($gatewayId, $gatewayMethod, $donationId, $expiration);
 
@@ -107,7 +107,7 @@ class TestRouteSignature extends TestCase
         $gatewayId = 'test-gateway';
         $gatewayMethod = 'secureMethod';
         $donationId = 1;
-        $expiration = RouteSignature::createExpirationTimestamp();
+        $expiration = $this->createExpirationTimestamp();
 
         $signature = new RouteSignature($gatewayId, $gatewayMethod, $donationId, $expiration);
 
@@ -116,5 +116,13 @@ class TestRouteSignature extends TestCase
         $this->assertFalse(
             $signature->isValid($suppliedSignature)
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function createExpirationTimestamp()
+    {
+        return (string)current_datetime()->modify('+1 day')->getTimestamp();
     }
 }
