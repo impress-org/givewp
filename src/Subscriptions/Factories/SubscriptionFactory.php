@@ -67,7 +67,13 @@ class SubscriptionFactory extends ModelFactory
         if (!$initialDonationId) {
             $donation = Donation::factory()->create(['donorId' => $subscription->donorId]);
             give()->donations->updateLegacyDonationMetaAsInitialSubscriptionDonation($donation->id);
-            give()->subscriptions->updateLegacyColumns($subscription->id, ['parent_payment_id' => $donation->id]);
+            give()->subscriptions->updateLegacyColumns(
+                $subscription->id,
+                [
+                    'parent_payment_id' => $donation->id,
+                    'expiration' => $subscription->expiration()
+                ]
+            );
         }
     }
 }
