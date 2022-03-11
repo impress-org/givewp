@@ -100,11 +100,13 @@ class DonationSummaryTest extends Give_Unit_Test_Case
 
     public function get_legacy_donation_data(GatewayPaymentData $paymentData)
     {
+        $formId = give_get_payment_form_id($paymentData->donationId);
         return [
             'source_id' => 'pm_1234',
             'donation_id' => $paymentData->donationId,
             'post_data' => [
-                'give-form-id' => give_get_payment_form_id($paymentData->donationId),
+                'give-form-title' => get_the_title($formId),
+                'give-form-id' => $formId,
                 'give-price-id' => $paymentData->priceId,
             ],
             'user_info' => [

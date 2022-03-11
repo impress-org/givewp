@@ -90,7 +90,8 @@ class DonationSummary
     protected function getLabel()
     {
         $formId = give_get_payment_form_id($this->get('donationId'));
-        return sprintf(__('Donation Form ID: %d', 'give'), $formId);
+        $formTitle = get_the_title( $formId );
+        return $formTitle ?: sprintf(__('Donation Form ID: %d', 'give'), $formId);
     }
 
     /**
