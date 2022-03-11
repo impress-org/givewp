@@ -41,7 +41,7 @@ class DonationFormsAdminPage
         wp_enqueue_script(
             'give-admin-donation-forms',
             GIVE_PLUGIN_URL . 'assets/dist/js/give-admin-donation-forms.js',
-            ['wp-element', 'wp-i18n', 'wp-hooks'],
+            ['wp-element', 'wp-i18n', 'wp-hooks', 'wp-api-fetch'],
             GIVE_VERSION,
             true
         );
@@ -51,6 +51,7 @@ class DonationFormsAdminPage
             [
                 'apiRoot' => $this->apiRoot,
                 'apiNonce' => $this->apiNonce,
+                'preload' => $this->preloadForms()
             ]
         );
 
@@ -63,30 +64,35 @@ class DonationFormsAdminPage
     }
 
     /**
+     * Make REST request to Donation Forms endpoint before page load
+     * @unreleased
+     */
+    public function preloadForms()
+    {
+        $queryParameters = [
+            'page' => 1,
+            'perPage' => 10,
+            'status' => 'any',
+            'search' => '',
+        ];
+
+        $url = add_query_arg(
+            $queryParameters,
+            $this->apiRoot
+        );
+
+        $request = \WP_REST_Request::from_url($url);
+        $response = rest_do_request($request);
+
+        return $response->get_data();
+    }
+
+    /**
      * Render admin page
      */
     public function render()
     {
         echo '<div id="give-admin-donation-forms-root"></div>';
-    }
-
-    /**
-     * Print preload tag for donation forms API request
-     * @unreleased
-     */
-    public function preloadForms()
-    {
-        $url = add_query_arg(
-            [
-                '_wpnonce' => $this->apiNonce,
-                'page' => 1,
-                'perPage' => 10,
-                'status' => 'any',
-                'search' => ''
-            ],
-            $this->apiRoot
-        );
-        printf('<link rel="preload" href="%s" as="fetch" crossorigin="anonymous"/>', $url);
     }
 
     /**

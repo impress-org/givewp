@@ -4,15 +4,11 @@ import apiFetch from '@wordpress/api-fetch';
 
 declare global {
     interface Window {
-        GiveDonationForms: {apiNonce: string; apiRoot: string};
+        GiveDonationForms: {apiNonce: string; apiRoot: string, preload: {} };
     }
 }
 
 let controller = null;
-const headers = {
-        'Content-Type': 'application/json',
-        'X-WP-Nonce': window.GiveDonationForms.apiNonce,
-};
 
 export const fetchWithArgs = (endpoint, args, method = 'GET', signal = null) => {
     const url = new URL(window.GiveDonationForms.apiRoot + endpoint);
@@ -20,12 +16,10 @@ export const fetchWithArgs = (endpoint, args, method = 'GET', signal = null) => 
     for (const [param, value] of Object.entries(args)) {
         url.searchParams.set(param, value as string);
     }
-    console.log(apiFetch);
     return apiFetch({
         url: url.href,
         method: method,
         signal: signal,
-        //headers: headers,
     })
         .then((res) => res)
         .catch((err) => {
@@ -43,6 +37,8 @@ const Fetcher = (params) => {
 export function useDonationForms({page, perPage, status, search}) {
     const {data, error, isValidating} = useSWR({page, perPage, status, search}, Fetcher, {
         use: [lagData],
+        fallbackData: window.GiveDonationForms.preload,
+        revalidateOnMount: false,
         onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
             //don't retry if we cancelled the initial request
             if(error.name == 'AbortError') return;
