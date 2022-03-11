@@ -24,7 +24,7 @@ class RouteSignatureTest extends TestCase
         $gatewayId = 'test-gateway';
         $gatewayMethod = 'secureMethod';
         $donationId = 1;
-        $expiration = RouteSignature::createExpirationTimestamp();
+        $expiration = $this->createExpirationTimestamp();
 
         $signature = new RouteSignature($gatewayId, $gatewayMethod, $donationId, $expiration);
 
@@ -43,7 +43,7 @@ class RouteSignatureTest extends TestCase
         $gatewayId = 'test-gateway';
         $gatewayMethod = 'secureMethod';
         $donationId = 1;
-        $expiration = RouteSignature::createExpirationTimestamp();
+        $expiration = $this->createExpirationTimestamp();
 
         $signature = new RouteSignature($gatewayId, $gatewayMethod, $donationId, $expiration);
 
@@ -65,7 +65,7 @@ class RouteSignatureTest extends TestCase
         $gatewayId = 'test-gateway';
         $gatewayMethod = 'secureMethod';
         $donationId = 1;
-        $expiration = RouteSignature::createExpirationTimestamp();
+        $expiration = $this->createExpirationTimestamp();
 
         $signature = new RouteSignature($gatewayId, $gatewayMethod, $donationId, $expiration);
 
@@ -107,7 +107,7 @@ class RouteSignatureTest extends TestCase
         $gatewayId = 'test-gateway';
         $gatewayMethod = 'secureMethod';
         $donationId = 1;
-        $expiration = RouteSignature::createExpirationTimestamp();
+        $expiration = $this->createExpirationTimestamp();
 
         $signature = new RouteSignature($gatewayId, $gatewayMethod, $donationId, $expiration);
 
@@ -116,5 +116,13 @@ class RouteSignatureTest extends TestCase
         $this->assertFalse(
             $signature->isValid($suppliedSignature)
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function createExpirationTimestamp()
+    {
+        return (string)current_datetime()->modify('+1 day')->getTimestamp();
     }
 }

@@ -30,7 +30,7 @@ class RouteSignature
      */
     public function __construct($gatewayId, $gatewayMethod, $donationId, $expiration = null)
     {
-        $this->expiration = $expiration ?: self::createExpirationTimestamp();
+        $this->expiration = $expiration ?: $this->createExpirationTimestamp();
         $this->signature = $this->generateSignatureString($gatewayId, $gatewayMethod, $donationId, $this->expiration);
     }
 
@@ -76,7 +76,7 @@ class RouteSignature
      *
      * @return string
      */
-    public static function createExpirationTimestamp()
+    public function createExpirationTimestamp()
     {
         return (string)current_datetime()->modify('+1 day')->getTimestamp();
     }
@@ -94,7 +94,7 @@ class RouteSignature
             $suppliedSignature,
             $this->toHash()
         );
-        
+
         $isNotExpired = ((int)$this->expiration) >= current_datetime()->getTimestamp();
 
         return $isSignatureValid && $isNotExpired;
