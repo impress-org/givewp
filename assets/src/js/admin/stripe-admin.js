@@ -3,7 +3,7 @@
  *
  * @since 2.5.0
  */
-const { __, sprintf } = wp.i18n;
+import { __, sprintf } from '@wordpress/i18n'
 
 import '../../../../src/PaymentGateways/resources/js/stripe-account-manager/set-default-account-action'
 import '../../../../src/PaymentGateways/resources/js/stripe-account-manager/disconnect-stripe-account-action'

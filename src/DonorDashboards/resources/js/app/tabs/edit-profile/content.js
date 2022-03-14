@@ -90,7 +90,7 @@ const Content = () => {
         },
         {
             value: '1',
-            label: __('Private - only organization admins can view my info'),
+            label: __('Private - only organization admins can view my info', 'give'),
         },
     ];
 
@@ -176,7 +176,7 @@ const Content = () => {
             <Heading>{__('Additional Info', 'give')}</Heading>
             <Divider />
             <RadioControl
-                label={__('Anonymous Giving')}
+                label={__('Anonymous Giving', 'give')}
                 description={__(
                     'This will prevent your avatar, first name, donation comments, and other information from appearing publicly on this organization’s website.',
                     'give'

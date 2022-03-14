@@ -1,19 +1,20 @@
 {
-  "presets": [
-    [
-      "@babel/preset-env",
-      {
-		"targets": {
-		  "browsers": "last 2 version, > 0.05%, ie >= 10"
-		}
-      }
-    ]
-  ],
-  "plugins": [
-    [
-      "@babel/transform-react-jsx"
+    "presets": [
+        [
+            "@babel/preset-env",
+            {
+                "targets": {
+                    "browsers": "last 2 version, > 0.05%, ie >= 10"
+                }
+            }
+        ]
     ],
-    "@babel/plugin-transform-runtime",
-    "@babel/plugin-proposal-object-rest-spread"
-  ]
+    "plugins": [
+        [
+            "@babel/transform-react-jsx"
+        ],
+        "@babel/plugin-transform-runtime",
+        "@babel/plugin-proposal-object-rest-spread",
+        "react-require"
+    ]
 }

@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 const {useInstanceId} = wp.compose;
 const {DateTimePicker, BaseControl, Button, Dropdown} = wp.components;
 const {__experimentalGetSettings, date} = wp.date;
-const {__} = wp.i18n;
+import { __ } from '@wordpress/i18n'
 
 const DateTimeControl = ({name, label, help, className, value, onChange}) => {
     const instanceId = useInstanceId(DateTimeControl);
