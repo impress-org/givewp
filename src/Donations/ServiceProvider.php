@@ -3,7 +3,7 @@
 namespace Give\Donations;
 
 use Give\Donations\LegacyListeners\DispatchGiveInsertPayment;
-use Give\Donations\LegacyListeners\DispatchGiveRecurringAddSubscriptionPayment;
+use Give\Donations\LegacyListeners\DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment;
 use Give\Donations\LegacyListeners\DispatchGiveUpdatePaymentStatus;
 use Give\Donations\LegacyListeners\InsertSequentialId;
 use Give\Donations\LegacyListeners\RemoveSequentialId;
@@ -46,7 +46,7 @@ class ServiceProvider implements ServiceProviderInterface
             Call::invoke(UpdateDonorPaymentIds::class, $donation);
 
             if ($donation->subscriptionId) {
-                Call::invoke(DispatchGiveRecurringAddSubscriptionPayment::class, $donation);
+                Call::invoke(DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment::class, $donation);
             }
 
             /**
