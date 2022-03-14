@@ -41,7 +41,7 @@ class DonationFormsAdminPage
         wp_enqueue_script(
             'give-admin-donation-forms',
             GIVE_PLUGIN_URL . 'assets/dist/js/give-admin-donation-forms.js',
-            ['wp-element', 'wp-i18n', 'wp-hooks', 'wp-api-fetch'],
+            ['wp-element', 'wp-i18n', 'wp-hooks'],
             GIVE_VERSION,
             true
         );

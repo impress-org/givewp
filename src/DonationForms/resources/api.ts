@@ -1,6 +1,5 @@
 import useSWR from 'swr';
 import lagData from './hooks/lagData';
-import apiFetch from '@wordpress/api-fetch';
 import useFallbackAsInitial from "./hooks/useFallbackAsInitial";
 
 declare global {
@@ -10,22 +9,26 @@ declare global {
 }
 
 let controller = null;
+const headers = {
+    'Content-Type': 'application/json',
+    'X-WP-Nonce': window.GiveDonationForms.apiNonce,
+};
 
 export const fetchWithArgs = (endpoint, args, method = 'GET', signal = null) => {
     const url = new URL(window.GiveDonationForms.apiRoot + endpoint);
-    url.searchParams.set('_wpnonce', window.GiveDonationForms.apiNonce);
     for (const [param, value] of Object.entries(args)) {
         url.searchParams.set(param, value as string);
     }
-    return apiFetch({
-        url: url.href,
+    return fetch(url.href, {
         method: method,
         signal: signal,
-    })
-        .then((res) => res)
-        .catch((err) => {
+        headers: headers,
+    }).then((res) => {
+        if(!res.ok){
             throw new Error();
-        });
+        }
+        return res.json();
+    });
 }
 
 const Fetcher = (params) => {
