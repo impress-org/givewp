@@ -57,6 +57,7 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
         setBusy(true);
         setDeleted([event.target.dataset.formid]);
         await mutateForm(event.target.dataset.formid, '/restore', 'POST');
+        setBusy(false);
         setDeleted([]);
     }
 
