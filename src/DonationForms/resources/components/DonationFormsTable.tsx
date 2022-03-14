@@ -22,6 +22,45 @@ interface DonationFormsTableProps {
     search: string;
 }
 
+const columnHeadings = [
+    {
+        name: 'id',
+        text: __('ID', 'give')
+    },
+    {
+        name: 'name',
+        text: __('Name', 'give')
+    },
+    {
+        name: 'amount',
+        text: __('Amount', 'give')
+    },
+    {
+        name: 'goal',
+        text: __('Goal', 'give')
+    },
+    {
+        name: 'donations',
+        text: __('Donations', 'give')
+    },
+    {
+        name: 'revenue',
+        text: __('Revenue', 'give')
+    },
+    {
+        name: 'shortcode',
+        text: __('Shortcode', 'give')
+    },
+    {
+        name: 'date',
+        text: __('Date', 'give')
+    },
+    {
+        name: 'status',
+        text: __('Status', 'give')
+    },
+];
+
 export default function DonationFormsTable({statusFilter: status, search}: DonationFormsTableProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(10);
@@ -133,73 +172,16 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                         </caption>
                         <thead>
                             <tr>
-                                <th scope="col" aria-sort="none" className={styles.tableColumnHeader} data-column="id">
-                                    {__('ID', 'give')}
-                                </th>
-                                <th
-                                    scope="col"
-                                    aria-sort="none"
-                                    className={styles.tableColumnHeader}
-                                    data-column="name"
-                                >
-                                    {__('Name', 'give')}
-                                </th>
-                                <th
-                                    scope="col"
-                                    aria-sort="none"
-                                    className={styles.tableColumnHeader}
-                                    data-column="amount"
-                                >
-                                    {__('Amount', 'give')}
-                                </th>
-                                <th
-                                    scope="col"
-                                    aria-sort="none"
-                                    className={styles.tableColumnHeader}
-                                    data-column="goal"
-                                >
-                                    {__('Goal', 'give')}
-                                </th>
-                                <th
-                                    scope="col"
-                                    aria-sort="none"
-                                    className={styles.tableColumnHeader}
-                                    data-column="donations"
-                                >
-                                    {__('Donations', 'give')}
-                                </th>
-                                <th
-                                    scope="col"
-                                    aria-sort="none"
-                                    className={styles.tableColumnHeader}
-                                    data-column="revenue"
-                                >
-                                    {__('Revenue', 'give')}
-                                </th>
-                                <th
-                                    scope="col"
-                                    aria-sort="none"
-                                    className={styles.tableColumnHeader}
-                                    data-column="shortcode"
-                                >
-                                    {__('Shortcode', 'give')}
-                                </th>
-                                <th
-                                    scope="col"
-                                    aria-sort="ascending"
-                                    className={styles.tableColumnHeader}
-                                    data-column="date"
-                                >
-                                    {__('Date', 'give')}
-                                </th>
-                                <th
-                                    scope="col"
-                                    aria-sort="none"
-                                    className={styles.tableColumnHeader}
-                                    data-column="status"
-                                >
-                                    {__('Status', 'give')}
-                                </th>
+                                {columnHeadings.map(heading =>
+                                    <th
+                                        scope="col"
+                                        aria-sort="none"
+                                        className={styles.tableColumnHeader}
+                                        data-column={heading.name}
+                                    >
+                                        {heading.text}
+                                    </th>
+                                )}
                             </tr>
                         </thead>
                         <tbody className={styles.tableContent}>
