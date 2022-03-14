@@ -142,7 +142,9 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
                         <div className={styles.goalProgress}>
                             <span
                                 style={{
-                                    width: Math.max(Math.min(form.goal.progress, 100), 0) + '%',
+                                    width: form.goal.format == 'percentage' ?
+                                        form.goal.actual :
+                                        Math.max(Math.min(form.goal.progress, 100), 0) + '%'
                                 }}
                             />
                         </div>
