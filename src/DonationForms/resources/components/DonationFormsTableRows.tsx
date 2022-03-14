@@ -73,7 +73,6 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
             className={cx(styles.tableRow, {
                 [styles.deleted]: deleted.indexOf(form.id) > -1,
                 [styles.duplicated]: duplicated.indexOf(parseInt(form.id)) > -1,
-                [styles.unclickable]: isValidating,
             })}
         >
             <td className={styles.tableCell}>
@@ -89,7 +88,7 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
                                 onClick={restoreForm}
                                 data-formid={form.id}
                                 className={styles.action}
-                                disabled={busy}
+                                disabled={busy || isValidating}
                             >
                                 {__('Restore', 'give')} <span className="give-visually-hidden">{form.name}</span>
                             </button>
@@ -98,7 +97,7 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
                                 onClick={deleteForm}
                                 data-formid={form.id}
                                 className={cx(styles.action, styles.delete)}
-                                disabled={busy}
+                                disabled={busy || isValidating}
                             >
                                 {__('Delete Permanently', 'give')}{' '}
                                 <span className="give-visually-hidden">{form.name}</span>
@@ -114,7 +113,7 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
                                 onClick={deleteForm}
                                 data-formid={form.id}
                                 className={cx(styles.action, {[styles.delete]: !trash})}
-                                disabled={busy}
+                                disabled={busy || isValidating}
                             >
                                 {trash ? __('Trash', 'give') : __('Delete', 'give')}{' '}
                                 <span className="give-visually-hidden">{form.name}</span>
@@ -125,9 +124,10 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
                                 onClick={duplicateForm}
                                 data-formid={form.id}
                                 className={styles.action}
-                                disabled={busy}
+                                disabled={busy || isValidating}
                             >
-                                {__('Duplicate', 'give')}
+                                {__('Duplicate', 'give')}{' '}
+                                <span className="give-visually-hidden">{form.name}</span>
                             </button>
                         </>
                     )}
