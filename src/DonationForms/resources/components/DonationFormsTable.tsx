@@ -178,6 +178,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                                         aria-sort="none"
                                         className={styles.tableColumnHeader}
                                         data-column={heading.name}
+                                        key={heading.name}
                                     >
                                         {heading.text}
                                     </th>
