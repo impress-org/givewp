@@ -26,9 +26,12 @@ export default function AdminDonationFormsPage() {
     const [statusFilter, setStatusFilter] = useState<DonationStatus>(DonationStatus.Any);
     const [search, setSearch] = useState<string>('');
     const debouncedSearch = useDebounce(search, 400);
+
     const handleStatusFilterChange: ChangeEventHandler<HTMLSelectElement> = (event) =>
         setStatusFilter(event.target.value as DonationStatus);
-    const handleSearchChange: ChangeEventHandler<HTMLInputElement> = (event) => setSearch(event.target.value);
+
+    const handleSearchChange: ChangeEventHandler<HTMLInputElement> = (event) =>
+        setSearch(event.target.value);
 
     return (
         <article>
@@ -47,7 +50,11 @@ export default function AdminDonationFormsPage() {
                     onChange={handleSearchChange}
                     className={styles.searchInput}
                 />
-                <select className={styles.statusFilter} aria-label={__('Filter donation forms by status', 'give')} onChange={handleStatusFilterChange}>
+                <select
+                    className={styles.statusFilter}
+                    aria-label={__('Filter donation forms by status', 'give')}
+                    onChange={handleStatusFilterChange}
+                >
                     {Object.values(DonationStatus).map((donationStatus) => (
                         <option key={donationStatus} value={donationStatus}>
                             {getDonationStatusText(donationStatus)}

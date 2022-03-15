@@ -78,12 +78,15 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
     const {data, error, isValidating} = useDonationForms(listParams);
     const {mutate, cache} = useSWRConfig();
     const isEmpty = !error && data?.forms.length === 0;
+
     useEffect(() => {
         setPage(1);
     }, [status, search]);
+
     useEffect(() => {
         initialLoad && data && setInitialLoad(false);
     }, [data]);
+
     useEffect(() => {
         if (isValidating && !cache.get(unstable_serialize(listParams))) {
             setLoadingOverlay(styles.appear);
@@ -94,6 +97,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
             return () => clearTimeout(timeoutId);
         }
     }, [isValidating]);
+
     useEffect(() => {
         let timeoutId;
         if (errors.length) {
