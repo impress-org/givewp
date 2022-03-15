@@ -7,7 +7,7 @@
  * @copyright:   Copyright (c) 2016, GiveWP
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
-@use '_variables' as *;
+@import '_variables';
 @import '_mixins';
 @import '../plugins/hint.min';
 @import '../plugins/float-labels';
