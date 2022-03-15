@@ -611,9 +611,11 @@ class Give_Scripts {
 
         wp_enqueue_style(
             'give-blocks-css',
-            GIVE_PLUGIN_URL . 'assets/dist/css/admin-block-grid-wall.css',
-            [ 'give-styles' ],
+            GIVE_PLUGIN_URL . 'assets/dist/css/admin-block-editor.css',
+            [],
             GIVE_VERSION
         );
+
+
     }
 }
