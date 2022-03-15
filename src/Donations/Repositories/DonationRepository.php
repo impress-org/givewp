@@ -158,7 +158,7 @@ class DonationRepository
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
-            Log::error('Failed creating a donation');
+            Log::error('Failed creating a donation', compact('donation'));
 
             throw new $exception('Failed creating a donation');
         }
@@ -212,7 +212,7 @@ class DonationRepository
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
-            Log::error('Failed updating a donation');
+            Log::error('Failed updating a donation', compact('donation'));
 
             throw new $exception('Failed updating a donation');
         }
@@ -251,7 +251,7 @@ class DonationRepository
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
-            Log::error('Failed deleting a donation');
+            Log::error('Failed deleting a donation', compact('donation'));
 
             throw new $exception('Failed deleting a donation');
         }
@@ -352,7 +352,7 @@ class DonationRepository
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
-            Log::error('Failed updating a donation as initial legacy subscription donation', $donationId);
+            Log::error('Failed updating a donation as initial legacy subscription donation', compact('donationId'));
 
             throw new $exception('Failed updating a donation as initial legacy subscription donation');
         }

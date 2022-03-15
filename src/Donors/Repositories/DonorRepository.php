@@ -133,7 +133,7 @@ class DonorRepository
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
-            Log::error('Failed creating a donor');
+            Log::error('Failed creating a donor', compact('donor'));
 
             throw new $exception('Failed creating a donor');
         }
@@ -176,7 +176,7 @@ class DonorRepository
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
-            Log::error('Failed updating a donor');
+            Log::error('Failed updating a donor', compact('donor'));
 
             throw new $exception('Failed updating a donor');
         }
@@ -211,7 +211,7 @@ class DonorRepository
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
-            Log::error('Failed updating a donor');
+            Log::error('Failed updating a donor', compact('donorId', 'columns'));
 
             throw new $exception('Failed updating a donor');
         }
@@ -242,7 +242,7 @@ class DonorRepository
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
-            Log::error('Failed deleting a donor');
+            Log::error('Failed deleting a donor', compact('donor'));
 
             throw new $exception('Failed deleting a donor');
         }
@@ -340,7 +340,7 @@ class DonorRepository
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
-            Log::error('Failed adding additional donor email');
+            Log::error('Failed adding additional donor email', compact('donorId', 'additionalEmail'));
 
             throw new $exception('Failed adding additional donor email');
         }
