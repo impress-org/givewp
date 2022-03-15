@@ -5,22 +5,21 @@ namespace Give\PaymentGateways\Gateways\Stripe\Actions;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\CheckoutSession;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\DonationSummary;
-use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
-use Give\PaymentGateways\Gateways\Stripe\WorkflowAction;
 use Give\ValueObjects\Money;
 use Give_Stripe_Customer;
 
 /**
  * @since 2.19.0
  */
-class CreateCheckoutSession extends WorkflowAction
+class CreateCheckoutSession
 {
     /**
      * @since 2.19.0
      * @param GatewayPaymentData $paymentData
      * @param DonationSummary $donationSummary
      * @param Give_Stripe_Customer $giveStripeCustomer
-     * @return void
+     * @throws \Give\PaymentGateways\Exceptions\InvalidPropertyName
+     * @return CheckoutSession
      */
     public function __invoke(
         GatewayPaymentData $paymentData,
@@ -62,11 +61,11 @@ class CreateCheckoutSession extends WorkflowAction
             $session_args['line_items'][0]['images'] = [ get_the_post_thumbnail_url( $formId ) ];
         }
 
-        $this->bind(
-            $session = give( CheckoutSession::class )->create( $session_args )
-        );
+        $session = give( CheckoutSession::class )->create( $session_args );
 
         give_insert_payment_note( $paymentData->donationId, 'Stripe Checkout Session ID: ' . $session->id() );
         give_set_payment_transaction_id( $paymentData->donationId, $session->id() );
+
+        return $session;
     }
 }
