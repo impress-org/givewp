@@ -7,16 +7,15 @@ use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\DonationSummary;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
-use Give\PaymentGateways\Gateways\Stripe\WorkflowAction;
 use Give\ValueObjects\Money;
 
 /**
  * @since 2.19.0
  */
-class CreatePaymentIntent extends WorkflowAction
+class CreatePaymentIntent
 {
     /** @var array */
-    protected $paymentIntentArgs;
+    protected $defaultIntentArgs;
 
     /**
      * @since 2.19.0
@@ -24,7 +23,7 @@ class CreatePaymentIntent extends WorkflowAction
      */
     public function __construct( $paymentIntentArgs = [] )
     {
-        $this->paymentIntentArgs = $paymentIntentArgs;
+        $this->defaultIntentArgs = $paymentIntentArgs;
     }
 
     /**
@@ -33,7 +32,8 @@ class CreatePaymentIntent extends WorkflowAction
      * @param DonationSummary $donationSummary
      * @param \Give_Stripe_Customer $giveStripeCustomer
      * @param PaymentMethod $paymentMethod
-     * @return void
+     * @throws \Give\PaymentGateways\Exceptions\InvalidPropertyName
+     * @return PaymentIntent
      */
     public function __invoke(
         GatewayPaymentData $paymentData,
@@ -60,7 +60,7 @@ class CreatePaymentIntent extends WorkflowAction
                 'payment_method' => $paymentMethod->id(),
                 'confirm' => true,
                 'return_url' => $paymentData->redirectUrl,
-            ], $this->paymentIntentArgs )
+            ], $this->defaultIntentArgs )
         );
 
         // Send Stripe Receipt emails when enabled.
@@ -79,6 +79,6 @@ class CreatePaymentIntent extends WorkflowAction
             give_update_meta($paymentData->donationId, '_give_stripe_payment_intent_require_action_url', $intent->nextActionRedirectUrl());
         }
 
-        $this->bind( $intent );
+        return $intent;
     }
 }

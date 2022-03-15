@@ -4,17 +4,16 @@ namespace Give\PaymentGateways\Gateways\Stripe\Actions;
 
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\Stripe\Exceptions\StripeCustomerException;
-use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
-use Give\PaymentGateways\Gateways\Stripe\WorkflowAction;
 use Give_Stripe_Customer;
 
-class GetOrCreateStripeCustomer extends WorkflowAction
+class GetOrCreateStripeCustomer
 {
 
     /**
      * @since 2.19.0
      *
      * @throws StripeCustomerException
+     * @return Give_Stripe_Customer
      */
     public function __invoke(GatewayPaymentData $paymentData)
     {
@@ -26,7 +25,7 @@ class GetOrCreateStripeCustomer extends WorkflowAction
 
         $this->saveStripeCustomerId($paymentData->donationId, $giveStripeCustomer->get_id());
 
-        $this->bind( $giveStripeCustomer );
+        return $giveStripeCustomer;
     }
 
     /**
