@@ -3,6 +3,7 @@
 namespace Give\Framework\Models;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Framework\Support\Contracts\Arrayable;
 use RuntimeException;
 
@@ -32,6 +33,13 @@ abstract class Model implements Arrayable
      * @var array
      */
     protected $properties = [];
+
+    /**
+     * The model relationships assigned to their relationship types
+     *
+     * @var array
+     */
+    protected $relationships = [];
 
     /**
      * Create a new model instance.
@@ -265,6 +273,10 @@ abstract class Model implements Arrayable
      */
     public function __get($key)
     {
+        if (array_key_exists($key, $this->relationships)) {
+            return $this->getRelationship($key);
+        }
+
         return $this->getAttribute($key);
     }
 
@@ -293,5 +305,33 @@ abstract class Model implements Arrayable
     public function __isset($key)
     {
         return isset($this->attributes[$key]);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param $key
+     *
+     * @return Model|Model[]
+     *
+     * @throws InvalidArgumentException
+     */
+    protected function getRelationship($key)
+    {
+        if (!is_callable([$this, $key])) {
+            throw new InvalidArgumentException("$key() does not exist in.");
+        }
+
+        $relationship = new Relationship($this->relationships[$key]);
+
+        if ($relationship->equals(Relationship::ONE_TO_ONE())) {
+            return $this->$key()->get();
+        }
+
+        if ($relationship->equals(Relationship::ONE_TO_MANY())) {
+            return $this->$key()->getAll();
+        }
+
+        return null;
     }
 }
