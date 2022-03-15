@@ -5,6 +5,7 @@ const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extract
 
 mix.setPublicPath('assets/dist')
     .sass('assets/src/css/frontend/give-frontend.scss', 'css/give.css')
+    .sass('assets/src/css/frontend/_components.donor.scss', 'css/admin-block-grid-wall.css')
     .sass('assets/src/css/admin/give-admin.scss', 'css/admin.css')
     .sass('assets/src/css/admin/give-admin-global.scss', 'css/admin-global.css')
     .sass('assets/src/css/admin/setup.scss', 'css/admin-setup.css')

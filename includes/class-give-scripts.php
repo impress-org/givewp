@@ -607,5 +607,12 @@ class Give_Scripts {
             ->dependencies(['give-admin-scripts'])
             ->registerTranslations()
             ->enqueue();
+
+        wp_enqueue_style(
+            'give-blocks-css',
+            GIVE_PLUGIN_URL . 'assets/dist/css/admin-block-grid-wall.css',
+            [ 'give-styles' ],
+            GIVE_VERSION
+        );
     }
 }
