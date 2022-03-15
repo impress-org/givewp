@@ -66,7 +66,7 @@ class TestSubscription extends \Give_Unit_Test_Case
         $renewal2 = Subscription::factory()->createRenewal($subscription->id, ['donorId' => $donor->id]);
 
         // include the initial donation with renewals
-        $this->assertCount(3, $subscription->donations()->getAll());
+        $this->assertCount(3, $subscription->donations);
     }
 
     /**
@@ -81,7 +81,7 @@ class TestSubscription extends \Give_Unit_Test_Case
         /** @var Subscription $subscription */
         $subscription = Subscription::factory()->create(['donorId' => $donor->id]);
 
-        $this->assertEquals($donor, $subscription->donor()->get());
+        $this->assertEquals($donor, $subscription->donor);
     }
 
     /**

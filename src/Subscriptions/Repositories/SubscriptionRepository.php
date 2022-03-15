@@ -309,7 +309,7 @@ class SubscriptionRepository
             }
         }
 
-        if (!$subscription->donor()->get()) {
+        if (!$subscription->donor) {
             throw new InvalidArgumentException("Invalid donorId, Donor does not exist");
         }
     }

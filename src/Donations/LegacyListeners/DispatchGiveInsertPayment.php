@@ -3,7 +3,6 @@
 namespace Give\Donations\LegacyListeners;
 
 use Give\Donations\Models\Donation;
-use Give\Donors\Models\Donor;
 use Give\Helpers\Hooks;
 use Give\PaymentGateways\DataTransferObjects\GiveInsertPaymentData;
 
@@ -17,8 +16,7 @@ class DispatchGiveInsertPayment
      */
     public function __invoke(Donation $donation)
     {
-        /** @var Donor $donor */
-        $donor = $donation->donor()->get();
+        $donor = $donation->donor;
 
         $giveInsertPaymentData = GiveInsertPaymentData::fromArray([
             'price' => $donation->getMinorAmount(),

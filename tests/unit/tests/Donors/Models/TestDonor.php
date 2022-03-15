@@ -62,7 +62,7 @@ class TestDonor extends \Give_Unit_Test_Case
         $donation1 = Donation::factory()->create(['donorId' => $donor->id, 'amount' => 100]);
         $donation2 = Donation::factory()->create(['donorId' => $donor->id, 'amount' => 200]);
 
-        $this->assertEquals($donor->donations()->getAll(), [$donation1, $donation2]);
+        $this->assertEquals($donor->donations, [$donation1, $donation2]);
     }
 
     /**
@@ -92,6 +92,6 @@ class TestDonor extends \Give_Unit_Test_Case
         $subscription1 = Subscription::factory()->create(['donorId' => $donor->id]);
         $subscription2 = Subscription::factory()->create(['donorId' => $donor->id]);
 
-        $this->assertEquals($donor->subscriptions()->getAll(), [$subscription1, $subscription2]);
+        $this->assertEquals($donor->subscriptions, [$subscription1, $subscription2]);
     }
 }

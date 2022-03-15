@@ -4,6 +4,7 @@ namespace Give\Donors\Models;
 
 use DateTime;
 use Exception;
+use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\DataTransferObjects\DonorQueryData;
 use Give\Donors\Factories\DonorFactory;
@@ -12,7 +13,9 @@ use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Factories\ModelFactory;
 use Give\Framework\Models\Model;
+use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Subscriptions\Models\Subscription;
 
 /**
  * Class Donor
@@ -27,6 +30,8 @@ use Give\Framework\QueryBuilder\QueryBuilder;
  * @property string $firstName
  * @property string $lastName
  * @property string $email
+ * @property Subscription[] $subscriptions
+ * @property Donation[] $donations
  */
 class Donor extends Model implements ModelCrud, ModelHasFactory
 {
@@ -42,6 +47,14 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
         'lastName' => 'string',
         'email' => 'string',
         'prefix' => 'string',
+    ];
+
+    /**
+     * @inheritdoc
+     */
+    protected $relationships = [
+        'donations' => Relationship::ONE_TO_MANY,
+        'subscriptions' => Relationship::ONE_TO_MANY,
     ];
 
     /**
@@ -167,7 +180,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
      */
     public function totalAmountDonated()
     {
-        return array_sum(array_column($this->donations()->getAll(), DonationMetaKeys::AMOUNT()->getKeyAsCamelCase()));
+        return array_sum(array_column($this->donations, DonationMetaKeys::AMOUNT()->getKeyAsCamelCase()));
     }
 
     /**

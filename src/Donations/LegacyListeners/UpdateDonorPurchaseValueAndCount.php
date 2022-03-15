@@ -4,7 +4,6 @@ namespace Give\Donations\LegacyListeners;
 
 use Exception;
 use Give\Donations\Models\Donation;
-use Give\Donors\Models\Donor;
 
 class UpdateDonorPurchaseValueAndCount
 {
@@ -17,8 +16,7 @@ class UpdateDonorPurchaseValueAndCount
      */
     public function __invoke(Donation $donation)
     {
-        /** @var Donor $donor */
-        $donor = $donation->donor()->get();
+        $donor = $donation->donor;
 
         give()->donorRepository->updateLegacyColumns($donation->donorId, [
             'purchase_value' => $donor->totalAmountDonated(),

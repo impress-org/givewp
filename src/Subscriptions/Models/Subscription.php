@@ -4,9 +4,12 @@ namespace Give\Subscriptions\Models;
 
 use DateTime;
 use Exception;
+use Give\Donations\Models\Donation;
+use Give\Donors\Models\Donor;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Model;
+use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Subscriptions\DataTransferObjects\SubscriptionQueryData;
 use Give\Subscriptions\Factories\SubscriptionFactory;
@@ -30,6 +33,8 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
  * @property int $feeAmount
  * @property SubscriptionStatus $status
  * @property string $gatewaySubscriptionId
+ * @property Donor $donor
+ * @property Donation[] $donations
  */
 class Subscription extends Model implements ModelCrud, ModelHasFactory
 {
@@ -49,6 +54,14 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
         'feeAmount' => 'int',
         'status' => SubscriptionStatus::class,
         'gatewaySubscriptionId' => 'string',
+    ];
+
+    /**
+     * @inheritdoc
+     */
+    protected $relationships = [
+        'donor' => Relationship::ONE_TO_ONE,
+        'donations' => Relationship::ONE_TO_MANY
     ];
 
     /**

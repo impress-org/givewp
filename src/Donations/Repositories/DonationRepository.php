@@ -421,7 +421,7 @@ class DonationRepository
             }
         }
 
-        if (!$donation->donor()->get()) {
+        if (!$donation->donor) {
             throw new InvalidArgumentException("Invalid donorId, Donor does not exist");
         }
     }

@@ -9,11 +9,14 @@ use Give\Donations\Factories\DonationFactory;
 use Give\Donations\Properties\BillingAddress;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donors\Models\Donor;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Model;
+use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Subscriptions\Models\Subscription;
 use Give\ValueObjects\Money;
 
 /**
@@ -43,6 +46,8 @@ use Give\ValueObjects\Money;
  * @property bool $anonymous
  * @property int $levelId
  * @property string $gatewayTransactionId
+ * @property Donor $donor
+ * @property Subscription $subscription
  */
 class Donation extends Model implements ModelCrud, ModelHasFactory
 {
@@ -72,6 +77,14 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
         'anonymous' => 'bool',
         'levelId' => 'int',
         'gatewayTransactionId' => 'string',
+    ];
+
+    /**
+     * @inheritdoc
+     */
+    protected $relationships = [
+        'donor' => Relationship::ONE_TO_ONE,
+        'subscription' => Relationship::ONE_TO_ONE,
     ];
 
     /**

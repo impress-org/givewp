@@ -86,8 +86,8 @@ class TestDonation extends \Give_Unit_Test_Case
         /** @var Donation $donation */
         $donation = Donation::factory()->create(['donorId' => $donor->id]);
 
-        $this->assertInstanceOf(Donor::class, $donation->donor()->get());
-        $this->assertEquals($donor, $donation->donor()->get());
+        $this->assertInstanceOf(Donor::class, $donation->donor);
+        $this->assertEquals($donor, $donation->donor);
     }
 
     /**
@@ -105,7 +105,7 @@ class TestDonation extends \Give_Unit_Test_Case
         /** @var Donation $donation */
         $donation = Donation::factory()->create(['donorId' => $donor->id, 'subscriptionId' => $subscription->id]);
 
-        $this->assertEquals($donation->subscription()->get(), $subscription);
+        $this->assertEquals($donation->subscription, $subscription);
     }
 
     /**
