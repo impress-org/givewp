@@ -36,9 +36,9 @@ class CheckoutGateway extends PaymentGateway
     {
         switch (give_stripe_get_checkout_type()) {
             case 'modal':
-                return $this->createPaymentModal($workflow);
+                return $this->createPaymentModal($paymentData);
             case 'redirect':
-                return $this->createPaymentRedirect($workflow);
+                return $this->createPaymentRedirect($paymentData);
             default:
                 throw new CheckoutException('Invalid Checkout Error');
         }
