@@ -94,18 +94,6 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @param  string  $email
-     * @return bool
-     * @throws Exception
-     */
-    public function addAdditionalEmail($email)
-    {
-        return give()->donorRepository->insertAdditionalEmail($this->id, $email);
-    }
-
-    /**
-     * @unreleased
-     *
      * @param  array  $attributes
      *
      * @return Donor
