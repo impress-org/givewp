@@ -242,7 +242,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                                 </div>
                                 <div className={styles.statusMessage}>
                                     {__('Click', 'give') + ' '}
-                                    <a href={'edit.php?post_type=give_forms&page=give-forms'}>{__('here', 'give')}</a>
+                                    <a href={window.location.href.toString()}>{__('here', 'give')}</a>
                                     {' ' + __('to reload the page.')}
                                 </div>
                             </>
