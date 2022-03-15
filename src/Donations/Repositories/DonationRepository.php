@@ -124,7 +124,7 @@ class DonationRepository
     {
         $this->validateDonation($donation);
 
-        Hooks::dispatch('give_donation_creating', $donation);
+        Hooks::doAction('give_donation_creating', $donation);
 
         $date = $donation->createdAt ? Temporal::getFormattedDateTime(
             $donation->createdAt
@@ -167,7 +167,7 @@ class DonationRepository
 
         $donation = $this->getById($donationId);
 
-        Hooks::dispatch('give_donation_created', $donation);
+        Hooks::doAction('give_donation_created', $donation);
 
         return $donation;
     }
@@ -184,7 +184,7 @@ class DonationRepository
     {
         $this->validateDonation($donation);
 
-        Hooks::dispatch('give_donation_updating', $donation);
+        Hooks::doAction('give_donation_updating', $donation);
 
         $date = Temporal::getCurrentFormattedDateForDatabase();
 
@@ -219,7 +219,7 @@ class DonationRepository
 
         DB::query('COMMIT');
 
-        Hooks::dispatch('give_donation_updated', $donation);
+        Hooks::doAction('give_donation_updated', $donation);
 
         return $donation;
     }
@@ -235,7 +235,7 @@ class DonationRepository
     {
         DB::query('START TRANSACTION');
 
-        Hooks::dispatch('give_donation_deleting', $donation);
+        Hooks::doAction('give_donation_deleting', $donation);
 
         try {
             DB::table('posts')
@@ -258,7 +258,7 @@ class DonationRepository
 
         DB::query('COMMIT');
 
-        Hooks::dispatch('give_donation_deleted', $donation);
+        Hooks::doAction('give_donation_deleted', $donation);
 
         return true;
     }

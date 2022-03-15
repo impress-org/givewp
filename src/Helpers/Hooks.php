@@ -96,7 +96,7 @@ class Hooks
      * @param  mixed  ...$args  Optional. Additional arguments which are passed on to the functions hooked to the action. Default empty.
      * @return void
      */
-    public static function dispatch($hookName, ...$args)
+    public static function doAction($hookName, ...$args)
     {
         do_action($hookName, ...$args);
 

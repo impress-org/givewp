@@ -38,9 +38,9 @@ class DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment
         $payment->key = $parent->key;
         $payment->mode = $parent->mode;
 
-        Hooks::dispatch('give_recurring_add_subscription_payment', $payment, $subscription);
+        Hooks::doAction('give_recurring_add_subscription_payment', $payment, $subscription);
 
-        Hooks::dispatch(
+        Hooks::doAction(
             'give_recurring_record_payment',
             $payment,
             $subscription->parent_payment_id,

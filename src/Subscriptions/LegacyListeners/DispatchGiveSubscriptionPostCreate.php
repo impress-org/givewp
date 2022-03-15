@@ -32,6 +32,6 @@ class DispatchGiveSubscriptionPostCreate
             'profile_id' => $subscription->gatewaySubscriptionId,
         ];
 
-        Hooks::dispatch('give_subscription_post_create', $subscription->id, $args);
+        Hooks::doAction('give_subscription_post_create', $subscription->id, $args);
     }
 }

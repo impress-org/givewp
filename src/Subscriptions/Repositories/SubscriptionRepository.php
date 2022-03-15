@@ -114,7 +114,7 @@ class SubscriptionRepository
     {
         $this->validateSubscription($subscription);
 
-        Hooks::dispatch('give_subscription_creating', $subscription);
+        Hooks::doAction('give_subscription_creating', $subscription);
 
         $date = $subscription->createdAt ? Temporal::getFormattedDateTime(
             $subscription->createdAt
@@ -152,7 +152,7 @@ class SubscriptionRepository
 
         $subscription = $this->getById($subscriptionId);
 
-        Hooks::dispatch('give_subscription_created', $subscription);
+        Hooks::doAction('give_subscription_created', $subscription);
 
         return $subscription;
     }
@@ -169,7 +169,7 @@ class SubscriptionRepository
     {
         $this->validateSubscription($subscription);
 
-        Hooks::dispatch('give_subscription_updating', $subscription);
+        Hooks::doAction('give_subscription_updating', $subscription);
 
         DB::query('START TRANSACTION');
 
@@ -203,7 +203,7 @@ class SubscriptionRepository
 
         $subscription = $this->getById($subscriptionId);
 
-        Hooks::dispatch('give_subscription_updating', $subscription);
+        Hooks::doAction('give_subscription_updating', $subscription);
 
         return $subscription;
     }
@@ -219,7 +219,7 @@ class SubscriptionRepository
      */
     public function delete(Subscription $subscription)
     {
-        Hooks::dispatch('give_subscription_deleting', $subscription);
+        Hooks::doAction('give_subscription_deleting', $subscription);
 
         DB::query('START TRANSACTION');
 
@@ -237,7 +237,7 @@ class SubscriptionRepository
 
         DB::query('COMMIT');
 
-        Hooks::dispatch('give_subscription_deleted', $subscription);
+        Hooks::doAction('give_subscription_deleted', $subscription);
 
         return true;
     }

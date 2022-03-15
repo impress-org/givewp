@@ -42,6 +42,6 @@ class DispatchGiveInsertPayment
          /**
          * @deprecated
          */
-        Hooks::dispatch('give_insert_payment', $donation->id, $giveInsertPaymentData->toArray());
+        Hooks::doAction('give_insert_payment', $donation->id, $giveInsertPaymentData->toArray());
     }
 }

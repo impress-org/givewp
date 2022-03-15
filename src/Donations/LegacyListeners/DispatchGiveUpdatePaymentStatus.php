@@ -26,7 +26,7 @@ class DispatchGiveUpdatePaymentStatus
             /** @var DonationStatus $originalStatus */
             $originalStatus = $donation->getOriginal('status');
 
-            Hooks::dispatch(
+            Hooks::doAction(
                 'give_update_payment_status',
                 $donation->id,
                 $donation->status->getValue(),
