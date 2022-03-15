@@ -599,6 +599,7 @@ class Give_Scripts {
      *
      * @since 2.19.0 Remove undefined gutenberg.css
      * @unreleased Load script with EnqueueScript.
+     * @unreleased Load missing block styles
      */
     public function gutenberg_admin_scripts()
     {
