@@ -21,21 +21,6 @@ tr.duplicated {
     animation: disappear 0.5s ease-in reverse;
 }
 
-.action {
-    &:is(button) {
-        appearance: none;
-        background: none;
-        border: none;
-        padding: 0;
-        font-weight: 400;
-        cursor: pointer;
-    }
-}
-
-.action.delete {
-    color: rgba(232, 75, 59);
-}
-
 .tableRowActions {
     position: absolute;
     inset-block-end: 1rem;

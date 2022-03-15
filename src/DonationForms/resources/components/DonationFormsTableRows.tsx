@@ -3,6 +3,7 @@ import {__} from '@wordpress/i18n';
 import cx from 'classnames';
 import {useDonationForms} from '../api';
 import {useEffect, useState} from 'react';
+import RowAction from './RowAction';
 
 const statusMap = {
     publish: __('published', 'give'),
@@ -37,16 +38,17 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
     }, [duplicated]);
 
     async function deleteForm(event) {
+        const id = event.target.dataset.actionid;
         const endpoint = data.trash ? '/trash' : '/delete';
         setBusy(true);
-        setDeleted([event.target.dataset.formid]);
-        await mutateForm(event.target.dataset.formid, endpoint, 'DELETE');
+        setDeleted([id]);
+        await mutateForm(id, endpoint, 'DELETE');
         setBusy(false);
         setDeleted([]);
     }
 
     async function duplicateForm(event) {
-        const id = event.target.dataset.formid;
+        const id = event.target.dataset.actionid;
         setBusy(true);
         const response = await mutateForm(id, '/duplicate', 'POST');
         setDuplicated([...response.successes]);
@@ -54,9 +56,10 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
     }
 
     async function restoreForm(event) {
+        const id = event.target.dataset.actionid;
         setBusy(true);
-        setDeleted([event.target.dataset.formid]);
-        await mutateForm(event.target.dataset.formid, '/restore', 'POST');
+        setDeleted([id]);
+        await mutateForm(id, '/restore', 'POST');
         setBusy(false);
         setDeleted([]);
     }
@@ -83,25 +86,21 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
                 <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
                     {status == 'trash' ? (
                         <>
-                            <button
-                                type="button"
+                            <RowAction
                                 onClick={restoreForm}
-                                data-formid={form.id}
-                                className={styles.action}
+                                actionId={form.id}
                                 disabled={busy || isValidating}
-                            >
-                                {__('Restore', 'give')} <span className="give-visually-hidden">{form.name}</span>
-                            </button>
-                            <button
-                                type="button"
+                                displayText={__('Restore', 'give')}
+                                hiddenText={form.name}
+                            />
+                            <RowAction
                                 onClick={deleteForm}
-                                data-formid={form.id}
-                                className={cx(styles.action, styles.delete)}
+                                actionId={form.id}
                                 disabled={busy || isValidating}
-                            >
-                                {__('Delete Permanently', 'give')}{' '}
-                                <span className="give-visually-hidden">{form.name}</span>
-                            </button>{' '}
+                                displayText={__('Delete Permanently', 'give')}
+                                hiddenText={form.name}
+                                highlight
+                            />
                         </>
                     ) : (
                         <>
