@@ -270,7 +270,7 @@ class DonationRepository
      *
      * @return array
      */
-    public function getCoreDonationMetaForDatabase(Donation $donation)
+    private function getCoreDonationMetaForDatabase(Donation $donation)
     {
         $meta = [
             DonationMetaKeys::AMOUNT => Money::of($donation->amount, $donation->currency)->getAmount(),
