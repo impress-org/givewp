@@ -121,8 +121,6 @@ abstract class Model implements Arrayable
     public function fill(array $attributes)
     {
         foreach ($attributes as $key => $value) {
-            $this->validatePropertyType($key, $value);
-
             $this->setAttribute($key, $value);
         }
 
@@ -158,6 +156,8 @@ abstract class Model implements Arrayable
      */
     public function setAttribute($key, $value)
     {
+        $this->validatePropertyType($key, $value);
+
         $this->attributes[$key] = $value;
 
         return $this;
@@ -279,8 +279,6 @@ abstract class Model implements Arrayable
      */
     public function __set($key, $value)
     {
-        $this->validatePropertyType($key, $value);
-
         $this->setAttribute($key, $value);
     }
 
