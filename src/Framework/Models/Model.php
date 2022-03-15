@@ -141,11 +141,11 @@ abstract class Model implements Arrayable
      */
     public function getAttribute($key)
     {
-        if (!$key) {
-            return null;
+        if (!array_key_exists($key, $this->properties)) {
+            throw new InvalidArgumentException("$key is not a valid property.");
         }
 
-        return array_key_exists($key, $this->attributes) ? $this->attributes[$key] : null;
+        return isset($this->attributes[$key]) ? $this->attributes[$key] : null;
     }
 
     /**
@@ -294,6 +294,6 @@ abstract class Model implements Arrayable
      */
     public function __isset($key)
     {
-        return !is_null($this->getAttribute($key));
+        return isset($this->attributes[$key]);
     }
 }

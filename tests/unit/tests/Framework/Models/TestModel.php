@@ -59,6 +59,20 @@ class TestModel extends \Give_Unit_Test_Case {
      *
      * @return void
      */
+    public function testGetAttributeShouldThrowInvalidArgumentException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $model = new MockModel(['id' => 1]);
+
+        $model->getAttribute('iDontExist');
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
     public function testSetAttributeShouldAssignPropertyValue()
     {
         $model = new MockModel(['id' => 1]);
@@ -69,8 +83,6 @@ class TestModel extends \Give_Unit_Test_Case {
 
     /**
      * @unreleased
-     *
-     * @coversDefaultClass
      *
      * @return void
      */
@@ -120,6 +132,34 @@ class TestModel extends \Give_Unit_Test_Case {
     /**
      * @unreleased
      *
+     * @return void
+     */
+    public function testIssetShouldReturnTrue()
+    {
+        $model = new MockModel(['id' => 0]);
+
+        $this->assertTrue(isset($model->id));
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
+    public function testIssetShouldReturnFalse()
+    {
+        $model = new MockModel();
+
+        $this->assertFalse(isset($model->id));
+
+        $model->id = null;
+
+        $this->assertFalse(isset($model->id));
+    }
+
+    /**
+     * @unreleased
+     *
      * @dataProvider invalidTypeProvider
      *
      * @return void
@@ -132,6 +172,8 @@ class TestModel extends \Give_Unit_Test_Case {
     }
 
     /**
+     * @unreleased
+     *
      * @return array
      */
     public function invalidTypeProvider()
