@@ -14,11 +14,58 @@ const statusMap = {
     inherit: __('inherit', 'give'),
 }
 
+const FormsRowActions = ({data, item, parameters, removeRow, addRow}) => {
+    const trashEnabled = Boolean(data?.trash);
+
+    if(parameters.status == 'trash') {
+        return (
+            <>
+                <RowAction
+                    onClick={removeRow('/restore', 'POST')}
+                    actionId={item.id}
+                    displayText={__('Restore', 'give')}
+                    hiddenText={item.name}
+                />
+                <RowAction
+                    onClick={removeRow('/delete', 'DELETE')}
+                    actionId={item.id}
+                    displayText={__('Delete Permanently', 'give')}
+                    hiddenText={item.name}
+                    highlight
+                />
+            </>
+        );
+    }
+
+    return (
+        <>
+            <a href={item.edit} className={styles.action}>
+                {__('Edit', 'give')} <span className="give-visually-hidden">{item.name}</span>
+            </a>
+            <RowAction
+                onClick={removeRow((trashEnabled ? '/trash' : '/delete'), 'DELETE')}
+                actionId={item.id}
+                highlight={!trashEnabled}
+                displayText={trashEnabled ? __('Trash', 'give') : __('Delete', 'give')}
+                hiddenText={item.name}
+            />
+            <a href={item.permalink}>{__('View', 'give')}</a>
+            <RowAction
+                onClick={addRow('/duplicate', 'POST')}
+                actionId={item.id}
+                data-formid={item.id}
+                displayText={__('Duplicate', 'give')}
+                hiddenText={item.name}
+            />
+        </>
+    );
+}
+
 export default function DonationFormsTableRows({listParams, mutateForm, status}) {
     const {data, isValidating} = useDonationForms(listParams);
     const [deleted, setDeleted] = useState([]);
     const [duplicated, setDuplicated] = useState([]);
-    const [busy, setBusy] = useState(false);
+
     useEffect(() => {
         if (duplicated.length) {
             const timeouts = [];
@@ -37,38 +84,26 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
         }
     }, [duplicated]);
 
-    async function deleteForm(event) {
-        const id = event.target.dataset.actionid;
-        const endpoint = data.trash ? '/trash' : '/delete';
-        setBusy(true);
-        setDeleted([id]);
-        await mutateForm(id, endpoint, 'DELETE');
-        setBusy(false);
-        setDeleted([]);
+    function removeRow(endpoint, method) {
+        return async (event) => {
+            const id = event.target.dataset.actionid;
+            setDeleted([id]);
+            await mutateForm(id, endpoint, method);
+            setDeleted([]);
+        }
     }
 
-    async function duplicateForm(event) {
-        const id = event.target.dataset.actionid;
-        setBusy(true);
-        const response = await mutateForm(id, '/duplicate', 'POST');
-        setDuplicated([...response.successes]);
-        setBusy(false);
-    }
-
-    async function restoreForm(event) {
-        const id = event.target.dataset.actionid;
-        setBusy(true);
-        setDeleted([id]);
-        await mutateForm(id, '/restore', 'POST');
-        setBusy(false);
-        setDeleted([]);
+    function addRow(endpoint, method) {
+        return async (event) => {
+            const id = event.target.dataset.actionid;
+            const response = await mutateForm(id, endpoint, method);
+            setDuplicated([...response.successes]);
+        }
     }
 
     if(!data?.forms) {
         return false;
     }
-
-    const trash = data ? data.trash : false;
 
     return data.forms.map((form) => (
         <tr
@@ -84,52 +119,13 @@ export default function DonationFormsTableRows({listParams, mutateForm, status})
             <th className={cx(styles.tableCell, styles.tableRowHeader)} scope="row">
                 <a href={form.edit}>{form.name}</a>
                 <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
-                    {status == 'trash' ? (
-                        <>
-                            <RowAction
-                                onClick={restoreForm}
-                                actionId={form.id}
-                                disabled={busy || isValidating}
-                                displayText={__('Restore', 'give')}
-                                hiddenText={form.name}
-                            />
-                            <RowAction
-                                onClick={deleteForm}
-                                actionId={form.id}
-                                disabled={busy || isValidating}
-                                displayText={__('Delete Permanently', 'give')}
-                                hiddenText={form.name}
-                                highlight
-                            />
-                        </>
-                    ) : (
-                        <>
-                            <a href={form.edit} className={styles.action}>
-                                {__('Edit', 'give')} <span className="give-visually-hidden">{form.name}</span>
-                            </a>
-                            <button
-                                type="button"
-                                onClick={deleteForm}
-                                data-formid={form.id}
-                                className={cx(styles.action, {[styles.delete]: !trash})}
-                                disabled={busy || isValidating}
-                            >
-                                {trash ? __('Trash', 'give') : __('Delete', 'give')}{' '}
-                                <span className="give-visually-hidden">{form.name}</span>
-                            </button>
-                            <a href={form.permalink}>{__('View', 'give')}</a>
-                            <button
-                                type="button"
-                                onClick={duplicateForm}
-                                data-formid={form.id}
-                                className={styles.action}
-                                disabled={busy || isValidating}
-                            >
-                                {__('Duplicate', 'give')}{' '}
-                                <span className="give-visually-hidden">{form.name}</span>
-                            </button>
-                        </>
-                    )}
+                    {!isValidating && <FormsRowActions
+                        data={data}
+                        item={form}
+                        parameters={listParams}
+                        removeRow={removeRow}
+                        addRow={addRow}
+                    />}
                 </div>
             </th>
             <td className={cx(styles.tableCell, styles.monetary)}>
