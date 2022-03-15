@@ -483,11 +483,11 @@ class DonationRepository
      * @unreleased
      *
      * @param $donorId
-     * @return string
+     * @return int
      */
     public function getTotalDonationCountByDonorId($donorId)
     {
-        return DB::table('posts')
+        return (int)DB::table('posts')
             ->where('post_type', 'give_payment')
             ->whereIn('ID', function (QueryBuilder $builder) use ($donorId) {
                 $builder

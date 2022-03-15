@@ -170,7 +170,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
      */
     public function totalDonations()
     {
-        return (int)give()->donations->getTotalDonationCountByDonorId($this->id);
+        return give()->donations->getTotalDonationCountByDonorId($this->id);
     }
 
     /**
