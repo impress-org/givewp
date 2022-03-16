@@ -319,7 +319,7 @@ abstract class Model implements Arrayable
     protected function getRelationship($key)
     {
         if (!is_callable([$this, $key])) {
-            throw new InvalidArgumentException("$key() does not exist in.");
+            throw new InvalidArgumentException("$key() does not exist.");
         }
 
         $relationship = new Relationship($this->relationships[$key]);
