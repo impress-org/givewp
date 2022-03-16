@@ -20,6 +20,15 @@ use Give_DB_Donors;
 class DonorRepositoryProxy
 {
     const SHARED_METHODS = ['insert', 'update', 'delete'];
+    
+    /**
+     * @var Give_DB_Donors
+     */
+    private $legacyDonorRepository;
+    /**
+     * @var DonorRepository
+     */
+    private $donorRepository;
 
     /**
      * The Give_DB_Donors class extends Give_DB which has & assigns public properties that we need to
@@ -27,10 +36,10 @@ class DonorRepositoryProxy
      *
      * @unreleased
      */
-    public function __construct()
+    public function __construct(Give_DB_Donors $legacyDonorRepository, DonorRepository $donorRepository)
     {
-        /** @var Give_DB_Donors $legacyDonorRepository */
-        $legacyDonorRepository = give(Give_DB_Donors::class);
+        $this->legacyDonorRepository = $legacyDonorRepository;
+        $this->donorRepository = $donorRepository;
 
         $properties = get_object_vars($legacyDonorRepository);
 
@@ -48,24 +57,18 @@ class DonorRepositoryProxy
      */
     public function __call($method, $parameters)
     {
-        /** @var DonorRepository $donorRepository */
-        $donorRepository = give(DonorRepository::class);
-
-        /** @var Give_DB_Donors $legacyDonorRepository */
-        $legacyDonorRepository = give(Give_DB_Donors::class);
-
         if (in_array($method, self::SHARED_METHODS, true)) {
-            return $parameters[0] instanceof Donor ? $donorRepository->{$method}(
+            return $parameters[0] instanceof Donor ? $this->donorRepository->{$method}(
                 ...$parameters
-            ) : $legacyDonorRepository->{$method}(...$parameters);
+            ) : $this->legacyDonorRepository->{$method}(...$parameters);
         }
 
-        if (method_exists($donorRepository, $method)) {
-            return $donorRepository->{$method}(...$parameters);
+        if (method_exists($this->donorRepository, $method)) {
+            return $this->donorRepository->{$method}(...$parameters);
         }
 
-        if (method_exists($legacyDonorRepository, $method)) {
-            return $legacyDonorRepository->{$method}(...$parameters);
+        if (method_exists($this->legacyDonorRepository, $method)) {
+            return $this->legacyDonorRepository->{$method}(...$parameters);
         }
 
         throw new InvalidArgumentException("$method does not exist.");
