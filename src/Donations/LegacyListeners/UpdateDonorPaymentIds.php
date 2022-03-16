@@ -20,6 +20,6 @@ class UpdateDonorPaymentIds
 
         $paymentIds = implode( ',', array_unique( array_values(  $ids ) ) );
 
-        give()->donorRepository->updateLegacyColumns($donation->donorId, ['payment_ids' => $paymentIds]);
+        give()->donors->updateLegacyColumns($donation->donorId, ['payment_ids' => $paymentIds]);
     }
 }

@@ -66,7 +66,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
      */
     public static function find($id)
     {
-        return give()->donorRepository->getById($id);
+        return give()->donors->getById($id);
     }
 
     /**
@@ -77,7 +77,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
      */
     public static function whereEmail($email)
     {
-        return give()->donorRepository->getByEmail($email);
+        return give()->donors->getByEmail($email);
     }
 
     /**
@@ -88,7 +88,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
      */
     public static function whereUserId($userId)
     {
-        return give()->donorRepository->getByWpUserId($userId);
+        return give()->donors->getByWpUserId($userId);
     }
 
     /**
@@ -104,7 +104,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     {
         $donor = new static($attributes);
 
-        return give()->donorRepository->insert($donor);
+        return give()->donors->insert($donor);
     }
 
     /**
@@ -117,10 +117,10 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     public function save()
     {
         if (!$this->id) {
-            return give()->donorRepository->insert($this);
+            return give()->donors->insert($this);
         }
 
-        return give()->donorRepository->update($this);
+        return give()->donors->update($this);
     }
 
     /**
@@ -130,7 +130,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
      */
     public function delete()
     {
-        return give()->donorRepository->delete($this);
+        return give()->donors->delete($this);
     }
 
     /**
@@ -160,7 +160,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
      */
     public function additionalEmails()
     {
-        return give()->donorRepository->getAdditionalEmails($this->id);
+        return give()->donors->getAdditionalEmails($this->id);
     }
 
     /**
@@ -190,7 +190,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
      */
     public static function query()
     {
-        return give()->donorRepository->prepareQuery();
+        return give()->donors->prepareQuery();
     }
 
     /**

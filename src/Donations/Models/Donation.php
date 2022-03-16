@@ -153,7 +153,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      */
     public function donor()
     {
-        return give()->donorRepository->queryById($this->donorId);
+        return give()->donors->queryById($this->donorId);
     }
 
     /**

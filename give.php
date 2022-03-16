@@ -46,7 +46,7 @@ use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ServiceProvider as DonationServiceProvider;
 use Give\DonationSummary\ServiceProvider as DonationSummaryServiceProvider;
 use Give\DonorDashboards\ServiceProvider as DonorDashboardsServiceProvider;
-use Give\Donors\Repositories\DonorRepository;
+use Give\Donors\Repositories\DonorRepositoryProxy;
 use Give\Donors\ServiceProvider as DonorsServiceProvider;
 use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
 use Give\Form\Templates;
@@ -81,13 +81,13 @@ if (!defined('ABSPATH')) {
 /**
  * Main Give Class
  *
+ * @unreleased add $donations, $subscriptions, and replace $donors class with DonorRepositoryProxy
  * @since 2.8.0 build in a service container
  * @since 1.0
  *
  * @property-read Give_API $api
  * @property-read Give_Async_Process $async_process
  * @property-read Give_Comment $comment
- * @property-read Give_DB_Donors $donors
  * @property-read Give_DB_Donor_Meta $donor_meta
  * @property-read Give_Emails $emails
  * @property-read Give_Email_Template_Tags $email_tags
@@ -107,7 +107,7 @@ if (!defined('ABSPATH')) {
  * @property-read Give_DB_Sessions $session_db
  * @property-read Give_Tooltips $tooltips
  * @property-read DonationRepository $donations
- * @property-read DonorRepository $donorRepository
+ * @property-read DonorRepositoryProxy $donors
  * @property-read SubscriptionRepository $subscriptions
  * @property-read Give_Recurring_DB_Subscription_Meta $subscription_meta
  *

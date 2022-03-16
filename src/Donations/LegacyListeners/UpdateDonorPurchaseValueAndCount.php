@@ -18,7 +18,7 @@ class UpdateDonorPurchaseValueAndCount
     {
         $donor = $donation->donor;
 
-        give()->donorRepository->updateLegacyColumns($donation->donorId, [
+        give()->donors->updateLegacyColumns($donation->donorId, [
             'purchase_value' => $donor->totalAmountDonated(),
             'purchase_count' => $donor->totalDonations()
         ]);
