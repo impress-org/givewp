@@ -55,8 +55,8 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
      * @inheritdoc
      */
     protected $relationships = [
-        'donations' => Relationship::ONE_TO_MANY,
-        'subscriptions' => Relationship::ONE_TO_MANY,
+        'donations' => Relationship::HAS_MANY,
+        'subscriptions' => Relationship::HAS_MANY,
     ];
 
     /**

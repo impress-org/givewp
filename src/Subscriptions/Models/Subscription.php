@@ -61,7 +61,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      */
     protected $relationships = [
         'donor' => Relationship::BELONGS_TO,
-        'donations' => Relationship::ONE_TO_MANY
+        'donations' => Relationship::HAS_MANY
     ];
 
     /**
