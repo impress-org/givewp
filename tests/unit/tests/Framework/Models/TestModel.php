@@ -219,8 +219,8 @@ class TestModel extends \Give_Unit_Test_Case
     {
         $model = new MockModelWithRelationship();
 
-        $this->assertEquals($model->relatedAndCallableOneToOne, $model->relatedAndCallableOneToOne()->get());
-        $this->assertEquals($model->relatedAndCallableOneToMany, $model->relatedAndCallableOneToMany()->getAll());
+        $this->assertEquals($model->relatedAndCallableHasOne, $model->relatedAndCallableHasOne()->get());
+        $this->assertEquals($model->relatedAndCallableHasMany, $model->relatedAndCallableHasMany()->getAll());
     }
 
     /**
@@ -262,8 +262,8 @@ class MockModel extends Model
  * @property int $id
  * @property string $firstName
  * @property string $lastName
- * @property Model|null $relatedAndCallableOneToOne
- * @property Model[]|null $relatedAndCallableOneToMany
+ * @property Model|null $relatedAndCallableHasOne
+ * @property Model[]|null $relatedAndCallableHasMany
  */
 class MockModelWithRelationship extends Model
 {
@@ -273,14 +273,14 @@ class MockModelWithRelationship extends Model
 
     protected $relationships = [
         'relatedButNotCallable' => Relationship::HAS_ONE,
-        'relatedAndCallableOneToOne' => Relationship::HAS_ONE,
-        'relatedAndCallableOneToMany' => Relationship::HAS_MANY,
+        'relatedAndCallableHasOne' => Relationship::HAS_ONE,
+        'relatedAndCallableHasMany' => Relationship::HAS_MANY,
     ];
 
     /**
      * @return QueryBuilder
      */
-    public function relatedAndCallableOneToOne()
+    public function relatedAndCallableHasOne()
     {
         return DB::table('posts');
     }
@@ -288,7 +288,7 @@ class MockModelWithRelationship extends Model
     /**
      * @return QueryBuilder
      */
-    public function relatedAndCallableOneToMany()
+    public function relatedAndCallableHasMany()
     {
         return DB::table('posts');
     }
