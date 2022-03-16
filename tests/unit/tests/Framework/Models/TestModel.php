@@ -130,7 +130,30 @@ class TestModel extends \Give_Unit_Test_Case
         $model->lastName = 'Gates';
 
         $this->assertEquals(['lastName' => 'Gates'], $model->getDirty());
+        $this->assertEquals(true, $model->isDirty());
         $this->assertTrue($model->isDirty('lastName'));
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
+    public function testModelShouldHaveCleanAttributes()
+    {
+        $model = new MockModel(
+            [
+                'id' => 1,
+                'firstName' => 'Bill',
+                'lastName' => 'Murray',
+                'emails' => ['billMurray@givewp.com']
+            ]
+        );
+
+        $model->lastName = 'Gates';
+
+        $this->assertEquals(false, $model->isClean());
+        $this->assertEquals(true, $model->isClean('firstName'));
     }
 
     /**

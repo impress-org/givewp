@@ -90,12 +90,29 @@ abstract class Model implements Arrayable
      *
      * @unreleased
      *
-     * @param  string  $attribute
+     * @param  string|null  $attribute
      * @return bool
      */
-    public function isDirty($attribute)
+    public function isDirty($attribute = null)
     {
+        if (!$attribute) {
+            return (bool)$this->getDirty();
+        }
+
         return array_key_exists($attribute, $this->getDirty());
+    }
+
+    /**
+     * Determine if a given attribute is clean.
+     *
+     * @unreleased
+     *
+     * @param  string|null  $attribute
+     * @return bool
+     */
+    public function isClean($attribute = null)
+    {
+        return !$this->isDirty($attribute);
     }
 
     /**
