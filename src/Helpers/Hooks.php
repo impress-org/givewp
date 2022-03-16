@@ -100,7 +100,7 @@ class Hooks
     {
         do_action($hookName, ...$args);
 
-        Log::notice(
+        Log::debug(
             "Hook Dispatched: $hookName",
             compact('hookName', 'args')
         );
