@@ -39,9 +39,11 @@ const FormsRowActions = ({data, item, parameters, removeRow, addRow}) => {
 
     return (
         <>
-            <a href={item.edit} className={styles.action}>
-                {__('Edit', 'give')} <span className="give-visually-hidden">{item.name}</span>
-            </a>
+            <RowAction
+                href={item.edit}
+                displayText={__('Edit', 'give')}
+                hiddenText={item.name}
+            />
             <RowAction
                 onClick={removeRow((trashEnabled ? '/trash' : '/delete'), 'DELETE')}
                 actionId={item.id}
@@ -49,7 +51,11 @@ const FormsRowActions = ({data, item, parameters, removeRow, addRow}) => {
                 displayText={trashEnabled ? __('Trash', 'give') : __('Delete', 'give')}
                 hiddenText={item.name}
             />
-            <a href={item.permalink}>{__('View', 'give')}</a>
+            <RowAction
+                href={item.permalink}
+                displayText={__('View', 'give')}
+                hiddenText={item.name}
+            />
             <RowAction
                 onClick={addRow('/duplicate', 'POST')}
                 actionId={item.id}
@@ -61,7 +67,7 @@ const FormsRowActions = ({data, item, parameters, removeRow, addRow}) => {
     );
 }
 
-export default function DonationFormsTableRows({listParams, mutateForm, status}) {
+export default function DonationFormsTableRows({listParams, mutateForm}) {
     const {data, isValidating} = useDonationForms(listParams);
     const [deleted, setDeleted] = useState([]);
     const [duplicated, setDuplicated] = useState([]);

@@ -190,7 +190,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                             </tr>
                         </thead>
                         <tbody className={styles.tableContent}>
-                            <DonationFormTableRows listParams={listParams} mutateForm={mutateForm} status={status} />
+                            <DonationFormTableRows listParams={listParams} mutateForm={mutateForm} />
                         </tbody>
                     </table>
                     {loadingOverlay && (
