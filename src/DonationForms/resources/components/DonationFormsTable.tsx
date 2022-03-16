@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {__, _n} from '@wordpress/i18n';
+import {__, _n, sprintf} from '@wordpress/i18n';
 import {useSWRConfig, unstable_serialize} from 'swr';
 import cx from 'classnames';
 
@@ -21,6 +21,10 @@ interface DonationFormsTableProps {
     statusFilter: DonationStatus;
     search: string;
 }
+
+const singleName = __('donation form', 'give');
+const pluralName = __('donation forms', 'give');
+const pluralTitleCase = __('Donation Forms', 'give');
 
 const columnHeadings = [
     {
@@ -160,7 +164,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                 <div className={styles.initialLoad}>
                     <div className={cx(styles.tableGroup)}>
                         <Spinner size={'large'} />
-                        <h2>{__('Loading donation forms', 'give')}</h2>
+                        <h2>{sprintf(__('Loading %s', 'give'), pluralName)}</h2>
                     </div>
                 </div>
             ) : (
@@ -172,7 +176,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                 >
                     <table className={styles.table}>
                         <caption id="giveDonationFormsTableCaption" className={styles.tableCaption}>
-                            {__('Donation Forms', 'give')}
+                            {pluralTitleCase}
                         </caption>
                         <thead>
                             <tr>
@@ -205,9 +209,12 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                                     <span>
                                         {successes.length +
                                             ' ' +
+                                            // translators:
+                                            // Like '1 item was updated successfully'
+                                            // or '3 items were updated successfully'
                                             _n(
-                                                'form was updated successfully',
-                                                'forms were updated successfully.',
+                                                sprintf('%s was updated successfully.', singleName),
+                                                sprintf('%s were updated successfully.', pluralName),
                                                 successes.length,
                                                 'give'
                                             )}
@@ -217,8 +224,8 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                                     {errors.length +
                                         ' ' +
                                         _n(
-                                            "form couldn't be updated.",
-                                            "forms couldn't be updated.",
+                                            `${singleName} couldn't be updated.`,
+                                            `${pluralName} couldn't be updated.`,
                                             errors.length,
                                             'give'
                                         )}
@@ -231,22 +238,24 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                                         setSuccesses([]);
                                     }}
                                 >
-                                    <span className="give-visually-hidden">dismiss</span>
+                                    <span className="give-visually-hidden">{__('dismiss', 'give')}</span>
                                 </button>
                             </div>
                         </div>
                     )}
                     <div id="giveDonationFormsTableMessage">
                         {isEmpty && (
-                            <div className={styles.statusMessage}>{__('No donation forms found.', 'give')}</div>
+                            <div className={styles.statusMessage}>
+                                {sprintf(__('No %s found.', 'give'), pluralName)}
+                            </div>
                         )}
                         {error && (
                             <>
                                 <div className={styles.statusMessage}>
-                                    {__('There was a problem retrieving the donation forms.', 'give')}
+                                    {sprintf(__('There was a problem retrieving the %s.', 'give'), pluralName)}
                                 </div>
                                 <div className={styles.statusMessage}>
-                                    {__('Click', 'give') + ' '}
+                                    {__('Click', 'give')}{' '}
                                     <a href={window.location.href.toString()}>{__('here', 'give')}</a>
                                     {' ' + __('to reload the page.')}
                                 </div>

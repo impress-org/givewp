@@ -125,7 +125,8 @@ export default function DonationFormsTableRows({listParams, mutateForm}) {
             <th className={cx(styles.tableCell, styles.tableRowHeader)} scope="row">
                 <a href={form.edit}>{form.name}</a>
                 <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
-                    {!isValidating && <FormsRowActions
+                    {!isValidating &&
+                    <FormsRowActions
                         data={data}
                         item={form}
                         parameters={listParams}
