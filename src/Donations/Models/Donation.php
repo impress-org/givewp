@@ -83,8 +83,8 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      * @inheritdoc
      */
     protected $relationships = [
-        'donor' => Relationship::ONE_TO_ONE,
-        'subscription' => Relationship::ONE_TO_ONE,
+        'donor' => Relationship::BELONGS_TO,
+        'subscription' => Relationship::BELONGS_TO,
     ];
 
     /**

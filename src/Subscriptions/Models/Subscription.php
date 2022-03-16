@@ -60,7 +60,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      * @inheritdoc
      */
     protected $relationships = [
-        'donor' => Relationship::ONE_TO_ONE,
+        'donor' => Relationship::BELONGS_TO,
         'donations' => Relationship::ONE_TO_MANY
     ];
 
