@@ -61,7 +61,7 @@ class DeleteDonor extends Endpoint
 
         foreach ($ids as $id) {
             try {
-                DB::table('give_donors')->where('idd', $id)->delete();
+                DB::table('give_donors')->where('id', $id)->delete();
                 $successes[] = $id;
             } catch (Exception $e) {
                 $errors[] = $id;
