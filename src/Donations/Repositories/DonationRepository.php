@@ -9,6 +9,7 @@ use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Call;
@@ -462,7 +463,9 @@ class DonationRepository
      */
     public function prepareQuery()
     {
-        return DB::table('posts')
+        $builder = new ModelQueryBuilder();
+
+        return $builder->from('posts')
             ->setModel(Donation::class)
             ->select(
                 ['ID', 'id'],

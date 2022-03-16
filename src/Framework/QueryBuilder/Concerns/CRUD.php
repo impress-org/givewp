@@ -2,33 +2,22 @@
 
 namespace Give\Framework\QueryBuilder\Concerns;
 
-use Give\Donations\Models\Donation;
-use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
-use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\Models\Contracts\ModelCrud;
-use Give\Framework\Models\Model;
-use Give\Subscriptions\Models\Subscription;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 trait CRUD
 {
     /**
-     * @var string
-     */
-    private $model;
-
-    /**
-     * @unreleased
+     * @see https://developer.wordpress.org/reference/classes/wpdb/insert/
      *
-     * @param  array  $data
+     * @since 2.19.0
+     *
      * @param  array|string  $format
      *
+     * @param  array  $data
      * @return false|int
-     *
-     * @see https://developer.wordpress.org/reference/classes/wpdb/insert/
      *
      */
     public function insert($data, $format = null)
@@ -41,14 +30,14 @@ trait CRUD
     }
 
     /**
-     * @unreleased
+     * @see https://developer.wordpress.org/reference/classes/wpdb/update/
      *
-     * @param  array  $data
+     * @since 2.19.0
+     *
      * @param  null  $format
      *
+     * @param  array  $data
      * @return false|int
-     *
-     * @see https://developer.wordpress.org/reference/classes/wpdb/update/
      *
      */
     public function update($data, $format = null)
@@ -63,7 +52,7 @@ trait CRUD
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return false|int
      *
@@ -81,39 +70,33 @@ trait CRUD
     /**
      * Get results
      *
-     * @unreleased
+     * @since 2.19.0
      *
-     * @param  string  $output  ARRAY_A|ARRAY_N|OBJECT|OBJECT_K
-     * @return array|Donation[]|Donor[]|Model[]|Subscription[]|object|null
+     * @param  string ARRAY_A|ARRAY_N|OBJECT|OBJECT_K $output
+     *
+     * @return array|object|null
      */
     public function getAll($output = OBJECT)
     {
-        if (isset($this->model)) {
-            return $this->getAllAsModel();
-        }
-
         return DB::get_results($this->getSQL(), $output);
     }
 
     /**
      * Get row
      *
-     * @unreleased
+     * @since 2.19.0
      *
-     * @param  string  $output  ARRAY_A|ARRAY_N|OBJECT|OBJECT_K
-     * @return object|Model|Donation|Donor|Subscription|null
+     * @param  string ARRAY_A|ARRAY_N|OBJECT|OBJECT_K $output
+     *
+     * @return array|object|null
      */
     public function get($output = OBJECT)
     {
-        if (isset($this->model)) {
-            return $this->getRowAsModel();
-        }
-
         return DB::get_row($this->getSQL(), $output);
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return string
      */
@@ -123,7 +106,7 @@ trait CRUD
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return array[]
      */
@@ -136,66 +119,5 @@ trait CRUD
         }
 
         return $wheres;
-    }
-
-    /**
-     * Set the model to be used for returning formatted query
-     *
-     * @param  string  $model
-     * @return $this
-     */
-    public function setModel($model)
-    {
-        if (!is_subclass_of($model, Model::class)) {
-            throw new InvalidArgumentException("$model must be an instance of " . Model::class);
-        }
-
-        $this->model = $model;
-
-        return $this;
-    }
-
-
-    /**
-     * Get row as model
-     *
-     * @unreleased
-     *
-     * @return Model|Donation|Subscription|Donor|null
-     */
-    protected function getRowAsModel()
-    {
-        $row = DB::get_row($this->getSQL(), OBJECT);
-
-        $model = $this->model;
-
-        if (!method_exists($model, 'fromQueryBuilderObject')) {
-            throw new InvalidArgumentException("fromQueryBuilderObject missing from $model");
-        }
-
-        return $row ? $model::fromQueryBuilderObject($row) : null;
-    }
-
-    /**
-     * Get results as models
-     *
-     * @unreleased
-     *
-     * @return Model[]|Donation[]|Subscription[]|Donor[]|null
-     */
-    protected function getAllAsModel()
-    {
-        $results = DB::get_results($this->getSQL(), OBJECT);
-
-        /** @var ModelCrud $model */
-        $model = $this->model;
-
-        if (!method_exists($model, 'fromQueryBuilderObject')) {
-            throw new InvalidArgumentException("fromQueryBuilderObject missing from $model");
-        }
-
-        return $results ? array_map(static function ($object) use ($model) {
-            return $model::fromQueryBuilderObject($object);
-        }, $results) : null;
     }
 }

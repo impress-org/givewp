@@ -7,10 +7,14 @@ use Give\Donors\Models\Donor;
 use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Log\Log;
 
+/**
+ * @unreleased
+ */
 class DonorRepository
 {
 
@@ -355,7 +359,9 @@ class DonorRepository
      */
     public function prepareQuery()
     {
-        return DB::table('give_donors')
+        $builder = new ModelQueryBuilder();
+
+        return $builder->from('give_donors')
             ->setModel(Donor::class)
             ->select(
                 'id',

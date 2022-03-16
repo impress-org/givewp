@@ -5,6 +5,7 @@ namespace Give\Subscriptions\Repositories;
 use Exception;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Hooks;
@@ -321,7 +322,9 @@ class SubscriptionRepository
      */
     public function prepareQuery()
     {
-        return DB::table('give_subscriptions')
+        $builder = new ModelQueryBuilder();
+
+        return $builder->from('give_subscriptions')
             ->setModel(Subscription::class)
             ->select(
                 ['id', 'id'],

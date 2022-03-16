@@ -191,7 +191,7 @@ final class TestDonationRepository extends \Give_Unit_Test_Case
 
         /** @var Donation $donation */
         $donation = Donation::factory()->create(['donorId' => $donor->id]);
-        
+
         $repository = new DonationRepository();
 
         // update donation values
