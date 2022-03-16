@@ -16,31 +16,35 @@ class DonorQueryData
     /**
      * @var int
      */
-    private $id;
+    public $id;
     /**
      * @var string
      */
-    private $createdAt;
+    public $createdAt;
     /**
      * @var int
      */
-    private $userId;
+    public $userId;
     /**
      * @var string
      */
-    private $email;
+    public $email;
     /**
      * @var string
      */
-    private $name;
+    public $name;
     /**
      * @var string
      */
-    private $firstName;
+    public $firstName;
     /**
      * @var string
      */
-    private $lastName;
+    public $lastName;
+    /**
+     * @var mixed
+     */
+    public $additionalEmails;
 
     /**
      * Convert data from donor object to Donor Model
@@ -60,6 +64,7 @@ class DonorQueryData
         $self->firstName = $object->firstName;
         $self->lastName = $object->lastName;
         $self->createdAt = Temporal::toDateTime($object->createdAt);
+        $self->additionalEmails = json_decode($object->additionalEmails, true);
 
         return $self;
     }

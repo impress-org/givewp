@@ -68,6 +68,7 @@ class TestDonorRepository extends Give_Unit_Test_Case
     public function testInsertShouldAddDonorToDatabase()
     {
         $donor = new Donor(Donor::factory()->definition());
+        $donor->additionalEmails = ["chrisFarley2@givewp.com", "chrisFarley3@givewp.com"];
 
         $repository = new DonorRepository();
 
@@ -88,6 +89,7 @@ class TestDonorRepository extends Give_Unit_Test_Case
         $this->assertEquals($query->firstName, $newDonor->firstName);
         $this->assertEquals($query->lastName, $newDonor->lastName);
         $this->assertEquals($query->email, $newDonor->email);
+        $this->assertEquals($query->additionalEmails, $newDonor->additionalEmails);
     }
 
     /**
@@ -127,17 +129,20 @@ class TestDonorRepository extends Give_Unit_Test_Case
 
         $donor->firstName = "Chris";
         $donor->lastName = "Farley";
+        $donor->additionalEmails = ["chrisFarley2@givewp.com", "chrisFarley3@givewp.com"];
 
-        $repository->update($donor);
+        $donor = $repository->update($donor);
 
         /** @var object $query */
         $query = DB::table('give_donors')
             ->select('*')
-            ->attachMeta('give_donormeta',
+            ->attachMeta(
+                'give_donormeta',
                 'ID',
                 'donor_id',
                 ['_give_donor_first_name', 'firstName'],
-                ['_give_donor_last_name', 'lastName']
+                ['_give_donor_last_name', 'lastName'],
+                ['additional_email', 'additionalEmails', true]
             )
             ->where('id', $donor->id)
             ->get();
@@ -145,6 +150,7 @@ class TestDonorRepository extends Give_Unit_Test_Case
         // assert updated values from the database
         $this->assertEquals("Chris", $query->firstName);
         $this->assertEquals("Farley", $query->lastName);
+        $this->assertEquals($donor->additionalEmails, json_decode($query->additionalEmails, true));
     }
 
     /**
@@ -180,7 +186,7 @@ class TestDonorRepository extends Give_Unit_Test_Case
     {
         /** @var Donor $donor */
         $donor = Donor::factory()->create();
-        
+
         $repository = new DonorRepository();
 
         $repository->delete($donor);

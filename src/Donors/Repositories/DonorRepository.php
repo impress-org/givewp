@@ -21,7 +21,6 @@ class DonorRepository
      * @var string[]
      */
     private $requiredDonorProperties = [
-        // TODO: name should be an accessor
         'name',
         'firstName',
         'lastName',
@@ -133,6 +132,17 @@ class DonorRepository
                         'meta_value' => $metaValue,
                     ]);
             }
+
+            if (isset($donor->additionalEmails)) {
+                foreach ($donor->additionalEmails as $additionalEmail) {
+                    DB::table('give_donormeta')
+                        ->insert([
+                            'donor_id' => $donorId,
+                            'meta_key' => DonorMetaKeys::ADDITIONAL_EMAILS,
+                            'meta_value' => $additionalEmail,
+                        ]);
+                }
+            }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -175,6 +185,10 @@ class DonorRepository
                     ->update([
                         'meta_value' => $metaValue,
                     ]);
+            }
+
+            if (isset($donor->additionalEmails) && $donor->isDirty('additionalEmails')) {
+                $this->updateAdditionalEmails($donor);
             }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -241,6 +255,16 @@ class DonorRepository
                     ->where('donor_id', $donor->id)
                     ->where('meta_key', $metaKey)
                     ->delete();
+            }
+
+            if (isset($donor->additionalEmails)) {
+                foreach ($donor->additionalEmails as $additionalEmail) {
+                    DB::table('give_donormeta')
+                        ->where('donor_id', $donor->id)
+                        ->where('meta_key', DonorMetaKeys::ADDITIONAL_EMAILS)
+                        ->where('meta_value', $additionalEmail)
+                        ->delete();
+                }
             }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -322,38 +346,6 @@ class DonorRepository
     }
 
     /**
-     * @unreleased
-     *
-     * @param  int  $donorId
-     * @param  string  $additionalEmail
-     * @return bool
-     * @throws Exception
-     */
-    public function insertAdditionalEmail($donorId, $additionalEmail)
-    {
-        DB::query('START TRANSACTION');
-
-        try {
-            DB::table('give_donormeta')
-                ->insert([
-                    'donor_id' => $donorId,
-                    'meta_key' => 'additional_email',
-                    'meta_value' => $additionalEmail,
-                ]);
-        } catch (Exception $exception) {
-            DB::query('ROLLBACK');
-
-            Log::error('Failed adding additional donor email', compact('donorId', 'additionalEmail'));
-
-            throw new $exception('Failed adding additional donor email');
-        }
-
-        DB::query('COMMIT');
-
-        return true;
-    }
-
-    /**
      * @return ModelQueryBuilder
      */
     public function prepareQuery()
@@ -379,7 +371,37 @@ class DonorRepository
                 'give_donormeta',
                 'ID',
                 'donor_id',
-                ...DonorMetaKeys::getColumnsForAttachMetaQuery()
+                ...DonorMetaKeys::getColumnsForAttachMetaQueryWithAdditionalEmails()
             );
+    }
+
+    /**
+     * Additional emails are assigned to the same additional_email meta key.
+     * In order to update them we need to delete and re-insert.
+     *
+     * @unreleased
+     *
+     * @param  Donor  $donor
+     * @return void
+     */
+    private function updateAdditionalEmails(Donor $donor)
+    {
+        foreach ($donor->additionalEmails as $additionalEmail) {
+            DB::table('give_donormeta')
+                ->where('donor_id', $donor->id)
+                ->where('meta_key', DonorMetaKeys::ADDITIONAL_EMAILS)
+                ->where('meta_value', $additionalEmail)
+                ->delete();
+        }
+
+        foreach ($donor->additionalEmails as $additionalEmail) {
+            DB::table('give_donormeta')
+                ->where('donor_id', $donor->id)
+                ->insert([
+                    'donor_id' => $donor->id,
+                    'meta_key' => DonorMetaKeys::ADDITIONAL_EMAILS,
+                    'meta_value' => $additionalEmail,
+                ]);
+        }
     }
 }

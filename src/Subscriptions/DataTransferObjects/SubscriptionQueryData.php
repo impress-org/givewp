@@ -18,55 +18,55 @@ class SubscriptionQueryData
     /**
      * @var int
      */
-    private $id;
+    public $id;
     /**
      * @var DateTime
      */
-    private $createdAt;
+    public $createdAt;
     /**
      * @var DateTime
      */
-    private $expiresAt;
+    public $expiresAt;
     /**
      * @var string
      */
-    private $status;
+    public $status;
     /**
      * @var int
      */
-    private $donorId;
+    public $donorId;
     /**
      * @var SubscriptionPeriod
      */
-    private $period;
+    public $period;
     /**
      * @var string
      */
-    private $frequency;
+    public $frequency;
     /**
      * @var int
      */
-    private $installments;
+    public $installments;
     /**
      * @var string
      */
-    private $transactionId;
+    public $transactionId;
     /**
      * @var int
      */
-    private $amount;
+    public $amount;
     /**
      * @var int
      */
-    private $feeAmount;
+    public $feeAmount;
     /**
      * @var string
      */
-    private $gatewaySubscriptionId;
+    public $gatewaySubscriptionId;
     /**
      * @var int
      */
-    private $donationFormId;
+    public $donationFormId;
 
     /**
      * Convert data from Subscription Object to Subscription Model

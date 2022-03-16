@@ -30,6 +30,7 @@ use Give\Subscriptions\Models\Subscription;
  * @property string $firstName
  * @property string $lastName
  * @property string $email
+ * @property string[] $additionalEmails
  * @property Subscription[] $subscriptions
  * @property Donation[] $donations
  */
@@ -47,6 +48,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
         'lastName' => 'string',
         'email' => 'string',
         'prefix' => 'string',
+        'additionalEmails' => 'array',
     ];
 
     /**
@@ -151,16 +153,6 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     public function subscriptions()
     {
         return give()->subscriptions->queryByDonorId($this->id);
-    }
-
-    /**
-     * @unreleased
-     *
-     * @return array
-     */
-    public function additionalEmails()
-    {
-        return give()->donors->getAdditionalEmails($this->id);
     }
 
     /**

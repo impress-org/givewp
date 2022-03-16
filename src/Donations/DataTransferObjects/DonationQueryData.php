@@ -20,91 +20,91 @@ class DonationQueryData
     /**
      * @var int
      */
-    private $amount;
+    public $amount;
     /**
      * @var string
      */
-    private $currency;
+    public $currency;
     /**
      * @var int
      */
-    private $donorId;
+    public $donorId;
     /**
      * @var string
      */
-    private $firstName;
+    public $firstName;
     /**
      * @var string
      */
-    private $lastName;
+    public $lastName;
     /**
      * @var string
      */
-    private $email;
+    public $email;
     /**
      * @var int
      */
-    private $id;
+    public $id;
     /**
      * @var DonationStatus
      */
-    private $status;
+    public $status;
     /**
      * @var int
      */
-    private $parentId;
+    public $parentId;
     /**
      * @var int
      */
-    private $subscriptionId;
+    public $subscriptionId;
     /**
      * @var DateTime
      */
-    private $updatedAt;
+    public $updatedAt;
     /**
      * @var DateTime
      */
-    private $createdAt;
+    public $createdAt;
     /**
      * @var string
      */
-    private $gateway;
+    public $gateway;
     /**
      * @var DonationMode
      */
-    private $mode;
+    public $mode;
     /**
      * @var int
      */
-    private $formId;
+    public $formId;
     /**
      * @var BillingAddress
      */
-    private $billingAddress;
+    public $billingAddress;
     /**
      * @var string
      */
-    private $formTitle;
+    public $formTitle;
     /**
      * @var string
      */
-    private $purchaseKey;
+    public $purchaseKey;
     /**
      * @var string
      */
-    private $donorIp;
+    public $donorIp;
     /**
      * @var bool
      */
-    private $anonymous;
+    public $anonymous;
     /**
      * @var int
      */
-    private $levelId;
+    public $levelId;
     /**
      * @var string
      */
-    private $gatewayTransactionId;
+    public $gatewayTransactionId;
 
     /**
      * Convert data from object to Donation
