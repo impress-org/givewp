@@ -6,7 +6,7 @@ use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\Clauses\OrderBy;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 trait OrderByStatement
 {

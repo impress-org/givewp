@@ -4,274 +4,274 @@
  */
 
 .give-stripe-add-account-link_field {
-	padding: 0 10px;
+    padding: 0 10px;
 }
 
 .give-stripe-connect-message > p {
-	overflow: hidden;
-	line-height: 30px;
-	font-size: 15px;
+    overflow: hidden;
+    line-height: 30px;
+    font-size: 15px;
 }
 
 #give-stripe-connect-banner {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-	p {
-		font-size: 16px;
-		flex: 1 0 0;
-	}
+    p {
+        font-size: 16px;
+        flex: 1 0 0;
+    }
 
-	#give-stripe-connect {
-		margin-left: 10px;
-	}
+    #give-stripe-connect {
+        margin-left: 10px;
+    }
 }
 
 @media (max-width: 782px) {
-	#give-stripe-connect-banner {
-		flex-direction: column;
-		align-items: flex-start;
+    #give-stripe-connect-banner {
+        flex-direction: column;
+        align-items: flex-start;
 
-		#give-stripe-connect {
-			margin-left: 0;
-			margin-top: 10px;
-		}
-	}
+        #give-stripe-connect {
+            margin-left: 0;
+            margin-top: 10px;
+        }
+    }
 }
 
 .give-stripe-connect-message #give-stripe-connect {
-	margin-left: 10px;
+    margin-left: 10px;
 }
 
 .give-stripe-icon {
-	display: inline-block;
-	width: 12px;
-	vertical-align: middle;
-	margin: 0 5px 0 0;
+    display: inline-block;
+    width: 12px;
+    vertical-align: middle;
+    margin: 0 5px 0 0;
 }
 
 // Temp dismiss button
 .give-stripe-connect-temp-dismiss {
-	color: #bfbfbf;
-	font-style: italic;
-	text-decoration: none;
-	font-size: 12px;
-	float: right;
-	outline: none;
+    color: #bfbfbf;
+    font-style: italic;
+    text-decoration: none;
+    font-size: 12px;
+    float: right;
+    outline: none;
 }
 
 a.give-stripe-connect-temp-dismiss:focus,
 a.give-stripe-connect-temp-dismiss:active {
-	outline: 0;
-	box-shadow: none;
+    outline: 0;
+    box-shadow: none;
 }
 
 .give-stripe-connect-temp-dismiss span.dashicons {
-	height: 14px;
-	font-size: 12px;
-	vertical-align: middle;
-	width: 14px;
+    height: 14px;
+    font-size: 12px;
+    vertical-align: middle;
+    width: 14px;
 }
 
 .give-stripe-webhook-explanation {
-	color: #333;
+    color: #333;
 }
 
 // Hide transaction ID tag (not supported)
 .give-settings-emails-tab {
-	.give_stripe_transaction_id_tag {
-		display: none;
-	}
+    .give_stripe_transaction_id_tag {
+        display: none;
+    }
 
-	&.give-settings-new-donation-section {
-		.give_stripe_transaction_id_tag {
-			display: block;
-		}
-	}
+    &.give-settings-new-donation-section {
+        .give_stripe_transaction_id_tag {
+            display: block;
+        }
+    }
 }
 
 // --------------------------------
 // Single Donor Page CSS
 // --------------------------------
 .stripe-customer-id-label {
-	font-weight: bold;
-	font-size: 16px;
-	line-height: 24px;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 24px;
 }
 
 .give-stripe-customer-link {
-	margin: 0 15px 0 10px;
-	font-size: 15px;
-	line-height: 24px;
+    margin: 0 15px 0 10px;
+    font-size: 15px;
+    line-height: 24px;
 }
 
 .give-stripe-customer-id-input,
 .give-stripe-customer-submit-wrap {
-	display: none;
+    display: none;
 }
 
 // --------------------------------
 // Connected Modal Support
 // --------------------------------
 .give-stripe-connected-modal {
-	.give-modal__title {
-		font-weight: normal;
-	}
+    .give-modal__title {
+        font-weight: normal;
+    }
 
-	.give-modal__description {
-		span {
-			display: block;
+    .give-modal__description {
+        span {
+            display: block;
 
-			&:first-child {
-				font-size: 14px;
-			}
-		}
-	}
+            &:first-child {
+                font-size: 14px;
+            }
+        }
+    }
 }
 
 // --------------------------------
 // New Default Modal
 // --------------------------------
 .give-stripe-modal-new-default {
-	.give-modal__title {
-		line-height: 58px;
+    .give-modal__title {
+        line-height: 58px;
 
-		.give-stripe-icon {
-			margin-right: 15px;
-		}
-	}
+        .give-stripe-icon {
+            margin-right: 15px;
+        }
+    }
 }
 
 // --------------------------------
 // Stripe Manage Accounts section
 // --------------------------------
 #give-settings-section-group-accounts {
-	max-width: 1220px;
-	position: relative;
+    max-width: 1220px;
+    position: relative;
 }
 
 .give-stripe-account-manager-wrap .give-forminp-api_key {
-	padding: 0 5px 25px;
+    padding: 0 5px 25px;
 }
 
 @mixin give-stripe-setting-heading {
-	margin: 15px 0 20px;
-	font-size: 20px;
-	color: #333;
-	letter-spacing: 0.6px;
+    margin: 15px 0 20px;
+    font-size: 20px;
+    color: #333;
+    letter-spacing: 0.6px;
 }
 
 #give-stripe-account-manager-description {
-	margin-bottom: 25px;
+    margin-bottom: 25px;
 
-	h2 {
-		@include give-stripe-setting-heading;
-	}
+    h2 {
+        @include give-stripe-setting-heading;
+    }
 }
 
 .give-stripe-subheading-description {
-	font-size: 16px;
-	color: #555;
-	line-height: 26px;
-	margin: 0 0 15px;
+    font-size: 16px;
+    color: #555;
+    line-height: 26px;
+    margin: 0 0 15px;
 }
 
 .give-stripe-setting-heading {
-	@include give-stripe-setting-heading;
+    @include give-stripe-setting-heading;
 }
 
 .give-stripe-account-manager-container {
-	display: flex;
-	flex-direction: column-reverse;
+    display: flex;
+    flex-direction: column-reverse;
 
-	.main-heading {
-		order: 2;
-	}
+    .main-heading {
+        order: 2;
+    }
 }
 
 .give-stripe-pro-badge {
-	background: #fff;
-	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
-	font-size: 14px;
-	border-radius: 24px;
-	position: absolute;
-	top: -6px;
-	left: 310px;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    font-size: 14px;
+    border-radius: 24px;
+    position: absolute;
+    top: -6px;
+    left: 310px;
 
-	.give-tooltip {
-		padding: 5px 10px 5px 5px;
-		color: #4a5568;
-		font-size: 13px;
-		margin: 0;
-	}
+    .give-tooltip {
+        padding: 5px 10px 5px 5px;
+        color: #4a5568;
+        font-size: 13px;
+        margin: 0;
+    }
 
-	.dashicons {
-		color: #66bb6a;
-	}
+    .dashicons {
+        color: #66bb6a;
+    }
 }
 
 // --------------------------------
 // Connect Button
 // --------------------------------
 .give-stripe-connect {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background: #6772e5;
-	color: #fff;
-	padding: 6px 24px;
-	border-radius: 5px;
-	font-size: 16px;
-	text-decoration: none;
-	letter-spacing: 0.6px;
-	transition: 0.3s ease all;
-	width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #6772e5;
+    color: #fff;
+    padding: 6px 24px;
+    border-radius: 5px;
+    font-size: 16px;
+    text-decoration: none;
+    letter-spacing: 0.6px;
+    transition: 0.3s ease all;
+    width: 200px;
 
-	.stripe-logo {
-		padding: 2px 10px 0 0;
-	}
+    .stripe-logo {
+        padding: 2px 10px 0 0;
+    }
 
-	&:hover,
-	&:focus,
-	&:active {
-		background: #3f4ddf;
-		color: #fff;
-	}
+    &:hover,
+    &:focus,
+    &:active {
+        background: #3f4ddf;
+        color: #fff;
+    }
 }
 
 // --------------------------------
 // Add Account Callout
 // --------------------------------
 .give-stripe-account-manager-add-section {
-	display: grid;
-	grid-template-columns: 75px 3fr 1fr;
-	grid-template-areas: 'stripe-logo-with-circle give-stripe-heading give-setting-tab-body-gateways';
-	background: #fff;
-	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
-	border-radius: 8px;
-	margin: 0 0 30px;
-	padding: 20px 24px;
-	order: 3;
+    display: grid;
+    grid-template-columns: 75px 3fr 1fr;
+    grid-template-areas: 'stripe-logo-with-circle give-stripe-heading give-setting-tab-body-gateways';
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    margin: 0 0 30px;
+    padding: 20px 24px;
+    order: 3;
 
-	.give-stripe-heading {
-		text-transform: uppercase;
-		line-height: 15px;
-		letter-spacing: 1px;
-		font-weight: normal;
-		font-size: 20px;
-		color: #4a5568;
-		white-space: nowrap;
-		float: left;
-	}
+    .give-stripe-heading {
+        text-transform: uppercase;
+        line-height: 15px;
+        letter-spacing: 1px;
+        font-weight: normal;
+        font-size: 20px;
+        color: #4a5568;
+        white-space: nowrap;
+        float: left;
+    }
 
-	.give-setting-tab-body-gateways {
-		display: flex;
-		align-items: center;
-		align-self: center;
-		justify-content: center;
-		min-width: 235px;
-	}
+    .give-setting-tab-body-gateways {
+        display: flex;
+        align-items: center;
+        align-self: center;
+        justify-content: center;
+        min-width: 235px;
+    }
 }
 
 // --------------------------------
@@ -279,25 +279,25 @@ a.give-stripe-connect-temp-dismiss:active {
 // --------------------------------
 
 .give-settings-premium-active {
-	.give-setting-tab-body-gateways {
-		width: 420px;
-	}
+    .give-setting-tab-body-gateways {
+        width: 420px;
+    }
 }
 
 .stripe-logo-with-circle {
-	border-radius: 50%;
-	width: 55px;
-	height: 55px;
-	line-height: 76px;
-	box-shadow: 0 0.75px 3px rgba(0, 0, 0, 0.25);
-	text-align: center;
-	vertical-align: middle;
-	padding: 0;
-	float: left;
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    line-height: 76px;
+    box-shadow: 0 0.75px 3px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    vertical-align: middle;
+    padding: 0;
+    float: left;
 }
 
 .give-stripe-icon {
-	background: url('../images/admin/stripe-s.svg') no-repeat center;
+    background: url('../images/admin/stripe-s.svg') no-repeat center;
 }
 
 // --------------------------------
@@ -305,45 +305,45 @@ a.give-stripe-connect-temp-dismiss:active {
 // --------------------------------
 
 .no-stripe-account-connected {
-	display: flex;
-	padding: 85px;
-	flex-direction: column;
-	align-items: center;
-	border-radius: 8px;
-	background-color: #f4f4f4;
-	text-align: center;
+    display: flex;
+    padding: 85px;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 8px;
+    background-color: #f4f4f4;
+    text-align: center;
 
-	.no-stripe-account-connected-inner {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		max-width: 360px;
+    .no-stripe-account-connected-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 360px;
 
-		.give-stripe-connect {
-			margin: 0 auto;
-		}
-	}
+        .give-stripe-connect {
+            margin: 0 auto;
+        }
+    }
 
-	.dashicons-info {
-		color: #b6c0cb;
-		font-size: 93px;
-		width: 93px;
-		height: 93px;
-		overflow: visible;
-		margin: 0 0 12px;
-	}
+    .dashicons-info {
+        color: #b6c0cb;
+        font-size: 93px;
+        width: 93px;
+        height: 93px;
+        overflow: visible;
+        margin: 0 0 12px;
+    }
 
-	.give-stripe-settings-heading {
-		margin: 0 0 6px;
-		padding: 0;
-	}
+    .give-stripe-settings-heading {
+        margin: 0 0 6px;
+        padding: 0;
+    }
 
-	p#give-stripe-connect-invite {
-		font-size: 16px;
-		color: #555;
-		padding: 0;
-		margin: 0 0 25px;
-	}
+    p#give-stripe-connect-invite {
+        font-size: 16px;
+        color: #555;
+        padding: 0;
+        margin: 0 0 25px;
+    }
 }
 
 // --------------------------------
@@ -351,23 +351,23 @@ a.give-stripe-connect-temp-dismiss:active {
 // --------------------------------
 
 .give-stripe-boxshadow-option-wrap {
-	background: #fff;
-	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
-	border: 1px solid #69b86800;
-	border-radius: 8px;
-	transition: 0.3s ease all;
-	overflow: hidden;
-	padding: 24px;
-	position: relative;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    border: 1px solid #69b86800;
+    border-radius: 8px;
+    transition: 0.3s ease all;
+    overflow: hidden;
+    padding: 24px;
+    position: relative;
 
-	&__selected {
-		border: 2px solid #69b868;
-	}
+    &__selected {
+        border: 2px solid #69b868;
+    }
 
-	&:hover {
-		transform: translate3d(0, -2px, 0);
-		box-shadow: 0 2px 8px 0 rgb(0 0 0 / 25%);
-	}
+    &:hover {
+        transform: translate3d(0, -2px, 0);
+        box-shadow: 0 2px 8px 0 rgb(0 0 0 / 25%);
+    }
 }
 
 // --------------------------------
@@ -375,149 +375,158 @@ a.give-stripe-connect-temp-dismiss:active {
 // --------------------------------
 
 .give-stripe-account-manager-list {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	grid-gap: 32px;
-	margin: 15px 0 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 32px;
+    margin: 15px 0 0;
 }
 
 .give-stripe-account-manager-list-item {
-	display: flex;
-	flex-direction: column;
-	order: 1;
+    display: flex;
+    flex-direction: column;
+    order: 1;
 }
 
 .give-stripe-label {
-	font-size: 14px;
-	line-height: 1.4;
-	font-weight: 400;
-	margin: 0 0 5px;
-	color: #4a5568;
-	letter-spacing: 0.5px;
-	display: block;
+    font-size: 14px;
+    line-height: 1.4;
+    font-weight: 400;
+    margin: 0 0 5px;
+    color: #4a5568;
+    letter-spacing: 0.5px;
+    display: block;
 }
 
 .give-stripe-account-fieldset {
-	margin: 0 0 20px;
+    margin: 0 0 20px;
 }
 
 .give-stripe-connect-data-field {
-	font-size: 15px;
-	color: #23282d;
-	font-weight: 600;
+    font-size: 15px;
+    color: #23282d;
+    font-weight: 600;
 }
 
 .give-stripe-account-default-checkmark {
-	width: 32px;
-	height: 32px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	position: absolute;
-	top: 24px;
-	right: 24px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 24px;
+    right: 24px;
+}
+
+.give-stripe-disconnect-account-btn,
+.give-stripe-edit-statement-descriptor-btn{
+    font-size: 16px;
+    color: #9ea3a8;
+
+    .dashicons {
+        text-decoration: none;
+        margin-right: 5px;
+    }
+
+    &:hover {
+        color: #0073aa;
+    }
+}
+
+.give-stripe-edit-statement-descriptor-btn{
+    margin-left: 15px;
+    font-weight: 400;
 }
 
 .give-stripe-account-actions {
-	display: flex;
-	align-items: center;
-	flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
 
-	.give-stripe-disconnect-account-btn {
-		margin-left: 15px;
-		font-size: 16px;
-		color: #9ea3a8;
-
-		.dashicons {
-			text-decoration: none;
-			margin-right: 5px;
-		}
-
-		&:hover {
-			color: #0073aa;
-		}
-	}
+    a {
+        margin-left: 15px;
+    }
 }
 
 .give-stripe-account-connected {
-	background: #69b868;
-	border-radius: 4px;
-	text-transform: uppercase;
-	font-weight: 700;
-	font-size: 12px;
-	color: #fff;
-	padding: 8px 16px;
-	margin-top: 3px;
+    background: #69b868;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    color: #fff;
+    padding: 8px 16px;
+    margin-top: 3px;
 }
 
 // "Default Account" pill
 .give-stripe-account-badge {
-	background: #fff;
-	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
-	font-size: 14px;
-	padding: 10px 20px;
-	border-radius: 24px;
-	display: inline-block;
-	margin-top: 8px;
-	align-self: flex-start;
-	color: #23282d;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    font-size: 14px;
+    padding: 10px 20px;
+    border-radius: 24px;
+    display: inline-block;
+    margin-top: 8px;
+    align-self: flex-start;
+    color: #23282d;
 }
 
 .give-stripe-account-default {
-	margin: 20px 0 0 3px;
+    margin: 20px 0 0 3px;
 
-	.give-stripe-account-set-default {
-		font-size: 16px;
-		font-weight: 500;
-	}
+    .give-stripe-account-set-default {
+        font-size: 16px;
+        font-weight: 500;
+    }
 }
 
 .give-stripe-account-edit {
-	padding: 5px 0 0 0;
-	font-size: 12px;
+    padding: 5px 0 0 0;
+    font-size: 12px;
 
-	> a {
-		margin: 0 10px;
-	}
+    > a {
+        margin: 0 10px;
+    }
 
-	> a:first-child {
-		margin-left: 0;
-	}
+    > a:first-child {
+        margin-left: 0;
+    }
 
-	> a:last-child {
-		margin-right: 0;
-	}
+    > a:last-child {
+        margin-right: 0;
+    }
 }
 
 .give-stripe-default-account-notice {
-	border: 1px solid #f49420;
-	background: #fff4e7;
-	margin: 30px 0 20px;
-	padding: 20px;
-	border-radius: 3px;
-	color: #333;
+    border: 1px solid #f49420;
+    background: #fff4e7;
+    margin: 30px 0 20px;
+    padding: 20px;
+    border-radius: 3px;
+    color: #333;
 
-	.dashicons {
-		font-size: 65px;
-		float: left;
-		color: #f49420;
-		position: relative;
-		top: -3px;
-		left: -5px;
-	}
+    .dashicons {
+        font-size: 65px;
+        float: left;
+        color: #f49420;
+        position: relative;
+        top: -3px;
+        left: -5px;
+    }
 
-	&__inner {
-		padding-left: 70px;
-	}
+    &__inner {
+        padding-left: 70px;
+    }
 
-	p {
-		font-size: 16px;
-		margin: 0 0 5px;
+    p {
+        font-size: 16px;
+        margin: 0 0 5px;
 
-		&:last-of-type {
-			margin-bottom: 0;
-		}
-	}
+        &:last-of-type {
+            margin-bottom: 0;
+        }
+    }
 }
 
 // --------------------------------
@@ -525,79 +534,79 @@ a.give-stripe-connect-temp-dismiss:active {
 // --------------------------------
 
 .give-settings-stripe-settings-section {
-	.give-stripe-credit-card-options {
-		display: block;
-		overflow: hidden;
-		padding: 20px 0 20px 5px;
-	}
+    .give-stripe-credit-card-options {
+        display: block;
+        overflow: hidden;
+        padding: 20px 0 20px 5px;
+    }
 
-	.give-stripe-cc-option-field {
-		float: left;
-		width: 340px;
-		height: 290px;
-		padding: 24px 26px;
+    .give-stripe-cc-option-field {
+        float: left;
+        width: 340px;
+        height: 290px;
+        padding: 24px 26px;
 
-		.stripe-cc-fields-radio-title {
-			display: block;
-		}
+        .stripe-cc-fields-radio-title {
+            display: block;
+        }
 
-		&:first-of-type {
-			margin-right: 20px;
-		}
-	}
+        &:first-of-type {
+            margin-right: 20px;
+        }
+    }
 
-	.stripe-cc-fields-radio-title {
-		font-weight: bold;
-		font-size: 17px;
-		margin: 10px 0 16px;
-	}
+    .stripe-cc-fields-radio-title {
+        font-weight: bold;
+        font-size: 17px;
+        margin: 10px 0 16px;
+    }
 
-	.stripe-cc-fields-radio-description {
-		font-size: 15px;
-		line-height: 24px;
-		color: #555;
-	}
+    .stripe-cc-fields-radio-description {
+        font-size: 15px;
+        line-height: 24px;
+        color: #555;
+    }
 }
 
 .give-stripe-credit-card-format-description {
-	max-width: 800px;
-	margin-left: 5px;
+    max-width: 800px;
+    margin-left: 5px;
 }
 
 .give-stripe-account-default-checkmark {
-	display: none;
+    display: none;
 }
 
 .give-stripe-boxshadow-option-wrap__selected .give-stripe-account-default-checkmark {
-	display: block;
+    display: block;
 }
 
 #give-settings-section-group-credit-card {
-	.give-stripe-credit-card-options {
-		cursor: pointer;
-	}
+    .give-stripe-credit-card-options {
+        cursor: pointer;
+    }
 
-	input[name='stripe_cc_fields_format'] {
-		display: none;
-	}
+    input[name='stripe_cc_fields_format'] {
+        display: none;
+    }
 }
 
 .stripe-cc-fields-example {
-	display: block;
+    display: block;
 
-	&__single {
-		margin-top: 50px;
-	}
+    &__single {
+        margin-top: 50px;
+    }
 
-	&__multi {
-		margin-top: 20px;
-	}
+    &__multi {
+        margin-top: 20px;
+    }
 
-	.stripe-cc-fields-example-text {
-		display: block;
-		font-size: 15px;
-		margin: 0 0 15px;
-	}
+    .stripe-cc-fields-example-text {
+        display: block;
+        font-size: 15px;
+        margin: 0 0 15px;
+    }
 }
 
 // --------------------------------
@@ -605,88 +614,88 @@ a.give-stripe-connect-temp-dismiss:active {
 // --------------------------------
 
 .give-stripe-manage-account-wrapper {
-	padding: 20px;
+    padding: 20px;
 }
 
 #stripe_form_account_options {
-	.give-stripe-manage-account-options {
-		padding: 20px 20px 0;
-	}
+    .give-stripe-manage-account-options {
+        padding: 20px 20px 0;
+    }
 
-	.give-stripe-per-form-option-label {
-		display: block;
-		height: 100%;
-		padding: 24px 26px;
-	}
+    .give-stripe-per-form-option-label {
+        display: block;
+        height: 100%;
+        padding: 24px 26px;
+    }
 
-	.give-stripe-per-form-options {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		width: 100%;
-		padding: 20px 0;
-		max-width: 800px;
+    .give-stripe-per-form-options {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: 100%;
+        padding: 20px 0;
+        max-width: 800px;
 
-		> div {
-			display: flex;
-			flex-direction: column;
-			flex-basis: 100%;
-			flex: 1;
-		}
-	}
+        > div {
+            display: flex;
+            flex-direction: column;
+            flex-basis: 100%;
+            flex: 1;
+        }
+    }
 
-	.give-stripe-per-form-option-field {
-		padding: 0;
+    .give-stripe-per-form-option-field {
+        padding: 0;
 
-		.give-stripe-per-form-radio-title {
-			display: block;
-			color: #333;
-			font-weight: bold;
-			font-size: 17px;
-			margin: 4px 0 12px;
-		}
+        .give-stripe-per-form-radio-title {
+            display: block;
+            color: #333;
+            font-weight: bold;
+            font-size: 17px;
+            margin: 4px 0 12px;
+        }
 
-		&:first-of-type {
-			margin-right: 20px;
-		}
-	}
+        &:first-of-type {
+            margin-right: 20px;
+        }
+    }
 
-	.give-stripe-per-form-main-heading h2 {
-		padding: 0;
-		font-size: 17px;
-		font-weight: 500;
-		margin: 5px 0 10px;
-	}
+    .give-stripe-per-form-main-heading h2 {
+        padding: 0;
+        font-size: 17px;
+        font-weight: 500;
+        margin: 5px 0 10px;
+    }
 
-	.give-stripe-per-form-description {
-		font-size: 15px;
-		line-height: 24px;
-		color: #555;
-		display: block;
-		margin: 0 0 15px;
-	}
+    .give-stripe-per-form-description {
+        font-size: 15px;
+        line-height: 24px;
+        color: #555;
+        display: block;
+        margin: 0 0 15px;
+    }
 
-	.give-stripe-per-form-global-setting {
-		font-size: 15px;
-		line-height: 24px;
-		color: #555;
+    .give-stripe-per-form-global-setting {
+        font-size: 15px;
+        line-height: 24px;
+        color: #555;
 
-		> span {
-			display: block;
-		}
+        > span {
+            display: block;
+        }
 
-		&__name {
-			font-weight: bold;
-			color: #333;
-		}
-	}
+        &__name {
+            font-weight: bold;
+            color: #333;
+        }
+    }
 
-	.give-stripe-setting-heading {
-		margin: 0 0 20px;
-		padding: 0;
-		font-size: 20px;
-		font-weight: 500;
-	}
+    .give-stripe-setting-heading {
+        margin: 0 0 20px;
+        padding: 0;
+        font-size: 20px;
+        font-weight: 500;
+    }
 }
 
 // --------------------------------
@@ -694,46 +703,47 @@ a.give-stripe-connect-temp-dismiss:active {
 // --------------------------------
 
 @media screen and (max-width: 1550px) {
-	#stripe_form_account_options {
-		.give-stripe-account-manager-list {
-			grid-template-columns: repeat(2, 1fr);
-			grid-gap: 25px;
-		}
-	}
+    #stripe_form_account_options {
+        .give-stripe-account-manager-list {
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 25px;
+        }
+    }
 }
+
 @media screen and (max-width: 1399px) {
-	#stripe_form_account_options {
-		// Connect notice
-		.give-stripe-account-manager-add-section {
-			display: block;
+    #stripe_form_account_options {
+        // Connect notice
+        .give-stripe-account-manager-add-section {
+            display: block;
 
-			.give-stripe-heading {
-				width: 100%;
-				text-align: center;
-				margin: 0 0 20px;
-			}
+            .give-stripe-heading {
+                width: 100%;
+                text-align: center;
+                margin: 0 0 20px;
+            }
 
-			.stripe-logo-with-circle {
-				display: none;
-			}
-		}
-	}
+            .stripe-logo-with-circle {
+                display: none;
+            }
+        }
+    }
 }
 
 @media screen and (max-width: 1149px) {
-	#stripe_form_account_options {
-		.give-stripe-account-manager-list {
-			grid-template-columns: repeat(1, 1fr);
-		}
+    #stripe_form_account_options {
+        .give-stripe-account-manager-list {
+            grid-template-columns: repeat(1, 1fr);
+        }
 
-		.give-stripe-per-form-options > div {
-			display: block;
-			flex: none;
-			width: 100%;
+        .give-stripe-per-form-options > div {
+            display: block;
+            flex: none;
+            width: 100%;
 
-			&:first-of-type {
-				margin: 0 0 25px;
-			}
-		}
-	}
+            &:first-of-type {
+                margin: 0 0 25px;
+            }
+        }
+    }
 }

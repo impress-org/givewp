@@ -76,10 +76,12 @@ class PayPalStandard extends PaymentGateway
                 $paymentData,
                 $this->generateSecureGatewayRouteUrl(
                     'handleSuccessPaymentReturn',
+                    $paymentData->donationId,
                     ['donation-id' => $paymentData->donationId]
                 ),
                 $this->generateSecureGatewayRouteUrl(
                     'handleFailedPaymentReturn',
+                    $paymentData->donationId,
                     ['donation-id' => $paymentData->donationId]
                 ),
                 $this->generateGatewayRouteUrl(
@@ -92,9 +94,10 @@ class PayPalStandard extends PaymentGateway
     /**
      * Handle payment redirect after successful payment on PayPal standard.
      *
-     * @unreleased
+     * @since 2.19.0
+     * @since 2.19.4 Only pending PayPal Standard donation set to processing.
      *
-     * @param array $queryParams Query params in gateway route. {
+     * @param  array  $queryParams  Query params in gateway route. {
      *
      * @type string "donation-id" Donation id.
      *
@@ -106,7 +109,10 @@ class PayPalStandard extends PaymentGateway
     {
         $donationId = (int)$queryParams['donation-id'];
         $payment = new Give_Payment($donationId);
-        $payment->update_status('processing');
+
+        if( 'pending' === $payment->status ) {
+            $payment->update_status('processing');
+        }
 
         return new RedirectResponse(Call::invoke(GenerateDonationReceiptPageUrl::class, $donationId));
     }
@@ -114,7 +120,7 @@ class PayPalStandard extends PaymentGateway
     /**
      * Handle payment redirect after failed payment on PayPal standard.
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @param array $queryParams Query params in gateway route. {
      *
@@ -136,7 +142,7 @@ class PayPalStandard extends PaymentGateway
     /**
      * Handle PayPal IPN notification.
      *
-     * @unreleased
+     * @since 2.19.0
      */
     public function handleIpnNotification()
     {
@@ -146,7 +152,7 @@ class PayPalStandard extends PaymentGateway
     /**
      * This function returns payment gateway settings.
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @return array
      */
@@ -208,7 +214,7 @@ class PayPalStandard extends PaymentGateway
                 'id' => 'paypal_invoice_prefix',
                 'name' => esc_html__('Invoice ID Prefix', 'give'),
                 'desc' => esc_html__(
-                    'Please enter a prefix for your invoice numbers. If you use your PayPal account for multiple fundraising platforms or ecommerce stores, ensure this prefix is unique. PayPal will not allow orders or donations with the same invoice number.',
+                    'Enter a prefix for your invoice numbers. If you use your PayPal account for multiple fundraising platforms or ecommerce stores, ensure this prefix is unique. PayPal will not allow orders or donations with the same invoice number.',
                     'give'
                 ),
                 'type' => 'text',

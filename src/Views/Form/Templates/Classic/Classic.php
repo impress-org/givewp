@@ -225,7 +225,7 @@ class Classic extends Template implements Hookable, Scriptable
     /**
      * Render donation form header
      *
-     * @unreleased use trinary operator instead of Coalesce operator to make code php 5.6 compatible.
+     * @since 2.19.0 use trinary operator instead of Coalesce operator to make code php 5.6 compatible.
      *
      * @param  int  $formId
      * @param  array  $args

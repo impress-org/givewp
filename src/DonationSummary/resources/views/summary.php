@@ -18,13 +18,13 @@
             <thead>
             <tr>
                 <th><?php
-                    _e('Donation Summary', 'givewp'); ?></th>
+                    _e('Donation Summary', 'give'); ?></th>
                 <th>
                     <?php
                     if ($this->isMultiStep()): ?>
                         <button type="button" class="back-btn" onclick="GiveDonationSummary.handleNavigateBack(event)">
                             <?php
-                            _e('Edit Donation', 'givewp'); ?>
+                            _e('Edit Donation', 'give'); ?>
                             <?php
                             include plugin_dir_path(__DIR__) . 'images/pencil.svg'; ?>
                         </button>
@@ -40,7 +40,7 @@
             <tr>
                 <td>
                     <div><?php
-                        _e('Payment Amount', 'givewp'); ?></div>
+                        _e('Payment Amount', 'give'); ?></div>
                 </td>
                 <td data-tag="amount"></td>
             </tr>
@@ -50,7 +50,7 @@
             <tr>
                 <td>
                     <div><?php
-                        _e('Giving Frequency', 'givewp'); ?></div>
+                        _e('Giving Frequency', 'give'); ?></div>
                     <?php
                     if ($this->isRecurringEnabled()): ?>
                         <span class="give-donation-summary-help-text js-give-donation-summary-frequency-help-text">

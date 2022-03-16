@@ -1,7 +1,7 @@
 // Reports admin dashboard widget
 
 // Dependencies
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n'
 
 // Store-related dependencies
 import { useStoreValue } from '../store';

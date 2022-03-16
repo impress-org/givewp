@@ -30,7 +30,7 @@ class PayPalCommerce extends PaymentGateway
     const GATEWAY_ID = 'paypal-commerce';
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @param int $formId
      * @param array $args
@@ -43,7 +43,7 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return string
      */
@@ -53,7 +53,7 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return string
      */
@@ -63,7 +63,7 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return string
      */
@@ -73,7 +73,7 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return string
      */
@@ -83,7 +83,7 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @param GatewayPaymentData $paymentData
      *

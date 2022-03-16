@@ -80,7 +80,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @inheritDoc
      */
@@ -99,7 +99,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
             );
 
             $message = __(
-                'An unexpected error occurred while processing your donation.  Please try again or contact us to help resolve.',
+                'An unexpected error occurred while processing the donation.  Please try again or contact a site administrator.',
                 'give'
             );
 
@@ -108,7 +108,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @inheritDoc
      */
@@ -128,7 +128,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
             );
 
             $message = __(
-                'An unexpected error occurred while processing your subscription.  Please try again or contact us to help resolve.',
+                'An unexpected error occurred while processing the subscription.  Please try again or contact the site administrator.',
                 'give'
             );
 
@@ -240,7 +240,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      * Generate gateway route url
      *
      * @since 2.18.0
-     * @unreleased remove $donationId param in favor of args
+     * @since 2.19.0 remove $donationId param in favor of args
      *
      * @param string $gatewayMethod
      * @param array|null $args
@@ -256,24 +256,29 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * Generate secure gateway route url
      *
-     * @unreleased
+     * @since 2.19.5 replace nonce with hash and expiration
+     * @since 2.19.4 replace RouteSignature args with unique donationId
+     * @since 2.19.0
      *
-     * @param string $gatewayMethod
-     * @param array|null $args
+     * @param  string  $gatewayMethod
+     * @param  int  $donationId
+     * @param  array|null  $args
      *
      * @return string
      *
      */
-    public function generateSecureGatewayRouteUrl($gatewayMethod, $args = null)
+    public function generateSecureGatewayRouteUrl($gatewayMethod, $donationId, $args = null)
     {
-        $nonce = new RouteSignature($this->getId(), $gatewayMethod, $args);
+        $signature = new RouteSignature($this->getId(), $gatewayMethod, $donationId);
 
         return Call::invoke(
             GenerateGatewayRouteUrl::class,
             $this->getId(),
             $gatewayMethod,
             array_merge($args, [
-                'give-route-signature' => $nonce->toNonce()
+                'give-route-signature' => $signature->toHash(),
+                'give-route-signature-id' => $donationId,
+                'give-route-signature-expiration' => $signature->expiration,
             ])
         );
     }
@@ -283,7 +288,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      * 1. Redirect to donation form if donation form submit.
      * 2. Return json response if processing payment on ajax.
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @param  Exception|PaymentGatewayException  $exception
      * @param  string  $message

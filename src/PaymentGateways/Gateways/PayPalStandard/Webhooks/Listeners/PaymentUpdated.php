@@ -10,7 +10,7 @@ use Give_Payment;
  * Handle web_accept and cart transaction types.
  * read more: https://developer.paypal.com/api/nvp-soap/ipn/IPNandPDTVariables/#link-ipntransactiontypes
  *
- * @unreleased
+ * @since 2.19.0
  */
 class PaymentUpdated implements EventListener
 {

@@ -1,0 +1,213 @@
+.deleted {
+    animation: disappear 400ms ease-in;
+    animation-fill-mode: forwards;
+    pointer-events: none;
+}
+
+@keyframes disappear {
+    0% {
+        filter: grayscale(0);
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        filter: grayscale(1);
+        opacity: 0;
+    }
+}
+
+tr.duplicated {
+    animation: disappear 0.5s ease-in reverse;
+}
+
+.action {
+    &:is(button) {
+        appearance: none;
+        background: none;
+        border: none;
+        padding: 0;
+        font-weight: 400;
+        cursor: pointer;
+    }
+}
+
+.action.delete {
+    color: rgba(232, 75, 59);
+}
+
+.tableRowActions {
+    position: absolute;
+    inset-block-end: 1rem;
+    opacity: 0;
+    transition: opacity 180ms ease-in;
+
+    display: flex;
+    align-items: center;
+    column-gap: 2rem;
+
+    > * {
+        position: relative;
+        color: #0878b0;
+        font-weight: 400;
+        line-height: 1;
+    }
+
+    > * + ::before {
+        position: absolute;
+        content: "";
+        inset-block: auto;
+        inset-inline-start: calc(-1.0625rem);
+        block-size: 110%;
+        inline-size: 0.125rem;
+        background-color: #dedede;
+    }
+
+    > a {
+        text-decoration: none;
+    }
+
+    &:focus-within {
+        opacity: 1;
+    }
+}
+
+.tableRow {
+
+    &:nth-child(odd) {
+        background-color: #f6f7f7;
+    }
+
+    &:nth-child(even) {
+        background-color: #fff;
+    }
+
+    &:hover .tableRowActions {
+        opacity: 1;
+    }
+}
+
+.tableRowHeader {
+    z-index: 1;
+
+    > a {
+        font-size: 1.125rem;
+        font-weight: 700;
+        text-decoration: none;
+    }
+}
+.tableCell {
+    position: relative;
+    padding-block-start: 1em;
+    padding-block-end: 2.5em;
+    padding-inline: 1em;
+    text-align: start;
+    vertical-align: top;
+    font-size: 0.875em;
+    font-weight: 600;
+    color: #333;
+
+    & > a:not([class]) {
+        text-decoration: none;
+    }
+}
+
+.statusBadge {
+    background-color: var(--give-primary-color);
+    border-radius: 0.1875rem;
+    color: #fff;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    padding-block: 0.5em;
+    padding-inline: 1rem;
+    text-align: center;
+    text-transform: uppercase;
+
+    &.pending {
+        background-color: rgba(8, 120, 176);
+    }
+
+    &.draft, &.auto-draft {
+        background-color: rgba(244, 148, 32);
+    }
+
+    &.future {
+        background-color: rgba(164, 99, 191);
+    }
+
+    &.trash, &.failed {
+        background-color: rgba(232, 75, 59);
+    }
+
+    &.private, &.refunded {
+        background-color: rgba(51, 51, 51, 1);
+    }
+
+    &.abandoned {
+        background-color: rgba(244, 197, 32, 1)
+    }
+}
+
+.idBadge {
+    display: inline-flex;
+    align-items: center;
+    background-color: #f3f2ec;
+    border: 0.0625rem solid #e0dfd9;
+    border-radius: 9999px;
+    color: #5f5f5f;
+    font-weight: 600;
+    padding-block: 0.1em;
+    padding-inline: 0.5em;
+    text-align: center;
+}
+
+.idBadge::before {
+    content: '#';
+    font-size: 0.615em;
+    padding-inline-end: 0.25em;
+}
+
+.statusMessage {
+    font-weight: 600;
+    font-size: 1.2em;
+    padding-inline: 2.5em;
+    padding-block: 2em;
+}
+
+.monetary {
+    color: var(--give-primary-color);
+}
+
+.goalProgress {
+    width: 100%;
+    height: 0.5rem;
+    position: relative;
+    background: rgba(238, 238, 238);
+    border-radius: 1.5625rem;
+    overflow: hidden;
+    margin: 0.3125rem 0 0.125rem;
+
+    & > span {
+        display: block;
+        height: 100%;
+        border-radius: 1.25rem 0.5rem 0.5rem 1.25rem;
+        background-color: rgba(43, 194, 83);
+        position: relative;
+        overflow: hidden;
+    }
+}
+
+.unclickable {
+    pointer-events: none;
+}
+
+.star {
+    color: #ffba00;
+}
+
+.shortcode {
+    min-inline-size: 0;
+    inline-size: 100%;
+    color: #2c3338;
+    background-color: #f6f7f7;
+}

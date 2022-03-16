@@ -356,6 +356,7 @@ function give_chosen_input( $field ) {
 				name="<?php echo $fieldName; ?>"
 				id="<?php echo esc_attr( $field['id'] ); ?>"
 			<?php echo "{$type} {$allow_new_values} {$placeholder}"; ?>
+            <?php echo give_get_attribute_str( $field ); ?>
 		>
 			<?php
 			foreach ( $choices as $key => $name ) {

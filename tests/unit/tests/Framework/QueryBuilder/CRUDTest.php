@@ -7,7 +7,7 @@ use Give\Framework\QueryBuilder\Concerns\CRUD;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @unreleased
+ * @since 2.19.0
  *
  * @covers CRUD
  */
@@ -16,7 +16,7 @@ final class CRUDTest extends TestCase
     /**
      * Truncate posts table to avoid duplicate records
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @return void
      */
@@ -30,7 +30,7 @@ final class CRUDTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return void
      */
@@ -57,7 +57,7 @@ final class CRUDTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return void
      */
@@ -95,7 +95,7 @@ final class CRUDTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return void
      */

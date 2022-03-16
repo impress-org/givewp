@@ -9,7 +9,7 @@ use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class PaymentGatewaysRegisterTest extends TestCase
 {
@@ -24,7 +24,7 @@ class PaymentGatewaysRegisterTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      */
     public function testPaymentGatewayRegistererIsTraversable()
     {
@@ -32,7 +32,7 @@ class PaymentGatewaysRegisterTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @throws Exception
      * @throws OverflowException
      */
@@ -43,7 +43,7 @@ class PaymentGatewaysRegisterTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      */
     public function testRegisterGateways()
     {
@@ -53,7 +53,7 @@ class PaymentGatewaysRegisterTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @throws Exception
      * @throws OverflowException
      */
@@ -65,7 +65,7 @@ class PaymentGatewaysRegisterTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      * @throws Exception
      * @throws OverflowException
      */

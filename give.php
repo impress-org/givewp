@@ -1,12 +1,13 @@
 <?php
+
 /**
  * Plugin Name: Give - Donation Plugin
  * Plugin URI: https://givewp.com
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.18.1
- * Requires at least: 4.9
+ * Version: 2.19.5
+ * Requires at least: 5.0
  * Requires PHP: 5.6
  * Text Domain: give
  * Domain Path: /languages
@@ -42,6 +43,8 @@
  */
 
 use Give\Container\Container;
+use Give\DonationForms\Repositories\DonationFormsRepository;
+use Give\DonationForms\ServiceProvider as DonationFormsServiceProvider;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ServiceProvider as DonationServiceProvider;
 use Give\DonationSummary\ServiceProvider as DonationSummaryServiceProvider;
@@ -52,13 +55,13 @@ use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvide
 use Give\Form\Templates;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Framework\Migrations\MigrationsServiceProvider;
-use Give\InPluginUpsells\ServiceProvider as InPluginUpsellsServiceProvider;
 use Give\LegacySubscriptions\ServiceProvider as LegacySubscriptionsServiceProvider;
 use Give\License\LicenseServiceProvider;
 use Give\Log\LogServiceProvider;
 use Give\MigrationLog\MigrationLogServiceProvider;
 use Give\MultiFormGoals\ServiceProvider as MultiFormGoalsServiceProvider;
 use Give\PaymentGateways\ServiceProvider as PaymentGatewaysServiceProvider;
+use Give\Promotions\ServiceProvider as PromotionsServiceProvider;
 use Give\Revenue\RevenueServiceProvider;
 use Give\Route\Form as FormRoute;
 use Give\ServiceProviders\LegacyServiceProvider;
@@ -109,6 +112,7 @@ if (!defined('ABSPATH')) {
  * @property-read DonationRepository $donations
  * @property-read DonorRepositoryProxy $donors
  * @property-read SubscriptionRepository $subscriptions
+ * @property-read DonationFormsRepository $donationFormsRepository
  * @property-read Give_Recurring_DB_Subscription_Meta $subscription_meta
  *
  * @mixin Container
@@ -153,6 +157,7 @@ final class Give
     private $container;
 
     /**
+     * @unreleased added Donors, Donations, and Subscriptions
      * @since 2.8.0
      *
      * @var array Array of Service Providers to load
@@ -167,7 +172,6 @@ final class Give
         RevenueServiceProvider::class,
         MultiFormGoalsServiceProvider::class,
         DonorDashboardsServiceProvider::class,
-        InPluginUpsellsServiceProvider::class,
         TrackingServiceProvider::class,
         TestDataServiceProvider::class,
         MigrationLogServiceProvider::class,
@@ -181,6 +185,8 @@ final class Give
         DonationServiceProvider::class,
         DonorsServiceProvider::class,
         SubscriptionServiceProvider::class,
+        DonationFormsServiceProvider::class,
+        PromotionsServiceProvider::class,
         LegacySubscriptionsServiceProvider::class
     ];
 
@@ -296,8 +302,8 @@ final class Give
     private function setup_constants()
     {
         // Plugin version.
-        if ( ! defined('GIVE_VERSION')) {
-            define('GIVE_VERSION', '2.18.1');
+        if (!defined('GIVE_VERSION')) {
+            define('GIVE_VERSION', '2.19.5');
         }
 
         // Plugin Root File.
@@ -521,7 +527,7 @@ final class Give
     /**
      * Sets up the Exception Handler to catch and handle uncaught exceptions
      *
-     * @unreleased
+     * @since 2.11.1
      */
     private function setupExceptionHandler()
     {
