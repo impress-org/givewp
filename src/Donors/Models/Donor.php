@@ -36,7 +36,7 @@ use Give\Subscriptions\Models\Subscription;
 class Donor extends Model implements ModelCrud, ModelHasFactory
 {
     /**
-     * @var string[]
+     * @inheritdoc
      */
     protected $properties = [
         'id' => 'int',

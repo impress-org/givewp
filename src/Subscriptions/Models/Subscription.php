@@ -39,7 +39,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class Subscription extends Model implements ModelCrud, ModelHasFactory
 {
     /**
-     * @var string[]
+     * @inheritdoc
      */
     protected $properties = [
         'id' => 'int',

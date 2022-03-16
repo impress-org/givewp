@@ -52,7 +52,7 @@ use Give\ValueObjects\Money;
 class Donation extends Model implements ModelCrud, ModelHasFactory
 {
     /**
-     * @var string[]
+     * @inheritdoc
      */
     protected $properties = [
         'id' => 'int',
