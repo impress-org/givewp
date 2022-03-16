@@ -70,21 +70,4 @@ class DonorRepositoryProxy
 
         throw new InvalidArgumentException("$method does not exist.");
     }
-
-    /**
-     * @unreleased
-     *
-     * @return void
-     */
-    public function __clone()
-    {
-        /** @var Give_DB_Donors $legacyDonorRepository */
-        $legacyDonorRepository = give(Give_DB_Donors::class);
-
-        $properties = get_object_vars($legacyDonorRepository);
-
-        foreach ($properties as $key => $value) {
-            $this->$key = $value;
-        }
-    }
 }
