@@ -342,11 +342,9 @@ abstract class Model implements Arrayable
         $relationship = new Relationship($this->relationships[$key]);
 
         switch (true) {
-            case ($relationship->equals(Relationship::ONE_TO_ONE())):
             case ($relationship->equals(Relationship::BELONGS_TO())):
             case ($relationship->equals(Relationship::HAS_ONE())):
                 return $this->$key()->get();
-            case ($relationship->equals(Relationship::ONE_TO_MANY())):
             case ($relationship->equals(Relationship::HAS_MANY())):
             case ($relationship->equals(Relationship::BELONGS_TO_MANY())):
             case ($relationship->equals(Relationship::MANY_TO_MANY())):

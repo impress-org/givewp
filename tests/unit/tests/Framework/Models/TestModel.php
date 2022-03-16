@@ -272,9 +272,9 @@ class MockModelWithRelationship extends Model
     ];
 
     protected $relationships = [
-        'relatedButNotCallable' => Relationship::ONE_TO_ONE,
-        'relatedAndCallableOneToOne' => Relationship::ONE_TO_ONE,
-        'relatedAndCallableOneToMany' => Relationship::ONE_TO_MANY,
+        'relatedButNotCallable' => Relationship::HAS_ONE,
+        'relatedAndCallableOneToOne' => Relationship::HAS_ONE,
+        'relatedAndCallableOneToMany' => Relationship::HAS_MANY,
     ];
 
     /**

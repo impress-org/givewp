@@ -9,8 +9,6 @@ use Give\Framework\Support\ValueObjects\Enum;
  *
  * @unreleased
  *
- * @method static ONE_TO_ONE();
- * @method static ONE_TO_MANY();
  * @method static HAS_ONE();
  * @method static HAS_MANY();
  * @method static MANY_TO_MANY();
@@ -19,8 +17,6 @@ use Give\Framework\Support\ValueObjects\Enum;
  */
 class Relationship extends Enum
 {
-    const ONE_TO_ONE = 'one-to-one';
-    const ONE_TO_MANY = 'one-to-many';
     const HAS_ONE = 'has-one';
     const HAS_MANY = 'has-many';
     const MANY_TO_MANY = 'many-to-many';
