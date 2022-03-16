@@ -82,6 +82,7 @@ class ListDonors extends Endpoint
                 'userId' => $donor->userId,
                 'email' => $donor->email,
                 'name' => $donor->name,
+                'titlePrefix' => $donor->titlePrefix,
                 'donationCount' => $donor->donationCount,
                 'dateCreated' => $donor->createdAt,
                 'donationRevenue' => $this->formatAmount($donor->donationRevenue),
