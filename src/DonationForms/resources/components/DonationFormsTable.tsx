@@ -114,15 +114,15 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
         return () => clearTimeout(timeoutId);
     }, [errors]);
 
-    async function mutateForm(ids, endpoint, method) {
+    async function mutateForm(ids, endpoint, method, remove = false) {
         try {
             const response = await fetchWithArgs(endpoint, {ids}, method);
             // if we just removed the last entry from the page and we're not on the first page, go back a page
             if (
+                remove &&
                 !response.errors.length &&
                 data.forms.length == 1 &&
-                data.totalPages > 1 &&
-                (endpoint == '/delete' || endpoint == '/trash' || endpoint == '/restore')
+                data.totalPages > 1
             ) {
                 setPage(page - 1);
             }

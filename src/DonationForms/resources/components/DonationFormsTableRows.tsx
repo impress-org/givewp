@@ -94,7 +94,7 @@ export default function DonationFormsTableRows({listParams, mutateForm}) {
         return async (event) => {
             const id = event.target.dataset.actionid;
             setDeleted([id]);
-            await mutateForm(id, endpoint, method);
+            await mutateForm(id, endpoint, method, true);
             setDeleted([]);
         }
     }
