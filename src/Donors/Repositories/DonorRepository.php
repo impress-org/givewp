@@ -6,7 +6,7 @@ use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_REST_Request;
 
-class DonorsRepository
+class DonorRepository
 {
     /**
      * @param WP_REST_Request $request

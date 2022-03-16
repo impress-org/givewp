@@ -2,7 +2,7 @@
 
 namespace Give\Donors;
 
-use Give\Donors\Repositories\DonorsRepository;
+use Give\Donors\Repositories\DonorRepository;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -16,7 +16,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register()
     {
-        give()->singleton('donorsRepository', DonorsRepository::class);
+        give()->singleton('donorRepository', DonorRepository::class);
     }
 
     /**

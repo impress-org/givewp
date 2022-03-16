@@ -72,8 +72,8 @@ class ListDonors extends Endpoint
     public function handleRequest(WP_REST_Request $request)
     {
         $data = [];
-        $donors = give()->donorsRepository->getDonorsForRequest($request);
-        $donorsCount = give()->donorsRepository->getTotalDonorsCountForRequest($request);
+        $donors = give()->donorRepository->getDonorsForRequest($request);
+        $donorsCount = give()->donorRepository->getTotalDonorsCountForRequest($request);
         $pageCount = (int)ceil($donorsCount / $request->get_param('perPage'));
 
         foreach ($donors as $donor) {
