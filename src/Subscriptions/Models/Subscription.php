@@ -9,8 +9,8 @@ use Give\Donors\Models\Donor;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Model;
+use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Models\ValueObjects\Relationship;
-use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Subscriptions\DataTransferObjects\SubscriptionQueryData;
 use Give\Subscriptions\Factories\SubscriptionFactory;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
@@ -81,7 +81,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @return QueryBuilder
+     * @return ModelQueryBuilder
      */
     public function donor()
     {
@@ -91,7 +91,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @return QueryBuilder
+     * @return ModelQueryBuilder
      */
     public function donations()
     {
@@ -147,7 +147,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @return QueryBuilder
+     * @return ModelQueryBuilder
      */
     public static function query()
     {

@@ -72,7 +72,7 @@ class DonationRepository
      *
      * @param  int  $subscriptionId
      *
-     * @return QueryBuilder
+     * @return ModelQueryBuilder
      */
     public function queryBySubscriptionId($subscriptionId)
     {
@@ -97,7 +97,7 @@ class DonationRepository
      *
      * @param  int  $donorId
      *
-     * @return QueryBuilder
+     * @return ModelQueryBuilder
      */
     public function queryByDonorId($donorId)
     {
@@ -459,7 +459,7 @@ class DonationRepository
     }
 
     /**
-     * @return QueryBuilder
+     * @return ModelQueryBuilder
      */
     public function prepareQuery()
     {

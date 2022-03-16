@@ -6,7 +6,6 @@ use Exception;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
-use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
@@ -45,7 +44,7 @@ class SubscriptionRepository
      * @unreleased
      *
      * @param  int  $subscriptionId
-     * @return QueryBuilder
+     * @return ModelQueryBuilder
      */
     public function queryById($subscriptionId)
     {
@@ -57,7 +56,7 @@ class SubscriptionRepository
      * @unreleased
      *
      * @param  int  $donationId
-     * @return QueryBuilder
+     * @return ModelQueryBuilder
      */
     public function queryByDonationId($donationId)
     {
@@ -69,7 +68,7 @@ class SubscriptionRepository
      * @unreleased
      *
      * @param  int  $donorId
-     * @return QueryBuilder
+     * @return ModelQueryBuilder
      */
     public function queryByDonorId($donorId)
     {
@@ -318,7 +317,7 @@ class SubscriptionRepository
     /**
      * @unreleased
      *
-     * @return QueryBuilder
+     * @return ModelQueryBuilder
      */
     public function prepareQuery()
     {

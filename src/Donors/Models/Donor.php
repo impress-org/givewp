@@ -13,8 +13,8 @@ use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Factories\ModelFactory;
 use Give\Framework\Models\Model;
+use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Models\ValueObjects\Relationship;
-use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Subscriptions\Models\Subscription;
 
 /**
@@ -25,7 +25,7 @@ use Give\Subscriptions\Models\Subscription;
  * @property int $id
  * @property int $userId
  * @property DateTime $createdAt
- * @property string $name // TODO: name should be an accessor
+ * @property string $name
  * @property string $prefix
  * @property string $firstName
  * @property string $lastName
@@ -136,7 +136,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @return QueryBuilder
+     * @return ModelQueryBuilder
      */
     public function donations()
     {
@@ -146,7 +146,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @return QueryBuilder
+     * @return ModelQueryBuilder
      */
     public function subscriptions()
     {
@@ -186,7 +186,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @return QueryBuilder
+     * @return ModelQueryBuilder
      */
     public static function query()
     {

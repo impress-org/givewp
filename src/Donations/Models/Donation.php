@@ -14,8 +14,8 @@ use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Model;
+use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Models\ValueObjects\Relationship;
-use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Subscriptions\Models\Subscription;
 use Give\ValueObjects\Money;
 
@@ -149,7 +149,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @return QueryBuilder
+     * @return ModelQueryBuilder
      */
     public function donor()
     {
@@ -159,7 +159,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @return QueryBuilder
+     * @return ModelQueryBuilder
      */
     public function subscription()
     {
@@ -203,7 +203,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @return QueryBuilder
+     * @return ModelQueryBuilder
      */
     public static function query()
     {

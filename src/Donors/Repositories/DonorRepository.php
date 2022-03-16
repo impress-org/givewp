@@ -8,7 +8,6 @@ use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
-use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Log\Log;
 
@@ -35,7 +34,7 @@ class DonorRepository
      * @unreleased
      *
      * @param  int  $donorId
-     * @return QueryBuilder
+     * @return ModelQueryBuilder
      */
     public function queryById($donorId)
     {
@@ -355,7 +354,7 @@ class DonorRepository
     }
 
     /**
-     * @return QueryBuilder
+     * @return ModelQueryBuilder
      */
     public function prepareQuery()
     {
