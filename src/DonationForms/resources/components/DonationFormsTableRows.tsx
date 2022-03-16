@@ -4,6 +4,7 @@ import cx from 'classnames';
 import {useDonationForms} from '../api';
 import {useEffect, useState} from 'react';
 import RowAction from './RowAction';
+import TableCell, {IdBadge, StatusBadge} from "./TableCell";
 
 const statusMap = {
     publish: __('published', 'give'),
@@ -59,7 +60,6 @@ const FormsRowActions = ({data, item, parameters, removeRow, addRow}) => {
             <RowAction
                 onClick={addRow('/duplicate', 'POST')}
                 actionId={item.id}
-                data-formid={item.id}
                 displayText={__('Duplicate', 'give')}
                 hiddenText={item.name}
             />
@@ -67,7 +67,24 @@ const FormsRowActions = ({data, item, parameters, removeRow, addRow}) => {
     );
 }
 
-export default function DonationFormsTableRows({listParams, mutateForm}) {
+const RenderRow = ({ col, item }) => {
+    switch(col?.preset){
+        case 'idBadge':
+            return (
+                <IdBadge key={col.name} id={item[col.name]}/>
+            );
+        case 'statusBadge':
+            return (
+                <StatusBadge key={col.name} status={item[col.render]}
+                             text={statusMap[item[col.render]]}
+                />
+            );
+        default:
+            return col.render instanceof Function ? col.render(item) : item[col.name];
+    }
+}
+
+export default function DonationFormsTableRows({listParams, mutateForm, columns}) {
     const {data, isValidating} = useDonationForms(listParams);
     const [deleted, setDeleted] = useState([]);
     const [duplicated, setDuplicated] = useState([]);
@@ -108,7 +125,7 @@ export default function DonationFormsTableRows({listParams, mutateForm}) {
     }
 
     if(!data?.forms) {
-        return false;
+        return null;
     }
 
     return data.forms.map((form) => (
@@ -119,9 +136,13 @@ export default function DonationFormsTableRows({listParams, mutateForm}) {
                 [styles.duplicated]: duplicated.indexOf(parseInt(form.id)) > -1,
             })}
         >
-            <td className={styles.tableCell}>
-                <div className={styles.idBadge}>{form.id}</div>
-            </td>
+            {columns.map((column) => (
+                <TableCell key={column.name} className={column?.addClass}
+                           heading={column?.header}
+                >
+                    <RenderRow col={column} item={form}/>
+                </TableCell>
+            ))}
             <th className={cx(styles.tableCell, styles.tableRowHeader)} scope="row">
                 <a href={form.edit}>{form.name}</a>
                 <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
@@ -135,70 +156,6 @@ export default function DonationFormsTableRows({listParams, mutateForm}) {
                     />}
                 </div>
             </th>
-            <td className={cx(styles.tableCell, styles.monetary)}>
-                {form.amount}
-            </td>
-            <td className={styles.tableCell}>
-                {form.goal ? (
-                    <>
-                        <div className={styles.goalProgress}>
-                            <span
-                                style={{
-                                    width: form.goal.format == 'percentage' ?
-                                        form.goal.actual :
-                                        Math.max(Math.min(form.goal.progress, 100), 0) + '%'
-                                }}
-                            />
-                        </div>
-                        <span className={cx({[styles.monetary]: form.goal.format == __('amount', 'give')})}>
-                            {form.goal.actual}
-                        </span>
-                        {form.goal.format != 'percentage' && (
-                            <>
-                                {' '}
-                                {__('of', 'give')}{' '}
-                                <a href={`${form.edit}&give_tab=donation_goal_options`}>
-                                    {form.goal.goal}
-                                    {form.goal.format != __('amount', 'give') ? ` ${form.goal.format}` : null}
-                                </a>
-                            </>
-                        )}
-                        {form.goal.progress >= 100 && (
-                            <p>
-                                <span className={cx('dashicons dashicons-star-filled', styles.star)}></span>
-                                {__('Goal achieved!', 'give')}
-                            </p>
-                        )}
-                    </>
-                ) : (
-                    <span>{__('No Goal Set', 'give')}</span>
-                )}
-            </td>
-            <td className={styles.tableCell}>
-                <a href={`edit.php?post_type=give_forms&page=give-payment-history&form_id=${form.id}`}>
-                    {form.donations}
-                </a>
-            </td>
-            <td className={styles.tableCell}>
-                <a href={`edit.php?post_type=give_forms&page=give-reports&tab=forms&legacy=true&form-id=${form.id}`}>
-                    {form.revenue}
-                </a>
-            </td>
-            <td className={styles.tableCell}>
-                <input
-                    type="text"
-                    aria-label={__('Copy shortcode', 'give')}
-                    readOnly
-                    value={form.shortcode}
-                    className={styles.shortcode}
-                />
-            </td>
-            <td className={styles.tableCell}>{form.datetime}</td>
-            <td className={styles.tableCell}>
-                <div className={cx(styles.statusBadge, styles[form.status])}>
-                    {statusMap[form.status] || __('none', 'give')}
-                </div>
-            </td>
         </tr>
     ));
 }

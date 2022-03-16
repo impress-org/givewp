@@ -72,86 +72,6 @@ tr.duplicated {
     }
 }
 
-.tableRowHeader {
-    z-index: 1;
-
-    > a {
-        font-size: 1.125rem;
-        font-weight: 700;
-        text-decoration: none;
-    }
-}
-.tableCell {
-    position: relative;
-    padding-block-start: 1em;
-    padding-block-end: 2.5em;
-    padding-inline: 1em;
-    text-align: start;
-    vertical-align: top;
-    font-size: 0.875em;
-    font-weight: 600;
-    color: #333;
-
-    & > a:not([class]) {
-        text-decoration: none;
-    }
-}
-
-.statusBadge {
-    background-color: var(--give-primary-color);
-    border-radius: 0.1875rem;
-    color: #fff;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    padding-block: 0.5em;
-    padding-inline: 1rem;
-    text-align: center;
-    text-transform: uppercase;
-
-    &.pending {
-        background-color: rgba(8, 120, 176);
-    }
-
-    &.draft, &.auto-draft {
-        background-color: rgba(244, 148, 32);
-    }
-
-    &.future {
-        background-color: rgba(164, 99, 191);
-    }
-
-    &.trash, &.failed {
-        background-color: rgba(232, 75, 59);
-    }
-
-    &.private, &.refunded {
-        background-color: rgba(51, 51, 51, 1);
-    }
-
-    &.abandoned {
-        background-color: rgba(244, 197, 32, 1)
-    }
-}
-
-.idBadge {
-    display: inline-flex;
-    align-items: center;
-    background-color: #f3f2ec;
-    border: 0.0625rem solid #e0dfd9;
-    border-radius: 9999px;
-    color: #5f5f5f;
-    font-weight: 600;
-    padding-block: 0.1em;
-    padding-inline: 0.5em;
-    text-align: center;
-}
-
-.idBadge::before {
-    content: '#';
-    font-size: 0.615em;
-    padding-inline-end: 0.25em;
-}
-
 .statusMessage {
     font-weight: 600;
     font-size: 1.2em;
@@ -159,40 +79,8 @@ tr.duplicated {
     padding-block: 2em;
 }
 
-.monetary {
-    color: var(--give-primary-color);
-}
-
-.goalProgress {
-    width: 100%;
-    height: 0.5rem;
-    position: relative;
-    background: rgba(238, 238, 238);
-    border-radius: 1.5625rem;
-    overflow: hidden;
-    margin: 0.3125rem 0 0.125rem;
-
-    & > span {
-        display: block;
-        height: 100%;
-        border-radius: 1.25rem 0.5rem 0.5rem 1.25rem;
-        background-color: rgba(43, 194, 83);
-        position: relative;
-        overflow: hidden;
-    }
-}
-
 .unclickable {
     pointer-events: none;
 }
 
-.star {
-    color: #ffba00;
-}
 
-.shortcode {
-    min-inline-size: 0;
-    inline-size: 100%;
-    color: #2c3338;
-    background-color: #f6f7f7;
-}

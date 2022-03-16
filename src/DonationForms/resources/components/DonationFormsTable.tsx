@@ -4,6 +4,7 @@ import {useSWRConfig, unstable_serialize} from 'swr';
 import cx from 'classnames';
 
 import styles from './DonationFormsTable.module.scss';
+import {columns} from './DonationForms';
 import Pagination from './Pagination.js';
 import DonationFormTableRows from './DonationFormsTableRows';
 import {Spinner} from '../../../Views/Components';
@@ -26,44 +27,10 @@ const singleName = __('donation form', 'give');
 const pluralName = __('donation forms', 'give');
 const pluralTitleCase = __('Donation Forms', 'give');
 
-const columnHeadings = [
-    {
-        name: 'id',
-        text: __('ID', 'give')
-    },
-    {
-        name: 'name',
-        text: __('Name', 'give')
-    },
-    {
-        name: 'amount',
-        text: __('Amount', 'give')
-    },
-    {
-        name: 'goal',
-        text: __('Goal', 'give')
-    },
-    {
-        name: 'donations',
-        text: __('Donations', 'give')
-    },
-    {
-        name: 'revenue',
-        text: __('Revenue', 'give')
-    },
-    {
-        name: 'shortcode',
-        text: __('Shortcode', 'give')
-    },
-    {
-        name: 'date',
-        text: __('Date', 'give')
-    },
-    {
-        name: 'status',
-        text: __('Status', 'give')
-    },
-];
+
+
+// Todo: recursively freeze table setup props so they are stable between renders
+// e.g. Object.freeze(columns);
 
 export default function DonationFormsTable({statusFilter: status, search}: DonationFormsTableProps) {
     const [page, setPage] = useState<number>(1);
@@ -180,7 +147,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                         </caption>
                         <thead>
                             <tr>
-                                {columnHeadings.map(heading =>
+                                {columns.map(heading =>
                                     <th
                                         scope="col"
                                         aria-sort="none"
@@ -194,7 +161,11 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                             </tr>
                         </thead>
                         <tbody className={styles.tableContent}>
-                            <DonationFormTableRows listParams={listParams} mutateForm={mutateForm} />
+                            <DonationFormTableRows
+                                listParams={listParams}
+                                mutateForm={mutateForm}
+                                columns={columns}
+                            />
                         </tbody>
                     </table>
                     {loadingOverlay && (
