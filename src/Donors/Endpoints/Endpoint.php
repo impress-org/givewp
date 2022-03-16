@@ -14,6 +14,17 @@ abstract class Endpoint implements RestRoute
     protected $endpoint;
 
     /**
+     * @param  string  $value
+     * @unreleased
+     *
+     * @return bool
+     */
+    public function validateInt($value)
+    {
+        return filter_var($value, FILTER_VALIDATE_INT);
+    }
+
+    /**
      * @param string $param
      * @param WP_REST_Request $request
      * @param string $key
