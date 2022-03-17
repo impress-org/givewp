@@ -4,6 +4,7 @@ namespace Give\Framework\PaymentGateways\CommandHandlers;
 
 use Exception;
 use Give\Donations\Models\Donation;
+use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\PaymentGateways\Commands\PaymentCommand;
 
@@ -48,13 +49,16 @@ abstract class PaymentHandler
     public function handle(Donation $donation)
     {
         $status = new DonationStatus($this->getPaymentStatus());
-        
+
         $donation->status = $status;
         $donation->gatewayTransactionId = $this->paymentCommand->gatewayTransactionId;
         $donation->save();
 
         foreach ($this->paymentCommand->paymentNotes as $paymentNote) {
-            give_insert_payment_note($donation->id, $paymentNote);
+            DonationNote::create([
+                'donationId' => $donation->id,
+                'content' => $paymentNote
+            ]);
         }
     }
 }
