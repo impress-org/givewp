@@ -93,9 +93,9 @@ export default function ListTableRows({listParams, mutateForm, columns}) {
         if (added.length) {
             const timeouts = [];
             timeouts[0] = setTimeout(() => {
-                const duplicateForm = document.getElementsByClassName(styles.duplicated);
-                if (duplicateForm.length == 1) {
-                    duplicateForm[0].scrollIntoView({behavior: 'smooth', block: 'center'});
+                const addedItem = document.getElementsByClassName(styles.duplicated);
+                if (addedItem.length == 1) {
+                    addedItem[0].scrollIntoView({behavior: 'smooth', block: 'center'});
                 }
             }, 100);
             timeouts[1] = setTimeout(() => {
