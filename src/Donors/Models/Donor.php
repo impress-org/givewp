@@ -85,6 +85,19 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
+     * @param  string  $donorEmail
+     * @return bool
+     */
+    public function hasEmail($donorEmail)
+    {
+        $emails = array_merge($this->additionalEmails, [$this->email]);
+
+        return in_array($donorEmail, $emails, true);
+    }
+
+    /**
+     * @unreleased
+     *
      * @param  int  $userId
      * @return Donor
      */
