@@ -28,9 +28,8 @@ const pluralName = __('donation forms', 'give');
 const pluralTitleCase = __('Donation Forms', 'give');
 
 
-
 // Todo: recursively freeze table setup props so they are stable between renders
-// e.g. Object.freeze(columns);
+// e.g. Object.freeze(columns); then do that recursively for properties
 
 export default function DonationFormsTable({statusFilter: status, search}: DonationFormsTableProps) {
     const [page, setPage] = useState<number>(1);
@@ -147,15 +146,15 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                         </caption>
                         <thead>
                             <tr>
-                                {columns.map(heading =>
+                                {columns.map(column =>
                                     <th
                                         scope="col"
                                         aria-sort="none"
                                         className={styles.tableColumnHeader}
-                                        data-column={heading.name}
-                                        key={heading.name}
+                                        data-column={column.name}
+                                        key={column.name}
                                     >
-                                        {heading.text}
+                                        {column.text}
                                     </th>
                                 )}
                             </tr>

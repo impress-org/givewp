@@ -12,6 +12,7 @@ export const columns = [
         name: 'name',
         text: __('Name', 'give'),
         heading: true,
+        render: (item) => <a href={item.edit}>{item.name}</a>
     },
     {
         name: 'amount',

@@ -75,8 +75,8 @@ const RenderRow = ({ col, item }) => {
             );
         case 'statusBadge':
             return (
-                <StatusBadge key={col.name} status={item[col.render]}
-                             text={statusMap[item[col.render]]}
+                <StatusBadge key={col.name} status={item[col.name]}
+                             text={statusMap[item[col.name]]}
                 />
             );
         default:
@@ -128,34 +128,32 @@ export default function DonationFormsTableRows({listParams, mutateForm, columns}
         return null;
     }
 
-    return data.forms.map((form) => (
+    return data.forms.map((item) => (
         <tr
-            key={form.id}
+            key={item.id}
             className={cx(styles.tableRow, {
-                [styles.deleted]: deleted.indexOf(form.id) > -1,
-                [styles.duplicated]: duplicated.indexOf(parseInt(form.id)) > -1,
+                [styles.deleted]: deleted.indexOf(item.id) > -1,
+                [styles.duplicated]: duplicated.indexOf(parseInt(item.id)) > -1,
             })}
         >
             {columns.map((column) => (
                 <TableCell key={column.name} className={column?.addClass}
-                           heading={column?.header}
+                           heading={column?.heading}
                 >
-                    <RenderRow col={column} item={form}/>
+                    <RenderRow col={column} item={item}/>
+                    {!isValidating && column?.heading &&
+                        <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
+                            <FormsRowActions
+                                data={data}
+                                item={item}
+                                parameters={listParams}
+                                removeRow={removeRow}
+                                addRow={addRow}
+                            />
+                        </div>
+                    }
                 </TableCell>
             ))}
-            <th className={cx(styles.tableCell, styles.tableRowHeader)} scope="row">
-                <a href={form.edit}>{form.name}</a>
-                <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
-                    {!isValidating &&
-                    <FormsRowActions
-                        data={data}
-                        item={form}
-                        parameters={listParams}
-                        removeRow={removeRow}
-                        addRow={addRow}
-                    />}
-                </div>
-            </th>
         </tr>
     ));
 }
