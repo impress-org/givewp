@@ -2,6 +2,7 @@
 
 namespace Give\Donors\Endpoints;
 
+use Give\Helpers\Date;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -72,8 +73,8 @@ class ListDonors extends Endpoint
     public function handleRequest(WP_REST_Request $request)
     {
         $data = [];
-        $donors = give()->donorRepository->getDonorsForRequest($request);
-        $donorsCount = give()->donorRepository->getTotalDonorsCountForRequest($request);
+        $donors = give()->donors->getDonorsForRequest($request);
+        $donorsCount = give()->donors->getTotalDonorsCountForRequest($request);
         $pageCount = (int)ceil($donorsCount / $request->get_param('perPage'));
 
         foreach ($donors as $donor) {
@@ -84,7 +85,7 @@ class ListDonors extends Endpoint
                 'name' => $donor->name,
                 'titlePrefix' => $donor->titlePrefix,
                 'donationCount' => $donor->donationCount,
-                'dateCreated' => $this->getDateTime($donor->createdAt),
+                'dateCreated' => Date::getDateTime($donor->createdAt),
                 'donationRevenue' => $this->formatAmount($donor->donationRevenue),
                 'hasGravatar' => give_validate_gravatar($donor->email)
             ];
@@ -97,42 +98,6 @@ class ListDonors extends Endpoint
                 'pageCount' => $pageCount
             ]
         );
-    }
-
-
-    /**
-     * Returns human readable date.
-     *
-     * @param string $date Date YYYY-MM-DD
-     *
-     * @return string
-     */
-    private function getDateTime($date)
-    {
-        $dateTimestamp = strtotime($date);
-        $currentTimestamp = current_time('timestamp');
-        $todayTimestamp = strtotime('today', $currentTimestamp);
-        $yesterdayTimestamp = strtotime('yesterday', $currentTimestamp);
-
-        if ($dateTimestamp >= $todayTimestamp) {
-            return sprintf(
-                '%1$s %2$s %3$s',
-                esc_html__('Today', 'give'),
-                esc_html__('at', 'give'),
-                date_i18n(get_option('time_format'), $dateTimestamp)
-            );
-        }
-
-        if ($dateTimestamp >= $yesterdayTimestamp) {
-            return sprintf(
-                '%1$s %2$s %3$s',
-                esc_html__('Yesterday', 'give'),
-                esc_html__('at', 'give'),
-                date_i18n(get_option('time_format'), $dateTimestamp)
-            );
-        }
-
-        return date_i18n(get_option('date_format'), $dateTimestamp);
     }
 
     /**
