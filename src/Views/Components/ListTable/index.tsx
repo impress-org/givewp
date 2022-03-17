@@ -12,7 +12,7 @@ import {fetchWithArgs, useDonationForms} from '../../../DonationForms/resources/
 export interface ListTableProps {
     filters: {};
     search?: string;
-    columns: Array<any>;
+    columns: Array<ListTableColumn>;
     singleName?: string;
     pluralName?: string;
     title: string;
