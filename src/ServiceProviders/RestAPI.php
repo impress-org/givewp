@@ -3,6 +3,8 @@
 namespace Give\ServiceProviders;
 
 use Give\DonationForms\Endpoints\ListForms;
+use Give\Donors\Endpoints\DeleteDonor;
+use Give\Donors\Endpoints\ListDonors;
 use Give\DonationForms\Endpoints\FormActions;
 use Give\API\Endpoints\Logs\FlushLogs;
 use Give\API\Endpoints\Logs\GetLogs;
@@ -41,6 +43,8 @@ class RestAPI implements ServiceProvider
         GetLogs::class,
         FlushLogs::class,
         ListForms::class,
+        ListDonors::class,
+        DeleteDonor::class,
         FormActions::class,
         GetMigrations::class,
         RunMigration::class,

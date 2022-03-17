@@ -3,6 +3,7 @@
 namespace Give\Donors;
 
 use Give\Donors\Repositories\DonorRepositoryProxy;
+use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
@@ -24,5 +25,11 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot()
     {
+        Hooks::addAction('admin_menu', DonorsAdminPage::class, 'registerMenuItem');
+
+        if (DonorsAdminPage::isShowing()) {
+            // Disabled until actual file is created
+            // Hooks::addAction('admin_enqueue_scripts', DonorsAdminPage::class, 'loadScripts');
+        }
     }
 }
