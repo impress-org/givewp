@@ -38,7 +38,6 @@ export default function AdminDonationFormsPage() {
                 <a href="post-new.php?post_type=give_forms" className={styles.addFormButton}>
                     {__('Add Form', 'give')}
                 </a>
-                <div className={"wp-header-end"} style={{display: 'none'}}/>
             </header>
             <section role={"search"} className={styles.searchContainer}>
                 <input
@@ -56,6 +55,8 @@ export default function AdminDonationFormsPage() {
                     ))}
                 </select>
             </section>
+            <div className={"wp-header-end"} style={{display: 'none'}}>
+            </div>
             <div className={styles.pageContent}>
                 <DonationFormsTable statusFilter={statusFilter} search={debouncedSearch} />
             </div>
