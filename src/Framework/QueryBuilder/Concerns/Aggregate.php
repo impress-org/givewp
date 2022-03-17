@@ -23,7 +23,7 @@ trait Aggregate
 
         $this->selects[] = new RawSQL('SELECT COUNT(%1s) AS count', $column);
 
-        return $this->get()->count;
+        return +$this->get()->count;
     }
 
     /**
