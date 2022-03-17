@@ -10,14 +10,6 @@ import DonationFormTableRows from './ListTableRows';
 import {Spinner} from '../../../Views/Components';
 import {fetchWithArgs, useDonationForms} from '../api';
 
-export enum DonationStatus {
-    Any = 'any',
-    Publish = 'publish',
-    Pending = 'pending',
-    Draft = 'draft',
-    Trash = 'trash',
-}
-
 interface ListTableProps {
     filters: {any};
     search: string;

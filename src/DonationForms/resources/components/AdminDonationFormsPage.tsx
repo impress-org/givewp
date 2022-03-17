@@ -4,7 +4,7 @@ import {__} from '@wordpress/i18n';
 
 import useDebounce from '../hooks/useDebounce';
 import styles from './AdminDonationFormsPage.module.scss';
-import ListTable, {DonationStatus} from './ListTable';
+import ListTable from './ListTable';
 import GiveIcon from "../../../Views/Components/GiveIcon";
 
 function getDonationStatusText(donationStatus: DonationStatus): string {
@@ -20,6 +20,14 @@ function getDonationStatusText(donationStatus: DonationStatus): string {
         case DonationStatus.Trash:
             return __('Trash', 'give');
     }
+}
+
+enum DonationStatus {
+    Any = 'any',
+    Publish = 'publish',
+    Pending = 'pending',
+    Draft = 'draft',
+    Trash = 'trash',
 }
 
 export default function AdminDonationFormsPage() {
