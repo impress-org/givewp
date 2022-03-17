@@ -11,6 +11,7 @@ use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Log\Log;
+use WP_REST_Request;
 
 /**
  * @unreleased
