@@ -3,7 +3,6 @@ import {__} from '@wordpress/i18n';
 import cx from 'classnames';
 import {useDonationForms} from '../../../DonationForms/resources/api';
 import {useEffect, useState} from 'react';
-import RowAction from './RowAction';
 import TableCell, {IdBadge, StatusBadge} from "./TableCell";
 
 const statusMap = {
@@ -13,58 +12,6 @@ const statusMap = {
     pending: __('pending', 'give'),
     trash: __('trash', 'give'),
     inherit: __('inherit', 'give'),
-}
-
-const FormsRowActions = ({data, item, parameters, removeRow, addRow}) => {
-    const trashEnabled = Boolean(data?.trash);
-
-    if(parameters.status == 'trash') {
-        return (
-            <>
-                <RowAction
-                    onClick={removeRow('/restore', 'POST')}
-                    actionId={item.id}
-                    displayText={__('Restore', 'give')}
-                    hiddenText={item.name}
-                />
-                <RowAction
-                    onClick={removeRow('/delete', 'DELETE')}
-                    actionId={item.id}
-                    displayText={__('Delete Permanently', 'give')}
-                    hiddenText={item.name}
-                    highlight
-                />
-            </>
-        );
-    }
-
-    return (
-        <>
-            <RowAction
-                href={item.edit}
-                displayText={__('Edit', 'give')}
-                hiddenText={item.name}
-            />
-            <RowAction
-                onClick={removeRow((trashEnabled ? '/trash' : '/delete'), 'DELETE')}
-                actionId={item.id}
-                highlight={!trashEnabled}
-                displayText={trashEnabled ? __('Trash', 'give') : __('Delete', 'give')}
-                hiddenText={item.name}
-            />
-            <RowAction
-                href={item.permalink}
-                displayText={__('View', 'give')}
-                hiddenText={item.name}
-            />
-            <RowAction
-                onClick={addRow('/duplicate', 'POST')}
-                actionId={item.id}
-                displayText={__('Duplicate', 'give')}
-                hiddenText={item.name}
-            />
-        </>
-    );
 }
 
 const RenderRow = ({ col, item }) => {
@@ -80,7 +27,7 @@ const RenderRow = ({ col, item }) => {
                 />
             );
         default:
-            return col.render instanceof Function ? col.render(item) : item[col.name];
+            return col?.render instanceof Function ? col.render(item) : item[col.name];
     }
 }
 
@@ -141,9 +88,9 @@ export default function ListTableRows({listParams, mutateForm, columns}) {
                            heading={column?.heading}
                 >
                     <RenderRow col={column} item={item}/>
-                    {!isValidating && column?.heading &&
+                    {!isValidating && column?.rowActions &&
                         <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
-                            <FormsRowActions
+                            <column.rowActions
                                 data={data}
                                 item={item}
                                 parameters={listParams}

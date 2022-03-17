@@ -25,6 +25,7 @@ export interface ListTableColumn {
     heading?: boolean;
     addClass?: string;
     render?: (item: {}) => JSX.Element|null;
+    rowActions?: (props: {}) => JSX.Element|null;
 }
 
 // Todo: recursively freeze table setup props so they are stable between renders
@@ -95,12 +96,7 @@ export default function ListTable({
         try {
             const response = await fetchWithArgs(endpoint, {ids}, method);
             // if we just removed the last entry from the page and we're not on the first page, go back a page
-            if (
-                remove &&
-                !response.errors.length &&
-                data.items.length == 1 &&
-                data.totalPages > 1
-            ) {
+            if (remove && !response.errors.length && data.items.length == 1 && data.totalPages > 1) {
                 setPage(page - 1);
             }
             // otherwise, revalidate current page
