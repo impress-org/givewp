@@ -13,7 +13,7 @@ export const donationFormsColumns: Array<ListTableColumn> = [
         name: 'name',
         text: __('Name', 'give'),
         heading: true,
-        render: (item) => <a href={item.edit}>{item.name}</a>
+        render: (form) => <a href={form.edit}>{form.name}</a>
     },
     {
         name: 'amount',
@@ -27,36 +27,40 @@ export const donationFormsColumns: Array<ListTableColumn> = [
             if (!form.goal) {
                 return __('No Goal Set', 'give');
             } else {
+                const goalPercentage = form.goal.format == 'percentage' ? form.goal.actual :
+                    Math.max(Math.min(form.goal.progress, 100), 0) + '%';
                 return (
                     <>
-                        <div className={styles.goalProgress}>
+                        <div role="progressbar" aria-labelledby={`giveDonationFormsProgressBar-${form.id}`} aria-valuenow={goalPercentage.slice(0, -1)}
+                             aria-valuemin={0} aria-valuemax={100} className={styles.goalProgress}
+                        >
                             <span
                                 style={{
-                                    width: form.goal.format == 'percentage' ?
-                                        form.goal.actual :
-                                        Math.max(Math.min(form.goal.progress, 100), 0) + '%'
+                                    width: goalPercentage
                                 }}
                             />
                         </div>
-                        <span className={cx({[styles.monetary]: form.goal.format == __('amount', 'give')})}>
-                            {form.goal.actual}
-                        </span>
-                        {form.goal.format != 'percentage' && (
-                            <>
-                                {' '}
-                                {__('of', 'give')}{' '}
-                                <a href={`${form.edit}&give_tab=donation_goal_options`}>
-                                    {form.goal.goal}
-                                    {form.goal.format != __('amount', 'give') ? ` ${form.goal.format}` : null}
-                                </a>
-                            </>
-                        )}
-                        {form.goal.progress >= 100 && (
-                            <p>
-                                <span className={cx('dashicons dashicons-star-filled', styles.star)}></span>
-                                {__('Goal achieved!', 'give')}
-                            </p>
-                        )}
+                        <div id={`giveDonationFormsProgressBar-${form.id}`}>
+                            <span className={cx({[styles.monetary]: form.goal.format == __('amount', 'give')})}>
+                                {form.goal.actual}
+                            </span>
+                            {form.goal.format != 'percentage' && (
+                                <>
+                                    {' '}
+                                    {__('of', 'give')}{' '}
+                                    <a href={`${form.edit}&give_tab=donation_goal_options`}>
+                                        {form.goal.goal}
+                                        {form.goal.format != __('amount', 'give') ? ` ${form.goal.format}` : null}
+                                    </a>
+                                </>
+                            )}
+                            {form.goal.progress >= 100 && (
+                                <p>
+                                    <span className={cx('dashicons dashicons-star-filled', styles.star)}></span>
+                                    {__('Goal achieved!', 'give')}
+                                </p>
+                            )}
+                        </div>
                     </>
                 )
             }
