@@ -96,7 +96,7 @@ class ListForms extends Endpoint
 
         return new WP_REST_Response(
             [
-                'forms'      => $data,
+                'items'      => $data,
                 'totalItems' => $totalForms,
                 'totalPages' => $totalPages
             ]

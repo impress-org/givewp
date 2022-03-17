@@ -124,11 +124,11 @@ export default function ListTableRows({listParams, mutateForm, columns}) {
         }
     }
 
-    if(!data?.forms) {
+    if(!data?.items) {
         return null;
     }
 
-    return data.forms.map((item) => (
+    return data.items.map((item) => (
         <tr
             key={item.id}
             className={cx(styles.tableRow, {

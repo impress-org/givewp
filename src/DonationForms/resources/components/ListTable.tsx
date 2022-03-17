@@ -47,7 +47,7 @@ export default function ListTable({filters, search}: ListTableProps) {
     };
     const {data, error, isValidating} = useDonationForms(listParams);
     const {mutate, cache} = useSWRConfig();
-    const isEmpty = !error && data?.forms.length === 0;
+    const isEmpty = !error && data?.items.length === 0;
 
     useEffect(() => {
         setPage(1);
@@ -91,7 +91,7 @@ export default function ListTable({filters, search}: ListTableProps) {
             if (
                 remove &&
                 !response.errors.length &&
-                data.forms.length == 1 &&
+                data.items.length == 1 &&
                 data.totalPages > 1
             ) {
                 setPage(page - 1);
