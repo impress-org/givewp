@@ -9,14 +9,16 @@ use Give\Log\ValueObjects\LogType;
  * Class LogModel
  * @package Give\Log
  *
+ * @unreleased added debug
+ * @since 2.10.0
+ *
  * @method error(string $message, string $source, array $context = [])
  * @method warning(string $message, string $source, array $context = [])
  * @method notice(string $message, string $source, array $context = [])
  * @method success(string $message, string $source, array $context = [])
  * @method info(string $message, string $source, array $context = [])
  * @method http(string $message, string $source, array $context = [])
- *
- * @since 2.10.0
+ * @method debug(string $message, string $source, array $context = [])
  */
 class LogModel
 {

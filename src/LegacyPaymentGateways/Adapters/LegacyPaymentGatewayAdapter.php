@@ -22,9 +22,9 @@ class LegacyPaymentGatewayAdapter
      * @since 2.18.0
      * @since 2.19.0 Added missing $args parameter for ID prefixing and general backwards compatibility.
      *
-     * @param int $formId
-     * @param array $args
-     * @param PaymentGatewayInterface  $registeredGateway
+     * @param  int  $formId
+     * @param  array  $args
+     * @param  PaymentGatewayInterface  $registeredGateway
      *
      * @return string|bool
      */
