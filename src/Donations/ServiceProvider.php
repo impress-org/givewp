@@ -10,6 +10,7 @@ use Give\Donations\LegacyListeners\RemoveSequentialId;
 use Give\Donations\LegacyListeners\UpdateDonorPaymentIds;
 use Give\Donations\LegacyListeners\UpdateSequentialId;
 use Give\Donations\Models\Donation;
+use Give\Donations\Repositories\DonationNotesRepository;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Helpers\Call;
 use Give\Helpers\Hooks;
@@ -23,6 +24,7 @@ class ServiceProvider implements ServiceProviderInterface
     public function register()
     {
         give()->singleton('donations', DonationRepository::class);
+        give()->singleton('donationNotes', DonationNotesRepository::class);
     }
 
     /**

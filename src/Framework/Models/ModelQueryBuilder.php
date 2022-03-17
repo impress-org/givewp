@@ -3,6 +3,7 @@
 namespace Give\Framework\Models;
 
 use Give\Donations\Models\Donation;
+use Give\Donations\Models\DonationNote;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -25,7 +26,7 @@ class ModelQueryBuilder extends QueryBuilder
      *
      * @unreleased
      *
-     * @return object|Model|Donation|Donor|Subscription|null
+     * @return object|Model|Donation|DonationNote|Donor|Subscription|null
      */
     public function get($output = OBJECT)
     {
@@ -47,7 +48,7 @@ class ModelQueryBuilder extends QueryBuilder
      *
      * @unreleased
      *
-     * @return array|Donation[]|Donor[]|Model[]|Subscription[]|object|null
+     * @return array|Donation[]|DonationNote[]|Donor[]|Model[]|Subscription[]|object|null
      */
     public function getAll($output = OBJECT)
     {
@@ -72,7 +73,7 @@ class ModelQueryBuilder extends QueryBuilder
      *
      * @param  object|null  $row
      *
-     * @return Model|Donation|Subscription|Donor|null
+     * @return Model|Donation|DonationNote|Subscription|Donor|null
      */
     protected function getRowAsModel($row)
     {

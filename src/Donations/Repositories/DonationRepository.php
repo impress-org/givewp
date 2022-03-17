@@ -22,6 +22,18 @@ use Give\ValueObjects\Money;
  */
 class DonationRepository
 {
+    /**
+     * @var DonationNotesRepository
+     */
+    public $notes;
+
+    /**
+     * @unreleased
+     */
+    public function __construct()
+    {
+        $this->notes = give(DonationNotesRepository::class);
+    }
 
     /**
      * @unreleased
@@ -53,6 +65,18 @@ class DonationRepository
         return $this->prepareQuery()
             ->where('ID', $donationId)
             ->get();
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param $donationId
+     * @return ModelQueryBuilder
+     */
+    public function queryById($donationId)
+    {
+        return $this->prepareQuery()
+            ->where('ID', $donationId);
     }
 
     /**
@@ -406,6 +430,41 @@ class DonationRepository
         }
 
         return $notes;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  int  $donationId
+     *
+     * @return bool
+     * @throws Exception
+     */
+    public function insertDonationNote($donationId, $note)
+    {
+        $date = Temporal::getCurrentFormattedDateForDatabase();
+
+        DB::query('START TRANSACTION');
+
+        try {
+            DB::table('give_comments')
+                ->insert([
+                    'comment_content' => $note,
+                    'comment_date' => $date,
+                    'comment_parent' => $donationId,
+                    'comment_type' => 'donation',
+                ]);
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed creating a donation note', compact('donationId', 'note'));
+
+            throw new $exception('Failed creating a donation note');
+        }
+
+        DB::query('COMMIT');
+
+        return true;
     }
 
     /**
