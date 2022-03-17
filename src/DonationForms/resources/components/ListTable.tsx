@@ -3,7 +3,7 @@ import {__, _n, sprintf} from '@wordpress/i18n';
 import {useSWRConfig, unstable_serialize} from 'swr';
 import cx from 'classnames';
 
-import styles from './DonationFormsTable.module.scss';
+import styles from './ListTable.module.scss';
 import {columns} from './DonationForms';
 import Pagination from './Pagination.js';
 import DonationFormTableRows from './ListTableRows';
@@ -136,12 +136,12 @@ export default function ListTable({filters, search}: ListTableProps) {
             ) : (
                 <div
                     role="group"
-                    aria-labelledby="giveDonationFormsTableCaption"
-                    aria-describedby="giveDonationFormsTableMessage"
+                    aria-labelledby="giveListTableCaption"
+                    aria-describedby="giveListTableMessage"
                     className={styles.tableGroup}
                 >
                     <table className={styles.table}>
-                        <caption id="giveDonationFormsTableCaption" className={styles.tableCaption}>
+                        <caption id="giveListTableCaption" className={styles.tableCaption}>
                             {pluralTitleCase}
                         </caption>
                         <thead>
@@ -213,7 +213,7 @@ export default function ListTable({filters, search}: ListTableProps) {
                             </div>
                         </div>
                     )}
-                    <div id="giveDonationFormsTableMessage">
+                    <div id="giveListTableMessage">
                         {isEmpty && (
                             <div className={styles.statusMessage}>
                                 {sprintf(__('No %s found.', 'give'), pluralName)}
