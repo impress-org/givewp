@@ -31,14 +31,14 @@ export interface ListTableColumn {
 // Todo: recursively freeze table setup props so they are stable between renders
 // e.g. Object.freeze(columns); then do that recursively for properties
 
-export default function ListTable({
+export const ListTable = ({
         filters = {},
         search = '',
         columns,
         singleName = __('item', 'give'),
         pluralName = __('items', 'give'),
         title
-}: ListTableProps) {
+}: ListTableProps) => {
 
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(10);
