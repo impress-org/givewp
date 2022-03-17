@@ -197,31 +197,12 @@ class FormData
     }
 
     /**
+     * @unreleased replace $donationId with Donation model
      *
-     * @return GiveInsertPaymentData
-     */
-    public function toGiveInsertPaymentData()
-    {
-        return GiveInsertPaymentData::fromArray([
-            'price' => $this->price,
-            'formTitle' => $this->formTitle,
-            'formId' => $this->formId,
-            'priceId' => $this->priceId,
-            'date' => $this->date,
-            'donorEmail' => $this->donorInfo->email,
-            'purchaseKey' => $this->purchaseKey,
-            'currency' => $this->currency,
-            'userInfo' => $this->userInfo,
-            'paymentGateway' => $this->paymentGateway
-        ]);
-    }
-
-    /**
-     * @param int $donationId
-     *
+     * @param  Donation  $donation
      * @return GatewayPaymentData
      */
-    public function toGatewayPaymentData($donationId)
+    public function toGatewayPaymentData(Donation $donation)
     {
         return GatewayPaymentData::fromArray([
             'legacyPaymentData' => $this->legacyDonationData,
@@ -231,11 +212,12 @@ class FormData
             'price' => $this->price,
             'priceId' => $this->priceId,
             'gatewayId' => $this->paymentGateway,
-            'donationId' => $donationId,
+            'donationId' => $donation->id,
             'purchaseKey' => $this->purchaseKey,
             'donorInfo' => $this->donorInfo,
             'cardInfo' => $this->cardInfo,
             'billingAddress' => $this->billingAddress,
+            'donation' => $donation
         ]);
     }
 }
