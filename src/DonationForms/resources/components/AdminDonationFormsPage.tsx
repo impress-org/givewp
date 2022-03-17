@@ -4,8 +4,8 @@ import {__} from '@wordpress/i18n';
 
 import useDebounce from '../hooks/useDebounce';
 import styles from './AdminDonationFormsPage.module.scss';
-import ListTable from './ListTable';
-import GiveIcon from "../../../Views/Components/GiveIcon";
+import ListTable from '@givewp/components/ListTable';
+import GiveIcon from "@givewp/components/GiveIcon";
 
 function getDonationStatusText(donationStatus: DonationStatus): string {
     switch (donationStatus) {

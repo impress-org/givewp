@@ -3,12 +3,12 @@ import {__, _n, sprintf} from '@wordpress/i18n';
 import {useSWRConfig, unstable_serialize} from 'swr';
 import cx from 'classnames';
 
-import styles from './ListTable.module.scss';
-import {columns} from './DonationForms';
+import styles from './style.module.scss';
+import {columns} from '../../../DonationForms/resources/components/DonationForms';
 import Pagination from './Pagination.js';
 import DonationFormTableRows from './ListTableRows';
-import {Spinner} from '../../../Views/Components';
-import {fetchWithArgs, useDonationForms} from '../api';
+import {Spinner} from '../index';
+import {fetchWithArgs, useDonationForms} from '../../../DonationForms/resources/api';
 
 interface ListTableProps {
     filters: {};

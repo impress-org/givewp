@@ -1,7 +1,7 @@
 import styles from './ListTableRows.module.scss';
 import {__} from '@wordpress/i18n';
 import cx from 'classnames';
-import {useDonationForms} from '../api';
+import {useDonationForms} from '../../../DonationForms/resources/api';
 import {useEffect, useState} from 'react';
 import RowAction from './RowAction';
 import TableCell, {IdBadge, StatusBadge} from "./TableCell";
