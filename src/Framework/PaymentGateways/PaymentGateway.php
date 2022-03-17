@@ -162,7 +162,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         if ($command instanceof PaymentComplete) {
             $handler = new PaymentCompleteHandler($command);
 
-            $handler->handle($gatewayPaymentData->donationId);
+            $handler->handle($gatewayPaymentData->donation);
 
             $response = response()->redirectTo($gatewayPaymentData->redirectUrl);
 

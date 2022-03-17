@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\DataTransferObjects;
 
+use Give\Donations\Models\Donation;
 use Give\ValueObjects\Address;
 use Give\ValueObjects\CardInfo;
 use Give\ValueObjects\DonorInfo;
@@ -71,8 +72,14 @@ class GatewayPaymentData
     public $legacyPaymentData;
 
     /**
+     * @var Donation
+     */
+    public $donation;
+
+    /**
      * Convert data from array into DTO
      *
+     * @unreleased add Donation model
      * @since 2.18.0
      *
      * @return self
@@ -94,6 +101,7 @@ class GatewayPaymentData
         $self->cardInfo = $array['cardInfo'];
         $self->billingAddress = $array['billingAddress'];
         $self->redirectUrl = give_get_success_page_uri();
+        $self->donation = $array['donation'];
 
         return $self;
     }

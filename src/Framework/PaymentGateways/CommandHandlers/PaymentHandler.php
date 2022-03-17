@@ -2,6 +2,9 @@
 
 namespace Give\Framework\PaymentGateways\CommandHandlers;
 
+use Exception;
+use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\PaymentGateways\Commands\PaymentCommand;
 
 abstract class PaymentHandler
@@ -35,21 +38,23 @@ abstract class PaymentHandler
     }
 
     /**
+     * @unreleased replace $donationId with Donation model
      * @since 2.18.0
      *
-     * @param  int  $donationId
+     * @param  Donation  $donation
      * @return void
+     * @throws Exception
      */
-    public function handle($donationId)
+    public function handle(Donation $donation)
     {
-        give_update_payment_status($donationId, $this->getPaymentStatus());
+        $status = new DonationStatus($this->getPaymentStatus());
+        
+        $donation->status = $status;
+        $donation->gatewayTransactionId = $this->paymentCommand->gatewayTransactionId;
+        $donation->save();
 
-        if( $this->paymentCommand->gatewayTransactionId ) {
-            give_set_payment_transaction_id($donationId, $this->paymentCommand->gatewayTransactionId);
-        }
-
-        foreach( $this->paymentCommand->paymentNotes as $paymentNote ) {
-            give_insert_payment_note( $donationId, $paymentNote );
+        foreach ($this->paymentCommand->paymentNotes as $paymentNote) {
+            give_insert_payment_note($donation->id, $paymentNote);
         }
     }
 }
