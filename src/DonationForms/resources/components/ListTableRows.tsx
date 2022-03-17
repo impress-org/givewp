@@ -1,4 +1,4 @@
-import styles from './DonationFormsTableRows.module.scss';
+import styles from './ListTableRows.module.scss';
 import {__} from '@wordpress/i18n';
 import cx from 'classnames';
 import {useDonationForms} from '../api';
