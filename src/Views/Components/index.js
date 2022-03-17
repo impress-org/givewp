@@ -12,3 +12,4 @@ export {default as Input} from './Input';
 export {default as PeriodSelector} from './PeriodSelector';
 export {default as Modal} from './Modal';
 export {default as ListTable, ListTableColumn} from './ListTable';
+export {default as GiveIcon} from './GiveIcon';
