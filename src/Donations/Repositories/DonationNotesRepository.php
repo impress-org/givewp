@@ -166,13 +166,13 @@ class DonationNotesRepository
      *
      * @param  int  $donationId
      *
-     * @return object[]
+     * @return ModelQueryBuilder
      */
-    public function getByDonationId($donationId)
+    public function queryByDonationId($donationId)
     {
         return $this->prepareQuery()
             ->where('comment_parent', $donationId)
-            ->getAll();
+            ->orderBy("comment_ID", "DESC");
     }
 
     /**

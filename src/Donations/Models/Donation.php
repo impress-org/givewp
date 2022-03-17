@@ -48,6 +48,7 @@ use Give\ValueObjects\Money;
  * @property string $gatewayTransactionId
  * @property Donor $donor
  * @property Subscription $subscription
+ * @property DonationNote[] $notes
  */
 class Donation extends Model implements ModelCrud, ModelHasFactory
 {
@@ -85,6 +86,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     protected $relationships = [
         'donor' => Relationship::BELONGS_TO,
         'subscription' => Relationship::BELONGS_TO,
+        'notes' => Relationship::HAS_MANY,
     ];
 
     /**
@@ -183,11 +185,11 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @return object[]
+     * @return ModelQueryBuilder
      */
-    public function getNotes()
+    public function notes()
     {
-        return give()->donations->getNotesByDonationId($this->id);
+        return give()->donations->notes->queryByDonationId($this->id);
     }
 
     /**

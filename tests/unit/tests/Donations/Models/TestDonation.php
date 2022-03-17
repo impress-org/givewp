@@ -4,6 +4,7 @@ namespace unit\tests\Donations\Models;
 
 use Exception;
 use Give\Donations\Models\Donation;
+use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
@@ -38,6 +39,7 @@ class TestDonation extends \Give_Unit_Test_Case
         $donorMetaTable = DB::prefix('give_donormeta');
         $subscriptionsTable = DB::prefix('give_subscriptions');
         $sequentialOrderingTable = DB::prefix('give_sequential_ordering');
+        $notesTable = DB::prefix('give_comments');
 
         DB::query("TRUNCATE TABLE $donorTable");
         DB::query("TRUNCATE TABLE $donorMetaTable");
@@ -45,6 +47,7 @@ class TestDonation extends \Give_Unit_Test_Case
         DB::query("TRUNCATE TABLE $donationsTable");
         DB::query("TRUNCATE TABLE $subscriptionsTable");
         DB::query("TRUNCATE TABLE $sequentialOrderingTable");
+        DB::query("TRUNCATE TABLE $notesTable");
     }
 
     /**
@@ -120,5 +123,25 @@ class TestDonation extends \Give_Unit_Test_Case
         give()->seq_donation_number->__save_donation_title($donation->id, get_post($donation->id), false);
 
         $this->assertEquals(1, $donation->getSequentialId());
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testShouldGetNotes()
+    {
+        /** @var Donor $donor */
+        $donor = Donor::factory()->create();
+
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create(['donorId' => $donor->id]);
+
+        $donationNote1 = DonationNote::factory()->create(['donationId' => $donation->id]);
+        $donationNote2 = DonationNote::factory()->create(['donationId' => $donation->id]);
+        $donationNote3 = DonationNote::factory()->create(['donationId' => $donation->id]);
+
+        $this->assertEquals([$donationNote3, $donationNote2, $donationNote1], $donation->notes);
     }
 }
