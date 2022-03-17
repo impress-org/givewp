@@ -4,7 +4,6 @@ import {useSWRConfig, unstable_serialize} from 'swr';
 import cx from 'classnames';
 
 import styles from './style.module.scss';
-import {columns} from '../../../DonationForms/resources/components/DonationForms';
 import Pagination from './Pagination.js';
 import DonationFormTableRows from './ListTableRows';
 import {Spinner} from '../index';
@@ -13,6 +12,7 @@ import {fetchWithArgs, useDonationForms} from '../../../DonationForms/resources/
 interface ListTableProps {
     filters: {};
     search: string;
+    columns: {};
 }
 
 const singleName = __('donation form', 'give');
@@ -23,7 +23,7 @@ const pluralTitleCase = __('Donation Forms', 'give');
 // Todo: recursively freeze table setup props so they are stable between renders
 // e.g. Object.freeze(columns); then do that recursively for properties
 
-export default function ListTable({filters = {}, search = ''}: ListTableProps) {
+export default function ListTable({filters = {}, search = '', columns}: ListTableProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(10);
     const [errors, setErrors] = useState<[]>([]);

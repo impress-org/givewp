@@ -1,8 +1,8 @@
 import {__} from "@wordpress/i18n";
-import styles from "./DonationForms.module.scss";
+import styles from "./DonationFormsColumns.module.scss";
 import cx from "classnames";
 
-export const columns = [
+export const donationFormsColumns = [
     {
         name: 'id',
         text: __('ID', 'give'),

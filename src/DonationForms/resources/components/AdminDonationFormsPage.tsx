@@ -3,6 +3,7 @@ import type {ChangeEventHandler} from 'react';
 import {__} from '@wordpress/i18n';
 
 import useDebounce from '../hooks/useDebounce';
+import {donationFormsColumns} from './DonationFormsColumns';
 import styles from './AdminDonationFormsPage.module.scss';
 import ListTable from '@givewp/components/ListTable';
 import GiveIcon from "@givewp/components/GiveIcon";
@@ -71,7 +72,7 @@ export default function AdminDonationFormsPage() {
                 </select>
             </div>
             <div className={styles.pageContent}>
-                <ListTable filters={{status: statusFilter}} search={debouncedSearch} />
+                <ListTable filters={{status: statusFilter}} search={debouncedSearch} columns={donationFormsColumns} />
             </div>
         </article>
     );
