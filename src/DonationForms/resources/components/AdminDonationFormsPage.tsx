@@ -4,7 +4,7 @@ import {__} from '@wordpress/i18n';
 
 import useDebounce from '../hooks/useDebounce';
 import styles from './AdminDonationFormsPage.module.scss';
-import DonationFormsTable, {DonationStatus} from './DonationFormsTable';
+import ListTable, {DonationStatus} from './ListTable';
 import GiveIcon from "../../../Views/Components/GiveIcon";
 
 function getDonationStatusText(donationStatus: DonationStatus): string {
@@ -63,7 +63,7 @@ export default function AdminDonationFormsPage() {
                 </select>
             </div>
             <div className={styles.pageContent}>
-                <DonationFormsTable filters={{status: statusFilter}} search={debouncedSearch} />
+                <ListTable filters={{status: statusFilter}} search={debouncedSearch} />
             </div>
         </article>
     );
