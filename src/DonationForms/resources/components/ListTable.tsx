@@ -11,7 +11,7 @@ import {Spinner} from '../../../Views/Components';
 import {fetchWithArgs, useDonationForms} from '../api';
 
 interface ListTableProps {
-    filters: {any};
+    filters: {};
     search: string;
 }
 
