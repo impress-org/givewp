@@ -37,13 +37,13 @@ const Fetcher = (params) => {
 }
 
 // SWR Fetcher
-export function useDonationForms({page, perPage, status, search}) {
-    const {data, error, isValidating} = useSWR({page, perPage, status, search}, Fetcher, {
+export function useDonationForms({page, perPage, search, ...filters}) {
+    const {data, error, isValidating} = useSWR({page, perPage, search, ...filters}, Fetcher, {
         use: [lagData],
         onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
             //don't retry if we cancelled the initial request
             if(error.name == 'AbortError') return;
-            if (retryCount >= 5) return
+            if (retryCount >= 5) return;
             const retryAfter = (retryCount + 1) * 500;
             setTimeout(() => revalidate({ retryCount }), retryAfter);
         }
