@@ -86,11 +86,11 @@ const RenderRow = ({ col, item }) => {
 
 export default function DonationFormsTableRows({listParams, mutateForm, columns}) {
     const {data, isValidating} = useDonationForms(listParams);
-    const [deleted, setDeleted] = useState([]);
-    const [duplicated, setDuplicated] = useState([]);
+    const [removed, setRemoved] = useState([]);
+    const [added, setAdded] = useState([]);
 
     useEffect(() => {
-        if (duplicated.length) {
+        if (added.length) {
             const timeouts = [];
             timeouts[0] = setTimeout(() => {
                 const duplicateForm = document.getElementsByClassName(styles.duplicated);
@@ -99,20 +99,20 @@ export default function DonationFormsTableRows({listParams, mutateForm, columns}
                 }
             }, 100);
             timeouts[1] = setTimeout(() => {
-                setDuplicated([]);
+                setAdded([]);
             }, 600);
             return () => {
                 timeouts.forEach((timeout) => clearTimeout(timeout));
             };
         }
-    }, [duplicated]);
+    }, [added]);
 
     function removeRow(endpoint, method) {
         return async (event) => {
             const id = event.target.dataset.actionid;
-            setDeleted([id]);
+            setRemoved([id]);
             await mutateForm(id, endpoint, method, true);
-            setDeleted([]);
+            setRemoved([]);
         }
     }
 
@@ -120,7 +120,7 @@ export default function DonationFormsTableRows({listParams, mutateForm, columns}
         return async (event) => {
             const id = event.target.dataset.actionid;
             const response = await mutateForm(id, endpoint, method);
-            setDuplicated([...response.successes]);
+            setAdded([...response.successes]);
         }
     }
 
@@ -132,8 +132,8 @@ export default function DonationFormsTableRows({listParams, mutateForm, columns}
         <tr
             key={item.id}
             className={cx(styles.tableRow, {
-                [styles.deleted]: deleted.indexOf(item.id) > -1,
-                [styles.duplicated]: duplicated.indexOf(parseInt(item.id)) > -1,
+                [styles.deleted]: removed.indexOf(item.id) > -1,
+                [styles.duplicated]: added.indexOf(parseInt(item.id)) > -1,
             })}
         >
             {columns.map((column) => (
