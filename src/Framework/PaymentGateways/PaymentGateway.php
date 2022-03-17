@@ -152,10 +152,11 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      *
      * @since 2.18.0
      *
-     * @param GatewayCommand $command
-     * @param GatewayPaymentData $gatewayPaymentData
+     * @param  GatewayCommand  $command
+     * @param  GatewayPaymentData  $gatewayPaymentData
      *
      * @throws TypeNotSupported
+     * @throws \Exception
      */
     public function handleGatewayPaymentCommand(GatewayCommand $command, GatewayPaymentData $gatewayPaymentData)
     {
@@ -172,7 +173,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         if ($command instanceof PaymentProcessing) {
             $handler = new PaymentProcessingHandler($command);
 
-            $handler->handle($gatewayPaymentData->donationId);
+            $handler->handle($gatewayPaymentData->donation);
 
             $response = response()->redirectTo($gatewayPaymentData->redirectUrl);
 
@@ -219,8 +220,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
             Call::invoke(
                 SubscriptionCompleteHandler::class,
                 $command,
-                $gatewaySubscriptionData->subscriptionId,
-                $gatewayPaymentData->donationId
+                $gatewaySubscriptionData->subscription,
+                $gatewayPaymentData->donation
             );
 
             $response = response()->redirectTo($gatewayPaymentData->redirectUrl);
