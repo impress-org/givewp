@@ -6,7 +6,7 @@ import cx from 'classnames';
 import styles from './DonationFormsTable.module.scss';
 import {columns} from './DonationForms';
 import Pagination from './Pagination.js';
-import DonationFormTableRows from './DonationFormsTableRows';
+import DonationFormTableRows from './ListTableRows';
 import {Spinner} from '../../../Views/Components';
 import {fetchWithArgs, useDonationForms} from '../api';
 

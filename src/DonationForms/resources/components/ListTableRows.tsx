@@ -84,7 +84,7 @@ const RenderRow = ({ col, item }) => {
     }
 }
 
-export default function DonationFormsTableRows({listParams, mutateForm, columns}) {
+export default function ListTableRows({listParams, mutateForm, columns}) {
     const {data, isValidating} = useDonationForms(listParams);
     const [removed, setRemoved] = useState([]);
     const [added, setAdded] = useState([]);
