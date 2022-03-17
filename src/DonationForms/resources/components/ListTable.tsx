@@ -23,7 +23,7 @@ const pluralTitleCase = __('Donation Forms', 'give');
 // Todo: recursively freeze table setup props so they are stable between renders
 // e.g. Object.freeze(columns); then do that recursively for properties
 
-export default function ListTable({filters, search}: ListTableProps) {
+export default function ListTable({filters = {}, search = ''}: ListTableProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(10);
     const [errors, setErrors] = useState<[]>([]);
