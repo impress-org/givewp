@@ -72,7 +72,11 @@ export default function AdminDonationFormsPage() {
                 </select>
             </div>
             <div className={styles.pageContent}>
-                <ListTable filters={{status: statusFilter}} search={debouncedSearch} columns={donationFormsColumns} />
+                <ListTable
+                    filters={{status: statusFilter}}
+                    search={debouncedSearch}
+                    columns={donationFormsColumns}
+                />
             </div>
         </article>
     );

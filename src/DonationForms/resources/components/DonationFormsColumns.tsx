@@ -1,8 +1,9 @@
 import {__} from "@wordpress/i18n";
 import styles from "./DonationFormsColumns.module.scss";
 import cx from "classnames";
+import {ListTableColumn} from "@givewp/components/ListTable";
 
-export const donationFormsColumns = [
+export const donationFormsColumns: Array<ListTableColumn> = [
     {
         name: 'id',
         text: __('ID', 'give'),

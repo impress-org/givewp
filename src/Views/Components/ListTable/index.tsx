@@ -9,21 +9,41 @@ import DonationFormTableRows from './ListTableRows';
 import {Spinner} from '../index';
 import {fetchWithArgs, useDonationForms} from '../../../DonationForms/resources/api';
 
-interface ListTableProps {
+export interface ListTableProps {
     filters: {};
-    search: string;
-    columns: {};
+    search?: string;
+    columns: Array<any>;
+    singleName?: string;
+    pluralName?: string;
+    title: string;
+}
+
+export interface ListTableColumn {
+    name: string;
+    text: string;
+    preset?: string;
+    heading?: boolean;
+    addClass?: string;
+    render?: (item: {}) => JSX.Element|null;
 }
 
 const singleName = __('donation form', 'give');
 const pluralName = __('donation forms', 'give');
-const pluralTitleCase = __('Donation Forms', 'give');
+const title = __('Donation Forms', 'give');
 
 
 // Todo: recursively freeze table setup props so they are stable between renders
 // e.g. Object.freeze(columns); then do that recursively for properties
 
-export default function ListTable({filters = {}, search = '', columns}: ListTableProps) {
+export default function ListTable({
+        filters = {},
+        search = '',
+        columns,
+        singleName = __('item', 'give'),
+        pluralName = __('items', 'give'),
+        title
+}: ListTableProps) {
+
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(10);
     const [errors, setErrors] = useState<[]>([]);
@@ -140,7 +160,7 @@ export default function ListTable({filters = {}, search = '', columns}: ListTabl
                 >
                     <table className={styles.table}>
                         <caption id="giveListTableCaption" className={styles.tableCaption}>
-                            {pluralTitleCase}
+                            {title}
                         </caption>
                         <thead>
                             <tr>
