@@ -82,12 +82,12 @@ export const columns = [
     {
         name: 'shortcode',
         text: __('Shortcode', 'give'),
-        render: (item) => (
+        render: (form) => (
             <input
                 type={"text"}
                 aria-label={__('Copy shortcode', 'give')}
                 readOnly
-                value={item.shortcode}
+                value={form.shortcode}
                 className={styles.shortcode}
             />
         )

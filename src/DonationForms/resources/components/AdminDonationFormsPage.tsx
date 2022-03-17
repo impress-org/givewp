@@ -63,7 +63,7 @@ export default function AdminDonationFormsPage() {
                 </select>
             </div>
             <div className={styles.pageContent}>
-                <DonationFormsTable statusFilter={statusFilter} search={debouncedSearch} />
+                <DonationFormsTable filters={{status: statusFilter}} search={debouncedSearch} />
             </div>
         </article>
     );

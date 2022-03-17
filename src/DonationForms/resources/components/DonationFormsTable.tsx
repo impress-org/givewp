@@ -19,7 +19,7 @@ export enum DonationStatus {
 }
 
 interface DonationFormsTableProps {
-    statusFilter: DonationStatus;
+    filters: {any};
     search: string;
 }
 
@@ -31,7 +31,7 @@ const pluralTitleCase = __('Donation Forms', 'give');
 // Todo: recursively freeze table setup props so they are stable between renders
 // e.g. Object.freeze(columns); then do that recursively for properties
 
-export default function DonationFormsTable({statusFilter: status, search}: DonationFormsTableProps) {
+export default function DonationFormsTable({filters, search}: DonationFormsTableProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(10);
     const [errors, setErrors] = useState<[]>([]);
@@ -42,8 +42,8 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
     const listParams = {
         page,
         perPage,
-        status,
         search,
+        ...filters
     };
     const {data, error, isValidating} = useDonationForms(listParams);
     const {mutate, cache} = useSWRConfig();
@@ -51,7 +51,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
 
     useEffect(() => {
         setPage(1);
-    }, [status, search]);
+    }, [filters, search]);
 
     useEffect(() => {
         initialLoad && data && setInitialLoad(false);
