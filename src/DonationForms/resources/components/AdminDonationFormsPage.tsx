@@ -31,6 +31,10 @@ enum DonationStatus {
     Trash = 'trash',
 }
 
+const singleName = __('donation form', 'give');
+const pluralName = __('donation forms', 'give');
+const title = __('Donation Forms', 'give');
+
 export default function AdminDonationFormsPage() {
     const [statusFilter, setStatusFilter] = useState<DonationStatus>(DonationStatus.Any);
     const [search, setSearch] = useState<string>('');
@@ -76,6 +80,9 @@ export default function AdminDonationFormsPage() {
                     filters={{status: statusFilter}}
                     search={debouncedSearch}
                     columns={donationFormsColumns}
+                    singleName={singleName}
+                    pluralName={pluralName}
+                    title={title}
                 />
             </div>
         </article>

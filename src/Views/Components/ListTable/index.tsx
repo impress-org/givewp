@@ -27,11 +27,6 @@ export interface ListTableColumn {
     render?: (item: {}) => JSX.Element|null;
 }
 
-const singleName = __('donation form', 'give');
-const pluralName = __('donation forms', 'give');
-const title = __('Donation Forms', 'give');
-
-
 // Todo: recursively freeze table setup props so they are stable between renders
 // e.g. Object.freeze(columns); then do that recursively for properties
 
