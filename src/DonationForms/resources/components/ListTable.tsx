@@ -128,9 +128,15 @@ export default function ListTable({filters, search}: ListTableProps) {
             </div>
             {( initialLoad && !error ) ? (
                 <div className={styles.initialLoad}>
-                    <div className={cx(styles.tableGroup)}>
+                    <div
+                        role="dialog"
+                        aria-labelledby="giveListTableLoadingMessage"
+                        className={cx(styles.tableGroup)}
+                    >
                         <Spinner size={'large'} />
-                        <h2>{sprintf(__('Loading %s', 'give'), pluralName)}</h2>
+                        <h2 id="giveListTableLoadingMessage">
+                            {sprintf(__('Loading %s', 'give'), pluralName)}
+                        </h2>
                     </div>
                 </div>
             ) : (
@@ -174,7 +180,11 @@ export default function ListTable({filters, search}: ListTableProps) {
                     )}
                     {errorOverlay && (
                         <div className={cx(styles.overlay, errorOverlay)}>
-                            <div id={styles.updateError}>
+                            <div
+                                id={styles.updateError}
+                                role="dialog"
+                                aria-labelledby="giveListTableErrorMessage"
+                            >
                                 {!!successes.length && (
                                     <span>
                                         {successes.length +
@@ -190,7 +200,7 @@ export default function ListTable({filters, search}: ListTableProps) {
                                             )}
                                     </span>
                                 )}
-                                <span>
+                                <span id="giveListTableErrorMessage">
                                     {errors.length +
                                         ' ' +
                                         _n(
