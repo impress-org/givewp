@@ -122,7 +122,7 @@ export default function ListTable({filters, search}: ListTableProps) {
                     currentPage={page}
                     totalPages={data ? data.totalPages : 1}
                     disabled={!data}
-                    totalItems={data ? parseInt(data.totalForms) : -1}
+                    totalItems={data ? parseInt(data.totalItems) : -1}
                     setPage={setPage}
                 />
             </div>
@@ -249,7 +249,7 @@ export default function ListTable({filters, search}: ListTableProps) {
                     currentPage={page}
                     totalPages={data ? data.totalPages : 1}
                     disabled={!data}
-                    totalItems={data ? parseInt(data.totalForms) : -1}
+                    totalItems={data ? parseInt(data.totalItems) : -1}
                     setPage={setPage}
                 />
             </div>
