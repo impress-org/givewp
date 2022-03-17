@@ -24,7 +24,7 @@ export interface ListTableColumn {
     preset?: string;
     heading?: boolean;
     addClass?: string;
-    render?: (item: {}) => JSX.Element|null;
+    render?: (item: {}) => JSX.Element|string|null;
     rowActions?: (props: {}) => JSX.Element|null;
 }
 

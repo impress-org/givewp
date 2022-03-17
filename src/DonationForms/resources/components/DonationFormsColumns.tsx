@@ -1,7 +1,7 @@
 import {__} from "@wordpress/i18n";
 import styles from "./DonationFormsColumns.module.scss";
 import cx from "classnames";
-import {ListTableColumn} from "@givewp/components/ListTable";
+import {ListTableColumn} from "@givewp/components";
 import {DonationFormsRowActions} from "./DonationFormsRowActions";
 
 export const donationFormsColumns: Array<ListTableColumn> = [
@@ -14,7 +14,7 @@ export const donationFormsColumns: Array<ListTableColumn> = [
         name: 'name',
         text: __('Name', 'give'),
         heading: true,
-        render: (form) => <a href={form.edit}>{form.name}</a>,
+        render: (form: {edit, name}) => <a href={form.edit}>{form.name}</a>,
         rowActions: DonationFormsRowActions
     },
     {
@@ -25,7 +25,7 @@ export const donationFormsColumns: Array<ListTableColumn> = [
     {
         name: 'goal',
         text: __('Goal', 'give'),
-        render: (form) => {
+        render: (form: {goal, edit, id}) => {
             if (!form.goal) {
                 return __('No Goal Set', 'give');
             } else {
@@ -71,7 +71,7 @@ export const donationFormsColumns: Array<ListTableColumn> = [
     {
         name: 'donations',
         text: __('Donations', 'give'),
-        render: (form) => (
+        render: (form: {donations, id}) => (
             <a href={`edit.php?post_type=give_forms&page=give-payment-history&form_id=${form.id}`}>
                 {form.donations}
             </a>
@@ -80,7 +80,7 @@ export const donationFormsColumns: Array<ListTableColumn> = [
     {
         name: 'revenue',
         text: __('Revenue', 'give'),
-        render: (form) => (
+        render: (form: {revenue, id}) => (
             <a href={`edit.php?post_type=give_forms&page=give-reports&tab=forms&legacy=true&form-id=${form.id}`}>
                 {form.revenue}
             </a>
@@ -89,7 +89,7 @@ export const donationFormsColumns: Array<ListTableColumn> = [
     {
         name: 'shortcode',
         text: __('Shortcode', 'give'),
-        render: (form) => (
+        render: (form: {shortcode}) => (
             <input
                 type={"text"}
                 aria-label={__('Copy shortcode', 'give')}
