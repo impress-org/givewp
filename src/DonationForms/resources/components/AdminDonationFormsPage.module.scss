@@ -6,6 +6,10 @@
     padding-block: 1em;
     padding-inline: 1.5em;
     border-bottom: 0.0625rem solid #dbdbdb;
+
+    & > img, & > svg {
+        flex-shrink: 0;
+    }
 }
 
 .pageTitle {
