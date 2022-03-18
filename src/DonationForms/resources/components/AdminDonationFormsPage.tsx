@@ -44,7 +44,14 @@ const singleName = __('donation form', 'give');
 const pluralName = __('donation forms', 'give');
 const title = __('Donation Forms', 'give');
 
-const donationFormFilters = [
+const headerButtons = [
+    {
+        text: __('Add Form', 'give'),
+        link: 'post-new.php?post_type=give_forms',
+    }
+];
+
+const donationFormFilters:Array<SearchFilterProps|SelectFilterProps> = [
     {
         name: 'search',
         type: 'search',
@@ -60,6 +67,18 @@ const donationFormFilters = [
         options: getDonationStatusText
     }
 ]
+
+interface SearchFilterProps {
+    name: string;
+    type: string;
+    text: string;
+    ariaLabel?: string;
+}
+
+interface SelectFilterProps extends SearchFilterProps {
+    values: any;
+    options: string|((string) => string);
+}
 
 export default function AdminDonationFormsPage() {
     const [filters, setFilters] = useState({status: DonationStatus.Any});
@@ -87,10 +106,12 @@ export default function AdminDonationFormsPage() {
         <article>
             <div className={styles.pageHeader}>
                 <GiveIcon size={'1.875rem'}/>
-                <h1 className={styles.pageTitle}>{__('Donation Forms', 'give')}</h1>
-                <a href="post-new.php?post_type=give_forms" className={styles.addFormButton}>
-                    {__('Add Form', 'give')}
-                </a>
+                <h1 className={styles.pageTitle}>{singleName}</h1>
+                {headerButtons.map(button => (
+                    <a href={button.link} className={styles.addFormButton}>
+                        {button.text}
+                    </a>
+                ))}
             </div>
             <div className={styles.searchContainer}>
                 {donationFormFilters.map((filter) => (
