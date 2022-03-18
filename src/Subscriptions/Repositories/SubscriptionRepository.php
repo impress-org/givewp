@@ -325,17 +325,17 @@ class SubscriptionRepository
 
         return $builder->from('give_subscriptions')
             ->select(
-                ['id', 'id'],
+                'id',
                 ['created', 'createdAt'],
                 ['expiration', 'expiresAt'],
                 ['customer_id', 'donorId'],
-                ['period', 'period'],
+                'period',
                 ['frequency', 'frequency'],
                 ['bill_times', 'installments'],
                 ['transaction_id', 'transactionId'],
                 ['recurring_amount', 'amount'],
                 ['recurring_fee_amount', 'feeAmount'],
-                ['status', 'status'],
+                'status',
                 ['profile_id', 'gatewaySubscriptionId'],
                 ['product_id', 'donationFormId']
             );
