@@ -16,8 +16,9 @@ abstract class PaymentHandler
     protected $paymentCommand;
 
     /**
+     * @unreleased change return type to DonationStatus
      * @since 2.18.0
-     * @return string
+     * @return DonationStatus
      */
     abstract protected function getPaymentStatus();
 
@@ -48,9 +49,7 @@ abstract class PaymentHandler
      */
     public function handle(Donation $donation)
     {
-        $status = new DonationStatus($this->getPaymentStatus());
-
-        $donation->status = $status;
+        $donation->status = $this->getPaymentStatus();
         $donation->gatewayTransactionId = $this->paymentCommand->gatewayTransactionId;
         $donation->save();
 
