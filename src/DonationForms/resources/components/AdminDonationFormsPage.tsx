@@ -55,6 +55,7 @@ const donationFormFilters = [
         name: 'status',
         type: 'select',
         text: __('status', 'give'),
+        ariaLabel: __('Filter donation forms by status', 'give'),
         values: DonationStatus,
         options: getDonationStatusText
     }
@@ -65,7 +66,7 @@ export default function AdminDonationFormsPage() {
     const [debouncedFilters, setDebouncedFilters] = useState({search: ''});
 
     const setFiltersLater = useRef(
-        debounce((filterValue) => setDebouncedFilters(filterValue), 500)
+        debounce((filterName, filterValue) => setDebouncedFilters(filterValue), 500)
     ).current;
 
     useEffect(() => {
@@ -74,12 +75,12 @@ export default function AdminDonationFormsPage() {
         }
     }, []);
 
-    const handleFilterChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
+    const handleFilterChange: ChangeEventHandler<HTMLInputElement|HTMLSelectElement> = (event) => {
         setFilters(prevState => ({...prevState, [event.target.name]: event.target.value}));
     }
 
-    const handleSearchChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-        setFiltersLater(event.target.value);
+    const handleDebouncedFilterChange: ChangeEventHandler<HTMLInputElement|HTMLSelectElement> = (event) => {
+        setFiltersLater(event.target.name, event.target.value);
     }
 
     return (
@@ -93,7 +94,11 @@ export default function AdminDonationFormsPage() {
             </div>
             <div className={styles.searchContainer}>
                 {donationFormFilters.map((filter) => (
-                    <RenderFilters filter={filter} onChange={handleFilterChange}/>
+                    <RenderFilters
+                        filter={filter}
+                        onChange={handleFilterChange}
+                        debouncedOnChange={handleDebouncedFilterChange}
+                    />
                 ))}
             </div>
             <div className={styles.pageContent}>
@@ -110,7 +115,7 @@ export default function AdminDonationFormsPage() {
     );
 }
 
-const RenderFilters = ({ filter, onChange }) => {
+const RenderFilters = ({ filter, onChange, debouncedOnChange }) => {
         switch(filter.type){
             case 'select':
                 return (
@@ -118,7 +123,7 @@ const RenderFilters = ({ filter, onChange }) => {
                         key={filter.name}
                         name={filter.name}
                         className={styles.statusFilter}
-                        aria-label={__('Filter donation forms by status', 'give')}
+                        aria-label={filter?.ariaLabel}
                         onChange={onChange}
                     >
                         {Object.values(filter.values).map((value) => (
@@ -135,9 +140,10 @@ const RenderFilters = ({ filter, onChange }) => {
                 return (
                     <input
                         type="search"
+                        key={filter.name}
                         aria-label={filter?.ariaLabel}
                         placeholder={filter?.text}
-                        onChange={onChange}
+                        onChange={debouncedOnChange}
                         className={styles.searchInput}
                     />
                 );
