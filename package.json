@@ -1,0 +1,42 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch": "npm run development -- --watch",
+        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "prod": "npm run production",
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "build": "npm run production",
+        "lint": "npm run lint:js & npm run lint:scss & npm run lint:php",
+        "lint:js": "eslint src/**/resources/**/*.js",
+        "lint:js:fix": "eslint src/**/resources/**/*.js --fix",
+        "lint:textdomain": "node ./wp-textdomain.js",
+        "lint:scss": "stylelint src/**/resources/**/*.scss"
+    },
+    "devDependencies": {
+        "@babel/eslint-parser": "^7.11.5",
+        "@babel/plugin-transform-react-jsx": "^7.10.4",
+        "@babel/preset-env": "^7.11.5",
+        "@prettier/plugin-php": "^0.14.3",
+        "@wordpress/babel-plugin-import-jsx-pragma": "^2.7.0",
+        "@wordpress/eslint-plugin": "^7.2.0",
+        "cross-env": "^7.0.2",
+        "cssnano": "^4.1.10",
+        "eslint": "^7.8.1",
+        "laravel-mix": "^5.0.5",
+        "lint-staged": "^10.3.0",
+        "prettier": "^2.1.1",
+        "resolve-url-loader": "^3.1.0",
+        "sass": "^1.26.10",
+        "sass-loader": "^8.0.2",
+        "stylelint": "^13.12.0",
+        "stylelint-config-prettier": "^8.0.2",
+        "stylelint-config-wordpress": "^17.0.0",
+        "stylelint-prettier": "^1.1.2",
+        "stylelint-scss": "^3.19.0",
+        "vue-template-compiler": "^2.6.12",
+        "wp-pot": "^1.6.3",
+        "wp-textdomain": "^1.0.1"
+    }
+}
