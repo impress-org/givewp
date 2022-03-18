@@ -149,7 +149,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @return ModelQueryBuilder
+     * @return ModelQueryBuilder<Donor>
      */
     public function donor()
     {
@@ -159,7 +159,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @return ModelQueryBuilder
+     * @return ModelQueryBuilder<Subscription>
      */
     public function subscription()
     {
@@ -203,7 +203,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @return ModelQueryBuilder
+     * @return ModelQueryBuilder<Donation>
      */
     public static function query()
     {
