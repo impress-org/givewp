@@ -9,6 +9,12 @@ import {ListTable} from '@givewp/components';
 import {GiveIcon} from "@givewp/components";
 import ListTableApi from '../api';
 
+declare global {
+    interface Window {
+        GiveDonationForms: {apiNonce: string; apiRoot: string};
+    }
+}
+
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 
 function getDonationStatusText(donationStatus: DonationStatus): string {
