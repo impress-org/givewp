@@ -346,14 +346,13 @@ class DonorRepository
     }
 
     /**
-     * @return ModelQueryBuilder
+     * @return ModelQueryBuilder<Donor>
      */
     public function prepareQuery()
     {
-        $builder = new ModelQueryBuilder();
+        $builder = new ModelQueryBuilder(Donor::class);
 
         return $builder->from('give_donors')
-            ->setModel(Donor::class)
             ->select(
                 'id',
                 ['user_id', 'userId'],

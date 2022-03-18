@@ -3,7 +3,7 @@
 namespace Give\Framework\Models\Contracts;
 
 use Give\Framework\Models\Model;
-use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Framework\Models\ModelQueryBuilder;
 
 /**
  * @unreleased
@@ -43,7 +43,7 @@ interface ModelCrud
     /**
      * @unreleased
      *
-     * @return QueryBuilder
+     * @return ModelQueryBuilder
      */
     public static function query();
 
