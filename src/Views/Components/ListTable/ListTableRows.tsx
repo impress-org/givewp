@@ -14,19 +14,23 @@ const statusMap = {
 }
 
 const RenderRow = ({ column, item }) => {
+    const value = item?.[column.name];
+    if(value === undefined){
+        return null;
+    }
     switch(column?.preset){
         case 'idBadge':
             return (
-                <IdBadge key={column.name} id={item[column.name]}/>
+                <IdBadge key={column.name} id={value}/>
             );
         case 'statusBadge':
             return (
-                <StatusBadge key={column.name} status={item[column.name]}
-                             text={statusMap[item[column.name]]}
+                <StatusBadge key={column.name} status={value}
+                             text={statusMap[value]}
                 />
             );
         default:
-            return column?.render instanceof Function ? column.render(item) : item[column.name];
+            return column?.render instanceof Function ? column.render(item) : value;
     }
 }
 
