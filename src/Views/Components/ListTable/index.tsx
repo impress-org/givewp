@@ -10,7 +10,6 @@ import {Spinner} from '../index';
 
 export interface ListTableProps {
     filters: {};
-    search?: string;
     columns: Array<ListTableColumn>;
     singleName?: string;
     pluralName?: string;
@@ -30,7 +29,6 @@ export interface ListTableColumn {
 
 export const ListTable = ({
         filters = {},
-        search = '',
         columns,
         singleName = __('item', 'give'),
         pluralName = __('items', 'give'),
@@ -48,7 +46,6 @@ export const ListTable = ({
     const listParams = {
         page,
         perPage,
-        search,
         ...filters
     };
     const {data, error, isValidating} = api.useListForms(listParams);
@@ -57,7 +54,7 @@ export const ListTable = ({
 
     useEffect(() => {
         setPage(1);
-    }, [filters, search]);
+    }, [filters]);
 
     useEffect(() => {
         initialLoad && data && setInitialLoad(false);

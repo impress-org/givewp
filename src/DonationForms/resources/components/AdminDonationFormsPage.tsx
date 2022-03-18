@@ -1,13 +1,13 @@
-import {useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import type {ChangeEventHandler} from 'react';
 import {__} from '@wordpress/i18n';
 
-import useDebounce from '../hooks/useDebounce';
 import {donationFormsColumns} from './DonationFormsColumns';
 import styles from './AdminDonationFormsPage.module.scss';
 import {ListTable} from '@givewp/components';
 import {GiveIcon} from "@givewp/components";
 import ListTableApi from '../api';
+import {debounce} from 'lodash';
 
 declare global {
     interface Window {
@@ -44,16 +44,43 @@ const singleName = __('donation form', 'give');
 const pluralName = __('donation forms', 'give');
 const title = __('Donation Forms', 'give');
 
+const donationFormFilters = [
+    {
+        name: 'search',
+        type: 'search',
+        text: __('Search by name or ID', 'give'),
+        ariaLabel: __('Search donation forms', 'give')
+    },
+    {
+        name: 'status',
+        type: 'select',
+        text: __('status', 'give'),
+        values: DonationStatus,
+        options: getDonationStatusText
+    }
+]
+
 export default function AdminDonationFormsPage() {
-    const [statusFilter, setStatusFilter] = useState<DonationStatus>(DonationStatus.Any);
-    const [search, setSearch] = useState<string>('');
-    const debouncedSearch = useDebounce(search, 400);
+    const [filters, setFilters] = useState({status: DonationStatus.Any});
+    const [debouncedFilters, setDebouncedFilters] = useState({search: ''});
 
-    const handleStatusFilterChange: ChangeEventHandler<HTMLSelectElement> = (event) =>
-        setStatusFilter(event.target.value as DonationStatus);
+    const setFiltersLater = useRef(
+        debounce((filterValue) => setDebouncedFilters(filterValue), 500)
+    ).current;
 
-    const handleSearchChange: ChangeEventHandler<HTMLInputElement> = (event) =>
-        setSearch(event.target.value);
+    useEffect(() => {
+        return () => {
+            setFiltersLater.cancel();
+        }
+    }, []);
+
+    const handleFilterChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
+        setFilters(prevState => ({...prevState, [event.target.name]: event.target.value}));
+    }
+
+    const handleSearchChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+        setFiltersLater(event.target.value);
+    }
 
     return (
         <article>
@@ -65,29 +92,13 @@ export default function AdminDonationFormsPage() {
                 </a>
             </div>
             <div className={styles.searchContainer}>
-                <input
-                    type="search"
-                    aria-label={__('Search donation forms', 'give')}
-                    placeholder={__('Search by name or ID', 'give')}
-                    onChange={handleSearchChange}
-                    className={styles.searchInput}
-                />
-                <select
-                    className={styles.statusFilter}
-                    aria-label={__('Filter donation forms by status', 'give')}
-                    onChange={handleStatusFilterChange}
-                >
-                    {Object.values(DonationStatus).map((donationStatus) => (
-                        <option key={donationStatus} value={donationStatus}>
-                            {getDonationStatusText(donationStatus)}
-                        </option>
-                    ))}
-                </select>
+                {donationFormFilters.map((filter) => (
+                    <RenderFilters filter={filter} onChange={handleFilterChange}/>
+                ))}
             </div>
             <div className={styles.pageContent}>
                 <ListTable
-                    filters={{status: statusFilter}}
-                    search={debouncedSearch}
+                    filters={{...filters, ...debouncedFilters}}
                     columns={donationFormsColumns}
                     singleName={singleName}
                     pluralName={pluralName}
@@ -97,4 +108,40 @@ export default function AdminDonationFormsPage() {
             </div>
         </article>
     );
+}
+
+const RenderFilters = ({ filter, onChange }) => {
+        switch(filter.type){
+            case 'select':
+                return (
+                    <select
+                        key={filter.name}
+                        name={filter.name}
+                        className={styles.statusFilter}
+                        aria-label={__('Filter donation forms by status', 'give')}
+                        onChange={onChange}
+                    >
+                        {Object.values(filter.values).map((value) => (
+                            <option key={value} value={value}>
+                                {filter.options instanceof Function ?
+                                    filter.options(value) :
+                                    filter.options[value]
+                                }
+                            </option>
+                        ))}
+                    </select>
+                );
+            case 'search':
+                return (
+                    <input
+                        type="search"
+                        aria-label={filter?.ariaLabel}
+                        placeholder={filter?.text}
+                        onChange={onChange}
+                        className={styles.searchInput}
+                    />
+                );
+            default:
+                break;
+        }
 }
