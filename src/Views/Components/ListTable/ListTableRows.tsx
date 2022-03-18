@@ -1,7 +1,6 @@
 import styles from './ListTableRows.module.scss';
 import {__} from '@wordpress/i18n';
 import cx from 'classnames';
-import {useDonationForms} from '../../../DonationForms/resources/api';
 import {useEffect, useState} from 'react';
 import TableCell, {IdBadge, StatusBadge} from "./TableCell";
 
@@ -14,25 +13,25 @@ const statusMap = {
     inherit: __('inherit', 'give'),
 }
 
-const RenderRow = ({ col, item }) => {
-    switch(col?.preset){
+const RenderRow = ({ column, item }) => {
+    switch(column?.preset){
         case 'idBadge':
             return (
-                <IdBadge key={col.name} id={item[col.name]}/>
+                <IdBadge key={column.name} id={item[column.name]}/>
             );
         case 'statusBadge':
             return (
-                <StatusBadge key={col.name} status={item[col.name]}
-                             text={statusMap[item[col.name]]}
+                <StatusBadge key={column.name} status={item[column.name]}
+                             text={statusMap[item[column.name]]}
                 />
             );
         default:
-            return col?.render instanceof Function ? col.render(item) : item[col.name];
+            return column?.render instanceof Function ? column.render(item) : item[column.name];
     }
 }
 
-export default function ListTableRows({listParams, mutateForm, columns}) {
-    const {data, isValidating} = useDonationForms(listParams);
+export default function ListTableRows({listParams, mutateForm, columns, api}) {
+    const {data, isValidating} = api.useListForms(listParams);
     const [removed, setRemoved] = useState([]);
     const [added, setAdded] = useState([]);
 
@@ -87,7 +86,7 @@ export default function ListTableRows({listParams, mutateForm, columns}) {
                 <TableCell key={column.name} className={column?.addClass}
                            heading={column?.heading}
                 >
-                    <RenderRow col={column} item={item}/>
+                    <RenderRow column={column} item={item}/>
                     {!isValidating && column?.rowActions &&
                         <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
                             <column.rowActions

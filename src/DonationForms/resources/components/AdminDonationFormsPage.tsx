@@ -7,6 +7,9 @@ import {donationFormsColumns} from './DonationFormsColumns';
 import styles from './AdminDonationFormsPage.module.scss';
 import {ListTable} from '@givewp/components';
 import {GiveIcon} from "@givewp/components";
+import ListTableApi from '../api';
+
+const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 
 function getDonationStatusText(donationStatus: DonationStatus): string {
     switch (donationStatus) {
@@ -83,6 +86,7 @@ export default function AdminDonationFormsPage() {
                     singleName={singleName}
                     pluralName={pluralName}
                     title={title}
+                    api={donationFormsApi}
                 />
             </div>
         </article>

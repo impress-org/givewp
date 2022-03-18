@@ -7,7 +7,6 @@ import styles from './style.module.scss';
 import Pagination from './Pagination.js';
 import DonationFormTableRows from './ListTableRows';
 import {Spinner} from '../index';
-import {fetchWithArgs, useDonationForms} from '../../../DonationForms/resources/api';
 
 export interface ListTableProps {
     filters: {};
@@ -16,6 +15,7 @@ export interface ListTableProps {
     singleName?: string;
     pluralName?: string;
     title: string;
+    api: {fetchWithArgs, useListForms};
 }
 
 export interface ListTableColumn {
@@ -28,16 +28,14 @@ export interface ListTableColumn {
     rowActions?: (props: {}) => JSX.Element|null;
 }
 
-// Todo: recursively freeze table setup props so they are stable between renders
-// e.g. Object.freeze(columns); then do that recursively for properties
-
 export const ListTable = ({
         filters = {},
         search = '',
         columns,
         singleName = __('item', 'give'),
         pluralName = __('items', 'give'),
-        title
+        title,
+        api
 }: ListTableProps) => {
 
     const [page, setPage] = useState<number>(1);
@@ -53,7 +51,7 @@ export const ListTable = ({
         search,
         ...filters
     };
-    const {data, error, isValidating} = useDonationForms(listParams);
+    const {data, error, isValidating} = api.useListForms(listParams);
     const {mutate, cache} = useSWRConfig();
     const isEmpty = !error && data?.items.length === 0;
 
@@ -94,7 +92,7 @@ export const ListTable = ({
 
     async function mutateForm(ids, endpoint, method, remove = false) {
         try {
-            const response = await fetchWithArgs(endpoint, {ids}, method);
+            const response = await api.fetchWithArgs(endpoint, {ids}, method);
             // if we just removed the last entry from the page and we're not on the first page, go back a page
             if (remove && !response.errors.length && data.items.length == 1 && data.totalPages > 1) {
                 setPage(page - 1);
@@ -173,6 +171,7 @@ export const ListTable = ({
                                 listParams={listParams}
                                 mutateForm={mutateForm}
                                 columns={columns}
+                                api={api}
                             />
                         </tbody>
                     </table>
@@ -190,8 +189,7 @@ export const ListTable = ({
                             >
                                 {!!successes.length && (
                                     <span>
-                                        {successes.length +
-                                            ' ' +
+                                        {successes.length + ' ' +
                                             // translators:
                                             // Like '1 item was updated successfully'
                                             // or '3 items were updated successfully'
@@ -200,7 +198,8 @@ export const ListTable = ({
                                                 sprintf('%s were updated successfully.', pluralName),
                                                 successes.length,
                                                 'give'
-                                            )}
+                                            )
+                                        }
                                     </span>
                                 )}
                                 <span id="giveListTableErrorMessage">
