@@ -88,7 +88,7 @@ class LegacyPaymentGatewayAdapter
                 ]
             );
 
-            $gatewaySubscriptionData = $subscriptionData->toGatewaySubscriptionData($subscription->id);
+            $gatewaySubscriptionData = $subscriptionData->toGatewaySubscriptionData($subscription);
 
             $registeredGateway->handleCreateSubscription($gatewayPaymentData, $gatewaySubscriptionData);
         }
