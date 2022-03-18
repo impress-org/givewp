@@ -317,14 +317,13 @@ class SubscriptionRepository
     /**
      * @unreleased
      *
-     * @return ModelQueryBuilder
+     * @return ModelQueryBuilder<Subscription>
      */
     public function prepareQuery()
     {
-        $builder = new ModelQueryBuilder();
+        $builder = new ModelQueryBuilder(Subscription::class);
 
         return $builder->from('give_subscriptions')
-            ->setModel(Subscription::class)
             ->select(
                 ['id', 'id'],
                 ['created', 'createdAt'],

@@ -459,14 +459,13 @@ class DonationRepository
     }
 
     /**
-     * @return ModelQueryBuilder
+     * @return ModelQueryBuilder<Donation>
      */
     public function prepareQuery()
     {
-        $builder = new ModelQueryBuilder();
+        $builder = new ModelQueryBuilder(Donation::class);
 
         return $builder->from('posts')
-            ->setModel(Donation::class)
             ->select(
                 ['ID', 'id'],
                 ['post_date', 'createdAt'],
