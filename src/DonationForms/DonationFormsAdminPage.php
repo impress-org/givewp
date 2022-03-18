@@ -9,7 +9,18 @@ use Give\Helpers\EnqueueScript;
  */
 class DonationFormsAdminPage
 {
+    /**
+     * The root URL of the page's WP API endpoints
+     *
+     * @var string
+     */
     protected $apiRoot;
+
+    /**
+     * Nonce for WP API authentication
+     *
+     * @var string
+     */
     protected $apiNonce;
 
     public function __construct()
