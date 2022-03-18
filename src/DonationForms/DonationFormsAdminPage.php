@@ -53,8 +53,8 @@ class DonationFormsAdminPage
     {
 
         $data =  [
-            'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/forms')),
-            'apiNonce' => wp_create_nonce('wp_rest'),
+            'apiRoot' => $this->apiRoot,
+            'apiNonce' => $this->apiNonce,
             'preload' => $this->preloadForms()
         ];
 
