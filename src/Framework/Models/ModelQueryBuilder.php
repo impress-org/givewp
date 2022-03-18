@@ -2,44 +2,51 @@
 
 namespace Give\Framework\Models;
 
-use Give\Donations\Models\Donation;
-use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\QueryBuilder\QueryBuilder;
-use Give\Subscriptions\Models\Subscription;
 
 /**
  * @unreleased
+ *
+ * @template M
  */
 class ModelQueryBuilder extends QueryBuilder
 {
     /**
-     * @var string
+     * @var class-string<M>
      */
     protected $model;
+
+    /**
+     * @param class-string<M> $modelClass
+     */
+    public function __construct($modelClass)
+    {
+        if (!is_subclass_of($modelClass, Model::class)) {
+            throw new InvalidArgumentException("$modelClass must be an instance of " . Model::class);
+        }
+
+        $this->model = $modelClass;
+    }
 
     /**
      * Get row
      *
      * @unreleased
      *
-     * @return object|Model|Donation|Donor|Subscription|null
+     * @return M|null
      */
     public function get($output = OBJECT)
     {
         $row = DB::get_row($this->getSQL(), OBJECT);
 
-        if (!$row){
+        if (!$row) {
             return null;
         }
 
-        if (isset($this->model)) {
-            return $this->getRowAsModel($row);
-        }
-
-        return $row;
+        return $this->getRowAsModel($row);
     }
 
     /**
@@ -47,7 +54,7 @@ class ModelQueryBuilder extends QueryBuilder
      *
      * @unreleased
      *
-     * @return array|Donation[]|Donor[]|Model[]|Subscription[]|object|null
+     * @return M[]|null
      */
     public function getAll($output = OBJECT)
     {
@@ -64,15 +71,14 @@ class ModelQueryBuilder extends QueryBuilder
         return $results;
     }
 
-
     /**
      * Get row as model
      *
      * @unreleased
      *
-     * @param  object|null  $row
+     * @param object|null $row
      *
-     * @return Model|Donation|Subscription|Donor|null
+     * @return M|null
      */
     protected function getRowAsModel($row)
     {
@@ -85,15 +91,14 @@ class ModelQueryBuilder extends QueryBuilder
         return $model::fromQueryBuilderObject($row);
     }
 
-
     /**
      * Get results as models
      *
      * @unreleased
      *
-     * @param  object[]  $results
+     * @param object[] $results
      *
-     * @return Model[]|Donation[]|Subscription[]|Donor[]|null
+     * @return M[]|null
      */
     protected function getAllAsModel($results)
     {
@@ -107,22 +112,5 @@ class ModelQueryBuilder extends QueryBuilder
         return array_map(static function ($object) use ($model) {
             return $model::fromQueryBuilderObject($object);
         }, $results);
-    }
-
-     /**
-     * Set the model to be used for returning formatted query
-     *
-     * @param  string  $model
-     * @return $this
-     */
-    public function setModel($model)
-    {
-        if (!is_subclass_of($model, Model::class)) {
-            throw new InvalidArgumentException("$model must be an instance of " . Model::class);
-        }
-
-        $this->model = $model;
-
-        return $this;
     }
 }
