@@ -80,7 +80,7 @@ interface SelectFilterProps extends SearchFilterProps {
     options: string|((string) => string);
 }
 
-export default function AdminDonationFormsPage() {
+export default function ListFormsPage() {
     const [filters, setFilters] = useState({status: DonationStatus.Any});
     const [debouncedFilters, setDebouncedFilters] = useState({search: ''});
 
