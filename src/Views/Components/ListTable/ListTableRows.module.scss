@@ -79,6 +79,30 @@ tr.duplicated {
     padding-block: 2em;
 }
 
+div.pending {
+    background-color: rgba(8, 120, 176);
+}
+
+div.draft, div.auto-draft {
+    background-color: rgba(244, 148, 32);
+}
+
+div.future {
+    background-color: rgba(164, 99, 191);
+}
+
+div.trash, div.failed {
+    background-color: rgba(232, 75, 59);
+}
+
+div.private, div.refunded {
+    background-color: rgba(51, 51, 51, 1);
+}
+
+div.abandoned {
+    background-color: rgba(244, 197, 32, 1)
+}
+
 .unclickable {
     pointer-events: none;
 }

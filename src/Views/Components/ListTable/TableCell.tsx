@@ -24,9 +24,9 @@ export function IdBadge({ id }){
     );
 }
 
-export function StatusBadge({ status, text}){
+export function StatusBadge({ className, text}){
     return (
-        <div className={cx(styles.statusBadge, styles[status])}>
+        <div className={cx(styles.statusBadge, className)}>
             {text || __('none', 'give')}
         </div>
     );

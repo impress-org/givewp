@@ -106,6 +106,6 @@ export const donationFormsColumns: Array<ListTableColumn> = [
     {
         name: 'status',
         text: __('Status', 'give'),
-        preset: 'statusBadge'
+        preset: 'postStatus'
     },
 ];

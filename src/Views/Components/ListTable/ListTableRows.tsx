@@ -4,7 +4,7 @@ import cx from 'classnames';
 import {useEffect, useState} from 'react';
 import TableCell, {IdBadge, StatusBadge} from "./TableCell";
 
-const statusMap = {
+const postStatusMap = {
     publish: __('published', 'give'),
     future: __('future', 'give'),
     draft: __('draft', 'give'),
@@ -25,8 +25,14 @@ const RenderRow = ({ column, item }) => {
             );
         case 'statusBadge':
             return (
-                <StatusBadge key={column.name} status={value}
-                             text={statusMap[value]}
+                <StatusBadge key={column.name} className={styles[value]}
+                             text={value}
+                />
+            );
+        case 'postStatus':
+            return (
+                <StatusBadge key={column.name} className={styles[value]}
+                             text={postStatusMap[value]}
                 />
             );
         default:
