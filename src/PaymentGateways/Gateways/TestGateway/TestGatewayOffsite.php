@@ -2,6 +2,10 @@
 
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
+use Exception;
+use Give\Donations\Models\Donation;
+use Give\Donations\Models\DonationNote;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
@@ -95,20 +99,22 @@ class TestGatewayOffsite extends PaymentGateway
     /**
      * An example of using a routeMethod for extending the Gateway API to handle a redirect.
      *
+     * @unreleased update to use Donation model
      * @since 2.19.0
      *
      * @param  array  $queryParams
      * @throws PaymentGatewayException
+     * @throws Exception
      */
     public function returnFromOffsiteRedirect($queryParams)
     {
-        $donationId = $queryParams['give-donation-id'];
+        $donation = Donation::find($queryParams['give-donation-id']);
 
-        if (!get_post($donationId)) {
+        if (!$donation) {
             throw new PaymentGatewayException('Donation does not exist');
         }
 
-        $this->updateDonation($donationId);
+        $this->updateDonation($donation);
 
         return response()->redirectTo(give_get_success_page_uri());
     }
@@ -116,34 +122,40 @@ class TestGatewayOffsite extends PaymentGateway
     /**
      * An example of using a secureRouteMethod for extending the Gateway API to handle a redirect.
      *
+     * @unreleased update to use Donation model
      * @since 2.19.0
      *
      * @param  array  $queryParams
      * @throws PaymentGatewayException
+     * @throws Exception
      */
     public function securelyReturnFromOffsiteRedirect($queryParams)
     {
-        $donationId = $queryParams['give-donation-id'];
+        $donation = Donation::find($queryParams['give-donation-id']);
 
-        if (!get_post($donationId)) {
+        if (!$donation) {
             throw new PaymentGatewayException('Donation does not exist');
         }
 
-        $this->updateDonation($donationId);
-
+        $this->updateDonation($donation);
+        
         return response()->redirectTo(give_get_success_page_uri());
     }
 
     /**
-     * Helper for updating donation
-     *
-     * @param $donationId
+     * @param  Donation  $donation
      * @return void
+     * @throws Exception
      */
-    private function updateDonation($donationId)
+    private function updateDonation(Donation $donation)
     {
-        give_insert_payment_note($donationId, 'NOTE GOES HERE');
-        give_update_payment_status($donationId);
-        give_set_payment_transaction_id($donationId, "test-gateway-transaction-id");
+        $donation->status = DonationStatus::COMPLETE();
+        $donation->gatewayTransactionId = "test-gateway-transaction-id";
+        $donation->save();
+
+        DonationNote::create([
+            'donationId' => $donation->id,
+            'content' => 'Donation Completed from Test Gateway Offsite.'
+        ]);
     }
 }
