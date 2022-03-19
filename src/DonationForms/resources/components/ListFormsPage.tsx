@@ -1,72 +1,10 @@
 import {useEffect, useRef, useState} from 'react';
 import type {ChangeEventHandler} from 'react';
-import {__} from '@wordpress/i18n';
 
-import {donationFormsColumns} from './DonationFormsColumns';
 import styles from './AdminDonationFormsPage.module.scss';
-import {ListTable} from '@givewp/components';
-import {GiveIcon} from "@givewp/components";
-import ListTableApi from '../api';
+import {ListTable, ListTableColumn} from '@givewp/components';
+import {GiveIcon} from '@givewp/components';
 import {debounce} from 'lodash';
-
-declare global {
-    interface Window {
-        GiveDonationForms: {apiNonce: string; apiRoot: string};
-    }
-}
-
-const donationFormsApi = new ListTableApi(window.GiveDonationForms);
-
-function getDonationStatusText(donationStatus: DonationStatus): string {
-    switch (donationStatus) {
-        case DonationStatus.Any:
-            return __('All', 'give');
-        case DonationStatus.Publish:
-            return __('Published', 'give');
-        case DonationStatus.Pending:
-            return __('Pending', 'give');
-        case DonationStatus.Draft:
-            return __('Draft', 'give');
-        case DonationStatus.Trash:
-            return __('Trash', 'give');
-    }
-}
-
-enum DonationStatus {
-    Any = 'any',
-    Publish = 'publish',
-    Pending = 'pending',
-    Draft = 'draft',
-    Trash = 'trash',
-}
-
-const singleName = __('donation form', 'give');
-const pluralName = __('donation forms', 'give');
-const title = __('Donation Forms', 'give');
-
-const headerButtons = [
-    {
-        text: __('Add Form', 'give'),
-        link: 'post-new.php?post_type=give_forms',
-    }
-];
-
-const donationFormFilters:Array<SearchFilterProps|SelectFilterProps> = [
-    {
-        name: 'search',
-        type: 'search',
-        text: __('Search by name or ID', 'give'),
-        ariaLabel: __('Search donation forms', 'give')
-    },
-    {
-        name: 'status',
-        type: 'select',
-        text: __('status', 'give'),
-        ariaLabel: __('Filter donation forms by status', 'give'),
-        values: DonationStatus,
-        options: getDonationStatusText
-    }
-]
 
 interface SearchFilterProps {
     name: string;
@@ -77,15 +15,34 @@ interface SearchFilterProps {
 
 interface SelectFilterProps extends SearchFilterProps {
     values: any;
-    options: string|((string) => string);
+    options: Array<{name: string, text: string}>;
 }
 
-export default function ListFormsPage() {
-    const [filters, setFilters] = useState({status: DonationStatus.Any});
-    const [debouncedFilters, setDebouncedFilters] = useState({search: ''});
+export interface ListFormsPageProps {
+    headerButtons: Array<{text: string, link: string}>;
+    filters: Array<SearchFilterProps|SelectFilterProps>;
+    singleName: string;
+    pluralName: string;
+    title: string;
+    columns: Array<ListTableColumn>;
+    api: any;
+}
 
+export default function ListFormsPage({
+    headerButtons = [],
+    filters = [],
+    singleName,
+    pluralName,
+    title,
+    columns,
+    api
+}) {
+    const [pageFilters, setFilters] = useState(getInitialFilterState(filters));
     const setFiltersLater = useRef(
-        debounce((filterName, filterValue) => setDebouncedFilters(filterValue), 500)
+        debounce((name, value) =>
+            setFilters(prevState => ({...prevState, [name]: value})),
+            500
+        )
     ).current;
 
     useEffect(() => {
@@ -106,16 +63,16 @@ export default function ListFormsPage() {
         <article>
             <div className={styles.pageHeader}>
                 <GiveIcon size={'1.875rem'}/>
-                <h1 className={styles.pageTitle}>{singleName}</h1>
+                <h1 className={styles.pageTitle}>{title}</h1>
                 {headerButtons.map(button => (
-                    <a href={button.link} className={styles.addFormButton}>
+                    <a key={button.link} href={button.link} className={styles.addFormButton}>
                         {button.text}
                     </a>
                 ))}
             </div>
             <div className={styles.searchContainer}>
-                {donationFormFilters.map((filter) => (
-                    <RenderFilters
+                {filters.map((filter) => (
+                    <TableFilter
                         filter={filter}
                         onChange={handleFilterChange}
                         debouncedOnChange={handleDebouncedFilterChange}
@@ -124,19 +81,19 @@ export default function ListFormsPage() {
             </div>
             <div className={styles.pageContent}>
                 <ListTable
-                    filters={{...filters, ...debouncedFilters}}
-                    columns={donationFormsColumns}
+                    filters={{...pageFilters}}
+                    columns={columns}
                     singleName={singleName}
                     pluralName={pluralName}
                     title={title}
-                    api={donationFormsApi}
+                    api={api}
                 />
             </div>
         </article>
     );
 }
 
-const RenderFilters = ({ filter, onChange, debouncedOnChange }) => {
+const TableFilter = ({ filter, onChange, debouncedOnChange }) => {
         switch(filter.type){
             case 'select':
                 return (
@@ -147,12 +104,9 @@ const RenderFilters = ({ filter, onChange, debouncedOnChange }) => {
                         aria-label={filter?.ariaLabel}
                         onChange={onChange}
                     >
-                        {Object.values(filter.values).map((value) => (
-                            <option key={value} value={value}>
-                                {filter.options instanceof Function ?
-                                    filter.options(value) :
-                                    filter.options[value]
-                                }
+                        {filter.options.map(({name, text}) => (
+                            <option key={name} value={name}>
+                                {text}
                             </option>
                         ))}
                     </select>
@@ -171,4 +125,21 @@ const RenderFilters = ({ filter, onChange, debouncedOnChange }) => {
             default:
                 break;
         }
+}
+
+const getInitialFilterState = (filters) => {
+    const state = {}
+    console.error(filters);
+    filters.map((filter) => {
+        switch (filter.type) {
+            case 'select':
+                state[filter.name] = filter.options?.[0].name
+                break;
+            case 'search':
+            default:
+                state[filter.name] = '';
+                break;
+        }
+    });
+    return state;
 }
