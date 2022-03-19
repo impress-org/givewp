@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from 'react';
 import type {ChangeEventHandler} from 'react';
 
-import styles from './AdminDonationFormsPage.module.scss';
+import styles from './ListTablePage.module.scss';
 import {ListTable, ListTableColumn} from '@givewp/components';
 import {GiveIcon} from '@givewp/components';
 import {debounce} from 'lodash';
@@ -28,7 +28,7 @@ export interface ListFormsPageProps {
     api: any;
 }
 
-export default function ListFormsPage({
+export default function ListTablePage({
     headerButtons = [],
     filters = [],
     singleName,

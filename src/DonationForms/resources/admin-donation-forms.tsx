@@ -2,7 +2,7 @@ import {StrictMode} from 'react';
 import ReactDOM from 'react-dom';
 import {__} from "@wordpress/i18n";
 import {donationFormsColumns} from './components/DonationFormsColumns';
-import ListFormsPage from './components/ListFormsPage';
+import ListTablePage from './components/ListTablePage';
 import './admin-donation-forms.module.scss';
 import ListTableApi from "./api";
 
@@ -62,7 +62,7 @@ const donationFormsFilters = [
 
 ReactDOM.render(
     <StrictMode>
-        <ListFormsPage
+        <ListTablePage
             title={__('Donation Forms', 'give')}
             singleName={__('donation form', 'give')}
             pluralName={__('donation forms', 'give')}
