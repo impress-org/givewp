@@ -2,9 +2,8 @@ import {StrictMode} from 'react';
 import ReactDOM from 'react-dom';
 import {__} from "@wordpress/i18n";
 import {donationFormsColumns} from './components/DonationFormsColumns';
-import ListTablePage from './components/ListTablePage';
+import {ListTablePage, ListTableApi} from '@givewp/components';
 import './admin-donation-forms.module.scss';
-import ListTableApi from "./api";
 
 declare global {
     interface Window {

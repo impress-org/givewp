@@ -11,5 +11,6 @@ export {default as Button} from './Button';
 export {default as Input} from './Input';
 export {default as PeriodSelector} from './PeriodSelector';
 export {default as Modal} from './Modal';
-export {ListTable, ListTableColumn} from './ListTable';
+export {default as ListTablePage, ListTablePageProps} from './ListTable';
+export {default as ListTableApi} from './ListTable/api';
 export {default as GiveIcon} from './GiveIcon';

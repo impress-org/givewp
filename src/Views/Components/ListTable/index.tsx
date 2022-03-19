@@ -1,257 +1,143 @@
-import {useEffect, useState} from 'react';
-import {__, _n, sprintf} from '@wordpress/i18n';
-import {useSWRConfig, unstable_serialize} from 'swr';
-import cx from 'classnames';
+import {useEffect, useRef, useState} from 'react';
+import type {ChangeEventHandler} from 'react';
 
-import styles from './style.module.scss';
-import Pagination from './Pagination.js';
-import DonationFormTableRows from './ListTableRows';
-import {Spinner} from '../index';
+import styles from './ListTablePage.module.scss';
+import {ListTable, ListTableColumn} from './ListTable';
+import {GiveIcon} from '@givewp/components';
+import {debounce} from 'lodash';
 
-export interface ListTableProps {
-    filters: {};
-    columns: Array<ListTableColumn>;
-    singleName?: string;
-    pluralName?: string;
-    title: string;
-    api: {fetchWithArgs, useListForms};
-}
-
-export interface ListTableColumn {
+interface SearchFilterProps {
     name: string;
+    type: string;
     text: string;
-    preset?: string;
-    heading?: boolean;
-    addClass?: string;
-    render?: (item: {}) => JSX.Element|string|null;
-    rowActions?: (props: {}) => JSX.Element|null;
+    ariaLabel?: string;
 }
 
-export const ListTable = ({
-        filters = {},
-        columns,
-        singleName = __('item', 'give'),
-        pluralName = __('items', 'give'),
-        title,
-        api
-}: ListTableProps) => {
+interface SelectFilterProps extends SearchFilterProps {
+    values: any;
+    options: Array<{name: string, text: string}>;
+}
 
-    const [page, setPage] = useState<number>(1);
-    const [perPage, setPerPage] = useState<number>(10);
-    const [errors, setErrors] = useState<[]>([]);
-    const [successes, setSuccesses] = useState<[]>([]);
-    const [initialLoad, setInitialLoad] = useState<boolean>(true);
-    const [loadingOverlay, setLoadingOverlay] = useState<any>(false);
-    const [errorOverlay, setErrorOverlay] = useState<any>(false);
-    const listParams = {
-        page,
-        perPage,
-        ...filters
-    };
-    const {data, error, isValidating} = api.useListForms(listParams);
-    const {mutate, cache} = useSWRConfig();
-    const isEmpty = !error && data?.items.length === 0;
+export interface ListTablePageProps {
+    headerButtons: Array<{text: string, link: string}>;
+    filters: Array<SearchFilterProps|SelectFilterProps>;
+    singleName: string;
+    pluralName: string;
+    title: string;
+    columns: Array<ListTableColumn>;
+    api: any;
+}
 
-    useEffect(() => {
-        setPage(1);
-    }, [filters]);
-
-    useEffect(() => {
-        initialLoad && data && setInitialLoad(false);
-    }, [data]);
-
-    useEffect(() => {
-        if (isValidating && !cache.get(unstable_serialize(listParams))) {
-            setLoadingOverlay(styles.appear);
-        }
-        if (!isValidating && loadingOverlay) {
-            setLoadingOverlay(styles.disappear);
-            const timeoutId = setTimeout(() => setLoadingOverlay(false), 100);
-            return () => clearTimeout(timeoutId);
-        }
-    }, [isValidating]);
+export default function ListTablePage({
+    headerButtons = [],
+    filters = [],
+    singleName,
+    pluralName,
+    title,
+    columns,
+    api
+}: ListTablePageProps) {
+    const [pageFilters, setFilters] = useState(getInitialFilterState(filters));
+    const setFiltersLater = useRef(
+        debounce((name, value) =>
+            setFilters(prevState => ({...prevState, [name]: value})),
+            500
+        )
+    ).current;
 
     useEffect(() => {
-        let timeoutId;
-        if (errors.length) {
-            setErrorOverlay(styles.appear);
-            timeoutId = setTimeout(
-                () =>
-                    document.getElementById(styles.updateError).scrollIntoView?.({behavior: 'smooth', block: 'center'}),
-                100
-            );
-        } else if (errorOverlay) {
-            setErrorOverlay(styles.disappear);
-            timeoutId = setTimeout(() => setErrorOverlay(false), 100);
+        return () => {
+            setFiltersLater.cancel();
         }
-        return () => clearTimeout(timeoutId);
-    }, [errors]);
+    }, []);
 
-    async function mutateForm(ids, endpoint, method, remove = false) {
-        try {
-            const response = await api.fetchWithArgs(endpoint, {ids}, method);
-            // if we just removed the last entry from the page and we're not on the first page, go back a page
-            if (remove && !response.errors.length && data.items.length == 1 && data.totalPages > 1) {
-                setPage(page - 1);
-            }
-            // otherwise, revalidate current page
-            else {
-                await mutate(listParams);
-            }
-            //revalidate all pages after the current page
-            const mutations = [];
-            for (let i = page + 1; i <= data.totalPages; i++) {
-                mutations.push(mutate({...listParams, page: i}));
-            }
-            setErrors(response.errors);
-            setSuccesses(response.successes);
-            return response;
-        } catch (error) {
-            setErrors(ids.split(','));
-            setSuccesses([]);
-            return {errors: ids.split(','), successes: []};
-        }
+    const handleFilterChange: ChangeEventHandler<HTMLInputElement|HTMLSelectElement> = (event) => {
+        setFilters(prevState => ({...prevState, [event.target.name]: event.target.value}));
+    }
+
+    const handleDebouncedFilterChange: ChangeEventHandler<HTMLInputElement|HTMLSelectElement> = (event) => {
+        setFiltersLater(event.target.name, event.target.value);
     }
 
     return (
-        <>
-            <div className={styles.pageActions}>
-                <Pagination
-                    currentPage={page}
-                    totalPages={data ? data.totalPages : 1}
-                    disabled={!data}
-                    totalItems={data ? parseInt(data.totalItems) : -1}
-                    setPage={setPage}
+        <article>
+            <div className={styles.pageHeader}>
+                <GiveIcon size={'1.875rem'}/>
+                <h1 className={styles.pageTitle}>{title}</h1>
+                {headerButtons.map(button => (
+                    <a key={button.link} href={button.link} className={styles.addFormButton}>
+                        {button.text}
+                    </a>
+                ))}
+            </div>
+            <div className={styles.searchContainer}>
+                {filters.map((filter) => (
+                    <TableFilter
+                        key={filter.name}
+                        filter={filter}
+                        onChange={handleFilterChange}
+                        debouncedOnChange={handleDebouncedFilterChange}
+                    />
+                ))}
+            </div>
+            <div className={styles.pageContent}>
+                <ListTable
+                    filters={{...pageFilters}}
+                    columns={columns}
+                    singleName={singleName}
+                    pluralName={pluralName}
+                    title={title}
+                    api={api}
                 />
             </div>
-            {( initialLoad && !error ) ? (
-                <div className={styles.initialLoad}>
-                    <div
-                        role="dialog"
-                        aria-labelledby="giveListTableLoadingMessage"
-                        className={cx(styles.tableGroup)}
-                    >
-                        <Spinner size={'large'} />
-                        <h2 id="giveListTableLoadingMessage">
-                            {sprintf(__('Loading %s', 'give'), pluralName)}
-                        </h2>
-                    </div>
-                </div>
-            ) : (
-                <div
-                    role="group"
-                    aria-labelledby="giveListTableCaption"
-                    aria-describedby="giveListTableMessage"
-                    className={styles.tableGroup}
-                >
-                    <table className={styles.table}>
-                        <caption id="giveListTableCaption" className={styles.tableCaption}>
-                            {title}
-                        </caption>
-                        <thead>
-                            <tr>
-                                {columns.map(column =>
-                                    <th
-                                        scope="col"
-                                        aria-sort="none"
-                                        className={styles.tableColumnHeader}
-                                        data-column={column.name}
-                                        key={column.name}
-                                    >
-                                        {column.text}
-                                    </th>
-                                )}
-                            </tr>
-                        </thead>
-                        <tbody className={styles.tableContent}>
-                            <DonationFormTableRows
-                                listParams={listParams}
-                                mutateForm={mutateForm}
-                                columns={columns}
-                                api={api}
-                            />
-                        </tbody>
-                    </table>
-                    {loadingOverlay && (
-                        <div className={cx(styles.overlay, loadingOverlay)}>
-                            <Spinner size={'medium'} />
-                        </div>
-                    )}
-                    {errorOverlay && (
-                        <div className={cx(styles.overlay, errorOverlay)}>
-                            <div
-                                id={styles.updateError}
-                                role="dialog"
-                                aria-labelledby="giveListTableErrorMessage"
-                            >
-                                {!!successes.length && (
-                                    <span>
-                                        {successes.length + ' ' +
-                                            // translators:
-                                            // Like '1 item was updated successfully'
-                                            // or '3 items were updated successfully'
-                                            _n(
-                                                sprintf('%s was updated successfully.', singleName),
-                                                sprintf('%s were updated successfully.', pluralName),
-                                                successes.length,
-                                                'give'
-                                            )
-                                        }
-                                    </span>
-                                )}
-                                <span id="giveListTableErrorMessage">
-                                    {errors.length +
-                                        ' ' +
-                                        _n(
-                                            `${singleName} couldn't be updated.`,
-                                            `${pluralName} couldn't be updated.`,
-                                            errors.length,
-                                            'give'
-                                        )}
-                                </span>
-                                <button
-                                    type="button"
-                                    className={cx('dashicons dashicons-dismiss', styles.dismiss)}
-                                    onClick={() => {
-                                        setErrors([]);
-                                        setSuccesses([]);
-                                    }}
-                                >
-                                    <span className="give-visually-hidden">{__('dismiss', 'give')}</span>
-                                </button>
-                            </div>
-                        </div>
-                    )}
-                    <div id="giveListTableMessage">
-                        {isEmpty && (
-                            <div className={styles.statusMessage}>
-                                {sprintf(__('No %s found.', 'give'), pluralName)}
-                            </div>
-                        )}
-                        {error && (
-                            <>
-                                <div className={styles.statusMessage}>
-                                    {sprintf(__('There was a problem retrieving the %s.', 'give'), pluralName)}
-                                </div>
-                                <div className={styles.statusMessage}>
-                                    {__('Click', 'give')}{' '}
-                                    <a href={window.location.href.toString()}>{__('here', 'give')}</a>
-                                    {' ' + __('to reload the page.')}
-                                </div>
-                            </>
-                        )}
-                    </div>
-                </div>
-            )}
-            <div className={styles.pageActions}>
-                <Pagination
-                    currentPage={page}
-                    totalPages={data ? data.totalPages : 1}
-                    disabled={!data}
-                    totalItems={data ? parseInt(data.totalItems) : -1}
-                    setPage={setPage}
-                />
-            </div>
-        </>
+        </article>
     );
+}
+
+const TableFilter = ({ filter, onChange, debouncedOnChange }) => {
+        switch(filter.type){
+            case 'select':
+                return (
+                    <select
+                        name={filter.name}
+                        className={styles.statusFilter}
+                        aria-label={filter?.ariaLabel}
+                        onChange={onChange}
+                    >
+                        {filter.options.map(({name, text}) => (
+                            <option key={name} value={name}>
+                                {text}
+                            </option>
+                        ))}
+                    </select>
+                );
+            case 'search':
+                return (
+                    <input
+                        type="search"
+                        aria-label={filter?.ariaLabel}
+                        placeholder={filter?.text}
+                        onChange={debouncedOnChange}
+                        className={styles.searchInput}
+                    />
+                );
+            default:
+                break;
+        }
+}
+
+const getInitialFilterState = (filters) => {
+    const state = {};
+    filters.map((filter) => {
+        switch (filter.type) {
+            case 'select':
+                state[filter.name] = filter.options?.[0].name
+                break;
+            case 'search':
+            default:
+                state[filter.name] = '';
+                break;
+        }
+    });
+    return state;
 }
