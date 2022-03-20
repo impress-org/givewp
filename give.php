@@ -1,11 +1,12 @@
 <?php
+
 /**
  * Plugin Name: Give - Donation Plugin
  * Plugin URI: https://givewp.com
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.19.4
+ * Version: 2.19.5
  * Requires at least: 5.0
  * Requires PHP: 5.6
  * Text Domain: give
@@ -44,8 +45,12 @@
 use Give\Container\Container;
 use Give\DonationForms\Repositories\DonationFormsRepository;
 use Give\DonationForms\ServiceProvider as DonationFormsServiceProvider;
+use Give\Donations\Repositories\DonationRepository;
+use Give\Donations\ServiceProvider as DonationServiceProvider;
 use Give\DonationSummary\ServiceProvider as DonationSummaryServiceProvider;
 use Give\DonorDashboards\ServiceProvider as DonorDashboardsServiceProvider;
+use Give\Donors\Repositories\DonorRepositoryProxy;
+use Give\Donors\ServiceProvider as DonorsServiceProvider;
 use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
 use Give\Form\Templates;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
@@ -66,6 +71,8 @@ use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\Routes;
 use Give\ServiceProviders\ServiceProvider;
 use Give\Shims\ShimsServiceProvider;
+use Give\Subscriptions\Repositories\SubscriptionRepository;
+use Give\Subscriptions\ServiceProvider as SubscriptionServiceProvider;
 use Give\TestData\ServiceProvider as TestDataServiceProvider;
 use Give\Tracking\TrackingServiceProvider;
 
@@ -77,13 +84,13 @@ if (!defined('ABSPATH')) {
 /**
  * Main Give Class
  *
+ * @unreleased add $donations, $subscriptions, and replace $donors class with DonorRepositoryProxy
  * @since 2.8.0 build in a service container
  * @since 1.0
  *
  * @property-read Give_API $api
  * @property-read Give_Async_Process $async_process
  * @property-read Give_Comment $comment
- * @property-read Give_DB_Donors $donors
  * @property-read Give_DB_Donor_Meta $donor_meta
  * @property-read Give_Emails $emails
  * @property-read Give_Email_Template_Tags $email_tags
@@ -99,10 +106,13 @@ if (!defined('ABSPATH')) {
  * @property-read Give_Scripts $scripts
  * @property-read Give_DB_Sequential_Ordering $sequential_donation_db
  * @property-read Give_Sequential_Donation_Number $seq_donation_number
- * @property-read Give_Session                    $session
- * @property-read Give_DB_Sessions                $session_db
- * @property-read Give_Tooltips                   $tooltips
- * @property-read DonationFormsRepository         $donationFormsRepository
+ * @property-read Give_Session $session
+ * @property-read Give_DB_Sessions $session_db
+ * @property-read Give_Tooltips $tooltips
+ * @property-read DonationRepository $donations
+ * @property-read DonorRepositoryProxy $donors
+ * @property-read SubscriptionRepository $subscriptions
+ * @property-read DonationFormsRepository $donationFormsRepository
  * @property-read Give_Recurring_DB_Subscription_Meta $subscription_meta
  *
  * @mixin Container
@@ -147,6 +157,7 @@ final class Give
     private $container;
 
     /**
+     * @unreleased added Donors, Donations, and Subscriptions
      * @since 2.8.0
      *
      * @var array Array of Service Providers to load
@@ -171,6 +182,9 @@ final class Give
         Give\Email\ServiceProvider::class,
         DonationSummaryServiceProvider::class,
         PaymentGatewaysServiceProvider::class,
+        DonationServiceProvider::class,
+        DonorsServiceProvider::class,
+        SubscriptionServiceProvider::class,
         DonationFormsServiceProvider::class,
         PromotionsServiceProvider::class,
         LegacySubscriptionsServiceProvider::class
@@ -288,8 +302,8 @@ final class Give
     private function setup_constants()
     {
         // Plugin version.
-        if ( ! defined('GIVE_VERSION')) {
-            define('GIVE_VERSION', '2.19.4');
+        if (!defined('GIVE_VERSION')) {
+            define('GIVE_VERSION', '2.19.5');
         }
 
         // Plugin Root File.
