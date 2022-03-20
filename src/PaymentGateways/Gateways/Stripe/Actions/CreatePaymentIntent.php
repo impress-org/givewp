@@ -4,7 +4,8 @@ namespace Give\PaymentGateways\Gateways\Stripe\Actions;
 
 use Give\LegacyPaymentGateways\DataTransferObjects\LegacyDonationData;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
-use Give\PaymentGateways\Gateways\Stripe\ValueObjects\DonationSummary;
+use Give\Framework\PaymentGateways\DonationSummary;
+use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
 use Give\PaymentGateways\Gateways\Stripe\WorkflowAction;
@@ -29,11 +30,14 @@ class CreatePaymentIntent extends WorkflowAction
 
     /**
      * @since 2.19.0
+     *
      * @param GatewayPaymentData $paymentData
      * @param DonationSummary $donationSummary
      * @param \Give_Stripe_Customer $giveStripeCustomer
      * @param PaymentMethod $paymentMethod
+     *
      * @return void
+     * @throws InvalidPropertyName
      */
     public function __invoke(
         GatewayPaymentData $paymentData,
@@ -54,7 +58,7 @@ class CreatePaymentIntent extends WorkflowAction
                 'currency' => $paymentData->currency,
                 'payment_method_types' => [ 'card' ],
                 'statement_descriptor' => give_stripe_get_statement_descriptor(),
-                'description' => $donationSummary->getSummary(),
+                'description' => $donationSummary->getSummaryWithDonor(),
                 'metadata' => give_stripe_prepare_metadata($paymentData->donationId, new LegacyDonationData( $paymentData, $paymentMethod->id() ) ),
                 'customer' => $giveStripeCustomer->get_id(),
                 'payment_method' => $paymentMethod->id(),

@@ -3,7 +3,7 @@
 namespace Give\PaymentGateways\Gateways\Stripe\Actions;
 
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
-use Give\PaymentGateways\Gateways\Stripe\ValueObjects\DonationSummary;
+use Give\Framework\PaymentGateways\DonationSummary;
 use Give\PaymentGateways\Gateways\Stripe\WorkflowAction;
 
 class SaveDonationSummary extends WorkflowAction
@@ -14,7 +14,7 @@ class SaveDonationSummary extends WorkflowAction
         give_update_meta(
             $paymentData->donationId,
             '_give_stripe_donation_summary',
-            $summary->getSummary()
+            $summary->getSummaryWithDonor()
         );
         $this->bind( $summary );
     }

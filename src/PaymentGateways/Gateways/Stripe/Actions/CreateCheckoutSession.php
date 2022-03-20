@@ -2,10 +2,9 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe\Actions;
 
+use Give\Framework\PaymentGateways\DonationSummary;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\CheckoutSession;
-use Give\PaymentGateways\Gateways\Stripe\ValueObjects\DonationSummary;
-use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
 use Give\PaymentGateways\Gateways\Stripe\WorkflowAction;
 use Give\ValueObjects\Money;
 use Give_Stripe_Customer;
@@ -38,7 +37,7 @@ class CreateCheckoutSession extends WorkflowAction
             'line_items'                 => [
                 [
                     'name'        => give_get_donation_form_title( $paymentData->donationId ),
-                    'description' => $donationSummary->getSummary(),
+                    'description' => $donationSummary->getSummaryWithDonor(),
                     'amount'      => Money::of( $paymentData->price, $paymentData->currency )->getMinorAmount(),
                     'currency'    => $paymentData->currency,
                     'quantity'    => 1,
@@ -46,7 +45,7 @@ class CreateCheckoutSession extends WorkflowAction
             ],
             'payment_intent_data'        => [
                 'capture_method'       => 'automatic',
-                'description'          => $donationSummary->getSummary(),
+                'description'          => $donationSummary->getSummaryWithDonor(),
                 'metadata'             => give_stripe_prepare_metadata( $paymentData->donationId ),
                 'statement_descriptor' => give_stripe_get_statement_descriptor(),
             ],
