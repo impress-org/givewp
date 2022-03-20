@@ -90,7 +90,7 @@ class DonationSummary
     protected function getLabel()
     {
         $formId = give_get_payment_form_id($this->get('donationId'));
-        $formTitle = get_the_title( $formId );
+        $formTitle = get_the_title($formId);
         return $formTitle ?: sprintf(__('Donation Form ID: %d', 'give'), $formId);
     }
 
@@ -101,7 +101,9 @@ class DonationSummary
     protected function getPriceLabel()
     {
         $formId = give_get_payment_form_id($this->get('donationId'));
-        return $this->get('priceId')
+        $priceId = $this->get('priceId');
+
+        return is_numeric($priceId)
             ? give_get_price_option_name($formId, $this->get('priceId'))
             : '';
     }
