@@ -56,9 +56,9 @@ class Give_Sequential_Donation_Number {
 	 * @since 2.1.0
 	 */
 	public function init() {
-		add_action( 'wp_insert_post', array( $this, '__save_donation_title' ), 10, 3 );
-		add_action( 'after_delete_post', array( $this, '__remove_serial_number' ), 10, 1 );
-	}
+        add_action('wp_insert_post', array($this, '__save_donation_title'), 10, 3);
+        add_action('after_delete_post', array($this, '__remove_serial_number'), 10, 1);
+    }
 
 	/**
 	 * Set serialize donation number as donation title.
@@ -328,7 +328,7 @@ class Give_Sequential_Donation_Number {
 				"
 				SELECT ID
 				FROM {$table_name}
-				ORDER BY id DESC 
+				ORDER BY id DESC
 				LIMIT 1
 				"
 			)
@@ -354,7 +354,7 @@ class Give_Sequential_Donation_Number {
 					FROM {$wpdb->posts}
 					WHERE post_type=%s
 					AND post_status=%s
-					ORDER BY id DESC 
+					ORDER BY id DESC
 					LIMIT 1
 					",
 					'give_payment',
