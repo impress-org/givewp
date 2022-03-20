@@ -7,6 +7,7 @@ use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Helpers\Call;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\Helpers\Gateways\Stripe;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
@@ -33,17 +34,11 @@ class CheckoutGateway extends PaymentGateway
      */
     public function createPayment( GatewayPaymentData $paymentData )
     {
-        $workflow = new Workflow();
-        $workflow->bind( $paymentData );
-
-        $workflow->action( new Actions\SaveDonationSummary );
-        $workflow->action( new Actions\GetOrCreateStripeCustomer );
-
         switch (give_stripe_get_checkout_type()) {
             case 'modal':
-                return $this->createPaymentModal($workflow);
+                return $this->createPaymentModal($paymentData);
             case 'redirect':
-                return $this->createPaymentRedirect($workflow);
+                return $this->createPaymentRedirect($paymentData);
             default:
                 throw new CheckoutException('Invalid Checkout Error');
         }
@@ -51,17 +46,26 @@ class CheckoutGateway extends PaymentGateway
 
     /**
      * @since 2.19.0
-     *
-     * @param $workflow
      * @return PaymentProcessing|RedirectOffsite
      * @throws Exceptions\PaymentIntentException
+     * @throws \Give\PaymentGateways\Exceptions\InvalidPropertyName
      */
-    protected function createPaymentModal($workflow)
+    protected function createPaymentModal( GatewayPaymentData $paymentData )
     {
-        $workflow->action(new Actions\GetPaymentMethodFromRequest);
-        $workflow->action(new Actions\CreatePaymentIntent());
-        $paymentIntent = $workflow->resolve(PaymentIntent::class);
-        return $this->handlePaymentIntentStatus($paymentIntent);
+        $paymentMethod = Call::invoke( Actions\GetPaymentMethodFromRequest::class, $paymentData );
+        $donationSummary = Call::invoke( Actions\SaveDonationSummary::class, $paymentData );
+        $stripeCustomer = Call::invoke( Actions\GetOrCreateStripeCustomer::class, $paymentData );
+
+        $createIntentAction = new Actions\CreatePaymentIntent([]);
+
+        return $this->handlePaymentIntentStatus(
+            $createIntentAction(
+                $paymentData,
+                $donationSummary,
+                $stripeCustomer,
+                $paymentMethod
+            )
+        );
     }
 
     /**
@@ -70,11 +74,12 @@ class CheckoutGateway extends PaymentGateway
      * @param $workflow
      * @return RedirectOffsite
      */
-    protected function createPaymentRedirect($workflow)
+    protected function createPaymentRedirect( GatewayPaymentData $paymentData )
     {
-        $workflow->action( new Actions\CreateCheckoutSession() );
-        $session = $workflow->resolve( CheckoutSession::class );
-        $paymentData = $workflow->resolve( GatewayPaymentData::class );
+        $donationSummary = Call::invoke( Actions\SaveDonationSummary::class, $paymentData );
+        $stripeCustomer = Call::invoke( Actions\GetOrCreateStripeCustomer::class, $paymentData );
+        $session = Call::invoke( Actions\CreateCheckoutSession::class, $donationSummary, $stripeCustomer, $paymentData );
+
         return new RedirectOffsite(
             $this->getRedirectUrl( $session->id(), give_get_payment_form_id( $paymentData->donationId ) )
         );
