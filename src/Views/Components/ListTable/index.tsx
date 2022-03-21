@@ -104,7 +104,6 @@ export default function ListTablePage({
                     />
                 </div>
                     <ListTable
-                        filters={{...pageFilters}}
                         columns={columns}
                         singleName={singleName}
                         pluralName={pluralName}

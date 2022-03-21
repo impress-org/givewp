@@ -7,7 +7,6 @@ import ListTableRows from './ListTableRows';
 import {Spinner} from '../index';
 
 export interface ListTableProps {
-    filters: {};
     columns: Array<ListTableColumn>;
     singleName?: string;
     pluralName?: string;
