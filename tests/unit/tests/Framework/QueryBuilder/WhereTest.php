@@ -256,6 +256,37 @@ final class WhereTest extends TestCase
         );
     }
 
+    public function testWhereLikeWithWildCardPositionLeft()
+    {
+        $builder = new QueryBuilder();
+
+        $builder
+            ->select('*')
+            ->from(DB::raw('posts'))
+            ->whereLike('post_title', '%Donation');
+
+        $this->assertContains(
+            "SELECT * FROM posts WHERE post_title LIKE '%Donation'",
+            DB::remove_placeholder_escape($builder->getSQL())
+        );
+    }
+
+
+    public function testWhereLikeWithWildCardPositionRight()
+    {
+        $builder = new QueryBuilder();
+
+        $builder
+            ->select('*')
+            ->from(DB::raw('posts'))
+            ->whereLike('post_title', 'Donation%');
+
+        $this->assertContains(
+            "SELECT * FROM posts WHERE post_title LIKE 'Donation%'",
+            DB::remove_placeholder_escape($builder->getSQL())
+        );
+    }
+
 
     public function testWhereNotLike()
     {
