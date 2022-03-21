@@ -74,7 +74,7 @@ class FormActions extends Endpoint
             case 'trash':
                 foreach ($ids as $id) {
                     $form = wp_trash_post($id);
-                    $form ? $successes[] = $form : $errors[] = $form;
+                    !empty($form) ? $successes[] = $id : $errors[] = $id;
                 }
 
                 break;
@@ -82,7 +82,7 @@ class FormActions extends Endpoint
             case 'restore':
                 foreach ($ids as $id) {
                     $form = wp_untrash_post($id);
-                    $form ? $successes[] = $form : $errors[] = $form;
+                    !empty($form) ? $successes[] = $id : $errors[] = $id;
                 }
 
                 break;
@@ -91,7 +91,7 @@ class FormActions extends Endpoint
             case 'delete':
                 foreach ($ids as $id) {
                     $form = wp_delete_post($id);
-                    $form ? $successes[] = $form : $errors[] = $form;
+                    !empty($form) ? $successes[] = $id : $errors[] = $id;
                 }
 
                 break;
