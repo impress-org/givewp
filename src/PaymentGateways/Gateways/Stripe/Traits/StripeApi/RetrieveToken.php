@@ -24,7 +24,6 @@ trait RetrieveToken
      */
     protected function getTokenDetails($tokenId, $args = [])
     {
-        // Set Application Info.
         give_stripe_set_app_info();
 
         try {
@@ -33,14 +32,13 @@ trait RetrieveToken
                 give_stripe_get_connected_account_options()
             );
 
-            // Retrieve Token Object.
             return StripeToken::retrieve($tokenId, $requestArgs)
                 ->toArray();
         } catch (Exception $e) {
             throw new StripeApiRequestException(
                 sprintf(
-                /* translators: %s Exception Message Body */
-                    __('Unable to retrieve token. Details: %s', 'give'),
+                /* translators: 1: Exception Message Body */
+                    esc_html__('Unable to retrieve token. Details: %1$s', 'give'),
                     $e->getMessage()
                 )
             );
