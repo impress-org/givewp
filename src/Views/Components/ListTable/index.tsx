@@ -42,18 +42,16 @@ export default function ListTablePage({
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(10);
     const [pageFilters, setFilters] = useState(getInitialFilterState(filters));
-
-    const setFiltersLater = useDebounce((name, value) => setFilters(prevState => ({...prevState, [name]: value})))
+    const setFiltersLater = useDebounce((name, value) =>
+        setFilters(prevState => ({...prevState, [name]: value}))
+    );
     useEffect(() => {
         setPage(1);
     }, [filters]);
 
-
-
     const {data, error, isValidating} = donationFormsApi.useListForms({page, perPage, ...pageFilters})
 
     const handleFilterChange: ChangeEventHandler<HTMLInputElement|HTMLSelectElement> = (event) => {
-        event.persist();
         setFilters(prevState => ({...prevState, [event.target.name]: event.target.value}));
     }
 
@@ -138,6 +136,7 @@ const TableFilter = ({ filter, onChange, debouncedOnChange }) => {
                 return (
                     <input
                         type="search"
+                        name={filter.name}
                         aria-label={filter?.ariaLabel}
                         placeholder={filter?.text}
                         onChange={debouncedOnChange}

@@ -11,10 +11,10 @@ export interface ListTableProps {
     singleName?: string;
     pluralName?: string;
     title: string;
-    data: {items: Array<{}>, totalPages: number, totalItems: string};
-    error: {};
-    isValidating: Boolean;
-    parameters: any;
+    data: {items: Array<{}>};
+    error?: {};
+    isValidating?: Boolean;
+    parameters?: any;
 }
 
 export interface ListTableColumn {
@@ -28,17 +28,16 @@ export interface ListTableColumn {
 }
 
 export const ListTable = ({
-        parameters,
+        parameters = {},
         columns,
         singleName = __('item', 'give'),
         pluralName = __('items', 'give'),
         title,
         data,
-        error,
-        isValidating,
+        error = false,
+        isValidating = false,
 }: ListTableProps) => {
-    const [errors, setErrors] = useState<[]>([]);
-    const [successes, setSuccesses] = useState<[]>([]);
+    const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>, successes: Array<number>}>({errors: [], successes: []});
     const [initialLoad, setInitialLoad] = useState<boolean>(true);
     const [loadingOverlay, setLoadingOverlay] = useState<any>(false);
     const [errorOverlay, setErrorOverlay] = useState<any>(false);
@@ -61,7 +60,7 @@ export const ListTable = ({
 
     useEffect(() => {
         let timeoutId;
-        if (errors.length) {
+        if (updateErrors.errors.length) {
             setErrorOverlay(styles.appear);
             timeoutId = setTimeout(
                 () =>
@@ -73,7 +72,11 @@ export const ListTable = ({
             timeoutId = setTimeout(() => setErrorOverlay(false), 100);
         }
         return () => clearTimeout(timeoutId);
-    }, [errors]);
+    }, [updateErrors.errors]);
+
+    const clearUpdateErrors = () => {
+        setUpdateErrors({errors: [], successes: []})
+    }
 
     return (
         <>
@@ -138,38 +141,35 @@ export const ListTable = ({
                                 role="dialog"
                                 aria-labelledby="giveListTableErrorMessage"
                             >
-                                {Boolean(successes.length) && (
+                                {Boolean(updateErrors.successes.length) && (
                                     <span>
-                                        {successes.length + ' ' +
+                                        {updateErrors.successes.length + ' ' +
                                             // translators:
                                             // Like '1 item was updated successfully'
                                             // or '3 items were updated successfully'
                                             _n(
                                                 sprintf('%s was updated successfully.', singleName),
                                                 sprintf('%s were updated successfully.', pluralName),
-                                                successes.length,
+                                                updateErrors.successes.length,
                                                 'give'
                                             )
                                         }
                                     </span>
                                 )}
                                 <span id="giveListTableErrorMessage">
-                                    {errors.length +
+                                    {updateErrors.errors.length +
                                         ' ' +
                                         _n(
                                             `${singleName} couldn't be updated.`,
                                             `${pluralName} couldn't be updated.`,
-                                            errors.length,
+                                            updateErrors.errors.length,
                                             'give'
                                         )}
                                 </span>
                                 <button
                                     type="button"
                                     className={cx('dashicons dashicons-dismiss', styles.dismiss)}
-                                    onClick={() => {
-                                        setErrors([]);
-                                        setSuccesses([]);
-                                    }}
+                                    onClick={clearUpdateErrors}
                                 >
                                     <span className="give-visually-hidden">{__('dismiss', 'give')}</span>
                                 </button>
