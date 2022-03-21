@@ -4,6 +4,7 @@ namespace Give\Framework\PaymentGateways\Log;
 
 use Give\Log\Log;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
+use Give\ValueObjects\CardInfo;
 
 /**
  * @unreleased remove cardInfo from log
@@ -23,6 +24,10 @@ class PaymentGatewayLog extends Log
         foreach ($arguments[1] as $argument) {
             if ($argument instanceof GatewayPaymentData) {
                 unset($argument->cardInfo, $argument->legacyPaymentData['card_info']);
+            }
+
+            if ($argument instanceof CardInfo) {
+                unset($argument);
             }
         }
 
