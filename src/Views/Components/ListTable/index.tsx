@@ -63,10 +63,12 @@ export default function ListTablePage({
     }, []);
 
     const handleFilterChange: ChangeEventHandler<HTMLInputElement|HTMLSelectElement> = (event) => {
+        event.persist();
         setFilters(prevState => ({...prevState, [event.target.name]: event.target.value}));
     }
 
     const handleDebouncedFilterChange: ChangeEventHandler<HTMLInputElement|HTMLSelectElement> = (event) => {
+        event.persist();
         setFiltersLater(event.target.name, event.target.value);
     }
 

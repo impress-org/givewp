@@ -39,8 +39,6 @@ export const ListTable = ({
         error,
         isValidating
 }: ListTableProps) => {
-
-
     const [errors, setErrors] = useState<[]>([]);
     const [successes, setSuccesses] = useState<[]>([]);
     const [initialLoad, setInitialLoad] = useState<boolean>(true);
