@@ -94,7 +94,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
                 $exception->getMessage(),
                 [
                     'Payment Gateway' => $this->getId(),
-                    'Donation Data' => $gatewayPaymentData
+                    'Donation ID' => $gatewayPaymentData->donationId
                 ]
             );
 
@@ -122,8 +122,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
                 $exception->getMessage(),
                 [
                     'Payment Gateway' => $this->getId(),
-                    'Donation Data' => $paymentData,
-                    'Subscription Data' => $subscriptionData
+                    'Donation ID' => $paymentData->donationId,
+                    'Subscription ID' => $subscriptionData->subscriptionId
                 ]
             );
 
