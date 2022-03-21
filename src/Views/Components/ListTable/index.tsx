@@ -4,9 +4,9 @@ import type {ChangeEventHandler} from 'react';
 import styles from './ListTablePage.module.scss';
 import {ListTable, ListTableColumn} from './ListTable';
 import {GiveIcon} from '@givewp/components';
-import {debounce} from 'lodash';
 import ListTableApi from './api';
 import Pagination from "./Pagination";
+import useDebounce from "./hooks/useDebounce";
 
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 
@@ -43,24 +43,14 @@ export default function ListTablePage({
     const [perPage, setPerPage] = useState<number>(10);
     const [pageFilters, setFilters] = useState(getInitialFilterState(filters));
 
+    const setFiltersLater = useDebounce((name, value) => setFilters(prevState => ({...prevState, [name]: value})))
     useEffect(() => {
         setPage(1);
     }, [filters]);
 
-    const setFiltersLater = useRef(
-        debounce((name, value) =>
-            setFilters(prevState => ({...prevState, [name]: value})),
-            500
-        )
-    ).current;
+
 
     const {data, error, isValidating} = donationFormsApi.useListForms({page, perPage, ...pageFilters})
-
-    useEffect(() => {
-        return () => {
-            setFiltersLater.cancel();
-        }
-    }, []);
 
     const handleFilterChange: ChangeEventHandler<HTMLInputElement|HTMLSelectElement> = (event) => {
         event.persist();

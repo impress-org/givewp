@@ -138,7 +138,7 @@ export const ListTable = ({
                                 role="dialog"
                                 aria-labelledby="giveListTableErrorMessage"
                             >
-                                {!!successes.length && (
+                                {Boolean(successes.length) && (
                                     <span>
                                         {successes.length + ' ' +
                                             // translators:
