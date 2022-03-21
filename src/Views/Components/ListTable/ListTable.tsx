@@ -38,9 +38,9 @@ export const ListTable = ({
         isValidating = false,
 }: ListTableProps) => {
     const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>, successes: Array<number>}>({errors: [], successes: []});
+    const [errorOverlay, setErrorOverlay] = useState<any>(false);
     const [initialLoad, setInitialLoad] = useState<boolean>(true);
     const [loadingOverlay, setLoadingOverlay] = useState<any>(false);
-    const [errorOverlay, setErrorOverlay] = useState<any>(false);
     const isEmpty = !error && data?.items.length === 0;
 
     useEffect(() => {

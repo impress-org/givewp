@@ -1,32 +1,14 @@
 import RowAction from "../../../Views/Components/ListTable/RowAction";
 import {__} from "@wordpress/i18n";
 import {useSWRConfig} from "swr";
+import ListTableApi from "../../../Views/Components/ListTable/api";
 
-/*async function mutateForm(ids, endpoint, method, remove = false) {
-    try {
-        const response = await api.fetchWithArgs(endpoint, {ids}, method);
-        // if we just removed the last entry from the page and we're not on the first page, go back a page
-        if (remove && !response.errors.length && data.items.length == 1 && data.totalPages > 1) {
-            setPage(page - 1);
-        }
-        // otherwise, revalidate current page
-        else {
-            await mutate(listParams);
-        }
-        //revalidate all pages after the current page
-        const mutations = [];
-        for (let i = page + 1; i <= data.totalPages; i++) {
-            mutations.push(mutate({...listParams, page: i}));
-        }
-        setErrors(response.errors);
-        setSuccesses(response.successes);
-        return response;
-    } catch (error) {
-        setErrors(ids.split(','));
-        setSuccesses([]);
-        return {errors: ids.split(','), successes: []};
-    }
-}*/
+const donationFormsApi = new ListTableApi(window.GiveDonationForms);
+
+const deleteForm = (mutate, parameters, endpoint, id) => {
+    donationFormsApi.fetchWithArgs(endpoint, {ids: [id]}, 'DELETE')
+        .then((res) => mutate(parameters));
+}
 
 export const DonationFormsRowActions = ({data, item, parameters, removeRow, addRow}) => {
     const trashEnabled = Boolean(data?.trash);
@@ -59,7 +41,7 @@ export const DonationFormsRowActions = ({data, item, parameters, removeRow, addR
                 hiddenText={item.name}
             />
             <RowAction
-                onClick={removeRow(() => console.log(trashEnabled ? '/trash' : '/delete'))}
+                onClick={removeRow(() => deleteForm(mutate, parameters, trashEnabled ? '/trash' : '/delete', item.id))}
                 actionId={item.id}
                 highlight={!trashEnabled}
                 displayText={trashEnabled ? __('Trash', 'give') : __('Delete', 'give')}
