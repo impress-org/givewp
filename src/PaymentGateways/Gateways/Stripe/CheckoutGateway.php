@@ -71,7 +71,6 @@ class CheckoutGateway extends PaymentGateway
     /**
      * @since 2.19.0
      *
-     * @param $workflow
      * @return RedirectOffsite
      */
     protected function createPaymentRedirect( GatewayPaymentData $paymentData )

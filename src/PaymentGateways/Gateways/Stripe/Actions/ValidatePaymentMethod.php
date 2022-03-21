@@ -2,15 +2,14 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe\Actions;
 
-use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\Stripe\Exceptions\PaymentMethodException;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
-use Give\PaymentGateways\Gateways\Stripe\WorkflowAction;
 
 /**
+ * @unreleased Do not extend removed WorkflowAction class.
  * @since 2.19.0
  */
-class ValidatePaymentMethod extends WorkflowAction
+class ValidatePaymentMethod
 {
     /**
      * @since 2.19.0
