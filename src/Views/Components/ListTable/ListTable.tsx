@@ -1,6 +1,5 @@
 import {useEffect, useState} from 'react';
 import {__, _n, sprintf} from '@wordpress/i18n';
-import {useSWRConfig, unstable_serialize} from 'swr';
 import cx from 'classnames';
 
 import styles from './style.module.scss';
@@ -37,14 +36,13 @@ export const ListTable = ({
         title,
         data,
         error,
-        isValidating
+        isValidating,
 }: ListTableProps) => {
     const [errors, setErrors] = useState<[]>([]);
     const [successes, setSuccesses] = useState<[]>([]);
     const [initialLoad, setInitialLoad] = useState<boolean>(true);
     const [loadingOverlay, setLoadingOverlay] = useState<any>(false);
     const [errorOverlay, setErrorOverlay] = useState<any>(false);
-    const {cache} = useSWRConfig();
     const isEmpty = !error && data?.items.length === 0;
 
     useEffect(() => {
@@ -52,7 +50,7 @@ export const ListTable = ({
     }, [data]);
 
     useEffect(() => {
-        if (isValidating && !cache.get(unstable_serialize(parameters))) {
+        if (isValidating) {
             setLoadingOverlay(styles.appear);
         }
         if (!isValidating && loadingOverlay) {
