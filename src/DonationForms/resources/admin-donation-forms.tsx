@@ -11,8 +11,6 @@ declare global {
     }
 }
 
-const donationFormsApi = new ListTableApi(window.GiveDonationForms);
-
 const donationStatus = [
     {
         name: 'any',
@@ -68,7 +66,6 @@ ReactDOM.render(
             headerButtons={headerButtons}
             filters={donationFormsFilters}
             columns={donationFormsColumns}
-            api={donationFormsApi}
         />
     </StrictMode>,
     document.getElementById('give-admin-donation-forms-root')

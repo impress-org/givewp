@@ -40,8 +40,7 @@ const RenderRow = ({ column, item }) => {
     }
 }
 
-export default function ListTableRows({listParams, mutateForm, columns, api}) {
-    const {data, isValidating} = api.useListForms(listParams);
+export default function ListTableRows({listParams, columns, data, isValidating}) {
     const [removed, setRemoved] = useState([]);
     const [added, setAdded] = useState([]);
 
@@ -63,20 +62,20 @@ export default function ListTableRows({listParams, mutateForm, columns, api}) {
         }
     }, [added]);
 
-    function removeRow(endpoint, method) {
+    function removeRow(removeCallback) {
         return async (event) => {
             const id = event.target.dataset.actionid;
             setRemoved([id]);
-            await mutateForm(id, endpoint, method, true);
+            await removeCallback(id);
             setRemoved([]);
         }
     }
 
-    function addRow(endpoint, method) {
+    function addRow(addCallback) {
         return async (event) => {
             const id = event.target.dataset.actionid;
-            const response = await mutateForm(id, endpoint, method);
-            setAdded([...response.successes]);
+            await addCallback(id);
+            setAdded([id]);
         }
     }
 
