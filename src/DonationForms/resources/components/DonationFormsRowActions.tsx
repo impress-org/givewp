@@ -1,6 +1,5 @@
 import RowAction from "../../../Views/Components/ListTable/RowAction";
 import {__} from "@wordpress/i18n";
-import {useSWRConfig} from "swr";
 import ListTableApi from "../../../Views/Components/ListTable/api";
 
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
@@ -10,20 +9,29 @@ const deleteForm = (mutate, endpoint, id) => {
         .then((res) => mutate());
 }
 
-export const DonationFormsRowActions = ({data, item, removeRow, addRow}) => {
+const restoreForm = (mutate, id) => {
+    donationFormsApi.fetchWithArgs('/restore', {ids: [id]}, 'POST')
+        .then((res) => mutate());
+}
+
+const duplicateForm = (mutate, id) => {
+    donationFormsApi.fetchWithArgs('/duplicate', {ids: [id]}, 'POST')
+        .then((res) => mutate());
+}
+
+export function DonationFormsRowActions ({data, item, removeRow, addRow}){
     const trashEnabled = Boolean(data?.trash);
-    const {mutate} = useSWRConfig();
-    if(false/*parameters.status === 'trash'*/) {
+    if(this.parameters.status === 'trash') {
         return (
             <>
                 <RowAction
-                    onClick={removeRow(() => console.log('restored'))}
+                    onClick={removeRow(() => restoreForm(this.mutate, item.id))}
                     actionId={item.id}
                     displayText={__('Restore', 'give')}
                     hiddenText={item.name}
                 />
                 <RowAction
-                    onClick={removeRow(() => console.log('removed'))}
+                    onClick={removeRow(() => deleteForm(this.mutate, '/delete', item.id))}
                     actionId={item.id}
                     displayText={__('Delete Permanently', 'give')}
                     hiddenText={item.name}
@@ -41,7 +49,7 @@ export const DonationFormsRowActions = ({data, item, removeRow, addRow}) => {
                 hiddenText={item.name}
             />
             <RowAction
-                onClick={removeRow(() => deleteForm(mutate, trashEnabled ? '/trash' : '/delete', item.id))}
+                onClick={removeRow(() => deleteForm(this.mutate, trashEnabled ? '/trash' : '/delete', item.id))}
                 actionId={item.id}
                 highlight={!trashEnabled}
                 displayText={trashEnabled ? __('Trash', 'give') : __('Delete', 'give')}
@@ -53,7 +61,7 @@ export const DonationFormsRowActions = ({data, item, removeRow, addRow}) => {
                 hiddenText={item.name}
             />
             <RowAction
-                onClick={addRow(()=> console.log('duplicated'))}
+                onClick={addRow(() => duplicateForm(this.mutate, item.id))}
                 actionId={item.id}
                 displayText={__('Duplicate', 'give')}
                 hiddenText={item.name}

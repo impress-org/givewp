@@ -7,6 +7,7 @@ import ListTableApi from "../../../Views/Components/ListTable/api";
 import styles from "../../../Views/Components/ListTable/ListTablePage.module.scss";
 import {useResetPage} from "../../../Views/Components/ListTable/hooks/useResetPage";
 import {DonationFormsRowActions} from "./DonationFormsRowActions";
+import {useSWRConfig} from "swr";
 
 declare global {
     interface Window {
@@ -54,11 +55,17 @@ export default function DonationFormsListTable(){
         setFilters(prevState => ({...prevState, [name]: value}))
     );
 
+    const parameters = {
+        page,
+        perPage,
+        ...filters
+    };
+
     useEffect(() => {
         setPage(1);
     }, [filters]);
 
-    const {data, error, isValidating} = donationFormsApi.useListTable({page, perPage, ...filters})
+    const {data, error, mutate, isValidating} = donationFormsApi.useListTable(parameters)
 
     useResetPage(data, page, setPage);
 
@@ -78,7 +85,7 @@ export default function DonationFormsListTable(){
             pluralName={__('donation forms', 'give')}
             inHeader={headerButtons}
             columns={donationFormsColumns}
-            rowActions={DonationFormsRowActions}
+            rowActions={DonationFormsRowActions.bind({mutate, parameters})}
             data={data}
             error={error}
             isValidating={isValidating}

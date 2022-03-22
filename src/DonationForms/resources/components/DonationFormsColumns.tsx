@@ -25,7 +25,7 @@ export const donationFormsColumns: Array<ListTableColumn> = [
         text: __('Goal', 'give'),
         render: (form: {goal, edit, id}) => {
             if (!form.goal) {
-                return __('No Goal Set', 'give');
+                return <>{__('No Goal Set', 'give')}</>;
             } else {
                 const goalPercentage = form.goal.format == 'percentage' ? form.goal.actual :
                     Math.max(Math.min(form.goal.progress, 100), 0) + '%';
