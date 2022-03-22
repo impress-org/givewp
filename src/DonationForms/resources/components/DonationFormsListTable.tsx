@@ -5,6 +5,7 @@ import {ChangeEventHandler, useEffect, useState} from "react";
 import useDebounce from "../../../Views/Components/ListTable/hooks/useDebounce";
 import ListTableApi from "../../../Views/Components/ListTable/api";
 import styles from "../../../Views/Components/ListTable/ListTablePage.module.scss";
+import {useResetPage} from "../../../Views/Components/ListTable/hooks/useResetPage";
 
 declare global {
     interface Window {
@@ -46,7 +47,7 @@ const headerButtons = (
 export default function DonationFormsListTable(){
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(10);
-    const [filters, setFilters] = useState({search: ''});
+    const [filters, setFilters] = useState({search: '', status: 'any'});
 
     const setFiltersLater = useDebounce((name, value) =>
         setFilters(prevState => ({...prevState, [name]: value}))
@@ -57,12 +58,7 @@ export default function DonationFormsListTable(){
 
     const {data, error, isValidating} = donationFormsApi.useListTable({page, perPage, ...filters})
 
-    //if we're displaying a non-existent page (like after deleting an item), go to the last available page
-    useEffect(() => {
-        if(data?.totalPages && page > data.totalPages){
-            setPage(data.totalPages);
-        }
-    }, [data]);
+    useResetPage(data, page, setPage);
 
     const handleFilterChange: ChangeEventHandler<HTMLInputElement|HTMLSelectElement> = (event) => {
         setFilters(prevState => ({...prevState, [event.target.name]: event.target.value}));
