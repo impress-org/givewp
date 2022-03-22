@@ -61,13 +61,9 @@ export default function DonationFormsListTable(){
         ...filters
     };
 
-    useEffect(() => {
-        setPage(1);
-    }, [filters]);
-
     const {data, error, mutate, isValidating} = donationFormsApi.useListTable(parameters)
 
-    useResetPage(data, page, setPage);
+    useResetPage(data, page, setPage, filters);
 
     const handleFilterChange: ChangeEventHandler<HTMLInputElement|HTMLSelectElement> = (event) => {
         setFilters(prevState => ({...prevState, [event.target.name]: event.target.value}));
