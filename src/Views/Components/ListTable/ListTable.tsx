@@ -129,6 +129,7 @@ export const ListTable = ({
                                 data={data}
                                 isValidating={isValidating}
                                 rowActions={rowActions}
+                                setUpdateErrors={setUpdateErrors}
                             />
                         </tbody>
                     </table>

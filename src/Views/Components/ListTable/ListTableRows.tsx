@@ -40,7 +40,7 @@ const RenderRow = ({ column, item }) => {
     }
 }
 
-export default function ListTableRows({columns, data, isValidating, rowActions}) {
+export default function ListTableRows({columns, data, isValidating, rowActions, setUpdateErrors}) {
     const [removed, setRemoved] = useState([]);
     const [added, setAdded] = useState([]);
 
@@ -96,7 +96,7 @@ export default function ListTableRows({columns, data, isValidating, rowActions})
                     <RenderRow column={column} item={item}/>
                     {!isValidating && rowActions &&
                         <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
-                            {column?.heading && rowActions({data, item, removeRow, addRow})}
+                            {column?.heading && rowActions({data, item, removeRow, addRow, setUpdateErrors})}
                         </div>
                     }
                 </TableCell>

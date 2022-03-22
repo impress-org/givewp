@@ -4,34 +4,38 @@ import ListTableApi from "../../../Views/Components/ListTable/api";
 
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 
-const deleteForm = (mutate, endpoint, id) => {
-    donationFormsApi.fetchWithArgs(endpoint, {ids: [id]}, 'DELETE')
-        .then((res) => mutate());
+const fetchAndUpdateErrors = async (mutate, endpoint, setUpdateErrors, id, method) => {
+    const response = await donationFormsApi.fetchWithArgs(endpoint, {ids: [id]}, method);
+    setUpdateErrors(response);
+    mutate();
 }
 
-const restoreForm = (mutate, id) => {
-    donationFormsApi.fetchWithArgs('/restore', {ids: [id]}, 'POST')
-        .then((res) => mutate());
+const deleteForm = async (mutate, setUpdateErrors, id, trashEnabled = false) => {
+    const endpoint = trashEnabled ? '/trash' : '/delete';
+    await fetchAndUpdateErrors(mutate, endpoint, setUpdateErrors, id, 'DELETE');
 }
 
-const duplicateForm = (mutate, id) => {
-    donationFormsApi.fetchWithArgs('/duplicate', {ids: [id]}, 'POST')
-        .then((res) => mutate());
+const restoreForm = async (mutate, setUpdateErrors, id) => {
+    await fetchAndUpdateErrors(mutate,'/restore', setUpdateErrors, id, 'POST');
 }
 
-export function DonationFormsRowActions ({data, item, removeRow, addRow}){
+const duplicateForm = async(mutate, setUpdateErrors, id) => {
+    await fetchAndUpdateErrors(mutate,'/duplicate', setUpdateErrors, id, 'POST');
+}
+
+export function DonationFormsRowActions ({data, item, removeRow, addRow, setUpdateErrors}){
     const trashEnabled = Boolean(data?.trash);
     if(this.parameters.status === 'trash') {
         return (
             <>
                 <RowAction
-                    onClick={removeRow(() => restoreForm(this.mutate, item.id))}
+                    onClick={removeRow(async () => await restoreForm(this.mutate, setUpdateErrors, item.id))}
                     actionId={item.id}
                     displayText={__('Restore', 'give')}
                     hiddenText={item.name}
                 />
                 <RowAction
-                    onClick={removeRow(() => deleteForm(this.mutate, '/delete', item.id))}
+                    onClick={removeRow(async () => await deleteForm(this.mutate, setUpdateErrors, item.id))}
                     actionId={item.id}
                     displayText={__('Delete Permanently', 'give')}
                     hiddenText={item.name}
@@ -49,7 +53,7 @@ export function DonationFormsRowActions ({data, item, removeRow, addRow}){
                 hiddenText={item.name}
             />
             <RowAction
-                onClick={removeRow(() => deleteForm(this.mutate, trashEnabled ? '/trash' : '/delete', item.id))}
+                onClick={removeRow(async () => await deleteForm(this.mutate, setUpdateErrors, item.id))}
                 actionId={item.id}
                 highlight={!trashEnabled}
                 displayText={trashEnabled ? __('Trash', 'give') : __('Delete', 'give')}
@@ -61,7 +65,7 @@ export function DonationFormsRowActions ({data, item, removeRow, addRow}){
                 hiddenText={item.name}
             />
             <RowAction
-                onClick={addRow(() => duplicateForm(this.mutate, item.id))}
+                onClick={addRow(() => duplicateForm(this.mutate, setUpdateErrors, item.id))}
                 actionId={item.id}
                 displayText={__('Duplicate', 'give')}
                 hiddenText={item.name}
