@@ -1,5 +1,11 @@
 import schema from './block.json';
+import {registerBlockType} from '@wordpress/blocks';
+import {useBlockProps} from '@wordpress/block-editor';
 
-const {registerBlockType} = wp.blocks;
+registerBlockType(schema, {
+    edit: () => {
+        const blockProps = useBlockProps();
 
-registerBlockType(schema, {});
+        return <div {...blockProps}>It's all happening.</div>;
+    },
+});
