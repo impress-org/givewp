@@ -553,12 +553,6 @@ class DonationRepository
                 DonationMetaKeys::GATEWAY,
                 DonationMetaKeys::ANONYMOUS
             )
-            ->leftJoin(
-                'give_donationmeta',
-                'id',
-                'metaTable.donation_id',
-                'metaTable'
-            )
             ->where('post_type', 'give_payment');
 
         $query = $this->getWhereConditionsForRequest($query, $request);
@@ -585,13 +579,7 @@ class DonationRepository
     public function getTotalDonationsCountForRequest(WP_REST_Request $request)
     {
         $query = DB::table('posts')
-            ->where('post_type', 'give_payment')
-            ->leftJoin(
-                'give_donationmeta',
-                'id',
-                'metaTable.donation_id',
-                'metaTable'
-            );
+            ->where('post_type', 'give_payment');
 
         $query = $this->getWhereConditionsForRequest($query, $request);
 
@@ -611,6 +599,15 @@ class DonationRepository
         $start = $request->get_param('start');
         $end = $request->get_param('end');
         $form = $request->get_param('form');
+
+        if ($form || ($search && !ctype_digit($search))) {
+            $query->leftJoin(
+                'give_donationmeta',
+                'id',
+                'metaTable.donation_id',
+                'metaTable'
+            );
+        }
 
         if ($search) {
             if (ctype_digit($search)) {
