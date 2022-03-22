@@ -9,5 +9,12 @@
             }
         ]
     ],
-    "plugins": ["@wordpress/babel-plugin-import-jsx-pragma", "@babel/plugin-transform-react-jsx"]
+    "plugins": [
+        [
+            "@babel/transform-react-jsx"
+        ],
+        "@babel/plugin-transform-runtime",
+        "@babel/plugin-proposal-object-rest-spread",
+        "react-require"
+    ]
 }
