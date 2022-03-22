@@ -16,14 +16,13 @@ class CreateSource
      * @unreleased
      *
      * @param array $stripeSourceRequestArgs
-     * @param int $formId
      *
      * @return Source
      * @throws StripeApiRequestException
      */
-    public function createCharge($stripeSourceRequestArgs, $formId = 0)
+    public function createCharge($stripeSourceRequestArgs)
     {
-        give_stripe_set_app_info($formId);
+        give_stripe_set_app_info();
 
         try {
             // Charge application fee, only if the Stripe premium add-on is not active.
