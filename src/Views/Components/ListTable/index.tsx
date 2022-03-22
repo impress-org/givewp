@@ -49,7 +49,7 @@ export default function ListTablePage({
         setPage(1);
     }, [filters]);
 
-    const {data, error, isValidating} = donationFormsApi.useListForms({page, perPage, ...pageFilters})
+    const {data, error, isValidating} = donationFormsApi.useListTable({page, perPage, ...pageFilters})
 
     //if we're displaying a non-existent page (like after deleting an item), go to the last available page
     useEffect(() => {

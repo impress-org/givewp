@@ -38,7 +38,7 @@ export default class ListTableApi {
     }
 
     // SWR Fetcher
-    useListForms = ({page, perPage, ...filters}) => {
+    useListTable = ({page, perPage, ...filters}) => {
         const {data, error, isValidating} = useSWR({page, perPage, ...filters}, this.fetcher, {
             use: [lagData],
             onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
