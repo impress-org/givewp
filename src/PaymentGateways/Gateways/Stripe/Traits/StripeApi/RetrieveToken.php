@@ -16,24 +16,24 @@ trait RetrieveToken
      *
      * @unreleased
      *
-     * @param array $args Additional arguments.
      * @param string $tokenId Stripe Token ID.
+     * @param array $options
      *
      * @return array
      * @throws StripeApiRequestException
      */
-    protected function getTokenDetails($tokenId, $args = [])
+    protected function getTokenDetails($tokenId, $options = [])
     {
         give_stripe_set_app_info();
 
         try {
-            $requestArgs = wp_parse_args(
-                $args,
-                give_stripe_get_connected_account_options()
-            );
-
-            return StripeToken::retrieve($tokenId, $requestArgs)
-                ->toArray();
+            return StripeToken::retrieve(
+                $tokenId,
+                wp_parse_args(
+                    $options,
+                    give_stripe_get_connected_account_options()
+                )
+            )->toArray();
         } catch (Exception $e) {
             throw new StripeApiRequestException(
                 sprintf(

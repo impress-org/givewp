@@ -16,11 +16,12 @@ trait CreateCharge
      * @unreleased
      *
      * @param array $stripeChargeRequestArgs
+     * @param array $options
      *
      * @return Charge
      * @throws StripeApiRequestException
      */
-    public function createCharge($stripeChargeRequestArgs)
+    public function createCharge($stripeChargeRequestArgs, $options = [])
     {
         give_stripe_set_app_info();
 
@@ -34,7 +35,10 @@ trait CreateCharge
 
             return Charge::create(
                 $stripeChargeRequestArgs,
-                give_stripe_get_connected_account_options()
+                wp_parse_args(
+                    $options,
+                    give_stripe_get_connected_account_options()
+                )
             );
         } catch (Exception $e) {
             throw new StripeApiRequestException(

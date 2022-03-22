@@ -16,11 +16,12 @@ class CreateSource
      * @unreleased
      *
      * @param array $stripeSourceRequestArgs
+     * @param array $options
      *
      * @return Source
      * @throws StripeApiRequestException
      */
-    public function createCharge($stripeSourceRequestArgs)
+    public function createCharge($stripeSourceRequestArgs, $options = [])
     {
         give_stripe_set_app_info();
 
@@ -34,7 +35,10 @@ class CreateSource
 
             return Source::create(
                 $stripeSourceRequestArgs,
-                give_stripe_get_connected_account_options()
+                wp_parse_args(
+                    $options,
+                    give_stripe_get_connected_account_options()
+                )
             );
         } catch (Exception $e) {
             throw new StripeApiRequestException(
