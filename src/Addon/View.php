@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Addon\Helpers;
+namespace Give\Addon;
 
 use InvalidArgumentException;
 

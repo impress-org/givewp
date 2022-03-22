@@ -1,10 +1,12 @@
 <?php
+
 namespace Give;
 
 use Give\Addon\Activation;
 use Give\Addon\Environment;
-use Give\NextGen\AddonServiceProvider;
 use Give\NextGen\DonationForm\ServiceProvider as DonationFormServiceProvider;
+use Give\Addon\ServiceProvider as AddonServiceProvider;
+use Give\NextGen\ServiceProvider as NextGenServiceProvider;
 
 /**
  * Plugin Name:         Give - Next Gen
@@ -52,6 +54,7 @@ add_action(
         if (Environment::giveMinRequiredVersionCheck()) {
             give()->registerServiceProvider(AddonServiceProvider::class);
             give()->registerServiceProvider(DonationFormServiceProvider::class);
+            give()->registerServiceProvider(NextGenServiceProvider::class);
         }
     }
 );

@@ -23,7 +23,7 @@ class Notices
             [
                 'id' => 'give-next-gen-activation-error',
                 'type' => 'error',
-                'description' => View::load('admin/notices/give-version-error'),
+                'description' => View::load('Addon.admin/notices/give-version-error'),
                 'show' => true,
             ]
         );
@@ -37,6 +37,6 @@ class Notices
      */
     public static function giveInactive()
     {
-        echo View::load('admin/notices/give-inactive');
+        echo View::load('Addon.admin/notices/give-inactive');
     }
 }
