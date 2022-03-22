@@ -6,6 +6,7 @@ import useDebounce from "../../../Views/Components/ListTable/hooks/useDebounce";
 import ListTableApi from "../../../Views/Components/ListTable/api";
 import styles from "../../../Views/Components/ListTable/ListTablePage.module.scss";
 import {useResetPage} from "../../../Views/Components/ListTable/hooks/useResetPage";
+import {DonationFormsRowActions} from "./DonationFormsRowActions";
 
 declare global {
     interface Window {
@@ -52,6 +53,7 @@ export default function DonationFormsListTable(){
     const setFiltersLater = useDebounce((name, value) =>
         setFilters(prevState => ({...prevState, [name]: value}))
     );
+
     useEffect(() => {
         setPage(1);
     }, [filters]);
@@ -76,6 +78,7 @@ export default function DonationFormsListTable(){
             pluralName={__('donation forms', 'give')}
             inHeader={headerButtons}
             columns={donationFormsColumns}
+            rowActions={DonationFormsRowActions}
             data={data}
             error={error}
             isValidating={isValidating}

@@ -5,9 +5,9 @@ import ListTableApi from "../../../Views/Components/ListTable/api";
 
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 
-const deleteForm = (mutate, parameters, endpoint, id) => {
+const deleteForm = (mutate, endpoint, id) => {
     donationFormsApi.fetchWithArgs(endpoint, {ids: [id]}, 'DELETE')
-        .then((res) => mutate(parameters));
+        .then((res) => mutate());
 }
 
 export const DonationFormsRowActions = ({data, item, removeRow, addRow}) => {
@@ -41,7 +41,7 @@ export const DonationFormsRowActions = ({data, item, removeRow, addRow}) => {
                 hiddenText={item.name}
             />
             <RowAction
-                onClick={removeRow(() => deleteForm(mutate, parameters, trashEnabled ? '/trash' : '/delete', item.id))}
+                onClick={removeRow(() => deleteForm(mutate, trashEnabled ? '/trash' : '/delete', item.id))}
                 actionId={item.id}
                 highlight={!trashEnabled}
                 displayText={trashEnabled ? __('Trash', 'give') : __('Delete', 'give')}

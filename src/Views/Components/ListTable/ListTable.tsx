@@ -15,6 +15,7 @@ export interface ListTableProps {
     //optional
     pluralName?: string;
     singleName?: string;
+    rowActions?: (({item, data, addRow, removeRow}) => JSX.Element)|JSX.Element|JSX.Element[]|null;
     error?: {};
     isValidating?: Boolean;
     parameters?: any;
@@ -26,8 +27,7 @@ export interface ListTableColumn {
     preset?: string;
     heading?: boolean;
     addClass?: string;
-    render?: (item: {}) => JSX.Element|string|null;
-    rowActions?: (props: {}) => JSX.Element|null;
+    render?: ((item: {}) => JSX.Element)|JSX.Element|JSX.Element[]|null;
 }
 
 export const ListTable = ({
@@ -36,6 +36,7 @@ export const ListTable = ({
         pluralName = __('items', 'give'),
         title,
         data,
+        rowActions = null,
         error = false,
         isValidating = false,
 }: ListTableProps) => {
@@ -127,6 +128,7 @@ export const ListTable = ({
                                 columns={columns}
                                 data={data}
                                 isValidating={isValidating}
+                                rowActions={rowActions}
                             />
                         </tbody>
                     </table>

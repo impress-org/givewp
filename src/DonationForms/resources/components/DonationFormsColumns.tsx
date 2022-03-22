@@ -2,7 +2,6 @@ import {__} from "@wordpress/i18n";
 import styles from "./DonationFormsColumns.module.scss";
 import cx from "classnames";
 import {ListTableColumn} from "@givewp/components";
-import {DonationFormsRowActions} from "./DonationFormsRowActions";
 
 export const donationFormsColumns: Array<ListTableColumn> = [
     {
@@ -15,7 +14,6 @@ export const donationFormsColumns: Array<ListTableColumn> = [
         text: __('Name', 'give'),
         heading: true,
         render: (form: {edit, name}) => <a href={form.edit}>{form.name}</a>,
-        rowActions: DonationFormsRowActions
     },
     {
         name: 'amount',

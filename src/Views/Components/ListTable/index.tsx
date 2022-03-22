@@ -14,6 +14,7 @@ export interface ListTablePageProps {
     //optional
     inHeader?: JSX.Element|JSX.Element[]|null;
     children?: JSX.Element|JSX.Element[]|null;
+    rowActions: JSX.Element|JSX.Element[]|null;
     page?: number;
     setPage?: null|((page: number) => void);
     error?: any;
@@ -26,6 +27,7 @@ export default function ListTablePage({
     title,
     columns,
     data,
+    rowActions = null,
     children = null,
     inHeader = null,
     error = false,
@@ -61,6 +63,7 @@ export default function ListTablePage({
                         singleName={singleName}
                         pluralName={pluralName}
                         title={title}
+                        rowActions={rowActions}
                         data={data}
                         error={error}
                         isValidating={isValidating}
