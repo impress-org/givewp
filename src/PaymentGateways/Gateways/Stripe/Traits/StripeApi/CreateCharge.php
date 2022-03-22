@@ -20,7 +20,7 @@ trait CreateCharge
      * @return Charge
      * @throws StripeApiRequestException
      */
-    public function createCharge($donationId, $stripeChargeRequestArgs)
+    public function createCharge($stripeChargeRequestArgs)
     {
         give_stripe_set_app_info();
 
