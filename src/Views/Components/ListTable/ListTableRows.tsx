@@ -40,7 +40,7 @@ const RenderRow = ({ column, item }) => {
     }
 }
 
-export default function ListTableRows({listParams, columns, data, isValidating}) {
+export default function ListTableRows({columns, data, isValidating}) {
     const [removed, setRemoved] = useState([]);
     const [added, setAdded] = useState([]);
 
@@ -101,7 +101,6 @@ export default function ListTableRows({listParams, columns, data, isValidating})
                             <column.rowActions
                                 data={data}
                                 item={item}
-                                parameters={listParams}
                                 removeRow={removeRow}
                                 addRow={addRow}
                             />

@@ -10,10 +10,10 @@ const deleteForm = (mutate, parameters, endpoint, id) => {
         .then((res) => mutate(parameters));
 }
 
-export const DonationFormsRowActions = ({data, item, parameters, removeRow, addRow}) => {
+export const DonationFormsRowActions = ({data, item, removeRow, addRow}) => {
     const trashEnabled = Boolean(data?.trash);
     const {mutate} = useSWRConfig();
-    if(parameters.status === 'trash') {
+    if(false/*parameters.status === 'trash'*/) {
         return (
             <>
                 <RowAction

@@ -122,7 +122,6 @@ export const ListTable = ({
                         </thead>
                         <tbody className={styles.tableContent}>
                             <ListTableRows
-                                listParams={parameters}
                                 columns={columns}
                                 data={data}
                                 isValidating={isValidating}

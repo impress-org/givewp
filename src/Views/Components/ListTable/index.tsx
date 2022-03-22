@@ -29,6 +29,7 @@ export interface ListTablePageProps {
     pluralName: string;
     title: string;
     columns: Array<ListTableColumn>;
+    children: JSX.Element|null;
 }
 
 export default function ListTablePage({
@@ -37,7 +38,8 @@ export default function ListTablePage({
     singleName,
     pluralName,
     title,
-    columns
+    columns,
+    children
 }: ListTablePageProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(10);
@@ -79,14 +81,15 @@ export default function ListTablePage({
                 ))}
             </div>
             <div className={styles.searchContainer}>
-                {filters.map((filter) => (
+                {null/*filters.map((filter) => (
                     <TableFilter
                         key={filter.name}
                         filter={filter}
                         onChange={handleFilterChange}
                         debouncedOnChange={handleDebouncedFilterChange}
                     />
-                ))}
+                ))*/}
+                {children}
             </div>
             <div className={styles.pageContent}>
                 <div className={styles.pageActions}>
