@@ -25,5 +25,10 @@
         "psr-4": {
             "Give\\": "src/"
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": false
+        }
     }
 }

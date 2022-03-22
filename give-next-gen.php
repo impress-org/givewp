@@ -4,6 +4,7 @@ namespace Give;
 use Give\Addon\Activation;
 use Give\Addon\Environment;
 use Give\NextGen\AddonServiceProvider;
+use Give\NextGen\DonationForm\ServiceProvider as DonationFormServiceProvider;
 
 /**
  * Plugin Name:         Give - Next Gen
@@ -50,6 +51,7 @@ add_action(
         // Check Give min required version.
         if (Environment::giveMinRequiredVersionCheck()) {
             give()->registerServiceProvider(AddonServiceProvider::class);
+            give()->registerServiceProvider(DonationFormServiceProvider::class);
         }
     }
 );
