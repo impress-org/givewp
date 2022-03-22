@@ -4,30 +4,33 @@ import {GiveIcon} from '@givewp/components';
 import Pagination from "./Pagination";
 
 export interface ListTablePageProps {
-    headerButtons: Array<{text: string, link: string}>;
+    //required
     singleName: string;
     pluralName: string;
     title: string;
     columns: Array<ListTableColumn>;
-    children?: JSX.Element|JSX.Element[]|null;
     data: {items: Array<{}>, totalPages: number, totalItems: string};
-    page: number;
-    setPage: null|((page: number) => void);
+
+    //optional
+    inHeader?: JSX.Element|JSX.Element[]|null;
+    children?: JSX.Element|JSX.Element[]|null;
+    page?: number;
+    setPage?: null|((page: number) => void);
     error?: any;
     isValidating?: Boolean;
 }
 
 export default function ListTablePage({
-    headerButtons = [],
     singleName,
     pluralName,
     title,
     columns,
-    children = null,
     data,
+    children = null,
+    inHeader = null,
     error = false,
     isValidating = false,
-    page = 1,
+    page = 0,
     setPage = null,
 }: ListTablePageProps) {
 
@@ -36,11 +39,7 @@ export default function ListTablePage({
             <div className={styles.pageHeader}>
                 <GiveIcon size={'1.875rem'}/>
                 <h1 className={styles.pageTitle}>{title}</h1>
-                {headerButtons.map(button => (
-                    <a key={button.link} href={button.link} className={styles.addFormButton}>
-                        {button.text}
-                    </a>
-                ))}
+                {inHeader}
             </div>
             <div className={styles.searchContainer}>
                 {children}

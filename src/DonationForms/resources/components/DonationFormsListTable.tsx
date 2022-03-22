@@ -37,12 +37,11 @@ const donationStatus = [
     }
 ]
 
-const headerButtons = [
-    {
-        text: __('Add Form', 'give'),
-        link: 'post-new.php?post_type=give_forms',
-    }
-];
+const headerButtons = (
+    <a href={'post-new.php?post_type=give_forms'} className={styles.addFormButton}>
+        {__('Add Form', 'give')}
+    </a>
+);
 
 export default function DonationFormsListTable(){
     const [page, setPage] = useState<number>(1);
@@ -79,7 +78,7 @@ export default function DonationFormsListTable(){
             title={__('Donation Forms', 'give')}
             singleName={__('donation form', 'give')}
             pluralName={__('donation forms', 'give')}
-            headerButtons={headerButtons}
+            inHeader={headerButtons}
             columns={donationFormsColumns}
             data={data}
             error={error}

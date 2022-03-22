@@ -7,11 +7,14 @@ import ListTableRows from './ListTableRows';
 import {Spinner} from '../index';
 
 export interface ListTableProps {
+    //required
     columns: Array<ListTableColumn>;
-    singleName?: string;
-    pluralName?: string;
     title: string;
     data: {items: Array<{}>};
+
+    //optional
+    pluralName?: string;
+    singleName?: string;
     error?: {};
     isValidating?: Boolean;
     parameters?: any;
