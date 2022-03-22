@@ -35,7 +35,7 @@ class RegisterDonationFormBlock
 
         // register block
         register_block_type(
-            GIVE_NEXT_GEN_URL . 'src/NextGen/DonationForm/resources/js/blocks/DonationFormBlock'
+            GIVE_NEXT_GEN_URL . 'src/NextGen/DonationForm/Blocks/DonationFormBlock'
         );
     }
 }
