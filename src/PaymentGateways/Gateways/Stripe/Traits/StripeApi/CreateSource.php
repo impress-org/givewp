@@ -10,7 +10,7 @@ use Stripe\Source;
 /**
  * @unreleased
  */
-class CreateSource
+trait CreateSource
 {
     /**
      * @unreleased
