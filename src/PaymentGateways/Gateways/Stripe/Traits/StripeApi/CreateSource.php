@@ -21,7 +21,7 @@ trait CreateSource
      * @return Source
      * @throws StripeApiRequestException
      */
-    public function createCharge($stripeSourceRequestArgs, $options = [])
+    public function createSource($stripeSourceRequestArgs, $options = [])
     {
         give_stripe_set_app_info();
 
