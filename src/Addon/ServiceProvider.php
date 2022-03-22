@@ -3,15 +3,12 @@
 namespace Give\Addon;
 
 use Give\Helpers\Hooks;
-use Give\ServiceProviders\ServiceProvider;
+use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
- * Example of a service provider responsible for add-on initialization.
- *
- * @package     Give\Addon
- * @copyright   Copyright (c) 2020, GiveWP
+ * @unreleased
  */
-class AddonServiceProvider implements ServiceProvider
+class ServiceProvider implements ServiceProviderInterface
 {
     /**
      * @inheritDoc
@@ -32,19 +29,8 @@ class AddonServiceProvider implements ServiceProvider
         Hooks::addFilter('plugin_action_links_' . GIVE_NEXT_GEN_BASENAME, Links::class);
 
         if (is_admin()) {
-            $this->loadBackend();
+            Hooks::addAction('admin_init', License::class, 'check');
+            Hooks::addAction('admin_init', ActivationBanner::class, 'show', 20);
         }
-    }
-
-    /**
-     * Load add-on backend assets.
-     *
-     * @return void
-     * @since 1.0.0
-     */
-    private function loadBackend()
-    {
-        Hooks::addAction('admin_init', License::class, 'check');
-        Hooks::addAction('admin_init', ActivationBanner::class, 'show', 20);
     }
 }

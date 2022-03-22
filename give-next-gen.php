@@ -3,7 +3,8 @@ namespace Give;
 
 use Give\Addon\Activation;
 use Give\Addon\Environment;
-use Give\NextGen\AddonServiceProvider;
+use Give\Addon\ServiceProvider as AddonServiceProvider;
+use Give\NextGen\ServiceProvider as NextGenServiceProvider;
 
 /**
  * Plugin Name:         Give - Next Gen
@@ -50,6 +51,7 @@ add_action(
         // Check Give min required version.
         if (Environment::giveMinRequiredVersionCheck()) {
             give()->registerServiceProvider(AddonServiceProvider::class);
+            give()->registerServiceProvider(NextGenServiceProvider::class);
         }
     }
 );
