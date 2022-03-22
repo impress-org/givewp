@@ -9,16 +9,14 @@ use Give\Framework\EnqueueScript;
  */
 class RegisterDonationFormBlock
 {
-    const SCRIPT_HANDLE = 'give-next-gen-donation-form-block-js';
-    const STYLE_HANDLE = 'give-next-gen-donation-form-block-css';
-
-    /*
+    /**
      * @unreleased
      */
     public function __invoke()
     {
+        // register scripts
         $enqueueScripts = new EnqueueScript(
-            self::SCRIPT_HANDLE,
+            'give-next-gen-donation-form-block-js',
             'public/js/give-next-gen-donation-form-block.js',
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
@@ -29,7 +27,7 @@ class RegisterDonationFormBlock
 
         // register styles
         wp_enqueue_style(
-            self::STYLE_HANDLE,
+            'give-next-gen-donation-form-block-css',
             GIVE_NEXT_GEN_URL . 'public/js/give-next-gen-donation-form-block.css',
             [],
             GIVE_NEXT_GEN_VERSION
