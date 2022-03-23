@@ -38,26 +38,36 @@ const donationStatus = [
     }
 ]
 
-const headerButtons = (
-    <a href={'post-new.php?post_type=give_forms'} className={styles.addFormButton}>
-        {__('Add Form', 'give')}
-    </a>
-);
+const donationFormsFilters = [
+    {
+        name: 'search',
+        type: 'search',
+        text: __('Search by name or ID', 'give'),
+        ariaLabel: __('Search donation forms', 'give')
+    },
+    {
+        name: 'status',
+        type: 'select',
+        text: __('status', 'give'),
+        ariaLabel: __('Filter donation forms by status', 'give'),
+        options: donationStatus
+    }
+]
 
 export default function DonationFormsListTable(){
-
-
     return (
         <ListTablePage
             title={__('Donation Forms', 'give')}
             singleName={__('donation form', 'give')}
             pluralName={__('donation forms', 'give')}
-            inHeader={headerButtons}
             columns={donationFormsColumns}
             rowActions={DonationFormsRowActions}
             apiSettings={window.GiveDonationForms}
+            filterSettings={donationFormsFilters}
         >
-
+            <a href={'post-new.php?post_type=give_forms'} className={styles.addFormButton}>
+                {__('Add Form', 'give')}
+            </a>
         </ListTablePage>
     );
 }

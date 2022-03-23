@@ -1,12 +1,15 @@
-import styles from './ListTablePage.module.scss';
-import {ListTable, ListTableColumn} from './ListTable';
-import {GiveIcon} from '@givewp/components';
-import Pagination from "./Pagination";
-import {__} from "@wordpress/i18n";
 import {ChangeEventHandler, createContext, useRef, useState} from "react";
+import {__} from "@wordpress/i18n";
+
+import {GiveIcon} from '@givewp/components';
+
+import {ListTable, ListTableColumn} from './ListTable';
+import Pagination from "./Pagination";
+import {Filter, getInitialFilterState} from './Filters';
 import useDebounce from "./hooks/useDebounce";
 import {useResetPage} from "./hooks/useResetPage";
 import ListTableApi from "./api";
+import styles from './ListTablePage.module.scss';
 
 export interface ListTablePageProps {
     //required
@@ -18,11 +21,9 @@ export interface ListTablePageProps {
     //optional
     pluralName?: string;
     singleName?: string;
-    inHeader?: JSX.Element|JSX.Element[]|null;
     children?: JSX.Element|JSX.Element[]|null;
-    rowActions: JSX.Element|JSX.Element[]|null;
-    page?: number;
-    setPage?: null|((page: number) => void);
+    rowActions?: JSX.Element|JSX.Element[]|null;
+    filterSettings?;
 }
 
 export const RowActionsContext = createContext({});
@@ -31,14 +32,15 @@ export default function ListTablePage({
     title,
     columns,
     apiSettings,
+    filterSettings = [],
     singleName = __('item', 'give'),
     pluralName  = __('items', 'give'),
     rowActions = null,
-    inHeader = null,
+    children = null,
 }: ListTablePageProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(10);
-    const [filters, setFilters] = useState({search: '', status: 'any'});
+    const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
 
     const setFiltersLater = useDebounce((name, value) =>
         setFilters(prevState => ({...prevState, [name]: value}))
@@ -70,29 +72,12 @@ export default function ListTablePage({
             <div className={styles.pageHeader}>
                 <GiveIcon size={'1.875rem'}/>
                 <h1 className={styles.pageTitle}>{title}</h1>
-                {inHeader}
+                {children}
             </div>
             <div className={styles.searchContainer}>
-                <input
-                    type='search'
-                    name='search'
-                    aria-label={__('Search donation forms', 'give')}
-                    placeholder={__('Search by name or ID', 'give')}
-                    onChange={handleDebouncedFilterChange}
-                    className={styles.searchInput}
-                />
-                <select
-                    name='status'
-                    className={styles.statusFilter}
-                    aria-label={__('Filter donation forms by status', 'give')}
-                    onChange={handleFilterChange}
-                >
-                    {[].map(({name, text}) => (
-                        <option key={name} value={name}>
-                            {text}
-                        </option>
-                    ))}
-                </select>
+                {filterSettings.map(filter =>
+                    <Filter filter={filter} onChange={handleFilterChange} debouncedOnChange={handleDebouncedFilterChange}/>
+                )}
             </div>
             <div className={styles.pageContent}>
                 <div className={styles.pageActions}>
