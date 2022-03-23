@@ -1,7 +1,7 @@
 import RowAction from "../../../Views/Components/ListTable/RowAction";
 import {__} from "@wordpress/i18n";
 import ListTableApi from "../../../Views/Components/ListTable/api";
-import {RowActionsContext} from "./DonationFormsListTable";
+import {RowActionsContext} from "../../../Views/Components/ListTable/";
 import {useSWRConfig} from "swr";
 
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
