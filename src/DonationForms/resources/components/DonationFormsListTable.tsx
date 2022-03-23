@@ -40,7 +40,7 @@ const donationStatus = [
     }
 ]
 
-export const RowActionsContext = createContext({});
+export const RowActionsContext = createContext({mutate: () => {}, parameters: {}});
 
 const headerButtons = (
     <a href={'post-new.php?post_type=give_forms'} className={styles.addFormButton}>

@@ -45,7 +45,7 @@ export default function ListTableRows({columns, data, isValidating, rowActions, 
     const [added, setAdded] = useState([]);
 
     useEffect(() => {
-        if (added.length) {
+        if (added.length && !isValidating) {
             const timeouts = [];
             timeouts[0] = setTimeout(() => {
                 const addedItem = document.getElementsByClassName(styles.duplicated);
@@ -60,7 +60,7 @@ export default function ListTableRows({columns, data, isValidating, rowActions, 
                 timeouts.forEach((timeout) => clearTimeout(timeout));
             };
         }
-    }, [added]);
+    }, [added, isValidating]);
 
     function removeRow(removeCallback) {
         return async (event) => {
@@ -75,7 +75,7 @@ export default function ListTableRows({columns, data, isValidating, rowActions, 
         return async (event) => {
             const id = event.target.dataset.actionid;
             const addedItem = await addCallback(id);
-            setAdded([addedItem]);
+            setAdded([...addedItem.successes]);
         }
     }
 

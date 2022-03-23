@@ -9,7 +9,7 @@ const fetchAndUpdateErrors = async (mutate, endpoint, setUpdateErrors, id, metho
     const response = await donationFormsApi.fetchWithArgs(endpoint, {ids: [id]}, method);
     setUpdateErrors(response);
     await mutate();
-    return response.sucessses;
+    return response;
 }
 
 const deleteForm = async (mutate, setUpdateErrors, id, trashEnabled = false) => {
@@ -65,7 +65,7 @@ export function DonationFormsRowActions ({data, item, removeRow, addRow, setUpda
                         hiddenText={item.name}
                     />
                     <RowAction
-                        onClick={addRow(() => duplicateForm(context.mutate, setUpdateErrors, item.id))}
+                        onClick={addRow(async (id) => await duplicateForm(context.mutate, setUpdateErrors, id))}
                         actionId={item.id}
                         displayText={__('Duplicate', 'give')}
                         hiddenText={item.name}
