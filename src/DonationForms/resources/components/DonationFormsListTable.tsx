@@ -17,23 +17,23 @@ declare global {
 
 const donationStatus = [
     {
-        name: 'any',
+        value: 'any',
         text: __('All', 'give'),
     },
     {
-        name: 'publish',
+        value: 'publish',
         text: __('Published', 'give'),
     },
     {
-        name: 'pending',
+        value: 'pending',
         text: __('Pending', 'give'),
     },
     {
-        name: 'draft',
+        value: 'draft',
         text: __('Draft', 'give'),
     },
     {
-        name: 'trash',
+        value: 'trash',
         text: __('Trash', 'give'),
     }
 ]

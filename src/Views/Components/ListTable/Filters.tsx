@@ -15,8 +15,8 @@ export const Filter = ({ filter, onChange, debouncedOnChange }) => {
                     aria-label={filter?.ariaLabel}
                     onChange={onChange}
                 >
-                    {filter.options.map(({name, text}) => (
-                        <option key={name} value={name}>
+                    {filter.options.map(({value, text}) => (
+                        <option key={value} value={value}>
                             {text}
                         </option>
                     ))}

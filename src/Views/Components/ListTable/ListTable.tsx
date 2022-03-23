@@ -16,9 +16,8 @@ export interface ListTableProps {
     pluralName?: string;
     singleName?: string;
     rowActions?: (({item, data, addRow, removeRow}) => JSX.Element)|JSX.Element|JSX.Element[]|null;
-    error?: {};
+    error?: {}|Boolean;
     isLoading?: Boolean;
-    parameters?: any;
 }
 
 export interface ListTableColumn {
