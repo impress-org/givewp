@@ -17,7 +17,7 @@ export interface ListTableProps {
     singleName?: string;
     rowActions?: (({item, data, addRow, removeRow}) => JSX.Element)|JSX.Element|JSX.Element[]|null;
     error?: {};
-    isValidating?: Boolean;
+    isLoading?: Boolean;
     parameters?: any;
 }
 
@@ -38,7 +38,7 @@ export const ListTable = ({
         data,
         rowActions = null,
         error = false,
-        isValidating = false,
+        isLoading = false,
 }: ListTableProps) => {
     const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>, successes: Array<number>}>({errors: [], successes: []});
     const [errorOverlay, setErrorOverlay] = useState<any>(false);
@@ -51,15 +51,15 @@ export const ListTable = ({
     }, [data]);
 
     useEffect(() => {
-        if (isValidating) {
+        if (isLoading) {
             setLoadingOverlay(styles.appear);
         }
-        if (!isValidating && loadingOverlay) {
+        if (!isLoading && loadingOverlay) {
             setLoadingOverlay(styles.disappear);
             const timeoutId = setTimeout(() => setLoadingOverlay(false), 100);
             return () => clearTimeout(timeoutId);
         }
-    }, [isValidating]);
+    }, [isLoading]);
 
     useEffect(() => {
         let timeoutId;
@@ -127,7 +127,7 @@ export const ListTable = ({
                             <ListTableRows
                                 columns={columns}
                                 data={data}
-                                isValidating={isValidating}
+                                isLoading={isLoading}
                                 rowActions={rowActions}
                                 setUpdateErrors={setUpdateErrors}
                             />

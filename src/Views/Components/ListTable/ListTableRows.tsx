@@ -40,12 +40,12 @@ const RenderRow = ({ column, item }) => {
     }
 }
 
-export default function ListTableRows({columns, data, isValidating, rowActions, setUpdateErrors}) {
+export default function ListTableRows({columns, data, isLoading, rowActions, setUpdateErrors}) {
     const [removed, setRemoved] = useState([]);
     const [added, setAdded] = useState([]);
 
     useEffect(() => {
-        if (added.length && !isValidating) {
+        if (added.length && !isLoading) {
             const timeouts = [];
             timeouts[0] = setTimeout(() => {
                 const addedItem = document.getElementsByClassName(styles.duplicated);
@@ -60,7 +60,7 @@ export default function ListTableRows({columns, data, isValidating, rowActions, 
                 timeouts.forEach((timeout) => clearTimeout(timeout));
             };
         }
-    }, [added, isValidating]);
+    }, [added, isLoading]);
 
     function removeRow(removeCallback) {
         return async (event) => {
@@ -94,7 +94,7 @@ export default function ListTableRows({columns, data, isValidating, rowActions, 
             {columns.map((column) => (
                 <TableCell key={column.name} className={column?.addClass} heading={column?.heading}>
                     <RenderRow column={column} item={item}/>
-                    {!isValidating && rowActions &&
+                    {!isLoading && rowActions &&
                         <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
                             {column?.heading && rowActions({data, item, removeRow, addRow, setUpdateErrors})}
                         </div>

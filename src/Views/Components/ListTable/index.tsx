@@ -115,7 +115,7 @@ export default function ListTablePage({
                             rowActions={rowActions}
                             data={data}
                             error={error}
-                            isValidating={isValidating}
+                            isLoading={isValidating}
                         />
                     </RowActionsContext.Provider>
                 <div className={styles.pageActions}>
