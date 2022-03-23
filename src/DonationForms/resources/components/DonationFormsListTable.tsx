@@ -1,7 +1,7 @@
 import {ListTablePage} from "@givewp/components";
 import {__} from "@wordpress/i18n";
 import {donationFormsColumns} from "./DonationFormsColumns";
-import {ChangeEventHandler, useEffect, useState} from "react";
+import {ChangeEventHandler, createContext, useEffect, useState} from "react";
 import useDebounce from "../../../Views/Components/ListTable/hooks/useDebounce";
 import ListTableApi from "../../../Views/Components/ListTable/api";
 import styles from "../../../Views/Components/ListTable/ListTablePage.module.scss";
@@ -40,6 +40,8 @@ const donationStatus = [
     }
 ]
 
+export const RowActionsContext = createContext({});
+
 const headerButtons = (
     <a href={'post-new.php?post_type=give_forms'} className={styles.addFormButton}>
         {__('Add Form', 'give')}
@@ -75,39 +77,41 @@ export default function DonationFormsListTable(){
     }
 
     return (
-        <ListTablePage
-            title={__('Donation Forms', 'give')}
-            singleName={__('donation form', 'give')}
-            pluralName={__('donation forms', 'give')}
-            inHeader={headerButtons}
-            columns={donationFormsColumns}
-            rowActions={DonationFormsRowActions.bind({mutate, parameters})}
-            data={data}
-            error={error}
-            isValidating={isValidating}
-            page={page}
-            setPage={setPage}
-        >
-            <input
-                type='search'
-                name='search'
-                aria-label={__('Search donation forms', 'give')}
-                placeholder={__('Search by name or ID', 'give')}
-                onChange={handleDebouncedFilterChange}
-                className={styles.searchInput}
-            />
-            <select
-                name='status'
-                className={styles.statusFilter}
-                aria-label={__('Filter donation forms by status', 'give')}
-                onChange={handleFilterChange}
+        <RowActionsContext.Provider value={{mutate, parameters}}>
+            <ListTablePage
+                title={__('Donation Forms', 'give')}
+                singleName={__('donation form', 'give')}
+                pluralName={__('donation forms', 'give')}
+                inHeader={headerButtons}
+                columns={donationFormsColumns}
+                rowActions={DonationFormsRowActions}
+                data={data}
+                error={error}
+                isValidating={isValidating}
+                page={page}
+                setPage={setPage}
             >
-                {donationStatus.map(({name, text}) => (
-                    <option key={name} value={name}>
-                        {text}
-                    </option>
-                ))}
-            </select>
-        </ListTablePage>
+                <input
+                    type='search'
+                    name='search'
+                    aria-label={__('Search donation forms', 'give')}
+                    placeholder={__('Search by name or ID', 'give')}
+                    onChange={handleDebouncedFilterChange}
+                    className={styles.searchInput}
+                />
+                <select
+                    name='status'
+                    className={styles.statusFilter}
+                    aria-label={__('Filter donation forms by status', 'give')}
+                    onChange={handleFilterChange}
+                >
+                    {donationStatus.map(({name, text}) => (
+                        <option key={name} value={name}>
+                            {text}
+                        </option>
+                    ))}
+                </select>
+            </ListTablePage>
+        </RowActionsContext.Provider>
     );
 }

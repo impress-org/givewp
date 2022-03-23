@@ -74,8 +74,8 @@ export default function ListTableRows({columns, data, isValidating, rowActions, 
     function addRow(addCallback) {
         return async (event) => {
             const id = event.target.dataset.actionid;
-            await addCallback(id);
-            setAdded([id]);
+            const addedItem = await addCallback(id);
+            setAdded([addedItem]);
         }
     }
 
