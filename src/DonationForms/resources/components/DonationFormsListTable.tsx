@@ -15,8 +15,6 @@ declare global {
     }
 }
 
-const donationFormsApi = new ListTableApi(window.GiveDonationForms);
-
 const donationStatus = [
     {
         name: 'any',
@@ -40,8 +38,6 @@ const donationStatus = [
     }
 ]
 
-export const RowActionsContext = createContext({});
-
 const headerButtons = (
     <a href={'post-new.php?post_type=give_forms'} className={styles.addFormButton}>
         {__('Add Form', 'give')}
@@ -49,69 +45,19 @@ const headerButtons = (
 );
 
 export default function DonationFormsListTable(){
-    const [page, setPage] = useState<number>(1);
-    const [perPage, setPerPage] = useState<number>(10);
-    const [filters, setFilters] = useState({search: '', status: 'any'});
 
-    const setFiltersLater = useDebounce((name, value) =>
-        setFilters(prevState => ({...prevState, [name]: value}))
-    );
-
-    const parameters = {
-        page,
-        perPage,
-        ...filters
-    };
-
-    const {data, error, isValidating} = donationFormsApi.useListTable(parameters)
-
-    useResetPage(data, page, setPage, filters);
-
-    const handleFilterChange: ChangeEventHandler<HTMLInputElement|HTMLSelectElement> = (event) => {
-        setFilters(prevState => ({...prevState, [event.target.name]: event.target.value}));
-    }
-
-    const handleDebouncedFilterChange: ChangeEventHandler<HTMLInputElement|HTMLSelectElement> = (event) => {
-        event.persist();
-        setFiltersLater(event.target.name, event.target.value);
-    }
 
     return (
-        <RowActionsContext.Provider value={parameters}>
-            <ListTablePage
-                title={__('Donation Forms', 'give')}
-                singleName={__('donation form', 'give')}
-                pluralName={__('donation forms', 'give')}
-                inHeader={headerButtons}
-                columns={donationFormsColumns}
-                rowActions={DonationFormsRowActions}
-                data={data}
-                error={error}
-                isValidating={isValidating}
-                page={page}
-                setPage={setPage}
-            >
-                <input
-                    type='search'
-                    name='search'
-                    aria-label={__('Search donation forms', 'give')}
-                    placeholder={__('Search by name or ID', 'give')}
-                    onChange={handleDebouncedFilterChange}
-                    className={styles.searchInput}
-                />
-                <select
-                    name='status'
-                    className={styles.statusFilter}
-                    aria-label={__('Filter donation forms by status', 'give')}
-                    onChange={handleFilterChange}
-                >
-                    {donationStatus.map(({name, text}) => (
-                        <option key={name} value={name}>
-                            {text}
-                        </option>
-                    ))}
-                </select>
-            </ListTablePage>
-        </RowActionsContext.Provider>
+        <ListTablePage
+            title={__('Donation Forms', 'give')}
+            singleName={__('donation form', 'give')}
+            pluralName={__('donation forms', 'give')}
+            inHeader={headerButtons}
+            columns={donationFormsColumns}
+            rowActions={DonationFormsRowActions}
+            apiSettings={window.GiveDonationForms}
+        >
+
+        </ListTablePage>
     );
 }
