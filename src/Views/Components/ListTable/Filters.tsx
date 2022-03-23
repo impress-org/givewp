@@ -42,7 +42,7 @@ export const getInitialFilterState = (filters) => {
     filters.map((filter) => {
         switch (filter.type) {
             case 'select':
-                state[filter.name] = filter.options?.[0].name
+                state[filter.name] = filter.options?.[0].value
                 break;
             case 'search':
             default:
