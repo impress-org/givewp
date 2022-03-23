@@ -40,7 +40,7 @@ const donationStatus = [
     }
 ]
 
-export const RowActionsContext = createContext({mutate: () => {}, parameters: {}});
+export const RowActionsContext = createContext({});
 
 const headerButtons = (
     <a href={'post-new.php?post_type=give_forms'} className={styles.addFormButton}>
@@ -63,7 +63,7 @@ export default function DonationFormsListTable(){
         ...filters
     };
 
-    const {data, error, mutate, isValidating} = donationFormsApi.useListTable(parameters)
+    const {data, error, isValidating} = donationFormsApi.useListTable(parameters)
 
     useResetPage(data, page, setPage, filters);
 
@@ -77,7 +77,7 @@ export default function DonationFormsListTable(){
     }
 
     return (
-        <RowActionsContext.Provider value={{mutate, parameters}}>
+        <RowActionsContext.Provider value={parameters}>
             <ListTablePage
                 title={__('Donation Forms', 'give')}
                 singleName={__('donation form', 'give')}
