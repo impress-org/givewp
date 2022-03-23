@@ -2,15 +2,16 @@
 
 ##ListTable
 
-| Prop       | Type                | Required | Default             |
-|------------|---------------------|----------|---------------------|
+| Prop       | Type              | Required | Default             |
+|------------|-------------------|----------|---------------------|
 | data       | Object: {items: {}} | Yes      | -                   |
-| columns    | Array               | Yes      | -                   |
-| title      | String              | Yes      | -                   |
-| singleName | String              | No       | __('item', 'give')  |
-| pluralName | String              | No       | __('items', 'give') |
-| error      | Object/Bool         | No       | false               |
-| isLoading  | Bool                | No       | false               |
+| columns    | Array             | Yes      | -                   |
+| title      | String            | Yes      | -                   |
+| singleName | String            | No       | __('item', 'give')  |
+| pluralName | String            | No       | __('items', 'give') |
+| error      | Object/Bool       | No       | false               |
+| isLoading  | Bool              | No       | false               |
+| rowActions | Function          | No | null |
 
 ##ListTablePage
 **ListTablePage** takes the same props as **ListTable**, as well as the following:
@@ -71,3 +72,14 @@ Each object in the array should contain the following properties:
 | type     | String | Yes               | What kind of filter to display.  <br/> Currently available types: `select`, `search`                        |
 | ariaLabel | String | Yes | A description of the filter for screen readers.                                                             |
 | options  | Array | For type `select` | What options to include for the `select`. An array of objects that look like `{value: 1, text: 'option 1'}` |
+
+
+### rowActions
+A React functional component. Used to display markup that will show when hovering over a row. Takes the following props:
+
+| Prop      | Type                | Description                                                                                                                                                                                                              |
+|-----------|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| data      | Object: {items: {}} | The data object.  <br/> See the `data` entry above.                                                                                                                                                                      |
+| item      | Object              | The information for a specific row.  <br/> See the `data` entry above.                                                                                                                                                   |
+| addRow    | Function            | Show an animation of an item being added to the table.  <br/> Takes a callback (for example, a fetch to an API that will create a new row), returns a function which executes the callback and shows the animation.      |
+| removeRow | Function            | Show an animation of an item being removed from the table.  <br/> Takes a callback (for example, a request to an API to that will delete a row), returns a function which executes the callback and shows the animation. |
