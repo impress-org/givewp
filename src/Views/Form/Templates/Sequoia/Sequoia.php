@@ -450,12 +450,24 @@ class Sequoia extends Template implements Hookable, Scriptable
      *
      * @since 2.7.0
      *
+     * @unreleased Form excerpt has precedence over form description
+     *
      * @param int|null $formId
      *
-     * @return string
+     * @return string|void
      */
     public function getFormExcerpt($formId)
     {
-        return get_the_excerpt($formId);
+        $excerpt = get_the_excerpt($formId);
+        $templateOptions = FormTemplateUtils::getOptions($formId);
+
+        if ( ! empty($excerpt)) {
+            return $excerpt;
+        }
+
+        // Backward compatibility
+        if ( ! empty($templateOptions['introduction']['description']) ) {
+            return $templateOptions['introduction']['description'];
+        }
     }
 }
