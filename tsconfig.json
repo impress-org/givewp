@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@givewp/components": ["./src/Views/Components/index.js"],
+      "@givewp/components/*": ["./src/Views/Components/*"],
       "@givewp/promotions/*": ["./src/Promotions/sharedResources/*"]
     }
   },
