@@ -638,6 +638,69 @@ stdClass Object
 )
 ```
 
+#### Fetch multiple instances of the same meta key
+
+Sometimes we need to fetch multiple instances of the same meta key. This is possible by setting the third parameter to `true`, example `['additional_email', 'additionalEmails', true]`
+
+```php
+DB::table('give_donors')
+  ->select(
+      'id',
+      'email',
+      'name'
+  )
+  ->attachMeta(
+      'give_donormeta',
+      'id',
+      'donor_id',
+  	  ['additional_email', 'additionalEmails', true]
+  );
+
+```
+
+Generated SQL:
+
+```sql
+SELECT id, email, name, GROUP_CONCAT(DISTINCT give_donormeta_attach_meta_0.meta_value) AS additionalEmails
+FROM wp_give_donors
+    LEFT JOIN wp_give_donormeta give_donormeta_attach_meta_0 ON id = give_donormeta_attach_meta_0.donor_id AND give_donormeta_attach_meta_0.meta_key = 'additional_email'
+GROUP BY id
+```
+
+Returned result:
+
+Instances with the same key, in this case `additional_email`, will be concatenated into JSON array string.
+
+```php
+Array
+(
+    [0] => stdClass Object
+        (
+            [id] => 1
+            [email] => bill@flywheel.local
+            [name] => Bill Murray
+            [additionalEmails] => ["email1@lywheel.local","email2@lywheel.local"]
+        )
+
+    [1] => stdClass Object
+        (
+            [id] => 2
+            [email] => jon@flywheel.local
+            [name] => Jon Waldstein
+            [additionalEmails] => ["email3@lywheel.local","email4@lywheel.local","email5@lywheel.local"]
+        )
+
+    [2] => stdClass Object
+        (
+            [id] => 3
+            [email] => ante@flywheel.local
+            [name] => Ante laca
+            [additionalEmails] =>
+        )
+
+)
+```
+
 ### configureMetaTable
 
 By default, `QueryBuilder::attachMeta` will use `meta_key`, and `meta_value` as meta table column names, but that sometimes might not be the case.

@@ -10,14 +10,14 @@ use Give\Framework\Database\DB;
 trait CRUD
 {
     /**
+     * @see https://developer.wordpress.org/reference/classes/wpdb/insert/
+     *
      * @since 2.19.0
      *
-     * @param  array  $data
      * @param  array|string  $format
      *
+     * @param  array  $data
      * @return false|int
-     *
-     * @see https://developer.wordpress.org/reference/classes/wpdb/insert/
      *
      */
     public function insert($data, $format = null)
@@ -30,14 +30,14 @@ trait CRUD
     }
 
     /**
+     * @see https://developer.wordpress.org/reference/classes/wpdb/update/
+     *
      * @since 2.19.0
      *
-     * @param  array  $data
      * @param  null  $format
      *
+     * @param  array  $data
      * @return false|int
-     *
-     * @see https://developer.wordpress.org/reference/classes/wpdb/update/
      *
      */
     public function update($data, $format = null)
@@ -102,7 +102,7 @@ trait CRUD
      */
     private function getTable()
     {
-        return $this->froms[ 0 ]->table;
+        return $this->froms[0]->table;
     }
 
     /**
@@ -115,7 +115,7 @@ trait CRUD
         $wheres = [];
 
         foreach ($this->wheres as $where) {
-            $wheres[ $where->column ] = $where->value;
+            $wheres[$where->column] = $where->value;
         }
 
         return $wheres;

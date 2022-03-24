@@ -599,6 +599,7 @@ class Give_Scripts {
      *
      * @since 2.19.0 Remove undefined gutenberg.css
      * @unreleased Load script with EnqueueScript.
+     * @unreleased Load missing block styles
      */
     public function gutenberg_admin_scripts()
     {
@@ -607,5 +608,14 @@ class Give_Scripts {
             ->dependencies(['give-admin-scripts'])
             ->registerTranslations()
             ->enqueue();
+
+        wp_enqueue_style(
+            'give-blocks-css',
+            GIVE_PLUGIN_URL . 'assets/dist/css/admin-block-editor.css',
+            [],
+            GIVE_VERSION
+        );
+
+
     }
 }

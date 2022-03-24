@@ -6,11 +6,10 @@ use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
-use Give\Helpers\Form\Utils as FormUtils;
+use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\Stripe\Traits\BECSMandateForm;
 use Give\PaymentGateways\Gateways\Stripe\Traits\HandlePaymentIntentStatus;
-use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
 
 /**
  * @since 2.19.0
@@ -40,18 +39,19 @@ class BECSGateway extends PaymentGateway
      */
     public function createPayment( GatewayPaymentData $paymentData )
     {
-        $workflow = new Workflow();
-        $workflow->bind( $paymentData );
+        $paymentMethod = Call::invoke( Actions\GetPaymentMethodFromRequest::class, $paymentData );
+        $donationSummary = Call::invoke( Actions\SaveDonationSummary::class, $paymentData );
+        $stripeCustomer = Call::invoke( Actions\GetOrCreateStripeCustomer::class, $paymentData );
 
-        $workflow->action( new Actions\SaveDonationSummary );
-        $workflow->action( new Actions\GetPaymentMethodFromRequest );
-        $workflow->action( new Actions\GetOrCreateStripeCustomer );
-        $workflow->action( new Actions\CreatePaymentIntent(
-            $this->getPaymentIntentArgs()
-        ));
+        $createIntentAction = new Actions\CreatePaymentIntent( $this->getPaymentIntentArgs() );
 
         return $this->handlePaymentIntentStatus(
-            $workflow->resolve( PaymentIntent::class )
+            $createIntentAction(
+                $paymentData,
+                $donationSummary,
+                $stripeCustomer,
+                $paymentMethod
+            )
         );
     }
 
