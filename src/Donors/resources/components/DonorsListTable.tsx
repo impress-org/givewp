@@ -9,29 +9,6 @@ declare global {
     }
 }
 
-const donationStatus = [
-    {
-        value: 'any',
-        text: __('All', 'give'),
-    },
-    {
-        value: 'publish',
-        text: __('Published', 'give'),
-    },
-    {
-        value: 'pending',
-        text: __('Pending', 'give'),
-    },
-    {
-        value: 'draft',
-        text: __('Draft', 'give'),
-    },
-    {
-        value: 'trash',
-        text: __('Trash', 'give'),
-    }
-]
-
 const donorsFilters = [
     {
         name: 'search',
@@ -44,7 +21,7 @@ const donorsFilters = [
         type: 'searchableselect',
         text: __('Select Form', 'give'),
         ariaLabel: __('Filter donation forms by status', 'give'),
-        options: donationStatus
+        options: window.GiveDonors.forms
     }
 ]
 

@@ -29,11 +29,15 @@ export const SearchableSelect = ({options, name, placeholder = '', ariaLabel = '
 
 const updateSearchableSelect = (options, name, onChange) => {
     return (event) => {
-        const selectedIndex = options.findIndex(option => {
-            return option.value.toLowerCase() === event.target.value.toLowerCase()
+        if(event.target.value === ''){
+            onChange(name, '');
+        }
+        const selectedIndex = options.findIndex((option) => {
+            return option.text.toLowerCase() === event.target.value.toLowerCase()
         });
+        console.log(selectedIndex);
         if(selectedIndex > -1){
-            onChange(name, options[selectedIndex].value)
+            onChange(name, options[selectedIndex].value);
         }
     }
 }

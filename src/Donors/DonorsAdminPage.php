@@ -57,6 +57,7 @@ class DonorsAdminPage
             'apiRoot' => $this->apiRoot,
             'apiNonce' => $this->apiNonce,
             'preload' => $this->preloadDonors(),
+            'forms' => $this->getForms(),
         ];
 
         EnqueueScript::make('give-admin-donors', 'assets/dist/js/give-admin-donors.js')
@@ -92,6 +93,40 @@ class DonorsAdminPage
         $response = rest_do_request($request);
 
         return $response->get_data();
+    }
+
+    public function getForms(){
+        $queryParameters = [
+            'page' => 1,
+            'perPage' => 50,
+            'search' => '',
+            'status' => 'any'
+        ];
+
+        $url = add_query_arg(
+            $queryParameters,
+            esc_url_raw(rest_url('give-api/v2/admin/forms'))
+        );
+
+        $request = \WP_REST_Request::from_url($url);
+        $response = rest_do_request($request);
+
+        $response = $response->get_data();
+        $forms = $response['items'];
+
+        $emptyOption = [
+                [
+                'value' => '',
+                'text' => 'Any',
+            ]
+        ];
+        $formOptions = array_map(function($form){
+            return [
+                'value' => $form['id'],
+                'text' => $form['name'],
+            ];
+        }, $forms);
+        return array_merge($emptyOption, $formOptions);
     }
 
     /**
