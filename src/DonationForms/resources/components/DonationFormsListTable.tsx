@@ -1,13 +1,8 @@
-import {ListTablePage} from "@givewp/components";
 import {__} from "@wordpress/i18n";
+import {ListTablePage} from "@givewp/components";
 import {donationFormsColumns} from "./DonationFormsColumns";
-import {ChangeEventHandler, createContext, useEffect, useState} from "react";
-import useDebounce from "../../../Views/Components/ListTable/hooks/useDebounce";
-import ListTableApi from "../../../Views/Components/ListTable/api";
-import styles from "../../../Views/Components/ListTable/ListTablePage.module.scss";
-import {useResetPage} from "../../../Views/Components/ListTable/hooks/useResetPage";
 import {DonationFormsRowActions} from "./DonationFormsRowActions";
-import {useSWRConfig} from "swr";
+import styles from "@givewp/components/ListTable/ListTablePage.module.scss";
 
 declare global {
     interface Window {
