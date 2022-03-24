@@ -26,6 +26,7 @@ export const Filter = ({ filter, onChange, debouncedOnChange }) => {
             return (
                 <input
                     type="search"
+                    name={filter.name}
                     aria-label={filter?.ariaLabel}
                     placeholder={filter?.text}
                     onChange={debouncedOnChange}
