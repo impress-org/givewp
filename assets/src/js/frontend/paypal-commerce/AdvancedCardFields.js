@@ -211,7 +211,7 @@ class AdvancedCardFields extends PaymentMethod {
 		const payload = await hostedCardFields.submit(
 			{
 			// Trigger 3D Secure authentication
-				contingencies: [ '3D_SECURE' ],
+				contingencies: [ 'SCA_WHEN_REQUIRED' ],
 				...getExtraCardDetails,
 			}
 		).catch( hostedFieldOnSubmitErrorHandler );
