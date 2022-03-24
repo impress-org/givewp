@@ -456,10 +456,6 @@ class Sequoia extends Template implements Hookable, Scriptable
      */
     public function getFormExcerpt($formId)
     {
-        $templateOptions = FormTemplateUtils::getOptions($formId);
-
-        return ! empty($templateOptions['introduction']['description']) ?
-            $templateOptions['introduction']['description'] :
-            get_the_excerpt($formId);
+        return get_the_excerpt($formId);
     }
 }
