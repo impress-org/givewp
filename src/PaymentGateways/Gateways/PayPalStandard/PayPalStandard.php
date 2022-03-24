@@ -108,13 +108,11 @@ class PayPalStandard extends PaymentGateway
     public function handleSuccessPaymentReturn($queryParams)
     {
         $donationId = (int)$queryParams['donation-id'];
-        $payment = new Give_Payment($donationId);
 
-        if( 'pending' === $payment->status ) {
-            $payment->update_status('processing');
-        }
-
-        return new RedirectResponse(Call::invoke(GenerateDonationReceiptPageUrl::class, $donationId));
+        return new RedirectResponse(add_query_arg(
+            [ 'payment-confirmation' => $this->getId() ],
+            Call::invoke(GenerateDonationReceiptPageUrl::class, $donationId)
+        ));
     }
 
     /**
