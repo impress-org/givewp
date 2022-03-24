@@ -96,6 +96,8 @@ class PayPalStandard extends PaymentGateway
      *
      * @since 2.19.0
      * @since 2.19.4 Only pending PayPal Standard donation set to processing.
+     * @unreleased 1. Do not set donation to "processing"
+     *             2. Add "payment-confirmation" param to receipt page url
      *
      * @param  array  $queryParams  Query params in gateway route. {
      *
