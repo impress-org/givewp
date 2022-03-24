@@ -26,7 +26,7 @@ export default function DonorsListTable(){
             singleName={__('donors', 'give')}
             pluralName={__('donors', 'give')}
             columns={donorsColumns}
-            {null/*rowActions={DonorsRowActions}*/}
+            rowActions={DonorsRowActions}
             apiSettings={window.GiveDonors}
             filterSettings={donorsFilters}
         />

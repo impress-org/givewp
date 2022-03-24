@@ -14,10 +14,9 @@ export const donorsColumns: Array<ListTableColumn> = [
         text: __('Email', 'give'),
     },
     {
-        name: 'donations',
+        name: 'donationCount',
         text: __('Donations', 'give'),
         render: (donor: {donationCount, id}) => {
-            console.log(donor);
             return (
                 <a href={`http://givewp-test-2.local/wp-admin/edit.php?post_type=give_forms&page=give-payment-history&donor=${donor.id}`}>
                     {`${donor.donationCount.toString()}`}
