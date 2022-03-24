@@ -1,46 +1,33 @@
-import RowAction from "../../../Views/Components/ListTable/RowAction";
 import {__} from "@wordpress/i18n";
-import ListTableApi from "../../../Views/Components/ListTable/api";
-import {RowActionsContext} from "../../../Views/Components/ListTable";
 import {useSWRConfig} from "swr";
+import RowAction from "@givewp/components/ListTable/RowAction";
+import ListTableApi from "@givewp/components/ListTable/api";
 
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 
-const fetchAndUpdateErrors = async (mutate, parameters, endpoint, setUpdateErrors, id, method) => {
-    const response = await donationFormsApi.fetchWithArgs(endpoint, {ids: [id]}, method);
-    setUpdateErrors(response);
-    await mutate(parameters);
-    return response;
-}
-
-const deleteForm = async (mutate, parameters, setUpdateErrors, id, trashEnabled = false) => {
-    const endpoint = trashEnabled ? '/trash' : '/delete';
-    await fetchAndUpdateErrors(mutate, parameters, endpoint, setUpdateErrors, id, 'DELETE');
-}
-
-const restoreForm = async (mutate, parameters, setUpdateErrors, id) => {
-    await fetchAndUpdateErrors(mutate, parameters,'/restore', setUpdateErrors, id, 'POST');
-}
-
-const duplicateForm = async(mutate, parameters, setUpdateErrors, id) => {
-    return await fetchAndUpdateErrors(mutate, parameters,'/duplicate', setUpdateErrors, id, 'POST');
-}
-
-export function DonationFormsRowActions ({data, item, removeRow, addRow, setUpdateErrors}){
-    const trashEnabled = Boolean(data?.trash);
+export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdateErrors, parameters}) {
     const {mutate} = useSWRConfig();
+    const trashEnabled = Boolean(data?.trash);
+
+    const fetchAndUpdateErrors = async (parameters, endpoint, id, method) => {
+        const response = await donationFormsApi.fetchWithArgs(endpoint, {ids: [id]}, method);
+        setUpdateErrors(response);
+        await mutate(parameters);
+        return response;
+    }
+
     return (
-        <RowActionsContext.Consumer>
-            {(parameters) => parameters.status === 'trash' ? (
+        <>
+            {parameters.status === 'trash' ? (
                 <>
                     <RowAction
-                        onClick={removeRow(async () => await restoreForm(mutate, parameters, setUpdateErrors, item.id))}
+                        onClick={removeRow(async () => await fetchAndUpdateErrors(parameters, '/restore', item.id, 'POST'))}
                         actionId={item.id}
                         displayText={__('Restore', 'give')}
                         hiddenText={item.name}
                     />
                     <RowAction
-                        onClick={removeRow(async () => await deleteForm(mutate, parameters, setUpdateErrors, item.id))}
+                        onClick={removeRow(async () => await fetchAndUpdateErrors(parameters, '/delete', item.id, 'DELETE'))}
                         actionId={item.id}
                         displayText={__('Delete Permanently', 'give')}
                         hiddenText={item.name}
@@ -55,7 +42,10 @@ export function DonationFormsRowActions ({data, item, removeRow, addRow, setUpda
                         hiddenText={item.name}
                     />
                     <RowAction
-                        onClick={removeRow(async () => await deleteForm(mutate, parameters, setUpdateErrors, item.id))}
+                        onClick={removeRow(async () => {
+                            const endpoint = trashEnabled ? '/trash' : '/delete';
+                            await fetchAndUpdateErrors(parameters, endpoint, item.id, 'DELETE');
+                        })}
                         actionId={item.id}
                         highlight={!trashEnabled}
                         displayText={trashEnabled ? __('Trash', 'give') : __('Delete', 'give')}
@@ -67,13 +57,13 @@ export function DonationFormsRowActions ({data, item, removeRow, addRow, setUpda
                         hiddenText={item.name}
                     />
                     <RowAction
-                        onClick={addRow(async (id) => await duplicateForm(mutate, parameters, setUpdateErrors, id))}
+                        onClick={addRow(async (id) => await fetchAndUpdateErrors(parameters, '/duplicate', id, 'POST'))}
                         actionId={item.id}
                         displayText={__('Duplicate', 'give')}
                         hiddenText={item.name}
                     />
                 </>
             )}
-        </RowActionsContext.Consumer>
+        </>
     );
 }
