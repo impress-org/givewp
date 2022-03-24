@@ -7,6 +7,27 @@ use Give\Helpers\EnqueueScript;
 class DonorsAdminPage
 {
     /**
+     * Root URL for this page's endpoints
+     * @var string
+     */
+    private $apiRoot;
+
+    /**
+     * Nonce for authentication with WP REST API
+     * @var string
+     */
+    private $apiNonce;
+
+    /**
+     * @unreleased
+     */
+    public function __construct()
+    {
+        $this->apiRoot = esc_url_raw(rest_url('give-api/v2/admin/donors'));
+        $this->apiNonce = wp_create_nonce('wp_rest');
+    }
+
+    /**
      * @unreleased
      */
     public function registerMenuItem()
@@ -15,7 +36,7 @@ class DonorsAdminPage
             'edit.php?post_type=give_forms',
             'give-donors'
         );
-        
+
         add_submenu_page(
             'edit.php?post_type=give_forms',
             esc_html__('Donors', 'give'),
@@ -33,8 +54,9 @@ class DonorsAdminPage
     public function loadScripts()
     {
         $data = [
-            'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/donors')),
-            'apiNonce' => wp_create_nonce('wp_rest'),
+            'apiRoot' => $this->apiRoot,
+            'apiNonce' => $this->apiNonce,
+            'preload' => $this->preloadDonors(),
         ];
 
         EnqueueScript::make('give-admin-donors', 'assets/dist/js/give-admin-donors.js')
@@ -48,6 +70,28 @@ class DonorsAdminPage
             [],
             null
         );
+    }
+
+    /**
+     * Make REST request to Donors endpoint before page load
+     * @unreleased
+     */
+    public function preloadDonors(){
+        $queryParameters = [
+            'page' => 1,
+            'perPage' => 10,
+            'search' => '',
+        ];
+
+        $url = add_query_arg(
+            $queryParameters,
+            $this->apiRoot
+        );
+
+        $request = \WP_REST_Request::from_url($url);
+        $response = rest_do_request($request);
+
+        return $response->get_data();
     }
 
     /**

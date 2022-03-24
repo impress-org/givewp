@@ -2,7 +2,6 @@ import {__} from "@wordpress/i18n";
 import {ListTablePage} from "@givewp/components";
 import {donorsColumns} from "./DonorsColumns";
 import {DonorsRowActions} from "./DonorsRowActions";
-import styles from "@givewp/components/ListTable/ListTablePage.module.scss";
 
 declare global {
     interface Window {
