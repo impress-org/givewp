@@ -1,0 +1,110 @@
+.deleted {
+    animation: disappear 400ms ease-in;
+    animation-fill-mode: forwards;
+    pointer-events: none;
+}
+
+@keyframes disappear {
+    0% {
+        filter: grayscale(0);
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        filter: grayscale(1);
+        opacity: 0;
+    }
+}
+
+tr.duplicated {
+    animation: disappear 0.5s ease-in reverse;
+}
+
+.tableRowActions {
+    position: absolute;
+    inset-block-end: 1rem;
+    opacity: 0;
+    transition: opacity 180ms ease-in;
+
+    display: flex;
+    align-items: center;
+    column-gap: 2rem;
+
+    > * {
+        position: relative;
+        color: #0878b0;
+        font-weight: 400;
+        line-height: 1;
+    }
+
+    > * + ::before {
+        position: absolute;
+        content: "";
+        inset-block: auto;
+        inset-inline-start: calc(-1.0625rem);
+        block-size: 110%;
+        inline-size: 0.125rem;
+        background-color: #dedede;
+    }
+
+    > a {
+        text-decoration: none;
+    }
+
+    &:focus-within {
+        opacity: 1;
+    }
+}
+
+.tableRow {
+
+    &:nth-child(odd) {
+        background-color: #f6f7f7;
+    }
+
+    &:nth-child(even) {
+        background-color: #fff;
+    }
+
+    &:hover .tableRowActions {
+        opacity: 1;
+    }
+}
+
+.statusMessage {
+    font-weight: 600;
+    font-size: 1.2em;
+    padding-inline: 2.5em;
+    padding-block: 2em;
+}
+
+div.pending {
+    background-color: rgba(8, 120, 176);
+}
+
+div.draft, div.auto-draft {
+    background-color: rgba(244, 148, 32);
+}
+
+div.future {
+    background-color: rgba(164, 99, 191);
+}
+
+div.trash, div.failed {
+    background-color: rgba(232, 75, 59);
+}
+
+div.private, div.refunded {
+    background-color: rgba(51, 51, 51, 1);
+}
+
+div.abandoned {
+    background-color: rgba(244, 197, 32, 1)
+}
+
+.unclickable {
+    pointer-events: none;
+}
+
+

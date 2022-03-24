@@ -23,6 +23,15 @@
     padding: 0 1.5em 1.5em 1.5em;
 }
 
+.pageActions {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-end;
+    margin-block-end: 0.5rem;
+    margin-block-start: 0.5rem;
+}
+
 .addFormButton {
     $depth: 0 0.125rem 0 #ddd;
 
