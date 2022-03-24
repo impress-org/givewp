@@ -1,0 +1,41 @@
+:global {
+    :root {
+        --give-primary-color: #69b868;
+    }
+
+    .post-type-give_forms #wpbody {
+        box-sizing: border-box;
+        padding-left: 0;
+    }
+
+    .post-type-give_forms #wpbody-content {
+        box-sizing: border-box;
+    }
+
+    .post-type-give_forms #wpbody::after {
+        all: revert;
+    }
+
+    .give-visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+    }
+
+    #give-admin-donation-forms-root {
+        box-sizing: border-box;
+        color: #333;
+        font-family: Open Sans, system-ui, sans-serif;
+        font-size: 1rem;
+
+        *, ::before, ::after {
+            box-sizing: inherit;
+        }
+    }
+}
