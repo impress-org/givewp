@@ -1,9 +1,6 @@
 import styles from "./ListTablePage.module.scss";
-
-export enum FilterPresets {
-    Search = 'search',
-    Select = 'select',
-}
+import {SearchableSelect} from "@givewp/components/ListTable/SearchableSelect";
+import React from "react";
 
 export const Filter = ({ filter, onChange, debouncedOnChange }) => {
     switch(filter.type){
@@ -13,7 +10,7 @@ export const Filter = ({ filter, onChange, debouncedOnChange }) => {
                     name={filter.name}
                     className={styles.statusFilter}
                     aria-label={filter?.ariaLabel}
-                    onChange={onChange}
+                    onChange={(event) => onChange(event.target.name, event.target.value)}
                 >
                     {filter.options.map(({value, text}) => (
                         <option key={value} value={value}>
@@ -22,13 +19,24 @@ export const Filter = ({ filter, onChange, debouncedOnChange }) => {
                     ))}
                 </select>
             );
+        case 'searchableselect':
+            return (
+                <SearchableSelect
+                    name={filter.name}
+                    options={filter.options}
+                    aria-label={filter?.ariaLabel}
+                    placeholder={filter?.text}
+                    onChange={onChange}
+                />
+            );
         case 'search':
             return (
                 <input
                     type="search"
+                    name={filter.name}
                     aria-label={filter?.ariaLabel}
                     placeholder={filter?.text}
-                    onChange={debouncedOnChange}
+                    onChange={(event) => debouncedOnChange(event.target.name, event.target.value)}
                     className={styles.searchInput}
                 />
             );
@@ -42,6 +50,7 @@ export const getInitialFilterState = (filters) => {
     filters.map((filter) => {
         switch (filter.type) {
             case 'select':
+            case 'searchableselect':
                 state[filter.name] = filter.options?.[0].value
                 break;
             case 'search':
