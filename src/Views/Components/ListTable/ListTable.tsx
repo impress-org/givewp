@@ -15,7 +15,8 @@ export interface ListTableProps {
     //optional
     pluralName?: string;
     singleName?: string;
-    rowActions?: (({item, data, addRow, removeRow}) => JSX.Element)|JSX.Element|JSX.Element[]|null;
+    rowActions?: (({item, data, addRow, removeRow}) => JSX.Element)|JSX.Element|JSX.Element[]|Function|null;
+    parameters?: {};
     error?: {}|Boolean;
     isLoading?: Boolean;
 }
@@ -36,6 +37,7 @@ export const ListTable = ({
         title,
         data,
         rowActions = null,
+        parameters = {},
         error = false,
         isLoading = false,
 }: ListTableProps) => {
@@ -128,6 +130,7 @@ export const ListTable = ({
                                 data={data}
                                 isLoading={isLoading}
                                 rowActions={rowActions}
+                                parameters={parameters}
                                 setUpdateErrors={setUpdateErrors}
                             />
                         </tbody>

@@ -40,7 +40,7 @@ const RenderRow = ({ column, item }) => {
     }
 }
 
-export default function ListTableRows({columns, data, isLoading, rowActions, setUpdateErrors}) {
+export default function ListTableRows({columns, data, isLoading, rowActions, setUpdateErrors, parameters}) {
     const [removed, setRemoved] = useState([]);
     const [added, setAdded] = useState([]);
 
@@ -96,7 +96,7 @@ export default function ListTableRows({columns, data, isLoading, rowActions, set
                     <RenderRow column={column} item={item}/>
                     {!isLoading && rowActions &&
                         <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
-                            {column?.heading && rowActions({data, item, removeRow, addRow, setUpdateErrors})}
+                            {column?.heading && rowActions({data, item, removeRow, addRow, setUpdateErrors, parameters})}
                         </div>
                     }
                 </TableCell>
