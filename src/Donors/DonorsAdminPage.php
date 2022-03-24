@@ -15,12 +15,7 @@ class DonorsAdminPage
             'edit.php?post_type=give_forms',
             'give-donors'
         );
-
-        remove_action(
-            'give_forms_page_give-donors',
-            'give_donors_page'
-        );
-
+        
         add_submenu_page(
             'edit.php?post_type=give_forms',
             esc_html__('Donors', 'give'),
@@ -72,6 +67,6 @@ class DonorsAdminPage
      */
     public static function isShowing()
     {
-        return isset($_GET['page']) && $_GET['page'] === 'give-donors';
+        return isset($_GET['page']) && $_GET['page'] === 'give-donors' && !isset($_GET['id']);
     }
 }
