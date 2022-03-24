@@ -15,7 +15,7 @@ import giveFormOptions from '../data/options';
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { formsPerPage, formIDs, excludedFormIDs, orderBy, order, categories, tags, columns, showTitle, showExcerpt, showGoal, showFeaturedImage, displayType } = attributes;
+	const { formsPerPage, formIDs, excludedFormIDs, orderBy, order, categories, tags, columns, showTitle, showExcerpt, excerptLength, showGoal, showFeaturedImage, displayType } = attributes;
 	const saveSetting = ( name, value ) => {
 		setAttributes( {
 			[ name ]: value,
@@ -78,7 +78,20 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Show Excerpt', 'give' ) }
 					checked={ !! showExcerpt }
 					onChange={ ( value ) => saveSetting( 'showExcerpt', value ) } />
-				<ToggleControl
+                <TextControl
+                    name="excerptLength"
+                    label={ __( 'Excerpt Length', 'give' ) }
+                    value={ excerptLength ? excerptLength : '' }
+                    className={ !showExcerpt && 'hidden' }
+                    onChange={ ( value ) => {
+                        if( value === '' ) {
+                            saveSetting('excerptLength', 0 );
+                        }
+                        const intValue = Math.abs( Number.parseInt(value) );
+                        if( intValue == value )
+                            saveSetting( 'excerptLength', value )
+                    } }/>
+                <ToggleControl
 					name="showGoal"
 					label={ __( 'Show Goal', 'give' ) }
 					checked={ !! showGoal }
