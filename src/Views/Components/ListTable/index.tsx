@@ -85,7 +85,7 @@ export default function ListTablePage({
             </div>
             <div className={styles.searchContainer}>
                 {filterSettings.map(filter =>
-                    <Filter filter={filter} onChange={handleFilterChange} debouncedOnChange={handleDebouncedFilterChange}/>
+                    <Filter key={filter.name} filter={filter} onChange={handleFilterChange} debouncedOnChange={handleDebouncedFilterChange}/>
                 )}
             </div>
             <div className={styles.pageContent}>
