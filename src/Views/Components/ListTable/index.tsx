@@ -15,14 +15,13 @@ export interface ListTablePageProps {
     //required
     title: string;
     columns: Array<ListTableColumn>;
-    data: {items: Array<{}>, totalPages: number, totalItems: string};
     apiSettings: {apiRoot, apiNonce};
 
     //optional
     pluralName?: string;
     singleName?: string;
     children?: JSX.Element|JSX.Element[]|null;
-    rowActions?: JSX.Element|JSX.Element[]|null;
+    rowActions?: JSX.Element|JSX.Element[]|Function|null;
     filterSettings?;
 }
 
@@ -67,6 +66,16 @@ export default function ListTablePage({
         setFiltersLater(event.target.name, event.target.value);
     }
 
+    const showPagination = () => (
+        <Pagination
+            currentPage={page}
+            totalPages={data ? data.totalPages : 1}
+            disabled={!data}
+            totalItems={data ? parseInt(data.totalItems) : -1}
+            setPage={setPage}
+        />
+    )
+
     return (
         <article>
             <div className={styles.pageHeader}>
@@ -81,38 +90,21 @@ export default function ListTablePage({
             </div>
             <div className={styles.pageContent}>
                 <div className={styles.pageActions}>
-                    {page && setPage &&
-                        <Pagination
-                            currentPage={page}
-                            totalPages={data ? data.totalPages : 1}
-                            disabled={!data}
-                            totalItems={data ? parseInt(data.totalItems) : -1}
-                            setPage={setPage}
-                        />
-                    }
+                    {page && setPage && showPagination()}
                 </div>
-                    <RowActionsContext.Provider value={parameters}>
-                        <ListTable
-                            columns={columns}
-                            singleName={singleName}
-                            pluralName={pluralName}
-                            title={title}
-                            rowActions={rowActions}
-                            data={data}
-                            error={error}
-                            isLoading={isValidating}
-                        />
-                    </RowActionsContext.Provider>
+                <ListTable
+                    columns={columns}
+                    singleName={singleName}
+                    pluralName={pluralName}
+                    title={title}
+                    rowActions={rowActions}
+                    parameters={parameters}
+                    data={data}
+                    error={error}
+                    isLoading={isValidating}
+                />
                 <div className={styles.pageActions}>
-                    {page && setPage &&
-                        <Pagination
-                            currentPage={page}
-                            totalPages={data ? data.totalPages : 1}
-                            disabled={!data}
-                            totalItems={data ? parseInt(data.totalItems) : -1}
-                            setPage={setPage}
-                        />
-                    }
+                    {page && setPage && showPagination()}
                 </div>
             </div>
         </article>
