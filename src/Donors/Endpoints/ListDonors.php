@@ -93,8 +93,8 @@ class ListDonors extends Endpoint
 
         return new WP_REST_Response(
             [
-                'donors' => $data,
-                'donorsCount' => $donorsCount,
+                'items' => $data,
+                'itemCount' => $donorsCount,
                 'pageCount' => $pageCount
             ]
         );
