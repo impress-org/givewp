@@ -30,7 +30,7 @@ class RemoveLogWithCardInfo extends Migration
      */
     public static function id()
     {
-        return 'remove-log-which-has-card-info';
+        return 'remove-log-with-card-info';
     }
 
     /**
@@ -46,6 +46,6 @@ class RemoveLogWithCardInfo extends Migration
      */
     public static function title()
     {
-        return 'Remove Log Which Has CardInfo';
+        return 'Remove Log With CardInfo';
     }
 }
