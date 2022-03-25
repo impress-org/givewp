@@ -12,11 +12,7 @@
     },
     "attributes": {
         "formId": {
-            "type": "integer"
-        }
-    },
-    "example": {
-        "attributes": {
+            "type": "number"
         }
     },
     "textdomain": "give",
