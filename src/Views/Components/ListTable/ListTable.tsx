@@ -24,6 +24,7 @@ export interface ListTableProps {
 export interface ListTableColumn {
     name: string;
     text: string;
+    inlineSize?: string;
     preset?: string;
     heading?: boolean;
     addClass?: string;
@@ -118,6 +119,7 @@ export const ListTable = ({
                                         className={styles.tableColumnHeader}
                                         data-column={column.name}
                                         key={column.name}
+                                        style={{inlineSize: (column?.inlineSize || '8rem')}}
                                     >
                                         {column.text}
                                     </th>
