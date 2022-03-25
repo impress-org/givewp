@@ -1,15 +1,25 @@
 const mix = require('laravel-mix');
 const wpPot = require('wp-pot');
 const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extraction-webpack-plugin');
+const donationFormBlockPath = 'src/NextGen/DonationForm/Blocks/DonationFormBlock';
 
 /**
  * Keep block builds within their domain for blocks.json to work properly
  */
-mix.js(
-    'src/NextGen/DonationForm/Blocks/DonationFormBlock/block.js',
-    'src/NextGen/DonationForm/Blocks/DonationFormBlock/build/index.js'
-);
+mix
+    /**
+     * DonationFormBlock - editor
+     */
+    .js(`${donationFormBlockPath}/block.js`, `${donationFormBlockPath}/build/editor.js`)
 
+    /**
+     * DonationFormBlock - view
+     */
+    .js(`${donationFormBlockPath}/app/App.jsx`, `${donationFormBlockPath}/build/view.js`);
+
+/**
+ * Extend the config to use DependencyExtractionWebpackPlugin for WP scripts asset dependencies
+ */
 mix.webpackConfig({
     plugins: [
         /*

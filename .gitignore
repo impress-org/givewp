@@ -51,3 +51,4 @@ vendor
 
 # Assert directory
 assets/dist
+**/build/

@@ -1,4 +1,6 @@
 {
-    "/src/NextGen/DonationForm/Blocks/DonationFormBlock/build/index.js": "/src/NextGen/DonationForm/Blocks/DonationFormBlock/build/index.js",
-    "/src/NextGen/DonationForm/Blocks/DonationFormBlock/build/index.asset.php": "/src/NextGen/DonationForm/Blocks/DonationFormBlock/build/index.asset.php"
+    "/src/NextGen/DonationForm/Blocks/DonationFormBlock/build/editor.js": "/src/NextGen/DonationForm/Blocks/DonationFormBlock/build/editor.js",
+    "/src/NextGen/DonationForm/Blocks/DonationFormBlock/build/editor.asset.php": "/src/NextGen/DonationForm/Blocks/DonationFormBlock/build/editor.asset.php",
+    "/src/NextGen/DonationForm/Blocks/DonationFormBlock/build/view.js": "/src/NextGen/DonationForm/Blocks/DonationFormBlock/build/view.js",
+    "/src/NextGen/DonationForm/Blocks/DonationFormBlock/build/view.asset.php": "/src/NextGen/DonationForm/Blocks/DonationFormBlock/build/view.asset.php"
 }
