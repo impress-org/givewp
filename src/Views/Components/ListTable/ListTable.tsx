@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import {__, _n, sprintf} from '@wordpress/i18n';
 import cx from 'classnames';
 
-import styles from './style.module.scss';
+import styles from './ListTable.module.scss';
 import ListTableRows from './ListTableRows';
 import {Spinner} from '../index';
 

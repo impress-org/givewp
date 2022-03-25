@@ -1,0 +1,16 @@
+.gravatar {
+    border-radius: 9999px;
+    max-height: 6rem;
+    flex-shrink: 1;
+}
+
+.nameCell {
+    display: flex;
+    justify-content: center;
+    align-content: space-around;
+}
+
+.name {
+    text-align: center;
+    font-size: 1.125rem;
+}

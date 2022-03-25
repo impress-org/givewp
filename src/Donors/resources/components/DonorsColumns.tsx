@@ -1,28 +1,31 @@
 import {__} from "@wordpress/i18n";
-import styles from "./DonationFormsColumns.module.scss";
-import cx from "classnames";
+import styles from "./DonorsColumns.module.scss";
 import {ListTableColumn} from "@givewp/components";
 
 export const donorsColumns: Array<ListTableColumn> = [
     {
         name: 'name',
         text: __('Name', 'give'),
-        heading: true,
+        render: (donor: {name, namePrefix, gravatar}) => (
+            <>
+                <img className={styles.gravatar} src={donor.gravatar} alt={`avatar for ${donor.name}`}/>
+                <b className={styles.name}>{donor.namePrefix ? donor.namePrefix + ' ' :''}{donor.name}</b>
+            </>
+        ),
     },
     {
         name: 'email',
         text: __('Email', 'give'),
+        heading: true,
     },
     {
         name: 'donationCount',
         text: __('Donations', 'give'),
-        render: (donor: {donationCount, id}) => {
-            return (
-                <a href={`http://givewp-test-2.local/wp-admin/edit.php?post_type=give_forms&page=give-payment-history&donor=${donor.id}`}>
-                    {`${donor.donationCount.toString()}`}
-                </a>
-            )
-        }
+        render: (donor: {donationCount, id}) => (
+            <a href={`http://givewp-test-2.local/wp-admin/edit.php?post_type=give_forms&page=give-payment-history&donor=${donor.id}`}>
+                {`${donor.donationCount.toString()}`}
+            </a>
+        )
     },
     {
         name: 'donationRevenue',
