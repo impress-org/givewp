@@ -8,7 +8,7 @@ export const donorsColumns: Array<ListTableColumn> = [
         text: __('Name', 'give'),
         render: (donor: {name, namePrefix, gravatar}) => (
             <>
-                <img className={styles.gravatar} src={donor.gravatar} alt={`avatar for ${donor.name}`}/>
+                <img className={styles.gravatar} src={donor.gravatar} alt={`avatar for ${donor.name}`} loading='lazy'/>
                 <b className={styles.name}>{donor.namePrefix ? donor.namePrefix + ' ' :''}{donor.name}</b>
             </>
         ),
