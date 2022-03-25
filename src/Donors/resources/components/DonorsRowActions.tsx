@@ -17,8 +17,6 @@ export function DonorsRowActions({data, item, removeRow, addRow, setUpdateErrors
 
     return (
         <>
-            <span>{item.id}
-            </span>
             <RowAction
                 href={`/wp-admin/edit.php?post_type=give_forms&page=give-donors&view=overview&id=${item.id}`}
                 displayText={__('View Donor', 'give')}

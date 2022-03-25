@@ -1,6 +1,7 @@
 import {__} from "@wordpress/i18n";
 import styles from "./DonorsColumns.module.scss";
 import {ListTableColumn} from "@givewp/components";
+import {IdBadge} from "@givewp/components/ListTable/TableCell";
 
 export const donorsColumns: Array<ListTableColumn> = [
     {
@@ -8,11 +9,12 @@ export const donorsColumns: Array<ListTableColumn> = [
         text: __('Name', 'give'),
         inlineSize: '12rem',
         addClass: styles.nameCell,
-        render: (donor: {name, namePrefix, gravatar}) => (
+        render: (donor: {name, namePrefix, gravatar, id}) => (
             <>
                 <div className={styles.gravatarWrapper}/>
                 <img className={styles.gravatar} src={donor.gravatar} alt={`avatar for ${donor.name}`} loading='lazy'/>
                 <b className={styles.name}>{donor.namePrefix ? donor.namePrefix + ' ' :''}{donor.name}</b>
+                <IdBadge addClass={styles.id} id={donor.id}/>
             </>
         ),
     },

@@ -18,9 +18,9 @@ export default function TableCell({className = '', children = null, heading = fa
     );
 }
 
-export function IdBadge({ id }){
+export function IdBadge({ id, addClass = '' }){
     return (
-        <div className={styles.idBadge}>{id}</div>
+        <div className={cx(styles.idBadge, addClass)}>{id}</div>
     );
 }
 
