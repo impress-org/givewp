@@ -2,18 +2,10 @@ const mix = require('laravel-mix');
 const wpPot = require('wp-pot');
 const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extraction-webpack-plugin');
 
-mix.setPublicPath('public')
-    .sourceMaps(false)
-    // Donation Form Blocks
-    .js(
-        'src/NextGen/DonationForm/Blocks/DonationFormBlock/registration/index.js',
-        'public/js/give-next-gen-donation-form-block.js'
-    )
-    .sass(
-        'src/NextGen/DonationForm/Blocks/DonationFormBlock/styles/index.scss',
-        'public/css/give-next-gen-donation-form-block.css'
-    );
-mix.setPublicPath('public').sourceMaps(false);
+mix.js(
+    'src/NextGen/DonationForm/Blocks/DonationFormBlock/registration/index.js',
+    'src/NextGen/DonationForm/Blocks/DonationFormBlock/build/index.js'
+);
 
 mix.webpackConfig({
     plugins: [
