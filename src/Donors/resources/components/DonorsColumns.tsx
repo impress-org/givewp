@@ -19,8 +19,12 @@ export const donorsColumns: Array<ListTableColumn> = [
     {
         name: 'email',
         text: __('Email', 'give'),
+        addClass: styles.email,
         inlineSize: '10rem',
         heading: true,
+        render: (donor: {email}) => (
+          <a href={`mailto:${donor.email}`}>{donor.email}</a>
+        ),
     },
     {
         name: 'donationCount',
