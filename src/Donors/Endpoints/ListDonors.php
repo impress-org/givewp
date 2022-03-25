@@ -54,6 +54,11 @@ class ListDonors extends Endpoint
                         'required' => false,
                         'validate_callback' => [$this, 'validateDate']
                     ],
+                    'form' => [
+                        'type' => 'integer',
+                        'required' => false,
+                        'default' => 0
+                    ],
                     'end' => [
                         'type' => 'string',
                         'required' => false,

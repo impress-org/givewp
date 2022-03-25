@@ -18,7 +18,7 @@ const donorsFilters = [
     },
     {
         name: 'form',
-        type: 'searchableselect',
+        type: 'formselect',
         text: __('Select Form', 'give'),
         ariaLabel: __('Filter donation forms by status', 'give'),
         options: window.GiveDonors.forms

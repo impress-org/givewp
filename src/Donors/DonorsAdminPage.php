@@ -116,7 +116,7 @@ class DonorsAdminPage
 
         $emptyOption = [
                 [
-                'value' => '',
+                'value' => '0',
                 'text' => 'Any',
             ]
         ];

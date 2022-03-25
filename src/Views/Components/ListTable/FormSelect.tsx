@@ -1,6 +1,7 @@
 import styles from "@givewp/components/ListTable/ListTablePage.module.scss";
 
-export const SearchableSelect = ({options, name, placeholder = '', ariaLabel = '', onChange}) => {
+//TODO: extract SearchableSelect component from FormSelect
+export const FormSelect = ({options, name, placeholder = '', ariaLabel = '', onChange}) => {
     return (
         <>
             <input
@@ -18,8 +19,8 @@ export const SearchableSelect = ({options, name, placeholder = '', ariaLabel = '
                 onChange={onChange}
             >
                 {options.map(({value, text}) => (
-                    <option key={value} data-value={value}>
-                        {text}
+                    <option key={`${value}${text}`} value={text}>
+                        {value === '0' ? '' : `ID ${value}`}
                     </option>
                 ))}
             </datalist>
@@ -30,12 +31,11 @@ export const SearchableSelect = ({options, name, placeholder = '', ariaLabel = '
 const updateSearchableSelect = (options, name, onChange) => {
     return (event) => {
         if(event.target.value === ''){
-            onChange(name, '');
+            onChange(name, 0);
         }
         const selectedIndex = options.findIndex((option) => {
             return option.text.toLowerCase() === event.target.value.toLowerCase()
         });
-        console.log(selectedIndex);
         if(selectedIndex > -1){
             onChange(name, options[selectedIndex].value);
         }

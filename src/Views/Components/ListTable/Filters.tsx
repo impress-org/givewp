@@ -1,5 +1,5 @@
 import styles from "./ListTablePage.module.scss";
-import {SearchableSelect} from "@givewp/components/ListTable/SearchableSelect";
+import {FormSelect} from "@givewp/components/ListTable/FormSelect";
 import React from "react";
 
 export const Filter = ({ filter, onChange, debouncedOnChange }) => {
@@ -19,9 +19,9 @@ export const Filter = ({ filter, onChange, debouncedOnChange }) => {
                     ))}
                 </select>
             );
-        case 'searchableselect':
+        case 'formselect':
             return (
-                <SearchableSelect
+                <FormSelect
                     name={filter.name}
                     options={filter.options}
                     aria-label={filter?.ariaLabel}
@@ -41,6 +41,7 @@ export const Filter = ({ filter, onChange, debouncedOnChange }) => {
                 />
             );
         default:
+            return null;
             break;
     }
 }
@@ -50,7 +51,7 @@ export const getInitialFilterState = (filters) => {
     filters.map((filter) => {
         switch (filter.type) {
             case 'select':
-            case 'searchableselect':
+            case 'formselect':
                 state[filter.name] = filter.options?.[0].value
                 break;
             case 'search':
