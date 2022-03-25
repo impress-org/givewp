@@ -25,9 +25,18 @@ class CreditCardGateway extends PaymentGateway
     {
         parent::__construct($subscriptionModule);
 
-        $this->errorMessages['accountConfiguredNoSsl']    = esc_html__( 'Credit Card fields are disabled because your site is not running securely over HTTPS.', 'give' );
-        $this->errorMessages['accountNotConfiguredNoSsl'] = esc_html__( 'Credit Card fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
-        $this->errorMessages['accountNotConfigured']      = esc_html__( 'Credit Card fields are disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
+        $this->errorMessages['accountConfiguredNoSsl'] = esc_html__(
+            'Credit Card fields are disabled because your site is not running securely over HTTPS.',
+            'give'
+        );
+        $this->errorMessages['accountNotConfiguredNoSsl'] = esc_html__(
+            'Credit Card fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.',
+            'give'
+        );
+        $this->errorMessages['accountNotConfigured'] = esc_html__(
+            'Credit Card fields are disabled. Please connect and configure your Stripe account to accept donations.',
+            'give'
+        );
     }
 
     /**
@@ -36,18 +45,19 @@ class CreditCardGateway extends PaymentGateway
      * @return GatewayCommand
      * @throws PaymentGatewayException
      */
-    public function createPayment( GatewayPaymentData $paymentData )
+    public function createPayment(GatewayPaymentData $paymentData)
     {
         $workflow = new Workflow();
-        $workflow->bind( $paymentData );
+        $workflow->bind($paymentData);
 
-        $workflow->action( new Actions\GetPaymentMethodFromRequest );
-        $workflow->action( new Actions\SaveDonationSummary );
-        $workflow->action( new Actions\GetOrCreateStripeCustomer );
-        $workflow->action( new Actions\CreatePaymentIntent );
+        $workflow->action(new Actions\GetPaymentMethodFromRequest);
+        $workflow->action(new Actions\SaveDonationSummary);
+        $workflow->action(new Actions\GetOrCreateStripeCustomer);
+        $workflow->action(new Actions\CreatePaymentIntent);
 
         return $this->handlePaymentIntentStatus(
-            $workflow->resolve( PaymentIntent::class )
+            $paymentData,
+            $workflow->resolve(PaymentIntent::class)
         );
     }
 
@@ -88,6 +98,6 @@ class CreditCardGateway extends PaymentGateway
      */
     public function getLegacyFormFieldMarkup($formId, $args)
     {
-        return $this->getCreditCardFormHTML( $formId, $args );
+        return $this->getCreditCardFormHTML($formId, $args);
     }
 }
