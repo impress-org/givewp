@@ -5,9 +5,12 @@ const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extract
 mix.setPublicPath('public')
     .sourceMaps(false)
     // Donation Form Blocks
-    .js('src/NextGen/DonationForm/Blocks/DonationFormBlock/index.js', 'public/js/give-next-gen-donation-form-block.js')
+    .js(
+        'src/NextGen/DonationForm/Blocks/DonationFormBlock/registration/index.js',
+        'public/js/give-next-gen-donation-form-block.js'
+    )
     .sass(
-        'src/NextGen/DonationForm/Blocks/DonationFormBlock/index.scss',
+        'src/NextGen/DonationForm/Blocks/DonationFormBlock/styles/index.scss',
         'public/css/give-next-gen-donation-form-block.css'
     );
 mix.setPublicPath('public').sourceMaps(false);

@@ -1,6 +1,6 @@
 import schema from './block.json';
 import {registerBlockType} from '@wordpress/blocks';
-import Edit from './edit';
+import Edit from '../edit';
 
 /**
  * @since 1.0.0

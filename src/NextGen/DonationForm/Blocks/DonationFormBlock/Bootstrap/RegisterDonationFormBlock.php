@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\NextGen\DonationForm\Bootstrap;
+namespace Give\NextGen\DonationForm\Blocks\DonationFormBlock\Bootstrap;
 
 use Give\Framework\EnqueueScript;
 
@@ -35,7 +35,8 @@ class RegisterDonationFormBlock
 
         // register block
         register_block_type(
-            GIVE_NEXT_GEN_URL . 'src/NextGen/DonationForm/Blocks/DonationFormBlock'
+            GIVE_NEXT_GEN_URL . 'src/NextGen/DonationForm/Blocks/DonationFormBlock/registration',
+            ['render_callback' => [$this, 'renderBlock']]
         );
     }
 }

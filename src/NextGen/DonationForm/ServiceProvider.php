@@ -3,7 +3,7 @@
 namespace Give\NextGen\DonationForm;
 
 use Give\Helpers\Hooks;
-use Give\NextGen\DonationForm\Bootstrap\RegisterDonationFormBlock;
+use Give\NextGen\DonationForm\Blocks\DonationFormBlock\Bootstrap\RegisterDonationFormBlock;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 class ServiceProvider implements ServiceProviderInterface {
