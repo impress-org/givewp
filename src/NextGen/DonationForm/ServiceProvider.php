@@ -3,7 +3,7 @@
 namespace Give\NextGen\DonationForm;
 
 use Give\Helpers\Hooks;
-use Give\NextGen\DonationForm\Blocks\DonationFormBlock\Bootstrap\RegisterDonationFormBlock;
+use Give\NextGen\DonationForm\Blocks\DonationFormBlock\Block as DonationFormBlock;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 class ServiceProvider implements ServiceProviderInterface {
@@ -22,7 +22,7 @@ class ServiceProvider implements ServiceProviderInterface {
     public function boot()
     {
         if (function_exists('register_block_type')) {
-            Hooks::addAction('init', RegisterDonationFormBlock::class);
+            Hooks::addAction('init', DonationFormBlock::class, 'register');
         }
     }
 }

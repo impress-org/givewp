@@ -2,8 +2,11 @@ const mix = require('laravel-mix');
 const wpPot = require('wp-pot');
 const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extraction-webpack-plugin');
 
+/**
+ * Keep block builds within their domain for blocks.json to work properly
+ */
 mix.js(
-    'src/NextGen/DonationForm/Blocks/DonationFormBlock/registration/index.js',
+    'src/NextGen/DonationForm/Blocks/DonationFormBlock/block.js',
     'src/NextGen/DonationForm/Blocks/DonationFormBlock/build/index.js'
 );
 

@@ -2623,10 +2623,10 @@ module.exports = window["wp"]["i18n"];
 
 /***/ }),
 
-/***/ "./src/NextGen/DonationForm/Blocks/DonationFormBlock/registration/block.json":
-/*!***********************************************************************************!*\
-  !*** ./src/NextGen/DonationForm/Blocks/DonationFormBlock/registration/block.json ***!
-  \***********************************************************************************/
+/***/ "./src/NextGen/DonationForm/Blocks/DonationFormBlock/block.json":
+/*!**********************************************************************!*\
+  !*** ./src/NextGen/DonationForm/Blocks/DonationFormBlock/block.json ***!
+  \**********************************************************************/
 /***/ ((module) => {
 
 module.exports = JSON.parse('{"$schema":"https://json.schemastore.org/block.json","apiVersion":2,"name":"givewp/next-gen-donation-form-block","version":"1.0.0","title":"GiveWP Next Gen Donation Form Block","category":"give","icon":"superhero","description":"A whole new world.","supports":{"html":false},"attributes":{"formId":{"type":"number"}},"textdomain":"give","editorScript":"file:./build/index.js"}');
@@ -2704,14 +2704,14 @@ module.exports = JSON.parse('{"$schema":"https://json.schemastore.org/block.json
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!*********************************************************************************!*\
-  !*** ./src/NextGen/DonationForm/Blocks/DonationFormBlock/registration/index.js ***!
-  \*********************************************************************************/
+/*!********************************************************************!*\
+  !*** ./src/NextGen/DonationForm/Blocks/DonationFormBlock/block.js ***!
+  \********************************************************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./block.json */ "./src/NextGen/DonationForm/Blocks/DonationFormBlock/registration/block.json");
+/* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./block.json */ "./src/NextGen/DonationForm/Blocks/DonationFormBlock/block.json");
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../edit */ "./src/NextGen/DonationForm/Blocks/DonationFormBlock/edit/index.js");
+/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit */ "./src/NextGen/DonationForm/Blocks/DonationFormBlock/edit/index.js");
 
 
 
