@@ -12,6 +12,7 @@ use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\WebhookRegister;
 use Give\PaymentGateways\Gateways\Stripe\CheckoutGateway;
 use Give\PaymentGateways\Gateways\Stripe\Controllers\UpdateStatementDescriptorAjaxRequestController;
 use Give\PaymentGateways\Gateways\Stripe\Migrations\AddStatementDescriptorToStripeAccounts;
+use Give\PaymentGateways\PayPalCommerce\Migrations\RemoveLogWithCardInfo;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
@@ -40,15 +41,33 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addFilter('give_register_gateway', RegisterPaymentGateways::class);
         Hooks::addFilter('give_payment_gateways', RegisterPaymentGatewaySettingsList::class);
         Hooks::addAction('template_redirect', GatewayRoute::class);
-        Hooks::addAction('wp_ajax_edit_stripe_account_statement_descriptor', UpdateStatementDescriptorAjaxRequestController::class);
+        Hooks::addAction(
+            'wp_ajax_edit_stripe_account_statement_descriptor',
+            UpdateStatementDescriptorAjaxRequestController::class
+        );
 
-        give(MigrationsRegister::class)
-            ->addMigration(AddStatementDescriptorToStripeAccounts::class);
+        $this->registerMigrations();
 
         /**
          * Stripe Checkout Redirect Handler
          */
         Hooks::addAction('wp_footer', CheckoutGateway::class, 'maybeHandleRedirect', 99999);
         Hooks::addAction('give_embed_footer', CheckoutGateway::class, 'maybeHandleRedirect', 99999);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerMigrations()
+    {
+        $migrationRegisterer = give(MigrationsRegister::class);
+        $migrations = [
+            AddStatementDescriptorToStripeAccounts::class,
+            RemoveLogWithCardInfo::class
+        ];
+
+        foreach ($migrations as $migration) {
+            $migrationRegisterer->addMigration($migration);
+        }
     }
 }
