@@ -27,11 +27,7 @@ class DonationResponseData implements Arrayable
     /**
      * @var string
      */
-    public $firstName;
-    /**
-     * @var string
-     */
-    public $lastName;
+    public $donorName;
     /**
      * @var string
      */
@@ -83,8 +79,7 @@ class DonationResponseData implements Arrayable
         $self->formTitle = $donation->{DonationMetaKeys::FORM_TITLE()};
         $self->amount = html_entity_decode(give_currency_filter(give_format_amount($donation->{DonationMetaKeys::AMOUNT()})));
         $self->donorId = (int)$donation->{DonationMetaKeys::DONOR_ID()};
-        $self->firstName = $donation->{DonationMetaKeys::FIRST_NAME()};
-        $self->lastName = $donation->{DonationMetaKeys::LAST_NAME()};
+        $self->donorName = $donation->{DonationMetaKeys::FIRST_NAME()} . ' ' . $donation->{DonationMetaKeys::LAST_NAME()};
         $self->email = $donation->{DonationMetaKeys::EMAIL()};
         $self->gateway = $donation->{DonationMetaKeys::GATEWAY()};
         $self->createdAt = Date::getDateTime($donation->createdAt);

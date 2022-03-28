@@ -57,13 +57,8 @@ export default function () {
             text: __('Date', 'give'),
         },
         {
-            name: 'firstName',
-            text: __('Donor Name', 'give'),
-            render: (donation: { firstName, lastName }) => (
-                <>
-                    {donation.firstName}{' '}{donation.lastName}
-                </>
-            )
+            name: 'donorName',
+            text: __('Donor Name', 'give')
         },
         {
             name: 'formTitle',
