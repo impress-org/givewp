@@ -33,15 +33,25 @@ class AddMissingTransactionIdForUncompletedDonations extends Migration
     public function run()
     {
         $donationMetaTable = DB::prefix('give_donationmeta');
-        $logTable = DB::prefix('give_comments');
+        $commentTable = DB::prefix('give_comments');
         $donationTable = DB::prefix('posts');
 
+        /*
+         * This SQL query will add transaction id to donation who pass following conditions:
+         * - Donation status is other than "publish".
+         * - Donation created after 20 March 2020. We released GiveWP 2.19.0 on 25th March 2022,
+         *   So donation created after or on following date may not have transaction id.
+         *   @see release information https://github.com/impress-org/givewp/releases/tag/2.19.0
+         * - Donation process with Stripe payment method.
+         * - Donation has note with "Stripe Charge/Payment Intent ID" prefix.
+         * - donation does not have transaction id.
+         */
         DB::query(
             "
             INSERT INTO $donationMetaTable (donation_id, meta_key, meta_value)
             SELECT dm1.donation_id, '_give_payment_transaction_id',SUBSTR( gc.comment_content, 34 ) as transactionId
             FROM $donationMetaTable as dm1
-                INNER JOIN $logTable as gc on gc.comment_parent = dm1.donation_id
+                INNER JOIN $commentTable as gc on gc.comment_parent = dm1.donation_id
                 INNER JOIN $donationTable as p on p.ID = dm1.donation_id
             WHERE NOT EXISTS (
                 SELECT *
