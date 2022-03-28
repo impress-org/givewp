@@ -61,7 +61,11 @@ class DonationsAdminPage
      */
     public function render()
     {
-        echo '<div id="give-admin-donations-root"></div>';
+        if (isset($_GET['view']) && 'view-payment-details' === $_GET['view']) {
+            include GIVE_PLUGIN_DIR . 'includes/admin/payments/view-payment-details.php';
+        } else {
+            echo '<div id="give-admin-donations-root"></div>';
+        }
     }
 
     /**
