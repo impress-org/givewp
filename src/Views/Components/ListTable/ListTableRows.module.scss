@@ -37,6 +37,7 @@ tr.duplicated {
         color: #0878b0;
         font-weight: 400;
         line-height: 1;
+        flex-shrink: 0;
     }
 
     > * + ::before {

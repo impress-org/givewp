@@ -27,6 +27,7 @@ export const donorsColumns: Array<ListTableColumn> = [
         name: 'name',
         text: __('Name', 'give'),
         inlineSize: '12rem',
+        heading: true,
         addClass: styles.nameCell,
         render: (donor: {name, namePrefix, id}) => (
                 <strong className={styles.name}>{donor.namePrefix ? donor.namePrefix + ' ' :''}{donor.name}</strong>
@@ -37,7 +38,6 @@ export const donorsColumns: Array<ListTableColumn> = [
         text: __('Email', 'give'),
         addClass: styles.email,
         inlineSize: '10rem',
-        heading: true,
         render: (donor: {email}) => (
           <a href={`mailto:${donor.email}`}>{donor.email}</a>
         ),
