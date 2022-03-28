@@ -186,19 +186,17 @@ export const ListTable = ({
                     )}
                     <div id="giveListTableMessage">
                         {isEmpty && (
-                            <div className={styles.statusMessage}>
+                            <div role='status' className={styles.statusMessage}>
                                 {sprintf(__('No %s found.', 'give'), pluralName)}
                             </div>
                         )}
                         {error && (
                             <>
-                                <div className={styles.statusMessage}>
+                                <div role='alert' className={styles.statusMessage}>
                                     {sprintf(__('There was a problem retrieving the %s.', 'give'), pluralName)}
                                 </div>
                                 <div className={styles.statusMessage}>
-                                    {__('Click', 'give')}{' '}
-                                    <a href={window.location.href.toString()}>{__('here', 'give')}</a>
-                                    {' ' + __('to reload the page.')}
+                                    <a href={window.location.href.toString()}>{__('Click here to reload the page.', 'give')}</a>
                                 </div>
                             </>
                         )}
