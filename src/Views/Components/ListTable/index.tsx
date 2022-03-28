@@ -10,6 +10,7 @@ import useDebounce from "./hooks/useDebounce";
 import {useResetPage} from "./hooks/useResetPage";
 import ListTableApi from "./api";
 import styles from './ListTablePage.module.scss';
+import cx from "classnames";
 
 export interface ListTablePageProps {
     //required
@@ -83,6 +84,7 @@ export default function ListTablePage({
                     <Filter key={filter.name} filter={filter} onChange={handleFilterChange} debouncedOnChange={handleDebouncedFilterChange}/>
                 )}
             </section>
+            <div className={cx('wp-header-end', 'hidden')}/>
             <div className={styles.pageContent}>
                 <div className={styles.pageActions}>
                     {page && setPage && showPagination()}
