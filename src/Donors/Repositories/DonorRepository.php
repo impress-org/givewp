@@ -483,6 +483,7 @@ class DonorRepository
         $start = $request->get_param('start');
         $end = $request->get_param('end');
         $donations = $request->get_param('donations');
+        $form = $request->get_param('form');
 
         if ($donations !== 0) {
             $builder->whereLike('payment_ids', $donations);
@@ -503,6 +504,12 @@ class DonorRepository
             $builder->where('date_created', $start, '>=');
         } else if ($end) {
             $builder->where('date_created', $end, '<=');
+        }
+
+        if ($form) {
+            $builder->whereLike('payment_ids', $form . ',%');
+            $builder->orWhereLike('payment_ids', '%,' . $form);
+            $builder->orWhereLike('payment_ids', '%,' . $form . ',%');
         }
 
         return $builder;

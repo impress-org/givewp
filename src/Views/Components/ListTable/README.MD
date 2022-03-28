@@ -2,16 +2,16 @@
 
 ##ListTable
 
-| Prop       | Type              | Required | Default             |
-|------------|-------------------|----------|---------------------|
-| data       | Object: {items: {}} | Yes      | -                   |
-| columns    | Array             | Yes      | -                   |
-| title      | String            | Yes      | -                   |
-| singleName | String            | No       | __('item', 'give')  |
-| pluralName | String            | No       | __('items', 'give') |
-| error      | Object/Bool       | No       | false               |
-| isLoading  | Bool              | No       | false               |
-| rowActions | Function          | No | null |
+| Prop       | Type                     | Required | Default             |
+|------------|--------------------------|----------|---------------------|
+| data       | Object: {items: {}}      | Yes      | -                   |
+| columns    | Array\<ListTableColumn\> | Yes      | -                   |
+| title      | String                   | Yes      | -                   |
+| singleName | String                   | No       | __('item', 'give')  |
+| pluralName | String                   | No       | __('items', 'give') |
+| error      | Object/Bool              | No       | false               |
+| isLoading  | Bool                     | No       | false               |
+| rowActions | Function                 | No | null |
 
 ##ListTablePage
 **ListTablePage** takes the same props as **ListTable**, as well as the following:
@@ -40,7 +40,8 @@ Each object in the array should contain the following properties:
 | text | String | Yes       | The label to display for the column. Should be translatable.                                                                                            |
 | preset | String | No | Which default component we should use to render this column. If `preset` and `render` are both missing, the column will just display as a plain string. |
 | render | Function | No        | A React functional component that takes one argument, `item`, and returns some JSX .                                                                    |
-| addClass | String | No | A class name that will be added to the `<td>` element that wraps each table cell. |
+| addClass | String | No | A class name that will be added to the `<td>` element that wraps each table cell.                                                                       |
+| inlineSize | String (CSS length) | no | The width of the column. Takes any valid CSS length, like `'300px'` or `'50%'`. Default is `'8rem'`.                                                          |
 
 ### title
 Will be used as the title displayed at the top of the page. Also used to generate a visually hidden table caption for accessibility. Should be translatable.

@@ -7,11 +7,13 @@ export const donationFormsColumns: Array<ListTableColumn> = [
     {
         name: 'id',
         text: __('ID', 'give'),
+        inlineSize: '4rem',
         preset: 'idBadge'
     },
     {
         name: 'name',
         text: __('Name', 'give'),
+        inlineSize: '10rem',
         heading: true,
         render: (form: {edit, name}) => <a href={form.edit}>{form.name}</a>,
     },
@@ -69,6 +71,7 @@ export const donationFormsColumns: Array<ListTableColumn> = [
     {
         name: 'donations',
         text: __('Donations', 'give'),
+        inlineSize: '6rem',
         render: (form: {donations, id}) => (
             <a href={`edit.php?post_type=give_forms&page=give-payment-history&form_id=${form.id}`}>
                 {form.donations}
@@ -78,6 +81,7 @@ export const donationFormsColumns: Array<ListTableColumn> = [
     {
         name: 'revenue',
         text: __('Revenue', 'give'),
+        inlineSize: '6rem',
         render: (form: {revenue, id}) => (
             <a href={`edit.php?post_type=give_forms&page=give-reports&tab=forms&legacy=true&form-id=${form.id}`}>
                 {form.revenue}
@@ -87,6 +91,7 @@ export const donationFormsColumns: Array<ListTableColumn> = [
     {
         name: 'shortcode',
         text: __('Shortcode', 'give'),
+        inlineSize: '10rem',
         render: (form: {shortcode}) => (
             <input
                 type={"text"}

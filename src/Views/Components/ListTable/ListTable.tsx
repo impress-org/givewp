@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import {__, _n, sprintf} from '@wordpress/i18n';
 import cx from 'classnames';
 
-import styles from './style.module.scss';
+import styles from './ListTable.module.scss';
 import ListTableRows from './ListTableRows';
 import {Spinner} from '../index';
 
@@ -24,6 +24,7 @@ export interface ListTableProps {
 export interface ListTableColumn {
     name: string;
     text: string;
+    inlineSize?: string;
     preset?: string;
     heading?: boolean;
     addClass?: string;
@@ -118,6 +119,7 @@ export const ListTable = ({
                                         className={styles.tableColumnHeader}
                                         data-column={column.name}
                                         key={column.name}
+                                        style={{inlineSize: (column?.inlineSize || '8rem')}}
                                     >
                                         {column.text}
                                     </th>

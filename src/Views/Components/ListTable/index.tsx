@@ -41,10 +41,6 @@ export default function ListTablePage({
     const [perPage, setPerPage] = useState<number>(10);
     const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
 
-    const setFiltersLater = useDebounce((name, value) =>
-        setFilters(prevState => ({...prevState, [name]: value}))
-    );
-
     const parameters = {
         page,
         perPage,
@@ -57,13 +53,12 @@ export default function ListTablePage({
 
     useResetPage(data, page, setPage, filters);
 
-    const handleFilterChange: ChangeEventHandler<HTMLInputElement|HTMLSelectElement> = (event) => {
-        setFilters(prevState => ({...prevState, [event.target.name]: event.target.value}));
-    }
+    const handleDebouncedFilterChange = useDebounce((name, value) =>
+        setFilters(prevState => ({...prevState, [name]: value}))
+    );
 
-    const handleDebouncedFilterChange: ChangeEventHandler<HTMLInputElement|HTMLSelectElement> = (event) => {
-        event.persist();
-        setFiltersLater(event.target.name, event.target.value);
+    const handleFilterChange = (name, value) => {
+        setFilters(prevState => ({...prevState, [name]: value}));
     }
 
     const showPagination = () => (

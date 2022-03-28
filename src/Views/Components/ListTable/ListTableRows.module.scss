@@ -30,6 +30,7 @@ tr.duplicated {
     display: flex;
     align-items: center;
     column-gap: 2rem;
+    word-break: keep-all;
 
     > * {
         position: relative;

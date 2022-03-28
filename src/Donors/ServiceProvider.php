@@ -28,8 +28,7 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('admin_menu', DonorsAdminPage::class, 'registerMenuItem');
 
         if (DonorsAdminPage::isShowing()) {
-            // Disabled until actual file is created
-            // Hooks::addAction('admin_enqueue_scripts', DonorsAdminPage::class, 'loadScripts');
+            Hooks::addAction('admin_enqueue_scripts', DonorsAdminPage::class, 'loadScripts');
         }
     }
 }

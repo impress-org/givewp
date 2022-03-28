@@ -1,17 +1,33 @@
 import useSWR from 'swr';
 import lagData from './hooks/lagData';
+import useFallbackAsInitial from "@givewp/components/ListTable/hooks/useFallbackAsInitial";
 
 export default class ListTableApi {
     private readonly apiRoot: string;
     private controller: AbortController|null;
     private readonly headers: { "X-WP-Nonce": string; "Content-Type": string };
-    constructor({apiNonce, apiRoot}) {
+    private readonly swrOptions;
+    constructor({apiNonce, apiRoot, preload = null}) {
         this.controller = null;
         this.apiRoot = apiRoot;
         this.headers = {
             'Content-Type': 'application/json',
             'X-WP-Nonce': apiNonce,
         };
+        this.swrOptions = {
+            use: [lagData],
+            onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+                //don't retry if we cancelled the initial request
+                if(error.name == 'AbortError') return;
+                if (retryCount >= 5) return;
+                const retryAfter = (retryCount + 1) * 500;
+                setTimeout(() => revalidate({ retryCount }), retryAfter);
+            }
+        };
+        if(preload){
+            this.swrOptions.fallbackData = preload;
+            this.swrOptions.use.push(useFallbackAsInitial);
+        }
     }
 
     fetchWithArgs = (endpoint, args, method = 'GET', signal = null) => {
@@ -39,17 +55,7 @@ export default class ListTableApi {
 
     // SWR Fetcher
     useListTable = ({page, perPage, ...filters}) => {
-        const {data, error, mutate, isValidating} = useSWR({page, perPage, ...filters}, this.fetcher, {
-            use: [lagData],
-            onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
-                //don't retry if we cancelled the initial request
-                if(error.name == 'AbortError') return;
-                if (retryCount >= 5) return;
-                const retryAfter = (retryCount + 1) * 500;
-                setTimeout(() => revalidate({ retryCount }), retryAfter);
-            }
-        });
-
+        const {data, error, mutate, isValidating} = useSWR({page, perPage, ...filters}, this.fetcher, this.swrOptions);
         return {data, error, mutate, isValidating};
     }
 }
