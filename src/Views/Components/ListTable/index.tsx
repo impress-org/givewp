@@ -73,16 +73,16 @@ export default function ListTablePage({
 
     return (
         <article>
-            <div className={styles.pageHeader}>
+            <header className={styles.pageHeader}>
                 <GiveIcon size={'1.875rem'}/>
                 <h1 className={styles.pageTitle}>{title}</h1>
                 {children}
-            </div>
-            <div className={styles.searchContainer}>
+            </header>
+            <section role='search' className={styles.searchContainer}>
                 {filterSettings.map(filter =>
                     <Filter key={filter.name} filter={filter} onChange={handleFilterChange} debouncedOnChange={handleDebouncedFilterChange}/>
                 )}
-            </div>
+            </section>
             <div className={styles.pageContent}>
                 <div className={styles.pageActions}>
                     {page && setPage && showPagination()}
