@@ -1,4 +1,5 @@
 import styles from "@givewp/components/ListTable/ListTablePage.module.scss";
+import {__, sprintf} from "@wordpress/i18n";
 
 //TODO: extract SearchableSelect component from FormSelect
 export const FormSelect = ({options, name, placeholder = '', ariaLabel = '', onChange}) => {
@@ -21,7 +22,8 @@ export const FormSelect = ({options, name, placeholder = '', ariaLabel = '', onC
                 {options.map(({value, text}) => (
                     <option
                         key={`${value}${text}`}
-                        value={value === '0' ? text : `${text} ID:${value}`}
+                        //translators: like 'My Donation Form (ID 21)'
+                        value={value === '0' ? text : sprintf(__('%1s (ID %2s)', 'give'), text, value)}
                     />
                 ))}
             </datalist>
