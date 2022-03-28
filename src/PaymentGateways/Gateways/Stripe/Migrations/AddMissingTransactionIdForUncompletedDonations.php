@@ -16,7 +16,7 @@ class AddMissingTransactionIdForUncompletedDonations extends Migration
      */
     public static function id()
     {
-        return 'qdd-missing-transaction-id-for-uncompleted-stripe-donations';
+        return 'add-missing-transaction-id-for-uncompleted-stripe-donations';
     }
 
     /**
