@@ -79,7 +79,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         if (DonationsAdminPage::isShowing()) {
             // Disabled until actual file is created
-            // Hooks::addAction('admin_enqueue_scripts', DonationsAdminPage::class, 'loadScripts');
+            Hooks::addAction('admin_enqueue_scripts', DonationsAdminPage::class, 'loadScripts');
         }
     }
 }
