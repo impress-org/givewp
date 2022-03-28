@@ -1,7 +1,6 @@
 import {__} from "@wordpress/i18n";
 import styles from "./DonorsColumns.module.scss";
 import {ListTableColumn} from "@givewp/components";
-import {IdBadge} from "@givewp/components/ListTable/TableCell";
 
 export const donorsColumns: Array<ListTableColumn> = [
     {

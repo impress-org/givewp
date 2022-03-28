@@ -1,6 +1,5 @@
 import styles from "./ListTablePage.module.scss";
 import {FormSelect} from "@givewp/components/ListTable/FormSelect";
-import React from "react";
 
 export const Filter = ({ filter, onChange, debouncedOnChange }) => {
     switch(filter.type){

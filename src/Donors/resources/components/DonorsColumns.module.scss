@@ -1,14 +1,16 @@
+$gravatar-dimensions: max(3rem, min(10vw, 6rem));
+
 .gravatar {
     border-radius: 9999px;
-    max-width: 6rem;
+    width: $gravatar-dimensions;
     flex-shrink: 2;
     position:absolute;
     z-index: 2;
 }
 
 .gravatarWrapper {
-    width: 6rem;
-    height: 6rem;
+    width: $gravatar-dimensions;
+    height: $gravatar-dimensions;
     padding: 6px;
     background: linear-gradient(rgba(255 255 255), rgba(122, 122, 122));
     border-radius: 9999px;
