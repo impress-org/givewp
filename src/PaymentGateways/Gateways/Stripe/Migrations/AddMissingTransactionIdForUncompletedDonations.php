@@ -44,7 +44,7 @@ class AddMissingTransactionIdForUncompletedDonations extends Migration
          *   @see release information https://github.com/impress-org/givewp/releases/tag/2.19.0
          * - Donation process with Stripe payment method.
          * - Donation has note with "Stripe Charge/Payment Intent ID" prefix.
-         * - donation does not have transaction id.
+         * - Donation does not have transaction id.
          */
         DB::query(
             "
