@@ -22,8 +22,7 @@ export const FormSelect = ({options, name, placeholder = '', ariaLabel = '', onC
                 {options.map(({value, text}) => (
                     <option
                         key={`${value}${text}`}
-                        //translators: like 'My Donation Form (ID 21)'
-                        value={value === '0' ? text : sprintf(__('%1s (ID %2s)', 'give'), text, value)}
+                        value={value === '0' ? text : `${text} (#${value})`}
                     />
                 ))}
             </datalist>
@@ -37,7 +36,7 @@ const updateSearchableSelect = (options, name, onChange) => {
             onChange(name, 0);
         }
         const selectedIndex = options.findIndex((option) => {
-            return event.target.value.endsWith(`ID:${option.value}`);
+            return event.target.value.endsWith(`(#${option.value})`);
         });
         if(selectedIndex > -1){
             onChange(name, options[selectedIndex].value);
