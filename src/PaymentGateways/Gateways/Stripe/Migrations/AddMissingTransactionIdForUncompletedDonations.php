@@ -57,14 +57,14 @@ class AddMissingTransactionIdForUncompletedDonations extends Migration
                 SELECT *
                 FROM $donationMetaTable as dm2
                 WHERE dm1.donation_id=dm2.donation_id
-                AND meta_key='_give_payment_transaction_id'
-            )
-            AND p.post_status!='publish'
-            AND p.post_date > '2022-02-20'
-            AND dm1.meta_key = '_give_payment_gateway'
-            AND dm1.meta_value like '%stripe%'
-            AND gc.comment_content like '%Stripe Charge/Payment Intent ID%'
-            AND SUBSTR( gc.comment_content, 34 ) != ''
+                    AND meta_key='_give_payment_transaction_id'
+                )
+                AND p.post_status!='publish'
+                AND p.post_date > '2022-02-20'
+                AND dm1.meta_key = '_give_payment_gateway'
+                AND dm1.meta_value like '%stripe%'
+                AND gc.comment_content like '%Stripe Charge/Payment Intent ID%'
+                AND SUBSTR( gc.comment_content, 34 ) != ''
             ORDER BY dm1.donation_id DESC
             "
         );
