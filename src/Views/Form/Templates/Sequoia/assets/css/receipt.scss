@@ -17,6 +17,13 @@
             margin: 38px auto 0 auto;
         }
     }
+
+    .error_icon {
+        @extend .checkmark;
+        border: 7px solid #c91f1f;
+        color: #c91f1f;
+    }
+
     .headline {
         margin-top: 30px;
         margin-bottom: 10px;

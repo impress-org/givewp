@@ -1,9 +1,9 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
-const { InspectorControls } = wp.blockEditor;
-const { PanelBody, SelectControl, ToggleControl, TextControl } = wp.components;
+import { __ } from '@wordpress/i18n'
+import { InspectorControls } from '@wordpress/block-editor';
+import { PanelBody, SelectControl, ToggleControl, TextControl } from '@wordpress/components';
 
 /**
  * Internal dependencies

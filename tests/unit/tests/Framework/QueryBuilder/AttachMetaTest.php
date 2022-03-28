@@ -4,8 +4,16 @@ use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @since 2.19.0
+ *
+ * @covers AttachMeta
+ */
 final class AttachMetaTest extends TestCase
 {
+    /**
+     * @since 2.19.0
+     */
     public function testAttachMeta()
     {
         $builder = new QueryBuilder();
@@ -35,7 +43,36 @@ final class AttachMetaTest extends TestCase
         );
     }
 
+    /**
+     * @unreleased
+     */
+    public function testAttachMetaGroupConcatQuery()
+    {
+        $builder = new QueryBuilder();
 
+        $builder
+            ->from(DB::raw('wp_give_donors'))
+            ->select(
+                'id',
+                'email',
+                'name'
+            )
+            ->attachMeta(
+                DB::raw('wp_give_donormeta'),
+                'id',
+                'donor_id',
+                ['additional_email', 'additionalEmails', true]
+            );
+
+        $this->assertContains(
+            "SELECT id, email, name, CONCAT('[',GROUP_CONCAT(DISTINCT CONCAT('\"',wp_give_donormeta_attach_meta_0.meta_value,'\"')),']') AS additionalEmails FROM wp_give_donors LEFT JOIN wp_give_donormeta wp_give_donormeta_attach_meta_0 ON id = wp_give_donormeta_attach_meta_0.donor_id AND wp_give_donormeta_attach_meta_0.meta_key = 'additional_email' GROUP BY id",
+            $builder->getSQL()
+        );
+    }
+
+    /**
+     * @since 2.19.0
+     */
     public function testConfigureMeta()
     {
         $builder = new QueryBuilder();
