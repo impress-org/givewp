@@ -1,10 +1,20 @@
 import ReactDOM from 'react-dom';
 import getWindowData from './utilities/getWindowData';
+import getDefaultValuesFromFieldsCollection from './utilities/getDefaultValuesFromFieldsCollection';
+import Form from './form/Form';
 
-const [{formId}] = getWindowData('attributes');
+/**
+ * Get data from the server
+ */
+const [attributes, form] = getWindowData('attributes', 'form');
 
-export default function App() {
-    return <p>FormId: {formId}</p>;
+/**
+ * Prepare default values for form
+ */
+const defaultValues = getDefaultValuesFromFieldsCollection(form.nodes);
+
+function App() {
+    return <Form fields={form.nodes} defaultValues={defaultValues} />;
 }
 
 ReactDOM.render(<App />, document.getElementById('root-give-next-gen-donation-form-block'));

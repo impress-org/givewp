@@ -39,6 +39,8 @@
         "wp-textdomain": "^1.0.1"
     },
     "dependencies": {
+        "@hookform/error-message": "^2.0.0",
+        "@hookform/resolvers": "^2.8.8",
         "@stripe/react-stripe-js": "^1.2.2",
         "@stripe/stripe-js": "^1.12.1",
         "@wordpress/block-editor": "^8.0.17",
@@ -51,7 +53,9 @@
         "axios": "^0.21.2",
         "classnames": "^2.2.6",
         "iframe-resizer": "^4.2.10",
+        "joi": "^17.6.0",
         "prop-types": "^15.7.2",
+        "react-hook-form": "^7.28.1",
         "swr": "^1.2.0"
     },
     "volta": {
