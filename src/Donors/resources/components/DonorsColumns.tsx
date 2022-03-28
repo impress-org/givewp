@@ -5,17 +5,31 @@ import {IdBadge} from "@givewp/components/ListTable/TableCell";
 
 export const donorsColumns: Array<ListTableColumn> = [
     {
+        name: 'id',
+        text: __('ID', 'give'),
+        inlineSize: '3rem',
+        preset: 'idBadge'
+    },
+    {
+        name: 'gravatar',
+        text: __('Avatar'),
+        inlineSize: '6rem',
+        render: (donor: {gravatar, name}) => (
+            <>
+                <div role='img' aria-label={`avatar for ${donor.name}`}>
+                    <img className={styles.gravatar} src={donor.gravatar} alt={donor.name} loading='lazy'/>
+                    <div className={styles.gravatarWrapper}/>
+                </div>
+            </>
+        ),
+    },
+    {
         name: 'name',
         text: __('Name', 'give'),
         inlineSize: '12rem',
         addClass: styles.nameCell,
-        render: (donor: {name, namePrefix, gravatar, id}) => (
-            <>
-                <div className={styles.gravatarWrapper}/>
-                <img className={styles.gravatar} src={donor.gravatar} alt={`avatar for ${donor.name}`} loading='lazy'/>
-                <b className={styles.name}>{donor.namePrefix ? donor.namePrefix + ' ' :''}{donor.name}</b>
-                <IdBadge addClass={styles.id} id={donor.id}/>
-            </>
+        render: (donor: {name, namePrefix, id}) => (
+                <strong className={styles.name}>{donor.namePrefix ? donor.namePrefix + ' ' :''}{donor.name}</strong>
         ),
     },
     {

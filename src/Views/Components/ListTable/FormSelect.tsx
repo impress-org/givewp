@@ -19,9 +19,10 @@ export const FormSelect = ({options, name, placeholder = '', ariaLabel = '', onC
                 onChange={onChange}
             >
                 {options.map(({value, text}) => (
-                    <option key={`${value}${text}`} value={text}>
-                        {value === '0' ? '' : `ID ${value}`}
-                    </option>
+                    <option
+                        key={`${value}${text}`}
+                        value={value === '0' ? text : `${text} ID:${value}`}
+                    />
                 ))}
             </datalist>
         </>
@@ -34,7 +35,7 @@ const updateSearchableSelect = (options, name, onChange) => {
             onChange(name, 0);
         }
         const selectedIndex = options.findIndex((option) => {
-            return option.text.toLowerCase() === event.target.value.toLowerCase()
+            return event.target.value.endsWith(`ID:${option.value}`);
         });
         if(selectedIndex > -1){
             onChange(name, options[selectedIndex].value);
