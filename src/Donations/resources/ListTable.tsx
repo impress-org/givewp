@@ -90,6 +90,13 @@ export default function () {
         }
     ]
 
+    const bulkActions = [
+        {
+            label: __('Delete', 'give'),
+            value: 'delete',
+        }
+    ]
+
     return (
         <ListTablePage
             title={__('Donations', 'give')}
@@ -97,6 +104,7 @@ export default function () {
             pluralName={__('Donations', 'give')}
             columns={columns}
             rowActions={rowActions}
+            bulkActions={bulkActions}
             apiSettings={window.GiveDonations}
             filterSettings={filters}
         >

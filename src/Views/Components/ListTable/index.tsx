@@ -1,4 +1,4 @@
-import {ChangeEventHandler, createContext, useRef, useState} from "react";
+import {createContext, useRef, useState} from "react";
 import {__} from "@wordpress/i18n";
 
 import {GiveIcon} from '@givewp/components';
@@ -19,6 +19,7 @@ export interface ListTablePageProps {
     apiSettings: {apiRoot, apiNonce};
 
     //optional
+    bulkActions?: Array<any>|null;
     pluralName?: string;
     singleName?: string;
     children?: JSX.Element|JSX.Element[]|null;
@@ -32,6 +33,7 @@ export default function ListTablePage({
     title,
     columns,
     apiSettings,
+    bulkActions = null,
     filterSettings = [],
     singleName = __('item', 'give'),
     pluralName  = __('items', 'give'),
@@ -88,7 +90,20 @@ export default function ListTablePage({
             </section>
             <div className={cx('wp-header-end', 'hidden')}/>
             <div className={styles.pageContent}>
-                <div className={styles.pageActions}>
+                <div className={cx(styles.pageActions,
+                    { [styles.alignEnd]: !bulkActions }
+                )}>
+                    {bulkActions &&
+                        <form id={styles.bulkActionsForm}>
+                            <select className={styles.bulkActions}>
+                                <option value=''>{__('Bulk Actions', 'give')}</option>
+                                {bulkActions.map(action => (
+                                    <option value={action.value}>{action.label}</option>
+                                ))}
+                            </select>
+                            <button>{__('Apply', 'give')}</button>
+                        </form>
+                    }
                     {page && setPage && showPagination()}
                 </div>
                 <ListTable

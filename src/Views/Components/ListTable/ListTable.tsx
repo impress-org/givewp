@@ -35,7 +35,7 @@ export interface ListTableColumn {
 const toggleAllRowCheckboxes = (event) => {
     const checked = event.target.checked;
     const checkboxes = document.querySelectorAll('input.giveListTableRowSelect');
-    checkboxes.forEach((checkbox:HTMLInputElement) => {
+    checkboxes.forEach((checkbox: HTMLInputElement) => {
         checkbox.checked = checked;
     });
 }

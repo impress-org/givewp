@@ -77,9 +77,13 @@
     display: flex;
     width: 100%;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     margin-block-end: 0.5rem;
     margin-block-start: 0.5rem;
+}
+
+.alignEnd {
+    justify-content: flex-end;
 }
 
 .addFormButton {
@@ -146,6 +150,16 @@ input.searchInput {
     }
 }
 
-select.statusFilter {
-    border: 1px solid #dddddd;
+select {
+    &.statusFilter, &.bulkActions {
+        border: 1px solid #dddddd;
+    }
+}
+
+#bulkActionsForm {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 1rem;
 }
