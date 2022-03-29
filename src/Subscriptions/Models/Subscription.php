@@ -188,7 +188,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @return SubscriptionFactory
+     * @return SubscriptionFactory<Subscription>
      */
     public static function factory()
     {

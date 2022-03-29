@@ -197,7 +197,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @return ModelFactory
+     * @return ModelFactory<Donor>
      */
     public static function factory()
     {

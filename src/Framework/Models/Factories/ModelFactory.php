@@ -4,22 +4,32 @@ namespace Give\Framework\Models\Factories;
 
 use Exception;
 use Faker\Generator;
+use Give\Framework\Database\DB;
 use Give\Framework\Models\Contracts\ModelCrud;
-use Give\Framework\Models\Model;
 
+/**
+ * @template M
+ */
 abstract class ModelFactory
 {
     /**
-     * @var string
+     * @var class-string<M>
      */
     protected $model;
+
     /**
      * @var Generator
      */
     protected $faker;
 
     /**
-     * @param  string $model
+     * @var int The number of models to create.
+     */
+    protected $count = 1;
+
+    /**
+     * @param class-string<M> $model
+     *
      * @return void
      */
     public function __construct($model)
@@ -28,7 +38,7 @@ abstract class ModelFactory
         $this->faker = $this->withFaker();
     }
 
-      /**
+    /**
      * Define the model's default state.
      *
      * @return array
@@ -36,25 +46,50 @@ abstract class ModelFactory
     abstract public function definition();
 
     /**
-     * @param  array  $attributes
-     * @return Model
+     * @param array $attributes
+     *
+     * @return M|M[]
+     */
+    public function make(array $attributes = [])
+    {
+        $results = [];
+        for ($i = 0; $i < $this->count; $i++) {
+            /** @var ModelCrud $model */
+            $model = $this->model;
+
+            $instance = new $model(
+                array_merge($this->definition(), $attributes)
+            );
+
+            $this->afterCreating($instance);
+
+            $results[] = $instance;
+        }
+
+        return $this->count === 1 ? $results[0] : $results;
+    }
+
+    /**
+     * @param array $attributes
+     *
+     * @return M|M[]
      * @throws Exception
      */
     public function create(array $attributes = [])
     {
-        /** @var ModelCrud $model */
-        $model = $this->model;
+        $instances = $this->make($attributes);
+        $instances = is_array($instances) ? $instances : [$instances];
 
-        $results = $model::create(
-            array_merge($this->definition(), $attributes)
-        );
+        DB::transaction(static function () use ($instances) {
+            foreach ($instances as $instance) {
+                $instance->save();
+            }
+        });
 
-        $this->afterCreating($results);
-
-        return $results;
+        return $this->count === 1 ? $instances[0] : $instances;
     }
 
-       /**
+    /**
      * Get a new Faker instance.
      *
      * @return Generator
@@ -64,7 +99,7 @@ abstract class ModelFactory
         return give()->make(Generator::class);
     }
 
-     /**
+    /**
      * Configure the factory.
      *
      * @return $this
@@ -75,7 +110,20 @@ abstract class ModelFactory
     }
 
     /**
-     * @param  Model  $model
+     * @param int $count
+     *
+     * @return $this
+     */
+    public function count($count)
+    {
+        $this->count = $count;
+
+        return $this;
+    }
+
+    /**
+     * @param M $model
+     *
      * @return void
      */
     public function afterCreating($model)
