@@ -478,7 +478,8 @@ class DonationRepository
                 'ID',
                 'donation_id',
                 ...DonationMetaKeys::getColumnsForAttachMetaQuery()
-            );
+            )
+            ->where('post_type', 'give_payment');
     }
 
     /**
