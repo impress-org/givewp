@@ -24,7 +24,7 @@ tr.duplicated {
 .tableRowActions {
     position: absolute;
     inset-block-end: 1rem;
-    opacity: 0;
+    opacity: 1;
     transition: opacity 180ms ease-in;
 
     display: flex;
@@ -111,4 +111,10 @@ div.abandoned {
 
 .monetary {
     color: var(--give-primary-color);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .tableRowActions {
+        opacity: 0;
+    }
 }
