@@ -79,13 +79,13 @@ export default function () {
             text: __('Name, Email, or Donation ID', 'give'),
             ariaLabel: __('Search donations', 'give')
         },
-        // {
-        //     name: 'form',
-        //     type: 'formselect',
-        //     text: __('Select Form', 'give'),
-        //     ariaLabel: __('Filter donation forms by status', 'give'),
-        //     options: window.GiveDonations.forms
-        // }
+        {
+            name: 'form',
+            type: 'formselect',
+            text: __('Select Form', 'give'),
+            ariaLabel: __('Filter donation forms by status', 'give'),
+            options: window.GiveDonations.forms
+        }
     ]
 
     return (
