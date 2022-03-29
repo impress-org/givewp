@@ -14,6 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use Give\Helpers\Html;
+
 /**
  * Give_Donation_Form_Block Class.
  *
@@ -117,6 +119,18 @@ class Give_Donation_Form_Block {
 					'id'                  => array(
 						'type' => 'number',
 					),
+					'className' => array(
+						'type' => 'string',
+						'default' => '',
+					),
+					'align' => array(
+						'type' => 'string',
+						'default' => '',
+					),
+					'extUtilities' => array(
+						'type' => 'object',
+						'default' => array(),
+					),
 					'prevId'              => array(
 						'type' => 'number',
 					),
@@ -172,7 +186,17 @@ class Give_Donation_Form_Block {
 		$parameters['display_style']         = $attributes['displayStyle'];
 		$parameters['continue_button_title'] = trim( $attributes['continueButtonTitle'] );
 
-		return give_form_shortcode( $parameters );
+		$class_names = Html::classNames(
+			isset( $attributes['extUtilities'] ) ? $attributes['extUtilities'] : null,
+			! empty( $attributes['align'] ) ? 'align' . $attributes['align'] : null,
+			isset( $attributes['className'] ) ? $attributes['className'] : null
+		);
+
+		$content = '<div class="' . $class_names . '">';
+		$content .= give_form_shortcode( $parameters );
+		$content .= '</div>';
+
+		return $content;
 	}
 
 	/**
