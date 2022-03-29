@@ -73,7 +73,7 @@ export default function ListTablePage({
     )
 
     return (
-        <article>
+        <article className={styles.page}>
             <header className={styles.pageHeader}>
                 <GiveIcon size={'1.875rem'}/>
                 <h1 className={styles.pageTitle}>{title}</h1>

@@ -1,6 +1,5 @@
 import {StrictMode} from 'react';
 import ReactDOM from 'react-dom';
-import './admin-donors.module.scss';
 import DonorsListTable from "./components/DonorsListTable";
 
 ReactDOM.render(
