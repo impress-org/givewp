@@ -3,6 +3,7 @@ import {useSWRConfig} from 'swr';
 import {ListTableColumn, ListTablePage} from '@givewp/components';
 import RowAction from "@givewp/components/ListTable/RowAction";
 import ListTableApi from '@givewp/components/ListTable/api';
+import styles from "@givewp/components/ListTable/ListTablePage.module.scss";
 
 declare global {
     interface Window {
@@ -98,6 +99,8 @@ export default function () {
             rowActions={rowActions}
             apiSettings={window.GiveDonations}
             filterSettings={filters}
-        />
+        >
+            <a className={styles.addFormButton} href={'edit.php?post_type=give_forms&page=give-tools&tab=import&importer-type=import_donations'}>Import Donations</a>
+        </ListTablePage>
     )
 }
