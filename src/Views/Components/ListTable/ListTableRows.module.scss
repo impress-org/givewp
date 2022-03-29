@@ -81,7 +81,7 @@ tr.duplicated {
     padding-block: 2em;
 }
 
-div.pending {
+div.pending, div.processing, div.preapproval {
     background-color: rgba(8, 120, 176);
 }
 
@@ -93,7 +93,7 @@ div.future {
     background-color: rgba(164, 99, 191);
 }
 
-div.trash, div.failed {
+div.trash, div.failed, div.revoked {
     background-color: rgba(232, 75, 59);
 }
 

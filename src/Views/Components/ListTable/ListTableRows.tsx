@@ -13,6 +13,19 @@ const postStatusMap = {
     inherit: __('inherit', 'give'),
 }
 
+const donationStatusMap = {
+    publish: __('complete', 'give'),
+    pending: __('pending', 'give'),
+    refunded: __('refunded', 'give'),
+    failed: __('failed', 'give'),
+    cancelled: __('cancelled', 'give'),
+    abandoned: __('abandoned', 'give'),
+    preapproval: __('pre-approved', 'give'),
+    processing: __('processing', 'give'),
+    revoked: __('revoked', 'give'),
+    give_subscription: __('renewal', 'give'),
+}
+
 const RenderRow = ({ column, item }) => {
     const value = item?.[column.name];
     if(value === undefined){
@@ -33,6 +46,12 @@ const RenderRow = ({ column, item }) => {
             return (
                 <StatusBadge key={column.name} className={styles[value]}
                              text={postStatusMap[value]}
+                />
+            );
+        case 'donationStatus':
+            return (
+                <StatusBadge key={column.name} className={styles[value]}
+                             text={donationStatusMap[value]}
                 />
             );
         case 'monetary':

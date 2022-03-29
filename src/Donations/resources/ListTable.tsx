@@ -67,7 +67,7 @@ export default function () {
         {
             name: 'status',
             text: __('Status', 'give'),
-            preset: 'postStatus',
+            preset: 'donationStatus',
         },
 
     ];
