@@ -10,6 +10,7 @@ import useDebounce from "./hooks/useDebounce";
 import {useResetPage} from "./hooks/useResetPage";
 import ListTableApi from "./api";
 import styles from './ListTablePage.module.scss';
+import cx from "classnames";
 
 export interface ListTablePageProps {
     //required
@@ -41,10 +42,6 @@ export default function ListTablePage({
     const [perPage, setPerPage] = useState<number>(10);
     const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
 
-    const setFiltersLater = useDebounce((name, value) =>
-        setFilters(prevState => ({...prevState, [name]: value}))
-    );
-
     const parameters = {
         page,
         perPage,
@@ -57,13 +54,12 @@ export default function ListTablePage({
 
     useResetPage(data, page, setPage, filters);
 
-    const handleFilterChange: ChangeEventHandler<HTMLInputElement|HTMLSelectElement> = (event) => {
-        setFilters(prevState => ({...prevState, [event.target.name]: event.target.value}));
-    }
+    const handleDebouncedFilterChange = useDebounce((name, value) =>
+        setFilters(prevState => ({...prevState, [name]: value}))
+    );
 
-    const handleDebouncedFilterChange: ChangeEventHandler<HTMLInputElement|HTMLSelectElement> = (event) => {
-        event.persist();
-        setFiltersLater(event.target.name, event.target.value);
+    const handleFilterChange = (name, value) => {
+        setFilters(prevState => ({...prevState, [name]: value}));
     }
 
     const showPagination = () => (
@@ -78,16 +74,17 @@ export default function ListTablePage({
 
     return (
         <article>
-            <div className={styles.pageHeader}>
+            <header className={styles.pageHeader}>
                 <GiveIcon size={'1.875rem'}/>
                 <h1 className={styles.pageTitle}>{title}</h1>
                 {children}
-            </div>
-            <div className={styles.searchContainer}>
+            </header>
+            <section role='search' className={styles.searchContainer}>
                 {filterSettings.map(filter =>
                     <Filter key={filter.name} filter={filter} onChange={handleFilterChange} debouncedOnChange={handleDebouncedFilterChange}/>
                 )}
-            </div>
+            </section>
+            <div className={cx('wp-header-end', 'hidden')}/>
             <div className={styles.pageContent}>
                 <div className={styles.pageActions}>
                     {page && setPage && showPagination()}

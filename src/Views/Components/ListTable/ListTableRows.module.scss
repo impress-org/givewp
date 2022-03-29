@@ -30,12 +30,14 @@ tr.duplicated {
     display: flex;
     align-items: center;
     column-gap: 2rem;
+    word-break: keep-all;
 
     > * {
         position: relative;
         color: #0878b0;
         font-weight: 400;
         line-height: 1;
+        flex-shrink: 0;
     }
 
     > * + ::before {

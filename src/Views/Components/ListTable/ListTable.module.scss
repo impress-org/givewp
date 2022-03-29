@@ -51,42 +51,7 @@
     font-weight: 700;
     padding: 1em;
     text-align: start;
-
-    &[data-column="id"] {
-        inline-size: 4rem;
-    }
-
-    &[data-column="name"] {
-        inline-size: 10rem;
-    }
-
-    &[data-column="amount"] {
-        inline-size: 8rem;
-    }
-
-    &[data-column="goal"] {
-        inline-size: 8rem;
-    }
-
-    &[data-column="donations"] {
-        inline-size: 6rem;
-    }
-
-    &[data-column="revenue"] {
-        inline-size: 6rem;
-    }
-
-    &[data-column="shortcode"] {
-        inline-size: 10rem;
-    }
-
-    &[data-column="datetime"] {
-        inline-size: 8rem;
-    }
-
-    &[data-column="status"] {
-        inline-size: 8rem;
-    }
+    inline-size: 8rem;
 }
 
 .tableContent {

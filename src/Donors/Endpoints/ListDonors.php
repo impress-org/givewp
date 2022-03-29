@@ -54,6 +54,11 @@ class ListDonors extends Endpoint
                         'required' => false,
                         'validate_callback' => [$this, 'validateDate']
                     ],
+                    'form' => [
+                        'type' => 'integer',
+                        'required' => false,
+                        'default' => 0
+                    ],
                     'end' => [
                         'type' => 'string',
                         'required' => false,
@@ -87,15 +92,15 @@ class ListDonors extends Endpoint
                 'donationCount' => $donor->donationCount,
                 'dateCreated' => Date::getDateTime($donor->createdAt),
                 'donationRevenue' => $this->formatAmount($donor->donationRevenue),
-                'hasGravatar' => give_validate_gravatar($donor->email)
+                'gravatar' => give_validate_gravatar($donor->email) ? get_avatar_url($donor->email) : GIVE_PLUGIN_URL . 'assets/dist/images/anonymous-user.svg',
             ];
         }
 
         return new WP_REST_Response(
             [
-                'donors' => $data,
-                'donorsCount' => $donorsCount,
-                'pageCount' => $pageCount
+                'items' => $data,
+                'totalItems' => $donorsCount,
+                'totalPages' => $pageCount
             ]
         );
     }

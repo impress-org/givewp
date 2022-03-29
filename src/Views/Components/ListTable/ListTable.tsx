@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import {__, _n, sprintf} from '@wordpress/i18n';
 import cx from 'classnames';
 
-import styles from './style.module.scss';
+import styles from './ListTable.module.scss';
 import ListTableRows from './ListTableRows';
 import {Spinner} from '../index';
 
@@ -24,6 +24,7 @@ export interface ListTableProps {
 export interface ListTableColumn {
     name: string;
     text: string;
+    inlineSize?: string;
     preset?: string;
     heading?: boolean;
     addClass?: string;
@@ -118,6 +119,7 @@ export const ListTable = ({
                                         className={styles.tableColumnHeader}
                                         data-column={column.name}
                                         key={column.name}
+                                        style={{inlineSize: (column?.inlineSize || '8rem')}}
                                     >
                                         {column.text}
                                     </th>
@@ -184,19 +186,17 @@ export const ListTable = ({
                     )}
                     <div id="giveListTableMessage">
                         {isEmpty && (
-                            <div className={styles.statusMessage}>
+                            <div role='status' className={styles.statusMessage}>
                                 {sprintf(__('No %s found.', 'give'), pluralName)}
                             </div>
                         )}
                         {error && (
                             <>
-                                <div className={styles.statusMessage}>
+                                <div role='alert' className={styles.statusMessage}>
                                     {sprintf(__('There was a problem retrieving the %s.', 'give'), pluralName)}
                                 </div>
                                 <div className={styles.statusMessage}>
-                                    {__('Click', 'give')}{' '}
-                                    <a href={window.location.href.toString()}>{__('here', 'give')}</a>
-                                    {' ' + __('to reload the page.')}
+                                    <a href={window.location.href.toString()}>{__('Click here to reload the page.', 'give')}</a>
                                 </div>
                             </>
                         )}
