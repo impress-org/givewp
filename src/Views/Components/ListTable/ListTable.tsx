@@ -5,6 +5,7 @@ import cx from 'classnames';
 import styles from './ListTable.module.scss';
 import ListTableRows from './ListTableRows';
 import {Spinner} from '../index';
+import {forEach} from "lodash";
 
 export interface ListTableProps {
     //required
@@ -32,7 +33,11 @@ export interface ListTableColumn {
 }
 
 const toggleAllRowCheckboxes = (event) => {
-
+    const checked = event.target.checked;
+    const checkboxes = document.querySelectorAll('input.giveListTableRowSelect');
+    checkboxes.forEach((checkbox:HTMLInputElement) => {
+        checkbox.checked = checked;
+    });
 }
 
 export const ListTable = ({
@@ -129,6 +134,7 @@ export const ListTable = ({
                                     </label>
                                     <input id='giveListTableSelectAll' type='checkbox'
                                            aria-labelledby='giveListTableSelectAll-Label'
+                                           onChange={toggleAllRowCheckboxes}
                                     />
                                 </th>
                                 <>
