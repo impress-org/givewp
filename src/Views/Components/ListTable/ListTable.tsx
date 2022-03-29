@@ -34,7 +34,7 @@ export interface ListTableColumn {
 
 const toggleAllRowCheckboxes = (event) => {
     const checked = event.target.checked;
-    const checkboxes = document.querySelectorAll('input.giveListTableRowSelect');
+    const checkboxes = document.querySelectorAll('input.giveListTableSelect');
     checkboxes.forEach((checkbox: HTMLInputElement) => {
         checkbox.checked = checked;
     });
@@ -132,7 +132,9 @@ export const ListTable = ({
                                     >
                                         {sprintf(__('Select all %s', 'give'), pluralName)}
                                     </label>
-                                    <input id='giveListTableSelectAll' type='checkbox'
+                                    <input id='giveListTableSelectAll'
+                                           type='checkbox'
+                                           className='giveListTableSelect'
                                            aria-labelledby='giveListTableSelectAll-Label'
                                            onChange={toggleAllRowCheckboxes}
                                     />

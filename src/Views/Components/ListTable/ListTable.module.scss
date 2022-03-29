@@ -140,3 +140,26 @@
         opacity: 1;
     }
 }
+
+@media (hover: hover) and (pointer: fine) {
+    :global {
+        input.giveListTableSelect {
+            opacity: 0;
+            transition: opacity 180ms ease-in;
+
+            &:focus-within {
+                opacity: 1;
+            }
+        }
+    }
+
+    .table:hover {
+
+        & :global {
+
+            .giveListTableSelect {
+                opacity: 1;
+            }
+        }
+    }
+}

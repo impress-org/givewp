@@ -119,7 +119,7 @@ export default function ListTableRows({columns, data, isLoading, rowActions, set
                     {sprintf(__('Select %1s %2s', 'give'), singleName, item.id)}
                 </label>
                 <input
-                    className='giveListTableRowSelect'
+                    className='giveListTableSelect'
                     data-id={item.id}
                     id={`giveListTableSelect${item.id}`}
                     aria-labelledby={`giveListTableSelect${item.id}-Label`}
