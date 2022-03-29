@@ -51,6 +51,7 @@ export default function () {
         {
             name: 'amount',
             text: __('Amount', 'give'),
+            preset: 'monetary',
         },
         {
             name: 'createdAt',

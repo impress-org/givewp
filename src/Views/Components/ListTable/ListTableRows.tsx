@@ -56,7 +56,7 @@ const RenderRow = ({ column, item }) => {
             );
         case 'monetary':
             return (
-                <strong className={styles.monetary}>value</strong>
+                <strong className={styles.monetary}>{value}</strong>
             );
         default:
             return column?.render instanceof Function ? column.render(item) : value;
