@@ -35,6 +35,10 @@ const RenderRow = ({ column, item }) => {
                              text={postStatusMap[value]}
                 />
             );
+        case 'monetary':
+            return (
+                <strong className={styles.monetary}>value</strong>
+            );
         default:
             return column?.render instanceof Function ? column.render(item) : value;
     }
