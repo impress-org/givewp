@@ -13,6 +13,12 @@ const [attributes, form] = getWindowData('attributes', 'form');
  */
 const defaultValues = getDefaultValuesFromFieldsCollection(form.nodes);
 
+/**
+ * @unreleased
+ *
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function App() {
     return <Form fields={form.nodes} defaultValues={defaultValues} />;
 }

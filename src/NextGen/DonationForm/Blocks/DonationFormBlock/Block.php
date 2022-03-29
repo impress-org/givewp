@@ -6,6 +6,7 @@ use Give\Framework\EnqueueScript;
 use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\Form;
+use Give\Framework\FieldsAPI\Group;
 use Give\Framework\FieldsAPI\Hidden;
 use Give\Framework\FieldsAPI\Text;
 
@@ -75,23 +76,34 @@ class Block
         $donationForm = new Form('DonationForm');
 
         $donationForm->append(
-            Text::make('firstName')
-                ->label(__('First Name', 'give'))
-                ->required(),
+            Group::make('donationDetails')
+                ->label(__('Donation Details', 'give'))
+                ->append(
+                    Text::make('donationAmount')
+                        ->label(__('Donation Amount', 'give'))
+                        ->defaultValue(50)
+                        ->required()
+                ),
 
-            Text::make('lastName')
-                ->label(__('Last Name', 'give'))
-                ->required(),
+            Group::make('donorDetails')
+                ->label(__('Donor Details', 'give'))
+                ->append(
+                    Text::make('firstName')
+                        ->label(__('First Name', 'give'))
+                        ->required(),
 
-            Email::make('email')
-                ->label(__('Email', 'give'))
-                ->required()
-                ->emailTag('email'),
+                    Text::make('lastName')
+                        ->label(__('Last Name', 'give'))
+                        ->required(),
 
-            Text::make('donationAmount')
-                ->label(__('Donation Amount', 'give'))
-                ->defaultValue(50)
-                ->required(),
+                    Email::make('email')
+                        ->label(__('Email', 'give'))
+                        ->required()
+                        ->emailTag('email')
+                ),
+
+            Group::make('paymentDetails')
+                ->label(__('Payment Details', 'give')),
 
             Hidden::make('formId')
                 ->defaultValue($attributes['formId'])

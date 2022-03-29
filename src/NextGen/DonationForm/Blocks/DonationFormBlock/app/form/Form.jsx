@@ -7,6 +7,7 @@ import Joi from 'joi';
 
 import Field from '../fields/Field';
 import getFieldErrorMessages from '../utilities/getFieldErrorMessages';
+import FieldGroup from '../fields/FieldGroup';
 
 const messages = getFieldErrorMessages();
 
@@ -18,9 +19,16 @@ const schema = Joi.object({
     formId: Joi.number().required(),
 });
 
+/**
+ * @unreleased
+ *
+ * @param fields
+ * @param defaultValues
+ * @returns {JSX.Element}
+ */
 function Form({fields, defaultValues}) {
     const isLoading = false;
-    const onSubmit = (data) => console.log(data);
+    const onSubmit = (data) => alert(JSON.stringify(data));
 
     const methods = useForm({
         defaultValues,
@@ -36,16 +44,22 @@ function Form({fields, defaultValues}) {
     return (
         <FormProvider {...methods}>
             <form className="give-next-gen" onSubmit={handleSubmit(onSubmit)}>
-                {fields.map(({type, name, label, readOnly, validationRules}) => (
-                    <Field
-                        key={name}
-                        label={label}
-                        type={type}
-                        name={name}
-                        readOnly={readOnly}
-                        required={validationRules?.required}
-                    />
-                ))}
+                {fields.map(({type, name, label, readOnly, validationRules, nodes}) => {
+                    if (type === 'group' && nodes) {
+                        return <FieldGroup fields={nodes} name={name} label={label} key={name} />;
+                    }
+
+                    return (
+                        <Field
+                            key={name}
+                            label={label}
+                            type={type}
+                            name={name}
+                            readOnly={readOnly}
+                            required={validationRules?.required}
+                        />
+                    );
+                })}
 
                 <ErrorMessage
                     errors={errors}
