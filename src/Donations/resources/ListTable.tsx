@@ -100,7 +100,9 @@ export default function () {
             apiSettings={window.GiveDonations}
             filterSettings={filters}
         >
-            <a className={styles.addFormButton} href={'edit.php?post_type=give_forms&page=give-tools&tab=import&importer-type=import_donations'}>
+            <a className={styles.addFormButton}
+               href={'edit.php?post_type=give_forms&page=give-tools&tab=import&importer-type=import_donations'}
+            >
                 {__('Import Donations', 'give')}
             </a>
         </ListTablePage>

@@ -75,8 +75,10 @@ export default function ListTablePage({
     return (
         <article className={styles.page}>
             <header className={styles.pageHeader}>
-                <GiveIcon size={'1.875rem'}/>
-                <h1 className={styles.pageTitle}>{title}</h1>
+                <div className={styles.pageTitleContainer}>
+                    <GiveIcon size={'1.875rem'}/>
+                    <h1 className={styles.pageTitle}>{title}</h1>
+                </div>
                 {children}
             </header>
             <section role='search' className={styles.searchContainer}>

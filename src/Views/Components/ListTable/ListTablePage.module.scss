@@ -43,6 +43,7 @@
 .pageHeader {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     column-gap: 1rem;
     background-color: #fff;
     padding-block: 1em;
@@ -52,6 +53,13 @@
     & > img, & > svg {
         flex-shrink: 0;
     }
+}
+
+.pageTitleContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 1rem;
 }
 
 .pageTitle {
