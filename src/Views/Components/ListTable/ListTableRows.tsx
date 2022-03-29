@@ -1,5 +1,5 @@
 import styles from './ListTableRows.module.scss';
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import cx from 'classnames';
 import {useEffect, useState} from 'react';
 import TableCell, {IdBadge, StatusBadge} from "./TableCell";
@@ -63,7 +63,7 @@ const RenderRow = ({ column, item }) => {
     }
 }
 
-export default function ListTableRows({columns, data, isLoading, rowActions, setUpdateErrors, parameters}) {
+export default function ListTableRows({columns, data, isLoading, rowActions, setUpdateErrors, parameters, singleName}) {
     const [removed, setRemoved] = useState([]);
     const [added, setAdded] = useState([]);
 
@@ -114,16 +114,30 @@ export default function ListTableRows({columns, data, isLoading, rowActions, set
                 [styles.duplicated]: added.indexOf(parseInt(item.id)) > -1,
             })}
         >
-            {columns.map((column) => (
-                <TableCell key={column.name} className={column?.addClass} heading={column?.heading}>
-                    <RenderRow column={column} item={item}/>
-                    {!isLoading && rowActions &&
-                        <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
-                            {column?.heading && rowActions({data, item, removeRow, addRow, setUpdateErrors, parameters})}
-                        </div>
-                    }
-                </TableCell>
-            ))}
+            <TableCell>
+                <label htmlFor={`giveListTableSelect${item.id}`} id={`giveListTableSelect${item.id}-Label`} className='give-visually-hidden'>
+                    {sprintf(__('Select %1s %2s', 'give'), singleName, item.id)}
+                </label>
+                <input
+                    className='select'
+                    data-id={item.id}
+                    id={`giveListTableSelect${item.id}`}
+                    aria-labelledby={`giveListTableSelect${item.id}-Label`}
+                    type='checkbox'
+                />
+            </TableCell>
+            <>
+                {columns.map((column) => (
+                    <TableCell key={column.name} className={column?.addClass} heading={column?.heading}>
+                        <RenderRow column={column} item={item}/>
+                        {!isLoading && rowActions &&
+                            <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
+                                {column?.heading && rowActions({data, item, removeRow, addRow, setUpdateErrors, parameters})}
+                            </div>
+                        }
+                    </TableCell>
+                ))}
+            </>
         </tr>
     ));
 }

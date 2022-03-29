@@ -31,6 +31,10 @@ export interface ListTableColumn {
     render?: ((item: {}) => JSX.Element)|JSX.Element|JSX.Element[]|null;
 }
 
+const toggleAllRowCheckboxes = (event) => {
+
+}
+
 export const ListTable = ({
         columns,
         singleName = __('item', 'give'),
@@ -112,18 +116,35 @@ export const ListTable = ({
                         </caption>
                         <thead>
                             <tr>
-                                {columns.map(column =>
-                                    <th
-                                        scope="col"
-                                        aria-sort="none"
-                                        className={styles.tableColumnHeader}
-                                        data-column={column.name}
-                                        key={column.name}
-                                        style={{inlineSize: (column?.inlineSize || '8rem')}}
+                                <th
+                                    scope="col"
+                                    aria-sort="none"
+                                    className={cx(styles.tableColumnHeader, styles.selectAll)}
+                                    data-column='select'
+                                >
+                                    <label htmlFor='giveListTableSelectAll' id='giveListTableSelectAll-Label'
+                                           className='give-visually-hidden'
                                     >
-                                        {column.text}
-                                    </th>
-                                )}
+                                        {sprintf(__('Select all %s', 'give'), pluralName)}
+                                    </label>
+                                    <input id='giveListTableSelectAll' type='checkbox'
+                                           aria-labelledby='giveListTableSelectAll-Label'
+                                    />
+                                </th>
+                                <>
+                                    {columns.map(column =>
+                                        <th
+                                            scope="col"
+                                            aria-sort="none"
+                                            className={styles.tableColumnHeader}
+                                            data-column={column.name}
+                                            key={column.name}
+                                            style={{inlineSize: (column?.inlineSize || '8rem')}}
+                                        >
+                                            {column.text}
+                                        </th>
+                                    )}
+                                </>
                             </tr>
                         </thead>
                         <tbody className={styles.tableContent}>
@@ -131,6 +152,7 @@ export const ListTable = ({
                                 columns={columns}
                                 data={data}
                                 isLoading={isLoading}
+                                singleName={singleName}
                                 rowActions={rowActions}
                                 parameters={parameters}
                                 setUpdateErrors={setUpdateErrors}
