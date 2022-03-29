@@ -11,6 +11,7 @@ use Give\PaymentGateways\Actions\RegisterPaymentGateways;
 use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\WebhookRegister;
 use Give\PaymentGateways\Gateways\Stripe\CheckoutGateway;
 use Give\PaymentGateways\Gateways\Stripe\Controllers\UpdateStatementDescriptorAjaxRequestController;
+use Give\PaymentGateways\Gateways\Stripe\Migrations\AddMissingTransactionIdForUncompletedDonations;
 use Give\PaymentGateways\Gateways\Stripe\Migrations\AddStatementDescriptorToStripeAccounts;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -37,18 +38,36 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot()
     {
+        $this->registerMigrations();
+
         Hooks::addFilter('give_register_gateway', RegisterPaymentGateways::class);
         Hooks::addFilter('give_payment_gateways', RegisterPaymentGatewaySettingsList::class);
         Hooks::addAction('template_redirect', GatewayRoute::class);
-        Hooks::addAction('wp_ajax_edit_stripe_account_statement_descriptor', UpdateStatementDescriptorAjaxRequestController::class);
-
-        give(MigrationsRegister::class)
-            ->addMigration(AddStatementDescriptorToStripeAccounts::class);
+        Hooks::addAction(
+            'wp_ajax_edit_stripe_account_statement_descriptor',
+            UpdateStatementDescriptorAjaxRequestController::class
+        );
 
         /**
          * Stripe Checkout Redirect Handler
          */
         Hooks::addAction('wp_footer', CheckoutGateway::class, 'maybeHandleRedirect', 99999);
         Hooks::addAction('give_embed_footer', CheckoutGateway::class, 'maybeHandleRedirect', 99999);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerMigrations()
+    {
+        $migrations = [
+            AddStatementDescriptorToStripeAccounts::class,
+            AddMissingTransactionIdForUncompletedDonations::class
+        ];
+        $migrationRegisterer = give(MigrationsRegister::class);
+
+        foreach ($migrations as $migrationClassName) {
+            $migrationRegisterer->addMigration($migrationClassName);
+        }
     }
 }
