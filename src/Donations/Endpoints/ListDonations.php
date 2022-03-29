@@ -75,7 +75,7 @@ class ListDonations extends Endpoint
         $data = [];
         $donations = give()->donations->getDonationsForRequest($request);
         $donationsCount = give()->donations->getTotalDonationsCountForRequest($request);
-        $pageCount = (int)ceil($donationsCount / $request->get_param('perPage'));
+        $totalPages = (int)ceil($donationsCount / $request->get_param('perPage'));
 
         foreach ($donations as $donation) {
             $data[] = DonationResponseData::fromObject($donation)->toArray();
@@ -85,7 +85,7 @@ class ListDonations extends Endpoint
             [
                 'items' => $data,
                 'itemsCount' => $donationsCount,
-                'pageCount' => $pageCount
+                'totalPages' => $totalPages
             ]
         );
     }
