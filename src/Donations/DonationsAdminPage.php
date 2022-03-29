@@ -3,9 +3,26 @@
 namespace Give\Donations;
 
 use Give\Helpers\EnqueueScript;
+use WP_REST_Request;
 
 class DonationsAdminPage
 {
+    /**
+     * @var string
+     */
+    private $apiRoot;
+
+    /**
+     * @var string
+     */
+    private $apiNonce;
+
+    public function __construct()
+    {
+        $this->apiRoot = esc_url_raw(rest_url('give-api/v2/admin/donations'));
+        $this->apiNonce = wp_create_nonce('wp_rest');
+    }
+
     /**
      * @unreleased
      */
@@ -38,8 +55,10 @@ class DonationsAdminPage
     public function loadScripts()
     {
         $data = [
-            'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/donations')),
-            'apiNonce' => wp_create_nonce('wp_rest'),
+            'apiRoot' => $this->apiRoot,
+            'apiNonce' => $this->apiNonce,
+            'preload' => $this->preloadDonations(),
+            'forms' => $this->getForms(),
         ];
 
         EnqueueScript::make('give-admin-donations', 'assets/dist/js/give-admin-donations.js')
@@ -77,5 +96,59 @@ class DonationsAdminPage
     public static function isShowing()
     {
         return isset($_GET['page']) && $_GET['page'] === 'give-payment-history';
+    }
+
+
+    /**
+     * @unreleased
+     * @return array
+     */
+    private function preloadDonations()
+    {
+        $queryParameters = [
+            'page' => 1,
+            'perPage' => 10
+        ];
+
+        $request = WP_REST_Request::from_url(add_query_arg(
+            $queryParameters,
+            $this->apiRoot
+        ));
+
+        return rest_do_request($request)->get_data();
+    }
+
+    /**
+     * @unreleased
+     * @return array
+     */
+    private function getForms()
+    {
+        $queryParameters = [
+            'page' => 1,
+            'perPage' => 50,
+            'status' => 'any'
+        ];
+
+        $request = WP_REST_Request::from_url(add_query_arg(
+            $queryParameters,
+            esc_url_raw(rest_url('give-api/v2/admin/forms'))
+        ));
+
+        $data = rest_do_request($request)->get_data();
+
+        $options = array_map(static function ($form) {
+            return [
+                'value' => $form['id'],
+                'text' => $form['name'],
+            ];
+        }, $data['items']);
+
+        return array_merge([
+            [
+                'value' => '0',
+                'text' => 'Any',
+            ]
+        ], $options);
     }
 }
