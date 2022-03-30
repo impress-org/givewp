@@ -1,5 +1,6 @@
 import {createContext, useRef, useState} from "react";
 import {__} from "@wordpress/i18n";
+import {A11yDialog} from "react-a11y-dialog";
 
 import {GiveIcon} from '@givewp/components';
 
@@ -43,6 +44,9 @@ export default function ListTablePage({
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(10);
     const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
+    const [modalAction, setModalAction] = useState(-1);
+    const [selected, setSelected] = useState([]);
+    const dialog = useRef();
 
     const parameters = {
         page,
@@ -64,6 +68,19 @@ export default function ListTablePage({
         setFilters(prevState => ({...prevState, [name]: value}));
     }
 
+    const openBulkActionModal = (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const action = formData.get('giveListTableBulkActions');
+        const actionIndex = bulkActions.findIndex((config) => action == config.value);
+        if(actionIndex < 0) return;
+        setModalAction(actionIndex);
+        const selectNodes = document.querySelectorAll('.giveListTableSelect:not(#giveListTableSelectAll)');
+        const selected = Array.from(selectNodes, (select, index) => parseInt(select.dataset.id));
+        setSelected(selected);
+        dialog.current.show();
+    }
+
     const showPagination = () => (
         <Pagination
             currentPage={page}
@@ -75,52 +92,69 @@ export default function ListTablePage({
     )
 
     return (
-        <article className={styles.page}>
-            <header className={styles.pageHeader}>
-                <div className={styles.pageTitleContainer}>
-                    <GiveIcon size={'1.875rem'}/>
-                    <h1 className={styles.pageTitle}>{title}</h1>
+        <>
+            <article className={styles.page}>
+                <header className={styles.pageHeader}>
+                    <div className={styles.pageTitleContainer}>
+                        <GiveIcon size={'1.875rem'}/>
+                        <h1 className={styles.pageTitle}>{title}</h1>
+                    </div>
+                    {children}
+                </header>
+                <section role='search' className={styles.searchContainer}>
+                    {filterSettings.map(filter =>
+                        <Filter key={filter.name} filter={filter} onChange={handleFilterChange} debouncedOnChange={handleDebouncedFilterChange}/>
+                    )}
+                </section>
+                <div className={cx('wp-header-end', 'hidden')}/>
+                <div className={styles.pageContent}>
+                    <div className={cx(styles.pageActions,
+                        { [styles.alignEnd]: !bulkActions }
+                    )}>
+                        {bulkActions &&
+                            <form id={styles.bulkActionsForm} onSubmit={openBulkActionModal}>
+                                <select className={styles.bulkActions} name='giveListTableBulkActions'>
+                                    <option value=''>{__('Bulk Actions', 'give')}</option>
+                                    {bulkActions.map(action => (
+                                        <option key={action.value} value={action.value}>{action.label}</option>
+                                    ))}
+                                </select>
+                                <button className={styles.addFormButton}>{__('Apply', 'give')}</button>
+                            </form>
+                        }
+                        {page && setPage && showPagination()}
+                    </div>
+                    <ListTable
+                        columns={columns}
+                        singleName={singleName}
+                        pluralName={pluralName}
+                        title={title}
+                        rowActions={rowActions}
+                        parameters={parameters}
+                        data={data}
+                        error={error}
+                        isLoading={isValidating}
+                    />
+                    <div className={styles.pageActions}>
+                        {page && setPage && showPagination()}
+                    </div>
                 </div>
-                {children}
-            </header>
-            <section role='search' className={styles.searchContainer}>
-                {filterSettings.map(filter =>
-                    <Filter key={filter.name} filter={filter} onChange={handleFilterChange} debouncedOnChange={handleDebouncedFilterChange}/>
-                )}
-            </section>
-            <div className={cx('wp-header-end', 'hidden')}/>
-            <div className={styles.pageContent}>
-                <div className={cx(styles.pageActions,
-                    { [styles.alignEnd]: !bulkActions }
-                )}>
-                    {bulkActions &&
-                        <form id={styles.bulkActionsForm}>
-                            <select className={styles.bulkActions}>
-                                <option value=''>{__('Bulk Actions', 'give')}</option>
-                                {bulkActions.map(action => (
-                                    <option value={action.value}>{action.label}</option>
-                                ))}
-                            </select>
-                            <button>{__('Apply', 'give')}</button>
-                        </form>
-                    }
-                    {page && setPage && showPagination()}
-                </div>
-                <ListTable
-                    columns={columns}
-                    singleName={singleName}
-                    pluralName={pluralName}
-                    title={title}
-                    rowActions={rowActions}
-                    parameters={parameters}
-                    data={data}
-                    error={error}
-                    isLoading={isValidating}
-                />
-                <div className={styles.pageActions}>
-                    {page && setPage && showPagination()}
-                </div>
-            </div>
-        </article>
+            </article>
+        <A11yDialog
+            id='giveListTableModal'
+            dialogRef={instance => (dialog.current = instance)}
+            title={(modalAction > - 1) ? `${bulkActions[modalAction].label} - ${singleName}` : 'Bulk Action'}
+            classNames={{
+                container: styles.container,
+                overlay: styles.overlay,
+                dialog: styles.dialog,
+                closeButton: ''
+            }}
+        >
+            {(modalAction > -1) && bulkActions[modalAction].confirm(selected)}
+            <button className={styles.addFormButton} onClick={(event) => dialog.current?.hide()}>{__('Cancel', 'give')}</button>
+            <button className={styles.addFormButton}>{__('Confirm', 'give')}</button>
+        </A11yDialog>
+        </>
     );
 }

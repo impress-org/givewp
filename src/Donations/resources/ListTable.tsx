@@ -105,6 +105,14 @@ export default function () {
             label: __('Delete', 'give'),
             value: 'delete',
             action: () => {},
+            confirm: (selected) => (
+                <>
+                    {__('Really delete the following donations?', 'give')}
+                    <ul>
+                        {selected.map(donationId => <li key={donationId}>{donationId}</li>)}
+                    </ul>
+                </p>
+            )
         }
     ]
 
