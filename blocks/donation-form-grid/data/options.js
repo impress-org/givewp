@@ -17,6 +17,7 @@ giveFormOptions.orderBy = [
 	{ value: 'menu_order', label: __( 'Menu Order', 'give' ) },
 	{ value: 'post__in', label: __( 'Provided Form IDs', 'give' ) },
 	{ value: 'closest_to_goal', label: __( 'Closest To Goal', 'give' ) },
+	{ value: 'random', label: __( 'Random', 'give' ) },
 ];
 
 // Form Order

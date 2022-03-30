@@ -956,6 +956,9 @@ function give_form_grid_shortcode( $atts ) {
 			$form_args['meta_key'] = '_give_form_sales';
 			$form_args['orderby']  = 'meta_value_num';
 			break;
+        case 'random':
+            $form_args['orderby']  = 'rand';
+            break;
 		case 'closest_to_goal':
 			if ( give_has_upgrade_completed( 'v240_update_form_goal_progress' ) ) {
 				$form_args['meta_key'] = '_give_form_goal_progress';
