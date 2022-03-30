@@ -34,12 +34,16 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					name="ids"
 					label={ __( 'Donor IDs', 'give' ) }
 					value={ ids }
-					onChange={ ( value ) => saveSetting( 'ids', value ) } />
+					onChange={ ( value ) => saveSetting( 'ids', value ) }
+                    help={ __('A comma-separated list of donor IDs to display.', 'give') }
+                />
 				<TextControl
 					name="formID"
-					label={ __( 'Form ID', 'give' ) }
+					label={ __( 'Form IDs', 'give' ) }
 					value={ formID }
-					onChange={ ( value ) => saveSetting( 'formID', value ) } />
+					onChange={ ( value ) => saveSetting( 'formID', value ) }
+                    help={ __('A comma-separated list of form IDs to display.', 'give') }
+                />
 				<SelectControl
 					label={ __( 'Order By', 'give' ) }
 					name="orderBy"

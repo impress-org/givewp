@@ -181,7 +181,7 @@ class Give_Donor_Wall_Block {
 
 		$parameters = [
 			'donors_per_page'   => absint( $attributes['donorsPerPage'] ),
-			'form_id'           => absint( $attributes['formID'] ),
+			'form_id'           => $attributes['formID'],
 			'ids'               => $attributes['ids'],
 			'orderby'           => $attributes['orderBy'],
 			'order'             => $attributes['order'],

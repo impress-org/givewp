@@ -232,7 +232,6 @@ class Give_Donor_Wall {
 		// Validate numeric attributes.
 		$numeric_attributes = [
 			'donors_per_page',
-			'form_id',
 			'paged',
 			'comment_length',
 			'avatar_size',
@@ -259,6 +258,23 @@ class Give_Donor_Wall {
 
 			$atts['ids'] = implode( ',', $tmp );
 		}
+
+        // Validate Form IDs
+        if ( ! empty( $atts['form_id'] ) ) {
+            if ( false === strpos( $atts['form_id'], ',' ) ) {
+                $tmp = [ absint( $atts['form_id'] ) ];
+            } else {
+                $tmp = array_filter(
+                    array_map(
+                        static function( $id ) {
+                            return absint( trim( $id ) ); },
+                        explode( ',', $atts['form_id'] )
+                    )
+                );
+            }
+
+            $atts['form_id'] = implode( ',', $tmp );
+        }
 
 		return $atts;
 	}
@@ -331,7 +347,7 @@ class Give_Donor_Wall {
 		$query_atts['orderby']       = in_array( $atts['orderby'], $valid_orderby ) ? $atts['orderby'] : 'post_date';
 		$query_atts['limit']         = $atts['donors_per_page'];
 		$query_atts['offset']        = $atts['donors_per_page'] * ( $atts['paged'] - 1 );
-		$query_atts['form_id']       = $atts['form_id'];
+		$query_atts['form_id']       = implode( '\',\'', explode( ',', $atts['form_id'] ) );
 		$query_atts['ids']           = implode( '\',\'', explode( ',', $atts['ids'] ) );
 		$query_atts['only_comments'] = ( true === $atts['only_comments'] );
 		$query_atts['anonymous']     = ( true === $atts['anonymous'] );
@@ -433,7 +449,7 @@ class Give_Donor_Wall {
 
 		if ( $query_params['form_id'] ) {
 			$sql   .= " INNER JOIN {$wpdb->donationmeta} as m2 ON (p1.ID = m2.{$donation_id_col})";
-			$where .= " AND m2.meta_key='_give_payment_form_id' AND m2.meta_value={$query_params['form_id']}";
+			$where .= " AND m2.meta_key='_give_payment_form_id' AND m2.meta_value IN ('{$query_params['form_id']}')";
 		}
 
 		// Get donations only from specific donors.
