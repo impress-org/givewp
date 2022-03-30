@@ -15,7 +15,7 @@ import giveFormOptions from '../data/options';
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { formsPerPage, paged, formIDs, excludedFormIDs, orderBy, order, categories, tags, columns, showTitle, showExcerpt, showGoal, showFeaturedImage, displayType } = attributes;
+	const { formsPerPage, paged, imageSize, imageHeight, formIDs, excludedFormIDs, orderBy, order, categories, tags, columns, showTitle, showExcerpt, showGoal, showFeaturedImage, displayType } = attributes;
 	const saveSetting = ( name, value ) => {
 		setAttributes( {
 			[ name ]: value,
@@ -74,6 +74,20 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					value={ columns }
 					options={ giveFormOptions.columns }
 					onChange={ ( value ) => saveSetting( 'columns', value ) } />
+                <TextControl
+                    name="imageSize"
+                    label={ __( 'Image Size', 'give' ) }
+                    value={ imageSize }
+                    onChange={ ( value ) => saveSetting( 'imageSize', value ) }
+                    help={ __( 'Featured image size. Default "medium". Accepts WordPress image sizes.' ) }
+                />
+                <TextControl
+                    name="imageHeight"
+                    label={ __( 'Image Height', 'give' ) }
+                    value={ imageHeight }
+                    onChange={ ( value ) => saveSetting( 'imageHeight', value ) }
+                    help={ __( 'Featured image height. Default "auto". Accepts valid CSS heights' ) }
+                />
 				<ToggleControl
 					name="showTitle"
 					label={ __( 'Show Title', 'give' ) }

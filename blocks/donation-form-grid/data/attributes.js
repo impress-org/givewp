@@ -39,6 +39,14 @@ const blockAttributes = {
 		type: 'string',
 		default: 'best-fit',
 	},
+    imageSize: {
+        type: 'string',
+        default: 'medium',
+    },
+    imageHeight: {
+        type: 'string',
+        default: 'auto',
+    },
 	showTitle: {
 		type: 'boolean',
 		default: true,

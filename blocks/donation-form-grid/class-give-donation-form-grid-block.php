@@ -119,6 +119,14 @@ class Give_Donation_Form_Grid_Block {
 						'type'    => 'string',
 						'default' => 'best-fit',
 					),
+                    'imageSize'           => array(
+						'type'    => 'string',
+						'default' => 'medium',
+					),
+                    'imageHeight'           => array(
+						'type'    => 'string',
+						'default' => 'auto',
+					),
 					'showTitle'         => array(
 						'type'    => 'boolean',
 						'default' => true,
@@ -172,6 +180,8 @@ class Give_Donation_Form_Grid_Block {
 			'show_featured_image' => $attributes['showFeaturedImage'],
 			'display_style'       => $attributes['displayType'],
             'paged'               => $attributes['paged'],
+            'image_size'          => $attributes['imageSize'],
+            'image_height'        => $attributes['imageHeight'],
 		);
 
 		$html = give_form_grid_shortcode( $parameters );
