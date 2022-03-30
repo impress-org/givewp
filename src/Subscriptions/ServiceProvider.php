@@ -26,6 +26,8 @@ class ServiceProvider implements ServiceProviderInterface
     public function boot()
     {
         $this->bootLegacyListeners();
+
+        give(MigrationsRegister::class)->addMigration(CreateSubscriptionTables::class);
     }
 
     /**
@@ -37,7 +39,5 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction('give_subscription_creating', DispatchGiveSubscriptionPreCreate::class);
         Hooks::addAction('give_subscription_created', DispatchGiveSubscriptionPostCreate::class);
-
-        give(MigrationsRegister::class)->addMigration(CreateSubscriptionTables::class);
     }
 }
