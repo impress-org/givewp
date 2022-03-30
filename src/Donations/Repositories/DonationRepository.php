@@ -243,12 +243,9 @@ class DonationRepository
                 ->where('id', $donation->id)
                 ->delete();
 
-            foreach ($this->getCoreDonationMetaForDatabase($donation) as $metaKey => $metaValue) {
-                DB::table('give_donationmeta')
-                    ->where('donation_id', $donation->id)
-                    ->where('meta_key', $metaKey)
-                    ->delete();
-            }
+            DB::table('give_donationmeta')
+                ->where('donation_id', $donation->id)
+                ->delete();
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
