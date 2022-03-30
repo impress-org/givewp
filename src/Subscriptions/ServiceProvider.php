@@ -2,10 +2,12 @@
 
 namespace Give\Subscriptions;
 
+use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use Give\Subscriptions\LegacyListeners\DispatchGiveSubscriptionPostCreate;
 use Give\Subscriptions\LegacyListeners\DispatchGiveSubscriptionPreCreate;
+use Give\Subscriptions\Migrations\CreateSubscriptionTables;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
 
 class ServiceProvider implements ServiceProviderInterface
@@ -35,5 +37,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction('give_subscription_creating', DispatchGiveSubscriptionPreCreate::class);
         Hooks::addAction('give_subscription_created', DispatchGiveSubscriptionPostCreate::class);
+
+        give(MigrationsRegister::class)->addMigration(CreateSubscriptionTables::class);
     }
 }
