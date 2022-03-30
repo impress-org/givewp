@@ -60,7 +60,12 @@ export default function () {
         },
         {
             name: 'donorName',
-            text: __('Donor Name', 'give')
+            text: __('Donor Name', 'give'),
+            render: (donation: {donorName, donorId}) => (
+                <a href={`edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donation.donorId}`}>
+                    {donation.donorName}
+                </a>
+            ),
         },
         {
             name: 'formTitle',
@@ -94,6 +99,7 @@ export default function () {
         {
             label: __('Delete', 'give'),
             value: 'delete',
+            action: () => {},
         }
     ]
 
