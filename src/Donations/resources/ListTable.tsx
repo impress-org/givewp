@@ -69,7 +69,12 @@ export default function () {
         },
         {
             name: 'formTitle',
-            text: __('Donation Form', 'give')
+            text: __('Donation Form', 'give'),
+            render: (donation: {formTitle, formId}) => (
+                <a href={`post.php?post=${donation.formId}&action=edit`}>
+                    {donation.formTitle}
+                </a>
+            )
         },
         {
             name: 'status',
