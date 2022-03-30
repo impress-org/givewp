@@ -9,6 +9,8 @@ use Give\Framework\FieldsAPI\Form;
 use Give\Framework\FieldsAPI\Group;
 use Give\Framework\FieldsAPI\Hidden;
 use Give\Framework\FieldsAPI\Text;
+use Give\Helpers\Call;
+use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
 
 class Block
 {
@@ -37,9 +39,12 @@ class Block
     {
         $donationForm = $this->createForm($attributes);
 
+        $donateUrl = Call::invoke(GenerateDonateRouteUrl::class);
+
         $exports = [
             'attributes' => $attributes,
-            'form' => $donationForm->jsonSerialize()
+            'form' => $donationForm->jsonSerialize(),
+            'donateUrl' => $donateUrl
         ];
 
         // enqueue front-end scripts
@@ -79,7 +84,7 @@ class Block
             Group::make('donationDetails')
                 ->label(__('Donation Details', 'give'))
                 ->append(
-                    Text::make('donationAmount')
+                    Text::make('amount')
                         ->label(__('Donation Amount', 'give'))
                         ->defaultValue(50)
                         ->required()
@@ -106,7 +111,16 @@ class Block
                 ->label(__('Payment Details', 'give')),
 
             Hidden::make('formId')
-                ->defaultValue($attributes['formId'])
+                ->defaultValue($attributes['formId']),
+
+            Hidden::make('formTitle')
+                ->defaultValue('Give Next Gen Form'),
+
+            Hidden::make('userId')
+                ->defaultValue(get_current_user_id()),
+
+            Hidden::make('currency')
+                ->defaultValue("USD")
         );
 
         return $donationForm;

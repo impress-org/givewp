@@ -1,3 +1,4 @@
+import {useEffect} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import {ErrorMessage} from '@hookform/error-message';
 import PropTypes from 'prop-types';
@@ -8,15 +9,22 @@ import Joi from 'joi';
 import Field from '../fields/Field';
 import getFieldErrorMessages from '../utilities/getFieldErrorMessages';
 import FieldGroup from '../fields/FieldGroup';
+import axios from 'axios';
+import getWindowData from '../utilities/getWindowData';
 
 const messages = getFieldErrorMessages();
+
+const [donateUrl] = getWindowData('donateUrl');
 
 const schema = Joi.object({
     firstName: Joi.string().required().label('First Name').messages(messages),
     lastName: Joi.string().required().label('Last Name').messages(messages),
     email: Joi.string().email({tlds: false}).required().label('Email').messages(messages),
-    donationAmount: Joi.number().integer().min(5).required().label('Donation Amount'),
+    amount: Joi.number().integer().min(5).required().label('Donation Amount'),
     formId: Joi.number().required(),
+    currency: Joi.string().required(),
+    formTitle: Joi.string().required(),
+    userId: Joi.number().required(),
 });
 
 /**
@@ -28,7 +36,22 @@ const schema = Joi.object({
  */
 function Form({fields, defaultValues}) {
     const isLoading = false;
-    const onSubmit = (data) => alert(JSON.stringify(data));
+    /**
+     * Handle submit request
+     *
+     * @param {Array} values - form values
+     * @return {Promise} - Axios
+     */
+    const handleSubmitRequest = async (values) => {
+        const request = await axios.post(donateUrl, {
+            ...values,
+            gatewayId: 'test-gateway',
+        });
+
+        if (request.status === 200) {
+            alert('Thank You!');
+        }
+    };
 
     const methods = useForm({
         defaultValues,
@@ -38,12 +61,17 @@ function Form({fields, defaultValues}) {
     const {
         handleSubmit,
         setError,
-        formState: {errors, isSubmitting},
+        formState: {errors, isSubmitting, isSubmitSuccessful},
+        reset,
     } = methods;
+
+    useEffect(() => {
+        reset();
+    }, [isSubmitSuccessful]);
 
     return (
         <FormProvider {...methods}>
-            <form className="give-next-gen" onSubmit={handleSubmit(onSubmit)}>
+            <form className="give-next-gen" onSubmit={handleSubmit(handleSubmitRequest)}>
                 {fields.map(({type, name, label, readOnly, validationRules, nodes}) => {
                     if (type === 'group' && nodes) {
                         return <FieldGroup fields={nodes} name={name} label={label} key={name} />;
@@ -67,7 +95,7 @@ function Form({fields, defaultValues}) {
                     render={({message}) => (
                         <div style={{textAlign: 'center'}}>
                             <p className="give-next-gen__error-message">
-                                {__('The following error occurred when submitting the form:', 'give-text-to-give')}
+                                {__('The following error occurred when submitting the form:', 'give')}
                             </p>
                             <p className="give-next-gen__error-message">{message}</p>
                         </div>
@@ -75,7 +103,7 @@ function Form({fields, defaultValues}) {
                 />
 
                 <button type="submit" disabled={isSubmitting || isLoading} className="give-next-gen__submit-button">
-                    {isSubmitting || isLoading ? __('Submitting…', 'give') : __('donate', 'give')}
+                    {isSubmitting || isLoading ? __('Submitting…', 'give') : __('Donate', 'give')}
                 </button>
             </form>
         </FormProvider>

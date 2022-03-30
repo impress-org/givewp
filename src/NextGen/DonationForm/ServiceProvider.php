@@ -4,6 +4,7 @@ namespace Give\NextGen\DonationForm;
 
 use Give\Helpers\Hooks;
 use Give\NextGen\DonationForm\Blocks\DonationFormBlock\Block as DonationFormBlock;
+use Give\NextGen\DonationForm\Routes\DonateRoute;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 class ServiceProvider implements ServiceProviderInterface {
@@ -24,5 +25,7 @@ class ServiceProvider implements ServiceProviderInterface {
         if (function_exists('register_block_type')) {
             Hooks::addAction('init', DonationFormBlock::class, 'register');
         }
+
+        Hooks::addAction('template_redirect', DonateRoute::class);
     }
 }
