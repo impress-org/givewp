@@ -846,6 +846,7 @@ function give_form_grid_shortcode( $atts ) {
 		'posts_per_page' => $atts['forms_per_page'],
 		'orderby'        => $atts['orderby'],
 		'order'          => $atts['order'],
+        'paged'          => $atts['paged'],
 		'tax_query'      => [
 			'relation' => 'AND',
 		],

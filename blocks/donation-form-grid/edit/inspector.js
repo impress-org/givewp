@@ -15,7 +15,7 @@ import giveFormOptions from '../data/options';
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { formsPerPage, formIDs, excludedFormIDs, orderBy, order, categories, tags, columns, showTitle, showExcerpt, showGoal, showFeaturedImage, displayType } = attributes;
+	const { formsPerPage, paged, formIDs, excludedFormIDs, orderBy, order, categories, tags, columns, showTitle, showExcerpt, showGoal, showFeaturedImage, displayType } = attributes;
 	const saveSetting = ( name, value ) => {
 		setAttributes( {
 			[ name ]: value,
@@ -30,6 +30,12 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Forms Per Page', 'give' ) }
 					value={ formsPerPage }
 					onChange={ ( value ) => saveSetting( 'formsPerPage', value ) }/>
+                <ToggleControl
+                    name="paged"
+                    label={ __( 'Show Pagination', 'give' ) }
+                    checked={ !! paged }
+                    onChange={ ( value ) => saveSetting( 'paged', value ) }
+                />
 				<TextControl
 					name="formIDs"
 					label={ __( 'Form IDs', 'give' ) }

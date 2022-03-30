@@ -7,6 +7,10 @@ const blockAttributes = {
 		type: 'string',
 		default: '12',
 	},
+    paged:{
+        type: 'boolean',
+        default: true,
+	},
 	formIDs: {
 		type: 'string',
 		default: '',

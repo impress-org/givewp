@@ -139,6 +139,10 @@ class Give_Donation_Form_Grid_Block {
 						'type'    => 'string',
 						'default' => 'redirect',
 					),
+                    'paged' => array(
+                        'type'    => 'boolean',
+                        'default' => true,
+                    ),
 				),
 			)
 		);
@@ -167,6 +171,7 @@ class Give_Donation_Form_Grid_Block {
 			'show_excerpt'        => $attributes['showExcerpt'],
 			'show_featured_image' => $attributes['showFeaturedImage'],
 			'display_style'       => $attributes['displayType'],
+            'paged'               => $attributes['paged'],
 		);
 
 		$html = give_form_grid_shortcode( $parameters );
