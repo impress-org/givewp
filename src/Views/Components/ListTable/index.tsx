@@ -75,7 +75,8 @@ export default function ListTablePage({
         const actionIndex = bulkActions.findIndex((config) => action == config.value);
         if(actionIndex < 0) return;
         setModalAction(actionIndex);
-        const selectNodes = document.querySelectorAll('.giveListTableSelect:not(#giveListTableSelectAll)');
+        const selectNodes = document.querySelectorAll('.giveListTableSelect:checked:not(#giveListTableSelectAll)');
+        if(!selectNodes.length) return;
         const selected = Array.from(selectNodes, (select, index) => parseInt(select.dataset.id));
         setSelected(selected);
         dialog.current.show();
@@ -151,9 +152,15 @@ export default function ListTablePage({
                 closeButton: ''
             }}
         >
-            {(modalAction > -1) && bulkActions[modalAction].confirm(selected)}
-            <button className={styles.addFormButton} onClick={(event) => dialog.current?.hide()}>{__('Cancel', 'give')}</button>
-            <button className={styles.addFormButton}>{__('Confirm', 'give')}</button>
+            {(modalAction > -1) && bulkActions[modalAction]?.confirm(selected)}
+            <button className={styles.addFormButton} onClick={(event) => dialog.current?.hide()}>
+                {__('Cancel', 'give')}
+            </button>
+            <button className={styles.addFormButton}
+                    onClick={(event) => bulkActions[modalAction]?.action(selected)}
+            >
+                {__('Confirm', 'give')}
+            </button>
         </A11yDialog>
         </>
     );
