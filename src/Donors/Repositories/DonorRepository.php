@@ -485,7 +485,7 @@ class DonorRepository
         $donations = $request->get_param('donations');
         $form = $request->get_param('form');
 
-        if ($donations !== 0) {
+        if ($donations) {
             $builder->whereLike('payment_ids', $donations);
         }
 
