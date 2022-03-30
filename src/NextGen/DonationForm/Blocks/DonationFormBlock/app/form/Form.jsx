@@ -28,6 +28,23 @@ const schema = Joi.object({
 });
 
 /**
+ * Handle submit request
+ *
+ * @param {Array} values - form values
+ * @return {Promise} - Axios
+ */
+const handleSubmitRequest = async (values) => {
+    const request = await axios.post(donateUrl, {
+        ...values,
+        gatewayId: 'test-gateway',
+    });
+
+    if (request.status === 200) {
+        alert('Thank You!');
+    }
+};
+
+/**
  * @unreleased
  *
  * @param fields
@@ -36,22 +53,6 @@ const schema = Joi.object({
  */
 function Form({fields, defaultValues}) {
     const isLoading = false;
-    /**
-     * Handle submit request
-     *
-     * @param {Array} values - form values
-     * @return {Promise} - Axios
-     */
-    const handleSubmitRequest = async (values) => {
-        const request = await axios.post(donateUrl, {
-            ...values,
-            gatewayId: 'test-gateway',
-        });
-
-        if (request.status === 200) {
-            alert('Thank You!');
-        }
-    };
 
     const methods = useForm({
         defaultValues,
