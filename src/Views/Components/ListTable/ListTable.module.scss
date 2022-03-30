@@ -143,7 +143,7 @@
 
 @media (hover: hover) and (pointer: fine) {
     :global {
-        input.giveListTableSelect {
+        input.giveListTableSelect:not(:checked) {
             opacity: 0;
             transition: opacity 180ms ease-in;
 
