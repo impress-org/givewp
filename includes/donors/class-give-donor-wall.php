@@ -190,6 +190,7 @@ class Give_Donor_Wall {
 				'show_avatar'       => true,
 				'show_name'         => true,
 				'show_company_name' => false,
+				'show_form'         => false,
 				'show_total'        => true,
 				'show_time'         => true,
 				'show_comments'     => true,
