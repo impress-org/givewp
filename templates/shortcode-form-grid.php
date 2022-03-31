@@ -113,7 +113,7 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                 ?>
                 <div>
                     <br />
-                    <button class="give-btn" style="background-color: <?php echo $button_bg_color; ?>;" onClick="location.href='<?php echo esc_attr(get_the_permalink()); ?>';">
+                    <button class="give-btn" style="background-color: <?php echo $button_bg_color; ?>;">
                         <span style="color: <?php echo $button_text_color; ?>">
                             <?php echo $button_text ?: __( 'Donate', 'give' ); ?>
                         </span>
