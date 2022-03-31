@@ -69,6 +69,8 @@ export default function ListTablePage({
             disabled={!data}
             totalItems={data ? parseInt(data.totalItems) : -1}
             setPage={setPage}
+            singleName={singleName}
+            pluralName={pluralName}
         />
     )
 
