@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n'
 import { InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, SelectControl, ToggleControl, TextControl } from '@wordpress/components';
+import { PanelBody, SelectControl, ToggleControl, TextControl, ColorPalette } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -15,7 +15,7 @@ import giveFormOptions from '../data/options';
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { formsPerPage, paged, imageSize, imageHeight, formIDs, excludedFormIDs, orderBy, order, categories, tags, columns, showTitle, showExcerpt, showGoal, showFeaturedImage, displayType } = attributes;
+	const { formsPerPage, paged, imageSize, imageHeight, formIDs, excludedFormIDs, orderBy, order, categories, tags, columns, showTitle, showExcerpt, showGoal, showFeaturedImage, showDonateButton, donateButtonBackgroundColor, donateButtonTextColor, displayType } = attributes;
 	const saveSetting = ( name, value ) => {
 		setAttributes( {
 			[ name ]: value,
@@ -108,6 +108,32 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Show Featured Image', 'give' ) }
 					checked={ !! showFeaturedImage }
 					onChange={ ( value ) => saveSetting( 'showFeaturedImage', value ) } />
+                <ToggleControl
+					name="showDonateButton"
+					label={ __( 'Show Donate Button', 'give' ) }
+					checked={ !! showDonateButton }
+					onChange={ ( value ) => saveSetting( 'showDonateButton', value ) } />
+                { showDonateButton && (
+                    <>
+                        <p>
+                            { __('Donate Button Background Color', 'give' ) }
+                        </p>
+                        <ColorPalette
+                            clearable={false}
+                            onChange={( value ) => saveSetting( 'donateButtonBackgroundColor', value )}
+                            value={ donateButtonBackgroundColor }
+                        />
+                        <p>
+                            { __('Donate Button Text Color', 'give' ) }
+                        </p>
+                        <ColorPalette
+                            clearable={false}
+                            onChange={( value ) => saveSetting( 'donateButtonTextColor', value )}
+                            value={ donateButtonTextColor }
+                        />
+                    </>
+                ) }
+
 				<SelectControl
 					label={ __( 'Display Type', 'give' ) }
 					name="displayType"

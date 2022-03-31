@@ -97,6 +97,29 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
 				echo '</div>';
 			}
 			?>
+
+            <?php if (true === $atts['show_donate_button']):
+                $button_text = ! empty( $atts['donate_button_text'] )
+                    ? $atts['donate_button_text']
+                    : give_get_meta( $form_id, '_give_form_grid_donate_button_text', true );
+
+                $button_bg_color = ! empty( $atts['donate_button_background_color'] )
+                    ? $atts['donate_button_background_color']
+                    : '#66bb6a';
+
+                $button_text_color = ! empty( $atts['donate_button_text_color'] )
+                    ? $atts['donate_button_text_color']
+                    : '#fff';
+                ?>
+                <div>
+                    <br />
+                    <button class="give-btn" style="background-color: <?php echo $button_bg_color; ?>;" onClick="location.href='<?php echo esc_attr(get_the_permalink()); ?>';">
+                        <span style="color: <?php echo $button_text_color; ?>">
+                            <?php echo $button_text ?: __( 'Donate', 'give' ); ?>
+                        </span>
+                    </button>
+                </div>
+            <?php endif; ?>
 		</div>
 
 		<?php

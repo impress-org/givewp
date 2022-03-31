@@ -635,18 +635,17 @@ class Give_MetaBox_Form_Data {
                             ],
                             'wrapper_class' => 'give-hidden',
                         ],
-// TODO: Check this with Matt
-//                        [
-//                            'name'          => __( 'Donate Button Text', 'give' ),
-//                            'description'   => __( 'Customize the text of the Donate Button on the Form Grid. Only applies if the Donate Button option is enabled in your Form Grid.', 'give' ),
-//                            'id'            => $prefix . 'form_grid_donate_button_text',
-//                            'type'          => 'text-medium',
-//                            'attributes'    => [
-//                                'placeholder' => 'Donate Here',
-//                                'data-field-visibility' => htmlspecialchars(json_encode([  $prefix . 'form_grid_option' => 'custom' ])),
-//                            ],
-//                            'wrapper_class' => 'give-hidden',
-//                        ],
+                        [
+                            'name'          => __( 'Donate Button Text', 'give' ),
+                            'description'   => __( 'Customize the text of the Donate Button on the Form Grid. Only applies if the Donate Button option is enabled in your Form Grid.', 'give' ),
+                            'id'            => $prefix . 'form_grid_donate_button_text',
+                            'type'          => 'text-medium',
+                            'attributes'    => [
+                                'placeholder' => 'Donate Here',
+                                'data-field-visibility' => htmlspecialchars(json_encode([  $prefix . 'form_grid_option' => 'custom' ])),
+                            ],
+                            'wrapper_class' => 'give-hidden',
+                        ],
                     ],
                 ]
             ),

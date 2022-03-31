@@ -63,6 +63,18 @@ const blockAttributes = {
 		type: 'boolean',
 		default: true,
 	},
+    showDonateButton: {
+		type: 'boolean',
+		default: false,
+	},
+    donateButtonBackgroundColor: {
+		type: 'string',
+		default: '#66bb6a',
+	},
+    donateButtonTextColor: {
+		type: 'string',
+		default: '#fff',
+	},
 	displayType: {
 		type: 'string',
 		default: 'redirect',
