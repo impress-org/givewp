@@ -141,27 +141,30 @@ export default function ListTablePage({
                     </div>
                 </div>
             </article>
-        <A11yDialog
-            id='giveListTableModal'
-            dialogRef={instance => (dialog.current = instance)}
-            title={(modalAction > - 1) ? `${bulkActions[modalAction].label} - ${singleName}` : 'Bulk Action'}
-            classNames={{
-                container: styles.container,
-                overlay: styles.overlay,
-                dialog: styles.dialog,
-                closeButton: ''
-            }}
-        >
-            {(modalAction > -1) && bulkActions[modalAction]?.confirm(selected)}
-            <button className={styles.addFormButton} onClick={(event) => dialog.current?.hide()}>
-                {__('Cancel', 'give')}
-            </button>
-            <button className={styles.addFormButton}
-                    onClick={(event) => bulkActions[modalAction]?.action(selected)}
+            <A11yDialog
+                id='giveListTableModal'
+                dialogRef={instance => (dialog.current = instance)}
+                title={(modalAction > - 1) ? `${bulkActions[modalAction].label} - ${pluralName}` : 'Bulk Action'}
+                classNames={{
+                    container: styles.container,
+                    overlay: styles.overlay,
+                    dialog: styles.dialog,
+                    closeButton: ''
+                }}
             >
-                {__('Confirm', 'give')}
-            </button>
-        </A11yDialog>
+                {(modalAction > -1) && bulkActions[modalAction]?.confirm(selected)}
+                <button className={styles.addFormButton} onClick={(event) => dialog.current?.hide()}>
+                    {__('Cancel', 'give')}
+                </button>
+                <button className={styles.addFormButton}
+                        onClick={async (event) => {
+                            dialog.current?.hide();
+                            await bulkActions[modalAction]?.action(selected);
+                        }}
+                >
+                    {__('Confirm', 'give')}
+                </button>
+            </A11yDialog>
         </>
     );
 }
