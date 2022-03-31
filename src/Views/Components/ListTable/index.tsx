@@ -68,13 +68,11 @@ export default function ListTablePage({
 
     useResetPage(data, page, setPage, filters);
 
-    const handleDebouncedFilterChange = useDebounce((name, value) =>
-        setFilters(prevState => ({...prevState, [name]: value}))
-    );
-
     const handleFilterChange = (name, value) => {
         setFilters(prevState => ({...prevState, [name]: value}));
     }
+    
+    const handleDebouncedFilterChange = useDebounce(handleFilterChange);
 
     const openBulkActionModal = (event) => {
         event.preventDefault();
