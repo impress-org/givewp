@@ -252,6 +252,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 == Changelog ==
 = 2.19.6: March 31st, 2022 =
 * Change: Click in the background when viewing a form in the Form Grid now closes the form
+* Fix: Significant improvements to making GiveWP translatable, especially the Donor Dashboard and other JavaScript
 * Fix: Forms were not able to be deleted if Recurring wasn't installed, but now they can be!
 * Fix: Sensitive information was being stored in the logs in some cases. The information will no longer be stored and logged information was removed.
 * Fix: Some PayPal donations were stuck in "processing" status, but now they are properly marked "complete"
