@@ -15,7 +15,7 @@ import giveDonorWallOptions from '../data/options';
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { donorsPerPage, ids, formID, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, showTotal, showDate, showComments, showAnonymous, onlyComments, commentLength, readMoreText, loadMoreText } = attributes;
+	const { donorsPerPage, ids, formID, categories, tags, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, showTotal, showDate, showComments, showAnonymous, onlyComments, commentLength, readMoreText, loadMoreText } = attributes;
 	const saveSetting = ( name, value ) => {
 		setAttributes( {
 			[ name ]: value,
@@ -44,6 +44,16 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					onChange={ ( value ) => saveSetting( 'formID', value ) }
                     help={ __('A comma-separated list of form IDs to display.', 'give') }
                 />
+                <TextControl
+                    name="categories"
+                    label={ __( 'Categories', 'give' ) }
+                    value={ categories }
+                    onChange={ ( value ) => saveSetting( 'categories', value ) }/>
+                <TextControl
+                    name="tags"
+                    label={ __( 'Tags', 'give' ) }
+                    value={ tags }
+                    onChange={ ( value ) => saveSetting( 'tags', value ) }/>
 				<SelectControl
 					label={ __( 'Order By', 'give' ) }
 					name="orderBy"

@@ -99,6 +99,14 @@ class Give_Donor_Wall_Block {
 						'type'    => 'string',
 						'default' => '',
 					],
+                    'categories'             => [
+                        'type'    => 'string',
+                        'default' => '',
+                    ],
+                    'tags'             => [
+                        'type'    => 'string',
+                        'default' => '',
+                    ],
 					'orderBy'         => [
 						'type'    => 'string',
 						'default' => 'post_date',
@@ -183,6 +191,8 @@ class Give_Donor_Wall_Block {
 			'donors_per_page'   => absint( $attributes['donorsPerPage'] ),
 			'form_id'           => $attributes['formID'],
 			'ids'               => $attributes['ids'],
+            'cats'                => $attributes['categories'],
+            'tags'                => $attributes['tags'],
 			'orderby'           => $attributes['orderBy'],
 			'order'             => $attributes['order'],
 			'pages'             => absint( $attributes['paged'] ),
