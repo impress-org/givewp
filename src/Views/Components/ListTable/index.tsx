@@ -12,6 +12,7 @@ import {useResetPage} from "./hooks/useResetPage";
 import ListTableApi from "./api";
 import styles from './ListTablePage.module.scss';
 import cx from "classnames";
+import {BulkActionSelect} from "@givewp/components/ListTable/BulkActionSelect";
 
 export interface ListTablePageProps {
     //required
@@ -118,17 +119,7 @@ export default function ListTablePage({
                     <div className={cx(styles.pageActions,
                         { [styles.alignEnd]: !bulkActions }
                     )}>
-                        {bulkActions &&
-                            <form id={styles.bulkActionsForm} onSubmit={openBulkActionModal}>
-                                <select className={styles.bulkActions} name='giveListTableBulkActions'>
-                                    <option value=''>{__('Bulk Actions', 'give')}</option>
-                                    {bulkActions.map(action => (
-                                        <option key={action.value} value={action.value}>{action.label}</option>
-                                    ))}
-                                </select>
-                                <button className={styles.addFormButton}>{__('Apply', 'give')}</button>
-                            </form>
-                        }
+                        <BulkActionSelect bulkActions={bulkActions} showModal={openBulkActionModal}/>
                         {page && setPage && showPagination()}
                     </div>
                     <ListTable
@@ -142,7 +133,10 @@ export default function ListTablePage({
                         error={error}
                         isLoading={isValidating}
                     />
-                    <div className={styles.pageActions}>
+                    <div className={cx(styles.pageActions,
+                        { [styles.alignEnd]: !bulkActions }
+                    )}>
+                        <BulkActionSelect bulkActions={bulkActions} showModal={openBulkActionModal}/>
                         {page && setPage && showPagination()}
                     </div>
                 </div>
