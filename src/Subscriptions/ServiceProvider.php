@@ -2,10 +2,12 @@
 
 namespace Give\Subscriptions;
 
+use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use Give\Subscriptions\LegacyListeners\DispatchGiveSubscriptionPostCreate;
 use Give\Subscriptions\LegacyListeners\DispatchGiveSubscriptionPreCreate;
+use Give\Subscriptions\Migrations\CreateSubscriptionTables;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
 
 class ServiceProvider implements ServiceProviderInterface
@@ -24,6 +26,8 @@ class ServiceProvider implements ServiceProviderInterface
     public function boot()
     {
         $this->bootLegacyListeners();
+
+        give(MigrationsRegister::class)->addMigration(CreateSubscriptionTables::class);
     }
 
     /**
