@@ -29,10 +29,18 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
 	<?php
 	// Print the opening anchor tag based on display style.
 	if ( 'redirect' === $atts['display_style'] ) {
+
+        $form_grid_option = give_get_meta( $form_id, '_give_form_grid_option', true );
+        $form_grid_redirect_url = give_get_meta( $form_id, '_give_form_grid_redirect_url', true );
+
+        $url = ( $form_grid_option === 'custom' && filter_var($form_grid_redirect_url, FILTER_VALIDATE_URL) )
+            ? $form_grid_redirect_url
+            : get_the_permalink();
+
 		printf(
 			'<a id="give-card-%1$s" class="give-card" href="%2$s">',
 			esc_attr( $form_id ),
-			esc_attr( get_the_permalink() )
+			esc_attr( $url )
 		);
 	} elseif ( 'modal_reveal' === $atts['display_style'] ) {
 		printf(
