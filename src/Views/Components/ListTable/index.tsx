@@ -64,14 +64,14 @@ export default function ListTablePage({
 
     const archiveApi = useRef(new ListTableApi(apiSettings)).current;
 
-    const {data, error, isValidating} = archiveApi.useListTable(parameters)
+    const {data, error, isValidating, mutate} = archiveApi.useListTable(parameters)
 
     useResetPage(data, page, setPage, filters);
 
     const handleFilterChange = (name, value) => {
         setFilters(prevState => ({...prevState, [name]: value}));
     }
-    
+
     const handleDebouncedFilterChange = useDebounce(handleFilterChange);
 
     const openBulkActionModal = (event) => {
@@ -166,6 +166,7 @@ export default function ListTablePage({
                         onClick={async (event) => {
                             dialog.current?.hide();
                             await bulkActions[modalAction]?.action(selected);
+                            await mutate();
                         }}
                 >
                     {__('Confirm', 'give')}

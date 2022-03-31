@@ -106,7 +106,11 @@ export default function () {
         {
             label: __('Delete', 'give'),
             value: 'delete',
-            action: async (selected) => await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE'),
+            action: async (selected) => {
+                const response = await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
+                mutate()
+                return response;
+            },
             confirm: (selected) => (
                 <>
                     {__('Really delete the following donations?', 'give')}
