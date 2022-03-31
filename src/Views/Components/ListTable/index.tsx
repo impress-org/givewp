@@ -20,12 +20,20 @@ export interface ListTablePageProps {
     apiSettings: {apiRoot, apiNonce};
 
     //optional
-    bulkActions?: Array<any>|null;
+    bulkActions?: Array<BulkActionsConfig>|null;
     pluralName?: string;
     singleName?: string;
     children?: JSX.Element|JSX.Element[]|null;
     rowActions?: JSX.Element|JSX.Element[]|Function|null;
     filterSettings?;
+}
+
+export interface BulkActionsConfig {
+    //required
+    label: string;
+    value: string|number;
+    action: (selected: Array<string|number>) => Promise<{errors: string|number, successes: string|number}>;
+    confirm: (selected: Array<string|number>) => JSX.Element|JSX.Element[]|string;
 }
 
 export const RowActionsContext = createContext({});

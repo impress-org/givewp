@@ -5,6 +5,7 @@ import RowAction from "@givewp/components/ListTable/RowAction";
 import ListTableApi from '@givewp/components/ListTable/api';
 import styles from "@givewp/components/ListTable/ListTablePage.module.scss";
 import {IdBadge} from "@givewp/components/ListTable/TableCell";
+import {BulkActionsConfig} from "@givewp/components/ListTable";
 
 declare global {
     interface Window {
@@ -101,14 +102,11 @@ export default function () {
         }
     ]
 
-    const bulkActions = [
+    const bulkActions:Array<BulkActionsConfig> = [
         {
             label: __('Delete', 'give'),
             value: 'delete',
-            action: async (selected) => {
-                const response = await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
-                console.log(response);
-            },
+            action: async (selected) => await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE'),
             confirm: (selected) => (
                 <>
                     {__('Really delete the following donations?', 'give')}
