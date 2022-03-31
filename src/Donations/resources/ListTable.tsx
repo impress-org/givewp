@@ -4,6 +4,7 @@ import {ListTableColumn, ListTablePage} from '@givewp/components';
 import RowAction from "@givewp/components/ListTable/RowAction";
 import ListTableApi from '@givewp/components/ListTable/api';
 import styles from "@givewp/components/ListTable/ListTablePage.module.scss";
+import {IdBadge} from "@givewp/components/ListTable/TableCell";
 
 declare global {
     interface Window {
@@ -112,7 +113,9 @@ export default function () {
                 <>
                     {__('Really delete the following donations?', 'give')}
                     <ul>
-                        {selected.map(donationId => <li key={donationId}>{donationId}</li>)}
+                        {selected.map(donationId => (
+                            <li key={donationId}><IdBadge id={donationId}/></li>
+                        ))}
                     </ul>
                 </p>
             )
