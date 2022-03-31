@@ -79,6 +79,10 @@ export default function () {
             )
         },
         {
+            name: 'gateway',
+            text: __('Gateway', 'give'),
+        },
+        {
             name: 'status',
             text: __('Status', 'give'),
             preset: 'donationStatus',
