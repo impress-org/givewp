@@ -13,7 +13,7 @@ use Give\Framework\Support\Facades\DateTime\Temporal;
 /**
  * Class DonationData
  *
- * @unreleased
+ * @since 2.19.6
  */
 class DonationQueryData
 {
@@ -111,7 +111,7 @@ class DonationQueryData
      *
      * @param  object  $donationQueryObject
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @return self
      */

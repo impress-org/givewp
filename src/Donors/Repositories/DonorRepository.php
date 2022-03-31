@@ -12,7 +12,7 @@ use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Log\Log;
 
 /**
- * @unreleased
+ * @since 2.19.6
  */
 class DonorRepository
 {
@@ -30,7 +30,7 @@ class DonorRepository
     /**
      * Query Donor By ID
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $donorId
      * @return ModelQueryBuilder
@@ -44,7 +44,7 @@ class DonorRepository
     /**
      * Get Donor By ID
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $donorId
      * @return Donor|null
@@ -57,7 +57,7 @@ class DonorRepository
     /**
      * Get Donor By WP User ID
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $userId
      * @return Donor|null
@@ -75,7 +75,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $donorId
      * @return array|bool
@@ -96,7 +96,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  Donor  $donor
      *
@@ -157,7 +157,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  Donor  $donor
      * @return Donor
@@ -204,7 +204,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $donorId
      * @param  array  $columns
@@ -280,7 +280,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  Donor  $donor
      * @return array
@@ -295,7 +295,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  Donor  $donor
      * @return void
@@ -378,7 +378,7 @@ class DonorRepository
      * Additional emails are assigned to the same additional_email meta key.
      * In order to update them we need to delete and re-insert.
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  Donor  $donor
      * @return void

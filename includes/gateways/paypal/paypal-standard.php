@@ -145,7 +145,7 @@ function give_get_paypal_page_style()
  * Shows "Donation Processing" message for PayPal payments that are still pending on site return
  *
  * @since      1.0
- * @unreleased Get donation id from donor session.
+ * @since 2.19.6 Get donation id from donor session.
  *
  * @param $content
  *

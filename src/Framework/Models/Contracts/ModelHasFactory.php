@@ -5,13 +5,13 @@ namespace Give\Framework\Models\Contracts;
 use Give\Framework\Models\Factories\ModelFactory;
 
 /**
- * @unreleased
+ * @since 2.19.6
  */
 interface ModelHasFactory
 {
     /**
-     * @unreleased
-     * 
+     * @since 2.19.6
+     *
      * @return ModelFactory
      */
     public static function factory();
