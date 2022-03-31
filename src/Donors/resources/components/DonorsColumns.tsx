@@ -46,7 +46,7 @@ export const donorsColumns: Array<ListTableColumn> = [
         text: __('Donations', 'give'),
         inlineSize: '6rem',
         render: (donor: {donationCount, id}) => (
-            <a href={`http://givewp-test-2.local/wp-admin/edit.php?post_type=give_forms&page=give-payment-history&donor=${donor.id}`}>
+            <a href={`edit.php?post_type=give_forms&page=give-payment-history&donor=${donor.id}`}>
                 {`${donor.donationCount.toString()}`}
             </a>
         )
