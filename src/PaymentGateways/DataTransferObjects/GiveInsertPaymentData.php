@@ -34,10 +34,6 @@ class GiveInsertPaymentData
     /**
      * @var string
      */
-    public $amount;
-    /**
-     * @var string
-     */
     public $formTitle;
     /**
      * @var int

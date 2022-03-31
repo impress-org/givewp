@@ -1,5 +1,5 @@
 const {useSelect} = wp.data;
-const {__} = wp.i18n;
+import { __ } from '@wordpress/i18n'
 
 /**
  * Get array of form options for a select control

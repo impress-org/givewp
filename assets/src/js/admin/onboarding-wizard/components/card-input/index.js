@@ -45,7 +45,10 @@ const CardInput = ( { checkMultiple, values, onChange, children } ) => {
 
 CardInput.propTypes = {
 	checkMultiple: PropTypes.bool,
-	values: PropTypes.array,
+	values: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.array
+    ]),
 	onChange: PropTypes.func,
 	children: function( props, propName, componentName ) {
 		const prop = props[ propName ];

@@ -51,9 +51,7 @@ jobs:
                     coverage: none
 
             -   name: Install composer dependencies
-                uses: php-actions/composer@v5
-                with:
-                    php_version: ${{ matrix.php }}
+                run: composer install --no-progress --no-interaction
 
             -   name: Store MySQL details in environment
                 run: |
@@ -97,9 +95,7 @@ jobs:
                     coverage: none
 
             -   name: Install composer dev dependencies
-                uses: php-actions/composer@v5
-                with:
-                    php_version: 7.2
+                run: composer install --no-progress --no-interaction
 
                 # In order to run this WordPress also needs to be installed
             -   name: Generate pot file

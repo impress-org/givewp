@@ -32,7 +32,7 @@ const AvatarControl = ({url, file, onChange}) => {
             <div className="give-donor-dashboard-avatar-control__input" {...getRootProps()}>
                 <input {...getInputProps()} />
                 <div className="give-donor-dashboard-avatar-control__preview">
-                    <img src={previewSrc} />
+                    <img src={previewSrc}/>
                 </div>
                 <div
                     className={`give-donor-dashboard-avatar-control__dropzone${
@@ -41,12 +41,14 @@ const AvatarControl = ({url, file, onChange}) => {
                 >
                     <div className="give-donor-dashboard-avatar-control__instructions">
                         {isDragActive ? (
-                            <p>Drop the image here...</p>
+                            <p>{__('Drop the image here...', 'give')}</p>
                         ) : (
                             <p>
-                                Drag image here to set <br />
-                                avatar or{' '}
-                                <span className="give-donor-dashboard-avatar-control__select-link">find image</span>
+                                {__('Drag image here to set', 'give')} <br/>
+                                {__('avatar or', 'give')}{' '}
+                                <span className="give-donor-dashboard-avatar-control__select-link">
+                                    {__('find image', 'give')}
+                                </span>
                             </p>
                         )}
                     </div>

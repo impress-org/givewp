@@ -5,6 +5,7 @@
 
 use Give\Framework\Migrations\MigrationsRunner;
 use Give\Helpers\Table;
+use Give\License\PremiumAddonsListManager;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -794,18 +795,29 @@ $give_updates = Give_Updates::get_instance();
 			<td><?php echo wp_kses( $plugin_name, wp_kses_allowed_html( 'post' ) ); ?></td>
 			<td class="help">&nbsp;</td>
 			<td>
-				<?php
-				if ( isset( $plugin_data['License'] ) && true === $plugin_data['License'] ) {
-					echo '<mark class="yes"><span class="dashicons dashicons-yes"></span></mark> ' . __( 'Licensed', 'give' );
-				} else {
-					echo '<mark class="error"><span class="dashicons dashicons-no-alt"></span></mark> ' . __( 'Unlicensed', 'give' );
-				}
+                <?php
+                if (!give(PremiumAddonsListManager::class)->isPremiumAddons($plugin_data['PluginURI'])) {
+                    echo '<mark class="error"><span class="dashicons dashicons-heart"></span></mark> ' . __(
+                            'Free addon',
+                            'give'
+                        );
+                } elseif (isset($plugin_data['License']) && true === $plugin_data['License']) {
+                    echo '<mark class="yes"><span class="dashicons dashicons-yes"></span></mark> ' . __(
+                            'Licensed',
+                            'give'
+                        );
+                } else {
+                    echo '<mark class="error"><span class="dashicons dashicons-no-alt"></span></mark> ' . __(
+                            'Unlicensed',
+                            'give'
+                        );
+                }
 
-				echo ' &ndash; '
-					 . sprintf( _x( 'by %s', 'by author', 'give' ), wp_kses( $author_name, wp_kses_allowed_html( 'post' ) ) )
-					 . ' &ndash; '
-					 . esc_html( $plugin_data['Version'] );
-				?>
+                echo ' &ndash; '
+                    . sprintf(_x('by %s', 'by author', 'give'), wp_kses($author_name, wp_kses_allowed_html('post')))
+                    . ' &ndash; '
+                    . esc_html($plugin_data['Version']);
+                ?>
 			</td>
 		</tr>
 		<?php

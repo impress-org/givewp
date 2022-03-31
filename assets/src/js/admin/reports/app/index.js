@@ -2,7 +2,7 @@
 
 // Vendor dependencies
 import moment from 'moment';
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
 
 import './style.scss';
 

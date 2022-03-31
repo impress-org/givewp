@@ -2,10 +2,10 @@
 Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, jason_the_adams, henryholtgeerts, kbjohnson90, alaca, benmeredithgmailcom
 Donate link: https://go.givewp.com/home
 Tags: donation, donate, recurring donations, fundraising, crowdfunding
-Requires at least: 4.9
+Requires at least: 5.0
 Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 2.19.5
+Stable tag: 2.19.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -250,6 +250,15 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.19.6: March 31st, 2022 =
+* Change: Click in the background when viewing a form in the Form Grid now closes the form
+* Fix: Forms were not able to be deleted if Recurring wasn't installed, but now they can be!
+* Fix: Sensitive information was being stored in the logs in some cases. The information will no longer be stored and logged information was removed.
+* Fix: Some PayPal donations were stuck in "processing" status, but now they are properly marked "complete"
+* Fix: Transaction ID wasn't being stored for Stripe donations using 3D Secure. Now it's stored and the missing ID's were recovered.
+* Fix: The Form Grid now displays the excerpt properly on the Multi-Step form
+* Fix: The Donor Wall and Form Grid blocks now look as they should in the block-editor
+
 = 2.19.5: March 11th, 2022 =
 * Fix: Resolved issue with PayPal failing to validate for authenticated users
 

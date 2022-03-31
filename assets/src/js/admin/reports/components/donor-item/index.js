@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import './style.scss';
 import { getBGColor, getInitials } from './utils';
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
 
 const DonorItem = ( { image, name, email, count, total, url } ) => {
 	const profile = image ? <img src={ image } /> : <div className="give-donor-initials" style={ { backgroundColor: getBGColor() } }>{ getInitials( name ) }</div>;

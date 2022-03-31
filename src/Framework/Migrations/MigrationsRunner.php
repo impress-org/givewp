@@ -132,8 +132,6 @@ class MigrationsRunner
                         ),
                     ]
                 );
-
-                break;
             }
 
             try {
@@ -146,6 +144,11 @@ class MigrationsRunner
                         'Query Errors' => $e->getQueryErrors(),
                     ]
                 );
+            }
+
+            // Stop Migration Runner if migration has failed
+            if ($migrationLog->getStatus() === MigrationLogStatus::FAILED) {
+                break;
             }
 
             // Commit transaction if successful

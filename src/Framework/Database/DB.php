@@ -2,6 +2,7 @@
 
 namespace Give\Framework\Database;
 
+use Exception;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\QueryBuilder\Clauses\RawSQL;
 use Give\Framework\QueryBuilder\QueryBuilder;
@@ -57,7 +58,7 @@ class DB
      * @since 2.9.6
      *
      * @param string $query
-     * @param mixed  ...$args
+     * @param mixed ...$args
      *
      * @return false|mixed
      */
@@ -121,7 +122,7 @@ class DB
      * Create QueryBuilder instance
      *
      * @param string $table
-     * @param  null|string  $alias
+     * @param null|string $alias
      *
      * @return QueryBuilder
      */
@@ -133,13 +134,76 @@ class DB
         return $builder;
     }
 
+    /**
+     * Runs a transaction. If the callable works then the transaction is committed. If the callable throws an exception
+     * then the transaction is rolled back.
+     *
+     * @since 2.19.6
+     *
+     * @param callable $callback
+     *
+     * @return void
+     * @throws Exception
+     */
+    public static function transaction(callable $callback)
+    {
+        self::beginTransaction();
+
+        try {
+            $callback();
+        } catch (Exception $e) {
+            self::rollback();
+            throw $e;
+        }
+
+        self::commit();
+    }
+
+    /**
+     * Manually starts a transaction
+     *
+     * @since 2.19.6
+     *
+     * @return void
+     */
+    public static function beginTransaction()
+    {
+        global $wpdb;
+        $wpdb->query('START TRANSACTION');
+    }
+
+    /**
+     * Manually rolls back a transaction
+     *
+     * @since 2.19.6
+     *
+     * @return void
+     */
+    public static function rollback()
+    {
+        global $wpdb;
+        $wpdb->query('ROLLBACK');
+    }
+
+    /**
+     * Manually commits a transaction
+     *
+     * @since 2.19.6
+     *
+     * @return void
+     */
+    public static function commit()
+    {
+        global $wpdb;
+        $wpdb->query('COMMIT');
+    }
 
     /**
      * Used as a flag to tell QueryBuilder not to process the provided SQL
      * If $args are provided, we will assume that dev wants to use DB::prepare method with raw SQL
      *
      * @param string $sql
-     * @param ...$args
+     * @param array ...$args
      *
      * @return RawSQL
      */
@@ -174,7 +238,7 @@ class DB
 
         $wpError = self::getQueryErrors($errorCount);
 
-        if ( ! empty($wpError->errors)) {
+        if (!empty($wpError->errors)) {
             throw DatabaseQueryException::create($wpError->get_error_messages());
         }
 

@@ -1,4 +1,5 @@
 import {useMemo} from 'react';
+import {kebabCase} from 'lodash';
 import {Button} from './Button';
 import {Card} from './Card';
 import {transformEmphasis, transformStrong} from '../utils';
@@ -15,7 +16,7 @@ export const PricingPlanCard = ({
     savingsPercentage,
     isMostPopular,
 }) => {
-    const includesLabelId = useMemo(() => `${window.lodash.kebabCase(name)}-includes-label`, [name]);
+    const includesLabelId = useMemo(() => `${kebabCase(name)}-includes-label`, [name]);
 
     return (
         <Card as="article" className={styles.card}>
