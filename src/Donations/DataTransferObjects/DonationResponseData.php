@@ -81,7 +81,7 @@ class DonationResponseData implements Arrayable
         $self->donorId = (int)$donation->{DonationMetaKeys::DONOR_ID()};
         $self->donorName = $donation->{DonationMetaKeys::FIRST_NAME()} . ' ' . $donation->{DonationMetaKeys::LAST_NAME()};
         $self->email = $donation->{DonationMetaKeys::EMAIL()};
-        $self->gateway = $donation->{DonationMetaKeys::GATEWAY()};
+        $self->gateway = give_get_gateway_admin_label($donation->{DonationMetaKeys::GATEWAY()});
         $self->createdAt = Date::getDateTime($donation->createdAt);
         $self->status = new DonationStatus($donation->status);
         $self->anonymous = (bool)$donation->{DonationMetaKeys::ANONYMOUS()};

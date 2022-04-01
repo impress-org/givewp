@@ -112,7 +112,6 @@ export default function () {
             value: 'delete',
             action: async (selected) => {
                 const response = await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
-                mutate()
                 return response;
             },
             confirm: (selected) => (
@@ -123,7 +122,7 @@ export default function () {
                             <li key={donationId}><IdBadge id={donationId}/></li>
                         ))}
                     </ul>
-                </p>
+                </>
             )
         }
     ]
