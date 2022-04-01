@@ -4,6 +4,7 @@ namespace Give\Donors\Endpoints;
 
 use Exception;
 use Give\Framework\Database\DB;
+use Give\Donors\Models\Donor;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -41,6 +42,11 @@ class DeleteDonor extends Endpoint
 
                             return true;
                         },
+                    ],
+                    'deleteDonationsAndRecords' => [
+                        'type' => 'boolean',
+                        'required' => 'false',
+                        'default' => 'false'
                     ]
                 ],
             ]
@@ -57,11 +63,31 @@ class DeleteDonor extends Endpoint
     public function handleRequest(WP_REST_Request $request)
     {
         $ids = $this->splitString($request->get_param('ids'));
+        $delete_donation = $request->get_param('deleteDonationsAndRecords');
         $errors = $successes = [];
 
         foreach ($ids as $id) {
             try {
-                DB::table('give_donors')->where('id', $id)->delete();
+                /**
+                 * Fires before deleting donor.
+                 *
+                 * @param int  $donor_id     The ID of the donor.
+                 * @param bool $delete_donor Confirm Donor Deletion.
+                 * @param bool $delete_donation  Confirm Donor related donations deletion.
+                 *
+                 * @unreleased
+                 */
+                do_action( 'give_pre_delete_donor', $id, true, $delete_donation );
+                $donor = Donor::find($id);
+                if ($delete_donation) {
+                    foreach( $donor->donations as $donation ) {
+                        $donation->delete();
+                    }
+                }
+                else {
+                    give_update_payment_meta( $id, '_give_payment_donor_id', 0 );
+                }
+                $donor->delete();
                 $successes[] = $id;
             } catch (Exception $e) {
                 $errors[] = $id;

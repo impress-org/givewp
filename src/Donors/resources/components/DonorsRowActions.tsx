@@ -12,8 +12,8 @@ export function DonorsRowActions({item, setUpdateErrors, parameters}) {
     const {mutate} = useSWRConfig();
 
     const fetchAndUpdateErrors = async (parameters, endpoint, id, method) => {
-        const deleteMeta = document.querySelector('#giveDonorsTableDeleteMeta') as HTMLInputElement;
-        const response = await donorsApi.fetchWithArgs(endpoint, {ids: [id]}, method);
+        const deleteDonations = document.querySelector('#giveDonorsTableDeleteDonations') as HTMLInputElement;
+        const response = await donorsApi.fetchWithArgs(endpoint, {ids: [id], deleteDonationsAndRecords: deleteDonations.checked}, method);
         setUpdateErrors(response);
         await mutate(parameters);
         return response;
@@ -24,10 +24,10 @@ export function DonorsRowActions({item, setUpdateErrors, parameters}) {
     const confirmDeleteDonor = (selected) => (
         <div>
             <p>
-                {sprintf(__('Really delete donor record for %s?', 'give'), item.name)}
+                {sprintf(__('Really delete %s?', 'give'), item.name)}
             </p>
-            <input id='giveDonorsTableDeleteMeta' type='checkbox'/>
-            <label htmlFor='giveDonorsTableDeleteMeta'>{__('Delete all associated donations and records', 'give')}</label>
+            <input id='giveDonorsTableDeleteDonations' type='checkbox'/>
+            <label htmlFor='giveDonorsTableDeleteDonations'>{__('Delete all associated donations and records', 'give')}</label>
         </div>
     );
 
