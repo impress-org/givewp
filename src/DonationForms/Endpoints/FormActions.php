@@ -91,6 +91,7 @@ class FormActions extends Endpoint
             case 'delete':
                 foreach ($ids as $id) {
                     $form = wp_delete_post($id);
+                    give()->form_meta->delete_all_meta($id);
                     $form ? $successes[] = $form : $errors[] = $form;
                 }
 

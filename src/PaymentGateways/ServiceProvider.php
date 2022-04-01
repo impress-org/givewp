@@ -56,7 +56,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      */
     private function registerMigrations()
     {

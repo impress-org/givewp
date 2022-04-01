@@ -6,7 +6,7 @@ namespace Give\Log\ValueObjects;
  * Class LogType
  * @package Give\Log\ValueObjects
  *
- * @unreleased - added DEBUG
+ * @since 2.19.6 - added DEBUG
  * @since 2.10.0
  *
  * @method static ERROR()

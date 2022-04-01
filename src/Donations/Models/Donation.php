@@ -22,7 +22,7 @@ use Give\ValueObjects\Money;
 /**
  * Class Donation
  *
- * @unreleased
+ * @since 2.19.6
  *
  * @property int $id
  * @property int $formId
@@ -90,7 +90,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     /**
      * Find donation by ID
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param int $id
      *
@@ -102,7 +102,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param array $attributes
      *
@@ -118,7 +118,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return Donation
      *
@@ -134,7 +134,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return bool
      *
@@ -146,7 +146,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return ModelQueryBuilder<Donor>
      */
@@ -156,7 +156,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return ModelQueryBuilder<Subscription>
      */
@@ -170,7 +170,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return int|null
      */
@@ -180,7 +180,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return object[]
      */
@@ -190,7 +190,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return Money
      */
@@ -200,7 +200,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return ModelQueryBuilder<Donation>
      */
@@ -210,7 +210,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param object $object
      *

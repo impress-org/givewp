@@ -7,7 +7,7 @@ use Give\Framework\Support\Facades\Str;
 trait EnumInteractsWithQueryBuilder
 {
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * Returns array of meta aliases to be used with attachMeta
      *

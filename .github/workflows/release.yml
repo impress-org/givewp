@@ -11,7 +11,7 @@ jobs:
             matrix:
                 php: [ 5.6, 7.2 ]
                 mysql: [ 'mysql:5.6', 'mysql:8.0' ]
-                wordpress: [ '4.9', '5.0', '5.1', '5.2', '5.3', '5.4', '5.5', latest ]
+                wordpress: [ '5.0', latest ]
 
         services:
             mysql56:
@@ -51,9 +51,7 @@ jobs:
                     coverage: none
 
             -   name: Install composer dependencies
-                uses: php-actions/composer@v5
-                with:
-                    php_version: ${{ matrix.php }}
+                run: composer install --no-progress --no-interaction
 
             -   name: Store MySQL details in environment
                 run: |
@@ -97,9 +95,7 @@ jobs:
                     coverage: none
 
             -   name: Install composer dev dependencies
-                uses: php-actions/composer@v5
-                with:
-                    php_version: 7.2
+                run: composer install --no-progress --no-interaction
 
                 # In order to run this WordPress also needs to be installed
             -   name: Generate pot file

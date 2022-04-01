@@ -72,7 +72,7 @@ jQuery( function() {
 
     /*
      * Close form modal by clicking on the background
-     * @unreleased
+     * @since 2.19.6
      */
     document.addEventListener('click', function(e){
         if (e.target.matches('.modal-inner-wrap') || e.target.matches('.give-embed-form-wrapper.modal')) {

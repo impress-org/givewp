@@ -14,7 +14,7 @@ class SubscriptionFactory extends ModelFactory
 {
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return array
      */
@@ -33,7 +33,7 @@ class SubscriptionFactory extends ModelFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @throws Exception
      */
@@ -49,7 +49,7 @@ class SubscriptionFactory extends ModelFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param $model
      * @return void
