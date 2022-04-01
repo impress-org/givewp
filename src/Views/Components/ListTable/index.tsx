@@ -1,7 +1,7 @@
 import {createContext, useRef, useState} from "react";
 import {__} from "@wordpress/i18n";
 import {A11yDialog} from "react-a11y-dialog";
-import {A11yDialogInstance} from "a11y-dialog";
+import A11yDialogInstance from "a11y-dialog";
 
 import {GiveIcon} from '@givewp/components';
 
@@ -54,7 +54,11 @@ export default function ListTablePage({
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(10);
     const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
-    const [modalAction, setModalAction] = useState(-1);
+    const [modalContent, setModalContent] = useState<{confirm, action, label}>({
+        confirm: (selected)=>{},
+        action: (selected)=>{},
+        label: ''
+    });
     const [selected, setSelected] = useState([]);
     const dialog = useRef() as {current: A11yDialogInstance};
 
@@ -76,16 +80,21 @@ export default function ListTablePage({
 
     const handleDebouncedFilterChange = useDebounce(handleFilterChange);
 
+    const showConfirmActionModal = (content, action) => {
+        //setModalContent({confirm, action});
+        dialog.current.show();
+    }
+
     const openBulkActionModal = (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
         const action = formData.get('giveListTableBulkActions');
         const actionIndex = bulkActions.findIndex((config) => action == config.value);
         if(actionIndex < 0) return;
-        setModalAction(actionIndex);
         const selectNodes = document.querySelectorAll('.giveListTableSelect:checked:not(#giveListTableSelectAll)');
         if(!selectNodes.length) return;
         const selected = Array.from(selectNodes, (select:HTMLSelectElement, index) => parseInt(select.dataset.id));
+        setModalContent({...bulkActions[actionIndex]});
         setSelected(selected);
         dialog.current.show();
     }
@@ -145,7 +154,7 @@ export default function ListTablePage({
             <A11yDialog
                 id='giveListTableModal'
                 dialogRef={instance => (dialog.current = instance)}
-                title={(modalAction > - 1) ? `${bulkActions[modalAction].label} - ${pluralName}` : 'Bulk Action'}
+                title={`${modalContent.label} - ${pluralName}`}
                 classNames={{
                     container: styles.container,
                     overlay: styles.overlay,
@@ -153,14 +162,14 @@ export default function ListTablePage({
                     closeButton: ''
                 }}
             >
-                {(modalAction > -1) && bulkActions[modalAction]?.confirm(selected)}
+                {modalContent?.confirm(selected) || null}
                 <button className={styles.addFormButton} onClick={(event) => dialog.current?.hide()}>
                     {__('Cancel', 'give')}
                 </button>
                 <button className={styles.addFormButton}
                         onClick={async (event) => {
                             dialog.current?.hide();
-                            await bulkActions[modalAction]?.action(selected);
+                            await modalContent.action(selected);
                             await mutate();
                         }}
                 >
