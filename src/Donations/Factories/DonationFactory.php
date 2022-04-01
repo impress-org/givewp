@@ -10,7 +10,7 @@ use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 class DonationFactory extends ModelFactory
 {
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return array
      */

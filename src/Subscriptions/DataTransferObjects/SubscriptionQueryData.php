@@ -11,7 +11,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 /**
  * Class SubscriptionObjectData
  *
- * @unreleased
+ * @since 2.19.6
  */
 class SubscriptionQueryData
 {
@@ -71,7 +71,7 @@ class SubscriptionQueryData
     /**
      * Convert data from Subscription Object to Subscription Model
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @return self
      */

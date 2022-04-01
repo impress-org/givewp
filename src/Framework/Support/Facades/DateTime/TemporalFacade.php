@@ -5,12 +5,12 @@ namespace Give\Framework\Support\Facades\DateTime;
 use DateTime;
 
 /**
- * @unreleased
+ * @since 2.19.6
  */
 class TemporalFacade
 {
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  string  $date
      *
@@ -24,7 +24,7 @@ class TemporalFacade
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return DateTime
      */
@@ -34,7 +34,7 @@ class TemporalFacade
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  DateTime  $dateTime
      *
@@ -46,7 +46,7 @@ class TemporalFacade
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return string
      */

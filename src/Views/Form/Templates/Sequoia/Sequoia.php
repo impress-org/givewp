@@ -450,7 +450,7 @@ class Sequoia extends Template implements Hookable, Scriptable
      *
      * @since 2.7.0
      *
-     * @unreleased Form excerpt has precedence over form description
+     * @since 2.19.6 Form excerpt has precedence over form description
      *
      * @param int|null $formId
      *

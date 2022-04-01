@@ -5,7 +5,7 @@ namespace Give\Donations\ValueObjects;
 use MyCLabs\Enum\Enum;
 
 /**
- * @unreleased
+ * @since 2.19.6
  *
  * @method static TEST()
  * @method static LIVE()

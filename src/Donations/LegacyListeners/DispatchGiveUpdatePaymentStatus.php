@@ -15,7 +15,7 @@ class DispatchGiveUpdatePaymentStatus
      * add_action( 'give_update_payment_status', 'give_complete_purchase', 100, 3 );
      * add_action( 'give_update_payment_status', 'give_record_status_change', 100, 3 );
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  Donation  $donation
      * @return void
