@@ -1,6 +1,7 @@
 import {createContext, useRef, useState} from "react";
 import {__} from "@wordpress/i18n";
 import {A11yDialog} from "react-a11y-dialog";
+import {A11yDialogInstance} from "a11y-dialog";
 
 import {GiveIcon} from '@givewp/components';
 
@@ -55,7 +56,7 @@ export default function ListTablePage({
     const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
     const [modalAction, setModalAction] = useState(-1);
     const [selected, setSelected] = useState([]);
-    const dialog = useRef();
+    const dialog = useRef() as {current: A11yDialogInstance};
 
     const parameters = {
         page,
@@ -84,7 +85,7 @@ export default function ListTablePage({
         setModalAction(actionIndex);
         const selectNodes = document.querySelectorAll('.giveListTableSelect:checked:not(#giveListTableSelectAll)');
         if(!selectNodes.length) return;
-        const selected = Array.from(selectNodes, (select, index) => parseInt(select.dataset.id));
+        const selected = Array.from(selectNodes, (select:HTMLSelectElement, index) => parseInt(select.dataset.id));
         setSelected(selected);
         dialog.current.show();
     }
