@@ -1,18 +1,38 @@
-import {__} from "@wordpress/i18n";
+import {__, sprintf} from "@wordpress/i18n";
 import {useSWRConfig} from "swr";
 import RowAction from "@givewp/components/ListTable/RowAction";
 import ListTableApi from "@givewp/components/ListTable/api";
+import {useContext} from "react";
+import {ShowConfirmModalContext} from "@givewp/components/ListTable";
 
 const donorsApi = new ListTableApi(window.GiveDonors);
 
-export function DonorsRowActions({data, item, removeRow, addRow, setUpdateErrors, parameters}) {
+export function DonorsRowActions({item, setUpdateErrors, parameters}) {
+    const showConfirmModal = useContext(ShowConfirmModalContext);
     const {mutate} = useSWRConfig();
 
     const fetchAndUpdateErrors = async (parameters, endpoint, id, method) => {
+        const deleteMeta = document.querySelector('#giveDonorsTableDeleteMeta');
         const response = await donorsApi.fetchWithArgs(endpoint, {ids: [id]}, method);
         setUpdateErrors(response);
         await mutate(parameters);
         return response;
+    }
+
+    const deleteItem = async (selected) => await fetchAndUpdateErrors(parameters, '/delete', item.id, 'DELETE');
+
+    const confirmDelete = (selected) => (
+        <>
+            <p>
+                {sprintf(__('Really delete donor %s?', 'give'), item.name)}
+            </p>
+            <input id='giveDonorsTableDeleteMeta' type='checkbox'/>
+            <label htmlFor='giveDonorsTableDeleteMeta'>{__('Delete all associated donations and records?', 'give')}</label>
+        </>
+    );
+
+    const confirmModal = (event) => {
+        showConfirmModal(__('Delete', 'give'), confirmDelete, deleteItem);
     }
 
     return (
@@ -22,7 +42,7 @@ export function DonorsRowActions({data, item, removeRow, addRow, setUpdateErrors
                 displayText={__('View Donor', 'give')}
             />
             <RowAction
-                onClick={removeRow(async () => await fetchAndUpdateErrors(parameters, '/delete', item.id, 'DELETE'))}
+                onClick={confirmModal}
                 actionId={item.id}
                 displayText={__('Delete', 'give')}
                 hiddenText={item.name}
