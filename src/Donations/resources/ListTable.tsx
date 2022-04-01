@@ -1,11 +1,12 @@
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import {useSWRConfig} from 'swr';
 import {ListTableColumn, ListTablePage} from '@givewp/components';
 import RowAction from "@givewp/components/ListTable/RowAction";
 import ListTableApi from '@givewp/components/ListTable/api';
 import styles from "@givewp/components/ListTable/ListTablePage.module.scss";
 import {IdBadge} from "@givewp/components/ListTable/TableCell";
-import {BulkActionsConfig} from "@givewp/components/ListTable";
+import {BulkActionsConfig, ShowConfirmModalContext} from "@givewp/components/ListTable";
+import {useContext} from "react";
 
 declare global {
     interface Window {
@@ -19,12 +20,25 @@ export default function () {
     const {mutate} = useSWRConfig();
 
     const rowActions = ({item, removeRow, setUpdateErrors, parameters}) => {
+        const showConfirmModal = useContext(ShowConfirmModalContext);
 
         const fetchAndUpdateErrors = async (parameters, endpoint, id, method) => {
             const response = await API.fetchWithArgs(endpoint, {ids: [id]}, method);
             setUpdateErrors(response);
             await mutate(parameters);
             return response;
+        }
+
+        const deleteItem = async (selected) => await fetchAndUpdateErrors(parameters, '/delete', item.id, 'DELETE');
+
+        const confirmDelete = (selected) => (
+            <p>
+                {sprintf(__('Really delete donation #%d?', 'give'), item.id)}
+            </p>
+        );
+
+        const confirmModal = (event) => {
+            showConfirmModal(__('Delete', 'give'), confirmDelete, deleteItem);
         }
 
         return (
@@ -34,7 +48,7 @@ export default function () {
                     displayText={__('Edit', 'give')}
                 />
                 <RowAction
-                    onClick={removeRow(async () => await fetchAndUpdateErrors(parameters, '/delete', item.id, 'DELETE'))}
+                    onClick={confirmModal}
                     actionId={item.id}
                     displayText={__('Delete', 'give')}
                     hiddenText={item.name}

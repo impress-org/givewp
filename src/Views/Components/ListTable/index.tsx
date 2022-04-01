@@ -38,7 +38,7 @@ export interface BulkActionsConfig {
     confirm: (selected: Array<string|number>) => JSX.Element|JSX.Element[]|string;
 }
 
-export const RowActionsContext = createContext({});
+export const ShowConfirmModalContext = createContext((label, confirm, action) => {});
 
 export default function ListTablePage({
     title,
@@ -80,8 +80,8 @@ export default function ListTablePage({
 
     const handleDebouncedFilterChange = useDebounce(handleFilterChange);
 
-    const showConfirmActionModal = (content, action) => {
-        //setModalContent({confirm, action});
+    const showConfirmActionModal = (label, confirm, action) => {
+        setModalContent({confirm, action, label});
         dialog.current.show();
     }
 
@@ -132,17 +132,19 @@ export default function ListTablePage({
                         <BulkActionSelect bulkActions={bulkActions} showModal={openBulkActionModal}/>
                         {page && setPage && showPagination()}
                     </div>
-                    <ListTable
-                        columns={columns}
-                        singleName={singleName}
-                        pluralName={pluralName}
-                        title={title}
-                        rowActions={rowActions}
-                        parameters={parameters}
-                        data={data}
-                        error={error}
-                        isLoading={isValidating}
-                    />
+                    <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
+                        <ListTable
+                            columns={columns}
+                            singleName={singleName}
+                            pluralName={pluralName}
+                            title={title}
+                            rowActions={rowActions}
+                            parameters={parameters}
+                            data={data}
+                            error={error}
+                            isLoading={isValidating}
+                        />
+                    </ShowConfirmModalContext.Provider>
                     <div className={cx(styles.pageActions,
                         { [styles.alignEnd]: !bulkActions }
                     )}>
