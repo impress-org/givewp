@@ -1,19 +1,35 @@
-import {__} from "@wordpress/i18n";
+import {__, sprintf} from "@wordpress/i18n";
 import {useSWRConfig} from "swr";
 import RowAction from "@givewp/components/ListTable/RowAction";
 import ListTableApi from "@givewp/components/ListTable/api";
+import {useContext} from "react";
+import {ShowConfirmModalContext} from "@givewp/components/ListTable";
 
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 
 export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdateErrors, parameters}) {
     const {mutate} = useSWRConfig();
+    const showConfirmModal = useContext(ShowConfirmModalContext);
     const trashEnabled = Boolean(data?.trash);
+    const deleteEndpoint = trashEnabled ? '/trash' : '/delete';
 
     const fetchAndUpdateErrors = async (parameters, endpoint, id, method) => {
         const response = await donationFormsApi.fetchWithArgs(endpoint, {ids: [id]}, method);
         setUpdateErrors(response);
         await mutate(parameters);
         return response;
+    }
+
+    const deleteForm = async (selected) => await fetchAndUpdateErrors(parameters, deleteEndpoint, item.id, 'DELETE');
+
+    const confirmDeleteForm = (selected) => (
+        <p>
+            {sprintf(__('Really delete %s?', 'give'), item.name)}
+        </p>
+    );
+
+    const confirmModal = (event) => {
+        showConfirmModal(__('Delete', 'give'), confirmDeleteForm, deleteForm);
     }
 
     return (
@@ -27,7 +43,7 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                         hiddenText={item.name}
                     />
                     <RowAction
-                        onClick={removeRow(async () => await fetchAndUpdateErrors(parameters, '/delete', item.id, 'DELETE'))}
+                        onClick={confirmModal}
                         actionId={item.id}
                         displayText={__('Delete Permanently', 'give')}
                         hiddenText={item.name}
@@ -42,10 +58,7 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                         hiddenText={item.name}
                     />
                     <RowAction
-                        onClick={removeRow(async () => {
-                            const endpoint = trashEnabled ? '/trash' : '/delete';
-                            await fetchAndUpdateErrors(parameters, endpoint, item.id, 'DELETE');
-                        })}
+                        onClick={trashEnabled ? removeRow(deleteForm) : confirmModal}
                         actionId={item.id}
                         highlight={!trashEnabled}
                         displayText={trashEnabled ? __('Trash', 'give') : __('Delete', 'give')}

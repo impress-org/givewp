@@ -156,7 +156,7 @@ export default function ListTablePage({
             <A11yDialog
                 id='giveListTableModal'
                 dialogRef={instance => (dialog.current = instance)}
-                title={`${modalContent.label} - ${pluralName}`}
+                title={`${modalContent.label} - ${title}`}
                 classNames={{
                     container: styles.container,
                     overlay: styles.overlay,

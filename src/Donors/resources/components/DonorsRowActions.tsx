@@ -12,27 +12,27 @@ export function DonorsRowActions({item, setUpdateErrors, parameters}) {
     const {mutate} = useSWRConfig();
 
     const fetchAndUpdateErrors = async (parameters, endpoint, id, method) => {
-        const deleteMeta = document.querySelector('#giveDonorsTableDeleteMeta');
+        const deleteMeta = document.querySelector('#giveDonorsTableDeleteMeta') as HTMLInputElement;
         const response = await donorsApi.fetchWithArgs(endpoint, {ids: [id]}, method);
         setUpdateErrors(response);
         await mutate(parameters);
         return response;
     }
 
-    const deleteItem = async (selected) => await fetchAndUpdateErrors(parameters, '/delete', item.id, 'DELETE');
+    const deleteDonor = async (selected) => await fetchAndUpdateErrors(parameters, '/delete', item.id, 'DELETE');
 
-    const confirmDelete = (selected) => (
-        <>
+    const confirmDeleteDonor = (selected) => (
+        <div>
             <p>
-                {sprintf(__('Really delete donor %s?', 'give'), item.name)}
+                {sprintf(__('Really delete donor record for %s?', 'give'), item.name)}
             </p>
             <input id='giveDonorsTableDeleteMeta' type='checkbox'/>
-            <label htmlFor='giveDonorsTableDeleteMeta'>{__('Delete all associated donations and records?', 'give')}</label>
-        </>
+            <label htmlFor='giveDonorsTableDeleteMeta'>{__('Delete all associated donations and records', 'give')}</label>
+        </div>
     );
 
     const confirmModal = (event) => {
-        showConfirmModal(__('Delete', 'give'), confirmDelete, deleteItem);
+        showConfirmModal(__('Delete', 'give'), confirmDeleteDonor, deleteDonor);
     }
 
     return (
