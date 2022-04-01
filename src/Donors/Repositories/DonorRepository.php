@@ -501,20 +501,21 @@ class DonorRepository
         }
 
         if ($form) {
-            $builder->whereIn('id', static function (QueryBuilder $builder) use ($form) {
-                $builder
-                    ->from('give_donationmeta')
-                    ->distinct()
-                    ->select('meta_value')
-                    ->where('meta_key', '_give_payment_donor_id')
-                    ->whereIn('donation_id', static function (QueryBuilder $builder) use ($form) {
-                        $builder
-                            ->from('give_donationmeta')
-                            ->select('donation_id')
-                            ->where('meta_key', '_give_payment_form_id')
-                            ->where('meta_value', $form);
-                    });
-            });
+            $builder
+                ->whereIn('id', static function (QueryBuilder $builder) use ($form) {
+                    $builder
+                        ->from('give_donationmeta')
+                        ->distinct()
+                        ->select('meta_value')
+                        ->where('meta_key', '_give_payment_donor_id')
+                        ->whereIn('donation_id', static function (QueryBuilder $builder) use ($form) {
+                            $builder
+                                ->from('give_donationmeta')
+                                ->select('donation_id')
+                                ->where('meta_key', '_give_payment_form_id')
+                                ->where('meta_value', $form);
+                        });
+                });
         }
 
         return $builder;
