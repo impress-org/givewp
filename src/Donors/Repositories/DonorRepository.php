@@ -478,16 +478,10 @@ class DonorRepository
      */
     private function getWhereConditionsForRequest(QueryBuilder $builder, WP_REST_Request $request)
     {
-
         $search = $request->get_param('search');
         $start = $request->get_param('start');
         $end = $request->get_param('end');
-        $donations = $request->get_param('donations');
         $form = $request->get_param('form');
-
-        if ($donations !== 0) {
-            $builder->whereLike('payment_ids', $donations);
-        }
 
         if ($search) {
             if (ctype_digit($search)) {
