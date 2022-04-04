@@ -13,6 +13,7 @@ use Give\PaymentGateways\Gateways\Stripe\CheckoutGateway;
 use Give\PaymentGateways\Gateways\Stripe\Controllers\UpdateStatementDescriptorAjaxRequestController;
 use Give\PaymentGateways\Gateways\Stripe\Migrations\AddMissingTransactionIdForUncompletedDonations;
 use Give\PaymentGateways\Gateways\Stripe\Migrations\AddStatementDescriptorToStripeAccounts;
+use Give\PaymentGateways\PayPalCommerce\Migrations\RemoveLogWithCardInfo;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
@@ -60,14 +61,10 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function registerMigrations()
     {
-        $migrations = [
+        give(MigrationsRegister::class)->addMigrations([
             AddStatementDescriptorToStripeAccounts::class,
-            AddMissingTransactionIdForUncompletedDonations::class
-        ];
-        $migrationRegisterer = give(MigrationsRegister::class);
-
-        foreach ($migrations as $migrationClassName) {
-            $migrationRegisterer->addMigration($migrationClassName);
-        }
+            AddMissingTransactionIdForUncompletedDonations::class,
+            RemoveLogWithCardInfo::class,
+        ]);
     }
 }
