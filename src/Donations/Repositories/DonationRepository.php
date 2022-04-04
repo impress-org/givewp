@@ -18,13 +18,13 @@ use Give\Log\Log;
 use Give\ValueObjects\Money;
 
 /**
- * @unreleased
+ * @since 2.19.6
  */
 class DonationRepository
 {
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @var string[]
      */
@@ -42,7 +42,7 @@ class DonationRepository
     /**
      * Get Donation By ID
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $donationId
      *
@@ -56,7 +56,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $subscriptionId
      *
@@ -68,7 +68,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $subscriptionId
      *
@@ -93,7 +93,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $donorId
      *
@@ -114,7 +114,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  Donation  $donation
      *
@@ -174,7 +174,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  Donation  $donation
      *
@@ -226,7 +226,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  Donation  $donation
      * @return bool
@@ -265,7 +265,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  Donation  $donation
      *
@@ -324,7 +324,7 @@ class DonationRepository
      * In Legacy terms, the Initial Donation acts as the parent ID for subscription renewals.
      * This function inserts those specific meta columns that accompany this concept.
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @throws Exception
      */
@@ -365,7 +365,7 @@ class DonationRepository
 
     /**
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $donationId
      *
@@ -383,7 +383,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $id
      *
@@ -409,7 +409,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  Donation  $donation
      * @return void
@@ -428,7 +428,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return DonationMode
      */
@@ -440,7 +440,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $formId
      * @return string
@@ -478,11 +478,12 @@ class DonationRepository
                 'ID',
                 'donation_id',
                 ...DonationMetaKeys::getColumnsForAttachMetaQuery()
-            );
+            )
+            ->where('post_type', 'give_payment');
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param $donorId
      * @return int
@@ -502,7 +503,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param $donorId
      * @return array|bool|null

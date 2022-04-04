@@ -6,12 +6,12 @@ use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
 
 /**
- * @unreleased
+ * @since 2.19.6
  */
 interface ModelCrud
 {
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $id
      * @return Model
@@ -19,7 +19,7 @@ interface ModelCrud
     public static function find($id);
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  array  $attributes
      * @return Model
@@ -27,28 +27,28 @@ interface ModelCrud
     public static function create(array $attributes);
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return Model
      */
     public function save();
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return bool
      */
     public function delete();
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return ModelQueryBuilder
      */
     public static function query();
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param $object
      * @return Model

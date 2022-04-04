@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n'
 import { InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, SelectControl, ToggleControl, TextControl } from '@wordpress/components';
+import { PanelBody, SelectControl, ToggleControl, TextControl, ColorPalette } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -15,7 +15,7 @@ import giveFormOptions from '../data/options';
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { formsPerPage, formIDs, excludedFormIDs, orderBy, order, categories, tags, columns, showTitle, showExcerpt, excerptLength, showGoal, showFeaturedImage, displayType } = attributes;
+	const { formsPerPage, paged, imageSize, imageHeight, formIDs, excludedFormIDs, orderBy, order, categories, tags, columns, showTitle, showExcerpt, excerptLength, showGoal, showFeaturedImage, showDonateButton, donateButtonBackgroundColor, donateButtonTextColor, displayType } = attributes;
 	const saveSetting = ( name, value ) => {
 		setAttributes( {
 			[ name ]: value,
@@ -30,6 +30,12 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Forms Per Page', 'give' ) }
 					value={ formsPerPage }
 					onChange={ ( value ) => saveSetting( 'formsPerPage', value ) }/>
+                <ToggleControl
+                    name="paged"
+                    label={ __( 'Show Pagination', 'give' ) }
+                    checked={ !! paged }
+                    onChange={ ( value ) => saveSetting( 'paged', value ) }
+                />
 				<TextControl
 					name="formIDs"
 					label={ __( 'Form IDs', 'give' ) }
@@ -68,6 +74,20 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					value={ columns }
 					options={ giveFormOptions.columns }
 					onChange={ ( value ) => saveSetting( 'columns', value ) } />
+                <TextControl
+                    name="imageSize"
+                    label={ __( 'Image Size', 'give' ) }
+                    value={ imageSize }
+                    onChange={ ( value ) => saveSetting( 'imageSize', value ) }
+                    help={ __( 'Featured image size. Default "medium". Accepts WordPress image sizes.' ) }
+                />
+                <TextControl
+                    name="imageHeight"
+                    label={ __( 'Image Height', 'give' ) }
+                    value={ imageHeight }
+                    onChange={ ( value ) => saveSetting( 'imageHeight', value ) }
+                    help={ __( 'Featured image height. Default "auto". Accepts valid CSS heights' ) }
+                />
 				<ToggleControl
 					name="showTitle"
 					label={ __( 'Show Title', 'give' ) }
@@ -101,6 +121,32 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Show Featured Image', 'give' ) }
 					checked={ !! showFeaturedImage }
 					onChange={ ( value ) => saveSetting( 'showFeaturedImage', value ) } />
+                <ToggleControl
+					name="showDonateButton"
+					label={ __( 'Show Donate Button', 'give' ) }
+					checked={ !! showDonateButton }
+					onChange={ ( value ) => saveSetting( 'showDonateButton', value ) } />
+                { showDonateButton && (
+                    <>
+                        <p>
+                            { __('Donate Button Background Color', 'give' ) }
+                        </p>
+                        <ColorPalette
+                            clearable={false}
+                            onChange={( value ) => saveSetting( 'donateButtonBackgroundColor', value )}
+                            value={ donateButtonBackgroundColor }
+                        />
+                        <p>
+                            { __('Donate Button Text Color', 'give' ) }
+                        </p>
+                        <ColorPalette
+                            clearable={false}
+                            onChange={( value ) => saveSetting( 'donateButtonTextColor', value )}
+                            value={ donateButtonTextColor }
+                        />
+                    </>
+                ) }
+
 				<SelectControl
 					label={ __( 'Display Type', 'give' ) }
 					name="displayType"

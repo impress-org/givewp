@@ -119,6 +119,14 @@ class Give_Donation_Form_Grid_Block {
 						'type'    => 'string',
 						'default' => 'best-fit',
 					),
+                    'imageSize'           => array(
+						'type'    => 'string',
+						'default' => 'medium',
+					),
+                    'imageHeight'           => array(
+						'type'    => 'string',
+						'default' => 'auto',
+					),
 					'showTitle'         => array(
 						'type'    => 'boolean',
 						'default' => true,
@@ -139,10 +147,26 @@ class Give_Donation_Form_Grid_Block {
 						'type'    => 'boolean',
 						'default' => true,
 					),
+                    'showDonateButton' => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
+                    'donateButtonBackgroundColor' => array(
+						'type'    => 'string',
+						'default' => '#66bb6a',
+					),
+                    'donateButtonTextColor' => array(
+                        'type'    => 'string',
+                        'default' => '#fff',
+                    ),
 					'displayType'       => array(
 						'type'    => 'string',
 						'default' => 'redirect',
 					),
+                    'paged' => array(
+                        'type'    => 'boolean',
+                        'default' => true,
+                    ),
 				),
 			)
 		);
@@ -171,7 +195,13 @@ class Give_Donation_Form_Grid_Block {
 			'show_excerpt'        => $attributes['showExcerpt'],
             'excerpt_length'      => $attributes['excerptLength'],
 			'show_featured_image' => $attributes['showFeaturedImage'],
+			'show_donate_button'  => $attributes['showDonateButton'],
+			'donate_button_background_color' => $attributes['donateButtonBackgroundColor'],
+			'donate_button_text_color' => $attributes['donateButtonTextColor'],
 			'display_style'       => $attributes['displayType'],
+            'paged'               => $attributes['paged'],
+            'image_size'          => $attributes['imageSize'],
+            'image_height'        => $attributes['imageHeight'],
 		);
 
 		$html = give_form_grid_shortcode( $parameters );
