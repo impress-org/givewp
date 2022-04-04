@@ -3,7 +3,6 @@
 namespace Give\Donors\Endpoints;
 
 use Exception;
-use Give\Framework\Database\DB;
 use Give\Donors\Models\Donor;
 use WP_REST_Request;
 use WP_REST_Response;

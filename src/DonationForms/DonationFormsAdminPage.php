@@ -34,6 +34,11 @@ class DonationFormsAdminPage
         $data =  [
             'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/forms')),
             'apiNonce' => wp_create_nonce('wp_rest'),
+            'authors' => wp_list_authors([
+                'exclude_admin' => false,
+                'echo' => false,
+                'html' => false,
+            ]),
         ];
 
         EnqueueScript::make('give-admin-donation-forms', 'assets/dist/js/give-admin-donation-forms.js')
