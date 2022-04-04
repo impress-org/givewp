@@ -40,6 +40,7 @@ class CreditCardGateway extends PaymentGateway
 
     /**
      * @inheritDoc
+     * @unreleased fix handlePaymentIntentStatus not receiving extra param
      * @since 2.19.0
      * @return GatewayCommand
      * @throws PaymentGatewayException
@@ -53,13 +54,13 @@ class CreditCardGateway extends PaymentGateway
         $createIntentAction = new Actions\CreatePaymentIntent([]);
 
         return $this->handlePaymentIntentStatus(
-            $paymentData,
             $createIntentAction(
                 $paymentData,
                 $donationSummary,
                 $stripeCustomer,
                 $paymentMethod
-            )
+            ),
+            $paymentData->donationId
         );
     }
 

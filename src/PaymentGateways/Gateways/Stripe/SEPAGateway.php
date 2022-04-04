@@ -33,6 +33,7 @@ class SEPAGateway extends PaymentGateway
 
     /**
      * @inheritDoc
+     * @unreleased fix handlePaymentIntentStatus not receiving extra param
      * @since 2.19.0
      * @return GatewayCommand
      * @throws PaymentGatewayException
@@ -51,7 +52,8 @@ class SEPAGateway extends PaymentGateway
                 $donationSummary,
                 $stripeCustomer,
                 $paymentMethod
-            )
+            ),
+            $paymentData->donationId
         );
     }
 
