@@ -122,7 +122,7 @@ class FormActions extends Endpoint
                 $author ? $update_args['post_author'] = $author : null;
                 $status ? $update_args['post_status'] = $status : null;
                 foreach ($ids as $id) {
-                    $form = wp_update_post(array_merge($update_args, ['ID' => $id,]));
+                    $form = wp_update_post(array_merge($update_args, ['ID' => $id]));
                     !empty($form) ? $successes[] = $id : $errors[] = $id;
                 }
                 break;

@@ -34,11 +34,7 @@ class DonationFormsAdminPage
         $data =  [
             'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/forms')),
             'apiNonce' => wp_create_nonce('wp_rest'),
-            'authors' => wp_list_authors([
-                'exclude_admin' => false,
-                'echo' => false,
-                'html' => false,
-            ]),
+            'authors' => $this->getAuthors(),
         ];
 
         EnqueueScript::make('give-admin-donation-forms', 'assets/dist/js/give-admin-donation-forms.js')
@@ -52,6 +48,23 @@ class DonationFormsAdminPage
             [],
             null
         );
+    }
+
+    /**
+     * Get a list of author user IDs and names
+     * @unreleased
+     */
+    public function getAuthors()
+    {
+        $author_users = get_users([
+            'role__in'  => ['author', 'administrator']
+        ]);
+        return array_map(function($user){
+            return [
+                'id'    => $user->ID,
+                'name'  => $user->display_name,
+            ];
+        }, $author_users);
     }
 
     /**
