@@ -20,6 +20,14 @@ const blockAttributes = {
 		type: 'string',
 		default: '',
 	},
+    categories: {
+        type: 'string',
+        default: '',
+    },
+    tags: {
+        type: 'string',
+        default: '',
+    },
 	orderBy: {
 		type: 'string',
 		default: 'post_date',
@@ -45,6 +53,10 @@ const blockAttributes = {
 		default: true,
 	},
 	showCompanyName: {
+		type: 'boolean',
+		default: false,
+	},
+    showForm: {
 		type: 'boolean',
 		default: false,
 	},

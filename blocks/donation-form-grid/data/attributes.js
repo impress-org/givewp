@@ -7,6 +7,10 @@ const blockAttributes = {
 		type: 'string',
 		default: '12',
 	},
+    paged:{
+        type: 'boolean',
+        default: true,
+	},
 	formIDs: {
 		type: 'string',
 		default: '',
@@ -35,6 +39,14 @@ const blockAttributes = {
 		type: 'string',
 		default: 'best-fit',
 	},
+    imageSize: {
+        type: 'string',
+        default: 'medium',
+    },
+    imageHeight: {
+        type: 'string',
+        default: 'auto',
+    },
 	showTitle: {
 		type: 'boolean',
 		default: true,
@@ -50,6 +62,18 @@ const blockAttributes = {
 	showFeaturedImage: {
 		type: 'boolean',
 		default: true,
+	},
+    showDonateButton: {
+		type: 'boolean',
+		default: false,
+	},
+    donateButtonBackgroundColor: {
+		type: 'string',
+		default: '#66bb6a',
+	},
+    donateButtonTextColor: {
+		type: 'string',
+		default: '#fff',
 	},
 	displayType: {
 		type: 'string',
