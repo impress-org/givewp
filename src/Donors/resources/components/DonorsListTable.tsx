@@ -1,13 +1,16 @@
 import {__} from "@wordpress/i18n";
-import {ListTablePage} from "@givewp/components";
+import {ListTableApi, ListTablePage} from "@givewp/components";
 import {donorsColumns} from "./DonorsColumns";
 import {DonorsRowActions} from "./DonorsRowActions";
+import {BulkActionsConfig} from "@givewp/components/ListTable";
 
 declare global {
     interface Window {
         GiveDonors;
     }
 }
+
+const API = new ListTableApi(window.GiveDonors);
 
 const donorsFilters = [
     {
@@ -25,6 +28,33 @@ const donorsFilters = [
     }
 ]
 
+const donorsBulkActions:Array<BulkActionsConfig> = [
+    {
+        label: __('Delete', 'give'),
+        value: 'delete',
+        action: async (selected) => {
+            const deleteDonations = document.querySelector('#giveDonorsTableDeleteDonations') as HTMLInputElement;
+            const args = {ids: selected.join(','), deleteDonationsAndRecords: deleteDonations.checked};
+            const response = await API.fetchWithArgs('/delete', args, 'DELETE');
+            return response;
+        },
+        confirm: (selected) => (
+            <div>
+                <p>
+                    {__('Really delete the following donors?', 'give')}
+                </p>
+                <ul>
+                    {selected.map((id) => (
+                        <li key={id}>{id.toString()}</li>
+                    ))}
+                </ul>
+                <input id='giveDonorsTableDeleteDonations' type='checkbox'/>
+                <label htmlFor='giveDonorsTableDeleteDonations'>{__('Delete all associated donations and records', 'give')}</label>
+            </div>
+        )
+    }
+];
+
 export default function DonorsListTable(){
     return (
         <ListTablePage
@@ -33,6 +63,7 @@ export default function DonorsListTable(){
             pluralName={__('donors', 'give')}
             columns={donorsColumns}
             rowActions={DonorsRowActions}
+            bulkActions={donorsBulkActions}
             apiSettings={window.GiveDonors}
             filterSettings={donorsFilters}
         />
