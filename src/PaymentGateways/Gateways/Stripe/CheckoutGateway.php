@@ -69,6 +69,7 @@ class CheckoutGateway extends PaymentGateway
     }
 
     /**
+     * @unreleased fix argument order of CreateCheckoutSession
      * @since 2.19.0
      *
      * @return RedirectOffsite
@@ -77,7 +78,7 @@ class CheckoutGateway extends PaymentGateway
     {
         $donationSummary = Call::invoke(Actions\SaveDonationSummary::class, $paymentData);
         $stripeCustomer = Call::invoke(Actions\GetOrCreateStripeCustomer::class, $paymentData);
-        $session = Call::invoke( Actions\CreateCheckoutSession::class, $donationSummary, $stripeCustomer, $paymentData );
+        $session = Call::invoke(Actions\CreateCheckoutSession::class, $paymentData, $donationSummary, $stripeCustomer);
 
         return new RedirectOffsite(
             $this->getRedirectUrl( $session->id(), give_get_payment_form_id( $paymentData->donationId ) )
