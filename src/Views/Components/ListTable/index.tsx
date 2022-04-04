@@ -35,7 +35,7 @@ export interface BulkActionsConfig {
     label: string;
     value: string|number;
     action: (selected: Array<string|number>) => Promise<{errors: string|number, successes: string|number}>;
-    confirm: (selected: Array<string|number>) => JSX.Element|JSX.Element[]|string;
+    confirm: (selected: Array<string|number>, names?: Array<string>) => JSX.Element|JSX.Element[]|string;
 }
 
 export const ShowConfirmModalContext = createContext((label, confirm, action) => {});
@@ -59,7 +59,8 @@ export default function ListTablePage({
         action: (selected)=>{},
         label: ''
     });
-    const [selected, setSelected] = useState([]);
+    const [selectedIds, setSelectedIds] = useState([]);
+    const [selectedNames, setSelectedNames] = useState([]);
     const dialog = useRef() as {current: A11yDialogInstance};
 
     const parameters = {
@@ -93,9 +94,11 @@ export default function ListTablePage({
         if(actionIndex < 0) return;
         const selectNodes = document.querySelectorAll('.giveListTableSelect:checked:not(#giveListTableSelectAll)');
         if(!selectNodes.length) return;
-        const selected = Array.from(selectNodes, (select:HTMLSelectElement, index) => parseInt(select.dataset.id));
+        const selected = Array.from(selectNodes, (select:HTMLSelectElement) => parseInt(select.dataset.id));
+        const names = Array.from(selectNodes, (select:HTMLSelectElement) => select.dataset.name);
         setModalContent({...bulkActions[actionIndex]});
-        setSelected(selected);
+        setSelectedIds(selected);
+        setSelectedNames(names);
         dialog.current.show();
     }
 
@@ -164,14 +167,14 @@ export default function ListTablePage({
                     closeButton: ''
                 }}
             >
-                {modalContent?.confirm(selected) || null}
+                {modalContent?.confirm(selectedIds, selectedNames) || null}
                 <button className={styles.addFormButton} onClick={(event) => dialog.current?.hide()}>
                     {__('Cancel', 'give')}
                 </button>
                 <button className={styles.addFormButton}
                         onClick={async (event) => {
                             dialog.current?.hide();
-                            await modalContent.action(selected);
+                            await modalContent.action(selectedIds);
                             await mutate();
                         }}
                 >

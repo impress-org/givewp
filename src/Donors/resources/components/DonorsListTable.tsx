@@ -38,14 +38,14 @@ const donorsBulkActions:Array<BulkActionsConfig> = [
             const response = await API.fetchWithArgs('/delete', args, 'DELETE');
             return response;
         },
-        confirm: (selected) => (
+        confirm: (selected, names) => (
             <div>
                 <p>
                     {__('Really delete the following donors?', 'give')}
                 </p>
                 <ul>
-                    {selected.map((id) => (
-                        <li key={id}>{id.toString()}</li>
+                    {selected.map((id, index) => (
+                        <li key={id}>{names[index]}</li>
                     ))}
                 </ul>
                 <input id='giveDonorsTableDeleteDonations' type='checkbox'/>

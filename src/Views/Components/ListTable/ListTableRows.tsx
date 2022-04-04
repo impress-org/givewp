@@ -121,6 +121,7 @@ export default function ListTableRows({columns, data, isLoading, rowActions, set
                 <input
                     className='giveListTableSelect'
                     data-id={item.id}
+                    data-name={item?.name}
                     id={`giveListTableSelect${item.id}`}
                     aria-labelledby={`giveListTableSelect${item.id}-Label`}
                     type='checkbox'
