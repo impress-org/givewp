@@ -77,7 +77,7 @@ export default function () {
         {
             name: 'donorName',
             text: __('Donor Name', 'give'),
-            render: (donation: {donorName, donorId}) => (
+            render: (donation: { donorName, donorId }) => (
                 <a href={`edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donation.donorId}`}>
                     {donation.donorName}
                 </a>
@@ -86,7 +86,7 @@ export default function () {
         {
             name: 'formTitle',
             text: __('Donation Form', 'give'),
-            render: (donation: {formTitle, formId}) => (
+            render: (donation: { formTitle, formId }) => (
                 <a href={`post.php?post=${donation.formId}&action=edit`}>
                     {donation.formTitle}
                 </a>
@@ -120,7 +120,7 @@ export default function () {
         }
     ]
 
-    const bulkActions:Array<BulkActionsConfig> = [
+    const bulkActions: Array<BulkActionsConfig> = [
         {
             label: __('Delete', 'give'),
             value: 'delete',
@@ -138,7 +138,41 @@ export default function () {
                     </ul>
                 </>
             )
-        }
+        },
+        ...(() => {
+            const donationStatuses = {
+                'publish': __('Set To Completed', 'give'),
+                'pending': __('Set To Pending', 'give'),
+                'processing': __('Set To Processing', 'give'),
+                'refunded': __('Set To Refunded', 'give'),
+                'revoked': __('Set To Revoked', 'give'),
+                'failed': __('Set To Failed', 'give'),
+                'cancelled': __('Set To Cancelled', 'give'),
+                'abandoned': __('Set To Abandoned', 'give'),
+                'preapproval': __('Set To Preapproval', 'give')
+            };
+
+            return Object.entries(donationStatuses).map(([value, label]) => {
+                return {
+                    label,
+                    value,
+                    action: async (selected) => await API.fetchWithArgs('/setStatus', {
+                        ids: selected.join(','),
+                        status: value
+                    }, 'POST'),
+                    confirm: (selected) => (
+                        <>
+                            {__('Set status for the following donations?', 'give')}
+                            <ul>
+                                {selected.map(donationId => (
+                                    <li key={donationId}><IdBadge id={donationId}/></li>
+                                ))}
+                            </ul>
+                        </>
+                    )
+                };
+            });
+        })(),
     ]
 
     return (
