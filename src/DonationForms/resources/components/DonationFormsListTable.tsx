@@ -100,12 +100,30 @@ const donationFormsBulkActions:Array<BulkActionsConfig> = [
     {
         label: __('Delete', 'give'),
         value: 'delete',
-        isVisible: (data) => !data?.trash,
+        isVisible: (data, parameters) => parameters.status === 'trash' || !data?.trash,
         action: async (selected) => await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE'),
         confirm: (selected, names) => (
             <div>
                 <p>
                     {__('Really delete the following donation forms?', 'give')}
+                </p>
+                <ul>
+                    {selected.map((id, index) => (
+                        <li key={id}>{names[index]}</li>
+                    ))}
+                </ul>
+            </div>
+        )
+    },
+    {
+        label: __('Move to Trash', 'give'),
+        value: 'trash',
+        isVisible: (data, parameters) => parameters.status !== 'trash' && data?.trash,
+        action: async (selected) => await API.fetchWithArgs('/trash', {ids: selected.join(',')}, 'DELETE'),
+        confirm: (selected, names) => (
+            <div>
+                <p>
+                    {__('Really trash the following donation forms?', 'give')}
                 </p>
                 <ul>
                     {selected.map((id, index) => (

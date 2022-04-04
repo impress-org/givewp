@@ -38,7 +38,7 @@ export interface BulkActionsConfig {
     confirm: (selected: Array<string|number>, names?: Array<string>) => JSX.Element|JSX.Element[]|string;
 
     //optional
-    isVisible?: (data) => Boolean;
+    isVisible?: (data, parameters) => Boolean;
 }
 
 export const ShowConfirmModalContext = createContext((label, confirm, action) => {});
@@ -119,7 +119,7 @@ export default function ListTablePage({
         <div className={cx(styles.pageActions,
             { [styles.alignEnd]: !bulkActions }
         )}>
-            <BulkActionSelect data={data} bulkActions={bulkActions} showModal={openBulkActionModal}/>
+            <BulkActionSelect parameters={parameters} data={data} bulkActions={bulkActions} showModal={openBulkActionModal}/>
             {page && setPage && showPagination()}
         </div>
     );

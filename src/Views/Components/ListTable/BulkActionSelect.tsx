@@ -1,7 +1,7 @@
 import styles from "@givewp/components/ListTable/ListTablePage.module.scss";
 import {__} from "@wordpress/i18n";
 
-export function BulkActionSelect ({bulkActions = null, showModal, data}) {
+export function BulkActionSelect ({bulkActions = null, showModal, data, parameters}) {
     if(!bulkActions){
         return null;
     }
@@ -11,7 +11,7 @@ export function BulkActionSelect ({bulkActions = null, showModal, data}) {
             <select className={styles.bulkActions} name='giveListTableBulkActions'>
                 <option value=''>{__('Bulk Actions', 'give')}</option>
                 {bulkActions.map(action => {
-                    if (typeof action?.isVisible == 'function' && !action.isVisible(data)) {
+                    if (typeof action?.isVisible == 'function' && !action.isVisible(data, parameters)) {
                         return null;
                     }
                     return <option key={action.value} value={action.value}>{action.label}</option>;
