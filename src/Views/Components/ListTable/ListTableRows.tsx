@@ -11,6 +11,7 @@ const postStatusMap = {
     pending: __('pending', 'give'),
     trash: __('trash', 'give'),
     inherit: __('inherit', 'give'),
+    private: __('private', 'give'),
 }
 
 const donationStatusMap = {
