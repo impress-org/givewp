@@ -136,7 +136,12 @@ export default function ListTablePage({
                 </header>
                 <section role='search' className={styles.searchContainer}>
                     {filterSettings.map(filter =>
-                        <Filter key={filter.name} filter={filter} onChange={handleFilterChange} debouncedOnChange={handleDebouncedFilterChange}/>
+                        <Filter
+                            key={filter.name}
+                            filter={filter}
+                            onChange={handleFilterChange}
+                            debouncedOnChange={handleDebouncedFilterChange}
+                        />
                     )}
                 </section>
                 <div className={cx('wp-header-end', 'hidden')}/>
