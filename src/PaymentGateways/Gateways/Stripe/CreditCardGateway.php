@@ -40,7 +40,7 @@ class CreditCardGateway extends PaymentGateway
 
     /**
      * @inheritDoc
-     * @unreleased fix handlePaymentIntentStatus not receiving extra param
+     * @since 2.19.7 fix handlePaymentIntentStatus not receiving extra param
      * @since 2.19.0
      * @return GatewayCommand
      * @throws PaymentGatewayException

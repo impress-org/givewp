@@ -6,7 +6,7 @@ use Give\Framework\Database\DB;
 use Give\Framework\Migrations\Contracts\Migration;
 
 /**
- * @unreleased
+ * @since 2.19.7
  */
 class RemoveLogWithCardInfo extends Migration
 {

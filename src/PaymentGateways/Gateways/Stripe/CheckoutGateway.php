@@ -23,7 +23,7 @@ class CheckoutGateway extends PaymentGateway
     use Traits\CheckoutRedirect;
 
     /**
-     * @unreleased fix handlePaymentIntentStatus not receiving extra param
+     * @since 2.19.7 fix handlePaymentIntentStatus not receiving extra param
      * @since 2.19.0
      * @return PaymentProcessing|RedirectOffsite
      * @throws Exceptions\PaymentIntentException
@@ -69,7 +69,7 @@ class CheckoutGateway extends PaymentGateway
     }
 
     /**
-     * @unreleased fix argument order of CreateCheckoutSession
+     * @since 2.19.7 fix argument order of CreateCheckoutSession
      * @since 2.19.0
      *
      * @return RedirectOffsite

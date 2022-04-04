@@ -10,7 +10,7 @@ use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
 trait HandlePaymentIntentStatus
 {
     /**
-     * @unreleased fix param order and only pass donationId
+     * @since 2.19.7 fix param order and only pass donationId
      *
      * @param  PaymentIntent  $paymentIntent
      * @param  string  $donationId
