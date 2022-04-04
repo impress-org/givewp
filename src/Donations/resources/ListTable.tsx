@@ -173,6 +173,21 @@ export default function () {
                 };
             });
         })(),
+        {
+            label: __('Resend Email Receipts', 'give'),
+            value: 'resendEmailReceipt',
+            action: async (selected) => await API.fetchWithArgs('/resendEmailReceipt', {ids: selected.join(',')}, 'POST'),
+            confirm: (selected) => (
+                <>
+                    {__('Resend Email Receipts for following donations?', 'give')}
+                    <ul>
+                        {selected.map(donationId => (
+                            <li key={donationId}><IdBadge id={donationId}/></li>
+                        ))}
+                    </ul>
+                </>
+            )
+        }
     ]
 
     return (
