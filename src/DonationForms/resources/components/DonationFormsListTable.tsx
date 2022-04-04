@@ -69,8 +69,7 @@ const donationFormsBulkActions:Array<BulkActionsConfig> = [
                 author,
                 status
             };
-            const response = await API.fetchWithArgs('/edit', editParams, 'UPDATE');
-            return response;
+            return await API.fetchWithArgs('/edit', editParams, 'UPDATE');
         },
         confirm: (selected, names) => (
             <>
@@ -84,7 +83,7 @@ const donationFormsBulkActions:Array<BulkActionsConfig> = [
                 <select id='giveDonationFormsTableSetAuthor'>
                     <option value=''>{__('Keep current author', )}</option>
                     {window.GiveDonationForms.authors.map(author => (
-                        <option value={author.id}>{author.name}</option>
+                        <option key={author.id} value={author.id}>{author.name}</option>
                     ))}
                 </select>
                 <label htmlFor='giveDonationFormsTableSetStatus'>{__('Set form status', 'give')}</label>
@@ -101,10 +100,8 @@ const donationFormsBulkActions:Array<BulkActionsConfig> = [
     {
         label: __('Delete', 'give'),
         value: 'delete',
-        action: async (selected) => {
-            const response = await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
-            return response;
-        },
+        isVisible: (data) => !data?.trash,
+        action: async (selected) => await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE'),
         confirm: (selected, names) => (
             <div>
                 <p>

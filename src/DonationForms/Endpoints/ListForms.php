@@ -99,7 +99,8 @@ class ListForms extends Endpoint
             [
                 'items'      => $data,
                 'totalItems' => $totalForms,
-                'totalPages' => $totalPages
+                'totalPages' => $totalPages,
+                'trash'      => defined('EMPTY_TRASH_DAYS') && EMPTY_TRASH_DAYS > 0,
             ]
         );
     }
