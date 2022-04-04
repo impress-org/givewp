@@ -25,7 +25,7 @@ class FormActions extends Endpoint
             $this->endpoint,
             [
                 [
-                    'methods'             => ['GET', 'POST', 'DELETE'],
+                    'methods'             => ['GET', 'POST', 'UPDATE', 'DELETE'],
                     'callback'            => [$this, 'handleRequest'],
                     'permission_callback' => [$this, 'permissionsCheck'],
                 ],
@@ -37,7 +37,8 @@ class FormActions extends Endpoint
                             'trash',
                             'restore',
                             'delete',
-                            'duplicate'
+                            'duplicate',
+                            'edit',
                         ],
                     ],
                     'ids'    => [
@@ -52,6 +53,14 @@ class FormActions extends Endpoint
 
                             return true;
                         },
+                    ],
+                    'author' => [
+                        'type'              => 'string',
+                        'required'          => 'false',
+                    ],
+                    'status' => [
+                        'type'              => 'string',
+                        'required'          => 'false',
                     ]
                 ],
             ]
@@ -104,6 +113,18 @@ class FormActions extends Endpoint
                     $form ? $successes[] = $form : $errors[] = $form;
                 }
 
+                break;
+
+            case 'edit':
+                $author = $request->get_param('author');
+                $status = $request->get_param('status');
+                $update_args = [];
+                $author ? $update_args['post_author'] = $author : null;
+                $status ? $update_args['post_status'] = $status : null;
+                foreach ($ids as $id) {
+                    $form = wp_update_post(array_merge($update_args, ['ID' => $id,]));
+                    !empty($form) ? $successes[] = $id : $errors[] = $id;
+                }
                 break;
         }
 
