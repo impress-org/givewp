@@ -36,6 +36,9 @@ export interface BulkActionsConfig {
     value: string|number;
     action: (selected: Array<string|number>) => Promise<{errors: string|number, successes: string|number}>;
     confirm: (selected: Array<string|number>, names?: Array<string>) => JSX.Element|JSX.Element[]|string;
+
+    //optional
+    isVisible?: (data) => Boolean;
 }
 
 export const ShowConfirmModalContext = createContext((label, confirm, action) => {});
@@ -112,6 +115,15 @@ export default function ListTablePage({
         />
     )
 
+    const PageActions = () => (
+        <div className={cx(styles.pageActions,
+            { [styles.alignEnd]: !bulkActions }
+        )}>
+            <BulkActionSelect data={data} bulkActions={bulkActions} showModal={openBulkActionModal}/>
+            {page && setPage && showPagination()}
+        </div>
+    );
+
     return (
         <>
             <article className={styles.page}>
@@ -129,12 +141,7 @@ export default function ListTablePage({
                 </section>
                 <div className={cx('wp-header-end', 'hidden')}/>
                 <div className={styles.pageContent}>
-                    <div className={cx(styles.pageActions,
-                        { [styles.alignEnd]: !bulkActions }
-                    )}>
-                        <BulkActionSelect bulkActions={bulkActions} showModal={openBulkActionModal}/>
-                        {page && setPage && showPagination()}
-                    </div>
+                    <PageActions/>
                     <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
                         <ListTable
                             columns={columns}
@@ -148,12 +155,7 @@ export default function ListTablePage({
                             isLoading={isValidating}
                         />
                     </ShowConfirmModalContext.Provider>
-                    <div className={cx(styles.pageActions,
-                        { [styles.alignEnd]: !bulkActions }
-                    )}>
-                        <BulkActionSelect bulkActions={bulkActions} showModal={openBulkActionModal}/>
-                        {page && setPage && showPagination()}
-                    </div>
+                    <PageActions/>
                 </div>
             </article>
             <A11yDialog
