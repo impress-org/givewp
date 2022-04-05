@@ -1,4 +1,4 @@
-$gravatar-dimensions: max(2rem, min(8vw, 4rem));
+$gravatar-dimensions: max(1.5rem, min(8vw, 3rem));
 
 .gravatar {
     border-radius: 9999px;
@@ -11,7 +11,7 @@ $gravatar-dimensions: max(2rem, min(8vw, 4rem));
     flex-flow: column wrap;
     align-content: flex-start;
     justify-content: center;
-    column-gap: 0.6125em;
+    gap: 0.6125em;
     height: calc($gravatar-dimensions + 0.5em);
     width: 100%;
     & > .email {

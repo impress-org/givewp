@@ -24,6 +24,12 @@ export const donorsColumns: Array<ListTableColumn> = [
         ),
     },
     {
+        name: 'donationRevenue',
+        inlineSize: '6rem',
+        text: __('Total Given', 'give'),
+        preset: 'monetary'
+    },
+    {
         name: 'donationCount',
         text: __('Donations', 'give'),
         inlineSize: '8rem',
@@ -32,12 +38,6 @@ export const donorsColumns: Array<ListTableColumn> = [
                 {sprintf(_n('%d donation', '%d donations', parseInt(donor.donationCount), 'give'), donor.donationCount)}
             </a>
         )
-    },
-    {
-        name: 'donationRevenue',
-        inlineSize: '6rem',
-        text: __('Total Given', 'give'),
-        preset: 'monetary'
     },
     {
         name: 'dateCreated',
