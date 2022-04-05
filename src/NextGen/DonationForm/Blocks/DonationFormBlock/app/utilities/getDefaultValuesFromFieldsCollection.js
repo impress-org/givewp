@@ -10,7 +10,9 @@ export default function getDefaultValuesFromFieldsCollection( fields ) {
     return fields.reduce((rules, field) => {
         if (field.nodes) {
             field.nodes.map(({name, defaultValue}) => {
-                rules[name] = defaultValue;
+                if (defaultValue) {
+                    rules[name] = defaultValue;
+                }
             });
         } else {
             rules[field.name] = field?.defaultValue;

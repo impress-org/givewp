@@ -11,6 +11,7 @@ import getFieldErrorMessages from '../utilities/getFieldErrorMessages';
 import FieldGroup from '../fields/FieldGroup';
 import axios from 'axios';
 import getWindowData from '../utilities/getWindowData';
+import PaymentDetails from '../fields/PaymentDetails';
 
 const messages = getFieldErrorMessages();
 
@@ -21,11 +22,12 @@ const schema = Joi.object({
     lastName: Joi.string().required().label('Last Name').messages(messages),
     email: Joi.string().email({tlds: false}).required().label('Email').messages(messages),
     amount: Joi.number().integer().min(5).required().label('Donation Amount'),
+    gatewayId: Joi.string().required().label('Payment Gateway').messages(messages),
     formId: Joi.number().required(),
     currency: Joi.string().required(),
     formTitle: Joi.string().required(),
     userId: Joi.number().required(),
-});
+}).unknown();
 
 /**
  * Handle submit request
@@ -36,7 +38,6 @@ const schema = Joi.object({
 const handleSubmitRequest = async (values) => {
     const request = await axios.post(donateUrl, {
         ...values,
-        gatewayId: 'test-gateway',
     });
 
     if (request.status === 200) {
@@ -72,8 +73,12 @@ function Form({fields, defaultValues}) {
 
     return (
         <FormProvider {...methods}>
-            <form className="give-next-gen" onSubmit={handleSubmit(handleSubmitRequest)}>
+            <form id="give-next-gen" onSubmit={handleSubmit(handleSubmitRequest)}>
                 {fields.map(({type, name, label, readOnly, validationRules, nodes}) => {
+                    if (name === 'paymentDetails') {
+                        return <PaymentDetails fields={nodes} name={name} label={label} key={name} />;
+                    }
+
                     if (type === 'group' && nodes) {
                         return <FieldGroup fields={nodes} name={name} label={label} key={name} />;
                     }

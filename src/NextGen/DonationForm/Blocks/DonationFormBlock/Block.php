@@ -9,11 +9,28 @@ use Give\Framework\FieldsAPI\Form;
 use Give\Framework\FieldsAPI\Group;
 use Give\Framework\FieldsAPI\Hidden;
 use Give\Framework\FieldsAPI\Text;
+use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Helpers\Call;
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
 
 class Block
 {
+    /**
+     * @var PaymentGatewayRegister
+     */
+    private $paymentGatewayRegister;
+
+    /**
+     * @unreleased
+     *
+     * @param  PaymentGatewayRegister  $paymentGatewayRegister
+     */
+    public function __construct(PaymentGatewayRegister $paymentGatewayRegister)
+    {
+        $this->paymentGatewayRegister = $paymentGatewayRegister;
+    }
+
     /**
      * @unreleased
      *
@@ -44,7 +61,7 @@ class Block
         $exports = [
             'attributes' => $attributes,
             'form' => $donationForm->jsonSerialize(),
-            'donateUrl' => $donateUrl
+            'donateUrl' => $donateUrl,
         ];
 
         // enqueue front-end scripts
@@ -78,6 +95,18 @@ class Block
      */
     private function createForm($attributes)
     {
+        $gatewayFields = [];
+        foreach ($this->paymentGatewayRegister->getPaymentGateways() as $registeredGateway) {
+            /** @var PaymentGateway $gateway */
+            $gateway = give($registeredGateway);
+
+            if (method_exists($gateway, 'getPaymentFields')) {
+                $gatewayFields[] = Group::make($gateway->getId())
+                    ->label($gateway->getPaymentMethodLabel())
+                    ->append($gateway->getPaymentFields());
+            }
+        }
+
         $donationForm = new Form('DonationForm');
 
         $donationForm->append(
@@ -108,7 +137,8 @@ class Block
                 ),
 
             Group::make('paymentDetails')
-                ->label(__('Payment Details', 'give')),
+                ->label(__('Payment Details', 'give'))
+                ->append(...$gatewayFields),
 
             Hidden::make('formId')
                 ->defaultValue($attributes['formId']),

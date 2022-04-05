@@ -5,45 +5,49 @@ import getWindowData from '../utilities/getWindowData';
 
 const [currencySymbol] = getWindowData('currencySymbol');
 
-function Field( { type, name, label, required, ...rest } ) {
-	const { register } = useFormContext();
-	const { errors } = useFormState();
-	const inputId = `give-${ name }`;
-	const isAmount = name === 'donationAmount';
+function Field({type, name, label, required, ...rest}) {
+    const {register} = useFormContext();
+    const {errors} = useFormState();
+    const inputId = `give-${name}`;
+    const isAmount = name === 'donationAmount';
 
-	if ( type === 'hidden' ) {
-		return <input type="hidden" id={ inputId } { ...register( name, { required } ) } { ...rest } />;
-	}
+    if (type === 'hidden') {
+        return <input type="hidden" id={inputId} {...register(name, {required})} {...rest} />;
+    }
 
-	return (
-		<div className="give-next-gen__field">
-			<label className="give-next-gen__label" htmlFor={ inputId }>
-				{ label }
-			</label>
+    if (type === 'html') {
+        return <div id={inputId} dangerouslySetInnerHTML={rest.html} />;
+    }
 
-			<div className="give-next-gen__input">
-				{ isAmount && (
-					<div className="give-next-gen__input-adornment give-next-gen__input-adornment--left">
-						{ !currencySymbol ?  "USD"  : currencySymbol}
-					</div>
-				) }
-				<input
-					type={ type }
-					id={ inputId }
-					inputMode={ isAmount ? 'decimal' : undefined }
-					required={ required }
-					{ ...register( name, { required } ) }
-					{ ...rest }
-				/>
-			</div>
+    return (
+        <div className="give-next-gen__field">
+            <label className="give-next-gen__label" htmlFor={inputId}>
+                {label}
+            </label>
 
-			<ErrorMessage
-				errors={ errors }
-				name={ name }
-				render={ ( { message } ) => <span className="give-next-gen__error-message">{ message }</span> }
-			/>
-		</div>
-	);
+            <div className="give-next-gen__input">
+                {isAmount && (
+                    <div className="give-next-gen__input-adornment give-next-gen__input-adornment--left">
+                        {!currencySymbol ? 'USD' : currencySymbol}
+                    </div>
+                )}
+                <input
+                    type={type}
+                    id={inputId}
+                    inputMode={isAmount ? 'decimal' : undefined}
+                    required={required}
+                    {...register(name, {required})}
+                    {...rest}
+                />
+            </div>
+
+            <ErrorMessage
+                errors={errors}
+                name={name}
+                render={({message}) => <span className="give-next-gen__error-message">{message}</span>}
+            />
+        </div>
+    );
 }
 
 Field.defaultProps = {
