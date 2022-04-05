@@ -45,6 +45,14 @@ export const donorsColumns: Array<ListTableColumn> = [
         )
     },
     {
+        name: 'latestDonation',
+        text: __('Latest Donation', 'give'),
+    },
+    {
+        name: 'donorType',
+        text: __('Donor Type', 'give'),
+    },
+    {
         name: 'dateCreated',
         text: __('Date Created', 'give'),
     },
