@@ -1,4 +1,4 @@
-import {__} from "@wordpress/i18n";
+import {__, _n, sprintf} from "@wordpress/i18n";
 import styles from "./DonorsColumns.module.scss";
 import {ListTableColumn} from "@givewp/components";
 
@@ -47,7 +47,7 @@ export const donorsColumns: Array<ListTableColumn> = [
         inlineSize: '6rem',
         render: (donor: {donationCount, id}) => (
             <a href={`edit.php?post_type=give_forms&page=give-payment-history&donor=${donor.id}`}>
-                {`${donor.donationCount.toString()}`}
+                {sprintf(_n('%d donation', '%d donations', parseInt(donor.donationCount), 'give'), donor.donationCount)}
             </a>
         )
     },
