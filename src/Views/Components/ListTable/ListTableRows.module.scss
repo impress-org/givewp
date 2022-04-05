@@ -71,6 +71,14 @@ tr.duplicated {
     &:hover .tableRowActions {
         opacity: 1;
     }
+
+    & .alignStart {
+        text-align: start;
+    }
+
+    & .alignCenter {
+        text-align: center;
+    }
 }
 
 .statusMessage {

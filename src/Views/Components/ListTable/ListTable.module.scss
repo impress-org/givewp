@@ -50,8 +50,16 @@
     color: #0878b0;
     font-weight: 700;
     padding: 1em;
-    text-align: start;
+    text-align: right;
     inline-size: 8rem;
+
+    &.alignStart {
+        text-align: start;
+    }
+
+    &.alignCenter {
+        text-align: center;
+    }
 }
 
 .tableContent {

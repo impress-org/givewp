@@ -14,6 +14,7 @@ export const donorsColumns: Array<ListTableColumn> = [
         name: 'name',
         text: __('Donor Information', 'give'),
         inlineSize: '14rem',
+        alignColumn: 'start',
         heading: true,
         render: (donor: {name, namePrefix, id, email, gravatar}) => (
             <div className={styles.donorInformation}>
@@ -41,6 +42,6 @@ export const donorsColumns: Array<ListTableColumn> = [
     },
     {
         name: 'dateCreated',
-        text: __('Date', 'give'),
+        text: __('Date Created', 'give'),
     },
 ];

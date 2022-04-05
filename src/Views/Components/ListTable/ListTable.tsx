@@ -27,6 +27,7 @@ export interface ListTableColumn {
     inlineSize?: string;
     preset?: string;
     heading?: boolean;
+    alignColumn?: 'center'|'start';
     addClass?: string;
     render?: ((item: {}) => JSX.Element)|JSX.Element|JSX.Element[]|null;
 }
@@ -116,7 +117,10 @@ export const ListTable = ({
                                     <th
                                         scope="col"
                                         aria-sort="none"
-                                        className={styles.tableColumnHeader}
+                                        className={cx(styles.tableColumnHeader, {
+                                            [styles.alignCenter]: column?.alignColumn === 'center',
+                                            [styles.alignStart]: column?.alignColumn === 'start',
+                                        })}
                                         data-column={column.name}
                                         key={column.name}
                                         style={{inlineSize: (column?.inlineSize || '8rem')}}

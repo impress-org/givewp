@@ -92,7 +92,10 @@ export default function ListTableRows({columns, data, isLoading, rowActions, set
             })}
         >
             {columns.map((column) => (
-                <TableCell key={column.name} className={column?.addClass} heading={column?.heading}>
+                <TableCell key={column.name} className={cx(column?.addClass, {
+                    [styles.alignCenter]: column?.alignColumn === 'center',
+                    [styles.alignStart]: column?.alignColumn === 'start',
+                })} heading={column?.heading}>
                     <RenderRow column={column} item={item}/>
                     {!isLoading && rowActions &&
                         <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
