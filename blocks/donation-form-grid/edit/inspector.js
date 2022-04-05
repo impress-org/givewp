@@ -101,16 +101,9 @@ const Inspector = ( { attributes, setAttributes } ) => {
                 <TextControl
                     name="excerptLength"
                     label={ __( 'Excerpt Length', 'give' ) }
-                    value={ excerptLength ? excerptLength : '' }
+                    value={ excerptLength || '' }
                     className={ !showExcerpt && 'hidden' }
-                    onChange={ ( value ) => {
-                        if( value === '' ) {
-                            saveSetting('excerptLength', 0 );
-                        }
-                        const intValue = Math.abs( Number.parseInt(value) );
-                        if( intValue == value )
-                            saveSetting( 'excerptLength', value )
-                    } }/>
+                    onChange={ ( value ) => saveSetting( 'excerptLength', Number.parseInt(value) || 0 ) }/>
                 <ToggleControl
 					name="showGoal"
 					label={ __( 'Show Goal', 'give' ) }
