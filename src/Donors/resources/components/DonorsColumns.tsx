@@ -54,7 +54,8 @@ export const donorsColumns: Array<ListTableColumn> = [
     {
         name: 'donationRevenue',
         inlineSize: '6rem',
-        text: __('Total Donated', 'give'),
+        text: __('Total Given', 'give'),
+        preset: 'monetary'
     },
     {
         name: 'dateCreated',
