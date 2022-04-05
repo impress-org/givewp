@@ -1,6 +1,7 @@
 import {__, _n, sprintf} from "@wordpress/i18n";
 import styles from "./DonorsColumns.module.scss";
 import {ListTableColumn} from "@givewp/components";
+import cx from "classnames";
 
 export const donorsColumns: Array<ListTableColumn> = [
     {
@@ -10,41 +11,22 @@ export const donorsColumns: Array<ListTableColumn> = [
         preset: 'idBadge'
     },
     {
-        name: 'gravatar',
-        text: __('Avatar'),
-        inlineSize: '6rem',
-        render: (donor: {gravatar, name}) => (
-            <>
-                <div role='img' aria-label={`avatar for ${donor.name}`}>
-                    <img className={styles.gravatar} src={donor.gravatar} alt={donor.name} loading='lazy'/>
-                    <div className={styles.gravatarWrapper}/>
-                </div>
-            </>
-        ),
-    },
-    {
         name: 'name',
-        text: __('Name', 'give'),
-        inlineSize: '12rem',
+        text: __('Donor Information', 'give'),
+        inlineSize: '14rem',
         heading: true,
-        addClass: styles.nameCell,
-        render: (donor: {name, namePrefix, id}) => (
+        render: (donor: {name, namePrefix, id, email, gravatar}) => (
+            <div className={styles.donorInformation}>
+                <img className={styles.gravatar} src={donor.gravatar} alt={donor.name} loading='lazy'/>
                 <strong className={styles.name}>{donor.namePrefix ? donor.namePrefix + ' ' :''}{donor.name}</strong>
-        ),
-    },
-    {
-        name: 'email',
-        text: __('Email', 'give'),
-        addClass: styles.email,
-        inlineSize: '10rem',
-        render: (donor: {email}) => (
-          <a href={`mailto:${donor.email}`}>{donor.email}</a>
+                <a className={styles.email} href={`mailto:${donor.email}`}>{donor.email}</a>
+            </div>
         ),
     },
     {
         name: 'donationCount',
         text: __('Donations', 'give'),
-        inlineSize: '6rem',
+        inlineSize: '8rem',
         render: (donor: {donationCount, id}) => (
             <a href={`edit.php?post_type=give_forms&page=give-payment-history&donor=${donor.id}`}>
                 {sprintf(_n('%d donation', '%d donations', parseInt(donor.donationCount), 'give'), donor.donationCount)}
