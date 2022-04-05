@@ -5,7 +5,7 @@ import ListTableApi from "@givewp/components/ListTable/api";
 
 const donorsApi = new ListTableApi(window.GiveDonors);
 
-export function DonorsRowActions({data, item, removeRow, addRow, setUpdateErrors, parameters}) {
+export function DonorsRowActions({item, removeRow, setUpdateErrors, parameters}) {
     const {mutate} = useSWRConfig();
 
     const fetchAndUpdateErrors = async (parameters, endpoint, id, method) => {

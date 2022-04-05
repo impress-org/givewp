@@ -1,5 +1,5 @@
-import {ChangeEventHandler, createContext, useRef, useState} from "react";
-import {__} from "@wordpress/i18n";
+import {createContext, useRef, useState} from "react";
+import {__, sprintf} from "@wordpress/i18n";
 
 import {GiveIcon} from '@givewp/components';
 
@@ -81,11 +81,14 @@ export default function ListTablePage({
                 <h1 className={styles.pageTitle}>{title}</h1>
                 {children}
             </header>
-            <section role='search' className={styles.searchContainer}>
+            <nav id={styles.searchContainer}>
+                <label htmlFor={styles.searchContainer} className='give-visually-hidden'>
+                    {sprintf(__('filter %s', 'give'), pluralName)}
+                </label>
                 {filterSettings.map(filter =>
                     <Filter key={filter.name} filter={filter} onChange={handleFilterChange} debouncedOnChange={handleDebouncedFilterChange}/>
                 )}
-            </section>
+            </nav>
             <div className={cx('wp-header-end', 'hidden')}/>
             <div className={styles.pageContent}>
                 <div className={styles.pageActions}>
