@@ -19,7 +19,7 @@ export const donationFormsColumns: Array<ListTableColumn> = [
     },
     {
         name: 'amount',
-        text: __('Amount', 'give'),
+        text: __('Donation Levels', 'give'),
         addClass: styles.monetary,
     },
     {
