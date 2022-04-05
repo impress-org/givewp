@@ -79,6 +79,10 @@ const blockAttributes = {
 		type: 'string',
 		default: 'redirect',
 	},
+    excerptLength: {
+        type: 'integer',
+        default: 16
+    },
 };
 
 export default blockAttributes;
