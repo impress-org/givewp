@@ -27,7 +27,7 @@ export interface ListTableColumn {
     inlineSize?: string;
     preset?: string;
     heading?: boolean;
-    alignColumn?: 'center'|'start';
+    alignColumn?: 'start'|'center'|'end';
     addClass?: string;
     render?: ((item: {}) => JSX.Element)|JSX.Element|JSX.Element[]|null;
 }
