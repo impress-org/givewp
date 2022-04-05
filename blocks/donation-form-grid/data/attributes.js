@@ -12,12 +12,16 @@ const blockAttributes = {
         default: true,
 	},
 	formIDs: {
-		type: 'string',
-		default: '',
+		type: 'array',
+		default: [],
 	},
 	excludedFormIDs:{
-		type: 'string',
-		default: '',
+		type: 'array',
+		default: [],
+	},
+    excludeForms:{
+		type: 'boolean',
+		default: false,
 	},
 	orderBy:{
 		type: 'string',
@@ -28,12 +32,12 @@ const blockAttributes = {
 		default: 'DESC',
 	},
 	categories:{
-		type: 'string',
-		default: '',
+		type: 'array',
+		default: [],
 	},
 	tags:{
-		type: 'string',
-		default: '',
+		type: 'array',
+		default: [],
 	},
 	columns: {
 		type: 'string',

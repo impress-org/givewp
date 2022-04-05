@@ -92,12 +92,16 @@ class Give_Donation_Form_Grid_Block {
 						'default' => '12',
 					),
 					'formIDs'           => array(
-						'type'    => 'string',
-						'default' => '',
+						'type'    => 'array',
+						'default' => [],
 					),
-					'excludedFormIDs'   => array(
-						'type'    => 'string',
-						'default' => '',
+					'excludeForms'   => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
+                    'excludedFormIDs'   => array(
+						'type'    => 'array',
+						'default' => [],
 					),
 					'orderBy'           => array(
 						'type'    => 'string',
@@ -108,12 +112,12 @@ class Give_Donation_Form_Grid_Block {
 						'default' => 'DESC',
 					),
 					'categories'        => array(
-						'type'    => 'string',
-						'default' => '',
+						'type'    => 'array',
+						'default' => [],
 					),
 					'tags'              => array(
-						'type'    => 'string',
-						'default' => '',
+						'type'    => 'array',
+						'default' => [],
 					),
 					'columns'           => array(
 						'type'    => 'string',
@@ -183,12 +187,12 @@ class Give_Donation_Form_Grid_Block {
 	public function render_block( $attributes ) {
 		$parameters = array(
 			'forms_per_page'      => absint( $attributes['formsPerPage'] ),
-			'ids'                 => $attributes['formIDs'],
-			'exclude'             => $attributes['excludedFormIDs'],
+			'ids'                 => implode(',', $attributes['formIDs'] ),
+			'exclude'             => implode(',', $attributes['excludedFormIDs'] ),
 			'orderby'             => $attributes['orderBy'],
 			'order'               => $attributes['order'],
-			'cats'                => $attributes['categories'],
-			'tags'                => $attributes['tags'],
+			'cats'                => implode(',', $attributes['categories'] ),
+			'tags'                => implode(',', $attributes['tags'] ),
 			'columns'             => $attributes['columns'],
 			'show_title'          => $attributes['showTitle'],
 			'show_goal'           => $attributes['showGoal'],
