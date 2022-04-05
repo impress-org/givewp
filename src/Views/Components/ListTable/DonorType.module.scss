@@ -1,0 +1,7 @@
+.badge {
+    height: 2rem;
+
+    &::before {
+        content: '1x'
+    }
+}

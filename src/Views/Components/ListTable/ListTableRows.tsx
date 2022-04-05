@@ -14,9 +14,9 @@ const postStatusMap = {
 }
 
 const RenderRow = ({ column, item }) => {
-    const value = item?.[column.name];
+    let value = item?.[column.name];
     if(value === undefined){
-        return null;
+        value = null;
     }
     switch(column?.preset){
         case 'idBadge':

@@ -24,6 +24,10 @@ $gravatar-dimensions: max(1.5rem, min(8vw, 3rem));
     font-size: 1.125rem;
 }
 
+.monetary {
+    color: var(--give-primary-color);
+}
+
 .email {
     max-width: calc(100% - $gravatar-dimensions);
     white-space: nowrap;
