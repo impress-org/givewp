@@ -1,7 +1,38 @@
-.badge {
-    height: 2rem;
+.container {
+    font-family: Open Sans;
+    background-color: white;
+    border: 1px solid rgba(203, 203, 203, 1);
+    border-radius: 0.1875rem;
+    width: -moz-fit-content;
+    width: fit-content;
+    margin: auto;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
 
-    &::before {
-        content: '1x'
+    & > * {
+        flex-shrink: 0;
+        flex-grow: 0;
     }
+}
+
+.badge {
+    padding: 0.375rem;
+    display: inline;
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: 0px;
+    color: white;
+
+    &.oneTime {
+        background-color: rgba(85, 110, 121, 1);
+    }
+}
+
+.label {
+    padding: 0 0.375rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    cursor: pointer;
 }

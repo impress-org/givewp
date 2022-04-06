@@ -52,6 +52,7 @@ export const donorsColumns: Array<ListTableColumn> = [
     {
         name: 'donorType',
         text: __('Donor Type', 'give'),
+        inlineSize: '12rem',
         render: (donor: {donorType}) => (
             <DonorType type={donor.donorType}/>
         )
