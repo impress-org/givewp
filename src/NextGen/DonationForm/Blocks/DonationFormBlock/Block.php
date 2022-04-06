@@ -8,6 +8,7 @@ use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\Form;
 use Give\Framework\FieldsAPI\Group;
 use Give\Framework\FieldsAPI\Hidden;
+use Give\Framework\FieldsAPI\Radio;
 use Give\Framework\FieldsAPI\Text;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
@@ -95,16 +96,12 @@ class Block
      */
     private function createForm($attributes)
     {
-        $gatewayFields = [];
-        foreach ($this->paymentGatewayRegister->getPaymentGateways() as $registeredGateway) {
+        $gatewayOptions = [];
+        foreach ($this->getEnabledPaymentGateways($attributes['formId']) as $enabledGateway) {
             /** @var PaymentGateway $gateway */
-            $gateway = give($registeredGateway);
+            $gateway = give($enabledGateway);
 
-            if (method_exists($gateway, 'getPaymentFields')) {
-                $gatewayFields[] = Group::make($gateway->getId())
-                    ->label($gateway->getPaymentMethodLabel())
-                    ->append($gateway->getPaymentFields());
-            }
+            $gatewayOptions[] = Radio::make($gateway->getId())->label($gateway->getPaymentMethodLabel());
         }
 
         $donationForm = new Form('DonationForm');
@@ -138,7 +135,7 @@ class Block
 
             Group::make('paymentDetails')
                 ->label(__('Payment Details', 'give'))
-                ->append(...$gatewayFields),
+                ->append(...$gatewayOptions),
 
             Hidden::make('formId')
                 ->defaultValue($attributes['formId']),
@@ -150,9 +147,32 @@ class Block
                 ->defaultValue(get_current_user_id()),
 
             Hidden::make('currency')
-                ->defaultValue("USD")
+                ->defaultValue(give_get_currency($attributes['formId']))
         );
 
         return $donationForm;
+    }
+
+    /**
+     * @return array
+     */
+    public function getEnabledPaymentGateways($formId)
+    {
+        $gateways = [];
+
+        $enabledGateways = give_get_option('gateways');
+        $defaultGateway = give_get_default_gateway($formId);
+
+        foreach ($enabledGateways as $gatewayId => $enabled) {
+            if ($enabled && $this->paymentGatewayRegister->hasPaymentGateway($gatewayId)) {
+                $gateways[$gatewayId] = $this->paymentGatewayRegister->getPaymentGateway($gatewayId);
+            }
+        }
+
+        if (array_key_exists($defaultGateway, $gateways)) {
+            $gateways = array_merge([$defaultGateway => $gateways[$defaultGateway]], $gateways);
+        }
+
+        return $gateways;
     }
 }
