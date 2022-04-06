@@ -53,4 +53,15 @@ interface SubscriptionModuleInterface
      * @return GatewayCommand
      */
     public function canUpdateSubscription(Subscription $subscriptionModel);
+
+    /**
+     * Cancel subscription.
+     *
+     * @unreleased
+     *
+     * @param Subscription $subscriptionModel
+     *
+     * @return GatewayCommand
+     */
+    public function cancelSubscription(Subscription $subscriptionModel);
 }

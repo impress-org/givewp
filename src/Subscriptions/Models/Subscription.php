@@ -11,6 +11,8 @@ use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Models\ValueObjects\Relationship;
+use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Subscriptions\DataTransferObjects\SubscriptionQueryData;
 use Give\Subscriptions\Factories\SubscriptionFactory;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
@@ -142,6 +144,29 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     public function delete()
     {
         return give()->subscriptions->delete($this);
+    }
+
+    /**
+     * @unreleased
+     * @throws Exception
+     */
+    public function cancel()
+    {
+        $gatewayClassName = give(PaymentGatewayRegister::class)->getPaymentGateway(
+            give()->subscriptions->getInitialDonationId($this->id)
+        );
+
+        if ($gatewayClassName) {
+            /* @var PaymentGateway $gateway */
+            $gateway = give($gatewayClassName);
+
+            if ($gateway->subscriptionModule->canCancelSubscription($this)) {
+                $gateway->subscriptionModule->cancelSubscription($this);
+            }
+        }
+
+        $this->status = 'cancelled';
+        $this->save();
     }
 
     /**
