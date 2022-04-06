@@ -4,6 +4,7 @@ import cx from "classnames";
 import styles from './DonorType.module.scss';
 import RenewalIcon from "@givewp/components/ListTable/images/RenewalIcon";
 import RecurringIcon from "@givewp/components/ListTable/images/RecurringIcon";
+import {useUniqueId} from "@givewp/components/ListTable/hooks/useUniqueId";
 
 interface DonorTypeProps {
     type: 'single'|'repeat'|'subscriber'|'new';
@@ -34,16 +35,18 @@ const donorTypeConfig = {
 
 export default function DonorType ({type}: DonorTypeProps) {
     const typeConfig = donorTypeConfig[type];
+    const badgeId = useUniqueId('giveDonationTypeBadge-');
     return (
         <div className={styles.container}>
-            {typeof typeConfig.badgeContent === 'string' ?
-                <div className={cx(styles.badge, typeConfig.badgeStyle)}>
+            {
+                typeof typeConfig.badgeContent === 'string' ?
+                <div role='img' aria-labelledby={badgeId} className={cx(styles.badge, typeConfig.badgeStyle)}>
                     {typeConfig.badgeContent}
                 </div>
                 :
-                <typeConfig.badgeContent className={cx(styles.badge, typeConfig.badgeStyle)}/>
+                <typeConfig.badgeContent aria-labelledby={badgeId} className={cx(styles.badge, typeConfig.badgeStyle)}/>
             }
-            <label className={styles.label}>{donorTypeConfig[type].label}</label>
+            <label id={badgeId} className={styles.label}>{donorTypeConfig[type].label}</label>
         </div>
     );
 }
