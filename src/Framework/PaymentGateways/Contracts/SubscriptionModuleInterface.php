@@ -45,7 +45,6 @@ interface SubscriptionModuleInterface
 
     /**
      * Return flag whether subscription editable.
-     * This will cover subscription amount and subscription's payment method like donor credit card number.
      *
      * @unreleased
      *
