@@ -1,7 +1,6 @@
 import {useEffect} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import {ErrorMessage} from '@hookform/error-message';
-import PropTypes from 'prop-types';
 import {__} from '@wordpress/i18n';
 import {joiResolver} from '@hookform/resolvers/joi';
 import Joi from 'joi';
@@ -12,6 +11,7 @@ import FieldGroup from '../fields/FieldGroup';
 import axios from 'axios';
 import getWindowData from '../utilities/getWindowData';
 import PaymentDetails from '../fields/PaymentDetails';
+import FieldInterface from '../types/FieldInterface';
 
 const messages = getFieldErrorMessages();
 
@@ -29,13 +29,7 @@ const schema = Joi.object({
     userId: Joi.number().required(),
 }).unknown();
 
-/**
- * Handle submit request
- *
- * @param {Array} values - form values
- * @return {Promise} - Axios
- */
-const handleSubmitRequest = async (values) => {
+const handleSubmitRequest = async (values: any) => {
     const request = await axios.post(donateUrl, {
         ...values,
     });
@@ -45,14 +39,12 @@ const handleSubmitRequest = async (values) => {
     }
 };
 
-/**
- * @unreleased
- *
- * @param fields
- * @param defaultValues
- * @returns {JSX.Element}
- */
-function Form({fields, defaultValues}) {
+type Props = {
+    fields: FieldInterface[];
+    defaultValues: object;
+};
+
+export default function Form({fields, defaultValues}: Props) {
     const isLoading = false;
 
     const methods = useForm({
@@ -74,7 +66,7 @@ function Form({fields, defaultValues}) {
     return (
         <FormProvider {...methods}>
             <form id="give-next-gen" onSubmit={handleSubmit(handleSubmitRequest)}>
-                {fields.map(({type, name, label, readOnly, validationRules, nodes}) => {
+                {fields.map(({type, name, label, readOnly, validationRules, nodes}: FieldInterface) => {
                     if (name === 'paymentDetails') {
                         return <PaymentDetails fields={nodes} name={name} label={label} key={name} />;
                     }
@@ -115,12 +107,3 @@ function Form({fields, defaultValues}) {
         </FormProvider>
     );
 }
-
-Form.propTypes = {
-    /** Form fields */
-    fields: PropTypes.array.isRequired,
-    /** Form default values */
-    defaultValues: PropTypes.object.isRequired,
-};
-
-export default Form;

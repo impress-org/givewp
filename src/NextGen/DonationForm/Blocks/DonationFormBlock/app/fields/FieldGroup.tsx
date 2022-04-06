@@ -1,14 +1,14 @@
+import {string} from 'joi';
+import FieldInterface from '../types/FieldInterface';
 import Field from './Field';
 
-/**
- * @unreleased
- *
- * @param name
- * @param label
- * @param fields
- * @returns {JSX.Element}
- */
-export default function FieldGroup({name, label, fields}) {
+type Props = {
+    name: string;
+    label: string;
+    fields: FieldInterface[];
+};
+
+export default function FieldGroup({name, label, fields}: Props) {
     return (
         <fieldset aria-labelledby={name}>
             <div>

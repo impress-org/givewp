@@ -15,7 +15,7 @@ mix
     /**
      * DonationFormBlock - view
      */
-    .js(`${donationFormBlockPath}/app/App.jsx`, `${donationFormBlockPath}/build/view.js`);
+    .ts(`${donationFormBlockPath}/app/App.tsx`, `${donationFormBlockPath}/build/view.js`);
 
 /**
  * Extend the config to use DependencyExtractionWebpackPlugin for WP scripts asset dependencies
