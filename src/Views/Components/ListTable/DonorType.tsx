@@ -2,7 +2,8 @@ import {__} from "@wordpress/i18n";
 import cx from "classnames";
 
 import styles from './DonorType.module.scss';
-import Renewal from "@givewp/components/ListTable/images/Renewal";
+import RenewalIcon from "@givewp/components/ListTable/images/RenewalIcon";
+import RecurringIcon from "@givewp/components/ListTable/images/RecurringIcon";
 
 interface DonorTypeProps {
     type: 'single'|'repeat'|'subscriber'|'new';
@@ -16,12 +17,12 @@ const donorTypeConfig = {
     },
     repeat: {
         badgeStyle: styles.repeat,
-        badgeContent: Renewal,
+        badgeContent: RenewalIcon,
         label: __('repeat donor', 'give'),
     },
     subscriber: {
         badgeStyle: styles.subscriber,
-        badgeContent: '',
+        badgeContent: RecurringIcon,
         label: __('subscriber', 'give'),
     },
     new: {
