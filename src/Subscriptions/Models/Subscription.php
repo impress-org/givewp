@@ -71,7 +71,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      *
      * @since 2.19.6
      *
-     * @param  int  $id
+     * @param int $id
      *
      * @return Subscription|null
      */
@@ -182,7 +182,8 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     /**
      * @since 2.19.6
      *
-     * @param  object  $object
+     * @param object $object
+     *
      * @return Subscription
      */
     public static function fromQueryBuilderObject($object)
