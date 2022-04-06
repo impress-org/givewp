@@ -54,7 +54,7 @@ export const donorsColumns: Array<ListTableColumn> = [
         text: __('Donor Type', 'give'),
         inlineSize: '12rem',
         render: (donor: {donorType}) => (
-            <DonorType type={donor.donorType}/>
+            <DonorType type={'repeat'}/>
         )
     },
     {

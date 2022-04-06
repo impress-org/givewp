@@ -3,8 +3,8 @@
     background-color: white;
     border: 1px solid rgba(203, 203, 203, 1);
     border-radius: 0.1875rem;
-    width: -moz-fit-content;
-    width: fit-content;
+    inline-size: -moz-fit-content;
+    inline-size: fit-content;
     margin: auto;
     padding: 0;
     display: inline-flex;
@@ -26,7 +26,14 @@
     color: white;
 
     &.oneTime {
-        background-color: rgba(85, 110, 121, 1);
+        background-color: rgba(85 110 121);
+    }
+
+    &.repeat {
+        box-sizing: content-box;
+        background: rgba(244 148 32);
+        block-size: 1.125rem;
+        inline-size: 1.3359375rem;
     }
 }
 
