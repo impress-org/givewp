@@ -1,7 +1,6 @@
 import {useFormState} from 'react-hook-form';
 import {ErrorMessage} from '@hookform/error-message';
 import PaymentGatewayOption from './PaymentGatewayOption';
-import {string} from 'joi';
 import PaymentGateway from '../value-objects/PaymentGateway';
 
 interface GatewayNode {

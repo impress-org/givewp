@@ -1,4 +1,3 @@
-import {useEffect} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import {ErrorMessage} from '@hookform/error-message';
 import {__} from '@wordpress/i18n';
@@ -12,6 +11,7 @@ import axios from 'axios';
 import getWindowData from '../utilities/getWindowData';
 import PaymentDetails from '../fields/PaymentDetails';
 import FieldInterface from '../types/FieldInterface';
+import DonationReceipt from './DonationReceipt';
 
 const messages = getFieldErrorMessages();
 
@@ -39,15 +39,21 @@ const handleSubmitRequest = async (values: any) => {
     }
 };
 
-type Props = {
+type PropTypes = {
     fields: FieldInterface[];
     defaultValues: object;
 };
 
-export default function Form({fields, defaultValues}: Props) {
-    const isLoading = false;
+type FormInputs = {
+    amount: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    gatewayId: string;
+};
 
-    const methods = useForm({
+export default function Form({fields, defaultValues}: PropTypes) {
+    const methods = useForm<FormInputs>({
         defaultValues,
         resolver: joiResolver(schema),
     });
@@ -55,13 +61,30 @@ export default function Form({fields, defaultValues}: Props) {
     const {
         handleSubmit,
         setError,
+        getValues,
         formState: {errors, isSubmitting, isSubmitSuccessful},
         reset,
     } = methods;
 
-    useEffect(() => {
-        reset();
-    }, [isSubmitSuccessful]);
+    // useEffect(() => {
+    //     reset();
+    // }, [isSubmitSuccessful]);
+
+    if (isSubmitSuccessful) {
+        const {amount, firstName, lastName, email, gatewayId} = getValues();
+
+        return (
+            <DonationReceipt
+                amount={amount}
+                email={email}
+                firstName={firstName}
+                lastName={lastName}
+                gateway={gatewayId}
+                status={'Complete'}
+                total={amount}
+            />
+        );
+    }
 
     return (
         <FormProvider {...methods}>
@@ -100,8 +123,8 @@ export default function Form({fields, defaultValues}: Props) {
                     )}
                 />
 
-                <button type="submit" disabled={isSubmitting || isLoading} className="give-next-gen__submit-button">
-                    {isSubmitting || isLoading ? __('Submitting…', 'give') : __('Donate', 'give')}
+                <button type="submit" disabled={isSubmitting} className="give-next-gen__submit-button">
+                    {isSubmitting ? __('Submitting…', 'give') : __('Donate', 'give')}
                 </button>
             </form>
         </FormProvider>
