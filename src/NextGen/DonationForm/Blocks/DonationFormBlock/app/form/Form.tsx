@@ -12,6 +12,7 @@ import getWindowData from '../utilities/getWindowData';
 import PaymentDetails from '../fields/PaymentDetails';
 import FieldInterface from '../types/FieldInterface';
 import DonationReceipt from './DonationReceipt';
+import Gateway from '../types/Gateway';
 
 const messages = getFieldErrorMessages();
 
@@ -42,6 +43,7 @@ const handleSubmitRequest = async (values: any) => {
 type PropTypes = {
     fields: FieldInterface[];
     defaultValues: object;
+    gateways: Gateway[];
 };
 
 type FormInputs = {
@@ -52,7 +54,7 @@ type FormInputs = {
     gatewayId: string;
 };
 
-export default function Form({fields, defaultValues}: PropTypes) {
+export default function Form({fields, defaultValues, gateways}: PropTypes) {
     const methods = useForm<FormInputs>({
         defaultValues,
         resolver: joiResolver(schema),
@@ -72,6 +74,7 @@ export default function Form({fields, defaultValues}: PropTypes) {
 
     if (isSubmitSuccessful) {
         const {amount, firstName, lastName, email, gatewayId} = getValues();
+        const gateway = gateways.find(({name}) => name === gatewayId);
 
         return (
             <DonationReceipt
@@ -79,7 +82,7 @@ export default function Form({fields, defaultValues}: PropTypes) {
                 email={email}
                 firstName={firstName}
                 lastName={lastName}
-                gateway={gatewayId}
+                gateway={gateway}
                 status={'Complete'}
                 total={amount}
             />

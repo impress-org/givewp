@@ -1,11 +1,13 @@
+import Gateway from '../types/Gateway';
+
 type PropTypes = {
-    firstName: string,
-    lastName?: string,
-    email: string,
-    status: string,
-    gateway: string,
-    amount: number,
-    total: number,
+    firstName: string;
+    lastName?: string;
+    email: string;
+    status: string;
+    gateway: Gateway;
+    amount: number;
+    total: number;
 };
 
 export default function DonationReceipt({firstName, lastName, email, status, gateway, amount, total}: PropTypes) {
@@ -20,17 +22,29 @@ export default function DonationReceipt({firstName, lastName, email, status, gat
                 <div>
                     <h3>Donor Details</h3>
                     <ul>
-                        <li><b>Donor Name:</b> {firstName} {lastName}</li>
-                        <li><b>Email Address:</b> {email}</li>
+                        <li>
+                            <b>Donor Name:</b> {firstName} {lastName}
+                        </li>
+                        <li>
+                            <b>Email Address:</b> {email}
+                        </li>
                     </ul>
                 </div>
                 <div>
                     <h3>Donation Details</h3>
                     <ul>
-                        <li><b>Payment Status:</b> {status}</li>
-                        <li><b>Payment Method:</b> {gateway}</li>
-                        <li><b>Donation Amount:</b> {amount}</li>
-                        <li><b>Donation Total:</b> {total}</li>
+                        <li>
+                            <b>Payment Status:</b> {status}
+                        </li>
+                        <li>
+                            <b>Payment Method:</b> {gateway.label}
+                        </li>
+                        <li>
+                            <b>Donation Amount:</b> {amount}
+                        </li>
+                        <li>
+                            <b>Donation Total:</b> {total}
+                        </li>
                     </ul>
                 </div>
             </div>
