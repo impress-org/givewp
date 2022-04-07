@@ -28,7 +28,7 @@ interface SubscriptionModuleInterface
      *
      * @param Subscription $subscriptionModel
      *
-     * @return GatewayCommand
+     * @return bool
      */
     public function canCancelSubscription(Subscription $subscriptionModel);
 
@@ -39,7 +39,7 @@ interface SubscriptionModuleInterface
      *
      * @param Subscription $subscriptionModel
      *
-     * @return GatewayCommand
+     * @return bool
      */
     public function canSyncSubscriptionWithPaymentGateway(Subscription $subscriptionModel);
 
@@ -50,7 +50,7 @@ interface SubscriptionModuleInterface
      *
      * @param Subscription $subscriptionModel
      *
-     * @return GatewayCommand
+     * @return bool
      */
     public function canUpdateSubscription(Subscription $subscriptionModel);
 
@@ -61,7 +61,7 @@ interface SubscriptionModuleInterface
      *
      * @param Subscription $subscriptionModel
      *
-     * @return GatewayCommand
+     * @return void
      */
     public function cancelSubscription(Subscription $subscriptionModel);
 }
