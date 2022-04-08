@@ -5,6 +5,8 @@ import styles from './DonorType.module.scss';
 import RenewalIcon from "@givewp/components/ListTable/images/RenewalIcon";
 import RecurringIcon from "@givewp/components/ListTable/images/RecurringIcon";
 import {useUniqueId} from "@givewp/components/ListTable/hooks/useUniqueId";
+import {faStar} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface DonorTypeProps {
     type: 'single'|'repeat'|'subscriber'|'new';
@@ -24,7 +26,7 @@ const donorTypeConfig = {
     subscriber: {
         badgeStyle: styles.subscriber,
         badgeContent: RecurringIcon,
-        label: __('subscriber', 'give'),
+        label: __('subscriber', 'give')
     },
     new: {
         badgeStyle: styles.new,
@@ -48,15 +50,16 @@ const donationTypeConfig = {
         badgeStyle: styles.subscriber,
         badgeContent: RecurringIcon,
         label: __('new subscriber', 'give'),
+        starred: true,
     }
 }
 
-function TypeBadge ({config}) {
+export default function TypeBadge ({config}) {
     if(!config) return null;
     // we need a unique element ID for aria labelling
     const badgeId = useUniqueId('giveDonationTypeBadge-');
     return (
-        <>
+        <div className={styles.relative}>
             <div className={styles.container}>
                 {
                     typeof config.badgeContent === 'string' ?
@@ -68,7 +71,18 @@ function TypeBadge ({config}) {
                 }
                 <label id={badgeId} className={styles.label}>{config.label}</label>
             </div>
-        </>
+            {
+                config?.starred ?
+                <FontAwesomeIcon
+                    icon={faStar}
+                    className={styles.star}
+                    role='img'
+                    aria-label={__('star', 'give')}
+                />
+                :
+                null
+            }
+        </div>
     );
 }
 

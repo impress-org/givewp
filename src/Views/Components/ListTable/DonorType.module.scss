@@ -71,8 +71,13 @@ svg.badge {
 }
 
 .star {
-    background: rgba(255, 215, 0, 1);
+    color: rgba(255, 215, 0, 1);
+    font-size: 1rem;
     position: absolute;
-    top: -50%;
-    right: -50%;
+    top: -0.5rem;
+    right: -0.5rem;
+}
+
+.relative {
+    position: relative;
 }

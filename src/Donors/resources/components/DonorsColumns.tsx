@@ -1,7 +1,6 @@
 import {__, _n, sprintf} from "@wordpress/i18n";
 import styles from "./DonorsColumns.module.scss";
 import {ListTableColumn} from "@givewp/components";
-import cx from "classnames";
 import {DonorType} from "@givewp/components/ListTable/DonorType";
 
 export const donorsColumns: Array<ListTableColumn> = [
