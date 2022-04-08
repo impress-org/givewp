@@ -34,7 +34,7 @@ class DonorRepository
      *
      * @unreleased
      *
-     * @param  int  $donorId
+     * @param int $donorId
      * @return ModelQueryBuilder
      */
     public function queryById($donorId)
@@ -48,7 +48,7 @@ class DonorRepository
      *
      * @unreleased
      *
-     * @param  int  $donorId
+     * @param int $donorId
      * @return Donor|null
      */
     public function getById($donorId)
@@ -61,7 +61,7 @@ class DonorRepository
      *
      * @unreleased
      *
-     * @param  int  $userId
+     * @param int $userId
      * @return Donor|null
      */
     public function getByWpUserId($userId)
@@ -79,7 +79,7 @@ class DonorRepository
     /**
      * @unreleased
      *
-     * @param  int  $donorId
+     * @param int $donorId
      * @return array|bool
      */
     public function getAdditionalEmails($donorId)
@@ -100,7 +100,7 @@ class DonorRepository
     /**
      * @unreleased
      *
-     * @param  Donor  $donor
+     * @param Donor $donor
      *
      * @return Donor
      * @throws Exception
@@ -161,7 +161,7 @@ class DonorRepository
     /**
      * @unreleased
      *
-     * @param  Donor  $donor
+     * @param Donor $donor
      * @return Donor
      * @throws Exception
      */
@@ -208,8 +208,8 @@ class DonorRepository
     /**
      * @unreleased
      *
-     * @param  int  $donorId
-     * @param  array  $columns
+     * @param int $donorId
+     * @param array $columns
      * @return bool
      * @throws Exception
      */
@@ -284,7 +284,7 @@ class DonorRepository
     /**
      * @unreleased
      *
-     * @param  Donor  $donor
+     * @param Donor $donor
      * @return array
      */
     private function getCoreDonorMeta(Donor $donor)
@@ -299,7 +299,7 @@ class DonorRepository
     /**
      * @unreleased
      *
-     * @param  Donor  $donor
+     * @param Donor $donor
      * @return void
      */
     private function validateDonor(Donor $donor)
@@ -312,7 +312,7 @@ class DonorRepository
     }
 
     /**
-     * @param  string  $email
+     * @param string $email
      * @return Donor
      */
     public function getByEmail($email)
@@ -329,7 +329,7 @@ class DonorRepository
     }
 
     /**
-     * @param  string  $email
+     * @param string $email
      * @return Donor
      */
     public function getByAdditionalEmail($email)
@@ -383,7 +383,7 @@ class DonorRepository
      *
      * @unreleased
      *
-     * @param  Donor  $donor
+     * @param Donor $donor
      * @return void
      */
     private function updateAdditionalEmails(Donor $donor)
@@ -478,16 +478,10 @@ class DonorRepository
      */
     private function getWhereConditionsForRequest(QueryBuilder $builder, WP_REST_Request $request)
     {
-
         $search = $request->get_param('search');
         $start = $request->get_param('start');
         $end = $request->get_param('end');
-        $donations = $request->get_param('donations');
         $form = $request->get_param('form');
-
-        if ($donations) {
-            $builder->whereLike('payment_ids', $donations);
-        }
 
         if ($search) {
             if (ctype_digit($search)) {
@@ -507,9 +501,21 @@ class DonorRepository
         }
 
         if ($form) {
-            $builder->whereLike('payment_ids', $form . ',%');
-            $builder->orWhereLike('payment_ids', '%,' . $form);
-            $builder->orWhereLike('payment_ids', '%,' . $form . ',%');
+            $builder
+                ->whereIn('id', static function (QueryBuilder $builder) use ($form) {
+                    $builder
+                        ->from('give_donationmeta')
+                        ->distinct()
+                        ->select('meta_value')
+                        ->where('meta_key', '_give_payment_donor_id')
+                        ->whereIn('donation_id', static function (QueryBuilder $builder) use ($form) {
+                            $builder
+                                ->from('give_donationmeta')
+                                ->select('donation_id')
+                                ->where('meta_key', '_give_payment_form_id')
+                                ->where('meta_value', $form);
+                        });
+                });
         }
 
         return $builder;

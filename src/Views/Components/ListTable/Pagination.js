@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import {useState, useEffect} from 'react';
 import styles from './Pagination.module.scss';
 import cx from 'classnames';
-import {__, _n} from '@wordpress/i18n';
+import {__} from '@wordpress/i18n';
 
-const Pagination = ({currentPage, totalPages, totalItems = -1, disabled, setPage}) => {
+const Pagination = ({currentPage, totalPages, totalItems = -1, disabled, setPage, singleName, pluralName}) => {
     const [pageInput, setPageInput] = useState(1);
 
     useEffect(() => {
@@ -15,10 +15,10 @@ const Pagination = ({currentPage, totalPages, totalItems = -1, disabled, setPage
     const previousPage = parseInt(currentPage) - 1;
 
     return (
-        <nav aria-label={__('donation forms table', 'give')} className={styles.container}>
+        <nav aria-label={sprintf(__('%s table', 'give'), pluralName)} className={styles.container}>
             {totalItems >= 1 &&
                 <span className={styles.totalItems}>
-                    {totalItems.toString() + " " + _n('form', 'forms', totalItems, 'give')}
+                    {totalItems.toString() + " "}{totalItems == 1 ?  singleName : pluralName}
                 </span>
             }
             {1 < totalPages &&

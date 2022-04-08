@@ -60,7 +60,6 @@ tr.duplicated {
 }
 
 .tableRow {
-
     &:nth-child(odd) {
         background-color: #f6f7f7;
     }
@@ -71,6 +70,14 @@ tr.duplicated {
 
     &:hover .tableRowActions {
         opacity: 1;
+    }
+
+    & .alignStart {
+        text-align: start;
+    }
+
+    & .alignCenter {
+        text-align: center;
     }
 }
 

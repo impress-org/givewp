@@ -28,9 +28,9 @@ const donationStatusMap = {
 }
 
 const RenderRow = ({ column, item }) => {
-    const value = item?.[column.name];
+    let value = item?.[column.name];
     if(value === undefined){
-        return null;
+        value = null;
     }
     switch(column?.preset){
         case 'idBadge':
@@ -130,7 +130,10 @@ export default function ListTableRows({columns, data, isLoading, rowActions, set
             </TableCell>
             <>
                 {columns.map((column) => (
-                    <TableCell key={column.name} className={column?.addClass} heading={column?.heading}>
+                    <TableCell key={column.name} className={cx(column?.addClass, {
+                        [styles.alignCenter]: column?.alignColumn === 'center',
+                        [styles.alignStart]: column?.alignColumn === 'start',
+                    })} heading={column?.heading}>
                         <RenderRow column={column} item={item}/>
                         {!isLoading && rowActions &&
                             <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>

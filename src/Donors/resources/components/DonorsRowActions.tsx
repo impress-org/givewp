@@ -39,7 +39,7 @@ export function DonorsRowActions({item, setUpdateErrors, parameters}) {
         <>
             <RowAction
                 href={`/wp-admin/edit.php?post_type=give_forms&page=give-donors&view=overview&id=${item.id}`}
-                displayText={__('View Donor', 'give')}
+                displayText={__('Edit', 'give')}
             />
             <RowAction
                 onClick={confirmModal}

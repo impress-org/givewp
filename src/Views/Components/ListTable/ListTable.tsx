@@ -28,6 +28,7 @@ export interface ListTableColumn {
     inlineSize?: string;
     preset?: string;
     heading?: boolean;
+    alignColumn?: 'start'|'center'|'end';
     addClass?: string;
     render?: ((item: {}) => JSX.Element)|JSX.Element|JSX.Element[]|null;
 }
@@ -130,7 +131,7 @@ export const ListTable = ({
                                     <label htmlFor='giveListTableSelectAll' id='giveListTableSelectAll-Label'
                                            className='give-visually-hidden'
                                     >
-                                        {sprintf(__('Select all %s', 'give'), pluralName)}
+                                       {sprintf(__('Select all %s', 'give'), pluralName)}
                                     </label>
                                     <input id='giveListTableSelectAll'
                                            type='checkbox'

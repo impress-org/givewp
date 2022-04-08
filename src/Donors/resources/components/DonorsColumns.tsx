@@ -1,6 +1,7 @@
-import {__} from "@wordpress/i18n";
+import {__, _n, sprintf} from "@wordpress/i18n";
 import styles from "./DonorsColumns.module.scss";
 import {ListTableColumn} from "@givewp/components";
+import {DonorType} from "@givewp/components/ListTable/DonorType";
 
 export const donorsColumns: Array<ListTableColumn> = [
     {
@@ -10,54 +11,55 @@ export const donorsColumns: Array<ListTableColumn> = [
         preset: 'idBadge'
     },
     {
-        name: 'gravatar',
-        text: __('Avatar'),
-        inlineSize: '6rem',
-        render: (donor: {gravatar, name}) => (
-            <>
-                <div role='img' aria-label={`avatar for ${donor.name}`}>
-                    <img className={styles.gravatar} src={donor.gravatar} alt={donor.name} loading='lazy'/>
-                    <div className={styles.gravatarWrapper}/>
-                </div>
-            </>
-        ),
-    },
-    {
         name: 'name',
-        text: __('Name', 'give'),
-        inlineSize: '12rem',
+        text: __('Donor Information', 'give'),
+        inlineSize: '14rem',
+        alignColumn: 'start',
         heading: true,
-        addClass: styles.nameCell,
-        render: (donor: {name, namePrefix, id}) => (
+        render: (donor: {name, namePrefix, id, email, gravatar}) => (
+            <div className={styles.donorInformation}>
+                <img className={styles.gravatar} src={donor.gravatar} alt={donor.name} loading='lazy'/>
                 <strong className={styles.name}>{donor.namePrefix ? donor.namePrefix + ' ' :''}{donor.name}</strong>
+                <a className={styles.email} href={`mailto:${donor.email}`}>{donor.email}</a>
+            </div>
         ),
-    },
-    {
-        name: 'email',
-        text: __('Email', 'give'),
-        addClass: styles.email,
-        inlineSize: '10rem',
-        render: (donor: {email}) => (
-          <a href={`mailto:${donor.email}`}>{donor.email}</a>
-        ),
-    },
-    {
-        name: 'donationCount',
-        text: __('Donations', 'give'),
-        inlineSize: '6rem',
-        render: (donor: {donationCount, id}) => (
-            <a href={`http://givewp-test-2.local/wp-admin/edit.php?post_type=give_forms&page=give-payment-history&donor=${donor.id}`}>
-                {`${donor.donationCount.toString()}`}
-            </a>
-        )
     },
     {
         name: 'donationRevenue',
         inlineSize: '6rem',
-        text: __('Total Donated', 'give'),
+        text: __('Total Given', 'give'),
+        addClass: styles.monetary,
+    },
+    {
+        name: 'donationCount',
+        text: __('Donations', 'give'),
+        inlineSize: '8rem',
+        render: (donor: {donationCount, id}) => (
+            <a href={`edit.php?post_type=give_forms&page=give-payment-history&donor=${donor.id}`}>
+                {
+                    donor.donationCount > 0 ?
+                    sprintf(_n('%d donation', '%d donations', parseInt(donor.donationCount), 'give'), donor.donationCount)
+                    : __('No donations', 'give')
+                }
+            </a>
+        )
+    },
+    {
+        name: 'latestDonation',
+        text: __('Latest Donation', 'give'),
+    },
+    {
+        name: 'donorType',
+        text: __('Donor Type', 'give'),
+        inlineSize: '12rem',
+        render: (donor: {donorType}) => (
+            <DonorType type={types[Math.floor(Math.random() * 4)]}/>
+        )
     },
     {
         name: 'dateCreated',
-        text: __('Date', 'give'),
+        text: __('Date Created', 'give'),
     },
 ];
+
+const types = [ 'single', 'repeat', 'subscriber', 'new' ];

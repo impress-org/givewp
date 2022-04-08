@@ -3,8 +3,8 @@
     padding-block-start: 1em;
     padding-block-end: 2.5em;
     padding-inline: 1em;
-    text-align: start;
-    vertical-align: top;
+    text-align: end;
+    vertical-align: middle;
     font-size: 0.875em;
     font-weight: 600;
     color: #333;
@@ -12,7 +12,6 @@
     & > a:not([class]) {
         text-decoration: none;
     }
-
 }
 
 .tableRowHeader {
