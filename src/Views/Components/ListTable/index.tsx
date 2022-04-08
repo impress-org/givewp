@@ -136,7 +136,7 @@ export default function ListTablePage({
                     </div>
                     {children}
                 </header>
-                <section role='search' className={styles.searchContainer}>
+                <section role='search' id={styles.searchContainer}>
                     {filterSettings.map(filter =>
                         <Filter
                             key={filter.name}
