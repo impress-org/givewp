@@ -2,13 +2,28 @@
 
 namespace Give\Donations\Factories;
 
+use Exception;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donors\Models\Donor;
 use Give\Framework\Models\Factories\ModelFactory;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 
 class DonationFactory extends ModelFactory
 {
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function beforeMaking($attributes)
+    {
+        if (!$attributes['donorId'] && !Donor::find(1)) {
+            Donor::factory()->create();
+        }
+    }
+
     /**
      * @since 2.19.6
      *

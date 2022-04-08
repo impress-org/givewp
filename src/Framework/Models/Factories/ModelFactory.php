@@ -28,7 +28,9 @@ abstract class ModelFactory
     protected $count = 1;
 
     /**
-     * @param class-string<M> $model
+     * @unreleased
+     *
+     * @param  class-string<M>  $model
      *
      * @return void
      */
@@ -46,7 +48,9 @@ abstract class ModelFactory
     abstract public function definition();
 
     /**
-     * @param array $attributes
+     * @unreleased
+     *
+     * @param  array  $attributes
      *
      * @return M|M[]
      */
@@ -57,11 +61,13 @@ abstract class ModelFactory
             /** @var ModelCrud $model */
             $model = $this->model;
 
+            $this->beforeMaking($attributes);
+
             $instance = new $model(
                 array_merge($this->definition(), $attributes)
             );
 
-            $this->afterCreating($instance);
+            $this->afterMaking($instance);
 
             $results[] = $instance;
         }
@@ -70,7 +76,9 @@ abstract class ModelFactory
     }
 
     /**
-     * @param array $attributes
+     * @unreleased
+     *
+     * @param  array  $attributes
      *
      * @return M|M[]
      * @throws Exception
@@ -79,14 +87,19 @@ abstract class ModelFactory
     {
         $instances = $this->make($attributes);
         $instances = is_array($instances) ? $instances : [$instances];
+        $createdInstances = [];
 
-        DB::transaction(static function () use ($instances) {
+        DB::transaction(function () use ($instances, &$createdInstances) {
             foreach ($instances as $instance) {
-                $instance->save();
+                $createdInstance = $instance->save();
+
+                $this->afterCreating($createdInstance);
+
+                $createdInstances[] = $createdInstance;
             }
         });
 
-        return $this->count === 1 ? $instances[0] : $instances;
+        return $this->count === 1 ? $createdInstances[0] : $createdInstances;
     }
 
     /**
@@ -122,11 +135,37 @@ abstract class ModelFactory
     }
 
     /**
-     * @param M $model
+     * @unreleased
+     *
+     * @param  M  $model
      *
      * @return void
      */
     public function afterCreating($model)
+    {
+        //
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  M  $model
+     *
+     * @return void
+     */
+    public function afterMaking($model)
+    {
+        //
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  array  $attributes
+     *
+     * @return void
+     */
+    public function beforeMaking($attributes)
     {
         //
     }
