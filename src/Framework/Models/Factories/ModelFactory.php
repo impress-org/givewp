@@ -61,8 +61,6 @@ abstract class ModelFactory
             /** @var ModelCrud $model */
             $model = $this->model;
 
-            $this->beforeMaking($attributes);
-
             $instance = new $model(
                 array_merge($this->definition(), $attributes)
             );
@@ -154,18 +152,6 @@ abstract class ModelFactory
      * @return void
      */
     public function afterMaking($model)
-    {
-        //
-    }
-
-    /**
-     * @unreleased
-     *
-     * @param  array  $attributes
-     *
-     * @return void
-     */
-    public function beforeMaking($attributes)
     {
         //
     }

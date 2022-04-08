@@ -13,21 +13,10 @@ class DonationFactory extends ModelFactory
 {
 
     /**
-     * @unreleased
-     *
-     * @throws Exception
-     */
-    public function beforeMaking($attributes)
-    {
-        if (!$attributes['donorId'] && !Donor::find(1)) {
-            Donor::factory()->create();
-        }
-    }
-
-    /**
      * @since 2.19.6
      *
      * @return array
+     * @throws Exception
      */
     public function definition()
     {
@@ -37,7 +26,7 @@ class DonationFactory extends ModelFactory
             'mode' => DonationMode::TEST(),
             'amount' => $this->faker->numberBetween(50, 50000),
             'currency' => 'USD',
-            'donorId' => 1,
+            'donorId' => Donor::factory()->create()->id,
             'firstName' => $this->faker->firstName,
             'lastName' => $this->faker->lastName,
             'email' => $this->faker->email,
