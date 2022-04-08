@@ -94,6 +94,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
+     * @unreleased return mutated model instance
      * @since 2.19.6
      *
      * @param  array  $attributes
@@ -112,6 +113,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
+     * @unreleased mutate model and return void
      * @since 2.19.6
      *
      * @return void

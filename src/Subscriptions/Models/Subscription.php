@@ -112,6 +112,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
 
 
     /**
+     * @unreleased return mutated model instance
      * @since 2.19.6
      *
      * @throws Exception
@@ -126,6 +127,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
+     * @unreleased mutate model in repository and return void
      * @since 2.19.6
      *
      * @return void

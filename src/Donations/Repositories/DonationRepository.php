@@ -115,6 +115,7 @@ class DonationRepository
     }
 
     /**
+     * @unreleased mutate model and return void
      * @since 2.19.6
      *
      * @param  Donation  $donation
@@ -219,6 +220,7 @@ class DonationRepository
     }
 
     /**
+     * @unreleased return void
      * @since 2.19.6
      *
      * @param  Donation  $donation
@@ -269,6 +271,7 @@ class DonationRepository
     }
 
     /**
+     * @unreleased simplify delete transaction
      * @since 2.19.6
      *
      * @param  Donation  $donation

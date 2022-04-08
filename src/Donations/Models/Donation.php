@@ -102,9 +102,10 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
+     * @unreleased return mutated model instance
      * @since 2.19.6
      *
-     * @param array $attributes
+     * @param  array  $attributes
      *
      * @return Donation
      *
@@ -120,6 +121,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
+     * @unreleased mutate model in repository and return void
      * @since 2.19.6
      *
      * @return void
