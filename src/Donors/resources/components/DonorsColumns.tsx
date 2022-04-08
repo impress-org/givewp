@@ -2,7 +2,7 @@ import {__, _n, sprintf} from "@wordpress/i18n";
 import styles from "./DonorsColumns.module.scss";
 import {ListTableColumn} from "@givewp/components";
 import cx from "classnames";
-import DonorType from "@givewp/components/ListTable/DonorType";
+import {DonorType} from "@givewp/components/ListTable/DonorType";
 
 export const donorsColumns: Array<ListTableColumn> = [
     {
@@ -54,7 +54,7 @@ export const donorsColumns: Array<ListTableColumn> = [
         text: __('Donor Type', 'give'),
         inlineSize: '12rem',
         render: (donor: {donorType}) => (
-            <DonorType type={'subscriber'}/>
+            <DonorType type={types[Math.floor(Math.random() * 4)]}/>
         )
     },
     {
@@ -62,3 +62,5 @@ export const donorsColumns: Array<ListTableColumn> = [
         text: __('Date Created', 'give'),
     },
 ];
+
+const types = [ 'single', 'repeat', 'subscriber', 'new' ];
