@@ -237,7 +237,7 @@ class SubscriptionRepository
 
         DB::query('COMMIT');
 
-        Hooks::doAction('give_subscription_deleted', $subscription);
+        Hooks::doAction('give_subscription_model_deleted', $subscription);
 
         return true;
     }
