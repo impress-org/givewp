@@ -64,4 +64,16 @@ interface SubscriptionModuleInterface
      * @return void
      */
     public function cancelSubscription(Subscription $subscriptionModel);
+
+    /**
+     * Return gateway subscription detail page url.
+     *
+     * @unreleased
+     *
+     * @param string $gatewaySubscriptionId
+     * @param string $donationMode
+     *
+     * @return string
+     */
+    public function gatewaySubscriptionDetailPageUrl( $gatewaySubscriptionId, $donationMode );
 }
