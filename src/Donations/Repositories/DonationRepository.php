@@ -5,6 +5,7 @@ namespace Give\Donations\Repositories;
 use Exception;
 use Give\Donations\Actions\GeneratePurchaseKey;
 use Give\Donations\Models\Donation;
+use Give\Donations\Properties\BillingAddress;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Framework\Database\DB;
@@ -118,7 +119,7 @@ class DonationRepository
      *
      * @param  Donation  $donation
      *
-     * @return Donation
+     * @return void
      * @throws Exception|InvalidArgumentException
      */
     public function insert(Donation $donation)
@@ -127,20 +128,18 @@ class DonationRepository
 
         Hooks::doAction('give_donation_creating', $donation);
 
-        $date = $donation->createdAt ? Temporal::getFormattedDateTime(
-            $donation->createdAt
-        ) : Temporal::getCurrentFormattedDateForDatabase();
-
+        $dateCreated = $donation->createdAt ?: Temporal::getCurrentDateTime();
+        $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
 
         DB::query('START TRANSACTION');
 
         try {
             DB::table('posts')
                 ->insert([
-                    'post_date' => $date,
-                    'post_date_gmt' => get_gmt_from_date($date),
-                    'post_modified' => $date,
-                    'post_modified_gmt' => get_gmt_from_date($date),
+                    'post_date' => $dateCreatedFormatted,
+                    'post_date_gmt' => get_gmt_from_date($dateCreatedFormatted),
+                    'post_modified' => $dateCreatedFormatted,
+                    'post_modified_gmt' => get_gmt_from_date($dateCreatedFormatted),
                     'post_status' => $donation->status->getValue(),
                     'post_type' => 'give_payment',
                     'post_parent' => isset($donation->parentId) ? $donation->parentId : 0
@@ -148,7 +147,9 @@ class DonationRepository
 
             $donationId = DB::last_insert_id();
 
-            foreach ($this->getCoreDonationMetaForDatabase($donation) as $metaKey => $metaValue) {
+            $donationMeta = $this->getCoreDonationMetaForDatabase($donation);
+
+            foreach ($donationMeta as $metaKey => $metaValue) {
                 DB::table('give_donationmeta')
                     ->insert([
                         'donation_id' => $donationId,
@@ -166,11 +167,55 @@ class DonationRepository
 
         DB::query('COMMIT');
 
-        $donation = $this->getById($donationId);
+        $donation->id = $donationId;
+
+        $donation->createdAt = $dateCreated;
+
+        if (!isset($donation->updatedAt)) {
+            $donation->updatedAt = $donation->createdAt;
+        }
+
+        if (!isset($donation->formTitle)) {
+            $donation->formTitle = $this->getFormTitle($donation->formId);
+        }
+
+        if (!isset($donation->mode)) {
+            $donation->mode = $this->getDefaultDonationMode();
+        }
+
+        if (!isset($donation->purchaseKey)) {
+            $donation->purchaseKey = $donationMeta[DonationMetaKeys::PURCHASE_KEY];
+        }
+
+        if (!isset($donation->donorIp)) {
+            $donation->donorIp = give_get_ip();
+        }
+
+        if (!isset($donation->subscriptionId)) {
+            $donation->subscriptionId = 0;
+        }
+
+        if (!isset($donation->billingAddress)) {
+            $donation->billingAddress = new BillingAddress();
+        }
+
+        if (!isset($donation->anonymous)) {
+            $donation->anonymous = false;
+        }
+
+        if (!isset($donation->levelId)) {
+            $donation->levelId = 0;
+        }
+
+        if (!isset($donation->gatewayTransactionId)) {
+            $donation->gatewayTransactionId = null;
+        }
+
+        if (!isset($donation->parentId)) {
+            $donation->parentId = 0;
+        }
 
         Hooks::doAction('give_donation_created', $donation);
-
-        return $donation;
     }
 
     /**
@@ -178,7 +223,7 @@ class DonationRepository
      *
      * @param  Donation  $donation
      *
-     * @return Donation
+     * @return void
      * @throws Exception|InvalidArgumentException
      */
     public function update(Donation $donation)
@@ -221,8 +266,6 @@ class DonationRepository
         DB::query('COMMIT');
 
         Hooks::doAction('give_donation_updated', $donation);
-
-        return $donation;
     }
 
     /**
@@ -243,12 +286,9 @@ class DonationRepository
                 ->where('id', $donation->id)
                 ->delete();
 
-            foreach ($this->getCoreDonationMetaForDatabase($donation) as $metaKey => $metaValue) {
-                DB::table('give_donationmeta')
-                    ->where('donation_id', $donation->id)
-                    ->where('meta_key', $metaKey)
-                    ->delete();
-            }
+            DB::table('give_donationmeta')
+                ->where('donation_id', $donation->id)
+                ->delete();
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 

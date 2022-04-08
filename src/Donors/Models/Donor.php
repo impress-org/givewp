@@ -106,23 +106,25 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     {
         $donor = new static($attributes);
 
-        return give()->donors->insert($donor);
+        give()->donors->insert($donor);
+
+        return $donor;
     }
 
     /**
      * @since 2.19.6
      *
-     * @return Donor
+     * @return void
      *
      * @throws Exception|InvalidArgumentException
      */
     public function save()
     {
         if (!$this->id) {
-            return give()->donors->insert($this);
+            give()->donors->insert($this);
         }
 
-        return give()->donors->update($this);
+        give()->donors->update($this);
     }
 
     /**

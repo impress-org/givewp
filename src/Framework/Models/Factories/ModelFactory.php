@@ -85,19 +85,16 @@ abstract class ModelFactory
     {
         $instances = $this->make($attributes);
         $instances = is_array($instances) ? $instances : [$instances];
-        $createdInstances = [];
 
-        DB::transaction(function () use ($instances, &$createdInstances) {
+        DB::transaction(function () use ($instances) {
             foreach ($instances as $instance) {
-                $createdInstance = $instance->save();
+                $instance->save();
 
-                $this->afterCreating($createdInstance);
-
-                $createdInstances[] = $createdInstance;
+                $this->afterCreating($instance);
             }
         });
 
-        return $this->count === 1 ? $createdInstances[0] : $createdInstances;
+        return $this->count === 1 ? $instances[0] : $instances;
     }
 
     /**

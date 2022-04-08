@@ -30,7 +30,9 @@ class TemporalFacade
      */
     public function getCurrentDateTime()
     {
-        return date_create('now', wp_timezone());
+        $now = date_create('now', wp_timezone())->format('Y-m-d H:i:s');
+        
+        return $this->toDateTime($now);
     }
 
     /**

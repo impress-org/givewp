@@ -100,23 +100,21 @@ class DonorRepository
      *
      * @param  Donor  $donor
      *
-     * @return Donor
+     * @return void
      * @throws Exception
      */
     public function insert(Donor $donor)
     {
         $this->validateDonor($donor);
 
-        $date = $donor->createdAt ? Temporal::getFormattedDateTime(
-            $donor->createdAt
-        ) : Temporal::getCurrentFormattedDateForDatabase();
+        $dateCreated = $donor->createdAt ?: Temporal::getCurrentDateTime();
 
         DB::query('START TRANSACTION');
 
         try {
             DB::table('give_donors')
                 ->insert([
-                    'date_created' => $date,
+                    'date_created' => Temporal::getFormattedDateTime($dateCreated),
                     'user_id' => isset($donor->userId) ? $donor->userId : 0,
                     'email' => $donor->email,
                     'name' => $donor->name
@@ -153,14 +151,27 @@ class DonorRepository
 
         DB::query('COMMIT');
 
-        return $this->getById($donorId);
+        $donor->id = $donorId;
+        $donor->createdAt = $dateCreated;
+
+        if (!isset($donor->userId)) {
+            $donor->userId = 0;
+        }
+
+        if (!isset($donor->prefix)) {
+            $donor->prefix = null;
+        }
+
+        if (!isset($donor->additionalEmails)) {
+            $donor->additionalEmails = null;
+        }
     }
 
     /**
      * @since 2.19.6
      *
      * @param  Donor  $donor
-     * @return Donor
+     * @return void
      * @throws Exception
      */
     public function update(Donor $donor)
@@ -199,8 +210,6 @@ class DonorRepository
         }
 
         DB::query('COMMIT');
-
-        return $donor;
     }
 
     /**

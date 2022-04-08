@@ -3,6 +3,7 @@
 namespace Give\Donors\DataTransferObjects;
 
 use Give\Donors\Models\Donor;
+use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
@@ -45,6 +46,10 @@ class DonorQueryData
      * @var mixed
      */
     public $additionalEmails;
+    /**
+     * @var string
+     */
+    public $prefix;
 
     /**
      * Convert data from donor object to Donor Model
@@ -59,6 +64,7 @@ class DonorQueryData
 
         $self->id = (int)$object->id;
         $self->userId = (int)$object->userId;
+        $self->prefix = $object->{DonorMetaKeys::PREFIX()->getKeyAsCamelCase()};
         $self->email = $object->email;
         $self->name = $object->name;
         $self->firstName = $object->firstName;

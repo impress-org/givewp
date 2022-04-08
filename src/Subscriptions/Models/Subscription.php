@@ -120,21 +120,24 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     {
         $subscription = new static($attributes);
 
-        return give()->subscriptions->insert($subscription);
+        give()->subscriptions->insert($subscription);
+
+        return $subscription;
     }
 
     /**
      * @since 2.19.6
      *
+     * @return void
      * @throws Exception
      */
     public function save()
     {
         if (!$this->id) {
-            return give()->subscriptions->insert($this);
+            give()->subscriptions->insert($this);
         }
 
-        return give()->subscriptions->update($this);
+        give()->subscriptions->update($this);
     }
 
     /**

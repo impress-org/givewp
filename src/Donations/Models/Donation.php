@@ -114,23 +114,25 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     {
         $donation = new static($attributes);
 
-        return give()->donations->insert($donation);
+        give()->donations->insert($donation);
+
+        return $donation;
     }
 
     /**
      * @since 2.19.6
      *
-     * @return Donation
+     * @return void
      *
      * @throws Exception|InvalidArgumentException
      */
     public function save()
     {
         if (!$this->id) {
-            return give()->donations->insert($this);
+            give()->donations->insert($this);
         }
 
-        return give()->donations->update($this);
+        give()->donations->update($this);
     }
 
     /**
