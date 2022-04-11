@@ -74,7 +74,7 @@ const Inspector = ({attributes, setAttributes}) => {
                     label={__('Columns', 'give')}
                     selected={columns}
                     onClick={(value) => saveSetting('columns', value)}
-                    help={ __('Controls how many columns of your Grid appear. “Best Fit” will adjust responsively to the width of your container element.', 'give') }
+                    help={ __('Controls how many columns of your Grid appear. "Best Fit" will adjust responsively to the width of your container element.', 'give') }
                 />
 
                 <ToggleControl
