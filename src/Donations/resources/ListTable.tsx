@@ -76,7 +76,7 @@ export default function () {
             text: __('Payment Type'),
             inlineSize: '12rem',
             render: (donation: {donationType}) => (
-                <DonationType type={types[Math.floor(Math.random() * 3)]}/>
+                <DonationType type={donation.donationType}/>
             )
         },
         {
@@ -218,5 +218,3 @@ export default function () {
         </ListTablePage>
     )
 }
-
-const types = [ 'single', 'renewal', 'subscription' ];

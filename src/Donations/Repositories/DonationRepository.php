@@ -552,7 +552,9 @@ class DonationRepository
                 DonationMetaKeys::EMAIL,
                 DonationMetaKeys::GATEWAY,
                 DonationMetaKeys::MODE,
-                DonationMetaKeys::ANONYMOUS
+                DonationMetaKeys::ANONYMOUS,
+                DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION,
+                DonationMetaKeys::IS_RECURRING
             )
             ->where('post_type', 'give_payment');
 

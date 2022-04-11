@@ -59,11 +59,15 @@ class DonationResponseData implements Arrayable
     /**
      * @var DonationMode
      */
-    public $payment_mode;
+    public $paymentMode;
     /**
      * @var bool
      */
     public $anonymous;
+    /**
+     * @var string
+     */
+    public $donationType;
 
     /**
      * Convert data from object to Donation
@@ -88,8 +92,9 @@ class DonationResponseData implements Arrayable
         $self->gateway = give_get_gateway_admin_label($donation->{DonationMetaKeys::GATEWAY()});
         $self->createdAt = Date::getDateTime($donation->createdAt);
         $self->status = new DonationStatus($donation->status);
-        $self->payment_mode = $donation->{DonationMetaKeys::MODE()};
+        $self->paymentMode = $donation->{DonationMetaKeys::MODE()};
         $self->anonymous = (bool)$donation->{DonationMetaKeys::ANONYMOUS()};
+        $self->donationType = DonationResponseData::getDonationType($donation);
 
         return $self;
     }
@@ -102,5 +107,23 @@ class DonationResponseData implements Arrayable
     public function toArray()
     {
         return get_object_vars($this);
+    }
+
+    /**
+     * Get donation type to display on front-end
+     *
+     * @return string
+     */
+    public static function getDonationType($donation)
+    {
+        if($donation->{DonationMetaKeys::IS_RECURRING()})
+        {
+            if($donation->{DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION()} <= 1)
+            {
+                return 'subscription';
+            }
+            return 'renewal';
+        }
+        return 'single';
     }
 }

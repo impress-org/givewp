@@ -32,6 +32,7 @@ use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
  * @method static COMPANY()
  * @method static GATEWAY_TRANSACTION_ID()
  * @method static SUBSCRIPTION_INITIAL_DONATION()
+ * @method static IS_RECURRING()
  */
 class DonationMetaKeys extends Enum
 {
@@ -61,4 +62,5 @@ class DonationMetaKeys extends Enum
     const COMPANY = '_give_donation_company';
     const GATEWAY_TRANSACTION_ID = '_give_payment_transaction_id';
     const SUBSCRIPTION_INITIAL_DONATION = '_give_subscription_payment';
+    const IS_RECURRING = '_give_is_donation_recurring';
 }

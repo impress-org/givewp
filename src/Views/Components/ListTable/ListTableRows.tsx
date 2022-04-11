@@ -57,7 +57,7 @@ const RenderRow = ({ column, item }) => {
                                  text={donationStatusMap[value]}
                     />
                     {
-                        (item?.payment_mode === 'test' || item?.gateway === __('Test Donation', 'give'))
+                        (item?.paymentMode === 'test' || item?.gateway === __('Test Donation', 'give'))
                         &&
                         <TestLabel className={styles.test}/>
                     }
