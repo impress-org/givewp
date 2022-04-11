@@ -12,6 +12,8 @@ import {
     FormTokenField
 } from '@wordpress/components';
 
+import ColumnSelector from '../../components/column-selector';
+
 /**
  * Internal dependencies
  */
@@ -68,12 +70,10 @@ const Inspector = ({attributes, setAttributes}) => {
     return (
         <InspectorControls key="inspector">
             <PanelBody title={__('Display Appearance', 'give')}>
-                <SelectControl
+                <ColumnSelector
                     label={__('Columns', 'give')}
-                    name="columns"
-                    value={columns}
-                    options={giveFormOptions.columns}
-                    onChange={(value) => saveSetting('columns', value)}
+                    selected={columns}
+                    onClick={(value) => saveSetting('columns', value)}
                     help={ __('Controls how many columns of your Grid appear. “Best Fit” will adjust responsively to the width of your container element.', 'give') }
                 />
 
