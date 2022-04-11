@@ -551,6 +551,7 @@ class DonationRepository
                 DonationMetaKeys::LAST_NAME,
                 DonationMetaKeys::EMAIL,
                 DonationMetaKeys::GATEWAY,
+                DonationMetaKeys::MODE,
                 DonationMetaKeys::ANONYMOUS
             )
             ->where('post_type', 'give_payment');

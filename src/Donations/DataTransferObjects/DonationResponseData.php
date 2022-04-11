@@ -49,13 +49,17 @@ class DonationResponseData implements Arrayable
      */
     public $gateway;
     /**
-     * @var DonationMode
+     * @var integer
      */
     public $formId;
     /**
      * @var string
      */
     public $formTitle;
+    /**
+     * @var DonationMode
+     */
+    public $payment_mode;
     /**
      * @var bool
      */
@@ -84,6 +88,7 @@ class DonationResponseData implements Arrayable
         $self->gateway = give_get_gateway_admin_label($donation->{DonationMetaKeys::GATEWAY()});
         $self->createdAt = Date::getDateTime($donation->createdAt);
         $self->status = new DonationStatus($donation->status);
+        $self->payment_mode = $donation->{DonationMetaKeys::MODE()};
         $self->anonymous = (bool)$donation->{DonationMetaKeys::ANONYMOUS()};
 
         return $self;
