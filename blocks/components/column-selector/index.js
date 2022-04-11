@@ -19,16 +19,21 @@ export function Selector({display, selected, onClick, children}) {
                 {'give_column_selector_selected': displayValue === selected}
             )}
         >
-            {Array(display).fill(null).map((val, i) => {
-                return (
-                    <div
-                        key={i}
-                        className="give_column_selector_button"
-                    >
-                        {children}
-                    </div>
-                )
-            })}
+            { display === 'best-fit' ? (
+                <div className="give_column_selector_button">
+                    {children}
+                </div>
+            ) : (
+              <>
+                  {Array(display).fill(null).map((val, i) => (
+                      <div
+                          key={i}
+                          className="give_column_selector_button"
+                      >
+                      </div>
+                  ))}
+              </>
+            )}
         </div>
     )
 }
