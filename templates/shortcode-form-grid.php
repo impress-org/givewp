@@ -38,7 +38,7 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
             : get_the_permalink();
 
 		printf(
-			'<a id="give-card-%1$s" class="give-card" href="%2$s">',
+			'<a id="give-card-%1$s" onclick="return !document.body.classList.contains( \'block-editor-page\' )" class="give-card" href="%2$s">',
 			esc_attr( $form_id ),
 			esc_attr( $url )
 		);
