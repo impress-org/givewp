@@ -50,15 +50,18 @@
     color: #0878b0;
     font-weight: 700;
     padding: 1em;
-    text-align: right;
     inline-size: 8rem;
 
-    &.alignStart {
+    &.start {
         text-align: start;
     }
 
-    &.alignCenter {
+    &.center {
         text-align: center;
+    }
+
+    &.end {
+        text-align: end;
     }
 }
 

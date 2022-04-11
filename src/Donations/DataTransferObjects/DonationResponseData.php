@@ -118,7 +118,7 @@ class DonationResponseData implements Arrayable
     {
         if($donation->{DonationMetaKeys::IS_RECURRING()})
         {
-            if($donation->{DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION()} <= 1)
+            if($donation->{DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION()} == 1)
             {
                 return 'subscription';
             }

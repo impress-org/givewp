@@ -66,6 +66,7 @@ export default function DonorsListTable(){
             bulkActions={donorsBulkActions}
             apiSettings={window.GiveDonors}
             filterSettings={donorsFilters}
+            align={'end'}
         />
     );
 }

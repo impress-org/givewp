@@ -28,6 +28,7 @@ export interface ListTablePageProps {
     children?: JSX.Element|JSX.Element[]|null;
     rowActions?: JSX.Element|JSX.Element[]|Function|null;
     filterSettings?;
+    align?: 'start'|'center'|'end';
 }
 
 export interface BulkActionsConfig {
@@ -53,6 +54,7 @@ export default function ListTablePage({
     pluralName  = __('items', 'give'),
     rowActions = null,
     children = null,
+    align = 'start',
 }: ListTablePageProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(10);
@@ -160,6 +162,7 @@ export default function ListTablePage({
                             data={data}
                             error={error}
                             isLoading={isValidating}
+                            align={align}
                         />
                     </ShowConfirmModalContext.Provider>
                     <PageActions/>

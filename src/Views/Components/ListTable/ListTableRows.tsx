@@ -72,7 +72,7 @@ const RenderRow = ({ column, item }) => {
     }
 }
 
-export default function ListTableRows({columns, data, isLoading, rowActions, setUpdateErrors, parameters, singleName}) {
+export default function ListTableRows({columns, data, isLoading, rowActions, setUpdateErrors, parameters, singleName, align}) {
     const [removed, setRemoved] = useState([]);
     const [added, setAdded] = useState([]);
 
@@ -138,10 +138,13 @@ export default function ListTableRows({columns, data, isLoading, rowActions, set
             </TableCell>
             <>
                 {columns.map((column) => (
-                    <TableCell key={column.name} className={cx(column?.addClass, {
-                        [styles.alignCenter]: column?.alignColumn === 'center',
-                        [styles.alignStart]: column?.alignColumn === 'start',
-                    })} heading={column?.heading}>
+                    <TableCell key={column.name} className={cx(column?.addClass,
+                        {
+                            [styles[align]]: !column?.alignColumn,
+                            [styles.center]: column?.alignColumn === 'center',
+                            [styles.start]: column?.alignColumn === 'start',
+                        }
+                    )} heading={column?.heading}>
                         <RenderRow column={column} item={item}/>
                         {!isLoading && rowActions &&
                             <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>

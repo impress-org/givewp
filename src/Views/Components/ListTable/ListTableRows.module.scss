@@ -72,12 +72,16 @@ tr.duplicated {
         opacity: 1;
     }
 
-    & .alignStart {
+    & .start {
         text-align: start;
     }
 
-    & .alignCenter {
+    & .center {
         text-align: center;
+    }
+
+    & .end {
+        text-align: end;
     }
 }
 

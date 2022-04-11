@@ -20,6 +20,7 @@ export interface ListTableProps {
     parameters?: {};
     error?: {}|Boolean;
     isLoading?: Boolean;
+    align?: 'start'|'center'|'end';
 }
 
 export interface ListTableColumn {
@@ -51,6 +52,7 @@ export const ListTable = ({
         parameters = {},
         error = false,
         isLoading = false,
+        align = 'start',
 }: ListTableProps) => {
     const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>, successes: Array<number>}>({errors: [], successes: []});
     const [errorOverlay, setErrorOverlay] = useState<any>(false);
@@ -145,7 +147,13 @@ export const ListTable = ({
                                         <th
                                             scope="col"
                                             aria-sort="none"
-                                            className={styles.tableColumnHeader}
+                                            className={cx(styles.tableColumnHeader,
+                                                {
+                                                    [styles[align]]: !column?.alignColumn,
+                                                    [styles.center]: column?.alignColumn === 'center',
+                                                    [styles.start]: column?.alignColumn === 'start',
+                                                }
+                                            )}
                                             data-column={column.name}
                                             key={column.name}
                                             style={{inlineSize: (column?.inlineSize || '8rem')}}
@@ -165,6 +173,7 @@ export const ListTable = ({
                                 rowActions={rowActions}
                                 parameters={parameters}
                                 setUpdateErrors={setUpdateErrors}
+                                align={align}
                             />
                         </tbody>
                     </table>
