@@ -75,11 +75,16 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function registerDonationsAdminPage()
     {
-        Hooks::addAction('admin_menu', DonationsAdminPage::class, 'registerMenuItem');
+        $userId = get_current_user_id();
+        $showLegacy = get_user_meta($userId, '_give_donations_archive_show_legacy', true);
+        // only register new admin page if user hasn't chosen to use the old one
+        if($showLegacy != 1)
+        {
+            Hooks::addAction('admin_menu', DonationsAdminPage::class, 'registerMenuItem');
 
-        if (DonationsAdminPage::isShowing()) {
-            // Disabled until actual file is created
-            Hooks::addAction('admin_enqueue_scripts', DonationsAdminPage::class, 'loadScripts');
+            if (DonationsAdminPage::isShowing()) {
+                Hooks::addAction('admin_enqueue_scripts', DonationsAdminPage::class, 'loadScripts');
+            }
         }
     }
 }

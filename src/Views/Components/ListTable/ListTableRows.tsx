@@ -140,7 +140,7 @@ export default function ListTableRows({columns, data, isLoading, rowActions, set
                 {columns.map((column) => (
                     <TableCell key={column.name} className={cx(column?.addClass,
                         {
-                            [styles[align]]: !column?.alignColumn,
+                            [styles[align]]: !(column?.alignColumn),
                             [styles.center]: column?.alignColumn === 'center',
                             [styles.start]: column?.alignColumn === 'start',
                         }

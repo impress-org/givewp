@@ -15,9 +15,9 @@ declare global {
     }
 }
 
-export default function () {
+const API = new ListTableApi(window.GiveDonations);
 
-    const API = new ListTableApi(window.GiveDonations);
+export default function () {
     const {mutate} = useSWRConfig();
 
     const rowActions = ({item, removeRow, setUpdateErrors, parameters}) => {
@@ -64,11 +64,14 @@ export default function () {
             name: 'id',
             text: __('ID', 'give'),
             heading: true,
+            alignColumn: 'start',
+            inlineSize: '5rem',
             preset: 'idBadge'
         },
         {
             name: 'amount',
             text: __('Amount', 'give'),
+            inlineSize: '6rem',
             preset: 'monetary',
         },
         {
@@ -210,11 +213,21 @@ export default function () {
             apiSettings={window.GiveDonations}
             filterSettings={filters}
         >
-            <a className={styles.addFormButton}
-               href={'edit.php?post_type=give_forms&page=give-tools&tab=import&importer-type=import_donations'}
-            >
-                {__('Import Donations', 'give')}
-            </a>
+            <div>
+                <a className={styles.addFormButton}
+                   href={'edit.php?post_type=give_forms&page=give-tools&tab=import&importer-type=import_donations'}
+                >
+                    {__('Import Donations', 'give')}
+                </a>
+                <button className={styles.addFormButton} onClick={showLegacyDonations}>
+                    {__('Switch to Legacy Table')}
+                </button>
+            </div>
         </ListTablePage>
     )
+}
+
+const showLegacyDonations = async (event) => {
+    await API.fetchWithArgs('/view', {isLegacy: 1});
+    window.location.reload();
 }

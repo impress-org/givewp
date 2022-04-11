@@ -5,6 +5,7 @@ namespace Give\ServiceProviders;
 use Give\DonationForms\Endpoints\ListForms;
 use Give\Donations\Endpoints\DonationActions;
 use Give\Donations\Endpoints\ListDonations;
+use Give\Donations\Endpoints\SwitchDonationView;
 use Give\Donors\Endpoints\DeleteDonor;
 use Give\Donors\Endpoints\ListDonors;
 use Give\DonationForms\Endpoints\FormActions;
@@ -47,6 +48,7 @@ class RestAPI implements ServiceProvider
         ListForms::class,
         ListDonors::class,
         ListDonations::class,
+        SwitchDonationView::class,
         DonationActions::class,
         DeleteDonor::class,
         FormActions::class,
