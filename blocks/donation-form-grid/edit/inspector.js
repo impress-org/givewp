@@ -74,6 +74,7 @@ const Inspector = ({attributes, setAttributes}) => {
                     value={columns}
                     options={giveFormOptions.columns}
                     onChange={(value) => saveSetting('columns', value)}
+                    help={ __('Controls how many columns of your Grid appear. “Best Fit” will adjust responsively to the width of your container element.', 'give') }
                 />
 
                 <ToggleControl
