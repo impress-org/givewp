@@ -1,0 +1,48 @@
+.give_column_selector {
+    padding-bottom: 20px;
+}
+
+.give_column_selector_container {
+    padding: 10px;
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: stretch;
+    background-color: #EEEEEE;
+    border-radius: 2px;
+    gap: 10px;
+    cursor: pointer;
+
+    .give_column_selector_button {
+        display: inline-flex;
+        flex: 1;
+        height: 40px;
+        border-radius: 2px;
+        background-color: #828282;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &.give_column_selector_selected {
+        border: 1px solid #828282;
+        .give_column_selector_button {
+            background-color: #2271B1;
+        }
+    }
+}
+
+.give_column_selector_help_text {
+    font-size: 12px;
+    font-style: normal;
+    color: rgb(117, 117, 117);
+}
+
+.give_column_selector_row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: stretch;
+    margin-bottom: 10px;
+    gap: 10px;
+}
