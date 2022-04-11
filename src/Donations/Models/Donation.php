@@ -203,6 +203,11 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
         return Money::ofMinor($this->amount, $this->currency);
     }
 
+    /**
+     * @unreleased
+     *
+     * @inheritDoc
+     */
     protected function getPropertyDefaults()
     {
         return array_merge(parent::getPropertyDefaults(), [

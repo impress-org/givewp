@@ -15,7 +15,6 @@ use Give\Framework\QueryBuilder\QueryBuilder;
  */
 class TestModel extends \Give_Unit_Test_Case
 {
-
     /**
      * @unreleased
      *
@@ -32,6 +31,11 @@ class TestModel extends \Give_Unit_Test_Case
         $this->assertEquals('Murray', $model->lastName);
     }
 
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
     public function testDefaultPropertyValues()
     {
         $model = new MockModel();

@@ -44,6 +44,7 @@ abstract class Model implements Arrayable
     /**
      * Create a new model instance.
      *
+     * @unreleased add support for property defaults
      * @since 2.19.6
      *
      * @param array $attributes
