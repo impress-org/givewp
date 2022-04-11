@@ -41,7 +41,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
      */
     protected $properties = [
         'id' => 'int',
-        'userId' => 'int',
+        'userId' => ['int', 0],
         'createdAt' => DateTime::class,
         'name' => 'string',
         'firstName' => 'string',
@@ -74,7 +74,8 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     /**
      * @since 2.19.6
      *
-     * @param  string  $email
+     * @param string $email
+     *
      * @return Donor
      */
     public static function whereEmail($email)
@@ -85,7 +86,8 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     /**
      * @since 2.19.6
      *
-     * @param  int  $userId
+     * @param int $userId
+     *
      * @return Donor
      */
     public static function whereUserId($userId)
@@ -97,7 +99,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
      * @unreleased return mutated model instance
      * @since 2.19.6
      *
-     * @param  array  $attributes
+     * @param array $attributes
      *
      * @return Donor
      *
@@ -192,7 +194,8 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     /**
      * @since 2.19.6
      *
-     * @param  object  $object
+     * @param object $object
+     *
      * @return Donor
      */
     public static function fromQueryBuilderObject($object)

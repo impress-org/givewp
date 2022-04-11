@@ -71,11 +71,11 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
         'firstName' => 'string',
         'lastName' => 'string',
         'email' => 'string',
-        'parentId' => 'int',
-        'subscriptionId' => 'int',
+        'parentId' => ['int', 0],
+        'subscriptionId' => ['int', 0],
         'billingAddress' => BillingAddress::class,
-        'anonymous' => 'bool',
-        'levelId' => 'int',
+        'anonymous' => ['bool', false],
+        'levelId' => ['int', 0],
         'gatewayTransactionId' => 'string',
     ];
 
@@ -105,7 +105,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      * @unreleased return mutated model instance
      * @since 2.19.6
      *
-     * @param  array  $attributes
+     * @param array $attributes
      *
      * @return Donation
      *
@@ -201,6 +201,15 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     public function getMinorAmount()
     {
         return Money::ofMinor($this->amount, $this->currency);
+    }
+
+    protected function getPropertyDefaults()
+    {
+        return array_merge(parent::getPropertyDefaults(), [
+            'mode' => give_is_test_mode() ? DonationMode::TEST() : DonationMode::LIVE(),
+            'donorIp' => give_get_ip(),
+            'billingAddress' => new BillingAddress(),
+        ]);
     }
 
     /**

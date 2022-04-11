@@ -151,22 +151,6 @@ class SubscriptionRepository
         $subscription->id = $subscriptionId;
         $subscription->createdAt = $dateCreated;
 
-        if (!isset($subscription->feeAmount)) {
-            $subscription->feeAmount = 0;
-        }
-
-        if (!isset($subscription->installments)) {
-            $subscription->installments = 0;
-        }
-
-        if (!isset($subscription->transactionId)) {
-            $subscription->transactionId = '';
-        }
-
-        if (!isset($subscription->gatewaySubscriptionId)) {
-            $subscription->gatewaySubscriptionId = '';
-        }
-
         if (!isset($subscription->expiresAt)) {
             $subscription->expiresAt = null;
         }

@@ -154,18 +154,6 @@ class DonorRepository
 
         $donor->id = $donorId;
         $donor->createdAt = $dateCreated;
-
-        if (!isset($donor->userId)) {
-            $donor->userId = 0;
-        }
-
-        if (!isset($donor->prefix)) {
-            $donor->prefix = null;
-        }
-
-        if (!isset($donor->additionalEmails)) {
-            $donor->additionalEmails = null;
-        }
     }
 
     /**

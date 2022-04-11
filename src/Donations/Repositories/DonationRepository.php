@@ -180,40 +180,8 @@ class DonationRepository
             $donation->formTitle = $this->getFormTitle($donation->formId);
         }
 
-        if (!isset($donation->mode)) {
-            $donation->mode = $this->getDefaultDonationMode();
-        }
-
         if (!isset($donation->purchaseKey)) {
             $donation->purchaseKey = $donationMeta[DonationMetaKeys::PURCHASE_KEY];
-        }
-
-        if (!isset($donation->donorIp)) {
-            $donation->donorIp = give_get_ip();
-        }
-
-        if (!isset($donation->subscriptionId)) {
-            $donation->subscriptionId = 0;
-        }
-
-        if (!isset($donation->billingAddress)) {
-            $donation->billingAddress = new BillingAddress();
-        }
-
-        if (!isset($donation->anonymous)) {
-            $donation->anonymous = false;
-        }
-
-        if (!isset($donation->levelId)) {
-            $donation->levelId = 0;
-        }
-
-        if (!isset($donation->gatewayTransactionId)) {
-            $donation->gatewayTransactionId = null;
-        }
-
-        if (!isset($donation->parentId)) {
-            $donation->parentId = 0;
         }
 
         Hooks::doAction('give_donation_created', $donation);
