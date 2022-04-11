@@ -187,12 +187,12 @@ class Give_Donation_Form_Grid_Block {
 	public function render_block( $attributes ) {
 		$parameters = array(
 			'forms_per_page'      => absint( $attributes['formsPerPage'] ),
-			'ids'                 => implode(',', $attributes['formIDs'] ),
-			'exclude'             => implode(',', $attributes['excludedFormIDs'] ),
+			'ids'                 => implode(',', $this->getAsArray($attributes['formIDs'] ) ),
+			'exclude'             => implode(',', $this->getAsArray($attributes['excludedFormIDs'] ) ),
 			'orderby'             => $attributes['orderBy'],
 			'order'               => $attributes['order'],
-			'cats'                => implode(',', $attributes['categories'] ),
-			'tags'                => implode(',', $attributes['tags'] ),
+			'cats'                => implode(',', $this->getAsArray($attributes['categories'] ) ),
+			'tags'                => implode(',', $this->getAsArray($attributes['tags'] ) ),
 			'columns'             => $attributes['columns'],
 			'show_title'          => $attributes['showTitle'],
 			'show_goal'           => $attributes['showGoal'],
@@ -213,6 +213,25 @@ class Give_Donation_Form_Grid_Block {
 
 		return $html;
 	}
+
+    /**
+     * @unreleased
+     *
+     * @param string|array $value
+     * @return array
+     */
+    private function getAsArray($value) {
+        if ( is_array($value) ) {
+            return $value;
+        }
+
+        // Backward compatibility
+        if (strpos($value, ',')) {
+            return explode(',', $value);
+        }
+
+        return [$value];
+    }
 
 	/**
 	 * Return formatted notice when shortcode return empty string
