@@ -3,6 +3,7 @@ import {__, sprintf} from '@wordpress/i18n';
 import cx from 'classnames';
 import {useEffect, useState} from 'react';
 import TableCell, {IdBadge, StatusBadge} from "./TableCell";
+import TestLabel from "@givewp/components/ListTable/TestLabel";
 
 const postStatusMap = {
     publish: __('published', 'give'),
@@ -51,9 +52,12 @@ const RenderRow = ({ column, item }) => {
             );
         case 'donationStatus':
             return (
-                <StatusBadge key={column.name} className={styles[value]}
-                             text={donationStatusMap[value]}
-                />
+                <div className={styles.donationStatus}>
+                    <StatusBadge key={column.name} className={styles[value]}
+                                 text={donationStatusMap[value]}
+                    />
+                    <TestLabel className={styles.test}/>
+                </div>
             );
         case 'monetary':
             return (

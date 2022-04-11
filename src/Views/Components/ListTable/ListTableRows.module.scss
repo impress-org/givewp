@@ -88,6 +88,16 @@ tr.duplicated {
     padding-block: 2em;
 }
 
+.donationStatus {
+    position: relative;
+
+    & .test {
+        position: absolute;
+        right: 0;
+        top: 75%;
+    }
+}
+
 div.pending, div.processing, div.preapproval {
     background-color: rgba(8, 120, 176);
 }

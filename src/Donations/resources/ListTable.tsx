@@ -7,6 +7,7 @@ import styles from "@givewp/components/ListTable/ListTablePage.module.scss";
 import {IdBadge} from "@givewp/components/ListTable/TableCell";
 import {BulkActionsConfig, ShowConfirmModalContext} from "@givewp/components/ListTable";
 import {useContext} from "react";
+import {DonationType} from "@givewp/components/ListTable/DonorType";
 
 declare global {
     interface Window {
@@ -69,6 +70,14 @@ export default function () {
             name: 'amount',
             text: __('Amount', 'give'),
             preset: 'monetary',
+        },
+        {
+            name: 'paymentType',
+            text: __('Payment Type'),
+            inlineSize: '12rem',
+            render: (donation: {donationType}) => (
+                <DonationType type={types[Math.floor(Math.random() * 3)]}/>
+            )
         },
         {
             name: 'createdAt',
@@ -209,3 +218,5 @@ export default function () {
         </ListTablePage>
     )
 }
+
+const types = [ 'single', 'renewal', 'subscription' ];
