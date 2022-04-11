@@ -32,6 +32,16 @@ class TestModel extends \Give_Unit_Test_Case
         $this->assertEquals('Murray', $model->lastName);
     }
 
+    public function testDefaultPropertyValues()
+    {
+        $model = new MockModel();
+
+        $this->assertNull($model->id);
+        $this->assertSame('Michael', $model->firstName);
+        $this->assertNull($model->lastName);
+        $this->assertSame([], $model->emails);
+    }
+
     /**
      * @unreleased
      *
@@ -123,7 +133,7 @@ class TestModel extends \Give_Unit_Test_Case
                 'id' => 1,
                 'firstName' => 'Bill',
                 'lastName' => 'Murray',
-                'emails' => ['billMurray@givewp.com']
+                'emails' => ['billMurray@givewp.com'],
             ]
         );
 
@@ -146,7 +156,7 @@ class TestModel extends \Give_Unit_Test_Case
                 'id' => 1,
                 'firstName' => 'Bill',
                 'lastName' => 'Murray',
-                'emails' => ['billMurray@givewp.com']
+                'emails' => ['billMurray@givewp.com'],
             ]
         );
 
@@ -249,12 +259,11 @@ class MockModel extends Model
 {
     protected $properties = [
         'id' => 'int',
-        'firstName' => 'string',
+        'firstName' => ['string', 'Michael'],
         'lastName' => 'string',
-        'emails' => 'array'
+        'emails' => ['array', []],
     ];
 }
-
 
 /**
  * @unreleased
