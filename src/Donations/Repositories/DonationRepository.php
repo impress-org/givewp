@@ -5,7 +5,6 @@ namespace Give\Donations\Repositories;
 use Exception;
 use Give\Donations\Actions\GeneratePurchaseKey;
 use Give\Donations\Models\Donation;
-use Give\Donations\Properties\BillingAddress;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Framework\Database\DB;
