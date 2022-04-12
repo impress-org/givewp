@@ -7,6 +7,7 @@ use Give\Donations\Actions\GeneratePurchaseKey;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
+use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
@@ -602,6 +603,7 @@ class DonationRepository
         $start = $request->get_param('start');
         $end = $request->get_param('end');
         $form = $request->get_param('form');
+        $donor = $request->get_param('donor');
 
         if ($form || ($search && !ctype_digit($search))) {
             $query->leftJoin(
@@ -615,6 +617,21 @@ class DonationRepository
         if ($search) {
             if (ctype_digit($search)) {
                 $query->where('id', $search);
+            } else {
+                $column = (strpos($search, '@') !== false)
+                    ? DonationMetaKeys::EMAIL
+                    : DonationMetaKeys::FIRST_NAME;
+                $query
+                    ->where('metaTable.meta_key', $column)
+                    ->whereLike('metaTable.meta_value', $search);
+            }
+        }
+
+        if ($donor) {
+            if (ctype_digit($donor)) {
+                $query
+                    ->where('metaTable.meta_key', DonationMetaKeys::DONOR_ID)
+                    ->whereLike('metaTable.meta_value', $donor);
             } else {
                 $column = (strpos($search, '@') !== false)
                     ? DonationMetaKeys::EMAIL

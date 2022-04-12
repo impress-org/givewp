@@ -47,7 +47,8 @@ class ListDonations extends Endpoint
                     ],
                     'search' => [
                         'type' => 'string',
-                        'required' => false
+                        'required' => false,
+                        'sanitize_callback' => 'sanitize_text_field',
                     ],
                     'start' => [
                         'type' => 'string',
@@ -58,6 +59,11 @@ class ListDonations extends Endpoint
                         'type' => 'string',
                         'required' => false,
                         'validate_callback' => [$this, 'validateDate']
+                    ],
+                    'donor' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'sanitize_callback' => 'sanitize_text_field',
                     ],
                 ],
             ]
