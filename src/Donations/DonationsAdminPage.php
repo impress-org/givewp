@@ -100,6 +100,8 @@ class DonationsAdminPage
 
 
     /**
+     * Get first page of results from REST API to display as initial table data
+     *
      * @unreleased
      * @return array
      */
@@ -120,6 +122,8 @@ class DonationsAdminPage
     }
 
     /**
+     * Retrieve a list of donation forms to populate the form filter dropdown
+     *
      * @unreleased
      * @return array
      */

@@ -1,7 +1,16 @@
 import styles from './RowAction.module.scss';
 import cx from 'classnames';
 
-export default function RowAction({onClick = null, className = '', actionId = null, displayText, hiddenText = '', disabled = false, highlight = false, href = ''}) {
+export default function RowAction({
+    onClick = null,
+    className = '',
+    actionId = null,
+    displayText,
+    hiddenText = '',
+    disabled = false,
+    highlight = false,
+    href = ''
+}) {
     if(href) {
         return (
             <a

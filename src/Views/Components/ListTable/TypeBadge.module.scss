@@ -1,4 +1,5 @@
 .container {
+    position: relative;
     font-family: Open Sans;
     background-color: white;
     border: 0;
@@ -69,12 +70,12 @@ svg.badge {
 }
 
 .star {
-    display: inline-block;
+    display: inline;
     color: rgba(255, 215, 0, 1);
-    position: relative;
+    position: absolute;
     z-index: 2;
-    top: -0.5625rem;
-    right: 0.5625rem;
+    top: -0.5rem;
+    right: -0.5rem;
 }
 
 .relative {

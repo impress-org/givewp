@@ -1,7 +1,7 @@
 import {__} from "@wordpress/i18n";
 import cx from "classnames";
 
-import styles from './DonorType.module.scss';
+import styles from './TypeBadge.module.scss';
 import RenewalIcon from "@givewp/components/ListTable/images/RenewalIcon";
 import RecurringIcon from "@givewp/components/ListTable/images/RecurringIcon";
 import {useUniqueId} from "@givewp/components/ListTable/hooks/useUniqueId";
@@ -70,18 +70,18 @@ export default function TypeBadge ({config}) {
                     <config.badgeContent aria-labelledby={badgeId} className={cx(styles.badge, config.badgeStyle)}/>
                 }
                 <label id={badgeId} className={styles.label}>{config.label}</label>
+                {
+                    config?.starred ?
+                        <FontAwesomeIcon
+                            icon={faStar}
+                            className={styles.star}
+                            role='img'
+                            aria-label={__('star', 'give')}
+                        />
+                        :
+                        null
+                }
             </div>
-            {
-                config?.starred ?
-                <FontAwesomeIcon
-                    icon={faStar}
-                    className={styles.star}
-                    role='img'
-                    aria-label={__('star', 'give')}
-                />
-                :
-                null
-            }
         </div>
     );
 }

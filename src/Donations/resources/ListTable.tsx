@@ -7,7 +7,7 @@ import styles from "@givewp/components/ListTable/ListTablePage.module.scss";
 import {IdBadge} from "@givewp/components/ListTable/TableCell";
 import {BulkActionsConfig, ShowConfirmModalContext} from "@givewp/components/ListTable";
 import {useContext} from "react";
-import {DonationType} from "@givewp/components/ListTable/DonorType";
+import {DonationType} from "@givewp/components/ListTable/TypeBadge";
 
 declare global {
     interface Window {
@@ -181,7 +181,7 @@ export default function () {
                     }, 'POST'),
                     confirm: (selected) => (
                         <>
-                            {__('Set status for the following donations?', 'give')}
+                            <p>{__('Set status for the following donations?', 'give')}</p>
                             <ul>
                                 {selected.map(donationId => (
                                     <li key={donationId}><IdBadge id={donationId}/></li>
@@ -198,7 +198,7 @@ export default function () {
             action: async (selected) => await API.fetchWithArgs('/resendEmailReceipt', {ids: selected.join(',')}, 'POST'),
             confirm: (selected) => (
                 <>
-                    {__('Resend Email Receipts for following donations?', 'give')}
+                    <p>{__('Resend Email Receipts for following donations?', 'give')}</p>
                     <ul>
                         {selected.map(donationId => (
                             <li key={donationId}><IdBadge id={donationId}/></li>

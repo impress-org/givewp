@@ -14,6 +14,7 @@ $gravatar-dimensions: 4rem;
     gap: 0.6125em;
     height: calc($gravatar-dimensions + 0.5em);
     width: 100%;
+
     & > .email {
         min-width: 0;
         overflow: hidden;

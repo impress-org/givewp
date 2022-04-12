@@ -33,7 +33,7 @@ export default class ListTableApi {
     fetchWithArgs = (endpoint, args, method = 'GET', signal = null) => {
         const url = new URL(this.apiRoot + endpoint);
         for (const [param, value] of Object.entries(args)) {
-            url.searchParams.set(param, value as string);
+            value !== '' && url.searchParams.set(param, value as string);
         }
         return fetch(url.href, {
             method: method,

@@ -29,6 +29,7 @@ export const Filter = ({ filter, value = null, onChange, debouncedOnChange }) =>
                     placeholder={filter?.text}
                     onChange={onChange}
                     style={{inlineSize: filter?.inlineSize}}
+                    defaultValue={value}
                 />
             );
         case 'search':
@@ -66,10 +67,10 @@ export const getInitialFilterState = (filters) => {
         {
             switch (filter.type) {
                 case 'select':
-                case 'formselect':
                     state[filter.name] = filter.options?.[0].value
                     break;
                 case 'search':
+                case 'formselect':
                 default:
                     state[filter.name] = '';
                     break;

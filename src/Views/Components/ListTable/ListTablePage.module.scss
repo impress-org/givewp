@@ -220,6 +220,7 @@ select {
     border-block-start-width: 0.25rem;
     box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
     max-width: 50vw;
+    min-width: 30vw;
 
     & ul {
         max-height: 60vh;
