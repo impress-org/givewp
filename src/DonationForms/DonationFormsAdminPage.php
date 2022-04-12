@@ -3,12 +3,23 @@
 namespace Give\DonationForms;
 
 use Give\Helpers\EnqueueScript;
+use WP_REST_Request;
 
 /**
  * @since 2.19.0
  */
 class DonationFormsAdminPage
 {
+    /**
+     * @var string
+     */
+    protected $apiRoot;
+
+    public function __construct()
+    {
+        $this->apiRoot = esc_url_raw(rest_url('give-api/v2/admin/forms'));
+    }
+
     /**
      * Register menu item
      */
@@ -32,8 +43,9 @@ class DonationFormsAdminPage
     public function loadScripts()
     {
         $data =  [
-            'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/forms')),
+            'apiRoot' => $this->apiRoot,
             'apiNonce' => wp_create_nonce('wp_rest'),
+            'preload' => $this->preloadDonationForms(),
             'authors' => $this->getAuthors(),
         ];
 
@@ -48,6 +60,27 @@ class DonationFormsAdminPage
             [],
             null
         );
+    }
+
+    /**
+     * Get first page of results from REST API to display as initial table data
+     *
+     * @unreleased
+     * @return array
+     */
+    private function preloadDonationForms()
+    {
+        $queryParameters = [
+            'page' => 1,
+            'perPage' => 30,
+        ];
+
+        $request = WP_REST_Request::from_url(add_query_arg(
+            $queryParameters,
+            $this->apiRoot
+        ));
+
+        return rest_do_request($request)->get_data();
     }
 
     /**
