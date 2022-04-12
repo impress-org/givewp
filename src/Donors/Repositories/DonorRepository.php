@@ -239,6 +239,9 @@ class DonorRepository
     }
 
     /**
+     * @unreleased consolidate meta deletion into a single query
+     * @since 2.19.6
+     *
      * @throws Exception
      */
     public function delete(Donor $donor)
