@@ -13,6 +13,11 @@ class SwitchDonationView extends Endpoint
     protected $endpoint = 'admin/donations/view';
 
     /**
+     * @var string
+     */
+    protected $slug = 'donations';
+
+    /**
      * @inheritDoc
      */
     public function registerRoute()
@@ -49,7 +54,7 @@ class SwitchDonationView extends Endpoint
         $userId = get_current_user_id();
         if($userId)
         {
-            update_user_meta($userId, '_give_donations_archive_show_legacy', $isLegacyEnabled);
+            update_user_meta($userId, sprintf('_give_%s_archive_show_legacy', $this->slug), $isLegacyEnabled);
         }
         else
         {

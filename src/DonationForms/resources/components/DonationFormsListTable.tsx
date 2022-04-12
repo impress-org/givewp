@@ -150,6 +150,14 @@ export default function DonationFormsListTable(){
             <a href={'post-new.php?post_type=give_forms'} className={styles.addFormButton}>
                 {__('Add Form', 'give')}
             </a>
+            <button className={styles.addFormButton} onClick={showLegacyDonationForms}>
+                {__('Switch to Legacy View')}
+            </button>
         </ListTablePage>
     );
+}
+
+const showLegacyDonationForms = async (event) => {
+    await API.fetchWithArgs('/view', {isLegacy: 1});
+    window.location.href = '/wp-admin/edit.php?post_type=give_forms';
 }

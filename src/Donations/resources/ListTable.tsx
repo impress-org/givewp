@@ -220,7 +220,7 @@ export default function () {
                     {__('Import Donations', 'give')}
                 </a>
                 <button className={styles.addFormButton} onClick={showLegacyDonations}>
-                    {__('Switch to Legacy Table')}
+                    {__('Switch to Legacy View')}
                 </button>
             </div>
         </ListTablePage>

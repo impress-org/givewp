@@ -76,6 +76,36 @@ class DonationFormsAdminPage
     }
 
     /**
+     * Display a button on the old donation forms table that switches to the React view
+     *
+     * @unreleased
+     */
+    public function renderReactSwitch()
+    {
+        ?>
+        <script type="text/javascript">
+            function showReactTable () {
+                fetch( '<?php echo esc_url_raw(rest_url('give-api/v2/admin/forms/view?isLegacy=0')) ?>', {
+                    method: 'GET',
+                    headers: {
+                        ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>'
+                    }
+                })
+                    .then((res) => {
+                        window.location = window.location.href = '/wp-admin/edit.php?post_type=give_forms&page=give-forms';
+                    });
+            }
+            jQuery( function() {
+                console.error('barf');
+                jQuery(jQuery(".wrap .page-title-action")[0]).after(
+                    '<button class="page-title-action" onclick="showReactTable()">Switch to Updated View</button>'
+                );
+            });
+        </script>
+        <?php
+    }
+
+    /**
      * Helper function to determine if current page is Give Add-ons admin page
      *
      * @return bool
