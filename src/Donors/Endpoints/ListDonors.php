@@ -2,7 +2,7 @@
 
 namespace Give\Donors\Endpoints;
 
-use Give\Helpers\Date;
+use Give\Donors\DataTransferObjects\DonorResponseData;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -83,22 +83,7 @@ class ListDonors extends Endpoint
         $pageCount = (int)ceil($donorsCount / $request->get_param('perPage'));
 
         foreach ($donors as $donor) {
-            $donorType = give()->donors->getDonorType($donor->id);
-            $donorLatestDonationDate = give()->donors->getDonorLatestDonationDate($donor->id);
-
-            $data[] = [
-                'id' => $donor->id,
-                'userId' => $donor->userId,
-                'email' => $donor->email,
-                'name' => $donor->name,
-                'titlePrefix' => $donor->titlePrefix,
-                'donationCount' => $donor->donationCount,
-                'dateCreated' => Date::getDateTime($donor->createdAt),
-                'donorType' => $donorType,
-                'latestDonation' => $donorLatestDonationDate ? Date::getDateTime($donorLatestDonationDate) : '',
-                'donationRevenue' => $this->formatAmount($donor->donationRevenue),
-                'gravatar' => get_avatar_url($donor->email),
-            ];
+            $data[] = DonorResponseData::fromObject($donor)->toArray();
         }
 
         return new WP_REST_Response(
@@ -108,16 +93,5 @@ class ListDonors extends Endpoint
                 'totalPages' => $pageCount
             ]
         );
-    }
-
-    /**
-     * @param string $amount
-     * @unreleased
-     *
-     * @return string
-     */
-    private function formatAmount($amount)
-    {
-        return html_entity_decode(give_currency_filter(give_format_amount($amount)));
     }
 }
