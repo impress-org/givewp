@@ -2,7 +2,7 @@ import {__} from '@wordpress/i18n';
 import cx from 'classnames';
 import './style.scss';
 
-export function Selector({display, selected, onClick, children}) {
+export function Selector({display, selected, onClick}) {
     const displayValue = String(display);
 
     const handleOnClick = () => {
