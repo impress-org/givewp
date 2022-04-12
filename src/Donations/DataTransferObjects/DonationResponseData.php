@@ -94,7 +94,7 @@ class DonationResponseData implements Arrayable
         $self->status = new DonationStatus($donation->status);
         $self->paymentMode = $donation->{DonationMetaKeys::MODE()};
         $self->anonymous = (bool)$donation->{DonationMetaKeys::ANONYMOUS()};
-        $self->donationType = DonationResponseData::getDonationType($donation);
+        $self->donationType = self::getDonationType($donation);
 
         return $self;
     }
@@ -102,6 +102,7 @@ class DonationResponseData implements Arrayable
     /**
      * Convert DTO to array
      *
+     * @unreleased
      * @return array
      */
     public function toArray()
@@ -112,14 +113,14 @@ class DonationResponseData implements Arrayable
     /**
      * Get donation type to display on front-end
      *
+     * @unreleased
+     * @param object $donation
      * @return string
      */
-    public static function getDonationType($donation)
+    private static function getDonationType($donation)
     {
-        if($donation->{DonationMetaKeys::IS_RECURRING()})
-        {
-            if($donation->{DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION()} == 1)
-            {
+        if ($donation->{DonationMetaKeys::IS_RECURRING()}) {
+            if ($donation->{DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION()}) {
                 return 'subscription';
             }
             return 'renewal';
