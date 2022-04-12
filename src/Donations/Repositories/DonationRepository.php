@@ -238,7 +238,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased simplify delete transaction
+     * @unreleased consolidate meta deletion into a single query
      * @since 2.19.6
      *
      * @param  Donation  $donation

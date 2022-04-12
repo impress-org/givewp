@@ -204,6 +204,7 @@ class SubscriptionRepository
     }
 
     /**
+     * @unreleased consolidate meta deletion into a single query
      * @since 2.19.6
      *
      * @param  Subscription  $subscription
@@ -221,6 +222,10 @@ class SubscriptionRepository
         try {
             DB::table('give_subscriptions')
                 ->where('id', $subscription->id)
+                ->delete();
+
+            DB::table('give_subscriptionmeta')
+                ->where('subscription_id', $subscription->id)
                 ->delete();
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
