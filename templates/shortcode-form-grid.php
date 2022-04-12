@@ -93,7 +93,9 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
 				&& true === $atts['show_goal']
 			) {
 				echo '<div class="give-card__progress">';
-					give_show_goal_progress( $form_id );
+					give_show_goal_progress( $form_id, [
+                        'show_bar' => $atts['show_bar']
+                    ] );
 				echo '</div>';
 			}
 			?>

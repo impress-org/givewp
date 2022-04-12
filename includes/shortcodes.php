@@ -796,6 +796,7 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
  * @unreleased string $donate_button_text Default Donate
  * @unreleased string $donate_button_background_color Default #66bb6a
  * @unreleased string $donate_button_text_color Default #fff
+ * @unreleased bool $show_bar Default false
  *
  * @return string|bool The markup of the form grid or false.
  */
@@ -816,6 +817,7 @@ function give_form_grid_shortcode( $atts ) {
 			'columns'             => 'best-fit',
 			'show_title'          => true,
 			'show_goal'           => true,
+			'show_bar'            => false,
 			'show_excerpt'        => true,
 			'show_featured_image' => true,
 			'show_donate_button'  => false,

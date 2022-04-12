@@ -147,6 +147,10 @@ class Give_Donation_Form_Grid_Block {
 						'type'    => 'boolean',
 						'default' => true,
 					),
+                    'showProgressBar'          => array(
+                        'type'    => 'boolean',
+                        'default' => false,
+                    ),
 					'showFeaturedImage' => array(
 						'type'    => 'boolean',
 						'default' => true,
@@ -196,6 +200,7 @@ class Give_Donation_Form_Grid_Block {
 			'columns'             => $attributes['columns'],
 			'show_title'          => $attributes['showTitle'],
 			'show_goal'           => $attributes['showGoal'],
+			'show_bar'            => $attributes['showProgressBar'],
 			'show_excerpt'        => $attributes['showExcerpt'],
             'excerpt_length'      => $attributes['excerptLength'],
 			'show_featured_image' => $attributes['showFeaturedImage'],

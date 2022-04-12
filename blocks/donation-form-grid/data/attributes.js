@@ -63,6 +63,10 @@ const blockAttributes = {
 		type: 'boolean',
 		default: true,
 	},
+    showProgressBar: {
+        type: 'boolean',
+        default: false,
+    },
 	showFeaturedImage: {
 		type: 'boolean',
 		default: true,

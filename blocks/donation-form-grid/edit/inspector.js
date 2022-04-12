@@ -41,6 +41,7 @@ const Inspector = ({attributes, setAttributes}) => {
         showExcerpt,
         excerptLength,
         showGoal,
+        showProgressBar,
         showFeaturedImage,
         showDonateButton,
         donateButtonBackgroundColor,
@@ -104,6 +105,15 @@ const Inspector = ({attributes, setAttributes}) => {
                     checked={!!showGoal}
                     onChange={(value) => saveSetting('showGoal', value)}
                 />
+
+                { showGoal && (
+                    <ToggleControl
+                        name="showProgressBar"
+                        label={__('Show Progress Bar', 'give')}
+                        checked={!!showProgressBar}
+                        onChange={(value) => saveSetting('showProgressBar', value)}
+                    />
+                )}
 
                 <ToggleControl
                     align="right"
