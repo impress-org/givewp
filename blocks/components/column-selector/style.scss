@@ -31,7 +31,7 @@
     }
 
     &.give_column_selector_selected {
-        border: 1px solid #828282;
+        outline: 1px solid #828282;
         .give_column_selector_box,
         .give_best_fit_icon_box {
             background-color: #2271B1 !important;
