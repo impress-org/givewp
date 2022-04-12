@@ -184,6 +184,7 @@ select {
     display: flex;
     opacity: 1;
     animation: appear 180ms ease-in 0s 1;
+    font-family: "Open Sans", sans-serif;
 
     &[aria-hidden='true'] {
         display: none;
@@ -204,18 +205,85 @@ select {
     background-color: rgba(43, 46, 56, 0.9);
 }
 
+#modalTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
 .dialog {
     margin: auto;
     z-index: 2;
     position: relative;
-    padding-inline: 2.5em;
-    padding-block: 1em;
     background: #fff;
     border: 1px solid #c3c4c7;
-    border-block-start-color: #d63638;
+    border-block-start-color: #69b868;
     border-block-start-width: 0.25rem;
     box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
+    max-width: 50vw;
 
+    & ul {
+        max-height: 60vh;
+        overflow-y: auto;
+        scrollbar-width: thin;
+    }
+
+    & li {
+        margin-inline: 2em;
+        font-weight: 600;
+    }
+
+    & li+li {
+        border-top: 1px solid rgba(196, 196, 196);
+        padding-top: 0.5rem;
+    }
+
+    & *:not(ul):not(.gutter):not(.modalContent) {
+        padding-inline: 1em
+    }
+
+    & > .modalContent {
+        padding-block-end: 1em;
+    }
+}
+
+.gutter {
+    border-top: 1px solid #DFDFDF;
+    background: rgba(245 245 245);
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    column-gap: 1em;
+    box-sizing: border-box !important;
+    padding-block: 1em;
+    padding-inline: 2rem;
+    overflow: hidden
+}
+
+$button-blue: rgba(8 120 176);
+
+#cancel, #confirm {
+    border-radius: 3px;
+    padding-inline: 0.75em;
+    padding-block: 0.5em;
+    transition: all 0.15s;
+
+    &:hover, &:focus {
+        background: white;
+        outline: 0.125rem solid var(--give-primary-color);
+        color: $button-blue;
+    }
+}
+
+#cancel {
+    border: 1px solid $button-blue;
+    color: $button-blue;
+    background: rgba(247 247 247);
+}
+
+#confirm {
+    background: $button-blue;
+    color: white;
 }
 
 @media (prefers-reduced-motion: reduce) {

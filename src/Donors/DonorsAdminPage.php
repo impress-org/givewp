@@ -80,7 +80,7 @@ class DonorsAdminPage
     public function preloadDonors(){
         $queryParameters = [
             'page' => 1,
-            'perPage' => 10,
+            'perPage' => 30,
             'search' => '',
         ];
 

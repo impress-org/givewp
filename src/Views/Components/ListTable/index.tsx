@@ -57,7 +57,7 @@ export default function ListTablePage({
     align = 'start',
 }: ListTablePageProps) {
     const [page, setPage] = useState<number>(1);
-    const [perPage, setPerPage] = useState<number>(10);
+    const [perPage, setPerPage] = useState<number>(30);
     const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
     const [modalContent, setModalContent] = useState<{confirm, action, label}>({
         confirm: (selected)=>{},
@@ -171,27 +171,32 @@ export default function ListTablePage({
             <A11yDialog
                 id='giveListTableModal'
                 dialogRef={instance => (dialog.current = instance)}
-                title={`${modalContent.label} - ${title}`}
+                title={modalContent.label}
+                titleId={styles.modalTitle}
                 classNames={{
                     container: styles.container,
                     overlay: styles.overlay,
                     dialog: styles.dialog,
-                    closeButton: ''
+                    closeButton: 'hidden',
                 }}
             >
-                {modalContent?.confirm(selectedIds, selectedNames) || null}
-                <button className={styles.addFormButton} onClick={(event) => dialog.current?.hide()}>
-                    {__('Cancel', 'give')}
-                </button>
-                <button className={styles.addFormButton}
-                        onClick={async (event) => {
-                            dialog.current?.hide();
-                            await modalContent.action(selectedIds);
-                            await mutate();
-                        }}
-                >
-                    {__('Confirm', 'give')}
-                </button>
+                <div className={styles.modalContent}>
+                    {modalContent?.confirm(selectedIds, selectedNames) || null}
+                </div>
+                <div className={styles.gutter}>
+                    <button id={styles.cancel} onClick={(event) => dialog.current?.hide()}>
+                        {__('Cancel', 'give')}
+                    </button>
+                    <button id={styles.confirm}
+                            onClick={async (event) => {
+                                dialog.current?.hide();
+                                await modalContent.action(selectedIds);
+                                await mutate();
+                            }}
+                    >
+                        {__('Confirm', 'give')}
+                    </button>
+                </div>
             </A11yDialog>
         </>
     );

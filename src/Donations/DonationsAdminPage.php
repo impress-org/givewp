@@ -107,7 +107,7 @@ class DonationsAdminPage
     {
         $queryParameters = [
             'page' => 1,
-            'perPage' => 10
+            'perPage' => 30
         ];
 
         $request = WP_REST_Request::from_url(add_query_arg(
