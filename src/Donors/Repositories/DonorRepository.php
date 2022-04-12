@@ -239,6 +239,9 @@ class DonorRepository
     }
 
     /**
+     * @unreleased consolidate meta deletion into a single query
+     * @since 2.19.6
+     *
      * @throws Exception
      */
     public function delete(Donor $donor)
@@ -250,22 +253,9 @@ class DonorRepository
                 ->where('id', $donor->id)
                 ->delete();
 
-            foreach ($this->getCoreDonorMeta($donor) as $metaKey => $metaValue) {
-                DB::table('give_donormeta')
-                    ->where('donor_id', $donor->id)
-                    ->where('meta_key', $metaKey)
-                    ->delete();
-            }
-
-            if (isset($donor->additionalEmails)) {
-                foreach ($donor->additionalEmails as $additionalEmail) {
-                    DB::table('give_donormeta')
-                        ->where('donor_id', $donor->id)
-                        ->where('meta_key', DonorMetaKeys::ADDITIONAL_EMAILS)
-                        ->where('meta_value', $additionalEmail)
-                        ->delete();
-                }
-            }
+            DB::table('give_donormeta')
+                ->where('donor_id', $donor->id)
+                ->delete();
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
