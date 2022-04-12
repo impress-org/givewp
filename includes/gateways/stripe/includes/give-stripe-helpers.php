@@ -1140,8 +1140,8 @@ function give_stripe_prepare_metadata( $donation_id, $donation_data = [] ) {
 	$args = array_merge( $args, give_stripe_get_custom_ffm_fields( $form_id, $donation_id ) );
 
 	// Limit metadata passed to Stripe as maximum of 20 metadata is only allowed.
-	if ( count( $args ) > 20 ) {
-		$args = array_slice( $args, 0, 19, false );
+	if ( count( $args ) > 50 ) {
+		$args = array_slice( $args, 0, 49, false );
 		$args = array_merge(
 			$args,
 			[
