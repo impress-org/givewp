@@ -631,14 +631,11 @@ class DonationRepository
             if (ctype_digit($donor)) {
                 $query
                     ->where('metaTable.meta_key', DonationMetaKeys::DONOR_ID)
-                    ->whereLike('metaTable.meta_value', $donor);
+                    ->where('metaTable.meta_value', $donor);
             } else {
-                $column = (strpos($search, '@') !== false)
-                    ? DonationMetaKeys::EMAIL
-                    : DonationMetaKeys::FIRST_NAME;
                 $query
-                    ->where('metaTable.meta_key', $column)
-                    ->whereLike('metaTable.meta_value', $search);
+                    ->where('metaTable.meta_key', DonationMetaKeys::FIRST_NAME)
+                    ->whereLike('metaTable.meta_value', $donor);
             }
         }
 
