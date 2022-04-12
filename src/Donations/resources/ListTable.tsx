@@ -87,11 +87,11 @@ export default function () {
             text: __('Date', 'give'),
         },
         {
-            name: 'donorName',
+            name: 'name',
             text: __('Donor Name', 'give'),
-            render: (donation: { donorName, donorId }) => (
+            render: (donation: { name, donorId }) => (
                 <a href={`edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donation.donorId}`}>
-                    {donation.donorName}
+                    {donation.name}
                 </a>
             ),
         },
@@ -147,12 +147,16 @@ export default function () {
                 const response = await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
                 return response;
             },
-            confirm: (selected) => (
+            confirm: (selected, names) => (
                 <>
-                    {__('Really delete the following donations?', 'give')}
+                    <p>{__('Really delete the following donations?', 'give')}</p>
                     <ul>
-                        {selected.map(donationId => (
-                            <li key={donationId}><IdBadge id={donationId}/></li>
+                        {selected.map((donationId, index) => (
+                            <li key={donationId}>
+                                <IdBadge id={donationId}/>
+                                {' '}
+                                <span>{sprintf(__('from %s', 'give'), names[index])}</span>
+                            </li>
                         ))}
                     </ul>
                 </>
@@ -179,13 +183,16 @@ export default function () {
                         ids: selected.join(','),
                         status: value
                     }, 'POST'),
-                    confirm: (selected) => (
+                    confirm: (selected, names) => (
                         <>
                             <p>{__('Set status for the following donations?', 'give')}</p>
                             <ul>
-                                {selected.map(donationId => (
-                                    <li key={donationId}><IdBadge id={donationId}/></li>
-                                ))}
+                                {selected.map((donationId, index) => (
+                                    <li key={donationId}>
+                                        <IdBadge id={donationId}/>
+                                        {' '}
+                                        <span>{sprintf(__('from %s', 'give'), names[index])}</span>
+                                    </li>                                ))}
                             </ul>
                         </>
                     )
@@ -196,12 +203,16 @@ export default function () {
             label: __('Resend Email Receipts', 'give'),
             value: 'resendEmailReceipt',
             action: async (selected) => await API.fetchWithArgs('/resendEmailReceipt', {ids: selected.join(',')}, 'POST'),
-            confirm: (selected) => (
+            confirm: (selected, names) => (
                 <>
                     <p>{__('Resend Email Receipts for following donations?', 'give')}</p>
                     <ul>
-                        {selected.map(donationId => (
-                            <li key={donationId}><IdBadge id={donationId}/></li>
+                        {selected.map((donationId, index) => (
+                            <li key={donationId}>
+                                <IdBadge id={donationId}/>
+                                {' '}
+                                <span>{sprintf(__('from %s', 'give'), names[index])}</span>
+                            </li>
                         ))}
                     </ul>
                 </>
