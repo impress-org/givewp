@@ -83,6 +83,9 @@ class ListDonors extends Endpoint
         $pageCount = (int)ceil($donorsCount / $request->get_param('perPage'));
 
         foreach ($donors as $donor) {
+            $donorType = give()->donors->getDonorType($donor->id);
+            $donorLatestDonationDate = give()->donors->getDonorLatestDonationDate($donor->id);
+
             $data[] = [
                 'id' => $donor->id,
                 'userId' => $donor->userId,
@@ -91,6 +94,8 @@ class ListDonors extends Endpoint
                 'titlePrefix' => $donor->titlePrefix,
                 'donationCount' => $donor->donationCount,
                 'dateCreated' => Date::getDateTime($donor->createdAt),
+                'donorType' => $donorType,
+                'latestDonation' => $donorLatestDonationDate ? Date::getDateTime($donorLatestDonationDate) : '',
                 'donationRevenue' => $this->formatAmount($donor->donationRevenue),
                 'gravatar' => give_validate_gravatar($donor->email) ? get_avatar_url($donor->email) : GIVE_PLUGIN_URL . 'assets/dist/images/anonymous-user.svg',
             ];
