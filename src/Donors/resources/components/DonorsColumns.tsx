@@ -53,7 +53,7 @@ export const donorsColumns: Array<ListTableColumn> = [
         text: __('Donor Type', 'give'),
         inlineSize: '12rem',
         render: (donor: {donorType}) => (
-            <DonorType type={types[Math.floor(Math.random() * 4)]}/>
+            <DonorType type={donor.donorType}/>
         )
     },
     {
@@ -61,5 +61,3 @@ export const donorsColumns: Array<ListTableColumn> = [
         text: __('Date Created', 'give'),
     },
 ];
-
-const types = [ 'single', 'repeat', 'subscriber', 'new' ];
