@@ -79,21 +79,25 @@ const donationFormsBulkActions:Array<BulkActionsConfig> = [
                         <li key={id}>{names[index]}</li>
                     ))}
                 </ul>
-                <label htmlFor='giveDonationFormsTableSetAuthor'>{__('Set form author', 'give')}</label>
-                <select id='giveDonationFormsTableSetAuthor'>
-                    <option value=''>{__('Keep current author', )}</option>
-                    {window.GiveDonationForms.authors.map(author => (
-                        <option key={author.id} value={author.id}>{author.name}</option>
-                    ))}
-                </select>
-                <label htmlFor='giveDonationFormsTableSetStatus'>{__('Set form status', 'give')}</label>
-                <select id='giveDonationFormsTableSetStatus'>
-                    <option value=''>{__('Keep current status', )}</option>
-                    <option value='publish'>{__('Published', 'give')}</option>
-                    <option value='private'>{__('Private', 'give')}</option>
-                    <option value='pending'>{__('Pending Review', 'give')}</option>
-                    <option value='draft'>{__('Draft', 'give')}</option>
-                </select>
+                <div style={{marginBlockEnd: '1em'}}>
+                    <label htmlFor='giveDonationFormsTableSetAuthor'>{__('Set form author', 'give')}</label>
+                    <select id='giveDonationFormsTableSetAuthor' style={{paddingInlineEnd: '2em'}}>
+                        <option value=''>{__('Keep current author', )}</option>
+                        {window.GiveDonationForms.authors.map(author => (
+                            <option key={author.id} value={author.id}>{author.name}</option>
+                        ))}
+                    </select>
+                </div>
+                <div>
+                    <label htmlFor='giveDonationFormsTableSetStatus'>{__('Set form status', 'give')}</label>
+                    <select id='giveDonationFormsTableSetStatus' style={{paddingInlineEnd: '2em'}}>
+                        <option value=''>{__('Keep current status', )}</option>
+                        <option value='publish'>{__('Published', 'give')}</option>
+                        <option value='private'>{__('Private', 'give')}</option>
+                        <option value='pending'>{__('Pending Review', 'give')}</option>
+                        <option value='draft'>{__('Draft', 'give')}</option>
+                    </select>
+                </div>
             </>
         )
     },
