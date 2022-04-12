@@ -203,7 +203,7 @@ class SubscriptionRepository
 
         $subscription = $this->getById($subscriptionId);
 
-        Hooks::doAction('give_subscription_updating', $subscription);
+        Hooks::doAction('give_subscription_updated', $subscription);
 
         return $subscription;
     }
