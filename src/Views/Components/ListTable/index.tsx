@@ -146,6 +146,7 @@ export default function ListTablePage({
                     {filterSettings.map(filter =>
                         <Filter
                             key={filter.name}
+                            value={filters[filter.name]}
                             filter={filter}
                             onChange={handleFilterChange}
                             debouncedOnChange={handleDebouncedFilterChange}

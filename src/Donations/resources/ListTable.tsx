@@ -122,14 +122,20 @@ export default function () {
             type: 'search',
             inlineSize: '14rem',
             text: __('Name, Email, or Donation ID', 'give'),
-            ariaLabel: __('Search donations', 'give')
+            ariaLabel: __('search donations', 'give'),
         },
         {
             name: 'form',
             type: 'formselect',
             text: __('Select Form', 'give'),
-            ariaLabel: __('Filter donation forms by status', 'give'),
-            options: window.GiveDonations.forms
+            ariaLabel: __('filter donation forms by status', 'give'),
+            options: window.GiveDonations.forms,
+        },
+        {
+            name: 'donor',
+            type: 'search',
+            text: __('Donor Name or ID'),
+            ariaLabel: __('search donations by donor name or donor id', 'give'),
         }
     ]
 

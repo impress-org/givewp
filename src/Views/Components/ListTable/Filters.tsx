@@ -1,7 +1,7 @@
 import styles from "./ListTablePage.module.scss";
 import {FormSelect} from "@givewp/components/ListTable/FormSelect";
 
-export const Filter = ({ filter, onChange, debouncedOnChange }) => {
+export const Filter = ({ filter, value = null, onChange, debouncedOnChange }) => {
     switch(filter.type){
         case 'select':
             return (
@@ -11,6 +11,7 @@ export const Filter = ({ filter, onChange, debouncedOnChange }) => {
                     aria-label={filter?.ariaLabel}
                     onChange={(event) => onChange(event.target.name, event.target.value)}
                     style={{inlineSize: filter?.inlineSize}}
+                    defaultValue={value}
                 >
                     {filter.options.map(({value, text}) => (
                         <option key={value} value={value}>
@@ -40,6 +41,7 @@ export const Filter = ({ filter, onChange, debouncedOnChange }) => {
                     onChange={(event) => debouncedOnChange(event.target.name, event.target.value)}
                     className={styles.searchInput}
                     style={{inlineSize: filter?.inlineSize}}
+                    defaultValue={value}
                 />
             );
         default:
@@ -48,18 +50,30 @@ export const Filter = ({ filter, onChange, debouncedOnChange }) => {
     }
 }
 
+// figure out what the initial filter state should be based on the filter configuration
 export const getInitialFilterState = (filters) => {
     const state = {};
+    const urlParams = new URLSearchParams(window.location.search);
     filters.map((filter) => {
-        switch (filter.type) {
-            case 'select':
-            case 'formselect':
-                state[filter.name] = filter.options?.[0].value
-                break;
-            case 'search':
-            default:
-                state[filter.name] = '';
-                break;
+        // if the search parameters contained a value for the filter, use that
+        const filterQuery = urlParams.get(filter.name);
+        // only accept a string or number, we don't want any surprises
+        if(urlParams.has(filter.name) && (typeof filterQuery == "string" || typeof filterQuery == "number")) {
+            state[filter.name] = filterQuery;
+        }
+        // otherwise, use the default value for the filter type
+        else
+        {
+            switch (filter.type) {
+                case 'select':
+                case 'formselect':
+                    state[filter.name] = filter.options?.[0].value
+                    break;
+                case 'search':
+                default:
+                    state[filter.name] = '';
+                    break;
+            }
         }
     });
     return state;
