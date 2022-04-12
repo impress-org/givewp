@@ -3,6 +3,7 @@
 namespace Give\Donors\Repositories;
 
 use Exception;
+use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\Models\Donor;
 use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Framework\Database\DB;
@@ -405,6 +406,77 @@ class DonorRepository
                     'meta_value' => $additionalEmail,
                 ]);
         }
+    }
+
+    /**
+     * @unreleased
+     * @param int $donorId
+     * @return string|null
+     */
+    public function getDonorLatestDonationDate($donorId)
+    {
+        $donation = DB::table('posts')
+            ->select('post_date')
+            ->leftJoin('give_donormeta', 'ID', 'donor_id')
+            ->where('post_type', 'give_payment')
+            ->where('donor_id', $donorId)
+            ->orderBy('ID', 'DESC')
+            ->limit(1)
+            ->get();
+
+        if ($donation) {
+            return $donation->post_date;
+        }
+
+        return null;
+    }
+
+    /**
+     * @unreleased
+     * @param int $donorId
+     * @return string|null
+     */
+    public function getDonorType($donorId)
+    {
+        $donor = DB::table('give_donors')
+            ->select(
+                'id',
+                ['purchase_count', 'donationCount'],
+                ['payment_ids', 'paymentIds']
+            )
+            ->where('id', $donorId)
+            ->get();
+
+        if (!$donor) {
+            return null;
+        }
+
+        if (!$donor->donationCount) {
+            return 'new';
+        }
+
+        // Donation IDs
+        $ids = strpos($donor->paymentIds, ',')
+            ? explode(',', $donor->paymentIds)
+            : [$donor->paymentIds];
+
+        // Recurring
+        $recurringDonations = DB::table('posts')
+            ->leftJoin('give_donationmeta', 'id', 'donation_id')
+            ->whereIn('donation_id', $ids)
+            ->where( 'meta_key', DonationMetaKeys::IS_RECURRING)
+            ->where( 'meta_value', '1')
+            ->count();
+
+        if ($recurringDonations) {
+            return 'subscriber';
+        }
+
+        if ((int)$donor->donationCount > 1 ) {
+            return 'repeat';
+        }
+
+        return 'single';
     }
 
     /**
