@@ -97,7 +97,7 @@ class ListDonors extends Endpoint
                 'donorType' => $donorType,
                 'latestDonation' => $donorLatestDonationDate ? Date::getDateTime($donorLatestDonationDate) : '',
                 'donationRevenue' => $this->formatAmount($donor->donationRevenue),
-                'gravatar' => give_validate_gravatar($donor->email) ? get_avatar_url($donor->email) : GIVE_PLUGIN_URL . 'assets/dist/images/anonymous-user.svg',
+                'gravatar' => get_avatar_url($donor->email),
             ];
         }
 
