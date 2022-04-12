@@ -6,7 +6,7 @@ use Give\Donors\Repositories\DonorRepositoryProxy;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
- * @unreleased
+ * @since 2.19.6
  */
 class ServiceProvider implements ServiceProviderInterface
 {

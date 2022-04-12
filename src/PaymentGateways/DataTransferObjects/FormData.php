@@ -166,7 +166,7 @@ class FormData
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return Donation
      * @throws Exception

@@ -7,7 +7,7 @@ use Give\Donations\Models\Donation;
 class RemoveSequentialId
 {
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  Donation  $donation
      * @return void

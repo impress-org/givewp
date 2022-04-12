@@ -96,6 +96,8 @@ class PayPalStandard extends PaymentGateway
      *
      * @since 2.19.0
      * @since 2.19.4 Only pending PayPal Standard donation set to processing.
+     * @since 2.19.6 1. Do not set donation to "processing"
+     *             2. Add "payment-confirmation" param to receipt page url
      *
      * @param  array  $queryParams  Query params in gateway route. {
      *
@@ -108,13 +110,11 @@ class PayPalStandard extends PaymentGateway
     public function handleSuccessPaymentReturn($queryParams)
     {
         $donationId = (int)$queryParams['donation-id'];
-        $payment = new Give_Payment($donationId);
 
-        if( 'pending' === $payment->status ) {
-            $payment->update_status('processing');
-        }
-
-        return new RedirectResponse(Call::invoke(GenerateDonationReceiptPageUrl::class, $donationId));
+        return new RedirectResponse(add_query_arg(
+            [ 'payment-confirmation' => $this->getId() ],
+            Call::invoke(GenerateDonationReceiptPageUrl::class, $donationId)
+        ));
     }
 
     /**

@@ -598,8 +598,8 @@ class Give_Scripts {
      * Gutenberg admin scripts.
      *
      * @since 2.19.0 Remove undefined gutenberg.css
-     * @unreleased Load script with EnqueueScript.
-     * @unreleased Load missing block styles
+     * @since 2.19.6 Load script with EnqueueScript.
+     * @since 2.19.6 Load missing block styles
      */
     public function gutenberg_admin_scripts()
     {

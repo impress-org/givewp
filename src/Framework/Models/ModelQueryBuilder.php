@@ -8,7 +8,7 @@ use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
- * @unreleased
+ * @since 2.19.6
  *
  * @template M
  */
@@ -34,7 +34,7 @@ class ModelQueryBuilder extends QueryBuilder
     /**
      * Get row
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @return M|null
      */
@@ -52,7 +52,7 @@ class ModelQueryBuilder extends QueryBuilder
     /**
      * Get results
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @return M[]|null
      */
@@ -74,7 +74,7 @@ class ModelQueryBuilder extends QueryBuilder
     /**
      * Get row as model
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param object|null $row
      *
@@ -94,7 +94,7 @@ class ModelQueryBuilder extends QueryBuilder
     /**
      * Get results as models
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param object[] $results
      *
