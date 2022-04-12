@@ -3,19 +3,26 @@
 namespace Give\PaymentGateways\Gateways\Stripe\Actions;
 
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
-use Give\PaymentGateways\Gateways\Stripe\ValueObjects\DonationSummary;
-use Give\PaymentGateways\Gateways\Stripe\WorkflowAction;
+use Give\Framework\PaymentGateways\DonationSummary;
 
-class SaveDonationSummary extends WorkflowAction
+/**
+ * @since 2.19.0
+ */
+class SaveDonationSummary
 {
-    public function __invoke( GatewayPaymentData $paymentData )
+    /**
+     * @param GatewayPaymentData $paymentData
+     *
+     * @return DonationSummary
+     */
+    public function __invoke(GatewayPaymentData $paymentData)
     {
-        $summary = new DonationSummary( $paymentData );
+        $summary = new DonationSummary($paymentData);
         give_update_meta(
             $paymentData->donationId,
             '_give_stripe_donation_summary',
-            $summary->getSummary()
+            $summary->getSummaryWithDonor()
         );
-        $this->bind( $summary );
+        return $summary;
     }
 }

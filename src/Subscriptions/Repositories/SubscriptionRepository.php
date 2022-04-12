@@ -12,7 +12,7 @@ use Give\Log\Log;
 use Give\Subscriptions\Models\Subscription;
 
 /**
- * @unreleased
+ * @since 2.19.6
  */
 class SubscriptionRepository
 {
@@ -30,7 +30,7 @@ class SubscriptionRepository
     ];
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $subscriptionId
      * @return Subscription
@@ -41,7 +41,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $subscriptionId
      * @return ModelQueryBuilder
@@ -53,7 +53,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $donationId
      * @return ModelQueryBuilder
@@ -65,7 +65,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $donorId
      * @return ModelQueryBuilder
@@ -77,7 +77,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $id
      *
@@ -103,7 +103,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  Subscription  $subscription
      *
@@ -158,7 +158,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  Subscription  $subscription
      *
@@ -209,7 +209,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  Subscription  $subscription
      *
@@ -243,7 +243,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $subscriptionId
      * @param  array  $columns
@@ -278,7 +278,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $subscriptionId
      * @return int|null
@@ -315,7 +315,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return ModelQueryBuilder<Subscription>
      */

@@ -14,14 +14,13 @@ if ( ( isset( $args['show_goal'] ) && ! filter_var( $args['show_goal'], FILTER_V
 	return false;
 }
 
-$goal_format         = give_get_form_goal_format( $form_id );
-$price               = give_get_meta( $form_id, '_give_set_price', true );
+$goal_progress_stats = give_goal_progress_stats( $form );
+$goal_format         = $goal_progress_stats['format'];
 $color               = give_get_meta( $form_id, '_give_goal_color', true );
 $show_text           = isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
 $show_bar            = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
-$goal_progress_stats = give_goal_progress_stats( $form );
 
-$income = $goal_progress_stats['raw_actual'];
+$income = $form->get_earnings();
 $goal   = $goal_progress_stats['raw_goal'];
 
 switch ( $goal_format ) {

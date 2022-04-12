@@ -29,7 +29,7 @@ class BillingAddress {
     public $zip;
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param array $array
      * @return BillingAddress

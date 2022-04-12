@@ -8,7 +8,7 @@ use Give\Framework\Support\Facades\DateTime\Temporal;
 /**
  * Class DonorObjectData
  *
- * @unreleased
+ * @since 2.19.6
  */
 class DonorQueryData
 {
@@ -49,7 +49,7 @@ class DonorQueryData
     /**
      * Convert data from donor object to Donor Model
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @return self
      */

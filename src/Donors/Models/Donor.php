@@ -20,7 +20,7 @@ use Give\Subscriptions\Models\Subscription;
 /**
  * Class Donor
  *
- * @unreleased
+ * @since 2.19.6
  *
  * @property int $id
  * @property int $userId
@@ -60,7 +60,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     ];
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param $id
      *
@@ -72,7 +72,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  string  $email
      * @return Donor
@@ -83,7 +83,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  string  $donorEmail
      * @return bool
@@ -107,7 +107,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  array  $attributes
      *
@@ -123,7 +123,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return Donor
      *
@@ -139,7 +139,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @throws Exception
      */
@@ -149,7 +149,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return ModelQueryBuilder<Donation>
      */
@@ -159,7 +159,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return ModelQueryBuilder<Subscription>
      */
@@ -169,7 +169,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return int
      */
@@ -179,7 +179,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return int
      */
@@ -189,7 +189,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return ModelQueryBuilder<Donor>
      */
@@ -199,7 +199,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  object  $object
      * @return Donor
@@ -210,7 +210,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @return ModelFactory
+     * @return ModelFactory<Donor>
      */
     public static function factory()
     {

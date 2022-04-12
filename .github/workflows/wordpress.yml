@@ -65,9 +65,7 @@ jobs:
                     coverage: none
 
             -   name: Install composer dependencies
-                uses: php-actions/composer@v5
-                with:
-                    php_version: ${{ matrix.php }}
+                run: composer install --no-progress --no-interaction
 
             -   name: Store MySQL details in environment
                 run: |

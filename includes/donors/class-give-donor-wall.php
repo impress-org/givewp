@@ -183,11 +183,14 @@ class Give_Donor_Wall {
 				'form_id'           => 0,
 				'paged'             => 1,
 				'ids'               => '',
+                'cats'              => '',
+                'tags'              => '',
 				'columns'           => 'best-fit',
 				'anonymous'         => true,
 				'show_avatar'       => true,
 				'show_name'         => true,
 				'show_company_name' => false,
+				'show_form'         => false,
 				'show_total'        => true,
 				'show_time'         => true,
 				'show_comments'     => true,
@@ -232,7 +235,6 @@ class Give_Donor_Wall {
 		// Validate numeric attributes.
 		$numeric_attributes = [
 			'donors_per_page',
-			'form_id',
 			'paged',
 			'comment_length',
 			'avatar_size',
@@ -245,20 +247,23 @@ class Give_Donor_Wall {
 
 		// Validate comma separated numeric attributes and keep original data format ( comma separated string).
 		if ( ! empty( $atts['ids'] ) ) {
-			if ( false === strpos( $atts['ids'], ',' ) ) {
-				$tmp = [ absint( $atts['ids'] ) ];
-			} else {
-				$tmp = array_filter(
-					array_map(
-						static function( $id ) {
-							return absint( trim( $id ) ); },
-						explode( ',', $atts['ids'] )
-					)
-				);
-			}
-
-			$atts['ids'] = implode( ',', $tmp );
+			$atts['ids'] = implode( ',', $this->split_string($atts['ids'], 'absint') );
 		}
+
+        // Validate Form IDs
+        if ( ! empty( $atts['form_id'] ) ) {
+            $atts['form_id'] = implode( ',', $this->split_string($atts['form_id'], 'absint') );
+        }
+
+        // Donation form categories
+        if ( ! empty( $atts['cats'] ) ) {
+            $atts['cats'] = $this->split_string($atts['cats']);
+        }
+
+        // Donation form tags
+        if ( ! empty( $atts['tags'] ) ) {
+            $atts['tags'] = $this->split_string($atts['tags']);
+        }
 
 		return $atts;
 	}
@@ -331,8 +336,10 @@ class Give_Donor_Wall {
 		$query_atts['orderby']       = in_array( $atts['orderby'], $valid_orderby ) ? $atts['orderby'] : 'post_date';
 		$query_atts['limit']         = $atts['donors_per_page'];
 		$query_atts['offset']        = $atts['donors_per_page'] * ( $atts['paged'] - 1 );
-		$query_atts['form_id']       = $atts['form_id'];
+		$query_atts['form_id']       = implode( '\',\'', explode( ',', $atts['form_id'] ) );
 		$query_atts['ids']           = implode( '\',\'', explode( ',', $atts['ids'] ) );
+		$query_atts['cats']          = $atts['cats'];
+		$query_atts['tags']          = $atts['tags'];
 		$query_atts['only_comments'] = ( true === $atts['only_comments'] );
 		$query_atts['anonymous']     = ( true === $atts['anonymous'] );
 
@@ -433,7 +440,7 @@ class Give_Donor_Wall {
 
 		if ( $query_params['form_id'] ) {
 			$sql   .= " INNER JOIN {$wpdb->donationmeta} as m2 ON (p1.ID = m2.{$donation_id_col})";
-			$where .= " AND m2.meta_key='_give_payment_form_id' AND m2.meta_value={$query_params['form_id']}";
+			$where .= " AND m2.meta_key='_give_payment_form_id' AND m2.meta_value IN ('{$query_params['form_id']}')";
 		}
 
 		// Get donations only from specific donors.
@@ -455,6 +462,54 @@ class Give_Donor_Wall {
 		) {
 			$where .= " AND p1.ID NOT IN ( SELECT DISTINCT({$donation_id_col}) FROM {$wpdb->donationmeta} WHERE meta_key='_give_anonymous_donation' AND meta_value='1')";
 		}
+
+        // Handle Taxonomy
+        $args = [
+            'post_type' => 'give_forms',
+            'posts_per_page' => -1,
+            'fields' => 'ids',
+            'tax_query' => [],
+        ];
+
+        // Categories
+        if ( is_array($atts['cats'])) {
+            $args['tax_query']['conditions'] = ['relation' => 'OR'];
+
+            foreach ($atts['cats'] as $category) {
+                $args['tax_query']['conditions'][] = [
+                    'operator' => 'IN',
+                    'taxonomy' => 'give_forms_category',
+                    'field' => 'slug',
+                    'terms' => $category,
+                ];
+            }
+        }
+
+        // Tags
+        if ( is_array($atts['tags'])) {
+            if (empty($args['tax_query'])) {
+                $args['tax_query']['conditions'] = ['relation' => 'OR'];
+            }
+
+            foreach($atts['tags'] as $tag) {
+                $args['tax_query']['conditions'][] = [
+                    'operator' => 'IN',
+                    'taxonomy' => 'give_forms_tag',
+                    'field' => 'slug',
+                    'terms' => $tag,
+                ];
+            }
+        }
+
+        if ( ! empty( $args['tax_query'] ) ) {
+            $query = new WP_Query( $args );
+
+            if ( ! empty($query->posts) ) {
+                $form_ids = implode("','", $query->posts );
+                $sql   .= " INNER JOIN {$wpdb->donationmeta} as m4 ON (p1.ID = m4.{$donation_id_col})";
+                $where .= " AND m4.meta_key='_give_payment_form_id' AND m4.meta_value IN ('{$form_ids}')";
+            }
+        }
 
 		// order by query based on parameter.
 		if ( 'donation_amount' === $query_params['orderby'] ) {
@@ -544,6 +599,41 @@ class Give_Donor_Wall {
 	private function has_donations( $atts = [] ) {
 		return (bool) $this->get_donations( $atts );
 	}
+
+    /**
+     * @unreleased
+     *
+     * @param string $string
+     * @param null|callable $filter
+     * @param string $separator
+     *
+     * @return array
+     */
+    private function split_string($string, $filter = null, $separator = ',') {
+        if ( false === strpos( $string, $separator ) ) {
+            $string = trim( $string );
+
+            if (is_callable($filter)) {
+                $string = $filter($string);
+            }
+
+            return [$string];
+        }
+
+        return array_filter(
+            array_map(
+                static function( $value ) use ($filter) {
+                    $value = trim( $value );
+
+                    if (is_callable($filter)) {
+                        return $filter($value);
+                    }
+                    return $value;
+                },
+                explode( $separator, $string )
+            )
+        );
+    }
 }
 
 // Initialize shortcode.

@@ -8,7 +8,7 @@ use Give\Framework\Support\Contracts\Arrayable;
 use RuntimeException;
 
 /**
- * @unreleased
+ * @since 2.19.6
  */
 abstract class Model implements Arrayable
 {
@@ -44,7 +44,7 @@ abstract class Model implements Arrayable
     /**
      * Create a new model instance.
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  array  $attributes
      * @return void
@@ -61,7 +61,7 @@ abstract class Model implements Arrayable
     /**
      * Sync the original attributes with the current.
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @return $this
      */
@@ -75,7 +75,7 @@ abstract class Model implements Arrayable
     /**
      * Get the model's original attribute values.
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  string|null  $key
      * @return mixed|array
@@ -88,7 +88,7 @@ abstract class Model implements Arrayable
     /**
      * Determine if a given attribute is dirty.
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  string|null  $attribute
      * @return bool
@@ -105,7 +105,7 @@ abstract class Model implements Arrayable
     /**
      * Determine if a given attribute is clean.
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  string|null  $attribute
      * @return bool
@@ -118,7 +118,7 @@ abstract class Model implements Arrayable
     /**
      * Get the attributes that have been changed since last sync.
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @return array
      */
@@ -138,7 +138,7 @@ abstract class Model implements Arrayable
     /**
      * Fill the model with an array of attributes.
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  array  $attributes
      * @return $this
@@ -155,7 +155,7 @@ abstract class Model implements Arrayable
     /**
      * Get an attribute from the model.
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  string  $key
      * @return mixed
@@ -174,7 +174,7 @@ abstract class Model implements Arrayable
     /**
      * Set a given attribute on the model.
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -191,7 +191,7 @@ abstract class Model implements Arrayable
     /**
      * Validate an attribute to a PHP type.
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -242,7 +242,7 @@ abstract class Model implements Arrayable
     /**
      * Get the property type
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param $key
      * @return string
@@ -253,7 +253,7 @@ abstract class Model implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return array
      */
@@ -263,7 +263,7 @@ abstract class Model implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return array
      */
@@ -283,7 +283,7 @@ abstract class Model implements Arrayable
     /**
      * Dynamically retrieve attributes on the model.
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  string  $key
      * @return mixed
@@ -300,7 +300,7 @@ abstract class Model implements Arrayable
     /**
      * Dynamically set attributes on the model.
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -314,7 +314,7 @@ abstract class Model implements Arrayable
     /**
      * Determine if an attribute exists on the model.
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  string  $key
      * @return bool
@@ -325,7 +325,7 @@ abstract class Model implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param $key
      *

@@ -15,7 +15,7 @@ import giveDonorWallOptions from '../data/options';
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { donorsPerPage, ids, formID, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, showTotal, showDate, showComments, showAnonymous, onlyComments, commentLength, readMoreText, loadMoreText } = attributes;
+	const { donorsPerPage, ids, formID, categories, tags, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, showForm, showTotal, showDate, showComments, showAnonymous, onlyComments, commentLength, readMoreText, loadMoreText } = attributes;
 	const saveSetting = ( name, value ) => {
 		setAttributes( {
 			[ name ]: value,
@@ -34,12 +34,26 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					name="ids"
 					label={ __( 'Donor IDs', 'give' ) }
 					value={ ids }
-					onChange={ ( value ) => saveSetting( 'ids', value ) } />
+					onChange={ ( value ) => saveSetting( 'ids', value ) }
+                    help={ __('A comma-separated list of donor IDs to display.', 'give') }
+                />
 				<TextControl
 					name="formID"
-					label={ __( 'Form ID', 'give' ) }
+					label={ __( 'Form IDs', 'give' ) }
 					value={ formID }
-					onChange={ ( value ) => saveSetting( 'formID', value ) } />
+					onChange={ ( value ) => saveSetting( 'formID', value ) }
+                    help={ __('A comma-separated list of form IDs to display.', 'give') }
+                />
+                <TextControl
+                    name="categories"
+                    label={ __( 'Categories', 'give' ) }
+                    value={ categories }
+                    onChange={ ( value ) => saveSetting( 'categories', value ) }/>
+                <TextControl
+                    name="tags"
+                    label={ __( 'Tags', 'give' ) }
+                    value={ tags }
+                    onChange={ ( value ) => saveSetting( 'tags', value ) }/>
 				<SelectControl
 					label={ __( 'Order By', 'give' ) }
 					name="orderBy"
@@ -78,6 +92,11 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Show Company Name', 'give' ) }
 					checked={ !! showCompanyName }
 					onChange={ ( value ) => saveSetting( 'showCompanyName', value ) } />
+                <ToggleControl
+					name="showForm"
+					label={ __( 'Show Donation Form', 'give' ) }
+					checked={ !! showForm }
+					onChange={ ( value ) => saveSetting( 'showForm', value ) } />
 				<ToggleControl
 					name="showTotal"
 					label={ __( 'Show Total', 'give' ) }

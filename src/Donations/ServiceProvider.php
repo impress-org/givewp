@@ -38,7 +38,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Legacy Listeners
      *
-     * @unreleased
+     * @since 2.19.6
      */
     private function bootLegacyListeners()
     {
