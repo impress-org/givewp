@@ -132,11 +132,15 @@ export default function ListTablePage({
         <>
             <article className={styles.page}>
                 <header className={styles.pageHeader}>
-                    <div className={styles.pageTitleContainer}>
+                    <div className={styles.flexRow}>
                         <GiveIcon size={'1.875rem'}/>
                         <h1 className={styles.pageTitle}>{title}</h1>
                     </div>
-                    {children}
+                    {children &&
+                        <div className={styles.flexRow}>
+                            {children}
+                        </div>
+                    }
                 </header>
                 <section role='search' id={styles.searchContainer}>
                     {filterSettings.map(filter =>

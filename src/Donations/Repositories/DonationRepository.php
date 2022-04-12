@@ -604,7 +604,7 @@ class DonationRepository
         $form = $request->get_param('form');
         $donor = $request->get_param('donor');
 
-        if ($form || ($search && !ctype_digit($search))) {
+        if ($form || $donor || ($search && !ctype_digit($search))) {
             $query->leftJoin(
                 'give_donationmeta',
                 'id',

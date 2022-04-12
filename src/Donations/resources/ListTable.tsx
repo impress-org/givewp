@@ -120,6 +120,7 @@ export default function () {
         {
             name: 'search',
             type: 'search',
+            inlineSize: '14rem',
             text: __('Name, Email, or Donation ID', 'give'),
             ariaLabel: __('Search donations', 'give')
         },
@@ -213,16 +214,14 @@ export default function () {
             apiSettings={window.GiveDonations}
             filterSettings={filters}
         >
-            <div>
-                <a className={styles.addFormButton}
-                   href={'edit.php?post_type=give_forms&page=give-tools&tab=import&importer-type=import_donations'}
-                >
-                    {__('Import Donations', 'give')}
-                </a>
-                <button className={styles.addFormButton} onClick={showLegacyDonations}>
-                    {__('Switch to Legacy View')}
-                </button>
-            </div>
+            <a className={styles.addFormButton}
+               href={'edit.php?post_type=give_forms&page=give-tools&tab=import&importer-type=import_donations'}
+            >
+                {__('Import Donations', 'give')}
+            </a>
+            <button className={styles.addFormButton} onClick={showLegacyDonations}>
+                {__('Switch to Legacy View')}
+            </button>
         </ListTablePage>
     )
 }

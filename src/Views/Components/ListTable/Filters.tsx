@@ -10,6 +10,7 @@ export const Filter = ({ filter, onChange, debouncedOnChange }) => {
                     className={styles.statusFilter}
                     aria-label={filter?.ariaLabel}
                     onChange={(event) => onChange(event.target.name, event.target.value)}
+                    style={{inlineSize: filter?.inlineSize}}
                 >
                     {filter.options.map(({value, text}) => (
                         <option key={value} value={value}>
@@ -26,6 +27,7 @@ export const Filter = ({ filter, onChange, debouncedOnChange }) => {
                     aria-label={filter?.ariaLabel}
                     placeholder={filter?.text}
                     onChange={onChange}
+                    style={{inlineSize: filter?.inlineSize}}
                 />
             );
         case 'search':
@@ -37,6 +39,7 @@ export const Filter = ({ filter, onChange, debouncedOnChange }) => {
                     placeholder={filter?.text}
                     onChange={(event) => debouncedOnChange(event.target.name, event.target.value)}
                     className={styles.searchInput}
+                    style={{inlineSize: filter?.inlineSize}}
                 />
             );
         default:

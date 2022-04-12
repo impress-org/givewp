@@ -1,8 +1,7 @@
 import styles from "@givewp/components/ListTable/ListTablePage.module.scss";
 import {__, sprintf} from "@wordpress/i18n";
 
-//TODO: extract SearchableSelect component from FormSelect
-export const FormSelect = ({options, name, placeholder = '', ariaLabel = '', onChange}) => {
+export const FormSelect = ({options, name, placeholder = '', ariaLabel = '', onChange, ...rest}) => {
     return (
         <>
             <input
@@ -13,6 +12,7 @@ export const FormSelect = ({options, name, placeholder = '', ariaLabel = '', onC
                 autoComplete={'off'}
                 aria-label={ariaLabel}
                 placeholder={placeholder}
+                {...rest}
             />
             <datalist
                 className={styles.statusFilter}
