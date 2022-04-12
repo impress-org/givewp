@@ -15,5 +15,4 @@ class SwitchDonationFormView extends SwitchDonationView
      * @inheritDoc
      */
     protected $slug = 'donation_forms';
-
 }

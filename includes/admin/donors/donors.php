@@ -116,6 +116,14 @@ function give_donors_page() {
 	if ( array_key_exists( $requested_view, $default_views ) && function_exists( $default_views[ $requested_view ] ) ) {
 		give_render_donor_view( $requested_view, $default_views );
 	}
+    else {
+        $userId = get_current_user_id();
+        $showLegacy = get_user_meta($userId, '_give_donors_archive_show_legacy', true);
+        if ($showLegacy == 1)
+        {
+            give_donors_list();
+        }
+    }
 }
 
 /**
@@ -154,7 +162,7 @@ function give_donor_tabs() {
  */
 function give_donors_list() {
 
-
+    include GIVE_PLUGIN_DIR . 'includes/admin/donors/class-donor-table.php';
 
 	$donors_table = new Give_Donor_List_Table();
 	$donors_table->prepare_items();

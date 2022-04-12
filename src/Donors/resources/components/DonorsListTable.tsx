@@ -3,6 +3,7 @@ import {ListTableApi, ListTablePage} from "@givewp/components";
 import {donorsColumns} from "./DonorsColumns";
 import {DonorsRowActions} from "./DonorsRowActions";
 import {BulkActionsConfig} from "@givewp/components/ListTable";
+import styles from "@givewp/components/ListTable/ListTablePage.module.scss";
 
 declare global {
     interface Window {
@@ -67,6 +68,15 @@ export default function DonorsListTable(){
             apiSettings={window.GiveDonors}
             filterSettings={donorsFilters}
             align={'end'}
-        />
+        >
+            <button className={styles.addFormButton} onClick={showLegacyDonors}>
+                {__('Switch to Legacy View')}
+            </button>
+        </ListTablePage>
     );
+}
+
+const showLegacyDonors = async (event) => {
+    await API.fetchWithArgs('/view', {isLegacy: 1});
+    window.location.reload();
 }

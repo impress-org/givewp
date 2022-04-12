@@ -96,7 +96,6 @@ class DonationFormsAdminPage
                     });
             }
             jQuery( function() {
-                console.error('barf');
                 jQuery(jQuery(".wrap .page-title-action")[0]).after(
                     '<button class="page-title-action" onclick="showReactTable()">Switch to Updated View</button>'
                 );

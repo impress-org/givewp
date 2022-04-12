@@ -37,7 +37,7 @@ class ServiceProvider implements ServiceProviderInterface
         }
         else
         {
-            add_action( 'admin_head', DonationFormsAdminPage::class, 'renderReactSwitch');
+            Hooks::addAction( 'admin_head', DonationFormsAdminPage::class, 'renderReactSwitch');
         }
     }
 }

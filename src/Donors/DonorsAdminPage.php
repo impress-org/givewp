@@ -139,6 +139,35 @@ class DonorsAdminPage
     }
 
     /**
+     * Display a button on the old donation forms table that switches to the React view
+     *
+     * @unreleased
+     */
+    public function renderReactSwitch()
+    {
+        ?>
+        <script type="text/javascript">
+            function showReactTable () {
+                fetch( '<?php echo esc_url_raw(rest_url('give-api/v2/admin/donors/view?isLegacy=0')) ?>', {
+                    method: 'GET',
+                    headers: {
+                        ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>'
+                    }
+                })
+                    .then((res) => {
+                        window.location.reload();
+                    });
+            }
+            jQuery( function() {
+                jQuery(jQuery(".wrap .wp-header-end")).before(
+                    '<button class="page-title-action" onclick="showReactTable()">Switch to Updated View</button>'
+                );
+            });
+        </script>
+        <?php
+    }
+
+    /**
      * Helper function to determine if current page is Give Donors admin page
      * @unreleased
      *
