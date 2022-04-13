@@ -82,7 +82,7 @@ const donationFormsBulkActions:Array<BulkActionsConfig> = [
                 <div style={{marginBlockEnd: '1em'}}>
                     <label htmlFor='giveDonationFormsTableSetAuthor'>{__('Set form author', 'give')}</label>
                     <select id='giveDonationFormsTableSetAuthor' style={{paddingInlineEnd: '2em'}}>
-                        <option value=''>{__('Keep current author', )}</option>
+                        <option value=''>{__('Keep current author', 'give')}</option>
                         {window.GiveDonationForms.authors.map(author => (
                             <option key={author.id} value={author.id}>{author.name}</option>
                         ))}
