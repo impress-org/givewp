@@ -3,7 +3,6 @@
 namespace Give\Framework\PaymentGateways\Contracts\Subscription;
 
 use Give\Subscriptions\Models\Subscription;
-use Give\ValueObjects\CardInfo;
 
 /**
  * @unreleased
