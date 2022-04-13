@@ -1,9 +1,10 @@
 import styles from './ListTableRows.module.scss';
-import {__, sprintf} from '@wordpress/i18n';
+import {__} from '@wordpress/i18n';
 import cx from 'classnames';
 import {useEffect, useState} from 'react';
 import TableCell, {IdBadge, StatusBadge} from "./TableCell";
 import TestLabel from "@givewp/components/ListTable/TestLabel";
+import {BulkActionCheckbox} from "@givewp/components/ListTable/BulkActionCheckbox";
 
 const postStatusMap = {
     publish: __('published', 'give'),
@@ -124,17 +125,7 @@ export default function ListTableRows({columns, data, isLoading, rowActions, set
             })}
         >
             <TableCell>
-                <label htmlFor={`giveListTableSelect${item.id}`} id={`giveListTableSelect${item.id}-Label`} className='give-visually-hidden'>
-                    {sprintf(__('Select %1s %2s', 'give'), singleName, item.id)}
-                </label>
-                <input
-                    className='giveListTableSelect'
-                    data-id={item.id}
-                    data-name={item?.name}
-                    id={`giveListTableSelect${item.id}`}
-                    aria-labelledby={`giveListTableSelect${item.id}-Label`}
-                    type='checkbox'
-                />
+                <BulkActionCheckbox id={item.id} name={item?.name} singleName={singleName}/>
             </TableCell>
             <>
                 {columns.map((column) => (

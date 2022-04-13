@@ -43,6 +43,7 @@ export interface BulkActionsConfig {
 }
 
 export const ShowConfirmModalContext = createContext((label, confirm, action) => {});
+export const CheckboxContext = createContext(null);
 
 export default function ListTablePage({
     title,
@@ -67,6 +68,7 @@ export default function ListTablePage({
     const [selectedIds, setSelectedIds] = useState([]);
     const [selectedNames, setSelectedNames] = useState([]);
     const dialog = useRef() as {current: A11yDialogInstance};
+    const checkboxRefs = useRef([]);
 
     const parameters = {
         page,
@@ -97,13 +99,17 @@ export default function ListTablePage({
         const action = formData.get('giveListTableBulkActions');
         const actionIndex = bulkActions.findIndex((config) => action == config.value);
         if(actionIndex < 0) return;
-        const selectNodes = document.querySelectorAll('.giveListTableSelect:checked:not(#giveListTableSelectAll)');
-        if(!selectNodes.length) return;
-        const selected = Array.from(selectNodes, (select:HTMLSelectElement) => parseInt(select.dataset.id));
-        const names = Array.from(selectNodes, (select:HTMLSelectElement) => select.dataset.name);
-        setModalContent({...bulkActions[actionIndex]});
+        const selected = [];
+        const names = [];
+        checkboxRefs.current.forEach((checkbox) => {
+            if(checkbox){
+                selected.push(checkbox.dataset.id);
+                names.push(checkbox.dataset.name);
+            }
+        });
         setSelectedIds(selected);
         setSelectedNames(names);
+        setModalContent({...bulkActions[actionIndex]});
         dialog.current.show();
     }
 
@@ -156,20 +162,22 @@ export default function ListTablePage({
                 <div className={cx('wp-header-end', 'hidden')}/>
                 <div className={styles.pageContent}>
                     <PageActions/>
-                    <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
-                        <ListTable
-                            columns={columns}
-                            singleName={singleName}
-                            pluralName={pluralName}
-                            title={title}
-                            rowActions={rowActions}
-                            parameters={parameters}
-                            data={data}
-                            error={error}
-                            isLoading={isValidating}
-                            align={align}
-                        />
-                    </ShowConfirmModalContext.Provider>
+                    <CheckboxContext.Provider value={checkboxRefs}>
+                        <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
+                            <ListTable
+                                columns={columns}
+                                singleName={singleName}
+                                pluralName={pluralName}
+                                title={title}
+                                rowActions={rowActions}
+                                parameters={parameters}
+                                data={data}
+                                error={error}
+                                isLoading={isValidating}
+                                align={align}
+                            />
+                        </ShowConfirmModalContext.Provider>
+                    </CheckboxContext.Provider>
                     <PageActions/>
                 </div>
             </article>
