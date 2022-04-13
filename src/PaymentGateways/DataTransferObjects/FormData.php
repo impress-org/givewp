@@ -9,6 +9,7 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\ValueObjects\Address;
 use Give\ValueObjects\CardInfo;
 use Give\ValueObjects\DonorInfo;
+use Give\ValueObjects\Money;
 
 /**
  * Class FormData
@@ -143,7 +144,7 @@ class FormData
             'firstName' => $request['user_info']['first_name'],
             'lastName' => $request['user_info']['last_name'],
             'email' => $request['user_info']['email'],
-            'honorific' => ! empty($request['user_info']['title']) ? $request['user_info']['title'] : '',
+            'honorific' => !empty($request['user_info']['title']) ? $request['user_info']['title'] : '',
             'address' => $request['user_info']['address']
         ]);
         $self->cardInfo = CardInfo::fromArray([
@@ -173,10 +174,12 @@ class FormData
      */
     public function toDonation($donorId)
     {
+        $donationAmount = Money::of($this->price, $this->currency);
+
         return new Donation([
             'status' => DonationStatus::PENDING(),
             'gateway' => $this->paymentGateway,
-            'amount' => (int)$this->price,
+            'amount' => $donationAmount->getMinorAmount(),
             'currency' => $this->currency,
             'donorId' => $donorId,
             'firstName' => $this->donorInfo->firstName,
@@ -199,7 +202,8 @@ class FormData
     /**
      * @unreleased replace $donationId with Donation model
      *
-     * @param  Donation  $donation
+     * @param Donation $donation
+     *
      * @return GatewayPaymentData
      */
     public function toGatewayPaymentData(Donation $donation)

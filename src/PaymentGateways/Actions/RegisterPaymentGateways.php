@@ -10,6 +10,7 @@ use Give\PaymentGateways\Gateways\Stripe\BECSGateway as StripeBECSGateway;
 use Give\PaymentGateways\Gateways\Stripe\CheckoutGateway as StripeCheckoutGateway;
 use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway as StripeCreditCardGateway;
 use Give\PaymentGateways\Gateways\Stripe\SEPAGateway as StripeSEPAGateway;
+use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 
 class RegisterPaymentGateways
@@ -21,7 +22,7 @@ class RegisterPaymentGateways
      */
     public $gateways = [
         // When complete, the Test Gateway will eventually replace The legacy Manual Gateway.
-        //TestGateway::class,
+        TestGateway::class,
         //TestGatewayOffsite::class,
         StripeBECSGateway::class,
         StripeCheckoutGateway::class,
