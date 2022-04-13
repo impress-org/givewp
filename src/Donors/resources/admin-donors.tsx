@@ -4,7 +4,7 @@ import DonorsListTable from "./components/DonorsListTable";
 
 ReactDOM.render(
     <StrictMode>
-        {<DonorsListTable />}
+        <DonorsListTable/>
     </StrictMode>,
     document.getElementById('give-admin-donors-root')
 );
