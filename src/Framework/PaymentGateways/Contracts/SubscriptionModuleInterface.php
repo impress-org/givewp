@@ -66,17 +66,6 @@ interface SubscriptionModuleInterface
     public function cancelSubscription(Subscription $subscriptionModel);
 
     /**
-     * Update subscription amount.
-     *
-     * @unreleased
-     *
-     * @param Subscription $subscriptionModel
-     *
-     * @return void
-     */
-    public function updateSubscriptionAmount(Subscription $subscriptionModel);
-
-    /**
      * Return gateway subscription detail page url.
      *
      * @unreleased
