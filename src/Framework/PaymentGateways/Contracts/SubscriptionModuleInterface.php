@@ -22,7 +22,19 @@ interface SubscriptionModuleInterface
     public function createSubscription(GatewayPaymentData $paymentData, GatewaySubscriptionData $subscriptionData);
 
     /**
-     * Return flag whether subscription cancelable.
+     * Cancel subscription.
+     *
+     * @unreleased
+     *
+     * @param Subscription $subscriptionModel
+     *
+     * @return void
+     */
+    public function cancelSubscription(Subscription $subscriptionModel);
+
+
+    /**
+     * Return flag whether donor can edit subscription.
      *
      * @unreleased
      *
@@ -30,7 +42,7 @@ interface SubscriptionModuleInterface
      *
      * @return bool
      */
-    public function canCancelSubscription(Subscription $subscriptionModel);
+    public function canDonorEditSubscription(Subscription $subscriptionModel);
 
     /**
      * Return flag whether subscription synchronizable.
@@ -44,7 +56,7 @@ interface SubscriptionModuleInterface
     public function canSyncSubscriptionWithPaymentGateway(Subscription $subscriptionModel);
 
     /**
-     * Return flag whether subscription editable.
+     * Update subscription amount.
      *
      * @unreleased
      *
@@ -52,18 +64,18 @@ interface SubscriptionModuleInterface
      *
      * @return bool
      */
-    public function canUpdateSubscription(Subscription $subscriptionModel);
+    public function canDonorUpdateSubscriptionAmount(Subscription $subscriptionModel);
 
     /**
-     * Cancel subscription.
+     * Update subscription amount.
      *
      * @unreleased
      *
      * @param Subscription $subscriptionModel
      *
-     * @return void
+     * @return bool
      */
-    public function cancelSubscription(Subscription $subscriptionModel);
+    public function canDonorUpdateSubscriptionPaymentMethod(Subscription $subscriptionModel);
 
     /**
      * Return gateway subscription detail page url.
