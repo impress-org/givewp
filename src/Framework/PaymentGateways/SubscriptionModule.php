@@ -10,7 +10,6 @@ use Give\Subscriptions\Models\Subscription;
  */
 abstract class SubscriptionModule implements SubscriptionModuleInterface
 {
-
     /**
      * @unreleased
      *
