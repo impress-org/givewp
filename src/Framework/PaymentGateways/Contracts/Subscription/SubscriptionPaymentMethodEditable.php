@@ -3,6 +3,7 @@
 namespace Give\Framework\PaymentGateways\Contracts\Subscription;
 
 use Give\Subscriptions\Models\Subscription;
+use Give\ValueObjects\CardInfo;
 
 /**
  * @unreleased
@@ -10,13 +11,14 @@ use Give\Subscriptions\Models\Subscription;
 interface SubscriptionPaymentMethodEditable
 {
     /**
-     * Update subscription amount.
+     * Update subscription payment method.
      *
      * @unreleased
      *
      * @param Subscription $subscriptionModel
+     * @param array $arg Additional information about payment method.
      *
      * @return void
      */
-    public function updateSubscriptionPaymentMethod(Subscription $subscriptionModel);
+    public function updateSubscriptionPaymentMethod(Subscription $subscriptionModel, array $arg = []);
 }
