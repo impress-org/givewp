@@ -32,7 +32,6 @@ interface SubscriptionModuleInterface
      */
     public function cancelSubscription(Subscription $subscriptionModel);
 
-
     /**
      * Return flag whether donor can edit subscription.
      *
