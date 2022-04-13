@@ -52,7 +52,9 @@ const donorsBulkActions:Array<BulkActionsConfig> = [
                 </ul>
                 <div>
                     <input id='giveDonorsTableDeleteDonations' type='checkbox'/>
-                    <label htmlFor='giveDonorsTableDeleteDonations'>{__('Delete all associated donations and records', 'give')}</label>
+                    <label htmlFor='giveDonorsTableDeleteDonations'>
+                        {__('Delete all associated donations and records', 'give')}
+                    </label>
                 </div>
             </>
         )
@@ -73,7 +75,7 @@ export default function DonorsListTable(){
             align={'end'}
         >
             <button className={styles.addFormButton} onClick={showLegacyDonors}>
-                {__('Switch to Legacy View')}
+                {__('Switch to Legacy View', 'give')}
             </button>
         </ListTablePage>
     );

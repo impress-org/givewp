@@ -25,7 +25,7 @@ class FormActions extends Endpoint
             $this->endpoint,
             [
                 [
-                    'methods'             => ['GET', 'POST', 'UPDATE', 'DELETE'],
+                    'methods'             => ['POST', 'UPDATE', 'DELETE'],
                     'callback'            => [$this, 'handleRequest'],
                     'permission_callback' => [$this, 'permissionsCheck'],
                 ],
