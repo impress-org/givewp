@@ -20,16 +20,4 @@ interface SubscriptionTransactionsSynchronizable
      * @return mixed
      */
     public function getSubscriptionTransactionsFromPaymentGateway(Subscription $subscriptionModel, array $args = []);
-
-    /**
-     * Return flag whether subscription transaction can be sync.
-     *
-     * @unreleased
-     *
-     * @param mixed $gatewayTransaction
-     * @param Subscription $subscriptionModel
-     *
-     * @return mixed
-     */
-    public function canSyncSubscriptionTransaction($gatewayTransaction, Subscription $subscriptionModel);
 }
