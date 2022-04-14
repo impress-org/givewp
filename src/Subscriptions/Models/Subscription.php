@@ -132,6 +132,10 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      */
     public function save()
     {
+        if (!$this->id) {
+            return give()->subscriptions->insert($this);
+        }
+
         return give()->subscriptions->update($this);
     }
 
@@ -153,7 +157,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     public function cancel()
     {
         $gatewayClassName = give(PaymentGatewayRegister::class)->getPaymentGateway(
-            give()->subscriptions->getInitialDonationId($this->id)
+            Donation::find(give()->subscriptions->getInitialDonationId($this->id))->gateway
         );
 
         if ($gatewayClassName) {
@@ -173,7 +177,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     public function refund(Donation $donationModel)
     {
         $gatewayClassName = give(PaymentGatewayRegister::class)->getPaymentGateway(
-            give()->subscriptions->getInitialDonationId($this->id)
+            Donation::find(give()->subscriptions->getInitialDonationId($this->id))->gateway
         );
 
         if ($gatewayClassName) {
