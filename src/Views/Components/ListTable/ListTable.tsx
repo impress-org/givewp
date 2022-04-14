@@ -5,7 +5,6 @@ import cx from 'classnames';
 import styles from './ListTable.module.scss';
 import ListTableRows from './ListTableRows';
 import {Spinner} from '../index';
-import {forEach} from "lodash";
 import {BulkActionCheckboxAll} from "@givewp/components/ListTable/BulkActionCheckbox";
 
 export interface ListTableProps {
