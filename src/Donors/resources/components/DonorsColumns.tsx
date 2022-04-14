@@ -19,8 +19,8 @@ export const donorsColumns: Array<ListTableColumn> = [
         render: (donor: {name, namePrefix, id, email, gravatar}) => (
             <div className={styles.donorInformation}>
                 <img className={styles.gravatar} src={donor.gravatar} alt={donor.name} loading='lazy'/>
-                <strong className={styles.name}>{donor.namePrefix ? donor.namePrefix + ' ' :''}{donor.name}</strong>
-                <a className={styles.email} href={`mailto:${donor.email}`}>{donor.email}</a>
+                <a className={styles.name} href={`/wp-admin/edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donor.id}`}>{donor.namePrefix ? donor.namePrefix + ' ' :''}{donor.name}</a>
+                <address className={styles.email}>{donor.email}</address>
             </div>
         ),
     },
@@ -28,7 +28,7 @@ export const donorsColumns: Array<ListTableColumn> = [
         name: 'donationRevenue',
         inlineSize: '6rem',
         text: __('Total Given', 'give'),
-        addClass: styles.monetary,
+        preset: 'monetary',
     },
     {
         name: 'donationCount',
