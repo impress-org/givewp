@@ -44,7 +44,7 @@ class DonorsAdminPage
             'edit_give_forms',
             'give-donors',
             [$this, 'render'],
-            6
+            5
         );
     }
 
@@ -95,6 +95,10 @@ class DonorsAdminPage
         return $response->get_data();
     }
 
+    /**
+     * Preload initial table data
+     * @unreleased
+     */
     public function getForms(){
         $queryParameters = [
             'page' => 1,
