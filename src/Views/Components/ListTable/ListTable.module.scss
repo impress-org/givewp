@@ -129,11 +129,11 @@
     justify-content: center;
     position: absolute;
     height: 100%;
-    width: 100%;
+    width: 999999px;
     background: rgba(255, 255, 255, 0.7);
     z-index: 10;
     border-radius: inherit;
-    overflow: hidden;;
+    overflow: hidden;
 }
 
 .appear {

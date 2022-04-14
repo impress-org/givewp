@@ -93,13 +93,7 @@ tr.duplicated {
 }
 
 .donationStatus {
-    position: relative;
 
-    & .test {
-        position: absolute;
-        right: 0;
-        top: 75%;
-    }
 }
 
 div.pending, div.processing, div.preapproval {
@@ -131,6 +125,8 @@ div.abandoned {
 }
 
 .monetary {
+    font-size: 1.375em;
+    font-weight: 700;
     color: var(--give-primary-color);
 }
 
