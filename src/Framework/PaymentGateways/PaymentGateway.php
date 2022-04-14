@@ -57,16 +57,18 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     public $secureRouteMethods = [];
 
     /**
-     * @var SubscriptionModuleInterface $subscriptionModule
+     * @unreleased Change variable type to SubscriptionModule.
+     * @var SubscriptionModule $subscriptionModule
      */
     public $subscriptionModule;
 
     /**
+     * @unreleased Change first argument type to SubscriptionModule abstract class.
      * @since 2.18.0
      *
-     * @param SubscriptionModuleInterface|null $subscriptionModule
+     * @param SubscriptionModule|null $subscriptionModule
      */
-    public function __construct(SubscriptionModuleInterface $subscriptionModule = null)
+    public function __construct(SubscriptionModule $subscriptionModule = null)
     {
         $this->subscriptionModule = $subscriptionModule;
     }
