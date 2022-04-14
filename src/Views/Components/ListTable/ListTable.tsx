@@ -6,6 +6,7 @@ import styles from './ListTable.module.scss';
 import ListTableRows from './ListTableRows';
 import {Spinner} from '../index';
 import {forEach} from "lodash";
+import {BulkActionCheckboxAll} from "@givewp/components/ListTable/BulkActionCheckbox";
 
 export interface ListTableProps {
     //required
@@ -32,14 +33,6 @@ export interface ListTableColumn {
     alignColumn?: 'start'|'center'|'end';
     addClass?: string;
     render?: ((item: {}) => JSX.Element)|JSX.Element|JSX.Element[]|null;
-}
-
-const toggleAllRowCheckboxes = (event) => {
-    const checked = event.target.checked;
-    const checkboxes = document.querySelectorAll('input.giveListTableSelect');
-    checkboxes.forEach((checkbox: HTMLInputElement) => {
-        checkbox.checked = checked;
-    });
 }
 
 export const ListTable = ({
@@ -130,17 +123,7 @@ export const ListTable = ({
                                     className={cx(styles.tableColumnHeader, styles.selectAll)}
                                     data-column='select'
                                 >
-                                    <label htmlFor='giveListTableSelectAll' id='giveListTableSelectAll-Label'
-                                           className='give-visually-hidden'
-                                    >
-                                       {sprintf(__('Select all %s', 'give'), pluralName)}
-                                    </label>
-                                    <input id='giveListTableSelectAll'
-                                           type='checkbox'
-                                           className='giveListTableSelect'
-                                           aria-labelledby='giveListTableSelectAll-Label'
-                                           onChange={toggleAllRowCheckboxes}
-                                    />
+                                    <BulkActionCheckboxAll pluralName={pluralName}/>
                                 </th>
                                 <>
                                     {columns.map(column =>

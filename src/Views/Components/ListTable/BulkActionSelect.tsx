@@ -1,7 +1,7 @@
 import styles from "@givewp/components/ListTable/ListTablePage.module.scss";
 import {__} from "@wordpress/i18n";
 
-export function BulkActionSelect ({bulkActions = null, showModal, data, parameters}) {
+export const BulkActionSelect = ({bulkActions = null, showModal, data, parameters}) => {
     if(!bulkActions){
         return null;
     }
@@ -21,4 +21,3 @@ export function BulkActionSelect ({bulkActions = null, showModal, data, paramete
         </form>
     );
 }
-

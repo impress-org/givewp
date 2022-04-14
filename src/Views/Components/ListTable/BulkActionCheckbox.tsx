@@ -37,3 +37,29 @@ export const BulkActionCheckbox = ({id, name, singleName}) => {
         </>
     );
 }
+
+export const BulkActionCheckboxAll = ({pluralName}) => {
+    const checkboxRefs = useContext(CheckboxContext);
+    return (
+        <>
+            <label htmlFor='giveListTableSelectAll' id='giveListTableSelectAll-Label'
+                   className='give-visually-hidden'
+            >
+                {sprintf(__('Select all %s', 'give'), pluralName)}
+            </label>
+            <input id='giveListTableSelectAll'
+                   type='checkbox'
+                   className='giveListTableSelect'
+                   aria-labelledby='giveListTableSelectAll-Label'
+                   onChange={(event) => toggleAllRowCheckboxes(event, checkboxRefs)}
+            />
+        </>
+    );
+}
+
+const toggleAllRowCheckboxes = (event, checkboxRefs) => {
+    const selectAll = event.target.checked;
+    checkboxRefs.current.forEach((checkbox) => {
+       checkbox.checked = selectAll;
+    });
+}
