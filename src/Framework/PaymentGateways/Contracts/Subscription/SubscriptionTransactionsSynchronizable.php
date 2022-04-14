@@ -22,7 +22,7 @@ interface SubscriptionTransactionsSynchronizable
     public function getSubscriptionTransactionsFromPaymentGateway(Subscription $subscriptionModel, array $args = []);
 
     /**
-     * Get subscription transactions from gateway.
+     * Return flag whether subscription transaction can be sync.
      *
      * @unreleased
      *
