@@ -123,7 +123,7 @@ export const ListTable = ({
                                     className={cx(styles.tableColumnHeader, styles.selectAll)}
                                     data-column='select'
                                 >
-                                    <BulkActionCheckboxAll pluralName={pluralName}/>
+                                    <BulkActionCheckboxAll pluralName={pluralName} data={data}/>
                                 </th>
                                 <>
                                     {columns.map(column =>

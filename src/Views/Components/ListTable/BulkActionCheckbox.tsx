@@ -1,5 +1,5 @@
 import {__, sprintf} from "@wordpress/i18n";
-import {useCallback, useContext, useEffect} from "react";
+import {useCallback, useContext, useEffect, useState} from "react";
 import {CheckboxContext} from "@givewp/components/ListTable/index";
 
 export const BulkActionCheckbox = ({id, name, singleName}) => {
@@ -38,8 +38,13 @@ export const BulkActionCheckbox = ({id, name, singleName}) => {
     );
 }
 
-export const BulkActionCheckboxAll = ({pluralName}) => {
+export const BulkActionCheckboxAll = ({pluralName, data}) => {
     const checkboxRefs = useContext(CheckboxContext);
+    const [checked, setChecked] = useState(false);
+    // reset the 'Select all' checkbox when table contents change
+    useEffect(() => {
+        setChecked(false);
+    }, [data]);
     return (
         <>
             <label htmlFor='giveListTableSelectAll' id='giveListTableSelectAll-Label'
@@ -51,15 +56,16 @@ export const BulkActionCheckboxAll = ({pluralName}) => {
                    type='checkbox'
                    className='giveListTableSelect'
                    aria-labelledby='giveListTableSelectAll-Label'
-                   onChange={(event) => toggleAllRowCheckboxes(event, checkboxRefs)}
+                   onChange={(event) => toggleAllRowCheckboxes(event, checkboxRefs, setChecked, checked)}
+                   checked={checked}
             />
         </>
     );
 }
 
-const toggleAllRowCheckboxes = (event, checkboxRefs) => {
-    const selectAll = event.target.checked;
+const toggleAllRowCheckboxes = (event, checkboxRefs, setChecked, checked) => {
     checkboxRefs.current.forEach((checkbox) => {
-       checkbox.checked = selectAll;
+       checkbox.checked = !checked;
     });
+    setChecked(!checked);
 }
