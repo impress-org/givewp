@@ -159,10 +159,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
         if ($gatewayClassName) {
             /* @var PaymentGateway $gateway */
             $gateway = give($gatewayClassName);
-
-            if ($gateway->subscriptionModule->canCancelSubscription($this)) {
-                $gateway->subscriptionModule->cancelSubscription($this);
-            }
+            $gateway->subscriptionModule->cancelSubscription($this);
         }
 
         $this->status = 'cancelled';
