@@ -162,7 +162,27 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
             $gateway->subscriptionModule->cancelSubscription($this);
         }
 
-        $this->status = 'cancelled';
+        $this->status = SubscriptionStatus::CANCELED();
+        $this->save();
+    }
+
+    /**
+     * @unreleased
+     * @throws Exception
+     */
+    public function refund(Donation $donationModel)
+    {
+        $gatewayClassName = give(PaymentGatewayRegister::class)->getPaymentGateway(
+            give()->subscriptions->getInitialDonationId($this->id)
+        );
+
+        if ($gatewayClassName) {
+            /* @var PaymentGateway $gateway */
+            $gateway = give($gatewayClassName);
+            $gateway->subscriptionModule->refundSubscriptionPayment($donationModel, $this);
+        }
+
+        $this->status = SubscriptionStatus::REFUNDED();
         $this->save();
     }
 
