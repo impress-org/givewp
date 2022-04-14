@@ -91,4 +91,13 @@ class TestSubscription extends \Give_Unit_Test_Case
     {
         $this->markTestIncomplete();
     }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function testSubscriptionShouldCancel()
+    {
+        $this->markTestIncomplete();
+    }
 }
