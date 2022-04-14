@@ -45,4 +45,21 @@ abstract class SubscriptionModule implements SubscriptionModuleInterface
                 'updateSubscriptionPaymentMethod'
             );
     }
+
+    /**
+     * Return flag whether subscription synchronizable.
+     *
+     * @unreleased
+     *
+     * @param Subscription $subscriptionModel
+     *
+     * @return bool
+     */
+    public function canSyncSubscriptionWithPaymentGateway(Subscription $subscriptionModel)
+    {
+        return method_exists(
+            $this,
+            'getSubscriptionTransactionsFromPaymentGateway'
+        );
+    }
 }
