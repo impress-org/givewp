@@ -78,7 +78,7 @@ abstract class SubscriptionModule implements SubscriptionModuleInterface
     {
         return method_exists(
             $this,
-            'updateSubscriptionPaymentMethod'
+            'refundSubscriptionPayment'
         );
     }
 }
