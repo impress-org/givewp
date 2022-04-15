@@ -187,7 +187,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
             /* @var PaymentGateway $gateway */
             $gateway = give($gatewayClassName);
 
-            if ($gateway->subscriptionModule->canRefundPaymentGatewaySubscriptionPayment()) {
+            if ($gateway->subscriptionModule->canRefundPaymentGatewaySubscriptionPayment($this, $donationModel)) {
                 $gateway->subscriptionModule->refundSubscriptionPayment($donationModel, $this);
             }
         }
