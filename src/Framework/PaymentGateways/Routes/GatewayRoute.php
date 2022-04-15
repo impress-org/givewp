@@ -2,6 +2,7 @@
 
 namespace Give\Framework\PaymentGateways\Routes;
 
+use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\DataTransferObjects\GatewayRouteData;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
@@ -24,12 +25,12 @@ class GatewayRoute
      * @since 2.19.0 - validate secureRouteMethods
      * @since 2.18.0
      *
-     * @return void
-     *
-     * @throws PaymentGatewayException
      * @since 2.18.0
      * @since 2.19.0 - validate secureRouteMethods
      *
+     * @return void
+     *
+     * @throws PaymentGatewayException
      */
     public function __invoke()
     {
@@ -122,8 +123,8 @@ class GatewayRoute
      * @since 2.19.4 replace RouteSignature args with unique donationId
      * @since 2.19.0
      *
-     * @param  string  $routeSignature
-     * @param  GatewayRouteData  $data
+     * @param string $routeSignature
+     * @param GatewayRouteData $data
      *
      * @return void
      */
@@ -171,7 +172,7 @@ class GatewayRoute
     private function handleGatewayRouteMethod(PaymentGateway $gateway, $method, $queryParams)
     {
         try {
-            $this->handleResponse($gateway->$method($queryParams));
+            $this->handleResponse($this->executeRouteCallback($gateway, $method, $queryParams));
         } catch (PaymentGatewayException $paymentGatewayException) {
             $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
         } catch (\Exception $exception) {
@@ -191,6 +192,29 @@ class GatewayRoute
                     )
                 )
             );
+        }
+    }
+
+    /**
+     * @param PaymentGateway $gateway
+     * @param string $method
+     * @param array $queryParams
+     *
+     * @throws PaymentGatewayException
+     * @return RedirectResponse
+     */
+    private function executeRouteCallback(PaymentGateway $gateway, $method, $queryParams)
+    {
+        if (method_exists($gateway, $method)) {
+            return $gateway->$method($queryParams);
+        }
+
+        if (array_key_exists($method, $gateway->routeMethods)) {
+            return call_user_func($gateway->routeMethods[$method]);
+        }
+
+        if (array_key_exists($method, $gateway->secureRouteMethods)) {
+            return call_user_func($gateway->secureRouteMethods[$method]);
         }
     }
 }
