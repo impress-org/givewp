@@ -339,10 +339,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      *
      * @param string $methodName
      */
-    public
-    function deRegister3rdPartyRouteMethod(
-        $methodName
-    ) {
+    public function deRegister3rdPartyRouteMethod($methodName) {
         // Do not de-register other than 3rd party routes.
         if (method_exists($this, $methodName)) {
             return;
