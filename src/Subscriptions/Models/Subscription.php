@@ -163,7 +163,10 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
         if ($gatewayClassName) {
             /* @var PaymentGateway $gateway */
             $gateway = give($gatewayClassName);
-            $gateway->subscriptionModule->cancelSubscription($this);
+
+            if ($gateway->subscriptionModule->canEditPaymentGatewaySubscription($this)) {
+                $gateway->subscriptionModule->cancelSubscription($this);
+            }
         }
 
         $this->status = SubscriptionStatus::CANCELED();
@@ -183,7 +186,10 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
         if ($gatewayClassName) {
             /* @var PaymentGateway $gateway */
             $gateway = give($gatewayClassName);
-            $gateway->subscriptionModule->refundSubscriptionPayment($donationModel, $this);
+
+            if ($gateway->subscriptionModule->canEditPaymentGatewaySubscription($this)) {
+                $gateway->subscriptionModule->refundSubscriptionPayment($donationModel, $this);
+            }
         }
 
         $this->status = SubscriptionStatus::REFUNDED();

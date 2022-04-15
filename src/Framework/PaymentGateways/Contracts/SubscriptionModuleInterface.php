@@ -54,7 +54,7 @@ interface SubscriptionModuleInterface
      *
      * @return bool
      */
-    public function canDonorEditSubscription(Subscription $subscriptionModel);
+    public function canEditPaymentGatewaySubscription(Subscription $subscriptionModel);
 
     /**
      * Return flag whether subscription synchronizable.
@@ -76,7 +76,7 @@ interface SubscriptionModuleInterface
      *
      * @return bool
      */
-    public function canDonorUpdateSubscriptionAmount(Subscription $subscriptionModel);
+    public function canUpdatePaymentGatewaySubscriptionAmount(Subscription $subscriptionModel);
 
     /**
      * Update subscription amount.
@@ -87,7 +87,7 @@ interface SubscriptionModuleInterface
      *
      * @return bool
      */
-    public function canDonorUpdateSubscriptionPaymentMethod(Subscription $subscriptionModel);
+    public function canUpdatePaymentGatewaySubscriptionPaymentMethod(Subscription $subscriptionModel);
 
     /**
      * Return gateway subscription detail page url.

@@ -15,7 +15,7 @@ abstract class SubscriptionModule implements SubscriptionModuleInterface
      *
      * @inheritDoc
      */
-    public function canDonorEditSubscription(Subscription $subscriptionModel)
+    public function canEditPaymentGatewaySubscription(Subscription $subscriptionModel)
     {
         return $subscriptionModel->gatewaySubscriptionId &&
             in_array($subscriptionModel->status->getValue(), ['active', 'failing'], true);
@@ -26,9 +26,9 @@ abstract class SubscriptionModule implements SubscriptionModuleInterface
      *
      * @inheritDoc
      */
-    public function canDonorUpdateSubscriptionAmount(Subscription $subscriptionModel)
+    public function canUpdatePaymentGatewaySubscriptionAmount(Subscription $subscriptionModel)
     {
-        return $this->canDonorEditSubscription($subscriptionModel) &&
+        return $this->canEditPaymentGatewaySubscription($subscriptionModel) &&
             method_exists($this, 'updateSubscriptionAmount');
     }
 
@@ -37,9 +37,9 @@ abstract class SubscriptionModule implements SubscriptionModuleInterface
      *
      * @inheritDoc
      */
-    public function canDonorUpdateSubscriptionPaymentMethod(Subscription $subscriptionModel)
+    public function canUpdatePaymentGatewaySubscriptionPaymentMethod(Subscription $subscriptionModel)
     {
-        return $this->canDonorEditSubscription($subscriptionModel) &&
+        return $this->canEditPaymentGatewaySubscription($subscriptionModel) &&
             method_exists(
                 $this,
                 'updateSubscriptionPaymentMethod'
