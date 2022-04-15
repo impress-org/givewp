@@ -161,13 +161,11 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
             Donation::find(give()->subscriptions->getInitialDonationId($this->id))->gateway
         );
 
-        if ($gatewayClassName) {
-            /* @var PaymentGateway $gateway */
-            $gateway = give($gatewayClassName);
+        /* @var PaymentGateway $gateway */
+        $gateway = give($gatewayClassName);
 
-            if ($gateway->subscriptionModule->canEditPaymentGatewaySubscription($this)) {
-                $gateway->subscriptionModule->cancelSubscription($this);
-            }
+        if ($gateway->subscriptionModule->canEditPaymentGatewaySubscription($this)) {
+            $gateway->subscriptionModule->cancelSubscription($this);
         }
 
         $this->status = SubscriptionStatus::CANCELED();
