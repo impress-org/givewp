@@ -200,8 +200,8 @@ class GatewayRoute
      * @param string $method
      * @param array $queryParams
      *
-     * @throws PaymentGatewayException
      * @return RedirectResponse
+     * @throws PaymentGatewayException
      */
     private function executeRouteCallback(PaymentGateway $gateway, $method, $queryParams)
     {
@@ -209,12 +209,7 @@ class GatewayRoute
             return $gateway->$method($queryParams);
         }
 
-        if (array_key_exists($method, $gateway->routeMethods)) {
-            return call_user_func($gateway->routeMethods[$method]);
-        }
-
-        if (array_key_exists($method, $gateway->secureRouteMethods)) {
-            return call_user_func($gateway->secureRouteMethods[$method]);
-        }
+        $allGatewayMethods = array_merge($gateway->routeMethods, $gateway->secureRouteMethods);
+        return call_user_func($gateway->$allGatewayMethods[$method]);
     }
 }
