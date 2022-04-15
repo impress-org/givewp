@@ -313,10 +313,10 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      * @unreleased
      *
      * @param string $methodName
-     * @param array $callback
+     * @param string $className
      * @param bool $secureRoute
      */
-    public function register3rdPartyRouteMethod($methodName, array $callback, $secureRoute = false)
+    public function register3rdPartyRouteMethod($methodName, $className, $secureRoute = false)
     {
         // Do not register duplicate routes.
         if (
@@ -326,6 +326,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
             return;
         }
 
+        $callback = [$className, $methodName];
         if ($secureRoute) {
             $this->secureRouteMethods[$methodName] = $callback;
         } else {
@@ -338,8 +339,10 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      *
      * @param string $methodName
      */
-    public function deRegister3rdPartyRouteMethod($methodName)
-    {
+    public
+    function deRegister3rdPartyRouteMethod(
+        $methodName
+    ) {
         // Do not de-register other than 3rd party routes.
         if (method_exists($this, $methodName)) {
             return;

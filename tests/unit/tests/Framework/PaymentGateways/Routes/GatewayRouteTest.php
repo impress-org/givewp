@@ -25,7 +25,7 @@ class GatewayRouteTest extends WP_UnitTestCase
         $methodName = 'handleStripeCreditCardSCA';
         $callbackData = [GatewayRouteTestGatewaySubscriptionModule::class, $methodName];
 
-        $gateway->register3rdPartyRouteMethod($methodName, $callbackData);
+        $gateway->register3rdPartyRouteMethod($methodName, GatewayRouteTestGatewaySubscriptionModule::class);
 
         $arrayDiff = array_diff($gateway->routeMethods[$methodName], $callbackData);
         $this->assertCount(0, $arrayDiff);
@@ -38,7 +38,7 @@ class GatewayRouteTest extends WP_UnitTestCase
         $callbackData = [GatewayRouteTestGatewaySubscriptionModule::class, $methodName];
 
         $gateway->deRegister3rdPartyRouteMethod($methodName);
-        $gateway->register3rdPartyRouteMethod($methodName, $callbackData, true);
+        $gateway->register3rdPartyRouteMethod($methodName, GatewayRouteTestGatewaySubscriptionModule::class, true);
 
         $arrayDiff = array_diff($gateway->secureRouteMethods[$methodName], $callbackData);
         $this->assertCount(0, $arrayDiff);
@@ -48,9 +48,8 @@ class GatewayRouteTest extends WP_UnitTestCase
     {
         $gateway = give(GatewayRouteTestGateway::class);
         $methodName = 'handleStripeCreditCardSCA';
-        $callbackData = [GatewayRouteTestGatewaySubscriptionModule::class, $methodName];
 
-        $gateway->register3rdPartyRouteMethod($methodName, $callbackData);
+        $gateway->register3rdPartyRouteMethod($methodName, GatewayRouteTestGatewaySubscriptionModule::class);
 
         $class = new ReflectionClass (GatewayRoute::class);
         $method = $class->getMethod('executeRouteCallback');
@@ -73,9 +72,8 @@ class GatewayRouteTest extends WP_UnitTestCase
         );
         $gateway = give(GatewayRouteTestGateway::class);
         $methodName = 'handleStripeCreditCardSCA';
-        $callbackData = [GatewayRouteTestGatewayTransactionModule::class, $methodName];
 
-        $gateway->register3rdPartyRouteMethod($methodName, $callbackData);
+        $gateway->register3rdPartyRouteMethod($methodName, GatewayRouteTestGatewayTransactionModule::class);
 
         $class = new ReflectionClass (GatewayRoute::class);
         $method = $class->getMethod('executeRouteCallback');
