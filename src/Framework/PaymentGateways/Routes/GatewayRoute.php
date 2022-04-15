@@ -216,10 +216,16 @@ class GatewayRoute
         $callback = $allGatewayMethods[$method];
         $callback[0] = give($callback[0]); // create object class.
 
-        if( $callback[0] instanceof SubscriptionModuleInterface ) {
+        if ($callback[0] instanceof SubscriptionModuleInterface) {
             return $callback($queryParams);
         }
 
-        throw new Exception( 'Gateway route is not processable.' );
+        throw new Exception(
+            sprintf(
+                'Gateway route registered from %1$s class is not processable. 3rd party route must method of %2$s type',
+                get_class($callback[0]),
+                SubscriptionModuleInterface::class
+            )
+        );
     }
 }
