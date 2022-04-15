@@ -34,8 +34,8 @@ export const donorsColumns: Array<ListTableColumn> = [
         name: 'donationCount',
         text: __('Donations', 'give'),
         inlineSize: '8rem',
-        render: (donor: {donationCount, id}) => (
-            <a href={`edit.php?post_type=give_forms&page=give-payment-history&donor=${donor.id}`}>
+        render: (donor: {donationCount, email}) => (
+            <a href={`edit.php?post_type=give_forms&page=give-payment-history&search=${donor.email}`}>
                 {
                     donor.donationCount > 0 ?
                     sprintf(_n('%d donation', '%d donations', parseInt(donor.donationCount), 'give'), donor.donationCount)

@@ -57,7 +57,7 @@ export const getInitialFilterState = (filters) => {
     const urlParams = new URLSearchParams(window.location.search);
     filters.map((filter) => {
         // if the search parameters contained a value for the filter, use that
-        const filterQuery = urlParams.get(filter.name);
+        const filterQuery = decodeURI(urlParams.get(filter.name));
         // only accept a string or number, we don't want any surprises
         if(urlParams.has(filter.name) && (typeof filterQuery == "string" || typeof filterQuery == "number")) {
             state[filter.name] = filterQuery;

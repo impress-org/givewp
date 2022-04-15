@@ -138,12 +138,6 @@ export default function () {
             text: __('Select Form', 'give'),
             ariaLabel: __('filter donation forms by status', 'give'),
             options: window.GiveDonations.forms,
-        },
-        {
-            name: 'donor',
-            type: 'search',
-            text: __('Donor Name or ID'),
-            ariaLabel: __('search donations by donor name or donor id', 'give'),
         }
     ]
 

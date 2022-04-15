@@ -110,8 +110,12 @@ class DonationsAdminPage
         $queryParameters = [
             'page' => 1,
             'perPage' => 30,
-            'donor' => isset($_GET['donor']) ? $_GET['donor'] : 0,
         ];
+
+        if(isset($_GET['search']))
+        {
+            $queryParameters['search'] = urldecode($_GET['search']);
+        }
 
         $request = WP_REST_Request::from_url(add_query_arg(
             $queryParameters,
