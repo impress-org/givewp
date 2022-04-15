@@ -5,7 +5,6 @@ namespace Give\Subscriptions\Models;
 use DateTime;
 use Exception;
 use Give\Donations\Models\Donation;
-use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
