@@ -316,7 +316,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      * @param array $callback
      * @param bool $secureRoute
      */
-    public function register3rdPartyRouteMethod($methodName, $callback, $secureRoute = false)
+    public function register3rdPartyRouteMethod($methodName, array $callback, $secureRoute = false)
     {
         // Do not register duplicate routes.
         if (
