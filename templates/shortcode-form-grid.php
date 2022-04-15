@@ -156,7 +156,10 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
 	<?php
 	// If modal, print form in hidden container until it is time to be revealed.
 	if ( 'modal_reveal' === $atts['display_style'] ) {
-		if ( ! FormUtils::isLegacyForm( $form_id ) ) {
+		if (
+            ! isset($_GET['context']) // check if we are in block editor
+            && ! FormUtils::isLegacyForm( $form_id )
+        ) {
 			echo give_form_shortcode(
 				[
 					'id'            => $form_id,
