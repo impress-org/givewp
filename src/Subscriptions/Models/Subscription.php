@@ -179,9 +179,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      */
     public function refund(Donation $donationModel)
     {
-        $gatewayClassName = give(PaymentGatewayRegister::class)->getPaymentGateway(
-            Donation::find(give()->subscriptions->getInitialDonationId($this->id))->gateway
-        );
+        $gatewayClassName = give(PaymentGatewayRegister::class)->getPaymentGateway($donationModel->gateway);
 
         if ($gatewayClassName) {
             /* @var PaymentGateway $gateway */
