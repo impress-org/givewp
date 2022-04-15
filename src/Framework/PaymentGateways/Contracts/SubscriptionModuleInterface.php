@@ -34,18 +34,6 @@ interface SubscriptionModuleInterface
     public function cancelSubscription(Subscription $subscriptionModel);
 
     /**
-     * refund subscription payment.
-     *
-     * @unreleased
-     *
-     * @param Donation $donationModel
-     * @param Subscription $subscriptionModel
-     *
-     * @return void
-     */
-    public function refundSubscriptionPayment(Donation $donationModel, Subscription $subscriptionModel );
-
-    /**
      * Return flag whether donor can edit subscription.
      *
      * @unreleased
