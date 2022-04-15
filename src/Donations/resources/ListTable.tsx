@@ -3,7 +3,8 @@ import {useSWRConfig} from 'swr';
 import {ListTableColumn, ListTablePage} from '@givewp/components';
 import RowAction from "@givewp/components/ListTable/RowAction";
 import ListTableApi from '@givewp/components/ListTable/api';
-import styles from "@givewp/components/ListTable/ListTablePage.module.scss";
+import tableStyles from "@givewp/components/ListTable/ListTablePage.module.scss";
+import styles from './ListTable.module.scss';
 import {IdBadge} from "@givewp/components/ListTable/TableCell";
 import {BulkActionsConfig, ShowConfirmModalContext} from "@givewp/components/ListTable";
 import {useContext} from "react";
@@ -77,7 +78,8 @@ export default function () {
         {
             name: 'paymentType',
             text: __('Payment Type'),
-            inlineSize: '12rem',
+            inlineSize: '11rem',
+            addClass: styles.paymentType,
             render: (donation: {donationType}) => (
                 <DonationType type={donation.donationType}/>
             )
@@ -111,9 +113,15 @@ export default function () {
         {
             name: 'status',
             text: __('Status', 'give'),
+            inlineSize: '10rem',
             preset: 'donationStatus',
         },
-
+        {
+            name: 'paymentMode',
+            text: '',
+            inlineSize: '3rem',
+            preset: 'testBadge'
+        }
     ];
 
     const filters = [
@@ -231,12 +239,12 @@ export default function () {
             apiSettings={window.GiveDonations}
             filterSettings={filters}
         >
-            <a className={styles.addFormButton}
+            <a className={tableStyles.addFormButton}
                href={'edit.php?post_type=give_forms&page=give-tools&tab=import&importer-type=import_donations'}
             >
                 {__('Import Donations', 'give')}
             </a>
-            <button className={styles.addFormButton} onClick={showLegacyDonations}>
+            <button className={tableStyles.addFormButton} onClick={showLegacyDonations}>
                 {__('Switch to Legacy View')}
             </button>
         </ListTablePage>

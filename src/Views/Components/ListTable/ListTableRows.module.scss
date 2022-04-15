@@ -83,6 +83,17 @@ tr.duplicated {
     }
 }
 
+.donationStatus {
+    display: flex;
+    flex-direction: row;
+    column-gap: 1rem;
+    align-items: center;
+
+    & > * {
+        flex-shrink: 0;
+    }
+}
+
 .statusMessage {
     font-weight: 600;
     font-size: 1.2em;
