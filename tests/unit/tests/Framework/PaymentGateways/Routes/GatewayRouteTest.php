@@ -3,14 +3,14 @@
 use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\Framework\PaymentGateways\Routes\GatewayRoute;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @unknown
  */
-class GatewayRouteTest extends TestCase
+class GatewayRouteTest extends WP_UnitTestCase
 {
     protected function setUp()
     {
@@ -40,6 +40,25 @@ class GatewayRouteTest extends TestCase
 
         $arrayDiff = array_diff($gateway->secureRouteMethods['handleStripeCreditCardSCA'], $callbackData);
         $this->assertCount(0, $arrayDiff);
+    }
+
+    public function testRegister3rdPartyGatewayRouteShouldExecute()
+    {
+        $gateway = give(GatewayRouteTestGateway::class);
+        $methodName = 'handleStripeCreditCardSCA';
+        $callbackData = [GatewayRouteTestGatewaySubscriptionModule::class, $methodName];
+
+        $gateway->register3rdPartyRouteMethod($methodName, $callbackData);
+
+        $class = new ReflectionClass (GatewayRoute::class);
+        $method = $class->getMethod('executeRouteCallback');
+        $method->setAccessible(true);
+        $actual = $method->invoke(give(GatewayRoute::class), $gateway, $methodName, []);
+
+        $this->assertEquals(
+            GatewayRouteTestGatewaySubscriptionModule::class . $methodName,
+            $actual
+        );
     }
 }
 
@@ -85,6 +104,6 @@ class GatewayRouteTestGatewaySubscriptionModule implements SubscriptionModuleInt
 
     public function handleStripeCreditCardSCA()
     {
-        return __FUNCTION__;
+        return __CLASS__ . __FUNCTION__;
     }
 }
