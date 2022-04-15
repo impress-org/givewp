@@ -2,7 +2,6 @@
 
 namespace Give\Framework\PaymentGateways;
 
-use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
 use Give\Subscriptions\Models\Subscription;
 
@@ -61,25 +60,6 @@ abstract class SubscriptionModule implements SubscriptionModuleInterface
         return method_exists(
             $this,
             'getSubscriptionTransactionsFromPaymentGateway'
-        );
-    }
-
-    /**
-     * Return flag whether subscription payment refundable.
-     *
-     * @unreleased
-     *
-     * @param Subscription $subscriptionModel
-     * @param Donation $donationModel
-     *
-     * @return bool
-     */
-    public function canRefundPaymentGatewaySubscriptionPayment(Subscription $subscriptionModel, Donation $donationModel)
-    {
-        return $this->canEditPaymentGatewaySubscription($subscriptionModel) &&
-            method_exists(
-            $this,
-            'refundSubscriptionPayment'
         );
     }
 }

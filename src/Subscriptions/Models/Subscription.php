@@ -175,30 +175,6 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
-     * @throws Exception
-     */
-    public function refund(Donation $donationModel)
-    {
-        $gatewayClassName = give(PaymentGatewayRegister::class)->getPaymentGateway($donationModel->gateway);
-
-        /* @var PaymentGateway $gateway */
-        $gateway = give($gatewayClassName);
-
-        if ($gateway->subscriptionModule->canRefundPaymentGatewaySubscriptionPayment($this, $donationModel)) {
-            $gateway->subscriptionModule->refundSubscriptionPayment($donationModel, $this);
-        }
-
-        $donationModel->status = DonationStatus::REFUNDED();
-        $donationModel->save();
-
-        if (DonationStatus::COMPLETE() === $donationModel->status->getValue()) {
-            $this->status = SubscriptionStatus::CANCELED();
-            $this->save();
-        }
-    }
-
-    /**
      * @since 2.19.6
      *
      * @return ModelQueryBuilder<Subscription>
