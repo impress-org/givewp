@@ -210,6 +210,8 @@ class GatewayRoute
         }
 
         $allGatewayMethods = array_merge($gateway->routeMethods, $gateway->secureRouteMethods);
-        return call_user_func($gateway->$allGatewayMethods[$method]);
+        $callback = $gateway->$allGatewayMethods[$method];
+        $callback[0] = give($callback[0]); // create object class.
+        return $callback();
     }
 }
