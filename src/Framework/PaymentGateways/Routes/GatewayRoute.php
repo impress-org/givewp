@@ -2,7 +2,9 @@
 
 namespace Give\Framework\PaymentGateways\Routes;
 
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Http\Response\Types\RedirectResponse;
+use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
 use Give\Framework\PaymentGateways\DataTransferObjects\GatewayRouteData;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
@@ -202,6 +204,7 @@ class GatewayRoute
      *
      * @return RedirectResponse
      * @throws PaymentGatewayException
+     * @throws Exception
      */
     private function executeRouteCallback(PaymentGateway $gateway, $method, $queryParams)
     {
@@ -212,6 +215,11 @@ class GatewayRoute
         $allGatewayMethods = array_merge($gateway->routeMethods, $gateway->secureRouteMethods);
         $callback = $allGatewayMethods[$method];
         $callback[0] = give($callback[0]); // create object class.
-        return $callback($queryParams);
+
+        if( $callback[0] instanceof SubscriptionModuleInterface ) {
+            return $callback($queryParams);
+        }
+
+        throw new Exception( 'Gateway route is not processable.' );
     }
 }
