@@ -5,6 +5,7 @@ namespace Give\Subscriptions\Models;
 use DateTime;
 use Exception;
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
@@ -181,17 +182,24 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     {
         $gatewayClassName = give(PaymentGatewayRegister::class)->getPaymentGateway($donationModel->gateway);
 
-        if ($gatewayClassName) {
-            /* @var PaymentGateway $gateway */
-            $gateway = give($gatewayClassName);
+        /* @var PaymentGateway $gateway */
+        $gateway = give($gatewayClassName);
 
+        if (DonationStatus::RENEWAL()->getValue() === $donationModel->status->getValue()) {
             if ($gateway->subscriptionModule->canRefundPaymentGatewaySubscriptionPayment($this, $donationModel)) {
                 $gateway->subscriptionModule->refundSubscriptionPayment($donationModel, $this);
             }
-        }
+        } elseif (DonationStatus::COMPLETE() === $donationModel->status->getValue()) {
+            if ($gateway->subscriptionModule->canRefundPaymentGatewaySubscriptionPayment($this, $donationModel)) {
+                $gateway->subscriptionModule->refundSubscriptionPayment($donationModel, $this);
+            }
 
-        $this->status = SubscriptionStatus::REFUNDED();
-        $this->save();
+            $donationModel->status = DonationStatus::REFUNDED();
+            $donationModel->save();
+
+            $this->status = SubscriptionStatus::CANCELED();
+            $this->save();
+        }
     }
 
     /**
