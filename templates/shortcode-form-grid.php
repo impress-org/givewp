@@ -100,7 +100,7 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
 			}
 			?>
 
-            <?php if (true === $atts['show_donate_button']):
+            <?php if ($atts['show_donate_button']):
                 $button_text = ! empty( $atts['donate_button_text'] )
                     ? $atts['donate_button_text']
                     : give_get_meta( $form_id, '_give_form_grid_donate_button_text', true );
