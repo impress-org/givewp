@@ -76,7 +76,8 @@ abstract class SubscriptionModule implements SubscriptionModuleInterface
      */
     public function canRefundPaymentGatewaySubscriptionPayment(Subscription $subscriptionModel, Donation $donationModel)
     {
-        return method_exists(
+        return $this->canEditPaymentGatewaySubscription($subscriptionModel) &&
+            method_exists(
             $this,
             'refundSubscriptionPayment'
         );
