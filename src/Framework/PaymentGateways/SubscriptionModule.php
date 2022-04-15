@@ -62,4 +62,15 @@ abstract class SubscriptionModule implements SubscriptionModuleInterface
             'getSubscriptionTransactionsFromPaymentGateway'
         );
     }
+
+    /**
+     * @unreleased
+     */
+    public function canRefundPaymentGatewaySubscriptionPayment()
+    {
+        return method_exists(
+            $this,
+            'updateSubscriptionPaymentMethod'
+        );
+    }
 }
