@@ -260,9 +260,9 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      * @since 2.19.4 replace RouteSignature args with unique donationId
      * @since 2.19.0
      *
-     * @param  string  $gatewayMethod
-     * @param  int  $donationId
-     * @param  array|null  $args
+     * @param string $gatewayMethod
+     * @param int $donationId
+     * @param array|null $args
      *
      * @return string
      *
@@ -290,8 +290,9 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      *
      * @since 2.19.0
      *
-     * @param  Exception|PaymentGatewayException  $exception
-     * @param  string  $message
+     * @param Exception|PaymentGatewayException $exception
+     * @param string $message
+     *
      * @return void
      */
     private function handleExceptionResponse($exception, $message)
@@ -306,5 +307,18 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
 
         give_set_error('PaymentGatewayException', $message);
         give_send_back_to_checkout();
+    }
+
+    /**
+     * @unreleased
+     * @return void
+     */
+    public function registerRouteMethod($methodName, callable $callback, $secureRoute = false)
+    {
+        if ($secureRoute) {
+            $this->secureRouteMethods[$methodName] = $callback;
+        } else {
+            $this->routeMethods[$methodName] = $callback;
+        }
     }
 }
