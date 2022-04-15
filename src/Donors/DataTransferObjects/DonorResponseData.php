@@ -91,7 +91,7 @@ class DonorResponseData implements Arrayable
         $self->donorType = give()->donors->getDonorType($donor->id);
         $self->latestDonation = $donorLatestDonationDate ? Date::getDateTime($donorLatestDonationDate) : '';
         $self->donationRevenue = $self->formatAmount($donor->donationRevenue);
-        $self->gravatar = get_avatar_url($donor->email);
+        $self->gravatar = get_avatar_url($donor->email, ["size" => 64]);
 
         return $self;
     }
