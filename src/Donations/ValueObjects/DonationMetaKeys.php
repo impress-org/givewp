@@ -38,7 +38,10 @@ class DonationMetaKeys extends Enum
     use EnumInteractsWithQueryBuilder;
 
     const AMOUNT = '_give_payment_total';
+    const BASE_AMOUNT = '_give_cs_base_amount';
     const CURRENCY = '_give_payment_currency';
+    const BASE_CURRENCY = '_give_cs_base_currency';
+    const EXCHANGE_RATE = '_give_cs_exchange_rate';
     const GATEWAY = '_give_payment_gateway';
     const DONOR_ID = '_give_payment_donor_id';
     const FIRST_NAME = '_give_donor_billing_first_name';

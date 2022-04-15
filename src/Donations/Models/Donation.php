@@ -17,7 +17,8 @@ use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Subscriptions\Models\Subscription;
-use Give\ValueObjects\Money;
+use Give\ValueObjects\Money as OldMoney;
+use Money\Money;
 
 /**
  * Class Donation
@@ -31,7 +32,10 @@ use Give\ValueObjects\Money;
  * @property DateTime $updatedAt
  * @property DonationStatus $status
  * @property DonationMode $mode
- * @property int $amount
+ * @property Money $amount
+ * @property Money $baseAmount
+ * @property Money $baseCurrencyAmount
+ * @property Money $feeAmountRecovered
  * @property string $currency
  * @property string $gateway
  * @property int $donorId
@@ -64,8 +68,11 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
         'updatedAt' => DateTime::class,
         'status' => DonationStatus::class,
         'mode' => DonationMode::class,
-        'amount' => 'int',
-        'currency' => 'string',
+        'chargeAmount' => Money::class,
+        'intendedAmount' => Money::class,
+        'chargeAmountInBaseCurrency' => Money::class,
+        'intendedAmountInBaseCurrency' => Money::class,
+        'feeAmountRecovered' => Money::class,
         'gateway' => 'string',
         'donorId' => 'int',
         'firstName' => 'string',
@@ -192,11 +199,11 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     /**
      * @since 2.19.6
      *
-     * @return Money
+     * @return OldMoney
      */
     public function getMinorAmount()
     {
-        return Money::ofMinor($this->amount, $this->currency);
+        return OldMoney::ofMinor($this->amount, $this->currency);
     }
 
     /**
