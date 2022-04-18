@@ -1,4 +1,5 @@
-import styles from "@givewp/components/ListTable/ListTablePage.module.scss";
+import pageStyles from "@givewp/components/ListTable/ListTablePage.module.scss";
+import styles from './BulkActionSelect.module.scss';
 import {__} from "@wordpress/i18n";
 
 export const BulkActionSelect = ({bulkActions = null, showModal, data, parameters}) => {
@@ -17,7 +18,7 @@ export const BulkActionSelect = ({bulkActions = null, showModal, data, parameter
                     return <option key={action.value} value={action.value}>{action.label}</option>;
                 })}
             </select>
-            <button className={styles.addFormButton}>{__('Apply', 'give')}</button>
+            <button className={pageStyles.addFormButton}>{__('Apply', 'give')}</button>
         </form>
     );
 }
