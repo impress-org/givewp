@@ -34,6 +34,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
  * @property int $amount
  * @property int $feeAmount
  * @property SubscriptionStatus $status
+ * @property string $gatewayId
  * @property string $gatewaySubscriptionId
  * @property Donor $donor
  * @property Donation[] $donations
@@ -56,6 +57,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
         'feeAmount' => 'int',
         'status' => SubscriptionStatus::class,
         'gatewaySubscriptionId' => 'string',
+        'gatewayId' => 'string',
     ];
 
     /**
@@ -213,6 +215,14 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
         }
 
         return date('Y-m-d H:i:s', strtotime('+ ' . $frequency . $period->getValue() . ' 23:59:59'));
+    }
+
+    /**
+     * @return PaymentGateway
+     */
+    public function gateway()
+    {
+        return give()->gateways->getPaymentGateway($this->gatewayId);
     }
 
     /**

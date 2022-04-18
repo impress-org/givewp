@@ -35,7 +35,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
      *
      * @param  string  $id
      *
-     * @return string
+     * @return PaymentGateway
      */
     public function getPaymentGateway($id)
     {
@@ -43,7 +43,10 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
             throw new InvalidArgumentException("No gateway exists with the ID {$id}");
         }
 
-        return $this->gateways[$id];
+        /** @var PaymentGateway $gateway */
+        $gateway = give($this->gateways[$id]);
+
+        return $gateway;
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace Give\Subscriptions\Repositories;
 
 use Exception;
+use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
@@ -26,13 +27,14 @@ class SubscriptionRepository
         'frequency',
         'amount',
         'status',
-        'donationFormId'
+        'donationFormId',
     ];
 
     /**
      * @since 2.19.6
      *
-     * @param  int  $subscriptionId
+     * @param int $subscriptionId
+     *
      * @return Subscription
      */
     public function getById($subscriptionId)
@@ -43,7 +45,8 @@ class SubscriptionRepository
     /**
      * @since 2.19.6
      *
-     * @param  int  $subscriptionId
+     * @param int $subscriptionId
+     *
      * @return ModelQueryBuilder
      */
     public function queryById($subscriptionId)
@@ -55,7 +58,8 @@ class SubscriptionRepository
     /**
      * @since 2.19.6
      *
-     * @param  int  $donationId
+     * @param int $donationId
+     *
      * @return ModelQueryBuilder
      */
     public function queryByDonationId($donationId)
@@ -67,7 +71,8 @@ class SubscriptionRepository
     /**
      * @since 2.19.6
      *
-     * @param  int  $donorId
+     * @param int $donorId
+     *
      * @return ModelQueryBuilder
      */
     public function queryByDonorId($donorId)
@@ -79,7 +84,7 @@ class SubscriptionRepository
     /**
      * @since 2.19.6
      *
-     * @param  int  $id
+     * @param int $id
      *
      * @return object[]
      */
@@ -105,7 +110,7 @@ class SubscriptionRepository
     /**
      * @since 2.19.6
      *
-     * @param  Subscription  $subscription
+     * @param Subscription $subscription
      *
      * @return Subscription
      * @throws Exception
@@ -135,11 +140,10 @@ class SubscriptionRepository
                 'recurring_fee_amount' => isset($subscription->feeAmount) ? $subscription->feeAmount : 0,
                 'bill_times' => isset($subscription->installments) ? $subscription->installments : 0,
                 'transaction_id' => isset($subscription->transactionId) ? $subscription->transactionId : '',
-                'product_id' => $subscription->donationFormId
+                'product_id' => $subscription->donationFormId,
             ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
-
 
             Log::error('Failed creating a subscription', compact('subscription'));
 
@@ -160,7 +164,7 @@ class SubscriptionRepository
     /**
      * @since 2.19.6
      *
-     * @param  Subscription  $subscription
+     * @param Subscription $subscription
      *
      * @return Subscription
      * @throws Exception
@@ -187,7 +191,7 @@ class SubscriptionRepository
                     'recurring_fee_amount' => isset($subscription->feeAmount) ? $subscription->feeAmount : 0,
                     'bill_times' => isset($subscription->installments) ? $subscription->installments : 0,
                     'transaction_id' => $subscription->transactionId,
-                    'product_id' => $subscription->donationFormId
+                    'product_id' => $subscription->donationFormId,
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -211,7 +215,7 @@ class SubscriptionRepository
     /**
      * @since 2.19.6
      *
-     * @param  Subscription  $subscription
+     * @param Subscription $subscription
      *
      * @return bool
      *
@@ -245,8 +249,9 @@ class SubscriptionRepository
     /**
      * @since 2.19.6
      *
-     * @param  int  $subscriptionId
-     * @param  array  $columns
+     * @param int $subscriptionId
+     * @param array $columns
+     *
      * @return bool
      * @throws Exception
      */
@@ -280,7 +285,8 @@ class SubscriptionRepository
     /**
      * @since 2.19.6
      *
-     * @param  int  $subscriptionId
+     * @param int $subscriptionId
+     *
      * @return int|null
      */
     public function getInitialDonationId($subscriptionId)
@@ -298,7 +304,8 @@ class SubscriptionRepository
     }
 
     /**
-     * @param  Subscription  $subscription
+     * @param Subscription $subscription
+     *
      * @return void
      */
     private function validateSubscription(Subscription $subscription)
@@ -338,6 +345,12 @@ class SubscriptionRepository
                 'status',
                 ['profile_id', 'gatewaySubscriptionId'],
                 ['product_id', 'donationFormId']
+            )
+            ->attachMeta(
+                'give_donationmeta',
+                'parent_payment_id',
+                'donation_id',
+                [DonationMetaKeys::GATEWAY, 'gatewayId']
             );
     }
 }
