@@ -42,15 +42,16 @@
 
 .pageHeader {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    column-gap: 1rem;
+    gap: 1rem;
     background-color: #fff;
     padding-block: 1em;
     padding-inline: 1.5em;
     border-bottom: 0.0625rem solid #dbdbdb;
 
-    & > img, & > svg {
+    & > * {
         flex-shrink: 0;
     }
 }
@@ -144,16 +145,13 @@ input.searchInput {
 #searchContainer {
     display: flex;
     flex-wrap: wrap;
+    gap: 1rem 1.5rem;
     align-items: center;
     justify-content: flex-start;
     background-color: rgba(248, 248, 248);
     padding-inline: 1.5em;
     padding-block: 1em;
     border-bottom: 0.0625rem solid #dbdbdb;
-
-    & > * {
-        margin-inline-end: 1.5em;
-    }
 }
 
 select.statusFilter {
@@ -206,11 +204,15 @@ select.statusFilter {
     position: relative;
     background: #fff;
     border: 1px solid #c3c4c7;
-    border-block-start-color: #69b868;
+    border-block-start-color: var(--give-primary-color);
     border-block-start-width: 0.25rem;
     box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
     max-width: 50vw;
     min-width: 30vw;
+
+    &.warning {
+        border-block-start-color: #d63638;
+    }
 
     & ul {
         max-height: 60vh;

@@ -225,8 +225,8 @@ export default function () {
     return (
         <ListTablePage
             title={__('Donations', 'give')}
-            singleName={__('Donation', 'give')}
-            pluralName={__('Donations', 'give')}
+            singleName={__('donation', 'give')}
+            pluralName={__('donations', 'give')}
             columns={columns}
             rowActions={rowActions}
             bulkActions={bulkActions}
