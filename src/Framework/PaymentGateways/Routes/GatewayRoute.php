@@ -167,9 +167,6 @@ class GatewayRoute
      * @param PaymentGateway $gateway
      * @param string $method
      * @param array $queryParams
-     *
-     * @return void
-     *
      */
     private function handleGatewayRouteMethod(PaymentGateway $gateway, $method, $queryParams)
     {
@@ -212,10 +209,10 @@ class GatewayRoute
             return $gateway->$method($queryParams);
         }
 
-        $allGatewayMethods = array_merge($gateway->routeMethods, $gateway->secureRouteMethods);
-        $callback = $allGatewayMethods[$method];
-        $callback[0] = give($callback[0]); // create object class.
+        if ($gateway->supportsSubscriptions() && method_exists($gateway->subscriptionModule, $method)) {
+            return $gateway->subscriptionModule->$method($queryParams);
+        }
 
-        return $callback($queryParams);
+        throw new Exception('Gateway route is not executable.');
     }
 }
