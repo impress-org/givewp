@@ -8,7 +8,7 @@ use Give\Framework\Support\Facades\Str;
 /**
  * @method public getKeyAsCamelCase()
  */
-class Enum extends \MyCLabs\Enum\Enum
+abstract class Enum extends \MyCLabs\Enum\Enum
 {
     /**
      * @unreleased
