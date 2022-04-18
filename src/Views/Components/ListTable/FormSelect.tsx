@@ -1,12 +1,13 @@
-import styles from "@givewp/components/ListTable/ListTablePage.module.scss";
-import {__, sprintf} from "@wordpress/i18n";
+import pageStyles from "@givewp/components/ListTable/ListTablePage.module.scss";
+import styles from './FormSelect.module.scss';
+import cx from "classnames";
 
 export const FormSelect = ({options, name, placeholder = '', ariaLabel = '', onChange, ...rest}) => {
     return (
         <>
             <input
                 type='search'
-                className={styles.searchInput}
+                className={cx(pageStyles.searchInput, styles.formSelect)}
                 list={`giveSearchSelect-${name}`}
                 onChange={updateSearchableSelect(options, name, onChange)}
                 autoComplete={'off'}
@@ -15,7 +16,7 @@ export const FormSelect = ({options, name, placeholder = '', ariaLabel = '', onC
                 {...rest}
             />
             <datalist
-                className={styles.statusFilter}
+
                 id={`giveSearchSelect-${name}`}
                 onChange={onChange}
             >
