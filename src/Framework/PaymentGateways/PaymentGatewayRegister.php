@@ -150,7 +150,6 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
      */
     private function registerSubscriptionModuleRoutes(PaymentGateway $gateway)
     {
-        // Exit if gateway does not have subscription module
         if (!$gateway->supportsSubscriptions()) {
             return;
         }
