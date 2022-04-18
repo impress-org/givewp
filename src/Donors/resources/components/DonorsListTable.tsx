@@ -34,6 +34,7 @@ const donorsBulkActions:Array<BulkActionsConfig> = [
     {
         label: __('Delete', 'give'),
         value: 'delete',
+        type: 'danger',
         action: async (selected) => {
             const deleteDonations = document.querySelector('#giveDonorsTableDeleteDonations') as HTMLInputElement;
             const args = {ids: selected.join(','), deleteDonationsAndRecords: deleteDonations.checked};

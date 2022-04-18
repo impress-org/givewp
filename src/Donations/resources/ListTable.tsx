@@ -40,7 +40,7 @@ export default function () {
         );
 
         const confirmModal = (event) => {
-            showConfirmModal(__('Delete', 'give'), confirmDelete, deleteItem);
+            showConfirmModal(__('Delete', 'give'), confirmDelete, deleteItem, 'danger');
         }
 
         return (
@@ -145,6 +145,7 @@ export default function () {
         {
             label: __('Delete', 'give'),
             value: 'delete',
+            type: 'danger',
             action: async (selected) => {
                 const response = await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
                 return response;

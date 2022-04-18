@@ -33,7 +33,7 @@ export function DonorsRowActions({item, setUpdateErrors, parameters}) {
     );
 
     const confirmModal = (event) => {
-        showConfirmModal(__('Delete', 'give'), confirmDeleteDonor, deleteDonor);
+        showConfirmModal(__('Delete', 'give'), confirmDeleteDonor, deleteDonor, 'danger');
     }
 
     return (

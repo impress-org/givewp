@@ -211,11 +211,15 @@ select.statusFilter {
     min-width: 30vw;
 
     &.warning {
+        border-block-start-color: #dba617;
+    }
+
+    &.danger {
         border-block-start-color: #d63638;
     }
 
     & ul {
-        max-height: 60vh;
+        max-height: 40vh;
         overflow-y: auto;
         scrollbar-width: thin;
     }

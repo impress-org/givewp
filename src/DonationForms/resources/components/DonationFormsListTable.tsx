@@ -104,6 +104,7 @@ const donationFormsBulkActions:Array<BulkActionsConfig> = [
     {
         label: __('Delete', 'give'),
         value: 'delete',
+        type: 'danger',
         isVisible: (data, parameters) => parameters.status === 'trash' || !data?.trash,
         action: async (selected) => await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE'),
         confirm: (selected, names) => (
@@ -122,6 +123,7 @@ const donationFormsBulkActions:Array<BulkActionsConfig> = [
     {
         label: __('Move to Trash', 'give'),
         value: 'trash',
+        type: 'danger',
         isVisible: (data, parameters) => parameters.status !== 'trash' && data?.trash,
         action: async (selected) => await API.fetchWithArgs('/trash', {ids: selected.join(',')}, 'DELETE'),
         confirm: (selected, names) => (

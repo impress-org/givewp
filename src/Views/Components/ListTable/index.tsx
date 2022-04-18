@@ -40,9 +40,10 @@ export interface BulkActionsConfig {
 
     //optional
     isVisible?: (data, parameters) => Boolean;
+    type?: 'normal'|'warning'|'danger';
 }
 
-export const ShowConfirmModalContext = createContext((label, confirm, action) => {});
+export const ShowConfirmModalContext = createContext((label, confirm, action, type=null) => {});
 export const CheckboxContext = createContext(null);
 
 export default function ListTablePage({
@@ -60,7 +61,7 @@ export default function ListTablePage({
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(30);
     const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
-    const [modalContent, setModalContent] = useState<{confirm, action, label}>({
+    const [modalContent, setModalContent] = useState<{confirm, action, label, type?: 'normal'|'warning'|'danger'}>({
         confirm: (selected)=>{},
         action: (selected)=>{},
         label: ''
@@ -88,8 +89,8 @@ export default function ListTablePage({
 
     const handleDebouncedFilterChange = useDebounce(handleFilterChange);
 
-    const showConfirmActionModal = (label, confirm, action) => {
-        setModalContent({confirm, action, label});
+    const showConfirmActionModal = (label, confirm, action, type:'normal'|'warning'|'danger'|null = null) => {
+        setModalContent({confirm, action, label, type});
         dialog.current.show();
     }
 
@@ -191,7 +192,10 @@ export default function ListTablePage({
                 classNames={{
                     container: styles.container,
                     overlay: styles.overlay,
-                    dialog: styles.dialog,
+                    dialog: cx(styles.dialog, {
+                        [styles.warning]: modalContent?.type === 'warning',
+                        [styles.danger]: modalContent?.type === 'danger',
+                    }),
                     closeButton: 'hidden',
                 }}
             >

@@ -29,7 +29,7 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
     );
 
     const confirmModal = (event) => {
-        showConfirmModal(__('Delete', 'give'), confirmDeleteForm, deleteForm);
+        showConfirmModal(__('Delete', 'give'), confirmDeleteForm, deleteForm, 'danger');
     }
 
     return (

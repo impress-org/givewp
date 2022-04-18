@@ -90,7 +90,7 @@ class ListDonations extends Endpoint
         return new WP_REST_Response(
             [
                 'items' => $data,
-                'itemsCount' => $donationsCount,
+                'totalItems' => $donationsCount,
                 'totalPages' => $totalPages
             ]
         );
