@@ -205,14 +205,10 @@ class GatewayRoute
      */
     private function executeRouteCallback(PaymentGateway $gateway, $method, $queryParams)
     {
-        if (method_exists($gateway, $method)) {
-            return $gateway->$method($queryParams);
-        }
-
-        if ($gateway->supportsSubscriptions() && method_exists($gateway->subscriptionModule, $method)) {
+        if ($gateway->supportsSubscriptions()) {
             return $gateway->subscriptionModule->$method($queryParams);
         }
 
-        throw new Exception('Gateway route is not executable.');
+        return $gateway->$method($queryParams);
     }
 }
