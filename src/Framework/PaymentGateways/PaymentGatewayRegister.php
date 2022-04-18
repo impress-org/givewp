@@ -151,71 +151,16 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
     private function registerSubscriptionModuleRoutes(PaymentGateway $gateway)
     {
         // Exit if gateway does not have subscription module
-        if( ! $gateway->supportsSubscriptions() ) {
+        if (!$gateway->supportsSubscriptions()) {
             return;
         }
 
         foreach ($gateway->subscriptionModule->routeMethods as $routeMethod) {
-            $this->register3rdPartyRouteMethod(
-                $gateway,
-                $routeMethod,
-                get_class($gateway->subscriptionModule)
-            );
+            $gateway->routeMethods[] = $routeMethod;
         }
 
         foreach ($gateway->subscriptionModule->secureRouteMethods as $routeMethod) {
-            $this->register3rdPartyRouteMethod(
-                $gateway,
-                $routeMethod,
-                get_class($gateway->subscriptionModule),
-                true
-            );
-        }
-    }
-
-    /**
-     * @unreleased
-     *
-     * @param PaymentGateway $gateway
-     * @param string $methodName
-     * @param string $className
-     * @param bool $secureRoute
-     */
-    private function register3rdPartyRouteMethod(PaymentGateway $gateway, $methodName, $className, $secureRoute = false)
-    {
-        // Do not register duplicate routes.
-        if (
-            isset($gateway->secureRouteMethods[$methodName]) ||
-            isset($gateway->routeMethods[$methodName])
-        ) {
-            return;
-        }
-
-        $callback = [$className, $methodName];
-        if ($secureRoute) {
-            $gateway->secureRouteMethods[$methodName] = $callback;
-        } else {
-            $gateway->routeMethods[$methodName] = $callback;
-        }
-    }
-
-    /**
-     * @unreleased
-     *
-     * @param PaymentGateway $gateway
-     * @param string $methodName
-     */
-    private function deRegister3rdPartyRouteMethod(PaymentGateway $gateway, $methodName)
-    {
-        // Do not de-register other than 3rd party routes.
-        if (method_exists($gateway, $methodName)) {
-            return;
-        }
-
-        if (isset($gateway->routeMethods[$methodName])) {
-            unset($gateway->routeMethods[$methodName]);
-        } elseif (isset($gateway->secureRouteMethods[$methodName])) {
-            unset($gateway->secureRouteMethods[$methodName]);
+            $gateway->secureRouteMethods[] = $routeMethod;
         }
     }
 }

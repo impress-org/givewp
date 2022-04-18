@@ -20,8 +20,8 @@ class SubscriptionGatewayRouteTest extends WP_UnitTestCase
         $this->registerGateway();
         $gateway = give(GatewayRouteTestGateway::class);
 
-        $this->assertThat($gateway->routeMethods, $this->arrayHasKey('handleSimpleRoute'));
-        $this->assertThat($gateway->secureRouteMethods, $this->arrayHasKey('handleSecureRoute'));
+        $this->assertContains('handleSimpleRoute', $gateway->routeMethods);
+        $this->assertContains('handleSecureRoute', $gateway->secureRouteMethods);
     }
 
     public function testRegisterGatewayRouteShouldExecute()
