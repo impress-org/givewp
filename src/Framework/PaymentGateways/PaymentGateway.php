@@ -64,9 +64,9 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * @since 2.18.0
      *
-     * @param SubscriptionModuleInterface|null $subscriptionModule
+     * @param SubscriptionModule|null $subscriptionModule
      */
-    public function __construct(SubscriptionModuleInterface $subscriptionModule = null)
+    public function __construct(SubscriptionModule $subscriptionModule = null)
     {
         $this->subscriptionModule = $subscriptionModule;
     }
