@@ -33,7 +33,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
      *
      * @since 2.18.0
      *
-     * @param  string  $id
+     * @param string $id
      *
      * @return string
      */
@@ -49,7 +49,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
     /**
      * @since 2.18.0
      *
-     * @param  string  $id
+     * @param string $id
      *
      * @return bool
      */
@@ -63,7 +63,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
      *
      * @since 2.18.0
      *
-     * @param  string  $gatewayClass
+     * @param string $gatewayClass
      *
      * @throws OverflowException|InvalidArgumentException|Exception
      */
@@ -113,8 +113,8 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
      *
      * @since 2.18.0
      *
-     * @param  string  $gatewayClass
-     * @param  string  $gatewayId
+     * @param string $gatewayClass
+     * @param string $gatewayId
      *
      * @return void
      */
@@ -125,15 +125,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
 
             /* @var PaymentGateway $gateway */
             $gateway = new $gatewayClass($subscriptionModule ? $container->make($subscriptionModule) : null);
-
-            // Register subscription module route methods to gateway class.
-            foreach ( $gateway->subscriptionModule->routeMethods as $routeMethod ) {
-                $gateway->register3rdPartyRouteMethod( $routeMethod, get_class( $subscriptionModule ) );
-            }
-
-            foreach ( $gateway->subscriptionModule->secureRouteMethods as $routeMethod ) {
-                $gateway->register3rdPartyRouteMethod( $routeMethod, get_class( $subscriptionModule ), true );
-            }
+            $this->registerSubscriptionModuleRoutes($gateway);
 
             return $gateway;
         });
@@ -142,7 +134,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
     /**
      * After gateway is registered, connect to legacy payment gateway adapter
      *
-     * @param  string  $gatewayClass
+     * @param string $gatewayClass
      */
     private function afterGatewayRegister($gatewayClass)
     {
@@ -150,5 +142,75 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
         $legacyPaymentGatewayRegisterAdapter = give(LegacyPaymentGatewayRegisterAdapter::class);
 
         $legacyPaymentGatewayRegisterAdapter->connectGatewayToLegacyPaymentGatewayAdapter($gatewayClass);
+    }
+
+    /**
+     * @unreleased
+     * @return void
+     */
+    private function registerSubscriptionModuleRoutes(PaymentGateway $gateway)
+    {
+        foreach ($gateway->subscriptionModule->routeMethods as $routeMethod) {
+            $this->register3rdPartyRouteMethod(
+                $gateway,
+                $routeMethod,
+                get_class($gateway->subscriptionModule)
+            );
+        }
+
+        foreach ($gateway->subscriptionModule->secureRouteMethods as $routeMethod) {
+            $this->register3rdPartyRouteMethod(
+                $gateway,
+                $routeMethod,
+                get_class($gateway->subscriptionModule),
+                true
+            );
+        }
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param PaymentGateway $gateway
+     * @param string $methodName
+     * @param string $className
+     * @param bool $secureRoute
+     */
+    private function register3rdPartyRouteMethod(PaymentGateway $gateway, $methodName, $className, $secureRoute = false)
+    {
+        // Do not register duplicate routes.
+        if (
+            isset($gateway->secureRouteMethods[$methodName]) ||
+            isset($gateway->routeMethods[$methodName])
+        ) {
+            return;
+        }
+
+        $callback = [$className, $methodName];
+        if ($secureRoute) {
+            $gateway->secureRouteMethods[$methodName] = $callback;
+        } else {
+            $gateway->routeMethods[$methodName] = $callback;
+        }
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param PaymentGateway $gateway
+     * @param string $methodName
+     */
+    private function deRegister3rdPartyRouteMethod(PaymentGateway $gateway, $methodName)
+    {
+        // Do not de-register other than 3rd party routes.
+        if (method_exists($gateway, $methodName)) {
+            return;
+        }
+
+        if (isset($gateway->routeMethods[$methodName])) {
+            unset($gateway->routeMethods[$methodName]);
+        } elseif (isset($gateway->secureRouteMethods[$methodName])) {
+            unset($gateway->secureRouteMethods[$methodName]);
+        }
     }
 }

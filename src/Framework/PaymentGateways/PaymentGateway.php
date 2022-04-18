@@ -308,47 +308,4 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         give_set_error('PaymentGatewayException', $message);
         give_send_back_to_checkout();
     }
-
-    /**
-     * @unreleased
-     *
-     * @param string $methodName
-     * @param string $className
-     * @param bool $secureRoute
-     */
-    public function register3rdPartyRouteMethod($methodName, $className, $secureRoute = false)
-    {
-        // Do not register duplicate routes.
-        if (
-            isset($this->secureRouteMethods[$methodName]) ||
-            isset($this->routeMethods[$methodName])
-        ) {
-            return;
-        }
-
-        $callback = [$className, $methodName];
-        if ($secureRoute) {
-            $this->secureRouteMethods[$methodName] = $callback;
-        } else {
-            $this->routeMethods[$methodName] = $callback;
-        }
-    }
-
-    /**
-     * @unreleased
-     *
-     * @param string $methodName
-     */
-    public function deRegister3rdPartyRouteMethod($methodName) {
-        // Do not de-register other than 3rd party routes.
-        if (method_exists($this, $methodName)) {
-            return;
-        }
-
-        if (isset($this->routeMethods[$methodName])) {
-            unset($this->routeMethods[$methodName]);
-        } elseif (isset($this->secureRouteMethods[$methodName])) {
-            unset($this->secureRouteMethods[$methodName]);
-        }
-    }
 }
