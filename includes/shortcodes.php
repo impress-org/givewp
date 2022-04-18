@@ -72,7 +72,7 @@ function give_donation_history( $atts, $content = false ) {
 		if ( give_get_receipt_session() || is_user_logged_in() ) {
 			echo sprintf(
 				'<a href="%s">%s</a>',
-				esc_url( give_get_history_page_uri() ),
+				esc_url($_SERVER['HTTP_REFERER'] ),
 				__( '&laquo; Return to All Donations', 'give' )
 			);
 		}
