@@ -74,7 +74,7 @@ const donationFormsBulkActions:Array<BulkActionsConfig> = [
         confirm: (selected, names) => (
             <>
                 <p>Donation forms to be edited:</p>
-                <ul>
+                <ul role='document' tabIndex={0}>
                     {selected.map((id, index) => (
                         <li key={id}>{names[index]}</li>
                     ))}
@@ -111,7 +111,7 @@ const donationFormsBulkActions:Array<BulkActionsConfig> = [
                 <p>
                     {__('Really delete the following donation forms?', 'give')}
                 </p>
-                <ul>
+                <ul role='document' tabIndex={0}>
                     {selected.map((id, index) => (
                         <li key={id}>{names[index]}</li>
                     ))}
@@ -129,7 +129,7 @@ const donationFormsBulkActions:Array<BulkActionsConfig> = [
                 <p>
                     {__('Really trash the following donation forms?', 'give')}
                 </p>
-                <ul>
+                <ul role='document' tabIndex={0}>
                     {selected.map((id, index) => (
                         <li key={id}>{names[index]}</li>
                     ))}

@@ -45,7 +45,7 @@ const donorsBulkActions:Array<BulkActionsConfig> = [
                 <p>
                     {__('Really delete the following donors?', 'give')}
                 </p>
-                <ul>
+                <ul role='document' tabIndex={0}>
                     {selected.map((id, index) => (
                         <li key={id}>{names[index]}</li>
                     ))}

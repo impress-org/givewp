@@ -152,7 +152,7 @@ export default function () {
             confirm: (selected, names) => (
                 <>
                     <p>{__('Really delete the following donations?', 'give')}</p>
-                    <ul>
+                    <ul role='document' tabIndex={0}>
                         {selected.map((donationId, index) => (
                             <li key={donationId}>
                                 <IdBadge id={donationId}/>
@@ -188,7 +188,7 @@ export default function () {
                     confirm: (selected, names) => (
                         <>
                             <p>{__('Set status for the following donations?', 'give')}</p>
-                            <ul>
+                            <ul role='document' tabIndex={0}>
                                 {selected.map((donationId, index) => (
                                     <li key={donationId}>
                                         <IdBadge id={donationId}/>
@@ -208,7 +208,7 @@ export default function () {
             confirm: (selected, names) => (
                 <>
                     <p>{__('Resend Email Receipts for following donations?', 'give')}</p>
-                    <ul>
+                    <ul role='document' tabIndex={0}>
                         {selected.map((donationId, index) => (
                             <li key={donationId}>
                                 <IdBadge id={donationId}/>
