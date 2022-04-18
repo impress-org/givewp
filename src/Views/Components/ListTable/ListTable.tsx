@@ -109,6 +109,7 @@ export const ListTable = ({
                     aria-labelledby="giveListTableCaption"
                     aria-describedby="giveListTableMessage"
                     className={styles.tableGroup}
+                    tabIndex={0}
                 >
                     <table className={styles.table}>
                         <caption id="giveListTableCaption" className={styles.tableCaption}>
