@@ -10,6 +10,17 @@ use Give\Framework\Support\Facades\Str;
  */
 class Enum extends \MyCLabs\Enum\Enum
 {
+    /**
+     * @unreleased
+     *
+     * Adds support for is{Value} methods. So if an Enum has an ACTIVE value, then an isActive() instance method is
+     * automatically available.
+     *
+     * @param $name
+     * @param $arguments
+     *
+     * @return bool
+     */
     public function __call($name, $arguments)
     {
         if (strpos($name, 'is') === 0) {
@@ -23,6 +34,21 @@ class Enum extends \MyCLabs\Enum\Enum
         }
 
         throw new BadMethodCallException("Method $name does not exist on enum");
+    }
+
+    /**
+     * @param ...$enums
+     *
+     * @return bool
+     */
+    public function isOneOf(...$enums) {
+        foreach($enums as $enum) {
+            if ( $this->equals($enum) ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
