@@ -123,7 +123,19 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
         give()->singleton($gatewayClass, function (Container $container) use ($gatewayClass, $gatewayId) {
             $subscriptionModule = apply_filters("give_gateway_{$gatewayId}_subscription_module", null);
 
-            return new $gatewayClass($subscriptionModule ? $container->make($subscriptionModule) : null);
+            /* @var PaymentGateway $gateway */
+            $gateway = new $gatewayClass($subscriptionModule ? $container->make($subscriptionModule) : null);
+
+            // Register subscription module route methods to gateway class.
+            foreach ( $gateway->subscriptionModule->routeMethods as $routeMethod ) {
+                $gateway->register3rdPartyRouteMethod( $routeMethod, get_class( $subscriptionModule ) );
+            }
+
+            foreach ( $gateway->subscriptionModule->secureRouteMethods as $routeMethod ) {
+                $gateway->register3rdPartyRouteMethod( $routeMethod, get_class( $subscriptionModule ), true );
+            }
+
+            return $gateway;
         });
     }
 
