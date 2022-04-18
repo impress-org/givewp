@@ -69,7 +69,7 @@ export default function TypeBadge ({config}) {
                     :
                     <config.badgeContent aria-labelledby={badgeId} className={cx(styles.badge, config.badgeStyle)}/>
                 }
-                <label id={badgeId} className={styles.label}>{config.label}</label>
+                <p id={badgeId} className={styles.label}>{config.label}</p>
                 {
                     config?.starred ?
                         <FontAwesomeIcon

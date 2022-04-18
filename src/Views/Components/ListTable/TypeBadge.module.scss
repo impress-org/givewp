@@ -7,7 +7,9 @@
     box-shadow: inset 0 0 0 1px rgba(203, 203, 203, 1);
     inline-size: -moz-fit-content;
     max-inline-size: fit-content;
+    block-size: 2rem;
     margin: 0;
+    padding: 0;
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
@@ -33,13 +35,17 @@
     &.repeat {
         background: rgba(244 148 32);
         block-size: 1.125rem;
-        inline-size: 1.3359375rem;
+        inline-size: 1.375rem;
+        padding-block: 0.4375rem;
+        padding-inline: 0.3125rem;
     }
 
     &.subscriber {
         background-image: linear-gradient(45deg, rgba(46 187 187), rgba(89 173 112));
         block-size: 1rem;
         inline-size: 1.375rem;
+        padding-block: 0.5rem;
+        padding-inline: 0.3125rem;
     }
 
     &.new {
@@ -61,7 +67,8 @@ svg.badge {
 }
 
 .label {
-    padding: 0 0.5rem;
+    margin: 0;
+    padding: 0.6125rem 0.5rem;
     font-size: 0.75rem;
     font-weight: 400;
     text-transform: uppercase;
