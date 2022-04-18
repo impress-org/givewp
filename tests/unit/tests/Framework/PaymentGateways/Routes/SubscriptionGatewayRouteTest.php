@@ -2,6 +2,7 @@
 
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\Framework\PaymentGateways\Routes\GatewayRoute;
 use Give\Framework\PaymentGateways\SubscriptionModule;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
@@ -12,26 +13,41 @@ use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
 class SubscriptionGatewayRouteTest extends WP_UnitTestCase
 {
     /**
-     * @var PaymentGatewayRegister
-     */
-    private $registerPaymentGateway;
-
-    /**
      * @unreleased
      */
-    public function testDeveloperShouldAbleToRegisterRouteCallback()
+    public function testSubscriptionRoutesShouldRegisterToGateway()
+    {
+        $this->registerGateway();
+        $gateway = give(GatewayRouteTestGateway::class);
+
+        $this->assertThat($gateway->routeMethods, $this->arrayHasKey('handleSimpleRoute'));
+        $this->assertThat($gateway->secureRouteMethods, $this->arrayHasKey('handleSecureRoute'));
+    }
+
+    public function testRegisterGatewayRouteShouldExecute()
+    {
+        $this->registerGateway();
+        $gateway = give(GatewayRouteTestGateway::class);
+        $methodName = 'handleSimpleRoute';
+
+        $class = new ReflectionClass (GatewayRoute::class);
+        $method = $class->getMethod('executeRouteCallback');
+        $method->setAccessible(true);
+        $actual = $method->invoke(give(GatewayRoute::class), $gateway, $methodName, []);
+
+        $this->assertEquals(
+            GatewayRouteTestGatewaySubscriptionModule::class . $methodName,
+            $actual
+        );
+    }
+
+    private function registerGateway()
     {
         add_filter("give_gateway_GatewayRouteTestGateway_subscription_module", function () {
             return GatewayRouteTestGatewaySubscriptionModule::class;
         });
 
-        $this->registerPaymentGateway = new PaymentGatewayRegister();
-        $this->registerPaymentGateway->registerGateway(GatewayRouteTestGateway::class);
-
-        $gateway = give(GatewayRouteTestGateway::class);
-
-        $this->arrayHasKey('handleSimpleRoute', $gateway->routeMethods);
-        $this->arrayHasKey('handleSecureRoute', $gateway->routeMethods);
+        (new PaymentGatewayRegister())->registerGateway(GatewayRouteTestGateway::class);
     }
 }
 
@@ -69,6 +85,14 @@ class GatewayRouteTestGateway extends PaymentGateway
 
 class GatewayRouteTestGatewaySubscriptionModule extends SubscriptionModule
 {
+    public $routeMethods = [
+        'handleSimpleRoute'
+    ];
+
+    public $secureRouteMethods = [
+        'handleSecureRoute'
+    ];
+
     public function createSubscription(
         GatewayPaymentData $paymentData,
         GatewaySubscriptionData $subscriptionData
