@@ -102,15 +102,17 @@ export default function ListTablePage({
         const selected = [];
         const names = [];
         checkboxRefs.current.forEach((checkbox) => {
-            if(checkbox){
+            if(checkbox.checked){
                 selected.push(checkbox.dataset.id);
                 names.push(checkbox.dataset.name);
             }
         });
         setSelectedIds(selected);
         setSelectedNames(names);
-        setModalContent({...bulkActions[actionIndex]});
-        dialog.current.show();
+        if(selected.length){
+            setModalContent({...bulkActions[actionIndex]});
+            dialog.current.show();
+        }
     }
 
     const showPagination = () => (
