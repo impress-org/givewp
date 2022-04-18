@@ -29,6 +29,7 @@ tr.duplicated {
     align-items: center;
     column-gap: 2rem;
     word-break: keep-all;
+    transition: opacity 150ms ease-in-out;
 
     > * {
         position: relative;
@@ -133,4 +134,10 @@ div.abandoned {
     font-size: 1.25em;
     font-weight: 700;
     color: var(--give-primary-color);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .tableRowActions {
+        opacity: 0;
+    }
 }
