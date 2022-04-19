@@ -310,4 +310,50 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         give_set_error('PaymentGatewayException', $message);
         give_send_back_to_checkout();
     }
+
+    /**
+     * @unreleased
+     *
+     * @param string $method
+     *
+     * @return bool
+     */
+    public function supportsMethodRoute($method)
+    {
+        $allGatewayMethods = array_merge(
+            $this->routeMethods,
+            $this->secureRouteMethods,
+            $this->subscriptionModule->routeMethods,
+            $this->subscriptionModule->secureRouteMethods
+        );
+
+        return in_array($method, $allGatewayMethods);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param string $method
+     *
+     * @throws Exception
+     */
+    public function callRouteMethod($method, $queryParams)
+    {
+        if (method_exists($this, $method)) {
+            return $this->$method($method, $queryParams);
+        }
+
+        if ($this->subscriptionModule->supportsMethodRoute($method)) {
+            return $this->subscriptionModule->callRouteMethod($method, $queryParams);
+        }
+
+        throw new Exception(
+            sprintf(
+                '%1$s route method is not supported by %2$s and %3$s',
+                $method,
+                get_class($this),
+                get_class($this->subscriptionModule)
+            )
+        );
+    }
 }
