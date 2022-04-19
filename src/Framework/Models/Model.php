@@ -271,9 +271,9 @@ abstract class Model implements Arrayable
      */
     protected function getPropertyDefault($key)
     {
-        return is_array(
-                   $this->properties[$key]
-               ) && isset($this->properties[$key][1]) ? $this->properties[$key][1] : null;
+        return is_array($this->properties[$key]) && isset($this->properties[$key][1])
+            ? $this->properties[$key][1]
+            : null;
     }
 
     /**
@@ -286,7 +286,7 @@ abstract class Model implements Arrayable
     protected function getPropertyDefaults()
     {
         $defaults = [];
-        foreach(array_keys($this->properties) as $property) {
+        foreach (array_keys($this->properties) as $property) {
             $defaults[$property] = $this->getPropertyDefault($property);
         }
 
