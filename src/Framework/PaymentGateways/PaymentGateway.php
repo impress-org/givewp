@@ -25,6 +25,7 @@ use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
+use Give\Subscriptions\Models\Subscription;
 
 use function Give\Framework\Http\Response\response;
 
@@ -69,6 +70,10 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      */
     public function __construct(SubscriptionModule $subscriptionModule = null)
     {
+        if ($subscriptionModule !== null) {
+            $subscriptionModule->setGateway($this);
+        }
+
         $this->subscriptionModule = $subscriptionModule;
     }
 
@@ -95,7 +100,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
                 $exception->getMessage(),
                 [
                     'Payment Gateway' => $this->getId(),
-                    'Donation Data' => $gatewayPaymentData
+                    'Donation Data' => $gatewayPaymentData,
                 ]
             );
 
@@ -124,7 +129,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
                 [
                     'Payment Gateway' => $this->getId(),
                     'Donation Data' => $paymentData,
-                    'Subscription Data' => $subscriptionData
+                    'Subscription Data' => $subscriptionData,
                 ]
             );
 
@@ -146,6 +151,38 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     public function createSubscription(GatewayPaymentData $paymentData, GatewaySubscriptionData $subscriptionData)
     {
         return $this->subscriptionModule->createSubscription($paymentData, $subscriptionData);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function cancelSubscription(Subscription $subscription)
+    {
+        $this->subscriptionModule->cancelSubscription($subscription);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function canSyncSubscriptionWithPaymentGateway()
+    {
+        return $this->subscriptionModule->canSyncSubscriptionWithPaymentGateway();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function canUpdateSubscriptionAmount()
+    {
+        return $this->subscriptionModule->canUpdateSubscriptionAmount();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function canUpdateSubscriptionPaymentMethod()
+    {
+        return $this->subscriptionModule->canUpdateSubscriptionPaymentMethod();
     }
 
     /**
@@ -261,9 +298,9 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      * @since 2.19.4 replace RouteSignature args with unique donationId
      * @since 2.19.0
      *
-     * @param  string  $gatewayMethod
-     * @param  int  $donationId
-     * @param  array|null  $args
+     * @param string $gatewayMethod
+     * @param int $donationId
+     * @param array|null $args
      *
      * @return string
      *
@@ -291,8 +328,9 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      *
      * @since 2.19.0
      *
-     * @param  Exception|PaymentGatewayException  $exception
-     * @param  string  $message
+     * @param Exception|PaymentGatewayException $exception
+     * @param string $message
+     *
      * @return void
      */
     private function handleExceptionResponse($exception, $message)

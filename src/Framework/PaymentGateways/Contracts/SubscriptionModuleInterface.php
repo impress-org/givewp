@@ -27,65 +27,36 @@ interface SubscriptionModuleInterface
      *
      * @unreleased
      *
-     * @param Subscription $subscriptionModel
+     * @param Subscription $subscription
      *
      * @return void
      */
-    public function cancelSubscription(Subscription $subscriptionModel);
+    public function cancelSubscription(Subscription $subscription);
 
     /**
-     * Return flag whether donor can edit subscription.
+     * Returns whether the gateway supports syncing subscriptions.
      *
      * @unreleased
-     *
-     * @param Subscription $subscriptionModel
      *
      * @return bool
      */
-    public function canEditPaymentGatewaySubscription(Subscription $subscriptionModel);
+    public function canSyncSubscriptionWithPaymentGateway();
 
     /**
-     * Return flag whether subscription synchronizable.
+     * Whether the gateway supports updating subscription amount.
      *
      * @unreleased
-     *
-     * @param Subscription $subscriptionModel
      *
      * @return bool
      */
-    public function canSyncSubscriptionWithPaymentGateway(Subscription $subscriptionModel);
+    public function canUpdateSubscriptionAmount();
 
     /**
-     * Update subscription amount.
+     * Whether the gateway supports updating subscription method.
      *
      * @unreleased
-     *
-     * @param Subscription $subscriptionModel
      *
      * @return bool
      */
-    public function canUpdatePaymentGatewaySubscriptionAmount(Subscription $subscriptionModel);
-
-    /**
-     * Update subscription amount.
-     *
-     * @unreleased
-     *
-     * @param Subscription $subscriptionModel
-     *
-     * @return bool
-     */
-    public function canUpdatePaymentGatewaySubscriptionPaymentMethod(Subscription $subscriptionModel);
-
-    /**
-     * Return gateway subscription detail page url.
-     *
-     * @unreleased
-     *
-     * @param string $gatewaySubscriptionId
-     * @param string $donationMode
-     *
-     * @return string
-     */
-    public function gatewaySubscriptionDetailPageUrl( $gatewaySubscriptionId, $donationMode );
+    public function canUpdateSubscriptionPaymentMethod();
 }

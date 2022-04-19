@@ -2,64 +2,52 @@
 
 namespace Give\Framework\PaymentGateways;
 
+use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionAmountEditable;
+use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPaymentMethodEditable;
+use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
 use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
-use Give\Subscriptions\Models\Subscription;
 
 /**
  * @unreleased
+ *
+ * @template G
  */
 abstract class SubscriptionModule implements SubscriptionModuleInterface
 {
     /**
-     * @unreleased
-     *
-     * @inheritDoc
+     * @var G
      */
-    public function canEditPaymentGatewaySubscription(Subscription $subscriptionModel)
+    protected $gateway;
+
+    /**
+     * @param G $gateway
+     */
+    public function setGateway(PaymentGateway $gateway)
     {
-        return $subscriptionModel->gatewaySubscriptionId &&
-            in_array($subscriptionModel->status->getValue(), ['active', 'failing'], true);
+        $this->gateway = $gateway;
     }
 
     /**
-     * @unreleased
-     *
      * @inheritDoc
      */
-    public function canUpdatePaymentGatewaySubscriptionAmount(Subscription $subscriptionModel)
+    public function canSyncSubscriptionWithPaymentGateway()
     {
-        return $this->canEditPaymentGatewaySubscription($subscriptionModel) &&
-            method_exists($this, 'updateSubscriptionAmount');
+        return $this instanceof SubscriptionTransactionsSynchronizable;
     }
 
     /**
-     * @unreleased
-     *
      * @inheritDoc
      */
-    public function canUpdatePaymentGatewaySubscriptionPaymentMethod(Subscription $subscriptionModel)
+    public function canUpdateSubscriptionAmount()
     {
-        return $this->canEditPaymentGatewaySubscription($subscriptionModel) &&
-            method_exists(
-                $this,
-                'updateSubscriptionPaymentMethod'
-            );
+        return $this instanceof SubscriptionAmountEditable;
     }
 
     /**
-     * Return flag whether subscription synchronizable.
-     *
-     * @unreleased
-     *
-     * @param Subscription $subscriptionModel
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function canSyncSubscriptionWithPaymentGateway(Subscription $subscriptionModel)
+    public function canUpdateSubscriptionPaymentMethod()
     {
-        return method_exists(
-            $this,
-            'getSubscriptionTransactionsFromPaymentGateway'
-        );
+        return $this instanceof SubscriptionPaymentMethodEditable;
     }
 }
