@@ -5,6 +5,7 @@ namespace Give\Subscriptions\Models;
 use DateTime;
 use Exception;
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
@@ -160,11 +161,32 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      */
     public function cancel($force = false)
     {
-        if ( ! $force && $this->status->isCanceled()) {
+        if (!$force && $this->status->isCanceled()) {
             return;
         }
 
         $this->gateway()->cancelSubscription($this);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param bool $force Set to true to ignore the status of the subscription
+     *
+     * @throws Exception
+     */
+    public function refund(Donation $donation, $force = false)
+    {
+        if (!$force && $this->status->isRefunded()) {
+            return;
+        }
+
+        if ($this->status->isOneOf(DonationStatus::RENEWAL)) {
+            $this->gateway()->refundPayment($donation);
+            return;
+        }
+
+        $this->gateway()->refundSubscription($this, $donation);
     }
 
     /**
