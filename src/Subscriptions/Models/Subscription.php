@@ -12,7 +12,6 @@ use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Framework\PaymentGateways\PaymentGateway;
-use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Subscriptions\DataTransferObjects\SubscriptionQueryData;
 use Give\Subscriptions\Factories\SubscriptionFactory;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
@@ -154,23 +153,18 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
 
     /**
      * @unreleased
+     *
+     * @param bool $force Set to true to ignore the status of the subscription
+     *
      * @throws Exception
      */
-    public function cancel()
+    public function cancel($force = false)
     {
-        $gatewayClassName = give(PaymentGatewayRegister::class)->getPaymentGateway(
-            Donation::find(give()->subscriptions->getInitialDonationId($this->id))->gateway
-        );
-
-        /* @var PaymentGateway $gateway */
-        $gateway = give($gatewayClassName);
-
-        if ($gateway->subscriptionModule->canEditPaymentGatewaySubscription($this)) {
-            $gateway->subscriptionModule->cancelSubscription($this);
+        if ( ! $force && $this->status->isCanceled()) {
+            return;
         }
 
-        $this->status = SubscriptionStatus::CANCELED();
-        $this->save();
+        $this->gateway()->cancelSubscription($this);
     }
 
     /**
@@ -194,7 +188,6 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     {
         return SubscriptionQueryData::fromObject($object)->toSubscription();
     }
-
 
     /**
      * Expiration / End Date / Renewal
