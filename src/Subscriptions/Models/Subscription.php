@@ -138,7 +138,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
             give()->subscriptions->insert($this);
         }
 
-        return give()->subscriptions->update($this);
+        give()->subscriptions->update($this);
     }
 
     /**
