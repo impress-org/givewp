@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\PayPalCommerce;
 
 use Exception;
+use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
@@ -201,5 +202,13 @@ class PayPalCommerce extends PaymentGateway
          * @since 2.9.6
          */
         return apply_filters('give_get_settings_paypal_commerce', $settings);
+    }
+
+    /**
+     * @unreleased
+     * @inerhitDoc
+     */
+    public function refundDonation(Donation $donation)
+    {
     }
 }

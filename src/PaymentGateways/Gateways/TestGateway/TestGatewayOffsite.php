@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
+use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
@@ -145,5 +146,13 @@ class TestGatewayOffsite extends PaymentGateway
         give_insert_payment_note($donationId, 'NOTE GOES HERE');
         give_update_payment_status($donationId);
         give_set_payment_transaction_id($donationId, "test-gateway-transaction-id");
+    }
+
+    /**
+     * @unreleased
+     * @inerhitDoc
+     */
+    public function refundDonation(Donation $donation)
+    {
     }
 }

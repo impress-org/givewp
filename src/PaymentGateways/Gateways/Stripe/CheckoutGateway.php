@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe;
 
+use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
@@ -131,5 +132,13 @@ class CheckoutGateway extends PaymentGateway
             case 'redirect':
                 return $this->getCheckoutInstructions();
         }
+    }
+
+    /**
+     * @unreleased
+     * @inerhitDoc
+     */
+    public function refundDonation(Donation $donation)
+    {
     }
 }

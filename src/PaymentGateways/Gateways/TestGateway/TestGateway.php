@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
+use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
@@ -69,5 +70,13 @@ class TestGateway extends PaymentGateway
         $transactionId = "test-gateway-transaction-id-{$paymentData->donationId}";
 
         return new PaymentComplete($transactionId);
+    }
+
+    /**
+     * @unreleased
+     * @inerhitDoc
+     */
+    public function refundDonation(Donation $donation)
+    {
     }
 }

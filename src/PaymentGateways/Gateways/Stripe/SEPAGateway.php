@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe;
 
+use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
@@ -120,5 +121,13 @@ class SEPAGateway extends PaymentGateway
                 ],
             ],
         ];
+    }
+
+    /**
+     * @unreleased
+     * @inerhitDoc
+     */
+    public function refundDonation(Donation $donation)
+    {
     }
 }
