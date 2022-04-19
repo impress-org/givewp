@@ -3,6 +3,7 @@
 namespace Give\Framework\PaymentGateways\Traits;
 
 use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\SubscriptionModule;
 
 /**
@@ -40,7 +41,7 @@ trait CallRouteMethod
             return $this->$method($method, $queryParams);
         }
 
-        throw new Exception(
+        throw new PaymentGatewayException(
             sprintf(
                 '%1$s route method is not supported by %2$s and %3$s',
                 $method,
