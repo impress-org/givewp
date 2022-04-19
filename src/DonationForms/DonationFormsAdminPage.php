@@ -22,6 +22,9 @@ class DonationFormsAdminPage
             'edit_give_forms',
             'give-forms',
             [$this, 'render'],
+            // Do not change the submenu position unless you have a strong reason.
+            // We use this position value to access this menu data in $submenu to add a custom class.
+            // Check DonationFormsAdminPage::highlightAllFormsMenuItem
             0
         );
     }
@@ -38,6 +41,7 @@ class DonationFormsAdminPage
         ];
 
         if (in_array($_SERVER['REQUEST_URI'], $pages)) {
+            // Add class to highlight 'All Forms' submenu.
             $submenu['edit.php?post_type=give_forms'][0][4] = add_cssclass(
                 'current',
                 isset($submenu['edit.php?post_type=give_forms'][0][4]) ? $submenu['edit.php?post_type=give_forms'][0][4] : ''
