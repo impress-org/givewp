@@ -322,10 +322,16 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     {
         $allGatewayMethods = array_merge(
             $this->routeMethods,
-            $this->secureRouteMethods,
-            $this->subscriptionModule->routeMethods,
-            $this->subscriptionModule->secureRouteMethods
+            $this->secureRouteMethods
         );
+
+        if ($this->supportsSubscriptions()) {
+            $allGatewayMethods = array_merge(
+                $allGatewayMethods,
+                $this->subscriptionModule->routeMethods,
+                $this->subscriptionModule->secureRouteMethods
+            );
+        }
 
         return in_array($method, $allGatewayMethods);
     }
@@ -340,10 +346,13 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     public function callRouteMethod($method, $queryParams)
     {
         if (method_exists($this, $method)) {
-            return $this->$method($method, $queryParams);
+            return $this->$method($queryParams);
         }
 
-        if ($this->subscriptionModule->supportsMethodRoute($method)) {
+        if (
+            $this->supportsSubscriptions() &&
+            $this->subscriptionModule->supportsMethodRoute($method)
+        ) {
             return $this->subscriptionModule->callRouteMethod($method, $queryParams);
         }
 
