@@ -30,6 +30,7 @@ class ServiceProvider implements ServiceProviderInterface
         if(empty($showLegacy))
         {
             Hooks::addAction('admin_menu', DonationFormsAdminPage::class, 'register');
+            Hooks::addAction('admin_menu', DonationFormsAdminPage::class, 'highlightAllFormsMenuItem');
 
             if (DonationFormsAdminPage::isShowing()) {
                 Hooks::addAction('admin_enqueue_scripts', DonationFormsAdminPage::class, 'loadScripts');

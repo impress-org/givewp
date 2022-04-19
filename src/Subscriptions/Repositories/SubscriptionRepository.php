@@ -12,7 +12,7 @@ use Give\Log\Log;
 use Give\Subscriptions\Models\Subscription;
 
 /**
- * @unreleased
+ * @since 2.19.6
  */
 class SubscriptionRepository
 {
@@ -30,7 +30,7 @@ class SubscriptionRepository
     ];
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $subscriptionId
      * @return Subscription
@@ -41,7 +41,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $subscriptionId
      * @return ModelQueryBuilder
@@ -53,7 +53,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $donationId
      * @return ModelQueryBuilder
@@ -65,7 +65,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $donorId
      * @return ModelQueryBuilder
@@ -77,7 +77,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $id
      *
@@ -103,7 +103,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  Subscription  $subscription
      *
@@ -158,7 +158,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  Subscription  $subscription
      *
@@ -209,7 +209,8 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @unreleased consolidate meta deletion into a single query
+     * @since 2.19.6
      *
      * @param  Subscription  $subscription
      *
@@ -227,6 +228,10 @@ class SubscriptionRepository
             DB::table('give_subscriptions')
                 ->where('id', $subscription->id)
                 ->delete();
+
+            DB::table('give_subscriptionmeta')
+                ->where('subscription_id', $subscription->id)
+                ->delete();
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -243,7 +248,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $subscriptionId
      * @param  array  $columns
@@ -278,7 +283,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $subscriptionId
      * @return int|null
@@ -315,28 +320,27 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
-     * @return ModelQueryBuilder
+     * @return ModelQueryBuilder<Subscription>
      */
     public function prepareQuery()
     {
-        $builder = new ModelQueryBuilder();
+        $builder = new ModelQueryBuilder(Subscription::class);
 
         return $builder->from('give_subscriptions')
-            ->setModel(Subscription::class)
             ->select(
-                ['id', 'id'],
+                'id',
                 ['created', 'createdAt'],
                 ['expiration', 'expiresAt'],
                 ['customer_id', 'donorId'],
-                ['period', 'period'],
+                'period',
                 ['frequency', 'frequency'],
                 ['bill_times', 'installments'],
                 ['transaction_id', 'transactionId'],
                 ['recurring_amount', 'amount'],
                 ['recurring_fee_amount', 'feeAmount'],
-                ['status', 'status'],
+                'status',
                 ['profile_id', 'gatewaySubscriptionId'],
                 ['product_id', 'donationFormId']
             );

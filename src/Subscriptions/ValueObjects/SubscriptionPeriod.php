@@ -5,7 +5,7 @@ namespace Give\Subscriptions\ValueObjects;
 use MyCLabs\Enum\Enum;
 
 /**
- * @unreleased
+ * @since 2.19.6
  *
  * @method static DAY()
  * @method static WEEK()

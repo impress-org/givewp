@@ -7,7 +7,7 @@ use Give\Framework\Support\ValueObjects\Enum;
 /**
  * Model Relationships
  *
- * @unreleased
+ * @since 2.19.6
  *
  * @method static HAS_ONE();
  * @method static HAS_MANY();

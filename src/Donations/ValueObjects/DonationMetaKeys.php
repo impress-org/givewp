@@ -6,7 +6,7 @@ use Give\Framework\Support\ValueObjects\Enum;
 use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
 
 /**
- * @unreleased
+ * @since 2.19.6
  *
  * @method static AMOUNT()
  * @method static CURRENCY()

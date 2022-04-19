@@ -90,7 +90,7 @@ class Hooks
     /**
      * Calls the WordPress do_action filter and logs the execution.
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  string  $hookName  The name of the action to be executed.
      * @param  mixed  ...$args  Optional. Additional arguments which are passed on to the functions hooked to the action. Default empty.

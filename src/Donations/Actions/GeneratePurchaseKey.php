@@ -4,7 +4,7 @@ namespace Give\Donations\Actions;
 
 class GeneratePurchaseKey {
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param string $email
      * @return string

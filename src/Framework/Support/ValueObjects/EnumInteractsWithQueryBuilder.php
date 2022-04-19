@@ -2,10 +2,12 @@
 
 namespace Give\Framework\Support\ValueObjects;
 
+use Give\Framework\Support\Facades\Str;
+
 trait EnumInteractsWithQueryBuilder
 {
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * Returns array of meta aliases to be used with attachMeta
      *
@@ -18,7 +20,7 @@ trait EnumInteractsWithQueryBuilder
         $columns = [];
 
         foreach (static::toArray() as $key => $value) {
-            $keyFormatted = static::camelCaseConstant($key);
+            $keyFormatted = Str::camel($key);
 
             $columns[] = [$value, $keyFormatted];
         }

@@ -19,7 +19,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 /**
  * Class Subscription
  *
- * @unreleased
+ * @since 2.19.6
  *
  * @property int $id
  * @property int $donationFormId
@@ -67,7 +67,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     /**
      * Find subscription by ID
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $id
      *
@@ -79,9 +79,9 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
-     * @return ModelQueryBuilder
+     * @return ModelQueryBuilder<Donor>
      */
     public function donor()
     {
@@ -89,9 +89,9 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
-     * @return ModelQueryBuilder
+     * @return ModelQueryBuilder<Donation>
      */
     public function donations()
     {
@@ -101,7 +101,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     /**
      * Get Subscription notes
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @return object[]
      */
@@ -112,7 +112,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
 
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @throws Exception
      */
@@ -124,17 +124,21 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @throws Exception
      */
     public function save()
     {
+        if (!$this->id) {
+            return give()->subscriptions->insert($this);
+        }
+
         return give()->subscriptions->update($this);
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return bool
      * @throws Exception
@@ -145,9 +149,9 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
-     * @return ModelQueryBuilder
+     * @return ModelQueryBuilder<Subscription>
      */
     public static function query()
     {
@@ -155,7 +159,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  object  $object
      * @return Subscription
@@ -169,7 +173,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     /**
      * Expiration / End Date / Renewal
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @return string
      */
@@ -188,7 +192,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @return SubscriptionFactory
+     * @return SubscriptionFactory<Subscription>
      */
     public static function factory()
     {

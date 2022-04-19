@@ -19,13 +19,13 @@ use Give\ValueObjects\Money;
 use WP_REST_Request;
 
 /**
- * @unreleased
+ * @since 2.19.6
  */
 class DonationRepository
 {
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @var string[]
      */
@@ -43,7 +43,7 @@ class DonationRepository
     /**
      * Get Donation By ID
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param int $donationId
      *
@@ -57,7 +57,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param int $subscriptionId
      *
@@ -69,7 +69,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param int $subscriptionId
      *
@@ -94,7 +94,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param int $donorId
      *
@@ -115,7 +115,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param Donation $donation
      *
@@ -175,7 +175,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param Donation $donation
      *
@@ -227,7 +227,8 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @unreleased consolidate meta deletion into a single query
+     * @since 2.19.6
      *
      * @param Donation $donation
      * @return bool
@@ -244,12 +245,9 @@ class DonationRepository
                 ->where('id', $donation->id)
                 ->delete();
 
-            foreach ($this->getCoreDonationMetaForDatabase($donation) as $metaKey => $metaValue) {
-                DB::table('give_donationmeta')
-                    ->where('donation_id', $donation->id)
-                    ->where('meta_key', $metaKey)
-                    ->delete();
-            }
+            DB::table('give_donationmeta')
+                ->where('donation_id', $donation->id)
+                ->delete();
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -266,7 +264,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param Donation $donation
      *
@@ -324,7 +322,7 @@ class DonationRepository
      * In Legacy terms, the Initial Donation acts as the parent ID for subscription renewals.
      * This function inserts those specific meta columns that accompany this concept.
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @throws Exception
      */
@@ -365,7 +363,7 @@ class DonationRepository
 
     /**
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param int $donationId
      *
@@ -383,7 +381,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param int $id
      *
@@ -409,7 +407,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param Donation $donation
      * @return void
@@ -428,7 +426,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return DonationMode
      */
@@ -440,7 +438,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param int $formId
      * @return string
@@ -459,14 +457,13 @@ class DonationRepository
     }
 
     /**
-     * @return ModelQueryBuilder
+     * @return ModelQueryBuilder<Donation>
      */
     public function prepareQuery()
     {
-        $builder = new ModelQueryBuilder();
+        $builder = new ModelQueryBuilder(Donation::class);
 
         return $builder->from('posts')
-            ->setModel(Donation::class)
             ->select(
                 ['ID', 'id'],
                 ['post_date', 'createdAt'],
@@ -479,11 +476,12 @@ class DonationRepository
                 'ID',
                 'donation_id',
                 ...DonationMetaKeys::getColumnsForAttachMetaQuery()
-            );
+            )
+            ->where('post_type', 'give_payment');
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param $donorId
      * @return int
@@ -503,7 +501,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param $donorId
      * @return array|bool|null

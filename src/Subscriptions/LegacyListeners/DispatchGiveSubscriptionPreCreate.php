@@ -8,7 +8,7 @@ use Give\Subscriptions\Models\Subscription;
 class DispatchGiveSubscriptionPreCreate
 {
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  Subscription  $subscription
      * @return void
