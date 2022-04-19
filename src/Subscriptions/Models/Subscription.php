@@ -133,7 +133,11 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      */
     public function save()
     {
-      return give()->subscriptions->update($this);
+        if (!$this->id) {
+            return give()->subscriptions->insert($this);
+        }
+
+        return give()->subscriptions->update($this);
     }
 
     /**
