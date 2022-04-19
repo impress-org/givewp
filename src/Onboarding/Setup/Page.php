@@ -62,7 +62,7 @@ class Page
             'manage_give_settings',
             'give-setup',
             [$this, 'render_page'],
-            0
+            2
         );
     }
 
