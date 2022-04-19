@@ -2,6 +2,7 @@
 
 namespace Give\Framework\PaymentGateways;
 
+use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface;
@@ -78,6 +79,14 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         }
 
         $this->subscriptionModule = $subscriptionModule;
+    }
+
+    /**
+     * @unreleased
+     * @inerhitDoc
+     */
+    public function refundDonation(Donation $donation)
+    {
     }
 
     /**
