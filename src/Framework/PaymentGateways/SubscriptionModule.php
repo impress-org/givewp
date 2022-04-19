@@ -6,6 +6,7 @@ use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionAmountEdit
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPaymentMethodEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
 use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
+use Give\Framework\PaymentGateways\Traits\HasRouteMethods;
 
 /**
  * @unreleased
@@ -14,6 +15,8 @@ use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
  */
 abstract class SubscriptionModule implements SubscriptionModuleInterface
 {
+    use HasRouteMethods;
+
     /**
      * @var G
      */
