@@ -38,7 +38,7 @@ trait CallRouteMethod
     public function callRouteMethod($method, $queryParams)
     {
         if ($this->supportsMethodRoute($method)) {
-            return $this->$method($method, $queryParams);
+            return $this->$method($queryParams);
         }
 
         throw new PaymentGatewayException(
