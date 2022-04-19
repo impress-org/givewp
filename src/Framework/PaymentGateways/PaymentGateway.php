@@ -22,7 +22,7 @@ use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\PaymentGateways\Routes\RouteSignature;
-use Give\Framework\PaymentGateways\Traits\CallRouteMethod;
+use Give\Framework\PaymentGateways\Traits\HasRouteMethods;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
@@ -36,27 +36,7 @@ use function Give\Framework\Http\Response\response;
 abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentGatewayInterface
 {
     use HandleHttpResponses;
-    use CallRouteMethod;
-
-    /**
-     * Route methods are used to extend the gateway api.
-     * By adding a custom routeMethod, you are effectively
-     * registering a new public route url that will resolve itself and
-     * call your method.
-     *
-     * @var string[]
-     */
-    public $routeMethods = [];
-
-    /**
-     * Secure Route methods are used to extend the gateway api with an additional wp_nonce.
-     * By adding a custom secureRouteMethod, you are effectively
-     * registering a new route url that will resolve itself and
-     * call your method after validating the nonce.
-     *
-     * @var string[]
-     */
-    public $secureRouteMethods = [];
+    use HasRouteMethods;
 
     /**
      * @var SubscriptionModuleInterface $subscriptionModule
