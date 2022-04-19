@@ -36,7 +36,10 @@ use function Give\Framework\Http\Response\response;
 abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentGatewayInterface
 {
     use HandleHttpResponses;
-    use HasRouteMethods;
+    use HasRouteMethods {
+        supportsMethodRoute as protected SupportsOwnMethodRoute;
+        callRouteMethod as protected CallOwnRouteMethod;
+    }
 
     /**
      * @var SubscriptionModuleInterface $subscriptionModule
@@ -300,20 +303,11 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      */
     public function supportsMethodRoute($method)
     {
-        $allGatewayMethods = array_merge(
-            $this->routeMethods,
-            $this->secureRouteMethods
-        );
-
-        if ($this->supportsSubscriptions()) {
-            $allGatewayMethods = array_merge(
-                $allGatewayMethods,
-                $this->subscriptionModule->routeMethods,
-                $this->subscriptionModule->secureRouteMethods
-            );
+        if ( $this->subscriptionModule && $this->subscriptionModule->supportsMethodRoute($method) ) {
+            return true;
         }
 
-        return in_array($method, $allGatewayMethods);
+        return $this->supportsOwnMethodRoute($method);
     }
 
     /**
@@ -325,24 +319,10 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      */
     public function callRouteMethod($method, $queryParams)
     {
-        if (method_exists($this, $method)) {
-            return $this->$method($queryParams);
-        }
-
-        if (
-            $this->supportsSubscriptions() &&
-            $this->subscriptionModule->supportsMethodRoute($method)
-        ) {
+        if ( $this->subscriptionModule && $this->subscriptionModule->supportsMethodRoute($method) ) {
             return $this->subscriptionModule->callRouteMethod($method, $queryParams);
         }
 
-        throw new Exception(
-            sprintf(
-                '%1$s route method is not supported by %2$s and %3$s',
-                $method,
-                get_class($this),
-                get_class($this->subscriptionModule)
-            )
-        );
+        return $this->callOwnRouteMethod($method, $queryParams);
     }
 }
