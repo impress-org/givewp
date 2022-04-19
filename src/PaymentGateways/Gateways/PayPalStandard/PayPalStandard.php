@@ -107,7 +107,7 @@ class PayPalStandard extends PaymentGateway
      *
      * @return RedirectResponse
      */
-    public function handleSuccessPaymentReturn($queryParams)
+    protected function handleSuccessPaymentReturn($queryParams)
     {
         $donationId = (int)$queryParams['donation-id'];
 
@@ -130,7 +130,7 @@ class PayPalStandard extends PaymentGateway
      *
      * @return RedirectResponse
      */
-    public function handleFailedPaymentReturn($queryParams)
+    protected function handleFailedPaymentReturn($queryParams)
     {
         $donationId = (int)$queryParams['donation-id'];
         $payment = new Give_Payment($donationId);
@@ -144,7 +144,7 @@ class PayPalStandard extends PaymentGateway
      *
      * @since 2.19.0
      */
-    public function handleIpnNotification()
+    protected function handleIpnNotification()
     {
         give(PayPalStandardWebhook::class)->handle();
     }
