@@ -15,29 +15,40 @@ class SubscriptionGatewayRouteTest extends WP_UnitTestCase
     /**
      * @unreleased
      */
-    public function testSubscriptionRoutesShouldRegisterToGateway()
+    public function testRegisteredSubscriptionModuleRouteShouldExecute()
     {
         $this->registerGateway();
         $gateway = give(GatewayRouteTestGateway::class);
-
-        $this->assertContains('handleSimpleRoute', $gateway->routeMethods);
-        $this->assertContains('handleSecureRoute', $gateway->secureRouteMethods);
-    }
-
-    public function testRegisterGatewayRouteShouldExecute()
-    {
-        $this->registerGateway();
-        $gateway = give(GatewayRouteTestGateway::class);
-        $methodName = 'handleSimpleRoute';
-
-        $class = new ReflectionClass (GatewayRoute::class);
-        $method = $class->getMethod('executeRouteCallback');
-        $method->setAccessible(true);
-        $actual = $method->invoke(give(GatewayRoute::class), $gateway, $methodName, []);
+        $routeMethod = 'handleSimpleRoute';
+        $secureRouteMethod = 'handleSecureRoute';
 
         $this->assertEquals(
-            GatewayRouteTestGatewaySubscriptionModule::class . $methodName,
-            $actual
+            GatewayRouteTestGatewaySubscriptionModule::class . $routeMethod,
+            $gateway->callRouteMethod($routeMethod, [])
+        );
+
+        $this->assertEquals(
+            GatewayRouteTestGatewaySubscriptionModule::class . $secureRouteMethod,
+            $gateway->callRouteMethod($secureRouteMethod, [])
+        );
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testThrowExceptionOnUnRegisteredRouteMethod()
+    {
+        $this->registerGateway();
+        $gateway = give(GatewayRouteTestGateway::class);
+        $routeMethod = 'UnRegisteredRoute';
+
+        $this->expectExceptionMessage(
+            'UnRegisteredRoute route method is not supported by GatewayRouteTestGateway and GatewayRouteTestGatewaySubscriptionModule'
+        );
+
+        $this->assertEquals(
+            GatewayRouteTestGatewaySubscriptionModule::class . $routeMethod,
+            $gateway->callRouteMethod($routeMethod, [])
         );
     }
 
@@ -99,12 +110,12 @@ class GatewayRouteTestGatewaySubscriptionModule extends SubscriptionModule
     ) {
     }
 
-    public function handleSimpleRoute()
+    protected function handleSimpleRoute()
     {
         return __CLASS__ . __FUNCTION__;
     }
 
-    public function handleSecureRoute()
+    protected function handleSecureRoute()
     {
         return __CLASS__ . __FUNCTION__;
     }
