@@ -196,17 +196,18 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 	<?php endif; ?>
 
 
-	<?php if ( ! empty( $show_bar ) ) : ?>
-		<div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"
-			 aria-valuenow="<?php echo esc_attr( $progress_bar_value ); ?>">
-			<span style="width: <?php echo esc_attr( $progress_bar_value ); ?>%;
-										   <?php
-											if ( ! empty( $color ) ) {
-												echo 'background-color:' . $color;
-											}
-											?>
-			"></span>
-		</div><!-- /.give-progress-bar -->
+	<?php if ( ! empty( $show_bar ) ) :
+        $style = "width:{$progress_bar_value}%;";
+
+        if ( ! empty($color)) {
+            $style .= ";background: linear-gradient(180deg, {$color} 0%, {$color} 100%), linear-gradient(180deg, #fff 0%, #ccc 100%); background-blend-mode: multiply;";
+        }
+        ?>
+        <div class="progress-bar">
+            <div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="<?php echo esc_attr( $progress_bar_value ); ?>">
+                <span style="<?php echo $style; ?>"></span>
+            </div>
+		</div>
 	<?php endif; ?>
 
 </div><!-- /.goal-progress -->
