@@ -18,6 +18,9 @@ use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
+use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionAmountEditable;
+use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPaymentMethodEditable;
+use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\PaymentGateways\Routes\RouteSignature;
@@ -166,7 +169,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      */
     public function canSyncSubscriptionWithPaymentGateway()
     {
-        return $this->subscriptionModule->canSyncSubscriptionWithPaymentGateway();
+        return $this instanceof SubscriptionTransactionsSynchronizable
+            || $this->subscriptionModule->canSyncSubscriptionWithPaymentGateway();
     }
 
     /**
@@ -174,7 +178,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      */
     public function canUpdateSubscriptionAmount()
     {
-        return $this->subscriptionModule->canUpdateSubscriptionAmount();
+        return $this instanceof SubscriptionAmountEditable
+            || $this->subscriptionModule->canUpdateSubscriptionAmount();
     }
 
     /**
@@ -182,7 +187,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      */
     public function canUpdateSubscriptionPaymentMethod()
     {
-        return $this->subscriptionModule->canUpdateSubscriptionPaymentMethod();
+        return $this instanceof SubscriptionPaymentMethodEditable
+            || $this->subscriptionModule->canUpdateSubscriptionPaymentMethod();
     }
 
     /**
