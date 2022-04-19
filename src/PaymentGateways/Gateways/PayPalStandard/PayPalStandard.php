@@ -2,7 +2,9 @@
 
 namespace Give\PaymentGateways\Gateways\PayPalStandard;
 
+use Give\Donations\Models\Donation;
 use Give\Framework\Http\Response\Types\RedirectResponse;
+use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Call;
@@ -239,5 +241,15 @@ class PayPalStandard extends PaymentGateway
          * @since 2.9.6
          */
         return apply_filters('give_get_settings_paypal_standard', $setting);
+    }
+
+    /**
+     * @unreleased
+     * @param Donation $donation
+     *
+     * @return GatewayCommand|void
+     */
+    public function refundDonation(Donation $donation)
+    {
     }
 }

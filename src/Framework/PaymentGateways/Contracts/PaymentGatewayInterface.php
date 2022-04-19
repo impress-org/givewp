@@ -78,7 +78,7 @@ interface PaymentGatewayInterface extends SubscriptionModuleInterface
      *
      * @param Donation $donation
      *
-     * @return GatewayCommand
+     * @return void
      * @throws PaymentGatewayException
      * @throws Exception
      */
