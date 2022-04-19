@@ -40,10 +40,6 @@ trait CallRouteMethod
             return $this->$method($method, $queryParams);
         }
 
-        if ($this->subscriptionModule->supportsMethodRoute($method)) {
-            return $this->subscriptionModule->callRouteMethod($method, $queryParams);
-        }
-
         throw new Exception(
             sprintf(
                 '%1$s route method is not supported by %2$s and %3$s',
@@ -53,5 +49,4 @@ trait CallRouteMethod
             )
         );
     }
-
 }
