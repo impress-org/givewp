@@ -29,7 +29,7 @@ class DonationFormsAdminPage
     /**
      * @unreleased
      */
-    public function highlightAllFormsMenuItem($menu)
+    public function highlightAllFormsMenuItem()
     {
         global $submenu;
         $pages = [
