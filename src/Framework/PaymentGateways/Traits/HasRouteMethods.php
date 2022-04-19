@@ -45,7 +45,7 @@ trait HasRouteMethods
     {
         $allGatewayMethods = array_merge($this->routeMethods, $this->secureRouteMethods);
 
-        return in_array($method, $allGatewayMethods);
+        return in_array($method, $allGatewayMethods, true);
     }
 
     /**
