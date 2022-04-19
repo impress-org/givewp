@@ -181,7 +181,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
             return;
         }
 
-        if ($this->status->isOneOf(DonationStatus::RENEWAL)) {
+        if ($donation->status->isRenewal()) {
             $this->gateway()->refundPayment($donation);
             return;
         }
