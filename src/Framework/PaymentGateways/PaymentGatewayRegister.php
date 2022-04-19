@@ -123,11 +123,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
         give()->singleton($gatewayClass, function (Container $container) use ($gatewayClass, $gatewayId) {
             $subscriptionModule = apply_filters("give_gateway_{$gatewayId}_subscription_module", null);
 
-            /* @var PaymentGateway $gateway */
-            $gateway = new $gatewayClass($subscriptionModule ? $container->make($subscriptionModule) : null);
-            $this->registerSubscriptionModuleRoutes($gateway);
-
-            return $gateway;
+            return new $gatewayClass($subscriptionModule ? $container->make($subscriptionModule) : null);
         });
     }
 
@@ -142,24 +138,5 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
         $legacyPaymentGatewayRegisterAdapter = give(LegacyPaymentGatewayRegisterAdapter::class);
 
         $legacyPaymentGatewayRegisterAdapter->connectGatewayToLegacyPaymentGatewayAdapter($gatewayClass);
-    }
-
-    /**
-     * @unreleased
-     * @return void
-     */
-    private function registerSubscriptionModuleRoutes(PaymentGateway $gateway)
-    {
-        if (!$gateway->supportsSubscriptions()) {
-            return;
-        }
-
-        foreach ($gateway->subscriptionModule->routeMethods as $routeMethod) {
-            $gateway->routeMethods[] = $routeMethod;
-        }
-
-        foreach ($gateway->subscriptionModule->secureRouteMethods as $routeMethod) {
-            $gateway->secureRouteMethods[] = $routeMethod;
-        }
     }
 }
