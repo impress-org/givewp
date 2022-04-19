@@ -9,7 +9,7 @@ use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
 /**
  * @unreleased
  */
-class CallRouteMethodTest extends WP_UnitTestCase
+class HasRouteMethodTest extends WP_UnitTestCase
 {
     /**
      * @unreleased
