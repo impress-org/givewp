@@ -22,8 +22,31 @@ class DonationFormsAdminPage
             'edit_give_forms',
             'give-forms',
             [$this, 'render'],
-            1
+            // Do not change the submenu position unless you have a strong reason.
+            // We use this position value to access this menu data in $submenu to add a custom class.
+            // Check DonationFormsAdminPage::highlightAllFormsMenuItem
+            0
         );
+    }
+
+    /**
+     * @unreleased
+     */
+    public function highlightAllFormsMenuItem()
+    {
+        global $submenu;
+        $pages = [
+            '/wp-admin/admin.php?page=give-forms', // Donation main menu page.
+            '/wp-admin/edit.php?post_type=give_forms' // Legacy donation form listing page.
+        ];
+
+        if (in_array($_SERVER['REQUEST_URI'], $pages)) {
+            // Add class to highlight 'All Forms' submenu.
+            $submenu['edit.php?post_type=give_forms'][0][4] = add_cssclass(
+                'current',
+                isset($submenu['edit.php?post_type=give_forms'][0][4]) ? $submenu['edit.php?post_type=give_forms'][0][4] : ''
+            );
+        }
     }
 
     /**
@@ -31,7 +54,7 @@ class DonationFormsAdminPage
      */
     public function loadScripts()
     {
-        $data =  [
+        $data = [
             'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/forms')),
             'apiNonce' => wp_create_nonce('wp_rest'),
         ];
@@ -65,5 +88,14 @@ class DonationFormsAdminPage
     public static function isShowing()
     {
         return isset($_GET['page']) && $_GET['page'] === 'give-forms';
+    }
+
+    /**
+     * @unreleased
+     * @return string
+     */
+    public static function getUrl()
+    {
+        return add_query_arg(['page' => 'give-forms'], admin_url('edit.php?post_type=give_forms'));
     }
 }
