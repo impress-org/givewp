@@ -25,6 +25,7 @@ class ServiceProvider implements ServiceProviderInterface
     public function boot()
     {
         Hooks::addAction('admin_menu', DonationFormsAdminPage::class, 'register');
+        Hooks::addAction('admin_menu', DonationFormsAdminPage::class, 'highlightAllFormsMenuItem');
 
         if (DonationFormsAdminPage::isShowing()) {
             Hooks::addAction('admin_enqueue_scripts', DonationFormsAdminPage::class, 'loadScripts');
