@@ -2,7 +2,6 @@
 
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\Framework\PaymentGateways\Routes\GatewayRoute;
 use Give\Framework\PaymentGateways\SubscriptionModule;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
@@ -10,7 +9,7 @@ use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
 /**
  * @unreleased
  */
-class SubscriptionGatewayRouteTest extends WP_UnitTestCase
+class CallRouteMethodTest extends WP_UnitTestCase
 {
     /**
      * @unreleased
