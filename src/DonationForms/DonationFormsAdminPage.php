@@ -22,8 +22,27 @@ class DonationFormsAdminPage
             'edit_give_forms',
             'give-forms',
             [$this, 'render'],
-            1
+            0
         );
+    }
+
+    /**
+     * @unreleased
+     */
+    public function highlightAllFormsMenuItem($menu)
+    {
+        global $submenu;
+        $pages = [
+            '/wp-admin/admin.php?page=give-forms', // Donation main menu page.
+            '/wp-admin/edit.php?post_type=give_forms' // Legacy donation form listing page.
+        ];
+
+        if (in_array($_SERVER['REQUEST_URI'], $pages)) {
+            $submenu['edit.php?post_type=give_forms'][0][4] = add_cssclass(
+                'current',
+                isset($submenu['edit.php?post_type=give_forms'][0][4]) ? $submenu['edit.php?post_type=give_forms'][0][4] : ''
+            );
+        }
     }
 
     /**
@@ -31,7 +50,7 @@ class DonationFormsAdminPage
      */
     public function loadScripts()
     {
-        $data =  [
+        $data = [
             'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/forms')),
             'apiNonce' => wp_create_nonce('wp_rest'),
         ];
