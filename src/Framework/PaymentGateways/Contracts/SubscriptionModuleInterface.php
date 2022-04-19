@@ -2,6 +2,7 @@
 
 namespace Give\Framework\PaymentGateways\Contracts;
 
+use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
@@ -31,6 +32,16 @@ interface SubscriptionModuleInterface
      * @return void
      */
     public function cancelSubscription(Subscription $subscription);
+
+    /**
+     * Refund subscription.
+     *
+     * @unreleased
+     *
+     * @param Subscription $subscription
+     * @param Donation $donation
+     */
+    public function refundSubscription(Subscription $subscription, Donation $donation);
 
     /**
      * Returns whether the gateway supports syncing subscriptions.
