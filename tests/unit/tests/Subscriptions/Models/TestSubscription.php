@@ -50,6 +50,23 @@ class TestSubscription extends \Give_Unit_Test_Case
     }
 
     /**
+     * @unreleased
+     *
+     * @return void
+     *
+     * @throws Exception
+     */
+    public function testCreateShouldInsertSubscription()
+    {
+        $subscription = Subscription::factory()->create();
+
+        /** @var Subscription $subscriptionFromDatabase */
+        $subscriptionFromDatabase = Subscription::find($subscription->id);
+
+        $this->assertEquals($subscription->getAttributes(), $subscriptionFromDatabase->getAttributes());
+    }
+
+    /**
      * @return void
      * @throws Exception
      */
@@ -81,7 +98,7 @@ class TestSubscription extends \Give_Unit_Test_Case
         /** @var Subscription $subscription */
         $subscription = Subscription::factory()->create(['donorId' => $donor->id]);
 
-        $this->assertEquals($donor, $subscription->donor);
+        $this->assertSame($donor->id, $subscription->donor->id);
     }
 
     /**

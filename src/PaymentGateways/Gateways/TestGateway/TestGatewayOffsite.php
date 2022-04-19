@@ -101,7 +101,7 @@ class TestGatewayOffsite extends PaymentGateway
      * @param  array  $queryParams
      * @throws PaymentGatewayException
      */
-    public function returnFromOffsiteRedirect($queryParams)
+    protected function returnFromOffsiteRedirect($queryParams)
     {
         $donationId = $queryParams['give-donation-id'];
 
@@ -122,7 +122,7 @@ class TestGatewayOffsite extends PaymentGateway
      * @param  array  $queryParams
      * @throws PaymentGatewayException
      */
-    public function securelyReturnFromOffsiteRedirect($queryParams)
+    protected function securelyReturnFromOffsiteRedirect($queryParams)
     {
         $donationId = $queryParams['give-donation-id'];
 

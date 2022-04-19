@@ -24,6 +24,7 @@ use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactio
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\PaymentGateways\Routes\RouteSignature;
+use Give\Framework\PaymentGateways\Traits\HasRouteMethods;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
@@ -38,26 +39,10 @@ use function Give\Framework\Http\Response\response;
 abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentGatewayInterface
 {
     use HandleHttpResponses;
-
-    /**
-     * Route methods are used to extend the gateway api.
-     * By adding a custom routeMethod, you are effectively
-     * registering a new public route url that will resolve itself and
-     * call your method.
-     *
-     * @var string[]
-     */
-    public $routeMethods = [];
-
-    /**
-     * Secure Route methods are used to extend the gateway api with an additional wp_nonce.
-     * By adding a custom secureRouteMethod, you are effectively
-     * registering a new route url that will resolve itself and
-     * call your method after validating the nonce.
-     *
-     * @var string[]
-     */
-    public $secureRouteMethods = [];
+    use HasRouteMethods {
+        supportsMethodRoute as protected SupportsOwnMethodRoute;
+        callRouteMethod as protected CallOwnRouteMethod;
+    }
 
     /**
      * @unreleased Change variable type to SubscriptionModule.
@@ -351,5 +336,37 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
 
         give_set_error('PaymentGatewayException', $message);
         give_send_back_to_checkout();
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param string $method
+     *
+     * @return bool
+     */
+    public function supportsMethodRoute($method)
+    {
+        if ( $this->subscriptionModule && $this->subscriptionModule->supportsMethodRoute($method) ) {
+            return true;
+        }
+
+        return $this->supportsOwnMethodRoute($method);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param string $method
+     *
+     * @throws Exception
+     */
+    public function callRouteMethod($method, $queryParams)
+    {
+        if ( $this->subscriptionModule && $this->subscriptionModule->supportsMethodRoute($method) ) {
+            return $this->subscriptionModule->callRouteMethod($method, $queryParams);
+        }
+
+        return $this->callOwnRouteMethod($method, $queryParams);
     }
 }

@@ -112,7 +112,7 @@ class SubscriptionRepository
      *
      * @param Subscription $subscription
      *
-     * @return Subscription
+     * @return void
      * @throws Exception
      */
     public function insert(Subscription $subscription)
@@ -121,15 +121,13 @@ class SubscriptionRepository
 
         Hooks::doAction('give_subscription_creating', $subscription);
 
-        $date = $subscription->createdAt ? Temporal::getFormattedDateTime(
-            $subscription->createdAt
-        ) : Temporal::getCurrentFormattedDateForDatabase();
+        $dateCreated = $subscription->createdAt ?: Temporal::getCurrentDateTime();
 
         DB::query('START TRANSACTION');
 
         try {
             DB::table('give_subscriptions')->insert([
-                'created' => $date,
+                'created' => Temporal::getFormattedDateTime($dateCreated),
                 'status' => $subscription->status->getValue(),
                 'profile_id' => isset($subscription->gatewaySubscriptionId) ? $subscription->gatewaySubscriptionId : '',
                 'customer_id' => $subscription->donorId,
@@ -154,11 +152,14 @@ class SubscriptionRepository
 
         $subscriptionId = DB::last_insert_id();
 
-        $subscription = $this->getById($subscriptionId);
+        $subscription->id = $subscriptionId;
+        $subscription->createdAt = $dateCreated;
+
+        if (!isset($subscription->expiresAt)) {
+            $subscription->expiresAt = null;
+        }
 
         Hooks::doAction('give_subscription_created', $subscription);
-
-        return $subscription;
     }
 
     /**
@@ -166,7 +167,7 @@ class SubscriptionRepository
      *
      * @param Subscription $subscription
      *
-     * @return Subscription
+     * @return void
      * @throws Exception
      */
     public function update(Subscription $subscription)
@@ -203,13 +204,7 @@ class SubscriptionRepository
 
         DB::query('COMMIT');
 
-        $subscriptionId = DB::last_insert_id();
-
-        $subscription = $this->getById($subscriptionId);
-
         Hooks::doAction('give_subscription_updating', $subscription);
-
-        return $subscription;
     }
 
     /**
@@ -246,7 +241,7 @@ class SubscriptionRepository
 
         DB::query('COMMIT');
 
-        Hooks::doAction('give_subscription_deleted', $subscription);
+        Hooks::doAction('give_subscription_model_deleted', $subscription);
 
         return true;
     }
