@@ -19,8 +19,14 @@ class SubscriptionGatewayRouteTest extends WP_UnitTestCase
     {
         $this->registerGateway();
         $gateway = give(GatewayRouteTestGateway::class);
+        $gatewayRouteMethod = 'gatewaySimpleRouteMethod';
         $routeMethod = 'handleSimpleRoute';
         $secureRouteMethod = 'handleSecureRoute';
+
+        $this->assertEquals(
+            GatewayRouteTestGateway::class . $gatewayRouteMethod,
+            $gateway->callRouteMethod($gatewayRouteMethod, [])
+        );
 
         $this->assertEquals(
             GatewayRouteTestGatewaySubscriptionModule::class . $routeMethod,
@@ -64,6 +70,13 @@ class SubscriptionGatewayRouteTest extends WP_UnitTestCase
 
 class GatewayRouteTestGateway extends PaymentGateway
 {
+    public $routeMethods = ['gatewaySimpleRouteMethod'];
+
+    protected function gatewaySimpleRouteMethod($queryParams)
+    {
+        return __CLASS__ . __FUNCTION__;
+    }
+
     public function getLegacyFormFieldMarkup($formId, $args)
     {
         return '';
@@ -110,12 +123,12 @@ class GatewayRouteTestGatewaySubscriptionModule extends SubscriptionModule
     ) {
     }
 
-    protected function handleSimpleRoute()
+    protected function handleSimpleRoute($queryParams)
     {
         return __CLASS__ . __FUNCTION__;
     }
 
-    protected function handleSecureRoute()
+    protected function handleSecureRoute($queryParams)
     {
         return __CLASS__ . __FUNCTION__;
     }
