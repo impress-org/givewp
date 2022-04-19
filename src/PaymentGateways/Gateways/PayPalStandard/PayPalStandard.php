@@ -144,7 +144,7 @@ class PayPalStandard extends PaymentGateway
      *
      * @since 2.19.0
      */
-    protected function handleIpnNotification()
+    public function handleIpnNotification()
     {
         give(PayPalStandardWebhook::class)->handle();
     }
