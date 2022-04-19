@@ -4,6 +4,7 @@ namespace Give\Onboarding\Wizard;
 
 defined('ABSPATH') || exit;
 
+use Give\DonationForms\DonationFormsAdminPage;
 use Give\Helpers\EnqueueScript;
 use Give\Onboarding\FormRepository;
 use Give\Onboarding\Helpers\FormatList;
@@ -143,7 +144,7 @@ class Page
             'apiNonce' => wp_create_nonce('wp_rest'),
             'setupUrl' => SetupPage::getSetupPageEnabledOrDisabled() === SetupPage::ENABLED ?
                 admin_url('edit.php?post_type=give_forms&page=give-setup') :
-                admin_url('edit.php?post_type=give_forms'),
+                DonationFormsAdminPage::getUrl(),
             'formPreviewUrl' => admin_url('?page=give-form-preview'),
             'localeCurrency' => $this->localeCollection->pluck('currency_code'),
             'currencies' => FormatList::fromKeyValue(give_get_currencies_list()),

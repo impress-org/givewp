@@ -8,6 +8,8 @@
 
 namespace Give\Onboarding\Setup;
 
+use Give\DonationForms\DonationFormsAdminPage;
+
 defined('ABSPATH') || exit;
 
 /**
@@ -31,7 +33,7 @@ class Page
         if (wp_verify_nonce($_GET['_wpnonce'], 'dismiss_setup_page')) {
             give_update_option('setup_page_enabled', self::DISABLED);
 
-            wp_redirect(add_query_arg(['post_type' => 'give_forms'], admin_url('edit.php')));
+            wp_redirect(DonationFormsAdminPage::getUrl());
             exit;
         }
     }
@@ -73,7 +75,7 @@ class Page
      */
     public function enqueue_scripts()
     {
-        if ( ! isset($_GET['page']) || 'give-setup' !== $_GET['page']) {
+        if (!isset($_GET['page']) || 'give-setup' !== $_GET['page']) {
             return;
         }
 

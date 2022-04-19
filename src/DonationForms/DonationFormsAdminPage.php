@@ -89,4 +89,13 @@ class DonationFormsAdminPage
     {
         return isset($_GET['page']) && $_GET['page'] === 'give-forms';
     }
+
+    /**
+     * @unreleased
+     * @return string
+     */
+    public static function getUrl()
+    {
+        return add_query_arg(['page' => 'give-forms'], admin_url('edit.php?post_type=give_forms'));
+    }
 }
