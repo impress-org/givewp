@@ -24,13 +24,16 @@ class TemporalFacade
     }
 
     /**
+     * @unreleased for consistency, match the DateTime to be the same as $this->toDateTime
      * @since 2.19.6
      *
      * @return DateTime
      */
     public function getCurrentDateTime()
     {
-        return date_create('now', wp_timezone());
+        $now = date_create('now', wp_timezone())->format('Y-m-d H:i:s');
+
+        return $this->toDateTime($now);
     }
 
     /**

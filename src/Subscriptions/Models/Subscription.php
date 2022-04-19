@@ -48,10 +48,10 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
         'donorId' => 'int',
         'period' => SubscriptionPeriod::class,
         'frequency' => 'int',
-        'installments' => 'int',
+        'installments' => ['int', 0],
         'transactionId' => 'string',
         'amount' => 'int',
-        'feeAmount' => 'int',
+        'feeAmount' => ['int', 0],
         'status' => SubscriptionStatus::class,
         'gatewaySubscriptionId' => 'string',
     ];
@@ -61,7 +61,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      */
     protected $relationships = [
         'donor' => Relationship::BELONGS_TO,
-        'donations' => Relationship::HAS_MANY
+        'donations' => Relationship::HAS_MANY,
     ];
 
     /**
@@ -69,7 +69,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      *
      * @since 2.19.6
      *
-     * @param  int  $id
+     * @param int $id
      *
      * @return Subscription|null
      */
@@ -110,8 +110,8 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
         return give()->subscriptions->getNotesBySubscriptionId($this->id);
     }
 
-
     /**
+     * @unreleased return mutated model instance
      * @since 2.19.6
      *
      * @throws Exception
@@ -120,21 +120,25 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     {
         $subscription = new static($attributes);
 
-        return give()->subscriptions->insert($subscription);
+        give()->subscriptions->insert($subscription);
+
+        return $subscription;
     }
 
     /**
+     * @unreleased mutate model in repository and return void
      * @since 2.19.6
      *
+     * @return void
      * @throws Exception
      */
     public function save()
     {
         if (!$this->id) {
-            return give()->subscriptions->insert($this);
+            give()->subscriptions->insert($this);
         }
 
-        return give()->subscriptions->update($this);
+        give()->subscriptions->update($this);
     }
 
     /**
@@ -161,14 +165,14 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     /**
      * @since 2.19.6
      *
-     * @param  object  $object
+     * @param object $object
+     *
      * @return Subscription
      */
     public static function fromQueryBuilderObject($object)
     {
         return SubscriptionQueryData::fromObject($object)->toSubscription();
     }
-
 
     /**
      * Expiration / End Date / Renewal
