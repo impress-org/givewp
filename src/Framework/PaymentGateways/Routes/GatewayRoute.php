@@ -171,7 +171,7 @@ class GatewayRoute
     private function handleGatewayRouteMethod(PaymentGateway $gateway, $method, $queryParams)
     {
         try {
-            $this->handleResponse($this->executeRouteCallback($gateway, $method, $queryParams));
+            $this->handleResponse($gateway->callRouteMethod($method, $queryParams));
         } catch (PaymentGatewayException $paymentGatewayException) {
             $this->handleResponse(response()->json($paymentGatewayException->getMessage()));
         } catch (\Exception $exception) {
@@ -192,23 +192,5 @@ class GatewayRoute
                 )
             );
         }
-    }
-
-    /**
-     * @param PaymentGateway $gateway
-     * @param string $method
-     * @param array $queryParams
-     *
-     * @return RedirectResponse
-     * @throws PaymentGatewayException
-     * @throws Exception
-     */
-    private function executeRouteCallback(PaymentGateway $gateway, $method, $queryParams)
-    {
-        if ($gateway->supportsSubscriptions()) {
-            return $gateway->subscriptionModule->$method($queryParams);
-        }
-
-        return $gateway->$method($queryParams);
     }
 }
