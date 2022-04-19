@@ -169,27 +169,6 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
-     *
-     * @param bool $force Set to true to ignore the status of the subscription
-     *
-     * @throws Exception
-     */
-    public function refund(Donation $donation, $force = false)
-    {
-        if (!$force && $this->status->isRefunded()) {
-            return;
-        }
-
-        if ($donation->status->isRenewal()) {
-            $this->gateway()->refundPayment($donation);
-            return;
-        }
-
-        $this->gateway()->refundSubscription($this, $donation);
-    }
-
-    /**
      * @since 2.19.6
      *
      * @return ModelQueryBuilder<Subscription>

@@ -34,16 +34,6 @@ interface SubscriptionModuleInterface
     public function cancelSubscription(Subscription $subscription);
 
     /**
-     * Refund subscription.
-     *
-     * @unreleased
-     *
-     * @param Subscription $subscription
-     * @param Donation $donation
-     */
-    public function refundSubscription(Subscription $subscription, Donation $donation);
-
-    /**
      * Returns whether the gateway supports syncing subscriptions.
      *
      * @unreleased

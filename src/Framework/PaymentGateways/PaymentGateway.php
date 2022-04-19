@@ -168,14 +168,6 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * @inheritDoc
      */
-    public function refundSubscription(Subscription $subscription, Donation $donation )
-    {
-        $this->subscriptionModule->refundSubscription($subscription, $donation);
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function canSyncSubscriptionWithPaymentGateway()
     {
         return $this instanceof SubscriptionTransactionsSynchronizable
