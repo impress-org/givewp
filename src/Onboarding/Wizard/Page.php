@@ -9,6 +9,7 @@ use Give\Onboarding\FormRepository;
 use Give\Onboarding\Helpers\FormatList;
 use Give\Onboarding\Helpers\LocationList;
 use Give\Onboarding\LocaleCollection;
+use Give\Onboarding\SettingsRepository;
 use Give\Onboarding\SettingsRepositoryFactory;
 use Give\Onboarding\Setup\Page as SetupPage;
 
@@ -41,6 +42,7 @@ class Page
     /**
      * @param FormRepository $formRepository
      * @param SettingsRepositoryFactory $settingsRepositoryFactory
+     * @param LocaleCollection $localeCollection
      */
     public function __construct(
         FormRepository $formRepository,
