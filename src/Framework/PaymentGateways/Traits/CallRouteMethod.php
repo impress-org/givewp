@@ -20,7 +20,7 @@ trait CallRouteMethod
      *
      * @return bool
      */
-    protected function supportsMethodRoute($method)
+    public function supportsMethodRoute($method)
     {
         $allGatewayMethods = array_merge($this->routeMethods, $this->secureRouteMethods);
 
@@ -46,7 +46,7 @@ trait CallRouteMethod
 
         throw new Exception(
             sprintf(
-                '%1$s route method is not supported by%2$s',
+                '%1$s route method is not supported by %2$s',
                 $method,
                 get_class($this)
             )
