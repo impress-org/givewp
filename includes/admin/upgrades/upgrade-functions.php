@@ -483,6 +483,14 @@ function give_show_upgrade_notices( $give_updates ) {
 			'callback' => 'give_v270_store_stripe_account_for_donation_callback',
 		]
 	);
+
+    $give_updates->register(
+        [
+            'id'       => 'v270_store_stripe_account_for_donation-234',
+            'version'  => '2.7.0',
+            'callback' => 'give_v270_store_stripe_account_for_donation_callback',
+        ]
+    );
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
