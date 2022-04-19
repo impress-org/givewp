@@ -10,14 +10,13 @@ use Give\Subscriptions\Models\Subscription;
 interface SubscriptionTransactionsSynchronizable
 {
     /**
-     * Get subscription transactions from gateway.
+     * Synchronizes a subscription and its transactions with the gateway.
      *
      * @unreleased
      *
      * @param Subscription $subscriptionModel
-     * @param array $args
      *
-     * @return mixed
+     * @return void
      */
-    public function getSubscriptionTransactionsFromPaymentGateway(Subscription $subscriptionModel, array $args = []);
+    public function synchronizeSubscription(Subscription $subscriptionModel);
 }
