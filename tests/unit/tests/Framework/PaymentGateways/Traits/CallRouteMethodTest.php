@@ -104,6 +104,10 @@ class GatewayRouteTestGateway extends PaymentGateway
     public function createPayment(GatewayPaymentData $paymentData)
     {
     }
+
+    public function refundDonation(\Give\Donations\Models\Donation $donation)
+    {
+    }
 }
 
 class GatewayRouteTestGatewaySubscriptionModule extends SubscriptionModule
@@ -130,5 +134,9 @@ class GatewayRouteTestGatewaySubscriptionModule extends SubscriptionModule
     protected function handleSecureRoute($queryParams)
     {
         return __CLASS__ . __FUNCTION__;
+    }
+
+    public function cancelSubscription(\Give\Subscriptions\Models\Subscription $subscription)
+    {
     }
 }
