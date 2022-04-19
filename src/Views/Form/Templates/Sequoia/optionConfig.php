@@ -11,9 +11,20 @@ $introHeadline = ( ! $formInfo->post_title || 'post-new.php' === $pagenow) ? __(
     'Support Our Cause',
     'give'
 ) : $formInfo->post_title;
+
 $introDescription = $formInfo->post_excerpt ?: esc_html__(
     'Help our organization by donating today! All donations go directly to making a difference for our cause.',
     'give'
+);
+
+$paymentAmountContent = $formInfo->post_content ?: esc_html__(
+    sprintf(
+        __(
+            'How much would you like to donate? As a contributor to %s we make sure your donation goes directly to supporting our cause. Thank you for your generosity!',
+            'give'
+        ),
+        get_bloginfo('sitename')
+    ),
 );
 
 return [
@@ -151,14 +162,9 @@ return [
                 ),
                 'type' => 'textarea',
                 'attributes' => [
-                    'placeholder' => sprintf(
-                        __(
-                            'How much would you like to donate? As a contributor to %s we make sure your donation goes directly to supporting our cause.',
-                            'give'
-                        ),
-                        get_bloginfo('sitename')
-                    ),
+                    'placeholder' => $paymentAmountContent,
                 ],
+                'default' => $paymentAmountContent,
             ],
             [
                 'id' => 'next_label',
