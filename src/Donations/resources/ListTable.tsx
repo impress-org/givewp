@@ -195,7 +195,8 @@ export default function () {
                                         <IdBadge id={donationId}/>
                                         {' '}
                                         <span>{sprintf(__('from %s', 'give'), names[index])}</span>
-                                    </li>                                ))}
+                                    </li>
+                                ))}
                             </ul>
                         </>
                     )

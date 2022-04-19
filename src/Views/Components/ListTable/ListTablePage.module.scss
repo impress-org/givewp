@@ -6,6 +6,10 @@
     .post-type-give_forms #wpbody {
         box-sizing: border-box;
         padding-left: 0;
+
+        & > a {
+            text-decoration: underline
+        }
     }
 
     .post-type-give_forms #wpbody-content {
@@ -133,15 +137,6 @@
     }
 }
 
-input.searchInput {
-    border: 1px solid rgba(221, 221, 221);
-    margin-inline-end: 0.5em;
-
-    &::placeholder {
-        color: rgba(157, 157, 157);
-    }
-}
-
 #searchContainer {
     display: flex;
     flex-wrap: wrap;
@@ -152,10 +147,6 @@ input.searchInput {
     padding-inline: 1.5em;
     padding-block: 1em;
     border-bottom: 0.0625rem solid #dbdbdb;
-}
-
-select.statusFilter {
-    border: 1px solid #dddddd;
 }
 
 .container,
@@ -208,7 +199,7 @@ select.statusFilter {
     border-block-start-width: 0.25rem;
     box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
     max-width: 50vw;
-    min-width: 30vw;
+    min-width: 20rem;
 
     &.warning {
         border-block-start-color: #dba617;
@@ -221,12 +212,14 @@ select.statusFilter {
     & ul {
         max-height: 40vh;
         overflow-y: auto;
-        scrollbar-width: thin;
+        overscroll-behavior-y: contain;
     }
 
     & li {
-        margin-inline: 2em;
         font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
 
     & li+li {
@@ -234,12 +227,12 @@ select.statusFilter {
         padding-top: 0.5rem;
     }
 
-    & *:not(ul):not(.gutter):not(.modalContent) {
-        padding-inline: 1em
+    & > *:not(ul):not(.gutter) {
+        padding-inline: 1rem
     }
 
     & > .modalContent {
-        padding-block-end: 1em;
+        padding-block-end: 1rem;
     }
 }
 

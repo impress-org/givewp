@@ -1,13 +1,14 @@
 import styles from "./ListTablePage.module.scss";
 import {FormSelect} from "@givewp/components/ListTable/FormSelect";
+import Select from "@givewp/components/ListTable/Select";
+import Input from "@givewp/components/ListTable/Input";
 
 export const Filter = ({ filter, value = null, onChange, debouncedOnChange }) => {
     switch(filter.type){
         case 'select':
             return (
-                <select
+                <Select
                     name={filter.name}
-                    className={styles.statusFilter}
                     aria-label={filter?.ariaLabel}
                     onChange={(event) => onChange(event.target.name, event.target.value)}
                     style={{inlineSize: filter?.inlineSize}}
@@ -18,7 +19,7 @@ export const Filter = ({ filter, value = null, onChange, debouncedOnChange }) =>
                             {text}
                         </option>
                     ))}
-                </select>
+                </Select>
             );
         case 'formselect':
             return (
@@ -34,13 +35,12 @@ export const Filter = ({ filter, value = null, onChange, debouncedOnChange }) =>
             );
         case 'search':
             return (
-                <input
+                <Input
                     type="search"
                     name={filter.name}
                     aria-label={filter?.ariaLabel}
                     placeholder={filter?.text}
                     onChange={(event) => debouncedOnChange(event.target.name, event.target.value)}
-                    className={styles.searchInput}
                     style={{inlineSize: filter?.inlineSize}}
                     defaultValue={value}
                 />

@@ -8,6 +8,10 @@
         cursor: pointer;
     }
 
+    &:focus, &:hover, &:active {
+        text-decoration: underline;
+    }
+
     &.delete {
         color: rgba(232, 75, 59);
     }

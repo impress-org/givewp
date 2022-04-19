@@ -1,11 +1,12 @@
 import pageStyles from "@givewp/components/ListTable/ListTablePage.module.scss";
 import styles from './FormSelect.module.scss';
 import cx from "classnames";
+import Input from "@givewp/components/ListTable/Input";
 
 export const FormSelect = ({options, name, placeholder = '', ariaLabel = '', onChange, ...rest}) => {
     return (
         <>
-            <input
+            <Input
                 type='search'
                 className={cx(pageStyles.searchInput, styles.formSelect)}
                 list={`giveSearchSelect-${name}`}

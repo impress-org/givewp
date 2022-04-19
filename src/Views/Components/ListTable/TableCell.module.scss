@@ -8,8 +8,13 @@
     font-weight: 600;
     color: #333;
 
-    & > a:not([class]) {
+    & a {
         text-decoration: none;
+
+        &:focus, &:hover, &:active {
+            text-decoration: underline;
+            transition: all 0.05s ease-in-out;
+        }
     }
 }
 
@@ -41,6 +46,8 @@
 
 .idBadge {
     display: inline-flex;
+    flex-shrink: 0;
+    flex-grow: 0;
     align-items: center;
     background-color: #f3f2ec;
     border: 0.0625rem solid #e0dfd9;
@@ -49,6 +56,9 @@
     padding-block: 0.1em;
     padding-inline: 0.5em;
     text-align: center;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
 }
 
 .idBadge::before {
