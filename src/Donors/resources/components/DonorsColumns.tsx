@@ -7,14 +7,15 @@ export const donorsColumns: Array<ListTableColumn> = [
     {
         name: 'id',
         text: __('ID', 'give'),
+        addClass: styles.donorCell,
         inlineSize: '3rem',
         preset: 'idBadge'
     },
     {
         name: 'name',
         text: __('Donor Information', 'give'),
+        addClass: styles.donorCell,
         inlineSize: '14rem',
-        alignColumn: 'start',
         heading: true,
         render: (donor: {name, namePrefix, id, email, gravatar}) => (
             <div className={styles.donorInformation}>
@@ -26,6 +27,7 @@ export const donorsColumns: Array<ListTableColumn> = [
     },
     {
         name: 'donationRevenue',
+        addClass: styles.donorCell,
         inlineSize: '6rem',
         text: __('Total Given', 'give'),
         preset: 'monetary',
@@ -33,6 +35,7 @@ export const donorsColumns: Array<ListTableColumn> = [
     {
         name: 'donationCount',
         text: __('Donations', 'give'),
+        addClass: styles.donorCell,
         inlineSize: '8rem',
         render: (donor: {donationCount, email}) => (
             <a href={`edit.php?post_type=give_forms&page=give-payment-history&search=${donor.email}`}>
@@ -47,11 +50,13 @@ export const donorsColumns: Array<ListTableColumn> = [
     {
         name: 'latestDonation',
         text: __('Latest Donation', 'give'),
+        addClass: styles.donorCell,
     },
     {
         name: 'donorType',
         text: __('Donor Type', 'give'),
-        inlineSize: '12rem',
+        addClass: styles.donorCell,
+        inlineSize: '11rem',
         render: (donor: {donorType}) => (
             <DonorType type={donor.donorType}/>
         )
@@ -59,5 +64,6 @@ export const donorsColumns: Array<ListTableColumn> = [
     {
         name: 'dateCreated',
         text: __('Date Created', 'give'),
+        addClass: styles.donorCell,
     },
 ];

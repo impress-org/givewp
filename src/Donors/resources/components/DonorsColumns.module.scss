@@ -7,11 +7,13 @@ $gravatar-dimensions: 4rem;
 }
 
 .donorInformation {
+    position: relative;
     display: flex;
     flex-flow: column wrap;
     align-content: flex-start;
     justify-content: center;
-    gap: 0.6125em;
+    column-gap: 0.6125rem;
+    row-gap: 0.25rem;
     height: $gravatar-dimensions;
     width: 100%;
 
@@ -23,9 +25,9 @@ $gravatar-dimensions: 4rem;
 
 .name {
     display: inline;
-    width: -webkit-fit-content;
-    width: -moz-fit-content;
-    width: fit-content;
+    inline-size: -webkit-fit-content;
+    inline-size: -moz-fit-content;
+    inline-size: fit-content;
     font-size: 1.125rem;
     text-decoration: none;
 }
@@ -37,4 +39,9 @@ $gravatar-dimensions: 4rem;
     max-width: calc(100% - $gravatar-dimensions);
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+.donorCell {
+    padding-block: 0;
+    height: 7rem;
 }

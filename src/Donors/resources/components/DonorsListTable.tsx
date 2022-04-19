@@ -73,7 +73,6 @@ export default function DonorsListTable(){
             bulkActions={donorsBulkActions}
             apiSettings={window.GiveDonors}
             filterSettings={donorsFilters}
-            align={'end'}
         >
             <button className={styles.addFormButton} onClick={showLegacyDonors}>
                 {__('Switch to Legacy View', 'give')}

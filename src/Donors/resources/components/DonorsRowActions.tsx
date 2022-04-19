@@ -37,19 +37,20 @@ export function DonorsRowActions({item, setUpdateErrors, parameters}) {
     }
 
     return (
-        <>
+        <div className={styles.container}>
             <RowAction
                 className={styles.action}
                 href={`/wp-admin/edit.php?post_type=give_forms&page=give-donors&view=overview&id=${item.id}`}
                 displayText={__('Edit', 'give')}
             />
             <RowAction
+                className={styles.action}
                 onClick={confirmModal}
                 actionId={item.id}
                 displayText={__('Delete', 'give')}
                 hiddenText={item.name}
                 highlight
             />
-        </>
+        </div>
     );
 }
