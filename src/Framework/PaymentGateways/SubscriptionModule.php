@@ -3,12 +3,15 @@
 namespace Give\Framework\PaymentGateways;
 
 use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
+use Give\Framework\PaymentGateways\Traits\CallRouteMethod;
 
 /**
  * @unreleased
  */
 abstract class SubscriptionModule implements SubscriptionModuleInterface
 {
+    use CallRouteMethod;
+
     /**
      * Route methods are used to extend the gateway api.
      * By adding a custom routeMethod, you are effectively

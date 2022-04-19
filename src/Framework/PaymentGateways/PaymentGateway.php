@@ -22,6 +22,7 @@ use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\PaymentGateways\Routes\RouteSignature;
+use Give\Framework\PaymentGateways\Traits\CallRouteMethod;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
@@ -35,6 +36,7 @@ use function Give\Framework\Http\Response\response;
 abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentGatewayInterface
 {
     use HandleHttpResponses;
+    use CallRouteMethod;
 
     /**
      * Route methods are used to extend the gateway api.
