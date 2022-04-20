@@ -46,16 +46,22 @@
     transition-property: border, background, color;
     transition-duration: .05s;
     transition-timing-function: ease-in-out;
+}
 
-    &:not(:disabled) {
-        cursor: pointer;
+button[aria-disabled="false"].navDirection {
+    cursor: pointer;
 
-        &:hover {
-            background: rgba(240, 240, 241);
-            border-color: rgba(10, 75, 120);
-            color: rgba(10, 75, 120);
-        }
+    &:hover {
+        background: rgba(240, 240, 241);
+        border-color: rgba(10, 75, 120);
+        color: rgba(10, 75, 120);
     }
+}
+
+button[aria-disabled="true"].navDirection {
+    color: rgba(167, 170, 173);
+    border-color: rgba(220, 220, 222);
+    background: rgba(246, 247, 247);
 }
 
 .navElement {
@@ -68,11 +74,7 @@
     text-align: center;
 }
 
-.navElement:disabled {
-    color: rgba(167, 170, 173);
-    border-color: rgba(220, 220, 222);
-    background: rgba(246, 247, 247);
-}
+
 
 .visuallyHidden {
     position: absolute;
