@@ -5,6 +5,7 @@ use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\PaymentGateways\SubscriptionModule;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
+use Give\Subscriptions\Models\Subscription;
 
 /**
  * @unreleased
@@ -104,10 +105,6 @@ class GatewayRouteTestGateway extends PaymentGateway
     public function createPayment(GatewayPaymentData $paymentData)
     {
     }
-
-    public function refundDonation(\Give\Donations\Models\Donation $donation)
-    {
-    }
 }
 
 class GatewayRouteTestGatewaySubscriptionModule extends SubscriptionModule
@@ -136,7 +133,7 @@ class GatewayRouteTestGatewaySubscriptionModule extends SubscriptionModule
         return __CLASS__ . __FUNCTION__;
     }
 
-    public function cancelSubscription(\Give\Subscriptions\Models\Subscription $subscription)
+    public function cancelSubscription(Subscription $subscription)
     {
     }
 }
