@@ -34,11 +34,15 @@
 }
 
 .navDirection {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
     text-decoration: none;
     color: #2271b1;
     border-color: #2271b1;
     background: rgba(229, 229, 229);
-    font-size: 1.125rem;
+    font-size: 1.5rem;
+    font-weight: 400;
     transition-property: border, background, color;
     transition-duration: .05s;
     transition-timing-function: ease-in-out;
@@ -57,12 +61,10 @@
 .navElement {
     border-width: 1px;
     border-style: solid;
-    display: inline-block;
     vertical-align: baseline;
-    min-width: 1.875rem;
-    min-height: 1.875rem;
+    inline-size: 1.875rem;
+    block-size: 1.875rem;
     padding: 0 0.25rem;
-    line-height: 1.625;
     text-align: center;
 }
 
