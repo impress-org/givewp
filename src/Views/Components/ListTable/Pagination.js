@@ -26,24 +26,26 @@ const Pagination = ({currentPage, totalPages, totalItems = -1, disabled, setPage
                     <button
                         className={cx(styles.navDirection, styles.navElement)}
                         disabled={previousPage <= 1}
+                        aria-label={(__('first page'))}
                         onClick={(e) => {
                             if (!disabled) {
                                 setPage(1);
                             }
                         }}
                     >
-                        «
+                        <span aria-hidden={true}>«</span>
                     </button>
                     <button
                         className={cx(styles.navDirection, styles.navElement)}
                         disabled={previousPage <= 0}
+                        aria-label={(__('previous page'))}
                         onClick={(e) => {
                             if (!disabled) {
                                 setPage(parseInt(currentPage) - 1);
                             }
                         }}
                     >
-                        ‹
+                        <span aria-hidden={true}>‹</span>
                     </button>
                     <span>
                         <label htmlFor={styles.currentPage} className={styles.visuallyHidden}>
@@ -68,24 +70,26 @@ const Pagination = ({currentPage, totalPages, totalItems = -1, disabled, setPage
                     <button
                         className={cx(styles.navDirection, styles.navElement)}
                         disabled={nextPage > totalPages}
+                        aria-label={(__('next page'))}
                         onClick={(e) => {
                             if (!disabled) {
                                 setPage(parseInt(currentPage) + 1);
                             }
                         }}
                     >
-                        ›
+                        <span aria-hidden={true}>›</span>
                     </button>
                     <button
                         className={cx(styles.navDirection, styles.navElement)}
                         disabled={nextPage > totalPages - 1}
+                        aria-label={(__('final page'))}
                         onClick={(e) => {
                             if (!disabled) {
                                 setPage(totalPages);
                             }
                         }}
                     >
-                        »
+                        <span aria-hidden={true}>»</span>
                     </button>
                 </>
             }
