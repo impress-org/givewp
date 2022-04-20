@@ -244,12 +244,4 @@ class PayPalStandard extends PaymentGateway
          */
         return apply_filters('give_get_settings_paypal_standard', $setting);
     }
-
-    /**
-     * @unreleased
-     * @inerhitDoc
-     */
-    public function refundDonation(Donation $donation)
-    {
-    }
 }
