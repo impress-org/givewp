@@ -70,17 +70,4 @@ interface PaymentGatewayInterface extends SubscriptionModuleInterface
      *
      */
     public function createPayment(GatewayPaymentData $paymentData);
-
-    /**
-     * Refund a payment with gateway
-     *
-     * @unreleased
-     *
-     * @param Donation $donation
-     *
-     * @return void
-     * @throws PaymentGatewayException
-     * @throws Exception
-     */
-    public function refundDonation(Donation $donation);
 }
