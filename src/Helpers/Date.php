@@ -39,6 +39,11 @@ class Date {
             );
         }
 
-        return date_i18n(get_option('date_format'), $dateTimestamp);
+        return sprintf(
+            '%1$s %2$s %3$s',
+            date_i18n(get_option('date_format'), $dateTimestamp),
+            esc_html__('at', 'give'),
+            date_i18n(get_option('time_format'), $dateTimestamp)
+        );
     }
 }
