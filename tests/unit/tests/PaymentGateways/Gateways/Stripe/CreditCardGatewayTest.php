@@ -40,7 +40,7 @@ class CreditCardGatewayTest extends Give_Unit_Test_Case
         $gateway = new CreditCardGateway();
 
         $this->mock(Give_Stripe_Payment_Intent::class, function() {
-            return new Give_Stripe_Payment_Intent( 'succeeded' );
+            return new Give_Stripe_Payment_Intent( 'processing' );
         });
 
         $this->assertInstanceOf( PaymentProcessing::class, $gateway->createPayment( $this->getMockPaymentData() ) );
