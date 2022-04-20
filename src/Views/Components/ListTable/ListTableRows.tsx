@@ -57,14 +57,8 @@ const RenderRow = ({ column, item }) => {
                     <StatusBadge key={column.name} className={styles[value]}
                                  text={donationStatusMap[value]}
                     />
+                    {(item.paymentMode === 'test') && <TestLabel/>}
                 </div>
-            );
-        case 'testBadge':
-            if(item?.paymentMode !== 'test'){
-                return null;
-            }
-            return (
-                <TestLabel/>
             );
         case 'monetary':
             return (

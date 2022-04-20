@@ -189,6 +189,7 @@
 #modalTitle {
     font-size: 1.25rem;
     font-weight: 700;
+    padding-inline: 1rem;
 }
 
 .dialog {
@@ -226,16 +227,16 @@
 
     & li+li {
         border-top: 1px solid rgba(196, 196, 196);
-        padding-top: 0.5rem;
-    }
-
-    & > *:not(ul):not(.gutter) {
-        padding-inline: 1rem
+        padding-top: 0.75rem;
     }
 
     & > .modalContent {
         padding-block-end: 1rem;
     }
+}
+
+.modalContent > * {
+    padding-inline: 1rem;
 }
 
 .gutter {

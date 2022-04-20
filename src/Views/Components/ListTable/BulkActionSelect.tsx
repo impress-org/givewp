@@ -10,7 +10,7 @@ export const BulkActionSelect = ({bulkActions = null, showModal, data, parameter
 
     return (
         <form id={styles.bulkActionsForm} onSubmit={showModal}>
-            <Select className={styles.bulkActions} name='giveListTableBulkActions'>
+            <Select name='giveListTableBulkActions'>
                 <option value=''>{__('Bulk Actions', 'give')}</option>
                 {bulkActions.map(action => {
                     if (typeof action?.isVisible == 'function' && !action.isVisible(data, parameters)) {

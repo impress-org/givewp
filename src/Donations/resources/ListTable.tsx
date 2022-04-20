@@ -113,15 +113,9 @@ export default function () {
         {
             name: 'status',
             text: __('Status', 'give'),
-            inlineSize: '10rem',
+            inlineSize: '12rem',
             preset: 'donationStatus',
         },
-        {
-            name: 'paymentMode',
-            text: '',
-            inlineSize: '3rem',
-            preset: 'testBadge'
-        }
     ];
 
     const filters = [
