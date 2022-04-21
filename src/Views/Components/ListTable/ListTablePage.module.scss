@@ -115,6 +115,7 @@
     transition-property: filter, color, outline;
     transition-duration: 180ms;
     transition-timing-function: ease-in;
+    cursor: pointer;
 
     &:is(a) {
         text-decoration: none;
@@ -258,6 +259,7 @@ $button-blue: rgba(8 120 176);
     padding-block: 0.5em;
     transition: all 0.15s;
     box-shadow: 0px 2px 0px #DDDDDD;
+    cursor: pointer;
 
     &:hover, &:focus {
         border-color: black;
