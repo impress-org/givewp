@@ -27,8 +27,10 @@ export function DonorsRowActions({item, setUpdateErrors, parameters}) {
             <p>
                 {sprintf(__('Really delete %s?', 'give'), item.name)}
             </p>
-            <input id='giveDonorsTableDeleteDonations' type='checkbox'/>
-            <label htmlFor='giveDonorsTableDeleteDonations'>{__('Delete all associated donations and records', 'give')}</label>
+            <input id='giveDonorsTableDeleteDonations' type='checkbox' defaultChecked={true}/>
+            <label htmlFor='giveDonorsTableDeleteDonations'>
+                {__('Delete all associated donations and records', 'give')}
+            </label>
         </div>
     );
 

@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {__, _n, sprintf} from '@wordpress/i18n';
 import cx from 'classnames';
 
@@ -47,9 +47,11 @@ export const ListTable = ({
         align = 'start',
 }: ListTableProps) => {
     const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>, successes: Array<number>}>({errors: [], successes: []});
-    const [errorOverlay, setErrorOverlay] = useState<any>(false);
+    const [errorOverlay, setErrorOverlay] = useState<string|boolean>(false);
     const [initialLoad, setInitialLoad] = useState<boolean>(true);
-    const [loadingOverlay, setLoadingOverlay] = useState<any>(false);
+    const [loadingOverlay, setLoadingOverlay] = useState<string|boolean>(false);
+    const [overlayWidth, setOverlayWidth] = useState(0);
+    const tableRef = useRef<null|HTMLTableElement>();
     const isEmpty = !error && data?.items.length === 0;
 
     useEffect(() => {
@@ -58,6 +60,10 @@ export const ListTable = ({
 
     useEffect(() => {
         if (isLoading) {
+            // we need to set the overlay width in JS because tables only respect 'position: relative' in FireFox
+            if(tableRef.current){
+                setOverlayWidth(tableRef.current.getBoundingClientRect().width);
+            }
             setLoadingOverlay(styles.appear);
         }
         if (!isLoading && loadingOverlay) {
@@ -111,7 +117,12 @@ export const ListTable = ({
                     className={styles.tableGroup}
                     tabIndex={0}
                 >
-                    <table className={styles.table}>
+                    {loadingOverlay && (
+                        <div className={cx(styles.overlay, loadingOverlay)} style={{width: overlayWidth && overlayWidth + 'px'}}>
+                            <Spinner size={'medium'} />
+                        </div>
+                    )}
+                    <table ref={tableRef} className={styles.table}>
                         <caption id="giveListTableCaption" className={styles.tableCaption}>
                             {title}
                         </caption>
@@ -160,11 +171,6 @@ export const ListTable = ({
                             />
                         </tbody>
                     </table>
-                    {loadingOverlay && (
-                        <div className={cx(styles.overlay, loadingOverlay)}>
-                            <Spinner size={'medium'} />
-                        </div>
-                    )}
                     {errorOverlay && (
                         <div className={cx(styles.overlay, errorOverlay)}>
                             <div

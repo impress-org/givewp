@@ -52,7 +52,7 @@ const donorsBulkActions:Array<BulkActionsConfig> = [
                     ))}
                 </ul>
                 <div>
-                    <input id='giveDonorsTableDeleteDonations' type='checkbox'/>
+                    <input id='giveDonorsTableDeleteDonations' type='checkbox' defaultChecked={true}/>
                     <label htmlFor='giveDonorsTableDeleteDonations'>
                         {__('Delete all associated donations and records', 'give')}
                     </label>
