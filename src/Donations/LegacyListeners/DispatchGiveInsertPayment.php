@@ -19,7 +19,7 @@ class DispatchGiveInsertPayment
         $donor = $donation->donor;
 
         $giveInsertPaymentData = GiveInsertPaymentData::fromArray([
-            'price' => $donation->getMinorAmount(),
+            'price' => $donation->chargeAmount->getAmount(),
             'formTitle' => $donation->formTitle,
             'formId' => $donation->formId,
             'priceId' => give_get_price_id($donation->formId, $donation->getMinorAmount()->getAmount()),
