@@ -17,15 +17,6 @@ $introDescription = $formInfo->post_excerpt ?: esc_html__(
     'give'
 );
 
-$paymentAmountContent = $formInfo->post_content ?: esc_html__(
-    sprintf(
-        __(
-            'How much would you like to donate? As a contributor to %s we make sure your donation goes directly to supporting our cause. Thank you for your generosity!',
-            'give'
-        ),
-        get_bloginfo('sitename')
-    ),
-);
 
 return [
     'visual_appearance' => [
@@ -162,9 +153,21 @@ return [
                 ),
                 'type' => 'textarea',
                 'attributes' => [
-                    'placeholder' => $paymentAmountContent,
+                    'placeholder' =>  sprintf(
+                        __(
+                            'How much would you like to donate? As a contributor to %s we make sure your donation goes directly to supporting our cause. Thank you for your generosity!',
+                            'give'
+                        ),
+                        get_bloginfo('sitename')
+                    ),
                 ],
-                'default' => $paymentAmountContent,
+                'default' =>  sprintf(
+                    __(
+                        'How much would you like to donate? As a contributor to %s we make sure your donation goes directly to supporting our cause. Thank you for your generosity!',
+                        'give'
+                    ),
+                    get_bloginfo('sitename')
+                ),
             ],
             [
                 'id' => 'next_label',
