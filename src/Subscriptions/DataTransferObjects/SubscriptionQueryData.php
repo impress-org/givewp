@@ -62,6 +62,10 @@ class SubscriptionQueryData
     /**
      * @var string
      */
+    public $gatewayId;
+    /**
+     * @var string
+     */
     public $gatewaySubscriptionId;
     /**
      * @var int
@@ -92,6 +96,7 @@ class SubscriptionQueryData
         $self->amount = (int)$subscriptionQueryObject->amount;
         $self->feeAmount = (int)$subscriptionQueryObject->feeAmount;
         $self->status = new SubscriptionStatus($subscriptionQueryObject->status);
+        $self->gatewayId = $subscriptionQueryObject->gatewayId;
         $self->gatewaySubscriptionId = $subscriptionQueryObject->gatewaySubscriptionId;
         $self->donationFormId = (int)$subscriptionQueryObject->donationFormId;
 

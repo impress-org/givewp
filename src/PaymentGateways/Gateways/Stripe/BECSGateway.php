@@ -2,10 +2,13 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe;
 
+use Give\Donations\Models\Donation;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Framework\PaymentGateways\SubscriptionModule;
 use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\Stripe\Traits\BECSMandateForm;
@@ -22,7 +25,10 @@ class BECSGateway extends PaymentGateway
     /** @var array */
     protected $errorMessages = [];
 
-    public function __construct(SubscriptionModuleInterface $subscriptionModule = null)
+    /**
+     * @param SubscriptionModule|null $subscriptionModule
+     */
+    public function __construct(SubscriptionModule $subscriptionModule = null)
     {
         parent::__construct($subscriptionModule);
 
@@ -116,5 +122,15 @@ class BECSGateway extends PaymentGateway
                 ],
             ],
         ];
+    }
+
+    /**
+     * @unreleased
+     * @inerhitDoc
+     * @throws Exception
+     */
+    public function refundDonation(Donation $donation)
+    {
+        throw new Exception('Method has not been implemented yet. Please use the legacy method in the meantime.');
     }
 }
