@@ -16,6 +16,7 @@ use Give_Stripe_Customer;
 class CreateCheckoutSession
 {
     /**
+     * @unreleased Update function to get input value to line_items[0][name]
      * @since 2.19.0
      *
      * @param GatewayPaymentData $paymentData
