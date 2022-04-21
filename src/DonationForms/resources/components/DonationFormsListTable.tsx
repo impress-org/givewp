@@ -4,6 +4,7 @@ import {donationFormsColumns} from "./DonationFormsColumns";
 import {DonationFormsRowActions} from "./DonationFormsRowActions";
 import styles from "@givewp/components/ListTable/ListTablePage.module.scss";
 import {BulkActionsConfig} from "@givewp/components/ListTable";
+import Select from "@givewp/components/ListTable/Select";
 
 declare global {
     interface Window {
@@ -79,24 +80,24 @@ const donationFormsBulkActions:Array<BulkActionsConfig> = [
                         <li key={id}>{names[index]}</li>
                     ))}
                 </ul>
-                <div style={{marginBlockEnd: '1em'}}>
+                <div className={styles.flexRow}>
                     <label htmlFor='giveDonationFormsTableSetAuthor'>{__('Set form author', 'give')}</label>
-                    <select id='giveDonationFormsTableSetAuthor' style={{paddingInlineEnd: '2em'}}>
+                    <Select id='giveDonationFormsTableSetAuthor' style={{paddingInlineEnd: '2rem'}}>
                         <option value=''>{__('Keep current author', 'give')}</option>
                         {window.GiveDonationForms.authors.map(author => (
                             <option key={author.id} value={author.id}>{author.name}</option>
                         ))}
-                    </select>
+                    </Select>
                 </div>
-                <div>
+                <div className={styles.flexRow}>
                     <label htmlFor='giveDonationFormsTableSetStatus'>{__('Set form status', 'give')}</label>
-                    <select id='giveDonationFormsTableSetStatus' style={{paddingInlineEnd: '2em'}}>
+                    <Select id='giveDonationFormsTableSetStatus' style={{paddingInlineEnd: '2rem'}}>
                         <option value=''>{__('Keep current status', )}</option>
                         <option value='publish'>{__('Published', 'give')}</option>
                         <option value='private'>{__('Private', 'give')}</option>
                         <option value='pending'>{__('Pending Review', 'give')}</option>
                         <option value='draft'>{__('Draft', 'give')}</option>
-                    </select>
+                    </Select>
                 </div>
             </>
         )

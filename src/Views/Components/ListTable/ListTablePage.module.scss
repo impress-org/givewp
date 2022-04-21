@@ -229,14 +229,11 @@
         border-top: 1px solid rgba(196, 196, 196);
         padding-top: 0.75rem;
     }
-
-    & > .modalContent {
-        padding-block-end: 1rem;
-    }
 }
 
 .modalContent > * {
     padding-inline: 1rem;
+    margin-block: 1rem;
 }
 
 .gutter {
