@@ -81,7 +81,7 @@ document.addEventListener('readystatechange', (event) => {
                             ? Give.fn.unFormatCurrency(
                                   input.value,
                                   Give.form.fn.getInfo('decimal_separator', donationForm)
-                              )
+                              ).toString()
                             : input.value;
 
                     const comparisonResult = compareWithOperator(operator, inputValue, value);
