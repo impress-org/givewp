@@ -469,6 +469,27 @@ class DonationRepository
     }
 
     /**
+     * @unreleased
+     *
+     * @param int $donationId
+     *
+     * @return string
+     */
+    public function getFormTitleByDonationId($donationId)
+    {
+        $metaData = DB::table('give_donationmeta')
+            ->where('donation_id', $donationId)
+            ->where('meta_key', '_give_payment_form_title')
+            ->get();
+
+        if (!$metaData) {
+            return '';
+        }
+
+        return $metaData->meta_value;
+    }
+
+    /**
      * @return ModelQueryBuilder<Donation>
      */
     public function prepareQuery()
