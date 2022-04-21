@@ -63,11 +63,20 @@ interface PaymentGatewayInterface extends SubscriptionModuleInterface
      *
      * @since 2.18.0
      *
-     * @param  GatewayPaymentData  $paymentData
+     * @param GatewayPaymentData $paymentData
      *
      * @return GatewayCommand
      * @throws PaymentGatewayException|Exception
      *
      */
     public function createPayment(GatewayPaymentData $paymentData);
+
+    /**
+     * @unreleased
+     *
+     * @param Donation $donation
+     *
+     * @return mixed
+     */
+    public function refundDonation(Donation $donation);
 }
