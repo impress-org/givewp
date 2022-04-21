@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\Gateways\PayPalStandard;
 
 use Give\Donations\Models\Donation;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\PaymentGateway;
@@ -245,8 +246,10 @@ class PayPalStandard extends PaymentGateway
     /**
      * @unreleased
      * @inerhitDoc
+     * @throws Exception
      */
     public function refundDonation(Donation $donation)
     {
+        throw new Exception('Method has not been implemented yet. Please use the legacy method in the meantime.');
     }
 }

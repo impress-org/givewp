@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
 use Give\Donations\Models\Donation;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
@@ -75,8 +76,10 @@ class TestGateway extends PaymentGateway
     /**
      * @unreleased
      * @inerhitDoc
+     * @throws Exception
      */
     public function refundDonation(Donation $donation)
     {
+        throw new Exception('Method has not been implemented yet. Please use the legacy method in the meantime.');
     }
 }
