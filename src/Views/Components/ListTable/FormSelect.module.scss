@@ -4,6 +4,7 @@ input.formSelect {
     background-size: 0.5625rem 0.6875rem;
     background-repeat: no-repeat;
     background-position: calc(100% - 0.3125rem) center;
+    inline-size: 14rem;
 
     &::-webkit-list-button, &::-webkit-calendar-picker-indicator {
         // hide the native datalist arrow but allow it to take pointer events
