@@ -105,6 +105,11 @@ class GatewayRouteTestGateway extends PaymentGateway
     public function createPayment(GatewayPaymentData $paymentData)
     {
     }
+
+    public function refundDonation(\Give\Donations\Models\Donation $donation)
+    {
+        // TODO: Implement refundDonation() method.
+    }
 }
 
 class GatewayRouteTestGatewaySubscriptionModule extends SubscriptionModule
