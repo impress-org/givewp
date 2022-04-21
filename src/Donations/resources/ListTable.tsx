@@ -72,7 +72,7 @@ export default function () {
         {
             name: 'amount',
             text: __('Amount', 'give'),
-            inlineSize: '6rem',
+            inlineSize: '7rem',
             preset: 'monetary',
         },
         {
@@ -86,11 +86,13 @@ export default function () {
         },
         {
             name: 'createdAt',
-            text: __('Date', 'give'),
+            inlineSize: '9rem',
+            text: __('Date / Time', 'give'),
         },
         {
             name: 'name',
             text: __('Donor Name', 'give'),
+            inlineSize: '9rem',
             render: (donation: { name, donorId }) => (
                 <a href={`edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donation.donorId}`}>
                     {donation.name}
@@ -100,6 +102,7 @@ export default function () {
         {
             name: 'formTitle',
             text: __('Donation Form', 'give'),
+            inlineSize: '9rem',
             render: (donation: { formTitle, formId }) => (
                 <a href={`post.php?post=${donation.formId}&action=edit`}>
                     {donation.formTitle}
@@ -108,6 +111,7 @@ export default function () {
         },
         {
             name: 'gateway',
+            inlineSize: '11rem',
             text: __('Gateway', 'give'),
         },
         {
