@@ -2,7 +2,8 @@
  * WordPress dependencies
  */
 import {__} from '@wordpress/i18n'
-import {InspectorControls} from '@wordpress/block-editor';
+import { select } from '@wordpress/data';
+import {InspectorControls, store } from '@wordpress/block-editor';
 import {
     PanelBody,
     SelectControl,
@@ -68,6 +69,13 @@ const Inspector = ({attributes, setAttributes}) => {
         return [value];
     };
 
+    const getImageSizes = () => select(store).getSettings().imageSizes.map(({slug, name}) => {
+        return {
+            value: slug,
+            label: name
+        };
+    });
+
     return (
         <InspectorControls key="inspector">
             <PanelBody title={__('Display Appearance', 'give')}>
@@ -125,10 +133,11 @@ const Inspector = ({attributes, setAttributes}) => {
 
                 {showFeaturedImage && (
                     <>
-                        <TextControl
+                        <SelectControl
                             name="imageSize"
                             label={__('Image Size', 'give')}
                             value={imageSize}
+                            options={getImageSizes()}
                             onChange={(value) => saveSetting('imageSize', value)}
                             help={__('Featured image size. Default "medium". Accepts WordPress image sizes.')}
                         />
