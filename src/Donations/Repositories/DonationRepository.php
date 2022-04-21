@@ -615,12 +615,18 @@ class DonationRepository
             if (ctype_digit($search)) {
                 $query->where('id', $search);
             } else {
-                $column = (strpos($search, '@') !== false)
-                    ? DonationMetaKeys::EMAIL
-                    : DonationMetaKeys::FIRST_NAME;
-                $query
-                    ->where('metaTable.meta_key', $column)
-                    ->whereLike('metaTable.meta_value', $search);
+                if (strpos($search, '@') !== false) {
+                    $query
+                        ->where('metaTable.meta_key', DonationMetaKeys::EMAIL)
+                        ->whereLike('metaTable.meta_value', $search)
+                    ;
+                } else {
+                    $query
+                        ->where('metaTable.meta_key', DonationMetaKeys::FIRST_NAME)
+                        ->whereLike('metaTable.meta_value', $search)
+                        ->orWhere('metaTable.meta_key', DonationMetaKeys::LAST_NAME)
+                        ->whereLike('metaTable.meta_value', $search);
+                }
             }
         }
 
@@ -632,6 +638,8 @@ class DonationRepository
             } else {
                 $query
                     ->where('metaTable.meta_key', DonationMetaKeys::FIRST_NAME)
+                    ->whereLike('metaTable.meta_value', $donor)
+                    ->orWhere('metaTable.meta_key', DonationMetaKeys::LAST_NAME)
                     ->whereLike('metaTable.meta_value', $donor);
             }
         }
