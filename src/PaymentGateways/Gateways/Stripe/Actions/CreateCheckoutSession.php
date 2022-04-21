@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe\Actions;
 
+use Give\Donations\Repositories\DonationRepository;
 use Give\Framework\PaymentGateways\DonationSummary;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
@@ -39,7 +40,7 @@ class CreateCheckoutSession
             'mode' => 'payment',
             'line_items' => [
                 [
-                    'name' => give_get_donation_form_title($paymentData->donationId),
+                    'name' => give(DonationRepository::class)->getFormTitleByDonationId($paymentData->donationId),
                     'description' => $donationSummary->getSummaryWithDonor(),
                     'amount' => Money::of($paymentData->price, $paymentData->currency)->getMinorAmount(),
                     'currency' => $paymentData->currency,
