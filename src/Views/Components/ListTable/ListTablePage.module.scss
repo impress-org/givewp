@@ -260,11 +260,18 @@ $button-blue: rgba(8 120 176);
     padding-inline: 0.75em;
     padding-block: 0.5em;
     transition: all 0.15s;
+    box-shadow: 0px 2px 0px #DDDDDD;
 
     &:hover, &:focus {
+        border-color: black;
         background: white;
-        outline: 0.125rem solid var(--give-primary-color);
         color: $button-blue;
+        box-shadow: none;
+    }
+
+    &:active {
+        border-color: rgba(170 170 170);
+        box-shadow: inset 0px 0px 3px rgba(170 170 170 / 0.8);
     }
 }
 
@@ -275,6 +282,7 @@ $button-blue: rgba(8 120 176);
 }
 
 #confirm {
+    border: 1px solid $button-blue;
     background: $button-blue;
     color: white;
 }
