@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\Gateways\PayPalStandard\Controllers;
 
+use Give\Log\Log;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\WebhookRegister;
 use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\WebhookValidator;
@@ -9,7 +10,7 @@ use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\WebhookValidator;
 /**
  * This class use to handle PayPal ipn.
  *
- * @unreleased
+ * @since 2.19.0
  */
 class PayPalStandardWebhook
 {
@@ -27,15 +28,16 @@ class PayPalStandardWebhook
     /**
      * Handle PayPal ipn
      *
-     * @unreleased
+     * @since 2.19.0
+     * @since 2.19.3 Respond with 200 http status to ipn.
      */
     public function handle()
     {
         $eventData = file_get_contents('php://input');
         $eventData = wp_parse_args($eventData);
 
-        if ( ! $this->webhookValidator->verifyEventSignature($eventData)) {
-            wp_die('Forbidden', 404);
+        if (!$this->webhookValidator->verifyEventSignature($eventData)) {
+            exit();
         }
 
         $donationId = isset($eventData['custom']) ? absint($eventData['custom']) : 0;
@@ -43,8 +45,15 @@ class PayPalStandardWebhook
 
         // ipn verification can be disabled in GiveWP (<=2.15.0).
         // This check will prevent anonymous requests from editing donation, if ipn verification disabled.
-        if ( ! $this->verifyDonationId($donationId)) {
-            wp_die('Forbidden', 404);
+        if (!$this->verifyDonationId($donationId)) {
+            Log::error(
+                'PayPal Standard IPN Error',
+                [
+                    'Message' => 'Donation id (from IPN) does not exist.',
+                    'Event Data' => $eventData
+                ]
+            );
+            exit();
         }
 
         $this->recordIpn($eventData, $donationId);
@@ -62,10 +71,11 @@ class PayPalStandardWebhook
     }
 
     /**
-     * @param array $eventData
+     * @since 2.19.0
+     *
      * @param int $donationId
      *
-     * @unreleased
+     * @param array $eventData
      */
     private function recordIpn(array $eventData, $donationId)
     {
@@ -81,7 +91,7 @@ class PayPalStandardWebhook
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @param int $donationId
      */
@@ -112,7 +122,7 @@ class PayPalStandardWebhook
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @param string $txnType
      * @param array $eventData

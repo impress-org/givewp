@@ -1,6 +1,6 @@
 // Dependencies
-const { __ } = wp.i18n;
-const { applyFilters } = wp.hooks;
+import { __ } from '@wordpress/i18n';
+import { applyFilters } from '@wordpress/hooks';
 import { getWindowData } from '../../utils';
 
 // Components

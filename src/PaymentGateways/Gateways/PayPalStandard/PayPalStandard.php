@@ -2,6 +2,8 @@
 
 namespace Give\PaymentGateways\Gateways\PayPalStandard;
 
+use Give\Donations\Models\Donation;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\PaymentGateway;
@@ -76,10 +78,12 @@ class PayPalStandard extends PaymentGateway
                 $paymentData,
                 $this->generateSecureGatewayRouteUrl(
                     'handleSuccessPaymentReturn',
+                    $paymentData->donationId,
                     ['donation-id' => $paymentData->donationId]
                 ),
                 $this->generateSecureGatewayRouteUrl(
                     'handleFailedPaymentReturn',
+                    $paymentData->donationId,
                     ['donation-id' => $paymentData->donationId]
                 ),
                 $this->generateGatewayRouteUrl(
@@ -92,9 +96,12 @@ class PayPalStandard extends PaymentGateway
     /**
      * Handle payment redirect after successful payment on PayPal standard.
      *
-     * @unreleased
+     * @since 2.19.0
+     * @since 2.19.4 Only pending PayPal Standard donation set to processing.
+     * @since 2.19.6 1. Do not set donation to "processing"
+     *             2. Add "payment-confirmation" param to receipt page url
      *
-     * @param array $queryParams Query params in gateway route. {
+     * @param  array  $queryParams  Query params in gateway route. {
      *
      * @type string "donation-id" Donation id.
      *
@@ -102,19 +109,20 @@ class PayPalStandard extends PaymentGateway
      *
      * @return RedirectResponse
      */
-    public function handleSuccessPaymentReturn($queryParams)
+    protected function handleSuccessPaymentReturn($queryParams)
     {
         $donationId = (int)$queryParams['donation-id'];
-        $payment = new Give_Payment($donationId);
-        $payment->update_status('processing');
 
-        return new RedirectResponse(Call::invoke(GenerateDonationReceiptPageUrl::class, $donationId));
+        return new RedirectResponse(add_query_arg(
+            [ 'payment-confirmation' => $this->getId() ],
+            Call::invoke(GenerateDonationReceiptPageUrl::class, $donationId)
+        ));
     }
 
     /**
      * Handle payment redirect after failed payment on PayPal standard.
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @param array $queryParams Query params in gateway route. {
      *
@@ -124,7 +132,7 @@ class PayPalStandard extends PaymentGateway
      *
      * @return RedirectResponse
      */
-    public function handleFailedPaymentReturn($queryParams)
+    protected function handleFailedPaymentReturn($queryParams)
     {
         $donationId = (int)$queryParams['donation-id'];
         $payment = new Give_Payment($donationId);
@@ -136,7 +144,7 @@ class PayPalStandard extends PaymentGateway
     /**
      * Handle PayPal IPN notification.
      *
-     * @unreleased
+     * @since 2.19.0
      */
     public function handleIpnNotification()
     {
@@ -146,7 +154,7 @@ class PayPalStandard extends PaymentGateway
     /**
      * This function returns payment gateway settings.
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @return array
      */
@@ -233,5 +241,15 @@ class PayPalStandard extends PaymentGateway
          * @since 2.9.6
          */
         return apply_filters('give_get_settings_paypal_standard', $setting);
+    }
+
+    /**
+     * @unreleased
+     * @inerhitDoc
+     * @throws Exception
+     */
+    public function refundDonation(Donation $donation)
+    {
+        throw new Exception('Method has not been implemented yet. Please use the legacy method in the meantime.');
     }
 }

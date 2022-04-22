@@ -11,7 +11,7 @@ use PayPalHttp\IOException;
 /**
  * This class returns paypal order for paypal order id given in request.
  *
- * @unreleased
+ * @since 2.19.0
  */
 class GetPayPalOrderFromRequest
 {

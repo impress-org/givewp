@@ -4,6 +4,7 @@ namespace Give\Log;
 
 use Exception;
 use Give\Log\Helpers\Environment;
+use Give\Log\ValueObjects\LogType;
 
 /**
  * Class Log
@@ -11,6 +12,7 @@ use Give\Log\Helpers\Environment;
  * The static facade intended to be the primary way of logging within GiveWP to make life easier.
  *
  * @package Give\Log
+ * @since 2.19.6 added debug
  * @since 2.10.0
  *
  * @note There are two special keywords used in the context that are representing category and source.
@@ -59,6 +61,7 @@ use Give\Log\Helpers\Environment;
  * @method static info(string $message, array $context = [])
  * @method static http(string $message, array $context = [])
  * @method static spam(string $message, array $context = [])
+ * @method static debug(string $message, array $context = [])
  */
 class Log
 {
@@ -119,6 +122,7 @@ class Log
      * @param  string  $name
      * @param  array  $arguments
      *
+     * @since 2.19.6 added conditional for logging debug()
      * @since 2.18.0 - always log errors, warnings & only log all if WP_DEBUG_LOG is enabled
      * @since 2.11.1
      *
@@ -128,7 +132,11 @@ class Log
         /** @var Log $logger */
         $logger = give(__CLASS__);
 
-        if (in_array($name, ['error', 'warning']) || Environment::isDebugLoggingEnabled()) {
+        if ($name !== LogType::DEBUG && (in_array($name, ['error', 'warning']) || Environment::isWPDebugLogEnabled())) {
+            call_user_func_array([$logger, $name], $arguments);
+        }
+
+        if (Environment::isGiveDebugEnabled()) {
             call_user_func_array([$logger, $name], $arguments);
         }
     }

@@ -3,7 +3,7 @@
 // 12 column grid for content to exist in
 
 // Vendor dependencies
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
 import { Fragment } from 'react';
 
 // Store-related dependencies

@@ -8,12 +8,12 @@ use Give\Session\SessionDonation\DonationAccessor;
 /**
  * This class use to generate failed page url.
  *
- * @unreleased
+ * @since 2.19.0
  */
 class GenerateDonationFailedPageUrl
 {
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return string
      */

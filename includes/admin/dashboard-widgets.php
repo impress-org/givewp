@@ -9,6 +9,8 @@
  * @since       1.0
  */
 
+use Give\DonationForms\DonationFormsAdminPage;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -40,7 +42,7 @@ function give_dashboard_at_a_glance_widget( $items ) {
 		if ( current_user_can( 'edit_give_forms', get_current_user_id() ) ) {
 			$text = sprintf(
 				'<a class="give-forms-count" href="%1$s">%2$s</a>',
-				admin_url( 'edit.php?post_type=give_forms' ),
+				DonationFormsAdminPage::getUrl(),
 				$text
 			);
 		} else {

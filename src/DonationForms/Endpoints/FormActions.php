@@ -6,7 +6,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class FormActions extends Endpoint
 {
@@ -91,6 +91,7 @@ class FormActions extends Endpoint
             case 'delete':
                 foreach ($ids as $id) {
                     $form = wp_delete_post($id);
+                    give()->form_meta->delete_all_meta($id);
                     $form ? $successes[] = $form : $errors[] = $form;
                 }
 

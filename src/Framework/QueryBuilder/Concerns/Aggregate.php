@@ -5,14 +5,14 @@ namespace Give\Framework\QueryBuilder\Concerns;
 use Give\Framework\QueryBuilder\Clauses\RawSQL;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 trait Aggregate
 {
     /**
      * Returns the number of rows returned by a query
      *
-     * @unreleased
+     * @since 2.19.0
      * @param  null|string  $column
      *
      * @return string
@@ -29,7 +29,7 @@ trait Aggregate
     /**
      * Returns the total sum in a set of values
      *
-     * @unreleased
+     * @since 2.19.0
      * @param  string  $column
      *
      * @return string
@@ -45,7 +45,7 @@ trait Aggregate
     /**
      * Get the average value in a set of values
      *
-     * @unreleased
+     * @since 2.19.0
      * @param  string  $column
      *
      * @return string
@@ -60,7 +60,7 @@ trait Aggregate
     /**
      * Returns the minimum value in a set of values
      *
-     * @unreleased
+     * @since 2.19.0
      * @param  string  $column
      *
      * @return string
@@ -75,7 +75,7 @@ trait Aggregate
     /**
      * Returns the maximum value in a set of values
      *
-     * @unreleased
+     * @since 2.19.0
      * @param  string  $column
      *
      * @return string

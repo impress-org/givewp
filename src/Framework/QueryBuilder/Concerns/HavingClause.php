@@ -10,7 +10,7 @@ use Give\Framework\QueryBuilder\Types\Math;
 use Give\Framework\QueryBuilder\Types\Operator;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 trait HavingClause
 {

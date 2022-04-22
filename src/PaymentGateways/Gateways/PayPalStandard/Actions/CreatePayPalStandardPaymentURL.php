@@ -40,7 +40,7 @@ class CreatePayPalStandardPaymentURL
 
             // Donation information.
             'invoice' => $paymentData->purchaseKey,
-            'amount' => $paymentData->amount,
+            'amount' => $paymentData->price,
             'item_name' => stripslashes($itemName),
             'currency_code' => give_get_currency($paymentData->donationId),
 
@@ -68,7 +68,7 @@ class CreatePayPalStandardPaymentURL
         /**
          * Filter the PayPal Standard redirect args.
          *
-         * @unreleased
+         * @since 2.19.0
          *
          * @param array $paypalPaymentArguments PayPal Standard payment Data.
          * @param GatewayPaymentData $paymentData Gateway payment data.
@@ -86,7 +86,7 @@ class CreatePayPalStandardPaymentURL
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @param array $paypalPaymentArguments
      * @param GatewayPaymentData $paymentData
@@ -107,7 +107,7 @@ class CreatePayPalStandardPaymentURL
                 $paymentData->donationId,
                 $paymentData->legacyPaymentData
             ],
-            '' // TODO: add plugin version: @unreleased
+            '2.19.0'
         );
     }
 }

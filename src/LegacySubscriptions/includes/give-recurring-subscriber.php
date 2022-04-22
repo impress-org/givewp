@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class Give_Recurring_Subscriber
  *
  * Includes methods for setting users as donors, setting their status, expiration, etc.
- * @unreleased - migrated from give-recurring
+ * @since 2.19.0 - migrated from give-recurring
  */
 class Give_Recurring_Subscriber extends Give_Donor {
 

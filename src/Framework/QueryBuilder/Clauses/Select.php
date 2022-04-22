@@ -3,7 +3,7 @@
 namespace Give\Framework\QueryBuilder\Clauses;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class Select
 {

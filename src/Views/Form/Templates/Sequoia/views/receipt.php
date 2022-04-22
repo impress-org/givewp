@@ -22,95 +22,104 @@ $pdfReceiptLinkDetailItem = null;
 
 ob_start();
 ?>
-<div class="give-receipt-wrap give-embed-receipt">
-    <div class="give-section receipt">
-        <?php
-        if ( ! empty($options['thank-you']['image'])) : ?>
-            <div class="image">
-                <img src="<?php
-                echo $options['thank-you']['image']; ?>" />
-            </div>
-        <?php
-        else : ?>
-            <div class="checkmark">
-                <i class="fas fa-check"></i>
-            </div>
-        <?php
-        endif; ?>
-        <h2 class="headline">
+    <div class="give-receipt-wrap give-embed-receipt">
+        <div class="give-section receipt">
             <?php
-            echo $receipt->heading; ?>
-        </h2>
-        <p class="message">
+            // Donation failed
+            if ($donation->post_status === 'failed'): ?>
+                <div class="error_icon">
+                    <i class="fas fa-times"></i>
+                </div>
+                <h2 class="headline">
+                    <?= __('Donation Failed', 'give') ?>
+                </h2>
+                <p class="message">
+                    <?= esc_html__('We\'re sorry, your donation failed to process. Please try again or contact site support.', 'give') ?>
+                </p>
             <?php
-            echo $receipt->message; ?>
-        </p>
-        <?php
-        require 'social-sharing.php'; ?>
-        <?php
-        /* @var Section $section */
-        foreach ($receipt as $section) {
-            // Continue if section does not have line items.
-            if ( ! $section->getLineItems()) {
-                continue;
-            }
+            // Donation completed
+            else: ?>
+                <?php if (!empty($options['thank-you']['image'])) : ?>
+                    <div class="image">
+                        <img src="<?php echo $options['thank-you']['image']; ?>"/>
+                    </div>
+                <?php else : ?>
+                    <div class="checkmark">
+                        <i class="fas fa-check"></i>
+                    </div>
+                <?php endif; ?>
 
-            if ('PDFReceipt' === $section->id) {
-                $pdfReceiptLinkDetailItem = $section['receiptLink'];
-                continue;
-            }
+                <h2 class="headline">
+                    <?php echo $receipt->heading; ?>
+                </h2>
+                <p class="message">
+                    <?php echo $receipt->message; ?>
+                </p>
 
-            echo '<div class="details">';
-            if ($section->label) {
-                printf('<h3 class="headline">%1$s</h3>', $section->label);
-            }
-            echo '<div class="details-table">';
+                <?php require 'social-sharing.php'; ?>
+            <?php endif; ?>
 
-            /* @var LineItem $lineItem */
-            foreach ($section as $lineItem) {
-                // Continue if line item does not have value.
-                if ( ! $lineItem->value) {
+            <?php
+            /* @var Section $section */
+            foreach ($receipt as $section) {
+                // Continue if section does not have line items.
+                if (!$section->getLineItems()) {
                     continue;
                 }
 
-                // This class is required to highlight total donation amount in receipt.
-                $detailRowClass = '';
-                if (DonationReceipt::DONATIONSECTIONID === $section->id) {
-                    $detailRowClass = 'totalAmount' === $lineItem->id ? ' total' : '';
+                if ('PDFReceipt' === $section->id) {
+                    $pdfReceiptLinkDetailItem = $section['receiptLink'];
+                    continue;
                 }
 
-                printf(
-                    '<div class="details-row%1$s">%2$s<div class="detail">%3$s</div><div class="value">%4$s</div></div>',
-                    $detailRowClass,
-                    $lineItem->icon,
-                    $lineItem->label,
-                    $lineItem->value
-                );
+                echo '<div class="details">';
+                if ($section->label) {
+                    printf('<h3 class="headline">%1$s</h3>', $section->label);
+                }
+                echo '<div class="details-table">';
+
+                /* @var LineItem $lineItem */
+                foreach ($section as $lineItem) {
+                    // Continue if line item does not have value.
+                    if (!$lineItem->value) {
+                        continue;
+                    }
+
+                    // This class is required to highlight total donation amount in receipt.
+                    $detailRowClass = '';
+                    if (DonationReceipt::DONATIONSECTIONID === $section->id) {
+                        $detailRowClass = 'totalAmount' === $lineItem->id ? ' total' : '';
+                    }
+
+                    printf(
+                        '<div class="details-row%1$s">%2$s<div class="detail">%3$s</div><div class="value">%4$s</div></div>',
+                        $detailRowClass,
+                        $lineItem->icon,
+                        $lineItem->label,
+                        $lineItem->value
+                    );
+                }
+                echo '</div>';
+                echo '</div>';
             }
-            echo '</div>';
-            echo '</div>';
-        }
-        ?>
+            ?>
 
-        <?php
-        if ($pdfReceiptLinkDetailItem) : ?>
-            <div class="give-btn download-btn">
+            <?php if ($pdfReceiptLinkDetailItem) : ?>
+                <div class="give-btn download-btn">
+                    <?php
+                    echo $pdfReceiptLinkDetailItem->value; ?>
+                </div>
+            <?php endif; ?>
+
+        </div>
+        <div class="form-footer">
+            <div class="secure-notice">
+                <i class="fas fa-lock"></i>
                 <?php
-                echo $pdfReceiptLinkDetailItem->value; ?>
+                _e('Secure Donation', 'give'); ?>
             </div>
-        <?php
-        endif; ?>
-
-    </div>
-    <div class="form-footer">
-        <div class="secure-notice">
-            <i class="fas fa-lock"></i>
-            <?php
-            _e('Secure Donation', 'give'); ?>
         </div>
     </div>
-</div>
-
 
 <?php
 $iframeView = new IframeContentView();
@@ -118,4 +127,3 @@ $iframeView = new IframeContentView();
 echo $iframeView->setTitle(esc_html__('Donation Receipt', 'give'))
     ->setBody(ob_get_clean())
     ->renderBody();
-?>

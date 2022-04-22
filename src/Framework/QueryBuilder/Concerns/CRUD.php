@@ -5,19 +5,19 @@ namespace Give\Framework\QueryBuilder\Concerns;
 use Give\Framework\Database\DB;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 trait CRUD
 {
     /**
-     * @unreleased
+     * @see https://developer.wordpress.org/reference/classes/wpdb/insert/
      *
-     * @param  array  $data
+     * @since 2.19.0
+     *
      * @param  array|string  $format
      *
+     * @param  array  $data
      * @return false|int
-     *
-     * @see https://developer.wordpress.org/reference/classes/wpdb/insert/
      *
      */
     public function insert($data, $format = null)
@@ -30,14 +30,14 @@ trait CRUD
     }
 
     /**
-     * @unreleased
+     * @see https://developer.wordpress.org/reference/classes/wpdb/update/
      *
-     * @param  array  $data
+     * @since 2.19.0
+     *
      * @param  null  $format
      *
+     * @param  array  $data
      * @return false|int
-     *
-     * @see https://developer.wordpress.org/reference/classes/wpdb/update/
      *
      */
     public function update($data, $format = null)
@@ -52,7 +52,7 @@ trait CRUD
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return false|int
      *
@@ -70,7 +70,7 @@ trait CRUD
     /**
      * Get results
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @param  string ARRAY_A|ARRAY_N|OBJECT|OBJECT_K $output
      *
@@ -84,7 +84,7 @@ trait CRUD
     /**
      * Get row
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @param  string ARRAY_A|ARRAY_N|OBJECT|OBJECT_K $output
      *
@@ -96,17 +96,17 @@ trait CRUD
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return string
      */
     private function getTable()
     {
-        return $this->froms[ 0 ]->table;
+        return $this->froms[0]->table;
     }
 
     /**
-     * @unreleased
+     * @since 2.19.0
      *
      * @return array[]
      */
@@ -115,7 +115,7 @@ trait CRUD
         $wheres = [];
 
         foreach ($this->wheres as $where) {
-            $wheres[ $where->column ] = $where->value;
+            $wheres[$where->column] = $where->value;
         }
 
         return $wheres;

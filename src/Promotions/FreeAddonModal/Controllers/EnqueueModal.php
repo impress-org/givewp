@@ -21,6 +21,8 @@ class EnqueueModal
         return [
             'siteUrl' => site_url(),
             'siteName' => get_bloginfo('name'),
+            'apiRoot' => esc_url_raw(rest_url('/give/v1/promotions/free-addon-modal/complete')),
+            'nonce' => wp_create_nonce('wp_rest'),
         ];
     }
 }

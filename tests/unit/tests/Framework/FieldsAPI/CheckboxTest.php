@@ -7,7 +7,7 @@ use Give_Unit_Test_Case;
 
 class CheckboxTest extends Give_Unit_Test_Case {
 	/**
-	 * @unreleased
+	 * @since 2.19.0
 	 */
 	public function testChecked() {
 		// Default is true

@@ -5,7 +5,7 @@ namespace Give\Framework\QueryBuilder\Clauses;
 use InvalidArgumentException;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class OrderBy
 {

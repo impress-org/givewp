@@ -5,7 +5,7 @@ namespace Give\Framework\QueryBuilder\Types;
 use ReflectionClass;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 abstract class Type
 {

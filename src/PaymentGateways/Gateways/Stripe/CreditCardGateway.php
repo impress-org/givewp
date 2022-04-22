@@ -2,16 +2,18 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe;
 
+use Give\Donations\Models\Donation;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
-use Give\Helpers\Form\Utils as FormUtils;
+use Give\Framework\PaymentGateways\SubscriptionModule;
+use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
-use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class CreditCardGateway extends PaymentGateway
 {
@@ -21,33 +23,47 @@ class CreditCardGateway extends PaymentGateway
     /** @var array */
     protected $errorMessages = [];
 
-    public function __construct(SubscriptionModuleInterface $subscriptionModule = null)
+    public function __construct(SubscriptionModule $subscriptionModule = null)
     {
         parent::__construct($subscriptionModule);
 
-        $this->errorMessages['accountConfiguredNoSsl']    = esc_html__( 'Credit Card fields are disabled because your site is not running securely over HTTPS.', 'give' );
-        $this->errorMessages['accountNotConfiguredNoSsl'] = esc_html__( 'Credit Card fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.', 'give' );
-        $this->errorMessages['accountNotConfigured']      = esc_html__( 'Credit Card fields are disabled. Please connect and configure your Stripe account to accept donations.', 'give' );
+        $this->errorMessages['accountConfiguredNoSsl'] = esc_html__(
+            'Credit Card fields are disabled because your site is not running securely over HTTPS.',
+            'give'
+        );
+        $this->errorMessages['accountNotConfiguredNoSsl'] = esc_html__(
+            'Credit Card fields are disabled because Stripe is not connected and your site is not running securely over HTTPS.',
+            'give'
+        );
+        $this->errorMessages['accountNotConfigured'] = esc_html__(
+            'Credit Card fields are disabled. Please connect and configure your Stripe account to accept donations.',
+            'give'
+        );
     }
 
     /**
      * @inheritDoc
-     * @unreleased
+     * @since 2.19.7 fix handlePaymentIntentStatus not receiving extra param
+     * @since 2.19.0
      * @return GatewayCommand
      * @throws PaymentGatewayException
      */
-    public function createPayment( GatewayPaymentData $paymentData )
+    public function createPayment(GatewayPaymentData $paymentData)
     {
-        $workflow = new Workflow();
-        $workflow->bind( $paymentData );
+        $paymentMethod = Call::invoke( Actions\GetPaymentMethodFromRequest::class, $paymentData );
+        $donationSummary = Call::invoke( Actions\SaveDonationSummary::class, $paymentData );
+        $stripeCustomer = Call::invoke( Actions\GetOrCreateStripeCustomer::class, $paymentData );
 
-        $workflow->action( new Actions\GetPaymentMethodFromRequest );
-        $workflow->action( new Actions\SaveDonationSummary );
-        $workflow->action( new Actions\GetOrCreateStripeCustomer );
-        $workflow->action( new Actions\CreatePaymentIntent );
+        $createIntentAction = new Actions\CreatePaymentIntent([]);
 
         return $this->handlePaymentIntentStatus(
-            $workflow->resolve( PaymentIntent::class )
+            $createIntentAction(
+                $paymentData,
+                $donationSummary,
+                $stripeCustomer,
+                $paymentMethod
+            ),
+            $paymentData->donationId
         );
     }
 
@@ -88,6 +104,16 @@ class CreditCardGateway extends PaymentGateway
      */
     public function getLegacyFormFieldMarkup($formId, $args)
     {
-        return $this->getCreditCardFormHTML( $formId, $args );
+        return $this->getCreditCardFormHTML($formId, $args);
+    }
+
+    /**
+     * @unreleased
+     * @inerhitDoc
+     * @throws Exception
+     */
+    public function refundDonation(Donation $donation)
+    {
+        throw new Exception('Method has not been implemented yet. Please use the legacy method in the meantime.');
     }
 }

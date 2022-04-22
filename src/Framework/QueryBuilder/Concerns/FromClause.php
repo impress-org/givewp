@@ -7,7 +7,7 @@ use Give\Framework\QueryBuilder\Clauses\From;
 use Give\Framework\QueryBuilder\Clauses\RawSQL;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 trait FromClause
 {

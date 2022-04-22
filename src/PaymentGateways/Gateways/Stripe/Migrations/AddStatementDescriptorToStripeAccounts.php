@@ -2,12 +2,13 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe\Migrations;
 
+use Exception;
 use Give\Framework\Migrations\Contracts\Migration;
 use Give\PaymentGateways\Stripe\Repositories\Settings;
 use Give\PaymentGateways\Stripe\Traits\HasStripeStatementDescriptorText;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class AddStatementDescriptorToStripeAccounts extends Migration
 {
@@ -15,7 +16,9 @@ class AddStatementDescriptorToStripeAccounts extends Migration
 
     /**
      * @inerhitDoc
-     * @unreleased
+     * @since 2.19.0
+     * @since 2.19.1 Use old stripe statement descriptor requirements to filter text.
+     *             https://github.com/impress-org/givewp/pull/6269
      */
     public function run()
     {
@@ -26,10 +29,9 @@ class AddStatementDescriptorToStripeAccounts extends Migration
             $statementDescriptor = give_get_option('stripe_statement_descriptor', get_bloginfo('name'));
             foreach ($allStripeAccount as $index => $stripAccount) {
                 if (!isset($stripAccount['statement_descriptor'])) {
-                    $statementDescriptor = trim($statementDescriptor);
-                    $this->validateStatementDescriptor($statementDescriptor);
-
-                    $allStripeAccount[$index]['statement_descriptor'] = $statementDescriptor;
+                    $allStripeAccount[$index]['statement_descriptor'] = $this->filterOldStatementDescriptor(
+                        $statementDescriptor
+                    );
                 }
             }
 
@@ -41,7 +43,7 @@ class AddStatementDescriptorToStripeAccounts extends Migration
 
     /**
      * @inerhitDoc
-     * @unreleased
+     * @since 2.19.0
      */
     public static function id()
     {
@@ -50,7 +52,7 @@ class AddStatementDescriptorToStripeAccounts extends Migration
 
     /**
      * @inerhitDoc
-     * @unreleased
+     * @since 2.19.0
      */
     public static function timestamp()
     {
@@ -59,7 +61,7 @@ class AddStatementDescriptorToStripeAccounts extends Migration
 
     /**
      * @inerhitDoc
-     * @unreleased
+     * @since 2.19.0
      */
     public static function title()
     {

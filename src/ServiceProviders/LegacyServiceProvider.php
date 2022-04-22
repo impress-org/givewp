@@ -180,6 +180,8 @@ class LegacyServiceProvider implements ServiceProvider
     /**
      * Binds the legacy classes to the service provider
      *
+     * @since 2.19.6 - remove donors in favor of DonorRepositoryProxy
+     *
      * @since 2.8.0
      */
     private function bindClasses()
@@ -192,7 +194,6 @@ class LegacyServiceProvider implements ServiceProvider
         $this->bindInstance('emails', 'Give_Emails', 'emails/class-give-emails.php');
         $this->bindInstance('email_tags', 'Give_Email_Template_Tags', 'emails/class-give-email-tags.php');
         $this->bindInstance('html', 'Give_HTML_Elements', 'admin/class-give-html-elements.php', true);
-        $this->bindInstance('donors', 'Give_DB_Donors', 'database/class-give-db-donors.php');
         $this->bindInstance('donor_meta', 'Give_DB_Donor_Meta', 'database/class-give-db-donor-meta.php');
         $this->bindInstance('tooltips', 'Give_Tooltips', 'class-give-tooltips.php');
         $this->bindInstance('notices', 'Give_Notices', 'class-notices.php');

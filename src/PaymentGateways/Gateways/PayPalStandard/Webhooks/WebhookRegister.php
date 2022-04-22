@@ -14,7 +14,7 @@ class WebhookRegister
      *
      * Structure: PayPalTractionType => EventHandlerClass
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @var string[]
      */
@@ -26,7 +26,7 @@ class WebhookRegister
     /**
      * Use this to register additional events and handlers
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @param string $payPalEvent PayPal event to listen for, i.e. CHECKOUT.ORDER.APPROVED
      * @param string $eventHandler The FQCN of the event handler
@@ -51,7 +51,7 @@ class WebhookRegister
     /**
      * Registers multiple event handlers using an array where the key is the
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @param array $handlers = [ 'web_accept' => EventHandler::class ]
      *                          https://developer.paypal.com/api/nvp-soap/ipn/IPNandPDTVariables/#link-ipntransactiontypes
@@ -66,7 +66,7 @@ class WebhookRegister
     /**
      * Returns Event Listener instance for given event
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @param string $event
      *
@@ -80,7 +80,7 @@ class WebhookRegister
     /**
      * Checks whether the given event is registered
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @param string $event
      *
@@ -94,7 +94,7 @@ class WebhookRegister
     /**
      * Returns an array of the registered events
      *
-     * @unreleased
+     * @since 2.19.0
      *
      * @return string[]
      */

@@ -7,7 +7,7 @@ use Give\Framework\QueryBuilder\Types\JoinType;
 use InvalidArgumentException;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class Join
 {

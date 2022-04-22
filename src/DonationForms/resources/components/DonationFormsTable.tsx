@@ -113,7 +113,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                     setPage={setPage}
                 />
             </div>
-            {initialLoad ? (
+            {( initialLoad && !error ) ? (
                 <div className={styles.initialLoad}>
                     <div className={cx(styles.tableGroup)}>
                         <Spinner size={'large'} />
@@ -253,7 +253,7 @@ export default function DonationFormsTable({statusFilter: status, search}: Donat
                         {isEmpty && (
                             <div className={styles.statusMessage}>{__('No donation forms found.', 'give')}</div>
                         )}
-                        {error && !isValidating && (
+                        {error && (
                             <>
                                 <div className={styles.statusMessage}>
                                     {__('There was a problem retrieving the donation forms.', 'give')}

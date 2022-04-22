@@ -5,7 +5,7 @@ namespace Give\Framework\QueryBuilder\Clauses;
 use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
- * @unreleased
+ * @since 2.19.0
  */
 class Union
 {

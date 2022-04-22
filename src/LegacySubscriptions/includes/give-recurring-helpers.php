@@ -18,7 +18,7 @@
  * @param  array  $payment_meta
  *
  * @return bool
- * @unreleased - this is copied over from give_recurring()->is_donation_recurring
+ * @since 2.19.0 - this is copied over from give_recurring()->is_donation_recurring
  * @access public
  *
  */
@@ -78,7 +78,7 @@ function give_recurring_is_donation_recurring($payment_meta)
  * @param  int  $level_id  The multi-level ID.
  *
  * @return bool
- * @unreleased - this is copied over from give_recurring()->is_recurring
+ * @since 2.19.0 - this is copied over from give_recurring()->is_recurring
  * @since  1.0
  * @access public
  * @static
@@ -150,7 +150,7 @@ function give_recurring_is_recurring($form_id, $level_id = 0)
  * @param  $price_id
  *
  * @return bool|string
- * @unreleased - this is copied over from give_recurring()->get_period
+ * @since 2.19.0 - this is copied over from give_recurring()->get_period
  * @access public
  * @static
  *
