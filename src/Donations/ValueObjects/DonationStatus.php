@@ -17,8 +17,19 @@ use MyCLabs\Enum\Enum;
  * @method static PROCESSING()
  * @method static REVOKED()
  * @method static RENEWAL()
+ * @method bool isPending()
+ * @method bool isComplete()
+ * @method bool isRefunded()
+ * @method bool isFailed()
+ * @method bool isCanceled()
+ * @method bool isAbandoned()
+ * @method bool isPreapproval()
+ * @method bool isProcessing()
+ * @method bool isRevoked()
+ * @method bool isRenewal()
  */
-class DonationStatus extends Enum {
+class DonationStatus extends Enum
+{
     const PENDING = 'pending';
     const PROCESSING = 'processing';
     const COMPLETE = 'publish';
