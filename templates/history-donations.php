@@ -205,7 +205,7 @@ if ( $donations ) : ?>
 									add_query_arg(
 										'donation_id',
 										$post->ID,
-										give_get_history_page_uri()
+                                        $_SERVER['REQUEST_URI']
 									)
 								),
 								$post->post_status,
