@@ -406,9 +406,10 @@ class DonorRepository
     {
         $donation = DB::table('posts')
             ->select('post_date')
-            ->leftJoin('give_donormeta', 'ID', 'donor_id')
+            ->leftJoin('give_donationmeta', 'ID', 'donation_id')
             ->where('post_type', 'give_payment')
-            ->where('donor_id', $donorId)
+            ->where('meta_key', DonationMetaKeys::DONOR_ID)
+            ->where('meta_value', $donorId)
             ->orderBy('ID', 'DESC')
             ->limit(1)
             ->get();
