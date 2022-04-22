@@ -4,12 +4,12 @@
 import {__} from '@wordpress/i18n'
 import {InspectorControls} from '@wordpress/block-editor';
 import {
+    ColorPalette,
+    FormTokenField,
     PanelBody,
     SelectControl,
-    ToggleControl,
     TextControl,
-    ColorPalette,
-    FormTokenField
+    ToggleControl
 } from '@wordpress/components';
 
 import ColumnSelector from '../../components/column-selector';
@@ -75,7 +75,7 @@ const Inspector = ({attributes, setAttributes}) => {
                     label={__('Columns', 'give')}
                     selected={columns}
                     onClick={(value) => saveSetting('columns', value)}
-                    help={ __('Controls how many columns of your Grid appear. "Best Fit" will adjust responsively to the width of your container element.', 'give') }
+                    help={__('Controls how many columns of your Grid appear. "Best Fit" will adjust responsively to the width of your container element.', 'give')}
                 />
 
                 <ToggleControl
@@ -106,7 +106,7 @@ const Inspector = ({attributes, setAttributes}) => {
                     onChange={(value) => saveSetting('showGoal', value)}
                 />
 
-                { showGoal && (
+                {showGoal && (
                     <ToggleControl
                         name="showProgressBar"
                         label={__('Show Progress Bar', 'give')}
@@ -130,7 +130,7 @@ const Inspector = ({attributes, setAttributes}) => {
                             label={__('Image Size', 'give')}
                             value={imageSize}
                             onChange={(value) => saveSetting('imageSize', value)}
-                            help={__('Featured image size. Default "medium". Accepts WordPress image sizes.')}
+                            help={__('Featured image size. Default "medium". Accepts WordPress image sizes.', 'give')}
                         />
 
                         <TextControl
@@ -138,7 +138,7 @@ const Inspector = ({attributes, setAttributes}) => {
                             label={__('Image Height', 'give')}
                             value={imageHeight}
                             onChange={(value) => saveSetting('imageHeight', value)}
-                            help={__('Featured image height. Default "auto". Accepts valid CSS heights')}
+                            help={__('Featured image height. Default "auto". Accepts valid CSS heights', 'give')}
                         />
                     </>
                 )}
