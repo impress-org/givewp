@@ -2,16 +2,18 @@
 
 ##ListTable
 
-| Prop       | Type                     | Required | Default             |
-|------------|--------------------------|----------|---------------------|
-| data       | Object: {items: {}}      | Yes      | -                   |
-| columns    | Array\<ListTableColumn\> | Yes      | -                   |
-| title      | String                   | Yes      | -                   |
-| singleName | String                   | No       | __('item', 'give')  |
-| pluralName | String                   | No       | __('items', 'give') |
-| error      | Object/Bool              | No       | false               |
-| isLoading  | Bool                     | No       | false               |
-| rowActions | Function                 | No | null |
+| Prop       | Type                                 | Required | Default             |
+|------------|--------------------------------------|----------|---------------------|
+| data       | Object: {items: {}}                  | Yes      | -                   |
+| columns    | Array\<ListTableColumn\>             | Yes      | -                   |
+| title      | String                               | Yes      | -                   |
+| singleName | String                               | No       | __('item', 'give')  |
+| pluralName | String                               | No       | __('items', 'give') |
+| error      | Object/Bool                          | No       | false               |
+| isLoading  | Bool                                 | No       | false               |
+| align | String - 'start', 'center', or 'end' | No       | 'start'             |
+| rowActions | JSX function component               | No       | null                |
+| bulkActions | Array\<BulkActionsConfig\> | No | null                |
 
 ##ListTablePage
 **ListTablePage** takes the same props as **ListTable**, as well as the following:
