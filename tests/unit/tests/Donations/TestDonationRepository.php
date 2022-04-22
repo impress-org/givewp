@@ -245,21 +245,4 @@ final class TestDonationRepository extends \Give_Unit_Test_Case
         $this->assertNull($donationQuery);
         $this->assertEmpty($donationCoreMetaQuery);
     }
-
-    /**
-     * @unreleased
-     *
-     * @return void
-     *
-     * @throws Exception
-     */
-    public function testGetFormTitleByDonationId()
-    {
-        $donationFactory = Donation::factory()->create();
-        $repository = new DonationRepository();
-
-        $formTitle = $repository->getFormTitleByDonationId($donationFactory->id);
-
-        $this->assertEquals('Form Title', $formTitle);
-    }
 }

@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe\Actions;
 
+use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Framework\PaymentGateways\DonationSummary;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
@@ -41,7 +42,7 @@ class CreateCheckoutSession
             'mode' => 'payment',
             'line_items' => [
                 [
-                    'name' => give(DonationRepository::class)->getFormTitleByDonationId($paymentData->donationId),
+                    'name' => Donation::find($paymentData->donationId)->formTitle,
                     'description' => $donationSummary->getSummaryWithDonor(),
                     'amount' => Money::of($paymentData->price, $paymentData->currency)->getMinorAmount(),
                     'currency' => $paymentData->currency,
