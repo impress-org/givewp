@@ -65,7 +65,9 @@ const RenderRow = ({ column, item }) => {
                 <strong className={styles.monetary}>{value}</strong>
             );
         default:
-            return column?.render instanceof Function ? column.render(item) : value;
+            if(column?.render instanceof Function) return column.render(item);
+            if(value === '' || value === null) return '-';
+            return value;
     }
 }
 
