@@ -9,6 +9,7 @@ use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Support\Facades\DateTime\Temporal;
+use Give\Framework\Support\ValueObjects\Money;
 
 /**
  * Class DonationData
@@ -18,9 +19,17 @@ use Give\Framework\Support\Facades\DateTime\Temporal;
 class DonationQueryData
 {
     /**
-     * @var int
+     * @var Money
      */
     public $amount;
+    /**
+     * @var string
+     */
+    public $exchangeRate;
+    /**
+     * @var Money
+     */
+    public $feeAmountRecovered;
     /**
      * @var string
      */
@@ -109,9 +118,9 @@ class DonationQueryData
     /**
      * Convert data from object to Donation
      *
-     * @param  object  $donationQueryObject
-     *
      * @since 2.19.6
+     *
+     * @param object $donationQueryObject
      *
      * @return self
      */
@@ -119,11 +128,14 @@ class DonationQueryData
     {
         $self = new static();
 
+        $currency = $donationQueryObject->{DonationMetaKeys::CURRENCY()->getKeyAsCamelCase()};
+
         $self->id = (int)$donationQueryObject->id;
         $self->formId = (int)$donationQueryObject->{DonationMetaKeys::FORM_ID()->getKeyAsCamelCase()};
         $self->formTitle = $donationQueryObject->{DonationMetaKeys::FORM_TITLE()->getKeyAsCamelCase()};
-        $self->amount = (int)$donationQueryObject->{DonationMetaKeys::AMOUNT()->getKeyAsCamelCase()};
-        $self->currency = $donationQueryObject->{DonationMetaKeys::CURRENCY()->getKeyAsCamelCase()};
+        $self->amount = Money::fromDecimal($donationQueryObject->{DonationMetaKeys::AMOUNT()->getKeyAsCamelCase()}, $currency);
+        $self->feeAmountRecovered = Money::fromDecimal($donationQueryObject->{DonationMetaKeys::FEE_AMOUNT_RECOVERED()->getKeyAsCamelCase()} ?: 0, $currency);
+        $self->exchangeRate = $donationQueryObject->{DonationMetaKeys::EXCHANGE_RATE()->getKeyAsCamelCase()};
         $self->donorId = (int)$donationQueryObject->{DonationMetaKeys::DONOR_ID()->getKeyAsCamelCase()};
         $self->firstName = $donationQueryObject->{DonationMetaKeys::FIRST_NAME()->getKeyAsCamelCase()};
         $self->lastName = $donationQueryObject->{DonationMetaKeys::LAST_NAME()->getKeyAsCamelCase()};
@@ -147,8 +159,8 @@ class DonationQueryData
         $self->donorIp = $donationQueryObject->{DonationMetaKeys::DONOR_IP()->getKeyAsCamelCase()};
         $self->anonymous = (bool)$donationQueryObject->{DonationMetaKeys::ANONYMOUS()->getKeyAsCamelCase()};
         $self->levelId = (int)$donationQueryObject->{DonationMetaKeys::LEVEL_ID()->getKeyAsCamelCase()};
-        $self->gatewayTransactionId = $donationQueryObject->{DonationMetaKeys::GATEWAY_TRANSACTION_ID(
-        )->getKeyAsCamelCase()};
+        $self->gatewayTransactionId = $donationQueryObject->{DonationMetaKeys::GATEWAY_TRANSACTION_ID()
+            ->getKeyAsCamelCase()};
 
         return $self;
     }

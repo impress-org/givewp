@@ -15,7 +15,6 @@ use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Call;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
-use Give\ValueObjects\Money;
 
 /**
  * @since 2.19.6
@@ -33,7 +32,6 @@ class DonationRepository
         'status',
         'gateway',
         'amount',
-        'currency',
         'donorId',
         'firstName',
         'email',
@@ -44,7 +42,7 @@ class DonationRepository
      *
      * @since 2.19.6
      *
-     * @param  int  $donationId
+     * @param int $donationId
      *
      * @return Donation|null
      */
@@ -58,7 +56,7 @@ class DonationRepository
     /**
      * @since 2.19.6
      *
-     * @param  int  $subscriptionId
+     * @param int $subscriptionId
      *
      * @return Donation[]|null
      */
@@ -70,7 +68,7 @@ class DonationRepository
     /**
      * @since 2.19.6
      *
-     * @param  int  $subscriptionId
+     * @param int $subscriptionId
      *
      * @return ModelQueryBuilder
      */
@@ -95,7 +93,7 @@ class DonationRepository
     /**
      * @since 2.19.6
      *
-     * @param  int  $donorId
+     * @param int $donorId
      *
      * @return ModelQueryBuilder
      */
@@ -116,7 +114,7 @@ class DonationRepository
     /**
      * @since 2.19.6
      *
-     * @param  Donation  $donation
+     * @param Donation $donation
      *
      * @return Donation
      * @throws Exception|InvalidArgumentException
@@ -131,7 +129,6 @@ class DonationRepository
             $donation->createdAt
         ) : Temporal::getCurrentFormattedDateForDatabase();
 
-
         DB::query('START TRANSACTION');
 
         try {
@@ -143,7 +140,7 @@ class DonationRepository
                     'post_modified_gmt' => get_gmt_from_date($date),
                     'post_status' => $donation->status->getValue(),
                     'post_type' => 'give_payment',
-                    'post_parent' => isset($donation->parentId) ? $donation->parentId : 0
+                    'post_parent' => isset($donation->parentId) ? $donation->parentId : 0,
                 ]);
 
             $donationId = DB::last_insert_id();
@@ -176,7 +173,7 @@ class DonationRepository
     /**
      * @since 2.19.6
      *
-     * @param  Donation  $donation
+     * @param Donation $donation
      *
      * @return Donation
      * @throws Exception|InvalidArgumentException
@@ -199,7 +196,7 @@ class DonationRepository
                     'post_modified_gmt' => get_gmt_from_date($date),
                     'post_status' => $donation->status->getValue(),
                     'post_type' => 'give_payment',
-                    'post_parent' => isset($donation->parentId) ? $donation->parentId : 0
+                    'post_parent' => isset($donation->parentId) ? $donation->parentId : 0,
                 ]);
 
             foreach ($this->getCoreDonationMetaForDatabase($donation) as $metaKey => $metaValue) {
@@ -229,7 +226,8 @@ class DonationRepository
      * @unreleased consolidate meta deletion into a single query
      * @since 2.19.6
      *
-     * @param  Donation  $donation
+     * @param Donation $donation
+     *
      * @return bool
      * @throws Exception
      */
@@ -265,16 +263,16 @@ class DonationRepository
     /**
      * @since 2.19.6
      *
-     * @param  Donation  $donation
+     * @param Donation $donation
      *
      * @return array
      */
     private function getCoreDonationMetaForDatabase(Donation $donation)
     {
         $meta = [
-//            DonationMetaKeys::AMOUNT => $donation->amount->,
-            DonationMetaKeys::AMOUNT => Money::of($donation->amount, $donation->currency)->getAmount(),
-            DonationMetaKeys::CURRENCY => $donation->currency,
+            DonationMetaKeys::AMOUNT => $donation->amount->formatToDecimal(),
+            DonationMetaKeys::CURRENCY => $donation->amount->getCurrency()->getCode(),
+            DonationMetaKeys::EXCHANGE_RATE => $donation->exchangeRate,
             DonationMetaKeys::GATEWAY => $donation->gateway,
             DonationMetaKeys::DONOR_ID => $donation->donorId,
             DonationMetaKeys::FIRST_NAME => $donation->firstName,
@@ -295,7 +293,11 @@ class DonationRepository
             DonationMetaKeys::DONOR_IP => isset($donation->donorIp) ? $donation->donorIp : give_get_ip(),
         ];
 
-        if (isset($donation->billingAddress)) {
+        if ($donation->feeAmountRecovered !== null) {
+            $meta[DonationMetaKeys::FEE_AMOUNT_RECOVERED] = $donation->feeAmountRecovered->formatToDecimal();
+        }
+
+        if ($donation->billingAddress !== null) {
             $meta[DonationMetaKeys::BILLING_COUNTRY] = $donation->billingAddress->country;
             $meta[DonationMetaKeys::BILLING_ADDRESS2] = $donation->billingAddress->address2;
             $meta[DonationMetaKeys::BILLING_CITY] = $donation->billingAddress->city;
@@ -366,7 +368,7 @@ class DonationRepository
      *
      * @since 2.19.6
      *
-     * @param  int  $donationId
+     * @param int $donationId
      *
      * @return int|null
      */
@@ -384,7 +386,7 @@ class DonationRepository
     /**
      * @since 2.19.6
      *
-     * @param  int  $id
+     * @param int $id
      *
      * @return object[]
      */
@@ -410,7 +412,8 @@ class DonationRepository
     /**
      * @since 2.19.6
      *
-     * @param  Donation  $donation
+     * @param Donation $donation
+     *
      * @return void
      */
     private function validateDonation(Donation $donation)
@@ -441,7 +444,8 @@ class DonationRepository
     /**
      * @since 2.19.6
      *
-     * @param  int  $formId
+     * @param int $formId
+     *
      * @return string
      */
     public function getFormTitle($formId)
@@ -485,6 +489,7 @@ class DonationRepository
      * @since 2.19.6
      *
      * @param $donorId
+     *
      * @return int
      */
     public function getTotalDonationCountByDonorId($donorId)
@@ -505,6 +510,7 @@ class DonationRepository
      * @since 2.19.6
      *
      * @param $donorId
+     *
      * @return array|bool|null
      */
     public function getAllDonationIdsByDonorId($donorId)

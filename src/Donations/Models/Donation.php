@@ -16,10 +16,8 @@ use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Models\ValueObjects\Relationship;
-use Give\Framework\Support\Currency;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
-use Give\ValueObjects\Money as OldMoney;
-use Money\Money;
 
 /**
  * Class Donation
@@ -33,9 +31,8 @@ use Money\Money;
  * @property DateTime $updatedAt
  * @property DonationStatus $status
  * @property DonationMode $mode
- * @property Money $chargeAmount
- * @property Money $feeAmountRecovered
- * @property string $currency
+ * @property \Give\Framework\Support\ValueObjects\Money $amount amount charged to the gateway
+ * @property \Give\Framework\Support\ValueObjects\Money $feeAmountRecovered
  * @property string $exchangeRate
  * @property string $gateway
  * @property int $donorId
@@ -68,9 +65,9 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
         'updatedAt' => DateTime::class,
         'status' => DonationStatus::class,
         'mode' => DonationMode::class,
-        'chargeAmount' => Money::class,
+        'amount' => Money::class,
         'feeAmountRecovered' => Money::class,
-        'exchangeRate' => 'string',
+        'exchangeRate' => ['string', '1'],
         'gateway' => 'string',
         'donorId' => 'int',
         'firstName' => 'string',
@@ -195,25 +192,15 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @since 2.19.6
-     *
-     * @return OldMoney
-     */
-    public function getMinorAmount()
-    {
-        return OldMoney::ofMinor($this->amount, $this->currency);
-    }
-
-    /**
      * Returns the amount charged in the currency the GiveWP site is set to
      *
      * @unreleased
      *
-     * @return Money
+     * @return \Give\Framework\Support\ValueObjects\Money
      */
-    public function amountChargedInBaseCurrency()
+    public function amountInBaseCurrency()
     {
-        return Currency::convertToBaseCurrency($this->chargeAmount, $this->exchangeRate);
+        return $this->amount->inBaseCurrency($this->exchangeRate);
     }
 
     /**
@@ -222,13 +209,13 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      *
      * @unreleased
      *
-     * @return Money
+     * @return \Give\Framework\Support\ValueObjects\Money
      */
     public function intendedAmount()
     {
         return $this->feeAmountRecovered === null
-            ? $this->chargeAmount
-            : $this->chargeAmount->subtract($this->feeAmountRecovered);
+            ? $this->amount
+            : $this->amount->subtract($this->feeAmountRecovered);
     }
 
     /**
@@ -236,11 +223,11 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      *
      * @unreleased
      *
-     * @return Money
+     * @return \Give\Framework\Support\ValueObjects\Money
      */
     public function intendedAmountInBaseCurrency()
     {
-        return Currency::convertToBaseCurrency($this->intendedAmount(), $this->exchangeRate);
+        return $this->intendedAmount()->inBaseCurrency($this->exchangeRate);
     }
 
     /**

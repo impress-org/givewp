@@ -9,7 +9,9 @@ use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
  * @since 2.19.6
  *
  * @method static AMOUNT()
+ * @method static FEE_AMOUNT_RECOVERED()
  * @method static CURRENCY()
+ * @method static EXCHANGE_RATE()
  * @method static GATEWAY()
  * @method static DONOR_ID()
  * @method static FIRST_NAME()
@@ -40,8 +42,8 @@ class DonationMetaKeys extends Enum
     const AMOUNT = '_give_payment_total';
     const BASE_AMOUNT = '_give_cs_base_amount';
     const CURRENCY = '_give_payment_currency';
-    const BASE_CURRENCY = '_give_cs_base_currency';
     const EXCHANGE_RATE = '_give_cs_exchange_rate';
+    const FEE_AMOUNT_RECOVERED = '_give_fee_amount';
     const GATEWAY = '_give_payment_gateway';
     const DONOR_ID = '_give_payment_donor_id';
     const FIRST_NAME = '_give_donor_billing_first_name';
