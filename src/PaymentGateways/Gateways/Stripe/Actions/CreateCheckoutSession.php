@@ -3,7 +3,6 @@
 namespace Give\PaymentGateways\Gateways\Stripe\Actions;
 
 use Give\Donations\Models\Donation;
-use Give\Donations\Repositories\DonationRepository;
 use Give\Framework\PaymentGateways\DonationSummary;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
