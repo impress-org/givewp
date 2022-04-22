@@ -5,12 +5,14 @@ namespace Give\Subscriptions\Models;
 use DateTime;
 use Exception;
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Models\ValueObjects\Relationship;
+use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Subscriptions\DataTransferObjects\SubscriptionQueryData;
 use Give\Subscriptions\Factories\SubscriptionFactory;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
@@ -32,6 +34,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
  * @property int $amount
  * @property int $feeAmount
  * @property SubscriptionStatus $status
+ * @property string $gatewayId
  * @property string $gatewaySubscriptionId
  * @property Donor $donor
  * @property Donation[] $donations
@@ -48,12 +51,13 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
         'donorId' => 'int',
         'period' => SubscriptionPeriod::class,
         'frequency' => 'int',
-        'installments' => 'int',
+        'installments' => ['int', 0],
         'transactionId' => 'string',
         'amount' => 'int',
-        'feeAmount' => 'int',
+        'feeAmount' => ['int', 0],
         'status' => SubscriptionStatus::class,
         'gatewaySubscriptionId' => 'string',
+        'gatewayId' => 'string',
     ];
 
     /**
@@ -61,7 +65,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      */
     protected $relationships = [
         'donor' => Relationship::BELONGS_TO,
-        'donations' => Relationship::HAS_MANY
+        'donations' => Relationship::HAS_MANY,
     ];
 
     /**
@@ -69,7 +73,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      *
      * @since 2.19.6
      *
-     * @param  int  $id
+     * @param int $id
      *
      * @return Subscription|null
      */
@@ -110,8 +114,8 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
         return give()->subscriptions->getNotesBySubscriptionId($this->id);
     }
 
-
     /**
+     * @unreleased return mutated model instance
      * @since 2.19.6
      *
      * @throws Exception
@@ -120,17 +124,25 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     {
         $subscription = new static($attributes);
 
-        return give()->subscriptions->insert($subscription);
+        give()->subscriptions->insert($subscription);
+
+        return $subscription;
     }
 
     /**
+     * @unreleased mutate model in repository and return void
      * @since 2.19.6
      *
+     * @return void
      * @throws Exception
      */
     public function save()
     {
-        return give()->subscriptions->update($this);
+        if (!$this->id) {
+            give()->subscriptions->insert($this);
+        }
+
+        give()->subscriptions->update($this);
     }
 
     /**
@@ -142,6 +154,22 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     public function delete()
     {
         return give()->subscriptions->delete($this);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param bool $force Set to true to ignore the status of the subscription
+     *
+     * @throws Exception
+     */
+    public function cancel($force = false)
+    {
+        if (!$force && $this->status->isCanceled()) {
+            return;
+        }
+
+        $this->gateway()->cancelSubscription($this);
     }
 
     /**
@@ -157,14 +185,14 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     /**
      * @since 2.19.6
      *
-     * @param  object  $object
+     * @param object $object
+     *
      * @return Subscription
      */
     public static function fromQueryBuilderObject($object)
     {
         return SubscriptionQueryData::fromObject($object)->toSubscription();
     }
-
 
     /**
      * Expiration / End Date / Renewal
@@ -185,6 +213,14 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
         }
 
         return date('Y-m-d H:i:s', strtotime('+ ' . $frequency . $period->getValue() . ' 23:59:59'));
+    }
+
+    /**
+     * @return PaymentGateway
+     */
+    public function gateway()
+    {
+        return give()->gateways->getPaymentGateway($this->gatewayId);
     }
 
     /**

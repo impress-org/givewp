@@ -67,7 +67,7 @@ class TestDonation extends \Give_Unit_Test_Case
             'firstName' => 'Bill',
             'lastName' => 'Murray',
             'email' => 'billMurray@givewp.com',
-            'formId' => 1
+            'formId' => 1,
         ]);
 
         $donationFromDatabase = Donation::find($donation->id);
@@ -87,7 +87,7 @@ class TestDonation extends \Give_Unit_Test_Case
         $donation = Donation::factory()->create(['donorId' => $donor->id]);
 
         $this->assertInstanceOf(Donor::class, $donation->donor);
-        $this->assertEquals($donor, $donation->donor);
+        $this->assertEquals($donor->id, $donation->donor->id);
     }
 
     /**
@@ -105,7 +105,7 @@ class TestDonation extends \Give_Unit_Test_Case
         /** @var Donation $donation */
         $donation = Donation::factory()->create(['donorId' => $donor->id, 'subscriptionId' => $subscription->id]);
 
-        $this->assertEquals($donation->subscription, $subscription);
+        $this->assertEquals($donation->subscription->id, $subscription->id);
     }
 
     /**
