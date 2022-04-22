@@ -24,8 +24,11 @@ export interface ListTableProps {
 }
 
 export interface ListTableColumn {
+    //required
     name: string;
     text: string;
+
+    //optional
     inlineSize?: string;
     preset?: string;
     heading?: boolean;
