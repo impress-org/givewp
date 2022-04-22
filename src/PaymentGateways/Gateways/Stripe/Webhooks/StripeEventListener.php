@@ -3,9 +3,8 @@
 namespace Give\PaymentGateways\Gateways\Stripe\Webhooks;
 
 use Give\Framework\Exceptions\Primitives\Exception;
-use Give\Framework\PaymentGateways\Webhooks\Contracts\EventListener;
 use Give\PaymentGateways\Gateways\Stripe\Traits\CanSetupStripeApp;
-use Stripe\ApiResource;
+use Give\PaymentGateways\Gateways\Stripe\Webhooks\Contracts\EventListener;
 use Stripe\Event;
 
 /**
@@ -16,27 +15,26 @@ abstract class StripeEventListener implements EventListener
     use CanSetupStripeApp;
 
     /**
-     * @param Event $event
-     *
-     * @return void
+     * @unreleased
      * @throws Exception
      */
-    public function __invoke($event)
+    public function __invoke(Event $event)
     {
-        /* @var ApiResource $eventDataObject */
-        $eventDataObject = $event->data->object;
-
-        $this->setupStripeApp($this->getFormId($eventDataObject));
+        $this->setupStripeApp($this->getFormId($event));
         $this->verifyEvent($event);
+        $this->logEventReceiveTime();
 
-        $this->processEvent($eventDataObject);
+        $this->processEvent($event);
     }
 
     /**
      * @unreleased
+     *
+     * @param string $eventId
+     *
      * @throws Exception
      */
-    public function verifyEvent($eventId)
+    protected function verifyEvent($eventId)
     {
         try {
             Event::retrieve($eventId);
@@ -47,10 +45,18 @@ abstract class StripeEventListener implements EventListener
 
     /**
      * @unreleased
-     *
-     * @param ApiResource $stripeEvent
+     * @return void
+     */
+    private function logEventReceiveTime()
+    {
+        // Update time of webhook received whenever the event is retrieved.
+        give_update_option('give_stripe_last_webhook_received_timestamp', time());
+    }
+
+    /**
+     * @unreleased
      *
      * @return int
      */
-    abstract public function getFormId($stripeEvent);
+    abstract public function getFormId(Event $event);
 }

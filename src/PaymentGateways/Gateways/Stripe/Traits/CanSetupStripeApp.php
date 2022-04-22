@@ -14,7 +14,7 @@ trait CanSetupStripeApp
      *
      * @return void
      */
-    public function setupStripeApp($formId)
+    protected function setupStripeApp($formId)
     {
         give_stripe_set_app_info($formId);
     }
