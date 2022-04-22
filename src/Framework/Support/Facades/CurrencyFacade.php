@@ -6,42 +6,100 @@ use Money\Converter;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use Money\Exchange\FixedExchange;
+use Money\Formatter\DecimalMoneyFormatter;
+use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
+use Money\Parser\DecimalMoneyParser;
+use NumberFormatter;
 
 class CurrencyFacade
 {
+    /**
+     * Immutably converts the given amount into the system currency.
+     *
+     * @unreleased
+     *
+     * @param Money $amount
+     * @param int|float $exchangeRate
+     *
+     * @return Money
+     */
     public function convertToBaseCurrency(Money $amount, $exchangeRate = 1)
     {
         $baseCurrency = $this->getBaseCurrency();
 
-        if ( $amount->getCurrency()->equals($baseCurrency) ) {
+        if ($amount->getCurrency()->equals($baseCurrency)) {
             return $amount;
         }
 
-        $converter = new Converter(new ISOCurrencies(), new FixedExchange([
-            give_get_option('currency', 'USD') => [
-                $amount->getCurrency()->getCode() => $exchangeRate,
-            ]
-        ]));
+        $converter = new Converter(
+            new ISOCurrencies(), new FixedExchange([
+                $amount->getCurrency()->getCode() => [
+                    give_get_option('currency', 'USD') => $exchangeRate,
+                ],
+            ])
+        );
 
         return $converter->convert($amount, $baseCurrency);
     }
 
     /**
-     * Formats the
+     * Creates a new Money instance from a decimal amount
+     *
+     * @unreleased
+     *
+     * @param string|float|int $amount
+     * @param string $currency
+     *
+     * @return Money
+     */
+    public function parseFromDecimal($amount, $currency)
+    {
+        return (new DecimalMoneyParser(new ISOCurrencies()))->parse((string)$amount, new Currency($currency));
+    }
+
+    /**
+     * Returns the amount in a decimal format, not including any currency symbols:
+     * - $1,500.25 -> 1500.25
+     *
+     * @unreleased
      *
      * @param Money $amount
      *
      * @return string
      */
-    public function formatAsLegacyAmount(Money $amount)
+    public function formatToDecimal(Money $amount)
     {
-        $numberDecimals = give_get_currencies('setting')[$amount->getCurrency()->getCode()]['number_decimals'];
-
-        return substr_replace($amount->getAmount(), '.', $numberDecimals, 0);
+        return (new DecimalMoneyFormatter(new ISOCurrencies()))->format($amount);
     }
 
     /**
+     * Formats the amount to a currency format, including currency symbols, in the given locale.
+     *
+     * @unreleased
+     *
+     * @param Money $amount
+     * @param string|null $locale
+     *
+     * @return string
+     */
+    public function formatToLocale(Money $amount, $locale = null)
+    {
+        if ($locale === null) {
+            $locale = get_locale();
+        }
+
+        $numberFormatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
+        $moneyFormatter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies());
+
+        return $moneyFormatter->format($amount);
+    }
+
+    /**
+     * Retrieves the system's base currency
+     *
+     * @unreleased
+     *
      * @return Currency
      */
     public function getBaseCurrency()

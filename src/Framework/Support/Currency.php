@@ -8,7 +8,9 @@ use Money\Money;
 
 /**
  * @method static Money convertToBaseCurrency(Money $amount, int|float|string $exchangeRate = 1)
- * @method static int|float formatAsLegacyAmount(Money $amount)
+ * @method static Money parseFromDecimal(string|float|int $amount, string $currencyCode)
+ * @method static string formatToDecimal(Money $amount)
+ * @method static string formatToLocale(Money $amount, $local = null)
  * @method static \Money\Currency getBaseCurrency()
  */
 class Currency extends Facade
