@@ -66,7 +66,8 @@ document.addEventListener('readystatechange', (event) => {
             const fieldName = fieldWrapper.getAttribute('data-field-name');
             const visibilityCondition = visibilityConditions[0]; // Currently we support only one visibility condition.
             let visible = false;
-            const {operator, value} = visibilityCondition;
+            const {operator} = visibilityCondition;
+            let {value} = visibilityCondition;
 
             const inputs = donationForm.querySelectorAll(`[name="${watchedFieldName}"]`);
             let hasFieldController = !!inputs.length;
@@ -74,15 +75,17 @@ document.addEventListener('readystatechange', (event) => {
             if (hasFieldController) {
                 inputs.forEach((input) => {
                     const fieldType = input.getAttribute('type');
+                    let inputValue = input.value;
 
                     // Make an exception for the amount field and parse the value
-                    const inputValue =
-                        input.name === 'give-amount'
-                            ? Give.fn.unFormatCurrency(
-                                  input.value,
-                                  Give.form.fn.getInfo('decimal_separator', donationForm)
-                              )
-                            : input.value;
+                    if (input.name === 'give-amount') {
+                        inputValue = Give.fn.unFormatCurrency(
+                            input.value,
+                            Give.form.fn.getInfo('decimal_separator', donationForm)
+                        );
+
+                        value = Math.abs(parseFloat(value));
+                    }
 
                     const comparisonResult = compareWithOperator(operator, inputValue, value);
 
