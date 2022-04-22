@@ -13,6 +13,7 @@ use Money\Money as VendorMoney;
  *
  * @unreleased
  *
+ * @method bool equals(Money $money )
  * @method Money subtract(Money $money)
  * @method Money add(Money $money)
  *

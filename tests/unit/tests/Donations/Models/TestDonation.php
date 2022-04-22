@@ -7,6 +7,7 @@ use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\Models\Subscription;
 use Give_Subscriptions_DB;
@@ -61,8 +62,7 @@ class TestDonation extends \Give_Unit_Test_Case
         $donation = Donation::create([
             'status' => DonationStatus::PENDING(),
             'gateway' => TestGateway::id(),
-            'amount' => 50,
-            'currency' => 'USD',
+            'amount' => new Money(5000, 'USD'),
             'donorId' => $donor->id,
             'firstName' => 'Bill',
             'lastName' => 'Murray',
@@ -120,5 +120,76 @@ class TestDonation extends \Give_Unit_Test_Case
         give()->seq_donation_number->__save_donation_title($donation->id, get_post($donation->id), false);
 
         $this->assertEquals(1, $donation->getSequentialId());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testDonationShouldReturnAmountInBaseCurrency()
+    {
+        $donation = $this->createDonation([
+            'amount' => new Money(5000, 'EUR'),
+            'exchangeRate' => '0.9',
+        ]);
+
+        self::assertMoneyEquals(
+            $donation->amount->inBaseCurrency($donation->exchangeRate),
+            $donation->amountInBaseCurrency()
+        );
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testDonationShouldGetIntendedAmount()
+    {
+        // When a donation has a fee recovery amount
+        $donation = $this->createDonation([
+            'amount' => new Money(5000, 'USD'),
+            'feeAmountRecovered' => new Money(500, 'USD'),
+        ]);
+
+        self::assertMoneyEquals(new Money(4500, 'USD'), $donation->intendedAmount());
+
+        // When a donation does not have a fee recovery amount
+        $donation = $this->createDonation([
+            'amount' => new Money(5000, 'USD'),
+        ]);
+
+        self::assertMoneyEquals(new Money(5000, 'USD'), $donation->intendedAmount());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testDonationShouldGetIntendedAmountInBaseCurrency()
+    {
+        // When a donation has a fee recovery amount
+        $donation = $this->createDonation([
+            'amount' => new Money(5000, 'USD'),
+            'feeAmountRecovered' => new Money(500, 'USD'),
+            'exchangeRate' => '0.9',
+        ]);
+
+        self::assertMoneyEquals(
+            $donation->intendedAmount()->inBaseCurrency($donation->exchangeRate),
+            $donation->intendedAmountInBaseCurrency()
+        );
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param array $attributes
+     *
+     * @return Donation
+     */
+    private function createDonation(array $attributes = [])
+    {
+        if (!isset($attributes['donorId'])) {
+            $attributes['donorId'] = Donor::factory()->create()->id;
+        }
+
+        return Donation::factory()->create($attributes);
     }
 }

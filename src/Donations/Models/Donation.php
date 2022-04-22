@@ -31,8 +31,8 @@ use Give\Subscriptions\Models\Subscription;
  * @property DateTime $updatedAt
  * @property DonationStatus $status
  * @property DonationMode $mode
- * @property \Give\Framework\Support\ValueObjects\Money $amount amount charged to the gateway
- * @property \Give\Framework\Support\ValueObjects\Money $feeAmountRecovered
+ * @property Money $amount amount charged to the gateway
+ * @property Money $feeAmountRecovered
  * @property string $exchangeRate
  * @property string $gateway
  * @property int $donorId
@@ -200,7 +200,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      *
      * @unreleased
      *
-     * @return \Give\Framework\Support\ValueObjects\Money
+     * @return Money
      */
     public function amountInBaseCurrency()
     {
@@ -213,7 +213,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      *
      * @unreleased
      *
-     * @return \Give\Framework\Support\ValueObjects\Money
+     * @return Money
      */
     public function intendedAmount()
     {
@@ -227,7 +227,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      *
      * @unreleased
      *
-     * @return \Give\Framework\Support\ValueObjects\Money
+     * @return Money
      */
     public function intendedAmountInBaseCurrency()
     {
@@ -244,6 +244,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
         return array_merge(parent::getPropertyDefaults(), [
             'mode' => give_is_test_mode() ? DonationMode::TEST() : DonationMode::LIVE(),
             'donorIp' => give_get_ip(),
+            'billingAddress' => new BillingAddress(),
         ]);
     }
 

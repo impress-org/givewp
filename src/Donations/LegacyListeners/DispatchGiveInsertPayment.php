@@ -26,7 +26,7 @@ class DispatchGiveInsertPayment
             'date' => $donation->createdAt,
             'donorEmail' => $donor->email,
             'purchaseKey' => $donation->purchaseKey,
-            'currency' => $donation->currency,
+            'currency' => $donation->amount->getCurrency()->getCode(),
             'paymentGateway' => $donation->gateway,
             'userInfo' => [
                 'id' => $donor->id,
