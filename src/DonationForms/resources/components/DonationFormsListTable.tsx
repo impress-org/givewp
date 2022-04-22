@@ -3,7 +3,7 @@ import {ListTableApi, ListTablePage} from "@givewp/components";
 import {donationFormsColumns} from "./DonationFormsColumns";
 import {DonationFormsRowActions} from "./DonationFormsRowActions";
 import styles from "@givewp/components/ListTable/ListTablePage.module.scss";
-import {BulkActionsConfig} from "@givewp/components/ListTable";
+import {BulkActionsConfig, FilterConfig} from "@givewp/components/ListTable";
 import Select from "@givewp/components/ListTable/Select";
 
 declare global {
@@ -37,7 +37,7 @@ const donationStatus = [
     }
 ]
 
-const donationFormsFilters = [
+const donationFormsFilters:Array<FilterConfig> = [
     {
         name: 'search',
         type: 'search',

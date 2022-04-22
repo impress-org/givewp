@@ -2,7 +2,7 @@ import {__} from "@wordpress/i18n";
 import {ListTableApi, ListTablePage} from "@givewp/components";
 import {donorsColumns} from "./DonorsColumns";
 import {DonorsRowActions} from "./DonorsRowActions";
-import {BulkActionsConfig} from "@givewp/components/ListTable";
+import {BulkActionsConfig, FilterConfig} from "@givewp/components/ListTable";
 import styles from "@givewp/components/ListTable/ListTablePage.module.scss";
 
 declare global {
@@ -13,7 +13,7 @@ declare global {
 
 const API = new ListTableApi(window.GiveDonors);
 
-const donorsFilters = [
+const donorsFilters:Array<FilterConfig> = [
     {
         name: 'search',
         type: 'search',

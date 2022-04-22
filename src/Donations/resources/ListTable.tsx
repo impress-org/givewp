@@ -6,7 +6,7 @@ import ListTableApi from '@givewp/components/ListTable/api';
 import tableStyles from "@givewp/components/ListTable/ListTablePage.module.scss";
 import styles from './ListTable.module.scss';
 import {IdBadge} from "@givewp/components/ListTable/TableCell";
-import {BulkActionsConfig, ShowConfirmModalContext} from "@givewp/components/ListTable";
+import {BulkActionsConfig, FilterConfig, ShowConfirmModalContext} from "@givewp/components/ListTable";
 import {useContext} from "react";
 import {DonationType} from "@givewp/components/ListTable/TypeBadge";
 
@@ -122,7 +122,7 @@ export default function () {
         },
     ];
 
-    const filters = [
+    const filters: Array<FilterConfig> = [
         {
             name: 'search',
             type: 'search',

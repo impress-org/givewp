@@ -31,6 +31,18 @@ export interface ListTablePageProps {
     align?: 'start'|'center'|'end';
 }
 
+export interface FilterConfig {
+    // required
+    name: string;
+    type: 'select'|'formselect'|'search';
+
+    // optional
+    ariaLabel?: string;
+    inlineSize?: string;
+    text?: string;
+    options?: Array<{text:string, value:string}>
+}
+
 export interface BulkActionsConfig {
     //required
     label: string;
