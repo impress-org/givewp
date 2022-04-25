@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe\Webhooks;
 
+use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\PaymentGateways\Gateways\Stripe\Traits\CanSetupStripeApp;
 use Give\PaymentGateways\Gateways\Stripe\Webhooks\Contracts\EventListener;
@@ -59,4 +60,11 @@ abstract class StripeEventListener implements EventListener
      * @return int
      */
     abstract public function getFormId(Event $event);
+
+    /**
+     * @unreleased
+     *
+     * @return Donation
+     */
+    abstract public function getDonation(Event $event);
 }
