@@ -103,7 +103,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
                     jQuery('#give-sendwp-connect').on('click', function(e) {
 
                         e.preventDefault();
-                        jQuery(this).html( give_vars.wait + ' <span class="give-loading"></span>' );
+                        jQuery(this).html( 'Connecting <span class="give-loading"></span>' );
                         document.body.style.cursor = 'wait';
                         give_sendwp_remote_install();
 
@@ -111,7 +111,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 
                     jQuery('#give-sendwp-disconnect').on('click', function(e) {
                         e.preventDefault();
-                        jQuery(this).html( give_vars.wait + ' <span class="give-loading dark"></span>' );
+                        jQuery(this).html( 'Disconnecting <span class="give-loading dark"></span>' );
                         document.body.style.cursor = 'wait';
                         give_sendwp_disconnect();
 
