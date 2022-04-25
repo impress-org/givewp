@@ -22,6 +22,7 @@ class CheckoutSessionCompleted extends StripeEventListener
     {
         /* @var Session $checkoutSession */
         $checkoutSession = $event->data->object;
+
         $donation = $this->getDonation($event);
         $donation->status = DonationStatus::COMPLETE();
         $donation->gatewayTransactionId = $checkoutSession->payment_intent;
