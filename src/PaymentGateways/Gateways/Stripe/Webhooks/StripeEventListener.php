@@ -16,17 +16,28 @@ abstract class StripeEventListener implements EventListener
 {
     use CanSetupStripeApp;
 
+    protected $gatewayTransactionId;
+
     /**
      * @unreleased
      * @throws Exception
      */
     public function __invoke(Event $event)
     {
-        $this->setupStripeApp($this->getFormId($event));
+        $this->setupDonationTransactionId($event);
+        $this->setupStripeApp($this->getFormId());
         $this->verifyEvent($event);
         $this->logEventReceiveTime();
 
         $this->processEvent($event);
+    }
+
+    /**
+     * @return void
+     */
+    protected function setupDonationTransactionId(Event $event)
+    {
+        $this->gatewayTransactionId = $event->data->object->id;
     }
 
     /**
@@ -58,25 +69,21 @@ abstract class StripeEventListener implements EventListener
     /**
      * @unreleased
      *
-     * @param Event $event
-     *
      * @return int
      */
-    public function getFormId(Event $event)
+    public function getFormId()
     {
-        return $this->getDonation($event)->formId;
+        return $this->getDonation()->formId;
     }
 
     /**
      * @unreleased
      *
-     * @param Event $event
-     *
      * @return Donation
      */
-    public function getDonation(Event $event)
+    public function getDonation()
     {
-        if ($donation = Donation::findByGatewayTransactionId($event->data->object->id)) {
+        if ($donation = Donation::findByGatewayTransactionId($this->gatewayTransactionId)) {
             return $donation;
         }
 
