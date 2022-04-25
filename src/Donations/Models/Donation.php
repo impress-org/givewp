@@ -71,11 +71,11 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
         'firstName' => 'string',
         'lastName' => 'string',
         'email' => 'string',
-        'parentId' => 'int',
-        'subscriptionId' => 'int',
+        'parentId' => ['int', 0],
+        'subscriptionId' => ['int', 0],
         'billingAddress' => BillingAddress::class,
-        'anonymous' => 'bool',
-        'levelId' => 'int',
+        'anonymous' => ['bool', false],
+        'levelId' => ['int', 0],
         'gatewayTransactionId' => 'string',
     ];
 
@@ -102,6 +102,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
+     * @unreleased return mutated model instance
      * @since 2.19.6
      *
      * @param array $attributes
@@ -114,23 +115,26 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     {
         $donation = new static($attributes);
 
-        return give()->donations->insert($donation);
+        give()->donations->insert($donation);
+
+        return $donation;
     }
 
     /**
+     * @unreleased mutate model in repository and return void
      * @since 2.19.6
      *
-     * @return Donation
+     * @return void
      *
      * @throws Exception|InvalidArgumentException
      */
     public function save()
     {
         if (!$this->id) {
-            return give()->donations->insert($this);
+            give()->donations->insert($this);
         }
 
-        return give()->donations->update($this);
+        give()->donations->update($this);
     }
 
     /**
@@ -197,6 +201,19 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     public function getMinorAmount()
     {
         return Money::ofMinor($this->amount, $this->currency);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @inheritDoc
+     */
+    protected function getPropertyDefaults()
+    {
+        return array_merge(parent::getPropertyDefaults(), [
+            'mode' => give_is_test_mode() ? DonationMode::TEST() : DonationMode::LIVE(),
+            'donorIp' => give_get_ip(),
+        ]);
     }
 
     /**

@@ -55,6 +55,7 @@ use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvide
 use Give\Form\Templates;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Framework\Migrations\MigrationsServiceProvider;
+use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\LegacySubscriptions\ServiceProvider as LegacySubscriptionsServiceProvider;
 use Give\License\LicenseServiceProvider;
 use Give\Log\LogServiceProvider;
@@ -109,6 +110,7 @@ if (!defined('ABSPATH')) {
  * @property-read Give_Session $session
  * @property-read Give_DB_Sessions $session_db
  * @property-read Give_Tooltips $tooltips
+ * @property-read PaymentGatewayRegister $gateways
  * @property-read DonationRepository $donations
  * @property-read DonorRepositoryProxy $donors
  * @property-read SubscriptionRepository $subscriptions
