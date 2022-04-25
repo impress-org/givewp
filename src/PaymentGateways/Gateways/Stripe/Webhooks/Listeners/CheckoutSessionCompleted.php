@@ -69,12 +69,10 @@ class CheckoutSessionCompleted extends StripeEventListener
      */
     public function getDonation(Event $event)
     {
-        $donationId = give_get_purchase_id_by_transaction_id($event->data->object->id);
-
-        if (!$donationId) {
-            throw new InvalidArgumentException('Unable to find donation for the Stripe event.');
+        if ($donation = Donation::findByGatewayTransactionId($event->data->object->id)) {
+            return $donation;
         }
 
-        return Donation::find($donationId);
+        throw new InvalidArgumentException('Unable to find donation for the Stripe event.');
     }
 }
