@@ -102,6 +102,20 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
+     * Find donation by gateway transaction ID
+     *
+     * @unreleased
+     *
+     * @param string $gatewayTransactionId
+     *
+     * @return Donation
+     */
+    public static function findByGatewayTransactionId($gatewayTransactionId)
+    {
+        return give()->donations->getByGatewayTransactionId($gatewayTransactionId);
+    }
+
+    /**
      * @unreleased return mutated model instance
      * @since 2.19.6
      *

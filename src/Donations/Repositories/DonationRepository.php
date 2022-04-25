@@ -44,7 +44,7 @@ class DonationRepository
      *
      * @since 2.19.6
      *
-     * @param  int  $donationId
+     * @param int $donationId
      *
      * @return Donation|null
      */
@@ -56,9 +56,27 @@ class DonationRepository
     }
 
     /**
+     * @unreleased
+     * @return Donation|null
+     */
+    public function getByGatewayTransactionId($gatewayTransactionId)
+    {
+        return $this->prepareQuery()
+            ->where('post_type', 'give_payment')
+            ->whereIn('ID', function (QueryBuilder $builder) use ($gatewayTransactionId) {
+                $builder
+                    ->select('donation_id')
+                    ->from('give_donationmeta')
+                    ->where('meta_key', DonationMetaKeys::GATEWAY_TRANSACTION_ID())
+                    ->where('meta_value', $gatewayTransactionId);
+            })
+            ->get();
+    }
+
+    /**
      * @since 2.19.6
      *
-     * @param  int  $subscriptionId
+     * @param int $subscriptionId
      *
      * @return Donation[]|null
      */
@@ -70,7 +88,7 @@ class DonationRepository
     /**
      * @since 2.19.6
      *
-     * @param  int  $subscriptionId
+     * @param int $subscriptionId
      *
      * @return ModelQueryBuilder
      */
@@ -95,7 +113,7 @@ class DonationRepository
     /**
      * @since 2.19.6
      *
-     * @param  int  $donorId
+     * @param int $donorId
      *
      * @return ModelQueryBuilder
      */
@@ -117,7 +135,7 @@ class DonationRepository
      * @unreleased mutate model and return void
      * @since 2.19.6
      *
-     * @param  Donation  $donation
+     * @param Donation $donation
      *
      * @return void
      * @throws Exception|InvalidArgumentException
@@ -190,7 +208,7 @@ class DonationRepository
      * @unreleased return void
      * @since 2.19.6
      *
-     * @param  Donation  $donation
+     * @param Donation $donation
      *
      * @return void
      * @throws Exception|InvalidArgumentException
@@ -241,7 +259,8 @@ class DonationRepository
      * @unreleased consolidate meta deletion into a single query
      * @since 2.19.6
      *
-     * @param  Donation  $donation
+     * @param Donation $donation
+     *
      * @return bool
      * @throws Exception
      */
@@ -277,7 +296,7 @@ class DonationRepository
     /**
      * @since 2.19.6
      *
-     * @param  Donation  $donation
+     * @param Donation $donation
      *
      * @return array
      */
@@ -377,7 +396,7 @@ class DonationRepository
      *
      * @since 2.19.6
      *
-     * @param  int  $donationId
+     * @param int $donationId
      *
      * @return int|null
      */
@@ -395,7 +414,7 @@ class DonationRepository
     /**
      * @since 2.19.6
      *
-     * @param  int  $id
+     * @param int $id
      *
      * @return object[]
      */
@@ -421,7 +440,8 @@ class DonationRepository
     /**
      * @since 2.19.6
      *
-     * @param  Donation  $donation
+     * @param Donation $donation
+     *
      * @return void
      */
     private function validateDonation(Donation $donation)
@@ -452,7 +472,8 @@ class DonationRepository
     /**
      * @since 2.19.6
      *
-     * @param  int  $formId
+     * @param int $formId
+     *
      * @return string
      */
     public function getFormTitle($formId)
@@ -496,6 +517,7 @@ class DonationRepository
      * @since 2.19.6
      *
      * @param $donorId
+     *
      * @return int
      */
     public function getTotalDonationCountByDonorId($donorId)
@@ -516,6 +538,7 @@ class DonationRepository
      * @since 2.19.6
      *
      * @param $donorId
+     *
      * @return array|bool|null
      */
     public function getAllDonationIdsByDonorId($donorId)
