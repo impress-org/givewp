@@ -111,9 +111,17 @@ class Template
                 $settings['payment_amount']['decimals_enabled'] = $settings['visual_appearance']['decimals_enabled'];
             }
             $settings['introduction']['primary_color'] = $settings['visual_appearance']['primary_color'];
-        } elseif (isset($settings['payment_amount']['decimals_enabled'], $settings['introduction']['primary_color'])) {
-            $settings['visual_appearance']['decimals_enabled'] = $settings['payment_amount']['decimals_enabled'];
-            $settings['visual_appearance']['primary_color'] = $settings['introduction']['primary_color'];
+        } elseif (isset($settings['payment_amount'], $settings['introduction'])) {
+            if (isset($settings['payment_amount']['decimals_enabled'])) {
+                $settings['visual_appearance']['decimals_enabled'] = $settings['payment_amount']['decimals_enabled'];
+            } else {
+                $settings['visual_appearance']['decimals_enabled'] = 'disabled';
+            }
+            if (isset($settings['visual_appearance']['primary_color'])) {
+                $settings['visual_appearance']['primary_color'] = $settings['introduction']['primary_color'];
+            } else {
+                $settings['visual_appearance']['primary_color'] = '#28C77B';
+            }
         }
 
         return $settings;
