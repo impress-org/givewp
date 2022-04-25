@@ -6,6 +6,7 @@ use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\PaymentGateways\Gateways\Stripe\Traits\CanSetupStripeApp;
 use Give\PaymentGateways\Gateways\Stripe\Webhooks\Contracts\EventListener;
+use http\Exception\InvalidArgumentException;
 use Stripe\Event;
 
 /**
@@ -57,14 +58,28 @@ abstract class StripeEventListener implements EventListener
     /**
      * @unreleased
      *
+     * @param Event $event
+     *
      * @return int
      */
-    abstract public function getFormId(Event $event);
+    public function getFormId(Event $event)
+    {
+        return $this->getDonation($event)->formId;
+    }
 
     /**
      * @unreleased
      *
+     * @param Event $event
+     *
      * @return Donation
      */
-    abstract public function getDonation(Event $event);
+    public function getDonation(Event $event)
+    {
+        if ($donation = Donation::findByGatewayTransactionId($event->data->object->id)) {
+            return $donation;
+        }
+
+        throw new InvalidArgumentException('Unable to find donation for the Stripe event.');
+    }
 }

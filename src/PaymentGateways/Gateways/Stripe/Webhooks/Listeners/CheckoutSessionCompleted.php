@@ -2,10 +2,8 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe\Webhooks\Listeners;
 
-use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\PaymentGateways\Gateways\Stripe\Webhooks\StripeEventListener;
-use http\Exception\InvalidArgumentException;
 use Stripe\Checkout\Session;
 use Stripe\Event;
 
@@ -40,16 +38,6 @@ class CheckoutSessionCompleted extends StripeEventListener
 
     /**
      * @unreleased
-     *
-     * @return int
-     */
-    public function getFormId(Event $event)
-    {
-        return $this->getDonation($event)->formId;
-    }
-
-    /**
-     * @unreleased
      * @return void
      */
     private function addSupportForLegacyActionHook($donationId, $event)
@@ -62,17 +50,4 @@ class CheckoutSessionCompleted extends StripeEventListener
         do_action('give_stripe_process_checkout_session_completed', $donationId, $event);
     }
 
-    /**
-     * @unreleased
-     *
-     * @inerhitDoc
-     */
-    public function getDonation(Event $event)
-    {
-        if ($donation = Donation::findByGatewayTransactionId($event->data->object->id)) {
-            return $donation;
-        }
-
-        throw new InvalidArgumentException('Unable to find donation for the Stripe event.');
-    }
 }
