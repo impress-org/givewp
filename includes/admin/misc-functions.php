@@ -332,7 +332,7 @@ add_action( 'wp_ajax_give_sendwp_remote_install', 'give_sendwp_remote_install_ha
  */
 function give_sendwp_disconnect () {
 
-	if ( ! current_user_can( 'manage_shop_settings' ) ) {
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		wp_send_json_error( array(
 			'error' => __( 'You do not have permission to do this.', 'give' )
 		) );
