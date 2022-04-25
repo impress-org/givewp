@@ -1,6 +1,7 @@
 <?php
 namespace Give\NextGen\Gateways;
 
+use Give\Donations\Models\Donation;
 use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\Group;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
@@ -68,11 +69,11 @@ class TestGatewayNextGen extends PaymentGateway
     {
         $transactionId = "test-gateway-transaction-id-{$paymentData->donationId}";
 
-         give_update_payment_status($paymentData->donationId);
+        give_update_payment_status($paymentData->donationId);
 
-         give_set_payment_transaction_id($paymentData->donationId, $transactionId);
+        give_set_payment_transaction_id($paymentData->donationId, $transactionId);
 
-         //return new PaymentComplete();
+        //return new PaymentComplete();
 
         return new RespondToBrowser([
             'donationId' => $paymentData->donationId,
@@ -87,5 +88,13 @@ class TestGatewayNextGen extends PaymentGateway
     public function getPaymentFields()
     {
         return Group::make($this->getId());
+    }
+
+    /**
+     * @inerhitDoc
+     */
+    public function refundDonation(Donation $donation)
+    {
+        // TODO: Implement refundDonation() method.
     }
 }
