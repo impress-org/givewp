@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 Give.form.fn.addErrors(
                     jQueryForm,
                     Give.form.fn.getErrorHTML([{
-                        message: __('You will not able to process payment because PayPal JS SDK script did not load correctly.', 'give')
+                        message: __('A problem has occurred with the connection between this site and PayPal, preventing donations. Please contact site administrators if reloading the page does not fix the issue. This is usually the result of some JavaScript conflict on the page.', 'give')
                     }])
                 );
 
