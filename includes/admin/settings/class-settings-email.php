@@ -89,7 +89,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
                     </th>
                     <td class="give-forminp">
                         <div class="give-field-description">
-                            <?php _e( 'We recommend SendWP to ensure quick and reliable delivery of all emails sent from your site, such as donation receipts, recurring donation renewal reminders, password resets, and more.', 'give' ); ?> <?php printf( __( '%sLearn more%s', 'give' ), '<a href="https://sendwp.com/" target="_blank" rel="noopener noreferrer">', '</a>' ); ?>
+                            <?php _e( 'GiveWP recommends SendWP to ensure quick and reliable delivery of all emails sent from your site, such as donation receipts, recurring donation renewal reminders, password resets, and more.', 'give' ); ?> <?php printf( __( '%sLearn more%s', 'give' ), '<a href="https://go.givewp.com/sendwpinternal" target="_blank" rel="noopener noreferrer">', '</a>' ); ?>
                         </div>
 
                         <br style="margin-bottom: 0.5rem;"/>
