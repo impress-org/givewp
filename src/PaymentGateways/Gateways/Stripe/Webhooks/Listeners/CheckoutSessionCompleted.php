@@ -5,6 +5,7 @@ namespace Give\PaymentGateways\Gateways\Stripe\Webhooks\Listeners;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\PaymentGateways\Gateways\Stripe\Webhooks\StripeEventListener;
+use http\Exception\InvalidArgumentException;
 use Stripe\Checkout\Session;
 use Stripe\Event;
 
@@ -23,25 +24,18 @@ class CheckoutSessionCompleted extends StripeEventListener
     {
         /* @var Session $checkoutSession */
         $checkoutSession = $event->data->object;
-
-        $donationId = give_get_purchase_id_by_transaction_id($checkoutSession->id);
-
-        if (!$donationId) {
-            return;
-        }
-
-        $donationModel = Donation::find($donationId);
-        $donationModel->status = DonationStatus::COMPLETE();
-        $donationModel->gatewayTransactionId = $checkoutSession->payment_intent;
-        $donationModel->save();
+        $donation = $this->getDonation($event);
+        $donation->status = DonationStatus::COMPLETE();
+        $donation->gatewayTransactionId = $checkoutSession->payment_intent;
+        $donation->save();
 
         // Insert donation note to inform admin that charge succeeded.
         give_insert_payment_note(
-            $donationModel->id,
+            $donation->id,
             esc_html__('Charge succeeded in Stripe.', 'give')
         );
 
-        $this->addSupportForLegacyActionHook($donationId, $event);
+        $this->addSupportForLegacyActionHook($donation->id, $event);
     }
 
     /**
@@ -51,7 +45,7 @@ class CheckoutSessionCompleted extends StripeEventListener
      */
     public function getFormId(Event $event)
     {
-        return give_get_purchase_id_by_transaction_id($event->data->object->id);
+        return $this->getDonation($event)->formId;
     }
 
     /**
@@ -66,5 +60,21 @@ class CheckoutSessionCompleted extends StripeEventListener
          * @since 2.5.5
          */
         do_action('give_stripe_process_checkout_session_completed', $donationId, $event);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @inerhitDoc
+     */
+    public function getDonation(Event $event)
+    {
+        $donationId = give_get_purchase_id_by_transaction_id($event->data->object->id);
+
+        if (!$donationId) {
+            throw new InvalidArgumentException('Unable to find donation for the Stripe event.');
+        }
+
+        return Donation::find($donationId);
     }
 }
