@@ -791,7 +791,13 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
  * @type int    $excerpt_length      Number of words before excerpt is truncated. Default '16'.
  * @type string $display_style       How the form is displayed, either in new page or modal popup.
  *                                       Default 'redirect'. Accepts 'redirect', 'modal'.
- * }
+ *
+ * @unreleased string $show_donate_button Option to show donate button
+ * @unreleased string $donate_button_text Default Donate
+ * @unreleased string $donate_button_background_color Default #66bb6a
+ * @unreleased string $donate_button_text_color Default #fff
+ * @unreleased bool $show_bar Default false
+ *
  * @return string|bool The markup of the form grid or false.
  */
 function give_form_grid_shortcode( $atts ) {
@@ -811,8 +817,13 @@ function give_form_grid_shortcode( $atts ) {
 			'columns'             => 'best-fit',
 			'show_title'          => true,
 			'show_goal'           => true,
+			'show_bar'            => false,
 			'show_excerpt'        => true,
 			'show_featured_image' => true,
+			'show_donate_button'  => false,
+			'donate_button_text'  => __('Donate', 'give'),
+			'donate_button_background_color' => '#66bb6a',
+			'donate_button_text_color' => '#fff',
 			'image_size'          => 'medium',
 			'image_height'        => 'auto',
 			'excerpt_length'      => 16,
@@ -846,6 +857,7 @@ function give_form_grid_shortcode( $atts ) {
 		'posts_per_page' => $atts['forms_per_page'],
 		'orderby'        => $atts['orderby'],
 		'order'          => $atts['order'],
+        'paged'          => $atts['paged'],
 		'tax_query'      => [
 			'relation' => 'AND',
 		],
@@ -956,6 +968,9 @@ function give_form_grid_shortcode( $atts ) {
 			$form_args['meta_key'] = '_give_form_sales';
 			$form_args['orderby']  = 'meta_value_num';
 			break;
+        case 'random':
+            $form_args['orderby']  = 'rand';
+            break;
 		case 'closest_to_goal':
 			if ( give_has_upgrade_completed( 'v240_update_form_goal_progress' ) ) {
 				$form_args['meta_key'] = '_give_form_goal_progress';

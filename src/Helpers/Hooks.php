@@ -3,6 +3,7 @@
 namespace Give\Helpers;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Log\Log;
 
 class Hooks
 {
@@ -83,6 +84,25 @@ class Hooks
             },
             $priority,
             $acceptedArgs
+        );
+    }
+
+    /**
+     * Calls the WordPress do_action filter and logs the execution.
+     *
+     * @since 2.19.6
+     *
+     * @param  string  $hookName  The name of the action to be executed.
+     * @param  mixed  ...$args  Optional. Additional arguments which are passed on to the functions hooked to the action. Default empty.
+     * @return void
+     */
+    public static function doAction($hookName, ...$args)
+    {
+        do_action($hookName, ...$args);
+
+        Log::debug(
+            "Hook Dispatched: $hookName",
+            compact('hookName', 'args')
         );
     }
 }

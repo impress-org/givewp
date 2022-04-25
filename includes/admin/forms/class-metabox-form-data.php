@@ -597,6 +597,58 @@ class Give_MetaBox_Form_Data {
 					),
 				]
 			),
+
+            /**
+             * Form Grid
+             *
+             * @unreleased
+             */
+            'form_grid_options'    => apply_filters(
+                'give_forms_grid_options',
+                [
+                    'id'        => 'form_grid_options',
+                    'title'     => __( 'Form Grid', 'give' ),
+                    'icon-html' => '<i class="fas fa-th-large"></i>',
+                    'fields'    => [
+                        [
+                            'name'        => __( 'Form Grid', 'give' ),
+                            'description' => __( 'These settings are used to customize how this form looks or functions if displayed using the Form Grid feature.', 'give' ),
+                            'id'          => $prefix . 'form_grid_option',
+                            'type'        => 'radio_inline',
+                            'default'     => 'default',
+                            'options'     => [
+                                'default' => __( 'Default options', 'give' ),
+                                'custom'  => __( 'Customize', 'give' ),
+                            ],
+                            'attributes'  => [
+                                'class' => 'give-visibility-handler',
+                            ]
+                        ],
+                        [
+                            'name'          => __( 'Redirect URL', 'give' ),
+                            'description'   => __( 'Provide the full URL of the page you want this form to redirect to when clicked on from the Form Grid. This only applies when the Form Grid uses the “Redirect” method.', 'give' ),
+                            'id'            => $prefix . 'form_grid_redirect_url',
+                            'type'          => 'text-medium',
+                            'attributes'    => [
+                                'placeholder' => 'https://example.com/donation-form',
+                                'data-field-visibility' => htmlspecialchars(json_encode([  $prefix . 'form_grid_option' => 'custom' ])),
+                            ],
+                            'wrapper_class' => 'give-hidden',
+                        ],
+                        [
+                            'name'          => __( 'Donate Button Text', 'give' ),
+                            'description'   => __( 'Customize the text of the Donate Button on the Form Grid. Only applies if the Donate Button option is enabled in your Form Grid.', 'give' ),
+                            'id'            => $prefix . 'form_grid_donate_button_text',
+                            'type'          => 'text-medium',
+                            'attributes'    => [
+                                'placeholder' => 'Donate Here',
+                                'data-field-visibility' => htmlspecialchars(json_encode([  $prefix . 'form_grid_option' => 'custom' ])),
+                            ],
+                            'wrapper_class' => 'give-hidden',
+                        ],
+                    ],
+                ]
+            ),
 		];
 
 		/**

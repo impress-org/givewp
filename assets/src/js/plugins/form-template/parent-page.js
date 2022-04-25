@@ -70,6 +70,17 @@ jQuery( function() {
 		} );
 	} );
 
+    /*
+     * Close form modal by clicking on the background
+     * @since 2.19.6
+     */
+    document.addEventListener('click', function(e){
+        if (e.target.matches('.modal-inner-wrap') || e.target.matches('.give-embed-form-wrapper.modal')) {
+           e.target.querySelector('.js-give-embed-form-modal-closer').click();
+        }
+    });
+
+
 	/**
 	 * Close embed form modal when press "esc" key.
 	 */

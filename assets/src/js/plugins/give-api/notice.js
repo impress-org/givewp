@@ -1,4 +1,6 @@
 /* globals Give, jQuery, commonL10n */
+import {__} from '@wordpress/i18n';
+
 export default {
 	fn: {
 		/**
@@ -104,7 +106,7 @@ export default {
 			 */
 			const btnText = ( 'undefined' !== typeof commonL10n ) ?
 				commonL10n.dismiss :
-				wp.i18n.__( 'Dismiss this notice.' );
+				__( 'Dismiss this notice.', 'give' );
 
 			return `<div class="give-notice notice notice-${ type }${ args.dismissible ? ' is-dismissible' : '' }"><p>${ notice }${ args.dismissible ? ` <button type="button" class="notice-dismiss"><span class="screen-reader-text">${ btnText }</span></button>` : '' }</p</div>`;
 		},

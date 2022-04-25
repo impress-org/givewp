@@ -7,13 +7,21 @@ const blockAttributes = {
 		type: 'string',
 		default: '12',
 	},
+    paged:{
+        type: 'boolean',
+        default: true,
+	},
 	formIDs: {
-		type: 'string',
-		default: '',
+		type: 'array',
+		default: [],
 	},
 	excludedFormIDs:{
-		type: 'string',
-		default: '',
+		type: 'array',
+		default: [],
+	},
+    excludeForms:{
+		type: 'boolean',
+		default: false,
 	},
 	orderBy:{
 		type: 'string',
@@ -24,17 +32,25 @@ const blockAttributes = {
 		default: 'DESC',
 	},
 	categories:{
-		type: 'string',
-		default: '',
+		type: 'array',
+		default: [],
 	},
 	tags:{
-		type: 'string',
-		default: '',
+		type: 'array',
+		default: [],
 	},
 	columns: {
 		type: 'string',
 		default: 'best-fit',
 	},
+    imageSize: {
+        type: 'string',
+        default: 'medium',
+    },
+    imageHeight: {
+        type: 'string',
+        default: 'auto',
+    },
 	showTitle: {
 		type: 'boolean',
 		default: true,
@@ -47,14 +63,34 @@ const blockAttributes = {
 		type: 'boolean',
 		default: true,
 	},
+    showProgressBar: {
+        type: 'boolean',
+        default: false,
+    },
 	showFeaturedImage: {
 		type: 'boolean',
 		default: true,
+	},
+    showDonateButton: {
+		type: 'boolean',
+		default: false,
+	},
+    donateButtonBackgroundColor: {
+		type: 'string',
+		default: '#66bb6a',
+	},
+    donateButtonTextColor: {
+		type: 'string',
+		default: '#fff',
 	},
 	displayType: {
 		type: 'string',
 		default: 'redirect',
 	},
+    excerptLength: {
+        type: 'integer',
+        default: 16
+    },
 };
 
 export default blockAttributes;

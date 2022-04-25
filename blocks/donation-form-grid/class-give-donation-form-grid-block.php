@@ -92,12 +92,16 @@ class Give_Donation_Form_Grid_Block {
 						'default' => '12',
 					),
 					'formIDs'           => array(
-						'type'    => 'string',
-						'default' => '',
+						'type'    => 'array',
+						'default' => [],
 					),
-					'excludedFormIDs'   => array(
-						'type'    => 'string',
-						'default' => '',
+					'excludeForms'   => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
+                    'excludedFormIDs'   => array(
+						'type'    => 'array',
+						'default' => [],
 					),
 					'orderBy'           => array(
 						'type'    => 'string',
@@ -108,16 +112,24 @@ class Give_Donation_Form_Grid_Block {
 						'default' => 'DESC',
 					),
 					'categories'        => array(
-						'type'    => 'string',
-						'default' => '',
+						'type'    => 'array',
+						'default' => [],
 					),
 					'tags'              => array(
-						'type'    => 'string',
-						'default' => '',
+						'type'    => 'array',
+						'default' => [],
 					),
 					'columns'           => array(
 						'type'    => 'string',
 						'default' => 'best-fit',
+					),
+                    'imageSize'           => array(
+						'type'    => 'string',
+						'default' => 'medium',
+					),
+                    'imageHeight'           => array(
+						'type'    => 'string',
+						'default' => 'auto',
 					),
 					'showTitle'         => array(
 						'type'    => 'boolean',
@@ -127,18 +139,42 @@ class Give_Donation_Form_Grid_Block {
 						'type'    => 'boolean',
 						'default' => true,
 					),
+                    'excerptLength'     => array(
+                        'type'    => 'integer',
+                        'default' => 16,
+                    ),
 					'showGoal'          => array(
 						'type'    => 'boolean',
 						'default' => true,
 					),
+                    'showProgressBar'          => array(
+                        'type'    => 'boolean',
+                        'default' => false,
+                    ),
 					'showFeaturedImage' => array(
 						'type'    => 'boolean',
 						'default' => true,
 					),
+                    'showDonateButton' => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
+                    'donateButtonBackgroundColor' => array(
+						'type'    => 'string',
+						'default' => '#66bb6a',
+					),
+                    'donateButtonTextColor' => array(
+                        'type'    => 'string',
+                        'default' => '#fff',
+                    ),
 					'displayType'       => array(
 						'type'    => 'string',
 						'default' => 'redirect',
 					),
+                    'paged' => array(
+                        'type'    => 'boolean',
+                        'default' => true,
+                    ),
 				),
 			)
 		);
@@ -155,18 +191,26 @@ class Give_Donation_Form_Grid_Block {
 	public function render_block( $attributes ) {
 		$parameters = array(
 			'forms_per_page'      => absint( $attributes['formsPerPage'] ),
-			'ids'                 => $attributes['formIDs'],
-			'exclude'             => $attributes['excludedFormIDs'],
+			'ids'                 => implode(',', $this->getAsArray($attributes['formIDs'] ) ),
+			'exclude'             => implode(',', $this->getAsArray($attributes['excludedFormIDs'] ) ),
 			'orderby'             => $attributes['orderBy'],
 			'order'               => $attributes['order'],
-			'cats'                => $attributes['categories'],
-			'tags'                => $attributes['tags'],
+			'cats'                => implode(',', $this->getAsArray($attributes['categories'] ) ),
+			'tags'                => implode(',', $this->getAsArray($attributes['tags'] ) ),
 			'columns'             => $attributes['columns'],
 			'show_title'          => $attributes['showTitle'],
 			'show_goal'           => $attributes['showGoal'],
+			'show_bar'            => $attributes['showProgressBar'],
 			'show_excerpt'        => $attributes['showExcerpt'],
+            'excerpt_length'      => $attributes['excerptLength'],
 			'show_featured_image' => $attributes['showFeaturedImage'],
+			'show_donate_button'  => $attributes['showDonateButton'],
+			'donate_button_background_color' => $attributes['donateButtonBackgroundColor'],
+			'donate_button_text_color' => $attributes['donateButtonTextColor'],
 			'display_style'       => $attributes['displayType'],
+            'paged'               => $attributes['paged'],
+            'image_size'          => $attributes['imageSize'],
+            'image_height'        => $attributes['imageHeight'],
 		);
 
 		$html = give_form_grid_shortcode( $parameters );
@@ -174,6 +218,25 @@ class Give_Donation_Form_Grid_Block {
 
 		return $html;
 	}
+
+    /**
+     * @unreleased
+     *
+     * @param string|array $value
+     * @return array
+     */
+    private function getAsArray($value) {
+        if ( is_array($value) ) {
+            return $value;
+        }
+
+        // Backward compatibility
+        if (strpos($value, ',')) {
+            return explode(',', $value);
+        }
+
+        return [$value];
+    }
 
 	/**
 	 * Return formatted notice when shortcode return empty string

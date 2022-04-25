@@ -5,7 +5,7 @@ import API, {useMigrationFetcher, getEndpoint} from './api';
 
 import styles from './styles.module.scss';
 
-const {__} = wp.i18n;
+import {__} from '@wordpress/i18n';
 
 const Migrations = () => {
     const [state, setState] = useState({
@@ -136,13 +136,13 @@ const Migrations = () => {
                 <Modal.Title>
                     <strong>{__('Migration Failed', 'give')}</strong>
 
-                    <Modal.CloseIcon onClick={closeMigrationModal} />
+                    <Modal.CloseIcon onClick={closeMigrationModal}/>
                 </Modal.Title>
 
-                <Modal.Section title={__('Migration ID', 'give')} content={migrationModal.id} />
-                <Modal.Section title={__('Last run', 'give')} content={migrationModal.last_run ?? 'n/a'} />
+                <Modal.Section title={__('Migration ID', 'give')} content={migrationModal.id}/>
+                <Modal.Section title={__('Last run', 'give')} content={migrationModal.last_run ?? __('n/a', 'give')}/>
 
-                <Modal.AdditionalContext type={migrationModal.status} context={migrationModal.error} />
+                <Modal.AdditionalContext type={migrationModal.status} context={migrationModal.error}/>
             </Modal>
         );
     };
@@ -158,7 +158,7 @@ const Migrations = () => {
                     <Modal.Content align="center">
                         {migrationRunModal.error ? (
                             <>
-                                <Modal.CloseIcon onClick={closeMigrationRunModal} />
+                                <Modal.CloseIcon onClick={closeMigrationRunModal}/>
                                 <h2>{__('Database update failed!', 'give')}</h2>
                                 {migrationRunModal.errorMessage && (
                                     <Modal.Content align="center">{migrationRunModal.errorMessage}</Modal.Content>
@@ -169,7 +169,7 @@ const Migrations = () => {
                             </>
                         ) : (
                             <>
-                                <Spinner />
+                                <Spinner/>
                                 <div style={{marginTop: 20}}>{__('Running Update', 'give')}</div>
                             </>
                         )}
@@ -178,7 +178,7 @@ const Migrations = () => {
                     <>
                         <Modal.Title>
                             <span className={classNames(styles.titleIcon, styles.warning)}>
-                                <span className="dashicons dashicons-warning" />
+                                <span className="dashicons dashicons-warning"/>
                             </span>
                             {__('Create a Backup Before Running Database Update', 'give')}
                         </Modal.Title>
@@ -274,7 +274,7 @@ const Migrations = () => {
     ];
 
     const columnFilters = {
-        status: (type) => <Label type={type} />,
+        status: (type) => <Label type={type}/>,
         actions: (type, migration) => {
             if (!state.showOptions && migration.status !== 'failed') {
                 return null;
@@ -299,7 +299,7 @@ const Migrations = () => {
                     }}
                     icon={true}
                 >
-                    <span className="dashicons dashicons-visibility" />
+                    <span className="dashicons dashicons-visibility"/>
                 </Button>
             );
         },
@@ -309,7 +309,7 @@ const Migrations = () => {
     if (!state.initialLoad && isLoading) {
         return (
             <Notice>
-                <Spinner />
+                <Spinner/>
                 <h2>{__('Loading updates activity', 'give')}</h2>
             </Notice>
         );

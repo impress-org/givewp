@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n'
 
 /**
  * Block Attributes
@@ -20,6 +20,14 @@ const blockAttributes = {
 		type: 'string',
 		default: '',
 	},
+    categories: {
+        type: 'string',
+        default: '',
+    },
+    tags: {
+        type: 'string',
+        default: '',
+    },
 	orderBy: {
 		type: 'string',
 		default: 'post_date',
@@ -45,6 +53,10 @@ const blockAttributes = {
 		default: true,
 	},
 	showCompanyName: {
+		type: 'boolean',
+		default: false,
+	},
+    showForm: {
 		type: 'boolean',
 		default: false,
 	},
@@ -74,11 +86,11 @@ const blockAttributes = {
 	},
 	readMoreText: {
 		type: 'string',
-		default: __( 'Read more' ),
+		default: __( 'Read more', 'give' ),
 	},
 	loadMoreText: {
 		type: 'string',
-		default: __( 'Load more' ),
+		default: __( 'Load more', 'give' ),
 	},
 	avatarSize: {
 		type: 'string',

@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 const {useInstanceId} = wp.compose;
 const {BaseControl, Button} = wp.components;
 const {MediaUpload} = wp.blockEditor;
-const {__} = wp.i18n;
+import { __ } from '@wordpress/i18n'
 
 const ImageControl = ({name, label, help, className, value, hideLabelFromVision, onChange}) => {
     const instanceId = useInstanceId(ImageControl);
