@@ -11,7 +11,7 @@ jobs:
             matrix:
                 php: [ 5.6, 7.2 ]
                 mysql: [ 'mysql:5.6', 'mysql:8.0' ]
-                wordpress: [ '4.9', '5.0', '5.1', '5.2', '5.3', '5.4', '5.5', latest ]
+                wordpress: [ '5.0', latest ]
 
         services:
             mysql56:

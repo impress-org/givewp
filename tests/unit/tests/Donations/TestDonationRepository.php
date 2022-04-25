@@ -65,33 +65,31 @@ final class TestDonationRepository extends \Give_Unit_Test_Case
      */
     public function testInsertShouldAddDonationToDatabase()
     {
-        $donor = Donor::factory()->create();
         $donation = new Donation(Donation::factory()->definition());
 
         $repository = new DonationRepository();
 
-        /** @var Donation $newDonation */
-        $newDonation = $repository->insert($donation);
+        $repository->insert($donation);
 
         /** @var object $query */
         $query = $repository->prepareQuery()
-            ->where('ID', $newDonation->id)
+            ->where('ID', $donation->id)
             ->get();
 
 
         // simulate asserting database has values
-        $this->assertInstanceOf(Donation::class, $newDonation);
-        $this->assertEquals($query->id, $newDonation->id);
-        $this->assertEquals($query->status, $newDonation->status->getValue());
-        $this->assertEquals($query->amount, $newDonation->amount);
-        $this->assertEquals($query->currency, $newDonation->currency);
-        $this->assertEquals($query->gateway, $newDonation->gateway);
-        $this->assertEquals($query->donorId, $newDonation->donorId);
-        $this->assertEquals($query->firstName, $newDonation->firstName);
-        $this->assertEquals($query->lastName, $newDonation->lastName);
-        $this->assertEquals($query->email, $newDonation->email);
-        $this->assertEquals($query->createdAt, $newDonation->createdAt);
-        $this->assertEquals($query->parentId, $newDonation->parentId);
+        $this->assertInstanceOf(Donation::class, $donation);
+        $this->assertEquals($query->id, $donation->id);
+        $this->assertEquals($query->status, $donation->status->getValue());
+        $this->assertEquals($query->amount, $donation->amount);
+        $this->assertEquals($query->currency, $donation->currency);
+        $this->assertEquals($query->gateway, $donation->gateway);
+        $this->assertEquals($query->donorId, $donation->donorId);
+        $this->assertEquals($query->firstName, $donation->firstName);
+        $this->assertEquals($query->lastName, $donation->lastName);
+        $this->assertEquals($query->email, $donation->email);
+        $this->assertEquals($query->createdAt->format('Y-m-d H:i:s'), $donation->createdAt->format('Y-m-d H:i:s'));
+        $this->assertEquals($query->parentId, $donation->parentId);
     }
 
     /**

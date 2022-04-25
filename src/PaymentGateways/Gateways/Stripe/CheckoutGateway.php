@@ -2,19 +2,18 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe;
 
+use Give\Donations\Models\Donation;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Call;
-use Give\Helpers\Form\Utils as FormUtils;
 use Give\Helpers\Gateways\Stripe;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
+use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Gateways\Stripe\Exceptions\CheckoutException;
-use Give\PaymentGateways\Gateways\Stripe\Helpers\CheckoutHelper;
-use Give\PaymentGateways\Gateways\Stripe\ValueObjects\CheckoutSession;
-use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
 
 /**
  * @since 2.19.0
@@ -24,31 +23,13 @@ class CheckoutGateway extends PaymentGateway
     use Traits\CheckoutInstructions;
     use Traits\CheckoutModal;
     use Traits\CheckoutRedirect;
-    use Traits\HandlePaymentIntentStatus;
 
     /**
-     * @inheritDoc
-     * @since 2.19.0
-     * @return GatewayCommand
-     * @throws PaymentGatewayException
-     */
-    public function createPayment( GatewayPaymentData $paymentData )
-    {
-        switch (give_stripe_get_checkout_type()) {
-            case 'modal':
-                return $this->createPaymentModal($paymentData);
-            case 'redirect':
-                return $this->createPaymentRedirect($paymentData);
-            default:
-                throw new CheckoutException('Invalid Checkout Error');
-        }
-    }
-
-    /**
+     * @since 2.19.7 fix handlePaymentIntentStatus not receiving extra param
      * @since 2.19.0
      * @return PaymentProcessing|RedirectOffsite
      * @throws Exceptions\PaymentIntentException
-     * @throws \Give\PaymentGateways\Exceptions\InvalidPropertyName
+     * @throws InvalidPropertyName
      */
     protected function createPaymentModal( GatewayPaymentData $paymentData )
     {
@@ -64,20 +45,42 @@ class CheckoutGateway extends PaymentGateway
                 $donationSummary,
                 $stripeCustomer,
                 $paymentMethod
-            )
+            ),
+            $paymentData->donationId
         );
     }
 
+    use Traits\HandlePaymentIntentStatus;
+
     /**
+     * @inheritDoc
+     * @since 2.19.0
+     * @return GatewayCommand
+     * @throws PaymentGatewayException
+     */
+    public function createPayment(GatewayPaymentData $paymentData)
+    {
+        switch (give_stripe_get_checkout_type()) {
+            case 'modal':
+                return $this->createPaymentModal($paymentData);
+            case 'redirect':
+                return $this->createPaymentRedirect($paymentData);
+            default:
+                throw new CheckoutException('Invalid Checkout Error');
+        }
+    }
+
+    /**
+     * @since 2.19.7 fix argument order of CreateCheckoutSession
      * @since 2.19.0
      *
      * @return RedirectOffsite
      */
-    protected function createPaymentRedirect( GatewayPaymentData $paymentData )
+    protected function createPaymentRedirect(GatewayPaymentData $paymentData)
     {
-        $donationSummary = Call::invoke( Actions\SaveDonationSummary::class, $paymentData );
-        $stripeCustomer = Call::invoke( Actions\GetOrCreateStripeCustomer::class, $paymentData );
-        $session = Call::invoke( Actions\CreateCheckoutSession::class, $donationSummary, $stripeCustomer, $paymentData );
+        $donationSummary = Call::invoke(Actions\SaveDonationSummary::class, $paymentData);
+        $stripeCustomer = Call::invoke(Actions\GetOrCreateStripeCustomer::class, $paymentData);
+        $session = Call::invoke(Actions\CreateCheckoutSession::class, $paymentData, $donationSummary, $stripeCustomer);
 
         return new RedirectOffsite(
             $this->getRedirectUrl( $session->id(), give_get_payment_form_id( $paymentData->donationId ) )
@@ -130,5 +133,15 @@ class CheckoutGateway extends PaymentGateway
             case 'redirect':
                 return $this->getCheckoutInstructions();
         }
+    }
+
+    /**
+     * @unreleased
+     * @inerhitDoc
+     * @throws Exception
+     */
+    public function refundDonation(Donation $donation)
+    {
+        throw new Exception('Method has not been implemented yet. Please use the legacy method in the meantime.');
     }
 }

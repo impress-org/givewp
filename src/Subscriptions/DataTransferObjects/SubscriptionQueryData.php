@@ -11,7 +11,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 /**
  * Class SubscriptionObjectData
  *
- * @unreleased
+ * @since 2.19.6
  */
 class SubscriptionQueryData
 {
@@ -62,6 +62,10 @@ class SubscriptionQueryData
     /**
      * @var string
      */
+    public $gatewayId;
+    /**
+     * @var string
+     */
     public $gatewaySubscriptionId;
     /**
      * @var int
@@ -71,7 +75,7 @@ class SubscriptionQueryData
     /**
      * Convert data from Subscription Object to Subscription Model
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @return self
      */
@@ -92,6 +96,7 @@ class SubscriptionQueryData
         $self->amount = (int)$subscriptionQueryObject->amount;
         $self->feeAmount = (int)$subscriptionQueryObject->feeAmount;
         $self->status = new SubscriptionStatus($subscriptionQueryObject->status);
+        $self->gatewayId = $subscriptionQueryObject->gatewayId;
         $self->gatewaySubscriptionId = $subscriptionQueryObject->gatewaySubscriptionId;
         $self->donationFormId = (int)$subscriptionQueryObject->donationFormId;
 

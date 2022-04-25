@@ -9,7 +9,7 @@ use Give\Log\ValueObjects\LogType;
  * Class LogModel
  * @package Give\Log
  *
- * @unreleased added debug
+ * @since 2.19.6 added debug
  * @since 2.10.0
  *
  * @method error(string $message, string $source, array $context = [])

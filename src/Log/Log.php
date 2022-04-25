@@ -12,7 +12,7 @@ use Give\Log\ValueObjects\LogType;
  * The static facade intended to be the primary way of logging within GiveWP to make life easier.
  *
  * @package Give\Log
- * @unreleased added debug
+ * @since 2.19.6 added debug
  * @since 2.10.0
  *
  * @note There are two special keywords used in the context that are representing category and source.
@@ -122,7 +122,7 @@ class Log
      * @param  string  $name
      * @param  array  $arguments
      *
-     * @unreleased added conditional for logging debug()
+     * @since 2.19.6 added conditional for logging debug()
      * @since 2.18.0 - always log errors, warnings & only log all if WP_DEBUG_LOG is enabled
      * @since 2.11.1
      *

@@ -14,14 +14,13 @@ if ( ( isset( $args['show_goal'] ) && ! filter_var( $args['show_goal'], FILTER_V
 	return false;
 }
 
-$goal_format         = give_get_form_goal_format( $form_id );
-$price               = give_get_meta( $form_id, '_give_set_price', true );
+$goal_progress_stats = give_goal_progress_stats( $form );
+$goal_format         = $goal_progress_stats['format'];
 $color               = give_get_meta( $form_id, '_give_goal_color', true );
 $show_text           = isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
 $show_bar            = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
-$goal_progress_stats = give_goal_progress_stats( $form );
 
-$income = $goal_progress_stats['raw_actual'];
+$income = $form->get_earnings();
 $goal   = $goal_progress_stats['raw_goal'];
 
 switch ( $goal_format ) {
@@ -197,17 +196,18 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 	<?php endif; ?>
 
 
-	<?php if ( ! empty( $show_bar ) ) : ?>
-		<div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"
-			 aria-valuenow="<?php echo esc_attr( $progress_bar_value ); ?>">
-			<span style="width: <?php echo esc_attr( $progress_bar_value ); ?>%;
-										   <?php
-											if ( ! empty( $color ) ) {
-												echo 'background-color:' . $color;
-											}
-											?>
-			"></span>
-		</div><!-- /.give-progress-bar -->
+	<?php if ( ! empty( $show_bar ) ) :
+        $style = "width:{$progress_bar_value}%;";
+
+        if ( ! empty($color)) {
+            $style .= ";background: linear-gradient(180deg, {$color} 0%, {$color} 100%), linear-gradient(180deg, #fff 0%, #ccc 100%); background-blend-mode: multiply;";
+        }
+        ?>
+        <div class="progress-bar">
+            <div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="<?php echo esc_attr( $progress_bar_value ); ?>">
+                <span style="<?php echo $style; ?>"></span>
+            </div>
+		</div>
 	<?php endif; ?>
 
 </div><!-- /.goal-progress -->

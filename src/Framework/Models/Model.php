@@ -8,7 +8,7 @@ use Give\Framework\Support\Contracts\Arrayable;
 use RuntimeException;
 
 /**
- * @unreleased
+ * @since 2.19.6
  */
 abstract class Model implements Arrayable
 {
@@ -44,24 +44,24 @@ abstract class Model implements Arrayable
     /**
      * Create a new model instance.
      *
-     * @unreleased
+     * @unreleased add support for property defaults
+     * @since 2.19.6
      *
-     * @param  array  $attributes
+     * @param array $attributes
+     *
      * @return void
      */
     public function __construct(array $attributes = [])
     {
-        $this->attributes = $attributes;
+        $this->fill(array_merge($this->getPropertyDefaults(), $attributes));
 
         $this->syncOriginal();
-
-        $this->fill($attributes);
     }
 
     /**
      * Sync the original attributes with the current.
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @return $this
      */
@@ -75,9 +75,10 @@ abstract class Model implements Arrayable
     /**
      * Get the model's original attribute values.
      *
-     * @unreleased
+     * @since 2.19.6
      *
-     * @param  string|null  $key
+     * @param string|null $key
+     *
      * @return mixed|array
      */
     public function getOriginal($key = null)
@@ -88,9 +89,10 @@ abstract class Model implements Arrayable
     /**
      * Determine if a given attribute is dirty.
      *
-     * @unreleased
+     * @since 2.19.6
      *
-     * @param  string|null  $attribute
+     * @param string|null $attribute
+     *
      * @return bool
      */
     public function isDirty($attribute = null)
@@ -105,9 +107,10 @@ abstract class Model implements Arrayable
     /**
      * Determine if a given attribute is clean.
      *
-     * @unreleased
+     * @since 2.19.6
      *
-     * @param  string|null  $attribute
+     * @param string|null $attribute
+     *
      * @return bool
      */
     public function isClean($attribute = null)
@@ -118,7 +121,7 @@ abstract class Model implements Arrayable
     /**
      * Get the attributes that have been changed since last sync.
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @return array
      */
@@ -138,9 +141,10 @@ abstract class Model implements Arrayable
     /**
      * Fill the model with an array of attributes.
      *
-     * @unreleased
+     * @since 2.19.6
      *
-     * @param  array  $attributes
+     * @param array $attributes
+     *
      * @return $this
      */
     public function fill(array $attributes)
@@ -155,9 +159,10 @@ abstract class Model implements Arrayable
     /**
      * Get an attribute from the model.
      *
-     * @unreleased
+     * @since 2.19.6
      *
-     * @param  string  $key
+     * @param string $key
+     *
      * @return mixed
      *
      * @throws RuntimeException
@@ -174,10 +179,10 @@ abstract class Model implements Arrayable
     /**
      * Set a given attribute on the model.
      *
-     * @unreleased
+     * @since 2.19.6
      *
-     * @param  string  $key
-     * @param  mixed  $value
+     * @param string $key
+     * @param mixed $value
      */
     public function setAttribute($key, $value)
     {
@@ -191,10 +196,10 @@ abstract class Model implements Arrayable
     /**
      * Validate an attribute to a PHP type.
      *
-     * @unreleased
+     * @since 2.19.6
      *
-     * @param  string  $key
-     * @param  mixed  $value
+     * @param string $key
+     * @param mixed $value
      *
      * @return bool
      */
@@ -223,8 +228,8 @@ abstract class Model implements Arrayable
     /**
      * Validate property type
      *
-     * @param  string  $key
-     * @param  mixed  $value
+     * @param string $key
+     * @param mixed $value
      *
      * @return void
      *
@@ -242,18 +247,54 @@ abstract class Model implements Arrayable
     /**
      * Get the property type
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param $key
+     *
      * @return string
      */
     protected function getPropertyType($key)
     {
-        return strtolower(trim($this->properties[$key]));
+        $type = is_array($this->properties[$key]) ? $this->properties[$key][0] : $this->properties[$key];
+
+        return strtolower(trim($type));
     }
 
     /**
+     * Get the default for a property if one is provided, otherwise default to null
+     *
      * @unreleased
+     *
+     * @param $key
+     *
+     * @return mixed|null
+     */
+    protected function getPropertyDefault($key)
+    {
+        return is_array($this->properties[$key]) && isset($this->properties[$key][1])
+            ? $this->properties[$key][1]
+            : null;
+    }
+
+    /**
+     * Returns the defaults for all the properties. If a default is omitted it defaults to null.
+     *
+     * @unreleased
+     *
+     * @return array
+     */
+    protected function getPropertyDefaults()
+    {
+        $defaults = [];
+        foreach (array_keys($this->properties) as $property) {
+            $defaults[$property] = $this->getPropertyDefault($property);
+        }
+
+        return $defaults;
+    }
+
+    /**
+     * @since 2.19.6
      *
      * @return array
      */
@@ -263,7 +304,7 @@ abstract class Model implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return array
      */
@@ -283,9 +324,10 @@ abstract class Model implements Arrayable
     /**
      * Dynamically retrieve attributes on the model.
      *
-     * @unreleased
+     * @since 2.19.6
      *
-     * @param  string  $key
+     * @param string $key
+     *
      * @return mixed
      */
     public function __get($key)
@@ -300,10 +342,11 @@ abstract class Model implements Arrayable
     /**
      * Dynamically set attributes on the model.
      *
-     * @unreleased
+     * @since 2.19.6
      *
-     * @param  string  $key
-     * @param  mixed  $value
+     * @param string $key
+     * @param mixed $value
+     *
      * @return void
      */
     public function __set($key, $value)
@@ -314,9 +357,10 @@ abstract class Model implements Arrayable
     /**
      * Determine if an attribute exists on the model.
      *
-     * @unreleased
+     * @since 2.19.6
      *
-     * @param  string  $key
+     * @param string $key
+     *
      * @return bool
      */
     public function __isset($key)
@@ -325,7 +369,7 @@ abstract class Model implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param $key
      *

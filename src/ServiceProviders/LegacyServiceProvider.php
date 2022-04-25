@@ -180,7 +180,7 @@ class LegacyServiceProvider implements ServiceProvider
     /**
      * Binds the legacy classes to the service provider
      *
-     * @unreleased - remove donors in favor of DonorRepositoryProxy
+     * @since 2.19.6 - remove donors in favor of DonorRepositoryProxy
      *
      * @since 2.8.0
      */

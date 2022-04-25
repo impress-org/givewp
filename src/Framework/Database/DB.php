@@ -138,7 +138,7 @@ class DB
      * Runs a transaction. If the callable works then the transaction is committed. If the callable throws an exception
      * then the transaction is rolled back.
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param callable $callback
      *
@@ -162,7 +162,7 @@ class DB
     /**
      * Manually starts a transaction
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      */
@@ -175,7 +175,7 @@ class DB
     /**
      * Manually rolls back a transaction
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      */
@@ -188,7 +188,7 @@ class DB
     /**
      * Manually commits a transaction
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      */

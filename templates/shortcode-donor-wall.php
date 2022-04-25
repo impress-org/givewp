@@ -68,6 +68,12 @@ $atts          = $args[2]; // Shortcode attributes.
 					</h3>
 				<?php endif; ?>
 
+                <?php if ( true === $atts['show_form'] && isset( $donation['_give_payment_form_title'] ) ) : ?>
+                    <div>
+                        <?php echo esc_html( $donation['_give_payment_form_title'] ); ?>
+                    </div>
+                <?php endif; ?>
+
 				<?php if ( true === $atts['show_total'] ) : ?>
 					<span class="give-donor__total">
 						<?php echo esc_html( give_donation_amount( $donation['donation_id'], true ) ); ?>

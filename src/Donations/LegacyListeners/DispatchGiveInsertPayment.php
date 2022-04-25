@@ -9,7 +9,7 @@ use Give\PaymentGateways\DataTransferObjects\GiveInsertPaymentData;
 class DispatchGiveInsertPayment
 {
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  Donation  $donation
      * @return void

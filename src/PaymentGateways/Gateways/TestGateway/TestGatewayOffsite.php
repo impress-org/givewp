@@ -2,6 +2,8 @@
 
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
+use Give\Donations\Models\Donation;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
@@ -100,7 +102,7 @@ class TestGatewayOffsite extends PaymentGateway
      * @param  array  $queryParams
      * @throws PaymentGatewayException
      */
-    public function returnFromOffsiteRedirect($queryParams)
+    protected function returnFromOffsiteRedirect($queryParams)
     {
         $donationId = $queryParams['give-donation-id'];
 
@@ -121,7 +123,7 @@ class TestGatewayOffsite extends PaymentGateway
      * @param  array  $queryParams
      * @throws PaymentGatewayException
      */
-    public function securelyReturnFromOffsiteRedirect($queryParams)
+    protected function securelyReturnFromOffsiteRedirect($queryParams)
     {
         $donationId = $queryParams['give-donation-id'];
 
@@ -145,5 +147,15 @@ class TestGatewayOffsite extends PaymentGateway
         give_insert_payment_note($donationId, 'NOTE GOES HERE');
         give_update_payment_status($donationId);
         give_set_payment_transaction_id($donationId, "test-gateway-transaction-id");
+    }
+
+    /**
+     * @unreleased
+     * @inerhitDoc
+     * @throws Exception
+     */
+    public function refundDonation(Donation $donation)
+    {
+        throw new Exception('Method has not been implemented yet. Please use the legacy method in the meantime.');
     }
 }

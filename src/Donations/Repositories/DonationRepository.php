@@ -18,13 +18,13 @@ use Give\Log\Log;
 use Give\ValueObjects\Money;
 
 /**
- * @unreleased
+ * @since 2.19.6
  */
 class DonationRepository
 {
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @var string[]
      */
@@ -42,7 +42,7 @@ class DonationRepository
     /**
      * Get Donation By ID
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $donationId
      *
@@ -56,7 +56,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $subscriptionId
      *
@@ -68,7 +68,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $subscriptionId
      *
@@ -93,7 +93,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $donorId
      *
@@ -114,11 +114,12 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @unreleased mutate model and return void
+     * @since 2.19.6
      *
      * @param  Donation  $donation
      *
-     * @return Donation
+     * @return void
      * @throws Exception|InvalidArgumentException
      */
     public function insert(Donation $donation)
@@ -127,20 +128,18 @@ class DonationRepository
 
         Hooks::doAction('give_donation_creating', $donation);
 
-        $date = $donation->createdAt ? Temporal::getFormattedDateTime(
-            $donation->createdAt
-        ) : Temporal::getCurrentFormattedDateForDatabase();
-
+        $dateCreated = $donation->createdAt ?: Temporal::getCurrentDateTime();
+        $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
 
         DB::query('START TRANSACTION');
 
         try {
             DB::table('posts')
                 ->insert([
-                    'post_date' => $date,
-                    'post_date_gmt' => get_gmt_from_date($date),
-                    'post_modified' => $date,
-                    'post_modified_gmt' => get_gmt_from_date($date),
+                    'post_date' => $dateCreatedFormatted,
+                    'post_date_gmt' => get_gmt_from_date($dateCreatedFormatted),
+                    'post_modified' => $dateCreatedFormatted,
+                    'post_modified_gmt' => get_gmt_from_date($dateCreatedFormatted),
                     'post_status' => $donation->status->getValue(),
                     'post_type' => 'give_payment',
                     'post_parent' => isset($donation->parentId) ? $donation->parentId : 0
@@ -148,7 +147,9 @@ class DonationRepository
 
             $donationId = DB::last_insert_id();
 
-            foreach ($this->getCoreDonationMetaForDatabase($donation) as $metaKey => $metaValue) {
+            $donationMeta = $this->getCoreDonationMetaForDatabase($donation);
+
+            foreach ($donationMeta as $metaKey => $metaValue) {
                 DB::table('give_donationmeta')
                     ->insert([
                         'donation_id' => $donationId,
@@ -166,19 +167,32 @@ class DonationRepository
 
         DB::query('COMMIT');
 
-        $donation = $this->getById($donationId);
+        $donation->id = $donationId;
+
+        $donation->createdAt = $dateCreated;
+
+        if (!isset($donation->updatedAt)) {
+            $donation->updatedAt = $donation->createdAt;
+        }
+
+        if (!isset($donation->formTitle)) {
+            $donation->formTitle = $this->getFormTitle($donation->formId);
+        }
+
+        if (!isset($donation->purchaseKey)) {
+            $donation->purchaseKey = $donationMeta[DonationMetaKeys::PURCHASE_KEY];
+        }
 
         Hooks::doAction('give_donation_created', $donation);
-
-        return $donation;
     }
 
     /**
-     * @unreleased
+     * @unreleased return void
+     * @since 2.19.6
      *
      * @param  Donation  $donation
      *
-     * @return Donation
+     * @return void
      * @throws Exception|InvalidArgumentException
      */
     public function update(Donation $donation)
@@ -221,12 +235,11 @@ class DonationRepository
         DB::query('COMMIT');
 
         Hooks::doAction('give_donation_updated', $donation);
-
-        return $donation;
     }
 
     /**
-     * @unreleased
+     * @unreleased consolidate meta deletion into a single query
+     * @since 2.19.6
      *
      * @param  Donation  $donation
      * @return bool
@@ -243,12 +256,9 @@ class DonationRepository
                 ->where('id', $donation->id)
                 ->delete();
 
-            foreach ($this->getCoreDonationMetaForDatabase($donation) as $metaKey => $metaValue) {
-                DB::table('give_donationmeta')
-                    ->where('donation_id', $donation->id)
-                    ->where('meta_key', $metaKey)
-                    ->delete();
-            }
+            DB::table('give_donationmeta')
+                ->where('donation_id', $donation->id)
+                ->delete();
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -265,7 +275,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  Donation  $donation
      *
@@ -324,7 +334,7 @@ class DonationRepository
      * In Legacy terms, the Initial Donation acts as the parent ID for subscription renewals.
      * This function inserts those specific meta columns that accompany this concept.
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @throws Exception
      */
@@ -365,7 +375,7 @@ class DonationRepository
 
     /**
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $donationId
      *
@@ -383,7 +393,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $id
      *
@@ -409,7 +419,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  Donation  $donation
      * @return void
@@ -428,7 +438,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return DonationMode
      */
@@ -440,7 +450,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $formId
      * @return string
@@ -483,7 +493,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param $donorId
      * @return int
@@ -503,7 +513,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param $donorId
      * @return array|bool|null

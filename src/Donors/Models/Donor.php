@@ -20,7 +20,7 @@ use Give\Subscriptions\Models\Subscription;
 /**
  * Class Donor
  *
- * @unreleased
+ * @since 2.19.6
  *
  * @property int $id
  * @property int $userId
@@ -41,7 +41,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
      */
     protected $properties = [
         'id' => 'int',
-        'userId' => 'int',
+        'userId' => ['int', 0],
         'createdAt' => DateTime::class,
         'name' => 'string',
         'firstName' => 'string',
@@ -60,7 +60,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     ];
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param $id
      *
@@ -72,9 +72,10 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
-     * @param  string  $email
+     * @param string $email
+     *
      * @return Donor
      */
     public static function whereEmail($email)
@@ -83,9 +84,10 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
-     * @param  int  $userId
+     * @param int $userId
+     *
      * @return Donor
      */
     public static function whereUserId($userId)
@@ -94,9 +96,10 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @unreleased return mutated model instance
+     * @since 2.19.6
      *
-     * @param  array  $attributes
+     * @param array $attributes
      *
      * @return Donor
      *
@@ -106,27 +109,30 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     {
         $donor = new static($attributes);
 
-        return give()->donors->insert($donor);
+        give()->donors->insert($donor);
+
+        return $donor;
     }
 
     /**
-     * @unreleased
+     * @unreleased mutate model and return void
+     * @since 2.19.6
      *
-     * @return Donor
+     * @return void
      *
      * @throws Exception|InvalidArgumentException
      */
     public function save()
     {
         if (!$this->id) {
-            return give()->donors->insert($this);
+            give()->donors->insert($this);
         }
 
-        return give()->donors->update($this);
+        give()->donors->update($this);
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @throws Exception
      */
@@ -136,7 +142,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return ModelQueryBuilder<Donation>
      */
@@ -146,7 +152,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return ModelQueryBuilder<Subscription>
      */
@@ -156,7 +162,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return int
      */
@@ -166,7 +172,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return int
      */
@@ -176,7 +182,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return ModelQueryBuilder<Donor>
      */
@@ -186,9 +192,10 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
-     * @param  object  $object
+     * @param object $object
+     *
      * @return Donor
      */
     public static function fromQueryBuilderObject($object)

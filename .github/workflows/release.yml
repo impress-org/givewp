@@ -11,7 +11,7 @@ jobs:
             matrix:
                 php: [ 5.6, 7.2 ]
                 mysql: [ 'mysql:5.6', 'mysql:8.0' ]
-                wordpress: [ '4.9', '5.0', '5.1', '5.2', '5.3', '5.4', '5.5', latest ]
+                wordpress: [ '5.0', latest ]
 
         services:
             mysql56:
@@ -97,12 +97,6 @@ jobs:
             -   name: Install composer dev dependencies
                 run: composer install --no-progress --no-interaction
 
-                # In order to run this WordPress also needs to be installed
-            -   name: Generate pot file
-                run: |
-                    composer exec "wp core download --path=/tmp/wordpress --version=latest --skip-content"
-                    composer exec "wp i18n make-pot ${{github.workspace}} ${{github.workspace}}/languages/give.pot --path=/tmp/wordpress"
-
             -   name: Remove dev dependencies
                 uses: php-actions/composer@v5
                 with:
@@ -116,11 +110,22 @@ jobs:
                 with:
                     node-version: '12'
 
-            -   name: Install npm dependencies
+            -   name: Install npm dependencies & build for translation
                 run: |
                     npm install -g npm@7
                     npm ci
-                    npm run build
+                    npm run dev
+
+                # In order to run this WordPress also needs to be installed
+            -   name: Generate pot file
+                run: |
+                    curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+                    chmod +x wp-cli.phar
+                    mv wp-cli.phar /usr/local/bin/wp
+                    php -d xdebug.mode=off "$(which wp)" i18n make-pot ${{github.workspace}} ${{github.workspace}}/languages/give.pot --exclude="$(cat .distignore | tr "\n" "," | sed 's/,$/ /' | tr " " "\n"),src/**/*.js,*.js.map,blocks/**/*.js"
+
+            -   name: Build assets for production
+                run: npm run build
 
             -   name: WordPress Plugin Deploy
                 id: deploy

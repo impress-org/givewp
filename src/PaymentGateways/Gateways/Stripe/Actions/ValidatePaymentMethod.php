@@ -6,7 +6,7 @@ use Give\PaymentGateways\Gateways\Stripe\Exceptions\PaymentMethodException;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
 
 /**
- * @unreleased Do not extend removed WorkflowAction class.
+ * @since 2.19.6 Do not extend removed WorkflowAction class.
  * @since 2.19.0
  */
 class ValidatePaymentMethod

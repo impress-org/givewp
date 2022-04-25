@@ -12,7 +12,7 @@ use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Log\Log;
 
 /**
- * @unreleased
+ * @since 2.19.6
  */
 class DonorRepository
 {
@@ -30,7 +30,7 @@ class DonorRepository
     /**
      * Query Donor By ID
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $donorId
      * @return ModelQueryBuilder
@@ -44,7 +44,7 @@ class DonorRepository
     /**
      * Get Donor By ID
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $donorId
      * @return Donor|null
@@ -57,7 +57,7 @@ class DonorRepository
     /**
      * Get Donor By WP User ID
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $userId
      * @return Donor|null
@@ -75,7 +75,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $donorId
      * @return array|bool
@@ -96,27 +96,26 @@ class DonorRepository
     }
 
     /**
-     * @unreleased
+     * @unreleased mutate model and return void
+     * @since 2.19.6
      *
      * @param  Donor  $donor
      *
-     * @return Donor
+     * @return void
      * @throws Exception
      */
     public function insert(Donor $donor)
     {
         $this->validateDonor($donor);
 
-        $date = $donor->createdAt ? Temporal::getFormattedDateTime(
-            $donor->createdAt
-        ) : Temporal::getCurrentFormattedDateForDatabase();
+        $dateCreated = $donor->createdAt ?: Temporal::getCurrentDateTime();
 
         DB::query('START TRANSACTION');
 
         try {
             DB::table('give_donors')
                 ->insert([
-                    'date_created' => $date,
+                    'date_created' => Temporal::getFormattedDateTime($dateCreated),
                     'user_id' => isset($donor->userId) ? $donor->userId : 0,
                     'email' => $donor->email,
                     'name' => $donor->name
@@ -153,14 +152,16 @@ class DonorRepository
 
         DB::query('COMMIT');
 
-        return $this->getById($donorId);
+        $donor->id = $donorId;
+        $donor->createdAt = $dateCreated;
     }
 
     /**
-     * @unreleased
+     * @unreleased return void
+     * @since 2.19.6
      *
      * @param  Donor  $donor
-     * @return Donor
+     * @return void
      * @throws Exception
      */
     public function update(Donor $donor)
@@ -199,12 +200,10 @@ class DonorRepository
         }
 
         DB::query('COMMIT');
-
-        return $donor;
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  int  $donorId
      * @param  array  $columns
@@ -239,6 +238,9 @@ class DonorRepository
     }
 
     /**
+     * @unreleased consolidate meta deletion into a single query
+     * @since 2.19.6
+     *
      * @throws Exception
      */
     public function delete(Donor $donor)
@@ -250,22 +252,9 @@ class DonorRepository
                 ->where('id', $donor->id)
                 ->delete();
 
-            foreach ($this->getCoreDonorMeta($donor) as $metaKey => $metaValue) {
-                DB::table('give_donormeta')
-                    ->where('donor_id', $donor->id)
-                    ->where('meta_key', $metaKey)
-                    ->delete();
-            }
-
-            if (isset($donor->additionalEmails)) {
-                foreach ($donor->additionalEmails as $additionalEmail) {
-                    DB::table('give_donormeta')
-                        ->where('donor_id', $donor->id)
-                        ->where('meta_key', DonorMetaKeys::ADDITIONAL_EMAILS)
-                        ->where('meta_value', $additionalEmail)
-                        ->delete();
-                }
-            }
+            DB::table('give_donormeta')
+                ->where('donor_id', $donor->id)
+                ->delete();
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -280,7 +269,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  Donor  $donor
      * @return array
@@ -295,7 +284,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  Donor  $donor
      * @return void
@@ -378,7 +367,7 @@ class DonorRepository
      * Additional emails are assigned to the same additional_email meta key.
      * In order to update them we need to delete and re-insert.
      *
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  Donor  $donor
      * @return void

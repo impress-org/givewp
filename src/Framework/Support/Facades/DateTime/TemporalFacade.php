@@ -5,12 +5,12 @@ namespace Give\Framework\Support\Facades\DateTime;
 use DateTime;
 
 /**
- * @unreleased
+ * @since 2.19.6
  */
 class TemporalFacade
 {
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  string  $date
      *
@@ -24,17 +24,20 @@ class TemporalFacade
     }
 
     /**
-     * @unreleased
+     * @unreleased for consistency, match the DateTime to be the same as $this->toDateTime
+     * @since 2.19.6
      *
      * @return DateTime
      */
     public function getCurrentDateTime()
     {
-        return date_create('now', wp_timezone());
+        $now = date_create('now', wp_timezone())->format('Y-m-d H:i:s');
+
+        return $this->toDateTime($now);
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @param  DateTime  $dateTime
      *
@@ -46,7 +49,7 @@ class TemporalFacade
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return string
      */
