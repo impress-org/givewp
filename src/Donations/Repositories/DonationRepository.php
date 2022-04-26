@@ -311,6 +311,7 @@ class DonationRepository
     private function getCoreDonationMetaForDatabase(Donation $donation)
     {
         $meta = [
+            DonationMetaKeys::GATEWAY_TRANSACTION_ID => $donation->gatewayTransactionId,
             DonationMetaKeys::AMOUNT => Money::of($donation->amount, $donation->currency)->getAmount(),
             DonationMetaKeys::CURRENCY => $donation->currency,
             DonationMetaKeys::GATEWAY => $donation->gateway,
