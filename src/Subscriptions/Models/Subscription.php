@@ -82,18 +82,6 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
-     *
-     * @param string $gatewayTransactionId
-     *
-     * @return Subscription|null
-     */
-    public static function findByGatewayTransactionId($gatewayTransactionId)
-    {
-        return give()->subscriptions->getByGatewayTransactionId($gatewayTransactionId);
-    }
-
-    /**
      * @since 2.19.6
      *
      * @return ModelQueryBuilder<Donor>
