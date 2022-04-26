@@ -71,7 +71,7 @@ abstract class StripeEventListener implements EventListener
      *
      * @return int
      */
-    public function getFormId()
+    protected function getFormId()
     {
         return $this->getDonation()->formId;
     }
@@ -81,7 +81,7 @@ abstract class StripeEventListener implements EventListener
      *
      * @return Donation
      */
-    public function getDonation()
+    protected function getDonation()
     {
         if ($donation = Donation::findByGatewayTransactionId($this->gatewayTransactionId)) {
             return $donation;
