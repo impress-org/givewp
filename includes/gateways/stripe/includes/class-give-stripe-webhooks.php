@@ -79,12 +79,14 @@ if (!class_exists('Give_Stripe_Webhooks')) {
                     json_decode($payload, true)
                 );
             } catch (\UnexpectedValueException $e) {
-                // Invalid payload
+                Log::warning(
+                    'Stripe - Webhook Received',
+                    ['Payload' => $payload,]
+                );
+
                 status_header(400);
                 exit();
             }
-
-            status_header(200);
 
             try {
                 $processed_event = $this->process($event);
@@ -105,14 +107,7 @@ if (!class_exists('Give_Stripe_Webhooks')) {
                 );
             }
 
-            Log::info(
-                'Stripe - Webhook Received',
-                [
-                    'Payload' => $payload,
-                    'Response' => $message
-                ]
-            );
-
+            status_header(200);
             exit($message);
         }
 
