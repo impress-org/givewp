@@ -23,7 +23,7 @@ class ChargeRefunded extends StripeEventListener
         $stripeCharge = $event->data->object;
 
         if ($stripeCharge->refunded) {
-            $donation = $this->getDonation();
+            $donation = $this->getDonation($event);
             $donation->status = DonationStatus::REFUNDED();
             $donation->save();
 
