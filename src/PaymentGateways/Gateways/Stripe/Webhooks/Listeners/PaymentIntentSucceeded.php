@@ -24,10 +24,13 @@ class PaymentIntentSucceeded extends StripeEventListener
 
         if (PaymentIntent::STATUS_SUCCEEDED === $paymentIntent->status) {
             $donation = $this->getDonation($event);
-            $donation->status = DonationStatus::COMPLETE();
-            $donation->save();
 
-            give_insert_payment_note($donation->id, __('Charge succeeded in Stripe.', 'give'));
+            if (!$donation->status->isOneOf(DonationStatus::COMPLETE())) {
+                $donation->status = DonationStatus::COMPLETE();
+                $donation->save();
+
+                give_insert_payment_note($donation->id, __('Charge succeeded in Stripe.', 'give'));
+            }
         }
 
         $this->addSupportForLegacyActionHook($event);
