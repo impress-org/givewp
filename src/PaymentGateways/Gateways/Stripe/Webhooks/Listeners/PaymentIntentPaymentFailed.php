@@ -3,7 +3,6 @@
 namespace Give\PaymentGateways\Gateways\Stripe\Webhooks\Listeners;
 
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
 use Give\PaymentGateways\Gateways\Stripe\Webhooks\StripeEventListener;
 use Stripe\Event;
 
@@ -19,7 +18,7 @@ class PaymentIntentPaymentFailed extends StripeEventListener
     {
         $donation = $this->getDonation($event);
 
-        if( ! $donation->status->isFailed() ) {
+        if (!$donation->status->isFailed()) {
             $donation->status = DonationStatus::FAILED();
             $donation->save();
 
