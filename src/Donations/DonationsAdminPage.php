@@ -95,7 +95,7 @@ class DonationsAdminPage
      */
     public static function isShowing()
     {
-        return isset($_GET['page']) && $_GET['page'] === 'give-payment-history';
+        return isset($_GET['page']) && $_GET['page'] === 'give-payment-history' && !isset($_GET['view']);
     }
 
 
