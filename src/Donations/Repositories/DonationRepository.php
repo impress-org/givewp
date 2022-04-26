@@ -17,6 +17,7 @@ use Give\Helpers\Hooks;
 use Give\Log\Log;
 
 /**
+ * @unreleased update amount type, fee recovered, and exchange rate
  * @since 2.19.6
  */
 class DonationRepository
@@ -274,6 +275,7 @@ class DonationRepository
     }
 
     /**
+     * @unreleased update amount to use new type, and add currency and exchange rate
      * @since 2.19.6
      *
      * @param Donation $donation

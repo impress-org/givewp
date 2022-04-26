@@ -22,6 +22,7 @@ use Give\Subscriptions\Models\Subscription;
 /**
  * Class Donation
  *
+ * @unreleased update amount type, fee recovered, and exchange rate
  * @since 2.19.6
  *
  * @property int $id
