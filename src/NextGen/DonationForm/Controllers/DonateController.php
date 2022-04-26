@@ -33,7 +33,8 @@ class DonateController
             $formData->donorInfo->lastName
         );
 
-        $donation = $formData->toDonation($donor->id)->save();
+        $donation = $formData->toDonation($donor->id);
+        $donation->save();
 
         $gatewayPaymentData = $formData->toGatewayPaymentData($donation->id);
 
