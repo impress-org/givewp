@@ -127,7 +127,7 @@ class TestDonation extends \Give_Unit_Test_Case
      */
     public function testDonationShouldReturnAmountInBaseCurrency()
     {
-        $donation = $this->createDonation([
+        $donation = Donation::factory()->create([
             'amount' => new Money(5000, 'EUR'),
             'exchangeRate' => '0.9',
         ]);
@@ -144,7 +144,7 @@ class TestDonation extends \Give_Unit_Test_Case
     public function testDonationShouldGetIntendedAmount()
     {
         // When a donation has a fee recovery amount
-        $donation = $this->createDonation([
+        $donation = Donation::factory()->create([
             'amount' => new Money(5000, 'USD'),
             'feeAmountRecovered' => new Money(500, 'USD'),
         ]);
@@ -152,7 +152,7 @@ class TestDonation extends \Give_Unit_Test_Case
         self::assertMoneyEquals(new Money(4500, 'USD'), $donation->intendedAmount());
 
         // When a donation does not have a fee recovery amount
-        $donation = $this->createDonation([
+        $donation = Donation::factory()->create([
             'amount' => new Money(5000, 'USD'),
         ]);
 
@@ -165,7 +165,7 @@ class TestDonation extends \Give_Unit_Test_Case
     public function testDonationShouldGetIntendedAmountInBaseCurrency()
     {
         // When a donation has a fee recovery amount
-        $donation = $this->createDonation([
+        $donation = Donation::factory()->create([
             'amount' => new Money(5000, 'USD'),
             'feeAmountRecovered' => new Money(500, 'USD'),
             'exchangeRate' => '0.9',
@@ -175,21 +175,5 @@ class TestDonation extends \Give_Unit_Test_Case
             $donation->intendedAmount()->inBaseCurrency($donation->exchangeRate),
             $donation->intendedAmountInBaseCurrency()
         );
-    }
-
-    /**
-     * @unreleased
-     *
-     * @param array $attributes
-     *
-     * @return Donation
-     */
-    private function createDonation(array $attributes = [])
-    {
-        if (!isset($attributes['donorId'])) {
-            $attributes['donorId'] = Donor::factory()->create()->id;
-        }
-
-        return Donation::factory()->create($attributes);
     }
 }
