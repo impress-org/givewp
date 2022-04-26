@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\Gateways\Stripe\Webhooks;
 
 use Give\Donations\Models\Donation;
+use Give\Donations\Repositories\DonationRepository;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\PaymentGateways\Gateways\Stripe\Traits\CanSetupStripeApp;
@@ -72,7 +73,7 @@ abstract class StripeEventListener implements EventListener
      */
     protected function getDonation(Event $event)
     {
-        if ($donation = Donation::findByGatewayTransactionId($event->data->object->id)) {
+        if ($donation = give(DonationRepository::class)->getByGatewayTransactionId($event->data->object->id)) {
             return $donation;
         }
 
