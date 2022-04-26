@@ -22,17 +22,19 @@ class CheckoutSessionCompleted extends StripeEventListener
     {
         /* @var Session $checkoutSession */
         $checkoutSession = $event->data->object;
-
         $donation = $this->getDonation($event);
-        $donation->status = DonationStatus::COMPLETE();
-        $donation->gatewayTransactionId = $checkoutSession->payment_intent;
-        $donation->save();
 
-        // Insert donation note to inform admin that charge succeeded.
-        give_insert_payment_note(
-            $donation->id,
-            esc_html__('Charge succeeded in Stripe.', 'give')
-        );
+        if (!$donation->status->isComplete()) {
+            $donation->status = DonationStatus::COMPLETE();
+            $donation->gatewayTransactionId = $checkoutSession->payment_intent;
+            $donation->save();
+
+            // Insert donation note to inform admin that charge succeeded.
+            give_insert_payment_note(
+                $donation->id,
+                esc_html__('Charge succeeded in Stripe.', 'give')
+            );
+        }
 
         $this->addSupportForLegacyActionHook($donation->id, $event);
     }
