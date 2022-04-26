@@ -25,7 +25,7 @@ class PaymentIntentSucceeded extends StripeEventListener
         if (PaymentIntent::STATUS_SUCCEEDED === $paymentIntent->status) {
             $donation = $this->getDonation($event);
 
-            if (!$donation->status->isOneOf(DonationStatus::COMPLETE())) {
+            if (!$donation->status->isComplete()) {
                 $donation->status = DonationStatus::COMPLETE();
                 $donation->save();
 
