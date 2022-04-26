@@ -4,9 +4,9 @@ namespace Give\PaymentGateways\Gateways\Stripe\Webhooks;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\PaymentGateways\Gateways\Stripe\Traits\CanSetupStripeApp;
 use Give\PaymentGateways\Gateways\Stripe\Webhooks\Contracts\EventListener;
-use http\Exception\InvalidArgumentException;
 use Stripe\Event;
 
 /**
