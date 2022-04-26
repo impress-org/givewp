@@ -61,16 +61,24 @@ class DonationRepository
      */
     public function getByGatewayTransactionId($gatewayTransactionId)
     {
+        return $this->queryByGatewayTransactionId($gatewayTransactionId)->get();
+    }
+
+    /**
+     * @unreleased
+     * @return ModelQueryBuilder
+     */
+    public function queryByGatewayTransactionId($gatewayTransactionId)
+    {
         return $this->prepareQuery()
             ->where('post_type', 'give_payment')
-            ->whereIn('ID', function (QueryBuilder $builder) use ($gatewayTransactionId) {
+            ->where('ID', function (QueryBuilder $builder) use ($gatewayTransactionId) {
                 $builder
                     ->select('donation_id')
                     ->from('give_donationmeta')
-                    ->where('meta_key', DonationMetaKeys::GATEWAY_TRANSACTION_ID())
+                    ->where('meta_key', DonationMetaKeys::GATEWAY_TRANSACTION_ID()->getValue())
                     ->where('meta_value', $gatewayTransactionId);
-            })
-            ->get();
+            });
     }
 
     /**
