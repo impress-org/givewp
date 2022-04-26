@@ -47,7 +47,7 @@ export default function () {
             <>
                 <RowAction
                     href={`/wp-admin/edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=${item.id}`}
-                    displayText={__('Edit', 'give')}
+                    displayText={__('View/Edit', 'give')}
                 />
                 <RowAction
                     onClick={confirmModal}
