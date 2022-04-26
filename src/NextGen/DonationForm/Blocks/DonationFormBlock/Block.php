@@ -97,10 +97,7 @@ class Block
     private function createForm($attributes)
     {
         $gatewayOptions = [];
-        foreach ($this->getEnabledPaymentGateways($attributes['formId']) as $enabledGateway) {
-            /** @var PaymentGateway $gateway */
-            $gateway = give($enabledGateway);
-
+        foreach ($this->getEnabledPaymentGateways($attributes['formId']) as $gateway) {
             $gatewayOptions[] = Radio::make($gateway->getId())->label($gateway->getPaymentMethodLabel());
         }
 
@@ -154,7 +151,7 @@ class Block
     }
 
     /**
-     * @return array
+     * @return PaymentGateway[]
      */
     public function getEnabledPaymentGateways($formId)
     {
