@@ -5,7 +5,6 @@ namespace Give\Subscriptions\Models;
 use DateTime;
 use Exception;
 use Give\Donations\Models\Donation;
-use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
@@ -80,6 +79,18 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     public static function find($id)
     {
         return give()->subscriptions->getById($id);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param string $gatewayTransactionId
+     *
+     * @return Subscription|null
+     */
+    public static function findByGatewayTransactionId($gatewayTransactionId)
+    {
+        return give()->subscriptions->getByGatewayTransactionId($gatewayTransactionId);
     }
 
     /**
