@@ -23,10 +23,9 @@ abstract class StripeEventListener implements EventListener
     public function __invoke(Event $event)
     {
         $this->setupStripeApp($this->getFormId($event));
-        $this->verifyEvent($event);
         $this->logEventReceiveTime();
 
-        $this->processEvent($event);
+        $this->processEvent($this->getEventFromStripe($event->id));
     }
 
     /**
@@ -34,12 +33,13 @@ abstract class StripeEventListener implements EventListener
      *
      * @param string $eventId
      *
+     * @return Event
      * @throws Exception
      */
-    protected function verifyEvent($eventId)
+    protected function getEventFromStripe($eventId)
     {
         try {
-            Event::retrieve($eventId);
+            return Event::retrieve($eventId);
         } catch (\Exception $e) {
             throw new Exception($e->getMessage());
         }
