@@ -60,11 +60,15 @@ abstract class StripeEventListener implements EventListener
     /**
      * @unreleased
      *
-     * @return int
+     * @return int|null
      */
     protected function getFormId(Event $event)
     {
-        return $this->getDonation($event)->formId;
+        if ($donation = $this->getDonation($event)) {
+            return $donation->formId;
+        }
+
+        return null;
     }
 
     /**
