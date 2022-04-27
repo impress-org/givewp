@@ -112,6 +112,14 @@ class Give_Donor_Wall {
 	 */
 	public function render_shortcode( $atts ) {
 
+        /**
+         * @unreleased Check nonce for AJAX request to prevent scrapping.
+         * @link https://github.com/impress-org/givewp/issues/6374
+         */
+        if( wp_doing_ajax() ) {
+            check_ajax_referer( 'givewp-donor-wall-more', 'nonce' );
+        }
+
 		$give_settings = give_get_settings();
 
 		$atts      = $this->parse_atts( $atts );
@@ -143,8 +151,9 @@ class Give_Donor_Wall {
 		$temp_atts['paged'] = $atts['paged'] + 1;
 
 		$more_btn_html = sprintf(
-			'<input type="hidden" class="give-donor-wall-shortcode-attrs" data-shortcode="%1$s">',
-			rawurlencode( http_build_query( $atts ) )
+			'<input type="hidden" class="give-donor-wall-shortcode-attrs" data-shortcode="%s" data-nonce="%s">',
+			rawurlencode( http_build_query( $atts ) ),
+            wp_create_nonce( 'givewp-donor-wall-more' )
 		);
 
 		if ( $this->has_donations( $temp_atts ) ) {

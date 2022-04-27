@@ -8,7 +8,7 @@
  * Author URI: https://givewp.com/
  * Version: 2.19.8
  * Requires at least: 5.0
- * Requires PHP: 5.6
+ * Requires PHP: 7.0
  * Text Domain: give
  * Domain Path: /languages
  *

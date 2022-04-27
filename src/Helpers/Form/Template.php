@@ -64,7 +64,7 @@ class Template
         // Backward compatibility for migrated settings.
         // 1. "Introduction -> Primary Color" move to "Visual Appearance -> Primary Color"
         // 2. "Payment Amount -> Decimal amounts" move to "Visual Appearance -> Decimal amounts"
-        return self::handleOptionsBackwardCompatibility($settings);
+        return self::handleOptionsBackwardCompatibility($settings, $template);
     }
 
     /**
@@ -102,9 +102,11 @@ class Template
      *
      * @param array $settings
      *
+     * @param string $template
+     *
      * @return array $settings
      */
-    public static function handleOptionsBackwardCompatibility($settings)
+    public static function handleOptionsBackwardCompatibility($settings, $template)
     {
         if (isset($settings['visual_appearance'])) {
             if (isset($settings['visual_appearance']['decimals_enabled'])) {
@@ -112,8 +114,24 @@ class Template
             }
             $settings['introduction']['primary_color'] = $settings['visual_appearance']['primary_color'];
         } elseif (isset($settings['payment_amount'], $settings['introduction'])) {
-            $settings['visual_appearance']['decimals_enabled'] = $settings['payment_amount']['decimals_enabled'];
-            $settings['visual_appearance']['primary_color'] = $settings['introduction']['primary_color'];
+            if (isset($settings['payment_amount']['decimals_enabled'])) {
+                $settings['visual_appearance']['decimals_enabled'] = $settings['payment_amount']['decimals_enabled'];
+            } else {
+                $settings['visual_appearance']['decimals_enabled'] = 'disabled';
+            }
+            if (isset($settings['visual_appearance']['primary_color'])) {
+                $settings['visual_appearance']['primary_color'] = $settings['introduction']['primary_color'];
+            } else {
+                switch ($template) {
+                    case 'sequoia':
+                        $settings['visual_appearance']['primary_color'] = '#28C77B';
+                        break;
+                    case 'classic':
+                    default:
+                        $settings['visual_appearance']['primary_color'] = '#1E8CBE';
+                        break;
+                }
+            }
         }
 
         return $settings;

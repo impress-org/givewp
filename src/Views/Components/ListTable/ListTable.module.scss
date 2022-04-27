@@ -50,42 +50,19 @@
     color: #0878b0;
     font-weight: 700;
     padding: 1em;
+    inline-size: 8rem;
     text-align: start;
 
-    &[data-column="id"] {
-        inline-size: 4rem;
+    &.start {
+        text-align: start;
     }
 
-    &[data-column="name"] {
-        inline-size: 10rem;
+    &.center {
+        text-align: center;
     }
 
-    &[data-column="amount"] {
-        inline-size: 8rem;
-    }
-
-    &[data-column="goal"] {
-        inline-size: 8rem;
-    }
-
-    &[data-column="donations"] {
-        inline-size: 6rem;
-    }
-
-    &[data-column="revenue"] {
-        inline-size: 6rem;
-    }
-
-    &[data-column="shortcode"] {
-        inline-size: 10rem;
-    }
-
-    &[data-column="date"] {
-        inline-size: 8rem;
-    }
-
-    &[data-column="status"] {
-        inline-size: 8rem;
+    &.end {
+        text-align: end;
     }
 }
 
@@ -93,13 +70,8 @@
     overflow: auto;
 }
 
-.pageActions {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: flex-end;
-    margin-block-end: 0.5rem;
-    margin-block-start: 0.5rem;
+.selectAll {
+    width: 2rem;
 }
 
 #updateError {
@@ -151,17 +123,16 @@
 }
 
 .overlay {
-    top: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     position: absolute;
-    height: 100%;
-    width: 100%;
+    block-size: 100%;
+    inline-size: 100%;
     background: rgba(255, 255, 255, 0.7);
-    z-index: 899;
+    z-index: 10;
     border-radius: inherit;
-    overflow: hidden;;
+    overflow: hidden;
 }
 
 .appear {

@@ -638,6 +638,22 @@ function give_import_page_link_callback() {
 	?>
 	<a href="<?php echo esc_url( give_import_page_url() ); ?>"
 	   class="page-import-action page-title-action"><?php _e( 'Import Donations', 'give' ); ?></a>
+    <script>
+        function showReactTable () {
+            fetch( '<?php echo esc_url_raw(rest_url('give-api/v2/admin/donations/view?isLegacy=0')) ?>', {
+                method: 'GET',
+                headers: {
+                    ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>'
+                }
+            })
+            .then((res) => {
+                window.location.reload();
+            });
+        }
+    </script>
+    <button onclick="showReactTable()" class="page-title-action">
+        <?php _e('Show Updated View', 'give') ?>
+    </button>
 
 	<?php
 	// Check if view donation single page only.
