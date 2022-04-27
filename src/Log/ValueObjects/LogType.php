@@ -6,6 +6,7 @@ namespace Give\Log\ValueObjects;
  * Class LogType
  * @package Give\Log\ValueObjects
  *
+ * @since 2.19.6 - added DEBUG
  * @since 2.10.0
  *
  * @method static ERROR()
@@ -15,6 +16,7 @@ namespace Give\Log\ValueObjects;
  * @method static INFO()
  * @method static HTTP()
  * @method static SPAM()
+ * @method static DEBUG()
  */
 class LogType extends Enum
 {
@@ -25,13 +27,14 @@ class LogType extends Enum
     const INFO = 'info';
     const HTTP = 'http';
     const SPAM = 'spam';
+    const DEBUG = 'debug';
 
     /**
      * @inheritDoc
      */
     public static function getDefault()
     {
-        return LogType::ERROR;
+        return self::ERROR;
     }
 
     /**
@@ -49,6 +52,7 @@ class LogType extends Enum
             self::INFO => esc_html__('Info', 'give'),
             self::HTTP => esc_html__('HTTP', 'give'),
             self::SPAM => esc_html__('Spam', 'give'),
+            self::DEBUG => esc_html__('Debug', 'give'),
         ];
     }
 }

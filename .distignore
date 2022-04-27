@@ -28,6 +28,9 @@
 .lintstagedrc.json
 .distignore
 .stylelintignore
+jsconfig.json
+globals.d.ts
+tsconfig.json
 
 cypress.json
 sample-data/wordpress.sql
@@ -49,5 +52,11 @@ CODE_OF_CONDUCT.md
 contributing.md
 postcss.config.js
 webpack.config.js
+webpack.mix.js
 docker-compose.yml
 wp-textdomain.js
+
+# GH Action files
+DOCKER_ENV
+docker_tag
+output.log

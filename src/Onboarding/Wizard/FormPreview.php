@@ -4,6 +4,7 @@ namespace Give\Onboarding\Wizard;
 
 defined('ABSPATH') || exit;
 
+use Give\Helpers\EnqueueScript;
 use Give\Onboarding\FormRepository;
 use Give_Scripts;
 
@@ -87,12 +88,9 @@ class FormPreview
             'all'
         );
 
-        wp_register_script(
-            'give',
-            GIVE_PLUGIN_URL . 'assets/dist/js/give.js',
-            ['jquery'],
-            GIVE_VERSION
-        );
+        EnqueueScript::make('give', 'assets/dist/js/give.js' )
+            ->registerTranslations()
+            ->register();
     }
 
     /**

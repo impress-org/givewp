@@ -99,6 +99,14 @@ class Give_Donor_Wall_Block {
 						'type'    => 'string',
 						'default' => '',
 					],
+                    'categories'             => [
+                        'type'    => 'string',
+                        'default' => '',
+                    ],
+                    'tags'             => [
+                        'type'    => 'string',
+                        'default' => '',
+                    ],
 					'orderBy'         => [
 						'type'    => 'string',
 						'default' => 'post_date',
@@ -124,6 +132,10 @@ class Give_Donor_Wall_Block {
 						'default' => true,
 					],
 					'showCompanyName' => [
+						'type'    => 'boolean',
+						'default' => false,
+					],
+                    'showForm' => [
 						'type'    => 'boolean',
 						'default' => false,
 					],
@@ -181,8 +193,10 @@ class Give_Donor_Wall_Block {
 
 		$parameters = [
 			'donors_per_page'   => absint( $attributes['donorsPerPage'] ),
-			'form_id'           => absint( $attributes['formID'] ),
+			'form_id'           => $attributes['formID'],
 			'ids'               => $attributes['ids'],
+            'cats'                => $attributes['categories'],
+            'tags'                => $attributes['tags'],
 			'orderby'           => $attributes['orderBy'],
 			'order'             => $attributes['order'],
 			'pages'             => absint( $attributes['paged'] ),
@@ -190,6 +204,7 @@ class Give_Donor_Wall_Block {
 			'show_avatar'       => $attributes['showAvatar'],
 			'show_name'         => $attributes['showName'],
 			'show_company_name' => $attributes['showCompanyName'],
+			'show_form'         => $attributes['showForm'],
 			'show_total'        => $attributes['showTotal'],
 			'show_time'         => $attributes['showDate'],
 			'show_comments'     => $attributes['showComments'],

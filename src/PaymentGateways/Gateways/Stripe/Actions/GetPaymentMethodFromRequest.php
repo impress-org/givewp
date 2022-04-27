@@ -5,14 +5,14 @@ namespace Give\PaymentGateways\Gateways\Stripe\Actions;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\Stripe\Exceptions\PaymentMethodException;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
-use Give\PaymentGateways\Gateways\Stripe\WorkflowAction;
 
-class GetPaymentMethodFromRequest extends WorkflowAction
+class GetPaymentMethodFromRequest
 {
     /**
      * @since 2.19.0
      * @param GatewayPaymentData $paymentData
      * @throws PaymentMethodException
+     * @return PaymentMethod $paymentMethod
      */
     public function __invoke( GatewayPaymentData $paymentData )
     {
@@ -27,6 +27,6 @@ class GetPaymentMethodFromRequest extends WorkflowAction
         give_update_meta($paymentData->donationId, '_give_stripe_source_id', $paymentMethod->id());
         give_insert_payment_note($paymentData->donationId, sprintf(__('Stripe Source/Payment Method ID: %s', 'give'), $paymentMethod->id()));
 
-        $this->bind( $paymentMethod );
+        return $paymentMethod;
     }
 }

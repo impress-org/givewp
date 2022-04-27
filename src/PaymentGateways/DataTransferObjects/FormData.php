@@ -2,6 +2,10 @@
 
 namespace Give\PaymentGateways\DataTransferObjects;
 
+use Exception;
+use Give\Donations\Models\Donation;
+use Give\Donations\Properties\BillingAddress;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\ValueObjects\Address;
 use Give\ValueObjects\CardInfo;
 use Give\ValueObjects\DonorInfo;
@@ -159,6 +163,37 @@ class FormData
         ]);
 
         return $self;
+    }
+
+    /**
+     * @since 2.19.6
+     *
+     * @return Donation
+     * @throws Exception
+     */
+    public function toDonation($donorId)
+    {
+        return new Donation([
+            'status' => DonationStatus::PENDING(),
+            'gateway' => $this->paymentGateway,
+            'amount' => (int)$this->price,
+            'currency' => $this->currency,
+            'donorId' => $donorId,
+            'firstName' => $this->donorInfo->firstName,
+            'lastName' => $this->donorInfo->lastName,
+            'email' => $this->donorInfo->email,
+            'formId' => $this->formId,
+            'formTitle' => $this->formTitle,
+            'billingAddress' => BillingAddress::fromArray([
+                'country' => $this->billingAddress->country,
+                'city' => $this->billingAddress->city,
+                'state' => $this->billingAddress->state,
+                'zip' => $this->billingAddress->postalCode,
+                'address1' => $this->billingAddress->line1,
+                'address2' => $this->billingAddress->line2
+            ]),
+            'levelId' => (int)$this->priceId
+        ]);
     }
 
     /**

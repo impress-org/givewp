@@ -4,21 +4,25 @@ namespace Give\PaymentGateways\Gateways\Stripe\Actions;
 
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\Stripe\Exceptions\StripeCustomerException;
-use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
-use Give\PaymentGateways\Gateways\Stripe\WorkflowAction;
 use Give_Stripe_Customer;
 
-class GetOrCreateStripeCustomer extends WorkflowAction
+class GetOrCreateStripeCustomer
 {
 
     /**
+     * @unreleased add second param support to function.
+     *             This param is optional because we use it only when donor subscribe for recurring donation.
      * @since 2.19.0
      *
+     * @param GatewayPaymentData $stripePaymentMethodId
+     * @param string $stripePaymentMethopdId
+     *
+     * @return Give_Stripe_Customer
      * @throws StripeCustomerException
      */
-    public function __invoke(GatewayPaymentData $paymentData)
+    public function __invoke(GatewayPaymentData $paymentData, $stripePaymentMethodId = '')
     {
-        $giveStripeCustomer = new Give_Stripe_Customer($paymentData->donorInfo->email);
+        $giveStripeCustomer = new Give_Stripe_Customer($paymentData->donorInfo->email, $stripePaymentMethodId);
 
         if (!$giveStripeCustomer->get_id()) {
             throw new StripeCustomerException(__('Unable to find or create stripe customer object.', 'give'));
@@ -26,14 +30,15 @@ class GetOrCreateStripeCustomer extends WorkflowAction
 
         $this->saveStripeCustomerId($paymentData->donationId, $giveStripeCustomer->get_id());
 
-        $this->bind( $giveStripeCustomer );
+        return $giveStripeCustomer;
     }
 
     /**
      * @since 2.19.0
      *
-     * @param  int  $donationId
-     * @param  string  $stripeCustomerId
+     * @param int $donationId
+     * @param string $stripeCustomerId
+     *
      * @return void
      */
     protected function saveStripeCustomerId($donationId, $stripeCustomerId)

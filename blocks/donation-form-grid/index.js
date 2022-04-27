@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
-const { registerBlockType } = wp.blocks;
+import { __ } from '@wordpress/i18n'
+import { registerBlockType } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -17,13 +17,13 @@ import GiveDonationFormGrid from './edit/block';
 
 export default registerBlockType( 'give/donation-form-grid', {
 
-	title: __( 'Donation Form Grid' ),
-	description: __( 'The GiveWP Donation Form Grid block insert an existing donation form into the page. Each form\'s presentation can be customized below.' ),
+	title: __( 'Donation Form Grid', 'give' ),
+	description: __( 'The GiveWP Donation Form Grid block insert an existing donation form into the page. Each form\'s presentation can be customized below.', 'give' ),
 	category: 'give',
 	icon: <GiveIcon color="grey" />,
 	keywords: [
-		__( 'donation' ),
-		__( 'grid' ),
+		__( 'donation', 'give' ),
+		__( 'grid', 'give' ),
 	],
 	supports: {
 		html: false,

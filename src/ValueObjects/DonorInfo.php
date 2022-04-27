@@ -52,6 +52,8 @@ class DonorInfo implements ValueObjects
     /**
      * Take array and return object.
      *
+     * @since 2.19.6 - fix update key validation with new variable to prevent removing not required keys like lastName
+     *
      * @param $array
      *
      * @return DonorInfo
@@ -60,9 +62,9 @@ class DonorInfo implements ValueObjects
     {
         $expectedKeys = ['wpUserId', 'firstName', 'email', 'honorific', 'address'];
 
-        $array = array_intersect_key($array, array_flip($expectedKeys));
+        $requiredKeys = array_intersect_key($array, array_flip($expectedKeys));
 
-        if (empty($array)) {
+        if (empty($requiredKeys)) {
             throw new InvalidArgumentException(
                 'Invalid DonorInfo object, must have the exact following keys: ' . implode(', ', $expectedKeys)
             );

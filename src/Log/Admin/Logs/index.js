@@ -15,7 +15,7 @@ import API, {useLogFetcher, getEndpoint} from './api';
 
 import styles from './styles.module.scss';
 
-const {__} = wp.i18n;
+import {__} from '@wordpress/i18n';
 
 const Logs = () => {
     const [state, setState] = useState({

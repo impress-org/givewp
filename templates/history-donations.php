@@ -118,7 +118,7 @@ if ( $donations ) : ?>
 				<tr class="give-donation-row">
 					<?php
 					/**
-					 * Fires in current user donation history table, before the row statrs.
+					 * Fires in current user donation history table, before the row starts.
 					 *
 					 * Allows you to add new <td> elements to the row, before other elements in the row.
 					 *
@@ -198,14 +198,14 @@ if ( $donations ) : ?>
 					<td class="give-donation-details">
 						<?php
 						// Display View Receipt or.
-						if ( 'publish' !== $post->post_status && 'subscription' !== $post->post_status ) :
+						if ( 'publish' !== $post->post_status && 'subscription' !== $post->post_status  ) :
 							echo sprintf(
 								'<span class="give-mobile-title">%4$s</span><a href="%1$s"><span class="give-donation-status %2$s">%3$s</span></a>',
 								esc_url(
 									add_query_arg(
 										'donation_id',
 										$post->ID,
-										give_get_history_page_uri()
+                                        $_SERVER['REQUEST_URI']
 									)
 								),
 								$post->post_status,
@@ -220,8 +220,8 @@ if ( $donations ) : ?>
 									add_query_arg(
 										'donation_id',
 										$post->ID,
-										give_get_history_page_uri()
-									)
+                                        $_SERVER['REQUEST_URI']
+                                    )
 								),
 								__( 'View Receipt &raquo;', 'give' ),
 								esc_html( $table_headings['details'] )
