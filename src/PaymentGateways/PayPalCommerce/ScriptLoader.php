@@ -140,6 +140,8 @@ EOT;
         $merchant = give(MerchantDetail::class);
         $scriptId = 'give-paypal-commerce-js';
 
+        $settings = give_get_settings();
+
         /**
          * List of PayPal query parameters: https://developer.paypal.com/docs/checkout/reference/customize-sdk/#query-parameters
          */
@@ -149,6 +151,7 @@ EOT;
             'components' => 'hosted-fields,buttons',
             'locale' => get_locale(),
             'disable-funding' => 'credit',
+            'enable-funding' => give_is_setting_enabled( $settings['paypal_commerce_accept_venmo'] ) ? 'venmo' : '',
             'vault' => true,
             'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
             'data-client-token' => $this->merchantRepository->getClientToken(),
