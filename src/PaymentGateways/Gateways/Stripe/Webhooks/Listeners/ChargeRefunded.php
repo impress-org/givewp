@@ -58,6 +58,6 @@ class ChargeRefunded extends StripeEventListener
         /* @var Charge $stripeCharge */
         $stripeCharge = $event->data->object;
 
-        return give(DonationRepository::class)->getByGatewayTransactionId($stripeCharge->payment_intent);
+        return give(DonationRepository::class)->getByGatewayTransactionId($stripeCharge->id);
     }
 }
