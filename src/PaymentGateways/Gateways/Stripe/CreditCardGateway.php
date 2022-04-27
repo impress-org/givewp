@@ -2,10 +2,13 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe;
 
+use Give\Donations\Models\Donation;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Framework\PaymentGateways\SubscriptionModule;
 use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 
@@ -20,7 +23,7 @@ class CreditCardGateway extends PaymentGateway
     /** @var array */
     protected $errorMessages = [];
 
-    public function __construct(SubscriptionModuleInterface $subscriptionModule = null)
+    public function __construct(SubscriptionModule $subscriptionModule = null)
     {
         parent::__construct($subscriptionModule);
 
@@ -102,5 +105,15 @@ class CreditCardGateway extends PaymentGateway
     public function getLegacyFormFieldMarkup($formId, $args)
     {
         return $this->getCreditCardFormHTML($formId, $args);
+    }
+
+    /**
+     * @unreleased
+     * @inerhitDoc
+     * @throws Exception
+     */
+    public function refundDonation(Donation $donation)
+    {
+        throw new Exception('Method has not been implemented yet. Please use the legacy method in the meantime.');
     }
 }
