@@ -96,7 +96,7 @@ class TestSubscriptionRepository extends Give_Unit_Test_Case
         $this->assertEquals($subscriptionQuery->frequency, $subscriptionInstance->frequency);
         $this->assertEquals($subscriptionQuery->initial_amount, $subscriptionInstance->amount);
         $this->assertEquals($subscriptionQuery->recurring_amount, $subscriptionInstance->amount);
-        $this->assertEquals($subscriptionQuery->recurring_fee_amount, $subscriptionInstance->feeAmount);
+        $this->assertEquals($subscriptionQuery->recurring_fee_amount, $subscriptionInstance->feeAmountRecovered);
         $this->assertEquals($subscriptionQuery->bill_times, $subscriptionInstance->installments);
         $this->assertEquals($subscriptionQuery->transaction_id, $subscriptionInstance->transactionId);
         $this->assertEquals($subscriptionQuery->status, $subscriptionInstance->status->getValue());
