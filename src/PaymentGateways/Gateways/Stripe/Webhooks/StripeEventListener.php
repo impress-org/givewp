@@ -22,10 +22,12 @@ abstract class StripeEventListener implements EventListener
      */
     public function __invoke(Event $event)
     {
-        $this->setupStripeApp($this->getFormId($event));
-        $this->logEventReceiveTime();
+        if ($formId = $this->getFormId($event)) {
+            $this->setupStripeApp($formId);
+            $this->logEventReceiveTime();
 
-        $this->processEvent($this->getEventFromStripe($event->id));
+            $this->processEvent($this->getEventFromStripe($event->id));
+        }
     }
 
     /**
