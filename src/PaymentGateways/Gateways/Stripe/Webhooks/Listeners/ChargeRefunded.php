@@ -4,7 +4,6 @@ namespace Give\PaymentGateways\Gateways\Stripe\Webhooks\Listeners;
 
 use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\PaymentGateways\Gateways\Stripe\Webhooks\StripeEventListener;
 use Stripe\Charge;
 use Stripe\Event;
@@ -59,10 +58,6 @@ class ChargeRefunded extends StripeEventListener
         /* @var Charge $stripeCharge */
         $stripeCharge = $event->data->object;
 
-        if ($donation = give(DonationRepository::class)->getByGatewayTransactionId($stripeCharge->payment_intent)) {
-            return $donation;
-        }
-
-        throw new InvalidArgumentException('Unable to find donation for the Stripe event.');
+        return give(DonationRepository::class)->getByGatewayTransactionId($stripeCharge->payment_intent);
     }
 }
