@@ -1,0 +1,68 @@
+.tableCell {
+    position: relative;
+    padding-block-start: 1em;
+    padding-block-end: 2.5em;
+    padding-inline: 1em;
+    vertical-align: middle;
+    font-size: 0.875em;
+    font-weight: 600;
+    color: #333;
+
+    & a {
+        text-decoration: none;
+
+        &:focus, &:hover, &:active {
+            text-decoration: underline;
+            transition: all 0.05s ease-in-out;
+        }
+    }
+}
+
+.tableRowHeader {
+    z-index: 1;
+    text-align: start;
+
+    > a {
+        font-size: 1.125rem;
+        font-weight: 700;
+        text-decoration: none;
+    }
+}
+
+.statusBadge {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 7rem;
+    height: 2rem;
+    background-color: var(--give-primary-color);
+    border-radius: 0.1875rem;
+    color: #fff;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    column-gap: 1rem;
+    text-transform: uppercase;
+}
+
+.idBadge {
+    display: inline-flex;
+    flex-shrink: 0;
+    flex-grow: 0;
+    align-items: center;
+    background-color: #f3f2ec;
+    border: 0.0625rem solid #e0dfd9;
+    border-radius: 9999px;
+    color: #5f5f5f;
+    padding-block: 0.1em;
+    padding-inline: 0.5em;
+    text-align: center;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+}
+
+.idBadge::before {
+    content: '#';
+    font-size: 0.615em;
+    padding-inline-end: 0.25em;
+}

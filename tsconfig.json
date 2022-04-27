@@ -12,7 +12,13 @@
     "esModuleInterop": true,
     "plugins": [
       {"name": "typescript-plugin-css-modules"}
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@givewp/components": ["./src/Views/Components/index.js"],
+      "@givewp/components/*": ["./src/Views/Components/*"],
+      "@givewp/promotions/*": ["./src/Promotions/sharedResources/*"]
+    }
   },
   "include": [
     "./src",

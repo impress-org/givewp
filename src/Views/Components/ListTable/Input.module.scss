@@ -1,0 +1,10 @@
+input.input {
+    border: 1px solid rgba(221, 221, 221);
+    margin-inline-end: 0.5em;
+    block-size: 2.5rem;
+    min-inline-size: 10.25rem;
+
+    &::placeholder {
+        color: rgba(157, 157, 157);
+    }
+}
