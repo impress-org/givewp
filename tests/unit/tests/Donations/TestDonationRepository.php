@@ -82,7 +82,7 @@ final class TestDonationRepository extends \Give_Unit_Test_Case
         $this->assertEquals($query->id, $donation->id);
         $this->assertEquals($query->status, $donation->status->getValue());
         $this->assertEquals($query->amount, $donation->amount);
-        $this->assertEquals($query->gateway, $donation->gateway);
+        $this->assertEquals($query->gateway, $donation->gatewayId);
         $this->assertEquals($query->donorId, $donation->donorId);
         $this->assertEquals($query->firstName, $donation->firstName);
         $this->assertEquals($query->lastName, $donation->lastName);

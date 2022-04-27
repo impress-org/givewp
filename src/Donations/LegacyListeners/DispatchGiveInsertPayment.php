@@ -33,7 +33,7 @@ class DispatchGiveInsertPayment
             'donorEmail' => $donor->email,
             'purchaseKey' => $donation->purchaseKey,
             'currency' => $donation->amount->getCurrency()->getCode(),
-            'paymentGateway' => $donation->gateway,
+            'paymentGateway' => $donation->gatewayId,
             'userInfo' => [
                 'id' => $donor->id,
                 'firstName' => $donor->firstName,

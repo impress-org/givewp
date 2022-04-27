@@ -30,7 +30,7 @@ class DispatchGivePreInsertPayment
             'donorEmail' => $donor->email,
             'purchaseKey' => $donation->purchaseKey,
             'currency' => $donation->amount->getCurrency()->getCode(),
-            'gateway' => $donation->gateway,
+            'gateway' => $donation->gatewayId,
             'status' => $donation->status->getValue(),
             'donor_id' => $donor->id,
             'userInfo' => [
@@ -49,7 +49,7 @@ class DispatchGivePreInsertPayment
         $donation->formTitle = $paymentData['formTitle'];
         $donation->formId = $paymentData['formId'];
         $donation->purchaseKey = $paymentData['purchaseKey'];
-        $donation->gateway = $paymentData['gateway'];
+        $donation->gatewayId = $paymentData['gateway'];
         $donation->donor->id = $paymentData['donor_id'];
         $donation->donor->userId = $paymentData['userInfo']['id'];
         $donation->donor->firstName = $paymentData['userInfo']['firstName'];

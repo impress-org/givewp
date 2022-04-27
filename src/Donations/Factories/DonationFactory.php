@@ -24,7 +24,7 @@ class DonationFactory extends ModelFactory
     {
         return [
             'status' => DonationStatus::PENDING(),
-            'gateway' => TestGateway::id(),
+            'gatewayId' => TestGateway::id(),
             'mode' => DonationMode::TEST(),
             'amount' => new Money($this->faker->numberBetween(50, 50000), 'USD'),
             'donorId' => Donor::factory()->create()->id,

@@ -61,7 +61,7 @@ class TestDonation extends \Give_Unit_Test_Case
 
         $donation = Donation::create([
             'status' => DonationStatus::PENDING(),
-            'gateway' => TestGateway::id(),
+            'gatewayId' => TestGateway::id(),
             'amount' => new Money(5000, 'USD'),
             'donorId' => $donor->id,
             'firstName' => 'Bill',

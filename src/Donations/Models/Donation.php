@@ -16,6 +16,7 @@ use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Models\ValueObjects\Relationship;
+use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
 
@@ -35,7 +36,7 @@ use Give\Subscriptions\Models\Subscription;
  * @property Money $amount amount charged to the gateway
  * @property Money $feeAmountRecovered
  * @property string $exchangeRate
- * @property string $gateway
+ * @property string $gatewayId
  * @property int $donorId
  * @property string $firstName
  * @property string $lastName
@@ -69,7 +70,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
         'amount' => Money::class,
         'feeAmountRecovered' => Money::class,
         'exchangeRate' => ['string', '1'],
-        'gateway' => 'string',
+        'gatewayId' => 'string',
         'donorId' => 'int',
         'firstName' => 'string',
         'lastName' => 'string',
@@ -233,6 +234,16 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     public function intendedAmountInBaseCurrency()
     {
         return $this->intendedAmount()->inBaseCurrency($this->exchangeRate);
+    }
+
+    /**
+     * Returns the gateway instance for this donation
+     *
+     * @unreleased
+     */
+    public function gateway(): PaymentGateway
+    {
+        return give()->gateways->getPaymentGateway($this->gatewayId);
     }
 
     /**

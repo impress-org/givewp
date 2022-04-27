@@ -31,7 +31,7 @@ class DonationRepository
     private $requiredDonationProperties = [
         'formId',
         'status',
-        'gateway',
+        'gatewayId',
         'amount',
         'donorId',
         'firstName',
@@ -288,7 +288,7 @@ class DonationRepository
             DonationMetaKeys::AMOUNT => $donation->amount->formatToDecimal(),
             DonationMetaKeys::CURRENCY => $donation->amount->getCurrency()->getCode(),
             DonationMetaKeys::EXCHANGE_RATE => $donation->exchangeRate,
-            DonationMetaKeys::GATEWAY => $donation->gateway,
+            DonationMetaKeys::GATEWAY => $donation->gatewayId,
             DonationMetaKeys::DONOR_ID => $donation->donorId,
             DonationMetaKeys::FIRST_NAME => $donation->firstName,
             DonationMetaKeys::LAST_NAME => $donation->lastName,
