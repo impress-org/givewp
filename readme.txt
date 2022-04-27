@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
 Tested up to: 5.9
 Requires PHP: 7.0
-Stable tag: 2.19.8
+Stable tag: 2.20.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -250,6 +250,21 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.20.0: April 27th, 2022 =
+* New: Refreshed the donor and donation list screens in the admin
+* New: Significant improvements to the donor wall and form grid blocks
+* Enhancement: Optimized deleting a donation and all of its meta
+* Enhancement: Many under-the-hood improvements Gateway API
+* Fix: Improved error handling if an error occurs with PayPal Donations
+* Fix: Viewing a receipt in the legacy donation history page now works
+* Fix: Prevent a "donation_decimals" notice when adding and updating forms
+* Fix: Percentage goals display properly on the form list
+* Fix: The correct donation form title is shown on the Stripe checkout page
+* Fix: Donor Wall can no longer be accessed outside of the website
+* Fix: Equal operator for conditional fields works again (also affects Form Field Manager)
+* Fix: Improved Multi-Step content to provide a default and avoid confusion
+
+
 = 2.19.8: April 6th, 2022 =
 * Fix: Corrected an issue with our javascript translations
 
