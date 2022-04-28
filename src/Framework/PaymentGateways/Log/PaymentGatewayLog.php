@@ -7,6 +7,7 @@ use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\ValueObjects\CardInfo;
 
 /**
+ * @unreleased Remove card information from post_data from legacyPaymentData property of GatewayPaymentData
  * @since 2.19.6 remove cardInfo from log
  * @since 2.18.0
  */
