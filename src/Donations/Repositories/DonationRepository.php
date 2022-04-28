@@ -48,7 +48,7 @@ class DonationRepository
      * @since 2.19.6
      *
      */
-    public function getById($donationId)
+    public function getById(int $donationId)
     {
         return $this->prepareQuery()
             ->where('ID', $donationId)
