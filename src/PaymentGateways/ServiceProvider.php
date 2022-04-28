@@ -14,6 +14,7 @@ use Give\PaymentGateways\Gateways\Stripe\Controllers\UpdateStatementDescriptorAj
 use Give\PaymentGateways\Gateways\Stripe\Migrations\AddMissingTransactionIdForUncompletedDonations;
 use Give\PaymentGateways\Gateways\Stripe\Migrations\AddStatementDescriptorToStripeAccounts;
 use Give\PaymentGateways\PayPalCommerce\Migrations\RemoveLogWithCardInfo;
+use Give\PaymentGateways\PayPalCommerce\Migrations\RemoveLogWithCardInfoInLegacyPaymentData;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
@@ -66,6 +67,7 @@ class ServiceProvider implements ServiceProviderInterface
             AddStatementDescriptorToStripeAccounts::class,
             AddMissingTransactionIdForUncompletedDonations::class,
             RemoveLogWithCardInfo::class,
+            RemoveLogWithCardInfoInLegacyPaymentData::class
         ]);
     }
 }
