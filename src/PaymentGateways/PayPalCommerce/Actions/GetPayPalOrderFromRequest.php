@@ -2,7 +2,6 @@
 
 namespace Give\PaymentGateways\PayPalCommerce\Actions;
 
-use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\PaymentGateways\PayPalCommerce\Exceptions\PayPalOrderIdException;
 use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalOrder;
 use PayPalHttp\HttpException;
@@ -21,7 +20,7 @@ class GetPayPalOrderFromRequest
      */
     public function __invoke()
     {
-        $paypalOrderId = give_clean($_POST['payPalOrderId']);
+        $paypalOrderId = !empty($_POST['payPalOrderId']) ? give_clean($_POST['payPalOrderId']) : null;
 
         if (!$paypalOrderId) {
             throw new PayPalOrderIdException(
