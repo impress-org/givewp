@@ -821,7 +821,7 @@ class GIVE_CLI_COMMAND {
                     try {
                         give_delete_donation($donation->id);
                         $progress->tick();
-                    } catch (Exception $e) {
+                    } catch (Throwable $e) {
                         $progress->finish();
                         WP_CLI::error( $e->getMessage() );
                     }
@@ -872,7 +872,7 @@ class GIVE_CLI_COMMAND {
 
                         $donor->delete();
                         $progress->tick();
-                    } catch (Exception $e) {
+                    } catch (Throwable $e) {
                         $progress->finish();
                         WP_CLI::error( $e->getMessage() );
                         return;
@@ -908,7 +908,7 @@ class GIVE_CLI_COMMAND {
                         $form = wp_delete_post($form->id);
                         give()->form_meta->delete_all_meta($form->id);
                         $progress->tick();
-                    } catch (Exception $e) {
+                    } catch (Throwable $e) {
                         $progress->finish();
                         WP_CLI::error( $e->getMessage() );
                     }
