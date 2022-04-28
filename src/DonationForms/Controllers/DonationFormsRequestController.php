@@ -88,7 +88,6 @@ class DonationFormsRequestController
         $perPage = $this->request->get_param('perPage');
 
         $query = DB::table('posts')
-            ->selectRaw('SELECT COUNT(ID) AS count')
             ->where('post_type', 'give_forms');
 
         if ($status === 'any') {
@@ -107,6 +106,6 @@ class DonationFormsRequestController
 
         $query->limit($perPage);
 
-        return $query->get()->count;
+        return $query->count();
     }
 }
