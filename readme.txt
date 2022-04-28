@@ -263,7 +263,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Fix: Donor Wall can no longer be accessed outside of the website
 * Fix: Equal operator for conditional fields works again (also affects Form Field Manager)
 * Fix: Improved Multi-Step content to provide a default and avoid confusion
-
+* Fix: Clicking the main "Donations" menu item goes to the forms list instead of making a new form
 
 = 2.19.8: April 6th, 2022 =
 * Fix: Corrected an issue with our javascript translations
