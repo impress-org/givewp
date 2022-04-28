@@ -148,8 +148,6 @@ document.addEventListener('DOMContentLoaded', () => {
         options.intent = isRecurring ? 'subscription' : 'capture';
         options.vault = !!isRecurring;
         options.currency = Give.form.fn.getInfo('currency_code', jQuery(form));
-        //TODO remove below comment before merging pull request.
-        //givePayPalCommerce.payPalSdkQueryParameters.locale = 'en'
 
         return loadScript({...givePayPalCommerce.payPalSdkQueryParameters, ...options});
     }
