@@ -25,9 +25,9 @@ jobs:
                 wordpress: latest
                 include:
                   - php: 7.0
-                  wordpress: '5.0'
+                    wordpress: '5.0'
                   - php: 7.4
-                  wordpress: '5.0'
+                    wordpress: '5.0'
 
         services:
             mysql56:
