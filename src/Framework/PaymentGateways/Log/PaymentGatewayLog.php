@@ -24,6 +24,21 @@ class PaymentGatewayLog extends Log
         foreach ($arguments[1] as $argument) {
             if ($argument instanceof GatewayPaymentData) {
                 unset($argument->cardInfo, $argument->legacyPaymentData['card_info']);
+
+                $cardFields = [
+                    'card_number',
+                    'card_cvc',
+                    'card_name',
+                    'card_exp_month',
+                    'card_exp_year',
+                    'card_expiry'
+                ];
+
+                foreach ($argument->legacyPaymentData['post_data'] as $fieldName => $data) {
+                    if (in_array($fieldName, $cardFields, true)) {
+                        unset($argument->legacyPaymentData['post_data'][$fieldName]);
+                    }
+                }
             }
 
             if ($argument instanceof CardInfo) {
