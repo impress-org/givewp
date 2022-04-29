@@ -22,18 +22,24 @@ trait Aggregate
     {
         $column = (!$column || $column === '*') ? '1' : trim($column);
 
-        if ($this->limit || $this->offset) {
-            $result = $this->getAll();
+        $this->selects[] = new RawSQL('SELECT COUNT(%1s) AS count', $column);
+        $result = $this->get();
 
-            $count = $result ? count($result) : 0;
-        } else {
-            $this->selects[] = new RawSQL('SELECT COUNT(%1s) AS count', $column);
-            $result = $this->get();
+        return +$result->count;
+    }
 
-            $count = $result ? +$result->count : 0;
-        }
+    /**
+     * Returns the number of rows returned by a query
+     *
+     * @unreleased
+     *
+     * @return int
+     */
+    public function countRows()
+    {
+        $result = $this->getAll();
 
-        return $count;
+        return $result ? count($result) : 0;
     }
 
     /**
