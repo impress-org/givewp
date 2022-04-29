@@ -1,0 +1,39 @@
+.give-form-grid-card__body {
+    align-items: center;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    order: 2;
+
+    .give-card__title,
+    .give-card__text,
+    .give-card__progress {
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+    }
+
+    .give-card__title {
+        padding-bottom: 1.2rem !important;
+    }
+}
+
+.give-form-grid-btn {
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    border: 0.125rem solid var(--give-primary-color);
+    border-radius: 0.4rem;
+    background-color: var(--give-primary-color);
+    color: #fff;
+    text-align: center;
+    font-family: inherit;
+    font-size: 1.375rem;
+    font-weight: 600;
+    line-height: 1.2;
+
+    transition-property: background-color, color;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in;
+}
