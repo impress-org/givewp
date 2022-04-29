@@ -105,6 +105,44 @@ final class AggregateTest extends TestCase
     }
 
     /**
+     *
+     * @since 2.19.0
+     *
+     * @return void
+     */
+    public function testCountRowsShouldReturnTheTotalNumberOfRecords()
+    {
+        $data = [
+            [
+                'post_title' => 'Query Builder Aggregate test 0',
+            ],
+            [
+                'post_title' => 'Query Builder Aggregate test 1',
+            ],
+            [
+                'post_title' => 'Query Builder Aggregate test 2',
+            ]
+        ];
+
+        foreach ($data as $row) {
+            DB::table('posts')->insert($row);
+        }
+
+        $postsCount = DB::table('posts')
+            ->limit(2)
+            ->countRows();
+
+        $this->assertEquals(2, $postsCount);
+
+        $nonExistentPostTypeCount = DB::table('posts')
+            ->where('post_type', 'dummy')
+            ->limit(2)
+            ->countRows();
+
+        $this->assertEquals(0, $nonExistentPostTypeCount);
+    }
+
+    /**
      * @since 2.19.0
      *
      * @return void
