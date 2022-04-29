@@ -239,6 +239,18 @@ class TestModel extends \Give_Unit_Test_Case
 
     /**
      * @unreleased
+     */
+    public function testModelRelationsShouldBeCached()
+    {
+        $model = new MockModelWithRelationship();
+
+        $post = $model->relatedAndCallableHasOne;
+
+        self::assertSame($model->relatedAndCallableHasOne, $post);
+    }
+
+    /**
+     * @unreleased
      *
      * @return array
      */
