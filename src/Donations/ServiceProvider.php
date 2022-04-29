@@ -31,6 +31,7 @@ class ServiceProvider implements ServiceProviderInterface
     public function boot()
     {
         $this->bootLegacyListeners();
+        $this->registerDonationsAdminPage();
     }
 
     /**
@@ -65,5 +66,25 @@ class ServiceProvider implements ServiceProviderInterface
         });
 
         Hooks::addAction('give_donation_deleted', RemoveSequentialId::class);
+    }
+
+    /**
+     * Donations Admin page
+     *
+     * @unreleased
+     */
+    private function registerDonationsAdminPage()
+    {
+        $userId = get_current_user_id();
+        $showLegacy = get_user_meta($userId, '_give_donations_archive_show_legacy', true);
+        // only register new admin page if user hasn't chosen to use the old one
+        if(empty($showLegacy))
+        {
+            Hooks::addAction('admin_menu', DonationsAdminPage::class, 'registerMenuItem');
+
+            if (DonationsAdminPage::isShowing()) {
+                Hooks::addAction('admin_enqueue_scripts', DonationsAdminPage::class, 'loadScripts');
+            }
+        }
     }
 }

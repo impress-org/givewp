@@ -43,7 +43,7 @@ class DonationFormsRepository
 
         // Status
         if ($status === 'any') {
-            $query->whereIn('post_status', ['publish', 'draft', 'pending']);
+            $query->whereIn('post_status', ['publish', 'draft', 'pending', 'private']);
         } else {
             $query->where('post_status', $status);
         }

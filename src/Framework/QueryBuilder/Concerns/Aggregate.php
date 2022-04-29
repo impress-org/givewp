@@ -15,7 +15,7 @@ trait Aggregate
      * @since 2.19.0
      * @param  null|string  $column
      *
-     * @return string
+     * @return int
      */
     public function count($column = null)
     {
@@ -23,7 +23,7 @@ trait Aggregate
 
         $this->selects[] = new RawSQL('SELECT COUNT(%1s) AS count', $column);
 
-        return $this->get()->count;
+        return +$this->get()->count;
     }
 
     /**
@@ -32,13 +32,13 @@ trait Aggregate
      * @since 2.19.0
      * @param  string  $column
      *
-     * @return string
+     * @return int|float
      */
     public function sum($column)
     {
         $this->selects[] = new RawSQL('SELECT SUM(%1s) AS sum', $column);
 
-        return $this->get()->sum;
+        return +$this->get()->sum;
     }
 
 
@@ -48,13 +48,13 @@ trait Aggregate
      * @since 2.19.0
      * @param  string  $column
      *
-     * @return string
+     * @return int|float
      */
     public function avg($column)
     {
         $this->selects[] = new RawSQL('SELECT AVG(%1s) AS avg', $column);
 
-        return $this->get()->avg;
+        return +$this->get()->avg;
     }
 
     /**
@@ -63,13 +63,13 @@ trait Aggregate
      * @since 2.19.0
      * @param  string  $column
      *
-     * @return string
+     * @return int|float
      */
     public function min($column)
     {
         $this->selects[] = new RawSQL('SELECT MIN(%1s) AS min', $column);
 
-        return $this->get()->min;
+        return +$this->get()->min;
     }
 
     /**
@@ -78,12 +78,12 @@ trait Aggregate
      * @since 2.19.0
      * @param  string  $column
      *
-     * @return string
+     * @return int|float
      */
     public function max($column)
     {
         $this->selects[] = new RawSQL('SELECT MAX(%1s) AS max', $column);
 
-        return $this->get()->max;
+        return +$this->get()->max;
     }
 }
