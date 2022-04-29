@@ -72,7 +72,7 @@ final class TestDonationRepository extends \Give_Unit_Test_Case
 
         $repository->insert($donation);
 
-        /** @var object $query */
+        /** @var Donation $query */
         $query = $repository->prepareQuery()
             ->where('ID', $donation->id)
             ->get();
@@ -82,7 +82,7 @@ final class TestDonationRepository extends \Give_Unit_Test_Case
         $this->assertEquals($query->id, $donation->id);
         $this->assertEquals($query->status, $donation->status->getValue());
         $this->assertEquals($query->amount, $donation->amount);
-        $this->assertEquals($query->gateway, $donation->gatewayId);
+        $this->assertEquals($query->gatewayId, $donation->gatewayId);
         $this->assertEquals($query->donorId, $donation->donorId);
         $this->assertEquals($query->firstName, $donation->firstName);
         $this->assertEquals($query->lastName, $donation->lastName);
@@ -105,7 +105,7 @@ final class TestDonationRepository extends \Give_Unit_Test_Case
         $donationMissingAmount = new Donation([
             'createdAt' => Temporal::getCurrentDateTime(),
             'status' => DonationStatus::PENDING(),
-            'gateway' => TestGateway::id(),
+            'gatewayId' => TestGateway::id(),
             'donorId' => 1,
             'firstName' => 'Bill',
             'lastName' => 'Murray',
@@ -160,7 +160,7 @@ final class TestDonationRepository extends \Give_Unit_Test_Case
         $donationMissingAmount = new Donation([
             'createdAt' => Temporal::getCurrentDateTime(),
             'status' => DonationStatus::PENDING(),
-            'gateway' => TestGateway::id(),
+            'gatewayId' => TestGateway::id(),
             'donorId' => 1,
             'firstName' => 'Bill',
             'lastName' => 'Murray',
