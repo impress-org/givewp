@@ -779,13 +779,18 @@ class GIVE_CLI_COMMAND {
      * [--donors]
      * : Delete all donors
      *
+     * [--donors-and-donations]
+     * : Delete all donors and their donations
+     *
      * [--forms]
      * : Delete all donation forms
      *
      * ## EXAMPLES
      *     wp give delete --donations
      *     wp give delete --donors
+     *     wp give delete --donors-and-donations
      *     wp give delete --forms
+     *     wp give delete --donations --donors --forms
      *
      * @unreleased
      */
@@ -796,132 +801,126 @@ class GIVE_CLI_COMMAND {
             return;
         }
 
-        $arg = key($assoc_args);
+        $actions = array_keys($assoc_args);
 
-        switch ($arg) {
-            /**
-             * Delete donations
-             */
-            case 'donations':
+        foreach($actions as $action) {
+            switch ($action) {
+                /**
+                 * Delete donations
+                 */
+                case 'donations':
 
-                $donations = DB::table('posts')
-                    ->select('id')
-                    ->where('post_type', 'give_payment')
-                    ->getAll();
+                    $donations = DB::table('posts')
+                        ->select('id')
+                        ->where('post_type', 'give_payment')
+                        ->getAll();
 
-                if ( ! $donations ) {
-                    WP_CLI::success( 'Nothing to delete.' );
-                    return;
-                }
-
-                $count = count($donations);
-                $progress = WP_CLI\Utils\make_progress_bar('Deleting donations', $count);
-
-                foreach ($donations as $donation) {
-                    try {
-                        give_delete_donation($donation->id);
-                        $progress->tick();
-                    } catch (Throwable $e) {
-                        $progress->finish();
-                        WP_CLI::error( $e->getMessage() );
+                    if ( ! $donations ) {
+                        WP_CLI::success( 'Donations: nothing to delete.' );
+                        break;
                     }
-                }
 
-                $progress->finish();
+                    $count = count($donations);
+                    $progress = WP_CLI\Utils\make_progress_bar('Deleting donations', $count);
 
-                WP_CLI::success( $count . ' donations deleted' );
-
-                break;
-
-            /**
-             * Delete donors
-             */
-            case 'donors':
-
-                $donors = DB::table('give_donors')
-                    ->select('id')
-                    ->getAll();
-
-                if ( ! $donors ) {
-                    WP_CLI::success( 'Nothing to delete.' );
-                    return;
-                }
-
-                $count = count($donors);
-                $progress = WP_CLI\Utils\make_progress_bar('Deleting donors', $count);
-
-                foreach ($donors as $donor) {
-                    try {
-                        /**
-                         * Fires before deleting donor.
-                         *
-                         * @param int  $donor_id     The ID of the donor.
-                         * @param bool $delete_donor Confirm Donor Deletion.
-                         * @param bool $delete_donation  Confirm Donor related donations deletion.
-                         *
-                         * @unreleased
-                         */
-                        do_action( 'give_pre_delete_donor', $donor->id, true, true );
-
-                        $donor = Donor::find($donor->id);
-
-                        // Delete donor donations
-                        foreach( $donor->donations as $donation ) {
-                            $donation->delete();
+                    foreach ($donations as $donation) {
+                        try {
+                            give_delete_donation($donation->id);
+                            $progress->tick();
+                        } catch (Throwable $e) {
+                            $progress->finish();
+                            WP_CLI::error( $e->getMessage() );
                         }
-
-                        $donor->delete();
-                        $progress->tick();
-                    } catch (Throwable $e) {
-                        $progress->finish();
-                        WP_CLI::error( $e->getMessage() );
-                        return;
                     }
-                }
 
-                $progress->finish();
+                    $progress->finish();
 
-                WP_CLI::success( $count . ' donors deleted' );
+                    WP_CLI::success( $count . ' donations deleted' );
 
-                break;
+                    break;
 
-            /**
-             * Delete forms
-             */
-            case 'forms':
+                /**
+                 * Delete donors
+                 */
+                case 'donors':
+                case 'donors-and-donations':
 
-                $forms = DB::table('posts')
-                    ->select('id')
-                    ->where('post_type', 'give_forms')
-                    ->getAll();
+                    $donors = DB::table('give_donors')
+                        ->select('id')
+                        ->getAll();
 
-                if ( ! $forms ) {
-                    WP_CLI::success( 'Nothing to delete.' );
-                    return;
-                }
-
-                $count = count($forms);
-                $progress = WP_CLI\Utils\make_progress_bar('Deleting donation forms', $count);
-
-                foreach ($forms as $form) {
-                    try {
-                        $form = wp_delete_post($form->id);
-                        give()->form_meta->delete_all_meta($form->id);
-                        $progress->tick();
-                    } catch (Throwable $e) {
-                        $progress->finish();
-                        WP_CLI::error( $e->getMessage() );
+                    if ( ! $donors ) {
+                        WP_CLI::success( 'Donors: nothing to delete.' );
+                        break;
                     }
-                }
 
-                $progress->finish();
+                    $count = count($donors);
+                    $progress = WP_CLI\Utils\make_progress_bar('Deleting donors', $count);
 
-                WP_CLI::success( $count . ' donation forms deleted' );
+                    foreach ($donors as $donor) {
+                        try {
+                            $donor = Donor::find($donor->id);
 
-                break;
+                            // Delete donor donations
+                            if ('donors-and-donation' === $action) {
+                                foreach( $donor->donations as $donation ) {
+                                    $donation->delete();
+                                }
+                            }
 
-            default:
-                WP_CLI::error( 'Invalid argument '. $arg );
+                            $donor->delete();
+                            $progress->tick();
+                        } catch (Throwable $e) {
+                            $progress->finish();
+                            WP_CLI::error( $e->getMessage() );
+                            break;
+                        }
+                    }
+
+                    $progress->finish();
+
+                    WP_CLI::success( $count . ' donors deleted' );
+
+                    break;
+
+                /**
+                 * Delete forms
+                 */
+                case 'forms':
+
+                    $forms = DB::table('posts')
+                        ->select('id')
+                        ->where('post_type', 'give_forms')
+                        ->getAll();
+
+                    if ( ! $forms ) {
+                        WP_CLI::success( 'Donation forms: nothing to delete.' );
+                        break;
+                    }
+
+                    $count = count($forms);
+                    $progress = WP_CLI\Utils\make_progress_bar('Deleting donation forms', $count);
+
+                    foreach ($forms as $form) {
+                        try {
+                            $form = wp_delete_post($form->id);
+                            give()->form_meta->delete_all_meta($form->id);
+                            $progress->tick();
+                        } catch (Throwable $e) {
+                            $progress->finish();
+                            WP_CLI::error( $e->getMessage() );
+                        }
+                    }
+
+                    $progress->finish();
+
+                    WP_CLI::success( $count . ' donation forms deleted' );
+
+                    break;
+
+                default:
+                    WP_CLI::error( 'Invalid argument '. $action );
+            }
         }
     }
 
