@@ -50,7 +50,7 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
 	}
 	?>
 
-		<div class="give-card__body">
+		<div class="give-form-grid-card__body">
 			<?php
 			// Maybe display the form title.
 			if ( true === $atts['show_title'] ) {
@@ -60,7 +60,36 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
 				);
 			}
 
-			// Maybe display the form excerpt.
+
+            // Maybe display the featured image.
+            if (
+                give_is_setting_enabled($give_settings['form_featured_img'])
+                && ($imageSrc = $formTemplate->getFormFeaturedImage($form_id))
+                && true === $atts['show_featured_image']
+            ) {
+                /*
+                 * Filters the image size used in card layouts.
+                 *
+                 * @param string The image size.
+                 * @param array  Form grid attributes.
+                 */
+                $image_size = apply_filters('give_form_grid_image_size', $atts['image_size'], $atts);
+                $image_attr = '';
+
+                if ('auto' !== $atts['image_height']) {
+                    $image_attr = [
+                        'style' => 'height: ' . $atts['image_height'],
+                    ];
+                }
+
+                printf(
+                    '<div class="give-card__media">%1$s</div>',
+                    wp_get_attachment_image(attachment_url_to_postid($imageSrc), $image_size, false, $image_attr)
+                );
+            }
+
+
+            // Maybe display the form excerpt.
 			if ( true === $atts['show_excerpt'] ) {
 				if ( $raw_content = $formTemplate->getFormExcerpt( $form_id ) ) {
 					$stripped_content = wp_strip_all_tags(
@@ -113,9 +142,9 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                     ? $atts['donate_button_text_color']
                     : '#fff';
                 ?>
+                <br />
                 <div>
-                    <br />
-                    <button class="give-btn" style="background-color: <?php echo $button_bg_color; ?>;">
+                    <button class="give-form-grid-btn" style="background-color: <?php echo $button_bg_color; ?>;">
                         <span style="color: <?php echo $button_text_color; ?>">
                             <?php echo $button_text ?: __( 'Donate', 'give' ); ?>
                         </span>
@@ -123,35 +152,6 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                 </div>
             <?php endif; ?>
 		</div>
-
-		<?php
-		// Maybe display the featured image.
-		if (
-			give_is_setting_enabled( $give_settings['form_featured_img'] )
-			&& ( $imageSrc = $formTemplate->getFormFeaturedImage( $form_id ) )
-			&& true === $atts['show_featured_image']
-		) {
-			/*
-			 * Filters the image size used in card layouts.
-			 *
-			 * @param string The image size.
-			 * @param array  Form grid attributes.
-			 */
-			$image_size = apply_filters( 'give_form_grid_image_size', $atts['image_size'], $atts );
-			$image_attr = '';
-
-			if ( 'auto' !== $atts['image_height'] ) {
-				$image_attr = [
-					'style' => 'height: ' . $atts['image_height'],
-				];
-			}
-
-			printf(
-				'<div class="give-card__media">%1$s</div>',
-				wp_get_attachment_image( attachment_url_to_postid( $imageSrc ), $image_size, false, $image_attr )
-			);
-		}
-		?>
 	</a>
 	<?php
 	// If modal, print form in hidden container until it is time to be revealed.
