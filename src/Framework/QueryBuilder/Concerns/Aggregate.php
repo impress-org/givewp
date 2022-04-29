@@ -13,24 +13,35 @@ trait Aggregate
      * Returns the number of rows returned by a query
      *
      * @since 2.19.0
-     * @param  null|string  $column
+     *
+     * @param null|string $column
      *
      * @return int
      */
     public function count($column = null)
     {
-        $column = ( ! $column || $column === '*') ? '1' : trim($column);
+        $column = (!$column || $column === '*') ? '1' : trim($column);
 
-        $this->selects[] = new RawSQL('SELECT COUNT(%1s) AS count', $column);
+        if ($this->limit || $this->offset) {
+            $result = $this->getAll();
 
-        return +$this->get()->count;
+            $count = $result ? count($result) : 0;
+        } else {
+            $this->selects[] = new RawSQL('SELECT COUNT(%1s) AS count', $column);
+            $result = $this->get();
+
+            $count = $result ? +$result->count : 0;
+        }
+
+        return $count;
     }
 
     /**
      * Returns the total sum in a set of values
      *
      * @since 2.19.0
-     * @param  string  $column
+     *
+     * @param string $column
      *
      * @return int|float
      */
@@ -46,7 +57,8 @@ trait Aggregate
      * Get the average value in a set of values
      *
      * @since 2.19.0
-     * @param  string  $column
+     *
+     * @param string $column
      *
      * @return int|float
      */
@@ -61,7 +73,8 @@ trait Aggregate
      * Returns the minimum value in a set of values
      *
      * @since 2.19.0
-     * @param  string  $column
+     *
+     * @param string $column
      *
      * @return int|float
      */
@@ -76,7 +89,8 @@ trait Aggregate
      * Returns the maximum value in a set of values
      *
      * @since 2.19.0
-     * @param  string  $column
+     *
+     * @param string $column
      *
      * @return int|float
      */
