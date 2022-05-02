@@ -28,7 +28,7 @@
             );
 
             printf(
-                '<fieldset id="giveDonorExport-searchBy" style="display: none">
+                '<fieldset id="giveDonorExport-searchBy" style="display: none; line-height: 2rem;">
                     <label for="giveDonorExport-searchBy">
                         %s
                     </label>
