@@ -151,12 +151,15 @@ EOT;
             'components' => 'hosted-fields,buttons',
             'locale' => get_locale(),
             'disable-funding' => 'credit',
-            'enable-funding' => give_is_setting_enabled( $settings['paypal_commerce_accept_venmo'] ) ? 'venmo' : '',
             'vault' => true,
             'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
             'data-client-token' => $this->merchantRepository->getClientToken(),
         ];
 
+        if (give_is_setting_enabled($settings['paypal_commerce_accept_venmo'])) {
+            $payPalSdkQueryParameters['enable-funding'] = 'venmo';
+        }
+        
         wp_enqueue_script(
             $scriptId,
             GIVE_PLUGIN_URL . 'assets/dist/js/paypal-commerce.js',
