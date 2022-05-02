@@ -86,7 +86,7 @@ jQuery( document ).ready( function( $ ) {
         if(instance.id === 'giveDonorExport-endDate'){
             donorExportEndDate = dateText;
         }
-        if (startDate || endDate) {
+        if (donorExportStartDate || donorExportEndDate) {
             $('#give_donors_export_donation_search_by').show();
         } else {
             $('#give_donors_export_donation_search_by').hide();
