@@ -2,6 +2,7 @@
 
 namespace Give\DonationForms\Repositories;
 
+use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 
 /**
@@ -18,7 +19,7 @@ class DonationFormsRepository
     {
         return DB::table('posts')
             ->leftJoin('give_donationmeta', 'ID', 'donation_id')
-            ->where('meta_key', '_give_payment_form_id')
+            ->where('meta_key', DonationMetaKeys::FORM_ID)
             ->where('meta_value', $formId)
             ->count();
     }
