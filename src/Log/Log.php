@@ -65,22 +65,14 @@ use Give\Log\ValueObjects\LogType;
  */
 class Log
 {
+    const REDACTION_LIST = ['card', 'password', 'secret', 'token'];
+
     public function __call($name, $arguments)
     {
         list ($message, $context) = array_pad($arguments, 2, null);
 
         if (is_array($context)) {
-            // Convert context values to string
-            $context = array_map(
-                function ($item) {
-                    if (is_array($item) || is_object($item)) {
-                        $item = print_r($item, true);
-                    }
-
-                    return $item;
-                },
-                $context
-            );
+            $context = $this->serializeAndRedactContext($context);
 
             // Default fields
             $data = array_filter(
@@ -117,15 +109,49 @@ class Log
     }
 
     /**
-     * Static helper for calling the logger methods
+     * Takes the context array, serializes it, and redacts sensitive data.
      *
-     * @param  string  $name
-     * @param  array  $arguments
+     * @unreleased
+     */
+    private function serializeAndRedactContext(array $context): array
+    {
+        $redactedData = [];
+
+        foreach ($context as $key => $value) {
+            foreach (self::REDACTION_LIST as $redaction) {
+                if (stripos($key, $redaction) !== false) {
+                    $redactedData[$key] = '[[redacted]]';
+                    continue 2;
+                }
+            }
+
+            if (is_array($value)) {
+                $value = $this->serializeAndRedactContext($value);
+            } elseif (is_object($value)) {
+                $value = $this->serializeAndRedactContext(
+                    array_merge(
+                        ['class' => get_class($value)],
+                        (array)$value
+                    )
+                );
+            }
+
+            $redactedData[$key] = $value;
+        }
+
+        return $redactedData;
+    }
+
+    /**
+     * Static helper for calling the logger methods
      *
      * @since 2.19.6 added conditional for logging debug()
      * @since 2.18.0 - always log errors, warnings & only log all if WP_DEBUG_LOG is enabled
      * @since 2.11.1
      *
+     * @param array $arguments
+     *
+     * @param string $name
      */
     public static function __callStatic($name, $arguments)
     {
