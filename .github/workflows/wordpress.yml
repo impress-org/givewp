@@ -11,6 +11,9 @@ on:
     # Allows you to run this workflow manually from the Actions tab
     workflow_dispatch:
 
+    # Allows you to use this workflow as part of another workflow
+    workflow_call:
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
     # This workflow contains a single job called "test"
@@ -18,13 +21,12 @@ jobs:
         # The type of runner that the job will run on
         runs-on: ubuntu-18.04
         strategy:
-            continue-on-error: true
             matrix:
-                php: [ 7.0, 7.4, 8.0 ]
+                php: [ 7.0, 7.2, 8.0 ]
                 mysql: [ 'mysql:5.6', 'mysql:8.0' ]
                 wordpress: [ '5.0', latest ]
                 exclude:
-                    - php: 8.0
+                  - php: 8.0
                     wordpress: '5.0'
 
         services:
