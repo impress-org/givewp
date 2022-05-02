@@ -18,10 +18,10 @@ class DonorsExport extends Give_Batch_Export
     /** @inheritdoc */
     protected $posted_data;
 
-    /** @var DateTime */
+    /** @var String */
     protected $startDate;
 
-    /** @var DateTime */
+    /** @var String */
     protected $endDate;
 
     /** @var String */
@@ -33,16 +33,16 @@ class DonorsExport extends Give_Batch_Export
     public function set_properties( $posted_data ) {
         $this->posted_data = $posted_data;
 
-        if( $this->posted_data['start_date'] ) {
-            $this->startDate = date('Y-m-d', strtotime($this->posted_data['start_date']));
+        if( $this->posted_data['giveDonorExport-startDate'] ) {
+            $this->startDate = date('Y-m-d', strtotime($this->posted_data['giveDonorExport-startDate']));
         }
 
-        if( $this->posted_data['end_date'] ) {
-            $this->endDate = date('Y-m-d', strtotime($this->posted_data['end_date']));
+        if( $this->posted_data['giveDonorExport-endDate'] ) {
+            $this->endDate = date('Y-m-d', strtotime($this->posted_data['giveDonorExport-endDate']));
         }
 
-        if( $this->posted_data['search_by'] ) {
-            $this->searchBy = $this->posted_data['search_by'];
+        if( $this->posted_data['searchBy'] ) {
+            $this->searchBy = $this->posted_data['searchBy'];
         }
     }
 
