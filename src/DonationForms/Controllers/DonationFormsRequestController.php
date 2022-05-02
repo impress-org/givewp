@@ -2,6 +2,7 @@
 
 namespace Give\DonationForms\Controllers;
 
+use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
 use Give\Framework\Database\DB;
 use WP_REST_Request;
 
@@ -44,10 +45,10 @@ class DonationFormsRequestController
                 ['post_title', 'title']
             )
             ->attachMeta('give_formmeta', 'id', 'form_id',
-                ['_give_form_earnings', 'revenue'],
-                ['_give_donation_levels', 'donationLevels'],
-                ['_give_set_price', 'setPrice'],
-                ['_give_goal_option', 'goalEnabled']
+                [DonationFormMetaKeys::FORM_EARNINGS, 'revenue'],
+                [DonationFormMetaKeys::DONATION_LEVELS, 'donationLevels'],
+                [DonationFormMetaKeys::SET_PRICE, 'setPrice'],
+                [DonationFormMetaKeys::GOAL_OPTION, 'goalEnabled']
             )
             ->where('post_type', 'give_forms')
             ->limit($perPage)
