@@ -27,10 +27,13 @@ jobs:
                 mysql: [ 'mysql:5.6', 'mysql:8.0' ]
                 wordpress: [ '5.0', latest ]
                 experimental: [ false ]
+                include:
+                  - php: 8.0
+                    wordpress: latest
+                    experimental: true
                 exclude:
                   - php: 8.0
                     wordpress: '5.0'
-                    experimental: true
 
         services:
             mysql56:
