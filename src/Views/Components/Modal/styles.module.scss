@@ -20,6 +20,8 @@
 .modal {
     display: block;
     max-width: 600px;
+    max-height: calc(100% - 2rem);
+    overflow-y: auto;
     width: 100%;
     position: absolute;
     top: 50%;
