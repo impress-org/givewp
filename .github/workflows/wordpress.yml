@@ -34,6 +34,8 @@ jobs:
                 exclude:
                   - php: 8.0
                     wordpress: '5.0'
+                  - php: 8.0
+                    experimental: false
 
         services:
             mysql56:
