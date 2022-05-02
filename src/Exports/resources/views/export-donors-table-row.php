@@ -28,17 +28,17 @@
             );
 
             printf(
-                '<fieldset id="give_donors_export_donation_search_by" style="display: none">
-                    <label for="give_donors_export_donation_search_by">
+                '<fieldset id="giveDonorExport-searchBy" style="display: none">
+                    <label for="giveDonorExport-searchBy">
                         %s
                     </label>
-                    <input type=radio id="give_donors_export_donation_search_by_donation"
-                        name="search_by" value="donation" checked/>
-                    <label for="give_donors_export_donation_search_by_donation">
+                    <input type=radio id="giveDonorExport-searchByDonation"
+                        name="searchBy" value="donation" checked/>
+                    <label for="giveDonorExport-searchByDonation">
                         %s
                     </label>
-                    <input type=radio id="give_donors_export_donation_search_by_donor" name="search_by" value="donor"/>
-                    <label for="give_donors_export_donation_search_by_donor">
+                    <input type=radio id="giveDonorExport-searchByDonor" name="searchBy" value="donor"/>
+                    <label for="giveDonorExport-searchByDonor">
                         %s
                     </label>
                 </fieldset>',

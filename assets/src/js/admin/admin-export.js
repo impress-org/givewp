@@ -87,9 +87,9 @@ jQuery( document ).ready( function( $ ) {
             donorExportEndDate = dateText;
         }
         if (donorExportStartDate || donorExportEndDate) {
-            $('#give_donors_export_donation_search_by').show();
+            $('#giveDonorExport-searchBy').show();
         } else {
-            $('#give_donors_export_donation_search_by').hide();
+            $('#giveDonorExport-searchBy').hide();
         }
     }
 
