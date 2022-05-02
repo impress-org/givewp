@@ -151,15 +151,16 @@ class ListForms extends Endpoint
      */
     private function getFormAmount($form): string
     {
-        $donationLevels = unserialize($form->donationLevels);
+        $donationLevels = unserialize($form->donationLevels, ['allowed_classes' => false]);
 
-        if (is_array($donationLevels)) {
-            $amount = array_column($donationLevels, '_give_amount');
-
+        if (
+            is_array($donationLevels)
+            && $amount = array_column($donationLevels, '_give_amount')
+        ) {
             return $this->formatAmount(min($amount)) . ' - ' . $this->formatAmount(max($amount));
         }
 
-        return $this->formatAmount($form->setPrice);
+        return $this->formatAmount($form->setPrice ?? '');
     }
 
     /**
