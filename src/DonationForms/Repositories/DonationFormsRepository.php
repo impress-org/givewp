@@ -16,14 +16,10 @@ class DonationFormsRepository
      */
     public function getFormDonationsCount(int $formId): int
     {
-        $donations = DB::table('posts')
-            ->selectRaw('SELECT COUNT(ID) as count')
+        return DB::table('posts')
             ->leftJoin('give_donationmeta', 'ID', 'donation_id')
             ->where('meta_key', '_give_payment_form_id')
             ->where('meta_value', $formId)
-            ->get();
-
-
-        return $donations->count;
+            ->count();
     }
 }
