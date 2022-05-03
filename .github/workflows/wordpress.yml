@@ -26,16 +26,9 @@ jobs:
                 php: [ 7.0, 7.4, 8.0 ]
                 mysql: [ 'mysql:5.6', 'mysql:8.0.28' ]
                 wordpress: [ '5.0', latest ]
-                experimental: [ false, true ]
                 exclude:
-                  - php: 7.0
-                    experimental: true
-                  - php: 7.4
-                    experimental: true
                   - php: 7.4
                     wordpress: '5.0'
-                  - php: 8.0
-                    experimental: false
                   - php: 8.0
                     wordpress: '5.0'
 
@@ -88,7 +81,7 @@ jobs:
                         MYSQL_PORT=${{ job.services.mysql56.ports[3306] }}
                         MYSQL_PASS=N0Tweak!@123!
                         ;;
-                      'mysql:8.0')
+                      'mysql:8.0.28')
                         MYSQL_PORT=${{ job.services.mysql80.ports[3306] }}
                         MYSQL_PASS=N0Tweak!@123!
                         ;;
