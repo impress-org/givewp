@@ -130,7 +130,7 @@ class Log
             } elseif (is_object($value)) {
                 $value = $this->serializeAndRedactContext(
                     array_merge(
-                        ['class' => get_class($value)],
+                        ['Object Class' => get_class($value)],
                         (array)$value
                     )
                 );
