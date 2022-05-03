@@ -106,7 +106,6 @@ install_db() {
 
 	# create database
 	eval "mysqladmin create ${DB_NAME} --user=${DB_USER} --password=${DB_PASS} ${EXTRA}"
-	eval "mysqld --sort_buffer_size=512K"
 }
 
 install_wp
