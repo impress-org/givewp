@@ -91,7 +91,6 @@ jobs:
                     MYSQL_VERSION: ${{ matrix.mysql }}
 
             -   name: Setup tmate session
-                if: ${{ failure() }}
                 uses: mxschmitt/action-tmate@v3
 
             -   name: Set Up Tests
