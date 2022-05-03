@@ -63,7 +63,7 @@ class TestSubscription extends \Give_Unit_Test_Case
         /** @var Subscription $subscriptionFromDatabase */
         $subscriptionFromDatabase = Subscription::find($subscription->id);
 
-        $this->assertEquals($subscription->getAttributes(), $subscriptionFromDatabase->getAttributes());
+        $this->assertEquals($subscription->toArray(), $subscriptionFromDatabase->toArray());
     }
 
     /**
