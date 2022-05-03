@@ -31,14 +31,14 @@ jobs:
                   - php: 7.0
                     wordpress: '5.0'
                     mysql: [ 'mysql:5.6', 'mysql:8.0' ]
-                    experimental: [ false ]
+                    experimental: false
                   - php: 8.0
                     wordpress: [ latest ]
                     mysql: [ 'mysql:5.6', 'mysql:8.0' ]
-                    experimental: [ true ]
+                    experimental: true
                 exclude:
                   - php: 8.0
-                    experimental: [ false ]
+                    experimental: false
 
         services:
             mysql56:
