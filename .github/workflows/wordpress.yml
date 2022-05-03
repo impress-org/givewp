@@ -46,11 +46,11 @@ jobs:
             # The workaround is to execute the command in the options, but it is VITAL that it is the LAST option and that any
             # environment variables are added via options. DO NOT ADD THE ENV LINE IN YAML. You've been warned.
             # @see https://github.com/docker-library/mysql/issues/690
-            mysql80:
-                image: mysql:8.0
+            mysql8028:
+                image: mysql:8.0.28
                 ports:
                     - 3306
-                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 -e MYSQL_ROOT_PASSWORD=N0Tweak!@123! --entrypoint sh mysql:8.0 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
+                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 -e MYSQL_ROOT_PASSWORD=N0Tweak!@123! --entrypoint sh mysql:8.0.28 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
 
         # Steps represent a sequence of tasks that will be executed as part of the job
         steps:
