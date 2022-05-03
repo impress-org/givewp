@@ -91,6 +91,8 @@ jobs:
                 env:
                     MYSQL_VERSION: ${{ matrix.mysql }}
 
+            -   name: Set MySQL system variables
+
             -   name: Set Up Tests
                 run: bash tests/unit/bin/install.sh wordpress_test root ${{ env.mysql_pass }} 127.0.0.1:${{ env.mysql_port }} ${{ matrix.wordpress }}
 
