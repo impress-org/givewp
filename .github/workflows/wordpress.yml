@@ -38,7 +38,7 @@ jobs:
                     MYSQL_ROOT_PASSWORD: N0Tweak!@123!
                 ports:
                     - 3306
-                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 mysql:56 --sort_buffer_size=512K
+                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 -v /.github/config
 
             # This was a total pain to get setup. The default authentication plugin changed in MySQL 8 and is incompatible
             # with WordPress. So it needs to be set back to mysql_native_password. The best way to do this is to use the
