@@ -51,7 +51,8 @@
         },
         "files": [
             "src/Framework/Http/Response/functions.php",
-            "src/Framework/wordpress-shims/*.php"
+            "src/Framework/wordpress-shims/blocks.php",
+            "src/Framework/wordpress-shims/time.php"
         ]
     },
     "config": {
