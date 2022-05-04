@@ -38,7 +38,7 @@ class DonationFormsRequestController
 
         $query = DB::table('posts')
             ->select(
-                ['ID', 'id'],
+                'id',
                 ['post_date', 'createdAt'],
                 ['post_date_gmt', 'createdAtGmt'],
                 ['post_status', 'status'],
