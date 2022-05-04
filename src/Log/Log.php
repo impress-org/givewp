@@ -65,8 +65,6 @@ use Give\Log\ValueObjects\LogType;
  */
 class Log
 {
-    const REDACTION_LIST = ['card', 'password', 'secret', 'token'];
-
     public function __call($name, $arguments)
     {
         list ($message, $context) = array_pad($arguments, 2, null);
@@ -118,7 +116,7 @@ class Log
         $redactedData = [];
 
         foreach ($context as $key => $value) {
-            foreach (self::REDACTION_LIST as $redaction) {
+            foreach ($this->getRedactionList() as $redaction) {
                 if (stripos($key, $redaction) !== false) {
                     $redactedData[$key] = '[[redacted]]';
                     continue 2;
@@ -165,5 +163,21 @@ class Log
         if (Environment::isGiveDebugEnabled()) {
             call_user_func_array([$logger, $name], $arguments);
         }
+    }
+
+    /**
+     * @unreleased
+     *
+     * Retrieves the redaction list after applying filters.
+     */
+    public function getRedactionList(): array
+    {
+        static $list = null;
+
+        if ($list === null) {
+            $list = apply_filters('give_log_redaction_list', ['card', 'password', 'secret', 'token']);
+        }
+
+        return $list;
     }
 }
