@@ -57,7 +57,6 @@ class SaleBanners
      */
     public function getVisibleBanners()
     {
-        Shim::load( 'current_datetime' );
         $currentDateTime = current_datetime();
         $currentUserId = get_current_user_id();
         $giveWPWebsiteTimezone = new DateTimeZone('America/Los_Angeles');

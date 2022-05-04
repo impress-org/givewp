@@ -10,30 +10,21 @@ use DateTime;
 class TemporalFacade
 {
     /**
+     * @unreleased minor clean up and add types to signature
      * @since 2.19.6
-     *
-     * @param  string  $date
-     *
-     * @return DateTime
      */
-    public function toDateTime($date)
+    public function toDateTime(string $date): DateTime
     {
-        $timezone = wp_timezone();
-
-        return date_create_from_format('Y-m-d H:i:s', $date, $timezone)->setTimezone($timezone);
+        return DateTime::createFromFormat('Y-m-d H:i:s', $date, wp_timezone());
     }
 
     /**
-     * @unreleased for consistency, match the DateTime to be the same as $this->toDateTime
+     * @unreleased simplify and add types to signature
      * @since 2.19.6
-     *
-     * @return DateTime
      */
-    public function getCurrentDateTime()
+    public function getCurrentDateTime(): DateTime
     {
-        $now = date_create('now', wp_timezone())->format('Y-m-d H:i:s');
-
-        return $this->toDateTime($now);
+        return new DateTime('now', wp_timezone());
     }
 
     /**

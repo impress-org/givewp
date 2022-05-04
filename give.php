@@ -71,7 +71,6 @@ use Give\ServiceProviders\PaymentGateways;
 use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\Routes;
 use Give\ServiceProviders\ServiceProvider;
-use Give\Shims\ShimsServiceProvider;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
 use Give\Subscriptions\ServiceProvider as SubscriptionServiceProvider;
 use Give\TestData\ServiceProvider as TestDataServiceProvider;
@@ -179,7 +178,6 @@ final class Give
         MigrationLogServiceProvider::class,
         LogServiceProvider::class,
         FormLegacyConsumerServiceProvider::class,
-        ShimsServiceProvider::class,
         LicenseServiceProvider::class,
         Give\Email\ServiceProvider::class,
         DonationSummaryServiceProvider::class,

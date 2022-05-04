@@ -50,7 +50,8 @@
             "Give\\": "src/"
         },
         "files": [
-            "src/Framework/Http/Response/functions.php"
+            "src/Framework/Http/Response/functions.php",
+            "src/Framework/wordpress-shims/*.php"
         ]
     },
     "config": {
