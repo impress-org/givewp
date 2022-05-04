@@ -404,7 +404,7 @@ function get_formatted_offline_instructions( $instructions, $form_id, $wpautop =
 		$settings_url
 	);
 
-	$offline_instructions = give_do_email_tags( $offline_instructions, null );
+	$offline_instructions = give_do_email_tags($offline_instructions, ['form_id' => $form_id]);
 
 	return $wpautop ? wpautop( do_shortcode( $offline_instructions ) ) : $offline_instructions;
 }
