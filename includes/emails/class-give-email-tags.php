@@ -972,10 +972,8 @@ function give_email_tag_form_title( $tag_args ) {
             $donation_form_title = give_get_payment_meta($tag_args['payment_id'], '_give_payment_form_title');
             break;
         case give_check_variable($tag_args, 'isset', 0, 'form_id'):
-            /** @var WP_Post $form */
-            $form = get_post($tag_args['form_id']);
-            
-            $donation_form_title = $form ? $form->post_title : null;
+            $donation_form_title = get_the_title($tag_args['form_id']);
+            break;
     }
 
     /**
@@ -983,7 +981,7 @@ function give_email_tag_form_title( $tag_args ) {
      *
      * @since 2.0
      *
-     * @param  string  $form_title
+     * @param  string  $donation_form_title
      * @param  array  $tag_args
      */
     return apply_filters(
