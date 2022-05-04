@@ -129,7 +129,7 @@ Modal.propTypes = {
 
 Modal.Title.propTypes = {
     // Collection of react DOM elements
-    children: PropTypes.object,
+    children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 };
 
 Modal.CloseIcon.propTypes = {
