@@ -57,7 +57,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
         'amount' => Money::class,
         'feeAmountRecovered' => Money::class,
         'status' => SubscriptionStatus::class,
-        'gatewaySubscriptionId' => 'string',
+        'gatewaySubscriptionId' => ['string', ''],
         'gatewayId' => 'string',
     ];
 
