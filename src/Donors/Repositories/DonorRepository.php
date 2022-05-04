@@ -162,10 +162,10 @@ class DonorRepository
      * @since 2.19.6
      *
      * @param Donor $donor
-     * @return Donor
+     * @return void
      * @throws Exception
      */
-    public function update(Donor $donor): Donor
+    public function update(Donor $donor)
     {
         $this->validateDonor($donor);
 
