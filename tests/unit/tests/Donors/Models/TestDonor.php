@@ -6,6 +6,7 @@ use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
 use Give_Subscriptions_DB;
 
@@ -75,8 +76,8 @@ class TestDonor extends \Give_Unit_Test_Case
         /** @var Donor $donor */
         $donor = Donor::factory()->create();
 
-        $donation1 = Donation::factory()->create(['donorId' => $donor->id, 'amount' => 100]);
-        $donation2 = Donation::factory()->create(['donorId' => $donor->id, 'amount' => 200]);
+        Donation::factory()->create(['donorId' => $donor->id]);
+        Donation::factory()->create(['donorId' => $donor->id]);
 
         $this->assertCount(2, $donor->donations);
     }
@@ -90,8 +91,8 @@ class TestDonor extends \Give_Unit_Test_Case
         /** @var Donor $donor */
         $donor = Donor::factory()->create();
 
-        $donation1 = Donation::factory()->create(['donorId' => $donor->id, 'amount' => 100]);
-        $donation2 = Donation::factory()->create(['donorId' => $donor->id, 'amount' => 200]);
+        Donation::factory()->create(['donorId' => $donor->id]);
+        Donation::factory()->create(['donorId' => $donor->id]);
 
         $this->assertEquals(2, $donor->totalDonations());
     }

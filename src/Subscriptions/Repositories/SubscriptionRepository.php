@@ -121,7 +121,7 @@ class SubscriptionRepository
 
         Hooks::doAction('give_subscription_creating', $subscription);
 
-        $dateCreated = $subscription->createdAt ?: Temporal::getCurrentDateTime();
+        $dateCreated = Temporal::withoutMicroseconds($subscription->createdAt ?: Temporal::getCurrentDateTime());
 
         DB::query('START TRANSACTION');
 
@@ -129,15 +129,15 @@ class SubscriptionRepository
             DB::table('give_subscriptions')->insert([
                 'created' => Temporal::getFormattedDateTime($dateCreated),
                 'status' => $subscription->status->getValue(),
-                'profile_id' => $subscription->gatewaySubscriptionId,
+                'profile_id' => $subscription->gatewaySubscriptionId ?? '',
                 'customer_id' => $subscription->donorId,
                 'period' => $subscription->period->getValue(),
                 'frequency' => $subscription->frequency,
-                'initial_amount' => $subscription->amount,
-                'recurring_amount' => $subscription->amount,
-                'recurring_fee_amount' => $subscription->feeAmount,
+                'initial_amount' => $subscription->amount->formatToDecimal(),
+                'recurring_amount' => $subscription->amount->formatToDecimal(),
+                'recurring_fee_amount' => $subscription->feeAmountRecovered !== null ? $subscription->feeAmountRecovered->formatToDecimal() : 0,
                 'bill_times' => $subscription->installments,
-                'transaction_id' => $subscription->transactionId,
+                'transaction_id' => $subscription->transactionId ?? '',
                 'product_id' => $subscription->donationFormId,
             ]);
         } catch (Exception $exception) {
@@ -187,11 +187,11 @@ class SubscriptionRepository
                     'customer_id' => $subscription->donorId,
                     'period' => $subscription->period->getValue(),
                     'frequency' => $subscription->frequency,
-                    'initial_amount' => $subscription->amount,
-                    'recurring_amount' => $subscription->amount,
-                    'recurring_fee_amount' => isset($subscription->feeAmount) ? $subscription->feeAmount : 0,
-                    'bill_times' => isset($subscription->installments) ? $subscription->installments : 0,
-                    'transaction_id' => $subscription->transactionId,
+                    'initial_amount' => $subscription->amount->formatToDecimal(),
+                    'recurring_amount' => $subscription->amount->formatToDecimal(),
+                    'recurring_fee_amount' => isset($subscription->feeAmountRecovered) ? $subscription->feeAmountRecovered->formatToDecimal() : 0,
+                    'bill_times' => $subscription->installments,
+                    'transaction_id' => $subscription->transactionId ?? '',
                     'product_id' => $subscription->donationFormId,
                 ]);
         } catch (Exception $exception) {
@@ -350,7 +350,8 @@ class SubscriptionRepository
                 'give_donationmeta',
                 'parent_payment_id',
                 'donation_id',
-                [DonationMetaKeys::GATEWAY, 'gatewayId']
+                [DonationMetaKeys::GATEWAY, 'gatewayId'],
+                [DonationMetaKeys::CURRENCY, 'currency']
             );
     }
 }
