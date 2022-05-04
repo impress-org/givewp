@@ -116,7 +116,7 @@ class Log
         $redactedData = [];
 
         foreach ($context as $key => $value) {
-            foreach ($this->getRedactionList() as $redaction) {
+            foreach (self::getRedactionList() as $redaction) {
                 if (stripos($key, $redaction) !== false) {
                     $redactedData[$key] = '[[redacted]]';
                     continue 2;
@@ -170,7 +170,7 @@ class Log
      *
      * Retrieves the redaction list after applying filters.
      */
-    public function getRedactionList(): array
+    public static function getRedactionList(): array
     {
         static $list = null;
 
