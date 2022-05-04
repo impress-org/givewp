@@ -13,6 +13,7 @@ use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\DataTransferObjects\SubscriptionQueryData;
 use Give\Subscriptions\Factories\SubscriptionFactory;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
@@ -31,8 +32,8 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
  * @property int $frequency
  * @property int $installments
  * @property string $transactionId
- * @property int $amount
- * @property int $feeAmount
+ * @property Money $amount
+ * @property Money $feeAmountRecovered
  * @property SubscriptionStatus $status
  * @property string $gatewayId
  * @property string $gatewaySubscriptionId
@@ -53,10 +54,10 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
         'frequency' => 'int',
         'installments' => ['int', 0],
         'transactionId' => 'string',
-        'amount' => 'int',
-        'feeAmount' => ['int', 0],
+        'amount' => Money::class,
+        'feeAmountRecovered' => Money::class,
         'status' => SubscriptionStatus::class,
-        'gatewaySubscriptionId' => 'string',
+        'gatewaySubscriptionId' => ['string', ''],
         'gatewayId' => 'string',
     ];
 
@@ -112,6 +113,19 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     public function getNotes()
     {
         return give()->subscriptions->getNotesBySubscriptionId($this->id);
+    }
+
+    /**
+     * Returns the subscription amount the donor "intended", which means it is the amount without recovered fees. So if the
+     * donor paid $100, but the donation was charged $105 with a $5 fee, this method will return $100.
+     *
+     * @unreleased
+     */
+    public function intendedAmount(): Money
+    {
+        return $this->feeAmountRecovered === null
+            ? $this->amount
+            : $this->amount->subtract($this->feeAmountRecovered);
     }
 
     /**

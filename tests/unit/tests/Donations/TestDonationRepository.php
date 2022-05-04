@@ -10,6 +10,7 @@ use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Support\Facades\DateTime\Temporal;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 
 /**
@@ -71,19 +72,17 @@ final class TestDonationRepository extends \Give_Unit_Test_Case
 
         $repository->insert($donation);
 
-        /** @var object $query */
+        /** @var Donation $query */
         $query = $repository->prepareQuery()
             ->where('ID', $donation->id)
             ->get();
-
 
         // simulate asserting database has values
         $this->assertInstanceOf(Donation::class, $donation);
         $this->assertEquals($query->id, $donation->id);
         $this->assertEquals($query->status, $donation->status->getValue());
         $this->assertEquals($query->amount, $donation->amount);
-        $this->assertEquals($query->currency, $donation->currency);
-        $this->assertEquals($query->gateway, $donation->gateway);
+        $this->assertEquals($query->gatewayId, $donation->gatewayId);
         $this->assertEquals($query->donorId, $donation->donorId);
         $this->assertEquals($query->firstName, $donation->firstName);
         $this->assertEquals($query->lastName, $donation->lastName);
@@ -106,8 +105,7 @@ final class TestDonationRepository extends \Give_Unit_Test_Case
         $donationMissingAmount = new Donation([
             'createdAt' => Temporal::getCurrentDateTime(),
             'status' => DonationStatus::PENDING(),
-            'gateway' => TestGateway::id(),
-            'currency' => 'USD',
+            'gatewayId' => TestGateway::id(),
             'donorId' => 1,
             'firstName' => 'Bill',
             'lastName' => 'Murray',
@@ -162,8 +160,7 @@ final class TestDonationRepository extends \Give_Unit_Test_Case
         $donationMissingAmount = new Donation([
             'createdAt' => Temporal::getCurrentDateTime(),
             'status' => DonationStatus::PENDING(),
-            'gateway' => TestGateway::id(),
-            'currency' => 'USD',
+            'gatewayId' => TestGateway::id(),
             'donorId' => 1,
             'firstName' => 'Bill',
             'lastName' => 'Murray',
@@ -193,7 +190,7 @@ final class TestDonationRepository extends \Give_Unit_Test_Case
         $repository = new DonationRepository();
 
         // update donation values
-        $donation->amount = 100;
+        $donation->amount = new Money(10000, 'USD');
         $donation->firstName = "Ron";
         $donation->lastName = "Swanson";
         $donation->email = "ron@swanson.com";
@@ -208,7 +205,7 @@ final class TestDonationRepository extends \Give_Unit_Test_Case
 
         // assert updated values from the database
         $this->assertNotEquals(50, $query->amount);
-        $this->assertEquals(100, $query->amount);
+        $this->assertMoneyEquals(new Money(10000, 'USD'), $query->amount);
         $this->assertEquals("Ron", $query->firstName);
         $this->assertEquals("Swanson", $query->lastName);
         $this->assertEquals("ron@swanson.com", $query->email);

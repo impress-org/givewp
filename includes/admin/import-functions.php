@@ -806,7 +806,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = [], $
 		],
 		'gateway'         => ( ! empty( $data['gateway'] ) ? strtolower( $data['gateway'] ) : 'manual' ),
 		'give_form_title' => ( ! empty( $data['form_title'] ) ? $data['form_title'] : ( method_exists( $form, 'get_name' ) ? $form->get_name() : '' ) ),
-		'give_form_id'    => method_exists( $form, 'get_ID' ) ? $form->get_ID() : '',
+		'give_form_id'    => ( ! empty( $form ) && method_exists( $form, 'get_ID' ) ) ? $form->get_ID() : '',
 		'give_price_id'   => $price_id,
 		'purchase_key'    => strtolower( md5( uniqid() ) ),
 		'user_email'      => $data['email'],

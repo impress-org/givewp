@@ -4,7 +4,8 @@ namespace Give\ValueObjects;
 
 /**
  * Class Money
- * @package Give\ValueObjects
+ *
+ * @deprecated @unreleased Use Give\Framework\Support\ValueObjects\Money in framework instead
  *
  * @since 2.9.0
  * @since 2.11.0 Refactored to make the minor amount the base.
