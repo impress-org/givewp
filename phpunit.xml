@@ -14,7 +14,7 @@
 			<directory prefix="tests-" suffix=".php">./tests/unit/legacy</directory>
 		</testsuite>
 		<testsuite name="Unit Tests">
-			<directory suffix="Test.php">./tests/unit/tests</directory>
+            <directory suffix="Test.php">./tests/unit/tests</directory>
             <directory prefix="Test" suffix=".php">./tests/unit/tests</directory>
 		</testsuite>
 	</testsuites>
