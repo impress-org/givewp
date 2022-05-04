@@ -18,6 +18,7 @@ use Give\Log\Log;
 use Give\ValueObjects\Money;
 
 /**
+ * @unreleased update amount type, fee recovered, and exchange rate
  * @since 2.19.6
  */
 class DonationRepository
@@ -31,9 +32,8 @@ class DonationRepository
     private $requiredDonationProperties = [
         'formId',
         'status',
-        'gateway',
+        'gatewayId',
         'amount',
-        'currency',
         'donorId',
         'firstName',
         'email',
@@ -128,7 +128,7 @@ class DonationRepository
 
         Hooks::doAction('give_donation_creating', $donation);
 
-        $dateCreated = $donation->createdAt ?: Temporal::getCurrentDateTime();
+        $dateCreated = Temporal::withoutMicroseconds($donation->createdAt ?: Temporal::getCurrentDateTime());
         $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
 
         DB::query('START TRANSACTION');
@@ -240,6 +240,7 @@ class DonationRepository
     /**
      * @unreleased consolidate meta deletion into a single query
      * @param Donation $donation
+     *
      * @return bool
      * @throws Exception
      * @since 2.19.6
@@ -275,18 +276,16 @@ class DonationRepository
     }
 
     /**
-     * @param Donation $donation
-     *
-     * @return array
+     * @unreleased update amount to use new type, and add currency and exchange rate
      * @since 2.19.6
-     *
      */
     private function getCoreDonationMetaForDatabase(Donation $donation): array
     {
         $meta = [
-            DonationMetaKeys::AMOUNT => Money::of($donation->amount, $donation->currency)->getAmount(),
-            DonationMetaKeys::CURRENCY => $donation->currency,
-            DonationMetaKeys::GATEWAY => $donation->gateway,
+            DonationMetaKeys::AMOUNT => $donation->amount->formatToDecimal(),
+            DonationMetaKeys::CURRENCY => $donation->amount->getCurrency()->getCode(),
+            DonationMetaKeys::EXCHANGE_RATE => $donation->exchangeRate,
+            DonationMetaKeys::GATEWAY => $donation->gatewayId,
             DonationMetaKeys::DONOR_ID => $donation->donorId,
             DonationMetaKeys::FIRST_NAME => $donation->firstName,
             DonationMetaKeys::LAST_NAME => $donation->lastName,
@@ -298,7 +297,11 @@ class DonationRepository
             DonationMetaKeys::DONOR_IP => $donation->donorIp ?? give_get_ip(),
         ];
 
-        if (isset($donation->billingAddress)) {
+        if ($donation->feeAmountRecovered !== null) {
+            $meta[DonationMetaKeys::FEE_AMOUNT_RECOVERED] = $donation->feeAmountRecovered->formatToDecimal();
+        }
+
+        if ($donation->billingAddress !== null) {
             $meta[DonationMetaKeys::BILLING_COUNTRY] = $donation->billingAddress->country;
             $meta[DonationMetaKeys::BILLING_ADDRESS2] = $donation->billingAddress->address2;
             $meta[DonationMetaKeys::BILLING_CITY] = $donation->billingAddress->city;
@@ -412,6 +415,7 @@ class DonationRepository
 
     /**
      * @param Donation $donation
+     *
      * @return void
      * @since 2.19.6
      *
@@ -443,6 +447,7 @@ class DonationRepository
 
     /**
      * @param int $formId
+     *
      * @return string
      * @since 2.19.6
      *
@@ -485,10 +490,7 @@ class DonationRepository
     }
 
     /**
-     * @param int $donorId
-     * @return int
      * @since 2.19.6
-     *
      */
     public function getTotalDonationCountByDonorId(int $donorId): int
     {
@@ -506,6 +508,7 @@ class DonationRepository
 
     /**
      * @param $donorId
+     *
      * @return array|bool|null
      * @since 2.19.6
      *

@@ -7,6 +7,7 @@ use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Support\Facades\DateTime\Temporal;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
@@ -94,9 +95,9 @@ class TestSubscriptionRepository extends Give_Unit_Test_Case
         $this->assertEquals($subscriptionQuery->product_id, $subscriptionInstance->donationFormId);
         $this->assertEquals($subscriptionQuery->period, $subscriptionInstance->period->getValue());
         $this->assertEquals($subscriptionQuery->frequency, $subscriptionInstance->frequency);
-        $this->assertEquals($subscriptionQuery->initial_amount, $subscriptionInstance->amount);
-        $this->assertEquals($subscriptionQuery->recurring_amount, $subscriptionInstance->amount);
-        $this->assertEquals($subscriptionQuery->recurring_fee_amount, $subscriptionInstance->feeAmount);
+        $this->assertEquals($subscriptionQuery->initial_amount, $subscriptionInstance->amount->formatToDecimal());
+        $this->assertEquals($subscriptionQuery->recurring_amount, $subscriptionInstance->amount->formatToDecimal());
+        $this->assertEquals($subscriptionQuery->recurring_fee_amount, $subscriptionInstance->feeAmountRecovered->formatToDecimal());
         $this->assertEquals($subscriptionQuery->bill_times, $subscriptionInstance->installments);
         $this->assertEquals($subscriptionQuery->transaction_id, $subscriptionInstance->transactionId);
         $this->assertEquals($subscriptionQuery->status, $subscriptionInstance->status->getValue());
@@ -165,7 +166,7 @@ class TestSubscriptionRepository extends Give_Unit_Test_Case
         $subscription = Subscription::factory()->create();
         $repository = new SubscriptionRepository();
 
-        $subscription->amount = 200;
+        $subscription->amount = new Money(2000, 'USD');
         $subscription->period = SubscriptionPeriod::YEAR();
 
         $repository->update($subscription);
@@ -175,8 +176,8 @@ class TestSubscriptionRepository extends Give_Unit_Test_Case
             ->where('id', $subscription->id)
             ->get();
 
-        $this->assertEquals(200, $subscriptionQuery->recurring_amount);
-        $this->assertEquals(SubscriptionPeriod::YEAR, $subscriptionQuery->period);
+        $this->assertEquals(20, $subscriptionQuery->recurring_amount);
+        $this->assertSame(SubscriptionPeriod::YEAR, $subscriptionQuery->period);
     }
 
     /**
