@@ -112,7 +112,7 @@ class DonorRepository
     {
         $this->validateDonor($donor);
 
-        $dateCreated = $donor->createdAt ?: Temporal::getCurrentDateTime();
+        $dateCreated = Temporal::withoutMicroseconds($donor->createdAt ?: Temporal::getCurrentDateTime());
 
         DB::query('START TRANSACTION');
 
