@@ -129,7 +129,7 @@ class DonationRepository
 
         Hooks::doAction('give_donation_creating', $donation);
 
-        $dateCreated = $donation->createdAt ?: Temporal::getCurrentDateTime();
+        $dateCreated = Temporal::withoutMicroseconds($donation->createdAt ?: Temporal::getCurrentDateTime());
         $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
 
         DB::query('START TRANSACTION');
@@ -299,7 +299,8 @@ class DonationRepository
             DonationMetaKeys::FORM_TITLE => isset($donation->formTitle) ? $donation->formTitle : $this->getFormTitle(
                 $donation->formId
             ),
-            DonationMetaKeys::MODE => isset($donation->mode) ? $donation->mode->getValue() : $this->getDefaultDonationMode()->getValue(),
+            DonationMetaKeys::MODE => isset($donation->mode) ? $donation->mode->getValue(
+            ) : $this->getDefaultDonationMode()->getValue(),
             DonationMetaKeys::PURCHASE_KEY => isset($donation->purchaseKey)
                 ? $donation->purchaseKey
                 : Call::invoke(
@@ -541,9 +542,9 @@ class DonationRepository
         );
     }
 
-
     /**
      * @param WP_REST_Request $request
+     *
      * @unreleased
      *
      * @return array
@@ -596,6 +597,7 @@ class DonationRepository
 
     /**
      * @param WP_REST_Request $request
+     *
      * @unreleased
      *
      * @return int
@@ -613,6 +615,7 @@ class DonationRepository
     /**
      * @param QueryBuilder $query
      * @param WP_REST_Request $request
+     *
      * @return QueryBuilder
      * @unreleased
      *
@@ -641,8 +644,7 @@ class DonationRepository
                 if (strpos($search, '@') !== false) {
                     $query
                         ->where('metaTable.meta_key', DonationMetaKeys::EMAIL)
-                        ->whereLike('metaTable.meta_value', $search)
-                    ;
+                        ->whereLike('metaTable.meta_value', $search);
                 } else {
                     $query
                         ->where('metaTable.meta_key', DonationMetaKeys::FIRST_NAME)
@@ -675,9 +677,9 @@ class DonationRepository
 
         if ($start && $end) {
             $query->whereBetween('post_date', $start, $end);
-        } else if ($start) {
+        } elseif ($start) {
             $query->where('post_date', $start, '>=');
-        } else if ($end) {
+        } elseif ($end) {
             $query->where('post_date', $end, '<=');
         }
 

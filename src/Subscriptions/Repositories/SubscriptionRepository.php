@@ -121,7 +121,7 @@ class SubscriptionRepository
 
         Hooks::doAction('give_subscription_creating', $subscription);
 
-        $dateCreated = $subscription->createdAt ?: Temporal::getCurrentDateTime();
+        $dateCreated = Temporal::withoutMicroseconds($subscription->createdAt ?: Temporal::getCurrentDateTime());
 
         DB::query('START TRANSACTION');
 
