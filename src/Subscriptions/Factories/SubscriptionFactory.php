@@ -77,6 +77,7 @@ class SubscriptionFactory extends ModelFactory
                     'expiration' => $subscription->expiration()
                 ]
             );
+            $subscription->gatewayId = $donation->gateway;
         }
     }
 }

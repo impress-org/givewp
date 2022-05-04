@@ -129,15 +129,15 @@ class SubscriptionRepository
             DB::table('give_subscriptions')->insert([
                 'created' => Temporal::getFormattedDateTime($dateCreated),
                 'status' => $subscription->status->getValue(),
-                'profile_id' => isset($subscription->gatewaySubscriptionId) ? $subscription->gatewaySubscriptionId : '',
+                'profile_id' => $subscription->gatewaySubscriptionId,
                 'customer_id' => $subscription->donorId,
                 'period' => $subscription->period->getValue(),
                 'frequency' => $subscription->frequency,
                 'initial_amount' => $subscription->amount,
                 'recurring_amount' => $subscription->amount,
-                'recurring_fee_amount' => isset($subscription->feeAmount) ? $subscription->feeAmount : 0,
-                'bill_times' => isset($subscription->installments) ? $subscription->installments : 0,
-                'transaction_id' => isset($subscription->transactionId) ? $subscription->transactionId : '',
+                'recurring_fee_amount' => $subscription->feeAmount,
+                'bill_times' => $subscription->installments,
+                'transaction_id' => $subscription->transactionId,
                 'product_id' => $subscription->donationFormId,
             ]);
         } catch (Exception $exception) {

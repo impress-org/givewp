@@ -52,11 +52,11 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
         'period' => SubscriptionPeriod::class,
         'frequency' => 'int',
         'installments' => ['int', 0],
-        'transactionId' => 'string',
+        'transactionId' => ['string', ''],
         'amount' => 'int',
         'feeAmount' => ['int', 0],
         'status' => SubscriptionStatus::class,
-        'gatewaySubscriptionId' => 'string',
+        'gatewaySubscriptionId' => ['string', ''],
         'gatewayId' => 'string',
     ];
 

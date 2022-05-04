@@ -42,6 +42,13 @@ abstract class Model implements Arrayable
     protected $relationships = [];
 
     /**
+     * Relationships that have already been loaded and don't need to be loaded again.
+     *
+     * @var Model[]
+     */
+    private $cachedRelations = [];
+
+    /**
      * Create a new model instance.
      *
      * @unreleased add support for property defaults
@@ -369,6 +376,7 @@ abstract class Model implements Arrayable
     }
 
     /**
+     * @unreleased cache the relations after first load
      * @since 2.19.6
      *
      * @param $key
@@ -383,18 +391,32 @@ abstract class Model implements Arrayable
             throw new InvalidArgumentException("$key() does not exist.");
         }
 
+        if ($this->hasCachedRelationship($key)) {
+            return $this->cachedRelations[$key];
+        }
+
         $relationship = new Relationship($this->relationships[$key]);
 
         switch (true) {
             case ($relationship->equals(Relationship::BELONGS_TO())):
             case ($relationship->equals(Relationship::HAS_ONE())):
-                return $this->$key()->get();
+                return $this->cachedRelations[$key] = $this->$key()->get();
             case ($relationship->equals(Relationship::HAS_MANY())):
             case ($relationship->equals(Relationship::BELONGS_TO_MANY())):
             case ($relationship->equals(Relationship::MANY_TO_MANY())):
-                return $this->$key()->getAll();
+                return $this->cachedRelations[$key] = $this->$key()->getAll();
         }
 
         return null;
+    }
+
+    /**
+     * Checks whether a relationship has already been loaded.
+     *
+     * @unreleased
+     */
+    protected function hasCachedRelationship(string $key): bool
+    {
+        return array_key_exists($key, $this->cachedRelations);
     }
 }

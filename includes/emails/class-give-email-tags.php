@@ -962,30 +962,33 @@ function give_email_tag_donation( $tag_args ) {
  * @return string $form_title
  */
 function give_email_tag_form_title( $tag_args ) {
-	$donation_form_title = '';
+    $donation_form_title = '';
 
-	// Backward compatibility.
-	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
+    // Backward compatibility.
+    $tag_args = __give_20_bc_str_type_email_tag_param($tag_args);
 
-	switch ( true ) {
-		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$donation_form_title = give_get_payment_meta( $tag_args['payment_id'], '_give_payment_form_title' );
-			break;
-	}
+    switch (true) {
+        case give_check_variable($tag_args, 'isset', 0, 'payment_id'):
+            $donation_form_title = give_get_payment_meta($tag_args['payment_id'], '_give_payment_form_title');
+            break;
+        case give_check_variable($tag_args, 'isset', 0, 'form_id'):
+            $donation_form_title = get_the_title($tag_args['form_id']);
+            break;
+    }
 
-	/**
-	 * Filter the {form_title} email template tag output.
-	 *
-	 * @since 2.0
-	 *
-	 * @param string $form_title
-	 * @param array  $tag_args
-	 */
-	return apply_filters(
-		'give_email_tag_form_title',
-		$donation_form_title,
-		$tag_args
-	);
+    /**
+     * Filter the {form_title} email template tag output.
+     *
+     * @since 2.0
+     *
+     * @param  string  $donation_form_title
+     * @param  array  $tag_args
+     */
+    return apply_filters(
+        'give_email_tag_form_title',
+        $donation_form_title,
+        $tag_args
+    );
 }
 
 /**

@@ -213,6 +213,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
         return array_merge(parent::getPropertyDefaults(), [
             'mode' => give_is_test_mode() ? DonationMode::TEST() : DonationMode::LIVE(),
             'donorIp' => give_get_ip(),
+            'billingAddress' => new BillingAddress(),
         ]);
     }
 
