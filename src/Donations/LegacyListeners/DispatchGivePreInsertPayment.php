@@ -4,6 +4,7 @@ namespace Give\Donations\LegacyListeners;
 
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donors\Models\Donor;
 use Give\Framework\Support\ValueObjects\Money;
 
 /**
@@ -19,7 +20,7 @@ class DispatchGivePreInsertPayment
             return;
         }
 
-        $donor = $donation->donor;
+        $donor = Donor::find($donation->donorId);
 
         $paymentData = [
             'price' => $donation->amount->formatToDecimal(),
@@ -50,11 +51,16 @@ class DispatchGivePreInsertPayment
         $donation->formId = $paymentData['formId'];
         $donation->purchaseKey = $paymentData['purchaseKey'];
         $donation->gatewayId = $paymentData['gateway'];
-        $donation->donor->id = $paymentData['donor_id'];
-        $donation->donor->userId = $paymentData['userInfo']['id'];
-        $donation->donor->firstName = $paymentData['userInfo']['firstName'];
-        $donation->donor->lastName = $paymentData['userInfo']['lastName'];
-        $donation->donor->prefix = $paymentData['userInfo']['title'];
-        $donation->donor->email = $paymentData['userInfo']['email'];
+        $donation->donorId = $paymentData['donor_id'];
+
+        // It's possible in the old hook to set donor attributes as well. We don't really
+        // want to encourage this moving forward, but this preserves backwards compatibility.
+        $donor = $donation->donor;
+        $donor->userId = $paymentData['userInfo']['id'];
+        $donor->firstName = $paymentData['userInfo']['firstName'];
+        $donor->lastName = $paymentData['userInfo']['lastName'];
+        $donor->prefix = $paymentData['userInfo']['title'];
+        $donor->email = $paymentData['userInfo']['email'];
+        $donor->save();
     }
 }
