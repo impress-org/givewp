@@ -1,6 +1,6 @@
 <?php
 
-use Give\DonationForms\Repositories\DonationFormsRepository as DonationFormsRepository;
+use Give\DonationForms\Controllers\DonationFormsRequestController;
 
 final class DonationFormsTest extends Give_Unit_Test_Case {
 
@@ -31,10 +31,10 @@ final class DonationFormsTest extends Give_Unit_Test_Case {
         $request->set_param('perPage', 30);
         $request->set_param('status', 'any');
 
-        $class = new ReflectionClass(DonationFormsRepository::class);
-        $getFormsForRequest = $class->getMethod('getFormsForRequest');
+        $class = new ReflectionClass(DonationFormsRequestController::class);
+        $getFormsForRequest = $class->getMethod('getForms');
         $getFormsForRequest->setAccessible(true);
-        $forms = $getFormsForRequest->invokeArgs(new DonationFormsRepository, [$request]);
+        $forms = $getFormsForRequest->invokeArgs(new DonationFormsRequestController, [$request]);
         $this->assertEquals(2, count($forms), 'Repository retrieves correct number of total forms');
     }
 
@@ -54,10 +54,10 @@ final class DonationFormsTest extends Give_Unit_Test_Case {
         $request->set_param('perPage', 30);
         $request->set_param('status', 'any');
 
-        $class = new ReflectionClass(DonationFormsRepository::class);
-        $getFormsForRequest = $class->getMethod('getFormsForRequest');
+        $class = new ReflectionClass(DonationFormsRequestController::class);
+        $getFormsForRequest = $class->getMethod('getForms');
         $getFormsForRequest->setAccessible(true);
-        $forms = $getFormsForRequest->invokeArgs(new DonationFormsRepository, [$request]);
+        $forms = $getFormsForRequest->invokeArgs(new DonationFormsRequestController, [$request]);
         $this->assertEquals(1, count($forms), 'Search retrieves a single form');
         $this->assertEquals('My Simple Form', $forms[0]->title, 'Search retrieves correct form');
     }
