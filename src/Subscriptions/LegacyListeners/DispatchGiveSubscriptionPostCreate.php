@@ -22,7 +22,7 @@ class DispatchGiveSubscriptionPostCreate
             'frequency' => $subscription->frequency,
             'initial_amount' => $subscription->amount,
             'recurring_amount' => $subscription->amount,
-            'recurring_fee_amount' => $subscription->feeAmount,
+            'recurring_fee_amount' => $subscription->feeAmountRecovered,
             'bill_times' => $subscription->installments,
             'parent_payment_id' => give()->subscriptions->getInitialDonationId($subscription->id),
             'form_id' => $subscription->donationFormId,

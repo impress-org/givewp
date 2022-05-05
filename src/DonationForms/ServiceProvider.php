@@ -24,10 +24,21 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot()
     {
-        Hooks::addAction('admin_menu', DonationFormsAdminPage::class, 'register');
+        $userId = get_current_user_id();
+        $showLegacy = get_user_meta($userId, '_give_donation_forms_archive_show_legacy', true);
+        // only register new admin page if user hasn't chosen to use the old one
+        if(empty($showLegacy))
+        {
+            Hooks::addAction('admin_menu', DonationFormsAdminPage::class, 'register');
+            Hooks::addAction('admin_menu', DonationFormsAdminPage::class, 'highlightAllFormsMenuItem');
 
-        if (DonationFormsAdminPage::isShowing()) {
-            Hooks::addAction('admin_enqueue_scripts', DonationFormsAdminPage::class, 'loadScripts');
+            if (DonationFormsAdminPage::isShowing()) {
+                Hooks::addAction('admin_enqueue_scripts', DonationFormsAdminPage::class, 'loadScripts');
+            }
+        }
+        else
+        {
+            Hooks::addAction( 'admin_head', DonationFormsAdminPage::class, 'renderReactSwitch');
         }
     }
 }

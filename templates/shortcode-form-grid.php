@@ -38,7 +38,7 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
             : get_the_permalink();
 
 		printf(
-			'<a id="give-card-%1$s" class="give-card" href="%2$s">',
+			'<a id="give-card-%1$s" onclick="return !document.body.classList.contains( \'block-editor-page\' )" class="give-card" href="%2$s">',
 			esc_attr( $form_id ),
 			esc_attr( $url )
 		);
@@ -93,12 +93,14 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
 				&& true === $atts['show_goal']
 			) {
 				echo '<div class="give-card__progress">';
-					give_show_goal_progress( $form_id );
+					give_show_goal_progress( $form_id, [
+                        'show_bar' => $atts['show_bar']
+                    ] );
 				echo '</div>';
 			}
 			?>
 
-            <?php if (true === $atts['show_donate_button']):
+            <?php if ($atts['show_donate_button']):
                 $button_text = ! empty( $atts['donate_button_text'] )
                     ? $atts['donate_button_text']
                     : give_get_meta( $form_id, '_give_form_grid_donate_button_text', true );
@@ -154,7 +156,10 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
 	<?php
 	// If modal, print form in hidden container until it is time to be revealed.
 	if ( 'modal_reveal' === $atts['display_style'] ) {
-		if ( ! FormUtils::isLegacyForm( $form_id ) ) {
+		if (
+            ! isset($_GET['context']) // check if we are in block editor
+            && ! FormUtils::isLegacyForm( $form_id )
+        ) {
 			echo give_form_shortcode(
 				[
 					'id'            => $form_id,

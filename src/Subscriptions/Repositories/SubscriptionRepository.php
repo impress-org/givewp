@@ -3,6 +3,7 @@
 namespace Give\Subscriptions\Repositories;
 
 use Exception;
+use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
@@ -26,13 +27,14 @@ class SubscriptionRepository
         'frequency',
         'amount',
         'status',
-        'donationFormId'
+        'donationFormId',
     ];
 
     /**
      * @since 2.19.6
      *
-     * @param  int  $subscriptionId
+     * @param int $subscriptionId
+     *
      * @return Subscription
      */
     public function getById($subscriptionId)
@@ -43,7 +45,8 @@ class SubscriptionRepository
     /**
      * @since 2.19.6
      *
-     * @param  int  $subscriptionId
+     * @param int $subscriptionId
+     *
      * @return ModelQueryBuilder
      */
     public function queryById($subscriptionId)
@@ -55,7 +58,8 @@ class SubscriptionRepository
     /**
      * @since 2.19.6
      *
-     * @param  int  $donationId
+     * @param int $donationId
+     *
      * @return ModelQueryBuilder
      */
     public function queryByDonationId($donationId)
@@ -67,7 +71,8 @@ class SubscriptionRepository
     /**
      * @since 2.19.6
      *
-     * @param  int  $donorId
+     * @param int $donorId
+     *
      * @return ModelQueryBuilder
      */
     public function queryByDonorId($donorId)
@@ -79,7 +84,7 @@ class SubscriptionRepository
     /**
      * @since 2.19.6
      *
-     * @param  int  $id
+     * @param int $id
      *
      * @return object[]
      */
@@ -105,9 +110,9 @@ class SubscriptionRepository
     /**
      * @since 2.19.6
      *
-     * @param  Subscription  $subscription
+     * @param Subscription $subscription
      *
-     * @return Subscription
+     * @return void
      * @throws Exception
      */
     public function insert(Subscription $subscription)
@@ -116,30 +121,27 @@ class SubscriptionRepository
 
         Hooks::doAction('give_subscription_creating', $subscription);
 
-        $date = $subscription->createdAt ? Temporal::getFormattedDateTime(
-            $subscription->createdAt
-        ) : Temporal::getCurrentFormattedDateForDatabase();
+        $dateCreated = Temporal::withoutMicroseconds($subscription->createdAt ?: Temporal::getCurrentDateTime());
 
         DB::query('START TRANSACTION');
 
         try {
             DB::table('give_subscriptions')->insert([
-                'created' => $date,
+                'created' => Temporal::getFormattedDateTime($dateCreated),
                 'status' => $subscription->status->getValue(),
-                'profile_id' => isset($subscription->gatewaySubscriptionId) ? $subscription->gatewaySubscriptionId : '',
+                'profile_id' => $subscription->gatewaySubscriptionId ?? '',
                 'customer_id' => $subscription->donorId,
                 'period' => $subscription->period->getValue(),
                 'frequency' => $subscription->frequency,
-                'initial_amount' => $subscription->amount,
-                'recurring_amount' => $subscription->amount,
-                'recurring_fee_amount' => isset($subscription->feeAmount) ? $subscription->feeAmount : 0,
-                'bill_times' => isset($subscription->installments) ? $subscription->installments : 0,
-                'transaction_id' => isset($subscription->transactionId) ? $subscription->transactionId : '',
-                'product_id' => $subscription->donationFormId
+                'initial_amount' => $subscription->amount->formatToDecimal(),
+                'recurring_amount' => $subscription->amount->formatToDecimal(),
+                'recurring_fee_amount' => $subscription->feeAmountRecovered !== null ? $subscription->feeAmountRecovered->formatToDecimal() : 0,
+                'bill_times' => $subscription->installments,
+                'transaction_id' => $subscription->transactionId ?? '',
+                'product_id' => $subscription->donationFormId,
             ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
-
 
             Log::error('Failed creating a subscription', compact('subscription'));
 
@@ -150,17 +152,20 @@ class SubscriptionRepository
 
         $subscriptionId = DB::last_insert_id();
 
-        $subscription = $this->getById($subscriptionId);
+        $subscription->id = $subscriptionId;
+        $subscription->createdAt = $dateCreated;
+
+        if (!isset($subscription->expiresAt)) {
+            $subscription->expiresAt = null;
+        }
 
         Hooks::doAction('give_subscription_created', $subscription);
-
-        return $subscription;
     }
 
     /**
      * @since 2.19.6
      *
-     * @param  Subscription  $subscription
+     * @param Subscription $subscription
      *
      * @return Subscription
      * @throws Exception
@@ -182,12 +187,12 @@ class SubscriptionRepository
                     'customer_id' => $subscription->donorId,
                     'period' => $subscription->period->getValue(),
                     'frequency' => $subscription->frequency,
-                    'initial_amount' => $subscription->amount,
-                    'recurring_amount' => $subscription->amount,
-                    'recurring_fee_amount' => isset($subscription->feeAmount) ? $subscription->feeAmount : 0,
-                    'bill_times' => isset($subscription->installments) ? $subscription->installments : 0,
-                    'transaction_id' => $subscription->transactionId,
-                    'product_id' => $subscription->donationFormId
+                    'initial_amount' => $subscription->amount->formatToDecimal(),
+                    'recurring_amount' => $subscription->amount->formatToDecimal(),
+                    'recurring_fee_amount' => isset($subscription->feeAmountRecovered) ? $subscription->feeAmountRecovered->formatToDecimal() : 0,
+                    'bill_times' => $subscription->installments,
+                    'transaction_id' => $subscription->transactionId ?? '',
+                    'product_id' => $subscription->donationFormId,
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -209,9 +214,10 @@ class SubscriptionRepository
     }
 
     /**
+     * @unreleased consolidate meta deletion into a single query
      * @since 2.19.6
      *
-     * @param  Subscription  $subscription
+     * @param Subscription $subscription
      *
      * @return bool
      *
@@ -227,6 +233,10 @@ class SubscriptionRepository
             DB::table('give_subscriptions')
                 ->where('id', $subscription->id)
                 ->delete();
+
+            DB::table('give_subscriptionmeta')
+                ->where('subscription_id', $subscription->id)
+                ->delete();
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -237,7 +247,7 @@ class SubscriptionRepository
 
         DB::query('COMMIT');
 
-        Hooks::doAction('give_subscription_deleted', $subscription);
+        Hooks::doAction('give_subscription_model_deleted', $subscription);
 
         return true;
     }
@@ -245,8 +255,9 @@ class SubscriptionRepository
     /**
      * @since 2.19.6
      *
-     * @param  int  $subscriptionId
-     * @param  array  $columns
+     * @param int $subscriptionId
+     * @param array $columns
+     *
      * @return bool
      * @throws Exception
      */
@@ -280,7 +291,8 @@ class SubscriptionRepository
     /**
      * @since 2.19.6
      *
-     * @param  int  $subscriptionId
+     * @param int $subscriptionId
+     *
      * @return int|null
      */
     public function getInitialDonationId($subscriptionId)
@@ -298,7 +310,8 @@ class SubscriptionRepository
     }
 
     /**
-     * @param  Subscription  $subscription
+     * @param Subscription $subscription
+     *
      * @return void
      */
     private function validateSubscription(Subscription $subscription)
@@ -338,6 +351,13 @@ class SubscriptionRepository
                 'status',
                 ['profile_id', 'gatewaySubscriptionId'],
                 ['product_id', 'donationFormId']
+            )
+            ->attachMeta(
+                'give_donationmeta',
+                'parent_payment_id',
+                'donation_id',
+                [DonationMetaKeys::GATEWAY, 'gatewayId'],
+                [DonationMetaKeys::CURRENCY, 'currency']
             );
     }
 }

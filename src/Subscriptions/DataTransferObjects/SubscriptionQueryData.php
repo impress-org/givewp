@@ -4,6 +4,7 @@ namespace Give\Subscriptions\DataTransferObjects;
 
 use DateTime;
 use Give\Framework\Support\Facades\DateTime\Temporal;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
@@ -52,13 +53,17 @@ class SubscriptionQueryData
      */
     public $transactionId;
     /**
-     * @var int
+     * @var Money
      */
     public $amount;
     /**
-     * @var int
+     * @var Money
      */
-    public $feeAmount;
+    public $feeAmountRecovered;
+    /**
+     * @var string
+     */
+    public $gatewayId;
     /**
      * @var string
      */
@@ -89,9 +94,10 @@ class SubscriptionQueryData
         $self->frequency = (int)$subscriptionQueryObject->frequency;
         $self->installments = (int)$subscriptionQueryObject->installments;
         $self->transactionId = $subscriptionQueryObject->transactionId;
-        $self->amount = (int)$subscriptionQueryObject->amount;
-        $self->feeAmount = (int)$subscriptionQueryObject->feeAmount;
+        $self->amount = Money::fromDecimal($subscriptionQueryObject->amount, $subscriptionQueryObject->currency);
+        $self->feeAmountRecovered = Money::fromDecimal($subscriptionQueryObject->feeAmount, $subscriptionQueryObject->currency);
         $self->status = new SubscriptionStatus($subscriptionQueryObject->status);
+        $self->gatewayId = $subscriptionQueryObject->gatewayId;
         $self->gatewaySubscriptionId = $subscriptionQueryObject->gatewaySubscriptionId;
         $self->donationFormId = (int)$subscriptionQueryObject->donationFormId;
 

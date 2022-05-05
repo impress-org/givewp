@@ -6,6 +6,7 @@ use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
 use Give_Subscriptions_DB;
 
@@ -51,6 +52,22 @@ class TestDonor extends \Give_Unit_Test_Case
     }
 
     /**
+     * @unreleased
+     *
+     * @return void
+     *
+     * @throws Exception
+     */
+    public function testCreateShouldInsertDonor()
+    {
+        $donor = Donor::factory()->create();
+
+        $donorFromDatabase = Donor::find($donor->id);
+
+        $this->assertEquals($donor->getAttributes(), $donorFromDatabase->getAttributes());
+    }
+
+    /**
      * @return void
      * @throws Exception
      */
@@ -59,10 +76,10 @@ class TestDonor extends \Give_Unit_Test_Case
         /** @var Donor $donor */
         $donor = Donor::factory()->create();
 
-        $donation1 = Donation::factory()->create(['donorId' => $donor->id, 'amount' => 100]);
-        $donation2 = Donation::factory()->create(['donorId' => $donor->id, 'amount' => 200]);
+        Donation::factory()->create(['donorId' => $donor->id]);
+        Donation::factory()->create(['donorId' => $donor->id]);
 
-        $this->assertEquals($donor->donations, [$donation1, $donation2]);
+        $this->assertCount(2, $donor->donations);
     }
 
     /**
@@ -74,8 +91,8 @@ class TestDonor extends \Give_Unit_Test_Case
         /** @var Donor $donor */
         $donor = Donor::factory()->create();
 
-        $donation1 = Donation::factory()->create(['donorId' => $donor->id, 'amount' => 100]);
-        $donation2 = Donation::factory()->create(['donorId' => $donor->id, 'amount' => 200]);
+        Donation::factory()->create(['donorId' => $donor->id]);
+        Donation::factory()->create(['donorId' => $donor->id]);
 
         $this->assertEquals(2, $donor->totalDonations());
     }
@@ -92,6 +109,6 @@ class TestDonor extends \Give_Unit_Test_Case
         $subscription1 = Subscription::factory()->create(['donorId' => $donor->id]);
         $subscription2 = Subscription::factory()->create(['donorId' => $donor->id]);
 
-        $this->assertEquals($donor->subscriptions, [$subscription1, $subscription2]);
+        $this->assertCount(2, $donor->subscriptions);
     }
 }

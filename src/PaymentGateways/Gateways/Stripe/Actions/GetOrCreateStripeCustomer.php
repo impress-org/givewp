@@ -10,14 +10,19 @@ class GetOrCreateStripeCustomer
 {
 
     /**
+     * @unreleased add second param support to function.
+     *             This param is optional because we use it only when donor subscribe for recurring donation.
      * @since 2.19.0
      *
-     * @throws StripeCustomerException
+     * @param GatewayPaymentData $stripePaymentMethodId
+     * @param string $stripePaymentMethopdId
+     *
      * @return Give_Stripe_Customer
+     * @throws StripeCustomerException
      */
-    public function __invoke(GatewayPaymentData $paymentData)
+    public function __invoke(GatewayPaymentData $paymentData, $stripePaymentMethodId = '')
     {
-        $giveStripeCustomer = new Give_Stripe_Customer($paymentData->donorInfo->email);
+        $giveStripeCustomer = new Give_Stripe_Customer($paymentData->donorInfo->email, $stripePaymentMethodId);
 
         if (!$giveStripeCustomer->get_id()) {
             throw new StripeCustomerException(__('Unable to find or create stripe customer object.', 'give'));
@@ -31,8 +36,9 @@ class GetOrCreateStripeCustomer
     /**
      * @since 2.19.0
      *
-     * @param  int  $donationId
-     * @param  string  $stripeCustomerId
+     * @param int $donationId
+     * @param string $stripeCustomerId
+     *
      * @return void
      */
     protected function saveStripeCustomerId($donationId, $stripeCustomerId)

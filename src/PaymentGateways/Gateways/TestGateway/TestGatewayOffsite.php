@@ -2,10 +2,10 @@
 
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
-use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
@@ -102,11 +102,12 @@ class TestGatewayOffsite extends PaymentGateway
      * @unreleased update to use Donation model
      * @since 2.19.0
      *
-     * @param  array  $queryParams
+     * @param array $queryParams
+     *
      * @throws PaymentGatewayException
      * @throws Exception
      */
-    public function returnFromOffsiteRedirect($queryParams)
+    protected function returnFromOffsiteRedirect($queryParams)
     {
         $donation = Donation::find($queryParams['give-donation-id']);
 
@@ -125,11 +126,12 @@ class TestGatewayOffsite extends PaymentGateway
      * @unreleased update to use Donation model
      * @since 2.19.0
      *
-     * @param  array  $queryParams
+     * @param array $queryParams
+     *
      * @throws PaymentGatewayException
      * @throws Exception
      */
-    public function securelyReturnFromOffsiteRedirect($queryParams)
+    protected function securelyReturnFromOffsiteRedirect($queryParams)
     {
         $donation = Donation::find($queryParams['give-donation-id']);
 
@@ -138,14 +140,15 @@ class TestGatewayOffsite extends PaymentGateway
         }
 
         $this->updateDonation($donation);
-        
+
         return response()->redirectTo(give_get_success_page_uri());
     }
 
     /**
-     * @param  Donation  $donation
+     * @param Donation $donation
+     *
      * @return void
-     * @throws Exception
+     * @throws \Exception
      */
     private function updateDonation(Donation $donation)
     {
@@ -157,5 +160,15 @@ class TestGatewayOffsite extends PaymentGateway
             'donationId' => $donation->id,
             'content' => 'Donation Completed from Test Gateway Offsite.'
         ]);
+    }
+
+    /**
+     * @unreleased
+     * @inerhitDoc
+     * @throws Exception
+     */
+    public function refundDonation(Donation $donation)
+    {
+        throw new Exception('Method has not been implemented yet. Please use the legacy method in the meantime.');
     }
 }
