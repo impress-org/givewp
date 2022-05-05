@@ -43,6 +43,10 @@ class CreateMigrationsTable extends Migration
         return strtotime('1970-01-01 00:00');
     }
 
+    /**
+     * @unreleased Add Check whether table installed before adding it to database.
+     * @throws DatabaseMigrationException
+     */
     public function run()
     {
         if( $this->isTableExist() ) {
@@ -68,7 +72,6 @@ class CreateMigrationsTable extends Migration
     }
 
     /**
-     * @return
      * @return bool
      */
     private function isTableExist()
