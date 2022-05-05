@@ -123,10 +123,6 @@ class Give_Donation_Form_Block {
 						'type' => 'string',
 						'default' => '',
 					),
-					'extUtilities' => array(
-						'type' => 'object',
-						'default' => array(),
-					),
 					'prevId'              => array(
 						'type' => 'number',
 					),
@@ -183,7 +179,6 @@ class Give_Donation_Form_Block {
 		$parameters['continue_button_title'] = trim( $attributes['continueButtonTitle'] );
 
 		$class_names = Html::classNames(
-			isset( $attributes['extUtilities'] ) ? $attributes['extUtilities'] : null,
 			isset( $attributes['className'] ) ? $attributes['className'] : null
 		);
 
