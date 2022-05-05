@@ -255,6 +255,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * New: Significant improvements to the donor wall and form grid blocks
 * Enhancement: Optimized deleting a donation and all of its meta
 * Enhancement: Many under-the-hood improvements Gateway API
+* Enhancement: Updated Romanian currency symbol to RON
+* Fix: Resolved a 3D Secure issue with PayPal Donations
+* Fix: Tags now work properly in the Offline Donations content
 * Fix: Improved error handling if an error occurs with PayPal Donations
 * Fix: Viewing a receipt in the legacy donation history page now works
 * Fix: Prevent a "donation_decimals" notice when adding and updating forms
