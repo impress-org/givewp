@@ -154,7 +154,7 @@ EOT;
             'data-client-token' => $this->merchantRepository->getClientToken(),
         ];
 
-        if (give_get_option('paypal_commerce_accept_venmo', 'disabled')) {
+        if (give_is_setting_enabled(give_get_option('paypal_commerce_accept_venmo', 'disabled'))) {
             $payPalSdkQueryParameters['enable-funding'] = 'venmo';
         }
 
