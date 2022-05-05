@@ -1,6 +1,7 @@
 <?php
 
 use Give\Form\Migrations\MoveOptionsToVisualAppearanceSection;
+use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 use Give\Log\Migrations\MigrateExistingLogs;
 use Give\MigrationLog\Migrations\CreateMigrationsTable;
 use Give\Revenue\Migrations\AddPastDonationsToRevenueTable;
@@ -526,6 +527,7 @@ function __give_get_tables()
  *
  * @unreleased Install migration table on fresh install because this table is required to run migrations.
  * @since 2.3.1
+ * @throws DatabaseMigrationException
  */
 function __give_register_tables()
 {
