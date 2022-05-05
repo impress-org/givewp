@@ -164,6 +164,10 @@ class PayPalCommerce extends PaymentGateway
                 'name' => esc_html__('Accept Venmo', 'give'),
                 'id' => 'paypal_commerce_accept_venmo',
                 'type' => 'radio_inline',
+                'desc' => esc_html__(
+                            'Displays a button allowing Donors to pay with Venmo (a PayPal Company). Donations still come into your PayPal account and are subject to normal PayPal transaction fees.',
+                            'give'
+                        ),
                 'default' => 'disabled',
                 'options' => [
                     'enabled' => esc_html__('Enabled', 'give'),
