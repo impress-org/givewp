@@ -123,10 +123,6 @@ class Give_Donation_Form_Block {
 						'type' => 'string',
 						'default' => '',
 					),
-					'align' => array(
-						'type' => 'string',
-						'default' => '',
-					),
 					'extUtilities' => array(
 						'type' => 'object',
 						'default' => array(),
@@ -188,15 +184,14 @@ class Give_Donation_Form_Block {
 
 		$class_names = Html::classNames(
 			isset( $attributes['extUtilities'] ) ? $attributes['extUtilities'] : null,
-			! empty( $attributes['align'] ) ? 'align' . $attributes['align'] : null,
 			isset( $attributes['className'] ) ? $attributes['className'] : null
 		);
 
-		$content = '<div class="' . $class_names . '">';
-		$content .= give_form_shortcode( $parameters );
-		$content .= '</div>';
+		add_filter( 'give_form_wrap_classes', function() use ( $class_names ) {
+			return $class_names;
+		});
 
-		return $content;
+		return give_form_shortcode( $parameters );
 	}
 
 	/**
