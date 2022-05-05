@@ -182,9 +182,9 @@ class Give_Donation_Form_Block {
 			isset( $attributes['className'] ) ? $attributes['className'] : null
 		);
 
-		add_filter( 'give_form_wrap_classes', function() use ( $class_names ) {
-			return $class_names;
-		});
+		add_filter( 'give_form_wrap_classes', function( $classes ) use ( $class_names ) {
+			return Html::classNames( $classes, $class_names );
+		} );
 
 		return give_form_shortcode( $parameters );
 	}
