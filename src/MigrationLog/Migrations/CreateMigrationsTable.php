@@ -45,9 +45,11 @@ class CreateMigrationsTable extends Migration
 
     public function run()
     {
-        global $wpdb;
+        if( $this->isTableExist() ) {
+            return;
+        }
 
-        $table = "{$wpdb->prefix}give_migrations";
+        $table = $this->getTableName();
         $charset = DB::get_charset_collate();
 
         $sql = "CREATE TABLE {$table} (
@@ -63,5 +65,33 @@ class CreateMigrationsTable extends Migration
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException("An error occurred while creating the {$table} table", 0, $exception);
         }
+    }
+
+    /**
+     * @return
+     * @return bool
+     */
+    private function isTableExist()
+    {
+        $result = DB::get_var(
+            DB::prepare(
+                'SELECT COUNT(*)
+            FROM information_schema.tables
+            WHERE table_schema = DATABASE()
+            AND table_name=%s;',
+                $this->getTableName()
+            )
+        );
+
+        return '1' === $result;
+    }
+
+    /**
+     * @unreleased
+     * @return string
+     */
+    private function getTableName()
+    {
+        return DB::prefix('give_migrations');
     }
 }
