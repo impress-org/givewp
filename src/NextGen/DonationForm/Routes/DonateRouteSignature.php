@@ -2,8 +2,6 @@
 
 namespace Give\NextGen\DonationForm\Routes;
 
-use Give\Framework\Shims\Shim;
-
 /**
 
  * @unreleased
@@ -21,11 +19,8 @@ class DonateRouteSignature
 
     /**
      * @unreleased
-     *
-     * @param  string  $name
-     * @param  string  $expiration
      */
-    public function __construct($name, $expiration = null)
+    public function __construct(string $name, string $expiration = null)
     {
         $this->expiration = $expiration ?: $this->createExpirationTimestamp();
         $this->signature = $this->generateSignatureString($name, $this->expiration);
@@ -34,12 +29,8 @@ class DonateRouteSignature
 
     /**
      * @unreleased
-     *
-     * @param  string  $name
-     * @param  string  $expiration
-     * @return string
      */
-    private function generateSignatureString($name, $expiration)
+    private function generateSignatureString(string $name, string $expiration): string
     {
         return "$name|$expiration";
     }
@@ -49,7 +40,7 @@ class DonateRouteSignature
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return $this->signature;
     }
@@ -59,7 +50,7 @@ class DonateRouteSignature
      *
      * @return string
      */
-    public function toHash()
+    public function toHash(): string
     {
         return wp_hash($this->signature);
     }
@@ -71,20 +62,16 @@ class DonateRouteSignature
      *
      * @return string
      */
-    public function createExpirationTimestamp()
+    public function createExpirationTimestamp(): string
     {
-        Shim::load( 'current_datetime' );
         return (string)current_datetime()->modify('+1 day')->getTimestamp();
     }
 
 
     /**
      * @unreleased
-     *
-     * @param  string  $suppliedSignature
-     * @return bool
      */
-    public function isValid($suppliedSignature)
+    public function isValid(string $suppliedSignature): bool
     {
         $isSignatureValid = hash_equals(
             $suppliedSignature,
