@@ -88,7 +88,7 @@ class DonationSummary
         $priceId = $this->donation->levelId;
 
         return is_numeric($priceId)
-            ? give_get_price_option_name($formId, $this->get('priceId'))
+            ? give_get_price_option_name($formId, $this->donation->levelId)
             : '';
     }
 
