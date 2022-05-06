@@ -28,6 +28,7 @@ $donor-space-double: $donor-space * 2;
 $donor-space-triple: $donor-space * 3;
 
 .give-donor {
+    font-family: 'Montserrat' !important;
 	border: 1px solid $give-card-border;
 	background: #fff;
 	color: $donor-color;
@@ -86,7 +87,7 @@ $donor-space-triple: $donor-space * 3;
             font-weight: 700;
             letter-spacing: 0;
             line-height: 0 !important;
-            margin: 1em 0 !important;
+            margin: 1.2em 0 !important;
             text-align: center;
         }
 
