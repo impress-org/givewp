@@ -18,7 +18,7 @@ class PayPalStandardBillingFields
      *
      * @return string
      */
-    public function __invoke($formId)
+    public function __invoke(int $formId): string
     {
         ob_start();
 
@@ -58,7 +58,7 @@ class PayPalStandardBillingFields
      *
      * @return string
      */
-    private function getLogo()
+    private function getLogo(): string
     {
         return file_get_contents(
             GIVE_PLUGIN_DIR . 'src/PaymentGateways/Gateways/PayPalStandard/resources/templates/paypal-standard-logo.svg'
