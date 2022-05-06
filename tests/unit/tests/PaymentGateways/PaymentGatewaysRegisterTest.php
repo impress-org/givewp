@@ -122,12 +122,12 @@ class MockStripe extends PaymentGateway
         return 'Credit Card';
     }
 
-    public function getLegacyFormFieldMarkup($formId, $args)
+    public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
         // TODO: Implement getLegacyFormFieldMarkup() method.
     }
 
-    public function createPayment(GatewayPaymentData $paymentData)
+    public function createPayment(Donation $donation)
     {
         // TODO: Implement createPayment() method.
     }
@@ -175,12 +175,12 @@ class MockPaypal extends PaymentGateway
         return 'PayPal';
     }
 
-    public function getLegacyFormFieldMarkup($formId, $args)
+    public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
         // TODO: Implement getLegacyFormFieldMarkup() method.
     }
 
-    public function createPayment(GatewayPaymentData $paymentData)
+    public function createPayment(Donation $donation)
     {
         // TODO: Implement createPayment() method.
     }
