@@ -14,7 +14,7 @@ class GiveDonorWall {
 				/**
 				 * Add events
 				 */
-				window.addDynamicEventListener( document, 'click', '.give-donor__read-more', GiveDonorWall.readMoreBtnEvent );
+				window.addDynamicEventListener( document, 'click', '.give-donor-content__read-more', GiveDonorWall.readMoreBtnEvent );
 				window.addDynamicEventListener( document, 'click', '.give-donor__load_more', GiveDonorWall.loadMoreBtnEvent );
 			}, false
 		);
@@ -38,7 +38,7 @@ class GiveDonorWall {
 		jQuery.magnificPopup.open(
 			{
 				items: {
-					src: evt.target.parentNode.parentNode.parentNode.getElementsByClassName( 'give-donor__comment' )[ 0 ],
+					src: evt.target.parentNode.parentNode.parentNode.getElementsByClassName( 'give-donor-content__comment' )[ 0 ],
 					type: 'inline',
 				},
 				mainClass: 'give-modal give-donor-wall-modal',
