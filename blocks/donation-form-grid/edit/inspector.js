@@ -83,7 +83,7 @@ const Inspector = ({attributes, setAttributes}) => {
                     label={__('Columns', 'give')}
                     selected={columns}
                     onClick={(value) => saveSetting('columns', value)}
-                    help={__('Controls how many columns of your Grid appear. "Best Fit" will adjust responsively to the width of your container element.', 'give')}
+                    help={__('Controls how many columns of the Form Grid appear. "Best Fit" will adjust responsively to the space available.', 'give')}
                 />
 
                 <ToggleControl
@@ -139,7 +139,7 @@ const Inspector = ({attributes, setAttributes}) => {
                             value={imageSize}
                             options={getImageSizes()}
                             onChange={(value) => saveSetting('imageSize', value)}
-                            help={__('Featured image size. Default "medium". Accepts WordPress image sizes.', 'give')}
+                            help={__('Featured image size. Default "medium." Accepts WordPress image sizes, which by default are "thumbnail," "medium," "large," or "full." ', 'give')}
                         />
 
                         <TextControl
@@ -147,7 +147,7 @@ const Inspector = ({attributes, setAttributes}) => {
                             label={__('Image Height', 'give')}
                             value={imageHeight}
                             onChange={(value) => saveSetting('imageHeight', value)}
-                            help={__('Featured image height. Default "auto". Accepts valid CSS heights', 'give')}
+                            help={__('Featured image height. Default "auto". Accepts valid heights in px, em, or rem.', 'give')}
                         />
                     </>
                 )}
@@ -188,7 +188,7 @@ const Inspector = ({attributes, setAttributes}) => {
                     value={orderBy}
                     options={giveFormOptions.orderBy}
                     onChange={(value) => saveSetting('orderBy', value)}
-                    help={__('What aspect of the forms should they be ordered by?', 'give')}
+                    help={__('The order forms are displayed in.', 'give')}
                 />
 
                 <SelectControl
@@ -197,7 +197,7 @@ const Inspector = ({attributes, setAttributes}) => {
                     value={order}
                     options={giveFormOptions.order}
                     onChange={(value) => saveSetting('order', value)}
-                    help={__('Should the form order ascend or descend?', 'give')}
+                    help={__('Whether the order ascends or descends.', 'give')}
                 />
 
                 <FormTokenField
@@ -262,14 +262,14 @@ const Inspector = ({attributes, setAttributes}) => {
                     value={displayType}
                     options={giveFormOptions.displayType}
                     onChange={(value) => saveSetting('displayType', value)}
-                    help={__('What should happen when a visitor clicks on a form card within the grid? They can be redirected to the page your form is on, or the form can be opened in a modal window.', 'give')}
+                    help={__('What should happen when a visitor clicks on a form within the grid? "Redirect" sends them to the individual form. "Modal" opens the form in a lightbox/popup on the same page.', 'give')}
                 />
                 <TextControl
                     name="formsPerPage"
                     label={__('Forms Per Page', 'give')}
                     value={formsPerPage}
                     onChange={(value) => saveSetting('formsPerPage', value)}
-                    help={__('What should happen when a visitor clicks on a form card within the grid? They can be redirected to the page your form is on, or the form can be opened in a modal window.', 'give')}
+                    help={__('How many forms should display on the first page load? To restrict display to only one page, disable pagination below.', 'give')}
                 />
                 <ToggleControl
                     name="paged"
