@@ -15,7 +15,7 @@
 --------------------------------------------------------------*/
 
 $donor-space: 20px;
-$donor-color: #333;
+$donor-color: #00160A;
 $donor-space-eighth: $donor-space * 0.125;
 $donor-space-quarter: $donor-space * 0.25;
 $donor-space-fifth: $donor-space * 0.2;
@@ -31,109 +31,188 @@ $donor-space-triple: $donor-space * 3;
 	border: 1px solid $give-card-border;
 	background: #fff;
 	color: $donor-color;
-	font-size: 1em;
 	margin-bottom: $donor-space;
-	padding: $donor-space;
 	position: relative;
 	transition: all 0.2s ease-out;
-	width: 100%;
+    width:100%;
+    max-height: 361px;
+    max-width: 385px;
 
-	&__header {
+    .give-card-container {
+        padding: $donor-space $donor-space-and-three-quarters;
+    }
 
-		/* [1] */
-		align-items: center;
+    /* [1] */
+	&-header {
 		display: flex;
-	}
+        flex-direction: column;
+        align-items: center;
+        max-height: 198px;
 
-	&__image {
+        &__image {
 
-		/* [2] */
-		display: flex;
-		align-items: center;
-		justify-content: center;
+            /* [2] */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            overflow: hidden;
+            border-radius: 50%;
 
-		background: #fff;
-		margin-right: $donor-space-half;
+            img {
+                object-fit: cover;
+                object-position: center;
+                width: 100%;
+
+            }
+
+            .give-donor-header__name_initial {
+                position: absolute;
+            }
+
+            &[data-anonymous-donation='0'] img[src*='anonymous-user.svg'],
+            &[data-anonymous-donation='1'] .give-donor-header__name_initial {
+                visibility: hidden;
+            }
+
+            &[data-anonymous-donation='0'][data-has-valid-gravatar='0'] {
+                border: 1px solid $give-card-border;
+            }
+        }
+
+        &__name {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0em;
+            line-height: 0 !important;
+            margin: 1em 0 !important;
+            text-align: center;
+        }
+
+    }
+
+
+    /* [2] */
+    &-content {
+        width: 100%;
+        border-left: 2px solid #219653;
+        padding-left: 10px;
+        font-size: .85rem;
+        font-weight: 400;
+        letter-spacing: 0;
+        text-align: left;
+
+
+
+        p {
+            color: $donor-color;
+            font-size: 1em !important;
+            font-style: italic !important;
+            line-height: 1.25rem !important;
+            width: 100%;
+            margin: 0 !important;
+
+        }
+
+        &:first-child {
+            margin-top: 0 !important;
+        }
+
+        & :last-child {
+            margin-bottom: 0 !important;
+        }
+
+        &__read-more {
+            color: #69B86B;
+            font-size: .75rem !important;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        &__excerpt + &__comment {
+            display: none;
+        }
+
+    }
+
+
+    /* [3] */
+    &-details {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 		overflow: hidden;
-		border-radius: 50%;
-		flex-basis: 40%;
+        margin-top: $donor-space;
 
-		position: relative;
+        &__wrapper {
+            display: flex;
+            flex-direction: column;
+        }
 
-		img {
-			object-fit: cover;
-			width: 100%;
-		}
+        &__form_title {
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: $donor-space;
+            letter-spacing: 0;
+            text-align: left;
+        }
 
-		.give-donor__name_initial {
-			position: absolute;
-		}
+        &__amount_donated {
+            color: #00160A;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 14.63px;
+            letter-spacing: 0;
+            text-align: left;
 
-		&[data-anonymous-donation='0'] img[src*='anonymous-user.svg'],
-		&[data-anonymous-donation='1'] .give-donor__name_initial {
-			visibility: hidden;
-		}
+        }
 
-		&[data-anonymous-donation='0'][data-has-valid-gravatar='0'] {
-			border: 1px solid $give-card-border;
-		}
-	}
+        &__total {
+            color: #219653;
+            font-size: 1.35rem;
+            font-weight: 700;
+            line-height: $donor-space-and-quarter;
+            letter-spacing: 0;
+            text-align: right;
+        }
 
-	&__details {
 
-		/* [3] */
-		flex-grow: 1;
-		overflow: hidden;
-		flex-basis: 60%;
-	}
+    }
 
-	&__name {
-		font-size: 1em !important;
-		font-weight: bold !important;
-		color: $donor-color !important;
-		line-height: 1.3 !important;
-		margin: 0 !important;
-		padding: 0 !important;
-	}
 
-	&__timestamp {
+    /* [4] */
+    &-tribute{
+        display: flex;
+        align-items: center;
+        background: #DEEAE3;
+        padding-left: 32px;
+        margin-bottom: $donor-space-half;
+        font-size: .75rem;
+
+        &__message {
+            font-size: 1em !important;
+            margin-left: 6px;
+            line-height: 32px;
+            letter-spacing: 0;
+            text-align: left;
+
+            & > span {
+                font-weight: 600;
+            }
+        }
+
+    }
+
+
+    &__timestamp {
 		color: $donor-color !important;
 		display: block;
 		font-size: 75% !important;
 		line-height: 1.3 !important;
 	}
 
-	&__content {
-		margin-top: $donor-space-half;
-		width: 100%;
 
-		p {
-			color: $donor-color;
-			font-size: 1em !important;
-			font-size: 1em !important;
-			line-height: 1.5 !important;
-			margin: 0 0 $donor-space !important;
-			padding: 0 !important;
-			width: 100%;
-		}
 
-		&:first-child {
-			margin-top: 0 !important;
-		}
-
-		& :last-child {
-			margin-bottom: 0 !important;
-		}
-	}
-
-	&__read-more {
-		cursor: pointer;
-		white-space: nowrap;
-	}
-
-	&__excerpt + &__comment {
-		display: none;
-	}
 }
 
 .give-donor-wall-modal {
