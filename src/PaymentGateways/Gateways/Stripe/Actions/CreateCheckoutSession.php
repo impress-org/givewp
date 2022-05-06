@@ -7,7 +7,6 @@ use Give\Framework\PaymentGateways\DonationSummary;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\CheckoutSession;
-use Give\ValueObjects\Money;
 use Give_Stripe_Customer;
 
 /**
@@ -27,13 +26,13 @@ class CreateCheckoutSession
      * @throws InvalidPropertyName
      */
     public function __invoke(
-        GatewayPaymentData $paymentData,
+        Donation $donation,
         DonationSummary $donationSummary,
         Give_Stripe_Customer $giveStripeCustomer
     ) {
         $session_args = [
             'customer' => $giveStripeCustomer->get_id(),
-            'client_reference_id' => $paymentData->purchaseKey,
+            'client_reference_id' => $donation->purchaseKey,
             'payment_method_types' => ['card'],
             'billing_address_collection' => give_is_setting_enabled(
                 give_get_option('stripe_collect_billing')
@@ -41,17 +40,17 @@ class CreateCheckoutSession
             'mode' => 'payment',
             'line_items' => [
                 [
-                    'name' => Donation::find($paymentData->donationId)->formTitle,
+                    'name' => Donation::find($donation->id)->formTitle,
                     'description' => $donationSummary->getSummaryWithDonor(),
-                    'amount' => Money::of($paymentData->price, $paymentData->currency)->getMinorAmount(),
-                    'currency' => $paymentData->currency,
+                    'amount' => $donation->amount->formatToMinorAmount(),
+                    'currency' => $donation->amount->getCurrency(),
                     'quantity' => 1,
                 ],
             ],
             'payment_intent_data' => [
                 'capture_method' => 'automatic',
                 'description' => $donationSummary->getSummaryWithDonor(),
-                'metadata' => give_stripe_prepare_metadata($paymentData->donationId),
+                'metadata' => give_stripe_prepare_metadata($donation->id),
                 'statement_descriptor' => give_stripe_get_statement_descriptor(),
             ],
             'submit_type' => 'donate',
@@ -61,15 +60,15 @@ class CreateCheckoutSession
         ];
 
         // If featured image exists, then add it to checkout session.
-        $formId = give_get_payment_form_id($paymentData->donationId);
+        $formId = give_get_payment_form_id($donation->id);
         if (!empty(get_the_post_thumbnail($formId))) {
             $session_args['line_items'][0]['images'] = [get_the_post_thumbnail_url($formId)];
         }
 
         $session = give(CheckoutSession::class)->create($session_args);
 
-        give_insert_payment_note($paymentData->donationId, 'Stripe Checkout Session ID: ' . $session->id());
-        give_set_payment_transaction_id($paymentData->donationId, $session->id());
+        give_insert_payment_note($donation->id, 'Stripe Checkout Session ID: ' . $session->id());
+        give_set_payment_transaction_id($donation->id, $session->id());
 
         return $session;
     }

@@ -15,12 +15,12 @@ trait HandlePaymentIntentStatus
      * @since 2.19.7 fix param order and only pass donationId
      *
      * @param PaymentIntent $paymentIntent
-     * @param string $donationId
+     * @param int $donationId
      *
      * @return PaymentCommand|RedirectOffsite
      * @throws PaymentIntentException
      */
-    public function handlePaymentIntentStatus(PaymentIntent $paymentIntent, $donationId)
+    public function handlePaymentIntentStatus(PaymentIntent $paymentIntent, int $donationId)
     {
         switch ($paymentIntent->status()) {
             case 'requires_action':

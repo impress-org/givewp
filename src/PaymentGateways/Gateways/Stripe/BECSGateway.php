@@ -5,7 +5,6 @@ namespace Give\PaymentGateways\Gateways\Stripe;
 use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
-use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\SubscriptionModule;
@@ -44,29 +43,29 @@ class BECSGateway extends PaymentGateway
      * @return GatewayCommand
      * @throws PaymentGatewayException
      */
-    public function createPayment( GatewayPaymentData $paymentData )
+    public function createPayment( Donation $donation ): GatewayCommand
     {
-        $paymentMethod = Call::invoke( Actions\GetPaymentMethodFromRequest::class, $paymentData );
-        $donationSummary = Call::invoke( Actions\SaveDonationSummary::class, $paymentData );
-        $stripeCustomer = Call::invoke( Actions\GetOrCreateStripeCustomer::class, $paymentData );
+        $paymentMethod = Call::invoke( Actions\GetPaymentMethodFromRequest::class, $donation );
+        $donationSummary = Call::invoke( Actions\SaveDonationSummary::class, $donation );
+        $stripeCustomer = Call::invoke( Actions\GetOrCreateStripeCustomer::class, $donation );
 
         $createIntentAction = new Actions\CreatePaymentIntent( $this->getPaymentIntentArgs() );
 
         return $this->handlePaymentIntentStatus(
             $createIntentAction(
-                $paymentData,
+                $donation,
                 $donationSummary,
                 $stripeCustomer,
                 $paymentMethod
             ),
-            $paymentData->donationId
+            $donation->id
         );
     }
 
     /**
      * @inheritDoc
      */
-    public static function id()
+    public static function id(): string
     {
         return 'stripe_becs';
     }
@@ -74,7 +73,7 @@ class BECSGateway extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getId()
+    public function getId(): string
     {
         return self::id();
     }
@@ -98,7 +97,7 @@ class BECSGateway extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getLegacyFormFieldMarkup($formId, $args)
+    public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
         return $this->getMandateFormHTML( $formId, $args );
     }
@@ -107,7 +106,7 @@ class BECSGateway extends PaymentGateway
      * @since 2.19.0
      * @return array
      */
-    protected function getPaymentIntentArgs()
+    protected function getPaymentIntentArgs(): array
     {
         return [
             'payment_method_types' => [ 'au_becs_debit' ],

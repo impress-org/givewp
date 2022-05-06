@@ -2,7 +2,7 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe\Actions;
 
-use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
+use Give\Donations\Models\Donation;
 use Give\PaymentGateways\Gateways\Stripe\Exceptions\StripeCustomerException;
 use Give_Stripe_Customer;
 
@@ -14,21 +14,18 @@ class GetOrCreateStripeCustomer
      *             This param is optional because we use it only when donor subscribe for recurring donation.
      * @since 2.19.0
      *
-     * @param GatewayPaymentData $stripePaymentMethodId
-     * @param string $stripePaymentMethopdId
-     *
      * @return Give_Stripe_Customer
      * @throws StripeCustomerException
      */
-    public function __invoke(GatewayPaymentData $paymentData, $stripePaymentMethodId = '')
+    public function __invoke(Donation $donation, $stripePaymentMethodId = '')
     {
-        $giveStripeCustomer = new Give_Stripe_Customer($paymentData->donorInfo->email, $stripePaymentMethodId);
+        $giveStripeCustomer = new Give_Stripe_Customer($donation->email, $stripePaymentMethodId);
 
         if (!$giveStripeCustomer->get_id()) {
             throw new StripeCustomerException(__('Unable to find or create stripe customer object.', 'give'));
         }
 
-        $this->saveStripeCustomerId($paymentData->donationId, $giveStripeCustomer->get_id());
+        $this->saveStripeCustomerId($donation->id, $giveStripeCustomer->get_id());
 
         return $giveStripeCustomer;
     }
