@@ -84,11 +84,10 @@ class DonationSummary
      */
     protected function getPriceLabel(): string
     {
-        $formId = give_get_payment_form_id($this->donation->id);
         $priceId = $this->donation->levelId;
 
         return is_numeric($priceId)
-            ? give_get_price_option_name($formId, $this->donation->levelId)
+            ? give_get_price_option_name($this->donation->formId, $this->donation->levelId)
             : '';
     }
 
