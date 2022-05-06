@@ -16,6 +16,9 @@ use Give\PaymentGateways\Gateways\PayPalStandard\Controllers\PayPalStandardWebho
 use Give\PaymentGateways\Gateways\PayPalStandard\Views\PayPalStandardBillingFields;
 use Give_Payment;
 
+/**
+ * @since 2.19.0
+ */
 class PayPalStandard extends PaymentGateway
 {
     public $routeMethods = [
