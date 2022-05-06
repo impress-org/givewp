@@ -5,6 +5,7 @@ namespace Give\Framework\PaymentGateways\Contracts;
 use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
+use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 
@@ -63,13 +64,12 @@ interface PaymentGatewayInterface extends SubscriptionModuleInterface
      *
      * @since 2.18.0
      *
-     * @param GatewayPaymentData $paymentData
+     * @return GatewayCommand|RedirectOffsite|void
      *
-     * @return GatewayCommand
-     * @throws PaymentGatewayException|Exception
-     *
+     * @throws PaymentGatewayException
+     * @throws Exception
      */
-    public function createPayment(GatewayPaymentData $paymentData);
+    public function createPayment(Donation $donation);
 
     /**
      * @unreleased

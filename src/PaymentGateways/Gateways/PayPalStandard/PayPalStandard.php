@@ -41,7 +41,7 @@ class PayPalStandard extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public static function id()
+    public static function id(): string
     {
         return 'paypal';
     }
@@ -49,7 +49,7 @@ class PayPalStandard extends PaymentGateway
     /**
      * @inerhitDoc
      */
-    public function getId()
+    public function getId(): string
     {
         return self::id();
     }
@@ -57,7 +57,7 @@ class PayPalStandard extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getName()
+    public function getName(): string
     {
         return esc_html__('PayPal Standard', 'give');
     }
@@ -65,7 +65,7 @@ class PayPalStandard extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getPaymentMethodLabel()
+    public function getPaymentMethodLabel(): string
     {
         return esc_html__('PayPal', 'give');
     }
@@ -73,7 +73,7 @@ class PayPalStandard extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function createPayment(GatewayPaymentData $paymentData)
+    public function createPayment(GatewayPaymentData $paymentData): RedirectOffsite
     {
         return new RedirectOffsite(
             Call::invoke(
@@ -104,15 +104,13 @@ class PayPalStandard extends PaymentGateway
      * @since 2.19.6 1. Do not set donation to "processing"
      *             2. Add "payment-confirmation" param to receipt page url
      *
-     * @param  array  $queryParams  Query params in gateway route. {
+     * @param array $queryParams  Query params in gateway route. {
      *
      * @type string "donation-id" Donation id.
      *
      * }
-     *
-     * @return RedirectResponse
      */
-    protected function handleSuccessPaymentReturn($queryParams)
+    protected function handleSuccessPaymentReturn(array $queryParams): RedirectResponse
     {
         $donationId = (int)$queryParams['donation-id'];
 
@@ -132,10 +130,8 @@ class PayPalStandard extends PaymentGateway
      * @type string "donation-id" Donation id.
      *
      * }
-     *
-     * @return RedirectResponse
      */
-    protected function handleFailedPaymentReturn($queryParams)
+    protected function handleFailedPaymentReturn(array $queryParams): RedirectResponse
     {
         $donationId = (int)$queryParams['donation-id'];
         $payment = new Give_Payment($donationId);
