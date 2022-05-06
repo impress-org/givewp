@@ -4,6 +4,7 @@ namespace Give\Framework\PaymentGateways\Contracts;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
+use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Subscriptions\Models\Subscription;
 
 interface SubscriptionModuleInterface
@@ -12,8 +13,10 @@ interface SubscriptionModuleInterface
      * Create a subscription with gateway
      *
      * @since 2.18.0
+     *
+     * @return GatewayCommand|RedirectOffsite
      */
-    public function createSubscription(Donation $donation, Subscription $subscription): GatewayCommand;
+    public function createSubscription(Donation $donation, Subscription $subscription);
 
     /**
      * Cancel subscription.
