@@ -15,13 +15,9 @@ class SubscriptionCompleteHandler
      * @unreleased replace logic with models
      * @since 2.18.0
      *
-     * @param  SubscriptionComplete  $subscriptionComplete
-     * @param  Subscription  $subscription
-     * @param  Donation  $donation
-     * @return void
      * @throws Exception
      */
-    public function __invoke(SubscriptionComplete $subscriptionComplete, $subscription, $donation)
+    public function __invoke(SubscriptionComplete $subscriptionComplete, Subscription $subscription, Donation $donation)
     {
         $donation->status = DonationStatus::COMPLETE();
         $donation->gatewayTransactionId = $subscriptionComplete->gatewayTransactionId;

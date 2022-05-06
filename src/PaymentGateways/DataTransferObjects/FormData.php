@@ -114,10 +114,8 @@ class FormData
      * Convert data from request into DTO
      *
      * @since 2.18.0
-     *
-     * @return self
      */
-    public static function fromRequest(array $request)
+    public static function fromRequest(array $request): FormData
     {
         $self = new static();
 
@@ -168,11 +166,9 @@ class FormData
 
     /**
      * @since 2.19.6
-     *
-     * @return Donation
      * @throws Exception
      */
-    public function toDonation($donorId)
+    public function toDonation($donorId): Donation
     {
         $donationAmount = Money::of($this->price, $this->currency);
 
@@ -201,12 +197,8 @@ class FormData
 
     /**
      * @unreleased replace $donationId with Donation model
-     *
-     * @param Donation $donation
-     *
-     * @return GatewayPaymentData
      */
-    public function toGatewayPaymentData(Donation $donation)
+    public function toGatewayPaymentData(Donation $donation): GatewayPaymentData
     {
         return GatewayPaymentData::fromArray([
             'legacyPaymentData' => $this->legacyDonationData,

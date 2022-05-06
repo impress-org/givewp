@@ -29,10 +29,8 @@ class SubscriptionData
      * Convert data from request into DTO
      *
      * @since 2.18.0
-     *
-     * @return self
      */
-    public static function fromRequest(array $request)
+    public static function fromRequest(array $request): SubscriptionData
     {
         $self = new static();
 
@@ -45,11 +43,8 @@ class SubscriptionData
 
     /**
      * @unreleased replace $subscriptionId with Subscription Model
-     *
-     * @param  Subscription  $subscription
-     * @return GatewaySubscriptionData
      */
-    public function toGatewaySubscriptionData(Subscription $subscription)
+    public function toGatewaySubscriptionData(Subscription $subscription): GatewaySubscriptionData
     {
         return GatewaySubscriptionData::fromArray([
             'period' => $this->period,

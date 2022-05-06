@@ -16,9 +16,9 @@ class PaymentCompleteHandler extends PaymentHandler
     }
 
     /**
-     * @return DonationStatus
+     * @unreleased
      */
-    protected function getPaymentStatus()
+    protected function getPaymentStatus(): DonationStatus
     {
         return DonationStatus::COMPLETE();
     }

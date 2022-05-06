@@ -14,7 +14,7 @@ class GenerateGatewayRouteUrl
      * @since 2.19.0 remove $donationId param in favor of args
      *
      */
-    public function __invoke($gatewayId, $gatewayMethod, $args = null)
+    public function __invoke($gatewayId, $gatewayMethod, $args = [])
     {
         $queryArgs = [
             'give-listener' => 'give-gateway',

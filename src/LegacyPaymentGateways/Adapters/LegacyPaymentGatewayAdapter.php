@@ -23,32 +23,25 @@ class LegacyPaymentGatewayAdapter
      *
      * @since 2.18.0
      * @since 2.19.0 Added missing $args parameter for ID prefixing and general backwards compatibility.
-     *
-     * @param  int  $formId
-     * @param  array  $args
-     * @param  PaymentGatewayInterface  $registeredGateway
-     *
-     * @return string|bool
      */
-    public function getLegacyFormFieldMarkup($formId, $args, $registeredGateway)
-    {
+    public function getLegacyFormFieldMarkup(
+        int $formId,
+        array $args,
+        PaymentGatewayInterface $registeredGateway
+    ): string {
         return $registeredGateway->getLegacyFormFieldMarkup($formId, $args);
     }
 
     /**
      * First we create a payment, then move on to the gateway processing
      *
-     * @since 2.18.0
-     * @since 2.19.0 Replace is_recurring with is_donation_recurring to detect recurring donations.
      * @unreleased Replace give_insert_payment with donation model.
+     * @since 2.19.0 Replace is_recurring with is_donation_recurring to detect recurring donations.
+     * @since 2.18.0
      *
-     * @param  array  $legacyDonationData  Legacy Donation Data
-     * @param  PaymentGatewayInterface  $registeredGateway
-     *
-     * @return void
      * @throws Exception
      */
-    public function handleBeforeGateway($legacyDonationData, $registeredGateway)
+    public function handleBeforeGateway(array $legacyDonationData, PaymentGatewayInterface $registeredGateway)
     {
         $formData = FormData::fromRequest($legacyDonationData);
 
@@ -61,17 +54,16 @@ class LegacyPaymentGatewayAdapter
             $formData->donorInfo->lastName
         );
 
-        $donation = $formData->toDonation($donor->id)->save();
+        $donation = $formData->toDonation($donor->id);
+        $donation->save();
 
         $this->setSession($donation->id);
-
-        $gatewayPaymentData = $formData->toGatewayPaymentData($donation);
 
         if (give_recurring_is_donation_recurring($formData->legacyDonationData)) {
             $subscriptionData = SubscriptionData::fromRequest($legacyDonationData);
 
             $subscription = Subscription::create([
-                'amount' => (int)$gatewayPaymentData->amount,
+                'amount' => $donation->amount,
                 'period' => new SubscriptionPeriod($subscriptionData->period),
                 'frequency' => (int)$subscriptionData->frequency,
                 'donorId' => $donor->id,
@@ -88,9 +80,7 @@ class LegacyPaymentGatewayAdapter
                 ]
             );
 
-            $gatewaySubscriptionData = $subscriptionData->toGatewaySubscriptionData($subscription);
-
-            $registeredGateway->handleCreateSubscription($gatewayPaymentData, $gatewaySubscriptionData);
+            $registeredGateway->handleCreateSubscription($donation, $subscription);
         }
 
         $registeredGateway->handleCreatePayment($gatewayPaymentData);
@@ -101,7 +91,7 @@ class LegacyPaymentGatewayAdapter
      *
      * @since 2.18.0
      *
-     * @param  string  $gatewayNonce
+     * @param string $gatewayNonce
      */
     private function validateGatewayNonce($gatewayNonce)
     {
@@ -123,6 +113,7 @@ class LegacyPaymentGatewayAdapter
      * @unreleased
      *
      * @param $donationId
+     *
      * @return void
      */
     private function setSession($donationId)
@@ -138,10 +129,11 @@ class LegacyPaymentGatewayAdapter
     /**
      * @unreleased
      *
-     * @param  int|null  $userId
-     * @param  string  $donorEmail
-     * @param  string  $firstName
-     * @param  string  $lastName
+     * @param int|null $userId
+     * @param string $donorEmail
+     * @param string $firstName
+     * @param string $lastName
+     *
      * @return Donor
      * @throws Exception
      */

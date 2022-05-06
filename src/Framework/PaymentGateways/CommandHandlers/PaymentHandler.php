@@ -18,9 +18,8 @@ abstract class PaymentHandler
     /**
      * @unreleased change return type to DonationStatus
      * @since 2.18.0
-     * @return DonationStatus
      */
-    abstract protected function getPaymentStatus();
+    abstract protected function getPaymentStatus(): DonationStatus;
 
     /**
      * @param PaymentCommand $paymentCommand
