@@ -150,7 +150,16 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 
 				echo sprintf(
 					/* translators: 1: amount of income raised 2: goal target amount. */
-					__( '<span class="income" data-amounts="%1$s">%2$s</span> of <span class="goal-text" data-amounts="%3$s">%4$s</span> raised', 'give' ),
+					__( '<div class="raised-details">
+                              <div class="income">
+                                   <span class="amount"  data-amounts="%1$s">%2$s</span>
+                                   <span> Raised </span>
+                              </div>
+                              <div class="goal-text">
+                                   <span class="amount" data-amounts="%3$s">%4$s</span>
+                                   <span> Goal </span>
+                              </div>
+                         </div>', 'give' ),
 					esc_attr( wp_json_encode( $income_amounts, JSON_PRETTY_PRINT ) ),
 					esc_attr( $formatted_income ),
 					esc_attr( wp_json_encode( $goal_amounts, JSON_PRETTY_PRINT ) ),
