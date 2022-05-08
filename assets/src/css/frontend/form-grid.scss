@@ -8,15 +8,10 @@
     order: 2;
     justify-content: space-evenly;
 
-    .give-card__title,
-    .give-card__text,
-    .give-card__progress {
-        padding-left: 1.5rem !important;
-        padding-right: 1.5rem !important;
-    }
-
     .give-card__title {
         font-family: "Open Sans";
+        line-height: 48px;
+        margin: 16px 0 0 !important;
     }
 
     .give-card__media {
