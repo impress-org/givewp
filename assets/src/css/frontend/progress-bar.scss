@@ -8,37 +8,55 @@
 */
 
 .give-goal-progress {
-  margin-bottom: 20px;
-  clear:both;
+    margin-bottom: 20px;
+    clear:both;
+    border: 0.75px solid #F2F2F2;
 
-  .income {
-	font-size: 46px;
-	line-height: 48px;
-	letter-spacing: -1px;
-	color: #333;
-  }
+        .raised-details {
+            display: flex;
+            justify-content: space-between;
 
-  .raised {
-	margin-bottom: 15px;
-  }
-}
+            .income {
+                border: 0.75px solid #F2F2F2;
+            }
 
-.give-progress-bar {
-  height: 20px;
-  position: relative;
-  background: #EEE;
-  border-radius: 25px;
-  overflow: hidden;
+            .income, .goal-text {
+                flex:1;
+                text-align: center;
 
-  > span {
-	display: block;
-	height: 100%;
-	border-top-right-radius: 8px;
-	border-bottom-right-radius: 8px;
-	border-top-left-radius: 20px;
-	border-bottom-left-radius: 20px;
-	background-color: rgb(43, 194, 83);
-	position: relative;
-	overflow: hidden;
-  }
-}
+                .amount {
+                    color: #4C4C4C;
+                    font-size:1.25rem !important;
+                    font-weight: 600;
+                }
+            }
+
+            .income > span, .goal-text > span {
+                display: block;
+                color: grey;
+                font-size: 1rem;
+            }
+        }
+
+
+        .give-progress-bar {
+            height: 20px;
+            position: relative;
+            background: #EEE;
+            border-radius: 25px;
+            margin: 1rem 0;
+
+            > span {
+                display: block;
+                height: 100%;
+                border-top-right-radius: 8px;
+                border-bottom-right-radius: 8px;
+                border-top-left-radius: 20px;
+                border-bottom-left-radius: 20px;
+                background-color: rgb(43, 194, 83);
+                position: relative;
+                overflow: hidden;
+            }
+        }
+    }
+
