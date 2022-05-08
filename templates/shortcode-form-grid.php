@@ -88,34 +88,6 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                 );
             }
 
-
-            // Maybe display the form excerpt.
-			if ( true === $atts['show_excerpt'] ) {
-				if ( $raw_content = $formTemplate->getFormExcerpt( $form_id ) ) {
-					$stripped_content = wp_strip_all_tags(
-						strip_shortcodes( $raw_content )
-					);
-				} else {
-					// Get content from the form post's content field.
-					$raw_content = give_get_meta( $form_id, '_give_form_content', true );
-
-					if ( ! empty( $raw_content ) ) {
-						$stripped_content = wp_strip_all_tags(
-							strip_shortcodes( $raw_content )
-						);
-					}
-				}
-
-				// Maybe truncate excerpt.
-				if ( 0 < $atts['excerpt_length'] ) {
-					$excerpt = wp_trim_words( $stripped_content, $atts['excerpt_length'] );
-				} else {
-					$excerpt = $stripped_content;
-				}
-
-				printf( '<p class="give-card__text">%s</p>', $excerpt );
-			}
-
 			// Maybe display the goal progress bar.
 			if (
 				give_is_setting_enabled( get_post_meta( $form_id, '_give_goal_option', true ) )
@@ -127,6 +99,33 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                     ] );
 				echo '</div>';
 			}
+
+            // Maybe display the form excerpt.
+            if ( true === $atts['show_excerpt'] ) {
+                if ( $raw_content = $formTemplate->getFormExcerpt( $form_id ) ) {
+                    $stripped_content = wp_strip_all_tags(
+                        strip_shortcodes( $raw_content )
+                    );
+                } else {
+                    // Get content from the form post's content field.
+                    $raw_content = give_get_meta( $form_id, '_give_form_content', true );
+
+                    if ( ! empty( $raw_content ) ) {
+                        $stripped_content = wp_strip_all_tags(
+                            strip_shortcodes( $raw_content )
+                        );
+                    }
+                }
+
+                // Maybe truncate excerpt.
+                if ( 0 < $atts['excerpt_length'] ) {
+                    $excerpt = wp_trim_words( $stripped_content, $atts['excerpt_length'] );
+                } else {
+                    $excerpt = $stripped_content;
+                }
+
+                printf( '<p class="give-card__text">%s</p>', $excerpt );
+            }
 			?>
 
             <?php if ($atts['show_donate_button']):
