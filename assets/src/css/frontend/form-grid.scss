@@ -19,6 +19,21 @@
         font-family: "Open Sans";
     }
 
+    .give-card__media {
+        min-width: 100%;
+        min-height: 300px;
+        max-height: 300px;
+    }
+
+    .give-card__media > img{
+        min-width: auto;
+        min-height: auto;
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
 
     .give-card__text {
         display: flex;
