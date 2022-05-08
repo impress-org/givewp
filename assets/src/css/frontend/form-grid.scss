@@ -15,6 +15,11 @@
         padding-right: 1.5rem !important;
     }
 
+    .give-card__title {
+        font-family: "Open Sans";
+    }
+
+
     .give-card__text {
         display: flex;
         justify-content: center;
@@ -24,7 +29,6 @@
         font-family: Montserrat;
         font-size: 1.35rem;
         font-weight: 400;
-        line-height: 27px;
         text-align: center;
     }
 
