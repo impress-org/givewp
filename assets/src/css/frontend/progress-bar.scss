@@ -17,18 +17,28 @@
             justify-content: space-between;
 
             .income {
-                border: 0.75px solid #F2F2F2;
+                .amount {
+                    color: #4C4C4C;
+                }
+            }
+
+            .goal-text {
+                .amount {
+                    color: #606060;
+                }
             }
 
             .income, .goal-text {
                 flex:1;
                 text-align: center;
+                border: 0.75px solid #F2F2F2;
+
 
                 .amount {
-                    color: #4C4C4C;
                     font-size:1.25rem !important;
                     font-weight: 600;
                 }
+
             }
 
             .income > span, .goal-text > span {
