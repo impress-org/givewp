@@ -9,9 +9,14 @@
     justify-content: space-evenly;
 
     .give-card__title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 62px;
+        width: 100%;
+        margin: 12px 0 !important;
         font-family: "Open Sans";
-        line-height: 48px;
-        margin: 16px 0 0 !important;
+        text-align: center;
     }
 
     .give-card__media {
@@ -40,10 +45,6 @@
         font-size: 1.35rem;
         font-weight: 400;
         text-align: center;
-    }
-
-    .give-card__title {
-        padding-bottom: 1.2rem !important;
     }
 }
 
