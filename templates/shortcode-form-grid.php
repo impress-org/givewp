@@ -116,7 +116,7 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
 				printf( '<p class="give-card__text">%s</p>', $excerpt );
 			}
 
-			// Maybe display the goal progess bar.
+			// Maybe display the goal progress bar.
 			if (
 				give_is_setting_enabled( get_post_meta( $form_id, '_give_goal_option', true ) )
 				&& true === $atts['show_goal']
