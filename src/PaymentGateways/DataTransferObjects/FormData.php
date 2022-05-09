@@ -6,10 +6,10 @@ use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\Properties\BillingAddress;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\ValueObjects\Address;
 use Give\ValueObjects\CardInfo;
 use Give\ValueObjects\DonorInfo;
-use Give\ValueObjects\Money;
 
 /**
  * Class FormData
@@ -170,13 +170,10 @@ class FormData
      */
     public function toDonation($donorId): Donation
     {
-        $donationAmount = Money::of($this->price, $this->currency);
-
         return new Donation([
             'status' => DonationStatus::PENDING(),
-            'gateway' => $this->paymentGateway,
-            'amount' => $donationAmount->getMinorAmount(),
-            'currency' => $this->currency,
+            'gatewayId' => $this->paymentGateway,
+            'amount' => Money::fromDecimal($this->price, $this->currency),
             'donorId' => $donorId,
             'firstName' => $this->donorInfo->firstName,
             'lastName' => $this->donorInfo->lastName,
