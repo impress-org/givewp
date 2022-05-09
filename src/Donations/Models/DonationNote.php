@@ -60,14 +60,15 @@ class DonationNote extends Model implements ModelCrud, ModelHasFactory
      * @param  array  $attributes
      *
      * @return $this
-     *
      * @throws Exception|InvalidArgumentException
      */
     public static function create(array $attributes)
     {
         $donationNote = new static($attributes);
 
-        return give()->donations->notes->insert($donationNote);
+        give()->donations->notes->insert($donationNote);
+
+        return $donationNote;
     }
 
     /**
