@@ -141,7 +141,6 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                     ? $atts['donate_button_text_color']
                     : '#fff';
                 ?>
-                <br />
                 <div>
                     <button class="give-form-grid-btn" style="background-color: <?php echo $button_bg_color; ?>;">
                         <span style="color: <?php echo $button_text_color; ?>">
