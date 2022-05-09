@@ -30,7 +30,7 @@ class DonationNotesRepository
     /**
      * @unreleased
      *
-     * @param  int  $noteId
+     * @param int $noteId
      *
      * @return DonationNote|null
      */
@@ -44,7 +44,7 @@ class DonationNotesRepository
     /**
      * @unreleased
      *
-     * @param  DonationNote  $donationNote
+     * @param DonationNote $donationNote
      *
      * @return DonationNote
      * @throws Exception|InvalidArgumentException
@@ -93,7 +93,7 @@ class DonationNotesRepository
     /**
      * @unreleased
      *
-     * @param  DonationNote  $donationNote
+     * @param DonationNote $donationNote
      *
      * @return DonationNote
      * @throws Exception|InvalidArgumentException
@@ -124,7 +124,7 @@ class DonationNotesRepository
 
         DB::query('COMMIT');
 
-        Hooks::doAction('give_donation_note_updated', $donationNote );
+        Hooks::doAction('give_donation_note_updated', $donationNote);
 
         return $donationNote;
     }
@@ -132,7 +132,8 @@ class DonationNotesRepository
     /**
      * @unreleased
      *
-     * @param  DonationNote  $donationNote
+     * @param DonationNote $donationNote
+     *
      * @return bool
      * @throws Exception
      */
@@ -164,7 +165,7 @@ class DonationNotesRepository
     /**
      * @unreleased
      *
-     * @param  int  $donationId
+     * @param int $donationId
      *
      * @return ModelQueryBuilder
      */
@@ -178,7 +179,8 @@ class DonationNotesRepository
     /**
      * @unreleased
      *
-     * @param  DonationNote  $donationNote
+     * @param DonationNote $donationNote
+     *
      * @return void
      */
     private function validateDonationNote(DonationNote $donationNote)
@@ -189,7 +191,7 @@ class DonationNotesRepository
             }
         }
 
-        if (!$donationNote->donation){
+        if (!$donationNote->donation) {
             throw new InvalidArgumentException("Invalid donationId, Donation does not exist");
         }
     }
@@ -199,10 +201,9 @@ class DonationNotesRepository
      */
     public function prepareQuery()
     {
-        $builder = new ModelQueryBuilder();
+        $builder = new ModelQueryBuilder(DonationNote::class);
 
         return $builder->from('give_comments')
-            ->setModel(DonationNote::class)
             ->select(
                 ['comment_ID', 'id'],
                 ['comment_parent', 'donationId'],
