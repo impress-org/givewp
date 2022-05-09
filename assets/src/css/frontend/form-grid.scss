@@ -14,8 +14,7 @@
         align-items: center;
         justify-content: center;
         height: 62px;
-        width: 100%;
-        margin: 12px 0 !important;
+        width: 90%;
         font-family: "Open Sans";
         font-size: 1.5em;
         text-align: center;
@@ -37,12 +36,13 @@
 
 
     .give-card__text {
-        flex: 1;
         display: flex;
         justify-content: center;
         align-items: center;
+        min-height: 174px;
+        width: 389px;
         font-family: Montserrat;
-        font-size: 1.35em;
+        font-size: 1.125em;
         font-weight: 400;
         text-align: center;
     }
@@ -74,5 +74,5 @@
 }
 
 .give-grid__item {
-    max-width: 428px;
+    width: 428px;
 }
