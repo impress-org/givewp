@@ -142,7 +142,11 @@ class TestDonation extends \Give_Unit_Test_Case
         $donationNote2 = DonationNote::factory()->create(['donationId' => $donation->id]);
         $donationNote3 = DonationNote::factory()->create(['donationId' => $donation->id]);
 
-        $this->assertEquals([$donationNote3, $donationNote2, $donationNote1], $donation->notes);
+        $this->assertCount( 3, $donation->notes );
+
+        $this->assertEquals($donationNote1->id, $donation->notes[2]->id);
+        $this->assertEquals($donationNote2->id, $donation->notes[1]->id);
+        $this->assertEquals($donationNote3->id, $donation->notes[0]->id);
     }
 
     /**
