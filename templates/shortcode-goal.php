@@ -175,7 +175,7 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
                                    <span> Raised </span>
                               </div>
                               <div class="goal-text">
-                                   <span> 100&#37; </span>
+                                   <span class="amount"> 100&#37; </span>
                                    <span> Goal </span>
                               </div>
                          </div>', 'give' ),
