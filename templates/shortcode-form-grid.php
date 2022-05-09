@@ -115,7 +115,7 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                 ?>
                 <div>
                     <br />
-                    <button class="give-btn" style="background-color: <?php echo $button_bg_color; ?>;">
+                    <button class="give-form-grid-btn" style="background-color: <?php echo $button_bg_color; ?>;">
                         <span style="color: <?php echo $button_text_color; ?>">
                             <?php echo $button_text ?: __( 'Donate', 'give' ); ?>
                         </span>
