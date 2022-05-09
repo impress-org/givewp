@@ -169,7 +169,16 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 			elseif ( 'percentage' === $goal_format ) :
 
 				echo sprintf( /* translators: %s: percentage of the amount raised compared to the goal target */
-					__( '<span class="give-percentage">%s%%</span> funded', 'give' ),
+					__( '<div class="raised-details">
+                              <div class="income">
+                                   <span class="give-percentage">%s%%</span>
+                                   <span> Raised </span>
+                              </div>
+                              <div class="goal-text">
+                                   <span> 100&#37; </span>
+                                   <span> Goal </span>
+                              </div>
+                         </div>', 'give' ),
 					round( $progress )
 				);
 
