@@ -191,26 +191,4 @@ class FormData
             'levelId' => (int)$this->priceId
         ]);
     }
-
-    /**
-     * @unreleased replace $donationId with Donation model
-     */
-    public function toGatewayPaymentData(Donation $donation): GatewayPaymentData
-    {
-        return GatewayPaymentData::fromArray([
-            'legacyPaymentData' => $this->legacyDonationData,
-            'amount' => $this->amount,
-            'currency' => $this->currency,
-            'date' => $this->date,
-            'price' => $this->price,
-            'priceId' => $this->priceId,
-            'gatewayId' => $this->paymentGateway,
-            'donationId' => $donation->id,
-            'purchaseKey' => $this->purchaseKey,
-            'donorInfo' => $this->donorInfo,
-            'cardInfo' => $this->cardInfo,
-            'billingAddress' => $this->billingAddress,
-            'donation' => $donation
-        ]);
-    }
 }
