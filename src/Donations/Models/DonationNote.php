@@ -73,17 +73,15 @@ class DonationNote extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @return $this
-     *
      * @throws Exception|InvalidArgumentException
      */
     public function save()
     {
         if (!$this->id) {
-            return give()->donations->notes->insert($this);
+            give()->donations->notes->insert($this);
+        } else{
+            give()->donations->notes->update($this);
         }
-
-        return give()->donations->notes->update($this);
     }
 
     /**

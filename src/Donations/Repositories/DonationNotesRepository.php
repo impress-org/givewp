@@ -46,7 +46,6 @@ class DonationNotesRepository
      *
      * @param DonationNote $donationNote
      *
-     * @return DonationNote
      * @throws Exception|InvalidArgumentException
      */
     public function insert(DonationNote $donationNote)
@@ -55,9 +54,8 @@ class DonationNotesRepository
 
         Hooks::doAction('give_donation_note_creating', $donationNote);
 
-        $date = $donationNote->createdAt ? Temporal::getFormattedDateTime(
-            $donationNote->createdAt
-        ) : Temporal::getCurrentFormattedDateForDatabase();
+        $dateCreated = Temporal::withoutMicroseconds($donationNote->createdAt ?: Temporal::getCurrentDateTime());
+        $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
 
 
         DB::query('START TRANSACTION');
@@ -66,8 +64,8 @@ class DonationNotesRepository
             DB::table('give_comments')
                 ->insert([
                     'comment_content' => $donationNote->content,
-                    'comment_date' => $date,
-                    'comment_date_gmt' => get_gmt_from_date($date),
+                    'comment_date' => $dateCreatedFormatted,
+                    'comment_date_gmt' => get_gmt_from_date($dateCreatedFormatted),
                     'comment_parent' => $donationNote->donationId,
                     'comment_type' => 'donation',
                 ]);
@@ -81,13 +79,10 @@ class DonationNotesRepository
 
         DB::query('COMMIT');
 
-        $donationNoteId = DB::last_insert_id();
-
-        $donationNote = $this->getById($donationNoteId);
+        $donationNote->id = DB::last_insert_id();
+        $donationNote->createdAt = $dateCreated;
 
         Hooks::doAction('give_donation_note_created', $donationNote);
-
-        return $donationNote;
     }
 
     /**
@@ -95,7 +90,6 @@ class DonationNotesRepository
      *
      * @param DonationNote $donationNote
      *
-     * @return DonationNote
      * @throws Exception|InvalidArgumentException
      */
     public function update(DonationNote $donationNote)
@@ -125,8 +119,6 @@ class DonationNotesRepository
         DB::query('COMMIT');
 
         Hooks::doAction('give_donation_note_updated', $donationNote);
-
-        return $donationNote;
     }
 
     /**
