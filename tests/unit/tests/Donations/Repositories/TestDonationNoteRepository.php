@@ -72,20 +72,19 @@ final class TestDonationNoteRepository extends \Give_Unit_Test_Case
 
         $repository = new DonationNotesRepository();
 
-        /** @var DonationNote $newDonationNote */
-        $newDonationNote = $repository->insert($donationNote);
+        $repository->insert($donationNote);
 
         /** @var DonationNote $query */
         $query = $repository->prepareQuery()
-            ->where('comment_ID', $newDonationNote->id)
+            ->where('comment_ID', $donationNote->id)
             ->get();
 
 
         // simulate asserting database has values
-        $this->assertInstanceOf(DonationNote::class, $newDonationNote);
-        $this->assertEquals($query->id, $newDonationNote->id);
-        $this->assertEquals($query->donationId, $newDonationNote->donationId);
-        $this->assertEquals($query->content, $newDonationNote->content);
+        $this->assertInstanceOf(DonationNote::class, $donationNote);
+        $this->assertEquals($query->id, $donationNote->id);
+        $this->assertEquals($query->donationId, $donationNote->donationId);
+        $this->assertEquals($query->content, $donationNote->content);
     }
 
     /**

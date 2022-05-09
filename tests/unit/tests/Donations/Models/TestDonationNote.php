@@ -70,6 +70,6 @@ class TestDonationNote  extends \Give_Unit_Test_Case
         $donationNote = DonationNote::factory()->create(['donationId' => $donation->id]);
 
         $this->assertInstanceOf(Donation::class, $donationNote->donation);
-        $this->assertEquals($donation, $donationNote->donation);
+        $this->assertEquals($donation->id, $donationNote->donation->id);
     }
 }
