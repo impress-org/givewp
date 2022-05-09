@@ -83,7 +83,7 @@ class LegacyPaymentGatewayAdapter
             $registeredGateway->handleCreateSubscription($donation, $subscription);
         }
 
-        $registeredGateway->handleCreatePayment($gatewayPaymentData);
+        $registeredGateway->handleCreatePayment($donation);
     }
 
     /**
