@@ -13,22 +13,22 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        min-height: 62px;
+        height: 62px;
         width: 100%;
         margin: 12px 0 !important;
         font-family: "Open Sans";
-        font-size: 2.5em;
+        font-size: 1.5em;
         text-align: center;
     }
 
     .give-card__media {
         min-width: 100%;
-        max-height: 300px;
+        height: 187px;
     }
 
     .give-card__media > img{
-        min-width: auto;
-        min-height: auto;
+        min-width: 100%;
+        min-height: 100%;
         max-width: 100%;
         max-height: 100%;
         object-fit: cover;
@@ -37,11 +37,10 @@
 
 
     .give-card__text {
+        flex: 1;
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 2.5rem 2rem 0 !important;
-        padding: 1.75em 0 !important;
         font-family: Montserrat;
         font-size: 1.35em;
         font-weight: 400;
@@ -74,3 +73,6 @@
     }
 }
 
+.give-grid__item {
+    max-width: 428px;
+}
