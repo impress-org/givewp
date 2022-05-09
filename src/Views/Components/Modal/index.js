@@ -5,7 +5,7 @@ import LoadingOverlay from '@givewp/components/LoadingOverlay';
 
 import styles from './styles.module.scss';
 
-import { __ } from '@wordpress/i18n'
+import {__} from '@wordpress/i18n';
 
 const Modal = ({visible, type, children, isLoading, handleClose, ...rest}) => {
     const closeModal = useCallback((event) => {
@@ -122,14 +122,14 @@ Modal.propTypes = {
     // Modal type
     type: PropTypes.string,
     // Collection of react DOM elements
-    children: PropTypes.object,
+    children: PropTypes.arrayOf(PropTypes.object),
     // Handle close callback
     handleClose: PropTypes.func,
 };
 
 Modal.Title.propTypes = {
     // Collection of react DOM elements
-    children: PropTypes.object,
+    children: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.object)]),
 };
 
 Modal.CloseIcon.propTypes = {
