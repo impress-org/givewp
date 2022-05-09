@@ -12,61 +12,55 @@
     clear:both;
     border: 0.75px solid #F2F2F2;
 
-        .raised-details {
-            display: flex;
-            justify-content: space-between;
+    .raised-details {
+    display: flex;
+    justify-content: space-between;
 
-            .income {
-                .amount {
-                    color: #4C4C4C;
-                }
+        .income, .goal-text {
+            flex:1;
+            text-align: center;
+            border: 0.75px solid #F2F2F2;
+        }
+
+            .income .amount {
+                color: #4C4C4C;
+                font-size: 24px;
+                font-weight: 600;
             }
 
-            .goal-text {
-                .amount {
-                    color: #606060;
-                }
-            }
-
-            .income, .goal-text {
-                flex:1;
-                text-align: center;
-                border: 0.75px solid #F2F2F2;
-
-
-                .amount {
-                    font-size:1.25rem !important;
-                    font-weight: 600;
-                }
-
+            .goal-text .amount {
+                color: #606060;
+                font-size: 24px;
+                font-weight: 600;
             }
 
             .income > span, .goal-text > span {
                 display: block;
                 color: grey;
-                font-size: 1rem;
+                font-size: 16px;
             }
-        }
+    }
 
 
-        .give-progress-bar {
-            height: 20px;
-            position: relative;
-            background: #F1F1F1;
-            border-radius: 25px;
-            margin: 1rem 1.25rem;
+.give-progress-bar {
+    height: 20px;
+    position: relative;
+    background: #F1F1F1;
+    border-radius: 25px;
+    margin: 1rem 1.25rem;
 
-            > span {
-                display: block;
-                height: 100%;
-                border-top-right-radius: 8px;
-                border-bottom-right-radius: 8px;
-                border-top-left-radius: 20px;
-                border-bottom-left-radius: 20px;
-                background-color: rgb(43, 194, 83);
-                position: relative;
-                overflow: hidden;
-            }
+    > span {
+        display: block;
+        height: 100%;
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+        background-color: rgb(43, 194, 83);
+        position: relative;
+        overflow: hidden;
         }
     }
+
+}
 
