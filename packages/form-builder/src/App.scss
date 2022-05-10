@@ -1,0 +1,72 @@
+.interface-interface-skeleton__editor {
+    //height: 60px;
+    background-color: white;
+}
+
+.interface-interface-skeleton__header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    border-bottom: 1px solid lightgray;
+    background-color: white;
+    z-index: 30; // Below the components-popover, which is at index 31.
+}
+
+.interface-interface-skeleton__body {
+    width: 100%;
+    //margin: 0 250px;
+}
+.interface-interface-skeleton__content {
+    width: 824px;
+    margin: auto;
+    padding: 80px 0; /* Leave room for toolbar above first block. */
+
+    box-sizing: border-box;
+    *, *:before, *:after {
+        box-sizing: inherit;
+    }
+}
+
+.is-root-container > .block-list-appender,
+.components-popover.block-editor-block-list__insertion-point-popover {
+    //display: none; /* CSS Hack to hide root level inserter @todo Move to a JS or config solution. */
+}
+
+[data-type="custom-block-editor/section"] > div > .block-editor-inner-blocks > .block-editor-block-list__layout,
+[data-type="custom-block-editor/donor-info"] > div > .block-editor-inner-blocks > .block-editor-block-list__layout,
+[data-type="custom-block-editor/donation-amount"] > div > .block-editor-inner-blocks > .block-editor-block-list__layout,
+[data-type="custom-block-editor/custom-fields"] > .block-editor-inner-blocks > .block-editor-block-list__layout {
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    margin-bottom: 40px;
+}
+
+.block-editor-block-list__block .block-list-appender {
+    position: unset !important;
+}
+
+.block-editor-list-view-leaf.is-selected,
+.block-editor-list-view-leaf.is-selected td {
+    background: #66bb6a;
+}
+
+input,
+select {
+    inline-size: 100%;
+    padding: 1.1875rem;
+    border: 0.078rem solid #666;
+    border-radius: 0.25rem;
+    box-shadow: inset 0 0.08em 0.4em rgba(0, 0, 0, 0.15);
+    background-color: #fff;
+    color: #828382;
+    font-size: 1rem;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.components-toolbar__control.components-button {
+    width: 100px;
+}

@@ -55,6 +55,7 @@ add_action(
             give()->registerServiceProvider(AddonServiceProvider::class);
             give()->registerServiceProvider(DonationFormServiceProvider::class);
             give()->registerServiceProvider(NextGenServiceProvider::class);
+            give()->registerServiceProvider(FormBuilder\ServiceProvider::class);
         }
     }
 );

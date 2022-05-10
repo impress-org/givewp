@@ -2,7 +2,7 @@ import {__} from '@wordpress/i18n';
 import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
 import {PanelBody, PanelRow, SelectControl} from '@wordpress/components';
 import {Fragment} from '@wordpress/element';
-import useFormOptions from '../hooks/useFormOptions';
+import useFormOptions from './hooks/useFormOptions';
 
 /**
  * @since 1.0.0

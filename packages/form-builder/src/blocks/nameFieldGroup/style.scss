@@ -1,0 +1,14 @@
+.nameFieldInnerBlocks {
+  display: flex;
+  gap: 20px;
+}
+[data-type="custom-block-editor/name-field-group"] [data-type="custom-block-editor/first-name-field"],
+[data-type="custom-block-editor/name-field-group"] [data-type="custom-block-editor/last-name-field"] {
+  flex: 4;
+}
+[data-type="custom-block-editor/name-field-group"] [data-type="custom-block-editor/honorific-name-field"] {
+  flex: 1;
+}
+[data-type="custom-block-editor/name-field-group"] .hideHonorific [data-type="custom-block-editor/honorific-name-field"] {
+  display: none;
+}

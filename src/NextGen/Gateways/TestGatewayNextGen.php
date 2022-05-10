@@ -97,4 +97,5 @@ class TestGatewayNextGen extends PaymentGateway
     {
         // TODO: Implement refundDonation() method.
     }
+
 }
