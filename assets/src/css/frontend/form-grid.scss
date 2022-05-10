@@ -13,9 +13,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        max-width: 428px;
         padding: 0 1em;
-        font-family: "Open Sans";
+        font-family: "Open Sans", system-ui;
         font-size: 1.5rem;
         font-weight: 600;
         text-align: center;
@@ -46,7 +45,7 @@
         min-height: 150px;
         padding: 1em !important;
         margin: 0 !important;
-        font-family: Montserrat;
+        font-family: Montserrat, system-ui;
         font-size: 1.125rem;
         font-weight: 400;
         text-align: center;
@@ -77,5 +76,3 @@
         margin-left: .55rem;
     }
 }
-
-
