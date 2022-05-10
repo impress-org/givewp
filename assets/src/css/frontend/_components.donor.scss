@@ -28,7 +28,6 @@ $donor-space-double: $donor-space * 2;
 $donor-space-triple: $donor-space * 3;
 
 .give-donor {
-    font-family: 'Montserrat' !important;
 	border: 1px solid $give-card-border;
 	background: #fff;
 	color: $donor-color;
@@ -37,23 +36,21 @@ $donor-space-triple: $donor-space * 3;
 	transition: all 0.2s ease-out;
     width:100%;
 
-
     .give-card-container {
         padding: $donor-space $donor-space-and-three-quarters;
     }
 
     /* [1] */
 	.give-donor-header {
-        flex:1;
+        flex: 1;
 		display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: space-between;
-        font-size: 1rem;
+        margin-top: 12px;
+
 
         .give-donor-header__image {
-
-            /* [2] */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -83,10 +80,12 @@ $donor-space-triple: $donor-space * 3;
 
         .give-donor-header__name {
             width: 100%;
-            font-size: 1.15rem;
-            font-weight: 600;
-            letter-spacing: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
             text-align: center;
+            padding:0;
+            margin: 0;
+            //border: 1px solid $give-card-border;
         }
     }
 
@@ -95,37 +94,29 @@ $donor-space-triple: $donor-space * 3;
     .give-donor-content {
         width: 100%;
         border-left: 2px solid #219653;
-        margin-bottom: 24px;
-        padding-left: 10px;
-        font-size: 0.875rem;
+        margin: 14px 0;
+        padding-left: 14px;
         font-weight: 400;
         letter-spacing: 0;
         text-align: left;
+        //border:1px solid grey;
+
 
         p {
             color: $donor-color;
             font-size: 1rem;
+            font-style: italic;
             width: 100%;
-            margin: 0 !important;
-
+            margin: 10px 0;
         }
 
-        &:first-child {
-            margin-top: 0 !important;
-        }
-
-        & :last-child {
-            margin-bottom: 0 !important;
-        }
-
-        &__read-more {
+        .give-donor-content__excerpt .give-donor-content__read-more {
             color: #69B86B;
-            font-size: 1rem;
             cursor: pointer;
             white-space: nowrap;
         }
 
-        &__excerpt + &__comment {
+        .give-donor-content__excerpt + .give-donor-content__comment {
             display: none;
         }
 
@@ -138,11 +129,12 @@ $donor-space-triple: $donor-space * 3;
         justify-content: space-between;
         align-items: center;
 		overflow: hidden;
+        margin: 20px 0;
+        //border:1px solid grey;
 
         .give-donor-details__wrapper {
             display: flex;
             flex-direction: column;
-            font-size: 1rem;
 
             > span:first-child {
                 font-size: 1.25rem;
@@ -153,16 +145,16 @@ $donor-space-triple: $donor-space * 3;
 
             > span:last-child {
                 color: #00160A;
-                font-size: .75rem;
+                font-size: .875rem;
                 font-weight: 400;
                 letter-spacing: 0;
                 text-align: left;
             }
         }
 
-        .give-donor-total {
+        .give-donor-details__total {
             color: #219653;
-            font-size: 1.25rem;
+            font-size: 1.55rem;
             font-weight: 700;
             letter-spacing: 0;
             text-align: right;
@@ -175,13 +167,27 @@ $donor-space-triple: $donor-space * 3;
         display: flex;
         align-items: center;
         background: #DEEAE3;
-        margin-bottom: $donor-space-half;
-        font-size: 0.75rem;
+        width: 100%;
+        height: 32px;
+        margin-bottom: 1rem;
+
+        > span:first-child {
+            margin-left: 42px;
+        }
+
+        > span {
+            > svg {
+                height: 22px;
+                width: 22px;
+            }
+        }
 
         .give-donor-tribute__message {
-            text-align: left;
+            margin-left: 10px;
+            font-size: .9rem;
 
-             > span {
+
+            > span {
                 font-weight: 600;
             }
         }
@@ -204,3 +210,5 @@ $donor-space-triple: $donor-space * 3;
 		margin-bottom: 0;
 	}
 }
+
+
