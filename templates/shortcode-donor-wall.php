@@ -51,7 +51,7 @@ $atts          = $args[2]; // Shortcode attributes.
                 }
                 ?>
                 <?php if ( true === $atts['show_name'] ) : ?>
-                    <h3 class="give-donor-header__name">
+                    <h3 class="give-donor-header__name" style='<?php echo ($atts['show_avatar']) ? "text-align: center" : "text-align: left"?>'>
                         <?php
                         // Get donor name based on donation parameter.
                         $donor_name = ! empty( $donation['_give_anonymous_donation'] )
