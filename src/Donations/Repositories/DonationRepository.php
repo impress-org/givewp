@@ -308,6 +308,7 @@ class DonationRepository
                     $donation->email
                 ),
             DonationMetaKeys::DONOR_IP => isset($donation->donorIp) ? $donation->donorIp : give_get_ip(),
+            DonationMetaKeys::GATEWAY_TRANSACTION_ID => $donation->gatewayTransactionId
         ];
 
         if ($donation->feeAmountRecovered !== null) {
