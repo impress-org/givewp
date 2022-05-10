@@ -82,7 +82,7 @@ class Log
             );
 
             // Additional context
-            $data['context'] = array_diff(
+            $data['context'] = array_diff_key(
                 $context,
                 $data
             );
