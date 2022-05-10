@@ -31,7 +31,7 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
 	if ( 'redirect' === $atts['display_style'] ) {
 
         $form_grid_option = give_get_meta( $form_id, '_give_form_grid_option', true );
-        $form_grid_redirect_url = give_get_meta( $form_id, '_give_form_grid_redirect_url', true );
+        $form_grid_redirect_url = esc_url(give_get_meta( $form_id, '_give_form_grid_redirect_url', true ));
 
         $url = ( $form_grid_option === 'custom' && filter_var($form_grid_redirect_url, FILTER_VALIDATE_URL) )
             ? $form_grid_redirect_url
@@ -115,7 +115,7 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                 ?>
                 <div>
                     <br />
-                    <button class="give-btn" style="background-color: <?php echo $button_bg_color; ?>;">
+                    <button class="give-form-grid-btn" style="background-color: <?php echo $button_bg_color; ?>;">
                         <span style="color: <?php echo $button_text_color; ?>">
                             <?php echo $button_text ?: __( 'Donate', 'give' ); ?>
                         </span>
