@@ -36,12 +36,10 @@ $donor-space-triple: $donor-space * 3;
 	position: relative;
 	transition: all 0.2s ease-out;
     width:100%;
-    max-height: 361px;
-    max-width: 385px;
+
 
     .give-card-container {
         padding: $donor-space $donor-space-and-three-quarters;
-        font-size: 16px;
     }
 
     /* [1] */
@@ -50,7 +48,7 @@ $donor-space-triple: $donor-space * 3;
         flex-direction: column;
         align-items: center;
         max-height: 198px;
-        font-size: 1em;
+        font-size: 1rem;
 
         &__image {
 
@@ -87,7 +85,7 @@ $donor-space-triple: $donor-space * 3;
             font-weight: 700;
             letter-spacing: 0;
             line-height: 0 !important;
-            margin: 1.2em 0 !important;
+            margin: 1.2rem 0 !important;
             text-align: center;
         }
 
@@ -100,7 +98,7 @@ $donor-space-triple: $donor-space * 3;
         border-left: 2px solid #219653;
         margin-bottom: 24px;
         padding-left: 10px;
-        font-size: 14px;
+        font-size: 0.875rem;
         font-weight: 400;
         letter-spacing: 0;
         text-align: left;
@@ -108,7 +106,7 @@ $donor-space-triple: $donor-space * 3;
         p {
             color: $donor-color;
             font-size: 1em !important;
-            line-height: 1.25em !important;
+            line-height: 1.25rem !important;
             width: 100%;
             margin: 0 !important;
 
@@ -124,7 +122,7 @@ $donor-space-triple: $donor-space * 3;
 
         &__read-more {
             color: #69B86B;
-            font-size: 1em !important;
+            font-size: 1rem !important;
             cursor: pointer;
             white-space: nowrap;
         }
@@ -146,7 +144,7 @@ $donor-space-triple: $donor-space * 3;
         &__wrapper {
             display: flex;
             flex-direction: column;
-            font-size: 16px;
+            font-size: 1rem;
         }
 
         &__form_title {
@@ -161,7 +159,7 @@ $donor-space-triple: $donor-space * 3;
             color: #00160A;
             font-size: .75em;
             font-weight: 400;
-            line-height: 14.63px;
+            line-height: 15px;
             letter-spacing: 0;
             text-align: left;
 
@@ -169,7 +167,7 @@ $donor-space-triple: $donor-space * 3;
 
         &__total {
             color: #219653;
-            font-size: 1.25em;
+            font-size: 1.25rem;
             font-weight: 700;
             line-height: $donor-space-and-quarter;
             letter-spacing: 0;
@@ -187,7 +185,7 @@ $donor-space-triple: $donor-space * 3;
         background: #DEEAE3;
         padding-left: 32px;
         margin-bottom: $donor-space-half;
-        font-size: 12px;
+        font-size: 0.75rem;
 
         &__message {
             margin-left: 6px;
@@ -197,7 +195,7 @@ $donor-space-triple: $donor-space * 3;
 
             & > span {
                 font-weight: 600;
-                font-size: 1em !important;
+                font-size: 1rem !important;
             }
         }
 
