@@ -71,6 +71,7 @@ class DonationRepository
      * @since 2.19.6
      *
      * @param $donationId
+     *
      * @return ModelQueryBuilder
      */
     public function queryById($donationId)
@@ -82,7 +83,7 @@ class DonationRepository
     /**
      * @unreleased
      *
-     * @param  int  $subscriptionId
+     * @param int $subscriptionId
      *
      * @return Donation[]|null
      */
@@ -319,18 +320,15 @@ class DonationRepository
             DonationMetaKeys::LAST_NAME => $donation->lastName,
             DonationMetaKeys::EMAIL => $donation->email,
             DonationMetaKeys::FORM_ID => $donation->formId,
-            DonationMetaKeys::FORM_TITLE => isset($donation->formTitle) ? $donation->formTitle : $this->getFormTitle(
-                $donation->formId
-            ),
-            DonationMetaKeys::MODE => isset($donation->mode) ? $donation->mode->getValue(
-            ) : $this->getDefaultDonationMode()->getValue(),
-            DonationMetaKeys::PURCHASE_KEY => isset($donation->purchaseKey)
-                ? $donation->purchaseKey
-                : Call::invoke(
+            DonationMetaKeys::FORM_TITLE => $donation->formTitle ?? $this->getFormTitle($donation->formId),
+            DonationMetaKeys::MODE => isset($donation->mode) ?
+                $donation->mode->getValue() :
+                $this->getDefaultDonationMode()->getValue(),
+            DonationMetaKeys::PURCHASE_KEY => $donation->purchaseKey ?? Call::invoke(
                     GeneratePurchaseKey::class,
                     $donation->email
                 ),
-            DonationMetaKeys::DONOR_IP => isset($donation->donorIp) ? $donation->donorIp : give_get_ip(),
+            DonationMetaKeys::DONOR_IP => $donation->donorIp ?? give_get_ip(),
         ];
 
         if ($donation->feeAmountRecovered !== null) {
