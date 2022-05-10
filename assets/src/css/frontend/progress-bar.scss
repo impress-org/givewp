@@ -22,23 +22,23 @@
             border: 0.75px solid #F2F2F2;
         }
 
-            .income .amount {
-                color: #4C4C4C;
-                font-size: 24px;
-                font-weight: 600;
-            }
+        .income, .amount {
+            color: #4C4C4C;
+            font-size: 1.2rem!important;
+            font-weight: 600;
+        }
 
-            .goal-text .amount {
-                color: #606060;
-                font-size: 24px;
-                font-weight: 600;
-            }
+        .goal-text, .amount {
+            color: #606060;
+            font-size: 1.2rem!important;
+            font-weight: 600;
+        }
 
-            .income > span, .goal-text > span {
+        .income > span, .goal-text > span {
                 display: block;
                 color: grey;
-                font-size: 14px;
-            }
+                font-size: 0.875rem;
+        }
     }
 
 

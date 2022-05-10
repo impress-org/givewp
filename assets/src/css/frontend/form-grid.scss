@@ -7,7 +7,6 @@
     order: 2;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
 
     .give-card__title {
         flex: 1;
@@ -17,7 +16,7 @@
         max-width: 428px;
         padding: 0 1em;
         font-family: "Open Sans";
-        font-size: 1.5em;
+        font-size: 1.5rem;
         font-weight: 600;
         text-align: center;
     }
@@ -48,7 +47,7 @@
         padding: 1em !important;
         margin: 0 !important;
         font-family: Montserrat;
-        font-size: 1.125em;
+        font-size: 1.125rem;
         font-weight: 400;
         text-align: center;
     }
@@ -65,7 +64,7 @@
     color: #fff;
     text-align: center;
     font-family: inherit;
-    font-size: 1.2em;
+    font-size: 1.2rem;
     font-weight: 600;
     line-height: 1.2;
 
