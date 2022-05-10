@@ -2,8 +2,6 @@
 
 namespace Give\PaymentGateways\DataTransferObjects;
 
-use Give\Subscriptions\Models\Subscription;
-
 /**
  * Class SubscriptionData
  * @since 2.18.0
@@ -39,19 +37,5 @@ class SubscriptionData
         $self->frequency = $request['frequency'];
 
         return $self;
-    }
-
-    /**
-     * @unreleased replace $subscriptionId with Subscription Model
-     */
-    public function toGatewaySubscriptionData(Subscription $subscription): GatewaySubscriptionData
-    {
-        return GatewaySubscriptionData::fromArray([
-            'period' => $this->period,
-            'times' => $this->times,
-            'frequency' => $this->frequency,
-            'subscriptionId' => $subscription->id,
-            'subscription' => $subscription
-        ]);
     }
 }
