@@ -158,6 +158,8 @@ class Give_Subscriptions_DB extends Give_DB
     {
         $status = parent::update($row_id, $data, $where);
 
+        (new Give_Recurring_Cache())->flush_on_subscription_update($status, $row_id, $data, $where);
+
         /**
          * Fire the action when subscriptions updated
          *
@@ -165,7 +167,6 @@ class Give_Subscriptions_DB extends Give_DB
          */
         do_action('give_subscription_updated', $status, $row_id, $data, $where);
 
-        (new Give_Recurring_Cache())->flush_on_subscription_update($status, $row_id, $data, $where);
 
         return $status;
     }
