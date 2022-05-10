@@ -43,14 +43,15 @@ $donor-space-triple: $donor-space * 3;
     }
 
     /* [1] */
-	&-header {
+	.give-donor-header {
+        flex:1;
 		display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: space-between;
         font-size: 1rem;
 
-        &__image {
+        .give-donor-header__image {
 
             /* [2] */
             display: flex;
@@ -80,18 +81,18 @@ $donor-space-triple: $donor-space * 3;
             }
         }
 
-        &__name {
+        .give-donor-header__name {
+            width: 100%;
             font-size: 1.15rem;
             font-weight: 600;
             letter-spacing: 0;
             text-align: center;
         }
-
     }
 
 
     /* [2] */
-    &-content {
+    .give-donor-content {
         width: 100%;
         border-left: 2px solid #219653;
         margin-bottom: 24px;
@@ -132,66 +133,62 @@ $donor-space-triple: $donor-space * 3;
 
 
     /* [3] */
-    &-details {
+    .give-donor-details {
         display: flex;
         justify-content: space-between;
         align-items: center;
 		overflow: hidden;
 
-        &__wrapper {
+        .give-donor-details__wrapper {
             display: flex;
             flex-direction: column;
             font-size: 1rem;
+
+            > span:first-child {
+                font-size: 1.25rem;
+                font-weight: 500;
+                letter-spacing: 0;
+                text-align: left;
+            }
+
+            > span:last-child {
+                color: #00160A;
+                font-size: .75rem;
+                font-weight: 400;
+                letter-spacing: 0;
+                text-align: left;
+            }
         }
 
-        &__form_title {
-            font-size: 1rem;
-            font-weight: 500;
-            letter-spacing: 0;
-            text-align: left;
-        }
-
-        &__amount_donated {
-            color: #00160A;
-            font-size: .75rem;
-            font-weight: 400;
-            letter-spacing: 0;
-            text-align: left;
-
-        }
-
-        &__total {
+        .give-donor-total {
             color: #219653;
             font-size: 1.25rem;
             font-weight: 700;
             letter-spacing: 0;
             text-align: right;
         }
-
-
     }
 
 
     /* [4] */
-    &-tribute{
+    .give-donor-tribute{
         display: flex;
         align-items: center;
         background: #DEEAE3;
         margin-bottom: $donor-space-half;
         font-size: 0.75rem;
 
-        &__message {
+        .give-donor-tribute__message {
             text-align: left;
 
-            & > span {
+             > span {
                 font-weight: 600;
             }
         }
-
     }
 
 
-    &__timestamp {
+    .give-donor-tribute__timestamp {
 		color: $donor-color !important;
 		display: block;
 		font-size: 75% !important;
