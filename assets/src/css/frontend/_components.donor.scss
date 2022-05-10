@@ -47,7 +47,7 @@ $donor-space-triple: $donor-space * 3;
 		display: flex;
         flex-direction: column;
         align-items: center;
-        max-height: 198px;
+        justify-content: space-between;
         font-size: 1rem;
 
         &__image {
@@ -81,11 +81,9 @@ $donor-space-triple: $donor-space * 3;
         }
 
         &__name {
-            font-size: 1em;
-            font-weight: 700;
+            font-size: 1.15rem;
+            font-weight: 600;
             letter-spacing: 0;
-            line-height: 0 !important;
-            margin: 1.2rem 0 !important;
             text-align: center;
         }
 
@@ -105,8 +103,7 @@ $donor-space-triple: $donor-space * 3;
 
         p {
             color: $donor-color;
-            font-size: 1em !important;
-            line-height: 1.25rem !important;
+            font-size: 1rem;
             width: 100%;
             margin: 0 !important;
 
@@ -122,7 +119,7 @@ $donor-space-triple: $donor-space * 3;
 
         &__read-more {
             color: #69B86B;
-            font-size: 1rem !important;
+            font-size: 1rem;
             cursor: pointer;
             white-space: nowrap;
         }
@@ -148,18 +145,16 @@ $donor-space-triple: $donor-space * 3;
         }
 
         &__form_title {
-            font-size: 1em;
+            font-size: 1rem;
             font-weight: 500;
-            line-height: $donor-space;
             letter-spacing: 0;
             text-align: left;
         }
 
         &__amount_donated {
             color: #00160A;
-            font-size: .75em;
+            font-size: .75rem;
             font-weight: 400;
-            line-height: 15px;
             letter-spacing: 0;
             text-align: left;
 
@@ -169,7 +164,6 @@ $donor-space-triple: $donor-space * 3;
             color: #219653;
             font-size: 1.25rem;
             font-weight: 700;
-            line-height: $donor-space-and-quarter;
             letter-spacing: 0;
             text-align: right;
         }
@@ -183,19 +177,14 @@ $donor-space-triple: $donor-space * 3;
         display: flex;
         align-items: center;
         background: #DEEAE3;
-        padding-left: 32px;
         margin-bottom: $donor-space-half;
         font-size: 0.75rem;
 
         &__message {
-            margin-left: 6px;
-            line-height: 32px;
-            letter-spacing: 0;
             text-align: left;
 
             & > span {
                 font-weight: 600;
-                font-size: 1rem !important;
             }
         }
 
