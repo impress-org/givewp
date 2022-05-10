@@ -211,12 +211,12 @@ class AdvancedCardFields extends PaymentMethod {
 		const payload = await hostedCardFields.submit(
 			{
 			// Trigger 3D Secure authentication
-				contingencies: [ '3D_SECURE' ],
+				contingencies: [ 'SCA_WHEN_REQUIRED' ],
 				...getExtraCardDetails,
 			}
 		).catch( hostedFieldOnSubmitErrorHandler );
 
-		if ( ! payload ) {
+        if ( ! payload ) {
 			return false;
 		}
 
@@ -251,26 +251,12 @@ class AdvancedCardFields extends PaymentMethod {
 		const result = await this.approvePayment( payload.orderId );
 
 		if ( ! result.success ) {
-			Give.form.fn.hideProcessingState();
-
-			if ( null === result.data.error ) {
-				Give.form.fn.addErrorsAndResetDonationButton(
-					this.jQueryForm,
-					Give.form.fn.getErrorHTML( [ { message: givePayPalCommerce.defaultDonationCreationError } ] )
-				);
-
-				return;
-			}
-
-			Give.form.fn.addErrorsAndResetDonationButton(
-				this.jQueryForm,
-				Give.form.fn.getErrorHTML( [ { message: result.data.error.details[ 0 ].description } ] )
-			);
+            this.hostedFieldOnSubmitErrorHandler(result.data.error);
+            return;
 		}
 
-		await DonationForm.addFieldToForm( this.form, result.data.order.id, 'payPalOrderId' );
-
-		this.submitDonationForm();
+        await DonationForm.addFieldToForm( this.form, result.data.order.id, 'payPalOrderId' );
+        this.submitDonationForm();
 	}
 
 	/**

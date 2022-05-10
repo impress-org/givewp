@@ -6,6 +6,7 @@
  * @subpackage  Array
  * @copyright   Copyright (c) 2018, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
+ * @unreleased update romanian to use RON
  * @since       2.4.0
  */
 
@@ -681,35 +682,35 @@ return array(
 		),
 	),
 	'PKR' => array(
-		'admin_label' => sprintf( __( 'Pakistani rupee (%1$s)', 'give' ), '&#8360;' ),
-		'symbol'      => '&#8360;',
-		'setting'     => array(
-			'currency_position'   => 'before',
-			'thousands_separator' => ',',
-			'decimal_separator'   => '.',
-			'number_decimals'     => 2,
-		),
-	),
-	'RON' => array(
-		'admin_label' => sprintf( __( 'Romanian leu (%1$s)', 'give' ), '&#76;' ),
-		'symbol'      => '&#76;',
-		'setting'     => array(
-			'currency_position'   => 'after',
-			'thousands_separator' => '.',
-			'decimal_separator'   => ',',
-			'number_decimals'     => 2,
-		),
-	),
-	'SAR' => array(
-		'admin_label' => sprintf( __( 'Saudi riyal (%1$s)', 'give' ), '&#x631;.&#x633;' ),
-		'symbol'      => '&#x631;.&#x633;',
-		'setting'     => array(
-			'currency_position'   => 'before',
-			'thousands_separator' => ',',
-			'decimal_separator'   => '.',
-			'number_decimals'     => 2,
-		),
-	),
+        'admin_label' => sprintf(__('Pakistani rupee (%1$s)', 'give'), '&#8360;'),
+        'symbol' => '&#8360;',
+        'setting' => array(
+            'currency_position' => 'before',
+            'thousands_separator' => ',',
+            'decimal_separator' => '.',
+            'number_decimals' => 2,
+        ),
+    ),
+    'RON' => array(
+        'admin_label' => sprintf(__('Romanian New Leu (%1$s)', 'give'), 'RON'),
+        'symbol' => 'RON',
+        'setting' => array(
+            'currency_position' => 'after',
+            'thousands_separator' => '.',
+            'decimal_separator' => ',',
+            'number_decimals' => 2,
+        ),
+    ),
+    'SAR' => array(
+        'admin_label' => sprintf(__('Saudi riyal (%1$s)', 'give'), '&#x631;.&#x633;'),
+        'symbol' => '&#x631;.&#x633;',
+        'setting' => array(
+            'currency_position' => 'before',
+            'thousands_separator' => ',',
+            'decimal_separator' => '.',
+            'number_decimals' => 2,
+        ),
+    ),
 	'SZL' => array(
 		'admin_label' => sprintf( __( 'Swazi lilangeni (%1$s)', 'give' ), '&#69;' ),
 		'symbol'      => '&#69;',

@@ -56,6 +56,7 @@ use Give\Form\Templates;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\Framework\WordPressShims\ServiceProvider as WordPressShimsServiceProvider;
 use Give\LegacySubscriptions\ServiceProvider as LegacySubscriptionsServiceProvider;
 use Give\License\LicenseServiceProvider;
 use Give\Log\LogServiceProvider;
@@ -71,7 +72,6 @@ use Give\ServiceProviders\PaymentGateways;
 use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\Routes;
 use Give\ServiceProviders\ServiceProvider;
-use Give\Shims\ShimsServiceProvider;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
 use Give\Subscriptions\ServiceProvider as SubscriptionServiceProvider;
 use Give\TestData\ServiceProvider as TestDataServiceProvider;
@@ -179,7 +179,6 @@ final class Give
         MigrationLogServiceProvider::class,
         LogServiceProvider::class,
         FormLegacyConsumerServiceProvider::class,
-        ShimsServiceProvider::class,
         LicenseServiceProvider::class,
         Give\Email\ServiceProvider::class,
         DonationSummaryServiceProvider::class,
@@ -189,7 +188,8 @@ final class Give
         SubscriptionServiceProvider::class,
         DonationFormsServiceProvider::class,
         PromotionsServiceProvider::class,
-        LegacySubscriptionsServiceProvider::class
+        LegacySubscriptionsServiceProvider::class,
+        WordPressShimsServiceProvider::class,
     ];
 
     /**
@@ -274,9 +274,9 @@ final class Give
         /**
          * Fire the action after Give core loads.
          *
-         * @param  Give class instance.
-         *
          * @since 1.8.7
+         *
+         * @param Give class instance.
          *
          */
         do_action('give_init', $this);
@@ -296,10 +296,10 @@ final class Give
     /**
      * Setup plugin constants
      *
-     * @return void
      * @since  1.0
      * @access private
      *
+     * @return void
      */
     private function setup_constants()
     {
@@ -337,10 +337,10 @@ final class Give
     /**
      * Loads the plugin language files.
      *
-     * @return void
      * @since  1.0
      * @access public
      *
+     * @return void
      */
     public function load_textdomain()
     {
@@ -409,9 +409,9 @@ final class Give
     /**
      * Display compatibility notice for Give 2.5.0 and Recurring 1.8.13 when Stripe premium is not active.
      *
-     * @return void
      * @since 2.5.0
      *
+     * @return void
      */
     public function display_old_recurring_compatibility_notice()
     {
@@ -486,9 +486,9 @@ final class Give
     /**
      * Register a Service Provider for bootstrapping
      *
-     * @param  string  $serviceProvider
      * @since 2.8.0
      *
+     * @param string $serviceProvider
      */
     public function registerServiceProvider($serviceProvider)
     {
@@ -498,13 +498,14 @@ final class Give
     /**
      * Magic properties are passed to the service container to retrieve the data.
      *
-     * @param  string  $propertyName
-     *
-     * @return mixed
-     * @throws Exception
      * @since 2.7.0
      *
      * @since 2.8.0 retrieve from the service container
+     *
+     * @param string $propertyName
+     *
+     * @return mixed
+     * @throws Exception
      */
     public function __get($propertyName)
     {
@@ -514,12 +515,13 @@ final class Give
     /**
      * Magic methods are passed to the service container.
      *
-     * @param $name
-     * @param $arguments
-     *
-     * @return mixed
      * @since 2.8.0
      *
+     * @param $arguments
+     *
+     * @param $name
+     *
+     * @return mixed
      */
     public function __call($name, $arguments)
     {

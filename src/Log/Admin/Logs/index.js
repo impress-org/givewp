@@ -81,7 +81,7 @@ const Logs = () => {
             description: log.description,
             date: log.date,
             message: log.message,
-            context: log.context,
+            context: JSON.stringify(log.context, null, '    '),
         });
     };
 

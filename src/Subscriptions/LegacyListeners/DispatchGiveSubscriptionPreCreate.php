@@ -21,7 +21,7 @@ class DispatchGiveSubscriptionPreCreate
             'frequency' => $subscription->frequency,
             'initial_amount' => $subscription->amount,
             'recurring_amount' => $subscription->amount,
-            'recurring_fee_amount' => $subscription->feeAmount,
+            'recurring_fee_amount' => $subscription->feeAmountRecovered,
             'bill_times' => $subscription->installments,
             'parent_payment_id' => 0,
             'form_id' => $subscription->donationFormId,

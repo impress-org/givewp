@@ -29,20 +29,22 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					name="donorsPerPage"
 					label={ __( 'Donors Per Page', 'give' ) }
 					value={ donorsPerPage }
-					onChange={ ( value ) => saveSetting( 'donorsPerPage', value ) } />
+					onChange={ ( value ) => saveSetting( 'donorsPerPage', value ) }
+                    help={ __('How many donors should show up on the initial page load?', 'give' ) }
+                />
 				<TextControl
 					name="ids"
 					label={ __( 'Donor IDs', 'give' ) }
 					value={ ids }
 					onChange={ ( value ) => saveSetting( 'ids', value ) }
-                    help={ __('A comma-separated list of donor IDs to display.', 'give') }
+                    help={ __('By default, all donors will display. Use this setting to restrict the donor wall to only display certain donors. Use a comma-separated list of donor IDs.', 'give') }
                 />
 				<TextControl
 					name="formID"
 					label={ __( 'Form IDs', 'give' ) }
 					value={ formID }
 					onChange={ ( value ) => saveSetting( 'formID', value ) }
-                    help={ __('A comma-separated list of form IDs to display.', 'give') }
+                    help={ __('By Default, donations to all forms will display. Use this setting to restrict the donor to display only donations to certains forms. Use a comma-separated list of form IDs.', 'give') }
                 />
                 <TextControl
                     name="categories"
@@ -74,7 +76,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					onChange={ ( value ) => saveSetting( 'columns', value ) } />
 				<TextControl
 					name="avatarSize"
-					label={ __( 'Avatar Size', 'give' ) }
+					label={ __( 'Avatar Size (px)', 'give' ) }
 					value={ avatarSize }
 					onChange={ ( value ) => saveSetting( 'avatarSize', value ) } />
 				<ToggleControl

@@ -4,6 +4,7 @@ namespace Give\Donors\Repositories;
 
 use Exception;
 use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Donors\Exceptions\FailedDonorUpdateException;
 use Give\Donors\Models\Donor;
 use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Framework\Database\DB;
@@ -111,7 +112,7 @@ class DonorRepository
     {
         $this->validateDonor($donor);
 
-        $dateCreated = $donor->createdAt ?: Temporal::getCurrentDateTime();
+        $dateCreated = Temporal::withoutMicroseconds($donor->createdAt ?: Temporal::getCurrentDateTime());
 
         DB::query('START TRANSACTION');
 
@@ -199,7 +200,7 @@ class DonorRepository
 
             Log::error('Failed updating a donor', compact('donor'));
 
-            throw new $exception('Failed updating a donor');
+            throw new FailedDonorUpdateException($donor, 0, $exception);
         }
 
         DB::query('COMMIT');

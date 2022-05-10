@@ -318,7 +318,7 @@ class Give_MetaBox_Form_Data {
 							],
 							[
 								'name'    => __( 'Name Title Prefix', 'give' ),
-								'desc'    => __( 'Do you want to add a name title prefix dropdown field before the donor\'s first name field? This will display a dropdown with options such as Mrs, Miss, Ms, Sir, and Dr for donor to choose from.', 'give' ),
+								'desc'    => __( 'Do you want to add a name title prefix dropdown field before the donor\'s first name field? This will display a dropdown with options such as Mrs, Miss, Ms, Sir, and Dr for the donor to choose from.', 'give' ),
 								'id'      => $prefix . 'name_title_prefix',
 								'type'    => 'radio_inline',
 								'options' => [
@@ -612,7 +612,7 @@ class Give_MetaBox_Form_Data {
                     'fields'    => [
                         [
                             'name'        => __( 'Form Grid', 'give' ),
-                            'description' => __( 'These settings are used to customize how this form looks or functions if displayed using the Form Grid feature.', 'give' ),
+                            'description' => __( 'These settings are used to customize how this form looks or functions when displayed as a part of a Form Grid. The default option is for donors to be redirected to the individual form page (linked above), and to have "Donate" as the default text. To change that behavior, select to customize the options.', 'give' ),
                             'id'          => $prefix . 'form_grid_option',
                             'type'        => 'radio_inline',
                             'default'     => 'default',
@@ -626,7 +626,7 @@ class Give_MetaBox_Form_Data {
                         ],
                         [
                             'name'          => __( 'Redirect URL', 'give' ),
-                            'description'   => __( 'Provide the full URL of the page you want this form to redirect to when clicked on from the Form Grid. This only applies when the Form Grid uses the “Redirect” method.', 'give' ),
+                            'description'   => __( 'The full URL of the page you want this form to redirect to when clicked on from the Form Grid. This only applies when the Form Grid uses the “Redirect” method. ', 'give' ),
                             'id'            => $prefix . 'form_grid_redirect_url',
                             'type'          => 'text-medium',
                             'attributes'    => [
@@ -637,7 +637,7 @@ class Give_MetaBox_Form_Data {
                         ],
                         [
                             'name'          => __( 'Donate Button Text', 'give' ),
-                            'description'   => __( 'Customize the text of the Donate Button on the Form Grid. Only applies if the Donate Button option is enabled in your Form Grid.', 'give' ),
+                            'description'   => __( 'The text on the Donate Button for this form when displayed on the Form Grid. This setting only applies if the Donate Button display option is enabled in your Form Grid.', 'give' ),
                             'id'            => $prefix . 'form_grid_donate_button_text',
                             'type'          => 'text-medium',
                             'attributes'    => [

@@ -6,6 +6,7 @@ use Give\Framework\Support\ValueObjects\Enum;
 use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
 
 /**
+ * @unreleased add fee amount recovered and exchange rate
  * @since 2.19.6
  *
  * @method static DonationMetaKeys AMOUNT()
@@ -33,13 +34,18 @@ use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
  * @method static DonationMetaKeys GATEWAY_TRANSACTION_ID()
  * @method static DonationMetaKeys SUBSCRIPTION_INITIAL_DONATION()
  * @method static DonationMetaKeys IS_RECURRING()
+ * @method static DonationMetaKeys FEE_AMOUNT_RECOVERED()
+ * @method static DonationMetaKeys EXCHANGE_RATE()
  */
 class DonationMetaKeys extends Enum
 {
     use EnumInteractsWithQueryBuilder;
 
     const AMOUNT = '_give_payment_total';
+    const BASE_AMOUNT = '_give_cs_base_amount';
     const CURRENCY = '_give_payment_currency';
+    const EXCHANGE_RATE = '_give_cs_exchange_rate';
+    const FEE_AMOUNT_RECOVERED = '_give_fee_amount';
     const GATEWAY = '_give_payment_gateway';
     const DONOR_ID = '_give_payment_donor_id';
     const FIRST_NAME = '_give_donor_billing_first_name';

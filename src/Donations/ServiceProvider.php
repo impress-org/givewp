@@ -3,6 +3,7 @@
 namespace Give\Donations;
 
 use Give\Donations\LegacyListeners\DispatchGiveInsertPayment;
+use Give\Donations\LegacyListeners\DispatchGivePreInsertPayment;
 use Give\Donations\LegacyListeners\DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment;
 use Give\Donations\LegacyListeners\DispatchGiveUpdatePaymentStatus;
 use Give\Donations\LegacyListeners\InsertSequentialId;
@@ -41,6 +42,8 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function bootLegacyListeners()
     {
+        Hooks::addAction('give_donation_creating', DispatchGivePreInsertPayment::class);
+
         add_action('give_donation_created', function (Donation $donation) {
             Call::invoke(InsertSequentialId::class, $donation);
             Call::invoke(DispatchGiveInsertPayment::class, $donation);
