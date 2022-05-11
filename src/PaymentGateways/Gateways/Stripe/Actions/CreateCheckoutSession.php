@@ -67,7 +67,7 @@ class CreateCheckoutSession
 
         $session = give(CheckoutSession::class)->create($session_args);
 
-        give_insert_payment_note($donation->id, 'Stripe Checkout Session ID: ' . $session->id());
+        $donation->addNote('Stripe Checkout Session ID: ' . $session->id());
         give_set_payment_transaction_id($donation->id, $session->id());
 
         return $session;

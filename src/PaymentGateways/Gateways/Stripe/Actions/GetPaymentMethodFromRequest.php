@@ -24,8 +24,7 @@ class GetPaymentMethodFromRequest
         );
 
         give_update_meta($donation->id, '_give_stripe_source_id', $paymentMethod->id());
-        give_insert_payment_note(
-            $donation->id,
+        $donation->addNote(
             sprintf(__('Stripe Source/Payment Method ID: %s', 'give'), $paymentMethod->id())
         );
 

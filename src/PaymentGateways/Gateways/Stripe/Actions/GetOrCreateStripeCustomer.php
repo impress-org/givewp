@@ -25,7 +25,7 @@ class GetOrCreateStripeCustomer
             throw new StripeCustomerException(__('Unable to find or create stripe customer object.', 'give'));
         }
 
-        $this->saveStripeCustomerId($donation->id, $giveStripeCustomer->get_id());
+        $this->saveStripeCustomerId($donation, $giveStripeCustomer->get_id());
 
         return $giveStripeCustomer;
     }
@@ -38,19 +38,18 @@ class GetOrCreateStripeCustomer
      *
      * @return void
      */
-    protected function saveStripeCustomerId($donationId, $stripeCustomerId)
+    protected function saveStripeCustomerId(Donation $donation, string $stripeCustomerId)
     {
         $donor = new \Give_Donor(
-            give_get_payment_donor_id($donationId)
+            give_get_payment_donor_id($donation->id)
         );
 
         $donor->update_meta(give_stripe_get_customer_key(), $stripeCustomerId);
 
-        give_insert_payment_note(
-            $donationId,
+        $donation->addNote(
             sprintf(__('Stripe Customer ID: %s', 'give'), $stripeCustomerId)
         );
 
-        give_update_meta($donationId, give_stripe_get_customer_key(), $stripeCustomerId);
+        give_update_meta($donation->id, give_stripe_get_customer_key(), $stripeCustomerId);
     }
 }

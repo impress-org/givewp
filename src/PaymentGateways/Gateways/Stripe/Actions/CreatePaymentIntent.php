@@ -63,12 +63,10 @@ class CreatePaymentIntent
 
         $intent = give(PaymentIntent::class)->create($intent_args);
 
-        give_insert_payment_note(
-            $donation->id,
+        $donation->addNote(
             sprintf(__('Stripe Charge/Payment Intent ID: %s', 'give'), $intent->id())
         );
-        give_insert_payment_note(
-            $donation->id,
+        $donation->addNote(
             sprintf(__('Stripe Payment Intent Client Secret: %s', 'give'), $intent->clientSecret())
         );
         give_update_meta(
@@ -78,8 +76,7 @@ class CreatePaymentIntent
         );
 
         if ('requires_action' === $intent->status()) {
-            give_insert_payment_note(
-                $donation->id,
+            $donation->addNote(
                 __('Stripe requires additional action to be fulfilled. Check your Stripe account.', 'give')
             );
             give_update_meta(
