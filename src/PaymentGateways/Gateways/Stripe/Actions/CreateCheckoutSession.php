@@ -59,10 +59,8 @@ class CreateCheckoutSession
             'locale' => give_stripe_get_preferred_locale(),
         ];
 
-        // If featured image exists, then add it to checkout session.
-        $formId = give_get_payment_form_id($donation->id);
-        if (!empty(get_the_post_thumbnail($formId))) {
-            $session_args['line_items'][0]['images'] = [get_the_post_thumbnail_url($formId)];
+        if (!empty(get_the_post_thumbnail($donation->formId))) {
+            $session_args['line_items'][0]['images'] = [get_the_post_thumbnail_url($donation->formId)];
         }
 
         $session = give(CheckoutSession::class)->create($session_args);

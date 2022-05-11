@@ -40,9 +40,7 @@ class GetOrCreateStripeCustomer
      */
     protected function saveStripeCustomerId(Donation $donation, string $stripeCustomerId)
     {
-        $donor = new \Give_Donor(
-            give_get_payment_donor_id($donation->id)
-        );
+        $donor = new \Give_Donor($donation->donorId);
 
         $donor->update_meta(give_stripe_get_customer_key(), $stripeCustomerId);
 
