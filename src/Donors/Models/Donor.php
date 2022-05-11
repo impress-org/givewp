@@ -73,8 +73,10 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
 
     /**
      * @since 2.19.6
+     *
+     * @return Donor|null
      */
-    public static function whereEmail(string $email): Donor
+    public static function whereEmail(string $email)
     {
         return give()->donors->getByEmail($email);
     }
