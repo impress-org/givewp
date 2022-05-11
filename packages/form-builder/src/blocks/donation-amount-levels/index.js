@@ -37,7 +37,7 @@ registerBlockType( 'custom-block-editor/donation-amount-levels', {
                             {
                                 props.attributes.levels.map( ( level, index ) => {
                                     return (
-                                        <div style={{ padding: '15px', border: '1px solid black', borderRadius: '3px' }}><sup>$</sup>{ level }</div>
+                                        <div key={ 'level-option-' + index } style={{ padding: '15px', border: '1px solid black', borderRadius: '3px' }}><sup>$</sup>{ level }</div>
                                     )
                                 } )
                             }
@@ -53,7 +53,7 @@ registerBlockType( 'custom-block-editor/donation-amount-levels', {
                                 {
                                     props.attributes.levels.map( ( label, index ) => {
                                         return (
-                                            <li key={ index } style={ { display: 'flex', justifyContent: 'space-between', alignItems: 'center', } }>
+                                            <li key={ 'level-option-inspector-' + index } style={ { display: 'flex', justifyContent: 'space-between', alignItems: 'center', } }>
                                                 <TextControl
                                                     value={ label }
                                                     onChange={ ( val ) => {
