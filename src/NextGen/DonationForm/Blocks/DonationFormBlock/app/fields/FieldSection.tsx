@@ -1,4 +1,3 @@
-import {string} from 'joi';
 import FieldInterface from '../types/FieldInterface';
 import Field from './Field';
 
@@ -8,7 +7,7 @@ type Props = {
     fields: FieldInterface[];
 };
 
-export default function FieldGroup({name, label, fields}: Props) {
+export default function FieldSection({name, label, fields}: Props) {
     return (
         <fieldset aria-labelledby={name}>
             <div>

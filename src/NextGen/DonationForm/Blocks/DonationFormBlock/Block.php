@@ -6,9 +6,9 @@ use Give\Framework\EnqueueScript;
 use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\Form;
-use Give\Framework\FieldsAPI\Group;
 use Give\Framework\FieldsAPI\Hidden;
 use Give\Framework\FieldsAPI\Radio;
+use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
@@ -53,7 +53,7 @@ class Block
      * @return string
      * @throws EmptyNameException
      */
-    public function render($attributes)
+    public function render(array $attributes): string
     {
         $donationForm = $this->createForm($attributes);
 
@@ -94,7 +94,7 @@ class Block
      * @return Form
      * @throws EmptyNameException
      */
-    private function createForm($attributes)
+    private function createForm($attributes): Form
     {
         $gatewayOptions = [];
         foreach ($this->getEnabledPaymentGateways($attributes['formId']) as $gateway) {
@@ -104,7 +104,7 @@ class Block
         $donationForm = new Form('DonationForm');
 
         $donationForm->append(
-            Group::make('donationDetails')
+            Section::make('donationDetails')
                 ->label(__('Donation Details', 'give'))
                 ->append(
                     Text::make('amount')
@@ -113,7 +113,7 @@ class Block
                         ->required()
                 ),
 
-            Group::make('donorDetails')
+            Section::make('donorDetails')
                 ->label(__('Donor Details', 'give'))
                 ->append(
                     Text::make('firstName')
@@ -130,7 +130,7 @@ class Block
                         ->emailTag('email')
                 ),
 
-            Group::make('paymentDetails')
+            Section::make('paymentDetails')
                 ->label(__('Payment Details', 'give'))
                 ->append(...$gatewayOptions),
 
@@ -153,7 +153,7 @@ class Block
     /**
      * @return PaymentGateway[]
      */
-    public function getEnabledPaymentGateways($formId)
+    public function getEnabledPaymentGateways($formId): array
     {
         $gateways = [];
 

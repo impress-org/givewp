@@ -6,7 +6,7 @@ import Joi from 'joi';
 
 import Field from '../fields/Field';
 import getFieldErrorMessages from '../utilities/getFieldErrorMessages';
-import FieldGroup from '../fields/FieldGroup';
+import FieldSection from '../fields/FieldSection';
 import axios from 'axios';
 import getWindowData from '../utilities/getWindowData';
 import PaymentDetails from '../fields/PaymentDetails';
@@ -97,8 +97,8 @@ export default function Form({fields, defaultValues, gateways}: PropTypes) {
                         return <PaymentDetails fields={nodes} name={name} label={label} key={name} />;
                     }
 
-                    if (type === 'group' && nodes) {
-                        return <FieldGroup fields={nodes} name={name} label={label} key={name} />;
+                    if (type === 'section' && nodes) {
+                        return <FieldSection fields={nodes} name={name} label={label} key={name} />;
                     }
 
                     return (
