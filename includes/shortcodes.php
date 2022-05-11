@@ -821,7 +821,7 @@ function give_form_grid_shortcode( $atts ) {
 			'show_excerpt'        => true,
 			'show_featured_image' => true,
 			'show_donate_button'  => false,
-			'donate_button_text'  => __('Donate', 'give'),
+            'donate_button_text'  => '',
 			'donate_button_background_color' => '#66bb6a',
 			'donate_button_text_color' => '#fff',
 			'image_size'          => 'medium',

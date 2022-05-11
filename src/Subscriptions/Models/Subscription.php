@@ -154,9 +154,9 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     {
         if (!$this->id) {
             give()->subscriptions->insert($this);
+        } else {
+            give()->subscriptions->update($this);
         }
-
-        give()->subscriptions->update($this);
     }
 
     /**

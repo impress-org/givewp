@@ -136,9 +136,9 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     {
         if (!$this->id) {
             give()->donations->insert($this);
+        } else {
+            give()->donations->update($this);
         }
-
-        give()->donations->update($this);
     }
 
     /**
