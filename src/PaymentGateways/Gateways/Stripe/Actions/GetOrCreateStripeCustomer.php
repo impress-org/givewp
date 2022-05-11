@@ -12,6 +12,7 @@ class GetOrCreateStripeCustomer
     /**
      * @unreleased add second param support to function.
      *             This param is optional because we use it only when donor subscribe for recurring donation.
+     * @unreleased Update function first argument type to Donation model
      * @since 2.19.0
      *
      * @return Give_Stripe_Customer
@@ -31,12 +32,8 @@ class GetOrCreateStripeCustomer
     }
 
     /**
+     * @unreleased Update function first argument type to Donation model
      * @since 2.19.0
-     *
-     * @param int $donationId
-     * @param string $stripeCustomerId
-     *
-     * @return void
      */
     protected function saveStripeCustomerId(Donation $donation, string $stripeCustomerId)
     {
