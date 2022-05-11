@@ -86,7 +86,7 @@ class CheckoutGateway extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public static function id()
+    public static function id(): string
     {
         return 'stripe_checkout';
     }
@@ -94,7 +94,7 @@ class CheckoutGateway extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getId()
+    public function getId(): string
     {
         return self::id();
     }
@@ -102,7 +102,7 @@ class CheckoutGateway extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getName()
+    public function getName(): string
     {
         return __('Stripe - Checkout', 'give');
     }
@@ -110,7 +110,7 @@ class CheckoutGateway extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getPaymentMethodLabel()
+    public function getPaymentMethodLabel(): string
     {
         return __('Stripe - Checkout', 'give');
     }

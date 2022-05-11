@@ -2,10 +2,10 @@
 
 namespace Give\Framework\PaymentGateways\CommandHandlers;
 
-use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Commands\PaymentCommand;
 
 abstract class PaymentHandler
@@ -33,7 +33,7 @@ abstract class PaymentHandler
      * @param PaymentCommand $paymentCommand
      * @return static
      */
-    public static function make(PaymentCommand $paymentCommand)
+    public static function make(PaymentCommand $paymentCommand): PaymentHandler
     {
         return new static($paymentCommand);
     }

@@ -7,7 +7,6 @@ use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
-use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 
 /**
  * @since 2.18.0
@@ -21,7 +20,7 @@ interface PaymentGatewayInterface extends SubscriptionModuleInterface
      *
      * @return string
      */
-    public static function id();
+    public static function id(): string;
 
     /**
      * Return a unique identifier for the gateway
@@ -30,7 +29,7 @@ interface PaymentGatewayInterface extends SubscriptionModuleInterface
      *
      * @return string
      */
-    public function getId();
+    public function getId(): string;
 
     /**
      * Returns a human-readable name for the gateway
@@ -39,7 +38,7 @@ interface PaymentGatewayInterface extends SubscriptionModuleInterface
      *
      * @return string - Translated text
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Returns a human-readable label for use when a donor selects a payment method to use
@@ -48,7 +47,7 @@ interface PaymentGatewayInterface extends SubscriptionModuleInterface
      *
      * @return string - Translated text
      */
-    public function getPaymentMethodLabel();
+    public function getPaymentMethodLabel(): string;
 
     /**
      * Determines if subscriptions are supported
@@ -57,7 +56,7 @@ interface PaymentGatewayInterface extends SubscriptionModuleInterface
      *
      * @return bool
      */
-    public function supportsSubscriptions();
+    public function supportsSubscriptions(): bool;
 
     /**
      * Create a payment with gateway

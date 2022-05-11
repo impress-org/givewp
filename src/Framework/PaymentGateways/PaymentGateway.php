@@ -74,8 +74,6 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
 
     /**
      * @since 2.19.0
-     *
-     * @inheritDoc
      */
     public function handleCreatePayment(Donation $donation)
     {
@@ -180,7 +178,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      * @since 2.18.0
      *
      * @throws TypeNotSupported
-     * @throws \Exception
+     * @throws Exception
      */
     public function handleGatewayPaymentCommand(GatewayCommand $command, Donation $donation)
     {

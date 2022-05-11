@@ -6,11 +6,11 @@ use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
-use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
 
 use function Give\Framework\Http\Response\response;
@@ -38,7 +38,7 @@ class TestGatewayOffsite extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public static function id()
+    public static function id(): string
     {
         return 'test-gateway-offsite';
     }
@@ -46,7 +46,7 @@ class TestGatewayOffsite extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getId()
+    public function getId(): string
     {
         return self::id();
     }
@@ -54,7 +54,7 @@ class TestGatewayOffsite extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getName()
+    public function getName(): string
     {
         return __('Test Gateway Offsite', 'give');
     }
@@ -62,7 +62,7 @@ class TestGatewayOffsite extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getPaymentMethodLabel()
+    public function getPaymentMethodLabel(): string
     {
         return __('Test Gateway Offsite', 'give');
     }
@@ -70,7 +70,7 @@ class TestGatewayOffsite extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getLegacyFormFieldMarkup($formId, $args)
+    public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
         if (FormUtils::isLegacyForm($formId)) {
             return false;
@@ -85,12 +85,12 @@ class TestGatewayOffsite extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function createPayment(GatewayPaymentData $paymentData)
+    public function createPayment(Donation $donation)
     {
         $redirectUrl = $this->generateSecureGatewayRouteUrl(
             'securelyReturnFromOffsiteRedirect',
-            $paymentData->donationId,
-            ['give-donation-id' => $paymentData->donationId]
+            $donation->id,
+            ['give-donation-id' => $donation->id]
         );
 
         return new RedirectOffsite($redirectUrl);
@@ -102,18 +102,15 @@ class TestGatewayOffsite extends PaymentGateway
      * @unreleased update to use Donation model
      * @since 2.19.0
      *
-     * @param array $queryParams
+     * @param  array  $queryParams
      *
-     * @throws PaymentGatewayException
+     * @return RedirectResponse
      * @throws Exception
+     * @throws PaymentGatewayException
      */
-    protected function returnFromOffsiteRedirect($queryParams)
+    protected function returnFromOffsiteRedirect(array $queryParams): RedirectResponse
     {
         $donation = Donation::find($queryParams['give-donation-id']);
-
-        if (!$donation) {
-            throw new PaymentGatewayException('Donation does not exist');
-        }
 
         $this->updateDonation($donation);
 
@@ -126,18 +123,14 @@ class TestGatewayOffsite extends PaymentGateway
      * @unreleased update to use Donation model
      * @since 2.19.0
      *
-     * @param array $queryParams
+     * @param  array  $queryParams
      *
-     * @throws PaymentGatewayException
+     * @return RedirectResponse
      * @throws Exception
      */
-    protected function securelyReturnFromOffsiteRedirect($queryParams)
+    protected function securelyReturnFromOffsiteRedirect(array $queryParams): RedirectResponse
     {
         $donation = Donation::find($queryParams['give-donation-id']);
-
-        if (!$donation) {
-            throw new PaymentGatewayException('Donation does not exist');
-        }
 
         $this->updateDonation($donation);
 
@@ -145,10 +138,10 @@ class TestGatewayOffsite extends PaymentGateway
     }
 
     /**
-     * @param Donation $donation
+     * @param  Donation  $donation
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     private function updateDonation(Donation $donation)
     {

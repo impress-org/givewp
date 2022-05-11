@@ -84,7 +84,7 @@ class CreditCardGateway extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getName()
+    public function getName(): string
     {
         return __('Stripe - Credit Card', 'give');
     }
@@ -92,7 +92,7 @@ class CreditCardGateway extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getPaymentMethodLabel()
+    public function getPaymentMethodLabel(): string
     {
         return __('Stripe - Credit Card', 'give');
     }

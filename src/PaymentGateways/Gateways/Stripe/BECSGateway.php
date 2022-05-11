@@ -9,7 +9,6 @@ use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\SubscriptionModule;
 use Give\Helpers\Call;
-use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\Stripe\Traits\BECSMandateForm;
 use Give\PaymentGateways\Gateways\Stripe\Traits\HandlePaymentIntentStatus;
 
@@ -81,7 +80,7 @@ class BECSGateway extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getName()
+    public function getName(): string
     {
         return __('Stripe - BECS Direct Debit', 'give');
     }
@@ -89,7 +88,7 @@ class BECSGateway extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getPaymentMethodLabel()
+    public function getPaymentMethodLabel(): string
     {
         return __('Stripe - BECS Direct Debit', 'give');
     }

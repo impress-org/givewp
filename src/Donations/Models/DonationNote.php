@@ -3,8 +3,8 @@
 namespace Give\Donations\Models;
 
 use DateTime;
-use Exception;
 use Give\Donations\Factories\DonationNoteFactory;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
@@ -48,7 +48,7 @@ class DonationNote extends Model implements ModelCrud, ModelHasFactory
      *
      * @return DonationNote
      */
-    public static function find($id)
+    public static function find($id): DonationNote
     {
         return give()->donations->notes->getById($id);
     }
@@ -62,7 +62,7 @@ class DonationNote extends Model implements ModelCrud, ModelHasFactory
      * @return $this
      * @throws Exception|InvalidArgumentException
      */
-    public static function create(array $attributes)
+    public static function create(array $attributes): DonationNote
     {
         $donationNote = new static($attributes);
 

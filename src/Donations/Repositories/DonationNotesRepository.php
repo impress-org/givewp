@@ -2,9 +2,9 @@
 
 namespace Give\Donations\Repositories;
 
-use Exception;
 use Give\Donations\Models\DonationNote;
 use Give\Framework\Database\DB;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
@@ -129,7 +129,7 @@ class DonationNotesRepository
      * @return bool
      * @throws Exception
      */
-    public function delete(DonationNote $donationNote)
+    public function delete(DonationNote $donationNote): bool
     {
         DB::query('START TRANSACTION');
 
@@ -157,11 +157,11 @@ class DonationNotesRepository
     /**
      * @unreleased
      *
-     * @param int $donationId
+     * @param  int  $donationId
      *
      * @return ModelQueryBuilder
      */
-    public function queryByDonationId($donationId)
+    public function queryByDonationId(int $donationId): ModelQueryBuilder
     {
         return $this->prepareQuery()
             ->where('comment_parent', $donationId)
@@ -191,7 +191,7 @@ class DonationNotesRepository
     /**
      * @return ModelQueryBuilder
      */
-    public function prepareQuery()
+    public function prepareQuery(): ModelQueryBuilder
     {
         $builder = new ModelQueryBuilder(DonationNote::class);
 

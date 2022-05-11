@@ -3,13 +3,13 @@
 namespace Give\Donations\Models;
 
 use DateTime;
-use Exception;
 use Give\Donations\DataTransferObjects\DonationQueryData;
 use Give\Donations\Factories\DonationFactory;
 use Give\Donations\Properties\BillingAddress;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
@@ -102,7 +102,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      *
      * @return Donation
      */
-    public static function find($id)
+    public static function find($id): Donation
     {
         return give()->donations->getById($id);
     }
