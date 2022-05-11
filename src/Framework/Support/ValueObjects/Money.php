@@ -11,7 +11,7 @@ use Money\Money as VendorMoney;
  * A decorator class for the vendor Money class which adds additional formatting and other convenience methods. Try and
  * keep the vendor Money logic in the Currency facade.
  *
- * @unreleased
+ * @since 2.20.0
  *
  * @method bool equals(Money $money )
  * @method Money subtract(Money $money)
@@ -27,7 +27,7 @@ class Money
     private $amount;
 
     /**
-     * @unreleased
+     * @since 2.20.0
      *
      * @param string|int $amount
      * @param string|VendorCurrency $currency
@@ -44,7 +44,7 @@ class Money
     /**
      * Returns the amount in the smallest unit of the currency.
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @return string
      */
@@ -56,7 +56,7 @@ class Money
     /**
      * Returns a new instance converted to the system base currency
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @param $exchangeRate
      *
@@ -71,7 +71,7 @@ class Money
      * Returns the amount in a decimal format, not including any currency symbols:
      * - $1,500.25 -> 1500.25
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @return string
      */
@@ -83,7 +83,7 @@ class Money
     /**
      * Formats the amount to a currency format, including currency symbols, in the given locale.
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @param string|null $locale
      *
@@ -99,7 +99,7 @@ class Money
      * Any instance of this class in arguments will be converted to the underlying vendor Money instance.
      * If the returned value is an instance of the vendor Money class, it will be converted to an instance of this class.
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @param $name
      * @param $arguments
@@ -134,7 +134,7 @@ class Money
     /**
      * Returns a new, immutable instance from a vendor Money instance
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @param VendorMoney $money
      *
@@ -148,7 +148,7 @@ class Money
     /**
      * Creates a new Money instance from a decimal amount
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @param string|float|int $amount
      * @param string $currency

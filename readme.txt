@@ -256,6 +256,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Enhancement: Optimized deleting a donation and all of its meta
 * Enhancement: Many under-the-hood improvements Gateway API
 * Enhancement: Updated Romanian currency symbol to RON
+* Enhancement: Logging system has built-in checks to redact sensitive information
 * Fix: Resolved a 3D Secure issue with PayPal Donations
 * Fix: Tags now work properly in the Offline Donations content
 * Fix: Improved error handling if an error occurs with PayPal Donations
@@ -267,6 +268,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Fix: Equal operator for conditional fields works again (also affects Form Field Manager)
 * Fix: Improved Multi-Step content to provide a default and avoid confusion
 * Fix: Clicking the main "Donations" menu item goes to the forms list instead of making a new form
+* Fix: Corrected PayPal Donations design when used in Classic template
 
 = 2.19.8: April 6th, 2022 =
 * Fix: Corrected an issue with our javascript translations

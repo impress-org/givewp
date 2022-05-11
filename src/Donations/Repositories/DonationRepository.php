@@ -19,7 +19,7 @@ use Give\ValueObjects\Money;
 use WP_REST_Request;
 
 /**
- * @unreleased update amount type, fee recovered, and exchange rate
+ * @since 2.20.0 update amount type, fee recovered, and exchange rate
  * @since 2.19.6
  */
 class DonationRepository
@@ -115,7 +115,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased mutate model and return void
+     * @since 2.20.0 mutate model and return void
      * @since 2.19.6
      *
      * @param Donation $donation
@@ -188,7 +188,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased return void
+     * @since 2.20.0 return void
      * @since 2.19.6
      *
      * @param Donation $donation
@@ -239,7 +239,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased consolidate meta deletion into a single query
+     * @since 2.20.0 consolidate meta deletion into a single query
      * @since 2.19.6
      *
      * @param Donation $donation
@@ -277,7 +277,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased update amount to use new type, and add currency and exchange rate
+     * @since 2.20.0 update amount to use new type, and add currency and exchange rate
      * @since 2.19.6
      *
      * @param Donation $donation
@@ -546,7 +546,7 @@ class DonationRepository
     /**
      * @param WP_REST_Request $request
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @return array
      */
@@ -599,7 +599,7 @@ class DonationRepository
     /**
      * @param WP_REST_Request $request
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @return int
      */
@@ -618,7 +618,7 @@ class DonationRepository
      * @param WP_REST_Request $request
      *
      * @return QueryBuilder
-     * @unreleased
+     * @since 2.20.0
      *
      */
     private function getWhereConditionsForRequest(QueryBuilder $query, WP_REST_Request $request)

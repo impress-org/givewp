@@ -74,7 +74,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Donations Admin page
      *
-     * @unreleased
+     * @since 2.20.0
      */
     private function registerDonationsAdminPage()
     {
