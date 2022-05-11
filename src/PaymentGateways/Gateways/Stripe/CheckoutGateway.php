@@ -45,7 +45,7 @@ class CheckoutGateway extends PaymentGateway
                 $stripeCustomer,
                 $paymentMethod
             ),
-            $donation->id
+            $donation
         );
     }
 

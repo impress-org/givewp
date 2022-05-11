@@ -58,7 +58,7 @@ class BECSGateway extends PaymentGateway
                 $stripeCustomer,
                 $paymentMethod
             ),
-            $donation->id
+            $donation
         );
     }
 

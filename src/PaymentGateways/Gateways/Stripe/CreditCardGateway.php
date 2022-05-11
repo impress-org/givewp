@@ -61,7 +61,7 @@ class CreditCardGateway extends PaymentGateway
                 $stripeCustomer,
                 $paymentMethod
             ),
-            $donation->id
+            $donation
         );
     }
 

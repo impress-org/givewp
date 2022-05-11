@@ -66,7 +66,7 @@ class SEPAGateway extends PaymentGateway
                 $stripeCustomer,
                 $paymentMethod
             ),
-            $donation->id
+            $donation
         );
     }
 

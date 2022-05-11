@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe\Traits;
 
+use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\PaymentCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
@@ -14,17 +15,15 @@ trait HandlePaymentIntentStatus
     /**
      * @since 2.19.7 fix param order and only pass donationId
      *
-     * @param PaymentIntent $paymentIntent
-     * @param int $donationId
-     *
      * @return PaymentCommand|RedirectOffsite
      * @throws PaymentIntentException
      */
-    public function handlePaymentIntentStatus(PaymentIntent $paymentIntent, int $donationId)
+    public function handlePaymentIntentStatus(PaymentIntent $paymentIntent, Donation $donation)
     {
         switch ($paymentIntent->status()) {
             case 'requires_action':
-                give_set_payment_transaction_id($donationId, $paymentIntent->id());
+                $donation->gatewayTransactionId = $paymentIntent->id();
+                $donation->save();
                 return new RedirectOffsite($paymentIntent->nextActionRedirectUrl());
             case 'succeeded':
                 return new PaymentComplete($paymentIntent->id());
