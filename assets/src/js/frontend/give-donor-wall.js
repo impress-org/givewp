@@ -69,6 +69,7 @@ class GiveDonorWall {
 			data: {
 				action: 'give_get_donor_comments',
 				data: shortcodeAttrHiddenField.getAttribute( 'data-shortcode' ),
+                nonce: shortcodeAttrHiddenField.getAttribute('data-nonce'),
 			},
 			beforeSend() {
 				loaderButton.className += ' give-active';

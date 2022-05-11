@@ -6,39 +6,46 @@ use Give\Framework\Support\ValueObjects\Enum;
 use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
 
 /**
+ * @since 2.20.0 add fee amount recovered and exchange rate
  * @since 2.19.6
  *
- * @method static AMOUNT()
- * @method static CURRENCY()
- * @method static GATEWAY()
- * @method static DONOR_ID()
- * @method static FIRST_NAME()
- * @method static LAST_NAME()
- * @method static EMAIL()
- * @method static SUBSCRIPTION_ID()
- * @method static MODE()
- * @method static FORM_ID()
- * @method static FORM_TITLE()
- * @method static BILLING_COUNTRY()
- * @method static BILLING_ADDRESS1()
- * @method static BILLING_ADDRESS2()
- * @method static BILLING_CITY()
- * @method static BILLING_STATE()
- * @method static BILLING_ZIP()
- * @method static PURCHASE_KEY()
- * @method static DONOR_IP()
- * @method static ANONYMOUS()
- * @method static LEVEL_ID()
- * @method static COMPANY()
- * @method static GATEWAY_TRANSACTION_ID()
- * @method static SUBSCRIPTION_INITIAL_DONATION()
+ * @method static DonationMetaKeys AMOUNT()
+ * @method static DonationMetaKeys CURRENCY()
+ * @method static DonationMetaKeys GATEWAY()
+ * @method static DonationMetaKeys DONOR_ID()
+ * @method static DonationMetaKeys FIRST_NAME()
+ * @method static DonationMetaKeys LAST_NAME()
+ * @method static DonationMetaKeys EMAIL()
+ * @method static DonationMetaKeys SUBSCRIPTION_ID()
+ * @method static DonationMetaKeys MODE()
+ * @method static DonationMetaKeys FORM_ID()
+ * @method static DonationMetaKeys FORM_TITLE()
+ * @method static DonationMetaKeys BILLING_COUNTRY()
+ * @method static DonationMetaKeys BILLING_ADDRESS1()
+ * @method static DonationMetaKeys BILLING_ADDRESS2()
+ * @method static DonationMetaKeys BILLING_CITY()
+ * @method static DonationMetaKeys BILLING_STATE()
+ * @method static DonationMetaKeys BILLING_ZIP()
+ * @method static DonationMetaKeys PURCHASE_KEY()
+ * @method static DonationMetaKeys DONOR_IP()
+ * @method static DonationMetaKeys ANONYMOUS()
+ * @method static DonationMetaKeys LEVEL_ID()
+ * @method static DonationMetaKeys COMPANY()
+ * @method static DonationMetaKeys GATEWAY_TRANSACTION_ID()
+ * @method static DonationMetaKeys SUBSCRIPTION_INITIAL_DONATION()
+ * @method static DonationMetaKeys IS_RECURRING()
+ * @method static DonationMetaKeys FEE_AMOUNT_RECOVERED()
+ * @method static DonationMetaKeys EXCHANGE_RATE()
  */
 class DonationMetaKeys extends Enum
 {
     use EnumInteractsWithQueryBuilder;
 
     const AMOUNT = '_give_payment_total';
+    const BASE_AMOUNT = '_give_cs_base_amount';
     const CURRENCY = '_give_payment_currency';
+    const EXCHANGE_RATE = '_give_cs_exchange_rate';
+    const FEE_AMOUNT_RECOVERED = '_give_fee_amount';
     const GATEWAY = '_give_payment_gateway';
     const DONOR_ID = '_give_payment_donor_id';
     const FIRST_NAME = '_give_donor_billing_first_name';
@@ -61,4 +68,5 @@ class DonationMetaKeys extends Enum
     const COMPANY = '_give_donation_company';
     const GATEWAY_TRANSACTION_ID = '_give_payment_transaction_id';
     const SUBSCRIPTION_INITIAL_DONATION = '_give_subscription_payment';
+    const IS_RECURRING = '_give_is_donation_recurring';
 }

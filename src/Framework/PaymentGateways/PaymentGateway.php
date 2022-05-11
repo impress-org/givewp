@@ -18,14 +18,18 @@ use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
-use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
+use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionAmountEditable;
+use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPaymentMethodEditable;
+use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\PaymentGateways\Routes\RouteSignature;
+use Give\Framework\PaymentGateways\Traits\HasRouteMethods;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Helpers\Call;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
+use Give\Subscriptions\Models\Subscription;
 
 use function Give\Framework\Http\Response\response;
 
@@ -35,39 +39,29 @@ use function Give\Framework\Http\Response\response;
 abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentGatewayInterface
 {
     use HandleHttpResponses;
+    use HasRouteMethods {
+        supportsMethodRoute as protected SupportsOwnMethodRoute;
+        callRouteMethod as protected CallOwnRouteMethod;
+    }
 
     /**
-     * Route methods are used to extend the gateway api.
-     * By adding a custom routeMethod, you are effectively
-     * registering a new public route url that will resolve itself and
-     * call your method.
-     *
-     * @var string[]
-     */
-    public $routeMethods = [];
-
-    /**
-     * Secure Route methods are used to extend the gateway api with an additional wp_nonce.
-     * By adding a custom secureRouteMethod, you are effectively
-     * registering a new route url that will resolve itself and
-     * call your method after validating the nonce.
-     *
-     * @var string[]
-     */
-    public $secureRouteMethods = [];
-
-    /**
-     * @var SubscriptionModuleInterface $subscriptionModule
+     * @since 2.20.0 Change variable type to SubscriptionModule.
+     * @var SubscriptionModule $subscriptionModule
      */
     public $subscriptionModule;
 
     /**
+     * @since 2.20.0 Change first argument type to SubscriptionModule abstract class.
      * @since 2.18.0
      *
-     * @param SubscriptionModuleInterface|null $subscriptionModule
+     * @param SubscriptionModule|null $subscriptionModule
      */
-    public function __construct(SubscriptionModuleInterface $subscriptionModule = null)
+    public function __construct(SubscriptionModule $subscriptionModule = null)
     {
+        if ($subscriptionModule !== null) {
+            $subscriptionModule->setGateway($this);
+        }
+
         $this->subscriptionModule = $subscriptionModule;
     }
 
@@ -94,7 +88,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
                 $exception->getMessage(),
                 [
                     'Payment Gateway' => $this->getId(),
-                    'Donation Data' => $gatewayPaymentData
+                    'Donation Data' => $gatewayPaymentData,
                 ]
             );
 
@@ -123,7 +117,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
                 [
                     'Payment Gateway' => $this->getId(),
                     'Donation Data' => $paymentData,
-                    'Subscription Data' => $subscriptionData
+                    'Subscription Data' => $subscriptionData,
                 ]
             );
 
@@ -145,6 +139,41 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     public function createSubscription(GatewayPaymentData $paymentData, GatewaySubscriptionData $subscriptionData)
     {
         return $this->subscriptionModule->createSubscription($paymentData, $subscriptionData);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function cancelSubscription(Subscription $subscription)
+    {
+        $this->subscriptionModule->cancelSubscription($subscription);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function canSyncSubscriptionWithPaymentGateway()
+    {
+        return $this instanceof SubscriptionTransactionsSynchronizable
+            || $this->subscriptionModule->canSyncSubscriptionWithPaymentGateway();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function canUpdateSubscriptionAmount()
+    {
+        return $this instanceof SubscriptionAmountEditable
+            || $this->subscriptionModule->canUpdateSubscriptionAmount();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function canUpdateSubscriptionPaymentMethod()
+    {
+        return $this instanceof SubscriptionPaymentMethodEditable
+            || $this->subscriptionModule->canUpdateSubscriptionPaymentMethod();
     }
 
     /**
@@ -260,9 +289,9 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      * @since 2.19.4 replace RouteSignature args with unique donationId
      * @since 2.19.0
      *
-     * @param  string  $gatewayMethod
-     * @param  int  $donationId
-     * @param  array|null  $args
+     * @param string $gatewayMethod
+     * @param int $donationId
+     * @param array|null $args
      *
      * @return string
      *
@@ -290,8 +319,9 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      *
      * @since 2.19.0
      *
-     * @param  Exception|PaymentGatewayException  $exception
-     * @param  string  $message
+     * @param Exception|PaymentGatewayException $exception
+     * @param string $message
+     *
      * @return void
      */
     private function handleExceptionResponse($exception, $message)
@@ -306,5 +336,37 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
 
         give_set_error('PaymentGatewayException', $message);
         give_send_back_to_checkout();
+    }
+
+    /**
+     * @since 2.20.0
+     *
+     * @param string $method
+     *
+     * @return bool
+     */
+    public function supportsMethodRoute($method)
+    {
+        if ( $this->subscriptionModule && $this->subscriptionModule->supportsMethodRoute($method) ) {
+            return true;
+        }
+
+        return $this->supportsOwnMethodRoute($method);
+    }
+
+    /**
+     * @since 2.20.0
+     *
+     * @param string $method
+     *
+     * @throws Exception
+     */
+    public function callRouteMethod($method, $queryParams)
+    {
+        if ( $this->subscriptionModule && $this->subscriptionModule->supportsMethodRoute($method) ) {
+            return $this->subscriptionModule->callRouteMethod($method, $queryParams);
+        }
+
+        return $this->callOwnRouteMethod($method, $queryParams);
     }
 }

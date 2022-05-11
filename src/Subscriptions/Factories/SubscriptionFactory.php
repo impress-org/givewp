@@ -5,7 +5,9 @@ namespace Give\Subscriptions\Factories;
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donors\Models\Donor;
 use Give\Framework\Models\Factories\ModelFactory;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
@@ -14,19 +16,21 @@ class SubscriptionFactory extends ModelFactory
 {
 
     /**
+     * @since 2.20.0 update default donorId to create factory
      * @since 2.19.6
      *
      * @return array
+     * @throws Exception
      */
     public function definition()
     {
         return [
-            'amount' => $this->faker->numberBetween(25, 50000),
+            'amount' => new Money($this->faker->numberBetween(25, 50000), 'USD'),
             'period' => SubscriptionPeriod::MONTH(),
             'frequency' => $this->faker->numberBetween(1, 4),
-            'donorId' => 1,
+            'donorId' => Donor::factory()->create()->id,
             'installments' => $this->faker->numberBetween(0, 12),
-            'feeAmount' => 0,
+            'feeAmountRecovered' => new Money(0, 'USD'),
             'status' => SubscriptionStatus::PENDING(),
             'donationFormId' => 1
         ];
@@ -74,6 +78,7 @@ class SubscriptionFactory extends ModelFactory
                     'expiration' => $subscription->expiration()
                 ]
             );
+            $subscription->gatewayId = $donation->gatewayId;
         }
     }
 }

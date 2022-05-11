@@ -3,6 +3,7 @@
 namespace Give\Donations;
 
 use Give\Donations\LegacyListeners\DispatchGiveInsertPayment;
+use Give\Donations\LegacyListeners\DispatchGivePreInsertPayment;
 use Give\Donations\LegacyListeners\DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment;
 use Give\Donations\LegacyListeners\DispatchGiveUpdatePaymentStatus;
 use Give\Donations\LegacyListeners\InsertSequentialId;
@@ -31,6 +32,7 @@ class ServiceProvider implements ServiceProviderInterface
     public function boot()
     {
         $this->bootLegacyListeners();
+        $this->registerDonationsAdminPage();
     }
 
     /**
@@ -40,6 +42,8 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function bootLegacyListeners()
     {
+        Hooks::addAction('give_donation_creating', DispatchGivePreInsertPayment::class);
+
         add_action('give_donation_created', function (Donation $donation) {
             Call::invoke(InsertSequentialId::class, $donation);
             Call::invoke(DispatchGiveInsertPayment::class, $donation);
@@ -65,5 +69,25 @@ class ServiceProvider implements ServiceProviderInterface
         });
 
         Hooks::addAction('give_donation_deleted', RemoveSequentialId::class);
+    }
+
+    /**
+     * Donations Admin page
+     *
+     * @since 2.20.0
+     */
+    private function registerDonationsAdminPage()
+    {
+        $userId = get_current_user_id();
+        $showLegacy = get_user_meta($userId, '_give_donations_archive_show_legacy', true);
+        // only register new admin page if user hasn't chosen to use the old one
+        if(empty($showLegacy))
+        {
+            Hooks::addAction('admin_menu', DonationsAdminPage::class, 'registerMenuItem');
+
+            if (DonationsAdminPage::isShowing()) {
+                Hooks::addAction('admin_enqueue_scripts', DonationsAdminPage::class, 'loadScripts');
+            }
+        }
     }
 }

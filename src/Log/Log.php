@@ -11,7 +11,7 @@ use Give\Log\ValueObjects\LogType;
  *
  * The static facade intended to be the primary way of logging within GiveWP to make life easier.
  *
- * @package Give\Log
+ * @since 2.20.0 add sensitive information redaction; store context as arrays for JSON serialization
  * @since 2.19.6 added debug
  * @since 2.10.0
  *
@@ -70,17 +70,7 @@ class Log
         list ($message, $context) = array_pad($arguments, 2, null);
 
         if (is_array($context)) {
-            // Convert context values to string
-            $context = array_map(
-                function ($item) {
-                    if (is_array($item) || is_object($item)) {
-                        $item = print_r($item, true);
-                    }
-
-                    return $item;
-                },
-                $context
-            );
+            $context = $this->serializeAndRedactContext($context);
 
             // Default fields
             $data = array_filter(
@@ -117,15 +107,49 @@ class Log
     }
 
     /**
-     * Static helper for calling the logger methods
+     * Takes the context array, serializes it, and redacts sensitive data.
      *
-     * @param  string  $name
-     * @param  array  $arguments
+     * @since 2.20.0
+     */
+    private function serializeAndRedactContext(array $context): array
+    {
+        $redactedData = [];
+
+        foreach ($context as $key => $value) {
+            foreach (self::getRedactionList() as $redaction) {
+                if (stripos($key, $redaction) !== false) {
+                    $redactedData[$key] = '[[redacted]]';
+                    continue 2;
+                }
+            }
+
+            if (is_array($value)) {
+                $value = $this->serializeAndRedactContext($value);
+            } elseif (is_object($value)) {
+                $value = $this->serializeAndRedactContext(
+                    array_merge(
+                        ['Object Class' => get_class($value)],
+                        (array)$value
+                    )
+                );
+            }
+
+            $redactedData[$key] = $value;
+        }
+
+        return $redactedData;
+    }
+
+    /**
+     * Static helper for calling the logger methods
      *
      * @since 2.19.6 added conditional for logging debug()
      * @since 2.18.0 - always log errors, warnings & only log all if WP_DEBUG_LOG is enabled
      * @since 2.11.1
      *
+     * @param array $arguments
+     *
+     * @param string $name
      */
     public static function __callStatic($name, $arguments)
     {
@@ -139,5 +163,21 @@ class Log
         if (Environment::isGiveDebugEnabled()) {
             call_user_func_array([$logger, $name], $arguments);
         }
+    }
+
+    /**
+     * @since 2.20.0
+     *
+     * Retrieves the redaction list after applying filters.
+     */
+    public static function getRedactionList(): array
+    {
+        static $list = null;
+
+        if ($list === null) {
+            $list = apply_filters('give_log_redaction_list', ['card', 'password', 'secret', 'token']);
+        }
+
+        return $list;
     }
 }

@@ -115,9 +115,15 @@ function give_donors_page() {
 	$requested_view = isset( $_GET['view'] ) ? sanitize_text_field( $_GET['view'] ) : 'donors';
 	if ( array_key_exists( $requested_view, $default_views ) && function_exists( $default_views[ $requested_view ] ) ) {
 		give_render_donor_view( $requested_view, $default_views );
-	} else {
-		give_donors_list();
 	}
+    else {
+        $userId = get_current_user_id();
+        $showLegacy = get_user_meta($userId, '_give_donors_archive_show_legacy', true);
+        if ($showLegacy == 1)
+        {
+            give_donors_list();
+        }
+    }
 }
 
 /**
@@ -156,7 +162,7 @@ function give_donor_tabs() {
  */
 function give_donors_list() {
 
-	include GIVE_PLUGIN_DIR . 'includes/admin/donors/class-donor-table.php';
+    include GIVE_PLUGIN_DIR . 'includes/admin/donors/class-donor-table.php';
 
 	$donors_table = new Give_Donor_List_Table();
 	$donors_table->prepare_items();
@@ -455,7 +461,7 @@ function give_donor_view( $donor ) {
 										echo sprintf(
 											'- <span class="disconnect-user">
 												<a id="disconnect-donor" href="#disconnect" aria-label="%1$s">%2$s</a>
-											</span> | 
+											</span> |
 											<span class="view-user-profile">
 												<a id="view-user-profile" href="%3$s" aria-label="%4$s">%5$s</a>
 											</span>',

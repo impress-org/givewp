@@ -35,15 +35,15 @@ export const FreeAddOnTab = () => {
                         </h3>
                     </div>
                     <div className={styles.description}>
-                        {reports.description.map((text) => (
-                            <p dangerouslySetInnerHTML={{__html: transformStrong(text)}}></p>
+                        {reports.description.map((text, index) => (
+                            <p dangerouslySetInnerHTML={{__html: transformStrong(text)}} key={index}></p>
                         ))}
                     </div>
                 </div>
                 <aside className={styles.includes}>
                     <h4>{reports.highlights.heading}</h4>
-                    {reports.highlights.items.map(({icon, text}) => (
-                        <div className={styles.nameAndFlag}>
+                    {reports.highlights.items.map(({icon, text}, index) => (
+                        <div className={styles.nameAndFlag} key={index}>
                             <img className={styles.icon} src={icon} alt="Icon" />
                             <strong>{text}</strong>
                         </div>

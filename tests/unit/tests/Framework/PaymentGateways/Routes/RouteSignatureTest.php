@@ -124,7 +124,6 @@ class RouteSignatureTest extends TestCase
      */
     public function createExpirationTimestamp()
     {
-        Shim::load( 'current_datetime' );
         return (string)current_datetime()->modify('+1 day')->getTimestamp();
     }
 }

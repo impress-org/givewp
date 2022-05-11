@@ -1,9 +1,11 @@
 <?php
 
+use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway;
+use Give\ValueObjects\DonorInfo;
 
 /**
  * @since 2.19.0
@@ -19,13 +21,26 @@ class CreditCardGatewayTest extends Give_Unit_Test_Case
     }
 
     /** @test */
-    public function it_creates_a_payment_that_is_processing()
+    public function it_creates_a_payment_that_is_complete()
     {
         $_POST['give_stripe_payment_method'] = 'pm_1234';
         $gateway = new CreditCardGateway();
 
         $this->mock(Give_Stripe_Payment_Intent::class, function() {
            return new Give_Stripe_Payment_Intent( 'succeeded' );
+        });
+
+        $this->assertInstanceOf( PaymentComplete::class, $gateway->createPayment( $this->getMockPaymentData() ) );
+    }
+
+    /** @test */
+    public function it_creates_a_payment_that_is_processing()
+    {
+        $_POST['give_stripe_payment_method'] = 'pm_1234';
+        $gateway = new CreditCardGateway();
+
+        $this->mock(Give_Stripe_Payment_Intent::class, function() {
+            return new Give_Stripe_Payment_Intent( 'processing' );
         });
 
         $this->assertInstanceOf( PaymentProcessing::class, $gateway->createPayment( $this->getMockPaymentData() ) );
@@ -50,7 +65,7 @@ class CreditCardGatewayTest extends Give_Unit_Test_Case
         $paymentData->donationId = 0;
         $paymentData->price = '1.00';
         $paymentData->currency = 'USD';
-        $paymentData->donorInfo = new \Give\ValueObjects\DonorInfo();
+        $paymentData->donorInfo = new DonorInfo();
         $paymentData->donorInfo->email = 'tester@test.test';
         return $paymentData;
     }

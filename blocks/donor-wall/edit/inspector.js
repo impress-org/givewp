@@ -15,7 +15,7 @@ import giveDonorWallOptions from '../data/options';
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { donorsPerPage, ids, formID, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, showTotal, showDate, showComments, showAnonymous, onlyComments, commentLength, readMoreText, loadMoreText } = attributes;
+	const { donorsPerPage, ids, formID, categories, tags, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, showForm, showTotal, showDate, showComments, showAnonymous, onlyComments, commentLength, readMoreText, loadMoreText } = attributes;
 	const saveSetting = ( name, value ) => {
 		setAttributes( {
 			[ name ]: value,
@@ -29,17 +29,33 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					name="donorsPerPage"
 					label={ __( 'Donors Per Page', 'give' ) }
 					value={ donorsPerPage }
-					onChange={ ( value ) => saveSetting( 'donorsPerPage', value ) } />
+					onChange={ ( value ) => saveSetting( 'donorsPerPage', value ) }
+                    help={ __('How many donors should show up on the initial page load?', 'give' ) }
+                />
 				<TextControl
 					name="ids"
 					label={ __( 'Donor IDs', 'give' ) }
 					value={ ids }
-					onChange={ ( value ) => saveSetting( 'ids', value ) } />
+					onChange={ ( value ) => saveSetting( 'ids', value ) }
+                    help={ __('By default, all donors will display. Use this setting to restrict the donor wall to only display certain donors. Use a comma-separated list of donor IDs.', 'give') }
+                />
 				<TextControl
 					name="formID"
-					label={ __( 'Form ID', 'give' ) }
+					label={ __( 'Form IDs', 'give' ) }
 					value={ formID }
-					onChange={ ( value ) => saveSetting( 'formID', value ) } />
+					onChange={ ( value ) => saveSetting( 'formID', value ) }
+                    help={ __('By Default, donations to all forms will display. Use this setting to restrict the donor to display only donations to certains forms. Use a comma-separated list of form IDs.', 'give') }
+                />
+                <TextControl
+                    name="categories"
+                    label={ __( 'Categories', 'give' ) }
+                    value={ categories }
+                    onChange={ ( value ) => saveSetting( 'categories', value ) }/>
+                <TextControl
+                    name="tags"
+                    label={ __( 'Tags', 'give' ) }
+                    value={ tags }
+                    onChange={ ( value ) => saveSetting( 'tags', value ) }/>
 				<SelectControl
 					label={ __( 'Order By', 'give' ) }
 					name="orderBy"
@@ -60,7 +76,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					onChange={ ( value ) => saveSetting( 'columns', value ) } />
 				<TextControl
 					name="avatarSize"
-					label={ __( 'Avatar Size', 'give' ) }
+					label={ __( 'Avatar Size (px)', 'give' ) }
 					value={ avatarSize }
 					onChange={ ( value ) => saveSetting( 'avatarSize', value ) } />
 				<ToggleControl
@@ -78,6 +94,11 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Show Company Name', 'give' ) }
 					checked={ !! showCompanyName }
 					onChange={ ( value ) => saveSetting( 'showCompanyName', value ) } />
+                <ToggleControl
+					name="showForm"
+					label={ __( 'Show Donation Form', 'give' ) }
+					checked={ !! showForm }
+					onChange={ ( value ) => saveSetting( 'showForm', value ) } />
 				<ToggleControl
 					name="showTotal"
 					label={ __( 'Show Total', 'give' ) }

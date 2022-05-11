@@ -7,18 +7,29 @@ use MyCLabs\Enum\Enum;
 /**
  * @since 2.19.6
  *
- * @method static PENDING()
- * @method static COMPLETE()
- * @method static REFUNDED()
- * @method static FAILED()
- * @method static CANCELED()
- * @method static ABANDONED()
- * @method static PREAPPROVAL()
- * @method static PROCESSING()
- * @method static REVOKED()
- * @method static RENEWAL()
+ * @method static DonationStatus PENDING()
+ * @method static DonationStatus COMPLETE()
+ * @method static DonationStatus REFUNDED()
+ * @method static DonationStatus FAILED()
+ * @method static DonationStatus CANCELED()
+ * @method static DonationStatus ABANDONED()
+ * @method static DonationStatus PREAPPROVAL()
+ * @method static DonationStatus PROCESSING()
+ * @method static DonationStatus REVOKED()
+ * @method static DonationStatus RENEWAL()
+ * @method bool isPending()
+ * @method bool isComplete()
+ * @method bool isRefunded()
+ * @method bool isFailed()
+ * @method bool isCanceled()
+ * @method bool isAbandoned()
+ * @method bool isPreapproval()
+ * @method bool isProcessing()
+ * @method bool isRevoked()
+ * @method bool isRenewal()
  */
-class DonationStatus extends Enum {
+class DonationStatus extends Enum
+{
     const PENDING = 'pending';
     const PROCESSING = 'processing';
     const COMPLETE = 'publish';

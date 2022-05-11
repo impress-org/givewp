@@ -72,24 +72,23 @@ class TestDonorRepository extends Give_Unit_Test_Case
 
         $repository = new DonorRepository();
 
-        /** @var Donor $newDonor */
-        $newDonor = $repository->insert($donor);
+        $repository->insert($donor);
 
         /** @var Donor $query */
         $query = $repository->prepareQuery()
-            ->where('id', $newDonor->id)
+            ->where('id', $donor->id)
             ->get();
 
 
         // simulate asserting database has values
-        $this->assertInstanceOf(Donor::class, $newDonor);
-        $this->assertEquals($query->createdAt, $newDonor->createdAt);
-        $this->assertEquals($query->id, $newDonor->id);
-        $this->assertEquals($query->name, $newDonor->name);
-        $this->assertEquals($query->firstName, $newDonor->firstName);
-        $this->assertEquals($query->lastName, $newDonor->lastName);
-        $this->assertEquals($query->email, $newDonor->email);
-        $this->assertEquals($query->additionalEmails, $newDonor->additionalEmails);
+        $this->assertInstanceOf(Donor::class, $donor);
+        $this->assertEquals($query->createdAt->format('Y-m-d H:i:s'), $donor->createdAt->format('Y-m-d H:i:s'));
+        $this->assertEquals($query->id, $donor->id);
+        $this->assertEquals($query->name, $donor->name);
+        $this->assertEquals($query->firstName, $donor->firstName);
+        $this->assertEquals($query->lastName, $donor->lastName);
+        $this->assertEquals($query->email, $donor->email);
+        $this->assertEquals($query->additionalEmails, $donor->additionalEmails);
     }
 
     /**
@@ -131,7 +130,7 @@ class TestDonorRepository extends Give_Unit_Test_Case
         $donor->lastName = "Farley";
         $donor->additionalEmails = ["chrisFarley2@givewp.com", "chrisFarley3@givewp.com"];
 
-        $donor = $repository->update($donor);
+        $repository->update($donor);
 
         /** @var object $query */
         $query = DB::table('give_donors')

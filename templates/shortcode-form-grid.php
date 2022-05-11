@@ -29,10 +29,18 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
 	<?php
 	// Print the opening anchor tag based on display style.
 	if ( 'redirect' === $atts['display_style'] ) {
+
+        $form_grid_option = give_get_meta( $form_id, '_give_form_grid_option', true );
+        $form_grid_redirect_url = esc_url(give_get_meta( $form_id, '_give_form_grid_redirect_url', true ));
+
+        $url = ( $form_grid_option === 'custom' && filter_var($form_grid_redirect_url, FILTER_VALIDATE_URL) )
+            ? $form_grid_redirect_url
+            : get_the_permalink();
+
 		printf(
-			'<a id="give-card-%1$s" class="give-card" href="%2$s">',
+			'<a id="give-card-%1$s" onclick="return !document.body.classList.contains( \'block-editor-page\' )" class="give-card" href="%2$s">',
 			esc_attr( $form_id ),
-			esc_attr( get_the_permalink() )
+			esc_attr( $url )
 		);
 	} elseif ( 'modal_reveal' === $atts['display_style'] ) {
 		printf(
@@ -85,10 +93,35 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
 				&& true === $atts['show_goal']
 			) {
 				echo '<div class="give-card__progress">';
-					give_show_goal_progress( $form_id );
+					give_show_goal_progress( $form_id, [
+                        'show_bar' => $atts['show_bar']
+                    ] );
 				echo '</div>';
 			}
 			?>
+
+            <?php if ($atts['show_donate_button']):
+                $button_text = ! empty( $atts['donate_button_text'] )
+                    ? $atts['donate_button_text']
+                    : give_get_meta( $form_id, '_give_form_grid_donate_button_text', true );
+
+                $button_bg_color = ! empty( $atts['donate_button_background_color'] )
+                    ? $atts['donate_button_background_color']
+                    : '#66bb6a';
+
+                $button_text_color = ! empty( $atts['donate_button_text_color'] )
+                    ? $atts['donate_button_text_color']
+                    : '#fff';
+                ?>
+                <div>
+                    <br />
+                    <button class="give-form-grid-btn" style="background-color: <?php echo $button_bg_color; ?>;">
+                        <span style="color: <?php echo $button_text_color; ?>">
+                            <?php echo $button_text ?: __( 'Donate', 'give' ); ?>
+                        </span>
+                    </button>
+                </div>
+            <?php endif; ?>
 		</div>
 
 		<?php
@@ -123,7 +156,10 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
 	<?php
 	// If modal, print form in hidden container until it is time to be revealed.
 	if ( 'modal_reveal' === $atts['display_style'] ) {
-		if ( ! FormUtils::isLegacyForm( $form_id ) ) {
+		if (
+            ! isset($_GET['context']) // check if we are in block editor
+            && ! FormUtils::isLegacyForm( $form_id )
+        ) {
 			echo give_form_shortcode(
 				[
 					'id'            => $form_id,

@@ -33,9 +33,9 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
      *
      * @since 2.18.0
      *
-     * @param  string  $id
+     * @param string $id
      *
-     * @return string
+     * @return PaymentGateway
      */
     public function getPaymentGateway($id)
     {
@@ -43,13 +43,16 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
             throw new InvalidArgumentException("No gateway exists with the ID {$id}");
         }
 
-        return $this->gateways[$id];
+        /** @var PaymentGateway $gateway */
+        $gateway = give($this->gateways[$id]);
+
+        return $gateway;
     }
 
     /**
      * @since 2.18.0
      *
-     * @param  string  $id
+     * @param string $id
      *
      * @return bool
      */
@@ -63,7 +66,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
      *
      * @since 2.18.0
      *
-     * @param  string  $gatewayClass
+     * @param string $gatewayClass
      *
      * @throws OverflowException|InvalidArgumentException|Exception
      */
@@ -113,8 +116,8 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
      *
      * @since 2.18.0
      *
-     * @param  string  $gatewayClass
-     * @param  string  $gatewayId
+     * @param string $gatewayClass
+     * @param string $gatewayId
      *
      * @return void
      */
@@ -130,7 +133,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
     /**
      * After gateway is registered, connect to legacy payment gateway adapter
      *
-     * @param  string  $gatewayClass
+     * @param string $gatewayClass
      */
     private function afterGatewayRegister($gatewayClass)
     {

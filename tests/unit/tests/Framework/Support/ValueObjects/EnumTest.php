@@ -14,6 +14,13 @@ final class EnumTest extends TestCase
         $this->assertFalse($enum->isMultiWord());
     }
 
+    public function testIsOneOfMethod()
+    {
+        $enum = TestEnum::FOO();
+        $this->assertTrue($enum->isOneOf(TestEnum::FOO(), TestEnum::BAR()));
+        $this->assertFalse($enum->isOneOf(TestEnum::BAR(), TestEnum::MULTI_WORD()));
+    }
+
     public function testCamelCaseKeys()
     {
         $foo = TestEnum::FOO();

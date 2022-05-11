@@ -2,20 +2,29 @@
 
 namespace Give\Subscriptions\ValueObjects;
 
-use MyCLabs\Enum\Enum;
+use Give\Framework\Support\ValueObjects\Enum;
 
 /**
  * @since 2.19.6
  *
- * @method static PENDING()
- * @method static ACTIVE()
- * @method static EXPIRED()
- * @method static COMPLETED()
- * @method static REFUNDED()
- * @method static ABANDONED()
- * @method static FAILING()
- * @method static CANCELED()
- * @method static SUSPENDED()
+ * @method static SubscriptionStatus PENDING()
+ * @method static SubscriptionStatus ACTIVE()
+ * @method static SubscriptionStatus EXPIRED()
+ * @method static SubscriptionStatus COMPLETED()
+ * @method static SubscriptionStatus REFUNDED()
+ * @method static SubscriptionStatus ABANDONED()
+ * @method static SubscriptionStatus FAILING()
+ * @method static SubscriptionStatus CANCELED()
+ * @method static SubscriptionStatus SUSPENDED()
+ * @method bool isPending()
+ * @method bool isActive()
+ * @method bool isExpired()
+ * @method bool isCompleted()
+ * @method bool isRefunded()
+ * @method bool isAbandoned()
+ * @method bool isFailing()
+ * @method bool isCanceled()
+ * @method bool isSuspended()
  */
 class SubscriptionStatus extends Enum {
     const PENDING = 'pending';

@@ -7,6 +7,7 @@ use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Support\Facades\DateTime\Temporal;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
@@ -63,7 +64,7 @@ class TestSubscriptionRepository extends Give_Unit_Test_Case
         $subscriptionById = $repository->getById($subscription->id);
 
         $this->assertInstanceOf(Subscription::class, $subscription);
-        $this->assertEquals($subscriptionById, $subscription);
+        $this->assertSame($subscription->id, $subscriptionById->id);
     }
 
     /**
@@ -77,26 +78,29 @@ class TestSubscriptionRepository extends Give_Unit_Test_Case
         $subscriptionInstance = new Subscription(Subscription::factory()->definition());
         $repository = new SubscriptionRepository();
 
-        $insertedSubscription = $repository->insert($subscriptionInstance);
+        $repository->insert($subscriptionInstance);
 
         /** @var object $subscriptionQuery */
         $subscriptionQuery = DB::table('give_subscriptions')
-            ->where('id', $insertedSubscription->id)
+            ->where('id', $subscriptionInstance->id)
             ->get();
 
-        $this->assertInstanceOf(Subscription::class, $insertedSubscription);
-        $this->assertEquals(Temporal::toDateTime($subscriptionQuery->created), $insertedSubscription->createdAt);
-        $this->assertEquals($subscriptionQuery->customer_id, $insertedSubscription->donorId);
-        $this->assertEquals($subscriptionQuery->profile_id, $insertedSubscription->gatewaySubscriptionId);
-        $this->assertEquals($subscriptionQuery->product_id, $insertedSubscription->donationFormId);
-        $this->assertEquals($subscriptionQuery->period, $insertedSubscription->period->getValue());
-        $this->assertEquals($subscriptionQuery->frequency, $insertedSubscription->frequency);
-        $this->assertEquals($subscriptionQuery->initial_amount, $insertedSubscription->amount);
-        $this->assertEquals($subscriptionQuery->recurring_amount, $insertedSubscription->amount);
-        $this->assertEquals($subscriptionQuery->recurring_fee_amount, $insertedSubscription->feeAmount);
-        $this->assertEquals($subscriptionQuery->bill_times, $insertedSubscription->installments);
-        $this->assertEquals($subscriptionQuery->transaction_id, $insertedSubscription->transactionId);
-        $this->assertEquals($subscriptionQuery->status, $insertedSubscription->status->getValue());
+        $this->assertInstanceOf(Subscription::class, $subscriptionInstance);
+        $this->assertEquals(
+            Temporal::toDateTime($subscriptionQuery->created)->format('Y-m-d H:i:s'),
+            $subscriptionInstance->createdAt->format('Y-m-d H:i:s')
+        );
+        $this->assertEquals($subscriptionQuery->customer_id, $subscriptionInstance->donorId);
+        $this->assertEquals($subscriptionQuery->profile_id, $subscriptionInstance->gatewaySubscriptionId);
+        $this->assertEquals($subscriptionQuery->product_id, $subscriptionInstance->donationFormId);
+        $this->assertEquals($subscriptionQuery->period, $subscriptionInstance->period->getValue());
+        $this->assertEquals($subscriptionQuery->frequency, $subscriptionInstance->frequency);
+        $this->assertEquals($subscriptionQuery->initial_amount, $subscriptionInstance->amount->formatToDecimal());
+        $this->assertEquals($subscriptionQuery->recurring_amount, $subscriptionInstance->amount->formatToDecimal());
+        $this->assertEquals($subscriptionQuery->recurring_fee_amount, $subscriptionInstance->feeAmountRecovered->formatToDecimal());
+        $this->assertEquals($subscriptionQuery->bill_times, $subscriptionInstance->installments);
+        $this->assertEquals($subscriptionQuery->transaction_id, $subscriptionInstance->transactionId);
+        $this->assertEquals($subscriptionQuery->status, $subscriptionInstance->status->getValue());
     }
 
     /**
@@ -162,7 +166,7 @@ class TestSubscriptionRepository extends Give_Unit_Test_Case
         $subscription = Subscription::factory()->create();
         $repository = new SubscriptionRepository();
 
-        $subscription->amount = 200;
+        $subscription->amount = new Money(2000, 'USD');
         $subscription->period = SubscriptionPeriod::YEAR();
 
         $repository->update($subscription);
@@ -172,8 +176,8 @@ class TestSubscriptionRepository extends Give_Unit_Test_Case
             ->where('id', $subscription->id)
             ->get();
 
-        $this->assertEquals(200, $subscriptionQuery->recurring_amount);
-        $this->assertEquals(SubscriptionPeriod::YEAR, $subscriptionQuery->period);
+        $this->assertEquals(20, $subscriptionQuery->recurring_amount);
+        $this->assertSame(SubscriptionPeriod::YEAR, $subscriptionQuery->period);
     }
 
     /**

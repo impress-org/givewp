@@ -2,6 +2,8 @@
 
 namespace Give\PaymentGateways\Gateways\PayPalStandard;
 
+use Give\Donations\Models\Donation;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\PaymentGateway;
@@ -107,7 +109,7 @@ class PayPalStandard extends PaymentGateway
      *
      * @return RedirectResponse
      */
-    public function handleSuccessPaymentReturn($queryParams)
+    protected function handleSuccessPaymentReturn($queryParams)
     {
         $donationId = (int)$queryParams['donation-id'];
 
@@ -130,7 +132,7 @@ class PayPalStandard extends PaymentGateway
      *
      * @return RedirectResponse
      */
-    public function handleFailedPaymentReturn($queryParams)
+    protected function handleFailedPaymentReturn($queryParams)
     {
         $donationId = (int)$queryParams['donation-id'];
         $payment = new Give_Payment($donationId);
@@ -239,5 +241,15 @@ class PayPalStandard extends PaymentGateway
          * @since 2.9.6
          */
         return apply_filters('give_get_settings_paypal_standard', $setting);
+    }
+
+    /**
+     * @since 2.20.0
+     * @inerhitDoc
+     * @throws Exception
+     */
+    public function refundDonation(Donation $donation)
+    {
+        throw new Exception('Method has not been implemented yet. Please use the legacy method in the meantime.');
     }
 }

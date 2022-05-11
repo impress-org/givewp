@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe\Actions;
 
+use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\DonationSummary;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
@@ -15,6 +16,7 @@ use Give_Stripe_Customer;
 class CreateCheckoutSession
 {
     /**
+     * @since 2.20.0 Update function to get input value to line_items[0][name]
      * @since 2.19.0
      *
      * @param GatewayPaymentData $paymentData
@@ -39,7 +41,7 @@ class CreateCheckoutSession
             'mode' => 'payment',
             'line_items' => [
                 [
-                    'name' => give_get_donation_form_title($paymentData->donationId),
+                    'name' => Donation::find($paymentData->donationId)->formTitle,
                     'description' => $donationSummary->getSummaryWithDonor(),
                     'amount' => Money::of($paymentData->price, $paymentData->currency)->getMinorAmount(),
                     'currency' => $paymentData->currency,

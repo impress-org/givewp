@@ -1985,7 +1985,7 @@ function give_goal_progress_stats( $form ) {
 	// Define Actual Goal based on the goal format.
 	switch ( $goal_format ) {
 		case 'percentage':
-			$actual     = "{$actual}%";
+			$actual     = "{$progress}%";
 			$total_goal = '';
 			break;
 

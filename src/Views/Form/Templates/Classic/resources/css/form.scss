@@ -24,11 +24,12 @@ label.give-hidden {
 @import 'reset';
 
 // Icons
-@import '~@givewp/fontawesome/fontawesome';
-@import '~@givewp/fontawesome/regular';
-@import '~@givewp/fontawesome/solid';
-@import '~@givewp/fontawesome/brands';
-@import '~@givewp/hint.css';
+@import '~@givewp/css/icons/fa/fontawesome';
+@import '~@givewp/css/icons/fa/regular';
+@import '~@givewp/css/icons/fa/solid';
+@import '~@givewp/css/icons/fa/brands';
+@import '~@givewp/css/plugins/hint.min.scss';
+@import '~@givewp/css/plugins/utils.scss';
 @import 'icons';
 
 // Context

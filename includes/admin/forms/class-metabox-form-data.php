@@ -318,7 +318,7 @@ class Give_MetaBox_Form_Data {
 							],
 							[
 								'name'    => __( 'Name Title Prefix', 'give' ),
-								'desc'    => __( 'Do you want to add a name title prefix dropdown field before the donor\'s first name field? This will display a dropdown with options such as Mrs, Miss, Ms, Sir, and Dr for donor to choose from.', 'give' ),
+								'desc'    => __( 'Do you want to add a name title prefix dropdown field before the donor\'s first name field? This will display a dropdown with options such as Mrs, Miss, Ms, Sir, and Dr for the donor to choose from.', 'give' ),
 								'id'      => $prefix . 'name_title_prefix',
 								'type'    => 'radio_inline',
 								'options' => [
@@ -597,6 +597,58 @@ class Give_MetaBox_Form_Data {
 					),
 				]
 			),
+
+            /**
+             * Form Grid
+             *
+             * @since 2.20.0
+             */
+            'form_grid_options'    => apply_filters(
+                'give_forms_grid_options',
+                [
+                    'id'        => 'form_grid_options',
+                    'title'     => __( 'Form Grid', 'give' ),
+                    'icon-html' => '<i class="fas fa-th-large"></i>',
+                    'fields'    => [
+                        [
+                            'name'        => __( 'Form Grid', 'give' ),
+                            'description' => __( 'These settings are used to customize how this form looks or functions when displayed as a part of a Form Grid. The default option is for donors to be redirected to the individual form page (linked above), and to have "Donate" as the default text. To change that behavior, select to customize the options.', 'give' ),
+                            'id'          => $prefix . 'form_grid_option',
+                            'type'        => 'radio_inline',
+                            'default'     => 'default',
+                            'options'     => [
+                                'default' => __( 'Default options', 'give' ),
+                                'custom'  => __( 'Customize', 'give' ),
+                            ],
+                            'attributes'  => [
+                                'class' => 'give-visibility-handler',
+                            ]
+                        ],
+                        [
+                            'name'          => __( 'Redirect URL', 'give' ),
+                            'description'   => __( 'The full URL of the page you want this form to redirect to when clicked on from the Form Grid. This only applies when the Form Grid uses the “Redirect” method. ', 'give' ),
+                            'id'            => $prefix . 'form_grid_redirect_url',
+                            'type'          => 'text-medium',
+                            'attributes'    => [
+                                'placeholder' => 'https://example.com/donation-form',
+                                'data-field-visibility' => htmlspecialchars(json_encode([  $prefix . 'form_grid_option' => 'custom' ])),
+                            ],
+                            'wrapper_class' => 'give-hidden',
+                        ],
+                        [
+                            'name'          => __( 'Donate Button Text', 'give' ),
+                            'description'   => __( 'The text on the Donate Button for this form when displayed on the Form Grid. This setting only applies if the Donate Button display option is enabled in your Form Grid.', 'give' ),
+                            'id'            => $prefix . 'form_grid_donate_button_text',
+                            'type'          => 'text-medium',
+                            'attributes'    => [
+                                'placeholder' => 'Donate Here',
+                                'data-field-visibility' => htmlspecialchars(json_encode([  $prefix . 'form_grid_option' => 'custom' ])),
+                            ],
+                            'wrapper_class' => 'give-hidden',
+                        ],
+                    ],
+                ]
+            ),
 		];
 
 		/**

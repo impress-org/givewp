@@ -28,7 +28,9 @@ abstract class ModelFactory
     protected $count = 1;
 
     /**
-     * @param class-string<M> $model
+     * @since 2.20.0
+     *
+     * @param  class-string<M>  $model
      *
      * @return void
      */
@@ -46,7 +48,9 @@ abstract class ModelFactory
     abstract public function definition();
 
     /**
-     * @param array $attributes
+     * @since 2.20.0
+     *
+     * @param  array  $attributes
      *
      * @return M|M[]
      */
@@ -61,7 +65,7 @@ abstract class ModelFactory
                 array_merge($this->definition(), $attributes)
             );
 
-            $this->afterCreating($instance);
+            $this->afterMaking($instance);
 
             $results[] = $instance;
         }
@@ -70,7 +74,9 @@ abstract class ModelFactory
     }
 
     /**
-     * @param array $attributes
+     * @since 2.20.0
+     *
+     * @param  array  $attributes
      *
      * @return M|M[]
      * @throws Exception
@@ -80,9 +86,11 @@ abstract class ModelFactory
         $instances = $this->make($attributes);
         $instances = is_array($instances) ? $instances : [$instances];
 
-        DB::transaction(static function () use ($instances) {
+        DB::transaction(function () use ($instances) {
             foreach ($instances as $instance) {
                 $instance->save();
+
+                $this->afterCreating($instance);
             }
         });
 
@@ -122,11 +130,25 @@ abstract class ModelFactory
     }
 
     /**
-     * @param M $model
+     * @since 2.20.0
+     *
+     * @param  M  $model
      *
      * @return void
      */
     public function afterCreating($model)
+    {
+        //
+    }
+
+    /**
+     * @since 2.20.0
+     *
+     * @param  M  $model
+     *
+     * @return void
+     */
+    public function afterMaking($model)
     {
         //
     }

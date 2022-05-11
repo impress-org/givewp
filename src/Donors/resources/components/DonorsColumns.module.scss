@@ -1,0 +1,47 @@
+$gravatar-dimensions: 4rem;
+
+.gravatar {
+    border-radius: 9999px;
+    width: $gravatar-dimensions;
+    height: $gravatar-dimensions;
+}
+
+.donorInformation {
+    position: relative;
+    display: flex;
+    flex-flow: column wrap;
+    align-content: flex-start;
+    justify-content: center;
+    column-gap: 0.6125rem;
+    row-gap: 0.25rem;
+    height: $gravatar-dimensions;
+    width: 100%;
+
+    & > .email {
+        min-width: 0;
+        overflow: hidden;
+    }
+}
+
+.name {
+    display: inline;
+    inline-size: -webkit-fit-content;
+    inline-size: -moz-fit-content;
+    inline-size: fit-content;
+    font-size: 1.125rem;
+    text-decoration: none;
+}
+
+.email {
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+    max-width: calc(100% - $gravatar-dimensions);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.donorCell {
+    padding-block: 0;
+    height: 7rem;
+}

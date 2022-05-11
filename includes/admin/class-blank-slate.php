@@ -9,6 +9,8 @@
  * @since       1.8.13
  */
 
+use Give\DonationForms\DonationFormsAdminPage;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -279,7 +281,7 @@ class Give_Blank_Slate {
 				'heading'  => __( 'No donations found.', 'give' ),
 				'message'  => __( 'When your first donation arrives, a record of the donation will appear here.', 'give' ),
 				'cta_text' => __( 'View All Forms', 'give' ),
-				'cta_link' => admin_url( 'edit.php?post_type=give_forms' ),
+				'cta_link' => DonationFormsAdminPage::getUrl(),
 				'help'     => sprintf(
 					/* translators: 1: Opening anchor tag. 2: Closing anchor tag. */
 					__( 'Need help? Learn more about %1$sDonations%2$s.', 'give' ),
@@ -295,7 +297,7 @@ class Give_Blank_Slate {
 				'heading'  => __( 'No donors found.', 'give' ),
 				'message'  => __( 'When your first donation arrives, the donor will appear here.', 'give' ),
 				'cta_text' => __( 'View All Forms', 'give' ),
-				'cta_link' => admin_url( 'edit.php?post_type=give_forms' ),
+				'cta_link' => DonationFormsAdminPage::getUrl(),
 				'help'     => sprintf(
 					/* translators: 1: Opening anchor tag. 2: Closing anchor tag. */
 					__( 'Need help? Learn more about %1$sDonors%2$s.', 'give' ),

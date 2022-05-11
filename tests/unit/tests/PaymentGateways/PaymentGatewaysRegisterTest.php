@@ -1,5 +1,6 @@
 <?php
 
+use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\PaymentGateways\Exceptions\OverflowException;
@@ -130,6 +131,14 @@ class MockStripe extends PaymentGateway
     {
         // TODO: Implement createPayment() method.
     }
+
+    /**
+     * @unreleased
+     * @inerhitDoc
+     */
+    public function refundDonation(Donation $donation)
+    {
+    }
 }
 
 class MockPaypal extends PaymentGateway
@@ -174,5 +183,13 @@ class MockPaypal extends PaymentGateway
     public function createPayment(GatewayPaymentData $paymentData)
     {
         // TODO: Implement createPayment() method.
+    }
+
+    /**
+     * @unreleased
+     * @inerhitDoc
+     */
+    public function refundDonation(Donation $donation)
+    {
     }
 }

@@ -2,7 +2,8 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
-use Exception;
+use Give\Donations\Models\Donation;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
@@ -160,6 +161,20 @@ class PayPalCommerce extends PaymentGateway
                 'default' => 'donation',
             ],
             [
+                'name' => esc_html__('Accept Venmo', 'give'),
+                'id' => 'paypal_commerce_accept_venmo',
+                'type' => 'radio_inline',
+                'desc' => esc_html__(
+                            'Displays a button allowing Donors to pay with Venmo (a PayPal Company). Donations still come into your PayPal account and are subject to normal PayPal transaction fees.',
+                            'give'
+                        ),
+                'default' => 'disabled',
+                'options' => [
+                    'enabled' => esc_html__('Enabled', 'give'),
+                    'disabled' => esc_html__('Disabled', 'give'),
+                ],
+            ],
+            [
                 'name' => esc_html__('PayPal Donations Gateway Settings Docs Link', 'give'),
                 'id' => 'paypal_commerce_gateway_settings_docs_link',
                 'url' => esc_url('http://docs.givewp.com/paypal-donations'),
@@ -201,5 +216,15 @@ class PayPalCommerce extends PaymentGateway
          * @since 2.9.6
          */
         return apply_filters('give_get_settings_paypal_commerce', $settings);
+    }
+
+    /**
+     * @since 2.20.0
+     * @inerhitDoc
+     * @throws Exception
+     */
+    public function refundDonation(Donation $donation)
+    {
+        throw new Exception('Method has not been implemented yet. Please use the legacy method in the meantime.');
     }
 }

@@ -32,6 +32,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         give()->singleton(PaymentGatewayRegister::class);
         give()->singleton(WebhookRegister::class);
+        give()->alias(PaymentGatewayRegister::class, 'gateways');
     }
 
     /**

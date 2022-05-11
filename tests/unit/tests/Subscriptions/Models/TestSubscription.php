@@ -6,6 +6,7 @@ use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
 use Give_Subscriptions_DB;
 
@@ -50,6 +51,23 @@ class TestSubscription extends \Give_Unit_Test_Case
     }
 
     /**
+     * @unreleased
+     *
+     * @return void
+     *
+     * @throws Exception
+     */
+    public function testCreateShouldInsertSubscription()
+    {
+        $subscription = Subscription::factory()->create();
+
+        /** @var Subscription $subscriptionFromDatabase */
+        $subscriptionFromDatabase = Subscription::find($subscription->id);
+
+        $this->assertEquals($subscription->toArray(), $subscriptionFromDatabase->toArray());
+    }
+
+    /**
      * @return void
      * @throws Exception
      */
@@ -81,13 +99,44 @@ class TestSubscription extends \Give_Unit_Test_Case
         /** @var Subscription $subscription */
         $subscription = Subscription::factory()->create(['donorId' => $donor->id]);
 
-        $this->assertEquals($donor, $subscription->donor);
+        $this->assertSame($donor->id, $subscription->donor->id);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testIntendedAmount()
+    {
+        // No amount recovered yields same amount
+        $subscription = Subscription::factory()->create([
+            'amount' => new Money(10000, 'USD'),
+            'feeAmountRecovered' => new Money(0, 'USD'),
+        ]);
+
+        self::assertMoneyEquals(new Money(10000, 'USD'), $subscription->intendedAmount());
+
+        // Intended amount is amount minus fee recovered
+        $subscription = Subscription::factory()->create([
+            'amount' => new Money(10000, 'USD'),
+            'feeAmountRecovered' => new Money(500, 'USD'),
+        ]);
+
+        self::assertMoneyEquals(new Money(9500, 'USD'), $subscription->intendedAmount());
     }
 
     /**
      * @return void
      */
     public function testSubscriptionShouldGetNotes()
+    {
+        $this->markTestIncomplete();
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function testSubscriptionShouldCancel()
     {
         $this->markTestIncomplete();
     }

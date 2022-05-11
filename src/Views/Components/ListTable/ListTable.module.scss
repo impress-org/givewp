@@ -1,0 +1,153 @@
+.initialLoad {
+    inline-size: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & > * {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        inline-size: 26em;
+        block-size: 20em;
+    }
+}
+
+.tableGroup {
+    background-color: #fff;
+    border: 0.0625em solid #ddd;
+    border-radius: 0.3125em;
+    overflow: auto;
+    position: relative;
+    max-inline-size: 100%;
+    box-shadow: 0 0 0.5625em rgb(68 68 68 / 0.05);
+}
+
+.table {
+    border-radius: inherit;
+    border-spacing: 0;
+    inline-size: 100%;
+    font-size: 1em;
+    table-layout: fixed;
+}
+
+/* Visually hidden class omitting position: absolute since that breaks the table
+ * semantics */
+.tableCaption {
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+.tableColumnHeader {
+    border-bottom: 0.0625em solid #ddd;
+    color: #0878b0;
+    font-weight: 700;
+    padding: 1em;
+    inline-size: 8rem;
+    text-align: start;
+
+    &.start {
+        text-align: start;
+    }
+
+    &.center {
+        text-align: center;
+    }
+
+    &.end {
+        text-align: end;
+    }
+}
+
+.tableContent {
+    overflow: auto;
+}
+
+.selectAll {
+    width: 2rem;
+}
+
+#updateError {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding-inline: 2.5em;
+    padding-block: 1em;
+    height: 5em;
+    position: relative;
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-left-color: #d63638;
+    border-left-width: 0.25rem;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
+    margin: 0.3125em 0.9375em 0.125em;
+}
+
+.dismiss {
+    background: none;
+    border: none;
+    color: #787c82;
+    display: block;
+    position: absolute;
+    margin: 0.5em;
+    right: 0;
+    top: 0;
+    font: normal 16px/20px dashicons;
+    speak: never;
+    height: 1.5rem;
+    text-align: center;
+    width: 1.5rem;
+    -webkit-font-smoothing: antialiased;
+
+    &:hover {
+        color: #d63638;
+    }
+
+    &:active {
+        color: #787c82;
+    }
+}
+
+.statusMessage {
+    font-weight: 600;
+    font-size: 1.2em;
+    padding-inline: 2.5em;
+    padding-block: 2em;
+}
+
+.overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    block-size: 100%;
+    inline-size: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    z-index: 10;
+    border-radius: inherit;
+    overflow: hidden;
+}
+
+.appear {
+    animation: appear 0.1s ease-in;
+}
+
+.disappear {
+    animation: appear 0.1s ease-in reverse;
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

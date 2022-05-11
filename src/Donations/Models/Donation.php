@@ -16,12 +16,14 @@ use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Models\ValueObjects\Relationship;
+use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
-use Give\ValueObjects\Money;
 
 /**
  * Class Donation
  *
+ * @since 2.20.0 update amount type, fee recovered, and exchange rate
  * @since 2.19.6
  *
  * @property int $id
@@ -31,9 +33,10 @@ use Give\ValueObjects\Money;
  * @property DateTime $updatedAt
  * @property DonationStatus $status
  * @property DonationMode $mode
- * @property int $amount
- * @property string $currency
- * @property string $gateway
+ * @property Money $amount amount charged to the gateway
+ * @property Money $feeAmountRecovered
+ * @property string $exchangeRate
+ * @property string $gatewayId
  * @property int $donorId
  * @property string $firstName
  * @property string $lastName
@@ -64,18 +67,19 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
         'updatedAt' => DateTime::class,
         'status' => DonationStatus::class,
         'mode' => DonationMode::class,
-        'amount' => 'int',
-        'currency' => 'string',
-        'gateway' => 'string',
+        'amount' => Money::class,
+        'feeAmountRecovered' => Money::class,
+        'exchangeRate' => ['string', '1'],
+        'gatewayId' => 'string',
         'donorId' => 'int',
         'firstName' => 'string',
         'lastName' => 'string',
         'email' => 'string',
-        'parentId' => 'int',
-        'subscriptionId' => 'int',
+        'parentId' => ['int', 0],
+        'subscriptionId' => ['int', 0],
         'billingAddress' => BillingAddress::class,
-        'anonymous' => 'bool',
-        'levelId' => 'int',
+        'anonymous' => ['bool', false],
+        'levelId' => ['int', 0],
         'gatewayTransactionId' => 'string',
     ];
 
@@ -102,6 +106,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
+     * @since 2.20.0 return mutated model instance
      * @since 2.19.6
      *
      * @param array $attributes
@@ -114,23 +119,26 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     {
         $donation = new static($attributes);
 
-        return give()->donations->insert($donation);
+        give()->donations->insert($donation);
+
+        return $donation;
     }
 
     /**
+     * @since 2.20.0 mutate model in repository and return void
      * @since 2.19.6
      *
-     * @return Donation
+     * @return void
      *
      * @throws Exception|InvalidArgumentException
      */
     public function save()
     {
         if (!$this->id) {
-            return give()->donations->insert($this);
+            give()->donations->insert($this);
+        } else {
+            give()->donations->update($this);
         }
-
-        return give()->donations->update($this);
     }
 
     /**
@@ -190,13 +198,66 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @since 2.19.6
+     * Returns the amount charged in the currency the GiveWP site is set to
+     *
+     * @since 2.20.0
      *
      * @return Money
      */
-    public function getMinorAmount()
+    public function amountInBaseCurrency()
     {
-        return Money::ofMinor($this->amount, $this->currency);
+        return $this->amount->inBaseCurrency($this->exchangeRate);
+    }
+
+    /**
+     * Returns the donation amount the donor "intended", which means it is the amount without recovered fees. So if the
+     * donor paid $100, but the donation was charged $105 with a $5 fee, this method will return $100.
+     *
+     * @since 2.20.0
+     *
+     * @return Money
+     */
+    public function intendedAmount()
+    {
+        return $this->feeAmountRecovered === null
+            ? $this->amount
+            : $this->amount->subtract($this->feeAmountRecovered);
+    }
+
+    /**
+     * Returns the amount intended in the currency the GiveWP site is set to
+     *
+     * @since 2.20.0
+     *
+     * @return Money
+     */
+    public function intendedAmountInBaseCurrency()
+    {
+        return $this->intendedAmount()->inBaseCurrency($this->exchangeRate);
+    }
+
+    /**
+     * Returns the gateway instance for this donation
+     *
+     * @since 2.20.0
+     */
+    public function gateway(): PaymentGateway
+    {
+        return give()->gateways->getPaymentGateway($this->gatewayId);
+    }
+
+    /**
+     * @since 2.20.0
+     *
+     * @inheritDoc
+     */
+    protected function getPropertyDefaults()
+    {
+        return array_merge(parent::getPropertyDefaults(), [
+            'mode' => give_is_test_mode() ? DonationMode::TEST() : DonationMode::LIVE(),
+            'donorIp' => give_get_ip(),
+            'billingAddress' => new BillingAddress(),
+        ]);
     }
 
     /**
