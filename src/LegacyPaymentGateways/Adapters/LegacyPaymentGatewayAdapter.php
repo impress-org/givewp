@@ -90,10 +90,8 @@ class LegacyPaymentGatewayAdapter
      * Validate Gateway Nonce
      *
      * @since 2.18.0
-     *
-     * @param string $gatewayNonce
      */
-    private function validateGatewayNonce($gatewayNonce)
+    private function validateGatewayNonce(string $gatewayNonce)
     {
         if (!wp_verify_nonce($gatewayNonce, 'give-gateway')) {
             wp_die(
@@ -129,22 +127,26 @@ class LegacyPaymentGatewayAdapter
     /**
      * @unreleased
      *
-     * @param int|null $userId
-     * @param string $donorEmail
-     * @param string $firstName
-     * @param string $lastName
+     * @param  int|null  $userId
+     * @param  string  $donorEmail
+     * @param  string  $firstName
+     * @param  string  $lastName
      *
      * @return Donor
      * @throws Exception
      */
-    private function getOrCreateDonor($userId, $donorEmail, $firstName, $lastName)
-    {
+    private function getOrCreateDonor(
+        int $userId,
+        string $donorEmail,
+        string $firstName,
+        string $lastName
+    ): Donor {
         // first check if donor exists as a user
         $donor = Donor::whereUserId($userId);
 
         // If they exist as a donor & user then make sure they don't already own this email before adding to their additional emails list..
         if ($donor && !$donor->hasEmail($donorEmail)) {
-            $donor->additionalEmails = array_merge($donor->additionalEmails, [$donorEmail]);
+            $donor->additionalEmails = array_merge($donor->additionalEmails ?? [], [$donorEmail]);
             $donor->save();
         }
 

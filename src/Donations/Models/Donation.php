@@ -23,7 +23,7 @@ use Give\Subscriptions\Models\Subscription;
 /**
  * Class Donation
  *
- * @unreleased update amount type, fee recovered, and exchange rate
+ * @unreleased update amount type, fee recovered, exchange rate, and levelId
  * @since 2.19.6
  *
  * @property int $id
@@ -47,7 +47,7 @@ use Give\Subscriptions\Models\Subscription;
  * @property string $purchaseKey
  * @property string $donorIp
  * @property bool $anonymous
- * @property int $levelId
+ * @property string $levelId
  * @property string $gatewayTransactionId
  * @property Donor $donor
  * @property Subscription $subscription
@@ -111,13 +111,9 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      * @unreleased return mutated model instance
      * @since 2.19.6
      *
-     * @param array $attributes
-     *
-     * @return Donation
-     *
      * @throws Exception|InvalidArgumentException
      */
-    public static function create(array $attributes)
+    public static function create(array $attributes): Donation
     {
         $donation = new static($attributes);
 
@@ -146,11 +142,9 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     /**
      * @since 2.19.6
      *
-     * @return bool
-     *
      * @throws Exception|InvalidArgumentException
      */
-    public function delete()
+    public function delete(): bool
     {
         return give()->donations->delete($this);
     }
@@ -160,7 +154,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      *
      * @return ModelQueryBuilder<Donor>
      */
-    public function donor()
+    public function donor(): ModelQueryBuilder
     {
         return give()->donors->queryById($this->donorId);
     }
@@ -170,7 +164,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      *
      * @return ModelQueryBuilder<Subscription>
      */
-    public function subscription()
+    public function subscription(): ModelQueryBuilder
     {
         if ($this->subscriptionId) {
             return give()->subscriptions->queryById($this->subscriptionId);
@@ -192,15 +186,17 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     /**
      * @since 2.19.6
      *
-     * @return ModelQueryBuilder
+     * @return ModelQueryBuilder<DonationNote>
      */
-    public function notes()
+    public function notes(): ModelQueryBuilder
     {
         return give()->donations->notes->queryByDonationId($this->id);
     }
 
     /**
      * @unreleased
+     *
+     * @throws Exception
      */
     public function addNote(string $message): DonationNote
     {
@@ -219,10 +215,8 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      * Returns the amount charged in the currency the GiveWP site is set to
      *
      * @unreleased
-     *
-     * @return Money
      */
-    public function amountInBaseCurrency()
+    public function amountInBaseCurrency(): Money
     {
         return $this->amount->inBaseCurrency($this->exchangeRate);
     }
@@ -232,10 +226,8 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      * donor paid $100, but the donation was charged $105 with a $5 fee, this method will return $100.
      *
      * @unreleased
-     *
-     * @return Money
      */
-    public function intendedAmount()
+    public function intendedAmount(): Money
     {
         return $this->feeAmountRecovered === null
             ? $this->amount
@@ -246,10 +238,8 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      * Returns the amount intended in the currency the GiveWP site is set to
      *
      * @unreleased
-     *
-     * @return Money
      */
-    public function intendedAmountInBaseCurrency()
+    public function intendedAmountInBaseCurrency(): Money
     {
         return $this->intendedAmount()->inBaseCurrency($this->exchangeRate);
     }
@@ -269,7 +259,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      *
      * @inheritDoc
      */
-    protected function getPropertyDefaults()
+    protected function getPropertyDefaults(): array
     {
         return array_merge(parent::getPropertyDefaults(), [
             'mode' => give_is_test_mode() ? DonationMode::TEST() : DonationMode::LIVE(),
@@ -283,7 +273,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      *
      * @return ModelQueryBuilder<Donation>
      */
-    public static function query()
+    public static function query(): ModelQueryBuilder
     {
         return give()->donations->prepareQuery();
     }
@@ -292,10 +282,8 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      * @since 2.19.6
      *
      * @param object $object
-     *
-     * @return Donation
      */
-    public static function fromQueryBuilderObject($object)
+    public static function fromQueryBuilderObject($object): Donation
     {
         return DonationQueryData::fromObject($object)->toDonation();
     }
@@ -303,7 +291,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     /**
      * @return DonationFactory<Donation>
      */
-    public static function factory()
+    public static function factory(): DonationFactory
     {
         return new DonationFactory(static::class);
     }
