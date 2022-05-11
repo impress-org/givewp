@@ -49,14 +49,10 @@ class CreateMigrationsTable extends Migration
      */
     public function run()
     {
-        if( $this->isTableExist() ) {
-            return;
-        }
-
-        $table = $this->getTableName();
+        $table = DB::prefix('give_migrations');
         $charset = DB::get_charset_collate();
 
-        $sql = "CREATE TABLE {$table} (
+        $sql = "CREATE TABLE IF NOT EXISTS {$table} (
 			id VARCHAR(180) NOT NULL,
 			status VARCHAR(16) NOT NULL,
 			error text NULL,
@@ -69,32 +65,5 @@ class CreateMigrationsTable extends Migration
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException("An error occurred while creating the {$table} table", 0, $exception);
         }
-    }
-
-    /**
-     * @return bool
-     */
-    private function isTableExist()
-    {
-        $result = DB::get_var(
-            DB::prepare(
-                'SELECT COUNT(*)
-            FROM information_schema.tables
-            WHERE table_schema = DATABASE()
-            AND table_name=%s;',
-                $this->getTableName()
-            )
-        );
-
-        return '1' === $result;
-    }
-
-    /**
-     * @unreleased
-     * @return string
-     */
-    private function getTableName()
-    {
-        return DB::prefix('give_migrations');
     }
 }
