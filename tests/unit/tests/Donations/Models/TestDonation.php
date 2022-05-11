@@ -3,6 +3,7 @@
 namespace unit\tests\Donations\Models;
 
 use Exception;
+use Give\Donations\Factories\DonationNoteFactory;
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
@@ -142,11 +143,31 @@ class TestDonation extends \Give_Unit_Test_Case
         $donationNote2 = DonationNote::factory()->create(['donationId' => $donation->id]);
         $donationNote3 = DonationNote::factory()->create(['donationId' => $donation->id]);
 
-        $this->assertCount( 3, $donation->notes );
+        $this->assertCount(3, $donation->notes);
 
         $this->assertEquals($donationNote1->id, $donation->notes[2]->id);
         $this->assertEquals($donationNote2->id, $donation->notes[1]->id);
         $this->assertEquals($donationNote3->id, $donation->notes[0]->id);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testDonationShouldAddNote()
+    {
+        /** @var Donor $donor */
+        $donor = Donor::factory()->create();
+
+        $fakeNote = DonationNote::factory()->definition()['content'];
+
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create(['donorId' => $donor->id]);
+        $donation->addNote($fakeNote);
+
+        $donationNotes = $donation->notes;
+
+        $this->assertCount(1, $donationNotes);
+        $this->assertEquals($fakeNote, $donationNotes[0]->content);
     }
 
     /**
