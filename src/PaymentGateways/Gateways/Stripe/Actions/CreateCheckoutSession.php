@@ -59,8 +59,8 @@ class CreateCheckoutSession
             'locale' => give_stripe_get_preferred_locale(),
         ];
 
-        if (!empty(get_the_post_thumbnail($donation->formId))) {
-            $session_args['line_items'][0]['images'] = [get_the_post_thumbnail_url($donation->formId)];
+        if ($formThumbnail = get_the_post_thumbnail($donation->formId)) {
+            $session_args['line_items'][0]['images'] = [$formThumbnail];
         }
 
         $session = give(CheckoutSession::class)->create($session_args);
