@@ -27,6 +27,7 @@ registerBlockType( 'custom-block-editor/name-field-group', {
     } />,
 
     supports: {
+        multiple: false,
         html: false, // Removes support for an HTML mode.
     },
 

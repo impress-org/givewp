@@ -22,6 +22,9 @@ registerBlockType( 'custom-block-editor/section', {
 registerBlockType( 'custom-block-editor/donor-info', {
     ...Defaults,
     title: __( 'Donor Information', 'custom-block-editor' ),
+    supports: {
+        multiple: false,
+    },
     attributes: {
         ...attributes,
         title: {
@@ -47,6 +50,9 @@ registerBlockType( 'custom-block-editor/donor-info', {
 registerBlockType( 'custom-block-editor/donation-amount', {
     ...Defaults,
     title: __( 'Donation Amount', 'custom-block-editor' ),
+    supports: {
+        multiple: false,
+    },
     attributes: {
         ...attributes,
         title: {

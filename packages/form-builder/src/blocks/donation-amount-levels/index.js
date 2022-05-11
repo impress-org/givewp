@@ -8,6 +8,7 @@ registerBlockType( 'custom-block-editor/donation-amount-levels', {
     title: __( 'Donation Amount and Levels', 'custom-block-editor' ),
 
     supports: {
+        multiple: false,
         html: false, // Removes support for an HTML mode.
     },
 
