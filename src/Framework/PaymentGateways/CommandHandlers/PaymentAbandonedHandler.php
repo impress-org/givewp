@@ -16,9 +16,9 @@ class PaymentAbandonedHandler extends PaymentHandler
     }
 
     /**
-     * @return DonationStatus
+     * @inheritDoc
      */
-    protected function getPaymentStatus()
+    protected function getPaymentStatus(): DonationStatus
     {
         return DonationStatus::ABANDONED();
     }

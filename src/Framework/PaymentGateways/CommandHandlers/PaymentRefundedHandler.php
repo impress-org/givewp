@@ -16,9 +16,9 @@ class PaymentRefundedHandler extends PaymentHandler
     }
 
     /**
-     * @return DonationStatus
+     * @inheritdoc
      */
-    protected function getPaymentStatus()
+    protected function getPaymentStatus(): DonationStatus
     {
         return DonationStatus::REFUNDED();
     }

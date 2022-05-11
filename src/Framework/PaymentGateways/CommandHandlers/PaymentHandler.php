@@ -17,6 +17,7 @@ abstract class PaymentHandler
 
     /**
      * @unreleased change return type to DonationStatus
+     *
      * @since 2.18.0
      */
     abstract protected function getPaymentStatus(): DonationStatus;
@@ -30,8 +31,7 @@ abstract class PaymentHandler
     }
 
     /**
-     * @param PaymentCommand $paymentCommand
-     * @return static
+     * @since 2.18.0
      */
     public static function make(PaymentCommand $paymentCommand): PaymentHandler
     {
@@ -42,8 +42,6 @@ abstract class PaymentHandler
      * @unreleased replace $donationId with Donation model
      * @since 2.18.0
      *
-     * @param  Donation  $donation
-     * @return void
      * @throws Exception
      */
     public function handle(Donation $donation)
