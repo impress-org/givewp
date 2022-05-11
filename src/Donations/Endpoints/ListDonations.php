@@ -3,6 +3,7 @@
 namespace Give\Donations\Endpoints;
 
 use Give\Donations\DataTransferObjects\DonationResponseData;
+use Give\Donations\DonationsListTable;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -76,7 +77,7 @@ class ListDonations extends Endpoint
      *
      * @return WP_REST_Response
      */
-    public function handleRequest(WP_REST_Request $request)
+    public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
         $data = [];
         $donations = give()->donations->getDonationsForRequest($request);
@@ -87,9 +88,16 @@ class ListDonations extends Endpoint
             $data[] = DonationResponseData::fromObject($donation)->toArray();
         }
 
+        /**
+         * @var DonationsListTable $table
+         */
+        $table = give(DonationsListTable::class);
+        $table->items($data);
+
         return new WP_REST_Response(
             [
-                'items' => $data,
+                'table' => $table->getTableDefinitions(),
+                'items' => $table->getItems(),
                 'totalItems' => $donationsCount,
                 'totalPages' => $totalPages
             ]
