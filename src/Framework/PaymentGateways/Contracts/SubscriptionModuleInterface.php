@@ -25,7 +25,7 @@ interface SubscriptionModuleInterface
     /**
      * Cancel subscription.
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @param Subscription $subscription
      *
@@ -36,7 +36,7 @@ interface SubscriptionModuleInterface
     /**
      * Returns whether the gateway supports syncing subscriptions.
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @return bool
      */
@@ -45,7 +45,7 @@ interface SubscriptionModuleInterface
     /**
      * Whether the gateway supports updating subscription amount.
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @return bool
      */
@@ -54,7 +54,7 @@ interface SubscriptionModuleInterface
     /**
      * Whether the gateway supports updating subscription method.
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @return bool
      */

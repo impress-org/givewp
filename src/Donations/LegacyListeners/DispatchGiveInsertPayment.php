@@ -9,7 +9,7 @@ use Give\PaymentGateways\DataTransferObjects\GiveInsertPaymentData;
 class DispatchGiveInsertPayment
 {
     /**
-     * @unreleased only run this listener if the legacy hook is used
+     * @since 2.20.0 only run this listener if the legacy hook is used
      * @since 2.19.6
      *
      * @param Donation $donation

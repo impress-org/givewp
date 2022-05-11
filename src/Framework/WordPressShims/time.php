@@ -6,7 +6,7 @@ if (!function_exists('wp_timezone_string')) {
     /**
      * Function is introduced in WP 5.3.
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @see https://developer.wordpress.org/reference/functions/wp_timezone_string
      */
@@ -35,7 +35,7 @@ if (!function_exists('wp_timezone')) {
     /**
      * Function is introduced in WP 5.3.
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @see https://developer.wordpress.org/reference/functions/wp_timezone
      */
@@ -49,7 +49,7 @@ if (!function_exists('current_datetime')) {
     /**
      * Function is introduced in WP 5.3.
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @see https://developer.wordpress.org/reference/functions/current_datetime
      */

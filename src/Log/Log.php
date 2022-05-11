@@ -11,7 +11,7 @@ use Give\Log\ValueObjects\LogType;
  *
  * The static facade intended to be the primary way of logging within GiveWP to make life easier.
  *
- * @unreleased add sensitive information redaction; store context as arrays for JSON serialization
+ * @since 2.20.0 add sensitive information redaction; store context as arrays for JSON serialization
  * @since 2.19.6 added debug
  * @since 2.10.0
  *
@@ -109,7 +109,7 @@ class Log
     /**
      * Takes the context array, serializes it, and redacts sensitive data.
      *
-     * @unreleased
+     * @since 2.20.0
      */
     private function serializeAndRedactContext(array $context): array
     {
@@ -166,7 +166,7 @@ class Log
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      *
      * Retrieves the redaction list after applying filters.
      */

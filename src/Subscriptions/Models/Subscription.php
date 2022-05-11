@@ -119,7 +119,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      * Returns the subscription amount the donor "intended", which means it is the amount without recovered fees. So if the
      * donor paid $100, but the donation was charged $105 with a $5 fee, this method will return $100.
      *
-     * @unreleased
+     * @since 2.20.0
      */
     public function intendedAmount(): Money
     {
@@ -129,7 +129,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased return mutated model instance
+     * @since 2.20.0 return mutated model instance
      * @since 2.19.6
      *
      * @throws Exception
@@ -144,7 +144,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased mutate model in repository and return void
+     * @since 2.20.0 mutate model in repository and return void
      * @since 2.19.6
      *
      * @return void
@@ -171,7 +171,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      *
      * @param bool $force Set to true to ignore the status of the subscription
      *

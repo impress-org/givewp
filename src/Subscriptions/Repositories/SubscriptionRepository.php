@@ -208,7 +208,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased consolidate meta deletion into a single query
+     * @since 2.20.0 consolidate meta deletion into a single query
      * @since 2.19.6
      *
      * @param Subscription $subscription

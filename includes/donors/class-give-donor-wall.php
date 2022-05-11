@@ -113,7 +113,7 @@ class Give_Donor_Wall {
 	public function render_shortcode( $atts ) {
 
         /**
-         * @unreleased Check nonce for AJAX request to prevent scrapping.
+         * @since 2.20.0 Check nonce for AJAX request to prevent scrapping.
          * @link https://github.com/impress-org/givewp/issues/6374
          */
         if( wp_doing_ajax() ) {
@@ -610,7 +610,7 @@ class Give_Donor_Wall {
 	}
 
     /**
-     * @unreleased
+     * @since 2.20.0
      *
      * @param string $string
      * @param null|callable $filter

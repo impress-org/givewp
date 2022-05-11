@@ -24,7 +24,7 @@ class DonationsAdminPage
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      */
     public function registerMenuItem()
     {
@@ -50,7 +50,7 @@ class DonationsAdminPage
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      */
     public function loadScripts()
     {
@@ -76,7 +76,7 @@ class DonationsAdminPage
 
     /**
      * Render admin page container
-     * @unreleased
+     * @since 2.20.0
      */
     public function render()
     {
@@ -89,7 +89,7 @@ class DonationsAdminPage
 
     /**
      * Helper function to determine if current page is Give Donors admin page
-     * @unreleased
+     * @since 2.20.0
      *
      * @return bool
      */
@@ -102,7 +102,7 @@ class DonationsAdminPage
     /**
      * Get first page of results from REST API to display as initial table data
      *
-     * @unreleased
+     * @since 2.20.0
      * @return array
      */
     private function preloadDonations()
@@ -128,7 +128,7 @@ class DonationsAdminPage
     /**
      * Retrieve a list of donation forms to populate the form filter dropdown
      *
-     * @unreleased
+     * @since 2.20.0
      * @return array
      */
     private function getForms()
