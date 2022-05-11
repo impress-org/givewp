@@ -165,7 +165,7 @@ class DonationNotesRepository
     {
         return $this->prepareQuery()
             ->where('comment_parent', $donationId)
-            ->orderBy("comment_ID", "DESC");
+            ->orderBy('comment_ID', 'DESC');
     }
 
     /**
@@ -184,7 +184,7 @@ class DonationNotesRepository
         }
 
         if (!$donationNote->donation) {
-            throw new InvalidArgumentException("Invalid donationId, Donation does not exist");
+            throw new InvalidArgumentException('Invalid donationId, Donation does not exist');
         }
     }
 
