@@ -31,7 +31,7 @@ class DonationSummaryTest extends Give_Unit_Test_Case
     {
         $donationId = Give_Helper_Payment::create_multilevel_payment(['result_type' => 'object']);
         $donation = Donation::find($donationId);
-        $donation->levelId = 2;
+        $donation->levelId = '2';
 
         $donation->save();
 
