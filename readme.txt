@@ -250,7 +250,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
-= 2.20.0: April 27th, 2022 =
+= 2.20.0: May 11th, 2022 =
 * New: Refreshed the donor and donation list screens in the admin
 * New: Significant improvements to the donor wall and form grid blocks
 * Enhancement: Optimized deleting a donation and all of its meta
