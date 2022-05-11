@@ -101,6 +101,9 @@ class FormData
      * @var DonorInfo
      */
     public $donorInfo;
+
+    /** @var bool */
+    public $anonymous;
     /**
      * This property is only for internal use. It will be removed in the future.
      * We will use this property to gracefully deprecate action and filter which exist in existing donation flow.
@@ -161,6 +164,10 @@ class FormData
             'postalCode' => $request['card_info']['card_zip'],
         ]);
 
+        $self->anonymous = isset($request['post_data']['give_anonymous_donation']) && (bool)absint(
+                $request['post_data']['give_anonymous_donation']
+            );
+
         return $self;
     }
 
@@ -188,7 +195,8 @@ class FormData
                 'address1' => $this->billingAddress->line1,
                 'address2' => $this->billingAddress->line2
             ]),
-            'levelId' => (int)$this->priceId
+            'levelId' => $this->priceId,
+            'anonymous' => $this->anonymous
         ]);
     }
 }

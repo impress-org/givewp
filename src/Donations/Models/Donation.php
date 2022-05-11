@@ -80,7 +80,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
         'subscriptionId' => ['int', 0],
         'billingAddress' => BillingAddress::class,
         'anonymous' => ['bool', false],
-        'levelId' => ['int', 0],
+        'levelId' => ['string', ''],
         'gatewayTransactionId' => 'string',
     ];
 

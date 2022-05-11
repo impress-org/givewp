@@ -3,7 +3,6 @@
 namespace unit\tests\Donations\Models;
 
 use Exception;
-use Give\Donations\Factories\DonationNoteFactory;
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
@@ -72,6 +71,8 @@ class TestDonation extends \Give_Unit_Test_Case
             'lastName' => 'Murray',
             'email' => 'billMurray@givewp.com',
             'formId' => 1,
+            'levelId' => 'custom',
+            'anonymous' => true
         ]);
 
         $donationFromDatabase = Donation::find($donation->id);
