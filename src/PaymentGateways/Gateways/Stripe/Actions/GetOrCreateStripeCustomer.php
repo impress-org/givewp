@@ -18,7 +18,7 @@ class GetOrCreateStripeCustomer
      * @return Give_Stripe_Customer
      * @throws StripeCustomerException
      */
-    public function __invoke(Donation $donation, $stripePaymentMethodId = '')
+    public function __invoke(Donation $donation, string $stripePaymentMethodId = ''): Give_Stripe_Customer
     {
         $giveStripeCustomer = new Give_Stripe_Customer($donation->email, $stripePaymentMethodId);
 
@@ -37,9 +37,7 @@ class GetOrCreateStripeCustomer
      */
     protected function saveStripeCustomerId(Donation $donation, string $stripeCustomerId)
     {
-        $donor = new \Give_Donor($donation->donorId);
-
-        $donor->update_meta(give_stripe_get_customer_key(), $stripeCustomerId);
+        give()->donor_meta->update_meta($donation->donorId, give_stripe_get_customer_key(), $stripeCustomerId);
 
         $donation->addNote(
             sprintf(__('Stripe Customer ID: %s', 'give'), $stripeCustomerId)
