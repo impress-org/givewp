@@ -44,13 +44,13 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     }
 
     /**
-     * @unreleased Change variable type to SubscriptionModule.
+     * @since 2.20.0 Change variable type to SubscriptionModule.
      * @var SubscriptionModule $subscriptionModule
      */
     public $subscriptionModule;
 
     /**
-     * @unreleased Change first argument type to SubscriptionModule abstract class.
+     * @since 2.20.0 Change first argument type to SubscriptionModule abstract class.
      * @since 2.18.0
      *
      * @param SubscriptionModule|null $subscriptionModule
@@ -311,7 +311,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      */
     public function supportsMethodRoute(string $method): bool
     {
@@ -323,7 +323,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      *
      * @param string $method
      *

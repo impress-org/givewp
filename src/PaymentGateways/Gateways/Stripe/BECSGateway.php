@@ -123,7 +123,7 @@ class BECSGateway extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      * @inerhitDoc
      * @throws Exception
      */

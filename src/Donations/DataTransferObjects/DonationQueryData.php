@@ -114,7 +114,7 @@ class DonationQueryData
     /**
      * Convert data from object to Donation
      *
-     * @unreleased update for new amount property, fee amount recovered, and exchange rate
+     * @since 2.20.0 update for new amount property, fee amount recovered, and exchange rate
      * @since 2.19.6
      *
      * @param object $donationQueryObject

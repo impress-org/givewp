@@ -11,7 +11,7 @@ use Give\Log\Log;
 /**
  * Removes logs that contain sensitive information.
  *
- * @unreleased
+ * @since 2.20.0
  */
 class RemoveSensitiveLogs extends Migration
 {

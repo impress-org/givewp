@@ -100,7 +100,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased mutate model and return void
+     * @since 2.20.0 mutate model and return void
      * @since 2.19.6
      *
      * @param Donor $donor
@@ -161,7 +161,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased return void
+     * @since 2.20.0 return void
      * @since 2.19.6
      *
      * @param Donor $donor
@@ -242,7 +242,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased consolidate meta deletion into a single query
+     * @since 2.20.0 consolidate meta deletion into a single query
      * @since 2.19.6
      *
      * @throws Exception
@@ -398,7 +398,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      * @param int $donorId
      * @return string|null
      */
@@ -422,7 +422,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      * @param int $donorId
      * @return string|null
      */
@@ -471,7 +471,7 @@ class DonorRepository
 
     /**
      * @param WP_REST_Request $request
-     * @unreleased
+     * @since 2.20.0
      *
      * @return array
      */
@@ -510,7 +510,7 @@ class DonorRepository
 
     /**
      * @param WP_REST_Request $request
-     * @unreleased
+     * @since 2.20.0
      *
      * @return int
      */
@@ -523,7 +523,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      * @return int
      */
     public function getDonorsCount()
@@ -534,7 +534,7 @@ class DonorRepository
     /**
      * @param QueryBuilder $builder
      * @param WP_REST_Request $request
-     * @unreleased
+     * @since 2.20.0
      *
      * @return QueryBuilder
      */

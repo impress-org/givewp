@@ -21,28 +21,28 @@ interface SubscriptionModuleInterface
     /**
      * Cancel subscription.
      *
-     * @unreleased
+     * @since 2.20.0
      */
     public function cancelSubscription(Subscription $subscription);
 
     /**
      * Returns whether the gateway supports syncing subscriptions.
      *
-     * @unreleased
+     * @since 2.20.0
      */
     public function canSyncSubscriptionWithPaymentGateway(): bool;
 
     /**
      * Whether the gateway supports updating subscription amount.
      *
-     * @unreleased
+     * @since 2.20.0
      */
     public function canUpdateSubscriptionAmount(): bool;
 
     /**
      * Whether the gateway supports updating subscription method.
      *
-     * @unreleased
+     * @since 2.20.0
      */
     public function canUpdateSubscriptionPaymentMethod(): bool;
 }

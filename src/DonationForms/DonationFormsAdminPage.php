@@ -41,7 +41,7 @@ class DonationFormsAdminPage
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      */
     public function highlightAllFormsMenuItem()
     {
@@ -88,7 +88,7 @@ class DonationFormsAdminPage
     /**
      * Get first page of results from REST API to display as initial table data
      *
-     * @unreleased
+     * @since 2.20.0
      * @return array
      */
     private function preloadDonationForms()
@@ -108,7 +108,7 @@ class DonationFormsAdminPage
 
     /**
      * Get a list of author user IDs and names
-     * @unreleased
+     * @since 2.20.0
      */
     public function getAuthors()
     {
@@ -134,7 +134,7 @@ class DonationFormsAdminPage
     /**
      * Display a button on the old donation forms table that switches to the React view
      *
-     * @unreleased
+     * @since 2.20.0
      */
     public function renderReactSwitch()
     {
@@ -171,7 +171,7 @@ class DonationFormsAdminPage
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      * @return string
      */
     public static function getUrl()

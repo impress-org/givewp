@@ -11,7 +11,7 @@ class ServiceProvider implements BaseServiceProvider
     /**
      * Autoload all the shim files in the same directory as this file.
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @inheritDoc
      */

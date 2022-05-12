@@ -9,7 +9,7 @@ use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
 use Give\Framework\PaymentGateways\Traits\HasRouteMethods;
 
 /**
- * @unreleased
+ * @since 2.20.0
  *
  * @template G
  */

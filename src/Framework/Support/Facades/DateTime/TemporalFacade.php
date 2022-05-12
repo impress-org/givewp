@@ -12,7 +12,7 @@ use DateTimeInterface;
 class TemporalFacade
 {
     /**
-     * @unreleased minor clean up and add types to signature
+     * @since 2.20.0 minor clean up and add types to signature
      * @since 2.19.6
      */
     public function toDateTime(string $date): DateTimeInterface
@@ -21,7 +21,7 @@ class TemporalFacade
     }
 
     /**
-     * @unreleased simplify and add types to signature
+     * @since 2.20.0 simplify and add types to signature
      * @since 2.19.6
      */
     public function getCurrentDateTime(): DateTimeInterface
@@ -54,7 +54,7 @@ class TemporalFacade
     /**
      * Immutably returns a new DateTime instance with the microseconds set to 0.
      *
-     * @unreleased
+     * @since 2.20.0
      */
     public function withoutMicroseconds(DateTimeInterface $dateTime)
     {
