@@ -116,7 +116,6 @@ class ListDonations extends Endpoint
 
         return new WP_REST_Response(
             [
-                'table' => $listTable->getTable(),
                 'items' => $listTable->getItems(),
                 'totalItems' => $donationsCount,
                 'totalPages' => $totalPages

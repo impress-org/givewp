@@ -66,6 +66,7 @@ class DonationsAdminPage
             'apiNonce' => $this->apiNonce,
             'preload' => $this->preloadDonations(),
             'forms' => $this->getForms(),
+            'table' => give(DonationsListTable::class)->getTable(),
             'adminUrl' => $this->adminUrl,
         ];
 
