@@ -108,15 +108,11 @@ trait Columns
      *
      * @unreleased
      * @param string $id
-     * @return Column|false
+     * @return Column|null
      */
     public function getColumnById(string $id)
     {
-        if (array_key_exists($id, $this->columns)) {
-            return $this->columns[$id];
-        }
-
-        return false;
+        return $this->columns[$id] ?? null;
     }
 
     /**
