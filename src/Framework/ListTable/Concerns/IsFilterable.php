@@ -51,7 +51,7 @@ trait IsFilterable
      * @unreleased
      * @return mixed
      */
-    public function applyFilters($value, array $row)
+    public function applyFilter($value, array $row)
     {
         if ($this->hasFilter()) {
             return call_user_func($this->columnFilter, $value, $row);

@@ -24,7 +24,7 @@ trait Items
         foreach ($items as $row) {
             foreach ($row as $name => $value) {
                 if ($column = $this->getColumnById($name)) {
-                    $row[$name] = $column->applyFilters($value, $row);
+                    $row[$name] = $column->applyFilter($value, $row);
                 }
             }
 
