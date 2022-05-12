@@ -4,7 +4,7 @@ namespace Give\PaymentGateways\Gateways\PayPalStandard\Actions;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\DonationSummary;
-use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
+use Give\PaymentGateways\DataTransferObjects\FormData;
 
 /**
  * This class create PayPal Standard payment gateway one time payment url on basis of donor donation query.
@@ -91,7 +91,7 @@ class CreatePayPalStandardPaymentURL
      */
     private function supportLegacyFilter(array $paypalPaymentArguments): array
     {
-        $formData = GatewayPaymentData::fromArray($_POST);
+        $formData = FormData::fromRequest($_POST);
 
         /**
          * Filter the PayPal Standard redirect args.
@@ -103,7 +103,7 @@ class CreatePayPalStandardPaymentURL
             [
                 $paypalPaymentArguments,
                 $paypalPaymentArguments['custom'],
-                $formData->legacyPaymentData
+                $formData->legacyDonationData
             ],
             '2.19.0'
         );
