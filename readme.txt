@@ -83,12 +83,13 @@ For new users, we suggest reviewing our [Getting Started Guide](https://go.givew
 
 If you are a GiveWP customer with an active license of any of our popular add-ons, we'd love to hear from you and support you via our [Priority Support channel](https://go.givewp.com/support).
 
-=== 💳 Accept Credit Card Donations ===
+=== 💳 Accept Credit Card Donations and More ===
 
 GiveWP comes with several payment gateway options:
 
 * **Stripe Donations** -- Our Stripe integration allows you to accept credit card donations on your website. There is a small 2% fee associated with these donations. Want no additional fees? Upgrade to our Stripe Premium add-on to start accepting [Stripe Donations]](https://go.givewp.com/addon-stripe).
 * **PayPal Donations** -- Allow worldwide donations with PayPal Donations. No additional fees applied.
+* **Venmo Donations** -- Give donors the option to pay through Venmo with their account balance or connected bank account. 
 * **Offline Donations** -- Enable your donors to send checks or physical donations with an offline gateway with instructions.
 * **Test Gateway** -- use the Test Gateway to see exactly how your donors will walk through the donation process.
 * **And many more Gateways** - View additional payment gateways on our website. These include Authorize.net, Bitpay, Square, Razorpay, Paytm, and more.
