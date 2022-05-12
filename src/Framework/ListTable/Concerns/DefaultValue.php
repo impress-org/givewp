@@ -10,7 +10,7 @@ trait DefaultValue
     /**
      * @var mixed
      */
-    protected $defaultValue;
+    private $defaultValue;
 
     /**
      * Set column default value
@@ -21,5 +21,14 @@ trait DefaultValue
     {
         $this->defaultValue = $value;
         return $this;
+    }
+
+    /**
+     * @unreleased
+     * @return mixed
+     */
+    public function getDefaultValue()
+    {
+        return $this->defaultValue;
     }
 }

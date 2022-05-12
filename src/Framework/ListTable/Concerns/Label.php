@@ -10,7 +10,7 @@ trait Label
     /**
      * @var string
      */
-    protected $label;
+    private $label;
 
     /**
      * Set column position
@@ -21,5 +21,13 @@ trait Label
     {
         $this->label = $label;
         return $this;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getLabel(): string
+    {
+        return $this->label;
     }
 }

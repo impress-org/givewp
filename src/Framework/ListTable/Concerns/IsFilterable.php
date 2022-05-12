@@ -15,7 +15,7 @@ trait IsFilterable
     /**
      * @var bool
      */
-    protected $filterable = false;
+    private $filterable = false;
 
     /**
      * Set is column filterable from frontend
@@ -58,5 +58,13 @@ trait IsFilterable
         }
 
         return $value;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function isFilterable(): bool
+    {
+        return $this->filterable;
     }
 }

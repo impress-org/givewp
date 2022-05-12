@@ -10,7 +10,7 @@ trait IsVisible
     /**
      * @var bool
      */
-    protected $visible = true;
+    private $visible = true;
 
     /**
      * Set is column visible on frontend
@@ -21,5 +21,13 @@ trait IsVisible
     {
         $this->visible = $visible;
         return $this;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function isVisible(): bool
+    {
+        return $this->visible;
     }
 }

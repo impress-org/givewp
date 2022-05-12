@@ -63,8 +63,17 @@ trait Columns
 
     /**
      * @unreleased
+     * @return Column[]
      */
     public function getColumns(): array
+    {
+        return $this->columns;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getColumnsArray(): array
     {
         return array_map(static function (Column $column) {
             return $column->toArray();

@@ -46,7 +46,7 @@ abstract class ListTable
     {
         return [
             'id' => $this->id(),
-            'columns' => $this->getColumns()
+            'columns' => $this->getColumnsArray()
         ];
     }
 }

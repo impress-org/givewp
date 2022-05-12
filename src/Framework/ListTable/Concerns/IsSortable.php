@@ -9,7 +9,7 @@ trait IsSortable
     /**
      * @var bool
      */
-    protected $sortable = false;
+    private $sortable = false;
 
     /**
      * Set is column sortable
@@ -20,5 +20,13 @@ trait IsSortable
     {
         $this->sortable = $sortable;
         return $this;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function isSortable(): bool
+    {
+        return $this->sortable;
     }
 }
