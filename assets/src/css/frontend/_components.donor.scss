@@ -29,6 +29,9 @@ $donor-space-double: $donor-space * 2;
 $donor-space-triple: $donor-space * 3;
 
 .give-donor {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 	border: 1px solid $give-card-border;
 	background: #fff;
 	color: $donor-color;
@@ -38,6 +41,10 @@ $donor-space-triple: $donor-space * 3;
     width:100%;
 
     .give-card-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
         padding: $donor-space $donor-space-and-three-quarters;
 
         /* [1] */
@@ -121,6 +128,7 @@ $donor-space-triple: $donor-space * 3;
 
         /* [3] */
         .give-donor-details {
+            flex-grow:1;
             display: flex;
             justify-content: space-between;
             align-items: center;
