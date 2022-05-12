@@ -63,7 +63,7 @@ class CreatePayPalStandardPaymentURL
         // Donations or regular transactions?
         $paypalPaymentArguments['cmd'] = give_get_paypal_button_type();
 
-        $paypalPaymentArguments = $this->supportLegacyFilter($paypalPaymentArguments);
+        $paypalPaymentArguments = $this->supportLegacyFilter($paypalPaymentArguments, $donation);
 
         /**
          * Filter the PayPal Standard redirect args.
@@ -88,7 +88,7 @@ class CreatePayPalStandardPaymentURL
     /**
      * @since 2.19.0
      */
-    private function supportLegacyFilter(array $paypalPaymentArguments): array
+    private function supportLegacyFilter(array $paypalPaymentArguments, Donation $donation): array
     {
         /**
          * Filter the PayPal Standard redirect args.
@@ -100,7 +100,14 @@ class CreatePayPalStandardPaymentURL
             [
                 $paypalPaymentArguments,
                 $paypalPaymentArguments['custom'],
-                give('LEGACY_DONATION_DATA')
+                [
+                    'price' => $donation->amount->formatToDecimal(),
+                    'purchase_key' => $donation->purchaseKey,
+                    'user_email' => $donation->email,
+                    'date' => $donation->createdAt->format('Y-m-d H:i:s'),
+                    'post_data' => give_clean($_POST),
+                    'gateway' => $donation->gatewayId,
+                ]
             ],
             '2.19.0'
         );

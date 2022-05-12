@@ -43,16 +43,7 @@ class LegacyPaymentGatewayAdapter
      */
     public function handleBeforeGateway(array $legacyDonationData, PaymentGatewayInterface $registeredGateway)
     {
-        // This constant is only for internal use. It will be removed in the future.
-        // We will use this property to gracefully deprecate legacy GiveWP action and filter which exist in existing donation flow.
-        give()->bind(
-            'LEGACY_DONATION_DATA',
-            static function () use ($legacyDonationData) {
-                return $legacyDonationData;
-            }
-        ); // storage
-
-        $formData = FormData::fromRequest($legacyDonationData);
+       $formData = FormData::fromRequest($legacyDonationData);
 
         $this->validateGatewayNonce($formData->gatewayNonce);
 
