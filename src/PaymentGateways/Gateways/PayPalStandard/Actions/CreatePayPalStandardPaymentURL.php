@@ -93,6 +93,7 @@ class CreatePayPalStandardPaymentURL
         /**
          * Filter the PayPal Standard redirect args.
          *
+         * @unreleased Create and pass legacy payment data to filter hook
          * @since 1.8
          */
         return apply_filters_deprecated(
