@@ -43,6 +43,15 @@ class LegacyPaymentGatewayAdapter
      */
     public function handleBeforeGateway(array $legacyDonationData, PaymentGatewayInterface $registeredGateway)
     {
+        // This constant is only for internal use. It will be removed in the future.
+        // We will use this property to gracefully deprecate legacy GiveWP action and filter which exist in existing donation flow.
+        give()->bind(
+            'LEGACY_DONATION_DATA',
+            static function () use ($legacyDonationData) {
+                return $legacyDonationData;
+            }
+        ); // storage
+
         $formData = FormData::fromRequest($legacyDonationData);
 
         $this->validateGatewayNonce($formData->gatewayNonce);
@@ -59,7 +68,7 @@ class LegacyPaymentGatewayAdapter
 
         $this->setSession($donation->id);
 
-        if (give_recurring_is_donation_recurring($formData->legacyDonationData)) {
+        if (give_recurring_is_donation_recurring($legacyDonationData)) {
             $subscriptionData = SubscriptionData::fromRequest($legacyDonationData);
 
             $subscription = Subscription::create([
@@ -127,10 +136,10 @@ class LegacyPaymentGatewayAdapter
     /**
      * @unreleased
      *
-     * @param  int|null  $userId
-     * @param  string  $donorEmail
-     * @param  string  $firstName
-     * @param  string  $lastName
+     * @param int|null $userId
+     * @param string $donorEmail
+     * @param string $firstName
+     * @param string $lastName
      *
      * @return Donor
      * @throws Exception

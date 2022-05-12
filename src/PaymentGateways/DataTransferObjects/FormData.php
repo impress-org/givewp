@@ -104,14 +104,6 @@ class FormData
 
     /** @var bool */
     public $anonymous;
-    /**
-     * This property is only for internal use. It will be removed in the future.
-     * We will use this property to gracefully deprecate action and filter which exist in existing donation flow.
-     *
-     * @deprecated
-     * @var array
-     */
-    public $legacyDonationData;
 
     /**
      * Convert data from request into DTO
@@ -122,7 +114,6 @@ class FormData
     {
         $self = new static();
 
-        $self->legacyDonationData = $request;
         $self->price = $request['price'];
         $self->date = $request['date'];
         $self->purchaseKey = $request['purchase_key'];
