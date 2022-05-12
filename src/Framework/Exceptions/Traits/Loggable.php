@@ -8,19 +8,15 @@ trait Loggable
      * Gets the Exception::getMessage() method
      *
      * @since 2.11.1
-     *
-     * @return string
      */
-    abstract public function getMessage();
+    abstract public function getMessage(): string;
 
     /**
      * Returns the human-readable log message
      *
      * @since 2.11.1
-     *
-     * @return string
      */
-    public function getLogMessage()
+    public function getLogMessage(): string
     {
         return $this->getMessage();
     }
@@ -32,7 +28,7 @@ trait Loggable
      *
      * @return array
      */
-    public function getLogContext()
+    public function getLogContext(): array
     {
         return [
             'category' => 'Uncaught Exception',
