@@ -113,23 +113,14 @@ $atts          = $args[2]; // Shortcode attributes.
                     </div>
                 <?php endif; ?>
                 <div class="give-donor-details">
-    <!--            --><?php //if ( true === $atts['show_form'] && isset( $donation['_give_payment_form_title'] ) ) : ?>
-    <!--                <div class="give-donor__form_title">-->
-    <!--                    <span>-->
-    <!--                    --><?php //echo esc_html( $donation['_give_payment_form_title'] ); ?>
-    <!--                    </span>-->
-    <!--                    <span class="give-donor__details_amount_donated">Amount Donated</span>-->
-    <!--                </div>-->
-    <!--            --><?php //endif; ?>
-
-    <!-- PlaceHolder / form title is not displaying -->
-                <div class="give-donor-details__wrapper">
-                    <span class="give-donor-details__form_title">
-                        Save The Planet
-                    </span>
-                    <span class="give-donor-details__amount_donated"> Amount Donated </span>
-                </div>
-<!--  End placeholder   -->
+                <?php if ( true === $atts['show_form'] && isset( $donation['_give_payment_form_title'] ) ) : ?>
+                    <div class="give-donor-details__wrapper">
+                        <span class="give-donor-details__form_title">
+                        <?php echo esc_html( $donation['_give_payment_form_title'] ); ?>
+                        </span>
+                        <span class="give-donor-details__amount_donated">Amount Donated</span>
+                    </div>
+                <?php endif; ?>
                 <?php if ( true === $atts['show_total'] ) : ?>
                     <span class="give-donor-details__total">
                             <?php echo esc_html( give_donation_amount( $donation['donation_id'], true ) ); ?>
@@ -145,7 +136,6 @@ $atts          = $args[2]; // Shortcode attributes.
                             <path d="M9.89333 8.89327L9.47999 9.39994C9.41333 9.47327 9.36666 9.61994 9.37333 9.71994L9.41333 10.3733C9.43999 10.7733 9.15333 10.9799 8.77999 10.8333L8.17333 10.5933C8.07999 10.5599 7.91999 10.5599 7.82666 10.5933L7.21999 10.8333C6.84666 10.9799 6.55999 10.7733 6.58666 10.3733L6.62666 9.71994C6.63333 9.61994 6.58666 9.47327 6.51999 9.39994L6.10666 8.89327C5.84666 8.5866 5.95999 8.2466 6.34666 8.1466L6.97999 7.9866C7.07999 7.95994 7.19999 7.8666 7.25333 7.77994L7.60666 7.23327C7.82666 6.89327 8.17333 6.89327 8.39333 7.23327L8.74666 7.77994C8.79999 7.8666 8.91999 7.95994 9.01999 7.9866L9.65333 8.1466C10.04 8.2466 10.1533 8.5866 9.89333 8.89327Z" fill="#15AE56"/>
                         </svg>
                     </span>
-<!--   Make Tribute Message Dynamic?        -->
                 <p class="give-donor-tribute__message"> <span> This was given in honor of </span> <span> Devin Walker </span></p>
             </div>
         </div>
