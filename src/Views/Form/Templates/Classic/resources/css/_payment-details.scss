@@ -261,6 +261,10 @@ $gatewayFontSize: 1rem;
         color: var(--give-primary-color);
     }
 
+    > #give_offline_payment_info >  p {
+        margin: 0;
+    }
+
     > .no-fields {
         p {
             margin-inline: auto;
