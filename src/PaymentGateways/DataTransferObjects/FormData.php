@@ -122,7 +122,7 @@ class FormData
         $self->postData = $request['post_data'];
         $self->formTitle = $request['post_data']['give-form-title'];
         $self->formId = (int)$request['post_data']['give-form-id'];
-        $self->priceId = isset($request['post_data']['give-price-id']) ? $request['post_data']['give-price-id'] : '';
+        $self->priceId = $request['post_data']['give-price-id'] ?? '';
         $self->formIdPrefix = $request['post_data']['give-form-id-prefix'];
         $self->currentUrl = $request['post_data']['give-current-url'];
         $self->formMinimum = $request['post_data']['give-form-minimum'];
