@@ -93,7 +93,7 @@ class MockStripe extends PaymentGateway
     /**
      * @return string
      */
-    public static function id()
+    public static function id(): string
     {
         return 'mock-stripe';
     }
@@ -101,7 +101,7 @@ class MockStripe extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getId()
+    public function getId(): string
     {
         return self::id();
     }
@@ -109,7 +109,7 @@ class MockStripe extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getName()
+    public function getName(): string
     {
         return 'Stripe Payment Method';
     }
@@ -117,7 +117,7 @@ class MockStripe extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getPaymentMethodLabel()
+    public function getPaymentMethodLabel(): string
     {
         return 'Credit Card';
     }
@@ -146,7 +146,7 @@ class MockPaypal extends PaymentGateway
     /**
      * @return string
      */
-    public static function id()
+    public static function id(): string
     {
         return 'mock-paypal';
     }
@@ -154,7 +154,7 @@ class MockPaypal extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getId()
+    public function getId(): string
     {
         return self::id();
     }
@@ -162,7 +162,7 @@ class MockPaypal extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getName()
+    public function getName(): string
     {
         return 'PayPal Payment Method';
     }
@@ -170,7 +170,7 @@ class MockPaypal extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getPaymentMethodLabel()
+    public function getPaymentMethodLabel(): string
     {
         return 'PayPal';
     }
