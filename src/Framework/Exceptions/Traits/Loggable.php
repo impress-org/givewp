@@ -9,7 +9,7 @@ trait Loggable
      *
      * @since 2.11.1
      */
-    abstract public function getMessage(): string;
+    abstract public function getMessage();
 
     /**
      * Returns the human-readable log message
