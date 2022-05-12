@@ -71,7 +71,7 @@ class GatewayRouteTestGateway extends PaymentGateway
 {
     public $routeMethods = ['gatewaySimpleRouteMethod'];
 
-    protected function gatewaySimpleRouteMethod($queryParams)
+    protected function gatewaySimpleRouteMethod($queryParams): string
     {
         return __CLASS__ . __FUNCTION__;
     }
@@ -81,22 +81,22 @@ class GatewayRouteTestGateway extends PaymentGateway
         return '';
     }
 
-    public static function id()
+    public static function id(): string
     {
         return 'GatewayRouteTestGateway';
     }
 
-    public function getId()
+    public function getId(): string
     {
         return self::id();
     }
 
-    public function getName()
+    public function getName(): string
     {
         return self::id();
     }
 
-    public function getPaymentMethodLabel()
+    public function getPaymentMethodLabel(): string
     {
         return self::id();
     }
@@ -127,12 +127,12 @@ class GatewayRouteTestGatewaySubscriptionModule extends SubscriptionModule
     ) {
     }
 
-    protected function handleSimpleRoute($queryParams)
+    protected function handleSimpleRoute($queryParams): string
     {
         return __CLASS__ . __FUNCTION__;
     }
 
-    protected function handleSecureRoute($queryParams)
+    protected function handleSecureRoute($queryParams): string
     {
         return __CLASS__ . __FUNCTION__;
     }
