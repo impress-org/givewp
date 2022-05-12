@@ -194,24 +194,6 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
-     *
-     * @throws Exception
-     */
-    public function addNote(string $message): DonationNote
-    {
-        $donationNote = new DonationNote([
-            'donationId' => $this->id,
-            'content' => $message
-        ]);
-
-        $donationNote->save();
-
-        return $donationNote;
-    }
-
-
-    /**
      * Returns the amount charged in the currency the GiveWP site is set to
      *
      * @since 2.20.0

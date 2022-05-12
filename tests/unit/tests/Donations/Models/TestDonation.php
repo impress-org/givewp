@@ -154,26 +154,6 @@ class TestDonation extends \Give_Unit_Test_Case
     /**
      * @unreleased
      */
-    public function testDonationShouldAddNote()
-    {
-        /** @var Donor $donor */
-        $donor = Donor::factory()->create();
-
-        $fakeNote = DonationNote::factory()->definition()['content'];
-
-        /** @var Donation $donation */
-        $donation = Donation::factory()->create(['donorId' => $donor->id]);
-        $donation->addNote($fakeNote);
-
-        $donationNotes = $donation->notes;
-
-        $this->assertCount(1, $donationNotes);
-        $this->assertEquals($fakeNote, $donationNotes[0]->content);
-    }
-
-    /**
-     * @unreleased
-     */
     public function testDonationShouldGetIntendedAmountInBaseCurrency()
     {
         // When a donation has a fee recovery amount

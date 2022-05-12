@@ -3,6 +3,8 @@
 namespace Give\PaymentGateways\Gateways\Stripe\Actions;
 
 use Give\Donations\Models\Donation;
+use Give\Donations\Models\DonationNote;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\DonationSummary;
 use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
@@ -18,12 +20,13 @@ class CreateCheckoutSession
      * @since 2.20.0 Update function to get input value to line_items[0][name]
      * @since 2.19.0
      *
-     * @param GatewayPaymentData $paymentData
-     * @param DonationSummary $donationSummary
-     * @param Give_Stripe_Customer $giveStripeCustomer
+     * @param  GatewayPaymentData  $paymentData
+     * @param  DonationSummary  $donationSummary
+     * @param  Give_Stripe_Customer  $giveStripeCustomer
      *
      * @return CheckoutSession
      * @throws InvalidPropertyName
+     * @throws Exception
      */
     public function __invoke(
         Donation $donation,
@@ -65,7 +68,11 @@ class CreateCheckoutSession
 
         $session = give(CheckoutSession::class)->create($session_args);
 
-        $donation->addNote('Stripe Checkout Session ID: ' . $session->id());
+        DonationNote::create([
+            'donationId' => $donation->id,
+            'content' => 'Stripe Checkout Session ID: ' . $session->id()
+        ]);
+
         $donation->gatewayTransactionId = $session->id();
         $donation->save();
 

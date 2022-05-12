@@ -3,6 +3,8 @@
 namespace Give\PaymentGateways\Gateways\Stripe\Actions;
 
 use Give\Donations\Models\Donation;
+use Give\Donations\Models\DonationNote;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\DonationSummary;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
@@ -28,6 +30,7 @@ class CreatePaymentIntent
      * @since 2.19.0
      *
      * @throws InvalidPropertyName
+     * @throws Exception
      */
     public function __invoke(
         Donation $donation,
@@ -63,12 +66,16 @@ class CreatePaymentIntent
 
         $intent = give(PaymentIntent::class)->create($intent_args);
 
-        $donation->addNote(
-            sprintf(__('Stripe Charge/Payment Intent ID: %s', 'give'), $intent->id())
-        );
-        $donation->addNote(
-            sprintf(__('Stripe Payment Intent Client Secret: %s', 'give'), $intent->clientSecret())
-        );
+        DonationNote::create([
+            'donationId' => $donation->id,
+            'content' => sprintf(__('Stripe Charge/Payment Intent ID: %s', 'give'), $intent->id())
+        ]);
+
+        DonationNote::create([
+            'donationId' => $donation->id,
+            'content' => sprintf(__('Stripe Payment Intent Client Secret: %s', 'give'), $intent->clientSecret())
+        ]);
+
         give_update_meta(
             $donation->id,
             '_give_stripe_payment_intent_client_secret',
@@ -76,9 +83,11 @@ class CreatePaymentIntent
         );
 
         if ('requires_action' === $intent->status()) {
-            $donation->addNote(
-                __('Stripe requires additional action to be fulfilled. Check your Stripe account.', 'give')
-            );
+            DonationNote::create([
+                'donationId' => $donation->id,
+                'content' => __('Stripe requires additional action to be fulfilled. Check your Stripe account.', 'give')
+            ]);
+
             give_update_meta(
                 $donation->id,
                 '_give_stripe_payment_intent_require_action_url',

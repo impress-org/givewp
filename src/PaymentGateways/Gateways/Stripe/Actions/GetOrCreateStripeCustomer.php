@@ -3,6 +3,8 @@
 namespace Give\PaymentGateways\Gateways\Stripe\Actions;
 
 use Give\Donations\Models\Donation;
+use Give\Donations\Models\DonationNote;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\PaymentGateways\Gateways\Stripe\Exceptions\StripeCustomerException;
 use Give_Stripe_Customer;
 
@@ -34,14 +36,16 @@ class GetOrCreateStripeCustomer
     /**
      * @unreleased Update function first argument type to Donation model
      * @since 2.19.0
+     * @throws Exception
      */
     protected function saveStripeCustomerId(Donation $donation, string $stripeCustomerId)
     {
         give()->donor_meta->update_meta($donation->donorId, give_stripe_get_customer_key(), $stripeCustomerId);
 
-        $donation->addNote(
-            sprintf(__('Stripe Customer ID: %s', 'give'), $stripeCustomerId)
-        );
+        DonationNote::create([
+            'donationId' => $donation->id,
+            'content' => sprintf(__('Stripe Customer ID: %s', 'give'), $stripeCustomerId)
+        ]);
 
         give_update_meta($donation->id, give_stripe_get_customer_key(), $stripeCustomerId);
     }
