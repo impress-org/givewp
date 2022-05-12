@@ -4,6 +4,7 @@ namespace Give\Donations\Endpoints;
 
 use Give\Donations\Controllers\DonationsRequestController;
 use Give\Donations\DataTransferObjects\DonationResponseData;
+use Give\Donations\DonationsListTable;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -66,6 +67,19 @@ class ListDonations extends Endpoint
                         'required' => false,
                         'sanitize_callback' => 'sanitize_text_field',
                     ],
+                    'sortColumn' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                    'sortDirection' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'enum' => [
+                            'asc',
+                            'desc'
+                        ],
+                    ],
                 ],
             ]
         );
@@ -89,9 +103,21 @@ class ListDonations extends Endpoint
             $data[] = DonationResponseData::fromObject($donation)->toArray();
         }
 
+        /**
+         * @var DonationsListTable $listTable
+         */
+        $listTable = give(DonationsListTable::class);
+        $listTable->items($data);
+
+        // Sort
+        if ($sortColumn = $request->get_param('sortColumn')) {
+            $listTable->sortItems($sortColumn, $request->get_param('sortDirection'));
+        }
+
         return new WP_REST_Response(
             [
-                'items' => $data,
+                'table' => $listTable->getTable(),
+                'items' => $listTable->getItems(),
                 'totalItems' => $donationsCount,
                 'totalPages' => $totalPages
             ]
