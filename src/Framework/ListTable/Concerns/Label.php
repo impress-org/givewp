@@ -10,24 +10,24 @@ trait Label
     /**
      * @var string
      */
-    private $label;
+    private $text;
 
     /**
-     * Set column position
+     * Set column text
      *
      * @unreleased
      */
-    public function label(string $label): self
+    public function text(string $text): self
     {
-        $this->label = $label;
+        $this->text = $text;
         return $this;
     }
 
     /**
      * @unreleased
      */
-    public function getLabel(): string
+    public function getText(): string
     {
-        return $this->label;
+        return $this->text;
     }
 }

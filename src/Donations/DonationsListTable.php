@@ -24,33 +24,33 @@ class DonationsListTable extends ListTable
     public function columns(): array
     {
         return [
-            Column::id('id')
-                ->label('ID')
+            Column::name('id')
+                ->text('ID')
                 ->sortable(true),
 
-            Column::id('amount')
-                ->label(__('Amount', 'give'))
+            Column::name('amount')
+                ->text(__('Amount', 'give'))
                 ->sortable(true),
 
-            Column::id('donationType')
-                ->label(__('Payment Type', 'give')),
+            Column::name('donationType')
+                ->text(__('Payment Type', 'give')),
 
-            Column::id('createdAt')
-                ->label(__('Date / Time', 'give'))
+            Column::name('createdAt')
+                ->text(__('Date / Time', 'give'))
                 ->sortable(true),
 
-            Column::id('name')
-                ->label(__('Donor Name', 'give')),
+            Column::name('name')
+                ->text(__('Donor Name', 'give')),
 
-            Column::id('formTitle')
-                ->label(__('Donation Form', 'give'))
+            Column::name('formTitle')
+                ->text(__('Donation Form', 'give'))
                 ->sortable(true),
 
-            Column::id('gateway')
-                ->label(__('Gateway', 'give')),
+            Column::name('gateway')
+                ->text(__('Gateway', 'give')),
 
-            Column::id('status')
-                ->label(__('Status', 'give'))
+            Column::name('status')
+                ->text(__('Status', 'give'))
         ];
     }
 }

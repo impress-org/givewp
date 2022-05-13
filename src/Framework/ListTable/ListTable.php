@@ -30,7 +30,7 @@ abstract class ListTable
     abstract public function id(): string;
 
     /**
-     * Register table columns
+     * Define table columns
      *
      * @unreleased
      * @return Column[]

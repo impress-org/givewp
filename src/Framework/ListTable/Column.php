@@ -25,14 +25,14 @@ class Column implements Arrayable
     /**
      * @var string
      */
-    protected $id;
+    protected $name;
 
     /**
      * @unreleased
      */
-    public function __construct(string $id)
+    public function __construct(string $name)
     {
-        $this->id = $id;
+        $this->name = $name;
     }
 
     /**
@@ -40,17 +40,17 @@ class Column implements Arrayable
      *
      * @unreleased
      */
-    public static function id(string $id): self
+    public static function name(string $name): self
     {
-        return new static($id);
+        return new static($name);
     }
 
     /**
      * @unreleased
      */
-    public function getId(): string
+    public function getName(): string
     {
-        return $this->id;
+        return $this->name;
     }
 
     /**
@@ -59,11 +59,11 @@ class Column implements Arrayable
     public function toArray(): array
     {
         return [
-            'id' => $this->id,
-            'label' => $this->label,
-            'visible' => $this->visible,
-            'sortable' => $this->sortable,
-            'filterable' => $this->filterable,
+            'name' => $this->getName(),
+            'text' => $this->getText(),
+            'visible' => $this->isVisible(),
+            'sortable' => $this->isSortable(),
+            'filterable' => $this->isFilterable(),
         ];
     }
 }

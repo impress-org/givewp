@@ -24,13 +24,13 @@ trait Columns
      */
     public function addColumn(Column $column)
     {
-        $id = $column->getId();
+        $columnName = $column->getName();
 
-        if (isset($this->columns[$id])) {
-            throw new ColumnIdCollisionException($id);
+        if (isset($this->columns[$columnName])) {
+            throw new ColumnIdCollisionException($columnName);
         }
 
-        $this->columns[$id] = $column;
+        $this->columns[$columnName] = $column;
     }
 
     /**
@@ -86,14 +86,14 @@ trait Columns
      * @unreleased
      * @throws ReferenceColumnNotFoundException
      */
-    public function addColumnBefore(string $columnId, Column $column)
+    public function addColumnBefore(string $columnName, Column $column)
     {
-        if (is_int($index = $this->getColumnIndexById($columnId))) {
+        if (is_int($index = $this->getColumnIndexByName($columnName))) {
             $this->insertAtIndex($index, $column);
             return;
         }
 
-        throw new ReferenceColumnNotFoundException($columnId);
+        throw new ReferenceColumnNotFoundException($columnName);
     }
 
     /**
@@ -102,26 +102,26 @@ trait Columns
      * @unreleased
      * @throws ReferenceColumnNotFoundException
      */
-    public function addColumnAfter(string $columnId, Column $column)
+    public function addColumnAfter(string $columnName, Column $column)
     {
-        if (is_int($index = $this->getColumnIndexById($columnId))) {
+        if (is_int($index = $this->getColumnIndexByName($columnName))) {
             $this->insertAtIndex($index + 1, $column);
             return;
         }
 
-        throw new ReferenceColumnNotFoundException($columnId);
+        throw new ReferenceColumnNotFoundException($columnName);
     }
 
     /**
      * Get registered column by column id
      *
      * @unreleased
-     * @param string $id
+     * @param string $name
      * @return Column|null
      */
-    public function getColumnById(string $id)
+    public function getColumnByName(string $name)
     {
-        return $this->columns[$id] ?? null;
+        return $this->columns[$name] ?? null;
     }
 
     /**
@@ -130,9 +130,9 @@ trait Columns
      * @unreleased
      * @return int|false
      */
-    public function getColumnIndexById(string $id)
+    public function getColumnIndexByName(string $columnName)
     {
-        return array_search($id, array_keys($this->columns), true);
+        return array_search($columnName, array_keys($this->columns), true);
     }
 
     /**
@@ -142,7 +142,7 @@ trait Columns
     {
         $this->columns = array_merge(
             array_splice($this->columns, 0, $index),
-            [$column->getId() => $column],
+            [$column->getName() => $column],
             $this->columns
         );
     }
