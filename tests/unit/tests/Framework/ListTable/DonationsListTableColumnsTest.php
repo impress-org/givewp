@@ -167,4 +167,63 @@ final class DonationsListTableColumnsTest extends TestCase
         $this->assertEquals(true, $column->isSortable());
         $this->assertEquals(true, $column->isFilterable());
     }
+
+    /**
+     * @return void
+     */
+    public function testItShouldSortItemsBasedOnColumnRowValue()
+    {
+        $items = [
+            [
+                'id' => 1,
+                'formTitle' => 'Donation Form 1',
+            ],
+            [
+                'id' => 2,
+                'formTitle' => 'Donation Form 2',
+            ]
+        ];
+
+        $listTable = give(DonationsListTable::class);
+
+        $listTable->items($items);
+        $listTable->sortItems('id', 'desc');
+
+        $listTableItems = $listTable->getItems();
+
+        $this->assertEquals('Donation Form 2', $listTableItems[0]['formTitle']);
+        $this->assertEquals('Donation Form 1', $listTableItems[1]['formTitle']);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItShouldFilterColumnRowValue()
+    {
+        $items = [
+            [
+                'id' => 1,
+                'formTitle' => 'Donation Form 1',
+            ],
+            [
+                'id' => 2,
+                'formTitle' => 'Donation Form 2',
+            ]
+        ];
+
+        $listTable = give(DonationsListTable::class);
+
+        $formTitleColumn = $listTable->getColumnByName('formTitle');
+
+        $formTitleColumn->filter(static function ($value, $row) {
+            return $value . ' updated';
+        });
+
+        $listTable->items($items);
+
+        $listTableItems = $listTable->getItems();
+
+        $this->assertEquals('Donation Form 1 updated', $listTableItems[0]['formTitle']);
+        $this->assertEquals('Donation Form 2 updated', $listTableItems[1]['formTitle']);
+    }
 }
