@@ -14,10 +14,8 @@ class RespondToBrowser implements GatewayCommand {
 
     /**
      * @since 2.18.0
-     *
-     * @param  array  $data
      */
-    public function __construct($data)
+    public function __construct(array $data)
     {
         $this->data = $data;
     }

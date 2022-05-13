@@ -4,8 +4,7 @@ namespace Give\Framework\PaymentGateways\Contracts;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
-use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
-use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
+use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Subscriptions\Models\Subscription;
 
 interface SubscriptionModuleInterface
@@ -15,21 +14,14 @@ interface SubscriptionModuleInterface
      *
      * @since 2.18.0
      *
-     * @param GatewayPaymentData $paymentData
-     * @param GatewaySubscriptionData $subscriptionData
-     *
-     * @return GatewayCommand
+     * @return GatewayCommand|RedirectOffsite
      */
-    public function createSubscription(GatewayPaymentData $paymentData, GatewaySubscriptionData $subscriptionData);
+    public function createSubscription(Donation $donation, Subscription $subscription);
 
     /**
      * Cancel subscription.
      *
      * @since 2.20.0
-     *
-     * @param Subscription $subscription
-     *
-     * @return void
      */
     public function cancelSubscription(Subscription $subscription);
 
@@ -37,26 +29,20 @@ interface SubscriptionModuleInterface
      * Returns whether the gateway supports syncing subscriptions.
      *
      * @since 2.20.0
-     *
-     * @return bool
      */
-    public function canSyncSubscriptionWithPaymentGateway();
+    public function canSyncSubscriptionWithPaymentGateway(): bool;
 
     /**
      * Whether the gateway supports updating subscription amount.
      *
      * @since 2.20.0
-     *
-     * @return bool
      */
-    public function canUpdateSubscriptionAmount();
+    public function canUpdateSubscriptionAmount(): bool;
 
     /**
      * Whether the gateway supports updating subscription method.
      *
      * @since 2.20.0
-     *
-     * @return bool
      */
-    public function canUpdateSubscriptionPaymentMethod();
+    public function canUpdateSubscriptionPaymentMethod(): bool;
 }

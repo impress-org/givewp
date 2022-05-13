@@ -66,7 +66,7 @@ class DonorRepository
      * @param int $userId
      * @return Donor|null
      */
-    public function getByWpUserId($userId)
+    public function getByWpUserId(int $userId)
     {
         // user_id can technically be 0 so make sure to return null
         if (!$userId) {

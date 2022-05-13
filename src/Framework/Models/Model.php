@@ -180,7 +180,7 @@ abstract class Model implements Arrayable
             throw new InvalidArgumentException("$key is not a valid property.");
         }
 
-        return isset($this->attributes[$key]) ? $this->attributes[$key] : null;
+        return $this->attributes[$key] ?? null;
     }
 
     /**

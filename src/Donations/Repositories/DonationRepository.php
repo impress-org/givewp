@@ -2,12 +2,12 @@
 
 namespace Give\Donations\Repositories;
 
-use Exception;
 use Give\Donations\Actions\GeneratePurchaseKey;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Framework\Database\DB;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
@@ -15,7 +15,6 @@ use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Call;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
-use Give\ValueObjects\Money;
 use WP_REST_Request;
 
 /**
@@ -24,6 +23,18 @@ use WP_REST_Request;
  */
 class DonationRepository
 {
+    /**
+     * @var DonationNotesRepository
+     */
+    public $notes;
+
+    /**
+     * @unreleased
+     */
+    public function __construct()
+    {
+        $this->notes = give(DonationNotesRepository::class);
+    }
 
     /**
      * @since 2.19.6
@@ -58,6 +69,19 @@ class DonationRepository
 
     /**
      * @since 2.19.6
+     *
+     * @param $donationId
+     *
+     * @return ModelQueryBuilder
+     */
+    public function queryById($donationId)
+    {
+        return $this->prepareQuery()
+            ->where('ID', $donationId);
+    }
+
+    /**
+     * @unreleased
      *
      * @param int $subscriptionId
      *
@@ -287,7 +311,10 @@ class DonationRepository
     private function getCoreDonationMetaForDatabase(Donation $donation)
     {
         $meta = [
-            DonationMetaKeys::AMOUNT => $donation->amount->formatToDecimal(),
+            DonationMetaKeys::AMOUNT => give_sanitize_amount_for_db(
+                $donation->amount->formatToDecimal(),
+                ['currency' => $donation->amount->getCurrency()]
+            ),
             DonationMetaKeys::CURRENCY => $donation->amount->getCurrency()->getCode(),
             DonationMetaKeys::EXCHANGE_RATE => $donation->exchangeRate,
             DonationMetaKeys::GATEWAY => $donation->gatewayId,
@@ -296,19 +323,18 @@ class DonationRepository
             DonationMetaKeys::LAST_NAME => $donation->lastName,
             DonationMetaKeys::EMAIL => $donation->email,
             DonationMetaKeys::FORM_ID => $donation->formId,
-            DonationMetaKeys::FORM_TITLE => isset($donation->formTitle) ? $donation->formTitle : $this->getFormTitle(
-                $donation->formId
-            ),
-            DonationMetaKeys::MODE => isset($donation->mode) ? $donation->mode->getValue(
-            ) : $this->getDefaultDonationMode()->getValue(),
-            DonationMetaKeys::PURCHASE_KEY => isset($donation->purchaseKey)
-                ? $donation->purchaseKey
-                : Call::invoke(
+            DonationMetaKeys::FORM_TITLE => $donation->formTitle ?? $this->getFormTitle($donation->formId),
+            DonationMetaKeys::MODE => isset($donation->mode) ?
+                $donation->mode->getValue() :
+                $this->getDefaultDonationMode()->getValue(),
+            DonationMetaKeys::PURCHASE_KEY => $donation->purchaseKey ?? Call::invoke(
                     GeneratePurchaseKey::class,
                     $donation->email
                 ),
-            DonationMetaKeys::DONOR_IP => isset($donation->donorIp) ? $donation->donorIp : give_get_ip(),
-            DonationMetaKeys::GATEWAY_TRANSACTION_ID => $donation->gatewayTransactionId
+            DonationMetaKeys::DONOR_IP => $donation->donorIp ?? give_get_ip(),
+            DonationMetaKeys::GATEWAY_TRANSACTION_ID => $donation->gatewayTransactionId,
+            DonationMetaKeys::LEVEL_ID => $donation->levelId,
+            DonationMetaKeys::ANONYMOUS => (int)$donation->anonymous
         ];
 
         if ($donation->feeAmountRecovered !== null) {
@@ -326,14 +352,6 @@ class DonationRepository
 
         if (isset($donation->subscriptionId)) {
             $meta[DonationMetaKeys::SUBSCRIPTION_ID] = $donation->subscriptionId;
-        }
-
-        if (isset($donation->anonymous)) {
-            $meta[DonationMetaKeys::ANONYMOUS] = $donation->anonymous;
-        }
-
-        if (isset($donation->levelId)) {
-            $meta[DonationMetaKeys::LEVEL_ID] = $donation->levelId;
         }
 
         return $meta;

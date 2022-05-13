@@ -2,7 +2,9 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe\Actions;
 
-use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
+use Give\Donations\Models\Donation;
+use Give\Donations\Models\DonationNote;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\PaymentGateways\Gateways\Stripe\Exceptions\StripeCustomerException;
 use Give_Stripe_Customer;
 
@@ -12,48 +14,39 @@ class GetOrCreateStripeCustomer
     /**
      * @since 2.20.0 add second param support to function.
      *             This param is optional because we use it only when donor subscribe for recurring donation.
+     * @unreleased Update function first argument type to Donation model
      * @since 2.19.0
-     *
-     * @param GatewayPaymentData $stripePaymentMethodId
-     * @param string $stripePaymentMethopdId
      *
      * @return Give_Stripe_Customer
      * @throws StripeCustomerException
      */
-    public function __invoke(GatewayPaymentData $paymentData, $stripePaymentMethodId = '')
+    public function __invoke(Donation $donation, string $stripePaymentMethodId = ''): Give_Stripe_Customer
     {
-        $giveStripeCustomer = new Give_Stripe_Customer($paymentData->donorInfo->email, $stripePaymentMethodId);
+        $giveStripeCustomer = new Give_Stripe_Customer($donation->email, $stripePaymentMethodId);
 
         if (!$giveStripeCustomer->get_id()) {
             throw new StripeCustomerException(__('Unable to find or create stripe customer object.', 'give'));
         }
 
-        $this->saveStripeCustomerId($paymentData->donationId, $giveStripeCustomer->get_id());
+        $this->saveStripeCustomerId($donation, $giveStripeCustomer->get_id());
 
         return $giveStripeCustomer;
     }
 
     /**
+     * @unreleased Update function first argument type to Donation model
      * @since 2.19.0
-     *
-     * @param int $donationId
-     * @param string $stripeCustomerId
-     *
-     * @return void
+     * @throws Exception
      */
-    protected function saveStripeCustomerId($donationId, $stripeCustomerId)
+    protected function saveStripeCustomerId(Donation $donation, string $stripeCustomerId)
     {
-        $donor = new \Give_Donor(
-            give_get_payment_donor_id($donationId)
-        );
+        give()->donor_meta->update_meta($donation->donorId, give_stripe_get_customer_key(), $stripeCustomerId);
 
-        $donor->update_meta(give_stripe_get_customer_key(), $stripeCustomerId);
+        DonationNote::create([
+            'donationId' => $donation->id,
+            'content' => sprintf(__('Stripe Customer ID: %s', 'give'), $stripeCustomerId)
+        ]);
 
-        give_insert_payment_note(
-            $donationId,
-            sprintf(__('Stripe Customer ID: %s', 'give'), $stripeCustomerId)
-        );
-
-        give_update_meta($donationId, give_stripe_get_customer_key(), $stripeCustomerId);
+        give_update_meta($donation->id, give_stripe_get_customer_key(), $stripeCustomerId);
     }
 }

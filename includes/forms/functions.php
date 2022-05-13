@@ -616,7 +616,7 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 	$prices     = give_get_variable_prices( $form_id );
 	$price_name = '';
 
-	if ( false === $prices ) {
+	if ( ! $prices ) {
 		return $price_name;
 	}
 
