@@ -3,9 +3,7 @@
 namespace Give\Revenue\Repositories;
 
 use Give\Framework\Database\DB;
-use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Log\Log;
 
 /**
  * Class Revenue
