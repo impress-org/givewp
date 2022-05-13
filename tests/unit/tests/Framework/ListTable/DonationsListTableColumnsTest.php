@@ -102,7 +102,7 @@ final class DonationsListTableColumnsTest extends TestCase
 
         $listTable = give(DonationsListTable::class);
 
-        $listTable->addColumnAfter(
+        $listTable->addColumnBefore(
             'nonExistingColumn',
             Column::name('customColumn')
         );
@@ -131,6 +131,8 @@ final class DonationsListTableColumnsTest extends TestCase
     public function testItShouldRemoveExistingColumn()
     {
         $listTable = give(DonationsListTable::class);
+
+        $this->assertInstanceOf(Column::class, $listTable->getColumnByName('id'));
 
         $listTable->removeColumn('id');
 
