@@ -77,7 +77,7 @@ trait Columns
     {
         return array_map(static function (Column $column) {
             return $column->toArray();
-        }, $this->columns);
+        }, array_values($this->columns));
     }
 
     /**
