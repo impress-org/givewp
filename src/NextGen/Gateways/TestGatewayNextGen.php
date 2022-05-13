@@ -18,7 +18,7 @@ class TestGatewayNextGen extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public static function id()
+    public static function id(): string
     {
         return 'test-gateway-next-gen';
     }
@@ -26,7 +26,7 @@ class TestGatewayNextGen extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getId()
+    public function getId(): string
     {
         return self::id();
     }
@@ -34,7 +34,7 @@ class TestGatewayNextGen extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getName()
+    public function getName(): string
     {
         return __('Test Gateway Next Gen', 'give');
     }
@@ -42,7 +42,7 @@ class TestGatewayNextGen extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getPaymentMethodLabel()
+    public function getPaymentMethodLabel(): string
     {
         return __('Test Gateway Next Gen', 'give');
     }
@@ -50,7 +50,7 @@ class TestGatewayNextGen extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getLegacyFormFieldMarkup($formId, $args)
+    public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
         if (FormUtils::isLegacyForm($formId)) {
             return false;
@@ -65,18 +65,18 @@ class TestGatewayNextGen extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function createPayment(GatewayPaymentData $paymentData)
+    public function createPayment(Donation $donation)
     {
-        $transactionId = "test-gateway-transaction-id-{$paymentData->donationId}";
+        $transactionId = "test-gateway-transaction-id-{$donation->id}";
 
-        give_update_payment_status($paymentData->donationId);
+        give_update_payment_status($donation->id);
 
-        give_set_payment_transaction_id($paymentData->donationId, $transactionId);
+        give_set_payment_transaction_id($donation->id, $transactionId);
 
         //return new PaymentComplete();
 
         return new RespondToBrowser([
-            'donationId' => $paymentData->donationId,
+            'donationId' => $donation->id,
             'redirectUrl' => give_get_success_page_uri(),
             'status' => "Complete"
         ]);

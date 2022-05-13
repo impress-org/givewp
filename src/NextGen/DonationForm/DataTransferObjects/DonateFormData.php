@@ -20,7 +20,7 @@ class DonateFormData extends FormData
      *
      * @return self
      */
-    public static function fromRequest(array $request)
+    public static function fromRequest(array $request): FormData
     {
         $self = new static();
 

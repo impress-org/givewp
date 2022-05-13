@@ -4,7 +4,7 @@ namespace Give\NextGen\DonationForm\Controllers;
 
 use Exception;
 use Give\Donors\Models\Donor;
-use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
+use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\PaymentGateways\DataTransferObjects\FormData;
 
 /**
@@ -18,13 +18,13 @@ class DonateController
      *
      * @unreleased
      *
-     * @param  FormData $formData
-     * @param  PaymentGatewayInterface  $registeredGateway
+     * @param  FormData  $formData
+     * @param  PaymentGateway  $registeredGateway
      *
      * @return void
      * @throws Exception
      */
-    public function donate(FormData $formData, $registeredGateway)
+    public function donate(FormData $formData, PaymentGateway $registeredGateway)
     {
         $donor = $this->getOrCreateDonor(
             $formData->donorInfo->wpUserId,
@@ -36,9 +36,7 @@ class DonateController
         $donation = $formData->toDonation($donor->id);
         $donation->save();
 
-        $gatewayPaymentData = $formData->toGatewayPaymentData($donation->id);
-
-        $registeredGateway->handleCreatePayment($gatewayPaymentData);
+        $registeredGateway->handleCreatePayment($donation);
     }
 
     /**
@@ -48,19 +46,24 @@ class DonateController
      * @param  string  $donorEmail
      * @param  string  $firstName
      * @param  string  $lastName
+     *
      * @return Donor
      * @throws Exception
      */
-    private function getOrCreateDonor($userId, $donorEmail, $firstName, $lastName)
-    {
+    private function getOrCreateDonor(
+        int $userId,
+        string $donorEmail,
+        string $firstName,
+        string $lastName
+    ): Donor {
         // first check if donor exists as a user
         $donor = Donor::whereUserId($userId);
 
         // If they exist as a donor & user then make sure they don't already own this email before adding to their additional emails list..
-//        if ($donor && !$donor->hasEmail($donorEmail)) {
-//            $donor->additionalEmails = array_merge($donor->additionalEmails, [$donorEmail]);
-//            $donor->save();
-//        }
+        if ($donor && !$donor->hasEmail($donorEmail)) {
+            $donor->additionalEmails = array_merge($donor->additionalEmails ?? [], [$donorEmail]);
+            $donor->save();
+        }
 
         // if donor is not a user than check for any donor matching this email
         if (!$donor) {
