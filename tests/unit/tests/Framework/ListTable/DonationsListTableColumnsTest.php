@@ -44,7 +44,7 @@ final class DonationsListTableColumnsTest extends TestCase
      */
     public function testAddingExistingColumnShouldThrowException()
     {
-        $this->expectException( ColumnIdCollisionException::class );
+        $this->expectException(ColumnIdCollisionException::class);
 
         $listTable = give(DonationsListTable::class);
 
@@ -101,7 +101,7 @@ final class DonationsListTableColumnsTest extends TestCase
      */
     public function testAddingColumnBeforeNoneExistingColumnShouldThrowException()
     {
-        $this->expectException( ReferenceColumnNotFoundException::class );
+        $this->expectException(ReferenceColumnNotFoundException::class);
 
         $listTable = give(DonationsListTable::class);
 
@@ -117,7 +117,7 @@ final class DonationsListTableColumnsTest extends TestCase
      */
     public function testAddingColumnAfterNoneExistingColumnShouldThrowException()
     {
-        $this->expectException( ReferenceColumnNotFoundException::class );
+        $this->expectException(ReferenceColumnNotFoundException::class);
 
         $listTable = give(DonationsListTable::class);
 
