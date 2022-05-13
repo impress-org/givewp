@@ -111,6 +111,7 @@ $donor-space-triple: $donor-space * 3;
                 color: $donor-color;
                 font-size: 1rem;
                 font-style: italic;
+                margin: 0;
             }
 
             .give-donor-content__excerpt .give-donor-content__read-more {
@@ -128,7 +129,7 @@ $donor-space-triple: $donor-space * 3;
 
         /* [3] */
         .give-donor-details {
-            flex-grow:1;
+            flex-grow: 1;
             display: flex;
             justify-content: space-between;
             align-items: center;
