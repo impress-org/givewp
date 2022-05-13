@@ -42,7 +42,7 @@ final class DonationsListTableColumnsTest extends TestCase
      * @return void
      * @throws ColumnIdCollisionException
      */
-    public function testAddingExistingColumnShouldThrowException()
+    public function testAddingColumnWithExistingNameShouldThrowException()
     {
         $this->expectException(ColumnIdCollisionException::class);
 
