@@ -10,7 +10,7 @@ class GetOrCreateStripeCustomer
 {
 
     /**
-     * @unreleased add second param support to function.
+     * @since 2.20.0 add second param support to function.
      *             This param is optional because we use it only when donor subscribe for recurring donation.
      * @since 2.19.0
      *

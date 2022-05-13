@@ -11,7 +11,7 @@ use Give\Framework\Support\Facades\Str;
 abstract class Enum extends \MyCLabs\Enum\Enum
 {
     /**
-     * @unreleased
+     * @since 2.20.0
      *
      * Adds support for is{Value} methods. So if an Enum has an ACTIVE value, then an isActive() instance method is
      * automatically available.

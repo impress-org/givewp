@@ -72,7 +72,7 @@ interface PaymentGatewayInterface extends SubscriptionModuleInterface
     public function createPayment(GatewayPaymentData $paymentData);
 
     /**
-     * @unreleased
+     * @since 2.20.0
      *
      * @param Donation $donation
      *

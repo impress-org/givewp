@@ -565,6 +565,22 @@ $give_updates = Give_Updates::get_instance();
 				Table::prefixTableName( 'give_revenue' )
 			);
 
+            $isMigrationTableExist = Table::tableExists(Table::prefixTableName('give_migrations'));
+            $db_table_list .= sprintf(
+                '<li><mark class="%1$s"><span class="dashicons dashicons-%2$s"></mark> %3$s</li>',
+                $isMigrationTableExist ? 'yes' : 'error',
+                $isMigrationTableExist ? 'yes' : 'no-alt',
+                Table::prefixTableName('give_migrations')
+            );
+
+            $isLogTableExist = Table::tableExists(Table::prefixTableName('give_log'));
+            $db_table_list .= sprintf(
+                '<li><mark class="%1$s"><span class="dashicons dashicons-%2$s"></mark> %3$s</li>',
+                $isLogTableExist ? 'yes' : 'error',
+                $isLogTableExist ? 'yes' : 'no-alt',
+                Table::prefixTableName('give_log')
+            );
+
 			echo "<ul>{$db_table_list}</ul>";
 			?>
 		</td>

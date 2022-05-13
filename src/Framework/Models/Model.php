@@ -51,7 +51,7 @@ abstract class Model implements Arrayable
     /**
      * Create a new model instance.
      *
-     * @unreleased add support for property defaults
+     * @since 2.20.0 add support for property defaults
      * @since 2.19.6
      *
      * @param array $attributes
@@ -270,7 +270,7 @@ abstract class Model implements Arrayable
     /**
      * Get the default for a property if one is provided, otherwise default to null
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @param $key
      *
@@ -286,7 +286,7 @@ abstract class Model implements Arrayable
     /**
      * Returns the defaults for all the properties. If a default is omitted it defaults to null.
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @return array
      */
@@ -376,7 +376,7 @@ abstract class Model implements Arrayable
     }
 
     /**
-     * @unreleased cache the relations after first load
+     * @since 2.20.0 cache the relations after first load
      * @since 2.19.6
      *
      * @param $key
@@ -413,7 +413,7 @@ abstract class Model implements Arrayable
     /**
      * Checks whether a relationship has already been loaded.
      *
-     * @unreleased
+     * @since 2.20.0
      */
     protected function hasCachedRelationship(string $key): bool
     {
