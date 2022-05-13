@@ -47,7 +47,6 @@ class DatabaseQueryException extends Exception
     {
         return [
             'category' => 'Uncaught database exception',
-            'Exception' => $this,
             'Query Errors' => $this->queryErrors,
         ];
     }
