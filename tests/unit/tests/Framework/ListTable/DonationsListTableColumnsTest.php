@@ -33,9 +33,6 @@ final class DonationsListTableColumnsTest extends TestCase
         $customColumn = $listTable->getColumnByName('custom');
 
         $this->assertInstanceOf(Column::class, $customColumn);
-
-        $this->assertEquals('custom', $customColumn->getName());
-        $this->assertEquals('custom column text', $customColumn->getText());
     }
 
     /**
@@ -99,7 +96,7 @@ final class DonationsListTableColumnsTest extends TestCase
      * @return void
      * @throws ReferenceColumnNotFoundException
      */
-    public function testAddingColumnBeforeNoneExistingColumnShouldThrowException()
+    public function testAddingColumnBeforeNonExistentColumnShouldThrowException()
     {
         $this->expectException(ReferenceColumnNotFoundException::class);
 
@@ -115,7 +112,7 @@ final class DonationsListTableColumnsTest extends TestCase
      * @return void
      * @throws ReferenceColumnNotFoundException
      */
-    public function testAddingColumnAfterNoneExistingColumnShouldThrowException()
+    public function testAddingColumnAfterNonExistentColumnShouldThrowException()
     {
         $this->expectException(ReferenceColumnNotFoundException::class);
 
@@ -138,5 +135,34 @@ final class DonationsListTableColumnsTest extends TestCase
         $listTable->removeColumn('id');
 
         $this->assertEquals(null, $listTable->getColumnByName('id'));
+    }
+
+    /**
+     * @return void
+     * @throws ColumnIdCollisionException
+     */
+    public function testCustomColumnDefinedProperties()
+    {
+        $listTable = give(DonationsListTable::class);
+
+        $listTable->addColumn(
+            Column::name('test')
+                ->text('Test Column')
+                ->visible(true)
+                ->sortable(true)
+                ->filterable(true)
+                ->defaultValue('test value')
+        );
+
+        $column = $listTable->getColumnByName('test');
+
+        $this->assertInstanceOf(Column::class, $column);
+
+        $this->assertEquals('test', $column->getName());
+        $this->assertEquals('Test Column', $column->getText());
+        $this->assertEquals('test value', $column->getDefaultValue());
+        $this->assertEquals(true, $column->isVisible());
+        $this->assertEquals(true, $column->isSortable());
+        $this->assertEquals(true, $column->isFilterable());
     }
 }
