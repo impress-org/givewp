@@ -142,7 +142,7 @@ $atts          = $args[2]; // Shortcode attributes.
                         <?php
                         $honoree_first_name = $donation['_give_tributes_first_name'];
                         $honoree_last_name = $donation['_give_tributes_last_name'];
-                        $honoree_full_name = trim($honoree_first_name  . " " . $honoree_last_name [0] . "." );
+                        $honoree_full_name = trim($honoree_first_name  . " " . strtoupper($honoree_last_name [0]) . "." );
 
                         echo esc_html( $honoree_full_name ) ?>
                     </span>
