@@ -23,14 +23,14 @@ $show_bar            = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'
 /**
  * This filter will be used to convert the income amounts to different currencies.
  *
- * @since 2.5.4
+ * @since TBD
  *
  * @param array $stats               The income and goal values for this form goal.
  * @param int   $form_id             Donation Form ID.
  * @param array $goal_progress_stats The full goal progress stats.
  * @param array $args                The full list of shortcode arguments passed.
  */
-$income_amounts = apply_filters(
+$shortcode_stats = apply_filters(
     'give_goal_shortcode_stats',
     array(
         'income' => $form->get_earnings(),
@@ -41,8 +41,8 @@ $income_amounts = apply_filters(
     $args
 );
 
-$income = $income_amounts['income'];
-$goal   = $income_amounts['goal'];
+$income = $shortcode_stats['income'];
+$goal   = $shortcode_stats['goal'];
 
 switch ( $goal_format ) {
 
