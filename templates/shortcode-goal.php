@@ -21,7 +21,7 @@ $show_text           = isset( $args['show_text'] ) ? filter_var( $args['show_tex
 $show_bar            = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
 
 /**
- * This filter will be used to convert the income amounts to different currencies.
+ * Allow filtering the goal stats used for this shortcode context.
  *
  * @since TBD
  *
