@@ -20,8 +20,29 @@ $color               = give_get_meta( $form_id, '_give_goal_color', true );
 $show_text           = isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
 $show_bar            = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
 
-$income = $form->get_earnings();
-$goal   = $goal_progress_stats['raw_goal'];
+/**
+ * This filter will be used to convert the income amounts to different currencies.
+ *
+ * @since 2.5.4
+ *
+ * @param array $stats               The income and goal values for this form goal.
+ * @param int   $form_id             Donation Form ID.
+ * @param array $goal_progress_stats The full goal progress stats.
+ * @param array $args                The full list of shortcode arguments passed.
+ */
+$income_amounts = apply_filters(
+    'give_goal_shortcode_stats',
+    array(
+        'income' => $form->get_earnings(),
+        'goal'   => $goal_progress_stats['raw_goal'],
+    ),
+    $form_id,
+    $goal_progress_stats,
+    $args
+);
+
+$income = $income_amounts['income'];
+$goal   = $income_amounts['goal'];
 
 switch ( $goal_format ) {
 
