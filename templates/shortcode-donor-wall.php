@@ -17,8 +17,8 @@ $atts          = $args[2]; // Shortcode attributes.
 
 
 <div class="give-grid__item">
-    <div class="give-donor">
-        <div class="give-card-container">
+    <div class="give-donor give-card">
+        <div class="give-donor-container">
             <div class="give-donor-header">
                 <?php
                 if ( true === $atts['show_avatar'] ) {
@@ -31,7 +31,7 @@ $atts          = $args[2]; // Shortcode attributes.
                     );
 
                     $donor_avatar = sprintf(
-                        '%2$s<p class="give-donor-header__name_initial">%1$s</p>',
+                        '%2$s<p class="give-donor-header__image__name_initial">%1$s</p>',
                         $donation['name_initial'],
                         $anonymous_donor_img
                     );
