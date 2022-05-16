@@ -28,6 +28,7 @@ $donor-space-and-three-quarters: $donor-space * 1.75;
 $donor-space-double: $donor-space * 2;
 $donor-space-triple: $donor-space * 3;
 
+
 .give-donor {
     display: flex;
     flex-direction: column;
@@ -57,7 +58,6 @@ $donor-space-triple: $donor-space * 3;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px;
 
     &__image {
         display: flex;
@@ -110,6 +110,7 @@ $donor-space-triple: $donor-space * 3;
     font-weight: 400;
     letter-spacing: 0;
     text-align: left;
+    margin: 10px 0;
 
     p {
         width: 100%;
@@ -138,8 +139,8 @@ $donor-space-triple: $donor-space * 3;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 20px 0;
     overflow: hidden;
+    margin: 10px 0;
 
 
     &__wrapper {
@@ -148,7 +149,7 @@ $donor-space-triple: $donor-space * 3;
 
 
         span:first-child {
-            color: #00160A;
+            color: $donor-color;
             font-size: 1.25rem;
             font-weight: 500;
             letter-spacing: 0;
@@ -156,7 +157,7 @@ $donor-space-triple: $donor-space * 3;
         }
 
         span:last-child {
-            color: #00160A;
+            color: $donor-color;
             font-size: .875rem;
             font-weight: 400;
             letter-spacing: 0;
@@ -182,6 +183,7 @@ $donor-space-triple: $donor-space * 3;
     margin-bottom: 18px;
     background: #DEEAE3;
 
+
     span {
         svg {
             display: block;
@@ -194,6 +196,8 @@ $donor-space-triple: $donor-space * 3;
     &__message {
         margin: 0 0 0 16px;
         font-size: .9rem;
+        color: $donor-color;
+
 
         span:last-child {
             font-weight: 600;
@@ -206,3 +210,5 @@ $donor-space-triple: $donor-space * 3;
 		margin-bottom: 0;
 	}
 }
+
+//*{ border:1px solid grey;}
