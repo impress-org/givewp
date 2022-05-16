@@ -9,7 +9,7 @@ trait IsSortable
     /**
      * @var bool
      */
-    private $sortable = false;
+    private $sortable = true;
 
     /**
      * Set is column sortable
