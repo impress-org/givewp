@@ -2,12 +2,12 @@
 
 namespace Give\Donations\Repositories;
 
-use Exception;
 use Give\Donations\Actions\GeneratePurchaseKey;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Framework\Database\DB;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
@@ -15,14 +15,26 @@ use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Call;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
-use Give\ValueObjects\Money;
+use WP_REST_Request;
 
 /**
- * @unreleased update amount type, fee recovered, and exchange rate
+ * @since 2.20.0 update amount type, fee recovered, and exchange rate
  * @since 2.19.6
  */
 class DonationRepository
 {
+    /**
+     * @var DonationNotesRepository
+     */
+    public $notes;
+
+    /**
+     * @unreleased
+     */
+    public function __construct()
+    {
+        $this->notes = give(DonationNotesRepository::class);
+    }
 
     /**
      * @since 2.19.6
@@ -56,10 +68,25 @@ class DonationRepository
     }
 
     /**
+     * @since 2.19.6
+     *
+     * @param $donationId
+     *
+     * @return ModelQueryBuilder
+     */
+    public function queryById($donationId)
+    {
+        return $this->prepareQuery()
+            ->where('ID', $donationId);
+    }
+
+    /**
+     * @since 2.19.6
+     *
      * @param int $subscriptionId
      *
      * @return Donation[]|null
-     * @since 2.19.6
+     * 
      *
      */
     public function getBySubscriptionId(int $subscriptionId)
@@ -114,12 +141,12 @@ class DonationRepository
     }
 
     /**
-     * @unreleased mutate model and return void
+     * @since 2.20.0 mutate model and return void
+     * @since 2.19.6
      * @param Donation $donation
      *
      * @return void
      * @throws Exception|InvalidArgumentException
-     * @since 2.19.6
      *
      */
     public function insert(Donation $donation)
@@ -187,12 +214,13 @@ class DonationRepository
     }
 
     /**
-     * @unreleased return void
+     * @since 2.20.0 return void
+     * @since 2.19.6
+     *
      * @param Donation $donation
      *
      * @return void
      * @throws Exception|InvalidArgumentException
-     * @since 2.19.6
      *
      */
     public function update(Donation $donation)
@@ -238,12 +266,12 @@ class DonationRepository
     }
 
     /**
-     * @unreleased consolidate meta deletion into a single query
+     * @since 2.20.0 consolidate meta deletion into a single query
+     * @since 2.19.6
      * @param Donation $donation
      *
      * @return bool
      * @throws Exception
-     * @since 2.19.6
      *
      */
     public function delete(Donation $donation): bool
@@ -276,13 +304,16 @@ class DonationRepository
     }
 
     /**
-     * @unreleased update amount to use new type, and add currency and exchange rate
+     * @since 2.20.0 update amount to use new type, and add currency and exchange rate
      * @since 2.19.6
      */
     private function getCoreDonationMetaForDatabase(Donation $donation): array
     {
         $meta = [
-            DonationMetaKeys::AMOUNT => $donation->amount->formatToDecimal(),
+            DonationMetaKeys::AMOUNT => give_sanitize_amount_for_db(
+                $donation->amount->formatToDecimal(),
+                ['currency' => $donation->amount->getCurrency()]
+            ),
             DonationMetaKeys::CURRENCY => $donation->amount->getCurrency()->getCode(),
             DonationMetaKeys::EXCHANGE_RATE => $donation->exchangeRate,
             DonationMetaKeys::GATEWAY => $donation->gatewayId,
@@ -292,9 +323,17 @@ class DonationRepository
             DonationMetaKeys::EMAIL => $donation->email,
             DonationMetaKeys::FORM_ID => $donation->formId,
             DonationMetaKeys::FORM_TITLE => $donation->formTitle ?? $this->getFormTitle($donation->formId),
-            DonationMetaKeys::MODE => isset($donation->mode) ? $donation->mode->getValue() : $this->getDefaultDonationMode()->getValue(),
-            DonationMetaKeys::PURCHASE_KEY => $donation->purchaseKey ?? Call::invoke(GeneratePurchaseKey::class, $donation->email),
+            DonationMetaKeys::MODE => isset($donation->mode) ?
+                $donation->mode->getValue() :
+                $this->getDefaultDonationMode()->getValue(),
+            DonationMetaKeys::PURCHASE_KEY => $donation->purchaseKey ?? Call::invoke(
+                    GeneratePurchaseKey::class,
+                    $donation->email
+                ),
             DonationMetaKeys::DONOR_IP => $donation->donorIp ?? give_get_ip(),
+            DonationMetaKeys::GATEWAY_TRANSACTION_ID => $donation->gatewayTransactionId,
+            DonationMetaKeys::LEVEL_ID => $donation->levelId,
+            DonationMetaKeys::ANONYMOUS => (int)$donation->anonymous
         ];
 
         if ($donation->feeAmountRecovered !== null) {
@@ -312,14 +351,6 @@ class DonationRepository
 
         if (isset($donation->subscriptionId)) {
             $meta[DonationMetaKeys::SUBSCRIPTION_ID] = $donation->subscriptionId;
-        }
-
-        if (isset($donation->anonymous)) {
-            $meta[DonationMetaKeys::ANONYMOUS] = $donation->anonymous;
-        }
-
-        if (isset($donation->levelId)) {
-            $meta[DonationMetaKeys::LEVEL_ID] = $donation->levelId;
         }
 
         return $meta;

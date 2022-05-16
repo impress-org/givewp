@@ -64,7 +64,7 @@ class DonorRepository
      * @param int $userId
      * @return Donor|null
      */
-    public function getByWpUserId($userId)
+    public function getByWpUserId(int $userId)
     {
         // user_id can technically be 0 so make sure to return null
         if (!$userId) {
@@ -98,7 +98,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased mutate model and return void
+     * @since 2.20.0 mutate model and return void
      * @since 2.19.6
      *
      * @param Donor $donor
@@ -159,7 +159,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased return void
+     * @since 2.20.0 return void
      * @since 2.19.6
      *
      * @param Donor $donor
@@ -240,7 +240,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased consolidate meta deletion into a single query
+     * @since 2.20.0 consolidate meta deletion into a single query
      * @since 2.19.6
      *
      * @throws Exception
@@ -396,7 +396,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      * @param int $donorId
      * @return string|null
      */
@@ -420,7 +420,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      * @param int $donorId
      * @return string|null
      */
@@ -468,10 +468,10 @@ class DonorRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      * @return int
      */
-    public function getDonorsCount(): int
+    public function getDonorsCount()
     {
         return DB::table('give_donors')->count();
     }

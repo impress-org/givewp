@@ -54,7 +54,7 @@ class DonorQueryData
     /**
      * Convert data from donor object to Donor Model
      *
-     * @unreleased add donor prefix property
+     * @since 2.20.0 add donor prefix property
      * @since 2.19.6
      *
      * @return self

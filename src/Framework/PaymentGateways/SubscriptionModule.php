@@ -9,7 +9,7 @@ use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
 use Give\Framework\PaymentGateways\Traits\HasRouteMethods;
 
 /**
- * @unreleased
+ * @since 2.20.0
  *
  * @template G
  */
@@ -33,7 +33,7 @@ abstract class SubscriptionModule implements SubscriptionModuleInterface
     /**
      * @inheritDoc
      */
-    public function canSyncSubscriptionWithPaymentGateway()
+    public function canSyncSubscriptionWithPaymentGateway(): bool
     {
         return $this instanceof SubscriptionTransactionsSynchronizable;
     }
@@ -41,7 +41,7 @@ abstract class SubscriptionModule implements SubscriptionModuleInterface
     /**
      * @inheritDoc
      */
-    public function canUpdateSubscriptionAmount()
+    public function canUpdateSubscriptionAmount(): bool
     {
         return $this instanceof SubscriptionAmountEditable;
     }
@@ -49,7 +49,7 @@ abstract class SubscriptionModule implements SubscriptionModuleInterface
     /**
      * @inheritDoc
      */
-    public function canUpdateSubscriptionPaymentMethod()
+    public function canUpdateSubscriptionPaymentMethod(): bool
     {
         return $this instanceof SubscriptionPaymentMethodEditable;
     }

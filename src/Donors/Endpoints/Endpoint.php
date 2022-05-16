@@ -15,7 +15,7 @@ abstract class Endpoint implements RestRoute
 
     /**
      * @param  string  $value
-     * @unreleased
+     * @since 2.20.0
      *
      * @return bool
      */
@@ -28,7 +28,7 @@ abstract class Endpoint implements RestRoute
      * @param string $param
      * @param WP_REST_Request $request
      * @param string $key
-     * @unreleased
+     * @since 2.20.0
      *
      * @return bool
      */
@@ -50,7 +50,7 @@ abstract class Endpoint implements RestRoute
 
     /**
      * Check user permissions
-     * @unreleased
+     * @since 2.20.0
      *
      * @return bool|WP_Error
      */
@@ -69,7 +69,7 @@ abstract class Endpoint implements RestRoute
 
     /**
      * Sets up the proper HTTP status code for authorization.
-     * @unreleased
+     * @since 2.20.0
      *
      * @return int
      */

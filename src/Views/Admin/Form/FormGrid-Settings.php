@@ -1,16 +1,10 @@
 <div class="form_grid_options_wrap inner-panel">
     <div class="form-template-introduction">
-        <p>
-            <?php _e('What is the Form Grid?', 'give'); ?>
-        </p>
-        <p class="give-field-description form-template-description">
-            <?php _e('The GiveWP Form Grid provides a way to add a grid layout of multiple forms into posts and pages using either a block or shortcode.', 'give'); ?>
-        </p>
-
         <div class="form-template-notice">
             <img src="<?= esc_url(GIVE_PLUGIN_URL . 'assets/dist/images/admin/cap-books.svg'); ?>" alt=""/>
             <p>
-                <?= esc_html__('Learn the ins and outs of creating the perfect Donation Form with GiveWP', 'give'); ?>
+                <?php _e('What is the Form Grid?', 'give'); ?><br />
+                <?php _e('The GiveWP Form Grid provides a way to add a grid layout of multiple forms into posts and pages using either a block or shortcode.', 'give'); ?>
             </p>
             <a href="https://givewp.com/documentation/core/blocks/form-grid-block/" target="_blank">
                 <?= __('Learn More', 'give'); ?>

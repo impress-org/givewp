@@ -5,14 +5,14 @@ namespace Give\Framework\PaymentGateways\Contracts\Subscription;
 use Give\Subscriptions\Models\Subscription;
 
 /**
- * @unreleased
+ * @since 2.20.0
  */
 interface SubscriptionPaymentMethodEditable
 {
     /**
      * Update subscription payment method.
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @param Subscription $subscriptionModel
      * @param array $arg Additional information about payment method.

@@ -2,7 +2,8 @@
 
 namespace Give\Framework\Database\Exceptions;
 
-use Exception;
+use Give\Framework\Exceptions\Primitives\Exception;
+use Throwable;
 
 /**
  * Class DatabaseQueryException
@@ -10,6 +11,7 @@ use Exception;
  * An exception for when errors occurred within the database while performing a query, which stores the SQL errors the
  * database returned
  *
+ * @unreleased Use the GiveWP exception class
  * @since 2.9.2
  */
 class DatabaseQueryException extends Exception
@@ -19,24 +21,11 @@ class DatabaseQueryException extends Exception
      */
     private $queryErrors;
 
-    /**
-     * Creates a new instance wih the query errors
-     *
-     * @since 2.9.2
-     *
-     * @param string|string[] $queryErrors
-     * @param string|null     $message
-     *
-     * @return DatabaseQueryException
-     */
-    public static function create($queryErrors, $message = null)
+    public function __construct(string $message, array $queryErrors, $code = 0, Throwable $previous = null)
     {
-        $error = new self();
+        $this->queryErrors = $queryErrors;
 
-        $error->message = $message ?: 'Query failed in database';
-        $error->queryErrors = (array)$queryErrors;
-
-        return $error;
+        parent::__construct($message, $code, $previous);
     }
 
     /**
@@ -46,32 +35,19 @@ class DatabaseQueryException extends Exception
      *
      * @return string[]
      */
-    public function getQueryErrors()
+    public function getQueryErrors(): array
     {
         return $this->queryErrors;
     }
 
     /**
-     * Returns a human readable form of the exception for logging
-     *
-     * @since 2.9.2
-     *
-     * @return string
+     * @inheritDoc
      */
-    public function getLogOutput()
+    public function getLogContext(): array
     {
-        $queryErrors = array_map(
-            function ($error) {
-                return " - {$error}";
-            },
-            $this->queryErrors
-        );
-
-        return "
-			Code: {$this->getCode()}\n
-			Message: {$this->getMessage()}\n
-			DB Errors: \n
-			{$queryErrors}
-		";
+        return [
+            'category' => 'Uncaught database exception',
+            'Query Errors' => $this->queryErrors,
+        ];
     }
 }

@@ -19,7 +19,7 @@ class DonorsAdminPage
     private $apiNonce;
 
     /**
-     * @unreleased
+     * @since 2.20.0
      */
     public function __construct()
     {
@@ -28,7 +28,7 @@ class DonorsAdminPage
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      */
     public function registerMenuItem()
     {
@@ -49,7 +49,7 @@ class DonorsAdminPage
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      */
     public function loadScripts()
     {
@@ -75,7 +75,7 @@ class DonorsAdminPage
 
     /**
      * Make REST request to Donors endpoint before page load
-     * @unreleased
+     * @since 2.20.0
      */
     public function preloadDonors(){
         $queryParameters = [
@@ -97,7 +97,7 @@ class DonorsAdminPage
 
     /**
      * Preload initial table data
-     * @unreleased
+     * @since 2.20.0
      */
     public function getForms(){
         $queryParameters = [
@@ -135,7 +135,7 @@ class DonorsAdminPage
 
     /**
      * Render admin page container
-     * @unreleased
+     * @since 2.20.0
      */
     public function render()
     {
@@ -145,7 +145,7 @@ class DonorsAdminPage
     /**
      * Display a button on the old donation forms table that switches to the React view
      *
-     * @unreleased
+     * @since 2.20.0
      */
     public function renderReactSwitch()
     {
@@ -173,7 +173,7 @@ class DonorsAdminPage
 
     /**
      * Helper function to determine if current page is Give Donors admin page
-     * @unreleased
+     * @since 2.20.0
      *
      * @return bool
      */
