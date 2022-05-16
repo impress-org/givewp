@@ -72,6 +72,10 @@ const blockAttributes = {
 		type: 'boolean',
 		default: true,
 	},
+    showTributes: {
+        type: 'boolean',
+        default: true,
+    },
 	showAnonymous: {
 		type: 'boolean',
 		default: true,
