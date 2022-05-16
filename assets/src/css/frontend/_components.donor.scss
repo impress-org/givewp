@@ -93,7 +93,7 @@ $donor-space-triple: $donor-space * 3;
     &__name {
         width: 100%;
         padding: 0;
-        margin: 0;
+        margin: 0 !important;
         font-size: 1.5rem;
         font-weight: 600;
         text-align: center;
