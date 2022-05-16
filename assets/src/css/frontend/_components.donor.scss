@@ -116,7 +116,7 @@ $donor-space-triple: $donor-space * 3;
         color: $donor-color;
         font-size: 1rem;
         font-style: italic;
-        margin: 0;
+        margin: 0 !important;
     }
 
     &__excerpt &__read-more {
