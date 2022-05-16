@@ -7,7 +7,6 @@
         "production": "mix --production",
         "build": "mix --production",
         "watch": "mix watch",
-        "test:e2e": "cypress open",
         "env": "wp-env"
     },
     "repository": {
@@ -38,7 +37,6 @@
         "axios-mock-adapter": "^1.18.2",
         "babel-loader": "^8.2.2",
         "babel-plugin-react-require": "^3.1.3",
-        "cypress": "^8.7.0",
         "jest": "^24.9.0",
         "jest-puppeteer": "^4.4.0",
         "laravel-mix": "^6.0.34",

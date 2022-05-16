@@ -32,7 +32,6 @@ jsconfig.json
 globals.d.ts
 tsconfig.json
 
-cypress.json
 sample-data/wordpress.sql
 sample-data/sample-data.numbers
 bower.json
