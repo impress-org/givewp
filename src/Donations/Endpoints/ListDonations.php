@@ -109,11 +109,6 @@ class ListDonations extends Endpoint
         $listTable = give(DonationsListTable::class);
         $listTable->items($data);
 
-        // Sort
-        if ($sortColumn = $request->get_param('sortColumn')) {
-            $listTable->sortItems($sortColumn, $request->get_param('sortDirection'));
-        }
-
         return new WP_REST_Response(
             [
                 'items' => $listTable->getItems(),

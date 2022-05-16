@@ -35,19 +35,6 @@ trait Items
     }
 
     /**
-     * Sort table items by column
-     *
-     * @unreleased
-     */
-    public function sortItems(string $column, string $direction = 'ASC')
-    {
-        $sortColumn = array_column($this->items, $column);
-        $sortDirection = ('DESC' === strtoupper($direction)) ? SORT_DESC : SORT_ASC;
-
-        array_multisort($sortColumn, $sortDirection, $this->items);
-    }
-
-    /**
      * @unreleased
      */
     public function getItems(): array
