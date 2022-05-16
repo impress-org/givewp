@@ -70,7 +70,6 @@ $donor-space-triple: $donor-space * 3;
         border-radius: 50%;
         border: 1px solid $give-card-border;
 
-
         img {
             object-fit: cover;
             object-position: center;
@@ -98,7 +97,6 @@ $donor-space-triple: $donor-space * 3;
         font-size: 1.5rem;
         font-weight: 600;
         text-align: center;
-
 
     }
 }
@@ -132,7 +130,6 @@ $donor-space-triple: $donor-space * 3;
     &__excerpt + &__comment {
         display: none;
     }
-
 }
 
 
@@ -185,7 +182,6 @@ $donor-space-triple: $donor-space * 3;
     min-height: 32px;
     margin-bottom: 18px;
     background: #DEEAE3;
-
 
     span {
         svg {
