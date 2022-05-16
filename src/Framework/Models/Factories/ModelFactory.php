@@ -28,7 +28,7 @@ abstract class ModelFactory
     protected $count = 1;
 
     /**
-     * @unreleased
+     * @since 2.20.0
      *
      * @param  class-string<M>  $model
      *
@@ -48,7 +48,7 @@ abstract class ModelFactory
     abstract public function definition();
 
     /**
-     * @unreleased
+     * @since 2.20.0
      *
      * @param  array  $attributes
      *
@@ -74,7 +74,7 @@ abstract class ModelFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      *
      * @param  array  $attributes
      *
@@ -130,7 +130,7 @@ abstract class ModelFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      *
      * @param  M  $model
      *
@@ -142,7 +142,7 @@ abstract class ModelFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      *
      * @param  M  $model
      *

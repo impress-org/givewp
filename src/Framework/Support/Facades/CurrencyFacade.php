@@ -17,7 +17,7 @@ class CurrencyFacade
     /**
      * Immutably converts the given amount into the system currency.
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @param Money $amount
      * @param int|float $exchangeRate
@@ -46,7 +46,7 @@ class CurrencyFacade
     /**
      * Creates a new Money instance from a decimal amount
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @param string|float|int $amount
      * @param string $currency
@@ -62,7 +62,7 @@ class CurrencyFacade
      * Returns the amount in a decimal format, not including any currency symbols:
      * - $1,500.25 -> 1500.25
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @param Money $amount
      *
@@ -76,7 +76,7 @@ class CurrencyFacade
     /**
      * Formats the amount to a currency format, including currency symbols, in the given locale.
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @param Money $amount
      * @param string|null $locale
@@ -98,7 +98,7 @@ class CurrencyFacade
     /**
      * Retrieves the system's base currency
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @return Currency
      */

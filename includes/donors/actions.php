@@ -2,16 +2,13 @@
 /**
  * Insert donor comment to donation.
  *
+ * @unreleased remove anonymous
  * @since 2.2.0
  *
- * @param int   $donation_id
- * @param array $donation_data
+ * @param  int  $donation_id
+ * @param  array  $donation_data
  */
 function __give_insert_donor_donation_comment( $donation_id, $donation_data ) {
-	$is_anonymous_donation = isset( $_POST['give_anonymous_donation'] )
-		? absint( $_POST['give_anonymous_donation'] )
-		: 0;
-
 	if ( ! empty( $_POST['give_comment'] ) ) {
 		$comment_meta = array( 'author_email' => $donation_data['user_info']['email'] );
 
@@ -27,8 +24,6 @@ function __give_insert_donor_donation_comment( $donation_id, $donation_data ) {
 			$comment_meta
 		);
 	}
-
-	give_update_meta( $donation_id, '_give_anonymous_donation', $is_anonymous_donation );
 }
 
 add_action( 'give_insert_payment', '__give_insert_donor_donation_comment', 10, 2 );

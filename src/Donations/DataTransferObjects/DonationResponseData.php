@@ -12,7 +12,7 @@ use Give\Helpers\Date;
 /**
  * Class DonationResponseData
  *
- * @unreleased
+ * @since 2.20.0
  */
 class DonationResponseData implements Arrayable
 {
@@ -74,7 +74,7 @@ class DonationResponseData implements Arrayable
      *
      * @param object $donation
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @return self
      */
@@ -102,7 +102,7 @@ class DonationResponseData implements Arrayable
     /**
      * Convert DTO to array
      *
-     * @unreleased
+     * @since 2.20.0
      * @return array
      */
     public function toArray()
@@ -113,7 +113,7 @@ class DonationResponseData implements Arrayable
     /**
      * Get donation type to display on front-end
      *
-     * @unreleased
+     * @since 2.20.0
      * @param object $donation
      * @return string
      */

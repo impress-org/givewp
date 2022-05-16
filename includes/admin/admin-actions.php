@@ -1611,7 +1611,7 @@ add_action( 'give_post_form_template_options_settings', 'give_render_form_theme_
 /**
  * Add Custom setting view for form grid setting panel
  *
- * @unreleased
+ * @since 2.20.0
  */
 function give_render_form_grid_setting_panel() {
     require_once GIVE_PLUGIN_DIR . 'src/Views/Admin/Form/FormGrid-Settings.php';

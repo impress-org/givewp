@@ -10,11 +10,8 @@ use function Give\Framework\Http\Response\response;
 class RespondToBrowserHandler  {
     /**
      * @since 2.18.0
-     *
-     * @param  RespondToBrowser $command
-     * @return JsonResponse
      */
-    public function __invoke(RespondToBrowser $command)
+    public function __invoke(RespondToBrowser $command): JsonResponse
     {
         return response()->json($command->data);
     }

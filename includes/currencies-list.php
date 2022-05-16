@@ -6,7 +6,7 @@
  * @subpackage  Array
  * @copyright   Copyright (c) 2018, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @unreleased update romanian to use RON
+ * @since 2.20.0 update romanian to use RON
  * @since       2.4.0
  */
 

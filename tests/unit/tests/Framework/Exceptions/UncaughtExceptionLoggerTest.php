@@ -27,11 +27,11 @@ class UncaughtExceptionLoggerTest extends Give_Unit_Test_Case
 }
 
 class ExceptionLogged extends Exception implements LoggableException {
-	public function getLogMessage() {
+	public function getLogMessage(): string {
 		return '';
 	}
 
-	public function getLogContext() {
+	public function getLogContext(): array {
 		return [];
 	}
 }

@@ -55,7 +55,7 @@ class DeleteDonor extends Endpoint
     /**
      * @param WP_REST_Request $request
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @return WP_REST_Response
      */
@@ -74,7 +74,7 @@ class DeleteDonor extends Endpoint
                  * @param bool $delete_donor Confirm Donor Deletion.
                  * @param bool $delete_donation  Confirm Donor related donations deletion.
                  *
-                 * @unreleased
+                 * @since 2.20.0
                  */
                 do_action( 'give_pre_delete_donor', $id, true, $delete_donation );
                 $donor = Donor::find($id);
@@ -104,7 +104,7 @@ class DeleteDonor extends Endpoint
      * Split string
      *
      * @param string $ids
-     * @unreleased
+     * @since 2.20.0
      *
      * @return string[]
      */

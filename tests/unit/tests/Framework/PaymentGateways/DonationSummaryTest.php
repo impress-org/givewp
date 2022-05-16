@@ -2,9 +2,8 @@
 
 namespace unit\tests\Framework\PaymentGateways;
 
+use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\DonationSummary;
-use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
-use Give\ValueObjects\DonorInfo;
 use Give_Helper_Payment;
 use Give_Unit_Test_Case;
 
@@ -16,14 +15,13 @@ class DonationSummaryTest extends Give_Unit_Test_Case
     /** @test */
     public function it_summarizes_a_simple_donation()
     {
-        $paymentData = new GatewayPaymentData();
-        $paymentData->donorInfo = new DonorInfo();
-        $paymentData->donationId = Give_Helper_Payment::create_simple_payment();
+        $donationId = Give_Helper_Payment::create_simple_payment();
+        $donation = Donation::find($donationId);
 
-        $summary = new DonationSummary($paymentData);
+        $summary = new DonationSummary($donation);
 
         $this->assertEquals(
-            give_payment_gateway_donation_summary($this->get_legacy_donation_data($paymentData), false),
+            give_payment_gateway_donation_summary($this->get_legacy_donation_data($donation), false),
             $summary->getSummary()
         );
     }
@@ -31,15 +29,16 @@ class DonationSummaryTest extends Give_Unit_Test_Case
     /** @test */
     public function it_summarizes_a_multilevel_donation()
     {
-        $paymentData = new GatewayPaymentData();
-        $paymentData->donorInfo = new DonorInfo();
-        $paymentData->donationId = Give_Helper_Payment::create_multilevel_payment(['result_type' => 'object']);
-        $paymentData->priceId = 2;
+        $donationId = Give_Helper_Payment::create_multilevel_payment(['result_type' => 'object']);
+        $donation = Donation::find($donationId);
+        $donation->levelId = '2';
 
-        $summary = new DonationSummary($paymentData);
+        $donation->save();
+
+        $summary = new DonationSummary($donation);
 
         $this->assertEquals(
-            give_payment_gateway_donation_summary($this->get_legacy_donation_data($paymentData), false),
+            give_payment_gateway_donation_summary($this->get_legacy_donation_data($donation), false),
             $summary->getSummary()
         );
     }
@@ -47,17 +46,18 @@ class DonationSummaryTest extends Give_Unit_Test_Case
     /** @test */
     public function it_summarizes_a_donation_with_donor_name_and_email()
     {
-        $paymentData = new GatewayPaymentData();
-        $paymentData->donorInfo = new DonorInfo();
-        $paymentData->donorInfo->firstName = 'Tester';
-        $paymentData->donorInfo->lastName = 'Test';
-        $paymentData->donorInfo->email = 'tester@test.test';
-        $paymentData->donationId = Give_Helper_Payment::create_simple_payment();
+        $donationId = Give_Helper_Payment::create_simple_payment();
+        $donation = Donation::find($donationId);
+        $donation->firstName = 'Tester';
+        $donation->lastName = 'Test';
+        $donation->email = 'tester@test.test';
 
-        $summary = new DonationSummary($paymentData);
+        $donation->save();
+
+        $summary = new DonationSummary($donation);
 
         $this->assertEquals(
-            give_payment_gateway_donation_summary($this->get_legacy_donation_data($paymentData), true),
+            give_payment_gateway_donation_summary($this->get_legacy_donation_data($donation), true),
             $summary->getSummaryWithDonor()
         );
     }
@@ -65,18 +65,17 @@ class DonationSummaryTest extends Give_Unit_Test_Case
     /** @test */
     public function it_summarizes_a_donation_with_filter()
     {
-        $paymentData = new GatewayPaymentData();
-        $paymentData->donorInfo = new DonorInfo();
-        $paymentData->donationId = Give_Helper_Payment::create_simple_payment();
+        $donationId = Give_Helper_Payment::create_simple_payment();
+        $donation = Donation::find($donationId);
 
         add_filter('give_payment_gateway_donation_summary', function ($summary) {
             return 'FILTERED SUMMARY';
         });
 
-        $summary = new DonationSummary($paymentData);
+        $summary = new DonationSummary($donation);
 
         $this->assertEquals(
-            give_payment_gateway_donation_summary($this->get_legacy_donation_data($paymentData), false),
+            give_payment_gateway_donation_summary($this->get_legacy_donation_data($donation), false),
             $summary->getSummary()
         );
     }
@@ -85,35 +84,34 @@ class DonationSummaryTest extends Give_Unit_Test_Case
     public function it_summarizes_a_simple_donation_truncated()
     {
         $length = 10;
-        $paymentData = new GatewayPaymentData();
-        $paymentData->donorInfo = new DonorInfo();
-        $paymentData->donationId = Give_Helper_Payment::create_simple_payment();
+        $donationId = Give_Helper_Payment::create_simple_payment();
+        $donation = Donation::find($donationId);
 
-        $summary = new DonationSummary($paymentData);
+        $summary = new DonationSummary($donation);
         $summary->setLength($length);
 
         $this->assertEquals(
-            give_payment_gateway_donation_summary($this->get_legacy_donation_data($paymentData), false, $length),
+            give_payment_gateway_donation_summary($this->get_legacy_donation_data($donation), false, $length),
             $summary->getSummary()
         );
     }
 
-    public function get_legacy_donation_data(GatewayPaymentData $paymentData)
+    public function get_legacy_donation_data(Donation $donation)
     {
-        $formId = give_get_payment_form_id($paymentData->donationId);
+        $formId = give_get_payment_form_id($donation->id);
         return [
             'source_id' => 'pm_1234',
-            'donation_id' => $paymentData->donationId,
+            'donation_id' => $donation->id,
             'post_data' => [
                 'give-form-title' => get_the_title($formId),
                 'give-form-id' => $formId,
-                'give-price-id' => $paymentData->priceId,
+                'give-price-id' => $donation->levelId,
             ],
             'user_info' => [
-                'first_name' => $paymentData->donorInfo->firstName,
-                'last_name' => $paymentData->donorInfo->lastName,
+                'first_name' => $donation->firstName,
+                'last_name' => $donation->lastName,
             ],
-            'user_email' => $paymentData->donorInfo->email,
+            'user_email' => $donation->email,
         ];
     }
 }

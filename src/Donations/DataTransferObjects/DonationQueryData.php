@@ -114,7 +114,7 @@ class DonationQueryData
     /**
      * Convert data from object to Donation
      *
-     * @unreleased update for new amount property, fee amount recovered, and exchange rate
+     * @since 2.20.0 update for new amount property, fee amount recovered, and exchange rate
      * @since 2.19.6
      *
      * @param object $donationQueryObject
@@ -156,7 +156,7 @@ class DonationQueryData
         $self->purchaseKey = $donationQueryObject->{DonationMetaKeys::PURCHASE_KEY()->getKeyAsCamelCase()};
         $self->donorIp = $donationQueryObject->{DonationMetaKeys::DONOR_IP()->getKeyAsCamelCase()};
         $self->anonymous = (bool)$donationQueryObject->{DonationMetaKeys::ANONYMOUS()->getKeyAsCamelCase()};
-        $self->levelId = (int)$donationQueryObject->{DonationMetaKeys::LEVEL_ID()->getKeyAsCamelCase()};
+        $self->levelId = (string)$donationQueryObject->{DonationMetaKeys::LEVEL_ID()->getKeyAsCamelCase()};
         $self->gatewayTransactionId = $donationQueryObject->{DonationMetaKeys::GATEWAY_TRANSACTION_ID()
             ->getKeyAsCamelCase()};
 

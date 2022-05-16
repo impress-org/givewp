@@ -601,7 +601,7 @@ class Give_MetaBox_Form_Data {
             /**
              * Form Grid
              *
-             * @unreleased
+             * @since 2.20.0
              */
             'form_grid_options'    => apply_filters(
                 'give_forms_grid_options',

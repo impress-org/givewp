@@ -10,7 +10,7 @@ use Give\Framework\Support\ValueObjects\Money;
 /**
  * Provides support for the legacy give_pre_insert_payment hook
  *
- * @unreleased
+ * @since 2.20.0
  */
 class DispatchGivePreInsertPayment
 {

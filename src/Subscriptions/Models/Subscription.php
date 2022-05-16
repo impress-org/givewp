@@ -87,7 +87,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      *
      * @return ModelQueryBuilder<Donor>
      */
-    public function donor()
+    public function donor(): ModelQueryBuilder
     {
         return give()->donors->queryById($this->donorId);
     }
@@ -97,7 +97,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      *
      * @return ModelQueryBuilder<Donation>
      */
-    public function donations()
+    public function donations(): ModelQueryBuilder
     {
         return give()->donations->queryBySubscriptionId($this->id);
     }
@@ -109,7 +109,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      *
      * @return object[]
      */
-    public function getNotes()
+    public function getNotes(): array
     {
         return give()->subscriptions->getNotesBySubscriptionId($this->id);
     }
@@ -118,7 +118,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      * Returns the subscription amount the donor "intended", which means it is the amount without recovered fees. So if the
      * donor paid $100, but the donation was charged $105 with a $5 fee, this method will return $100.
      *
-     * @unreleased
+     * @since 2.20.0
      */
     public function intendedAmount(): Money
     {
@@ -128,7 +128,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased return mutated model instance
+     * @since 2.20.0 return mutated model instance
      * @since 2.19.6
      *
      * @throws Exception
@@ -143,7 +143,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased mutate model in repository and return void
+     * @since 2.20.0 mutate model in repository and return void
      * @since 2.19.6
      *
      * @return void
@@ -164,19 +164,19 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      * @return bool
      * @throws Exception
      */
-    public function delete()
+    public function delete(): bool
     {
         return give()->subscriptions->delete($this);
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      *
      * @param bool $force Set to true to ignore the status of the subscription
      *
      * @throws Exception
      */
-    public function cancel($force = false)
+    public function cancel(bool $force = false)
     {
         if (!$force && $this->status->isCanceled()) {
             return;
@@ -190,7 +190,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      *
      * @return ModelQueryBuilder<Subscription>
      */
-    public static function query()
+    public static function query(): ModelQueryBuilder
     {
         return give()->subscriptions->prepareQuery();
     }
@@ -202,7 +202,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      *
      * @return Subscription
      */
-    public static function fromQueryBuilderObject($object)
+    public static function fromQueryBuilderObject($object): Subscription
     {
         return SubscriptionQueryData::fromObject($object)->toSubscription();
     }
@@ -214,7 +214,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      *
      * @return string
      */
-    public function expiration()
+    public function expiration(): string
     {
         $frequency = $this->frequency;
         $period = $this->period;
@@ -231,7 +231,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     /**
      * @return PaymentGateway
      */
-    public function gateway()
+    public function gateway(): PaymentGateway
     {
         return give()->gateways->getPaymentGateway($this->gatewayId);
     }
@@ -239,7 +239,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     /**
      * @return SubscriptionFactory<Subscription>
      */
-    public static function factory()
+    public static function factory(): SubscriptionFactory
     {
         return new SubscriptionFactory(static::class);
     }
