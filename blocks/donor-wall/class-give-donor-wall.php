@@ -151,6 +151,10 @@ class Give_Donor_Wall_Block {
 						'type'    => 'boolean',
 						'default' => true,
 					],
+                    'showTributes'    => [
+                        'type'    => 'boolean',
+                        'default' => true,
+                    ],
 					'showAnonymous'   => [
 						'type'    => 'boolean',
 						'default' => true,
@@ -208,7 +212,8 @@ class Give_Donor_Wall_Block {
 			'show_total'        => $attributes['showTotal'],
 			'show_time'         => $attributes['showDate'],
 			'show_comments'     => $attributes['showComments'],
-			'anonymous'         => $attributes['showAnonymous'],
+            'show_tributes'     => $attributes['showTributes'],
+            'anonymous'         => $attributes['showAnonymous'],
 			'comment_length'    => absint( $attributes['commentLength'] ),
 			'only_comments'     => $attributes['onlyComments'],
 			'readmore_text'     => $attributes['readMoreText'],
