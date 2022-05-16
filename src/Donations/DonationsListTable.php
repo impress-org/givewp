@@ -21,7 +21,7 @@ class DonationsListTable extends ListTable
     /**
      * @inheritDoc
      */
-    public function columns(): array
+    public function getDefaultColumns(): array
     {
         return [
             Column::name('id')

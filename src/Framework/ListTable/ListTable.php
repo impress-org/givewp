@@ -20,7 +20,7 @@ abstract class ListTable implements Arrayable
      */
     public function __construct()
     {
-        $this->addColumns(...$this->columns());
+        $this->addColumns(...$this->getDefaultColumns());
     }
 
     /**
@@ -36,7 +36,7 @@ abstract class ListTable implements Arrayable
      * @unreleased
      * @return Column[]
      */
-    abstract public function columns(): array;
+    abstract protected function getDefaultColumns(): array;
 
     /**
      * Get table definitions
