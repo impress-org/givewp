@@ -4,11 +4,12 @@ namespace Give\Framework\ListTable;
 
 use Give\Framework\ListTable\Concerns\Columns;
 use Give\Framework\ListTable\Concerns\Items;
+use Give\Framework\Support\Contracts\Arrayable;
 
 /**
  * @unreleased
  */
-abstract class ListTable
+abstract class ListTable implements Arrayable
 {
     use Columns;
     use Items;
@@ -42,7 +43,7 @@ abstract class ListTable
      *
      * @unreleased
      */
-    public function getTable(): array
+    public function toArray(): array
     {
         return [
             'id' => $this->id(),
