@@ -15,7 +15,7 @@ import giveDonorWallOptions from '../data/options';
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { donorsPerPage, ids, formID, categories, tags, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, showForm, showTotal, showDate, showComments, showAnonymous, onlyComments, commentLength, readMoreText, loadMoreText } = attributes;
+	const { donorsPerPage, ids, formID, categories, tags, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, showForm, showTotal, showDate, showComments, showTributes, showAnonymous, onlyComments, commentLength, readMoreText, loadMoreText } = attributes;
 	const saveSetting = ( name, value ) => {
 		setAttributes( {
 			[ name ]: value,
@@ -112,6 +112,11 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Show Comments', 'give' ) }
 					checked={ !! showComments }
 					onChange={ ( value ) => saveSetting( 'showComments', value ) } />
+                <ToggleControl
+                    name="showTributes"
+                    label={ __( 'Show Tributes', 'give' ) }
+                    checked={ !! showTributes }
+                    onChange={ ( value ) => saveSetting( 'showTributes', value ) } />
 				<ToggleControl
 					name="showAnonymous"
 					label={ __( 'Show Anonymous', 'give' ) }
