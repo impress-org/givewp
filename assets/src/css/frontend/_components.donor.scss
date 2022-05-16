@@ -176,7 +176,7 @@ $donor-space-triple: $donor-space * 3;
     display: flex;
     align-items: center;
     width: 100%;
-    height: 32px;
+    min-height: 32px;
     margin-bottom: 18px;
     background: #DEEAE3;
 
