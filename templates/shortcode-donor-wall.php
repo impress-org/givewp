@@ -128,7 +128,7 @@ $atts          = $args[2]; // Shortcode attributes.
                 <?php endif; ?>
                 </div>
             </div>
-        <?php if (isset( $donation['_give_tributes_first_name'] ) || isset( $donation['_give_tributes_Last_name']) ) : ?>
+        <?php if ( true === $atts['show_tributes'] && (isset( $donation['_give_tributes_first_name'] ) || isset( $donation['_give_tributes_Last_name'])) ) : ?>
             <div class="give-donor-tribute">
                     <span>
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
