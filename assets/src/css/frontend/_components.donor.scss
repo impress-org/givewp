@@ -92,7 +92,7 @@ $donor-space-triple: $donor-space * 3;
 
     &__name {
         width: 100%;
-        padding:0;
+        padding: 0;
         margin: 0;
         font-size: 1.5rem;
         font-weight: 600;
@@ -192,7 +192,7 @@ $donor-space-triple: $donor-space * 3;
     }
 
     &__message {
-        margin: 0 0 0 10px;
+        margin: 0 0 0 16px;
         font-size: .9rem;
 
         span:last-child {
