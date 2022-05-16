@@ -1,13 +1,13 @@
 import ReactDOM from 'react-dom';
-import getWindowData from './utilities/getWindowData';
 import getDefaultValuesFromFieldsCollection from './utilities/getDefaultValuesFromFieldsCollection';
 import Form from './form/Form';
 import getPaymentGateways from './utilities/getPaymentGateways';
+import getWindowData from './utilities/getWindowData';
 
 /**
  * Get data from the server
  */
-const [attributes, form] = getWindowData('attributes', 'form');
+const {attributes, form} = getWindowData();
 
 /**
  * Prepare default values for form

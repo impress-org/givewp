@@ -1,9 +1,6 @@
 import PropTypes from 'prop-types';
 import {useFormContext, useFormState} from 'react-hook-form';
 import {ErrorMessage} from '@hookform/error-message';
-import getWindowData from '../utilities/getWindowData';
-
-const [currencySymbol] = getWindowData('currencySymbol');
 
 function Field({type, name, label, required, ...rest}) {
     const {register} = useFormContext();
@@ -27,9 +24,7 @@ function Field({type, name, label, required, ...rest}) {
 
             <div className="give-next-gen__input">
                 {isAmount && (
-                    <div className="give-next-gen__input-adornment give-next-gen__input-adornment--left">
-                        {!currencySymbol ? 'USD' : currencySymbol}
-                    </div>
+                    <div className="give-next-gen__input-adornment give-next-gen__input-adornment--left">{'USD'}</div>
                 )}
                 <input
                     type={type}
