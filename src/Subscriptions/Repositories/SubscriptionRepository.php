@@ -167,7 +167,7 @@ class SubscriptionRepository
      *
      * @param Subscription $subscription
      *
-     * @return void
+     * @return Subscription
      * @throws Exception
      */
     public function update(Subscription $subscription)
@@ -204,7 +204,13 @@ class SubscriptionRepository
 
         DB::query('COMMIT');
 
-        Hooks::doAction('give_subscription_updating', $subscription);
+        $subscriptionId = DB::last_insert_id();
+
+        $subscription = $this->getById($subscriptionId);
+
+        Hooks::doAction('give_subscription_updated', $subscription);
+
+        return $subscription;
     }
 
     /**

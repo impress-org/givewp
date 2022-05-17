@@ -13,10 +13,8 @@ class RedirectOffsite implements GatewayCommand {
 
     /**
      * @since 2.18.0
-     *
-     * @param  string  $redirectUrl
      */
-    public function __construct($redirectUrl)
+    public function __construct(string $redirectUrl)
     {
         $this->redirectUrl = $redirectUrl;
     }

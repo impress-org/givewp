@@ -1,10 +1,9 @@
 <?php
 
+use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\PaymentGateways\SubscriptionModule;
-use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
-use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
 use Give\Subscriptions\Models\Subscription;
 
 /**
@@ -77,7 +76,7 @@ class GatewayRouteTestGateway extends PaymentGateway
         return __CLASS__ . __FUNCTION__;
     }
 
-    public function getLegacyFormFieldMarkup($formId, $args): string
+    public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
         return '';
     }
@@ -102,11 +101,11 @@ class GatewayRouteTestGateway extends PaymentGateway
         return self::id();
     }
 
-    public function createPayment(GatewayPaymentData $paymentData)
+    public function createPayment(Donation $donation)
     {
     }
 
-    public function refundDonation(\Give\Donations\Models\Donation $donation)
+    public function refundDonation(Donation $donation)
     {
         // TODO: Implement refundDonation() method.
     }
@@ -123,8 +122,8 @@ class GatewayRouteTestGatewaySubscriptionModule extends SubscriptionModule
     ];
 
     public function createSubscription(
-        GatewayPaymentData $paymentData,
-        GatewaySubscriptionData $subscriptionData
+        Donation $donation,
+        Subscription $subscription
     ) {
     }
 

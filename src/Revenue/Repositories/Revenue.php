@@ -3,7 +3,6 @@
 namespace Give\Revenue\Repositories;
 
 use Give\Framework\Database\DB;
-use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 
 /**
@@ -52,28 +51,16 @@ class Revenue
      * @param $revenueId
      *
      * @return false|int
-     * @throws DatabaseQueryException
      */
     public function deleteByDonationId($revenueId)
     {
         global $wpdb;
 
-        try {
-            return DB::delete(
-                $wpdb->give_revenue,
-                ['donation_id' => $revenueId],
-                ['%d']
-            );
-        } catch (DatabaseQueryException $exception) {
-            give_record_log(
-                'Revenue delete by donation failed',
-                $exception->getLogOutput(),
-                0,
-                'database'
-            );
-
-            throw $exception;
-        }
+        return DB::delete(
+            $wpdb->give_revenue,
+            ['donation_id' => $revenueId],
+            ['%d']
+        );
     }
 
     /**

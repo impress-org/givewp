@@ -2,6 +2,7 @@
 
 namespace Give\Framework\PaymentGateways\CommandHandlers;
 
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\PaymentGateways\Commands\PaymentAbandoned;
 
 class PaymentAbandonedHandler extends PaymentHandler
@@ -15,10 +16,10 @@ class PaymentAbandonedHandler extends PaymentHandler
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
-    protected function getPaymentStatus()
+    protected function getPaymentStatus(): DonationStatus
     {
-        return 'abandoned';
+        return DonationStatus::ABANDONED();
     }
 }

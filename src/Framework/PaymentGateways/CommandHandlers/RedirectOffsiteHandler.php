@@ -10,11 +10,8 @@ use function Give\Framework\Http\Response\response;
 class RedirectOffsiteHandler  {
     /**
      * @since 2.18.0
-     *
-     * @param  RedirectOffsite  $command
-     * @return RedirectResponse
      */
-    public function __invoke(RedirectOffsite $command)
+    public function __invoke(RedirectOffsite $command): RedirectResponse
     {
         return response()->redirectTo($command->redirectUrl);
     }
