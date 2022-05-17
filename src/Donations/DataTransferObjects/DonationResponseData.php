@@ -27,7 +27,7 @@ final class DonationResponseData implements Arrayable
     /**
      * @var string
      */
-    public $donorName;
+    public $name;
     /**
      * @var string
      */
