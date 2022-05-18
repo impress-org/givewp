@@ -652,7 +652,7 @@ function give_import_page_link_callback() {
         }
     </script>
     <button onclick="showReactTable()" class="page-title-action">
-        <?php _e('Show Updated View', 'give') ?>
+        <?php _e('Switch to New View', 'give') ?>
     </button>
 
 	<?php
