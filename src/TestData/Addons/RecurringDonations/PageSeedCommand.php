@@ -8,7 +8,7 @@ use WP_CLI;
  * Class PageSeedCommand
  * @package Give\TestData\RecurringDonations
  *
- * A WP-CLI command for seeding recuring donations demonstration page.
+ * A WP-CLI command for seeding recurring donation's demonstration page.
  */
 class PageSeedCommand
 {
@@ -24,7 +24,7 @@ class PageSeedCommand
     }
 
     /**
-     * Generates Recurring Donations demonstartion page
+     * Generates Recurring Donation's demonstration page
      *
      * [--preview=<preview>]
      * : Preview generated data

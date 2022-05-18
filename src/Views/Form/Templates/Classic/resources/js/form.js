@@ -18,7 +18,7 @@ import {
 } from './is-feature-active.js';
 
 // This must be called ASAP (since this is used when DOMContentLoaded happens)
-// It doesn’t use anything inside the body.
+// It does not use anything inside the body.
 IS_STRIPE_ACTIVE && setStripeElementStyles();
 
 // Transforms document for classic template
@@ -444,7 +444,7 @@ function setRecurringPeriodSelectWidth() {
         }
 
         // Update after the fonts load.
-        // Note: FontFaceSet’s loadingdone doesn’t seem to work in Safari.
+        // Note: FontFaceSet’s loadingdone does not seem to work in Safari.
         document.fonts.ready.then(updateWidth);
 
         // Update when the value changes.

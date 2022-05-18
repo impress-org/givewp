@@ -25,7 +25,7 @@ class PageSeedCommand
     }
 
     /**
-     * Generates GiveWP demonstartion page with all GiveWP shortcodes included
+     * Generates GiveWP demonstration page with all GiveWP shortcodes included
      *
      * [--preview=<preview>]
      * : Preview generated data

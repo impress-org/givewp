@@ -38,6 +38,6 @@ export function transformEmphasis(text) {
  * Get an asset URL.
  *
  * @param {string} filename (without leading slash).
- * @returns {strign} asset URL
+ * @returns {string} asset URL
  */
 export const assetUrl = (filename) => `${window.GiveAddons.assetsUrl}${filename}`;

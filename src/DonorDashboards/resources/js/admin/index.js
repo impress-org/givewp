@@ -1,7 +1,7 @@
 // Code to handle showing/hiding admin notices (based on dismissed status in localStorage)
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Select dismissable notices
+    // Select dismissible notices
     const notices = document.querySelectorAll('div[data-give-dismissible]');
 
     // Apply for every dismissible GiveWP notice

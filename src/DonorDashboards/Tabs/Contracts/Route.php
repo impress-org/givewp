@@ -82,7 +82,7 @@ abstract class Route implements RestRoute
                     'Email Access Token' => give()->email_access->token_email,
                     'Session Email' => give()->session->get('give_email'),
                     'Session Expiration' => give()->session->get_session_expiration(),
-                    'Error' => __('Donor ID coud not be validated for request.', 'give'),
+                    'Error' => __('Donor ID could not be validated for request.', 'give'),
                 ]
             );
 

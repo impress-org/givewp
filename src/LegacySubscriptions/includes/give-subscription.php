@@ -1062,7 +1062,7 @@ class Give_Subscription {
 	 * @param  integer $length The number of notes to get
 	 * @param  integer $paged  What note to start at
 	 *
-	 * @return array           The notes requsted
+	 * @return array           The notes requested
 	 */
 	public function get_notes( $length = 20, $paged = 1 ) {
 
