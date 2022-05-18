@@ -67,7 +67,7 @@ class DonationSeedCommand
      * default: false
      *
      * [--params=<params>]
-     * : Additinal params
+     * : Additional params
      * default: ''
      *
      * [--consistent=<consistent>]

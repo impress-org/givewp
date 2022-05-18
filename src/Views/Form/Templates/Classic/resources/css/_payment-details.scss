@@ -30,7 +30,7 @@ $gatewayFontSize: 1rem;
 
 #give-gateway-radio-list > li {
     // Ideally, the input would be wrapped with the label, but even then we
-    // wouldn’t be able to add nice hover and focus styles for this. So, we are
+    // would not be able to add nice hover and focus styles for this. So, we are
     // using absolute positioning to increase the hit area of the checkbox and
     // then placing the pseudo-element checkbox styles, label, and gateway icon
     // manually. Below are a few variables for tweaking the layout.

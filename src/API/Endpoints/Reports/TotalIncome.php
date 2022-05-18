@@ -119,7 +119,7 @@ class TotalIncome extends Endpoint
             'give'
         );
 
-        // Create data objec to be returned, with 'highlights' object containing total and average figures to display
+        // Create data object to be returned, with 'highlights' object containing total and average figures to display
         $data = [
             'datasets' => [
                 [
@@ -159,7 +159,7 @@ class TotalIncome extends Endpoint
 
         // Check that prev value and current value are > 0 (can't divide by 0)
         if ($prevIncome > 0 && $currentIncome > 0) {
-            // Check if it is a percent decreate, or increase
+            // Check if it is a percent decrease, or increase
             if ($prevIncome > $currentIncome) {
                 // Calculate a percent decrease
                 $trend = ((($prevIncome - $currentIncome) / $prevIncome) * 100) * -1;
