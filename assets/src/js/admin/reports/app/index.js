@@ -45,7 +45,7 @@ const App = () => {
 						<SettingsToggle />
 					</div>
 				</div>
-                <div className="wp-header-end hidden"> </div>
+                <hr className="wp-header-end hidden"/>
                 <Tabs />
 				<Routes />
 			</div>

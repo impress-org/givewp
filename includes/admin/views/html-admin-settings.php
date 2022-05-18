@@ -70,7 +70,7 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 
 		</div>
 
-        <div class="wp-header-end hidden"></div>
+        <hr class="wp-header-end hidden">
 
         <div class="nav-tab-wrapper give-nav-tab-wrapper">
 				<?php
