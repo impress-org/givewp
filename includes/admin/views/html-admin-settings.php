@@ -70,8 +70,12 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 
 		</div>
 
-        // Default behavior of WordPress places admin notices directly after the first h-tag inside any element
-        with the class of wrap. The tag below will instruct WordPress to place these notices below the header.
+        <?php
+        /*
+            Default behavior of WordPress places admin notices directly after the first h-tag inside any element
+            with the class of wrap. The tag below will instruct WordPress to place these notices below the header.
+        */
+        ?>
         <hr class="wp-header-end hidden">
 
         <div class="nav-tab-wrapper give-nav-tab-wrapper">
