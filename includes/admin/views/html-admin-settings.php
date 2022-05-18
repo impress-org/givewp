@@ -22,7 +22,7 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 	/**
 	 * Filter the main form tab.
 	 *
-	 * Note: You can stop print main form if you want to.filter dynamically fire on basis of setting page slug
+	 * Note: You can stop print main form if you want to filter dynamically fire on basis of setting page slug
 	 * For example: if you register a setting page with give-settings menu slug
 	 *              then filter will be give-settings_open_form, give-settings_close_form
 	 *              We are using this filter in includes/admin/tools/class-settings-data.php#L52
