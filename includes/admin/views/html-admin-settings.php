@@ -41,6 +41,7 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 		)
 	);
 	?>
+
 	<div class="wrap give-settings-page <?php echo esc_html( $wrapper_class ); ?>">
 
 		<?php echo $form_open_tag; ?>
@@ -69,7 +70,9 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 
 		</div>
 
-		<div class="nav-tab-wrapper give-nav-tab-wrapper">
+        <div class="wp-header-end hidden"></div>
+
+        <div class="nav-tab-wrapper give-nav-tab-wrapper">
 				<?php
 				foreach ( $tabs as $name => $label ) {
 					echo '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=' . self::$setting_filter_prefix . "&tab={$name}" ) . '" class="nav-tab ' . ( $current_tab === $name ? 'nav-tab-active' : 'give-mobile-hidden' ) . '">' . $label . '</a>';
