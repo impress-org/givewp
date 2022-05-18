@@ -105,7 +105,7 @@
 
     & .give-formatted-currency {
         // This is already formatted for the currency and flexbox breaks it so
-        // we agressively set the direction.
+        // we aggressively set the direction.
         direction: ltr;
         display: flex;
         column-gap: 0.15rem;
