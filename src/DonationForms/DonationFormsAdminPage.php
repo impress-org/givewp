@@ -153,7 +153,7 @@ class DonationFormsAdminPage
             }
             jQuery( function() {
                 jQuery(jQuery(".wrap .page-title-action")[0]).after(
-                    '<button class="page-title-action" onclick="showReactTable()">Switch to Updated View</button>'
+                    '<button class="page-title-action" onclick="showReactTable()">Switch to New View</button>'
                 );
             });
         </script>
@@ -163,11 +163,21 @@ class DonationFormsAdminPage
     /**
      * Helper function to determine if current page is Give Add-ons admin page
      *
-     * @return bool
+     * @since 2.20.0
      */
-    public static function isShowing()
+    public static function isShowing(): bool
     {
         return isset($_GET['page']) && $_GET['page'] === 'give-forms';
+    }
+
+    /**
+     * Helper function to determine if the current page is the legacy donation forms list page
+     *
+     * @unreleased
+     */
+    public static function isShowingLegacyPage(): bool
+    {
+        return isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms' && empty($_GET['page']);
     }
 
     /**
