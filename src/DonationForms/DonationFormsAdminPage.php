@@ -173,7 +173,7 @@ class DonationFormsAdminPage
     /**
      * Helper function to determine if the current page is the legacy donation forms list page
      *
-     * @unreleased
+     * @since 2.20.1
      */
     public static function isShowingLegacyPage(): bool
     {
