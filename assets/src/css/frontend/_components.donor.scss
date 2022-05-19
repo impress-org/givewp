@@ -29,6 +29,10 @@ $donor-space-double: $donor-space * 2;
 $donor-space-triple: $donor-space * 3;
 
 
+//* {
+//    border:1px solid grey;
+//}
+
 .give-donor {
     display: flex;
     flex-direction: column;
@@ -41,168 +45,167 @@ $donor-space-triple: $donor-space * 3;
 	transition: all 0.2s ease-out;
     width:100%;
 
-    &-container {
+    /* [1] */
+    &-header {
         flex: 1;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        padding: $donor-space $donor-space-and-three-quarters;
+        align-items: center;
+        min-height: 116px;
+        justify-content: space-evenly;
+        align-content: space-between;
+
+
+        &__image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            overflow: hidden;
+            border-radius: 50%;
+            border: 1px solid $give-card-border;
+
+
+            img {
+                object-fit: cover;
+                object-position: center;
+                width: 100%;
+                border:1px solid grey;
+
+            }
+
+            &__name_initial {
+                position: absolute;
+            }
+
+            &[data-anonymous-donation='0'] img[src*='anonymous-user.svg'],
+            &[data-anonymous-donation='1'] .give-donor-header__name_initial {
+                visibility: hidden;
+            }
+
+            &[data-anonymous-donation='0'][data-has-valid-gravatar='0'] {
+                border: 1px solid $give-card-border;
+            }
+        }
+
+        &__name {
+            width: 100%;
+            margin: 0 !important;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+            line-height: 20px;
+        }
     }
-}
+
+    /* [2] */
+    &-wrapper {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &-content {
+        width: 100%;
+        padding-left: 14px;
+        border-left: 2px solid #219653;
+        font-weight: 400;
+        letter-spacing: 0;
+        text-align: left;
+        //margin: 5px 0;
+
+        p {
+            width: 100%;
+
+            color: $donor-color;
+            font-size: 1rem;
+            font-style: italic;
+            margin: 0 !important;
+        }
+
+        &__excerpt &__read-more {
+            color: #69B86B;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        &__excerpt + &__comment {
+            display: none;
+        }
+    }
 
 
-/* [1] */
-.give-donor-header {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
+    /* [3] */
+    &-details {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        overflow: hidden;
 
-    &__image {
+        &__wrapper {
+            display: flex;
+            flex-direction: column;
+
+
+            span:first-child {
+                color: $donor-color;
+                font-size: 1.25rem;
+                font-weight: 500;
+                letter-spacing: 0;
+                text-align: left;
+            }
+
+            span:last-child {
+                color: $donor-color;
+                font-size: .875rem;
+                font-weight: 400;
+                letter-spacing: 0;
+                text-align: left;
+            }
+        }
+
+        &__total {
+            color: #219653;
+            font-size: 1.55rem;
+            font-weight: 700;
+            letter-spacing: 0;
+            text-align: right;
+        }
+    }
+
+    /* [4] */
+    &-tribute{
         display: flex;
         align-items: center;
-        justify-content: center;
-        margin-bottom: 12px;
-        background: #fff;
-        overflow: hidden;
-        border-radius: 50%;
-        border: 1px solid $give-card-border;
-
-        img {
-            object-fit: cover;
-            object-position: center;
-            width: 100%;
-        }
-
-        &__name_initial {
-            position: absolute;
-        }
-
-        &[data-anonymous-donation='0'] img[src*='anonymous-user.svg'],
-        &[data-anonymous-donation='1'] .give-donor-header__name_initial {
-            visibility: hidden;
-        }
-
-        &[data-anonymous-donation='0'][data-has-valid-gravatar='0'] {
-            border: 1px solid $give-card-border;
-        }
-    }
-
-    &__name {
         width: 100%;
-        padding: 0;
-        margin: 0 !important;
-        font-size: 1.5rem;
-        font-weight: 600;
-        text-align: center;
+        min-height: 32px;
+        //margin-bottom: 18px;
+        background: #DEEAE3;
 
-    }
-}
+        span {
+            svg {
+                display: block;
+                height: 22px;
+                width: 22px;
+                margin-left: 42px;
+            }
+        }
 
-
-
-/* [2] */
-.give-donor-content {
-    width: 100%;
-    padding-left: 14px;
-    border-left: 2px solid #219653;
-    font-weight: 400;
-    letter-spacing: 0;
-    text-align: left;
-    margin: 5px 0;
-
-    p {
-        width: 100%;
-        color: $donor-color;
-        font-size: 1rem;
-        font-style: italic;
-        margin: 0 !important;
-    }
-
-    &__excerpt &__read-more {
-        color: #69B86B;
-        cursor: pointer;
-        white-space: nowrap;
-    }
-
-    &__excerpt + &__comment {
-        display: none;
-    }
-}
-
-
-/* [3] */
-.give-donor-details {
-    flex-grow: 1;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    overflow: hidden;
-    margin: 10px 0;
-
-
-    &__wrapper {
-        display: flex;
-        flex-direction: column;
-
-
-        span:first-child {
+        &__message {
+            margin: 0 0 0 16px;
+            font-size: .9rem;
             color: $donor-color;
-            font-size: 1.25rem;
-            font-weight: 500;
-            letter-spacing: 0;
-            text-align: left;
-        }
-
-        span:last-child {
-            color: $donor-color;
-            font-size: .875rem;
-            font-weight: 400;
-            letter-spacing: 0;
-            text-align: left;
-        }
-    }
-
-    &__total {
-        color: #219653;
-        font-size: 1.55rem;
-        font-weight: 700;
-        letter-spacing: 0;
-        text-align: right;
-    }
-}
-
-/* [4] */
-.give-donor-tribute{
-    display: flex;
-    align-items: center;
-    width: 100%;
-    min-height: 32px;
-    margin-bottom: 18px;
-    background: #DEEAE3;
-
-    span {
-        svg {
-            display: block;
-            height: 22px;
-            width: 22px;
-            margin-left: 42px;
-        }
-    }
-
-    &__message {
-        margin: 0 0 0 16px;
-        font-size: .9rem;
-        color: $donor-color;
 
 
-        span:last-child {
-            font-weight: 600;
+            span:last-child {
+                font-weight: 600;
+            }
         }
     }
 }
+
+
 
 .give-donor-wall-modal {
 	p:last-child {
