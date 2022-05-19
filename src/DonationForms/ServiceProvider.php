@@ -36,7 +36,7 @@ class ServiceProvider implements ServiceProviderInterface
                 Hooks::addAction('admin_enqueue_scripts', DonationFormsAdminPage::class, 'loadScripts');
             }
         }
-        else
+        elseif(DonationFormsAdminPage::isShowingLegacyPage())
         {
             Hooks::addAction( 'admin_head', DonationFormsAdminPage::class, 'renderReactSwitch');
         }
