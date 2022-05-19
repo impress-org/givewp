@@ -18,7 +18,7 @@ $atts          = $args[2]; // Shortcode attributes.
 
 <div class="give-grid__item">
     <div class="give-donor give-card">
-<!--        <div class="give-donor-container">-->
+        <div class="give-donor-container">
             <div class="give-donor-header">
                 <?php
                 if ( true === $atts['show_avatar'] ) {
@@ -129,6 +129,7 @@ $atts          = $args[2]; // Shortcode attributes.
                     </span>
                 <?php endif; ?>
                 </div>
+            </div>
         <?php if ( true === $atts['show_tributes'] && (isset( $donation['_give_tributes_first_name'] ) || isset( $donation['_give_tributes_Last_name'])) ) : ?>
             <div class="give-donor-tribute">
                     <span>
@@ -150,9 +151,7 @@ $atts          = $args[2]; // Shortcode attributes.
                 </span>
             </div>
         <?php endif; ?>
-            </div>
-
     </div>
-<!--    </div>-->
+    </div>
 
 
