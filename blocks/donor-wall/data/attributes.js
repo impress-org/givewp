@@ -86,7 +86,7 @@ const blockAttributes = {
 	},
 	commentLength: {
 		type: 'string',
-		default: '140',
+		default: '80',
 	},
 	readMoreText: {
 		type: 'string',
