@@ -8,7 +8,6 @@
 */
 
 .give-goal-progress {
-    flex:1;
     background: #F6F6F6;
     padding: 16px 24px;
 }
@@ -30,9 +29,9 @@
 
 .give-progress-bar {
     position: relative;
-    height: 10px;
+    height: 12px;
     background: #F1F1F1;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     border-radius: 25px;
 
     > span {
