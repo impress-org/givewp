@@ -1,78 +1,39 @@
-.give-form-grid-card__body {
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
+.give-form-grid {
     display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    order: 2;
-    align-items: center;
-    justify-content: center;
 
-    .give-card__title {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0 1em;
-        font-family: "Open Sans", system-ui;
-        font-size: 1.5rem;
-        font-weight: 600;
-        text-align: center;
+    &-media {
+
+        img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
     }
 
-    .give-card__media {
-        min-width: 100%;
-        min-height: 30vh;
-        max-height: 30vh;
-        overflow: hidden;
-    }
-
-    .give-card__media > img{
-        min-width: 100%;
-        min-height: 100%;
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: cover;
-        object-position: center;
-    }
-
-
-    .give-card__text {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    &-container {
+        display: flex; flex-direction: column;
         width: 100%;
-        min-height: 150px;
-        padding: 1em !important;
-        margin: 0 !important;
-        font-family: Montserrat, system-ui;
-        font-size: 1.125rem;
-        font-weight: 400;
-        text-align: center;
     }
 }
 
-.give-form-grid-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem;
-    border: 0.125rem solid var(--give-primary-color);
-    border-radius: 0.4rem;
-    background-color: var(--give-primary-color);
-    color: #fff;
-    text-align: center;
-    font-family: inherit;
-    font-size: 1.2rem;
-    font-weight: 600;
-    line-height: 1.2;
+.give-form-grid-content {
+    padding: 24px ;
 
-    transition-property: background-color, color;
-    transition-duration: 200ms;
-    transition-timing-function: ease-in;
+    & > h3 {
+        margin: 0;
+    }
 
-    & > svg {
-        display: inline-block;
-        margin-left: .55rem;
+    & > p {
+        margin: 4px 0 8px 0;
+    }
+
+    & > button {
+        background: none;
+        padding: 0;
+        border: none;
+        text-decoration: underline;
+        text-underline-offset: 5px;
+        cursor: pointer;
     }
 }
+
