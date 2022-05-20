@@ -66,7 +66,7 @@ $donor-space-triple: $donor-space * 3;
         flex: 1;
         display: flex;
         flex-direction: column;
-        padding: 0 5%;
+        padding: 0 32px;
 
         &__image {
             align-self: center;
@@ -169,7 +169,7 @@ $donor-space-triple: $donor-space * 3;
 
             span:last-child {
                 color: $donor-color;
-                font-size: safe-rem(.8);
+                font-size: safe-rem(0.8);
                 font-weight: 400;
                 letter-spacing: 0;
                 text-align: left;
@@ -194,7 +194,6 @@ $donor-space-triple: $donor-space * 3;
         align-items: center;
         width: 100%;
         min-height: 32px;
-        margin-top: 18px;
         background: #DEEAE3;
 
         span {
@@ -202,13 +201,12 @@ $donor-space-triple: $donor-space * 3;
                 display: block;
                 height: 22px;
                 width: 22px;
-                margin-left: 32px;
+                margin: 0 15px 0 32px;
             }
         }
 
         &__message {
-            margin-left: 12px;
-            font-size: safe-rem(.9);
+            font-size: safe-rem(0.75);
             color: $donor-color;
 
 
