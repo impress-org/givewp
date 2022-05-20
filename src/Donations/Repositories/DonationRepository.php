@@ -15,7 +15,6 @@ use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Call;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
-use WP_REST_Request;
 
 /**
  * @since 2.20.0 update amount type, fee recovered, and exchange rate
@@ -54,11 +53,9 @@ class DonationRepository
     /**
      * Get Donation By ID
      *
-     * @param int $donationId
-     *
-     * @return Donation|null
      * @since 2.19.6
      *
+     * @return Donation|null
      */
     public function getById(int $donationId)
     {
@@ -69,12 +66,8 @@ class DonationRepository
 
     /**
      * @since 2.19.6
-     *
-     * @param $donationId
-     *
-     * @return ModelQueryBuilder
      */
-    public function queryById($donationId)
+    public function queryById(int $donationId): ModelQueryBuilder
     {
         return $this->prepareQuery()
             ->where('ID', $donationId);
@@ -83,11 +76,7 @@ class DonationRepository
     /**
      * @since 2.19.6
      *
-     * @param int $subscriptionId
-     *
      * @return Donation[]|null
-     * 
-     *
      */
     public function getBySubscriptionId(int $subscriptionId)
     {
@@ -95,11 +84,7 @@ class DonationRepository
     }
 
     /**
-     * @param int $subscriptionId
-     *
-     * @return ModelQueryBuilder
      * @since 2.19.6
-     *
      */
     public function queryBySubscriptionId(int $subscriptionId): ModelQueryBuilder
     {
@@ -120,11 +105,7 @@ class DonationRepository
     }
 
     /**
-     * @param int $donorId
-     *
-     * @return ModelQueryBuilder
      * @since 2.19.6
-     *
      */
     public function queryByDonorId(int $donorId): ModelQueryBuilder
     {
@@ -141,19 +122,19 @@ class DonationRepository
     }
 
     /**
+     *
+     * @unreleased replace actions with givewp_donation_creating and givewp_donation_created
      * @since 2.20.0 mutate model and return void
      * @since 2.19.6
-     * @param Donation $donation
      *
      * @return void
      * @throws Exception|InvalidArgumentException
-     *
      */
     public function insert(Donation $donation)
     {
         $this->validateDonation($donation);
 
-        Hooks::doAction('give_donation_creating', $donation);
+        Hooks::doAction('givewp_donation_creating', $donation);
 
         $dateCreated = Temporal::withoutMicroseconds($donation->createdAt ?: Temporal::getCurrentDateTime());
         $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
@@ -210,24 +191,22 @@ class DonationRepository
             $donation->purchaseKey = $donationMeta[DonationMetaKeys::PURCHASE_KEY];
         }
 
-        Hooks::doAction('give_donation_created', $donation);
+        Hooks::doAction('givewp_donation_created', $donation);
     }
 
     /**
+     * @unreleased replace actions with givewp_donation_updating and givewp_donation_updated
      * @since 2.20.0 return void
      * @since 2.19.6
      *
-     * @param Donation $donation
-     *
      * @return void
      * @throws Exception|InvalidArgumentException
-     *
      */
     public function update(Donation $donation)
     {
         $this->validateDonation($donation);
 
-        Hooks::doAction('give_donation_updating', $donation);
+        Hooks::doAction('givewp_donation_updating', $donation);
 
         $date = Temporal::getCurrentFormattedDateForDatabase();
 
@@ -262,23 +241,21 @@ class DonationRepository
 
         DB::query('COMMIT');
 
-        Hooks::doAction('give_donation_updated', $donation);
+        Hooks::doAction('givewp_donation_updated', $donation);
     }
 
     /**
+     * @unreleased replace actions with givewp_donation_deleting and givewp_donation_deleted
      * @since 2.20.0 consolidate meta deletion into a single query
      * @since 2.19.6
-     * @param Donation $donation
      *
-     * @return bool
      * @throws Exception
-     *
      */
     public function delete(Donation $donation): bool
     {
         DB::query('START TRANSACTION');
 
-        Hooks::doAction('give_donation_deleting', $donation);
+        Hooks::doAction('givewp_donation_deleting', $donation);
 
         try {
             DB::table('posts')
@@ -298,7 +275,7 @@ class DonationRepository
 
         DB::query('COMMIT');
 
-        Hooks::doAction('give_donation_deleted', $donation);
+        Hooks::doAction('givewp_donation_deleted', $donation);
 
         return true;
     }
@@ -360,9 +337,9 @@ class DonationRepository
      * In Legacy terms, the Initial Donation acts as the parent ID for subscription renewals.
      * This function inserts those specific meta columns that accompany this concept.
      *
-     * @throws Exception
      * @since 2.19.6
      *
+     * @throws Exception
      */
     public function updateLegacyDonationMetaAsInitialSubscriptionDonation($donationId): bool
     {
@@ -400,12 +377,9 @@ class DonationRepository
     }
 
     /**
-     *
-     * @param int $donationId
-     *
-     * @return int|null
      * @since 2.19.6
      *
+     * @return int|null
      */
     public function getSequentialId(int $donationId)
     {
@@ -419,11 +393,9 @@ class DonationRepository
     }
 
     /**
-     * @param int $id
-     *
-     * @return object[]
      * @since 2.19.6
      *
+     * @return object[]
      */
     public function getNotesByDonationId(int $id): array
     {
@@ -445,11 +417,9 @@ class DonationRepository
     }
 
     /**
-     * @param Donation $donation
-     *
-     * @return void
      * @since 2.19.6
      *
+     * @return void
      */
     private function validateDonation(Donation $donation)
     {
@@ -465,9 +435,7 @@ class DonationRepository
     }
 
     /**
-     * @return DonationMode
      * @since 2.19.6
-     *
      */
     private function getDefaultDonationMode(): DonationMode
     {
@@ -477,11 +445,7 @@ class DonationRepository
     }
 
     /**
-     * @param int $formId
-     *
-     * @return string
      * @since 2.19.6
-     *
      */
     public function getFormTitle(int $formId): string
     {
@@ -538,13 +502,11 @@ class DonationRepository
     }
 
     /**
-     * @param $donorId
-     *
-     * @return array|bool|null
      * @since 2.19.6
      *
+     * @return array|bool|null
      */
-    public function getAllDonationIdsByDonorId($donorId)
+    public function getAllDonationIdsByDonorId(int $donorId)
     {
         return array_column(
             DB::table('give_donationmeta')

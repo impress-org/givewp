@@ -52,7 +52,7 @@ class DonationNotesRepository
     {
         $this->validateDonationNote($donationNote);
 
-        Hooks::doAction('give_donation_note_creating', $donationNote);
+        Hooks::doAction('givewp_donation_note_creating', $donationNote);
 
         $dateCreated = Temporal::withoutMicroseconds($donationNote->createdAt ?: Temporal::getCurrentDateTime());
         $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
@@ -82,7 +82,7 @@ class DonationNotesRepository
         $donationNote->id = DB::last_insert_id();
         $donationNote->createdAt = $dateCreated;
 
-        Hooks::doAction('give_donation_note_created', $donationNote);
+        Hooks::doAction('givewp_donation_note_created', $donationNote);
     }
 
     /**
@@ -96,7 +96,7 @@ class DonationNotesRepository
     {
         $this->validateDonationNote($donationNote);
 
-        Hooks::doAction('give_donation_note_updating', $donationNote);
+        Hooks::doAction('givewp_donation_note_updating', $donationNote);
 
         DB::query('START TRANSACTION');
 
@@ -118,7 +118,7 @@ class DonationNotesRepository
 
         DB::query('COMMIT');
 
-        Hooks::doAction('give_donation_note_updated', $donationNote);
+        Hooks::doAction('givewp_donation_note_updated', $donationNote);
     }
 
     /**
@@ -133,7 +133,7 @@ class DonationNotesRepository
     {
         DB::query('START TRANSACTION');
 
-        Hooks::doAction('give_donation_note_deleting', $donationNote);
+        Hooks::doAction('givewp_donation_note_deleting', $donationNote);
 
         try {
             DB::table('give_comments')
@@ -149,7 +149,7 @@ class DonationNotesRepository
 
         DB::query('COMMIT');
 
-        Hooks::doAction('give_donation_note_deleted', $donationNote);
+        Hooks::doAction('givewp_donation_note_deleted', $donationNote);
 
         return true;
     }
