@@ -1,7 +1,10 @@
+
+
 .give-form-grid {
     display: flex;
 
     &-media {
+        min-width: 38%;
 
         img {
             height: 100%;
@@ -11,26 +14,30 @@
     }
 
     &-container {
-        display: flex; flex-direction: column;
+        display: flex;
+        flex-direction: column;
         width: 100%;
     }
 }
 
 .give-form-grid-content {
+    flex: 1;
     padding: 24px ;
 
     & > h3 {
-        margin: 0;
+        line-height: 18px;
     }
 
     & > p {
-        margin: 4px 0 8px 0;
+        font-size: 1rem;
+        line-height: 32px;
     }
 
     & > button {
         background: none;
         padding: 0;
         border: none;
+        font-size: 1rem;
         text-decoration: underline;
         text-underline-offset: 5px;
         cursor: pointer;
