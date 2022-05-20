@@ -137,7 +137,7 @@ class Give_Donor_Wall_Block {
 					],
                     'showForm' => [
 						'type'    => 'boolean',
-						'default' => false,
+						'default' => true,
 					],
 					'showTotal'       => [
 						'type'    => 'boolean',
@@ -165,7 +165,7 @@ class Give_Donor_Wall_Block {
 					],
 					'commentLength'   => [
 						'type'    => 'string',
-						'default' => '140',
+						'default' => '80',
 					],
 					'readMoreText'    => [
 						'type'    => 'string',
@@ -177,7 +177,7 @@ class Give_Donor_Wall_Block {
 					],
 					'avatarSize'      => [
 						'type'    => 'string',
-						'default' => '60',
+						'default' => '80',
 					],
 				],
 			]
