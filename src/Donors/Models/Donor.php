@@ -195,7 +195,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
      *
      * @return ModelQueryBuilder<Donor>
      */
-    public static function query()
+    public static function query(): ModelQueryBuilder
     {
         return give()->donors->prepareQuery();
     }
