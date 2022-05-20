@@ -188,11 +188,11 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 				echo sprintf( /* translators: 1: total number of donations completed 2: total number of donations set as goal */
 					_n(
 						'<div class="raised__details">
-                                           <span>%1$s</span>
+                                           <span class="amount">%1$s</span>
                                            <span class="goal">%2$s</span>
                                 </div>',
 						'<div class="raised__details">
-                                           <span >%1$s</span>
+                                           <span class="amount" >%1$s</span>
                                            <span class="goal">%2$s</span>
                                 </div>',
 						$goal,
@@ -207,7 +207,7 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 				echo sprintf( /* translators: 1: total number of donors completed 2: total number of donors set as goal */
 					_n(
 						'<div class="raised-details">
-                                           <span >%1$s</span>
+                                           <span class="amount" >%1$s</spanclass>
                                            <span class="goal">%2$s</span>
                                 </div>',
 						'<div class="raised-details">
