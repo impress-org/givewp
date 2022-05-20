@@ -21,8 +21,23 @@ class DatabaseQueryException extends Exception
      */
     private $queryErrors;
 
-    public function __construct(string $message, array $queryErrors, $code = 0, Throwable $previous = null)
-    {
+    /**
+     * @var string
+     */
+    private $query;
+
+    /**
+     * @unreleased include query and query errors, and make auto-logging compatible
+     * @since 2.9.2
+     */
+    public function __construct(
+        string $query,
+        array $queryErrors,
+        string $message = 'Database Query',
+        $code = 0,
+        Throwable $previous = null
+    ) {
+        $this->query = $query;
         $this->queryErrors = $queryErrors;
 
         parent::__construct($message, $code, $previous);
@@ -40,6 +55,11 @@ class DatabaseQueryException extends Exception
         return $this->queryErrors;
     }
 
+    public function getQuery(): string
+    {
+        return $this->query;
+    }
+
     /**
      * @inheritDoc
      */
@@ -47,6 +67,7 @@ class DatabaseQueryException extends Exception
     {
         return [
             'category' => 'Uncaught database exception',
+            'Query' => $this->query,
             'Query Errors' => $this->queryErrors,
         ];
     }
