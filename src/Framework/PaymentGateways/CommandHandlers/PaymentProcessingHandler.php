@@ -18,7 +18,7 @@ class PaymentProcessingHandler extends PaymentHandler
     /**
      * @return DonationStatus
      */
-    protected function getPaymentStatus()
+    protected function getPaymentStatus(): DonationStatus
     {
         return DonationStatus::PROCESSING();
     }
