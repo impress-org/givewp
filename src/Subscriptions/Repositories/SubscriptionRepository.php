@@ -31,8 +31,10 @@ class SubscriptionRepository
 
     /**
      * @since 2.19.6
+     *
+     * @return Subscription|null
      */
-    public function getById(int $subscriptionId): Subscription
+    public function getById(int $subscriptionId)
     {
         return $this->queryById($subscriptionId)->get();
     }
@@ -150,10 +152,10 @@ class SubscriptionRepository
      *
      * @param  Subscription  $subscription
      *
-     * @return Subscription
+     * @return void
      * @throws Exception
      */
-    public function update(Subscription $subscription): Subscription
+    public function update(Subscription $subscription)
     {
         $this->validateSubscription($subscription);
 
@@ -187,13 +189,7 @@ class SubscriptionRepository
 
         DB::query('COMMIT');
 
-        $subscriptionId = DB::last_insert_id();
-
-        $subscription = $this->getById($subscriptionId);
-
         Hooks::doAction('givewp_subscription_updated', $subscription);
-
-        return $subscription;
     }
 
     /**
