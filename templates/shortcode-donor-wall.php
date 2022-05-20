@@ -19,7 +19,6 @@ $atts          = $args[2]; // Shortcode attributes.
 <div class="give-grid__item">
     <div class="give-donor give-card">
         <div class="give-donor-container">
-            <div class="give-donor-header">
                 <?php
                 if ( true === $atts['show_avatar'] ) {
 
@@ -31,7 +30,7 @@ $atts          = $args[2]; // Shortcode attributes.
                     );
 
                     $donor_avatar = sprintf(
-                        '%2$s<p class="give-donor-header__image__name_initial">%1$s</p>',
+                        '%2$s<p class="give-donor-container__image__name_initial">%1$s</p>',
                         $donation['name_initial'],
                         $anonymous_donor_img
                     );
@@ -41,7 +40,7 @@ $atts          = $args[2]; // Shortcode attributes.
 
                     // Maybe display the Avatar.
                     echo sprintf(
-                        '<div class="give-donor-header__image" data-donor_email="%1$s" data-has-valid-gravatar="%2$s" data-avatar-size="%3$s" data-anonymous-donation="%5$s" style="max-width:%3$spx;">%4$s</div>',
+                        '<div class="give-donor-container__image" data-donor_email="%1$s" data-has-valid-gravatar="%2$s" data-avatar-size="%3$s" data-anonymous-donation="%5$s" style="max-width:%3$spx;">%4$s</div>',
                         md5( strtolower( trim( $donation['_give_payment_donor_email'] ) ) ),
                         absint( $validate_gravatar ),
                         $atts['avatar_size'],
@@ -66,7 +65,6 @@ $atts          = $args[2]; // Shortcode attributes.
                         <?php echo esc_html( $donation['_give_donation_company'] ); ?>
                     </h3>
                 <?php endif; ?>
-                </div>
 
                 <?php
                 if (
