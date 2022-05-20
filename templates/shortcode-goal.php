@@ -55,6 +55,19 @@ switch ( $goal_format ) {
 $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progress, $form_id, $form );
 ?>
 <div class="give-goal-progress">
+    <?php if ( ! empty( $show_bar ) ) :
+        $style = "width:{$progress_bar_value}%;";
+
+        if ( ! empty($color)) {
+            $style .= ";background: linear-gradient(180deg, {$color} 0%, {$color} 100%), linear-gradient(180deg, #fff 0%, #ccc 100%); background-blend-mode: multiply;";
+        }
+        ?>
+        <div class="progress-bar">
+            <div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="<?php echo esc_attr( $progress_bar_value ); ?>">
+                <span style="<?php echo $style; ?>"></span>
+            </div>
+        </div>
+    <?php endif; ?>
 	<?php if ( ! empty( $show_text ) ) : ?>
 		<div class="raised">
 			<?php
@@ -147,18 +160,11 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 						'form_id' => $form_id,
 					)
 				);
-
 				echo sprintf(
 					/* translators: 1: amount of income raised 2: goal target amount. */
-					__( '<div class="raised-details">
-                              <div class="income">
+					__( '<div class="raised__details">
                                    <span class="amount"  data-amounts="%1$s">%2$s</span>
-                                   <span> Raised </span>
-                              </div>
-                              <div class="goal-text">
-                                   <span class="amount" data-amounts="%3$s">%4$s</span>
-                                   <span> Goal </span>
-                              </div>
+                                   <span class="goal" data-amounts="%3$s"><span>of </span>%4$s</span>
                          </div>', 'give' ),
 					esc_attr( wp_json_encode( $income_amounts, JSON_PRETTY_PRINT ) ),
 					esc_attr( $formatted_income ),
@@ -169,14 +175,9 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 			elseif ( 'percentage' === $goal_format ) :
 
 				echo sprintf( /* translators: %s: percentage of the amount raised compared to the goal target */
-					__( '<div class="raised-details">
-                              <div class="income">
+					__( '<div class="raised__details">
                                    <span class="give-percentage amount">%s%%</span>
-                                   <span> Raised </span>
-                              </div>
-                              <div class="goal-text">
-                                   <span class="amount"> 100&#37; </span>
-                                   <span> Goal </span>
+                                   <span class="goal"> 100&#37; </span>
                               </div>
                          </div>', 'give' ),
 					round( $progress )
@@ -186,25 +187,13 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 
 				echo sprintf( /* translators: 1: total number of donations completed 2: total number of donations set as goal */
 					_n(
-						'<div class="raised-details">
-                                      <div class="income">
-                                           <span class="amount">%1$s</span>
-                                           <span> Donations Raised </span>
-                                      </div>
-                                      <div class="goal-text">
-                                           <span class="amount">%2$s</span>
-                                           <span> Donation Goal </span>
-                                      </div>
+						'<div class="raised__details">
+                                           <span>%1$s</span>
+                                           <span class="goal">%2$s</span>
                                 </div>',
-						'<div class="raised-details">
-                                      <div class="income">
-                                           <span class="amount">%1$s</span>
-                                           <span> Donations Raised </span>
-                                      </div>
-                                      <div class="goal-text">
-                                           <span class="amount">%2$s</span>
-                                           <span> Donation Goal </span>
-                                      </div>
+						'<div class="raised__details">
+                                           <span >%1$s</span>
+                                           <span class="goal">%2$s</span>
                                 </div>',
 						$goal,
 						'give'
@@ -218,24 +207,12 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 				echo sprintf( /* translators: 1: total number of donors completed 2: total number of donors set as goal */
 					_n(
 						'<div class="raised-details">
-                                      <div class="income">
-                                           <span class="amount">%1$s</span>
-                                           <span> Donors </span>
-                                      </div>
-                                      <div class="goal-text">
-                                           <span class="amount">%2$s</span>
-                                           <span> Goal </span>
-                                      </div>
+                                           <span >%1$s</span>
+                                           <span class="goal">%2$s</span>
                                 </div>',
 						'<div class="raised-details">
-                                      <div class="income">
                                            <span class="amount">%1$s</span>
-                                           <span> Donors </span>
-                                      </div>
-                                      <div class="goal-text">
-                                           <span class="amount">%2$s</span>
-                                           <span> Goal </span>
-                                      </div>
+                                           <span class="goal">%2$s</span>
                                 </div>',
 						$goal,
 						'give'
@@ -248,20 +225,4 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 			?>
 		</div>
 	<?php endif; ?>
-
-
-	<?php if ( ! empty( $show_bar ) ) :
-        $style = "width:{$progress_bar_value}%;";
-
-        if ( ! empty($color)) {
-            $style .= ";background: linear-gradient(180deg, {$color} 0%, {$color} 100%), linear-gradient(180deg, #fff 0%, #ccc 100%); background-blend-mode: multiply;";
-        }
-        ?>
-        <div class="progress-bar">
-            <div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="<?php echo esc_attr( $progress_bar_value ); ?>">
-                <span style="<?php echo $style; ?>"></span>
-            </div>
-		</div>
-	<?php endif; ?>
-
 </div><!-- /.goal-progress -->

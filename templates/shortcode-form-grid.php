@@ -49,18 +49,8 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
 		);
 	}
 	?>
-
-		<div class="give-form-grid-card__body">
+		<div class="give-form-grid">
 			<?php
-			// Maybe display the form title.
-			if ( true === $atts['show_title'] ) {
-				printf(
-					'<h3 class="give-card__title">%1$s</h3>',
-					$formTemplate->getFormHeading( $form_id )
-				);
-			}
-
-
             // Maybe display the featured image.
             if (
                 give_is_setting_enabled($give_settings['form_featured_img'])
@@ -83,77 +73,95 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                 }
 
                 printf(
-                    '<div class="give-card__media">%1$s</div>',
+                    '<div class="give-form-grid-media">%1$s</div>',
                     wp_get_attachment_image(attachment_url_to_postid($imageSrc), $image_size, false, $image_attr)
                 );
             }
+            ?>
 
-			// Maybe display the goal progress bar.
-			if (
-				give_is_setting_enabled( get_post_meta( $form_id, '_give_goal_option', true ) )
-				&& true === $atts['show_goal']
-			) {
-				echo '<div class="give-card__progress">';
-					give_show_goal_progress( $form_id, [
-                        'show_bar' => $atts['show_bar']
-                    ] );
-				echo '</div>';
-			}
+            <div class="give-form-grid-container">
+                <div class="give-form-grid-content">
+                    <?php
 
-            // Maybe display the form excerpt.
-            if ( true === $atts['show_excerpt'] ) {
-                if ( $raw_content = $formTemplate->getFormExcerpt( $form_id ) ) {
-                    $stripped_content = wp_strip_all_tags(
-                        strip_shortcodes( $raw_content )
-                    );
-                } else {
-                    // Get content from the form post's content field.
-                    $raw_content = give_get_meta( $form_id, '_give_form_content', true );
-
-                    if ( ! empty( $raw_content ) ) {
-                        $stripped_content = wp_strip_all_tags(
-                            strip_shortcodes( $raw_content )
+                    // Maybe display the form title.
+                    if ( true === $atts['show_title'] ) {
+                        printf(
+                            '<h3 class="give-form-grid-content__title">%1$s</h3>',
+                            $formTemplate->getFormHeading( $form_id )
                         );
                     }
-                }
 
-                // Maybe truncate excerpt.
-                if ( 0 < $atts['excerpt_length'] ) {
-                    $excerpt = wp_trim_words( $stripped_content, $atts['excerpt_length'] );
-                } else {
-                    $excerpt = $stripped_content;
-                }
+                    // Maybe display the form excerpt.
+                    if ( true === $atts['show_excerpt'] ) {
+                        if ( $raw_content = $formTemplate->getFormExcerpt( $form_id ) ) {
+                            $stripped_content = wp_strip_all_tags(
+                                strip_shortcodes( $raw_content )
+                            );
+                        } else {
+                            // Get content from the form post's content field.
+                            $raw_content = give_get_meta( $form_id, '_give_form_content', true );
 
-                printf( '<p class="give-card__text">%s</p>', $excerpt );
-            }
-			?>
+                            if ( ! empty( $raw_content ) ) {
+                                $stripped_content = wp_strip_all_tags(
+                                    strip_shortcodes( $raw_content )
+                                );
+                            }
+                        }
 
-            <?php if ($atts['show_donate_button']):
-                $button_text = ! empty( $atts['donate_button_text'] )
-                    ? $atts['donate_button_text']
-                    : give_get_meta( $form_id, '_give_form_grid_donate_button_text', true );
+                        // Maybe truncate excerpt.
+                        if ( 0 < $atts['excerpt_length'] ) {
+                            $excerpt = wp_trim_words( $stripped_content, $atts['excerpt_length'] );
+                        } else {
+                            $excerpt = $stripped_content;
+                        }
 
-                $button_bg_color = ! empty( $atts['donate_button_background_color'] )
-                    ? $atts['donate_button_background_color']
-                    : '#66bb6a';
+                        printf( '<p class="give-form-grid-content__text">%s</p>', $excerpt );
+                    }
 
-                $button_text_color = ! empty( $atts['donate_button_text_color'] )
-                    ? $atts['donate_button_text_color']
-                    : '#fff';
-                ?>
-                <div>
-                    <button class="give-form-grid-btn" style="background-color: <?php echo $button_bg_color; ?>;">
-                        <span style="color: <?php echo $button_text_color; ?>">
-                            <?php echo $button_text ?: __( 'Donate', 'give' ); ?>
-                        </span>
+                     if ($atts['show_donate_button']):
+                        $button_text = ! empty( $atts['donate_button_text'] )
+                            ? $atts['donate_button_text']
+                            : give_get_meta( $form_id, '_give_form_grid_donate_button_text', true );
 
-                        <svg width="11" height="19" viewBox="0 0 11 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M1.8335 19C1.44969 19 1.06569 18.8535 0.773186 18.5606C0.187248 17.9746 0.187248 17.0254 0.773186 16.4395L7.21475 10L0.773186 3.55939C0.187248 2.97345 0.187248 2.02423 0.773186 1.43829C1.35912 0.852356 2.30834 0.852356 2.89428 1.43829L10.3943 8.93829C10.9802 9.52423 10.9802 10.4734 10.3943 11.0594L2.89428 18.5594C2.60131 18.8547 2.2174 19 1.8335 19Z" fill="white"/>
-                        </svg>
+                        $button_bg_color = ! empty( $atts['donate_button_background_color'] )
+                            ? $atts['donate_button_background_color']
+                            : '#66bb6a';
 
-                    </button>
+                        $button_text_color = ! empty( $atts['donate_button_text_color'] )
+                            ? $atts['donate_button_text_color']
+                            : '#fff';
+                        ?>
+
+                        <button style="text-decoration-color: <?php echo $button_text_color; ?>">
+                                    <span style="color: <?php echo $button_text_color; ?>">
+                                        <?php echo $button_text ?: __( 'Donate', 'give' ); ?>
+                                    </span>
+
+                            <svg width="11" height="19" viewBox="0 0 11 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1.8335 19C1.44969 19 1.06569 18.8535 0.773186 18.5606C0.187248 17.9746 0.187248 17.0254 0.773186 16.4395L7.21475 10L0.773186 3.55939C0.187248 2.97345 0.187248 2.02423 0.773186 1.43829C1.35912 0.852356 2.30834 0.852356 2.89428 1.43829L10.3943 8.93829C10.9802 9.52423 10.9802 10.4734 10.3943 11.0594L2.89428 18.5594C2.60131 18.8547 2.2174 19 1.8335 19Z" fill="white"/>
+                            </svg>
+                        </button>
+                    <?php endif; ?>
                 </div>
-            <?php endif; ?>
+                <?php
+                    // Maybe display the goal progress bar.
+                    if (
+                        give_is_setting_enabled( get_post_meta( $form_id, '_give_goal_option', true ) )
+                        && true === $atts['show_goal']
+                    ) {
+                        echo '<div class="give-form-grid-content__progress">';
+                        give_show_goal_progress( $form_id, [
+                            'show_bar' => $atts['show_bar']
+                        ] );
+                        echo '</div>';
+                    }
+                ?>
+            </div>
+
+
+
+
+
 		</div>
 	</a>
 	<?php
