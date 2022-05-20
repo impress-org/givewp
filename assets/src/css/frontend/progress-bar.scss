@@ -8,6 +8,7 @@
 */
 
 .give-goal-progress {
+    height: 100%;
     background: #F6F6F6;
     padding: 16px 24px;
 }
@@ -18,14 +19,19 @@
         flex-direction: column;
         font-size: 1rem;
 
-
         & > span:first-child {
             font-weight: 700;
+            font-size: 1rem;
+            line-height: 16px;
+        }
+
+        &  > span:last-child {
+            font-size: 14px;
+            line-height: 16px;
         }
 
     }
 }
-
 
 .give-progress-bar {
     position: relative;
