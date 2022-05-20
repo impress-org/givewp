@@ -136,10 +136,6 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                                     <span style="color: <?php echo $button_text_color; ?>">
                                         <?php echo $button_text ?: __( 'Donate', 'give' ); ?>
                                     </span>
-
-                            <svg width="11" height="19" viewBox="0 0 11 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1.8335 19C1.44969 19 1.06569 18.8535 0.773186 18.5606C0.187248 17.9746 0.187248 17.0254 0.773186 16.4395L7.21475 10L0.773186 3.55939C0.187248 2.97345 0.187248 2.02423 0.773186 1.43829C1.35912 0.852356 2.30834 0.852356 2.89428 1.43829L10.3943 8.93829C10.9802 9.52423 10.9802 10.4734 10.3943 11.0594L2.89428 18.5594C2.60131 18.8547 2.2174 19 1.8335 19Z" fill="white"/>
-                            </svg>
                         </button>
                     <?php endif; ?>
                 </div>
