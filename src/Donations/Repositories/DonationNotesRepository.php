@@ -34,7 +34,7 @@ class DonationNotesRepository
      *
      * @return DonationNote|null
      */
-    public function getById($noteId)
+    public function getById(int $noteId)
     {
         return $this->prepareQuery()
             ->where('comment_ID', $noteId)
@@ -189,7 +189,7 @@ class DonationNotesRepository
     }
 
     /**
-     * @return ModelQueryBuilder
+     * @return ModelQueryBuilder<DonationNote>
      */
     public function prepareQuery(): ModelQueryBuilder
     {

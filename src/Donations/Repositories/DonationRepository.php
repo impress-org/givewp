@@ -66,6 +66,9 @@ class DonationRepository
 
     /**
      * @since 2.19.6
+     *
+     * @param  int  $donationId
+     * @return ModelQueryBuilder<Donation>
      */
     public function queryById(int $donationId): ModelQueryBuilder
     {
@@ -85,6 +88,9 @@ class DonationRepository
 
     /**
      * @since 2.19.6
+     *
+     * @param  int  $subscriptionId
+     * @return ModelQueryBuilder<Donation>
      */
     public function queryBySubscriptionId(int $subscriptionId): ModelQueryBuilder
     {
@@ -106,6 +112,9 @@ class DonationRepository
 
     /**
      * @since 2.19.6
+     *
+     * @param  int  $donorId
+     * @return ModelQueryBuilder<Donation>
      */
     public function queryByDonorId(int $donorId): ModelQueryBuilder
     {

@@ -98,11 +98,11 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      *
      * @since 2.19.6
      *
-     * @param int $id
+     * @param  int  $id
      *
-     * @return Donation
+     * @return Donation|null
      */
-    public static function find($id): Donation
+    public static function find($id)
     {
         return give()->donations->getById($id);
     }
@@ -271,7 +271,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @return DonationFactory<Donation>
+     * @since 2.19.6
      */
     public static function factory(): DonationFactory
     {

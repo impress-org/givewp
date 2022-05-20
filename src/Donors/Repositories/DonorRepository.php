@@ -34,6 +34,8 @@ class DonorRepository
      * Query Donor By ID
      *
      * @since 2.19.6
+     *
+     * @return ModelQueryBuilder<Donor>
      */
     public function queryById(int $donorId): ModelQueryBuilder
     {
@@ -341,6 +343,8 @@ class DonorRepository
     }
 
     /**
+     * @since 2.19.6
+     *
      * @return ModelQueryBuilder<Donor>
      */
     public function prepareQuery(): ModelQueryBuilder

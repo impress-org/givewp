@@ -41,6 +41,9 @@ class SubscriptionRepository
 
     /**
      * @since 2.19.6
+     *
+     * @param  int  $subscriptionId
+     * @return ModelQueryBuilder<Subscription>
      */
     public function queryById(int $subscriptionId): ModelQueryBuilder
     {
@@ -50,6 +53,9 @@ class SubscriptionRepository
 
     /**
      * @since 2.19.6
+     *
+     * @param  int  $donationId
+     * @return ModelQueryBuilder<Subscription>
      */
     public function queryByDonationId(int $donationId): ModelQueryBuilder
     {
@@ -59,6 +65,9 @@ class SubscriptionRepository
 
     /**
      * @since 2.19.6
+     *
+     * @param  int  $donorId
+     * @return ModelQueryBuilder<Subscription>
      */
     public function queryByDonorId(int $donorId): ModelQueryBuilder
     {
@@ -93,8 +102,6 @@ class SubscriptionRepository
     /**
      * @unreleased replace actions with givewp_subscription_creating and givewp_subscription_created
      * @since 2.19.6
-     *
-     * @param  Subscription  $subscription
      *
      * @return void
      * @throws Exception
@@ -150,8 +157,6 @@ class SubscriptionRepository
      * @unreleased replace actions with givewp_subscription_updating and givewp_subscription_updated
      * @since 2.19.6
      *
-     * @param  Subscription  $subscription
-     *
      * @return void
      * @throws Exception
      */
@@ -196,10 +201,6 @@ class SubscriptionRepository
      * @unreleased replace actions with givewp_subscription_deleting and givewp_subscription_deleted
      * @since 2.20.0 consolidate meta deletion into a single query
      * @since 2.19.6
-     *
-     * @param  Subscription  $subscription
-     *
-     * @return bool
      *
      * @throws Exception
      */
@@ -267,8 +268,6 @@ class SubscriptionRepository
     /**
      * @since 2.19.6
      *
-     * @param int $subscriptionId
-     *
      * @return int|null
      */
     public function getInitialDonationId(int $subscriptionId)
@@ -286,7 +285,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @param Subscription $subscription
+     * @since 2.19.6
      *
      * @return void
      */

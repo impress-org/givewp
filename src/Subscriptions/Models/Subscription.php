@@ -161,7 +161,6 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     /**
      * @since 2.19.6
      *
-     * @return bool
      * @throws Exception
      */
     public function delete(): bool
@@ -199,8 +198,6 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      * @since 2.19.6
      *
      * @param object $object
-     *
-     * @return Subscription
      */
     public static function fromQueryBuilderObject($object): Subscription
     {
@@ -211,8 +208,6 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      * Expiration / End Date / Renewal
      *
      * @since 2.19.6
-     *
-     * @return string
      */
     public function expiration(): string
     {
@@ -237,7 +232,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @return SubscriptionFactory<Subscription>
+     * @since 2.19.6
      */
     public static function factory(): SubscriptionFactory
     {
