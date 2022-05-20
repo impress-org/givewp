@@ -11,6 +11,23 @@
  * 4. Details include the forms title & amount given.
  */
 
+@use "sass:string";
+
+$MIN_REM_SIZE: 16px;
+
+/**
+ * Safely use rem values in distributed code for unpredictable environments (e.g. for use inside a WordPress plugin).
+ *
+ * This does not support IE 11 and a few other outdated browser.
+ * A Sass mixin could be used to provide a fallback value for this.
+ *
+ * @param {Number} $value
+ * @return {String} e.g. for $value: 3 and $MIN_REM_SIZE: 16px => max(3rem, 48px)
+ */
+@function safe-rem($value) {
+    @return string.unquote("max(#{$value}rem, #{$value * $MIN_REM_SIZE})");
+}
+
 /*--------------------------------------------------------------
 # Spacing
 --------------------------------------------------------------*/
@@ -27,6 +44,7 @@ $donor-space-and-half: $donor-space * 1.5;
 $donor-space-and-three-quarters: $donor-space * 1.75;
 $donor-space-double: $donor-space * 2;
 $donor-space-triple: $donor-space * 3;
+
 
 .give-donor {
     position: relative;
@@ -90,7 +108,7 @@ $donor-space-triple: $donor-space * 3;
         &__name {
             width: 100%;
             margin: 0 0 16px 0;
-            font-size: 1.5rem;
+            font-size: safe-rem(1.5);
             font-weight: 600;
             text-align: center;
             line-height: 20px;
@@ -118,7 +136,7 @@ $donor-space-triple: $donor-space * 3;
         p {
             width: 100%;
             color: $donor-color;
-            font-size: 1rem;
+            font-size: safe-rem(1);
             font-style: italic;
             margin: 0 !important;
         }
@@ -148,7 +166,7 @@ $donor-space-triple: $donor-space * 3;
 
             span:first-child {
                 color: $donor-color;
-                font-size: 1.25rem;
+                font-size: safe-rem(1.25);
                 font-weight: 500;
                 letter-spacing: 0;
                 text-align: left;
@@ -156,7 +174,7 @@ $donor-space-triple: $donor-space * 3;
 
             span:last-child {
                 color: $donor-color;
-                font-size: .875rem;
+                font-size: safe-rem(.875);
                 font-weight: 400;
                 letter-spacing: 0;
                 text-align: left;
@@ -165,7 +183,7 @@ $donor-space-triple: $donor-space * 3;
 
         &__total {
             color: #219653;
-            font-size: 1.55rem;
+            font-size: safe-rem(1.55);
             font-weight: 700;
             letter-spacing: 0;
             text-align: right;
@@ -193,7 +211,7 @@ $donor-space-triple: $donor-space * 3;
 
         &__message {
             margin-left: 12px;
-            font-size: .9rem;
+            font-size: safe-rem(.9);
             color: $donor-color;
 
 
