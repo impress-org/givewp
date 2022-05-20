@@ -44,11 +44,9 @@ class DonationNote extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @param  int  $id
-     *
-     * @return DonationNote
+     * @return DonationNote|null
      */
-    public static function find($id): DonationNote
+    public static function find($id)
     {
         return give()->donations->notes->getById($id);
     }
@@ -56,8 +54,6 @@ class DonationNote extends Model implements ModelCrud, ModelHasFactory
 
     /**
      * @unreleased
-     *
-     * @param  array  $attributes
      *
      * @return $this
      * @throws Exception|InvalidArgumentException
@@ -74,6 +70,7 @@ class DonationNote extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
+     * @return void
      * @throws Exception|InvalidArgumentException
      */
     public function save()
@@ -88,11 +85,9 @@ class DonationNote extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @return bool
-     *
      * @throws Exception|InvalidArgumentException
      */
-    public function delete()
+    public function delete(): bool
     {
         return give()->donations->notes->delete($this);
     }
@@ -100,17 +95,19 @@ class DonationNote extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @return ModelQueryBuilder
+     * @return ModelQueryBuilder<DonationNote>
      */
-    public static function query()
+    public static function query(): ModelQueryBuilder
     {
         return give()->donations->notes->prepareQuery();
     }
 
     /**
-     * @return ModelQueryBuilder
+     * @unreleased
+     *
+     * @return ModelQueryBuilder<Donation>
      */
-    public function donation()
+    public function donation(): ModelQueryBuilder
     {
         return give()->donations->queryById($this->donationId);
     }
@@ -119,9 +116,8 @@ class DonationNote extends Model implements ModelCrud, ModelHasFactory
      * @unreleased
      *
      * @param  object  $object
-     * @return DonationNote
      */
-    public static function fromQueryBuilderObject($object)
+    public static function fromQueryBuilderObject($object): DonationNote
     {
         return new DonationNote([
             'id' => (int)$object->id,
@@ -132,9 +128,9 @@ class DonationNote extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @return DonationNoteFactory
+     * @unreleased
      */
-    public static function factory()
+    public static function factory(): DonationNoteFactory
     {
         return new DonationNoteFactory(static::class);
     }
