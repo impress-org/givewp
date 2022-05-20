@@ -13,16 +13,22 @@ export default function FieldSection({name, label, fields}: Props) {
             <div>
                 <h2 id={name}>{label}</h2>
             </div>
-            {fields.map(({type, name, label, readOnly, validationRules}) => (
-                <Field
-                    key={name}
-                    label={label}
-                    type={type}
-                    name={name}
-                    readOnly={readOnly}
-                    required={validationRules?.required}
-                />
-            ))}
+            {fields.map(({type, name, label, readOnly, validationRules, nodes}) => {
+                if (type === 'section' && nodes) {
+                    return <FieldSection fields={nodes} name={name} label={label} key={name} />;
+                }
+                
+                return (
+                    <Field
+                        key={name}
+                        label={label}
+                        type={type}
+                        name={name}
+                        readOnly={readOnly}
+                        required={validationRules?.required}
+                    />
+                );
+            })}
         </fieldset>
     );
 }

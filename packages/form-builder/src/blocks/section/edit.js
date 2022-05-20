@@ -44,8 +44,9 @@ export default function Edit( props ) {
                 </header>
 
                 <InnerBlocks
+                    allowedBlocks={ props.attributes.allowedBlocks }
                     template={ props.attributes.innerBlocksTemplate }
-                    renderAppender={ !! isSelectedOrIsInnerBlockSelected && InnerBlocks.ButtonBlockAppender}
+                    renderAppender={ !! isSelectedOrIsInnerBlockSelected && InnerBlocks.ButtonBlockAppender }
                 />
 
             </div>

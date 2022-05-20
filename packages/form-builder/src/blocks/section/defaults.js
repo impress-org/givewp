@@ -28,6 +28,9 @@ const defaults = {
             selector: 'p',
             default: 'Section Description',
         },
+        allowedBlocks: {
+            default: true,
+        },
     },
 
     save: function() {

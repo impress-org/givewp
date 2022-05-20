@@ -6,6 +6,7 @@ use Give\Framework\EnqueueScript;
 use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\Form;
+use Give\Framework\FieldsAPI\Group;
 use Give\Framework\FieldsAPI\Hidden;
 use Give\Framework\FieldsAPI\Radio;
 use Give\Framework\FieldsAPI\Section;
@@ -90,49 +91,33 @@ class Block
     /**
      * @unreleased
      *
-     * @param  array  $attributes
-     * @return Form
      * @throws EmptyNameException
      */
-    private function createForm($attributes): Form
+    private function createForm(array $attributes): Form
     {
         $gatewayOptions = [];
         foreach ($this->getEnabledPaymentGateways($attributes['formId']) as $gateway) {
             $gatewayOptions[] = Radio::make($gateway->getId())->label($gateway->getPaymentMethodLabel());
         }
 
-        $donationForm = new Form('DonationForm');
+        $donationForm = new Form($attributes['formId']);
+
+        $formBlockData = json_decode(get_post($attributes['formId'])->post_content, false);
+
+        foreach( $formBlockData as $block ) {
+            $donationForm->append($this->convertFormBlockDataToFieldsAPI($block));
+        }
+
+        /**
+         * @todo for some reason, `getNodeByName()` isn't working...
+         */
+        foreach( $donationForm->all() as $node ) {
+            if( 'paymentDetails' === $node->getName() ) {
+                $node->append(...$gatewayOptions);
+            }
+        }
 
         $donationForm->append(
-            Section::make('donationDetails')
-                ->label(__('Donation Details', 'give'))
-                ->append(
-                    Text::make('amount')
-                        ->label(__('Donation Amount', 'give'))
-                        ->defaultValue(50)
-                        ->required()
-                ),
-
-            Section::make('donorDetails')
-                ->label(__('Donor Details', 'give'))
-                ->append(
-                    Text::make('firstName')
-                        ->label(__('First Name', 'give'))
-                        ->required(),
-
-                    Text::make('lastName')
-                        ->label(__('Last Name', 'give'))
-                        ->required(),
-
-                    Email::make('email')
-                        ->label(__('Email', 'give'))
-                        ->required()
-                        ->emailTag('email')
-                ),
-
-            Section::make('paymentDetails')
-                ->label(__('Payment Details', 'give'))
-                ->append(...$gatewayOptions),
 
             Hidden::make('formId')
                 ->defaultValue($attributes['formId']),
@@ -171,5 +156,71 @@ class Block
         }
 
         return $gateways;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  object  $block
+     * @return Section|Text
+     * @throws EmptyNameException
+     */
+    protected function convertFormBlockDataToFieldsAPI($block)
+    {
+        if( 'custom-block-editor/payment-gateways' === $block->name ) {
+            return Section::make('paymentDetails')
+                    ->label($block->attributes->title);
+        }
+
+        if ($block->innerBlocks) {
+
+            /**
+             * @todo Currently re-purposing sections for groups so that they render for the prototype.
+             */
+            $section = (false && $block->name === "custom-block-editor/name-field-group")
+                ? Group::make('name-group')
+                : Section::make($block->clientId);
+
+            if (property_exists($block->attributes, 'title')) {
+                $section->label($block->attributes->title);
+            }
+
+            foreach ($block->innerBlocks as $innerBlock) {
+                $section->append($this->convertFormBlockDataToFieldsAPI($innerBlock));
+            }
+
+            return $section;
+        }
+
+
+        /*
+         * I'm considering refactoring the `namespace/block-type` to be
+         * used as `field-category/block-type` for easier parsing.
+         *
+         * For example:
+         *  `section/donor-information`
+         *      `group/donor-name`
+         *          `text/donor-first-name`
+         *          `text/donor-last-name`
+         *      `email/donor-email`
+         */
+
+        if ($block->name === "custom-block-editor/donation-amount-levels") {
+            $field = Text::make('amount')->required();
+        } elseif ($block->name === "custom-block-editor/first-name-field") {
+            $field = Text::make('firstName')->required();
+        } elseif ($block->name === "custom-block-editor/last-name-field") {
+            $field = Text::make('lastName')->required();
+        } elseif ($block->name === "custom-block-editor/email-field") {
+            $field = Email::make('email')->required()->emailTag('email');
+        } else {
+            $field = Text::make($block->clientId);
+        }
+
+        if (property_exists($block->attributes, 'label')) {
+            $field->label($block->attributes->label);
+        }
+
+        return $field;
     }
 }

@@ -69,3 +69,27 @@ registerBlockType( 'custom-block-editor/donation-amount', {
     },
     edit: Edit,
 } );
+
+registerBlockType( 'custom-block-editor/payment-gateways', {
+    ...Defaults,
+    title: __( 'Payment Gateways', 'custom-block-editor' ),
+    supports: {
+        multiple: false,
+    },
+    attributes: {
+        ...attributes,
+        title: {
+          default:__( 'Payment Details', 'custom-block-editor' )
+        },
+        description: {
+            default: 'PAYMENT DETAILS WILL GO HERE :)',
+        },
+        allowedBlocks: {
+            default: [],
+        },
+        innerBlocksTemplate: {
+            default: []
+        },
+    },
+    edit: Edit,
+} );

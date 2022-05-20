@@ -1,20 +1,20 @@
 const localStorageDriver = {
-    save: ( blocks ) => {
-        console.log( 'Saving to local storage...' )
-        console.log( blocks )
+    save: ({ blocks, formTitle } ) => {
         return new Promise((resolve, reject) => {
             setTimeout( function() {
-                localStorage.setItem('@givewp/form-builder', JSON.stringify(blocks) )
-                console.log( 'Saved to local storage!' )
+                localStorage.setItem('@givewp/form-builder.blocks', JSON.stringify(blocks) )
+                localStorage.setItem('@givewp/form-builder.formTitle', formTitle )
                 resolve()
             }, 1000)
         })
     },
     load: () => {
-        const value = localStorage.getItem('@givewp/form-builder' )
-        console.log( 'Loading from local storage...' )
-        console.log( value )
-        return JSON.parse( value )
+        const blocks = JSON.parse( localStorage.getItem('@givewp/form-builder.blocks' ) )
+        const formTitle = localStorage.getItem('@givewp/form-builder.formTitle' )
+        return {
+            blocks,
+            formTitle
+        }
     },
 }
 
