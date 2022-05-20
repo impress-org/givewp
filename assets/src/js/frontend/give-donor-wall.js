@@ -151,7 +151,7 @@ class GiveDonorWall {
 		gridWraps = Array.from( shortcodeAttrHiddenField.parentNode.querySelectorAll( '.give-grid__item' ) );
 
 		gridWraps.forEach( function( gridWrap, index ) {
-			gravatarContainer = gridWrap.querySelector( '.give-donor-header__image' );
+			gravatarContainer = gridWrap.querySelector( '.give-donor-container__image' );
 
 			// Bailout out if already tried to load gravatar.
 			if ( gravatarContainer.classList.contains( 'gravatar-loaded' ) ) {
