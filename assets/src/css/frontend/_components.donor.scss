@@ -5,9 +5,8 @@
 /**
  * Single donor with user image, details, and review text.
  *
- * 1. Card Container wraps the Header, Content & Details. It displays above the tribute message.
- * 2. Header includes the image and donor name.
- * 3. Content includes the donor comment
+ * 1. Card Container wraps the Image, Name, Content & Details. It displays above the tribute message.
+ * 2. Content includes the donor comment
  * 4. Details include the forms title & amount given.
  */
 
@@ -46,6 +45,9 @@ $donor-space-double: $donor-space * 2;
 $donor-space-triple: $donor-space * 3;
 
 
+.give-grid__item {
+    max-width: 385px;
+}
 .give-donor {
     position: relative;
     display: flex;
@@ -53,7 +55,7 @@ $donor-space-triple: $donor-space * 3;
     justify-content: space-between;
     width:100%;
     max-height: 100%;
-    padding: 5% 0;
+    padding: 18px 0;
     margin-bottom: $donor-space;
     border: 1px solid $give-card-border;
     background: #fff;
@@ -65,17 +67,9 @@ $donor-space-triple: $donor-space * 3;
         display: flex;
         flex-direction: column;
         padding: 0 5%;
-    }
-
-    /* [1] */
-    &-header {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-evenly;
-        align-content: space-between;
 
         &__image {
+            align-self: center;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -107,7 +101,7 @@ $donor-space-triple: $donor-space * 3;
 
         &__name {
             width: 100%;
-            margin: 0 0 16px 0;
+            margin: 0 0 10px 0 !important;
             font-size: safe-rem(1.5);
             font-weight: 600;
             text-align: center;
@@ -115,8 +109,7 @@ $donor-space-triple: $donor-space * 3;
         }
     }
 
-    /* [2] */
-
+    /* [1] */
     &-wrapper {
         flex: 1;
         display: flex;
@@ -127,8 +120,9 @@ $donor-space-triple: $donor-space * 3;
     &-content {
         flex: 1;
         width: 100%;
-        margin-bottom: 14px;
-        padding-left: 14px;
+        margin-bottom: 20px;
+        line-height: 20px;
+        padding-left: 16px;
         border-left: 2px solid #219653;
         font-weight: 400;
         letter-spacing: 0;
@@ -136,8 +130,9 @@ $donor-space-triple: $donor-space * 3;
         p {
             width: 100%;
             color: $donor-color;
-            font-size: safe-rem(1);
+            font-size: safe-rem(.875);
             font-style: italic;
+            line-height: 20px;
             margin: 0 !important;
         }
 
@@ -153,7 +148,7 @@ $donor-space-triple: $donor-space * 3;
     }
 
 
-    /* [3] */
+    /* [2] */
 
     &-details {
         display: flex;
@@ -166,7 +161,7 @@ $donor-space-triple: $donor-space * 3;
 
             span:first-child {
                 color: $donor-color;
-                font-size: safe-rem(1.25);
+                font-size: safe-rem(1);
                 font-weight: 500;
                 letter-spacing: 0;
                 text-align: left;
@@ -174,7 +169,7 @@ $donor-space-triple: $donor-space * 3;
 
             span:last-child {
                 color: $donor-color;
-                font-size: safe-rem(.875);
+                font-size: safe-rem(.8);
                 font-weight: 400;
                 letter-spacing: 0;
                 text-align: left;
@@ -182,22 +177,24 @@ $donor-space-triple: $donor-space * 3;
         }
 
         &__total {
+            min-width: 35%;
             color: #219653;
-            font-size: safe-rem(1.55);
+            font-size: safe-rem(1.25);
             font-weight: 700;
+            line-height: 24px;
             letter-spacing: 0;
             text-align: right;
         }
     }
 
-    /* [4] */
+    /* [3] */
 
     &-tribute{
         display: flex;
         align-items: center;
         width: 100%;
         min-height: 32px;
-        margin-top: 22px;
+        margin-top: 18px;
         background: #DEEAE3;
 
         span {
@@ -205,7 +202,7 @@ $donor-space-triple: $donor-space * 3;
                 display: block;
                 height: 22px;
                 width: 22px;
-                margin-left: 42px;
+                margin-left: 32px;
             }
         }
 
