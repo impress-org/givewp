@@ -45,10 +45,6 @@ $donor-space-double: $donor-space * 2;
 $donor-space-triple: $donor-space * 3;
 
 
-.give-grid__item {
-    max-width: 385px;
-}
-
 .give-donor {
     position: relative;
     display: flex;
@@ -141,6 +137,7 @@ $donor-space-triple: $donor-space * 3;
             color: #69B86B;
             cursor: pointer;
             white-space: nowrap;
+
         }
 
         &__excerpt + &__comment {
