@@ -48,6 +48,7 @@ $donor-space-triple: $donor-space * 3;
 .give-grid__item {
     max-width: 385px;
 }
+
 .give-donor {
     position: relative;
     display: flex;
@@ -194,6 +195,7 @@ $donor-space-triple: $donor-space * 3;
         align-items: center;
         width: 100%;
         min-height: 32px;
+        margin-top: 32px;
         background: #DEEAE3;
 
         span {
