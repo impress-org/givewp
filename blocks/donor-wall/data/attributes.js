@@ -58,7 +58,7 @@ const blockAttributes = {
 	},
     showForm: {
 		type: 'boolean',
-		default: false,
+		default: true,
 	},
 	showTotal: {
 		type: 'boolean',
