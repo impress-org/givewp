@@ -98,7 +98,7 @@ const blockAttributes = {
 	},
 	avatarSize: {
 		type: 'string',
-		default: '80',
+		default: '75',
 	},
 };
 
