@@ -50,7 +50,7 @@ $atts          = $args[2]; // Shortcode attributes.
                 }
                 ?>
                 <?php if ( true === $atts['show_name'] ) : ?>
-                    <h3 class="give-donor-header__name" style='<?php echo ($atts['show_avatar']) ? "text-align: center" : "text-align: left"?>'>
+                    <h3 class="give-donor-container__name" style='<?php echo ($atts['show_avatar']) ? "text-align: center" : "text-align: left"?>'>
                         <?php
                         // Get donor name based on donation parameter.
                         $donor_name = ! empty( $donation['_give_anonymous_donation'] )
@@ -61,7 +61,7 @@ $atts          = $args[2]; // Shortcode attributes.
                     </h3>
                 <?php endif; ?>
                 <?php if ( true === $atts['show_company_name'] && isset( $donation['_give_donation_company'] ) ) : ?>
-                    <h3 class="give-donor-header__name">
+                    <h3 class="give-donor-container__name">
                         <?php echo esc_html( $donation['_give_donation_company'] ); ?>
                     </h3>
                 <?php endif; ?>
