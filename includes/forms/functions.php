@@ -174,21 +174,23 @@ function give_send_back_to_checkout( $args = [] ) {
 
 	$url     = isset( $_POST['give-current-url'] ) ? sanitize_text_field( $_POST['give-current-url'] ) : '';
 	$form_id = 0;
+    $defaults = [];
 
 	// Set the form_id.
 	if ( isset( $_POST['give-form-id'] ) ) {
-		$form_id = sanitize_text_field( $_POST['give-form-id'] );
+        $defaults['form-id'] = (int) sanitize_text_field( $_POST['give-form-id'] );
 	}
+
+    // Set the payment mode.
+    if ( isset( $_POST['payment-mode'] ) ) {
+        $defaults['payment-mode'] = sanitize_text_field( $_POST['payment-mode'] );
+    }
 
 	// Need a URL to continue. If none, redirect back to single form.
 	if ( empty( $url ) ) {
 		wp_safe_redirect( get_permalink( $form_id ) );
 		give_die();
 	}
-
-	$defaults = [
-		'form-id' => (int) $form_id,
-	];
 
 	// Set the $level_id.
 	if ( isset( $_POST['give-price-id'] ) ) {
