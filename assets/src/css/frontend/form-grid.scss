@@ -25,16 +25,18 @@
     padding: 24px ;
 
     & > h3 {
+        font-size: 1rem;
+        font-weight: 700;
         line-height: 18px;
     }
 
     & > p {
-        font-size: 1rem;
-        line-height: 32px;
+        font-size: .875rem;
+        line-height: 24px;
     }
 
     & > button {
-        background: none;
+        background-color: transparent!important;
         padding: 0;
         border: none;
         font-size: 1rem;
