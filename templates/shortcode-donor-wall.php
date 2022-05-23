@@ -13,6 +13,8 @@ $donation = $args[0];
 
 $give_settings = $args[1]; // Give settings.
 $atts          = $args[2]; // Shortcode attributes.
+
+$primary_color = $atts['color']
 ?>
 
 
@@ -75,7 +77,7 @@ $atts          = $args[2]; // Shortcode attributes.
                 ) :
                     ?>
                 <div class="give-donor-wrapper">
-                    <div class="give-donor-content">
+                    <div class="give-donor-content" style="border-color: <?php echo ! empty( $atts['color']) ? $atts['color'] :'#219653' ?>">
                         <?php
                         $comment     = trim( $donation['donor_comment'] );
                         $total_chars = strlen( $comment );
@@ -122,14 +124,14 @@ $atts          = $args[2]; // Shortcode attributes.
                     </div>
                 <?php endif; ?>
                 <?php if ( true === $atts['show_total'] ) : ?>
-                    <span class="give-donor-details__total">
+                    <span class="give-donor-details__total" style="color: <?php echo ! empty( $atts['color']) ? $atts['color'] :'#219653' ?>">
                             <?php echo esc_html( give_donation_amount( $donation['donation_id'], true ) ); ?>
                     </span>
                 <?php endif; ?>
                 </div>
             </div>
         <?php if ( true === $atts['show_tributes'] && (isset( $donation['_give_tributes_first_name'] ) || isset( $donation['_give_tributes_Last_name'])) ) : ?>
-            <div class="give-donor-tribute">
+            <div class="give-donor-tribute" style="background-color: <?php echo ! empty( $atts['color']) ? $atts['color'] :'#219653' ?>" >
                     <span>
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path opacity="0.4" d="M11.9667 5.13998L11.8734 5.08665L10.9467 4.55332L9.0334 3.44665C8.44673 3.10665 7.5534 3.10665 6.96673 3.44665L5.0534 4.55332L4.12673 5.09332L4.00673 5.15998C2.8134 5.95998 2.7334 6.10665 2.7334 7.39332V10.4667C2.7334 11.7533 2.8134 11.9 4.0334 12.72L6.96673 14.4133C7.26007 14.5867 7.62673 14.6667 8.00007 14.6667C8.36673 14.6667 8.74007 14.5867 9.0334 14.4133L11.9934 12.7C13.1867 11.9 13.2667 11.7533 13.2667 10.4667V7.39332C13.2667 6.10665 13.1867 5.95998 11.9667 5.13998Z" fill="#15AE56"/>
