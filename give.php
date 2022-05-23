@@ -85,6 +85,7 @@ if (!defined('ABSPATH')) {
 /**
  * Main Give Class
  *
+ * @unreleased Remove php dependency validation logic and constant
  * @since 2.19.6 add $donations, $subscriptions, and replace $donors class with DonorRepositoryProxy
  * @since 2.8.0 build in a service container
  * @since 1.0
