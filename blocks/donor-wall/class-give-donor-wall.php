@@ -179,6 +179,10 @@ class Give_Donor_Wall_Block {
 						'type'    => 'string',
 						'default' => '80',
 					],
+                    'color'      => [
+                        'type'    => 'string',
+                        'default' => '#219653',
+                    ],
 				],
 			]
 		);
@@ -219,6 +223,7 @@ class Give_Donor_Wall_Block {
 			'readmore_text'     => $attributes['readMoreText'],
 			'loadmore_text'     => $attributes['loadMoreText'],
 			'avatar_size'       => $avatarSize ?: 60,
+            'color'             => $attributes['color']
 		];
 
 		$html = Give_Donor_Wall::get_instance()->render_shortcode( $parameters );
