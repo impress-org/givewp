@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n'
 import { InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, SelectControl, ToggleControl, TextControl } from '@wordpress/components';
+import { PanelBody, SelectControl, ToggleControl, TextControl, ColorPicker } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -15,7 +15,7 @@ import giveDonorWallOptions from '../data/options';
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { donorsPerPage, ids, formID, categories, tags, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, showForm, showTotal, showDate, showComments, showTributes, showAnonymous, onlyComments, commentLength, readMoreText, loadMoreText } = attributes;
+	const { donorsPerPage, ids, formID, categories, tags, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, showForm, showTotal, showDate, showComments, showTributes, showAnonymous, onlyComments, commentLength, readMoreText, loadMoreText, color } = attributes;
 	const saveSetting = ( name, value ) => {
 		setAttributes( {
 			[ name ]: value,
@@ -127,6 +127,13 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Only Donors with Comments', 'give' ) }
 					checked={ !! onlyComments }
 					onChange={ ( value ) => saveSetting( 'onlyComments', value ) } />
+                <ColorPicker
+                    name="color"
+                    color={color}
+                    defaultValue={color}
+                    onChange={ ( value ) => saveSetting('color', value) }
+                    enableAlpha
+                />
 				<TextControl
 					name="commentLength"
 					label={ __( 'Comment Length', 'give' ) }
@@ -142,6 +149,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Load More Text', 'give' ) }
 					value={ loadMoreText }
 					onChange={ ( value ) => saveSetting( 'loadMoreText', value ) } />
+
 			</PanelBody>
 		</InspectorControls>
 	);
