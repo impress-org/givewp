@@ -37,7 +37,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function bootLegacyListeners()
     {
-        Hooks::addAction('give_subscription_creating', DispatchGiveSubscriptionPreCreate::class);
-        Hooks::addAction('give_subscription_created', DispatchGiveSubscriptionPostCreate::class);
+        Hooks::addAction('givewp_subscription_creating', DispatchGiveSubscriptionPreCreate::class);
+        Hooks::addAction('givewp_subscription_created', DispatchGiveSubscriptionPostCreate::class);
     }
 }

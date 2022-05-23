@@ -11,7 +11,6 @@ use Give\Donors\Factories\DonorFactory;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
-use Give\Framework\Models\Factories\ModelFactory;
 use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Models\ValueObjects\Relationship;
@@ -64,9 +63,9 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
      *
      * @param $id
      *
-     * @return Donor
+     * @return Donor|null
      */
-    public static function find($id): Donor
+    public static function find($id)
     {
         return give()->donors->getById($id);
     }
@@ -214,9 +213,11 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @return ModelFactory<Donor>
+     * @since 2.19.6
+     *
+     * @return DonorFactory
      */
-    public static function factory()
+    public static function factory(): DonorFactory
     {
         return new DonorFactory(static::class);
     }
