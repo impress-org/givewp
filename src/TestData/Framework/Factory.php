@@ -29,7 +29,7 @@ abstract class Factory implements FactoryContract
     }
 
     /**
-     * Allways generate consistent data
+     * Always generate consistent data
      *
      * @param bool $consistent
      *

@@ -72,7 +72,7 @@ abstract class Field
     public $defaultValue = null;
 
     /**
-     * Field attribues.
+     * Field attributes.
      *
      * @since 2.7.0
      * @var string

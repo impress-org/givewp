@@ -159,7 +159,7 @@ function give_recurring_get_period($form_id, $price_id = 0)
 {
     $recurring_option = give_get_meta($form_id, '_give_recurring', true);
 
-    // Is this a variable price form & admin's choice?
+    // Is this a variable price form & admins choice?
     if (give_has_variable_prices($form_id) && 'yes_admin' === $recurring_option) {
         if ('custom' === $price_id) {
             return give_get_meta($form_id, '_give_recurring_custom_amount_period', true, 'month');

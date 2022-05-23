@@ -164,7 +164,7 @@ class DonorsAdminPage
             }
             jQuery( function() {
                 jQuery(jQuery(".wrap .wp-header-end")).before(
-                    '<button class="page-title-action" onclick="showReactTable()">Switch to Updated View</button>'
+                    '<button class="page-title-action" onclick="showReactTable()">Switch to New View</button>'
                 );
             });
         </script>
