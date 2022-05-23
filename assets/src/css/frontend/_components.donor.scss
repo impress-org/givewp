@@ -134,10 +134,8 @@ $donor-space-triple: $donor-space * 3;
         }
 
         &__excerpt &__read-more {
-            color: #69B86B;
             cursor: pointer;
             white-space: nowrap;
-
         }
 
         &__excerpt + &__comment {
