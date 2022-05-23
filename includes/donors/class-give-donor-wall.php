@@ -209,6 +209,7 @@ class Give_Donor_Wall {
 				'readmore_text'     => esc_html__( 'Read more', 'give' ),
 				'loadmore_text'     => esc_html__( 'Load more', 'give' ),
 				'avatar_size'       => 60,
+                'color'             => "#219653",
 				'orderby'           => 'post_date',
 				'order'             => 'DESC',
 				'hide_empty'        => true,  // Deprecated in 2.3.0
