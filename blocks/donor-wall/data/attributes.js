@@ -100,6 +100,10 @@ const blockAttributes = {
 		type: 'string',
 		default: '75',
 	},
+    color: {
+        type: 'string',
+        default: '#219653',
+    }
 };
 
 export default blockAttributes;
