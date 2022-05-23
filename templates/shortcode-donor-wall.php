@@ -14,7 +14,7 @@ $donation = $args[0];
 $give_settings = $args[1]; // Give settings.
 $atts          = $args[2]; // Shortcode attributes.
 
-$primary_color = $atts['color']
+$primary_color = $atts['color'];
 ?>
 
 
@@ -118,7 +118,17 @@ $primary_color = $atts['color']
                 <?php if ( true === $atts['show_form'] && isset( $donation['_give_payment_form_title'] ) ) : ?>
                     <div class="give-donor-details__wrapper">
                         <span class="give-donor-details__form_title">
-                        <?php echo esc_html( $donation['_give_payment_form_title'] ); ?>
+                            <?php
+                            $word_count = 5;
+                            preg_match("/(\S+\s*){0,$word_count}/", $donation['_give_payment_form_title'], $regs);
+                            $form_name = trim($regs[0] . "...");
+
+                            if(str_word_count($donation['_give_payment_form_title'], 0) < 8){
+                               echo esc_html($donation['_give_payment_form_title'] ) ;
+                            } else {
+                                echo esc_html($form_name) ;
+                            }
+                            ?>
                         </span>
                         <span class="give-donor-details__amount_donated">Amount Donated</span>
                     </div>
