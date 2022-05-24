@@ -64,39 +64,39 @@ export default function ({label, onClick, selected, help}) {
                 <p className="give_column_selector_help_text">{help}</p>
             )}
 
-            <Row>
-                <Selector
-                    display="best-fit"
-                    onClick={onClick}
-                    selected={selected}
-                />
-            </Row>
-
-            <Row>
-                <Selector
-                    display={1}
-                    onClick={onClick}
-                    selected={selected}
-                />
-                <Selector
-                    display={2}
-                    onClick={onClick}
-                    selected={selected}
-                />
-            </Row>
-
-            <Row>
-                <Selector
-                    display={3}
-                    onClick={onClick}
-                    selected={selected}
-                />
-                <Selector
-                    display={4}
-                    onClick={onClick}
-                    selected={selected}
-                />
-            </Row>
+            {selected === 'best-fit' ? (
+                <Row>
+                    <Selector
+                        display="best-fit"
+                        onClick={onClick}
+                        selected={selected}
+                    />
+                </Row>
+            ) : selected === '1' ? (
+                    <Row>
+                        <Selector
+                            display={1}
+                            onClick={onClick}
+                            selected={selected}
+                        />
+                    </Row>
+            ) : selected === '2' ? (
+                <Row>
+                    <Selector
+                        display={2}
+                        onClick={onClick}
+                        selected={selected}
+                    />
+                </Row>
+            ) :
+                <Row>
+                    <Selector
+                        display={3}
+                        onClick={onClick}
+                        selected={selected}
+                     />
+                </Row>
+            }
         </div>
     )
 }
