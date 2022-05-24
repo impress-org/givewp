@@ -130,7 +130,7 @@ $primary_color = $atts['color'];
                                 preg_match("/(\S+\s*){0,$word_count}/", $donation['_give_payment_form_title'], $regs);
                                 $form_name = trim($regs[0] . "...");
 
-                                if(str_word_count($donation['_give_payment_form_title'], 0) < $word_count){
+                                if(str_word_count($donation['_give_payment_form_title'], 0) <= $word_count){
                                     echo esc_html($donation['_give_payment_form_title'] ) ;
                                 } else {
                                     echo esc_html($form_name) ;
@@ -138,7 +138,9 @@ $primary_color = $atts['color'];
                                 ?>
                             </span>
                         <?php endif; ?>
-                        <span class="give-donor-details__amount_donated">Amount Donated</span>
+                        <?php if ( true === $atts['show_total'] ) : ?>
+                            <span class="give-donor-details__amount_donated">Amount Donated</span>
+                        <?php endif; ?>
                     </div>
                 <?php if ( true === $atts['show_total'] ) : ?>
                     <span class="give-donor-details__total" style="color: <?php echo ! empty( $atts['color']) ? $atts['color'] :'#219653' ?>">
