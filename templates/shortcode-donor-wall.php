@@ -117,7 +117,7 @@ $primary_color = $atts['color'];
                 <div class="give-donor-details">
                     <div class="give-donor-details__wrapper">
                         <?php if ( true === $atts['show_form'] && false === $atts['show_total'] && isset( $donation['_give_payment_form_title'] ) ) : ?>
-                            <span class="give-donor-details__form_title">
+                            <span class="give-donor-details__form_title" style="text-align: center">
                                 <?php
                                     echo esc_html( $donation['_give_payment_form_title'] ) ;
                                 ?>
