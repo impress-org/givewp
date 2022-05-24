@@ -116,15 +116,22 @@ $primary_color = $atts['color'];
                 <?php endif; ?>
                 <div class="give-donor-details">
                     <div class="give-donor-details__wrapper">
-                        <?php if ( true === $atts['show_form'] && isset( $donation['_give_payment_form_title'] ) ) : ?>
+                        <?php if ( true === $atts['show_form'] && false === $atts['show_total'] && isset( $donation['_give_payment_form_title'] ) ) : ?>
                             <span class="give-donor-details__form_title">
                                 <?php
-                                $word_count = 5;
+                                    echo esc_html( $donation['_give_payment_form_title'] ) ;
+                                ?>
+                            </span>
+                        <?php endif; ?>
+                        <?php if ( true === $atts['show_form'] && true === $atts['show_total'] && isset( $donation['_give_payment_form_title'] ) ) : ?>
+                            <span class="give-donor-details__form_title">
+                                <?php
+                                $word_count = 3;
                                 preg_match("/(\S+\s*){0,$word_count}/", $donation['_give_payment_form_title'], $regs);
                                 $form_name = trim($regs[0] . "...");
 
-                                if(str_word_count($donation['_give_payment_form_title'], 0) < 8){
-                                   echo esc_html($donation['_give_payment_form_title'] ) ;
+                                if(str_word_count($donation['_give_payment_form_title'], 0) < $word_count){
+                                    echo esc_html($donation['_give_payment_form_title'] ) ;
                                 } else {
                                     echo esc_html($form_name) ;
                                 }
