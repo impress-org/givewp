@@ -175,6 +175,10 @@ class Give_Donor_Wall_Block {
 						'type'    => 'string',
 						'default' => '60',
 					],
+                    'toggleOptions'      => [
+                        'type'    => 'string',
+                        'default' => '0',
+                    ],
 				],
 			]
 		);
@@ -214,6 +218,7 @@ class Give_Donor_Wall_Block {
 			'readmore_text'     => $attributes['readMoreText'],
 			'loadmore_text'     => $attributes['loadMoreText'],
 			'avatar_size'       => $avatarSize ?: 60,
+            'toggle_options'    => $attributes['toggleOptions'],
 		];
 
 		$html = Give_Donor_Wall::get_instance()->render_shortcode( $parameters );
