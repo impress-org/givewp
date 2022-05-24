@@ -11,6 +11,7 @@ import { PanelBody, Panel, SelectControl, ToggleControl, TextControl } from '@wo
 import giveDonorWallOptions from '../data/options';
 
 import ColumnSelector from '../../components/column-selector';
+import ToggleOptions from '../../components/toggle';
 
 
 /**
@@ -18,14 +19,17 @@ import ColumnSelector from '../../components/column-selector';
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { donorsPerPage, ids, formID, categories, tags, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, showForm, showTotal, showDate, showComments, showAnonymous, onlyComments, commentLength, readMoreText, loadMoreText } = attributes;
-	const saveSetting = ( name, value ) => {
+	const { donorsPerPage, ids, formID, categories, tags, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, showForm, showTotal, showDate, showComments, showAnonymous, onlyComments, commentLength, readMoreText, loadMoreText, toggleOptions } = attributes;
+
+    const saveSetting = ( name, value ) => {
 		setAttributes( {
 			[ name ]: value,
 		} );
 	};
 
-	return (
+    console.log(toggleOptions);
+
+    return (
 		<InspectorControls key="inspector">
                 <Panel>
                     <PanelBody title="Layout" initialOpen={ true }>
@@ -45,6 +49,9 @@ const Inspector = ( { attributes, setAttributes } ) => {
                 </Panel>
                 <Panel>
                     <PanelBody title="Display Elements" initialOpen={ true }>
+                        <ToggleOptions options={[__( 'Donor Info', 'give' ), __( 'Wall Attributes', 'give' )  ]}
+                        onClick={( value ) => saveSetting( 'toggleOptions', value ) }
+                        selected={toggleOptions}/>
                         <ToggleControl
                             name="showName"
                             label={ __( 'Show Name', 'give' ) }
