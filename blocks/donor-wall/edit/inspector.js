@@ -3,12 +3,15 @@
  */
 import { __ } from '@wordpress/i18n'
 import { InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, SelectControl, ToggleControl, TextControl } from '@wordpress/components';
+import { PanelBody, Panel, SelectControl, ToggleControl, TextControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
 import giveDonorWallOptions from '../data/options';
+
+import ColumnSelector from '../../components/column-selector';
+
 
 /**
  * Render Inspector Controls
@@ -24,14 +27,87 @@ const Inspector = ( { attributes, setAttributes } ) => {
 
 	return (
 		<InspectorControls key="inspector">
-			<PanelBody title={ __( 'Donor Wall Settings', 'give' ) }>
-				<TextControl
-					name="donorsPerPage"
-					label={ __( 'Donors Per Page', 'give' ) }
-					value={ donorsPerPage }
-					onChange={ ( value ) => saveSetting( 'donorsPerPage', value ) }
-                    help={ __('How many donors should show up on the initial page load?', 'give' ) }
-                />
+                <Panel>
+                    <PanelBody title="Layout" initialOpen={ true }>
+                        <ColumnSelector
+                            label={__('Columns', 'give')}
+                            selected={columns}
+                            onClick={(value) => saveSetting('columns', value)}
+                            help={__('Controls how many columns of the Form Grid appear. "Best Fit" will adjust responsively to the space available.', 'give')}
+                        />
+                        <SelectControl
+                            label={ __( 'Columns', 'give' ) }
+                            name="columns"
+                            value={ columns }
+                            options={ giveDonorWallOptions.columns }
+                            onChange={ ( value ) => saveSetting( 'columns', value ) } />
+                    </PanelBody>
+                </Panel>
+                <Panel>
+                    <PanelBody title="Display Elements" initialOpen={ true }>
+                        <ToggleControl
+                            name="showName"
+                            label={ __( 'Show Name', 'give' ) }
+                            checked={ !! showName }
+                            onChange={ ( value ) => saveSetting( 'showName', value ) } />
+                        <ToggleControl
+                            name="showName"
+                            label={ __( 'Show Company Name', 'give' ) }
+                            checked={ !! showCompanyName }
+                            onChange={ ( value ) => saveSetting( 'showCompanyName', value ) } />
+
+                        <ToggleControl
+                            name="showAvatar"
+                            label={ __( 'Show Avatar', 'give' ) }
+                            checked={ !! showAvatar }
+                            onChange={ ( value ) => saveSetting( 'showAvatar', value ) } />
+                        <ToggleControl
+                            name="showAnonymous"
+                            label={ __( 'Show Anonymous', 'give' ) }
+                            checked={ !! showAnonymous }
+                            onChange={ ( value ) => saveSetting( 'showAnonymous', value ) } />
+                    </PanelBody>
+                </Panel>
+                <Panel>
+                    <PanelBody title="Wall settings" initialOpen={ true }>
+                        <SelectControl
+                            label={ __( 'Order By', 'give' ) }
+                            name="orderBy"
+                            value={ orderBy }
+                            options={ giveDonorWallOptions.orderBy }
+                            onChange={ ( value ) => saveSetting( 'orderBy', value ) } />
+                        <SelectControl
+                            label={ __( 'Order', 'give' ) }
+                            name="order"
+                            value={ order }
+                            options={ giveDonorWallOptions.order }
+                            onChange={ ( value ) => saveSetting( 'order', value ) } />
+                        <SelectControl
+                            label={ __( 'Filter', 'give' ) }
+                            name="order"
+                            value={ order }
+                            options={ giveDonorWallOptions.order }
+                            onChange={ ( value ) => saveSetting( 'order', value ) } />
+                    </PanelBody>
+                </Panel>
+                <Panel>
+                    <PanelBody title="Wall interaction" initialOpen={ true }>
+                        <TextControl
+                            name="donorsPerPage"
+                            label={ __( 'Donors Per Page', 'give' ) }
+                            value={ donorsPerPage }
+                            onChange={ ( value ) => saveSetting( 'donorsPerPage', value ) }
+                            help={ __('How many donors should show up on the initial page load?', 'give' ) }
+                        />
+                        <TextControl
+                            name="loadMoreText"
+                            label={ __( 'Load More Text', 'give' ) }
+                            value={ loadMoreText }
+                            onChange={ ( value ) => saveSetting( 'loadMoreText', value ) } />
+                    </PanelBody>
+                </Panel>
+
+
 				<TextControl
 					name="ids"
 					label={ __( 'Donor IDs', 'give' ) }
@@ -56,44 +132,14 @@ const Inspector = ( { attributes, setAttributes } ) => {
                     label={ __( 'Tags', 'give' ) }
                     value={ tags }
                     onChange={ ( value ) => saveSetting( 'tags', value ) }/>
-				<SelectControl
-					label={ __( 'Order By', 'give' ) }
-					name="orderBy"
-					value={ orderBy }
-					options={ giveDonorWallOptions.orderBy }
-					onChange={ ( value ) => saveSetting( 'orderBy', value ) } />
-				<SelectControl
-					label={ __( 'Order', 'give' ) }
-					name="order"
-					value={ order }
-					options={ giveDonorWallOptions.order }
-					onChange={ ( value ) => saveSetting( 'order', value ) } />
+
 				<SelectControl
 					label={ __( 'Columns', 'give' ) }
 					name="columns"
 					value={ columns }
 					options={ giveDonorWallOptions.columns }
 					onChange={ ( value ) => saveSetting( 'columns', value ) } />
-				<TextControl
-					name="avatarSize"
-					label={ __( 'Avatar Size (px)', 'give' ) }
-					value={ avatarSize }
-					onChange={ ( value ) => saveSetting( 'avatarSize', value ) } />
-				<ToggleControl
-					name="showAvatar"
-					label={ __( 'Show Avatar', 'give' ) }
-					checked={ !! showAvatar }
-					onChange={ ( value ) => saveSetting( 'showAvatar', value ) } />
-				<ToggleControl
-					name="showName"
-					label={ __( 'Show Name', 'give' ) }
-					checked={ !! showName }
-					onChange={ ( value ) => saveSetting( 'showName', value ) } />
-				<ToggleControl
-					name="showName"
-					label={ __( 'Show Company Name', 'give' ) }
-					checked={ !! showCompanyName }
-					onChange={ ( value ) => saveSetting( 'showCompanyName', value ) } />
+
                 <ToggleControl
 					name="showForm"
 					label={ __( 'Show Donation Form', 'give' ) }
@@ -114,11 +160,12 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Show Comments', 'give' ) }
 					checked={ !! showComments }
 					onChange={ ( value ) => saveSetting( 'showComments', value ) } />
-				<ToggleControl
-					name="showAnonymous"
-					label={ __( 'Show Anonymous', 'give' ) }
-					checked={ !! showAnonymous }
-					onChange={ ( value ) => saveSetting( 'showAnonymous', value ) } />
+            <TextControl
+                name="avatarSize"
+                label={ __( 'Avatar Size (px)', 'give' ) }
+                value={ avatarSize }
+                onChange={ ( value ) => saveSetting( 'avatarSize', value ) } />
+
 				<ToggleControl
 					name="onlyComments"
 					label={ __( 'Only Donors with Comments', 'give' ) }
@@ -134,12 +181,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Read More Text', 'give' ) }
 					value={ readMoreText }
 					onChange={ ( value ) => saveSetting( 'readMoreText', value ) } />
-				<TextControl
-					name="loadMoreText"
-					label={ __( 'Load More Text', 'give' ) }
-					value={ loadMoreText }
-					onChange={ ( value ) => saveSetting( 'loadMoreText', value ) } />
-			</PanelBody>
+
 		</InspectorControls>
 	);
 };
