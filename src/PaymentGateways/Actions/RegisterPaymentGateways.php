@@ -62,24 +62,26 @@ class RegisterPaymentGateways
     /**
      * Register 3rd party payment gateways
      *
+     * @unreleased use givewp prefix for action
      * @since 2.18.0
      *
      * @param  PaymentGatewayRegister  $paymentGatewayRegister
      */
     private function register3rdPartyPaymentGateways(PaymentGatewayRegister $paymentGatewayRegister)
     {
-        do_action('give_register_payment_gateway', $paymentGatewayRegister);
+        do_action('givewp_register_payment_gateway', $paymentGatewayRegister);
     }
 
     /**
      * Unregister 3rd party payment gateways
      *
+     * @unreleased use givewp prefix for action
      * @since 2.18.0
      *
      * @param  PaymentGatewayRegister  $paymentGatewayRegister
      */
     private function unregister3rdPartyPaymentGateways(PaymentGatewayRegister $paymentGatewayRegister)
     {
-        do_action('give_unregister_payment_gateway', $paymentGatewayRegister);
+        do_action('givewp_unregister_payment_gateway', $paymentGatewayRegister);
     }
 }
