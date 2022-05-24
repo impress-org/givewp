@@ -11,9 +11,9 @@ const giveDonorWallOptions = {};
 // Form Display Styles
 giveDonorWallOptions.columns = [
 	{ value: 'best-fit', label: __( 'Best Fit', 'give' ) },
-	{ value: '1', label: '1' },
-	{ value: '2', label: '2' },
-	{ value: '3', label: '3' },
+	{ value: '1', label: 'Full width' },
+	{ value: '2', label: 'Double' },
+	{ value: '3', label: 'Max (3)' },
 ];
 
 // Order
