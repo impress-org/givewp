@@ -5,15 +5,8 @@ import './style.scss';
 export function Selector({display, selected, onClick}) {
     const displayValue = String(display);
 
-    const handleOnClick = () => {
-        if (onClick instanceof Function) {
-            onClick(displayValue);
-        }
-    };
-
     return (
         <div
-            onClick={handleOnClick}
             className={cx(
                 'give_column_selector_container',
                 {'give_column_selector_selected': displayValue === selected}
