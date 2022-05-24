@@ -2,6 +2,7 @@
 
 namespace Give\Framework\PaymentGateways\Log;
 
+use Give\Donations\Models\Donation;
 use Give\Log\Log;
 
 /**
@@ -17,6 +18,13 @@ class PaymentGatewayLog extends Log
     {
         $arguments[1]['category'] = 'Payment Gateway';
         $arguments[1]['source'] = 'Payment Gateway';
+
+        if (
+            array_key_exists('Donation', $arguments[1]) &&
+            $arguments[1]['Donation'] instanceof Donation
+        ) {
+            $arguments[1]['source'] = $arguments[1]['Donation']->gateway()->getName();
+        }
 
         parent::__callStatic($name, $arguments);
     }
