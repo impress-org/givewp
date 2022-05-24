@@ -154,13 +154,13 @@ $donor-space-triple: $donor-space * 3;
         &__wrapper {
             display: flex;
             flex-direction: column;
+            width: 100%;
 
             span:first-child {
                 color: $donor-color;
-                font-size: safe-rem(1);
-                font-weight: 500;
+                font-size: safe-rem(1) !important;;
+                font-weight: 500 !important;;
                 letter-spacing: 0;
-                text-align: left;
             }
 
             span:last-child {
