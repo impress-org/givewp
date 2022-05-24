@@ -96,6 +96,10 @@ const blockAttributes = {
 		type: 'string',
 		default: '60',
 	},
+    toggleOptions: {
+        type: 'array',
+        default: '0',
+    }
 };
 
 export default blockAttributes;
