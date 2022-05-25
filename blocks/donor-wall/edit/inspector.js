@@ -176,23 +176,6 @@ const Inspector = ( { attributes, setAttributes } ) => {
                     value={ tags }
                     onChange={ ( value ) => saveSetting( 'tags', value ) }/>
 
-				<SelectControl
-					label={ __( 'Columns', 'give' ) }
-					name="columns"
-					value={ columns }
-					options={ giveDonorWallOptions.columns }
-					onChange={ ( value ) => saveSetting( 'columns', value ) } />
-
-
-
-				<ToggleControl
-					name="showDate"
-					label={ __( 'Show Time', 'give' ) }
-					checked={ !! showDate }
-					onChange={ ( value ) => saveSetting( 'showDate', value ) } />
-
-
-
 				<ToggleControl
 					name="onlyComments"
 					label={ __( 'Only Donors with Comments', 'give' ) }
