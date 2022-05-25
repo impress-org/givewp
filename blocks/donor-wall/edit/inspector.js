@@ -62,17 +62,21 @@ const Inspector = ( { attributes, setAttributes } ) => {
                             label={ __( 'Show Company Name', 'give' ) }
                             checked={ !! showCompanyName }
                             onChange={ ( value ) => saveSetting( 'showCompanyName', value ) } />
-
-                        <ToggleControl
-                            name="showAvatar"
-                            label={ __( 'Show Avatar', 'give' ) }
-                            checked={ !! showAvatar }
-                            onChange={ ( value ) => saveSetting( 'showAvatar', value ) } />
                         <ToggleControl
                             name="showAnonymous"
                             label={ __( 'Show Anonymous', 'give' ) }
                             checked={ !! showAnonymous }
                             onChange={ ( value ) => saveSetting( 'showAnonymous', value ) } />
+                        <ToggleControl
+                            name="showAvatar"
+                            label={ __( 'Show Avatar', 'give' ) }
+                            checked={ !! showAvatar }
+                            onChange={ ( value ) => saveSetting( 'showAvatar', value ) } />
+                        <TextControl
+                            name="avatarSize"
+                            label={ __( 'Avatar Size (px)', 'give' ) }
+                            value={ avatarSize }
+                            onChange={ ( value ) => saveSetting( 'avatarSize', value ) } />
                     </PanelBody>
                 </Panel>
                 <Panel>
@@ -167,11 +171,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Show Comments', 'give' ) }
 					checked={ !! showComments }
 					onChange={ ( value ) => saveSetting( 'showComments', value ) } />
-            <TextControl
-                name="avatarSize"
-                label={ __( 'Avatar Size (px)', 'give' ) }
-                value={ avatarSize }
-                onChange={ ( value ) => saveSetting( 'avatarSize', value ) } />
+
 
 				<ToggleControl
 					name="onlyComments"
