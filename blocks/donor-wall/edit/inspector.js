@@ -12,6 +12,7 @@ import giveDonorWallOptions from '../data/options';
 
 import ColumnSelector from '../../components/column-selector';
 import ToggleOptions from '../../components/toggle';
+import Filter from '../../components/filter';
 
 
 /**
@@ -19,15 +20,13 @@ import ToggleOptions from '../../components/toggle';
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { donorsPerPage, ids, formID, categories, tags, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, showForm, showTotal, showDate, showComments, showAnonymous, onlyComments, commentLength, readMoreText, loadMoreText, toggleOptions } = attributes;
+	const { donorsPerPage, ids, formID, categories, tags, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, onlyComments, showForm, showTotal, showComments, showAnonymous, commentLength, readMoreText, loadMoreText, toggleOptions, filter } = attributes;
 
     const saveSetting = ( name, value ) => {
 		setAttributes( {
 			[ name ]: value,
 		} );
 	};
-
-    console.log(toggleOptions);
 
     return (
 		<InspectorControls key="inspector">
@@ -50,7 +49,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
                 <Panel>
                     <PanelBody title="Display Elements" initialOpen={ true }>
                         <ToggleOptions
-                            options={[__( 'Donor info', 'give' ), __( 'Wall attributes', 'give' )  ]}
+                            options={[__( 'Donor info', 'give' ), __( 'Wall attributes', 'give' ) ]}
                             onClick={( value ) => saveSetting( 'toggleOptions', value ) }
                             selected={toggleOptions}/>
                                 {toggleOptions === 'Donor info' ?
@@ -125,12 +124,17 @@ const Inspector = ( { attributes, setAttributes } ) => {
                             value={ order }
                             options={ giveDonorWallOptions.order }
                             onChange={ ( value ) => saveSetting( 'order', value ) } />
-                        <SelectControl
-                            label={ __( 'Filter', 'give' ) }
-                            name="filter"
-                            value={ order }
-                            options={ giveDonorWallOptions.filter }
-                            onChange={ ( value ) => saveSetting( 'order', value ) } />
+
+                          <Filter
+                              TextControls ={[
+                                  {name:"ids", value: ids, onChange: ( value ) => saveSetting( 'ids', value ), filterValue: 'Donor ID'},
+                                  {name:"formID", value: formID, onChange: ( value ) => saveSetting( 'formID', value ), filterValue: 'Form ID'},
+                                  {name:"categories", value: categories , onChange:  ( value ) => saveSetting( 'categories', value ), filterValue: 'Categories'},
+                                  {name:"tags", value: tags , onChange: ( value ) => saveSetting( 'tags', value ), filterValue: 'Tags'},
+                                  {name: "onlyComments", checked: !!onlyComments, onChange: (value) => saveSetting('onlyComments', value), filterValue: 'Donors with comments'}
+                              ]}
+                              SelectControl = <SelectControl label={ __( 'Filter', 'give' ) } name="filter" value={ filter } options={ giveDonorWallOptions.filter } onChange={ ( value ) => saveSetting( 'filter', value ) } />
+                          />
                     </PanelBody>
                 </Panel>
                 <Panel>
@@ -149,42 +153,38 @@ const Inspector = ( { attributes, setAttributes } ) => {
                             onChange={ ( value ) => saveSetting( 'loadMoreText', value ) } />
                     </PanelBody>
                 </Panel>
-
-
-				<TextControl
-					name="ids"
-					label={ __( 'Donor IDs', 'give' ) }
-					value={ ids }
-					onChange={ ( value ) => saveSetting( 'ids', value ) }
-                    help={ __('By default, all donors will display. Use this setting to restrict the donor wall to only display certain donors. Use a comma-separated list of donor IDs.', 'give') }
-                />
-				<TextControl
-					name="formID"
-					label={ __( 'Form IDs', 'give' ) }
-					value={ formID }
-					onChange={ ( value ) => saveSetting( 'formID', value ) }
-                    help={ __('By Default, donations to all forms will display. Use this setting to restrict the donor to display only donations to certains forms. Use a comma-separated list of form IDs.', 'give') }
-                />
-                <TextControl
-                    name="categories"
-                    label={ __( 'Categories', 'give' ) }
-                    value={ categories }
-                    onChange={ ( value ) => saveSetting( 'categories', value ) }/>
-                <TextControl
-                    name="tags"
-                    label={ __( 'Tags', 'give' ) }
-                    value={ tags }
-                    onChange={ ( value ) => saveSetting( 'tags', value ) }/>
-
-				<ToggleControl
-					name="onlyComments"
-					label={ __( 'Only Donors with Comments', 'give' ) }
-					checked={ !! onlyComments }
-					onChange={ ( value ) => saveSetting( 'onlyComments', value ) } />
-
-
 		</InspectorControls>
 	);
 };
 
 export default Inspector;
+
+//
+// {filter === 'Donor ID' ? <TextControl
+//         name="ids"
+//         label={ __( 'Donor IDs', 'give' ) }
+//         value={ ids }
+//         onChange={ ( value ) => saveSetting( 'ids', value ) }
+//         help={ __('By default, all donors will display. Use this setting to restrict the donor wall to only display certain donors. Use a comma-separated list of donor IDs.', 'give') }/> :
+//     filter === 'Form ID' ? <TextControl
+//             name="formID"
+//             label={ __( 'Form IDs', 'give' ) }
+//             value={ formID }
+//             onChange={ ( value ) => saveSetting( 'formID', value ) }
+//             help={ __('By Default, donations to all forms will display. Use this setting to restrict the donor to display only donations to certains forms. Use a comma-separated list of form IDs.', 'give') }/> :
+//         filter === 'Categories' ? <TextControl
+//                 name="categories" label={ __( 'Categories', 'give' ) }
+//                 value={ categories }
+//                 onChange={ ( value ) => saveSetting( 'categories', value ) }/> :
+//             filter === 'Tags' ?
+//                 <TextControl
+//                     name="tags"
+//                     label={ __( 'Tags', 'give' ) }
+//                     value={ tags }
+//                     onChange={ ( value ) => saveSetting( 'tags', value ) }/> :
+//                 <ToggleControl
+//                     name="onlyComments"
+//                     label={ __( 'Only Donors with Comments', 'give' ) }
+//                     checked={ !! onlyComments }
+//                     onChange={ ( value ) => saveSetting( 'onlyComments', value ) } />
+// }
