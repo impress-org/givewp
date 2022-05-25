@@ -49,7 +49,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
                 </Panel>
                 <Panel>
                     <PanelBody title="Display Elements" initialOpen={ true }>
-                        <ToggleOptions options={[__( 'Donor Info', 'give' ), __( 'Wall Attributes', 'give' )  ]}
+                        <ToggleOptions options={[__( 'Donor info', 'give' ), __( 'Wall attributes', 'give' )  ]}
                         onClick={( value ) => saveSetting( 'toggleOptions', value ) }
                         selected={toggleOptions}/>
                         <ToggleControl
