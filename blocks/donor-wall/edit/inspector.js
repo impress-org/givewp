@@ -127,9 +127,9 @@ const Inspector = ( { attributes, setAttributes } ) => {
                             onChange={ ( value ) => saveSetting( 'order', value ) } />
                         <SelectControl
                             label={ __( 'Filter', 'give' ) }
-                            name="order"
+                            name="filter"
                             value={ order }
-                            options={ giveDonorWallOptions.order }
+                            options={ giveDonorWallOptions.filter }
                             onChange={ ( value ) => saveSetting( 'order', value ) } />
                     </PanelBody>
                 </Panel>
