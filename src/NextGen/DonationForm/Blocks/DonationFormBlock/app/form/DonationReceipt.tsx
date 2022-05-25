@@ -1,4 +1,4 @@
-import Gateway from '../types/Gateway';
+import type {Gateway} from '../types/Gateway';
 
 type PropTypes = {
     firstName: string;

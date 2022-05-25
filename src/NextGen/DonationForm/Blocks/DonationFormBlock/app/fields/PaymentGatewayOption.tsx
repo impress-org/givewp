@@ -1,28 +1,26 @@
 import {useFormContext} from 'react-hook-form';
-import usePaymentGatewayFields from '../hooks/usePaymentGatewayFields';
-import PaymentGateway from '../value-objects/PaymentGateway';
 
 type Props = {
-    name: PaymentGateway;
+    id: string;
     label: string;
     index: number;
+    fields: Function;
 };
 
-export default function PaymentGatewayOption({name, label, index}: Props) {
+export default function PaymentGatewayOption({id, label, fields: Fields, index}: Props) {
     const {register} = useFormContext();
-    const Fields = usePaymentGatewayFields(name);
 
     return (
         <li>
             <input
                 {...register('gatewayId', {required: true})}
                 type="radio"
-                value={name}
+                value={id}
                 defaultChecked={index === 0}
             />
-            <label htmlFor={name}> Donate with {label}</label>
+            <label htmlFor={id}> Donate with {label}</label>
             <div style={{paddingBottom: '20px'}}>
-                <Fields />
+                <Fields/>
             </div>
         </li>
     );

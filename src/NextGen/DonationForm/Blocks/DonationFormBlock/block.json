@@ -16,5 +16,5 @@
         }
     },
     "textdomain": "give",
-    "editorScript": "file:./build/editor.js"
+    "editorScript": "file:../../../../../build/donationFormBlock.js"
 }

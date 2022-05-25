@@ -40,7 +40,7 @@ class Block
      */
     public function register()
     {
-        register_block_type_from_metadata(
+        register_block_type(
             __DIR__,
             ['render_callback' => [$this, 'render']]
         );
@@ -49,40 +49,42 @@ class Block
     /**
      * @unreleased
      *
-     * @param  array  $attributes
-     *
-     * @return string
+     * @return string|null
      * @throws EmptyNameException
      */
-    public function render(array $attributes): string
+    public function render(array $attributes)
     {
+        // return early if we're still inside the editor to avoid server side effects
+        if (!empty($_REQUEST)) {
+            return null;
+        }
+
         $donationForm = $this->createForm($attributes);
 
         $donateUrl = Call::invoke(GenerateDonateRouteUrl::class);
+
+        $formId = $attributes['formId'];
+
+        $formDataGateways = $this->getFormDataGateways($formId);
 
         $exports = [
             'attributes' => $attributes,
             'form' => $donationForm->jsonSerialize(),
             'donateUrl' => $donateUrl,
+            'successUrl' => give_get_success_page_uri(),
+            'gateways' => $formDataGateways
         ];
 
-        // enqueue front-end scripts
-        // since this is using render_callback viewScript in blocks.json will not work.
-        $enqueueScripts = new EnqueueScript(
-            'give-next-gen-donation-form-block-js',
-            'src/NextGen/DonationForm/Blocks/DonationFormBlock/build/view.js',
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
-            'give'
-        );
-
-        $enqueueScripts->loadInFooter()->enqueue();
-
-        ob_start(); ?>
-
-        <div id="root-give-next-gen-donation-form-block"></div>
+        ob_start();
+        ?>
 
         <script>window.giveNextGenExports = <?= wp_json_encode($exports) ?>;</script>
+
+        <?php
+        $this->enqueueScripts($formId);
+        ?>
+
+        <div id="root-give-next-gen-donation-form-block"></div>
 
         <?php
         return ob_get_clean();
@@ -95,14 +97,16 @@ class Block
      */
     private function createForm(array $attributes): Form
     {
+        $formId = $attributes['formId'];
+
         $gatewayOptions = [];
-        foreach ($this->getEnabledPaymentGateways($attributes['formId']) as $gateway) {
+        foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
             $gatewayOptions[] = Radio::make($gateway->getId())->label($gateway->getPaymentMethodLabel());
         }
 
-        $donationForm = new Form($attributes['formId']);
+        $donationForm = new Form($formId);
 
-        $formBlockData = json_decode(get_post($attributes['formId'])->post_content, false);
+        $formBlockData = json_decode(get_post($formId)->post_content, false);
 
         foreach( $formBlockData as $block ) {
             $donationForm->append($this->convertFormBlockDataToFieldsAPI($block));
@@ -120,7 +124,7 @@ class Block
         $donationForm->append(
 
             Hidden::make('formId')
-                ->defaultValue($attributes['formId']),
+                ->defaultValue($formId),
 
             Hidden::make('formTitle')
                 ->defaultValue('Give Next Gen Form'),
@@ -129,7 +133,7 @@ class Block
                 ->defaultValue(get_current_user_id()),
 
             Hidden::make('currency')
-                ->defaultValue(give_get_currency($attributes['formId']))
+                ->defaultValue(give_get_currency($formId))
         );
 
         return $donationForm;
@@ -222,5 +226,62 @@ class Block
         }
 
         return $field;
+    }
+
+    /**
+     * @unreleased
+     */
+    private function getFormDataGateways(int $formId): array
+    {
+        $formDataGateways = [];
+
+        foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
+            $gatewayId = $gateway->getId();
+
+            $formDataGateways[$gatewayId] = array_merge(
+                [
+                    'label' => give_get_gateway_checkout_label($gatewayId) ?? $gateway->getPaymentMethodLabel()
+                ],
+                method_exists($gateway, 'formSettings') ? $gateway->formSettings($formId) : []
+            );
+        }
+
+        return $formDataGateways;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
+    private function enqueueScripts(int $formId)
+    {
+        // enqueue front-end scripts
+        // since this is using render_callback viewScript in blocks.json will not work.
+        $enqueueBlockScript = new EnqueueScript(
+            'give-next-gen-donation-form-block-js',
+            'build/donationFormBlockApp.js',
+            GIVE_NEXT_GEN_DIR,
+            GIVE_NEXT_GEN_URL,
+            'give'
+        );
+
+        $enqueuePaymentGatewayRegistrarScript = new EnqueueScript(
+            'give-payment-gateway-registrar-js',
+            'build/paymentGatewayRegistrar.js',
+            GIVE_NEXT_GEN_DIR,
+            GIVE_NEXT_GEN_URL,
+            'give'
+        );
+
+        $enqueuePaymentGatewayRegistrarScript->loadInFooter()->enqueue();
+
+        foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
+            if (method_exists($gateway, 'enqueueScript')) {
+                $gateway->enqueueScript()->loadInFooter()->enqueue();
+            }
+        }
+
+        $enqueueBlockScript->loadInFooter()->enqueue();
     }
 }

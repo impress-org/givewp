@@ -52,4 +52,7 @@ vendor
 
 # Assert directory
 assets/dist
-**/build/
+build
+**/build.*
+**/build.asset.*
+

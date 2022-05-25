@@ -1,20 +1,22 @@
 <?php
-namespace Give\NextGen\Gateways;
+namespace Give\NextGen\Gateways\NextGenTestGateway;
 
 use Give\Donations\Models\Donation;
-use Give\Framework\FieldsAPI\Contracts\Node;
-use Give\Framework\FieldsAPI\Group;
+use Give\Donations\ValueObjects\DonationStatus;
+use Give\Framework\EnqueueScript;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Framework\PaymentGateways\Traits\HasRequest;
 use Give\Helpers\Form\Utils as FormUtils;
-use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
 
 /**
  * @unreleased
  */
-class TestGatewayNextGen extends PaymentGateway
+class NextGenTestGateway extends PaymentGateway
 {
+    use HasRequest;
+
     /**
      * @inheritDoc
      */
@@ -48,6 +50,22 @@ class TestGatewayNextGen extends PaymentGateway
     }
 
     /**
+     * @unreleased
+     *
+     * @return EnqueueScript
+     */
+    public function enqueueScript(): EnqueueScript
+    {
+        return new EnqueueScript(
+            $this->getId(),
+            'build/nextGenTestGateway.js',
+            GIVE_NEXT_GEN_DIR,
+            GIVE_NEXT_GEN_URL,
+            'give'
+        );
+    }
+
+    /**
      * @inheritDoc
      */
     public function getLegacyFormFieldMarkup(int $formId, array $args): string
@@ -67,27 +85,18 @@ class TestGatewayNextGen extends PaymentGateway
      */
     public function createPayment(Donation $donation)
     {
+        $intent = $this->request()->get('testGatewayIntent');
         $transactionId = "test-gateway-transaction-id-{$donation->id}";
 
-        give_update_payment_status($donation->id);
-
-        give_set_payment_transaction_id($donation->id, $transactionId);
-
-        //return new PaymentComplete();
+        $donation->status = DonationStatus::COMPLETE();
+        $donation->gatewayTransactionId = $transactionId;
+        $donation->save();
 
         return new RespondToBrowser([
-            'donationId' => $donation->id,
+            'donation' => $donation->toArray(),
             'redirectUrl' => give_get_success_page_uri(),
-            'status' => "Complete"
+            'intent' => $intent
         ]);
-    }
-
-    /**
-     * @return Node
-     */
-    public function getPaymentFields()
-    {
-        return Group::make($this->getId());
     }
 
     /**

@@ -12,7 +12,8 @@ import getWindowData from '../utilities/getWindowData';
 import PaymentDetails from '../fields/PaymentDetails';
 import FieldInterface from '../types/FieldInterface';
 import DonationReceipt from './DonationReceipt';
-import Gateway from '../types/Gateway';
+import {useGiveDonationFormStore} from '../store';
+import type {Gateway} from "../types/Gateway";
 
 const messages = getFieldErrorMessages();
 
@@ -30,20 +31,9 @@ const schema = Joi.object({
     userId: Joi.number().required(),
 }).unknown();
 
-const handleSubmitRequest = async (values: any) => {
-    const request = await axios.post(donateUrl, {
-        ...values,
-    });
-
-    if (request.status === 200) {
-        alert('Thank You!');
-    }
-};
-
 type PropTypes = {
     fields: FieldInterface[];
     defaultValues: object;
-    gateways: Gateway[];
 };
 
 type FormInputs = {
@@ -54,7 +44,30 @@ type FormInputs = {
     gatewayId: string;
 };
 
-export default function Form({fields, defaultValues, gateways}: PropTypes) {
+const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
+    let gatewayResponse = null;
+
+    try {
+        gatewayResponse = gateway.beforeCreatePayment?.(values);
+    } catch (error) {
+        return setError('FORM_ERROR', {message: error.message});
+    }
+
+    const request = await axios.post(donateUrl, {
+        ...values,
+        ...gatewayResponse?.values
+    });
+
+    if (request.status === 200) {
+        alert('Thank You!');
+    }
+}
+
+export default function Form({fields, defaultValues}: PropTypes) {
+    const {gateways} = useGiveDonationFormStore();
+
+    const getGateway = (gatewayId) => gateways.find(({id}) => id === gatewayId);
+
     const methods = useForm<FormInputs>({
         defaultValues,
         resolver: joiResolver(schema),
@@ -65,16 +78,11 @@ export default function Form({fields, defaultValues, gateways}: PropTypes) {
         setError,
         getValues,
         formState: {errors, isSubmitting, isSubmitSuccessful},
-        reset,
     } = methods;
-
-    // useEffect(() => {
-    //     reset();
-    // }, [isSubmitSuccessful]);
 
     if (isSubmitSuccessful) {
         const {amount, firstName, lastName, email, gatewayId} = getValues();
-        const gateway = gateways.find(({name}) => name === gatewayId);
+        const gateway = gateways.find(({id}) => id === gatewayId);
 
         return (
             <DonationReceipt
@@ -91,14 +99,15 @@ export default function Form({fields, defaultValues, gateways}: PropTypes) {
 
     return (
         <FormProvider {...methods}>
-            <form id="give-next-gen" onSubmit={handleSubmit(handleSubmitRequest)}>
+            <form id="give-next-gen"
+                  onSubmit={handleSubmit((values) => handleSubmitRequest(values, setError, getGateway(values.gatewayId)))}>
                 {fields.map(({type, name, label, readOnly, validationRules, nodes}: FieldInterface) => {
                     if (name === 'paymentDetails') {
-                        return <PaymentDetails fields={nodes} name={name} label={label} key={name} />;
+                        return <PaymentDetails gateways={gateways} name={name} label={label} key={name}/>;
                     }
 
                     if (type === 'section' && nodes) {
-                        return <FieldSection fields={nodes} name={name} label={label} key={name} />;
+                        return <FieldSection fields={nodes} name={name} label={label} key={name}/>;
                     }
 
                     return (

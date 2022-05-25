@@ -1,11 +1,10 @@
 import FieldInterface from './FieldInterface';
 
-type giveNextGenExports = {
+export type giveNextGenExports = {
     form: {
         nodes: FieldInterface[];
     };
     attributes: object;
     donateUrl: string;
+    successUrl: string;
 };
-
-export default giveNextGenExports;

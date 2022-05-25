@@ -1,7 +1,7 @@
 import {__} from '@wordpress/i18n';
 import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
 import {PanelBody, PanelRow, SelectControl} from '@wordpress/components';
-import {Fragment} from '@wordpress/element';
+import {Fragment, useEffect} from '@wordpress/element';
 import useFormOptions from './hooks/useFormOptions';
 
 /**
@@ -14,6 +14,12 @@ import useFormOptions from './hooks/useFormOptions';
 export default function Edit({attributes, setAttributes}) {
     const {formId} = attributes;
     const {formOptions} = useFormOptions();
+
+    useEffect(() => {
+        if (!formId) {
+            setAttributes({formId: formOptions[0].value})
+        }
+    }, [JSON.stringify(formOptions)]);
 
     return (
         <Fragment>
