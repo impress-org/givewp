@@ -34,5 +34,15 @@ giveDonorWallOptions.toggleOptions = [
     { value: 'Wall attributes', label: __( 'Wall Attributes', 'give' ) },
 ];
 
+//Filter
+giveDonorWallOptions.filter = [
+    { value: 'Donor ID', label: __( 'Donor ID', 'give' ) },
+    { value: 'Form ID', label: __( 'Form ID', 'give' ) },
+    { value: 'Categories', label: __( 'Categories', 'give' ) },
+    { value: 'Tags', label: __( 'Tags', 'give' ) },
+    { value: 'Donors with comments', label: __( 'Donors with comments', 'give' ) },
+];
+
+
 
 export default giveDonorWallOptions;
