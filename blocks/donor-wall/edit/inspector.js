@@ -49,34 +49,66 @@ const Inspector = ( { attributes, setAttributes } ) => {
                 </Panel>
                 <Panel>
                     <PanelBody title="Display Elements" initialOpen={ true }>
-                        <ToggleOptions options={[__( 'Donor info', 'give' ), __( 'Wall attributes', 'give' )  ]}
-                        onClick={( value ) => saveSetting( 'toggleOptions', value ) }
-                        selected={toggleOptions}/>
-                        <ToggleControl
-                            name="showName"
-                            label={ __( 'Show Name', 'give' ) }
-                            checked={ !! showName }
-                            onChange={ ( value ) => saveSetting( 'showName', value ) } />
-                        <ToggleControl
-                            name="showName"
-                            label={ __( 'Show Company Name', 'give' ) }
-                            checked={ !! showCompanyName }
-                            onChange={ ( value ) => saveSetting( 'showCompanyName', value ) } />
-                        <ToggleControl
-                            name="showAnonymous"
-                            label={ __( 'Show Anonymous', 'give' ) }
-                            checked={ !! showAnonymous }
-                            onChange={ ( value ) => saveSetting( 'showAnonymous', value ) } />
-                        <ToggleControl
-                            name="showAvatar"
-                            label={ __( 'Show Avatar', 'give' ) }
-                            checked={ !! showAvatar }
-                            onChange={ ( value ) => saveSetting( 'showAvatar', value ) } />
-                        <TextControl
-                            name="avatarSize"
-                            label={ __( 'Avatar Size (px)', 'give' ) }
-                            value={ avatarSize }
-                            onChange={ ( value ) => saveSetting( 'avatarSize', value ) } />
+                        <ToggleOptions
+                            options={[__( 'Donor info', 'give' ), __( 'Wall attributes', 'give' )  ]}
+                            onClick={( value ) => saveSetting( 'toggleOptions', value ) }
+                            selected={toggleOptions}/>
+                                {toggleOptions === 'Donor info' ?
+                                    <>
+                                        <ToggleControl
+                                            name="showName"
+                                            label={ __( 'Show Name', 'give' ) }
+                                            checked={ !! showName }
+                                            onChange={ ( value ) => saveSetting( 'showName', value ) } />
+                                        <ToggleControl
+                                            name="showName"
+                                            label={ __( 'Show Company Name', 'give' ) }
+                                            checked={ !! showCompanyName }
+                                            onChange={ ( value ) => saveSetting( 'showCompanyName', value ) } />
+                                        <ToggleControl
+                                            name="showAnonymous"
+                                            label={ __( 'Show Anonymous', 'give' ) }
+                                            checked={ !! showAnonymous }
+                                            onChange={ ( value ) => saveSetting( 'showAnonymous', value ) } />
+                                        <ToggleControl
+                                            name="showAvatar"
+                                            label={ __( 'Show Avatar', 'give' ) }
+                                            checked={ !! showAvatar }
+                                            onChange={ ( value ) => saveSetting( 'showAvatar', value ) } />
+                                        <TextControl
+                                            name="avatarSize"
+                                            label={ __( 'Avatar Size (px)', 'give' ) }
+                                            value={ avatarSize }
+                                            onChange={ ( value ) => saveSetting( 'avatarSize', value ) } />
+                                    </> :
+                                    <>
+                                        <ToggleControl
+                                            name="showForm"
+                                            label={ __( 'Show Donation Form', 'give' ) }
+                                            checked={ !! showForm }
+                                            onChange={ ( value ) => saveSetting( 'showForm', value ) } />
+                                        <ToggleControl
+                                            name="showTotal"
+                                            label={ __( 'Show Total', 'give' ) }
+                                            checked={ !! showTotal }
+                                            onChange={ ( value ) => saveSetting( 'showTotal', value ) } />
+                                        <ToggleControl
+                                            name="showComments"
+                                            label={ __( 'Show Comments', 'give' ) }
+                                            checked={ !! showComments }
+                                            onChange={ ( value ) => saveSetting( 'showComments', value ) } />
+                                        <TextControl
+                                            name="commentLength"
+                                            label={ __( 'Comment Length', 'give' ) }
+                                            value={ commentLength }
+                                            onChange={ ( value ) => saveSetting( 'commentLength', value ) } />
+                                        <TextControl
+                                            name="readMoreText"
+                                            label={ __( 'Read More Text', 'give' ) }
+                                            value={ readMoreText }
+                                            onChange={ ( value ) => saveSetting( 'readMoreText', value ) } />
+                                    </>
+                                }
                     </PanelBody>
                 </Panel>
                 <Panel>
@@ -151,26 +183,14 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					options={ giveDonorWallOptions.columns }
 					onChange={ ( value ) => saveSetting( 'columns', value ) } />
 
-                <ToggleControl
-					name="showForm"
-					label={ __( 'Show Donation Form', 'give' ) }
-					checked={ !! showForm }
-					onChange={ ( value ) => saveSetting( 'showForm', value ) } />
-				<ToggleControl
-					name="showTotal"
-					label={ __( 'Show Total', 'give' ) }
-					checked={ !! showTotal }
-					onChange={ ( value ) => saveSetting( 'showTotal', value ) } />
+
+
 				<ToggleControl
 					name="showDate"
 					label={ __( 'Show Time', 'give' ) }
 					checked={ !! showDate }
 					onChange={ ( value ) => saveSetting( 'showDate', value ) } />
-				<ToggleControl
-					name="showComments"
-					label={ __( 'Show Comments', 'give' ) }
-					checked={ !! showComments }
-					onChange={ ( value ) => saveSetting( 'showComments', value ) } />
+
 
 
 				<ToggleControl
@@ -178,16 +198,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					label={ __( 'Only Donors with Comments', 'give' ) }
 					checked={ !! onlyComments }
 					onChange={ ( value ) => saveSetting( 'onlyComments', value ) } />
-				<TextControl
-					name="commentLength"
-					label={ __( 'Comment Length', 'give' ) }
-					value={ commentLength }
-					onChange={ ( value ) => saveSetting( 'commentLength', value ) } />
-				<TextControl
-					name="readMoreText"
-					label={ __( 'Read More Text', 'give' ) }
-					value={ readMoreText }
-					onChange={ ( value ) => saveSetting( 'readMoreText', value ) } />
+
 
 		</InspectorControls>
 	);
