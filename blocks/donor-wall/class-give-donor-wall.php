@@ -177,7 +177,7 @@ class Give_Donor_Wall_Block {
 					],
                     'toggleOptions'      => [
                         'type'    => 'string',
-                        'default' => '0',
+                        'default' => 'Donor info',
                     ],
 				],
 			]
