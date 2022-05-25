@@ -99,6 +99,10 @@ const blockAttributes = {
     toggleOptions: {
         type: 'string',
         default: 'Donor info',
+    },
+    filter: {
+        type: 'string',
+        default: 'Donor ID',
     }
 };
 
