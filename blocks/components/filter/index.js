@@ -14,7 +14,17 @@ export default function ({TextControls, SelectControl, }) {
                 filterValue={TextProps[0].filterValue}
                 label={TextProps[0].label}
             />
-            <div className="filter__selected">hello</div>
+            <div className="give-filter-component">
+                <div className="give-filter-component__options">
+                    <span> {TextProps[0].value} </span>
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 1L9 9" stroke="#1E1E1E" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M9 1L1 9" stroke="#1E1E1E" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+
+
+                </div>
+            </div>
         </>
     );
 }
