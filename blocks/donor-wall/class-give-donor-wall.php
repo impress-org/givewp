@@ -179,6 +179,10 @@ class Give_Donor_Wall_Block {
                         'type'    => 'string',
                         'default' => 'Donor info',
                     ],
+                    'filter'      => [
+                        'type'    => 'string',
+                        'default' => 'Donor ID',
+                    ]
 				],
 			]
 		);
@@ -219,6 +223,7 @@ class Give_Donor_Wall_Block {
 			'loadmore_text'     => $attributes['loadMoreText'],
 			'avatar_size'       => $avatarSize ?: 60,
             'toggle_options'    => $attributes['toggleOptions'],
+            'filter'            => $attributes['filter'],
 		];
 
 		$html = Give_Donor_Wall::get_instance()->render_shortcode( $parameters );
