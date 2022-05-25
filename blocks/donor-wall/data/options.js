@@ -30,8 +30,8 @@ giveDonorWallOptions.orderBy = [
 
 //Toggle Switch
 giveDonorWallOptions.toggleOptions = [
-    { value: '0', label: __( 'Donation Info', 'give' ) },
-    { value: '1', label: __( 'Wall Attributes', 'give' ) },
+    { value: 'Donor info', label: __( 'Donor Info', 'give' ) },
+    { value: 'Wall attributes', label: __( 'Wall Attributes', 'give' ) },
 ];
 
 
