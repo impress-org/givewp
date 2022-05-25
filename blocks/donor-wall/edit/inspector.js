@@ -128,7 +128,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
                           <Filter
                               TextControls ={[
                                   {name:"ids", value: ids, onChange: ( value ) => saveSetting( 'ids', value ), filterValue: 'Donor ID'},
-                                  {name:"formID", value: formID, onChange: ( value ) => saveSetting( 'formID', value ), filterValue: 'Form ID'},
+                                  {name:"formID", value: formID, onChange: ( value ) => saveSetting( 'formID',  value ), filterValue: 'Form ID'},
                                   {name:"categories", value: categories , onChange:  ( value ) => saveSetting( 'categories', value ), filterValue: 'Categories'},
                                   {name:"tags", value: tags , onChange: ( value ) => saveSetting( 'tags', value ), filterValue: 'Tags'},
                                   {name: "onlyComments", checked: !!onlyComments, onChange: (value) => saveSetting('onlyComments', value), filterValue: 'Donors with comments'}
