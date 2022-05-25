@@ -97,7 +97,7 @@ const blockAttributes = {
 		default: '60',
 	},
     toggleOptions: {
-        type: 'array',
+        type: 'string',
         default: '0',
     }
 };
