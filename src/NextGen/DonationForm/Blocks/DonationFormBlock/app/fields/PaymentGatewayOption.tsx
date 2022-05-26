@@ -1,13 +1,12 @@
 import {useFormContext} from 'react-hook-form';
+import {Gateway} from "../types/Gateway";
 
 type Props = {
-    id: string;
-    label: string;
+    gateway: Gateway;
     index: number;
-    fields: Function;
 };
 
-export default function PaymentGatewayOption({id, label, fields: Fields, index}: Props) {
+export default function PaymentGatewayOption({gateway, index}: Props) {
     const {register} = useFormContext();
 
     return (
@@ -15,12 +14,12 @@ export default function PaymentGatewayOption({id, label, fields: Fields, index}:
             <input
                 {...register('gatewayId', {required: true})}
                 type="radio"
-                value={id}
+                value={gateway.id}
                 defaultChecked={index === 0}
             />
-            <label htmlFor={id}> Donate with {label}</label>
+            <label htmlFor={gateway.id}> Donate with {gateway.label}</label>
             <div style={{paddingBottom: '20px'}}>
-                <Fields/>
+                {gateway.fields()}
             </div>
         </li>
     );

@@ -18,8 +18,8 @@ export default function PaymentDetails({name, label, gateways}: Props) {
                 <h2 id={name}>{label}</h2>
             </div>
             <ul style={{listStyleType: 'none', padding: 0}}>
-                {gateways.map(({id, label, fields}, index) => (
-                    <PaymentGatewayOption fields={fields} id={id} label={label} index={index} key={id}/>
+                {gateways.map((gateway, index) => (
+                    <PaymentGatewayOption gateway={gateway} index={index} key={gateway.id}/>
                 ))}
             </ul>
 
