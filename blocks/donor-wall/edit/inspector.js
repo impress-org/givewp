@@ -27,7 +27,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
 			[ name ]: value,
 		} );
 	};
-
+console.log("!")
     return (
 		<InspectorControls key="inspector">
                 <Panel>
@@ -124,17 +124,17 @@ const Inspector = ( { attributes, setAttributes } ) => {
                             value={ order }
                             options={ giveDonorWallOptions.order }
                             onChange={ ( value ) => saveSetting( 'order', value ) } />
-
-                          <Filter
-                              TextControls ={[
-                                  {name:"ids", value: ids, onChange: ( value ) => saveSetting( 'ids', value ), filterValue: 'Donor ID'},
-                                  {name:"formID", value: formID, onChange: ( value ) => saveSetting( 'formID',  value ), filterValue: 'Form ID'},
-                                  {name:"categories", value: categories , onChange:  ( value ) => saveSetting( 'categories', value ), filterValue: 'Categories'},
-                                  {name:"tags", value: tags , onChange: ( value ) => saveSetting( 'tags', value ), filterValue: 'Tags'},
-                                  {name: "onlyComments", checked: !!onlyComments, onChange: (value) => saveSetting('onlyComments', value), filterValue: 'Donors with comments'}
+                        <SelectControl label={ __( 'Filter', 'give' ) } name="filter" value={ filter } options={ giveDonorWallOptions.filter } onChange={ ( value ) => saveSetting( 'filter', value ) } />
+                        <Filter
+                            filter={filter}
+                            TextControls ={[
+                                {name:"ids", value: ids, onChange: ( value ) => saveSetting( 'ids', value ), filterValue: 'Donor ID'},
+                                {name:"formID", value: formID, onChange: ( value ) => saveSetting( 'formID',  value ), filterValue: 'Form ID'},
+                                {name:"categories", value: categories , onChange:  ( value ) => saveSetting( 'categories', value ), filterValue: 'Categories'},
+                                {name:"tags", value: tags , onChange: ( value ) => saveSetting( 'tags', value ), filterValue: 'Tags'},
+                                {name: "onlyComments", checked: !!onlyComments, onChange: (value) => saveSetting('onlyComments', value), filterValue: 'Donors with comments'}
                               ]}
-                              SelectControl = <SelectControl label={ __( 'Filter', 'give' ) } name="filter" value={ filter } options={ giveDonorWallOptions.filter } onChange={ ( value ) => saveSetting( 'filter', value ) } />
-                          />
+                        />
                     </PanelBody>
                 </Panel>
                 <Panel>
