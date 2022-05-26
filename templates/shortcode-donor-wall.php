@@ -28,14 +28,13 @@ $primary_color = $atts['color'];
                         // Donor gave anonymously
                         $imageUrl = GIVE_PLUGIN_URL . 'assets/dist/images/anonymous-user.svg';
                         $alt = __('Anonymous User', 'give');
-
                         echo "
-                            <div class='give-donor-container__image'>
-                                <img src='$imageUrl' alt='$alt' />
+                            <div class='give-donor-container__image' >
+                                <img class='give-donor-container__image__anonymous' src='$imageUrl' alt='$alt'/>
                             </div>
                         ";
 
-                    } elseif($donation['_give_payment_donor_email'] && give_validate_gravatar($donation['_give_payment_donor_email'])) {
+                    } elseif( $donation['_give_payment_donor_email'] && give_validate_gravatar($donation['_give_payment_donor_email'])) {
                         // Donor has a valid Gravatar
                         $hash = md5( strtolower( trim( $donation['_give_payment_donor_email'] ) ) );
 
@@ -76,7 +75,7 @@ $primary_color = $atts['color'];
 
                 <?php
                 if (
-                     $atts['show_comments']
+                    $atts['show_comments']
                     && absint( $atts['comment_length'] )
                     && ! empty( $donation['donor_comment'] )
                     && ! $donation['_give_anonymous_donation']
@@ -88,6 +87,8 @@ $primary_color = $atts['color'];
                         $comment     = trim( $donation['donor_comment'] );
                         $total_chars = strlen( $comment );
                         $max_chars   = $atts['comment_length'];
+                        $primary_color;
+
 
                         // A truncated excerpt is displayed if the comment is too long.
                         if ( $max_chars < $total_chars ) {
@@ -106,7 +107,7 @@ $primary_color = $atts['color'];
                             $excerpt = trim( $excerpt, '.!,:;' );
 
                             echo sprintf(
-                                '<p class="give-donor-content__excerpt">%s&hellip;<span> <a class="give-donor-content__read-more">%s</a></span></p>',
+                                '<p class="give-donor-content__excerpt">%s&hellip;<span> <a class="give-donor-content__read-more" >%s</a></span></p>',
                                 nl2br( esc_html( $excerpt ) ),
                                 esc_html( $atts['readmore_text'] )
                             );
@@ -122,14 +123,14 @@ $primary_color = $atts['color'];
                 <?php endif; ?>
                 <div class="give-donor-details">
                     <div class="give-donor-details__wrapper">
-                        <?php if ( true === $atts['show_form'] && false === $atts['show_total'] && isset( $donation['_give_payment_form_title'] ) ) : ?>
+                        <?php if ($atts['show_form'] && ! $atts['show_total'] && isset( $donation['_give_payment_form_title'] ) ) : ?>
                             <span class="give-donor-details__form_title" style="text-align: center">
                                 <?php
                                     echo esc_html( $donation['_give_payment_form_title'] ) ;
                                 ?>
                             </span>
                         <?php endif; ?>
-                        <?php if ( true === $atts['show_form'] && true === $atts['show_total'] && isset( $donation['_give_payment_form_title'] ) ) : ?>
+                        <?php if ( $atts['show_form'] &&  $atts['show_total'] && isset( $donation['_give_payment_form_title'] ) ) : ?>
                             <span class="give-donor-details__form_title">
                                 <?php
                                 $word_count = 3;
