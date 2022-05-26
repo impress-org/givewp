@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n'
 import { InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, Panel, SelectControl, ToggleControl, TextControl } from '@wordpress/components';
+import { PanelBody, Panel, SelectControl, ToggleControl, TextControl, ColorPicker } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -20,14 +20,13 @@ import Filter from '../../components/filter';
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { donorsPerPage, ids, formID, categories, tags, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, onlyComments, showForm, showTotal, showComments, showAnonymous, commentLength, readMoreText, loadMoreText, toggleOptions, filter } = attributes;
+	const { donorsPerPage, ids, formID, categories, tags, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, onlyComments, showForm, showTotal, showComments, showAnonymous, showTributes, commentLength, readMoreText, loadMoreText, toggleOptions, filter, color  } = attributes;
 
-    const saveSetting = ( name, value ) => {
+	const saveSetting = ( name, value ) => {
 		setAttributes( {
 			[ name ]: value,
 		} );
 	};
-console.log("!")
     return (
 		<InspectorControls key="inspector">
                 <Panel>
@@ -96,6 +95,11 @@ console.log("!")
                                             label={ __( 'Show Comments', 'give' ) }
                                             checked={ !! showComments }
                                             onChange={ ( value ) => saveSetting( 'showComments', value ) } />
+                                        <ToggleControl
+                                            name="showTributes"
+                                            label={ __( 'Show Tributes', 'give' ) }
+                                            checked={ !! showTributes }
+                                            onChange={ ( value ) => saveSetting( 'showTributes', value ) } />
                                         <TextControl
                                             name="commentLength"
                                             label={ __( 'Comment Length', 'give' ) }
@@ -151,6 +155,13 @@ console.log("!")
                             label={ __( 'Load More Text', 'give' ) }
                             value={ loadMoreText }
                             onChange={ ( value ) => saveSetting( 'loadMoreText', value ) } />
+                        <ColorPicker
+                            name="color"
+                            color={color}
+                            defaultValue={color}
+                            onChange={ ( value ) => saveSetting('color', value) }
+                            enableAlpha
+                        />
                     </PanelBody>
                 </Panel>
 		</InspectorControls>

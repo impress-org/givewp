@@ -58,13 +58,9 @@ const blockAttributes = {
 	},
     showForm: {
 		type: 'boolean',
-		default: false,
-	},
-	showTotal: {
-		type: 'boolean',
 		default: true,
 	},
-	showDate: {
+	showTotal: {
 		type: 'boolean',
 		default: true,
 	},
@@ -72,6 +68,10 @@ const blockAttributes = {
 		type: 'boolean',
 		default: true,
 	},
+    showTributes: {
+        type: 'boolean',
+        default: true,
+    },
 	showAnonymous: {
 		type: 'boolean',
 		default: true,
@@ -82,7 +82,7 @@ const blockAttributes = {
 	},
 	commentLength: {
 		type: 'string',
-		default: '140',
+		default: '80',
 	},
 	readMoreText: {
 		type: 'string',
@@ -94,7 +94,7 @@ const blockAttributes = {
 	},
 	avatarSize: {
 		type: 'string',
-		default: '60',
+		default: '75',
 	},
     toggleOptions: {
         type: 'string',
@@ -103,6 +103,10 @@ const blockAttributes = {
     filter: {
         type: 'string',
         default: 'Donor ID',
+    },
+    color: {
+        type: 'string',
+        default: '#219653',
     }
 };
 
