@@ -6,7 +6,6 @@ use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\DonationSummary;
-use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\CheckoutSession;
 use Give_Stripe_Customer;
@@ -19,10 +18,6 @@ class CreateCheckoutSession
     /**
      * @since 2.20.0 Update function to get input value to line_items[0][name]
      * @since 2.19.0
-     *
-     * @param  GatewayPaymentData  $paymentData
-     * @param  DonationSummary  $donationSummary
-     * @param  Give_Stripe_Customer  $giveStripeCustomer
      *
      * @return CheckoutSession
      * @throws InvalidPropertyName
