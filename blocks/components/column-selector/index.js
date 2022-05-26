@@ -12,28 +12,9 @@ export function Selector({display, selected, onClick}) {
                 {'give_column_selector_selected': displayValue === selected}
             )}
         >
-            {display === 'best-fit' ? (
-                <div className="give_column_selector_icon_container">
-                    <div>
-                        {__('Best Fit (Responsive)', 'give')}
-                    </div>
-                    <div>
-                        <div className="give_best_fit_icon">
-                            <div className="give_best_fit_row">
-                                <div className="give_best_fit_icon_box"> </div>
-                                <div className="give_best_fit_icon_box"> </div>
-                            </div>
-                            <div className="give_best_fit_row">
-                                <div className="give_best_fit_icon_box"> </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            ) : (
                 <>
                     {Array(display).fill(null).map((val, i) => <div key={i} className="give_column_selector_box"> </div>)}
                 </>
-            )}
         </div>
     )
 }
@@ -57,15 +38,7 @@ export default function ({label, onClick, selected, help}) {
                 <p className="give_column_selector_help_text">{help}</p>
             )}
 
-            {selected === 'best-fit' ? (
-                <Row>
-                    <Selector
-                        display="best-fit"
-                        onClick={onClick}
-                        selected={selected}
-                    />
-                </Row>
-            ) : selected === '1' ? (
+            {selected === '1' ? (
                     <Row>
                         <Selector
                             display={1}
@@ -81,13 +54,21 @@ export default function ({label, onClick, selected, help}) {
                         selected={selected}
                     />
                 </Row>
-            ) :
+            ) : selected === '3' ? (
                 <Row>
                     <Selector
                         display={3}
                         onClick={onClick}
                         selected={selected}
                      />
+                </Row>
+            ):
+                <Row>
+                    <Selector
+                        display='4'
+                        onClick={onClick}
+                        selected={selected}
+                    />
                 </Row>
             }
         </div>
