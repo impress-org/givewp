@@ -36,7 +36,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
                             label={__('Columns', 'give')}
                             selected={columns}
                             onClick={(value) => saveSetting('columns', value)}
-                            help={__('Controls how many columns of the Form Grid appear. "Best Fit" will adjust responsively to the space available.', 'give')}
+                            help={__('Controls how many columns of the Form Grid appear. All sizes "will adjust responsively to the space available. The maximum number per row is 4', 'give')}
                         />
                         <SelectControl
                             label={ __( 'Columns', 'give' ) }
