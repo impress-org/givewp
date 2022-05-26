@@ -93,7 +93,7 @@ class Give_Donor_Wall_Block {
 					],
 					'formID'          => [
 						'type'    => 'string',
-						'default' => '# 0',
+						'default' => '0',
 					],
 					'ids'             => [
 						'type'    => 'string',
@@ -121,7 +121,7 @@ class Give_Donor_Wall_Block {
 					],
 					'columns'         => [
 						'type'    => 'string',
-						'default' => 'best-fit',
+						'default' => '3',
 					],
 					'showAvatar'      => [
 						'type'    => 'boolean',
