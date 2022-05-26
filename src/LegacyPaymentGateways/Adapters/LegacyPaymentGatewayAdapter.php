@@ -35,7 +35,8 @@ class LegacyPaymentGatewayAdapter
     /**
      * First we create a payment, then move on to the gateway processing
      *
-     * @unreleased Replace give_insert_payment with donation model.
+     * @unreleased Replace give_insert_payment with donation model. Store legacy subscription data in donation meta.
+     *             Attach subscription id to donation.
      * @since 2.19.0 Replace is_recurring with is_donation_recurring to detect recurring donations.
      * @since 2.18.0
      *
@@ -43,7 +44,7 @@ class LegacyPaymentGatewayAdapter
      */
     public function handleBeforeGateway(array $legacyDonationData, PaymentGatewayInterface $registeredGateway)
     {
-       $formData = FormData::fromRequest($legacyDonationData);
+        $formData = FormData::fromRequest($legacyDonationData);
 
         $this->validateGatewayNonce($formData->gatewayNonce);
 
@@ -72,6 +73,7 @@ class LegacyPaymentGatewayAdapter
                 'donationFormId' => $formData->formId
             ]);
 
+            give()->donations->updateLegacyDonationMetaAsInitialSubscriptionDonation($donation->id);
             give()->subscriptions->updateLegacyColumns(
                 $subscription->id,
                 [
