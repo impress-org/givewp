@@ -14,7 +14,7 @@ const blockAttributes = {
 	},
 	formID: {
 		type: 'string',
-		default: '# 0',
+		default: '0',
 	},
 	ids: {
 		type: 'string',
@@ -42,7 +42,7 @@ const blockAttributes = {
 	},
 	columns: {
 		type: 'string',
-		default: 'best-fit',
+		default: '3',
 	},
 	showAvatar: {
 		type: 'boolean',
