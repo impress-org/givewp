@@ -2,6 +2,8 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe\Webhooks\Listeners;
 
+use Give\Donations\Models\DonationNote;
+use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\PaymentGateways\Gateways\Stripe\Webhooks\StripeEventListener;
 use Stripe\Checkout\Session;
@@ -28,12 +30,6 @@ class CheckoutSessionCompleted extends StripeEventListener
             $donation->status = DonationStatus::COMPLETE();
             $donation->gatewayTransactionId = $checkoutSession->payment_intent;
             $donation->save();
-
-            // Insert donation note to inform admin that charge succeeded.
-            give_insert_payment_note(
-                $donation->id,
-                esc_html__('Charge succeeded in Stripe.', 'give')
-            );
         }
 
         $this->addSupportForLegacyActionHook($donation->id, $event);
