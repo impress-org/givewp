@@ -73,15 +73,21 @@ if (!class_exists('Give_Stripe_Webhooks')) {
 
             // Retrieve the request's body and parse it as JSON.
             $payload = @file_get_contents('php://input');
+            $payload = json_decode($payload, true);
 
             try {
-                $event = Event::constructFrom(
-                    json_decode($payload, true)
+                $event = \Stripe\Event::retrieve(
+                    Event::constructFrom(
+                        $payload
+                    )->id
                 );
-            } catch (\UnexpectedValueException $e) {
+            } catch (\Exception $exception) {
                 Log::warning(
                     'Stripe - Webhook Received',
-                    ['Payload' => $payload,]
+                    [
+                        'Payload' => $payload,
+                        'Error' => $exception->getMessage()
+                    ]
                 );
 
                 status_header(400);
