@@ -158,33 +158,3 @@ const Inspector = ( { attributes, setAttributes } ) => {
 };
 
 export default Inspector;
-
-//
-// {filter === 'Donor ID' ? <TextControl
-//         name="ids"
-//         label={ __( 'Donor IDs', 'give' ) }
-//         value={ ids }
-//         onChange={ ( value ) => saveSetting( 'ids', value ) }
-//         help={ __('By default, all donors will display. Use this setting to restrict the donor wall to only display certain donors. Use a comma-separated list of donor IDs.', 'give') }/> :
-//     filter === 'Form ID' ? <TextControl
-//             name="formID"
-//             label={ __( 'Form IDs', 'give' ) }
-//             value={ formID }
-//             onChange={ ( value ) => saveSetting( 'formID', value ) }
-//             help={ __('By Default, donations to all forms will display. Use this setting to restrict the donor to display only donations to certains forms. Use a comma-separated list of form IDs.', 'give') }/> :
-//         filter === 'Categories' ? <TextControl
-//                 name="categories" label={ __( 'Categories', 'give' ) }
-//                 value={ categories }
-//                 onChange={ ( value ) => saveSetting( 'categories', value ) }/> :
-//             filter === 'Tags' ?
-//                 <TextControl
-//                     name="tags"
-//                     label={ __( 'Tags', 'give' ) }
-//                     value={ tags }
-//                     onChange={ ( value ) => saveSetting( 'tags', value ) }/> :
-//                 <ToggleControl
-//                     name="onlyComments"
-//                     label={ __( 'Only Donors with Comments', 'give' ) }
-//                     checked={ !! onlyComments }
-//                     onChange={ ( value ) => saveSetting( 'onlyComments', value ) } />
-// }
