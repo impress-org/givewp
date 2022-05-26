@@ -73,9 +73,6 @@ class LegacyPaymentGatewayAdapter
                 'donationFormId' => $formData->formId
             ]);
 
-            $donation->subscriptionId = $subscription->id;
-            $donation->save();
-
             give()->donations->updateLegacyDonationMetaAsInitialSubscriptionDonation($donation->id);
             give()->subscriptions->updateLegacyColumns(
                 $subscription->id,
