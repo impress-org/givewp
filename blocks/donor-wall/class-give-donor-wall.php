@@ -217,7 +217,7 @@ class Give_Donor_Wall_Block {
 			'only_comments'     => $attributes['onlyComments'],
 			'readmore_text'     => $attributes['readMoreText'],
 			'loadmore_text'     => $attributes['loadMoreText'],
-			'avatar_size'       => $avatarSize ?: 60,
+			'avatar_size'       => $avatarSize ?: 75,
             'color'             => $attributes['color']
 		];
 

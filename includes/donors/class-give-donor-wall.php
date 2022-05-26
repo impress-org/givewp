@@ -206,7 +206,7 @@ class Give_Donor_Wall {
 				'only_comments'     => false,
 				'readmore_text'     => esc_html__( 'Read more', 'give' ),
 				'loadmore_text'     => esc_html__( 'Load more', 'give' ),
-				'avatar_size'       => 60,
+				'avatar_size'       => 75,
                 'color'             => "#219653",
 				'orderby'           => 'post_date',
 				'order'             => 'DESC',
