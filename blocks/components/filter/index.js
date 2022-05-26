@@ -12,6 +12,7 @@ export default function ({TextControls, filter }) {
                 value={TextProps.value}
                 filterValue={TextProps.filterValue}
                 label={TextProps.label}
+                help={TextProps.help}
             />
         </>
     );
