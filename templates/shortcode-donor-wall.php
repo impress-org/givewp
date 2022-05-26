@@ -22,36 +22,42 @@ $primary_color = $atts['color'];
     <div class="give-donor give-card">
         <div class="give-donor-container">
                 <?php
-                if ( true === $atts['show_avatar'] ) {
+                if ( $atts['show_avatar'] ) {
 
-                    // Get anonymous donor image.
-                    $anonymous_donor_img = sprintf(
-                        '<img src="%1$s" alt="%2$s">',
-                        esc_url( GIVE_PLUGIN_URL . 'assets/dist/images/anonymous-user.svg' ),
-                        esc_attr__( 'Anonymous User', 'give' )
-                    );
+                    if ( !empty($donation['_give_anonymous_donation'])) {
+                        // Donor gave anonymously
+                        $imageUrl = GIVE_PLUGIN_URL . 'assets/dist/images/anonymous-user.svg';
+                        $alt = __('Anonymous User', 'give');
 
-                    $donor_avatar = sprintf(
-                        '%2$s<p class="give-donor-container__image__name_initial">%1$s</p>',
-                        $donation['name_initial'],
-                        $anonymous_donor_img
-                    );
+                        echo "
+                            <div class='give-donor-container__image'>
+                                <img src='$imageUrl' alt='$alt' />
+                            </div>
+                        ";
 
-                    // Validate donor gravatar.
-                    $validate_gravatar = ! empty( $donation['_give_anonymous_donation'] ) ? 0 : give_validate_gravatar( $donation['_give_payment_donor_email'] );
+                    } elseif($donation['_give_payment_donor_email'] && give_validate_gravatar($donation['_give_payment_donor_email'])) {
+                        // Donor has a valid Gravatar
+                        $hash = md5( strtolower( trim( $donation['_give_payment_donor_email'] ) ) );
 
-                    // Maybe display the Avatar.
-                    echo sprintf(
-                        '<div class="give-donor-container__image" data-donor_email="%1$s" data-has-valid-gravatar="%2$s" data-avatar-size="%3$s" data-anonymous-donation="%5$s" style="max-width:%3$spx;">%4$s</div>',
-                        md5( strtolower( trim( $donation['_give_payment_donor_email'] ) ) ),
-                        absint( $validate_gravatar ),
-                        $atts['avatar_size'],
-                        $donor_avatar,
-                        (int) ! empty( $donation['_give_anonymous_donation'] )
-                    );
+                        echo "
+                            <div class='give-donor-container__image'>
+                                <img src='https://gravatar.com/avatar/$hash' alt='{$donor->name}' />
+                            </div>
+                        ";
+
+                    } else {
+                        // Everyone else
+
+                        $initial = $donation['name_initial'];
+                        echo "
+                           <div class='give-donor-container__image'>
+                             <p class='give-donor-container__image__name_initial'>$initial</p>
+                           </div>
+                        ";
+                    }
                 }
                 ?>
-                <?php if ( true === $atts['show_name'] ) : ?>
+                <?php if ( $atts['show_name'] ) : ?>
                     <h3 class="give-donor-container__name" style='<?php echo ($atts['show_avatar']) ? "text-align: center" : "text-align: left"?>'>
                         <?php
                         // Get donor name based on donation parameter.
@@ -70,7 +76,7 @@ $primary_color = $atts['color'];
 
                 <?php
                 if (
-                    true === $atts['show_comments']
+                     $atts['show_comments']
                     && absint( $atts['comment_length'] )
                     && ! empty( $donation['donor_comment'] )
                     && ! $donation['_give_anonymous_donation']
@@ -138,7 +144,7 @@ $primary_color = $atts['color'];
                                 ?>
                             </span>
                         <?php endif; ?>
-                        <?php if ( true === $atts['show_total'] ) : ?>
+                        <?php if ($atts['show_total'] ) : ?>
                             <span class="give-donor-details__amount_donated">Amount Donated</span>
                         <?php endif; ?>
                     </div>
@@ -149,7 +155,7 @@ $primary_color = $atts['color'];
                 <?php endif; ?>
                 </div>
             </div>
-        <?php if ( true === $atts['show_tributes'] && (isset( $donation['_give_tributes_first_name'] ) || isset( $donation['_give_tributes_Last_name'])) ) : ?>
+        <?php if (  $atts['show_tributes'] && (isset( $donation['_give_tributes_first_name'] ) || isset( $donation['_give_tributes_Last_name'])) ) : ?>
             <div class="give-donor-tribute" style="background-color: <?php echo ! empty( $atts['color']) ? $atts['color'] . '20' :'#219653' ?>" >
                     <span>
                         <svg width="16" height="16" viewBox="0 0 16 16"  xmlns="http://www.w3.org/2000/svg" class="give-donor-tribute__svg">
