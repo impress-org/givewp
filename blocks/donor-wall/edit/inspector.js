@@ -103,11 +103,6 @@ const Inspector = ( { attributes, setAttributes } ) => {
 					checked={ !! showTotal }
 					onChange={ ( value ) => saveSetting( 'showTotal', value ) } />
 				<ToggleControl
-					name="showDate"
-					label={ __( 'Show Time', 'give' ) }
-					checked={ !! showDate }
-					onChange={ ( value ) => saveSetting( 'showDate', value ) } />
-				<ToggleControl
 					name="showComments"
 					label={ __( 'Show Comments', 'give' ) }
 					checked={ !! showComments }

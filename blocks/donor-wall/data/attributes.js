@@ -64,10 +64,6 @@ const blockAttributes = {
 		type: 'boolean',
 		default: true,
 	},
-	showDate: {
-		type: 'boolean',
-		default: true,
-	},
 	showComments: {
 		type: 'boolean',
 		default: true,

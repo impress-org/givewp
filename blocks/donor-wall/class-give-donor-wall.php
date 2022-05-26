@@ -143,10 +143,6 @@ class Give_Donor_Wall_Block {
 						'type'    => 'boolean',
 						'default' => true,
 					],
-					'showDate'        => [
-						'type'    => 'boolean',
-						'default' => true,
-					],
 					'showComments'    => [
 						'type'    => 'boolean',
 						'default' => true,
@@ -214,7 +210,6 @@ class Give_Donor_Wall_Block {
 			'show_company_name' => $attributes['showCompanyName'],
 			'show_form'         => $attributes['showForm'],
 			'show_total'        => $attributes['showTotal'],
-			'show_time'         => $attributes['showDate'],
 			'show_comments'     => $attributes['showComments'],
             'show_tributes'     => $attributes['showTributes'],
             'anonymous'         => $attributes['showAnonymous'],
