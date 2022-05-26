@@ -90,7 +90,7 @@ $avatarSize = (int) $atts['avatar_size'] ;
                         $comment     = trim( $donation['donor_comment'] );
                         $total_chars = strlen( $comment );
                         $max_chars   = $atts['comment_length'];
-                        $primary_color;
+                        $read_more_text = $atts['readmore_text'];
 
 
                         // A truncated excerpt is displayed if the comment is too long.
@@ -109,17 +109,13 @@ $avatarSize = (int) $atts['avatar_size'] ;
 
                             $excerpt = trim( $excerpt, '.!,:;' );
 
-                            echo sprintf(
-                                '<p class="give-donor-content__excerpt">%s&hellip;<span> <a class="give-donor-content__read-more" >%s</a></span></p>',
-                                nl2br( esc_html( $excerpt ) ),
-                                esc_html( $atts['readmore_text'] )
-                            );
+                            echo "<p class='give-donor-content__excerpt'>$excerpt &hellip;
+                                    <span> <a class='give-donor-content__read-more' style='color: {$primary_color}'> $read_more_text </a></span>
+                                   </p>";
                         }
-
-                        echo sprintf(
-                            '<p class="give-donor-content__comment">%s</p>',
-                            nl2br( esc_html( $comment ) )
-                        );
+                        else {
+                            echo "<p class='give-donor-content__comment'> $comment </p>";
+                        }
                         ?>
                     </div>
                 </div>
