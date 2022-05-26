@@ -2,7 +2,7 @@ import {__} from '@wordpress/i18n';
 import cx from 'classnames';
 import './style.scss';
 
-export function Selector({display, selected, onClick}) {
+export function Selector({display, selected}) {
     const displayValue = String(display);
 
     return (
@@ -27,7 +27,7 @@ export function Row({children}) {
     )
 }
 
-export default function ({label, onClick, selected, help}) {
+export default function ({label, selected, help}) {
     return (
         <div className="give_column_selector">
             {label && (
@@ -42,7 +42,6 @@ export default function ({label, onClick, selected, help}) {
                     <Row>
                         <Selector
                             display={1}
-                            onClick={onClick}
                             selected={selected}
                         />
                     </Row>
@@ -50,7 +49,6 @@ export default function ({label, onClick, selected, help}) {
                 <Row>
                     <Selector
                         display={2}
-                        onClick={onClick}
                         selected={selected}
                     />
                 </Row>
@@ -58,15 +56,13 @@ export default function ({label, onClick, selected, help}) {
                 <Row>
                     <Selector
                         display={3}
-                        onClick={onClick}
                         selected={selected}
                      />
                 </Row>
             ):
                 <Row>
                     <Selector
-                        display='4'
-                        onClick={onClick}
+                        display={4}
                         selected={selected}
                     />
                 </Row>
