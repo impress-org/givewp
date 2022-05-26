@@ -15,6 +15,7 @@ $give_settings = $args[1]; // Give settings.
 $atts          = $args[2]; // Shortcode attributes.
 
 $primary_color = $atts['color'];
+$avatarSize = (int) $atts['avatar_size'] ;
 ?>
 
 
@@ -28,9 +29,10 @@ $primary_color = $atts['color'];
                         // Donor gave anonymously
                         $imageUrl = GIVE_PLUGIN_URL . 'assets/dist/images/anonymous-user.svg';
                         $alt = __('Anonymous User', 'give');
+
                         echo "
                             <div class='give-donor-container__image' >
-                                <img class='give-donor-container__image__anonymous' src='$imageUrl' alt='$alt'/>
+                                <img class='give-donor-container__image__anonymous' src='$imageUrl' alt='$alt' style='height: {$avatarSize}px;'/>
                             </div>
                         ";
 
@@ -38,9 +40,10 @@ $primary_color = $atts['color'];
                         // Donor has a valid Gravatar
                         $hash = md5( strtolower( trim( $donation['_give_payment_donor_email'] ) ) );
 
+
                         echo "
-                            <div class='give-donor-container__image'>
-                                <img src='https://gravatar.com/avatar/$hash' alt='{$donor->name}' />
+                            <div class='give-donor-container__image' >
+                                <img src='https://gravatar.com/avatar/$hash' alt='{$donor->name}' style='height: {$avatarSize}px;'/>
                             </div>
                         ";
 
@@ -67,7 +70,7 @@ $primary_color = $atts['color'];
                         <?php echo esc_html( $donor_name ); ?>
                     </h3>
                 <?php endif; ?>
-                <?php if ( true === $atts['show_company_name'] && isset( $donation['_give_donation_company'] ) ) : ?>
+                <?php if ( $atts['show_company_name'] && isset( $donation['_give_donation_company'] ) ) : ?>
                     <h3 class="give-donor-container__name">
                         <?php echo esc_html( $donation['_give_donation_company'] ); ?>
                     </h3>
@@ -126,7 +129,7 @@ $primary_color = $atts['color'];
                         <?php if ($atts['show_form'] && ! $atts['show_total'] && isset( $donation['_give_payment_form_title'] ) ) : ?>
                             <span class="give-donor-details__form_title" style="text-align: center">
                                 <?php
-                                    echo esc_html( $donation['_give_payment_form_title'] ) ;
+                                    echo esc_html( $donation['_give_payment_form_title']  ) ;
                                 ?>
                             </span>
                         <?php endif; ?>
