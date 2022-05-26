@@ -101,7 +101,7 @@ class Give_Donor_Wall {
 	 *
 	 * @type string $readmore_text       Link label for modal in which donor can read full comment.
 	 * @type string $loadmore_text       Button label which will load more donor comments.
-	 * @type int    $avatar_size         Avatar image size in pixels without the "px". Default "60"
+	 * @type int    $avatar_size         Avatar image size in pixels without the "px". Default "75"
 	 * @type string $orderby             The order in which you want the donations to appear.
 	 *                                   Currently we are using this attribute internally and it will sort donations by created date.
 	 * @type string $order               The order in which you want the donors to appear. Accepts "ASC". "DESC".

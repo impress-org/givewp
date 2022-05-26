@@ -173,7 +173,7 @@ class Give_Donor_Wall_Block {
 					],
 					'avatarSize'      => [
 						'type'    => 'string',
-						'default' => '80',
+						'default' => '75',
 					],
                     'color'      => [
                         'type'    => 'string',
