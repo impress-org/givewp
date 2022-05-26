@@ -128,8 +128,8 @@ console.log("!")
                         <Filter
                             filter={filter}
                             TextControls ={[
-                                {name:"ids", value: ids, onChange: ( value ) => saveSetting( 'ids', value ), filterValue: 'Donor ID'},
-                                {name:"formID", value: formID, onChange: ( value ) => saveSetting( 'formID',  value ), filterValue: 'Form ID'},
+                                {name:"ids", value: ids,  onChange: ( value ) => saveSetting( 'ids', value ), filterValue: 'Donor ID', help: __('By Default, donations to all forms will display. Use this setting to restrict the donor to display only donations to certains forms. Use a comma-separated list of form IDs.', 'give') },
+                                {name:"formID", value: formID, onChange: ( value ) => saveSetting( 'formID',  value ), filterValue: 'Form ID', help: __('By default, all donors will display. Use this setting to restrict the donor wall to only display certain donors. Use a comma-separated list of donor IDs.', 'give') },
                                 {name:"categories", value: categories , onChange:  ( value ) => saveSetting( 'categories', value ), filterValue: 'Categories'},
                                 {name:"tags", value: tags , onChange: ( value ) => saveSetting( 'tags', value ), filterValue: 'Tags'},
                                 {name: "onlyComments", checked: !!onlyComments, onChange: (value) => saveSetting('onlyComments', value), filterValue: 'Donors with comments'}
