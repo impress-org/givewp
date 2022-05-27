@@ -1,7 +1,5 @@
 import LocalStorage from './local'
 
-const fallbackStorage = LocalStorage
-
-const Storage = window.storage || fallbackStorage
+const Storage = window.storage || LocalStorage
 
 export default Storage
