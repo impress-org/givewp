@@ -2,6 +2,7 @@
     "private": true,
     "scripts": {
         "build": "wp-scripts build && npm run build --workspaces",
+        "dev": "wp-scripts build && npm run build --workspaces",
         "start": "wp-scripts start",
         "packages-update": "wp-scripts packages-update",
         "plugin-zip": "wp-scripts plugin-zip",
