@@ -1,5 +1,6 @@
-import {loadStripe} from '@stripe/stripe-js';
-import {Elements, PaymentElement, useElements, useStripe} from "@stripe/react-stripe-js";
+import {loadStripe, Stripe, StripeElements} from '@stripe/stripe-js';
+import {Elements, PaymentElement, useElements, useStripe} from '@stripe/react-stripe-js';
+import type {Gateway, GatewaySettings} from '@givewp/forms/types';
 
 const StripeFields = ({gateway}) => {
     const stripe = useStripe();
@@ -8,16 +9,33 @@ const StripeFields = ({gateway}) => {
     gateway.stripe = stripe;
     gateway.elements = elements;
 
-    return <PaymentElement/>
+    return <PaymentElement />;
 };
 
 let stripePromise = null;
 let stripeElementOptions = null;
 
-const stripeGateway = {
+interface StripeSettings extends GatewaySettings {
+    stripeKey: string;
+    stripeConnectAccountId: string;
+    stripeClientSecret: string;
+    successUrl: string;
+}
+
+interface StripeGateway extends Gateway {
+    stripe?: Stripe;
+    elements?: StripeElements;
+    settings?: StripeSettings;
+}
+
+const stripeGateway: StripeGateway = {
     id: 'next-gen-stripe',
-    initialize({stripeKey, stripeConnectAccountId, stripeClientSecret, successUrl}) {
-        this.successUrl = successUrl;
+    supportsRecurring: true,
+    supportsCurrency(currency: string): boolean {
+        return true;
+    },
+    initialize() {
+        const {stripeKey, stripeConnectAccountId, stripeClientSecret} = this.settings;
 
         /**
          * Create the Stripe object and pass our api keys
@@ -30,7 +48,7 @@ const stripeGateway = {
             clientSecret: stripeClientSecret,
         };
     },
-    beforeCreatePayment: async function (values) {
+    beforeCreatePayment: async function (values): Promise<object> {
         window.alert('create payment with gateway');
 
         if (!this.stripe || !this.elements) {
@@ -43,7 +61,7 @@ const stripeGateway = {
             elements: this.elements,
             confirmParams: {
                 // Make sure to change this to your payment completion page
-                return_url: this.successUrl
+                return_url: this.settings.successUrl,
             },
         });
 
@@ -52,19 +70,19 @@ const stripeGateway = {
         // your `return_url`. For some payment methods like iDEAL, your customer will
         // be redirected to an intermediate site first to authorize the payment, then
         // redirected to the `return_url`.
-        if (error.type === "card_error" || error.type === "validation_error") {
+        if (error.type === 'card_error' || error.type === 'validation_error') {
             console.log(error.message);
         } else {
-            console.log("An unexpected error occured.");
+            console.log('An unexpected error occurred.');
         }
     },
-    fields() {
+    Fields() {
         return (
             <Elements stripe={stripePromise} options={stripeElementOptions}>
-                <StripeFields gateway={stripeGateway}/>
+                <StripeFields gateway={stripeGateway} />
             </Elements>
-        )
-    }
-}
+        );
+    },
+};
 
 window.givewp.gateways.register(stripeGateway);

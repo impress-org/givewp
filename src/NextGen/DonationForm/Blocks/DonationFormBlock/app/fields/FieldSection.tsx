@@ -1,4 +1,4 @@
-import FieldInterface from '../types/FieldInterface';
+import {Field as FieldInterface} from '@givewp/forms/types';
 import Field from './Field';
 
 type Props = {
@@ -17,7 +17,7 @@ export default function FieldSection({name, label, fields}: Props) {
                 if (type === 'section' && nodes) {
                     return <FieldSection fields={nodes} name={name} label={label} key={name} />;
                 }
-                
+
                 return (
                     <Field
                         key={name}

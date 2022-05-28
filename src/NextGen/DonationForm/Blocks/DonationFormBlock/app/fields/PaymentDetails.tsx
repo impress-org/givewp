@@ -1,7 +1,7 @@
 import {useFormState} from 'react-hook-form';
 import {ErrorMessage} from '@hookform/error-message';
 import PaymentGatewayOption from './PaymentGatewayOption';
-import type {Gateway} from "../types/Gateway";
+import type {Gateway} from '@givewp/forms/types';
 
 type Props = {
     name: string;
@@ -19,7 +19,7 @@ export default function PaymentDetails({name, label, gateways}: Props) {
             </div>
             <ul style={{listStyleType: 'none', padding: 0}}>
                 {gateways.map((gateway, index) => (
-                    <PaymentGatewayOption gateway={gateway} index={index} key={gateway.id}/>
+                    <PaymentGatewayOption gateway={gateway} index={index} key={gateway.id} />
                 ))}
             </ul>
 

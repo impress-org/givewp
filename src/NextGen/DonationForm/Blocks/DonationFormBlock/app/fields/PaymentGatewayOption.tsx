@@ -1,5 +1,5 @@
 import {useFormContext} from 'react-hook-form';
-import {Gateway} from "../types/Gateway";
+import {Gateway} from '@givewp/forms/types';
 
 type Props = {
     gateway: Gateway;
@@ -8,6 +8,7 @@ type Props = {
 
 export default function PaymentGatewayOption({gateway, index}: Props) {
     const {register} = useFormContext();
+    const Fields = gateway.Fields;
 
     return (
         <li>
@@ -17,9 +18,9 @@ export default function PaymentGatewayOption({gateway, index}: Props) {
                 value={gateway.id}
                 defaultChecked={index === 0}
             />
-            <label htmlFor={gateway.id}> Donate with {gateway.label}</label>
+            <label htmlFor={gateway.id}> Donate with {gateway.settings.label}</label>
             <div style={{paddingBottom: '20px'}}>
-                {gateway.fields()}
+                <Fields />
             </div>
         </li>
     );

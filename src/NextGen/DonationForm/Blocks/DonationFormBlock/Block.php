@@ -72,7 +72,7 @@ class Block
             'form' => $donationForm->jsonSerialize(),
             'donateUrl' => $donateUrl,
             'successUrl' => give_get_success_page_uri(),
-            'gateways' => $formDataGateways
+            'gatewaySettings' => $formDataGateways
         ];
 
         ob_start();
@@ -266,22 +266,25 @@ class Block
             'give'
         );
 
-        $enqueuePaymentGatewayRegistrarScript = new EnqueueScript(
-            'give-payment-gateway-registrar-js',
-            'build/paymentGatewayRegistrar.js',
+        (new EnqueueScript(
+            'give-donation-form-registrars-js',
+            'build/donationFormRegistrars.js',
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
             'give'
-        );
-
-        $enqueuePaymentGatewayRegistrarScript->loadInFooter()->enqueue();
+        ))->loadInFooter()->enqueue();
 
         foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
             if (method_exists($gateway, 'enqueueScript')) {
-                $gateway->enqueueScript()->loadInFooter()->enqueue();
+                /** @var EnqueueScript $script */
+                $script = $gateway->enqueueScript();
+
+                $script->dependencies(['give-donation-form-registrars-js'])
+                    ->loadInFooter()
+                    ->enqueue();
             }
         }
 
-        $enqueueBlockScript->loadInFooter()->enqueue();
+        $enqueueBlockScript->dependencies(['give-donation-form-registrars-js'])->loadInFooter()->enqueue();
     }
 }

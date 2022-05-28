@@ -13,12 +13,30 @@ const defaultConfig = require('@wordpress/scripts/config/webpack.config.js');
  */
 module.exports = {
     ...defaultConfig,
+    resolve: {
+        ...defaultConfig.resolve,
+        alias: {
+            ...defaultConfig.resolve.alias,
+            '@givewp/forms/types': path.resolve(__dirname, 'src/NextGen/DonationForm/resources/types.ts'),
+        },
+    },
     entry: {
-        donationFormBlock: path.resolve(process.cwd(), 'src', 'NextGen/DonationForm/Blocks/DonationFormBlock/block.js'),
-        donationFormBlockApp: path.resolve(process.cwd(), 'src', 'NextGen/DonationForm/Blocks/DonationFormBlock/app/DonationFormBlockApp.tsx'),
-        nextGenCreditCardGateway: path.resolve(process.cwd(), 'src', 'NextGen/Gateways/Stripe/NextGenCreditCardGateway/nextGenCreditCardGateway.jsx'),
-        nextGenTestGateway: path.resolve(process.cwd(), 'src', 'NextGen/Gateways/NextGenTestGateway/nextGenTestGateway.jsx'),
-        paymentGatewayRegistrar: path.resolve(process.cwd(), 'src', 'Framework/PaymentGateways/FrontEnd/PaymentGatewayRegistrar/paymentGatewayRegistrar.js'),
+        donationFormBlock: srcPath('NextGen/DonationForm/Blocks/DonationFormBlock/block.js'),
+        donationFormBlockApp: srcPath('NextGen/DonationForm/Blocks/DonationFormBlock/app/DonationFormBlockApp.tsx'),
+        donationFormRegistrars: srcPath('NextGen/DonationForm/Registrars/resources/registrars.ts'),
+        nextGenCreditCardGateway: srcPath(
+            'NextGen/Gateways/Stripe/NextGenCreditCardGateway/nextGenCreditCardGateway.tsx'
+        ),
+        nextGenTestGateway: srcPath('NextGen/Gateways/NextGenTestGateway/nextGenTestGateway.tsx'),
     },
 };
 
+/**
+ * Helper for getting the path to the src directory.
+ *
+ * @param {string} relativePath
+ * @returns {string}
+ */
+function srcPath(relativePath) {
+    return path.resolve(process.cwd(), 'src', relativePath);
+}
