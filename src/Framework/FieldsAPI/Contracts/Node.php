@@ -6,20 +6,20 @@ use JsonSerializable;
 
 interface Node extends JsonSerializable
 {
+    /**
+     * The primitive node type, one of "field", "element", or "group".
+     */
+    public function getNodeType(): string;
 
     /**
      * Get the field’s type.
-     *
-     * @return string
      */
-    public function getType();
+    public function getType(): string;
 
     /**
      * Get the node’s name.
-     *
-     * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * {@inheritdoc}

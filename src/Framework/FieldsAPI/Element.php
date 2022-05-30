@@ -27,6 +27,14 @@ abstract class Element implements Node
     }
 
     /**
+     * @inheritDoc
+     */
+    public function getNodeType(): string
+    {
+        return 'element';
+    }
+
+    /**
      * Create a named block.
      *
      * @since 2.12.0

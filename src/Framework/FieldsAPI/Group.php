@@ -40,6 +40,14 @@ class Group implements Node, Collection
     }
 
     /**
+     * @inheritDoc
+     */
+    public function getNodeType(): string
+    {
+        return 'group';
+    }
+
+    /**
      * @since 2.12.0
      *
      * @param $name
