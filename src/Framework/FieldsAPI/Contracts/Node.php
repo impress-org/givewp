@@ -8,6 +8,8 @@ interface Node extends JsonSerializable
 {
     /**
      * The primitive node type, one of "field", "element", or "group".
+     *
+     * @unreleased
      */
     public function getNodeType(): string;
 

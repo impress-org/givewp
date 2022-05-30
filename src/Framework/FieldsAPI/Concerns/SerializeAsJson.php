@@ -9,6 +9,8 @@ trait SerializeAsJson
 
     /**
      * {@inheritdoc}
+     *
+     * @unreleased add nodeTye to the json
      */
     public function jsonSerialize(): array
     {
