@@ -25,11 +25,6 @@ $goal   = $goal_progress_stats['raw_goal'];
 
 switch ( $goal_format ) {
 
-	case 'donation':
-		$progress           = $goal ? round( ( $income / $goal ) * 100, 2 ) : 0;
-		$progress_bar_value = $income >= $goal ? 100 : $progress;
-		break;
-
 	case 'donors':
 		$progress_bar_value = $goal ? round( ( $income / $goal ) * 100, 2 ) : 0;
 		$progress           = $progress_bar_value;
@@ -176,7 +171,7 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 
 				echo sprintf( /* translators: %s: percentage of the amount raised compared to the goal target */
 					__( '<div class="raised__details">
-                                   <span class="give-percentage amount">%s%%</span>
+                                   <span class="amount">%s%%</span>
                                    <span class="goal"><span>of </span><span>100&#37;</span>
                               </div>
                          </div>', 'give' ),
@@ -206,11 +201,11 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 
 				echo sprintf( /* translators: 1: total number of donors completed 2: total number of donors set as goal */
 					_n(
-						'<div class="raised-details">
+						'<div class="raised__details">
                                            <span class="amount" >%1$s</spanclass>
                                            <span class="goal">%2$s</span>
                                 </div>',
-						'<div class="raised-details">
+						'<div class="raised__details">
                                            <span class="amount">%1$s</span>
                                            <span class="goal">%2$s</span>
                                 </div>',
@@ -223,6 +218,10 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 
 			endif;
 			?>
+            <div class="raised__details">
+                <span class="amount raised__details_donations">90</span>
+                <span class="goal">Donations</span>
+            </div>
 		</div>
 	<?php endif; ?>
 </div><!-- /.goal-progress -->
