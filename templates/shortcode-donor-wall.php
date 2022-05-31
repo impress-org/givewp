@@ -52,8 +52,8 @@ $avatarSize = (int) $atts['avatar_size'] ;
 
                         $initial = $donation['name_initial'];
                         echo "
-                           <div class='give-donor-container__image'>
-                             <p class='give-donor-container__image__name_initial'>$initial</p>
+                           <div class='give-donor-container__image' style='height: {$avatarSize}px; width: {$avatarSize}px;'>
+                             <span class='give-donor-container__image__name_initial'>$initial</span>
                            </div>
                         ";
                     }
