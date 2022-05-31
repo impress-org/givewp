@@ -35,7 +35,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
                         <ColumnSelector
                             selected={columns}
                             onClick={(value) => saveSetting('columns', value)}
-                            help={__('Controls how many columns of the Form Grid appear. All sizes "will adjust responsively to the space available. The maximum number per row is 4', 'give')}
+                            help={__('Controls how many columns of the Form Grid appear. All sizes will adjust responsively to the space available. The maximum number allowed per row is 4', 'give')}
                         />
                         <SelectControl
                             className="give-donor-wall-inspector"
