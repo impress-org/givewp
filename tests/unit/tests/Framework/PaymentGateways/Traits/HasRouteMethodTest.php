@@ -140,4 +140,11 @@ class GatewayRouteTestGatewaySubscriptionModule extends SubscriptionModule
     public function cancelSubscription(Subscription $subscription)
     {
     }
+
+    public function getPaymentGatewaySubscriptionDetailPageUrl(
+        string $gatewaySubscriptionId,
+        string $donationMode
+    ): string {
+        return '';
+    }
 }
