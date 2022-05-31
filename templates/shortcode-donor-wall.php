@@ -86,7 +86,7 @@ $avatarSize = (int) $atts['avatar_size'] ;
                     && ! $donation['_give_anonymous_donation']
                 ) :
                     ?>
-<!--                <div class="give-donor-wrapper">-->
+                <div class="give-donor-wrapper">
                     <div class="give-donor-content" style="border-color: <?php echo ! empty( $atts['color']) ? $atts['color'] :'#219653' ?>">
                         <?php
                         $comment     = trim( $donation['donor_comment'] );
@@ -120,39 +120,33 @@ $avatarSize = (int) $atts['avatar_size'] ;
                         }
                         ?>
                     </div>
-<!--                </div>-->
+                </div>
                 <?php endif; ?>
                 <div class="give-donor-details">
                     <div class="give-donor-details__wrapper">
-                        <?php if ($atts['show_form'] && ! $atts['show_total'] && isset( $donation['_give_payment_form_title'] ) ) : ?>
-                            <span class="give-donor-details__form_title" style="text-align: center">
-                                <?php
-                                    echo esc_html( $donation['_give_payment_form_title']  ) ;
-                                ?>
-                            </span>
-                        <?php endif; ?>
+                        <?php
+                            $full_form_name = $donation['_give_payment_form_title'];
+                            $word_count = 3;
+                            preg_match("/(\S+\s*){0,$word_count}/", $donation['_give_payment_form_title'], $regs);
+                            $truncated_form_name = trim($regs[0] . "...");
 
-                        <?php if ( $atts['show_form'] &&  $atts['show_total'] && isset( $donation['_give_payment_form_title'] ) ) : ?>
-                            <span class="give-donor-details__form_title">
-                                <?php
-                                $word_count = 3;
-                                preg_match("/(\S+\s*){0,$word_count}/", $donation['_give_payment_form_title'], $regs);
-                                $form_name = trim($regs[0] . "...");
-
-                                if(str_word_count($donation['_give_payment_form_title'], 0) <= $word_count){
-                                    echo esc_html($donation['_give_payment_form_title'] ) ;
-                                } else {
-                                    echo esc_html($form_name) ;
+                            if ( $atts['show_form'] &&  $atts['show_total'] && isset( $donation['_give_payment_form_title'] ) ) {
+                                if (str_word_count($donation['_give_payment_form_title'], 0) <= $word_count) {
+                                    echo "<span class='give-donor-details__form_title'> $full_form_name </span>";
                                 }
-                                ?>
-                            </span>
-                        <?php endif; ?>
+                                else {
+                                    echo  "<span class='give-donor-details__form_title'> $truncated_form_name </span>";
+                                }
+                            }
 
-                        <?php if ($atts['show_total'] ) {
-                            echo "<span class='give-donor-details__amount_donated'>Amount Donated</span>";
-                        }
-                        ?>
+                            else if ($atts['show_form'] && ! $atts['show_total'] && isset( $donation['_give_payment_form_title'] ) ) {
+                                echo  "<span class='give-donor-details__form_title' style='text-align: center'> $full_form_name </span>";
+                            }
 
+                            if ($atts['show_total'] ) {
+                                echo "<span class='give-donor-details__amount_donated'>Amount Donated</span>";
+                            }
+                      ?>
                     </div>
 
                 <?php
