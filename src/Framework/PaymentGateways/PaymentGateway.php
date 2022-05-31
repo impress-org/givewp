@@ -20,6 +20,7 @@ use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionAmountEditable;
+use Give\Framework\PaymentGateways\Contracts\Subscription\GatewaySubscriptionIdLinkable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPaymentMethodEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
@@ -170,6 +171,14 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     {
         return $this instanceof SubscriptionPaymentMethodEditable
             || $this->subscriptionModule->canUpdateSubscriptionPaymentMethod();
+    }
+
+    /**
+     * @unreleased
+     */
+    public function hasGatewaySubscriptionIdLink(): bool
+    {
+        return $this->subscriptionModule instanceof GatewaySubscriptionIdLinkable;
     }
 
     /**

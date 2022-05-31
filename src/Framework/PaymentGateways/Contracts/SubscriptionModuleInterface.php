@@ -45,9 +45,4 @@ interface SubscriptionModuleInterface
      * @since 2.20.0
      */
     public function canUpdateSubscriptionPaymentMethod(): bool;
-
-    /**
-     * @unreleased
-     */
-    public function getPaymentGatewaySubscriptionDetailPageUrl(string $gatewaySubscriptionId, string $donationMode): string;
 }
