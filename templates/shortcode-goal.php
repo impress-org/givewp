@@ -20,8 +20,29 @@ $color               = give_get_meta( $form_id, '_give_goal_color', true );
 $show_text           = isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
 $show_bar            = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
 
-$income = $form->get_earnings();
-$goal   = $goal_progress_stats['raw_goal'];
+/**
+ * Allow filtering the goal stats used for this shortcode context.
+ *
+ * @since TBD
+ *
+ * @param array $stats               The income and goal values for this form goal.
+ * @param int   $form_id             Donation Form ID.
+ * @param array $goal_progress_stats The full goal progress stats.
+ * @param array $args                The full list of shortcode arguments passed.
+ */
+$shortcode_stats = apply_filters(
+    'give_goal_shortcode_stats',
+    array(
+        'income' => $form->get_earnings(),
+        'goal'   => $goal_progress_stats['raw_goal'],
+    ),
+    $form_id,
+    $goal_progress_stats,
+    $args
+);
+
+$income = $shortcode_stats['income'];
+$goal   = $shortcode_stats['goal'];
 
 switch ( $goal_format ) {
 
