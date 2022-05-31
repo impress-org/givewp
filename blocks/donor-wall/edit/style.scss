@@ -23,7 +23,6 @@
         align-items: center !important;
         justify-content: center !important;
 
-
         .components-input-control__label{
             flex: 1 !important;
             margin: 0 !important;
@@ -32,5 +31,9 @@
 
     .components-input-control__container {
         max-width: 165px !important;
+
+            > select {
+                line-height: 1.2 !important;
+            }
+        }
     }
-}
