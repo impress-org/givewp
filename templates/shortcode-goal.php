@@ -23,12 +23,12 @@ $show_bar            = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'
 /**
  * Allow filtering the goal stats used for this shortcode context.
  *
- * @since TBD
+ * @unreleased
  *
- * @param array $stats               The income and goal values for this form goal.
- * @param int   $form_id             Donation Form ID.
- * @param array $goal_progress_stats The full goal progress stats.
- * @param array $args                The full list of shortcode arguments passed.
+ * @param  array  $stats  The income and goal values for this form goal.
+ * @param  int  $form_id  Donation Form ID.
+ * @param  array  $goal_progress_stats  The full goal progress stats.
+ * @param  array  $args  The full list of shortcode arguments passed.
  */
 $shortcode_stats = apply_filters(
     'give_goal_shortcode_stats',
