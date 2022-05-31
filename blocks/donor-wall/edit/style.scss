@@ -3,6 +3,10 @@
     align-items: center !important;
     justify-content: space-between !important;
 
+    .components-base-control__label {
+        margin: 0 !important;
+    }
+
     .components-base-control__field {
         display: flex !important;
         flex-direction: row!important;
