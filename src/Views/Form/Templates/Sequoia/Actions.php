@@ -172,7 +172,7 @@ class Actions
         // Remove goal.
         remove_action('give_pre_form', 'give_show_goal_progress', 10);
 
-        // Remove intermediate continue button which appear when display style set to other then onpage.
+        // Remove intermediate continue button which appears when display style is set to anything other than "onpage".
         remove_action('give_after_donation_levels', 'give_display_checkout_button', 10);
 
         // Hide title.

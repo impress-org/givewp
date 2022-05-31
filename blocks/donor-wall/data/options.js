@@ -10,11 +10,10 @@ const giveDonorWallOptions = {};
 
 // Form Display Styles
 giveDonorWallOptions.columns = [
-	{ value: 'best-fit', label: __( 'Best Fit', 'give' ) },
-	{ value: '1', label: '1' },
-	{ value: '2', label: '2' },
-	{ value: '3', label: '3' },
-	{ value: '4', label: '4' },
+	{ value: '1', label: 'Full width' },
+	{ value: '2', label: 'Double' },
+	{ value: '3', label: 'Triple' },
+    { value: '4', label: 'Max (4)' },
 ];
 
 // Order
@@ -28,5 +27,22 @@ giveDonorWallOptions.orderBy = [
 	{ value: 'donation_amount', label: __( 'Donation Amount', 'give' ) },
 	{ value: 'post_date', label: __( 'Date Created', 'give' ) },
 ];
+
+//Toggle Switch
+giveDonorWallOptions.toggleOptions = [
+    { value: 'Donor info', label: __( 'Donor Info', 'give' ) },
+    { value: 'Wall attributes', label: __( 'Wall Attributes', 'give' ) },
+];
+
+//Filter
+giveDonorWallOptions.filter = [
+    { value: 'Donor ID', label: __( 'Donor ID', 'give' ) },
+    { value: 'Form ID', label: __( 'Form ID', 'give' ) },
+    { value: 'Categories', label: __( 'Categories', 'give' ) },
+    { value: 'Tags', label: __( 'Tags', 'give' ) },
+    { value: 'Donors with comments', label: __( 'Donors with comments', 'give' ) },
+];
+
+
 
 export default giveDonorWallOptions;

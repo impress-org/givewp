@@ -10,8 +10,6 @@ interface LegacyPaymentGatewayInterface {
 	 * Returns form fields for donation form to render
 	 *
 	 * @since 2.18.0
-	 *
-	 * @return string|bool
 	 */
-	public function getLegacyFormFieldMarkup( $formId, $args );
+	public function getLegacyFormFieldMarkup( int $formId, array $args ): string;
 }

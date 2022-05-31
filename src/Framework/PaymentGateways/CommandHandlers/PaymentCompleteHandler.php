@@ -2,6 +2,7 @@
 
 namespace Give\Framework\PaymentGateways\CommandHandlers;
 
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 
 class PaymentCompleteHandler extends PaymentHandler
@@ -15,10 +16,10 @@ class PaymentCompleteHandler extends PaymentHandler
     }
 
     /**
-     * @return string
+     * @unreleased
      */
-    protected function getPaymentStatus()
+    protected function getPaymentStatus(): DonationStatus
     {
-        return 'complete';
+        return DonationStatus::COMPLETE();
     }
 }

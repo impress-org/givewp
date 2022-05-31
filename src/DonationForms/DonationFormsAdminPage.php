@@ -41,7 +41,7 @@ class DonationFormsAdminPage
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      */
     public function highlightAllFormsMenuItem()
     {
@@ -88,7 +88,7 @@ class DonationFormsAdminPage
     /**
      * Get first page of results from REST API to display as initial table data
      *
-     * @unreleased
+     * @since 2.20.0
      * @return array
      */
     private function preloadDonationForms()
@@ -108,7 +108,7 @@ class DonationFormsAdminPage
 
     /**
      * Get a list of author user IDs and names
-     * @unreleased
+     * @since 2.20.0
      */
     public function getAuthors()
     {
@@ -134,7 +134,7 @@ class DonationFormsAdminPage
     /**
      * Display a button on the old donation forms table that switches to the React view
      *
-     * @unreleased
+     * @since 2.20.0
      */
     public function renderReactSwitch()
     {
@@ -153,7 +153,7 @@ class DonationFormsAdminPage
             }
             jQuery( function() {
                 jQuery(jQuery(".wrap .page-title-action")[0]).after(
-                    '<button class="page-title-action" onclick="showReactTable()">Switch to Updated View</button>'
+                    '<button class="page-title-action" onclick="showReactTable()">Switch to New View</button>'
                 );
             });
         </script>
@@ -163,15 +163,25 @@ class DonationFormsAdminPage
     /**
      * Helper function to determine if current page is Give Add-ons admin page
      *
-     * @return bool
+     * @since 2.20.0
      */
-    public static function isShowing()
+    public static function isShowing(): bool
     {
         return isset($_GET['page']) && $_GET['page'] === 'give-forms';
     }
 
     /**
-     * @unreleased
+     * Helper function to determine if the current page is the legacy donation forms list page
+     *
+     * @since 2.20.1
+     */
+    public static function isShowingLegacyPage(): bool
+    {
+        return isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms' && empty($_GET['page']);
+    }
+
+    /**
+     * @since 2.20.0
      * @return string
      */
     public static function getUrl()

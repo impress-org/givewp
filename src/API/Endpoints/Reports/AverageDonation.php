@@ -132,7 +132,7 @@ class AverageDonation extends Endpoint
             'give'
         );
 
-        // Create data objec to be returned, with 'highlights' object containing total and average figures to display
+        // Create data object to be returned, with 'highlights' object containing total and average figures to display
         $data = [
             'datasets' => [
                 [

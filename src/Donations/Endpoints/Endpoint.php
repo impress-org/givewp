@@ -15,7 +15,7 @@ abstract class Endpoint implements RestRoute
 
     /**
      * @param  string  $value
-     * @unreleased
+     * @since 2.20.0
      *
      * @return bool
      */
@@ -28,7 +28,7 @@ abstract class Endpoint implements RestRoute
      * @param string $param
      * @param WP_REST_Request $request
      * @param string $key
-     * @unreleased
+     * @since 2.20.0
      *
      * @return bool
      */
@@ -50,7 +50,7 @@ abstract class Endpoint implements RestRoute
 
     /**
      * Check user permissions
-     * @unreleased
+     * @since 2.20.0
      *
      * @return bool|WP_Error
      */
@@ -59,7 +59,7 @@ abstract class Endpoint implements RestRoute
         if (!current_user_can('edit_posts')) {
             return new WP_Error(
                 'rest_forbidden',
-                esc_html__('You dont have the right permissions to view Donations', 'give'),
+                esc_html__('You don\'t have permission to view Donations', 'give'),
                 ['status' => $this->authorizationStatusCode()]
             );
         }
@@ -69,7 +69,7 @@ abstract class Endpoint implements RestRoute
 
     /**
      * Sets up the proper HTTP status code for authorization.
-     * @unreleased
+     * @since 2.20.0
      *
      * @return int
      */

@@ -43,7 +43,7 @@ class SwitchDonationView extends Endpoint
 
     /**
      * @param WP_REST_Request $request
-     * @unreleased
+     * @since 2.20.0
      *
      * @return WP_REST_Response
      */

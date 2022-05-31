@@ -32,13 +32,8 @@ class PayPalCommerce extends PaymentGateway
 
     /**
      * @since 2.19.0
-     *
-     * @param int $formId
-     * @param array $args
-     *
-     * @return string
      */
-    public function getLegacyFormFieldMarkup($formId, $args)
+    public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
         return give(AdvancedCardFields::class)->addCreditCardForm($formId);
     }
@@ -48,7 +43,7 @@ class PayPalCommerce extends PaymentGateway
      *
      * @return string
      */
-    public static function id()
+    public static function id(): string
     {
         return 'paypal-commerce';
     }
@@ -58,7 +53,7 @@ class PayPalCommerce extends PaymentGateway
      *
      * @return string
      */
-    public function getId()
+    public function getId(): string
     {
         return self::id();
     }
@@ -68,7 +63,7 @@ class PayPalCommerce extends PaymentGateway
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return esc_html__('PayPal Donations', 'give');
     }
@@ -78,7 +73,7 @@ class PayPalCommerce extends PaymentGateway
      *
      * @return string
      */
-    public function getPaymentMethodLabel()
+    public function getPaymentMethodLabel(): string
     {
         return esc_html__('Credit Card', 'give');
     }
@@ -86,12 +81,9 @@ class PayPalCommerce extends PaymentGateway
     /**
      * @since 2.19.0
      *
-     * @param GatewayPaymentData $paymentData
-     *
-     * @return GatewayCommand
      * @throws PaymentGatewayException
      */
-    public function createPayment(GatewayPaymentData $paymentData)
+    public function createPayment(Donation $donation): GatewayCommand
     {
         $paypalOrder = Call::invoke(GetPayPalOrderFromRequest::class);
         $command = PaymentComplete::make($paypalOrder->payment->id);
@@ -104,7 +96,7 @@ class PayPalCommerce extends PaymentGateway
         ];
 
         give('payment_meta')->update_meta(
-            $paymentData->donationId,
+            $donation->id,
             '_give_order_id',
             $paypalOrder->id
         );
@@ -164,6 +156,10 @@ class PayPalCommerce extends PaymentGateway
                 'name' => esc_html__('Accept Venmo', 'give'),
                 'id' => 'paypal_commerce_accept_venmo',
                 'type' => 'radio_inline',
+                'desc' => esc_html__(
+                            'Displays a button allowing Donors to pay with Venmo (a PayPal Company). Donations still come into your PayPal account and are subject to normal PayPal transaction fees.',
+                            'give'
+                        ),
                 'default' => 'disabled',
                 'options' => [
                     'enabled' => esc_html__('Enabled', 'give'),
@@ -215,7 +211,7 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      * @inerhitDoc
      * @throws Exception
      */

@@ -7,7 +7,7 @@ use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\SubscriptionModule;
 
 /**
- * @unreleased
+ * @since 2.20.0
  * @property SubscriptionModule $subscriptionModule
  * @property array $routeMethods
  * @property array $secureRouteMethods
@@ -35,7 +35,7 @@ trait HasRouteMethods
     public $secureRouteMethods = [];
 
     /**
-     * @unreleased
+     * @since 2.20.0
      *
      * @param string $method
      *
@@ -49,7 +49,7 @@ trait HasRouteMethods
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      *
      * @param string $method
      *

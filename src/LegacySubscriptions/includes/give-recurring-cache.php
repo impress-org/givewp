@@ -57,7 +57,6 @@ class Give_Recurring_Cache {
 
 		add_action( 'give_subscription_inserted', array( $this, 'flush_on_subscription_insert' ) );
 		add_action( 'give_subscription_deleted', array( $this, 'flush_on_subscription_delete' ), 10, 2 );
-		add_action( 'give_subscription_updated', array( $this, 'flush_on_subscription_update' ), 10, 4 );
 		add_action( 'give_cache_filter_group_name', array( $this, 'filter_group_name' ), 999, 2 );
 		add_action( 'give_deleted_give-donations_cache', array( $this, 'flush_on_donation_edit' ), 10 );
 		add_action( 'before_delete_post', array( $this, 'flush_on_donation_delete' ), 10 );

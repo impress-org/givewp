@@ -42,7 +42,7 @@ const blockAttributes = {
 	},
 	columns: {
 		type: 'string',
-		default: 'best-fit',
+		default: '3',
 	},
 	showAvatar: {
 		type: 'boolean',
@@ -96,6 +96,14 @@ const blockAttributes = {
 		type: 'string',
 		default: '75',
 	},
+    toggleOptions: {
+        type: 'string',
+        default: 'Donor info',
+    },
+    filter: {
+        type: 'string',
+        default: 'Donor ID',
+    },
     color: {
         type: 'string',
         default: '#219653',

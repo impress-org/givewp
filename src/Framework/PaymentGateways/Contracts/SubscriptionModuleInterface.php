@@ -4,8 +4,7 @@ namespace Give\Framework\PaymentGateways\Contracts;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
-use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
-use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
+use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Subscriptions\Models\Subscription;
 
 interface SubscriptionModuleInterface
@@ -15,48 +14,35 @@ interface SubscriptionModuleInterface
      *
      * @since 2.18.0
      *
-     * @param GatewayPaymentData $paymentData
-     * @param GatewaySubscriptionData $subscriptionData
-     *
-     * @return GatewayCommand
+     * @return GatewayCommand|RedirectOffsite
      */
-    public function createSubscription(GatewayPaymentData $paymentData, GatewaySubscriptionData $subscriptionData);
+    public function createSubscription(Donation $donation, Subscription $subscription);
 
     /**
      * Cancel subscription.
      *
-     * @unreleased
-     *
-     * @param Subscription $subscription
-     *
-     * @return void
+     * @since 2.20.0
      */
     public function cancelSubscription(Subscription $subscription);
 
     /**
      * Returns whether the gateway supports syncing subscriptions.
      *
-     * @unreleased
-     *
-     * @return bool
+     * @since 2.20.0
      */
-    public function canSyncSubscriptionWithPaymentGateway();
+    public function canSyncSubscriptionWithPaymentGateway(): bool;
 
     /**
      * Whether the gateway supports updating subscription amount.
      *
-     * @unreleased
-     *
-     * @return bool
+     * @since 2.20.0
      */
-    public function canUpdateSubscriptionAmount();
+    public function canUpdateSubscriptionAmount(): bool;
 
     /**
      * Whether the gateway supports updating subscription method.
      *
-     * @unreleased
-     *
-     * @return bool
+     * @since 2.20.0
      */
-    public function canUpdateSubscriptionPaymentMethod();
+    public function canUpdateSubscriptionPaymentMethod(): bool;
 }

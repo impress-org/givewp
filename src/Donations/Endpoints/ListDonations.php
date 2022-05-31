@@ -2,6 +2,7 @@
 
 namespace Give\Donations\Endpoints;
 
+use Give\Donations\Controllers\DonationsRequestController;
 use Give\Donations\DataTransferObjects\DonationResponseData;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -72,15 +73,16 @@ class ListDonations extends Endpoint
 
     /**
      * @param WP_REST_Request $request
-     * @unreleased
+     * @since 2.20.0
      *
      * @return WP_REST_Response
      */
-    public function handleRequest(WP_REST_Request $request)
+    public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
         $data = [];
-        $donations = give()->donations->getDonationsForRequest($request);
-        $donationsCount = give()->donations->getTotalDonationsCountForRequest($request);
+        $controller = new DonationsRequestController($request);
+        $donations = $controller->getDonations();
+        $donationsCount = $controller->getTotalDonationsCount();
         $totalPages = (int)ceil($donationsCount / $request->get_param('perPage'));
 
         foreach ($donations as $donation) {

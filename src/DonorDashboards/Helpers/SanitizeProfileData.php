@@ -10,7 +10,7 @@ class SanitizeProfileData
 {
 
     /**
-     * Sanitize int passed, and return 0 if somehting other than an integer was passed
+     * Sanitize int passed, and return 0 if something other than an integer was passed
      *
      * @since 2.10.0
      *

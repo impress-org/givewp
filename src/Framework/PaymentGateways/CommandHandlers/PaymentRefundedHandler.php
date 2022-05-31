@@ -2,6 +2,7 @@
 
 namespace Give\Framework\PaymentGateways\CommandHandlers;
 
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 
 class PaymentRefundedHandler extends PaymentHandler
@@ -15,10 +16,10 @@ class PaymentRefundedHandler extends PaymentHandler
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
-    protected function getPaymentStatus()
+    protected function getPaymentStatus(): DonationStatus
     {
-        return 'refunded';
+        return DonationStatus::REFUNDED();
     }
 }

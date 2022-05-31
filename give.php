@@ -6,7 +6,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.19.8
+ * Version: 2.20.1
  * Requires at least: 5.0
  * Requires PHP: 7.0
  * Text Domain: give
@@ -56,6 +56,7 @@ use Give\Form\Templates;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\Framework\WordPressShims\ServiceProvider as WordPressShimsServiceProvider;
 use Give\LegacySubscriptions\ServiceProvider as LegacySubscriptionsServiceProvider;
 use Give\License\LicenseServiceProvider;
 use Give\Log\LogServiceProvider;
@@ -71,7 +72,6 @@ use Give\ServiceProviders\PaymentGateways;
 use Give\ServiceProviders\RestAPI;
 use Give\ServiceProviders\Routes;
 use Give\ServiceProviders\ServiceProvider;
-use Give\Shims\ShimsServiceProvider;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
 use Give\Subscriptions\ServiceProvider as SubscriptionServiceProvider;
 use Give\TestData\ServiceProvider as TestDataServiceProvider;
@@ -85,6 +85,7 @@ if (!defined('ABSPATH')) {
 /**
  * Main Give Class
  *
+ * @unreleased Remove php dependency validation logic and constant
  * @since 2.19.6 add $donations, $subscriptions, and replace $donors class with DonorRepositoryProxy
  * @since 2.8.0 build in a service container
  * @since 1.0
@@ -179,7 +180,6 @@ final class Give
         MigrationLogServiceProvider::class,
         LogServiceProvider::class,
         FormLegacyConsumerServiceProvider::class,
-        ShimsServiceProvider::class,
         LicenseServiceProvider::class,
         Give\Email\ServiceProvider::class,
         DonationSummaryServiceProvider::class,
@@ -189,7 +189,8 @@ final class Give
         SubscriptionServiceProvider::class,
         DonationFormsServiceProvider::class,
         PromotionsServiceProvider::class,
-        LegacySubscriptionsServiceProvider::class
+        LegacySubscriptionsServiceProvider::class,
+        WordPressShimsServiceProvider::class,
     ];
 
     /**
@@ -218,18 +219,6 @@ final class Give
      */
     public function boot()
     {
-        // PHP version
-        if (!defined('GIVE_REQUIRED_PHP_VERSION')) {
-            define('GIVE_REQUIRED_PHP_VERSION', '5.6.0');
-        }
-
-        // Bailout: Need minimum php version to load plugin.
-        if (function_exists('phpversion') && version_compare(GIVE_REQUIRED_PHP_VERSION, phpversion(), '>')) {
-            add_action('admin_notices', [$this, 'minimum_phpversion_notice']);
-
-            return;
-        }
-
         $this->setup_constants();
 
         // Add compatibility notice for recurring and stripe support with Give 2.5.0.
@@ -274,9 +263,9 @@ final class Give
         /**
          * Fire the action after Give core loads.
          *
-         * @param  Give class instance.
-         *
          * @since 1.8.7
+         *
+         * @param Give class instance.
          *
          */
         do_action('give_init', $this);
@@ -296,16 +285,16 @@ final class Give
     /**
      * Setup plugin constants
      *
-     * @return void
      * @since  1.0
      * @access private
      *
+     * @return void
      */
     private function setup_constants()
     {
         // Plugin version.
         if (!defined('GIVE_VERSION')) {
-            define('GIVE_VERSION', '2.19.8');
+            define('GIVE_VERSION', '2.20.1');
         }
 
         // Plugin Root File.
@@ -337,10 +326,10 @@ final class Give
     /**
      * Loads the plugin language files.
      *
-     * @return void
      * @since  1.0
      * @access public
      *
+     * @return void
      */
     public function load_textdomain()
     {
@@ -358,60 +347,11 @@ final class Give
     }
 
     /**
-     *  Show minimum PHP version notice.
-     *
-     * @since  1.8.12
-     * @access public
-     */
-    public function minimum_phpversion_notice()
-    {
-        // Bailout.
-        if (!is_admin()) {
-            return;
-        }
-
-        $notice_desc = '<p><strong>' . __(
-                'Your site could be faster and more secure with a newer PHP version.',
-                'give'
-            ) . '</strong></p>';
-        $notice_desc .= '<p>' . __(
-                'Hey, we\'ve noticed that you\'re running an outdated version of PHP. PHP is the programming language that WordPress and GiveWP are built on. The version that is currently used for your site is no longer supported. Newer versions of PHP are both faster and more secure. In fact, your version of PHP no longer receives security updates, which is why we\'re sending you this notice.',
-                'give'
-            ) . '</p>';
-        $notice_desc .= '<p>' . __(
-                'Hosts have the ability to update your PHP version, but sometimes they don\'t dare to do that because they\'re afraid they\'ll break your site.',
-                'give'
-            ) . '</p>';
-        $notice_desc .= '<p><strong>' . __('To which version should I update?', 'give') . '</strong></p>';
-        $notice_desc .= '<p>' . __(
-                'You should update your PHP version to either 5.6 or to 7.0 or 7.1. On a normal WordPress site, switching to PHP 5.6 should never cause issues. We would however actually recommend you switch to PHP7. There are some plugins that are not ready for PHP7 though, so do some testing first. PHP7 is much faster than PHP 5.6. It\'s also the only PHP version still in active development and therefore the better option for your site in the long run.',
-                'give'
-            ) . '</p>';
-        $notice_desc .= '<p><strong>' . __('Can\'t update? Ask your host!', 'give') . '</strong></p>';
-        $notice_desc .= '<p>' . sprintf(
-                __(
-                    'If you cannot upgrade your PHP version yourself, you can send an email to your host. If they don\'t want to upgrade your PHP version, we would suggest you switch hosts. Have a look at one of the recommended %1$sWordPress hosting partners%2$s.',
-                    'give'
-                ),
-                sprintf(
-                    '<a href="%1$s" target="_blank">',
-                    esc_url('https://wordpress.org/hosting/')
-                ),
-                '</a>'
-            ) . '</p>';
-
-        echo sprintf(
-            '<div class="notice notice-error">%1$s</div>',
-            wp_kses_post($notice_desc)
-        );
-    }
-
-    /**
      * Display compatibility notice for Give 2.5.0 and Recurring 1.8.13 when Stripe premium is not active.
      *
-     * @return void
      * @since 2.5.0
      *
+     * @return void
      */
     public function display_old_recurring_compatibility_notice()
     {
@@ -486,9 +426,9 @@ final class Give
     /**
      * Register a Service Provider for bootstrapping
      *
-     * @param  string  $serviceProvider
      * @since 2.8.0
      *
+     * @param string $serviceProvider
      */
     public function registerServiceProvider($serviceProvider)
     {
@@ -498,13 +438,14 @@ final class Give
     /**
      * Magic properties are passed to the service container to retrieve the data.
      *
-     * @param  string  $propertyName
-     *
-     * @return mixed
-     * @throws Exception
      * @since 2.7.0
      *
      * @since 2.8.0 retrieve from the service container
+     *
+     * @param string $propertyName
+     *
+     * @return mixed
+     * @throws Exception
      */
     public function __get($propertyName)
     {
@@ -514,12 +455,13 @@ final class Give
     /**
      * Magic methods are passed to the service container.
      *
-     * @param $name
-     * @param $arguments
-     *
-     * @return mixed
      * @since 2.8.0
      *
+     * @param $arguments
+     *
+     * @param $name
+     *
+     * @return mixed
      */
     public function __call($name, $arguments)
     {
