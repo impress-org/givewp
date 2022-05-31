@@ -59,6 +59,7 @@ $avatarSize = (int) $atts['avatar_size'] ;
                     }
                 }
                 ?>
+
                 <?php if ( $atts['show_name'] ) : ?>
                     <h3 class="give-donor-container__name" style='<?php echo ($atts['show_avatar']) ? "text-align: center" : "text-align: left"?>'>
                         <?php
@@ -70,6 +71,7 @@ $avatarSize = (int) $atts['avatar_size'] ;
                         <?php echo esc_html( $donor_name ); ?>
                     </h3>
                 <?php endif; ?>
+
                 <?php if ( $atts['show_company_name'] && isset( $donation['_give_donation_company'] ) ) : ?>
                     <h3 class="give-donor-container__name">
                         <?php echo esc_html( $donation['_give_donation_company'] ); ?>
@@ -84,7 +86,7 @@ $avatarSize = (int) $atts['avatar_size'] ;
                     && ! $donation['_give_anonymous_donation']
                 ) :
                     ?>
-                <div class="give-donor-wrapper">
+<!--                <div class="give-donor-wrapper">-->
                     <div class="give-donor-content" style="border-color: <?php echo ! empty( $atts['color']) ? $atts['color'] :'#219653' ?>">
                         <?php
                         $comment     = trim( $donation['donor_comment'] );
@@ -118,7 +120,7 @@ $avatarSize = (int) $atts['avatar_size'] ;
                         }
                         ?>
                     </div>
-                </div>
+<!--                </div>-->
                 <?php endif; ?>
                 <div class="give-donor-details">
                     <div class="give-donor-details__wrapper">
@@ -129,6 +131,7 @@ $avatarSize = (int) $atts['avatar_size'] ;
                                 ?>
                             </span>
                         <?php endif; ?>
+
                         <?php if ( $atts['show_form'] &&  $atts['show_total'] && isset( $donation['_give_payment_form_title'] ) ) : ?>
                             <span class="give-donor-details__form_title">
                                 <?php
@@ -144,15 +147,24 @@ $avatarSize = (int) $atts['avatar_size'] ;
                                 ?>
                             </span>
                         <?php endif; ?>
-                        <?php if ($atts['show_total'] ) : ?>
-                            <span class="give-donor-details__amount_donated">Amount Donated</span>
-                        <?php endif; ?>
+
+                        <?php if ($atts['show_total'] ) {
+                            echo "<span class='give-donor-details__amount_donated'>Amount Donated</span>";
+                        }
+                        ?>
+
                     </div>
-                <?php if ( true === $atts['show_total'] ) : ?>
-                    <span class="give-donor-details__total" style="color: <?php echo ! empty( $atts['color']) ? $atts['color'] :'#219653' ?>">
-                            <?php echo esc_html( give_donation_amount( $donation['donation_id'], true ) ); ?>
-                    </span>
-                <?php endif; ?>
+
+                <?php
+                    $donation_total =  give_donation_amount( $donation['donation_id'], true );
+                    $donation_amount = substr($donation_total, 0, strpos($donation_total, "."));
+
+                    if ( true === $atts['show_total'] ){
+                        echo "
+                             <span class= 'give-donor-details__total' style='color: {$primary_color}'> $donation_amount </span>
+                        ";
+                    }
+               ?>
                 </div>
             </div>
         <?php if (  $atts['show_tributes'] && (isset( $donation['_give_tributes_first_name'] ) || isset( $donation['_give_tributes_Last_name'])) ) : ?>
