@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n'
-import { InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, Panel, SelectControl, ToggleControl, TextControl, ColorPicker } from '@wordpress/components';
+import {ColorPalette, InspectorControls} from '@wordpress/block-editor';
+import { PanelBody, Panel, SelectControl, ToggleControl, TextControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -155,15 +155,20 @@ const Inspector = ( { attributes, setAttributes } ) => {
                             label={ __( 'Load More Text', 'give' ) }
                             value={ loadMoreText }
                             onChange={ ( value ) => saveSetting( 'loadMoreText', value ) } />
-                        <ColorPicker
-                            name="color"
-                            color={color}
-                            defaultValue={color}
-                            onChange={ ( value ) => saveSetting('color', value) }
-                            enableAlpha
-                        />
                     </PanelBody>
                 </Panel>
+            <Panel>
+                <PanelBody title= {__('Color', 'give')} initialOpen={ true }>
+                    <ColorPalette
+                        name="color"
+                        clearable={false}
+                        colors={[]}
+                        value={color}
+                        onChange={ ( value ) => saveSetting('color', value) }
+                        enableAlpha
+                    />
+                </PanelBody>
+            </Panel>
 		</InspectorControls>
 	);
 };
