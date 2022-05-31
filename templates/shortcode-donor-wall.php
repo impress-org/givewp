@@ -50,7 +50,7 @@ $avatarSize = (int) $atts['avatar_size'] ;
                     } else {
                         // Everyone else
 
-                        $initial = $donation['name_initial'];
+                        $initial = esc_html($donation['name_initial']);
                         echo "
                            <div class='give-donor-container__image' style='height: {$avatarSize}px; width: {$avatarSize}px;'>
                              <span class='give-donor-container__image__name_initial'>$initial</span>
@@ -125,11 +125,12 @@ $avatarSize = (int) $atts['avatar_size'] ;
                 <div class="give-donor-details">
                     <div class="give-donor-details__wrapper">
                         <?php
-                            $full_form_name = $donation['_give_payment_form_title'];
+                            $full_form_name = esc_html($donation['_give_payment_form_title']);
                             $word_count = 3;
-                            preg_match("/(\S+\s*){0,$word_count}/", $donation['_give_payment_form_title'], $regs);
+                            preg_match("/(\S+\s*){0,$word_count}/", esc_html($donation['_give_payment_form_title']), $regs);
                             $truncated_form_name = trim($regs[0] . "...");
 
+                            // Determine whether to truncate form name based on amount of words
                             if ( $atts['show_form'] &&  $atts['show_total'] && isset( $donation['_give_payment_form_title'] ) ) {
                                 if (str_word_count($donation['_give_payment_form_title'], 0) <= $word_count) {
                                     echo "<span class='give-donor-details__form_title'> $full_form_name </span>";
@@ -139,6 +140,7 @@ $avatarSize = (int) $atts['avatar_size'] ;
                                 }
                             }
 
+                            // Display full form name if ['show_total'] is false
                             else if ($atts['show_form'] && ! $atts['show_total'] && isset( $donation['_give_payment_form_title'] ) ) {
                                 echo  "<span class='give-donor-details__form_title' style='text-align: center'> $full_form_name </span>";
                             }
@@ -151,9 +153,9 @@ $avatarSize = (int) $atts['avatar_size'] ;
 
                 <?php
                     $donation_total =  give_donation_amount( $donation['donation_id'], true );
-                    $donation_amount = substr($donation_total, 0, strpos($donation_total, "."));
+                    $donation_amount = esc_html(substr($donation_total, 0, strpos($donation_total, ".")));
 
-                    if ( true === $atts['show_total'] ){
+                    if ($atts['show_total'] ){
                         echo "
                              <span class= 'give-donor-details__total' style='color: {$primary_color}'> $donation_amount </span>
                         ";
