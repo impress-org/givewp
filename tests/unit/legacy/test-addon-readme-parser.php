@@ -58,8 +58,8 @@ class Mock_GiveWP_Readme_Parser extends Give_Readme_Parser
         return '=== Give - Addon ===
 Requires at least: 5.0
 Requires PHP: 7.0
-Requires Give: 2.26.0
+Requires GiveWP: 2.26.0
 
-Add-on for Give.';
+Add-on for GiveWP.';
     }
 }
