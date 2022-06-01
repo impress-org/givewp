@@ -14,10 +14,7 @@ interface SubscriptionPaymentMethodEditable
      *
      * @since 2.20.0
      *
-     * @param Subscription $subscriptionModel
      * @param array $arg Additional information about payment method.
-     *
-     * @return void
      */
-    public function updateSubscriptionPaymentMethod(Subscription $subscriptionModel, array $arg = []);
+    public function updateSubscriptionPaymentMethod(Subscription $subscription, array $arg = []);
 }
