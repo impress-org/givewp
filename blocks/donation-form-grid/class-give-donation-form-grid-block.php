@@ -175,6 +175,10 @@ class Give_Donation_Form_Grid_Block {
                         'type'    => 'boolean',
                         'default' => true,
                     ),
+                    'filter'       => array(
+                        'type'    => 'string',
+                        'default' => 'tags',
+                    ),
 				),
 			)
 		);
@@ -211,7 +215,10 @@ class Give_Donation_Form_Grid_Block {
             'paged'               => $attributes['paged'],
             'image_size'          => $attributes['imageSize'],
             'image_height'        => $attributes['imageHeight'],
-		);
+            'filter'              => $attributes['filter'],
+
+
+        );
 
 		$html = give_form_grid_shortcode( $parameters );
 		$html = ! empty( $html ) ? $html : $this->blank_slate();

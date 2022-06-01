@@ -91,6 +91,10 @@ const blockAttributes = {
         type: 'integer',
         default: 16
     },
+    filter: {
+        type: 'string',
+        default: 'tags',
+    }
 };
 
 export default blockAttributes;

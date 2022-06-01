@@ -43,9 +43,9 @@ giveFormOptions.displayType = [
 
 //Filter
 giveFormOptions.filter = [
-    { value: 'Form ID', label: __( 'Form ID', 'give' ) },
-    { value: 'Categories', label: __( 'Categories', 'give' ) },
-    { value: 'Tags', label: __( 'Tags', 'give' ) },
+    { value: 'formIDs', label: __( 'Form ID', 'give' ) },
+    { value: 'categories', label: __( 'Categories', 'give' ) },
+    { value: 'tags', label: __( 'Tags', 'give' ) },
 ];
 
 export default giveFormOptions;
