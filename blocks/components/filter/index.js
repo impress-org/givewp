@@ -2,7 +2,7 @@ import './style.scss';
 import {FormTokenField} from "@wordpress/components";
 
 export default function ({data, filter }) {
-    const props = data.filter(i => i.filterValue === filter)[0];
+    const props = data.filter(i => i.filterValue === filter[0])[0];
 
     return(
         <>
