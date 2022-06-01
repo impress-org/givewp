@@ -155,11 +155,11 @@ const Inspector = ({attributes, setAttributes}) => {
                     <SelectControl
                         className="give-form-grid-inspector"
                         label={ __( 'Filter', 'give' ) }
-                        name="filter" value={ filter }
+                        name="filter" value={ getAsArray(filter) }
                         options={ giveFormOptions.filter }
                         onChange={ ( value ) => saveSetting( 'filter', value ) } />
                     <Filter
-                        filter={filter}
+                        filter={getAsArray(filter)}
                         data ={[
                             {name:"formIDs", value: getAsArray(formIDs), onChange: ( value ) => saveSetting( 'formIDs',  value ), filterValue: 'formIDs', help: __('Type the ID of your form to add it to the list. Only forms with these IDs you choose will be displayed in this grid.', 'give')},
                             {name:"categories", value:getAsArray(categories), onChange:  ( value ) => saveSetting( 'categories', value ), filterValue: 'categories', help: __('Type the name of your category to add it to the list. Only forms within the categories you choose will be displayed in this grid.', 'give')},
