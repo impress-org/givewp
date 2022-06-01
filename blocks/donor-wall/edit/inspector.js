@@ -33,6 +33,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
             return <TextControl
                     className="give-donor-wall-inspector"
                     label={ __( 'Categories', 'give' ) }
+                    help={__('Type the name of your category to add it to the list. Only donations within the categories you choose will be displayed in this grid.', 'give')}
                     name="categories"
                     value={categories}
                     onChange ={(value) => saveSetting('categories', value)}/>
