@@ -102,7 +102,7 @@ const blockAttributes = {
     },
     filter: {
         type: 'string',
-        default: 'Donor ID',
+        default: 'formID',
     },
     color: {
         type: 'string',
