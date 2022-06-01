@@ -176,8 +176,8 @@ class Give_Donation_Form_Grid_Block {
                         'default' => true,
                     ),
                     'filter'       => array(
-                        'type'    => 'string',
-                        'default' => 'tags',
+                        'type'    => 'array',
+                        'default' => ['tags'],
                     ),
 				),
 			)
