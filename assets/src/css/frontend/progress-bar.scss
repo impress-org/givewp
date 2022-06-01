@@ -7,6 +7,12 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
+
+
+.give-form-grid-content__progress {
+    height: 27%;
+}
+
 .give-goal-progress {
     height: 100%;
     background: #F6F6F6;
@@ -25,12 +31,10 @@
         & > span:first-child {
             font-weight: 700 !important;
             font-size: 1rem;
-            line-height: 16px;
         }
 
         &  > span:last-child {
             font-size: 14px;
-            line-height: 16px;
         }
 
         &_donations{

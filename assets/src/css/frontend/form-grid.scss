@@ -19,18 +19,16 @@
 }
 
 .give-form-grid-content {
-    flex: 1;
+    height: 73%;
     padding: 24px ;
 
     & > h3 {
         font-size: 1rem;
         font-weight: 700;
-        line-height: 18px;
     }
 
     & > p {
-        font-size: .875rem;
-        line-height: 24px;
+        font-size: 1rem;
     }
 
     & > button {
