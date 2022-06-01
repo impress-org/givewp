@@ -13,7 +13,6 @@ import {
     ToggleControl
 } from '@wordpress/components';
 
-import ColumnSelector from '../../components/column-selector';
 
 /**
  * Internal dependencies
@@ -21,6 +20,9 @@ import ColumnSelector from '../../components/column-selector';
 import giveFormOptions from '../data/options';
 
 import Filter from "../../components/filter";
+import ColumnSelector from '../../components/column-selector';
+
+import './style.scss'
 
 /**
  * Render Inspector Controls
@@ -100,23 +102,27 @@ const Inspector = ({attributes, setAttributes}) => {
             <Panel>
                 <PanelBody title= {__('Display Elements', 'give')} initialOpen={ true }>
                     <ToggleControl
+                        className="give-form-grid-inspector"
                         name="showTitle"
                         label={__('Show Title', 'give')}
                         checked={!!showTitle}
                         onChange={(value) => saveSetting('showTitle', value)}/>
                     <ToggleControl
+                        className="give-form-grid-inspector"
                         name="showGoal"
                         label={__('Show Goal', 'give')}
                         checked={!!showGoal}
                         onChange={(value) => saveSetting('showGoal', value)}
                     />
                     <ToggleControl
+                        className="give-form-grid-inspector"
                         name="showExcerpt"
                         label={__('Show Excerpt', 'give')}
                         checked={!!showExcerpt}
                         onChange={(value) => saveSetting('showExcerpt', value)}
                     />
                     <ToggleControl
+                        className="give-form-grid-inspector"
                         align="right"
                         name="showFeaturedImage"
                         label={__('Show Featured Image', 'give')}
@@ -128,6 +134,7 @@ const Inspector = ({attributes, setAttributes}) => {
             <Panel>
                 <PanelBody title= {__('Grid Settings', 'give')} initialOpen={ true }>
                     <SelectControl
+                        className="give-form-grid-inspector"
                         label={__('Order By', 'give')}
                         name="orderBy"
                         value={orderBy}
@@ -137,6 +144,7 @@ const Inspector = ({attributes, setAttributes}) => {
                     />
 
                     <SelectControl
+                        className="give-form-grid-inspector"
                         label={__('Order', 'give')}
                         name="order"
                         value={order}
@@ -144,7 +152,12 @@ const Inspector = ({attributes, setAttributes}) => {
                         onChange={(value) => saveSetting('order', value)}
                         help={__('Whether the order ascends or descends.', 'give')}
                     />
-                    <SelectControl className="" label={ __( 'Filter', 'give' ) } name="filter" value={ filter } options={ giveFormOptions.filter } onChange={ ( value ) => saveSetting( 'filter', value ) } />
+                    <SelectControl
+                        className="give-form-grid-inspector"
+                        label={ __( 'Filter', 'give' ) }
+                        name="filter" value={ filter }
+                        options={ giveFormOptions.filter }
+                        onChange={ ( value ) => saveSetting( 'filter', value ) } />
                     <Filter
                         filter={filter}
                         TextControls ={[
@@ -158,6 +171,7 @@ const Inspector = ({attributes, setAttributes}) => {
             <Panel>
                 <PanelBody title= {__('Grid Interaction', 'give')} initialOpen={ true }>
                     <SelectControl
+                        className="give-form-grid-inspector"
                         label={__('Display Type', 'give')}
                         name="displayType"
                         value={displayType}
@@ -166,6 +180,7 @@ const Inspector = ({attributes, setAttributes}) => {
                         help={__('What should happen when a visitor clicks on a form within the grid? "Redirect" sends them to the individual form. "Modal" opens the form in a lightbox/popup on the same page.', 'give')}
                     />
                     <TextControl
+                        className="give-form-grid-inspector"
                         name="formsPerPage"
                         label={__('Forms Per Page', 'give')}
                         value={formsPerPage}
@@ -195,6 +210,7 @@ const Inspector = ({attributes, setAttributes}) => {
                             />
                         </>
                         <ToggleControl
+                            className="give-form-grid-inspector"
                             name="showDonateButton"
                             label={__('Show Donate Button', 'give')}
                             checked={!!showDonateButton}
