@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n'
+import giveDonorWallOptions from "../../donor-wall/data/options";
 
 /**
  * Options data for various form selects
@@ -38,6 +39,13 @@ giveFormOptions.columns = [
 giveFormOptions.displayType = [
 	{ value: 'redirect', label: __( 'Redirect', 'give' ) },
 	{ value: 'modal_reveal', label: __( 'Modal', 'give' ) },
+];
+
+//Filter
+giveFormOptions.filter = [
+    { value: 'Form ID', label: __( 'Form ID', 'give' ) },
+    { value: 'Categories', label: __( 'Categories', 'give' ) },
+    { value: 'Tags', label: __( 'Tags', 'give' ) },
 ];
 
 export default giveFormOptions;
