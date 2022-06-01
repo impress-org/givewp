@@ -19,7 +19,6 @@ import {
  */
 import giveFormOptions from '../data/options';
 
-import Filter from "../../components/filter";
 import ColumnSelector from '../../components/column-selector';
 
 import './style.scss'
@@ -86,7 +85,6 @@ const Inspector = ({attributes, setAttributes}) => {
         return  <>
             <FormTokenField
                 name="categories"
-                label={__('Categories', 'give')}
                 value={getAsArray(categories)}
                 onChange={(value) => saveSetting('categories', value)}
             />
@@ -99,7 +97,6 @@ const Inspector = ({attributes, setAttributes}) => {
           return <>
               <FormTokenField
                   name="tags"
-                  label={__('Tags', 'give')}
                   value={getAsArray(tags)}
                   onChange={(value) => saveSetting('tags', value)}
               />
@@ -111,7 +108,6 @@ const Inspector = ({attributes, setAttributes}) => {
           return <>
               <FormTokenField
                   name="formIDs"
-                  label={__('Form IDs', 'give')}
                   value={getAsArray(formIDs)}
                   onChange={(value) => saveSetting('formIDs', value)}
               />
