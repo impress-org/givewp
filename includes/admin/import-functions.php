@@ -1120,5 +1120,5 @@ function give_import_page_url( $parameter = [] ) {
 	];
 	$import_query_arg  = wp_parse_args( $parameter, $defalut_query_arg );
 
-	return add_query_arg( $import_query_arg, admin_url( 'edit.php' ) );
+	return esc_url( add_query_arg( $import_query_arg, admin_url( 'edit.php' ) ) );
 }

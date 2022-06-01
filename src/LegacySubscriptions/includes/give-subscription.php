@@ -835,10 +835,10 @@ class Give_Subscription {
 	 */
 	public function get_update_url() {
 
-		$url = add_query_arg( array(
+		$url = esc_url(add_query_arg( array(
 			'action'          => 'update',
 			'subscription_id' => $this->id,
-		) );
+		) ) );
 
 		return apply_filters( 'give_subscription_update_url', $url, $this );
 	}
@@ -851,10 +851,10 @@ class Give_Subscription {
 	 */
 	public function get_edit_subscription_url() {
 
-		$url = add_query_arg( array(
+		$url = esc_url(add_query_arg( array(
 			'action'          => 'edit_subscription',
 			'subscription_id' => $this->id,
-		), give_get_subscriptions_page_uri() );
+		), give_get_subscriptions_page_uri() ));
 
 		return apply_filters( 'give_subscription_edit_subscription_url', $url, $this );
 	}

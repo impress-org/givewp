@@ -114,31 +114,35 @@ function give_email_preview_buttons_callback( $field ) {
 
 	echo sprintf(
 		'<a href="%1$s" class="button-secondary" target="_blank">%2$s</a>',
-		wp_nonce_url(
-			add_query_arg(
-				array(
-					'give_action' => 'preview_email',
-					'email_type'  => $field_id,
-				),
-				home_url()
-			),
-			'give-preview-email'
-		),
+        esc_url(
+            wp_nonce_url(
+                add_query_arg(
+                    array(
+                        'give_action' => 'preview_email',
+                        'email_type'  => $field_id,
+                    ),
+                    home_url()
+                ),
+                'give-preview-email'
+            )
+        ),
 		$field['name']
 	);
 
 	echo sprintf(
 		' <a href="%1$s" aria-label="%2$s" class="button-secondary">%3$s</a>',
-		wp_nonce_url(
-			add_query_arg(
-				array(
-					'give_action'     => 'send_preview_email',
-					'email_type'      => $field_id,
-					'give-messages[]' => 'sent-test-email',
-				)
-			),
-			'give-send-preview-email'
-		),
+        esc_url(
+            wp_nonce_url(
+                add_query_arg(
+                    array(
+                        'give_action'     => 'send_preview_email',
+                        'email_type'      => $field_id,
+                        'give-messages[]' => 'sent-test-email',
+                    )
+                ),
+                'give-send-preview-email'
+            )
+        ),
 		esc_attr__( 'Send Test Email.', 'give' ),
 		esc_html__( 'Send Test Email', 'give' )
 	);

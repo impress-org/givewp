@@ -68,7 +68,7 @@ class Utils
             }
         }
 
-        return $url;
+        return esc_url_raw($url);
     }
 
     /**
