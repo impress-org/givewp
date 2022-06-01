@@ -41,14 +41,10 @@ class SubscriptionRepository
 
     /**
      * @unreleased
-     *
-     * @param string $gatewayTransactionId
-     *
-     * @return Subscription
      */
-    public function getByGatewayTransactionId($gatewayTransactionId)
+    public function getByGatewaySubscriptionId(string $gatewaySubscriptionId): Subscription
     {
-        return $this->queryByGatewayTransactionId($gatewayTransactionId)->get();
+        return $this->queryByGatewaySubscriptionId($gatewaySubscriptionId)->get();
     }
 
     /**
@@ -70,7 +66,7 @@ class SubscriptionRepository
      *
      * @return ModelQueryBuilder
      */
-    public function queryByGatewayTransactionId($gatewayTransactionId)
+    public function queryByGatewaySubscriptionId($gatewayTransactionId)
     {
         return $this->prepareQuery()
             ->where('profile_id', $gatewayTransactionId);
