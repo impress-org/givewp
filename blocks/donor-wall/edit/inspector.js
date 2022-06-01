@@ -167,7 +167,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
                     <PanelBody title= {__('Wall Settings', 'give')} initialOpen={ true }>
                         <SelectControl
                             className="give-donor-wall-inspector"
-                            label={ __( 'Order By', 'give' ) }
+                            label={ __( 'Sort By', 'give' ) }
                             name="orderBy"
                             value={ orderBy }
                             options={ giveDonorWallOptions.orderBy }
@@ -182,7 +182,8 @@ const Inspector = ( { attributes, setAttributes } ) => {
                         <SelectControl
                             className="give-donor-wall-inspector"
                             label={ __( 'Filter', 'give' ) }
-                            name="filter" value={ filter } options={ giveDonorWallOptions.filter }
+                            name="filter" value={ filter }
+                            options={ giveDonorWallOptions.filter }
                             onChange={ ( value ) => saveSetting( 'filter', value ) } />
 
                         {filterValue(filter)}
