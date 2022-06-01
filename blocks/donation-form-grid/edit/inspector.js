@@ -81,6 +81,48 @@ const Inspector = ({attributes, setAttributes}) => {
         };
     });
 
+  const filterValue = () => {
+      if (filter === 'categories') {
+        return  <>
+            <FormTokenField
+                name="categories"
+                label={__('Categories', 'give')}
+                value={getAsArray(categories)}
+                onChange={(value) => saveSetting('categories', value)}
+            />
+
+            <p className="components-form-token-field__help">
+                {__('Type the name of your category to add it to the list. Only forms within the categories you choose will be displayed in this grid.', 'give')}
+            </p>
+        </>
+      } else if (filter === 'tags') {
+          return <>
+              <FormTokenField
+                  name="tags"
+                  label={__('Tags', 'give')}
+                  value={getAsArray(tags)}
+                  onChange={(value) => saveSetting('tags', value)}
+              />
+
+              <p className="components-form-token-field__help">
+                  {__('Type the name of your tag to add it to the list. Only forms with these tags you choose will be displayed in this grid.', 'give')}
+              </p></>
+      } else if (filter === 'formIDs'){
+          return <>
+              <FormTokenField
+                  name="formIDs"
+                  label={__('Form IDs', 'give')}
+                  value={getAsArray(formIDs)}
+                  onChange={(value) => saveSetting('formIDs', value)}
+              />
+
+              <p className="components-form-token-field__help">
+                  {__('Type the ID of your form to add it to the list. Only forms with these IDs you choose will be displayed in this grid.', 'give')}
+              </p></>
+      }
+  }
+
+
     return (
         <InspectorControls key="inspector">
             <Panel>
@@ -155,17 +197,12 @@ const Inspector = ({attributes, setAttributes}) => {
                     <SelectControl
                         className="give-form-grid-inspector"
                         label={ __( 'Filter', 'give' ) }
-                        name="filter" value={ getAsArray(filter) }
+                        name="filter" value={filter}
                         options={ giveFormOptions.filter }
                         onChange={ ( value ) => saveSetting( 'filter', value ) } />
-                    <Filter
-                        filter={getAsArray(filter)}
-                        data ={[
-                            {name:"formIDs", value: getAsArray(formIDs), onChange: ( value ) => saveSetting( 'formIDs',  value ), filterValue: 'formIDs', help: __('Type the ID of your form to add it to the list. Only forms with these IDs you choose will be displayed in this grid.', 'give')},
-                            {name:"categories", value:getAsArray(categories), onChange:  ( value ) => saveSetting( 'categories', value ), filterValue: 'categories', help: __('Type the name of your category to add it to the list. Only forms within the categories you choose will be displayed in this grid.', 'give')},
-                            {name:"tags", value: getAsArray(tags) , onChange: ( value ) => saveSetting( 'tags', value ), filterValue: 'tags', help: __('Type the name of your tag to add it to the list. Only forms with these tags you choose will be displayed in this grid.', 'give')},
-                        ]}
-                    />
+
+                    {filterValue(filter)}
+
                     <ToggleControl
                         className="give-form-grid-inspector"
                         name="excludeForms"
