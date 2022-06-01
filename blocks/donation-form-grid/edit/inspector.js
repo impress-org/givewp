@@ -160,12 +160,33 @@ const Inspector = ({attributes, setAttributes}) => {
                         onChange={ ( value ) => saveSetting( 'filter', value ) } />
                     <Filter
                         filter={filter}
-                        TextControls ={[
-                            {name:"formIDs", value: formIDs, onChange: ( value ) => saveSetting( 'formIDs',  value ), filterValue: 'formIDs', help: __('By default, all donors will display. Use this setting to restrict the donor wall to only display certain donors. Use a comma-separated list of donor IDs.', 'give') },
-                            {name:"categories", value: categories , onChange:  ( value ) => saveSetting( 'categories', value ), filterValue: 'categories'},
-                            {name:"tags", value: tags , onChange: ( value ) => saveSetting( 'tags', value ), filterValue: 'tags'},
+                        data ={[
+                            {name:"formIDs", value: getAsArray(formIDs), onChange: ( value ) => saveSetting( 'formIDs',  value ), filterValue: 'formIDs', help: __('Type the ID of your form to add it to the list. Only forms with these IDs you choose will be displayed in this grid.', 'give')},
+                            {name:"categories", value:getAsArray(categories), onChange:  ( value ) => saveSetting( 'categories', value ), filterValue: 'categories', help: __('Type the name of your category to add it to the list. Only forms within the categories you choose will be displayed in this grid.', 'give')},
+                            {name:"tags", value: getAsArray(tags) , onChange: ( value ) => saveSetting( 'tags', value ), filterValue: 'tags', help: __('Type the name of your tag to add it to the list. Only forms with these tags you choose will be displayed in this grid.', 'give')},
                         ]}
                     />
+                    <ToggleControl
+                        className="give-form-grid-inspector"
+                        name="excludeForms"
+                        label={__('Exclude specific forms?', 'give')}
+                        checked={!!excludeForms}
+                        onChange={(value) => saveSetting('excludeForms', value)}
+                    />
+
+                    {excludeForms && (
+                        <>
+                            <FormTokenField
+                                name="excludedFormIDs"
+                                label={__('Excluded Form IDs', 'give')}
+                                value={getAsArray(excludedFormIDs)}
+                                onChange={(value) => saveSetting('excludedFormIDs', value)}
+                            />
+                            <p className="components-form-token-field__help">
+                                {__('Type the ID of your form to exclude it from the list. Forms with these IDs you choose will not be displayed in this grid.', 'give')}
+                            </p>
+                        </>
+                    )}
                 </PanelBody>
             </Panel>
             <Panel>
@@ -217,6 +238,48 @@ const Inspector = ({attributes, setAttributes}) => {
                             onChange={(value) => saveSetting('showDonateButton', value)}
                         />
                 </PanelBody>
+            </Panel>
+            <Panel>
+                <PanelBody title={__('Filters and Categories', 'give')}>
+
+
+
+                    <FormTokenField
+                        name="categories"
+                        label={__('Categories', 'give')}
+                        value={getAsArray(categories)}
+                        onChange={(value) => saveSetting('categories', value)}
+                    />
+
+                    <p className="components-form-token-field__help">
+                        {__('Type the name of your category to add it to the list. Only forms within the categories you choose will be displayed in this grid.', 'give')}
+                    </p>
+
+                    <FormTokenField
+                        name="tags"
+                        label={__('Tags', 'give')}
+                        value={getAsArray(tags)}
+                        onChange={(value) => saveSetting('tags', value)}
+                    />
+
+                    <p className="components-form-token-field__help">
+                        {__('Type the name of your tag to add it to the list. Only forms with these tags you choose will be displayed in this grid.', 'give')}
+                    </p>
+
+                    <FormTokenField
+                        name="formIDs"
+                        label={__('Form IDs', 'give')}
+                        value={getAsArray(formIDs)}
+                        onChange={(value) => saveSetting('formIDs', value)}
+                    />
+
+                    <p className="components-form-token-field__help">
+                        {__('Type the ID of your form to add it to the list. Only forms with these IDs you choose will be displayed in this grid.', 'give')}
+                    </p>
+
+
+                </PanelBody>
+
             </Panel>
         </InspectorControls>
     );
