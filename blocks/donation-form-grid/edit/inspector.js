@@ -149,8 +149,8 @@ const Inspector = ({attributes, setAttributes}) => {
                         filter={filter}
                         TextControls ={[
                             {name:"formIDs", value: formIDs, onChange: ( value ) => saveSetting( 'formIDs',  value ), filterValue: 'formIDs', help: __('By default, all donors will display. Use this setting to restrict the donor wall to only display certain donors. Use a comma-separated list of donor IDs.', 'give') },
-                            {name:"categories", value: categories , onChange:  ( value ) => saveSetting( 'categories', value ), filterValue: 'Categories'},
-                            {name:"tags", value: tags , onChange: ( value ) => saveSetting( 'tags', value ), filterValue: 'Tags'},
+                            {name:"categories", value: categories , onChange:  ( value ) => saveSetting( 'categories', value ), filterValue: 'categories'},
+                            {name:"tags", value: tags , onChange: ( value ) => saveSetting( 'tags', value ), filterValue: 'tags'},
                         ]}
                     />
                 </PanelBody>
