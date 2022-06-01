@@ -12,7 +12,6 @@ import giveDonorWallOptions from '../data/options';
 
 import ColumnSelector from '../../components/column-selector';
 import ToggleOptions from '../../components/toggle';
-import Filter from '../../components/filter';
 
 import './style.scss'
 
@@ -28,6 +27,44 @@ const Inspector = ( { attributes, setAttributes } ) => {
 			[ name ]: value,
 		} );
 	};
+
+    const filterValue = () => {
+        if(filter === 'categories'){
+            return <TextControl
+                    className="give-donor-wall-inspector"
+                    label={ __( 'Categories', 'give' ) }
+                    name="categories"
+                    value={categories}
+                    onChange ={(value) => saveSetting('categories', value)}/>
+
+        } else if (filter === 'tags'){
+            return <TextControl
+                    className="give-donor-wall-inspector"
+                    label={ __( 'Tags', 'give' ) }
+                    name="tags"
+                    value={tags}
+                    onChange ={(value) => saveSetting('tags', value)}/>
+
+        } else if (filter === 'ids'){
+            return <TextControl
+                    className="give-donor-wall-inspector"
+                    label={ __( 'IDs', 'give' ) }
+                    help = {__('By default, all donors will display. Use this setting to restrict the donor wall to only display certain donors. Use a comma-separated list of donor IDs.', 'give') }
+                    name="ids"
+                    value={ids}
+                    onChange ={(value) => saveSetting('ids', value)}/>
+
+        } else if (filter === 'formID' ){
+            return <TextControl
+                    className="give-donor-wall-inspector"
+                    label={ __( 'Form IDs', 'give' ) }
+                    help={__('By Default, donations to all forms will display. Use this setting to restrict the donor to display only donations to certains forms. Use a comma-separated list of form IDs.', 'give')}
+                    name="formID"
+                    value={formID}
+                    onChange ={(value) => saveSetting('formID', value)}/>
+        }
+    };
+
     return (
 		<InspectorControls key="inspector">
                 <Panel>
@@ -142,17 +179,14 @@ const Inspector = ( { attributes, setAttributes } ) => {
                             value={ order }
                             options={ giveDonorWallOptions.order }
                             onChange={ ( value ) => saveSetting( 'order', value ) } />
-                        <SelectControl className="give-donor-wall-inspector" label={ __( 'Filter', 'give' ) } name="filter" value={ filter } options={ giveDonorWallOptions.filter } onChange={ ( value ) => saveSetting( 'filter', value ) } />
-                        <Filter
-                            filter={filter}
-                            TextControls ={[
-                                {name:"ids", value: ids,  onChange: ( value ) => saveSetting( 'ids', value ), filterValue: 'Donor ID', help: __('By Default, donations to all forms will display. Use this setting to restrict the donor to display only donations to certains forms. Use a comma-separated list of form IDs.', 'give') },
-                                {name:"formID", value: formID, onChange: ( value ) => saveSetting( 'formID',  value ), filterValue: 'Form ID', help: __('By default, all donors will display. Use this setting to restrict the donor wall to only display certain donors. Use a comma-separated list of donor IDs.', 'give') },
-                                {name:"categories", value: categories , onChange:  ( value ) => saveSetting( 'categories', value ), filterValue: 'Categories'},
-                                {name:"tags", value: tags , onChange: ( value ) => saveSetting( 'tags', value ), filterValue: 'Tags'},
-                                {name: "onlyComments", checked: !!onlyComments, onChange: (value) => saveSetting('onlyComments', value), filterValue: 'Donors with comments'}
-                              ]}
-                        />
+                        <SelectControl
+                            className="give-donor-wall-inspector"
+                            label={ __( 'Filter', 'give' ) }
+                            name="filter" value={ filter } options={ giveDonorWallOptions.filter }
+                            onChange={ ( value ) => saveSetting( 'filter', value ) } />
+
+                        //Switches TextControls based on value of filter
+                        {filterValue(filter)}
                     </PanelBody>
                 </Panel>
                 <Panel>
