@@ -19,8 +19,7 @@ import ColumnSelector from '../../components/column-selector';
  * Internal dependencies
  */
 import giveFormOptions from '../data/options';
-import giveDonorWallOptions from "../../donor-wall/data/options";
-import ToggleOptions from "../../components/toggle";
+
 import Filter from "../../components/filter";
 
 /**
@@ -50,7 +49,8 @@ const Inspector = ({attributes, setAttributes}) => {
         showDonateButton,
         donateButtonBackgroundColor,
         donateButtonTextColor,
-        displayType
+        displayType,
+        filter,
     } = attributes;
 
     const saveSetting = (name, value) => {
@@ -144,15 +144,13 @@ const Inspector = ({attributes, setAttributes}) => {
                         onChange={(value) => saveSetting('order', value)}
                         help={__('Whether the order ascends or descends.', 'give')}
                     />
-                    <SelectControl className="" label={ __( 'Filter', 'give' ) } name="filter" value={ filter } options={ giveDonorWallOptions.filter } onChange={ ( value ) => saveSetting( 'filter', value ) } />
+                    <SelectControl className="" label={ __( 'Filter', 'give' ) } name="filter" value={ filter } options={ giveFormOptions.filter } onChange={ ( value ) => saveSetting( 'filter', value ) } />
                     <Filter
                         filter={filter}
                         TextControls ={[
-                            {name:"ids", value: ids,  onChange: ( value ) => saveSetting( 'ids', value ), filterValue: 'Donor ID', help: __('By Default, donations to all forms will display. Use this setting to restrict the donor to display only donations to certains forms. Use a comma-separated list of form IDs.', 'give') },
-                            {name:"formID", value: formID, onChange: ( value ) => saveSetting( 'formID',  value ), filterValue: 'Form ID', help: __('By default, all donors will display. Use this setting to restrict the donor wall to only display certain donors. Use a comma-separated list of donor IDs.', 'give') },
+                            {name:"formIDs", value: formIDs, onChange: ( value ) => saveSetting( 'formIDs',  value ), filterValue: 'formIDs', help: __('By default, all donors will display. Use this setting to restrict the donor wall to only display certain donors. Use a comma-separated list of donor IDs.', 'give') },
                             {name:"categories", value: categories , onChange:  ( value ) => saveSetting( 'categories', value ), filterValue: 'Categories'},
                             {name:"tags", value: tags , onChange: ( value ) => saveSetting( 'tags', value ), filterValue: 'Tags'},
-                            {name: "onlyComments", checked: !!onlyComments, onChange: (value) => saveSetting('onlyComments', value), filterValue: 'Donors with comments'}
                         ]}
                     />
                 </PanelBody>
@@ -202,11 +200,6 @@ const Inspector = ({attributes, setAttributes}) => {
                             checked={!!showDonateButton}
                             onChange={(value) => saveSetting('showDonateButton', value)}
                         />
-                </PanelBody>
-            </Panel>
-            <Panel>
-                <PanelBody title= {__('Color Settings', 'give')} initialOpen={ true }>
-
                 </PanelBody>
             </Panel>
         </InspectorControls>
