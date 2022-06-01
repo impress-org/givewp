@@ -92,8 +92,8 @@ const blockAttributes = {
         default: 16
     },
     filter: {
-        type: 'string',
-        default: 'tags',
+        type: 'array',
+        default: ['tags'],
     }
 };
 
