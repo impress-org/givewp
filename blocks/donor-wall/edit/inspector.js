@@ -185,7 +185,6 @@ const Inspector = ( { attributes, setAttributes } ) => {
                             name="filter" value={ filter } options={ giveDonorWallOptions.filter }
                             onChange={ ( value ) => saveSetting( 'filter', value ) } />
 
-                        //Switches TextControls based on value of filter
                         {filterValue(filter)}
                     </PanelBody>
                 </Panel>
