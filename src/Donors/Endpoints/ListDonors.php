@@ -2,6 +2,7 @@
 
 namespace Give\Donors\Endpoints;
 
+use Give\Donors\Controllers\DonorsRequestController;
 use Give\Donors\DataTransferObjects\DonorResponseData;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -71,15 +72,16 @@ class ListDonors extends Endpoint
 
     /**
      * @param WP_REST_Request $request
-     * @unreleased
+     * @since 2.20.0
      *
      * @return WP_REST_Response
      */
-    public function handleRequest(WP_REST_Request $request)
+    public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
         $data = [];
-        $donors = give()->donors->getDonorsForRequest($request);
-        $donorsCount = give()->donors->getTotalDonorsCountForRequest($request);
+        $controller = new DonorsRequestController($request);
+        $donors = $controller->getDonors();
+        $donorsCount = $controller->getTotalDonorsCount();
         $pageCount = (int)ceil($donorsCount / $request->get_param('perPage'));
 
         foreach ($donors as $donor) {

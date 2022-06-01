@@ -9,35 +9,41 @@ use Give\PaymentGateways\DataTransferObjects\GiveInsertPaymentData;
 class DispatchGiveInsertPayment
 {
     /**
+     * @since 2.20.0 only run this listener if the legacy hook is used
      * @since 2.19.6
      *
-     * @param  Donation  $donation
+     * @param Donation $donation
+     *
      * @return void
      */
     public function __invoke(Donation $donation)
     {
+        if (!has_action('give_insert_payment')) {
+            return;
+        }
+
         $donor = $donation->donor;
 
         $giveInsertPaymentData = GiveInsertPaymentData::fromArray([
-            'price' => $donation->getMinorAmount(),
+            'price' => $donation->amount->formatToDecimal(),
             'formTitle' => $donation->formTitle,
             'formId' => $donation->formId,
-            'priceId' => give_get_price_id($donation->formId, $donation->getMinorAmount()->getAmount()),
+            'priceId' => give_get_price_id($donation->formId, $donation->amount->formatToDecimal()),
             'date' => $donation->createdAt,
             'donorEmail' => $donor->email,
             'purchaseKey' => $donation->purchaseKey,
-            'currency' => $donation->currency,
-            'paymentGateway' => $donation->gateway,
+            'currency' => $donation->amount->getCurrency()->getCode(),
+            'paymentGateway' => $donation->gatewayId,
             'userInfo' => [
                 'id' => $donor->id,
                 'firstName' => $donor->firstName,
                 'lastName' => $donor->lastName,
                 'title' => $donor->prefix,
-                'email' => $donor->email
+                'email' => $donor->email,
             ],
         ]);
 
-         /**
+        /**
          * @deprecated
          */
         Hooks::doAction('give_insert_payment', $donation->id, $giveInsertPaymentData->toArray());

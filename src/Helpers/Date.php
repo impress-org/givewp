@@ -3,7 +3,7 @@
 namespace Give\Helpers;
 
 /**
- * @unreleased
+ * @since 2.20.0
  */
 class Date {
 
@@ -11,7 +11,7 @@ class Date {
      * Returns human readable date.
      *
      * @param string $datetime A date/time string
-     * @unreleased
+     * @since 2.20.0
      *
      * @return string
      */

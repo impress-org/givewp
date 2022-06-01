@@ -92,7 +92,7 @@ class Settings
     }
 
     /**
-     * Return CMB2 compatible array used to render/control override legacy donation manamgent pages setting
+     * Return CMB2 compatible array used to render/control override legacy donation management pages setting
      *
      * @since 2.10.0
      * @return array
@@ -264,7 +264,7 @@ class Settings
     }
 
     /**
-     * Determine whether the Disable Gutenberg plugin is active
+     * Determine whether Disable Gutenberg plugin is active
      *
      * @since 2.10.0
      * @return bool
@@ -310,7 +310,7 @@ class Settings
                 }
             }
 
-            // Hide settings that are overriden by Donor Profile setting
+            // Hide settings that are overridden by Donor Profile setting
             $key = 0;
             foreach ($settings as $setting) {
                 if (in_array($setting['id'], $overrideSettingsMap)) {

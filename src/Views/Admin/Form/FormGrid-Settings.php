@@ -1,7 +1,6 @@
 <div class="form_grid_options_wrap inner-panel">
     <div class="form-template-introduction">
 
-
         <div class="form-template-notice">
             <img src="<?= esc_url(GIVE_PLUGIN_URL . 'assets/dist/images/admin/cap-books.svg'); ?>" alt=""/>
             <p>

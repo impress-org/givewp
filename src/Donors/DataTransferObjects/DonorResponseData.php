@@ -8,7 +8,7 @@ use Give\Helpers\Date;
 /**
  * Class DonorResponseData
  *
- * @unreleased
+ * @since 2.20.0
  */
 class DonorResponseData implements Arrayable
 {
@@ -71,7 +71,7 @@ class DonorResponseData implements Arrayable
      *
      * @param object $donor
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @return self
      */
@@ -99,7 +99,7 @@ class DonorResponseData implements Arrayable
     /**
      * Convert DTO to array
      *
-     * @unreleased
+     * @since 2.20.0
      * @return array
      */
     public function toArray()
@@ -109,7 +109,7 @@ class DonorResponseData implements Arrayable
 
     /**
      * @param string $amount
-     * @unreleased
+     * @since 2.20.0
      *
      * @return string
      */

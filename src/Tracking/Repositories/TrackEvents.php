@@ -28,7 +28,7 @@ class TrackEvents
     }
 
     /**
-     * Remove list of recently edited donaiton forms.
+     * Remove list of recently edited donation forms.
      *
      * @since 2.10.2
      */

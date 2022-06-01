@@ -12,7 +12,8 @@
         "kjohnson/format-object-list": "^0.1.0",
         "fakerphp/faker": "^1.9",
         "myclabs/php-enum": "^1.6",
-        "symfony/http-foundation": "^3.4"
+        "symfony/http-foundation": "^3.4",
+        "moneyphp/money": "v3.3.1"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
@@ -54,7 +55,7 @@
     },
     "config": {
         "platform": {
-            "php": "5.6.40"
+            "php": "7.0"
         },
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,

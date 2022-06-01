@@ -40,7 +40,7 @@ class ScriptLoader
      */
     public function loadAdminScripts()
     {
-        if ( ! Give_Admin_Settings::is_setting_page('gateway', 'paypal')) {
+        if (!Give_Admin_Settings::is_setting_page('gateway', 'paypal')) {
             return;
         }
 
@@ -132,7 +132,7 @@ EOT;
      */
     public function loadPublicAssets()
     {
-        if ( ! Utils::gatewayIsActive() || ! Utils::isAccountReadyToAcceptPayment()) {
+        if (!Utils::gatewayIsActive() || !Utils::isAccountReadyToAcceptPayment()) {
             return;
         }
 
@@ -153,6 +153,10 @@ EOT;
             'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
             'data-client-token' => $this->merchantRepository->getClientToken(),
         ];
+
+        if (give_is_setting_enabled(give_get_option('paypal_commerce_accept_venmo', 'disabled'))) {
+            $payPalSdkQueryParameters['enable-funding'] = 'venmo';
+        }
 
         wp_enqueue_script(
             $scriptId,

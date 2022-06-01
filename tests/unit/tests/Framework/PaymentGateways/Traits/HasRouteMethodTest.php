@@ -1,10 +1,9 @@
 <?php
 
+use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\PaymentGateways\SubscriptionModule;
-use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
-use Give\PaymentGateways\DataTransferObjects\GatewaySubscriptionData;
 use Give\Subscriptions\Models\Subscription;
 
 /**
@@ -72,41 +71,41 @@ class GatewayRouteTestGateway extends PaymentGateway
 {
     public $routeMethods = ['gatewaySimpleRouteMethod'];
 
-    protected function gatewaySimpleRouteMethod($queryParams)
+    protected function gatewaySimpleRouteMethod($queryParams): string
     {
         return __CLASS__ . __FUNCTION__;
     }
 
-    public function getLegacyFormFieldMarkup($formId, $args)
+    public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
         return '';
     }
 
-    public static function id()
+    public static function id(): string
     {
         return 'GatewayRouteTestGateway';
     }
 
-    public function getId()
+    public function getId(): string
     {
         return self::id();
     }
 
-    public function getName()
+    public function getName(): string
     {
         return self::id();
     }
 
-    public function getPaymentMethodLabel()
+    public function getPaymentMethodLabel(): string
     {
         return self::id();
     }
 
-    public function createPayment(GatewayPaymentData $paymentData)
+    public function createPayment(Donation $donation)
     {
     }
 
-    public function refundDonation(\Give\Donations\Models\Donation $donation)
+    public function refundDonation(Donation $donation)
     {
         // TODO: Implement refundDonation() method.
     }
@@ -123,17 +122,17 @@ class GatewayRouteTestGatewaySubscriptionModule extends SubscriptionModule
     ];
 
     public function createSubscription(
-        GatewayPaymentData $paymentData,
-        GatewaySubscriptionData $subscriptionData
+        Donation $donation,
+        Subscription $subscription
     ) {
     }
 
-    protected function handleSimpleRoute($queryParams)
+    protected function handleSimpleRoute($queryParams): string
     {
         return __CLASS__ . __FUNCTION__;
     }
 
-    protected function handleSecureRoute($queryParams)
+    protected function handleSecureRoute($queryParams): string
     {
         return __CLASS__ . __FUNCTION__;
     }

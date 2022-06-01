@@ -24,7 +24,7 @@ class Page
     const DISABLED = 'disabled';
 
     /**
-     * Dissmiss the Setup Page.
+     * Dismiss the Setup Page.
      *
      * @since 2.8.0
      */

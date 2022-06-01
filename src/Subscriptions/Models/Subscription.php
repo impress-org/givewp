@@ -5,7 +5,6 @@ namespace Give\Subscriptions\Models;
 use DateTime;
 use Exception;
 use Give\Donations\Models\Donation;
-use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
@@ -13,6 +12,7 @@ use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\DataTransferObjects\SubscriptionQueryData;
 use Give\Subscriptions\Factories\SubscriptionFactory;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
@@ -31,8 +31,8 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
  * @property int $frequency
  * @property int $installments
  * @property string $transactionId
- * @property int $amount
- * @property int $feeAmount
+ * @property Money $amount
+ * @property Money $feeAmountRecovered
  * @property SubscriptionStatus $status
  * @property string $gatewayId
  * @property string $gatewaySubscriptionId
@@ -53,10 +53,10 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
         'frequency' => 'int',
         'installments' => ['int', 0],
         'transactionId' => 'string',
-        'amount' => 'int',
-        'feeAmount' => ['int', 0],
+        'amount' => Money::class,
+        'feeAmountRecovered' => Money::class,
         'status' => SubscriptionStatus::class,
-        'gatewaySubscriptionId' => 'string',
+        'gatewaySubscriptionId' => ['string', ''],
         'gatewayId' => 'string',
     ];
 
@@ -87,7 +87,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      *
      * @return ModelQueryBuilder<Donor>
      */
-    public function donor()
+    public function donor(): ModelQueryBuilder
     {
         return give()->donors->queryById($this->donorId);
     }
@@ -97,7 +97,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      *
      * @return ModelQueryBuilder<Donation>
      */
-    public function donations()
+    public function donations(): ModelQueryBuilder
     {
         return give()->donations->queryBySubscriptionId($this->id);
     }
@@ -109,13 +109,26 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      *
      * @return object[]
      */
-    public function getNotes()
+    public function getNotes(): array
     {
         return give()->subscriptions->getNotesBySubscriptionId($this->id);
     }
 
     /**
-     * @unreleased return mutated model instance
+     * Returns the subscription amount the donor "intended", which means it is the amount without recovered fees. So if the
+     * donor paid $100, but the donation was charged $105 with a $5 fee, this method will return $100.
+     *
+     * @since 2.20.0
+     */
+    public function intendedAmount(): Money
+    {
+        return $this->feeAmountRecovered === null
+            ? $this->amount
+            : $this->amount->subtract($this->feeAmountRecovered);
+    }
+
+    /**
+     * @since 2.20.0 return mutated model instance
      * @since 2.19.6
      *
      * @throws Exception
@@ -130,7 +143,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased mutate model in repository and return void
+     * @since 2.20.0 mutate model in repository and return void
      * @since 2.19.6
      *
      * @return void
@@ -140,30 +153,29 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     {
         if (!$this->id) {
             give()->subscriptions->insert($this);
+        } else {
+            give()->subscriptions->update($this);
         }
-
-        give()->subscriptions->update($this);
     }
 
     /**
      * @since 2.19.6
      *
-     * @return bool
      * @throws Exception
      */
-    public function delete()
+    public function delete(): bool
     {
         return give()->subscriptions->delete($this);
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      *
      * @param bool $force Set to true to ignore the status of the subscription
      *
      * @throws Exception
      */
-    public function cancel($force = false)
+    public function cancel(bool $force = false)
     {
         if (!$force && $this->status->isCanceled()) {
             return;
@@ -177,7 +189,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      *
      * @return ModelQueryBuilder<Subscription>
      */
-    public static function query()
+    public static function query(): ModelQueryBuilder
     {
         return give()->subscriptions->prepareQuery();
     }
@@ -186,10 +198,8 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      * @since 2.19.6
      *
      * @param object $object
-     *
-     * @return Subscription
      */
-    public static function fromQueryBuilderObject($object)
+    public static function fromQueryBuilderObject($object): Subscription
     {
         return SubscriptionQueryData::fromObject($object)->toSubscription();
     }
@@ -198,10 +208,8 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      * Expiration / End Date / Renewal
      *
      * @since 2.19.6
-     *
-     * @return string
      */
-    public function expiration()
+    public function expiration(): string
     {
         $frequency = $this->frequency;
         $period = $this->period;
@@ -218,15 +226,15 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     /**
      * @return PaymentGateway
      */
-    public function gateway()
+    public function gateway(): PaymentGateway
     {
         return give()->gateways->getPaymentGateway($this->gatewayId);
     }
 
     /**
-     * @return SubscriptionFactory<Subscription>
+     * @since 2.19.6
      */
-    public static function factory()
+    public static function factory(): SubscriptionFactory
     {
         return new SubscriptionFactory(static::class);
     }

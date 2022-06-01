@@ -792,11 +792,11 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
  * @type string $display_style       How the form is displayed, either in new page or modal popup.
  *                                       Default 'redirect'. Accepts 'redirect', 'modal'.
  *
- * @unreleased string $show_donate_button Option to show donate button
- * @unreleased string $donate_button_text Default Donate
- * @unreleased string $donate_button_background_color Default #66bb6a
- * @unreleased string $donate_button_text_color Default #fff
- * @unreleased bool $show_bar Default false
+ * @since 2.20.0 string $show_donate_button Option to show donate button
+ * @since 2.20.0 string $donate_button_text Default Donate
+ * @since 2.20.0 string $donate_button_background_color Default #66bb6a
+ * @since 2.20.0 string $donate_button_text_color Default #fff
+ * @since 2.20.0 bool $show_bar Default false
  *
  * @return string|bool The markup of the form grid or false.
  */

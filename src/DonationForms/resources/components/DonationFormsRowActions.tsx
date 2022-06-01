@@ -11,7 +11,7 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
     const {mutate} = useSWRConfig();
     const showConfirmModal = useContext(ShowConfirmModalContext);
     const trashEnabled = Boolean(data?.trash);
-    const deleteEndpoint = trashEnabled ? '/trash' : '/delete';
+    const deleteEndpoint = trashEnabled && item.status !== 'trash' ? '/trash' : '/delete';
 
     const fetchAndUpdateErrors = async (parameters, endpoint, id, method) => {
         const response = await donationFormsApi.fetchWithArgs(endpoint, {ids: [id]}, method);

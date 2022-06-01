@@ -121,7 +121,7 @@ class Give_Donor_Wall_Block {
 					],
 					'columns'         => [
 						'type'    => 'string',
-						'default' => 'best-fit',
+						'default' => '3',
 					],
 					'showAvatar'      => [
 						'type'    => 'boolean',
@@ -137,13 +137,9 @@ class Give_Donor_Wall_Block {
 					],
                     'showForm' => [
 						'type'    => 'boolean',
-						'default' => false,
-					],
-					'showTotal'       => [
-						'type'    => 'boolean',
 						'default' => true,
 					],
-					'showDate'        => [
+					'showTotal'       => [
 						'type'    => 'boolean',
 						'default' => true,
 					],
@@ -151,6 +147,10 @@ class Give_Donor_Wall_Block {
 						'type'    => 'boolean',
 						'default' => true,
 					],
+                    'showTributes'    => [
+                        'type'    => 'boolean',
+                        'default' => true,
+                    ],
 					'showAnonymous'   => [
 						'type'    => 'boolean',
 						'default' => true,
@@ -161,7 +161,7 @@ class Give_Donor_Wall_Block {
 					],
 					'commentLength'   => [
 						'type'    => 'string',
-						'default' => '140',
+						'default' => '80',
 					],
 					'readMoreText'    => [
 						'type'    => 'string',
@@ -173,8 +173,20 @@ class Give_Donor_Wall_Block {
 					],
 					'avatarSize'      => [
 						'type'    => 'string',
-						'default' => '60',
+						'default' => '75',
 					],
+                    'toggleOptions'      => [
+                        'type'    => 'string',
+                        'default' => 'Donor info',
+                    ],
+                    'filter'      => [
+                        'type'    => 'string',
+                        'default' => 'Donor ID',
+                    ],
+                    'color'      => [
+                        'type'    => 'string',
+                        'default' => '#219653',
+                    ],
 				],
 			]
 		);
@@ -206,14 +218,17 @@ class Give_Donor_Wall_Block {
 			'show_company_name' => $attributes['showCompanyName'],
 			'show_form'         => $attributes['showForm'],
 			'show_total'        => $attributes['showTotal'],
-			'show_time'         => $attributes['showDate'],
 			'show_comments'     => $attributes['showComments'],
-			'anonymous'         => $attributes['showAnonymous'],
+            'show_tributes'     => $attributes['showTributes'],
+            'anonymous'         => $attributes['showAnonymous'],
 			'comment_length'    => absint( $attributes['commentLength'] ),
 			'only_comments'     => $attributes['onlyComments'],
 			'readmore_text'     => $attributes['readMoreText'],
 			'loadmore_text'     => $attributes['loadMoreText'],
-			'avatar_size'       => $avatarSize ?: 60,
+            'toggle_options'    => $attributes['toggleOptions'],
+            'filter'            => $attributes['filter'],
+			'avatar_size'       => $avatarSize ?: 75,
+            'color'             => $attributes['color']
 		];
 
 		$html = Give_Donor_Wall::get_instance()->render_shortcode( $parameters );

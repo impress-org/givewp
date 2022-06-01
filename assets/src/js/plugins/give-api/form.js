@@ -814,9 +814,9 @@ export default {
 		 * @param {*} $errors Errors list.
 		 */
 		addErrorsAndResetDonationButton: function( $form, $errors = null ) {
-			$errors && this.addErrors( $form, $errors );
 			this.resetDonationButton( $form );
-		},
+            $errors && this.addErrors( $form, $errors );
+        },
 
 		/**
 		 * Reset "Donate Now" button state.

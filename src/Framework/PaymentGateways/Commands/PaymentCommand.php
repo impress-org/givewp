@@ -25,7 +25,7 @@ abstract class PaymentCommand implements GatewayCommand
      * @param  string|null  $gatewayTransactionId
      * @return static
      */
-    public static function make($gatewayTransactionId = null)
+    public static function make(string $gatewayTransactionId = null): PaymentCommand
     {
         return new static($gatewayTransactionId);
     }
@@ -35,7 +35,7 @@ abstract class PaymentCommand implements GatewayCommand
      *
      * @param  string|null  $gatewayTransactionId
      */
-    public function __construct($gatewayTransactionId = null)
+    public function __construct(string $gatewayTransactionId = null)
     {
         $this->gatewayTransactionId = $gatewayTransactionId;
     }
@@ -44,9 +44,10 @@ abstract class PaymentCommand implements GatewayCommand
      * @param  string|string[]  ...$paymentNotes
      * @return $this
      */
-    public function setPaymentNotes(...$paymentNotes)
+    public function setPaymentNotes(...$paymentNotes): PaymentCommand
     {
         $this->paymentNotes = $paymentNotes;
+
         return $this;
     }
 
@@ -54,9 +55,10 @@ abstract class PaymentCommand implements GatewayCommand
      * @param  string  $gatewayTransactionId
      * @return $this
      */
-    public function setTransactionId($gatewayTransactionId)
+    public function setTransactionId(string $gatewayTransactionId): PaymentCommand
     {
         $this->gatewayTransactionId = $gatewayTransactionId;
+        
         return $this;
     }
 }

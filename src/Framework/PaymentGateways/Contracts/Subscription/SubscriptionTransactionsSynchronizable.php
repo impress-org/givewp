@@ -5,14 +5,14 @@ namespace Give\Framework\PaymentGateways\Contracts\Subscription;
 use Give\Subscriptions\Models\Subscription;
 
 /**
- * @unreleased
+ * @since 2.20.0
  */
 interface SubscriptionTransactionsSynchronizable
 {
     /**
      * Synchronizes a subscription and its transactions with the gateway.
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @param Subscription $subscriptionModel
      *
