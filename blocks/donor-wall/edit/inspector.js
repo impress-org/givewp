@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n'
-import {InspectorControls, } from '@wordpress/block-editor';
-import {PanelBody, Panel, SelectControl, ToggleControl, TextControl, FormTokenField, ColorPalette} from '@wordpress/components';
+import {InspectorControls,ColorPalette } from '@wordpress/block-editor';
+import {PanelBody, Panel, SelectControl, ToggleControl, TextControl, FormTokenField } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -28,13 +28,26 @@ const Inspector = ( { attributes, setAttributes } ) => {
 		} );
 	};
 
+    const getAsArray = value => {
+        if (Array.isArray(value)) {
+            return value;
+        }
+
+        // Backward compatibility
+        if (formIDs.indexOf(',')) {
+            return value.split(',');
+        }
+
+        return [value];
+    };
+
     const filterValue = () => {
         if(filter === 'categories'){
             return <FormTokenField
                         className="give-donor-wall-inspector"
                         label={ __( 'Categories', 'give' ) }
                         onChange ={(value) => saveSetting('categories', value)}
-                        value={categories}
+                        value={getAsArray(categories)}
                         help={__('Type the name of your category to add it to the list. Only donations within the categories you choose will be displayed in this grid.', 'give')}/>
 
         } else if (filter === 'tags'){
@@ -42,7 +55,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
                     className="give-donor-wall-inspector"
                     label={ __( 'Tags', 'give' ) }
                     name="tags"
-                    value={tags}
+                    value={getAsArray(tags)}
                     onChange ={(value) => saveSetting('tags', value)}/>
 
         } else if (filter === 'ids'){
@@ -51,7 +64,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
                     label={ __( 'IDs', 'give' ) }
                     help = {__('By default, all donors will display. Use this setting to restrict the donor wall to only display certain donors. Use a comma-separated list of donor IDs.', 'give') }
                     name="ids"
-                    value={ids}
+                    value={getAsArray(ids)}
                     onChange ={(value) => saveSetting('ids', value)}/>
 
         } else if (filter === 'formID' ){
@@ -60,7 +73,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
                     label={ __( 'Form IDs', 'give' ) }
                     help={__('By Default, donations to all forms will display. Use this setting to restrict the donor to display only donations to certains forms. Use a comma-separated list of form IDs.', 'give')}
                     name="formID"
-                    value={formID}
+                    value={getAsArray(formID)}
                     onChange ={(value) => saveSetting('formID', value)}/>
         }
     };
@@ -119,7 +132,8 @@ const Inspector = ( { attributes, setAttributes } ) => {
                                         <TextControl
                                             className="give-donor-wall-inspector"
                                             name="avatarSize"
-                                            label={ __( 'Avatar Size (px)', 'give' ) }
+                                            label={ __( 'Avatar Size', 'give' ) }
+                                            help={__('Avatar size. Default height is 75. Accepts valid heights in px.', 'give')}
                                             value={ avatarSize }
                                             onChange={ ( value ) => saveSetting( 'avatarSize', value ) } />
                                     </> :
@@ -151,7 +165,8 @@ const Inspector = ( { attributes, setAttributes } ) => {
                                         <TextControl
                                             className="give-donor-wall-inspector"
                                             name="commentLength"
-                                            label={ __( 'Comment Length (characters)', 'give' ) }
+                                            label={ __( 'Comment Length', 'give' ) }
+                                            help={__('Limits the amount of characters to be displayed on donations with comments.', 'give')}
                                             value={ commentLength }
                                             onChange={ ( value ) => saveSetting( 'commentLength', value ) } />
                                         <TextControl
