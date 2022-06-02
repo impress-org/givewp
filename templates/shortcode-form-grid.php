@@ -23,6 +23,8 @@ $activeTemplate = FormUtils::isLegacyForm( $form_id ) ? 'legacy' : Template::get
 
 /* @var \Give\Form\Template $formTemplate */
 $formTemplate = Give()->templates->getTemplate( $activeTemplate );
+
+$flex_direction = $atts['columns'] === '1' ? "row" : "column";
 ?>
 
 <div class="give-grid__item">
@@ -49,7 +51,7 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
 		);
 	}
 	?>
-		<div class="give-form-grid">
+		<div class="give-form-grid" style="flex-direction:<?php echo $flex_direction ?>">
 			<?php
             // Maybe display the featured image.
             if (
