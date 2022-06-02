@@ -213,7 +213,6 @@ const Inspector = ( { attributes, setAttributes } ) => {
                     <ColorPalette
                         name="color"
                         clearable={false}
-                        colors={[]}
                         value={color}
                         onChange={ ( value ) => saveSetting('color', value) }
                         enableAlpha
