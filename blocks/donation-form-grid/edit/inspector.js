@@ -272,48 +272,6 @@ const Inspector = ({attributes, setAttributes}) => {
                         />
                 </PanelBody>
             </Panel>
-            <Panel>
-                <PanelBody title={__('Filters and Categories', 'give')}>
-
-
-
-                    <FormTokenField
-                        name="categories"
-                        label={__('Categories', 'give')}
-                        value={getAsArray(categories)}
-                        onChange={(value) => saveSetting('categories', value)}
-                    />
-
-                    <p className="components-form-token-field__help">
-                        {__('Type the name of your category to add it to the list. Only forms within the categories you choose will be displayed in this grid.', 'give')}
-                    </p>
-
-                    <FormTokenField
-                        name="tags"
-                        label={__('Tags', 'give')}
-                        value={getAsArray(tags)}
-                        onChange={(value) => saveSetting('tags', value)}
-                    />
-
-                    <p className="components-form-token-field__help">
-                        {__('Type the name of your tag to add it to the list. Only forms with these tags you choose will be displayed in this grid.', 'give')}
-                    </p>
-
-                    <FormTokenField
-                        name="formIDs"
-                        label={__('Form IDs', 'give')}
-                        value={getAsArray(formIDs)}
-                        onChange={(value) => saveSetting('formIDs', value)}
-                    />
-
-                    <p className="components-form-token-field__help">
-                        {__('Type the ID of your form to add it to the list. Only forms with these IDs you choose will be displayed in this grid.', 'give')}
-                    </p>
-
-
-                </PanelBody>
-
-            </Panel>
         </InspectorControls>
     );
 };
