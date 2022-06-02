@@ -119,7 +119,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
                                         <TextControl
                                             className="give-donor-wall-inspector"
                                             name="avatarSize"
-                                            label={ __( 'Avatar Size', 'give' ) }
+                                            label={ __( 'Avatar Size (px)', 'give' ) }
                                             value={ avatarSize }
                                             onChange={ ( value ) => saveSetting( 'avatarSize', value ) } />
                                     </> :
@@ -151,7 +151,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
                                         <TextControl
                                             className="give-donor-wall-inspector"
                                             name="commentLength"
-                                            label={ __( 'Comment Length', 'give' ) }
+                                            label={ __( 'Comment Length (characters)', 'give' ) }
                                             value={ commentLength }
                                             onChange={ ( value ) => saveSetting( 'commentLength', value ) } />
                                         <TextControl
