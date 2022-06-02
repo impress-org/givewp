@@ -16,6 +16,8 @@ $atts          = $args[2]; // Shortcode attributes.
 
 $primary_color = $atts['color'];
 $avatarSize = (int) $atts['avatar_size'] ;
+$tribute_background_color =  ! empty( $atts['color']) ? $atts['color'] . '20' :'#219653';
+
 ?>
 
 
@@ -170,9 +172,6 @@ $avatarSize = (int) $atts['avatar_size'] ;
             $honoree_first_name = esc_html($donation['_give_tributes_first_name']);
             $honoree_last_name = esc_html($donation['_give_tributes_last_name']);
 
-            $tribute_background_color =  ! empty( $atts['color']) ? $atts['color'] . '20' :'#219653';
-
-
             $honoree_full_name =
                 //Determine if a last name is available
                 $donation['_give_tributes_last_name'] ?
@@ -196,7 +195,9 @@ $avatarSize = (int) $atts['avatar_size'] ;
                         <span> $honoree_full_name </span>
                     </span>
                 </div>";
-            }
+            } else {
+            echo "<div class='give-donor-tribute' style='background-color: {$tribute_background_color} '></div>";
+        }
         ?>
     </div>
 </div>
