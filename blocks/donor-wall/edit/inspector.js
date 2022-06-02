@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n'
-import {ColorPalette, InspectorControls} from '@wordpress/block-editor';
-import { PanelBody, Panel, SelectControl, ToggleControl, TextControl } from '@wordpress/components';
+import {InspectorControls, } from '@wordpress/block-editor';
+import {PanelBody, Panel, SelectControl, ToggleControl, TextControl, FormTokenField, ColorPalette} from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -30,16 +30,15 @@ const Inspector = ( { attributes, setAttributes } ) => {
 
     const filterValue = () => {
         if(filter === 'categories'){
-            return <TextControl
-                    className="give-donor-wall-inspector"
-                    label={ __( 'Categories', 'give' ) }
-                    help={__('Type the name of your category to add it to the list. Only donations within the categories you choose will be displayed in this grid.', 'give')}
-                    name="categories"
-                    value={categories}
-                    onChange ={(value) => saveSetting('categories', value)}/>
+            return <FormTokenField
+                        className="give-donor-wall-inspector"
+                        label={ __( 'Categories', 'give' ) }
+                        onChange ={(value) => saveSetting('categories', value)}
+                        value={categories}
+                        help={__('Type the name of your category to add it to the list. Only donations within the categories you choose will be displayed in this grid.', 'give')}/>
 
         } else if (filter === 'tags'){
-            return <TextControl
+            return <FormTokenField
                     className="give-donor-wall-inspector"
                     label={ __( 'Tags', 'give' ) }
                     name="tags"
@@ -47,7 +46,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
                     onChange ={(value) => saveSetting('tags', value)}/>
 
         } else if (filter === 'ids'){
-            return <TextControl
+            return <FormTokenField
                     className="give-donor-wall-inspector"
                     label={ __( 'IDs', 'give' ) }
                     help = {__('By default, all donors will display. Use this setting to restrict the donor wall to only display certain donors. Use a comma-separated list of donor IDs.', 'give') }
@@ -56,7 +55,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
                     onChange ={(value) => saveSetting('ids', value)}/>
 
         } else if (filter === 'formID' ){
-            return <TextControl
+            return <FormTokenField
                     className="give-donor-wall-inspector"
                     label={ __( 'Form IDs', 'give' ) }
                     help={__('By Default, donations to all forms will display. Use this setting to restrict the donor to display only donations to certains forms. Use a comma-separated list of form IDs.', 'give')}
@@ -65,6 +64,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
                     onChange ={(value) => saveSetting('formID', value)}/>
         }
     };
+
 
     return (
 		<InspectorControls key="inspector">
