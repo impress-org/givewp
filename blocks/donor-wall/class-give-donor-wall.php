@@ -92,20 +92,20 @@ class Give_Donor_Wall_Block {
 						'default' => '12',
 					],
 					'formID'          => [
-						'type'    => 'string',
-						'default' => '0',
+						'type'    => 'array',
+						'default' => [],
 					],
 					'ids'             => [
-						'type'    => 'string',
-						'default' => '',
+						'type'    => 'array',
+						'default' => [],
 					],
                     'categories'             => [
-                        'type'    => 'string',
-                        'default' => '',
+                        'type'    => 'array',
+                        'default' => [],
                     ],
                     'tags'             => [
-                        'type'    => 'string',
-                        'default' => '',
+                        'type'    => 'array',
+                        'default' => [],
                     ],
 					'orderBy'         => [
 						'type'    => 'string',
