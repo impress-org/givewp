@@ -52,34 +52,48 @@ $flex_direction = $atts['columns'] === '1' ? "row" : "column";
 	}
 	?>
 		<div class="give-form-grid" style="flex-direction:<?php echo $flex_direction ?>">
-			<?php
-            // Maybe display the featured image.
-            if (
-                give_is_setting_enabled($give_settings['form_featured_img'])
-                && ($imageSrc = $formTemplate->getFormFeaturedImage($form_id))
-                && true === $atts['show_featured_image']
-            ) {
-                /*
-                 * Filters the image size used in card layouts.
-                 *
-                 * @param string The image size.
-                 * @param array  Form grid attributes.
-                 */
-                $image_size = apply_filters('give_form_grid_image_size', $atts['image_size'], $atts);
-                $image_attr = '';
+                <?php
+                // Maybe display the featured image.
+                if (
+                    give_is_setting_enabled($give_settings['form_featured_img'])
+                    && ($imageSrc = $formTemplate->getFormFeaturedImage($form_id))
+                    && true === $atts['show_featured_image']
+                ) {
+                    /*
+                     * Filters the image size used in card layouts.
+                     *
+                     * @param string The image size.
+                     * @param array  Form grid attributes.
+                     */
+                    $image_size = apply_filters('give_form_grid_image_size', $atts['image_size'], $atts);
+                    $image_attr = '';
 
-                if ('auto' !== $atts['image_height']) {
-                    $image_attr = [
-                        'style' => 'height: ' . $atts['image_height'],
-                    ];
+                    if ('auto' !== $atts['image_height']) {
+                        $image_attr = [
+                            'style' => 'height: ' . $atts['image_height'],
+                        ];
+                    }
+
+                    $tag_background_color = ! empty( $atts['donate_button_text_color'] )
+                        ? $atts['donate_button_text_color'] . "96"
+                        : '#fff';
+
+                    $tag_text_color = ! empty( $atts['donate_button_text_color'] )
+                        ? $atts['donate_button_text_color']
+                        : '#fff';
+
+                    echo "
+                        <div class='give-form-grid-media'>
+                             <img src='$imageSrc' alt='$image_attr' height='$image_size' />
+
+                             <div class='give-form-grid-media__tags'>
+                                <span style='color: $tag_text_color; background-color: $tag_background_color;'>Animal</span>
+                                <span style='color: $tag_text_color; background-color: $tag_background_color'>Wild life</span>
+                             </div>
+                        </div>
+                    ";
                 }
-
-                printf(
-                    '<div class="give-form-grid-media">%1$s</div>',
-                    wp_get_attachment_image(attachment_url_to_postid($imageSrc), $image_size, false, $image_attr)
-                );
-            }
-            ?>
+                ?>
 
             <div class="give-form-grid-container">
                 <div class="give-form-grid-content">
