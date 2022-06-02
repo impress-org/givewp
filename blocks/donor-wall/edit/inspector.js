@@ -43,38 +43,52 @@ const Inspector = ( { attributes, setAttributes } ) => {
 
     const filterValue = () => {
         if(filter === 'categories'){
-            return <FormTokenField
-                        className="give-donor-wall-inspector"
-                        label={ __( 'Categories', 'give' ) }
-                        onChange ={(value) => saveSetting('categories', value)}
-                        value={getAsArray(categories)}
-                        help={__('Type the name of your category to add it to the list. Only donations within the categories you choose will be displayed in this grid.', 'give')}/>
+            return <> <FormTokenField
+                className="give-donor-wall-inspector"
+                label={ __( 'Categories', 'give' ) }
+                onChange ={(value) => saveSetting('categories', value)}
+                value={getAsArray(categories)}/>
+                <p className="components-form-token-field__help">
+                    {__('Type the name of your category to add it to the list. Only forms within the categories you choose will be displayed in this grid.', 'give')}
+                </p>
+            </>
 
         } else if (filter === 'tags'){
-            return <FormTokenField
-                    className="give-donor-wall-inspector"
-                    label={ __( 'Tags', 'give' ) }
-                    name="tags"
-                    value={getAsArray(tags)}
-                    onChange ={(value) => saveSetting('tags', value)}/>
+            return <> <FormTokenField
+                className="give-donor-wall-inspector"
+                label={ __( 'Tags', 'give' ) }
+                name="tags"
+                value={getAsArray(tags)}
+                onChange ={(value) => saveSetting('tags', value)}/>
+                <p className="components-form-token-field__help">
+                    {__('Type the name of your tag to add it to the list. Only forms with these tags you choose will be displayed in this grid.', 'give')}
+                </p>
+            </>
 
         } else if (filter === 'ids'){
-            return <FormTokenField
-                    className="give-donor-wall-inspector"
-                    label={ __( 'IDs', 'give' ) }
-                    help = {__('By default, all donors will display. Use this setting to restrict the donor wall to only display certain donors. Use a comma-separated list of donor IDs.', 'give') }
-                    name="ids"
-                    value={getAsArray(ids)}
-                    onChange ={(value) => saveSetting('ids', value)}/>
+            return  <> <FormTokenField
+                className="give-donor-wall-inspector"
+                label={ __( 'IDs', 'give' ) }
+                name="ids"
+                value={getAsArray(ids)}
+                onChange ={(value) => saveSetting('ids', value)}/>
+                <p className="components-form-token-field__help">
+                    {__('By default, all donors will display. Use this setting to restrict the donor wall to only display certain donors. Use a comma-separated list of donor IDs.', 'give')}
+                </p>
+            </>
 
         } else if (filter === 'formID' ){
-            return <FormTokenField
-                    className="give-donor-wall-inspector"
-                    label={ __( 'Form IDs', 'give' ) }
-                    help={__('By Default, donations to all forms will display. Use this setting to restrict the donor to display only donations to certains forms. Use a comma-separated list of form IDs.', 'give')}
-                    name="formID"
-                    value={getAsArray(formID)}
-                    onChange ={(value) => saveSetting('formID', value)}/>
+            return <> <FormTokenField
+                className="give-donor-wall-inspector"
+                label={ __( 'Form IDs', 'give' ) }
+                help={__('By Default, donations to all forms will display. Use this setting to restrict the donor to display only donations to certains forms. Use a comma-separated list of form IDs.', 'give')}
+                name="formID"
+                value={getAsArray(formID)}
+                onChange ={(value) => saveSetting('formID', value)}/>
+                <p className="components-form-token-field__help">
+                    {__('Type the ID of your form to add it to the list. Only forms with these IDs you choose will be displayed in this grid.', 'give')}
+                </p>
+            </>
         }
     };
 
