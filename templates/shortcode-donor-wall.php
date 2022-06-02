@@ -164,7 +164,7 @@ $avatarSize = (int) $atts['avatar_size'] ;
                 </div>
             </div>
         <?php
-        if (  $atts['show_tributes'] && (isset( $donation['_give_tributes_first_name'] ) || isset( $donation['_give_tributes_Last_name']))) {
+        if ((isset( $donation['_give_tributes_first_name'] ) || isset( $donation['_give_tributes_Last_name']))) {
 
             $tribute_message = esc_html($donation['_give_tributes_type']);
             $honoree_first_name = esc_html($donation['_give_tributes_first_name']);
