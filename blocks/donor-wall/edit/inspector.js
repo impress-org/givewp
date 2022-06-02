@@ -45,7 +45,6 @@ const Inspector = ( { attributes, setAttributes } ) => {
         if(filter === 'categories'){
             return <> <FormTokenField
                 className="give-donor-wall-inspector"
-                label={ __( 'Categories', 'give' ) }
                 onChange ={(value) => saveSetting('categories', value)}
                 value={getAsArray(categories)}/>
                 <p className="components-form-token-field__help">
@@ -56,7 +55,6 @@ const Inspector = ( { attributes, setAttributes } ) => {
         } else if (filter === 'tags'){
             return <> <FormTokenField
                 className="give-donor-wall-inspector"
-                label={ __( 'Tags', 'give' ) }
                 name="tags"
                 value={getAsArray(tags)}
                 onChange ={(value) => saveSetting('tags', value)}/>
@@ -68,7 +66,6 @@ const Inspector = ( { attributes, setAttributes } ) => {
         } else if (filter === 'ids'){
             return  <> <FormTokenField
                 className="give-donor-wall-inspector"
-                label={ __( 'IDs', 'give' ) }
                 name="ids"
                 value={getAsArray(ids)}
                 onChange ={(value) => saveSetting('ids', value)}/>
@@ -80,7 +77,6 @@ const Inspector = ( { attributes, setAttributes } ) => {
         } else if (filter === 'formID' ){
             return <> <FormTokenField
                 className="give-donor-wall-inspector"
-                label={ __( 'Form IDs', 'give' ) }
                 help={__('By Default, donations to all forms will display. Use this setting to restrict the donor to display only donations to certains forms. Use a comma-separated list of form IDs.', 'give')}
                 name="formID"
                 value={getAsArray(formID)}
