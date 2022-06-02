@@ -41,7 +41,7 @@ const blockAttributes = {
 	},
 	columns: {
 		type: 'string',
-		default: 'best-fit',
+		default: '1',
 	},
     imageSize: {
         type: 'string',
