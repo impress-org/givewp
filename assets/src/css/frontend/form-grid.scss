@@ -40,18 +40,18 @@ $MIN_REM_SIZE: 16px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: flex-start;
-    height: 73%;
-    padding: 24px ;
+    padding:  18px ;
 
     & > h3 {
         font-size: safe-rem(1);
-        font-weight: 700;
+        font-weight: 700 !important;
     }
 
     & > p {
         font-size: 1rem;
+        font-weight: 400;
     }
 
     & > button {
@@ -59,9 +59,11 @@ $MIN_REM_SIZE: 16px;
         padding: 0;
         border: none;
         font-size: safe-rem(1);
+        font-weight: 400;
         text-decoration: underline;
         text-underline-offset: 5px;
         cursor: pointer;
+
     }
 }
 
@@ -75,7 +77,7 @@ $MIN_REM_SIZE: 16px;
     color: #fff;
     text-align: center;
     font-family: inherit;
-    font-size: safe-rem(1.375);
+    font-size: safe-rem(1);
     font-weight: 600;
     line-height: 1.2;
 

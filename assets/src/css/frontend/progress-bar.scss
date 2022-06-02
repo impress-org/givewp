@@ -10,13 +10,12 @@
 
 
 .give-form-grid-content__progress {
-    height: 27%;
+
 }
 
 .give-goal-progress {
-    height: 100%;
     background: #F6F6F6;
-    padding: 16px 24px;
+    padding: 16px 20px;
 }
 
 .raised {
@@ -35,6 +34,8 @@
 
         &  > span:last-child {
             font-size: 14px;
+            font-weight: 400;
+
         }
 
         &_donations{
@@ -46,7 +47,7 @@
 
 .give-progress-bar {
     position: relative;
-    height: 12px;
+    height: 10px;
     background: #F1F1F1;
     margin-bottom: 10px;
     border-radius: 25px;
