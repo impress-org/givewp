@@ -156,6 +156,12 @@ const Inspector = ( { attributes, setAttributes } ) => {
                                             label={ __( 'Show Comments', 'give' ) }
                                             checked={ !! showComments }
                                             onChange={ ( value ) => saveSetting( 'showComments', value ) } />
+                                        <ToggleControl
+                                            className="give-donor-wall-inspector"
+                                            name="onlyComments"
+                                            label={ __( 'Only Comments', 'give' ) }
+                                            checked={ !! onlyComments }
+                                            onChange={ ( value ) => saveSetting( 'onlyComments', value ) } />
                                         <TextControl
                                             className="give-donor-wall-inspector"
                                             name="commentLength"
