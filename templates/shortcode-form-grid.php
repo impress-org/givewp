@@ -18,13 +18,15 @@ $raw_content      = ''; // Raw form content.
 $stripped_content = ''; // Form content stripped of HTML tags and shortcodes.
 $excerpt          = ''; // Trimmed form excerpt ready for display.
 
+$flex_direction = $atts['columns'] === '1' ? "row" : "column";
+
+
 
 $activeTemplate = FormUtils::isLegacyForm( $form_id ) ? 'legacy' : Template::getActiveID( $form_id );
 
 /* @var \Give\Form\Template $formTemplate */
 $formTemplate = Give()->templates->getTemplate( $activeTemplate );
 
-$flex_direction = $atts['columns'] === '1' ? "row" : "column";
 ?>
 
 <div class="give-grid__item">
@@ -82,6 +84,7 @@ $flex_direction = $atts['columns'] === '1' ? "row" : "column";
                         ? $atts['donate_button_text_color']
                         : '#fff';
 
+
                     echo "
                         <div class='give-form-grid-media'>
                              <img src='$imageSrc' alt='$image_attr' height='$image_size' />
@@ -138,10 +141,6 @@ $flex_direction = $atts['columns'] === '1' ? "row" : "column";
                         $button_text = ! empty( $atts['donate_button_text'] )
                             ? $atts['donate_button_text']
                             : give_get_meta( $form_id, '_give_form_grid_donate_button_text', true );
-
-                        $button_bg_color = ! empty( $atts['donate_button_background_color'] )
-                            ? $atts['donate_button_background_color']
-                            : '#66bb6a';
 
                         $button_text_color = ! empty( $atts['donate_button_text_color'] )
                             ? $atts['donate_button_text_color']
