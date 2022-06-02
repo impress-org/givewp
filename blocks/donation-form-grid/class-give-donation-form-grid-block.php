@@ -121,7 +121,7 @@ class Give_Donation_Form_Grid_Block {
 					),
 					'columns'           => array(
 						'type'    => 'string',
-						'default' => 'best-fit',
+						'default' => '1',
 					),
                     'imageSize'           => array(
 						'type'    => 'string',
