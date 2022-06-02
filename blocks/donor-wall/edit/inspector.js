@@ -20,7 +20,7 @@ import './style.scss'
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { donorsPerPage, ids, formID, categories, tags, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, onlyComments, showForm, showTotal, showComments, showAnonymous, showTributes, commentLength, readMoreText, loadMoreText, toggleOptions, filter, color  } = attributes;
+	const { donorsPerPage, ids, formID, categories, tags, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, onlyComments, showForm, showTotal, showComments, showAnonymous,  commentLength, readMoreText, loadMoreText, toggleOptions, filter, color  } = attributes;
 
 	const saveSetting = ( name, value ) => {
 		setAttributes( {
@@ -156,12 +156,6 @@ const Inspector = ( { attributes, setAttributes } ) => {
                                             label={ __( 'Show Comments', 'give' ) }
                                             checked={ !! showComments }
                                             onChange={ ( value ) => saveSetting( 'showComments', value ) } />
-                                        <ToggleControl
-                                            className="give-donor-wall-inspector"
-                                            name="showTributes"
-                                            label={ __( 'Show Tributes', 'give' ) }
-                                            checked={ !! showTributes }
-                                            onChange={ ( value ) => saveSetting( 'showTributes', value ) } />
                                         <TextControl
                                             className="give-donor-wall-inspector"
                                             name="commentLength"

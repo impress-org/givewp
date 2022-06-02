@@ -147,10 +147,6 @@ class Give_Donor_Wall_Block {
 						'type'    => 'boolean',
 						'default' => true,
 					],
-                    'showTributes'    => [
-                        'type'    => 'boolean',
-                        'default' => true,
-                    ],
 					'showAnonymous'   => [
 						'type'    => 'boolean',
 						'default' => true,
