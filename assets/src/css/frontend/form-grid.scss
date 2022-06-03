@@ -18,6 +18,7 @@ $MIN_REM_SIZE: 16px;
 
 .give-form-grid {
     display: flex;
+    height: 100%;
 
     &-media {
         position: relative;
@@ -51,9 +52,11 @@ $MIN_REM_SIZE: 16px;
     }
 
     &-container {
+        flex-grow: 1;
         display: flex;
         flex-direction: column;
         width: 100%;
+
     }
 }
 
@@ -66,8 +69,10 @@ $MIN_REM_SIZE: 16px;
     padding:  18px ;
 
     & > h3 {
-        font-size: safe-rem(1);
+        height:100%;
+        font-size: safe-rem(1.375) !important;
         font-weight: 700 !important;
+        margin: 0 !important;
     }
 
     & > p {
