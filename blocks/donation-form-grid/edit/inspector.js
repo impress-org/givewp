@@ -3,7 +3,7 @@
  */
 import {__} from '@wordpress/i18n'
 import { select } from '@wordpress/data';
-import {InspectorControls, store } from '@wordpress/block-editor';
+import {InspectorControls, PanelColorSettings, store } from '@wordpress/block-editor';
 import {
     ColorPalette,
     FormTokenField, Panel,
@@ -48,7 +48,7 @@ const Inspector = ({attributes, setAttributes}) => {
         showProgressBar,
         showFeaturedImage,
         showDonateButton,
-        donateButtonBackgroundColor,
+        tagBackgroundColor,
         donateButtonTextColor,
         displayType,
         filter,
@@ -79,6 +79,8 @@ const Inspector = ({attributes, setAttributes}) => {
             label: name
         };
     });
+
+    console.log(tagBackgroundColor)
 
   const filterValue = () => {
       if (filter === 'categories') {
@@ -243,26 +245,22 @@ const Inspector = ({attributes, setAttributes}) => {
                     />
                 </PanelBody>
             </Panel>
-            <Panel>
-                <PanelBody title= {__('Color Settings', 'give')} initialOpen={ true }>
-                        <>
-                            <p>
-                                {__('Donate Button Background Color', 'give')}
-                            </p>
-                            <ColorPalette
-                                clearable={false}
-                                onChange={(value) => saveSetting('donateButtonBackgroundColor', value)}
-                                value={donateButtonBackgroundColor}
-                            />
-                            <p>
-                                {__('Donate Button Text Color', 'give')}
-                            </p>
-                            <ColorPalette
-                                clearable={false}
-                                onChange={(value) => saveSetting('donateButtonTextColor', value)}
-                                value={donateButtonTextColor}
-                            />
-                        </>
+            <PanelColorSettings
+                title={ __( 'Color Settings' ) }
+                colorSettings={ [
+                    {
+                        value: tagBackgroundColor
+,                       onChange: (value) => saveSetting('tagBackgroundColor', value),
+                        label: __('Tag Background Color', 'give')
+
+                    },
+                    {
+                        value: donateButtonTextColor,
+                        onChange: (value) => saveSetting('donateButtonTextColor', value),
+                        label: __('Donate Button Text Color', 'give')
+                    },
+                ] }
+            />
                         <ToggleControl
                             className="give-form-grid-inspector"
                             name="showDonateButton"
@@ -270,8 +268,6 @@ const Inspector = ({attributes, setAttributes}) => {
                             checked={!!showDonateButton}
                             onChange={(value) => saveSetting('showDonateButton', value)}
                         />
-                </PanelBody>
-            </Panel>
         </InspectorControls>
     );
 };
