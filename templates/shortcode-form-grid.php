@@ -76,13 +76,13 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                         ];
                     }
 
-                    $tag_background_color = ! empty( $atts['donate_button_text_color'] )
-                        ? $atts['donate_button_text_color'] . "96"
-                        : '#fff';
+                    $tag_bg_color = ! empty( $atts['tag_background_color'] )
+                        ? $atts['tag_background_color'] . "96"
+                        : '#000000';
 
                     $tag_text_color = ! empty( $atts['donate_button_text_color'] )
                         ? $atts['donate_button_text_color']
-                        : '#fff';
+                        : '#000000';
 
 
                     echo "
@@ -90,8 +90,8 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                              <img src='$imageSrc' alt='$image_attr' height='$image_size' />
 
                              <div class='give-form-grid-media__tags'>
-                                <span style='color: $tag_text_color; background-color: $tag_background_color;'>Animal</span>
-                                <span style='color: $tag_text_color; background-color: $tag_background_color'>Wild life</span>
+                                <span style='color: $tag_text_color; background-color: $tag_bg_color;'>Animal</span>
+                                <span style='color: $tag_text_color; background-color: $tag_bg_color'>Wild life</span>
                              </div>
                         </div>
                     ";
