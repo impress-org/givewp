@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n'
-import {InspectorControls,ColorPalette } from '@wordpress/block-editor';
+import {InspectorControls, PanelColorSettings,} from '@wordpress/block-editor';
 import {PanelBody, Panel, SelectControl, ToggleControl, TextControl, FormTokenField } from '@wordpress/components';
 
 /**
@@ -233,18 +233,19 @@ const Inspector = ( { attributes, setAttributes } ) => {
                             onChange={ ( value ) => saveSetting( 'loadMoreText', value ) } />
                     </PanelBody>
                 </Panel>
-            <Panel>
-                <PanelBody title= {__('Color Settings', 'give')} initialOpen={ true }>
-                    <ColorPalette
-                        name="color"
-                        clearable={false}
-                        value={color}
-                        onChange={ ( value ) => saveSetting('color', value) }
-                        enableAlpha
-                    />
-                </PanelBody>
-            </Panel>
-		</InspectorControls>
+            <PanelColorSettings
+                title={ __( 'Color Settings' ) }
+                colorSettings={ [
+                    {
+                        value: color,
+                        onChange: ( value ) => setAttributes( { color: value } ),
+                        label: __( 'Color' ),
+                    },
+
+                ] }
+            >
+
+            </PanelColorSettings>		</InspectorControls>
 	);
 };
 
