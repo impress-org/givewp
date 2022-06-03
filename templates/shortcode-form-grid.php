@@ -77,11 +77,11 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                     }
 
                     $tag_bg_color = ! empty( $atts['tag_background_color'] )
-                        ? $atts['tag_background_color'] . "96"
-                        : '#000000';
+                        ? $atts['tag_background_color']
+                        : '#ffffff';
 
-                    $tag_text_color = ! empty( $atts['donate_button_text_color'] )
-                        ? $atts['donate_button_text_color']
+                    $tag_text_color = ! empty( $atts['tag_text_color'] )
+                        ? $atts['tag_text_color']
                         : '#000000';
 
 
