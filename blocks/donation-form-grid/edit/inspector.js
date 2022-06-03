@@ -52,6 +52,7 @@ const Inspector = ({attributes, setAttributes}) => {
         donateButtonTextColor,
         displayType,
         filter,
+        tagTextColor
     } = attributes;
 
     const saveSetting = (name, value) => {
@@ -258,6 +259,11 @@ const Inspector = ({attributes, setAttributes}) => {
                         value: donateButtonTextColor,
                         onChange: (value) => saveSetting('donateButtonTextColor', value),
                         label: __('Donate Button Text Color', 'give')
+                    },
+                    {
+                        value: tagTextColor,
+                        onChange: (value) => saveSetting('tagTextColor', value),
+                        label: __('Tag Text Color', 'give')
                     },
                 ] }
             />

@@ -77,8 +77,12 @@ const blockAttributes = {
 	},
     tagBackgroundColor: {
 		type: 'string',
-		default: '#66bb6a',
+		default: '#000000',
 	},
+    tagTextColor: {
+        type: 'string',
+        default: '#000000',
+    },
     donateButtonTextColor: {
 		type: 'string',
 		default: '#fff',

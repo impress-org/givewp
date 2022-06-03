@@ -161,11 +161,15 @@ class Give_Donation_Form_Grid_Block {
 					),
                     'tagBackgroundColor' => array(
 						'type'    => 'string',
-						'default' => '#66bb6a',
+						'default' => '#ffffff',
 					),
+                    'tagTextColor' => array(
+                        'type'    => 'string',
+                        'default' => '#000000',
+                    ),
                     'donateButtonTextColor' => array(
                         'type'    => 'string',
-                        'default' => '#fff',
+                        'default' => '#000000',
                     ),
 					'displayType'       => array(
 						'type'    => 'string',
@@ -210,7 +214,8 @@ class Give_Donation_Form_Grid_Block {
 			'show_featured_image' => $attributes['showFeaturedImage'],
 			'show_donate_button'  => $attributes['showDonateButton'],
 			'tag_background_color' => $attributes['tagBackgroundColor'],
-			'donate_button_text_color' => $attributes['donateButtonTextColor'],
+            'tag_text_color' => $attributes['tagTextColor'],
+            'donate_button_text_color' => $attributes['donateButtonTextColor'],
 			'display_style'       => $attributes['displayType'],
             'paged'               => $attributes['paged'],
             'image_size'          => $attributes['imageSize'],
