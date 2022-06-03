@@ -204,6 +204,7 @@ $donor-space-triple: $donor-space * 3;
         &__message {
             font-size: safe-rem(0.75);
             color: $donor-color;
+            text-align: center;
 
 
             span:last-child {
