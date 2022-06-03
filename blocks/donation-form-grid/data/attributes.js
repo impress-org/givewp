@@ -75,7 +75,7 @@ const blockAttributes = {
 		type: 'boolean',
 		default: false,
 	},
-    donateButtonBackgroundColor: {
+    tagBackgroundColor: {
 		type: 'string',
 		default: '#66bb6a',
 	},
