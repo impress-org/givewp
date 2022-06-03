@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n'
-import {InspectorControls, PanelColorSettings,} from '@wordpress/block-editor';
+import {InspectorControls, ColorPalette,} from '@wordpress/block-editor';
 import {PanelBody, Panel, SelectControl, ToggleControl, TextControl, FormTokenField } from '@wordpress/components';
 
 /**
@@ -108,7 +108,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
                     </PanelBody>
                 </Panel>
                 <Panel>
-                    <PanelBody title= {__('Display Elements', 'give')} initialOpen={ true }>
+                    <PanelBody title= {__('Display Elements', 'give')} initialOpen={ false }>
                         <ToggleOptions
                             options={[__( 'Donor info', 'give' ), __( 'Wall attributes', 'give' ) ]}
                             onClick={( value ) => saveSetting( 'toggleOptions', value ) }
@@ -190,7 +190,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
                     </PanelBody>
                 </Panel>
                 <Panel>
-                    <PanelBody title= {__('Wall Settings', 'give')} initialOpen={ true }>
+                    <PanelBody title= {__('Wall Settings', 'give')} initialOpen={ false }>
                         <SelectControl
                             className="give-donor-wall-inspector"
                             label={ __( 'Sort By', 'give' ) }
@@ -216,7 +216,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
                     </PanelBody>
                 </Panel>
                 <Panel>
-                    <PanelBody title= {__('Wall Interaction', 'give')} initialOpen={ true }>
+                    <PanelBody title= {__('Wall Interaction', 'give')} initialOpen={ false }>
                         <TextControl
                             className="give-donor-wall-inspector"
                             name="donorsPerPage"
@@ -233,19 +233,15 @@ const Inspector = ( { attributes, setAttributes } ) => {
                             onChange={ ( value ) => saveSetting( 'loadMoreText', value ) } />
                     </PanelBody>
                 </Panel>
-            <PanelColorSettings
-                title={ __( 'Color Settings' ) }
-                colorSettings={ [
-                    {
-                        value: color,
-                        onChange: ( value ) => setAttributes( { color: value } ),
-                        label: __( 'Color' ),
-                    },
-
-                ] }
-            >
-
-            </PanelColorSettings>		</InspectorControls>
+                <Panel>
+                    <PanelBody title= {__('Color', 'give')} initialOpen={ false }>
+                        <ColorPalette
+                            value={color}
+                            onChange={( value ) => setAttributes( { color: value } )}
+                        />
+                    </PanelBody>
+                </Panel>
+	</InspectorControls>
 	);
 };
 
