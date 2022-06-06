@@ -46,7 +46,8 @@ $MIN_REM_SIZE: 16px;
                 padding: 4px 8px;
                 margin: 0 6px;
                 border-radius: 5px;
-                font-weight: 700;
+                font-size: safe-rem(.975);
+                font-weight: 600;
             }
         }
     }
