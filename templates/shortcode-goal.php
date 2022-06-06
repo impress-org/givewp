@@ -218,8 +218,9 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 
 			endif;
 			?>
+
             <div class="raised__details">
-                <span class="amount raised__details_donations">90</span>
+                <span class="amount raised__details_donations"> <?php echo $form->get_sales(); ?></span>
                 <span class="goal">Donations</span>
             </div>
 		</div>
