@@ -45,7 +45,7 @@ $tribute_background_color =  ! empty( $atts['color']) ? $atts['color'] . '20' :'
 
                         echo "
                             <div class='give-donor-container__image' >
-                                <img src='https://gravatar.com/avatar/$hash' alt='{$donor->name}' style='height: {$avatarSize}px;'/>
+                                <img src='https://gravatar.com/avatar/$hash' alt='$donor->name' style='height: $avatarSize px;'/>
                             </div>
                         ";
 
