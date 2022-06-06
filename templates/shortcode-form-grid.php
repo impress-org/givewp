@@ -84,14 +84,22 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                         ? $atts['tag_text_color']
                         : '#000000';
 
+                    $tags = wp_get_post_terms($form_id,'give_forms_tag');
+
+                    $tag_elements = array_map(
+                        function($term)use($tag_text_color,$tag_bg_color){
+                            return "<span style='color: $tag_text_color; background-color: $tag_bg_color;'>$term->name</span>";
+                        }, $tags
+                    );
+
+                    $tag_elements_output = implode('', $tag_elements);
 
                     echo "
                         <div class='give-form-grid-media'>
                              <img src='$imageSrc' alt='$image_attr' height='$image_size' />
 
                              <div class='give-form-grid-media__tags'>
-                                <span style='color: $tag_text_color; background-color: $tag_bg_color;'>Animal</span>
-                                <span style='color: $tag_text_color; background-color: $tag_bg_color'>Wild life</span>
+                                $tag_elements_output;
                              </div>
                         </div>
                     ";
