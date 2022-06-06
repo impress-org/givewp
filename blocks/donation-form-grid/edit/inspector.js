@@ -81,8 +81,6 @@ const Inspector = ({attributes, setAttributes}) => {
         };
     });
 
-    console.log(tagBackgroundColor)
-
   const filterValue = () => {
       if (filter === 'categories') {
         return  <>
