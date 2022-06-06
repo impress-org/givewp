@@ -35,7 +35,3 @@ require_once GIVE_PLUGIN_DIR . 'blocks/donation-form/class-give-donation-form-bl
 require_once GIVE_PLUGIN_DIR . 'blocks/donation-form-grid/class-give-donation-form-grid-block.php';
 require_once GIVE_PLUGIN_DIR . 'blocks/donor-wall/class-give-donor-wall.php';
 
-
-wp_localize_script('give-blocks-js', 'giveFeatureFlags',[
-    'isTributesEnabled' => \Give\Helpers\utils::isPluginActive('give-tributes/give-tributes.php')
-]);
