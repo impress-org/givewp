@@ -4,13 +4,13 @@ namespace Give\Framework\FieldsAPI;
 
 use Give\Framework\FieldsAPI\Contracts\Collection;
 use Give\Framework\FieldsAPI\Contracts\Node;
+use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 
 /**
  * @since 2.12.0
  */
 class Form implements Node, Collection
 {
-
     use Concerns\HasLabel;
     use Concerns\HasName;
     use Concerns\HasNodes;
@@ -35,5 +35,30 @@ class Form implements Node, Collection
     public static function make($name)
     {
         return new static($name);
+    }
+
+    public function getNodeType(): string
+    {
+        return 'group';
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @param Section[] $nodes
+     *
+     * @throws TypeNotSupported
+     */
+    public function append(Node ...$nodes)
+    {
+        foreach ($nodes as $node) {
+            if ( !$node instanceof Section ) {
+                throw new TypeNotSupported($node->getType());
+            }
+
+            $this->insertAtIndex($this->count(), $node);
+        }
+
+        return $this;
     }
 }

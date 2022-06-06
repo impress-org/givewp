@@ -8,7 +8,7 @@ class TypeNotSupported extends Exception
 {
     public function __construct($type, $code = 0, $previous = null)
     {
-        $message = "Factory type $type is not supported";
+        $message = "Type $type is not supported";
         parent::__construct($message, $code, $previous);
     }
 }
