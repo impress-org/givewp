@@ -3,6 +3,10 @@
     align-items: center !important;
     justify-content: space-between !important;
 
+    &__filter {
+        margin-top: -18px !important;
+    }
+
     .components-base-control__label {
         margin: 0 !important;
     }
@@ -39,6 +43,5 @@
     }
 
     .components-form-token-field{
-        margin-top: -18px !important;
         label { display: none !important;}
     }
