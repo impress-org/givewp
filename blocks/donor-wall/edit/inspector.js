@@ -88,8 +88,16 @@ const Inspector = ( { attributes, setAttributes } ) => {
             </>
         }
     };
-
-
+console.log(window)
+const displayTributes = () => {
+if(window.Give_Tribute)
+   return  <ToggleControl
+        className="give-donor-wall-inspector"
+        name="showTributes"
+        label={ __( 'Show Tributes', 'give' ) }
+        checked={ !! showTributes }
+        onChange={ ( value ) => saveSetting( 'showTributes', value ) } />
+}
     return (
 		<InspectorControls key="inspector">
                 <Panel>
@@ -161,12 +169,8 @@ const Inspector = ( { attributes, setAttributes } ) => {
                                             label={ __( 'Show Total', 'give' ) }
                                             checked={ !! showTotal }
                                             onChange={ ( value ) => saveSetting( 'showTotal', value ) } />
-                                        <ToggleControl
-                                            className="give-donor-wall-inspector"
-                                            name="showTributes"
-                                            label={ __( 'Show Tributes', 'give' ) }
-                                            checked={ !! showTributes }
-                                            onChange={ ( value ) => saveSetting( 'showTributes', value ) } />
+                                        {displayTributes()}
+
                                         <ToggleControl
                                             className="give-donor-wall-inspector"
                                             name="showComments"
