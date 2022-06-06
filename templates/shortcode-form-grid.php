@@ -55,6 +55,24 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
 	?>
 		<div class="give-form-grid" style="flex-direction:<?php echo $flex_direction ?>">
                 <?php
+                $tag_bg_color = ! empty( $atts['tag_background_color'] )
+                    ? $atts['tag_background_color']
+                    : '#ffffff';
+
+                $tag_text_color = ! empty( $atts['tag_text_color'] )
+                    ? $atts['tag_text_color']
+                    : '#000000';
+
+                $tags = wp_get_post_terms($form_id,'give_forms_tag');
+
+                $tag_elements = array_map(
+                    function($term)use($tag_text_color,$tag_bg_color){
+                        return "<span style='color: $tag_text_color; background-color: $tag_bg_color;'>$term->name</span>";
+                    }, $tags
+                );
+
+                $tag_elements_output = implode('', $tag_elements);
+
                 // Maybe display the featured image.
                 if (
                     give_is_setting_enabled($give_settings['form_featured_img'])
@@ -76,30 +94,12 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                         ];
                     }
 
-                    $tag_bg_color = ! empty( $atts['tag_background_color'] )
-                        ? $atts['tag_background_color']
-                        : '#ffffff';
-
-                    $tag_text_color = ! empty( $atts['tag_text_color'] )
-                        ? $atts['tag_text_color']
-                        : '#000000';
-
-                    $tags = wp_get_post_terms($form_id,'give_forms_tag');
-
-                    $tag_elements = array_map(
-                        function($term)use($tag_text_color,$tag_bg_color){
-                            return "<span style='color: $tag_text_color; background-color: $tag_bg_color;'>$term->name</span>";
-                        }, $tags
-                    );
-
-                    $tag_elements_output = implode('', $tag_elements);
-
                     echo "
                         <div class='give-form-grid-media'>
                              <img src='$imageSrc' alt='$image_attr' height='$image_size' />
 
                              <div class='give-form-grid-media__tags'>
-                                $tag_elements_output;
+                                $tag_elements_output
                              </div>
                         </div>
                     ";
@@ -107,6 +107,18 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                 ?>
 
             <div class="give-form-grid-container">
+                <?php
+                if(false === $atts['show_featured_image']){
+                    echo "
+                     <div class='give-form-grid-media'>
+                             <div class='give-form-grid-media__tags_no_image'>
+                                $tag_elements_output
+                             </div>
+                        </div>
+                    ";
+                }
+
+                ?>
                 <div class="give-form-grid-content">
                     <?php
 
