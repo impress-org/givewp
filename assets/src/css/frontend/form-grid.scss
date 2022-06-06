@@ -50,6 +50,21 @@ $MIN_REM_SIZE: 16px;
                 font-weight: 600;
             }
         }
+
+        &__tags_no_image {
+            margin: 15px 0 0 15px;
+            background: none;
+
+            > span {
+                padding: 8px 16px;
+                margin: 0 6px;
+                border-radius: 5px;
+                font-size: safe-rem(.975);
+                font-weight: 600;
+
+            }
+
+        }
     }
 
     &-container {
