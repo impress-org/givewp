@@ -164,6 +164,13 @@ const Inspector = ({attributes, setAttributes}) => {
                     />
                     <ToggleControl
                         className="give-form-grid-inspector"
+                        name="showDonateButton"
+                        label={__('Show Donate Button', 'give')}
+                        checked={!!showDonateButton}
+                        onChange={(value) => saveSetting('showDonateButton', value)}
+                    />
+                    <ToggleControl
+                        className="give-form-grid-inspector"
                         align="right"
                         name="showFeaturedImage"
                         label={__('Show Featured Image', 'give')}
@@ -267,13 +274,7 @@ const Inspector = ({attributes, setAttributes}) => {
                     },
                 ] }
             />
-                        <ToggleControl
-                            className="give-form-grid-inspector"
-                            name="showDonateButton"
-                            label={__('Show Donate Button', 'give')}
-                            checked={!!showDonateButton}
-                            onChange={(value) => saveSetting('showDonateButton', value)}
-                        />
+
         </InspectorControls>
     );
 };
