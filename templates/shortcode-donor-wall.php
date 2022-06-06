@@ -166,7 +166,7 @@ $tribute_background_color =  ! empty( $atts['color']) ? $atts['color'] . '20' :'
                 </div>
             </div>
         <?php
-        if ((isset( $donation['_give_tributes_first_name'] ) || isset( $donation['_give_tributes_Last_name']))) {
+        if ($atts['show_tributes'] && (isset( $donation['_give_tributes_first_name'] ) || isset( $donation['_give_tributes_Last_name']))) {
 
             $tribute_message = esc_html($donation['_give_tributes_type']);
             $honoree_first_name = esc_html($donation['_give_tributes_first_name']);
@@ -195,9 +195,7 @@ $tribute_background_color =  ! empty( $atts['color']) ? $atts['color'] . '20' :'
                         <span> $honoree_full_name </span>
                     </span>
                 </div>";
-            } else {
-            echo "<div class='give-donor-tribute' style='background-color: {$tribute_background_color} '></div>";
-        }
+            }
         ?>
     </div>
 </div>

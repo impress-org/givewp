@@ -13,6 +13,7 @@ import giveDonorWallOptions from '../data/options';
 import ColumnSelector from '../../components/column-selector';
 import ToggleOptions from '../../components/toggle';
 
+
 import './style.scss'
 
 /**
@@ -20,7 +21,7 @@ import './style.scss'
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { donorsPerPage, ids, formID, categories, tags, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, onlyComments, showForm, showTotal, showComments, showAnonymous,  commentLength, readMoreText, loadMoreText, toggleOptions, filter, color  } = attributes;
+	const { donorsPerPage, ids, formID, categories, tags, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, onlyComments, showForm, showTotal, showComments, showAnonymous,  commentLength, readMoreText, loadMoreText, toggleOptions, filter, color, showTributes  } = attributes;
 
 	const saveSetting = ( name, value ) => {
 		setAttributes( {
@@ -160,6 +161,12 @@ const Inspector = ( { attributes, setAttributes } ) => {
                                             label={ __( 'Show Total', 'give' ) }
                                             checked={ !! showTotal }
                                             onChange={ ( value ) => saveSetting( 'showTotal', value ) } />
+                                        <ToggleControl
+                                            className="give-donor-wall-inspector"
+                                            name="showTributes"
+                                            label={ __( 'Show Tributes', 'give' ) }
+                                            checked={ !! showTributes }
+                                            onChange={ ( value ) => saveSetting( 'showTributes', value ) } />
                                         <ToggleControl
                                             className="give-donor-wall-inspector"
                                             name="showComments"

@@ -103,6 +103,10 @@ const blockAttributes = {
     color: {
         type: 'string',
         default: '#219653',
+    },
+    showTributes: {
+        type: 'boolean',
+        default: false,
     }
 };
 

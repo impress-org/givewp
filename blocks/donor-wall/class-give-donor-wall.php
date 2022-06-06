@@ -183,6 +183,10 @@ class Give_Donor_Wall_Block {
                         'type'    => 'string',
                         'default' => '#219653',
                     ],
+                    'showTributes'      => [
+                        'type'    => 'boolean',
+                        'default' => false,
+                    ],
 				],
 			]
 		);
