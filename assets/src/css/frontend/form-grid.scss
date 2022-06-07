@@ -85,10 +85,9 @@ $MIN_REM_SIZE: 16px;
     padding:  18px ;
 
     & > h3 {
-        height:100%;
+        height: 100%;
         font-size: safe-rem(1.375) !important;
         font-weight: 700 !important;
-        margin: 0 !important;
     }
 
     & > p {
