@@ -34,4 +34,17 @@ class Helpers
 
         return null;
     }
+
+    /**
+     * Retrieve donor logged in status
+     *
+     * @unreleased
+     */
+    public static function isDonorLoggedIn(): bool
+    {
+        return is_user_logged_in() || (
+                give_is_setting_enabled( give_get_option( 'email_access' ) ) &&
+                Give()->email_access->is_valid_token(Give()->email_access->get_token())
+        );
+    }
 }
