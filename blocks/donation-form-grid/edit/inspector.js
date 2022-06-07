@@ -185,6 +185,26 @@ const Inspector = ({attributes, setAttributes}) => {
                         checked={!!showFeaturedImage}
                         onChange={(value) => saveSetting('showFeaturedImage', value)}
                     />
+                    {showFeaturedImage && (
+                        <>
+                            <SelectControl
+                                name="imageSize"
+                                label={__('Image Size', 'give')}
+                                value={imageSize}
+                                options={getImageSizes()}
+                                onChange={(value) => saveSetting('imageSize', value)}
+                                help={__('Featured image size. Default "medium." Accepts WordPress image sizes, which by default are "thumbnail," "medium," "large," or "full." ', 'give')}
+                            />
+
+                            <TextControl
+                                name="imageHeight"
+                                label={__('Image Height', 'give')}
+                                value={imageHeight}
+                                onChange={(value) => saveSetting('imageHeight', value)}
+                                help={__('Featured image height. Default "auto". Accepts valid heights in px, em, or rem.', 'give')}
+                            />
+                        </>
+                    )}
                 </PanelBody>
             </Panel>
             <Panel>
