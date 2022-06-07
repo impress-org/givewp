@@ -172,6 +172,13 @@ const Inspector = ({attributes, setAttributes}) => {
                     />
                     <ToggleControl
                         className="give-form-grid-inspector"
+                        name="paged"
+                        label={__('Show Pagination', 'give')}
+                        checked={!!paged}
+                        onChange={(value) => saveSetting('paged', value)}
+                    />
+                    <ToggleControl
+                        className="give-form-grid-inspector"
                         name="showDonateButton"
                         label={__('Show Donate Button', 'give')}
                         checked={!!showDonateButton}
