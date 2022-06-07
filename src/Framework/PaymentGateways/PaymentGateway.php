@@ -73,6 +73,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     }
 
     /**
+     * @unreleased Handle PHP exception.
      * @since 2.19.0
      */
     public function handleCreatePayment(Donation $donation)
@@ -80,7 +81,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         try {
             $command = $this->createPayment($donation);
             $this->handleGatewayPaymentCommand($command, $donation);
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             PaymentGatewayLog::error(
                 $exception->getMessage(),
                 [
@@ -99,6 +100,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     }
 
     /**
+     * @unreleased Handle PHP exception.
      * @since 2.19.0
      *
      */
@@ -107,7 +109,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         try {
             $command = $this->createSubscription($donation, $subscription);
             $this->handleGatewaySubscriptionCommand($command, $donation, $subscription);
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             PaymentGatewayLog::error(
                 $exception->getMessage(),
                 [
@@ -294,9 +296,10 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      * 1. Redirect to donation form if donation form submit.
      * 2. Return json response if processing payment on ajax.
      *
+     * @unreleased Handle PHP exception.
      * @since 2.19.0
      */
-    private function handleExceptionResponse(Exception $exception, string $message)
+    private function handleExceptionResponse(\Exception $exception, string $message)
     {
         if ($exception instanceof PaymentGatewayException) {
             $message = $exception->getMessage();
