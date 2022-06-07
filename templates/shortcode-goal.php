@@ -53,6 +53,8 @@ switch ( $goal_format ) {
  * @since 1.8.8
  */
 $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progress, $form_id, $form );
+
+
 ?>
 <div class="give-goal-progress">
     <?php if ( ! empty( $show_bar ) ) :
@@ -197,8 +199,8 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 						$goal,
 						'give'
 					),
-					give_format_amount( $income, array( 'decimal' => false ) ),
-					give_format_amount( $goal, array( 'decimal' => false ) )
+                    $form->get_sales(),
+                    give_format_amount( $goal, array( 'decimal' => false ) )
 				);
 
 			elseif ( 'donors' === $goal_format ) :
@@ -219,7 +221,6 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 					give_format_amount( $income, array( 'decimal' => false ) ),
 					give_format_amount( $goal, array( 'decimal' => false ) )
 				);
-
 			endif;
 			?>
 
