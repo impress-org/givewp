@@ -271,15 +271,16 @@ const Inspector = ({attributes, setAttributes}) => {
 
                     },
                     {
-                        value: donateButtonTextColor,
-                        onChange: (value) => saveSetting('donateButtonTextColor', value),
-                        label: __('Donate Button Text Color', 'give')
-                    },
-                    {
                         value: tagTextColor,
                         onChange: (value) => saveSetting('tagTextColor', value),
                         label: __('Tag Text Color', 'give')
                     },
+                    {
+                        value: donateButtonTextColor,
+                        onChange: (value) => saveSetting('donateButtonTextColor', value),
+                        label: __('Donate Button Text Color', 'give')
+                    },
+
                 ] }
             />
 
