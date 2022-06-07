@@ -73,6 +73,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     }
 
     /**
+     * @unreleased Handle PHP exception.
      * @since 2.19.0
      */
     public function handleCreatePayment(Donation $donation)
@@ -99,6 +100,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     }
 
     /**
+     * @unreleased Handle PHP exception.
      * @since 2.19.0
      *
      */
@@ -294,6 +296,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      * 1. Redirect to donation form if donation form submit.
      * 2. Return json response if processing payment on ajax.
      *
+     * @unreleased Handle PHP exception.
      * @since 2.19.0
      */
     private function handleExceptionResponse(\Exception $exception, string $message)
