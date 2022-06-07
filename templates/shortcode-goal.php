@@ -56,7 +56,7 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 ?>
 <div class="give-goal-progress">
     <?php if ( ! empty( $show_bar ) ) :
-        $style = "width:{$progress_bar_value}%;";
+        $style = "width:$progress_bar_value%;";
 
         if ( ! empty($color)) {
             $style .= ";background: linear-gradient(180deg, {$color} 0%, {$color} 100%), linear-gradient(180deg, #fff 0%, #ccc 100%); background-blend-mode: multiply;";
@@ -191,8 +191,8 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
                                            <span class="goal">%2$s</span>
                                 </div>',
 						'<div class="raised__details">
-                                           <span class="amount" >%1$s</span>
-                                           <span class="goal">%2$s</span>
+                                           <span class="amount">%1$s</span>
+                                           <span class="goal"><span>of</span> %2$s <span>Donations</span></span>
                                 </div>',
 						$goal,
 						'give'
@@ -206,12 +206,12 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 				echo sprintf( /* translators: 1: total number of donors completed 2: total number of donors set as goal */
 					_n(
 						'<div class="raised__details">
-                                           <span class="amount" >%1$s</spanclass>
-                                           <span class="goal">%2$s</span>
+                                           <span class="amount">%1$s</spanclass>
+                                           <span class="goal"><span>of</span> %2$s <span>Donors</span> </span>
                                 </div>',
 						'<div class="raised__details">
                                            <span class="amount">%1$s</span>
-                                           <span class="goal">%2$s</span>
+                                           <span class="goal"><span>of</span> %2$s <span>Donors</span></span>
                                 </div>',
 						$goal,
 						'give'
