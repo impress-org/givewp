@@ -189,11 +189,6 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                     }
                 ?>
             </div>
-
-
-
-
-
 		</div>
 	</a>
 	<?php
