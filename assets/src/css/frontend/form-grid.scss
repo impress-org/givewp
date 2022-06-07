@@ -42,9 +42,12 @@ $MIN_REM_SIZE: 16px;
             padding: 0 16px;
             background: rgba(0, 0, 0, 0.35);
 
+            > span:first-child {
+                margin-right: 10px;
+            }
+
             > span {
                 padding: 6px 12px;
-                margin: 0 6px;
                 border-radius: 5px;
                 font-size: safe-rem(.975);
                 font-weight: 600;

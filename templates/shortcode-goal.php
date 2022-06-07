@@ -25,20 +25,25 @@ $goal   = $goal_progress_stats['raw_goal'];
 
 switch ( $goal_format ) {
 
-	case 'donors':
-		$progress_bar_value = $goal ? round( ( $income / $goal ) * 100, 2 ) : 0;
-		$progress           = $progress_bar_value;
-		break;
+    case 'donation':
+        $progress           = $goal ? round( ( $income / $goal ) * 100, 2 ) : 0;
+        $progress_bar_value = $income >= $goal ? 100 : $progress;
+        break;
 
-	case 'percentage':
-		$progress           = $goal ? round( ( $income / $goal ) * 100, 2 ) : 0;
-		$progress_bar_value = $income >= $goal ? 100 : $progress;
-		break;
+    case 'donors':
+        $progress_bar_value = $goal ? round( ( $income / $goal ) * 100, 2 ) : 0;
+        $progress           = $progress_bar_value;
+        break;
 
-	default:
-		$progress           = $goal ? round( ( $income / $goal ) * 100, 2 ) : 0;
-		$progress_bar_value = $income >= $goal ? 100 : $progress;
-		break;
+    case 'percentage':
+        $progress           = $goal ? round( ( $income / $goal ) * 100, 2 ) : 0;
+        $progress_bar_value = $income >= $goal ? 100 : $progress;
+        break;
+
+    default:
+        $progress           = $goal ? round( ( $income / $goal ) * 100, 2 ) : 0;
+        $progress_bar_value = $income >= $goal ? 100 : $progress;
+        break;
 
 }
 
@@ -173,7 +178,6 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 					__( '<div class="raised__details">
                                    <span class="amount">%s%%</span>
                                    <span class="goal"><span>of </span><span>100&#37;</span>
-                              </div>
                          </div>', 'give' ),
 					round( $progress )
 				);
