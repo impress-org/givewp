@@ -32,17 +32,6 @@ class Helpers
             }
         }
 
-        if (
-            false !== give()->session->get_session_expiration() ||
-            true === give_get_history_session()
-        ) {
-            $email = give()->session->get('give_email');
-            $donor = give()->donors->get_donor_by('email', $email);
-            if ($donor) {
-                return $donor->id;
-            }
-        }
-
         return null;
     }
 }
