@@ -10,7 +10,7 @@ import {
     PanelBody,
     SelectControl,
     TextControl,
-    ToggleControl
+    ToggleControl,
 } from '@wordpress/components';
 
 
@@ -85,6 +85,7 @@ const Inspector = ({attributes, setAttributes}) => {
       if (filter === 'categories') {
         return  <>
             <FormTokenField
+                className="give-form-grid-inspector__filter"
                 name="categories"
                 value={getAsArray(categories)}
                 onChange={(value) => saveSetting('categories', value)}
@@ -97,6 +98,7 @@ const Inspector = ({attributes, setAttributes}) => {
       } else if (filter === 'tags') {
           return <>
               <FormTokenField
+                  className="give-form-grid-inspector__filter"
                   name="tags"
                   value={getAsArray(tags)}
                   onChange={(value) => saveSetting('tags', value)}
@@ -108,6 +110,7 @@ const Inspector = ({attributes, setAttributes}) => {
       } else if (filter === 'formIDs'){
           return <>
               <FormTokenField
+                  className="give-form-grid-inspector__filter"
                   name="formIDs"
                   value={getAsArray(formIDs)}
                   onChange={(value) => saveSetting('formIDs', value)}
@@ -159,6 +162,13 @@ const Inspector = ({attributes, setAttributes}) => {
                         label={__('Show Excerpt', 'give')}
                         checked={!!showExcerpt}
                         onChange={(value) => saveSetting('showExcerpt', value)}
+                    />
+                    <ToggleControl
+                        className="give-form-grid-inspector"
+                        name="showProgressBar"
+                        label={__('Show Progress Bar', 'give')}
+                        checked={!!showProgressBar}
+                        onChange={(value) => saveSetting('showProgressBar', value)}
                     />
                     <ToggleControl
                         className="give-form-grid-inspector"
