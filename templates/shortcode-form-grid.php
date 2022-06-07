@@ -107,19 +107,19 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                 ?>
 
             <div class="give-form-grid-container">
-                <?php
-                if(false === $atts['show_featured_image']){
-                    echo "
+                <div class="give-form-grid-content">
+                    <?php
+                    if(false === $atts['show_featured_image']){
+                        echo "
                      <div class='give-form-grid-media'>
                              <div class='give-form-grid-media__tags_no_image'>
                                 $tag_elements_output
                              </div>
                         </div>
                     ";
-                }
+                    }
+                    ?>
 
-                ?>
-                <div class="give-form-grid-content">
                     <?php
 
                     // Maybe display the form title.
