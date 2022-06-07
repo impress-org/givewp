@@ -80,7 +80,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         try {
             $command = $this->createPayment($donation);
             $this->handleGatewayPaymentCommand($command, $donation);
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             PaymentGatewayLog::error(
                 $exception->getMessage(),
                 [
@@ -107,7 +107,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
         try {
             $command = $this->createSubscription($donation, $subscription);
             $this->handleGatewaySubscriptionCommand($command, $donation, $subscription);
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             PaymentGatewayLog::error(
                 $exception->getMessage(),
                 [
@@ -296,7 +296,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      *
      * @since 2.19.0
      */
-    private function handleExceptionResponse(Exception $exception, string $message)
+    private function handleExceptionResponse(\Exception $exception, string $message)
     {
         if ($exception instanceof PaymentGatewayException) {
             $message = $exception->getMessage();
