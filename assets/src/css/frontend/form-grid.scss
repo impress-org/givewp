@@ -50,21 +50,6 @@ $MIN_REM_SIZE: 16px;
                 font-weight: 600;
             }
         }
-
-        &__tags_no_image {
-            margin: 15px 0 0 15px;
-            background: none;
-
-            > span {
-                padding: 8px 16px;
-                margin: 0 6px;
-                border-radius: 5px;
-                font-size: safe-rem(.975);
-                font-weight: 600;
-
-            }
-
-        }
     }
 
     &-container {
@@ -82,12 +67,33 @@ $MIN_REM_SIZE: 16px;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: flex-start;
-    padding:  18px ;
+    padding:  18px;
+
+    .give-form-grid-media__tags_no_image {
+        display: flex;
+        background: none;
+        margin-bottom: 12px;
+
+        > span:first-child {
+            margin-right: 10px;
+        }
+
+        > span {
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-size: safe-rem(.975);
+            font-weight: 600;
+        }
+
+    }
 
     & > h3 {
+        display: flex;
+        align-items: flex-end;
         height: 100%;
         font-size: safe-rem(1.375) !important;
         font-weight: 700 !important;
+        margin: 0 !important;
     }
 
     & > p {
