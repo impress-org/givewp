@@ -26,13 +26,13 @@ $goal   = $goal_progress_stats['raw_goal'];
 switch ( $goal_format ) {
 
     case 'donation':
-        $progress           = $goal ? round( ( $income / $goal ) * 100, 2 ) : 0;
-        $progress_bar_value = $income >= $goal ? 100 : $progress;
+        $progress           = $goal ? round( ( $form->get_sales() / $goal ) * 100, 2 ) : 0;
+        $progress_bar_value = $form->get_sales() >= $goal ? 100 : $progress;
         break;
 
     case 'donors':
-        $progress_bar_value = $goal ? round( ( $income / $goal ) * 100, 2 ) : 0;
-        $progress           = $progress_bar_value;
+        $progress           = $goal ? round( ( give_get_form_donor_count( $form->ID ) / $goal ) * 100, 2 ) : 0;
+        $progress_bar_value = give_get_form_donor_count( $form->ID ) >= $goal ? 100 : $progress;
         break;
 
     case 'percentage':
@@ -53,6 +53,7 @@ switch ( $goal_format ) {
  * @since 1.8.8
  */
 $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progress, $form_id, $form );
+
 
 
 ?>
@@ -189,7 +190,7 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 				echo sprintf( /* translators: 1: total number of donations completed 2: total number of donations set as goal */
 					_n(
 						'<div class="raised__details">
-                                           <span class="amount">%1$s</span>
+                                           <span class="amount">%s%%</span>
                                            <span class="goal">%2$s</span>
                                 </div>',
 						'<div class="raised__details">
@@ -218,7 +219,7 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 						$goal,
 						'give'
 					),
-					give_format_amount( $income, array( 'decimal' => false ) ),
+                    give_get_form_donor_count( $form->ID ),
 					give_format_amount( $goal, array( 'decimal' => false ) )
 				);
 			endif;
