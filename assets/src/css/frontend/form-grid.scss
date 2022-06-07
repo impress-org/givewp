@@ -91,9 +91,6 @@ $MIN_REM_SIZE: 16px;
     }
 
     & > h3 {
-        display: flex;
-        align-items: flex-end;
-        height: 100%;
         font-size: safe-rem(1.375) !important;
         font-weight: 700 !important;
         margin: 0 !important;
