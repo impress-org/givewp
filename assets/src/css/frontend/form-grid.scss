@@ -23,14 +23,18 @@ $MIN_REM_SIZE: 16px;
     &-media {
         position: relative;
         min-width: 40%;
-        border-radius: 8px;
+        border-radius: 2px;
 
         img {
-            min-height: 289px;
             min-width: 100%;
             max-width: 100%;
             border-radius: 2px;
             object-fit: cover;
+        }
+
+        &__row{
+            min-height:100%;
+            border-radius: 2px;
         }
 
         &__tags {
@@ -40,7 +44,7 @@ $MIN_REM_SIZE: 16px;
             right: 0;
             display: flex;
             align-items: center;
-            height: 23%;
+            height: 20%;
             padding: 0 16px;
             border-radius: 2px;
 
