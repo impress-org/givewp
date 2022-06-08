@@ -211,6 +211,14 @@ const Inspector = ( { attributes, setAttributes } ) => {
                             value={ order }
                             options={ giveDonorWallOptions.order }
                             onChange={ ( value ) => saveSetting( 'order', value ) } />
+                        <SelectControl
+                            className="give-donor-wall-inspector"
+                            label={ __( 'Filter', 'give' ) }
+                            name="filter" value={ filter }
+                            options={ giveDonorWallOptions.filter }
+                            onChange={ ( value ) => saveSetting( 'filter', value ) } />
+
+                        {filterValue(filter)}
                     </PanelBody>
                 </Panel>
                 <Panel>
@@ -229,14 +237,6 @@ const Inspector = ( { attributes, setAttributes } ) => {
                             label={ __( 'Load More Text', 'give' ) }
                             value={ loadMoreText }
                             onChange={ ( value ) => saveSetting( 'loadMoreText', value ) } />
-                        <SelectControl
-                            className="give-donor-wall-inspector"
-                            label={ __( 'Filter', 'give' ) }
-                            name="filter" value={ filter }
-                            options={ giveDonorWallOptions.filter }
-                            onChange={ ( value ) => saveSetting( 'filter', value ) } />
-
-                        {filterValue(filter)}
                     </PanelBody>
                 </Panel>
                 <Panel>
