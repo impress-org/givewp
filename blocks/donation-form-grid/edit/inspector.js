@@ -81,6 +81,7 @@ const Inspector = ({attributes, setAttributes}) => {
         };
     });
 
+
   const filterValue = () => {
       if (filter === 'categories') {
         return  <>
@@ -275,8 +276,15 @@ const Inspector = ({attributes, setAttributes}) => {
                         value={displayType}
                         options={giveFormOptions.displayType}
                         onChange={(value) => saveSetting('displayType', value)}
-                        help={__('What should happen when a visitor clicks on a form within the grid? "Redirect" sends them to the individual form. "Modal" opens the form in a lightbox/popup on the same page.', 'give')}
                     />
+                    {displayType === 'redirect' ?
+                        <p className="components-form-token-field__help">
+                            {__('Users will be redirected to the donation form page.', 'give')}
+                        </p> :
+                        <p className="components-form-token-field__help">
+                            {__('Modal with the donation form will be displayed on the same page.', 'give')}
+                        </p>
+                    }
                     <TextControl
                         className="give-form-grid-inspector"
                         name="formsPerPage"
