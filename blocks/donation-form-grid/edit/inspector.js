@@ -52,7 +52,8 @@ const Inspector = ({attributes, setAttributes}) => {
         donateButtonTextColor,
         displayType,
         filter,
-        tagTextColor
+        tagTextColor,
+        imageHeightOptions
     } = attributes;
 
     const saveSetting = (name, value) => {
@@ -81,6 +82,10 @@ const Inspector = ({attributes, setAttributes}) => {
         };
     });
 
+    const handleImageOptions = (value) => {
+        saveSetting('imageHeightOptions', value)
+        saveSetting('imageHeight', value)
+    }
 
   const filterValue = () => {
       if (filter === 'categories') {
@@ -189,20 +194,28 @@ const Inspector = ({attributes, setAttributes}) => {
                     {showFeaturedImage && (
                         <>
                             <SelectControl
+                                className="give-form-grid-inspector"
                                 name="imageSize"
                                 label={__('Image Size', 'give')}
                                 value={imageSize}
                                 options={getImageSizes()}
                                 onChange={(value) => saveSetting('imageSize', value)}
                             />
-
-                            <TextControl
-                                name="imageHeight"
+                            <SelectControl
+                                className="give-form-grid-inspector"
+                                name="imageHeightOptions"
                                 label={__('Image Height', 'give')}
-                                value={imageHeight}
-                                onChange={(value) => saveSetting('imageHeight', value)}
-                                help={__('Featured image height. Default "auto". Accepts valid heights in px, em, or rem.', 'give')}
+                                value={imageHeightOptions}
+                                options={giveFormOptions.imageHeight}
+                                onChange={(value) => handleImageOptions(value)}
                             />
+
+                            {imageHeightOptions === 'custom' && <TextControl
+                                className="give-form-grid-inspector__filter"                                    name="imageHeight"
+                                    value={imageHeight}
+                                    onChange={(value) => saveSetting('imageHeight', value)}
+                                    help={__('Featured image height. Default "auto". Accepts valid heights in px, em, or rem.', 'give')}/>
+                            }
                         </>
                     )}
                 </PanelBody>

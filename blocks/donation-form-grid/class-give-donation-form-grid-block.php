@@ -183,6 +183,10 @@ class Give_Donation_Form_Grid_Block {
                         'type'    => 'string',
                         'default' => 'tags',
                     ),
+                    'imageHeightOptions'       => array(
+                        'type'    => 'string',
+                        'default' => 'auto',
+                    ),
 				),
 			)
 		);
@@ -221,6 +225,7 @@ class Give_Donation_Form_Grid_Block {
             'image_size'          => $attributes['imageSize'],
             'image_height'        => $attributes['imageHeight'],
             'filter'              => $attributes['filter'],
+            'imageHeightOptions'  => $attributes['imageHeightOptions']
 
 
         );

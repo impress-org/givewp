@@ -48,4 +48,10 @@ giveFormOptions.filter = [
     { value: 'tags', label: __( 'Tags', 'give' ) },
 ];
 
+//Image Height
+giveFormOptions.imageHeight = [
+    { value: 'auto', label: __( 'Auto', 'give' ) },
+    { value: 'custom', label: __( 'Custom', 'give' ) },
+]
+
 export default giveFormOptions;

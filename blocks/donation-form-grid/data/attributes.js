@@ -51,6 +51,10 @@ const blockAttributes = {
         type: 'string',
         default: 'auto',
     },
+    imageHeightOptions: {
+        type: 'string',
+        default: 'auto',
+    },
 	showTitle: {
 		type: 'boolean',
 		default: true,
