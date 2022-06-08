@@ -30,7 +30,7 @@ class PaymentGatewayGatewayNotSupportSubscription
                     sprintf(
                     /* translators: 1. Payment gateway name.*/
                         esc_html__(
-                            'Currently, we are not supporting recurring donations with %1$s.',
+                            'Recurring Donations are not supported with %1$s.',
                             'give'
                         ),
                         $registeredGateway->getName()
