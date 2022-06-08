@@ -251,7 +251,7 @@ const Inspector = ({attributes, setAttributes}) => {
                     {filterValue(filter)}
 
                     <ToggleControl
-                        className="give-form-grid-inspector"
+                        className="give-form-grid-inspector exclude__form"
                         name="excludeForms"
                         label={__('Exclude specific forms?', 'give')}
                         checked={!!excludeForms}
