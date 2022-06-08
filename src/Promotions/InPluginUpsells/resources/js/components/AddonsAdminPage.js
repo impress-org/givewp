@@ -6,6 +6,7 @@ import {MustHaveAddons} from './MustHaveAddons';
 import {AdditionalAddons} from './AdditionalAddons';
 import {PricingPlans} from './PricingPlans';
 import {FreeAddOnTab} from './FreeAddOnTab';
+import { StellarDiscounts } from "./StellarDiscounts";
 import {assetUrl} from '../utils';
 import styles from './AddonsAdminPage.module.css';
 
@@ -19,6 +20,7 @@ export function AddonsAdminPage({startingTab = 0}) {
                 'images/addons-admin-page-decor-2.png',
                 'images/addons-admin-page-decor-3.png',
                 'images/addons-admin-page-decor-4.png',
+                'images/addons-admin-page-decor-5.png',
             ].map(assetUrl),
         []
     );
@@ -57,9 +59,10 @@ export function AddonsAdminPage({startingTab = 0}) {
                     />
                     <TabList className={styles.tabs}>
                         <Tab>{__('Must Have Add-ons', 'give')}</Tab>
-                        <Tab>{__('View Pricing Plans', 'give')}</Tab>
-                        <Tab>{__('Additional Add-ons', 'give')}</Tab>
-                        <Tab>{__('Get a Free Add-on!', 'give')}</Tab>
+                        <Tab>{__('Pricing Plans', 'give')}</Tab>
+                        <Tab>{__('More Add-ons', 'give')}</Tab>
+                        <Tab>{__('Stellar Discounts', 'give')}</Tab>
+                        <Tab>{__('Get a Free Add-on', 'give')}</Tab>
                     </TabList>
                 </div>
             </div>
@@ -72,6 +75,9 @@ export function AddonsAdminPage({startingTab = 0}) {
                 </TabPanel>
                 <TabPanel>
                     <AdditionalAddons/>
+                </TabPanel>
+                <TabPanel>
+                    <StellarDiscounts/>
                 </TabPanel>
                 <TabPanel>
                     <FreeAddOnTab/>

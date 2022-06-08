@@ -40,6 +40,7 @@
         "jest": "^24.9.0",
         "jest-puppeteer": "^4.4.0",
         "laravel-mix": "^6.0.34",
+        "postcss": "^8.4.14",
         "prettier": "^2.4.1",
         "puppeteer": "^1.20.0",
         "resolve-url-loader": "^4.0.0",

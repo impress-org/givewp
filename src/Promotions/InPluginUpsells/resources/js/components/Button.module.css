@@ -2,14 +2,14 @@
     appearance: none;
     display: block;
     padding: 0.888em;
-    border-radius: 9999px;
+    border-radius: 999px;
     border-width: 0.125rem;
     border-style: solid;
     border-color: #66bb6a;
     background-color: #66bb6a;
     color: #fff;
-    font-weight: 700;
-    font-size: 1.125rem;
+    font-weight: 600;
+    font-size: 1.1rem;
     text-align: center;
     text-decoration: none;
     line-height: 1;
