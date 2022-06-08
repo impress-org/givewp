@@ -33,7 +33,7 @@ class PaymentGatewayGatewayNotSupportSubscription
                             'Recurring Donations are not supported with %1$s.',
                             'give'
                         ),
-                        $registeredGateway->getName()
+                        $registeredGateway->getPaymentMethodLabel()
                     )
                 );
             }
