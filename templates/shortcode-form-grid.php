@@ -82,6 +82,7 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                     give_is_setting_enabled($give_settings['form_featured_img'])
                     && ($imageSrc = $formTemplate->getFormFeaturedImage($form_id))
                     && $atts['show_featured_image']
+                    && $atts['columns'] !== '1'
                 ) {
                     /*
                      * Filters the image size used in card layouts.
@@ -110,7 +111,22 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                              </div>
                         </div>
                     ";
-                }
+                } elseif(
+                    give_is_setting_enabled($give_settings['form_featured_img'])
+                    && ($imageSrc = $formTemplate->getFormFeaturedImage($form_id))
+                    && $atts['show_featured_image']
+                    && $atts['columns'] === '1')
+                    {
+                        echo "
+                            <div class='give-form-grid-media'>
+                                <img class='give-form-grid-media__row' src='$imageSrc' alt='' />
+
+                                 <div class='give-form-grid-media__tags' style='background: $tag_container_color' >
+                                    $tag_elements_output
+                                 </div>
+                            </div>
+                        ";
+                    }
                 ?>
 
             <div class="give-form-grid-container">
