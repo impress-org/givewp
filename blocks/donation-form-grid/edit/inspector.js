@@ -200,7 +200,6 @@ const Inspector = ({attributes, setAttributes}) => {
                                 value={imageSize}
                                 options={getImageSizes()}
                                 onChange={(value) => saveSetting('imageSize', value)}
-                                help={__('Featured image size. Default "medium." Accepts WordPress image sizes, which by default are "thumbnail," "medium," "large," or "full." ', 'give')}
                             />
 
                             <TextControl
