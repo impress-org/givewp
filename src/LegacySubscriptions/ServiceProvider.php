@@ -3,6 +3,8 @@
 namespace Give\LegacySubscriptions;
 
 use Closure;
+use Give\Helpers\Hooks;
+use Give\LegacySubscriptions\Notices\PaymentGatewayGatewayNotSupportSubscription;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
@@ -37,6 +39,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot()
     {
+        Hooks::addAction('give_checkout_error_checks', PaymentGatewayGatewayNotSupportSubscription::class);
     }
 
     /**
