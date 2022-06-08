@@ -278,20 +278,21 @@ const Inspector = ({attributes, setAttributes}) => {
                             {__('Modal with the donation form will be displayed on the same page.', 'give')}
                         </p>
                     }
-                    {!! paged && <TextControl
+                    <TextControl
                         className="give-form-grid-inspector"
                         name="formsPerPage"
                         label={__('Forms Per Page', 'give')}
                         value={formsPerPage}
                         onChange={(value) => saveSetting('formsPerPage', value)}
                         help={__('Sets the number of forms to be displayed on the first page load.', 'give')}
-                    />}
+                    />
                     <ToggleControl
                         className="give-form-grid-inspector"
                         name="paged"
                         label={__('Show Pagination', 'give')}
                         checked={!!paged}
                         onChange={(value) => saveSetting('paged', value)}
+                        help={__('Enable form display to multiple pages.', 'give')}
                     />
                 </PanelBody>
             </Panel>
