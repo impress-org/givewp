@@ -227,6 +227,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * Handle gateway subscription command
      *
+     * @unreleased Handle RedirectOffsite response.
      * @since 2.18.0
      *
      * @throws TypeNotSupported
