@@ -278,10 +278,10 @@ const Inspector = ({attributes, setAttributes}) => {
                         onChange={(value) => saveSetting('displayType', value)}
                     />
                     {displayType === 'redirect' ?
-                        <p className="components-form-token-field__help">
+                        <p className="give-form-grid-inspector__help">
                             {__('Users will be redirected to the donation form page.', 'give')}
                         </p> :
-                        <p className="components-form-token-field__help">
+                        <p className="give-form-grid-inspector__help">
                             {__('Modal with the donation form will be displayed on the same page.', 'give')}
                         </p>
                     }
