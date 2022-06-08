@@ -118,8 +118,8 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                     && $atts['columns'] === '1')
                     {
                         echo "
-                            <div class='give-form-grid-media'>
-                                <img class='give-form-grid-media__row' src='$imageSrc' alt='' />
+                            <div id='row-media' class='give-form-grid-media'>
+                                <img class='give-form-grid-media' src='$imageSrc' alt='' />
 
                                  <div class='give-form-grid-media__tags' style='background: $tag_container_color' >
                                     $tag_elements_output
@@ -132,9 +132,9 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
             <div class="give-form-grid-container">
                 <div class="give-form-grid-content">
                     <?php
-                    if(false === $atts['show_featured_image']){
+                    if( !$atts['show_featured_image']){
                             echo "
-                                 <div class='give-form-grid-media'>
+                                 <div class='give-form-grid-media' >
                                          <div class='give-form-grid-media__tags_no_image'>
                                             $tag_elements_output
                                          </div>
