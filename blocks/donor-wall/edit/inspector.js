@@ -2,8 +2,9 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n'
-import {ColorPalette, InspectorControls} from '@wordpress/block-editor';
-import { PanelBody, Panel, SelectControl, ToggleControl, TextControl } from '@wordpress/components';
+
+import {InspectorControls, ColorPalette,} from '@wordpress/block-editor';
+import {PanelBody, Panel, SelectControl, ToggleControl, TextControl, FormTokenField } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -14,19 +15,80 @@ import ColumnSelector from '../../components/column-selector';
 import ToggleOptions from '../../components/toggle';
 
 import './style.scss'
+import Toggle from "../../components/toggle";
 
 /**
  * Render Inspector Controls
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { donorsPerPage, ids, formID, categories, tags, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, onlyComments, showForm, showTotal, showComments, showAnonymous, showTributes, commentLength, readMoreText, loadMoreText, toggleOptions, filter, color  } = attributes;
+	const { donorsPerPage, ids, formID, categories, tags, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, onlyComments, showForm, showTotal, showComments, showAnonymous,  commentLength, readMoreText, loadMoreText, toggleOptions, filter, color, showTributes  } = attributes;
 
 	const saveSetting = ( name, value ) => {
 		setAttributes( {
 			[ name ]: value,
 		} );
 	};
+
+    const getAsArray = value => {
+        if (Array.isArray(value)) {
+            return value;
+        }
+
+        // Backward compatibility
+        if (formIDs.indexOf(',')) {
+            return value.split(',');
+        }
+
+        return [value];
+    };
+
+    const filterValue = () => {
+        if(filter === 'categories'){
+            return <> <FormTokenField
+                className="give-donor-wall-inspector"
+                onChange ={(value) => saveSetting('categories', value)}
+                value={getAsArray(categories)}/>
+                <p className="components-form-token-field__help">
+                    {__('Type the name of your category to add it to the list. Only forms within the categories you choose will be displayed in this grid.', 'give')}
+                </p>
+            </>
+
+        } else if (filter === 'tags'){
+            return <> <FormTokenField
+                className="give-donor-wall-inspector"
+                name="tags"
+                value={getAsArray(tags)}
+                onChange ={(value) => saveSetting('tags', value)}/>
+                <p className="components-form-token-field__help">
+                    {__('Type the name of your tag to add it to the list. Only forms with these tags you choose will be displayed in this grid.', 'give')}
+                </p>
+            </>
+
+        } else if (filter === 'ids'){
+            return  <> <FormTokenField
+                className="give-donor-wall-inspector"
+                name="ids"
+                value={getAsArray(ids)}
+                onChange ={(value) => saveSetting('ids', value)}/>
+                <p className="components-form-token-field__help">
+                    {__('By default, all donors will display. Use this setting to restrict the donor wall to only display certain donors. Use a comma-separated list of donor IDs.', 'give')}
+                </p>
+            </>
+
+        } else if (filter === 'formID' ){
+            return <> <FormTokenField
+                className="give-donor-wall-inspector"
+                help={__('By Default, donations to all forms will display. Use this setting to restrict the donor to display only donations to certains forms. Use a comma-separated list of form IDs.', 'give')}
+                name="formID"
+                value={getAsArray(formID)}
+                onChange ={(value) => saveSetting('formID', value)}/>
+                <p className="components-form-token-field__help">
+                    {__('Type the ID of your form to add it to the list. Only forms with these IDs you choose will be displayed in this grid.', 'give')}
+                </p>
+            </>
+        }
+    };
     return (
 		<InspectorControls key="inspector">
                 <Panel>
@@ -46,7 +108,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
                     </PanelBody>
                 </Panel>
                 <Panel>
-                    <PanelBody title= {__('Display Elements', 'give')} initialOpen={ true }>
+                    <PanelBody title= {__('Display Elements', 'give')} initialOpen={ false }>
                         <ToggleOptions
                             options={[__( 'Donor info', 'give' ), __( 'Wall attributes', 'give' ) ]}
                             onClick={( value ) => saveSetting( 'toggleOptions', value ) }
@@ -81,6 +143,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
                                             className="give-donor-wall-inspector"
                                             name="avatarSize"
                                             label={ __( 'Avatar Size', 'give' ) }
+                                            help={__('Avatar size. Default height is 75. Accepts valid heights in px.', 'give')}
                                             value={ avatarSize }
                                             onChange={ ( value ) => saveSetting( 'avatarSize', value ) } />
                                     </> :
@@ -97,6 +160,12 @@ const Inspector = ( { attributes, setAttributes } ) => {
                                             label={ __( 'Show Total', 'give' ) }
                                             checked={ !! showTotal }
                                             onChange={ ( value ) => saveSetting( 'showTotal', value ) } />
+                                        { !!window.Give_Tribute && <ToggleControl
+                                            className="give-donor-wall-inspector"
+                                            name="showTributes"
+                                            label={ __( 'Show Tributes', 'give' ) }
+                                            checked={ !! showTributes }
+                                            onChange={ ( value ) => saveSetting( 'showTributes', value ) } />}
                                         <ToggleControl
                                             className="give-donor-wall-inspector"
                                             name="showComments"
@@ -105,14 +174,15 @@ const Inspector = ( { attributes, setAttributes } ) => {
                                             onChange={ ( value ) => saveSetting( 'showComments', value ) } />
                                         <ToggleControl
                                             className="give-donor-wall-inspector"
-                                            name="showTributes"
-                                            label={ __( 'Show Tributes', 'give' ) }
-                                            checked={ !! showTributes }
-                                            onChange={ ( value ) => saveSetting( 'showTributes', value ) } />
+                                            name="onlyComments"
+                                            label={ __( 'Only Comments', 'give' ) }
+                                            checked={ !! onlyComments }
+                                            onChange={ ( value ) => saveSetting( 'onlyComments', value ) } />
                                         <TextControl
                                             className="give-donor-wall-inspector"
                                             name="commentLength"
                                             label={ __( 'Comment Length', 'give' ) }
+                                            help={__('Limits the amount of characters to be displayed on donations with comments.', 'give')}
                                             value={ commentLength }
                                             onChange={ ( value ) => saveSetting( 'commentLength', value ) } />
                                         <TextControl
@@ -126,10 +196,10 @@ const Inspector = ( { attributes, setAttributes } ) => {
                     </PanelBody>
                 </Panel>
                 <Panel>
-                    <PanelBody title= {__('Wall Settings', 'give')} initialOpen={ true }>
+                    <PanelBody title= {__('Wall Settings', 'give')} initialOpen={ false }>
                         <SelectControl
                             className="give-donor-wall-inspector"
-                            label={ __( 'Order By', 'give' ) }
+                            label={ __( 'Sort By', 'give' ) }
                             name="orderBy"
                             value={ orderBy }
                             options={ giveDonorWallOptions.orderBy }
@@ -141,7 +211,6 @@ const Inspector = ( { attributes, setAttributes } ) => {
                             value={ order }
                             options={ giveDonorWallOptions.order }
                             onChange={ ( value ) => saveSetting( 'order', value ) } />
-                        <SelectControl className="give-donor-wall-inspector" label={ __( 'Filter', 'give' ) } name="filter" value={ filter } options={ giveDonorWallOptions.filter } onChange={ ( value ) => saveSetting( 'filter', value ) } />
                     </PanelBody>
                 </Panel>
                 <Panel>
@@ -160,21 +229,25 @@ const Inspector = ( { attributes, setAttributes } ) => {
                             label={ __( 'Load More Text', 'give' ) }
                             value={ loadMoreText }
                             onChange={ ( value ) => saveSetting( 'loadMoreText', value ) } />
+                        <SelectControl
+                            className="give-donor-wall-inspector"
+                            label={ __( 'Filter', 'give' ) }
+                            name="filter" value={ filter }
+                            options={ giveDonorWallOptions.filter }
+                            onChange={ ( value ) => saveSetting( 'filter', value ) } />
+
+                        {filterValue(filter)}
                     </PanelBody>
                 </Panel>
-            <Panel>
-                <PanelBody title= {__('Color Settings', 'give')} initialOpen={ true }>
-                    <ColorPalette
-                        name="color"
-                        clearable={false}
-                        colors={[]}
-                        value={color}
-                        onChange={ ( value ) => saveSetting('color', value) }
-                        enableAlpha
-                    />
-                </PanelBody>
-            </Panel>
-		</InspectorControls>
+                <Panel>
+                    <PanelBody title= {__('Color', 'give')} initialOpen={ false }>
+                        <ColorPalette
+                            value={color}
+                            onChange={( value ) => setAttributes( { color: value } )}
+                        />
+                    </PanelBody>
+                </Panel>
+	</InspectorControls>
 	);
 };
 

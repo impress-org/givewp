@@ -36,11 +36,10 @@ giveDonorWallOptions.toggleOptions = [
 
 //Filter
 giveDonorWallOptions.filter = [
-    { value: 'Donor ID', label: __( 'Donor ID', 'give' ) },
-    { value: 'Form ID', label: __( 'Form ID', 'give' ) },
-    { value: 'Categories', label: __( 'Categories', 'give' ) },
-    { value: 'Tags', label: __( 'Tags', 'give' ) },
-    { value: 'Donors with comments', label: __( 'Donors with comments', 'give' ) },
+    { value: 'ids', label: __( 'Donor ID', 'give' ) },
+    { value: 'formID', label: __( 'Form ID', 'give' ) },
+    { value: 'categories', label: __( 'Categories', 'give' ) },
+    { value: 'tags', label: __( 'Tags', 'give' ) },
 ];
 
 

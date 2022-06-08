@@ -16,6 +16,8 @@ $atts          = $args[2]; // Shortcode attributes.
 
 $primary_color = $atts['color'];
 $avatarSize = (int) $atts['avatar_size'] ;
+$tribute_background_color =  ! empty( $atts['color']) ? $atts['color'] . '20' :'#219653';
+
 ?>
 
 
@@ -43,7 +45,7 @@ $avatarSize = (int) $atts['avatar_size'] ;
 
                         echo "
                             <div class='give-donor-container__image' >
-                                <img src='https://gravatar.com/avatar/$hash' alt='{$donor->name}' style='height: {$avatarSize}px;'/>
+                                <img src='https://gravatar.com/avatar/$hash' alt='$donor->name' style='height: $avatarSize px;'/>
                             </div>
                         ";
 
@@ -164,14 +166,11 @@ $avatarSize = (int) $atts['avatar_size'] ;
                 </div>
             </div>
         <?php
-        if (  $atts['show_tributes'] && (isset( $donation['_give_tributes_first_name'] ) || isset( $donation['_give_tributes_Last_name']))) {
+        if ($atts['show_tributes'] && (isset( $donation['_give_tributes_first_name'] ) || isset( $donation['_give_tributes_Last_name']))) {
 
             $tribute_message = esc_html($donation['_give_tributes_type']);
             $honoree_first_name = esc_html($donation['_give_tributes_first_name']);
             $honoree_last_name = esc_html($donation['_give_tributes_last_name']);
-
-            $tribute_background_color =  ! empty( $atts['color']) ? $atts['color'] . '20' :'#219653';
-
 
             $honoree_full_name =
                 //Determine if a last name is available

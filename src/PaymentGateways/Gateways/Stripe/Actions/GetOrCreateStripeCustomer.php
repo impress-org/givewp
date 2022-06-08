@@ -17,8 +17,7 @@ class GetOrCreateStripeCustomer
      * @unreleased Update function first argument type to Donation model
      * @since 2.19.0
      *
-     * @return Give_Stripe_Customer
-     * @throws StripeCustomerException
+     * @throws StripeCustomerException|Exception
      */
     public function __invoke(Donation $donation, string $stripePaymentMethodId = ''): Give_Stripe_Customer
     {

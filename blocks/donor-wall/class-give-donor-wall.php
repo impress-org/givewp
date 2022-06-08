@@ -92,20 +92,20 @@ class Give_Donor_Wall_Block {
 						'default' => '12',
 					],
 					'formID'          => [
-						'type'    => 'string',
-						'default' => '0',
+						'type'    => 'array',
+						'default' => [],
 					],
 					'ids'             => [
-						'type'    => 'string',
-						'default' => '',
+						'type'    => 'array',
+						'default' => [],
 					],
                     'categories'             => [
-                        'type'    => 'string',
-                        'default' => '',
+                        'type'    => 'array',
+                        'default' => [],
                     ],
                     'tags'             => [
-                        'type'    => 'string',
-                        'default' => '',
+                        'type'    => 'array',
+                        'default' => [],
                     ],
 					'orderBy'         => [
 						'type'    => 'string',
@@ -147,10 +147,6 @@ class Give_Donor_Wall_Block {
 						'type'    => 'boolean',
 						'default' => true,
 					],
-                    'showTributes'    => [
-                        'type'    => 'boolean',
-                        'default' => true,
-                    ],
 					'showAnonymous'   => [
 						'type'    => 'boolean',
 						'default' => true,
@@ -187,6 +183,10 @@ class Give_Donor_Wall_Block {
                         'type'    => 'string',
                         'default' => '#219653',
                     ],
+                    'showTributes'      => [
+                        'type'    => 'boolean',
+                        'default' => false,
+                    ],
 				],
 			]
 		);
@@ -205,10 +205,10 @@ class Give_Donor_Wall_Block {
 
 		$parameters = [
 			'donors_per_page'   => absint( $attributes['donorsPerPage'] ),
-			'form_id'           => $attributes['formID'],
-			'ids'               => $attributes['ids'],
-            'cats'                => $attributes['categories'],
-            'tags'                => $attributes['tags'],
+			'form_id'           => implode(',', $this->getAsArray($attributes['formID'] ) ),
+			'ids'               => implode(',', $this->getAsArray($attributes['ids'] ) ),
+            'cats'              => implode(',', $this->getAsArray($attributes['categories'] ) ),
+            'tags'              => implode(',', $this->getAsArray($attributes['tags'] ) ),
 			'orderby'           => $attributes['orderBy'],
 			'order'             => $attributes['order'],
 			'pages'             => absint( $attributes['paged'] ),
@@ -236,6 +236,26 @@ class Give_Donor_Wall_Block {
 
 		return $html;
 	}
+
+
+    /**
+     * @unreleased
+     *
+     * @param string|array $value
+     * @return array
+     */
+    private function getAsArray($value) {
+        if ( is_array($value) ) {
+            return $value;
+        }
+
+        // Backward compatibility
+        if (strpos($value, ',')) {
+            return explode(',', $value);
+        }
+
+        return [$value];
+    }
 
 	/**
 	 * Return formatted notice when shortcode returns an empty string

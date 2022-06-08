@@ -65,6 +65,32 @@ class DonationRepository
     }
 
     /**
+     * @unreleased
+     * @return Donation|null
+     */
+    public function getByGatewayTransactionId($gatewayTransactionId)
+    {
+        return $this->queryByGatewayTransactionId($gatewayTransactionId)->get();
+    }
+
+    /**
+     * @unreleased
+     * @return ModelQueryBuilder
+     */
+    public function queryByGatewayTransactionId($gatewayTransactionId)
+    {
+        return $this->prepareQuery()
+            ->where('post_type', 'give_payment')
+            ->where('ID', function (QueryBuilder $builder) use ($gatewayTransactionId) {
+                $builder
+                    ->select('donation_id')
+                    ->from('give_donationmeta')
+                    ->where('meta_key', DonationMetaKeys::GATEWAY_TRANSACTION_ID()->getValue())
+                    ->where('meta_value', $gatewayTransactionId);
+            });
+    }
+
+    /**
      * @since 2.19.6
      *
      * @param  int  $donationId
@@ -296,6 +322,7 @@ class DonationRepository
     private function getCoreDonationMetaForDatabase(Donation $donation): array
     {
         $meta = [
+            DonationMetaKeys::GATEWAY_TRANSACTION_ID => $donation->gatewayTransactionId,
             DonationMetaKeys::AMOUNT => give_sanitize_amount_for_db(
                 $donation->amount->formatToDecimal(),
                 ['currency' => $donation->amount->getCurrency()]
@@ -317,7 +344,6 @@ class DonationRepository
                     $donation->email
                 ),
             DonationMetaKeys::DONOR_IP => $donation->donorIp ?? give_get_ip(),
-            DonationMetaKeys::GATEWAY_TRANSACTION_ID => $donation->gatewayTransactionId,
             DonationMetaKeys::LEVEL_ID => $donation->levelId,
             DonationMetaKeys::ANONYMOUS => (int)$donation->anonymous
         ];

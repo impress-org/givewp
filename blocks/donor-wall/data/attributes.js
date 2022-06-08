@@ -13,20 +13,20 @@ const blockAttributes = {
 		default: '12',
 	},
 	formID: {
-		type: 'string',
-		default: '0',
+		type: 'array',
+		default: [],
 	},
 	ids: {
-		type: 'string',
-		default: '',
+		type: 'array',
+		default: [],
 	},
     categories: {
-        type: 'string',
-        default: '',
+        type: 'array',
+        default: [],
     },
     tags: {
         type: 'string',
-        default: '',
+        default: [],
     },
 	orderBy: {
 		type: 'string',
@@ -107,7 +107,7 @@ const blockAttributes = {
     color: {
         type: 'string',
         default: '#219653',
-    }
+    },
 };
 
 export default blockAttributes;
