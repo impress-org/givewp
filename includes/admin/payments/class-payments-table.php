@@ -606,16 +606,18 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 			$actions['email_links'] = sprintf(
 				'<a class="resend-single-donation-receipt" href="%1$s" aria-label="%2$s">%3$s</a>',
-				wp_nonce_url(
-					add_query_arg(
-						[
-							'give-action' => 'email_links',
-							'purchase_id' => $payment->ID,
-						],
-						$this->base_url
-					),
-					'give_payment_nonce'
-				),
+                esc_url(
+                    wp_nonce_url(
+                        add_query_arg(
+                            [
+                                'give-action' => 'email_links',
+                                'purchase_id' => $payment->ID,
+                            ],
+                            $this->base_url
+                        ),
+                        'give_payment_nonce'
+                    )
+                ),
 				sprintf( __( 'Resend Donation %s Receipt', 'give' ), $payment->ID ),
 				__( 'Resend Receipt', 'give' )
 			);
@@ -625,16 +627,18 @@ class Give_Payment_History_Table extends WP_List_Table {
 		if ( current_user_can( 'view_give_payments' ) ) {
 			$actions['delete'] = sprintf(
 				'<a class="delete-single-donation" href="%1$s" aria-label="%2$s">%3$s</a>',
-				wp_nonce_url(
-					add_query_arg(
-						[
-							'give-action' => 'delete_payment',
-							'purchase_id' => $payment->ID,
-						],
-						$this->base_url
-					),
-					'give_donation_nonce'
-				),
+                esc_url(
+                    wp_nonce_url(
+                        add_query_arg(
+                            [
+                                'give-action' => 'delete_payment',
+                                'purchase_id' => $payment->ID,
+                            ],
+                            $this->base_url
+                        ),
+                        'give_donation_nonce'
+                    )
+                ),
 				sprintf( __( 'Delete Donation %s', 'give' ), $payment->ID ),
 				__( 'Delete', 'give' )
 			);

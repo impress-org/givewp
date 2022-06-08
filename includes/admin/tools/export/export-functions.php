@@ -116,7 +116,7 @@ function give_do_ajax_export() {
 
 		$json_data = [
 			'step' => 'done',
-			'url'  => add_query_arg( $args, admin_url() ),
+			'url'  => esc_url_raw(add_query_arg( $args, admin_url() )),
 		];
 
 	}

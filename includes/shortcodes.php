@@ -555,9 +555,9 @@ function give_process_profile_editor_updates( $data ) {
 		 * If the password is changed, then logout and redirect to the same page.
 		 */
 		if ( '2' === $update_code || '3' === $update_code ) {
-			wp_logout( wp_redirect( add_query_arg( $profile_edit_redirect_args, $data['give_redirect'] ) ) );
+			wp_logout();
 		} else {
-			wp_redirect( add_query_arg( $profile_edit_redirect_args, $data['give_redirect'] ) );
+			wp_redirect( esc_url_raw( add_query_arg( $profile_edit_redirect_args, $data['give_redirect'] ) ) );
 		}
 
 		give_die();

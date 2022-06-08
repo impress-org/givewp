@@ -1348,10 +1348,10 @@ function give_stripe_get_admin_settings_page_url( $args = [] ) {
 
 	$args = wp_parse_args( $args, $default_args );
 
-	return add_query_arg(
+	return esc_url_raw( add_query_arg(
 		$args,
-		esc_url_raw( admin_url( 'edit.php' ) )
-	);
+		admin_url( 'edit.php' )
+	) );
 }
 
 /**

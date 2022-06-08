@@ -113,10 +113,10 @@ class PayPalStandard extends PaymentGateway
     {
         $donationId = (int)$queryParams['donation-id'];
 
-        return new RedirectResponse(add_query_arg(
+        return new RedirectResponse(esc_url_raw(add_query_arg(
             [ 'payment-confirmation' => $this->getId() ],
             Call::invoke(GenerateDonationReceiptPageUrl::class, $donationId)
-        ));
+        )));
     }
 
     /**

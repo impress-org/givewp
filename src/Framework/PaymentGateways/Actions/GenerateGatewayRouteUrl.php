@@ -26,9 +26,9 @@ class GenerateGatewayRouteUrl
             $queryArgs = array_merge($queryArgs, $args);
         }
 
-        return add_query_arg(
+        return esc_url_raw(add_query_arg(
             $queryArgs,
             home_url()
-        );
+        ));
     }
 }

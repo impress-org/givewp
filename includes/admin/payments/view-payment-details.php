@@ -137,16 +137,18 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 										echo sprintf(
 											'<span class="delete-donation" id="delete-donation-%d"><a class="delete-single-donation delete-donation-button dashicons dashicons-trash" href="%s" aria-label="%s"></a></span>',
 											$payment_id,
-											wp_nonce_url(
-												add_query_arg(
-													array(
-														'give-action' => 'delete_payment',
-														'purchase_id' => $payment_id,
-													),
-													$base_url
-												),
-												'give_donation_nonce'
-											),
+                                            esc_url(
+                                                wp_nonce_url(
+                                                    add_query_arg(
+                                                        array(
+                                                            'give-action' => 'delete_payment',
+                                                            'purchase_id' => $payment_id,
+                                                        ),
+                                                        $base_url
+                                                    ),
+                                                    'give_donation_nonce'
+                                                )
+                                            ),
 											sprintf( __( 'Delete Donation %s', 'give' ), $payment_id )
 										);
 									}
@@ -357,7 +359,7 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 												<a href="<?php echo $purchase_url; ?>"><?php _e( 'View all donations for this donor &raquo;', 'give' ); ?></a>
 											</p>
 										</div>
-										
+
 									</div>
 									<!-- /.column-container -->
 

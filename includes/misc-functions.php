@@ -61,7 +61,7 @@ function give_get_current_page_url() {
 	 *
 	 * @since 1.0
 	 */
-	return apply_filters( 'give_get_current_page_url', $current_uri );
+	return esc_url_raw( apply_filters( 'give_get_current_page_url', $current_uri ) );
 
 }
 
