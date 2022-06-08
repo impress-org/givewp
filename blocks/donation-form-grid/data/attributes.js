@@ -69,7 +69,7 @@ const blockAttributes = {
 	},
     showProgressBar: {
         type: 'boolean',
-        default: false,
+        default: true,
     },
 	showFeaturedImage: {
 		type: 'boolean',
@@ -77,19 +77,19 @@ const blockAttributes = {
 	},
     showDonateButton: {
 		type: 'boolean',
-		default: false,
+		default: true,
 	},
     tagBackgroundColor: {
 		type: 'string',
-		default: '#000000',
+		default: '#69b86b',
 	},
     tagTextColor: {
         type: 'string',
-        default: '#000000',
+        default: '#ffffff',
     },
     donateButtonTextColor: {
 		type: 'string',
-		default: '#fff',
+		default: '#69b86b',
 	},
 	displayType: {
 		type: 'string',

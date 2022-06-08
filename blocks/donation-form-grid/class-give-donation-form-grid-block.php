@@ -149,7 +149,7 @@ class Give_Donation_Form_Grid_Block {
 					),
                     'showProgressBar'          => array(
                         'type'    => 'boolean',
-                        'default' => false,
+                        'default' => true,
                     ),
 					'showFeaturedImage' => array(
 						'type'    => 'boolean',
@@ -157,19 +157,19 @@ class Give_Donation_Form_Grid_Block {
 					),
                     'showDonateButton' => array(
 						'type'    => 'boolean',
-						'default' => false,
+						'default' => true,
 					),
                     'tagBackgroundColor' => array(
 						'type'    => 'string',
-						'default' => '#ffffff',
+						'default' => '#69b86b',
 					),
                     'tagTextColor' => array(
                         'type'    => 'string',
-                        'default' => '#000000',
+                        'default' => '#ffffff',
                     ),
                     'donateButtonTextColor' => array(
                         'type'    => 'string',
-                        'default' => '#000000',
+                        'default' => '#69b86b',
                     ),
 					'displayType'       => array(
 						'type'    => 'string',

@@ -59,11 +59,11 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
 
                 $tag_bg_color = ! empty( $atts['tag_background_color'] )
                     ? $atts['tag_background_color']
-                    : '#ffffff';
+                    : '#69b86b';
 
                 $tag_text_color = ! empty( $atts['tag_text_color'] )
                     ? $atts['tag_text_color']
-                    : '#000000';
+                    : '#ffffff';
 
                 $tag_container_color = count($tags) >= 1
                     ? 'rgba(0, 0, 0, 0.35)'
