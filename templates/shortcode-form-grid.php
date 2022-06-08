@@ -55,6 +55,8 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
 	?>
 		<div class="give-form-grid" style="flex-direction:<?php echo $flex_direction ?>">
                 <?php
+                $tags = wp_get_post_terms($form_id,'give_forms_tag');
+
                 $tag_bg_color = ! empty( $atts['tag_background_color'] )
                     ? $atts['tag_background_color']
                     : '#ffffff';
@@ -63,7 +65,9 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                     ? $atts['tag_text_color']
                     : '#000000';
 
-                $tags = wp_get_post_terms($form_id,'give_forms_tag');
+                $tag_container_color = count($tags) >= 1
+                    ? 'rgba(0, 0, 0, 0.35)'
+                    : 'none';
 
                 $tag_elements = array_map(
                     function($term)use($tag_text_color,$tag_bg_color){
@@ -77,7 +81,7 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                 if (
                     give_is_setting_enabled($give_settings['form_featured_img'])
                     && ($imageSrc = $formTemplate->getFormFeaturedImage($form_id))
-                    && true === $atts['show_featured_image']
+                    && $atts['show_featured_image']
                 ) {
                     /*
                      * Filters the image size used in card layouts.
@@ -98,7 +102,7 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                         <div class='give-form-grid-media'>
                              <img src='$imageSrc' alt='$image_attr' height='$image_size' />
 
-                             <div class='give-form-grid-media__tags'>
+                             <div class='give-form-grid-media__tags' style='background: $tag_container_color' >
                                 $tag_elements_output
                              </div>
                         </div>
@@ -110,14 +114,14 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                 <div class="give-form-grid-content">
                     <?php
                     if(false === $atts['show_featured_image']){
-                        echo "
-                     <div class='give-form-grid-media'>
-                             <div class='give-form-grid-media__tags_no_image'>
-                                $tag_elements_output
-                             </div>
-                        </div>
-                    ";
-                    }
+                            echo "
+                                 <div class='give-form-grid-media'>
+                                         <div class='give-form-grid-media__tags_no_image'>
+                                            $tag_elements_output
+                                         </div>
+                                   </div>
+                            ";
+                        }
                     ?>
 
                     <?php
