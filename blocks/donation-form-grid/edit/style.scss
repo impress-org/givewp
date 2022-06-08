@@ -12,8 +12,9 @@
         color: rgb(117, 117, 117);
         font-style: normal;
         margin: -15px  0 15px 0 !important;
-
     }
+
+
 
     .components-base-control__label {
         margin: 0 !important;
@@ -52,4 +53,8 @@
 
     .components-form-token-field{
         label { display: none !important;}
+    }
+
+    .exclude__form {
+        margin: 20px 0 0 0 !important;
     }
