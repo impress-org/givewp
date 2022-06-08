@@ -305,7 +305,7 @@ function give_build_paypal_url($payment_id, $payment_data)
         'charset'       => get_bloginfo('charset'),
         'custom'        => $payment_id,
         'rm'            => '2',
-        'return'        => $return_url,
+        'return'        => esc_url_raw( $return_url ),
         'cancel_return' => give_get_failed_transaction_uri(),
         'notify_url'    => $listener_url,
         'page_style'    => give_get_paypal_page_style(),

@@ -16,14 +16,14 @@ trait CheckoutRedirect
      */
     public function getRedirectUrl( $sessionId, $formId )
     {
-        return add_query_arg(
+        return esc_url_raw(add_query_arg(
             [
                 'action'  => 'checkout_processing',
                 'session' => $sessionId,
                 'id'      => $formId,
             ],
             site_url()
-        );
+        ));
     }
 
     /**

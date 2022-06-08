@@ -119,10 +119,10 @@ class Utils
     {
         $args = array_merge($args, ['giveDonationAction' => 'showReceipt']);
 
-        return add_query_arg(
+        return esc_url_raw(add_query_arg(
             $args,
             $url
-        );
+        ));
     }
 
     /**
@@ -198,10 +198,10 @@ class Utils
     {
         $args = array_merge($args, ['giveDonationAction' => 'failedDonation']);
 
-        return add_query_arg(
+        return esc_url_raw(add_query_arg(
             $args,
             $url
-        );
+        ));
     }
 
     /**

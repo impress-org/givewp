@@ -107,10 +107,10 @@ class DonorsAdminPage
             'status' => 'any'
         ];
 
-        $url = add_query_arg(
+        $url = esc_url_raw(add_query_arg(
             $queryParameters,
-            esc_url_raw(rest_url('give-api/v2/admin/forms'))
-        );
+            rest_url('give-api/v2/admin/forms')
+        ));
 
         $request = \WP_REST_Request::from_url($url);
         $response = rest_do_request($request);
