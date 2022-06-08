@@ -28,11 +28,10 @@ giveFormOptions.order = [
 
 // Form Display Styles
 giveFormOptions.columns = [
-	{ value: 'best-fit', label: __( 'Best Fit', 'give' ) },
-	{ value: '1', label: '1' },
-	{ value: '2', label: '2' },
-	{ value: '3', label: '3' },
-	{ value: '4', label: '4' },
+	{ value: '1', label: 'Full Width' },
+	{ value: '2', label: 'Double' },
+	{ value: '3', label: 'Triple' },
+    { value: '4', label: 'Max (4)' },
 ];
 
 // Form Display Styles

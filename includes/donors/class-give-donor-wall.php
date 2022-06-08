@@ -95,14 +95,13 @@ class Give_Donor_Wall {
 	 * @type bool   $show_name           Whether to display the donor's full name, first and last. Default 'true'.
 	 * @type bool   $show_company_name   Whether to display the donor's company name. Default 'false'.
 	 * @type bool   $show_total          Whether to display the donor's donation amount. Default 'true'.
-	 * @type bool   $show_time           Whether to display date of the last donation. Default 'true'.
 	 * @type bool   $show_comments       Whether to display the donor's comment if they left one. Default 'true'.
 	 * @type int    $comment_length      The number of words to display for the comments before a "Read more" field
 	 * @type int    $only_comments       Whether to display the donors only with comment. Default 'false'.
 	 *
 	 * @type string $readmore_text       Link label for modal in which donor can read full comment.
 	 * @type string $loadmore_text       Button label which will load more donor comments.
-	 * @type int    $avatar_size         Avatar image size in pixels without the "px". Default "60"
+	 * @type int    $avatar_size         Avatar image size in pixels without the "px". Default "75"
 	 * @type string $orderby             The order in which you want the donations to appear.
 	 *                                   Currently we are using this attribute internally and it will sort donations by created date.
 	 * @type string $order               The order in which you want the donors to appear. Accepts "ASC". "DESC".
@@ -201,13 +200,14 @@ class Give_Donor_Wall {
 				'show_company_name' => false,
 				'show_form'         => false,
 				'show_total'        => true,
-				'show_time'         => true,
 				'show_comments'     => true,
-				'comment_length'    => 140,
+                'show_tributes'     => true,
+                'comment_length'    => 140,
 				'only_comments'     => false,
 				'readmore_text'     => esc_html__( 'Read more', 'give' ),
 				'loadmore_text'     => esc_html__( 'Load more', 'give' ),
-				'avatar_size'       => 60,
+				'avatar_size'       => 75,
+                'color'             => "#219653",
 				'orderby'           => 'post_date',
 				'order'             => 'DESC',
 				'hide_empty'        => true,  // Deprecated in 2.3.0
@@ -223,9 +223,8 @@ class Give_Donor_Wall {
 			'show_name',
 			'show_company_name',
 			'show_total',
-			'show_time',
 			'show_comments',
-			'show_comments',
+			'show_tributes',
 			'hide_empty',
 			'only_comments',
 			'only_donor_html',
