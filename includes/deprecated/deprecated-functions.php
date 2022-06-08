@@ -1175,7 +1175,7 @@ function give_get_premium_add_ons() {
  * Displays Stripe Connect Button.
  *
  * @since 2.5.0
- * @deprecated @unrelesed
+ * @deprecated 2.20.2
  *
  * @return string
  */

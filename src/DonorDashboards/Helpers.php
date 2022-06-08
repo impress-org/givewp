@@ -38,7 +38,7 @@ class Helpers
     /**
      * Retrieve donor logged in status
      *
-     * @unreleased
+     * @since 2.20.2
      */
     public static function isDonorLoggedIn(): bool
     {
