@@ -117,10 +117,10 @@ class DonationsAdminPage
             $queryParameters['search'] = urldecode($_GET['search']);
         }
 
-        $request = WP_REST_Request::from_url(add_query_arg(
+        $request = WP_REST_Request::from_url(esc_url(add_query_arg(
             $queryParameters,
             $this->apiRoot
-        ));
+        )));
 
         return rest_do_request($request)->get_data();
     }

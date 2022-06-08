@@ -222,7 +222,7 @@ function give_send_back_to_checkout( $args = [] ) {
 	/**
 	 * Filter the redirect url
 	 */
-	wp_safe_redirect( apply_filters( 'give_send_back_to_checkout', $redirect, $args ) );
+	wp_safe_redirect( esc_url_raw( apply_filters( 'give_send_back_to_checkout', $redirect, $args ) ) );
 
 	give_die();
 }

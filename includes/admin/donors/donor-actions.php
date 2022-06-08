@@ -161,16 +161,18 @@ function give_edit_donor( $args ) {
 
 	if ( $output['success'] ) {
 		wp_safe_redirect(
-			add_query_arg(
-				array(
-					'post_type'       => 'give_forms',
-					'page'            => 'give-donors',
-					'view'            => 'overview',
-					'id'              => $donor_id,
-					'give-messages[]' => 'profile-updated',
-				),
-				esc_url( admin_url( 'edit.php' ) )
-			)
+            esc_url(
+                 add_query_arg(
+                     array(
+                         'post_type'       => 'give_forms',
+                         'page'            => 'give-donors',
+                         'view'            => 'overview',
+                         'id'              => $donor_id,
+                         'give-messages[]' => 'profile-updated',
+                     ),
+                     admin_url( 'edit.php' )
+                 )
+            )
 		);
 	}
 

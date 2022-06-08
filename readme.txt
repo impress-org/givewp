@@ -3,9 +3,9 @@ Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman
 Donate link: https://go.givewp.com/home
 Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
-Tested up to: 5.9
+Tested up to: 6.0
 Requires PHP: 7.0
-Stable tag: 2.20.1
+Stable tag: 2.20.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -251,6 +251,11 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.20.2: June 8th, 2022 =
+* Security: Donors are no longer able to view the Donor Dashboard for the email they donated in without logging in
+* Security: Added additional URL escaping around the codebase to protect against XSS attacks
+* Fix: Subscriptions can now be changed again by donors using the legacy subscriptions shortcode
+
 = 2.20.1: May 19th, 2022 =
 * Fix: Corrected an issue where admin notices were displaying strangely
 * Fix: Removed the "Switch to New View" button that would show up in strange admin places when switched to the legacy donor or donation lists

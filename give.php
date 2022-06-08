@@ -6,7 +6,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.20.1
+ * Version: 2.20.2
  * Requires at least: 5.0
  * Requires PHP: 7.0
  * Text Domain: give
@@ -294,7 +294,7 @@ final class Give
     {
         // Plugin version.
         if (!defined('GIVE_VERSION')) {
-            define('GIVE_VERSION', '2.20.1');
+            define('GIVE_VERSION', '2.20.2');
         }
 
         // Plugin Root File.
@@ -438,9 +438,8 @@ final class Give
     /**
      * Magic properties are passed to the service container to retrieve the data.
      *
-     * @since 2.7.0
-     *
      * @since 2.8.0 retrieve from the service container
+     * @since 2.7.0
      *
      * @param string $propertyName
      *
