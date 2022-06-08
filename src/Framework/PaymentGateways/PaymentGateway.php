@@ -249,6 +249,12 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
             $this->handleResponse($response);
         }
 
+        if ($command instanceof RedirectOffsite) {
+            $response = Call::invoke(RedirectOffsiteHandler::class, $command);
+
+            $this->handleResponse($response);
+        }
+
         throw new TypeNotSupported(
             sprintf(
                 "Return type must be an instance of %s",
