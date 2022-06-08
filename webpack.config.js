@@ -24,8 +24,8 @@ module.exports = {
         donationFormBlock: srcPath('NextGen/DonationForm/Blocks/DonationFormBlock/block.js'),
         donationFormBlockApp: srcPath('NextGen/DonationForm/Blocks/DonationFormBlock/app/DonationFormBlockApp.tsx'),
         donationFormRegistrars: srcPath('NextGen/DonationForm/Registrars/resources/registrars.ts'),
-        nextGenCreditCardGateway: srcPath(
-            'NextGen/Gateways/Stripe/NextGenCreditCardGateway/nextGenCreditCardGateway.tsx'
+        nextGenStripeGateway: srcPath(
+            'NextGen/Gateways/Stripe/NextGenStripeGateway/nextGenStripeGateway.tsx'
         ),
         nextGenTestGateway: srcPath('NextGen/Gateways/NextGenTestGateway/nextGenTestGateway.tsx'),
     },

@@ -4,7 +4,7 @@ namespace Give\NextGen;
 
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
-use Give\NextGen\Gateways\Stripe\NextGenCreditCardGateway\NextGenCreditCardGateway;
+use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
@@ -26,7 +26,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         add_action('givewp_register_payment_gateway', function (PaymentGatewayRegister $registrar) {
             $registrar->registerGateway(NextGenTestGateway::class);
-            $registrar->registerGateway(NextGenCreditCardGateway::class);
+            $registrar->registerGateway(NextGenStripeGateway::class);
         });
     }
 }

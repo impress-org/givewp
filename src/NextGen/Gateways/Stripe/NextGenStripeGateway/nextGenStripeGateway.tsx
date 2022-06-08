@@ -20,6 +20,7 @@ interface StripeSettings extends GatewaySettings {
     stripeConnectAccountId: string;
     stripeClientSecret: string;
     successUrl: string;
+    stripePaymentIntentId: string;
 }
 
 interface StripeGateway extends Gateway {
@@ -49,18 +50,28 @@ const stripeGateway: StripeGateway = {
         };
     },
     beforeCreatePayment: async function (values): Promise<object> {
-        window.alert('create payment with gateway');
-
         if (!this.stripe || !this.elements) {
             // Stripe.js has not yet loaded.
             // Make sure to disable form submission until Stripe.js has loaded.
             return;
         }
 
+        return {
+            ...this.settings
+        }
+    },
+    afterCreatePayment: async function (response: { status: string, intentStatus: string }): Promise<void> {
+        if (response.intentStatus === 'requires_payment_method') {
+            const {error: fetchUpdatesError} = await this.elements.fetchUpdates();
+            
+            if (fetchUpdatesError) {
+                throw new Error(fetchUpdatesError.message);
+            }
+        }
+
         const {error} = await this.stripe.confirmPayment({
             elements: this.elements,
             confirmParams: {
-                // Make sure to change this to your payment completion page
                 return_url: this.settings.successUrl,
             },
         });
@@ -71,15 +82,15 @@ const stripeGateway: StripeGateway = {
         // be redirected to an intermediate site first to authorize the payment, then
         // redirected to the `return_url`.
         if (error.type === 'card_error' || error.type === 'validation_error') {
-            console.log(error.message);
-        } else {
-            console.log('An unexpected error occurred.');
+            throw new Error(error.message);
+        } else if (error) {
+            throw new Error(error.message);
         }
     },
     Fields() {
         return (
             <Elements stripe={stripePromise} options={stripeElementOptions}>
-                <StripeFields gateway={stripeGateway} />
+                <StripeFields gateway={stripeGateway}/>
             </Elements>
         );
     },

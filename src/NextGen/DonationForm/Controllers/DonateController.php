@@ -5,7 +5,7 @@ namespace Give\NextGen\DonationForm\Controllers;
 use Exception;
 use Give\Donors\Models\Donor;
 use Give\Framework\PaymentGateways\PaymentGateway;
-use Give\PaymentGateways\DataTransferObjects\FormData;
+use Give\NextGen\DonationForm\DataTransferObjects\DonateFormData;
 
 /**
  * @unreleased
@@ -18,23 +18,25 @@ class DonateController
      *
      * @unreleased
      *
-     * @param  FormData  $formData
+     * @param  DonateFormData  $formData
      * @param  PaymentGateway  $registeredGateway
      *
      * @return void
      * @throws Exception
      */
-    public function donate(FormData $formData, PaymentGateway $registeredGateway)
+    public function donate(DonateFormData $formData, PaymentGateway $registeredGateway)
     {
         $donor = $this->getOrCreateDonor(
-            $formData->donorInfo->wpUserId,
-            $formData->donorInfo->email,
-            $formData->donorInfo->firstName,
-            $formData->donorInfo->lastName
+            $formData->wpUserId,
+            $formData->email,
+            $formData->firstName,
+            $formData->lastName
         );
 
         $donation = $formData->toDonation($donor->id);
         $donation->save();
+
+        $this->setSession($donation->id);
 
         $registeredGateway->handleCreatePayment($donation);
     }
@@ -82,5 +84,24 @@ class DonateController
         }
 
         return $donor;
+    }
+
+    /**
+     * Set donation id to purchase session for use in the donation receipt.
+     *
+     * @unreleased
+     *
+     * @param $donationId
+     *
+     * @return void
+     */
+    private function setSession($donationId)
+    {
+        $purchaseSession = (array)give()->session->get('give_purchase');
+
+        if ($purchaseSession && array_key_exists('purchase_key', $purchaseSession)) {
+            $purchaseSession['donation_id'] = $donationId;
+            give()->session->set('give_purchase', $purchaseSession);
+        }
     }
 }

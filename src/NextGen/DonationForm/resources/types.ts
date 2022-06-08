@@ -10,7 +10,7 @@ export interface FormData {
     firstName: string;
     lastName?: string;
     email: string;
-    amount: Currency;
+    amount: number;
     company?: string;
 }
 
@@ -75,6 +75,11 @@ export interface Gateway {
      * A hook before the form is submitted.
      */
     beforeCreatePayment?(values: FormData): Promise<object> | Error;
+
+    /**
+     * A hook after the form is submitted.
+     */
+    afterCreatePayment?(response: object): Promise<void> | Error;
 }
 
 export interface Template {}

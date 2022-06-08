@@ -2,71 +2,92 @@
 
 namespace Give\NextGen\DonationForm\DataTransferObjects;
 
-use Give\PaymentGateways\DataTransferObjects\FormData;
-use Give\ValueObjects\Address;
-use Give\ValueObjects\CardInfo;
-use Give\ValueObjects\DonorInfo;
+use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationStatus;
+use Give\Framework\Support\ValueObjects\Money;
 
 /**
  * @unreleased
  */
-class DonateFormData extends FormData
+class DonateFormData
 {
+    /**
+     * @var float
+     */
+    public $amount;
+    /**
+     * @var string
+     */
+    public $gatewayId;
+    /**
+     * @var string
+     */
+    public $currency;
+    /**
+     * @var string
+     */
+    public $firstName;
+    /**
+     * @var string
+     */
+    public $lastName;
+    /**
+     * @var string
+     */
+    public $email;
+    /**
+     * @var int
+     */
+    public $wpUserId;
+    /**
+     * @var int
+     */
+    public $formId;
+    /**
+     * @var string
+     */
+    public $formTitle;
 
     /**
      * Convert data from request into DTO
      *
      * @unreleased
      *
-     * @return self
+     * @param  array  $request
+     * @return DonateFormData
      */
-    public static function fromRequest(array $request): FormData
+    public static function fromRequest(array $request): DonateFormData
     {
         $self = new static();
 
-        $self->price = $request['amount'];
-        $self->priceId = '';
+        $self->gatewayId = $request['gatewayId'];
         $self->amount = $request['amount'];
-        $self->date = '';
-        $self->purchaseKey = '';
         $self->currency = $request['currency'];
-        $self->formTitle = $request['formTitle'];
+        $self->firstName = $request['firstName'];
+        $self->lastName = $request['lastName'];
+        $self->email = $request['email'];
+        $self->wpUserId = (int)$request['userId'];
         $self->formId = (int)$request['formId'];
-        $self->paymentGateway = $request['gatewayId'];
-
-        $self->billingAddress = Address::fromArray([
-            'line1' => 'line1',
-            'line2' => 'line2',
-            'city' => 'city',
-            'state' => 'state',
-            'country' => 'country',
-            'postalCode' => 'postalCode',
-        ]);
-
-       $self->donorInfo = DonorInfo::fromArray([
-            'wpUserId' => $request['userId'],
-            'firstName' => $request['firstName'],
-            'lastName' => $request['lastName'],
-            'email' => $request['email'],
-            'honorific' => '',
-            'address' =>[
-                'line1' => 'line1',
-                'line2' => 'line2',
-                'city' => 'city',
-                'state' => 'state',
-                'country' => 'country',
-                'postalCode' => 'postalCode',
-            ]
-        ]);
-
-        $self->cardInfo = CardInfo::fromArray([
-            'name' => '',
-            'cvc' => '',
-            'expMonth' => '',
-            'expYear' => '',
-            'number' => '',
-        ]);
+        $self->formTitle = $request['formTitle'];
 
         return $self;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function toDonation($donorId): Donation
+    {
+        return new Donation([
+            'status' => DonationStatus::PENDING(),
+            'gatewayId' => $this->gatewayId,
+            'amount' => Money::fromDecimal($this->amount, $this->currency),
+            'donorId' => $donorId,
+            'firstName' => $this->firstName,
+            'lastName' => $this->lastName,
+            'email' => $this->email,
+            'formId' => $this->formId,
+            'formTitle' => $this->formTitle,
+        ]);
     }
 }

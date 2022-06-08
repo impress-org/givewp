@@ -72,10 +72,10 @@ class DonateRoute
             $gatewayIds = array_keys($paymentGateways);
 
             // make sure gateway is valid
-            $this->validateGateway($formData->paymentGateway, $gatewayIds);
+            $this->validateGateway($formData->gatewayId, $gatewayIds);
 
             /** @var PaymentGateway $gateway */
-            $gateway = give($paymentGateways[$formData->paymentGateway]);
+            $gateway = give($paymentGateways[$formData->gatewayId]);
 
             try {
                 $this->donateController->donate($formData, $gateway);
