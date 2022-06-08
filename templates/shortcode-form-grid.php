@@ -98,9 +98,12 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                         ];
                     }
 
+                    $image = wp_get_attachment_image( attachment_url_to_postid( $imageSrc ), $image_size, false, $image_attr );
+
+
                     echo "
                         <div class='give-form-grid-media'>
-                             <img src='$imageSrc' alt='$image_attr' height='$image_size' />
+                            <div class='give-card__media'> $image </div>
 
                              <div class='give-form-grid-media__tags' style='background: $tag_container_color' >
                                 $tag_elements_output
