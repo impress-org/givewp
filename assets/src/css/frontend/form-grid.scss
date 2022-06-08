@@ -23,8 +23,13 @@ $MIN_REM_SIZE: 16px;
     &-media {
         position: relative;
         min-width: 40%;
+        border-radius: 8px;
 
         img {
+            min-height: 289px;
+            min-width: 100%;
+            max-width: 100%;
+            border-radius: 2px;
             object-fit: cover;
         }
 
@@ -37,13 +42,15 @@ $MIN_REM_SIZE: 16px;
             align-items: center;
             height: 23%;
             padding: 0 16px;
+            border-radius: 2px;
+
 
             > span:first-child {
                 margin-right: 10px;
             }
 
             > span {
-                padding: 6px 12px;
+                padding: 4px 10px;
                 border-radius: 5px;
                 font-size: safe-rem(.975);
                 font-weight: 600;
@@ -72,13 +79,14 @@ $MIN_REM_SIZE: 16px;
         display: flex;
         background: none;
         margin-bottom: 12px;
+        border-radius: 2px;
 
         > span:first-child {
             margin-right: 10px;
         }
 
         > span {
-            padding: 6px 12px;
+            padding: 4px 10px;
             border-radius: 5px;
             font-size: safe-rem(.975);
             font-weight: 600;
