@@ -58,7 +58,7 @@ class CheckoutGateway extends PaymentGateway
      */
     public function createPayment(Donation $donation): GatewayCommand
     {
-        switch (give_stripe_get_checkout_type()) {
+        switch ($this->getCheckoutType()) {
             case 'modal':
                 return $this->createPaymentModal($donation);
             case 'redirect':
@@ -66,6 +66,14 @@ class CheckoutGateway extends PaymentGateway
             default:
                 throw new CheckoutException('Invalid Checkout Error');
         }
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getCheckoutType(): string
+    {
+        return give_stripe_get_checkout_type();
     }
 
     /**
