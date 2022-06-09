@@ -23,7 +23,14 @@ class PaymentGatewayGatewayNotSupportSubscription
 
             if (
                 give_recurring_is_donation_recurring($legacyFormData) &&
-                !$registeredGateway->supportsSubscriptions()
+                (
+                    !$registeredGateway->supportsSubscriptions() &&
+
+                    // All gateways which registers with new gateway api do not have subscription module,
+                    // But they can process subscription with legacy gateway api.
+                    // This check will make sure that we don't show the notice for those gateways.
+                    empty(\Give_Recurring::get_gateway_class($registeredGateway->getId()))
+                )
             ) {
                 give_set_error(
                     'payment-gateway-not-support-subscription',
