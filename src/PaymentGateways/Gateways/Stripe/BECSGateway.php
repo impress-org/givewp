@@ -109,7 +109,7 @@ class BECSGateway extends PaymentGateway
     {
         return [
             'payment_method_types' => [ 'au_becs_debit' ],
-            'setup_future_usage'   => 'off_session', // @TODO Is this correct? Maybe should be `on_session` - need to confirm.
+            'setup_future_usage'   => 'on_session',
             'mandate_data'         => [
                 'customer_acceptance' => [
                     'type'   => 'online',
