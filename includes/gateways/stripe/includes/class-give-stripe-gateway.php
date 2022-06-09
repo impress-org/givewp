@@ -628,13 +628,13 @@ if ( ! class_exists( 'Give_Stripe_Gateway' ) ) {
 				],
 				'statement_descriptor' => give_stripe_get_statement_descriptor(),
 				'redirect'             => [
-					'return_url' => add_query_arg(
+					'return_url' => esc_url_raw( add_query_arg(
 						[
 							'give-listener' => 'stripe_three_d_secure',
 							'donation_id'   => $donation_id,
 						],
 						give_get_success_page_uri()
-					),
+					) ),
 				],
 			];
 

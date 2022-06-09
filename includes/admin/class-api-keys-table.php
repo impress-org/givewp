@@ -316,7 +316,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 		foreach ( $users as $user ) {
 			$keys[ $user->ID ]['id']    = $user->ID;
 			$keys[ $user->ID ]['email'] = $user->user_email;
-			$keys[ $user->ID ]['user']  = '<a href="' . add_query_arg( 'user_id', $user->ID, 'user-edit.php' ) . '"><strong>' . $user->user_login . '</strong></a>';
+			$keys[ $user->ID ]['user']  = '<a href="' . esc_url( add_query_arg( 'user_id', $user->ID, 'user-edit.php' ) ) . '"><strong>' . $user->user_login . '</strong></a>';
 
 			$keys[ $user->ID ]['key']    = Give()->api->get_user_public_key( $user->ID );
 			$keys[ $user->ID ]['secret'] = Give()->api->get_user_secret_key( $user->ID );

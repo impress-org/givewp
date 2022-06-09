@@ -358,7 +358,7 @@ function give_disconnect_donor_user_id( $args ) {
 		give_set_error( 'give-disconnect-user-fail', __( 'Failed to disconnect user from donor.', 'give' ) );
 	}
 
-	$output['redirect'] = $redirect_url;
+	$output['redirect'] = esc_url( $redirect_url );
 
 	/**
 	 * Fires after disconnecting user ID from a donor.
@@ -516,7 +516,7 @@ function give_remove_donor_email() {
 		$url = add_query_arg( 'give-messages[]', 'email-remove-failed', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ) );
 	}
 
-	wp_safe_redirect( $url );
+	wp_safe_redirect( esc_url( $url ) );
 	exit;
 }
 
@@ -673,7 +673,7 @@ function give_process_donor_deletion( $args ) {
 		admin_url( 'edit.php?post_type=give_forms&page=give-donors' )
 	);
 
-	wp_safe_redirect( $redirect_url );
+	wp_safe_redirect( esc_url( $redirect_url ) );
 	give_die();
 
 }

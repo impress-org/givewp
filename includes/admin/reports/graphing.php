@@ -839,7 +839,7 @@ function give_reports_refresh_button() {
 		[
 			'label'       => esc_attr__( 'Clicking this will clear the reports cache.', 'give' ),
 			'tag_content' => '<span class="give-admin-button-icon give-admin-button-icon-update"></span>' . esc_html__( 'Refresh Report Data', 'give' ),
-			'link'        => $url,
+			'link'        => esc_url( $url ),
 			'position'    => 'left',
 			'attributes'  => [
 				'class' => 'button alignright give-admin-button',
