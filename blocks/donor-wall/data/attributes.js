@@ -13,20 +13,20 @@ const blockAttributes = {
 		default: '12',
 	},
 	formID: {
-		type: 'string',
-		default: '0',
+		type: 'array',
+		default: [],
 	},
 	ids: {
-		type: 'string',
-		default: '',
+		type: 'array',
+		default: [],
 	},
     categories: {
-        type: 'string',
-        default: '',
+        type: 'array',
+        default: [],
     },
     tags: {
         type: 'string',
-        default: '',
+        default: [],
     },
 	orderBy: {
 		type: 'string',
@@ -42,7 +42,7 @@ const blockAttributes = {
 	},
 	columns: {
 		type: 'string',
-		default: 'best-fit',
+		default: '3',
 	},
 	showAvatar: {
 		type: 'boolean',
@@ -58,13 +58,9 @@ const blockAttributes = {
 	},
     showForm: {
 		type: 'boolean',
-		default: false,
-	},
-	showTotal: {
-		type: 'boolean',
 		default: true,
 	},
-	showDate: {
+	showTotal: {
 		type: 'boolean',
 		default: true,
 	},
@@ -82,7 +78,7 @@ const blockAttributes = {
 	},
 	commentLength: {
 		type: 'string',
-		default: '140',
+		default: '80',
 	},
 	readMoreText: {
 		type: 'string',
@@ -94,8 +90,24 @@ const blockAttributes = {
 	},
 	avatarSize: {
 		type: 'string',
-		default: '60',
+		default: '75',
 	},
+    toggleOptions: {
+        type: 'string',
+        default: 'Donor info',
+    },
+    filter: {
+        type: 'string',
+        default: 'formID',
+    },
+    color: {
+        type: 'string',
+        default: '#219653',
+    },
+    showTributes: {
+        type: 'boolean',
+        default: false,
+    }
 };
 
 export default blockAttributes;

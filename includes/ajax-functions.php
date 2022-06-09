@@ -130,7 +130,7 @@ function give_get_ajax_url( $query = [] ) {
 		$ajax_url = add_query_arg( $query, $ajax_url );
 	}
 
-	return apply_filters( 'give_ajax_url', $ajax_url );
+	return esc_url_raw( apply_filters( 'give_ajax_url', $ajax_url ) );
 }
 
 /**

@@ -5,7 +5,6 @@
 
     .post-type-give_forms #wpbody {
         box-sizing: border-box;
-        padding-left: 0;
 
         & > a {
             text-decoration: underline
@@ -53,6 +52,7 @@
     background-color: #fff;
     padding-block: 1em;
     padding-inline: 1.5em;
+    margin-left: -20px;
     border-bottom: 0.0625rem solid #dbdbdb;
 
     & > * {
@@ -72,6 +72,7 @@
     margin: 0;
     font-size: 1.5rem;
     font-weight: 600;
+
 }
 
 .pageContent {
@@ -149,6 +150,7 @@
     background-color: rgba(248, 248, 248);
     padding-inline: 1.5em;
     padding-block: 1em;
+    margin: 0 -20px 0 -22px;
     border-bottom: 0.0625rem solid #dbdbdb;
 }
 

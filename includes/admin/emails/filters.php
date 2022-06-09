@@ -23,32 +23,19 @@ function give_email_notification_row_actions_callback( $row_actions, $email ) {
 	if ( Give_Email_Notification_Util::is_email_preview( $email ) ) {
 		$preview_link = sprintf(
 			'<a href="%1$s" target="_blank">%2$s</a>',
-			wp_nonce_url(
-				add_query_arg(
-					array(
-						'give_action' => 'preview_email',
-						'email_type'  => $email->config['id'],
-					),
-					home_url()
-				),
-				'give-preview-email'
-			),
+            esc_url(
+                wp_nonce_url(
+                    add_query_arg(
+                        array(
+                            'give_action' => 'preview_email',
+                            'email_type'  => $email->config['id'],
+                        ),
+                        home_url()
+                    ),
+                    'give-preview-email'
+                )
+            ),
 			__( 'Preview', 'give' )
-		);
-
-		$send_preview_email_link = sprintf(
-			'<a href="%1$s">%2$s</a>',
-			wp_nonce_url(
-				add_query_arg(
-					array(
-						'give_action'     => 'send_preview_email',
-						'email_type'      => $email->config['id'],
-						'give-messages[]' => 'sent-test-email',
-					)
-				),
-				'give-send-preview-email'
-			),
-			__( 'Send test email', 'give' )
 		);
 
 		$send_preview_email_link = give()->tooltips->render_link( [
@@ -57,7 +44,7 @@ function give_email_notification_row_actions_callback( $row_actions, $email ) {
 				esc_html__( 'Click this link to send a test email to yourself at %s', 'give' ),
 				wp_get_current_user()->user_email
 			),
-			'link'        => wp_nonce_url(
+			'link'        => esc_url(wp_nonce_url(
 				add_query_arg(
 					array(
 						'give_action'     => 'send_preview_email',
@@ -66,7 +53,7 @@ function give_email_notification_row_actions_callback( $row_actions, $email ) {
 					)
 				),
 				'give-send-preview-email'
-			)
+			))
 		] );
 
 		$row_actions['email_preview']      = $preview_link;

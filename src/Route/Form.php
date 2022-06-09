@@ -137,13 +137,13 @@ class Form
 
         return get_option('permalink_structure')
             ? home_url("/{$this->base}/{$form_id}", $scheme)
-            : add_query_arg(
+            : esc_url(add_query_arg(
                 [
                     'give_form_id' => $form_id,
                     'url_prefix' => $this->base,
                 ],
                 home_url('', $scheme)
-            );
+            ));
     }
 
     /**

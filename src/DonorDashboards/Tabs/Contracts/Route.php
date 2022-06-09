@@ -3,6 +3,7 @@
 namespace Give\DonorDashboards\Tabs\Contracts;
 
 use Give\API\RestRoute;
+use Give\DonorDashboards\Helpers as DonorDashboardHelpers;
 use Give\Log\Log;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -12,7 +13,6 @@ use WP_REST_Response;
  */
 abstract class Route implements RestRoute
 {
-
     /**
      * Returns string to complete Route endpoint
      * Full route will be donor-profile/{endpoint}
@@ -61,7 +61,7 @@ abstract class Route implements RestRoute
                     'methods' => 'POST',
                     'callback' => [$this, 'handleRequestWithDonorIdCheck'],
                     'permission_callback' => function () {
-                        return is_user_logged_in() || Give()->session->get_session_expiration() !== false;
+                        return DonorDashboardHelpers::isDonorLoggedIn();
                     },
                 ],
                 'args' => $this->args(),
@@ -72,7 +72,7 @@ abstract class Route implements RestRoute
     public function handleRequestWithDonorIdCheck(WP_REST_Request $request)
     {
         // Check that the provided donor ID is valid
-        if ( ! Give()->donors->get_donor_by('id', give()->donorDashboard->getId())) {
+        if (!Give()->donors->get_donor_by('id', give()->donorDashboard->getId())) {
             Log::error(
                 esc_html__('An error occurred while validating donor ID on request.', 'give'),
                 [

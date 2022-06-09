@@ -19,6 +19,7 @@ import ColumnSelector from '../../components/column-selector';
  * Internal dependencies
  */
 import giveFormOptions from '../data/options';
+import giveDonorWallOptions from "../../donor-wall/data/options";
 
 /**
  * Render Inspector Controls
@@ -85,7 +86,12 @@ const Inspector = ({attributes, setAttributes}) => {
                     onClick={(value) => saveSetting('columns', value)}
                     help={__('Controls how many columns of the Form Grid appear. "Best Fit" will adjust responsively to the space available.', 'give')}
                 />
-
+                <SelectControl
+                    label={ __( 'Columns', 'give' ) }
+                    name="columns"
+                    value={ columns }
+                    options={ giveFormOptions.columns }
+                    onChange={ ( value ) => saveSetting( 'columns', value ) } />
                 <ToggleControl
                     name="showTitle"
                     label={__('Show Title', 'give')}
