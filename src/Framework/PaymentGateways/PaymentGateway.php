@@ -227,6 +227,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * Handle gateway subscription command
      *
+     * @unreleased Handle RedirectOffsite response.
      * @since 2.18.0
      *
      * @throws TypeNotSupported
@@ -245,6 +246,12 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
             );
 
             $response = response()->redirectTo(give_get_success_page_uri());
+
+            $this->handleResponse($response);
+        }
+
+        if ($command instanceof RedirectOffsite) {
+            $response = Call::invoke(RedirectOffsiteHandler::class, $command);
 
             $this->handleResponse($response);
         }
