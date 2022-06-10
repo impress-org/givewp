@@ -3,7 +3,7 @@
 namespace Give\Framework\PaymentGateways;
 
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionAmountEditable;
-use Give\Framework\PaymentGateways\Contracts\Subscription\GatewaySubscriptionIdLinkable;
+use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionDashboardLinkable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPaymentMethodEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
 use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
@@ -60,6 +60,6 @@ abstract class SubscriptionModule implements SubscriptionModuleInterface
      */
     public function hasGatewaySubscriptionIdLink(): bool
     {
-        return $this instanceof GatewaySubscriptionIdLinkable;
+        return $this instanceof SubscriptionDashboardLinkable;
     }
 }

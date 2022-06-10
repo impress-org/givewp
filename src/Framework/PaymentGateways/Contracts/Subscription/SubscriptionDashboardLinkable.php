@@ -5,7 +5,7 @@ namespace Give\Framework\PaymentGateways\Contracts\Subscription;
 /**
  * @unreleased
  */
-interface GatewaySubscriptionIdLinkable
+interface SubscriptionDashboardLinkable
 {
     /**
      * @unreleased
