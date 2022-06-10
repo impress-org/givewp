@@ -11,9 +11,9 @@
   background: white;
   border: 1px solid lightgray;
   bottom: 0;
-  color: slategray;
+  //color: slategray;
   height: 100vh;
-  overflow: hidden;
+  //overflow: hidden; // The Inspector Popout needs to be visible.
   position: fixed !important; // !important override added when migrated to WordPress - not sure why this is necessary...
   top: 60px; // Account for header @todo move this to layout, not in the component.
   width: 20%;
@@ -37,4 +37,26 @@
 
 .sidebar-panel .active-tab {
     border-top: 3px solid #66bb6a;
+}
+
+.givewp-next-gen-inspector-popout {
+    box-sizing: border-box;
+    padding: 20px;
+
+    position: absolute;
+    right: calc(100% + 25px); // Position beside the sidebar.
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+
+
+}
+
+.givewp-next-gen-inspector-popout--container {
+    color: black;
+    outline: 1px solid lightgray;
+    background-color: white;
 }

@@ -9,7 +9,7 @@ import { InterfaceSkeleton } from "@wordpress/interface";
 import Header from './components/header'
 import { Sidebar, SecondarySidebar } from './components/sidebar'
 import Content from './components/content'
-import { FormTitleProvider } from './context/formTitle'
+import { FormSettingsProvider, defaultFormSettings } from './settings/context';
 
 import { useToggleState } from "./hooks";
 
@@ -33,27 +33,30 @@ function App() {
         toggle: toggleShowSidebar
     } = useToggleState( true )
 
-    const { blocks: initialBlocks, formTitle: initialFormTitle } =  Storage.load();
+    const { blocks: initialBlocks, settings: initialFormSettings } =  Storage.load();
     if (initialBlocks instanceof Error ) {
         alert( 'Unable to load initial blocks.' )
         console.error(initialBlocks);
     }
 
-    const [formTitle, setFormTitle] = useState( initialFormTitle || 'Donation Form' )
+    const [formSettings, setFormSettings] = useState( {
+        ...defaultFormSettings,
+        ...initialFormSettings,
+    } )
 
     const [ blocks, updateBlocks ] = useState( initialBlocks || parse(`
         <!-- wp:custom-block-editor/donation-amount /-->
         <!-- wp:custom-block-editor/donor-info /-->
-        <!-- wp:custom-block-editor/payment-gateways /-->
+        <!-- wp:custom-block-editor/payment-details /-->
     `));
 
     const saveCallback = () => {
-        return Storage.save( { blocks, formTitle } )
+        return Storage.save( { blocks, formSettings } )
             .catch(error => alert(error.message));
     }
 
     return (
-        <FormTitleProvider formTitle={formTitle} setFormTitle={setFormTitle}>
+        <FormSettingsProvider formSettings={formSettings} setFormSettings={setFormSettings}>
             <ShortcutProvider>
                 <BlockEditorProvider
                     value={ blocks }
@@ -78,7 +81,7 @@ function App() {
                     </SlotFillProvider>
                 </BlockEditorProvider>
             </ShortcutProvider>
-        </FormTitleProvider>
+        </FormSettingsProvider>
     );
 }
 

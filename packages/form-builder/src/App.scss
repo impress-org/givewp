@@ -36,6 +36,7 @@
 [data-type="custom-block-editor/section"] > div > .block-editor-inner-blocks > .block-editor-block-list__layout,
 [data-type="custom-block-editor/donor-info"] > div > .block-editor-inner-blocks > .block-editor-block-list__layout,
 [data-type="custom-block-editor/donation-amount"] > div > .block-editor-inner-blocks > .block-editor-block-list__layout,
+[data-type="custom-block-editor/payment-details"] > .block-editor-inner-blocks > .block-editor-block-list__layout,
 [data-type="custom-block-editor/custom-fields"] > .block-editor-inner-blocks > .block-editor-block-list__layout {
     display: flex;
     gap: 20px;
@@ -69,4 +70,16 @@ select {
 
 .components-toolbar__control.components-button {
     width: 100px;
+}
+
+.components-form-toggle.is-checked .components-form-toggle__track {
+    background-color: #68BF6B;
+}
+
+/**
+ * Fixes an issue with inspector select controls covering selected option.
+ */
+.components-select-control__input {
+    padding: 8px;
+    font-weight: normal;
 }

@@ -29,7 +29,7 @@ class ServiceProvider implements ServiceProviderInterface
                 'callback' => function( \WP_REST_Request $request ) {
                     return [
                         'blocks' => get_post( $request->get_param('id') )->post_content,
-                        'formTitle' => get_post( $request->get_param('id') )->post_title,
+                        'settings' => get_post_meta( $request->get_param('id'), 'formBuilderSettings', true ),
                     ];
                 },
                 'permission_callback' => function() {
@@ -46,11 +46,17 @@ class ServiceProvider implements ServiceProviderInterface
             register_rest_route( 'givewp/next-gen', '/form/(?P<id>\d+)', array(
                 'methods' => 'POST',
                 'callback' => function( \WP_REST_Request $request ) {
-                    return wp_update_post([
+                    $settings = json_decode( $request->get_param( 'settings' ) );
+                    $meta = update_post_meta( $request->get_param('id'), 'formBuilderSettings', $request->get_param( 'settings' ) );
+                    $post = wp_update_post([
                         'ID'           => $request->get_param('id'),
                         'post_content' => $request->get_param('blocks'),
-                        'post_title' => $request->get_param('formTitle'),
+                        'post_title' => $settings->formTitle,
                     ]);
+                    return [
+                        $meta,
+                        $post,
+                    ] ;
                 },
                 'permission_callback' => function() {
                     return current_user_can( 'manage_options' );
@@ -118,7 +124,7 @@ class ServiceProvider implements ServiceProviderInterface
                         'resourceURL' => rest_url( 'givewp/next-gen/form/' . abs( $_GET['donationFormID'] ) ),
                         'nonce' => wp_create_nonce( 'wp_rest' ),
                         'blockData' => get_post( abs( $_GET['donationFormID'] ) )->post_content,
-                        'formTitle' => get_post( abs( $_GET['donationFormID'] ) )->post_title,
+                        'settings' => get_post_meta( abs( $_GET['donationFormID'] ), 'formBuilderSettings', true ),
                     ]);
 
                     wp_enqueue_script( '@givewp/form-builder/script', trailingslashit(GIVE_NEXT_GEN_URL) . 'packages/form-builder/build/' . $js, [], false, true );

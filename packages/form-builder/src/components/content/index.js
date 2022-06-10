@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React  from 'react';
 import {BlockList, BlockTools, ObserveTyping, WritingFlow, ButtonBlockAppender, RichText } from "@wordpress/block-editor";
-import { FormTitleContext } from '../../context/formTitle'
+import {useFormSettings} from "../../settings/context";
 
 const Component = () => {
 
-    const [formTitle, setFormTitle] = useContext(FormTitleContext)
+    const [ { formTitle }, updateFormSetting ] = useFormSettings();
 
     return (
         <BlockTools>
@@ -12,7 +12,7 @@ const Component = () => {
                 <RichText
                     tagName="h1"
                     value={ formTitle }
-                    onChange={ setFormTitle }
+                    onChange={ ( formTitle ) => updateFormSetting( formTitle ) }
                     style={{ margin: '40px' }}
                 />
                 <ObserveTyping>

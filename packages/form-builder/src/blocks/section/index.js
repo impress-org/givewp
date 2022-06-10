@@ -70,9 +70,9 @@ registerBlockType( 'custom-block-editor/donation-amount', {
     edit: Edit,
 } );
 
-registerBlockType( 'custom-block-editor/payment-gateways', {
+registerBlockType( 'custom-block-editor/payment-details', {
     ...Defaults,
-    title: __( 'Payment Gateways', 'custom-block-editor' ),
+    title: __( 'Payment Details', 'custom-block-editor' ),
     supports: {
         multiple: false,
     },
@@ -84,11 +84,10 @@ registerBlockType( 'custom-block-editor/payment-gateways', {
         description: {
             default: 'PAYMENT DETAILS WILL GO HERE :)',
         },
-        allowedBlocks: {
-            default: [],
-        },
         innerBlocksTemplate: {
-            default: []
+            default: [
+                [ 'custom-block-editor/payment-gateways', { lock: { remove: true } }  ],
+            ]
         },
     },
     edit: Edit,

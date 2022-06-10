@@ -1,19 +1,19 @@
 const localStorageDriver = {
-    save: ({ blocks, formTitle } ) => {
+    save: ({ blocks, formSettings } ) => {
         return new Promise((resolve, reject) => {
             setTimeout( function() {
                 localStorage.setItem('@givewp/form-builder.blocks', JSON.stringify(blocks) )
-                localStorage.setItem('@givewp/form-builder.formTitle', formTitle )
+                localStorage.setItem('@givewp/form-builder.settings', JSON.stringify(formSettings) )
                 resolve()
             }, 1000)
         })
     },
     load: () => {
         const blocks = JSON.parse( localStorage.getItem('@givewp/form-builder.blocks' ) )
-        const formTitle = localStorage.getItem('@givewp/form-builder.formTitle' )
+        const settings = JSON.parse( localStorage.getItem('@givewp/form-builder.settings' ) )
         return {
             blocks,
-            formTitle
+            settings
         }
     },
 }

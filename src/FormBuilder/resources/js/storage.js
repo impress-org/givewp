@@ -1,5 +1,5 @@
 window.storage = {
-    save: ( { blocks, formTitle } ) => {
+    save: ( { blocks, formSettings } ) => {
         return new Promise((resolve, reject) => {
             jQuery.post( {
                 url: window.storageData.resourceURL,
@@ -8,7 +8,7 @@ window.storage = {
                 },
                 data: {
                     blocks: JSON.stringify(blocks),
-                    formTitle: formTitle,
+                    settings: JSON.stringify(formSettings),
                 }
             })
                 .done(() => {
@@ -22,7 +22,7 @@ window.storage = {
     load: () => {
         return {
             blocks: JSON.parse(window.storageData.blockData),
-            formTitle: window.storageData.formTitle,
+            settings: JSON.parse( window.storageData.settings || "{}" ),
         };
     },
 }

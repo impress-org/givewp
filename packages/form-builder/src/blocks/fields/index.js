@@ -103,3 +103,15 @@ registerBlockType( 'custom-block-editor/email-field', {
     } />,
 } );
 
+registerBlockType( 'custom-block-editor/payment-gateways', {
+    ...settings,
+    parent: 'custom-block-editor/payment-details',
+    title: __( 'Payment Gateways', 'custom-block-editor' ),
+    supports: {
+        multiple: false,
+    },
+    attributes: {
+        lock: { remove: true },
+    },
+    edit: () => <div style={{padding:'20px',margin:'20px 0',textAlign:'center',backgroundColor:'#fafafa'}}>{'Payment Gateways Go Here'}</div>
+} );
