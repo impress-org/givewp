@@ -11,10 +11,6 @@ trait CanSetupStripeApp
 {
     /**
      * @unreleased
-     *
-     * @param int $formId
-     *
-     * @return void
      */
     protected function setupStripeApp(int $formId)
     {
