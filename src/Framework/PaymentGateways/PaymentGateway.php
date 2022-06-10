@@ -28,6 +28,7 @@ use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\PaymentGateways\Routes\RouteSignature;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Framework\PaymentGateways\Traits\HasRouteMethods;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Helpers\Call;
 use Give\Subscriptions\Models\Subscription;
 
@@ -36,7 +37,12 @@ use function Give\Framework\Http\Response\response;
 /**
  * @since 2.18.0
  */
-abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentGatewayInterface
+abstract class PaymentGateway implements PaymentGatewayInterface,
+                                         LegacyPaymentGatewayInterface,
+                                         SubscriptionDashboardLinkable,
+                                         SubscriptionAmountEditable,
+                                         SubscriptionPaymentMethodEditable,
+                                         SubscriptionTransactionsSynchronizable
 {
     use HandleHttpResponses;
     use HasRouteMethods {
@@ -153,8 +159,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      */
     public function canSyncSubscriptionWithPaymentGateway(): bool
     {
-        return $this instanceof SubscriptionTransactionsSynchronizable
-            || $this->subscriptionModule->canSyncSubscriptionWithPaymentGateway();
+        return method_exists($this, 'synchronizeSubscription')
+            || ($this->subscriptionModule && $this->subscriptionModule->canSyncSubscriptionWithPaymentGateway());
     }
 
     /**
@@ -162,8 +168,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      */
     public function canUpdateSubscriptionAmount(): bool
     {
-        return $this instanceof SubscriptionAmountEditable
-            || $this->subscriptionModule->canUpdateSubscriptionAmount();
+        return method_exists($this, 'updateSubscriptionAmount')
+            || ($this->subscriptionModule && $this->subscriptionModule->canUpdateSubscriptionAmount());
     }
 
     /**
@@ -171,8 +177,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      */
     public function canUpdateSubscriptionPaymentMethod(): bool
     {
-        return $this instanceof SubscriptionPaymentMethodEditable
-            || $this->subscriptionModule->canUpdateSubscriptionPaymentMethod();
+        return method_exists($this, 'updateSubscriptionPaymentMethod')
+            || ($this->subscriptionModule && $this->subscriptionModule->canUpdateSubscriptionPaymentMethod());
     }
 
     /**
@@ -180,8 +186,67 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      */
     public function hasGatewayDashboardSubscriptionUrl(): bool
     {
-        return $this instanceof SubscriptionDashboardLinkable ||
-            ( $this->subscriptionModule && $this->subscriptionModule->hasGatewayDashboardSubscriptionUrl() );
+        return method_exists($this, 'gatewayDashboardSubscriptionUrl') ||
+            ($this->subscriptionModule && $this->subscriptionModule->hasGatewayDashboardSubscriptionUrl());
+    }
+
+    /**
+     * @unreleased
+     * @inheritDoc
+     * @throws Exception
+     */
+    public function synchronizeSubscription(Subscription $subscription)
+    {
+        if ($this->subscriptionModule && $this->subscriptionModule->hasGatewayDashboardSubscriptionUrl()) {
+            $this->subscriptionModule->synchronizeSubscription($subscription);
+            return;
+        }
+
+        throw new Exception('Method has not been implemented yet.');
+    }
+
+    /**
+     * @unreleased
+     * @inheritDoc
+     * @throws Exception
+     */
+    public function updateSubscriptionAmount(Subscription $subscription, Money $newRenewalAmount)
+    {
+        if ($this->subscriptionModule && $this->subscriptionModule->canUpdateSubscriptionAmount()) {
+            $this->subscriptionModule->updateSubscriptionAmount($subscription, $newRenewalAmount);
+            return;
+        }
+
+        throw new Exception('Method has not been implemented yet.');
+    }
+
+    /**
+     * @unreleased
+     * @inheritDoc
+     * @throws Exception
+     */
+    public function updateSubscriptionPaymentMethod(Subscription $subscription, array $arg = [])
+    {
+        if ($this->subscriptionModule && $this->subscriptionModule->canUpdateSubscriptionPaymentMethod()) {
+            $this->subscriptionModule->updateSubscriptionPaymentMethod($subscription, $arg);
+            return;
+        }
+
+        throw new Exception('Method has not been implemented yet.');
+    }
+
+    /**
+     * @unreleased
+     * @inheritDoc
+     * @throws Exception
+     */
+    public function gatewayDashboardSubscriptionUrl(Subscription $subscription): string
+    {
+        if ($this->subscriptionModule && $this->subscriptionModule->hasGatewayDashboardSubscriptionUrl()) {
+            return $this->subscriptionModule->gatewayDashboardSubscriptionUrl($subscription);
+        }
+
+        throw new Exception('Method has not been implemented yet.');
     }
 
     /**
@@ -192,8 +257,11 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      * @throws TypeNotSupported
      * @throws Exception
      */
-    public function handleGatewayPaymentCommand(GatewayCommand $command, Donation $donation)
-    {
+    public
+    function handleGatewayPaymentCommand(
+        GatewayCommand $command,
+        Donation $donation
+    ) {
         if ($command instanceof PaymentComplete) {
             $handler = new PaymentCompleteHandler($command);
 
@@ -242,7 +310,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      *
      * @throws TypeNotSupported
      */
-    public function handleGatewaySubscriptionCommand(
+    public
+    function handleGatewaySubscriptionCommand(
         GatewayCommand $command,
         Donation $donation,
         Subscription $subscription
@@ -280,8 +349,11 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      * @since 2.18.0
      * @since 2.19.0 remove $donationId param in favor of args
      */
-    public function generateGatewayRouteUrl(string $gatewayMethod, array $args = []): string
-    {
+    public
+    function generateGatewayRouteUrl(
+        string $gatewayMethod,
+        array $args = []
+    ): string {
         return Call::invoke(GenerateGatewayRouteUrl::class, $this->getId(), $gatewayMethod, $args);
     }
 
@@ -292,8 +364,12 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      * @since 2.19.4 replace RouteSignature args with unique donationId
      * @since 2.19.0
      */
-    public function generateSecureGatewayRouteUrl(string $gatewayMethod, int $donationId, array $args = []): string
-    {
+    public
+    function generateSecureGatewayRouteUrl(
+        string $gatewayMethod,
+        int $donationId,
+        array $args = []
+    ): string {
         $signature = new RouteSignature($this->getId(), $gatewayMethod, $donationId);
 
         return Call::invoke(
@@ -316,8 +392,11 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      * @unreleased Handle PHP exception.
      * @since 2.19.0
      */
-    private function handleExceptionResponse(\Exception $exception, string $message)
-    {
+    private
+    function handleExceptionResponse(
+        \Exception $exception,
+        string $message
+    ) {
         if ($exception instanceof PaymentGatewayException) {
             $message = $exception->getMessage();
         }
@@ -333,8 +412,10 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * @since 2.20.0
      */
-    public function supportsMethodRoute(string $method): bool
-    {
+    public
+    function supportsMethodRoute(
+        string $method
+    ): bool {
         if ($this->subscriptionModule && $this->subscriptionModule->supportsMethodRoute($method)) {
             return true;
         }
@@ -349,8 +430,11 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
      *
      * @throws Exception
      */
-    public function callRouteMethod($method, $queryParams)
-    {
+    public
+    function callRouteMethod(
+        $method,
+        $queryParams
+    ) {
         if ($this->subscriptionModule && $this->subscriptionModule->supportsMethodRoute($method)) {
             return $this->subscriptionModule->callRouteMethod($method, $queryParams);
         }
