@@ -2,6 +2,8 @@
 
 namespace Give\Framework\PaymentGateways\Contracts\Subscription;
 
+use Give\Subscriptions\Models\Subscription;
+
 /**
  * @unreleased
  */
@@ -10,8 +12,5 @@ interface SubscriptionDashboardLinkable
     /**
      * @unreleased
      */
-    public function getGatewaySubscriptionIdLink(
-        string $gatewaySubscriptionId,
-        string $donationMode
-    ): string;
+    public function gatewayDashboardSubscriptionUrl(Subscription $subscription): string;
 }

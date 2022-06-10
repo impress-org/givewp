@@ -178,9 +178,10 @@ abstract class PaymentGateway implements PaymentGatewayInterface, LegacyPaymentG
     /**
      * @unreleased
      */
-    public function hasGatewaySubscriptionIdLink(): bool
+    public function hasGatewayDashboardSubscriptionUrl(): bool
     {
-        return $this->subscriptionModule instanceof SubscriptionDashboardLinkable;
+        return $this instanceof SubscriptionDashboardLinkable ||
+            ( $this->subscriptionModule && $this->subscriptionModule->hasGatewayDashboardSubscriptionUrl() );
     }
 
     /**

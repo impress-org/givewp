@@ -58,7 +58,7 @@ abstract class SubscriptionModule implements SubscriptionModuleInterface
     /**
      * @unreleased
      */
-    public function hasGatewaySubscriptionIdLink(): bool
+    public function hasGatewayDashboardSubscriptionUrl(): bool
     {
         return $this instanceof SubscriptionDashboardLinkable;
     }
