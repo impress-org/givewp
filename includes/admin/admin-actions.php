@@ -76,7 +76,7 @@ function give_redirect_to_clean_url_admin_pages() {
 	if ( $redirect ) {
 		// Redirect.
 		wp_redirect(
-            esc_url(
+            esc_url_raw(
                 remove_query_arg(
                     [ '_wp_http_referer', '_wpnonce' ],
                     wp_unslash( $_SERVER['REQUEST_URI'] )

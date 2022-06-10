@@ -329,7 +329,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			);
 
 			wp_redirect(
-                esc_url(
+                esc_url_raw(
                     add_query_arg(
                         array(
                             'give-messages[]' => 'email-sent',
