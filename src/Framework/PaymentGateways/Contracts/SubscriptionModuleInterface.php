@@ -16,7 +16,7 @@ interface SubscriptionModuleInterface
      *
      * @return GatewayCommand|RedirectOffsite
      */
-    public function createSubscription(Donation $donation, Subscription $subscription);
+    public function createSubscription(Donation $donation, Subscription $subscription, $gatewayData = null);
 
     /**
      * Cancel subscription.

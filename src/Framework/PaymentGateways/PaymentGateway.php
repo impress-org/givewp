@@ -86,7 +86,14 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     public function handleCreatePayment(Donation $donation)
     {
         try {
-            $command = $this->createPayment($donation);
+            /**
+             * Filter hook to provide gateway data before transaction is processed by the gateway.
+             *
+             * @unreleased
+             */
+            $gatewayData = apply_filters('givewp_new_payment_gateway_data', null, $donation);
+
+            $command = $this->createPayment($donation, $gatewayData);
             $this->handleGatewayPaymentCommand($command, $donation);
         } catch (\Exception $exception) {
             PaymentGatewayLog::error(
@@ -114,7 +121,14 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     public function handleCreateSubscription(Donation $donation, Subscription $subscription)
     {
         try {
-            $command = $this->createSubscription($donation, $subscription);
+            /**
+             * Filter hook to provide gateway data before initial transaction for subscription is processed by the gateway.
+             *
+             * @unreleased
+             */
+            $gatewayData = apply_filters('givewp_new_subscription_gateway_data', null, $donation, $subscription);
+
+            $command = $this->createSubscription($donation, $subscription, $gatewayData);
             $this->handleGatewaySubscriptionCommand($command, $donation, $subscription);
         } catch (\Exception $exception) {
             PaymentGatewayLog::error(
