@@ -185,39 +185,59 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
+     * @unreleased
      * @inheritDoc
+     * @throws Exception
      */
     public function canSyncSubscriptionWithPaymentGateway(): bool
     {
-        return method_exists($this, 'synchronizeSubscription')
-            || ($this->subscriptionModule && $this->subscriptionModule->canSyncSubscriptionWithPaymentGateway());
-    }
+        if( $this->subscriptionModule ) {
+            return $this->subscriptionModule->canSyncSubscriptionWithPaymentGateway();
+        }
 
-    /**
-     * @inheritDoc
-     */
-    public function canUpdateSubscriptionAmount(): bool
-    {
-        return method_exists($this, 'updateSubscriptionAmount')
-            || ($this->subscriptionModule && $this->subscriptionModule->canUpdateSubscriptionAmount());
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function canUpdateSubscriptionPaymentMethod(): bool
-    {
-        return method_exists($this, 'updateSubscriptionPaymentMethod')
-            || ($this->subscriptionModule && $this->subscriptionModule->canUpdateSubscriptionPaymentMethod());
+        throw new Exception(esc_html__('Method has not been implemented yet.', 'give'));
     }
 
     /**
      * @unreleased
+     * @inheritDoc
+     * @throws Exception
+     */
+    public function canUpdateSubscriptionAmount(): bool
+    {
+        if( $this->subscriptionModule ) {
+            return $this->subscriptionModule->canUpdateSubscriptionAmount();
+        }
+
+        throw new Exception(esc_html__('Method has not been implemented yet.', 'give'));
+    }
+
+    /**
+     * @unreleased
+     * @inheritDoc
+     * @throws Exception
+     */
+    public function canUpdateSubscriptionPaymentMethod(): bool
+    {
+        if( $this->subscriptionModule ) {
+            return $this->subscriptionModule->canUpdateSubscriptionPaymentMethod();
+        }
+
+        throw new Exception(esc_html__('Method has not been implemented yet.', 'give'));
+    }
+
+    /**
+     * @unreleased
+     * @unreleased
+     * @throws Exception
      */
     public function hasGatewayDashboardSubscriptionUrl(): bool
     {
-        return method_exists($this, 'gatewayDashboardSubscriptionUrl') ||
-            ($this->subscriptionModule && $this->subscriptionModule->hasGatewayDashboardSubscriptionUrl());
+        if( $this->subscriptionModule ) {
+            return $this->subscriptionModule->hasGatewayDashboardSubscriptionUrl();
+        }
+
+        throw new Exception(esc_html__('Method has not been implemented yet.', 'give'));
     }
 
     /**
