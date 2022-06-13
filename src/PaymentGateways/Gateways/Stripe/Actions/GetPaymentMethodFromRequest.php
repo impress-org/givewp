@@ -19,7 +19,7 @@ class GetPaymentMethodFromRequest
     public function __invoke(Donation $donation): PaymentMethod
     {
         if (!isset($_POST['give_stripe_payment_method'])) {
-            throw new PaymentMethodException('Payment Method Not Found');
+            throw new PaymentMethodException(esc_html__('Payment Method Not Found', 'give'));
         }
 
         $paymentMethod = new PaymentMethod(
