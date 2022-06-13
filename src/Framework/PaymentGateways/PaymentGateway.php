@@ -81,6 +81,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
 
     /**
      * @unreleased Handle PHP exception.
+     *
+     * @unreleased Add filter hook to provide gateway data before donation is processed by the gateway.
      * @since 2.19.0
      */
     public function handleCreatePayment(Donation $donation)
@@ -119,6 +121,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
 
     /**
      * @unreleased Handle PHP exception.
+     *
+     * @unreleased Add filter hook to provide gateway data before subscription is processed by the gateway.
      * @since 2.19.0
      *
      */
