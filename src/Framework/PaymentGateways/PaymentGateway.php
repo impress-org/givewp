@@ -232,7 +232,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             return;
         }
 
-        throw new Exception('Method has not been implemented yet.');
+        throw new Exception(esc_html__('Method has not been implemented yet.', 'give'));
     }
 
     /**
@@ -247,7 +247,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             return;
         }
 
-        throw new Exception('Method has not been implemented yet.');
+        throw new Exception(esc_html__('Method has not been implemented yet.', 'give'));
     }
 
     /**
@@ -263,13 +263,13 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
              * In this case, we need to update the payment method on the gateway.
              * So we need to get data from different context.
              *
-             * Array destructuring helping us to provide data from multiple context for the same method.
+             * Array destructuring helping us to provide multiple context for the same method.
              */
             $this->subscriptionModule->updateSubscriptionPaymentMethod(...func_get_args());
             return;
         }
 
-        throw new Exception('Method has not been implemented yet.');
+        throw new Exception(esc_html__('Method has not been implemented yet.', 'give'));
     }
 
     /**
@@ -283,7 +283,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             return $this->subscriptionModule->gatewayDashboardSubscriptionUrl($subscription);
         }
 
-        throw new Exception('Method has not been implemented yet.');
+        throw new Exception(esc_html__('Method has not been implemented yet.', 'give'));
     }
 
     /**
