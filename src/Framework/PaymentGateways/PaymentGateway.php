@@ -294,8 +294,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      * @throws TypeNotSupported
      * @throws Exception
      */
-    public
-    function handleGatewayPaymentCommand(
+    public function handleGatewayPaymentCommand(
         GatewayCommand $command,
         Donation $donation
     ) {
