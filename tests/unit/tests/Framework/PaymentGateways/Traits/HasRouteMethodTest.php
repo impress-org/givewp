@@ -59,7 +59,7 @@ class HasRouteMethodTest extends WP_UnitTestCase
 
     private function registerGateway()
     {
-        add_filter("give_gateway_GatewayRouteTestGateway_subscription_module", function () {
+        add_filter("givewp_gateway_GatewayRouteTestGateway_subscription_module", function () {
             return GatewayRouteTestGatewaySubscriptionModule::class;
         });
 
