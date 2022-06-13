@@ -258,6 +258,13 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     public function updateSubscriptionPaymentMethod(Subscription $subscription)
     {
         if ($this->subscriptionModule && $this->subscriptionModule->canUpdateSubscriptionPaymentMethod()) {
+            /*
+             * Donor can update payment method from legacy subscription page and donor dashboard.
+             * In this case, we need to update the payment method on the gateway.
+             * So we need to get data from different context.
+             *
+             * Array destructuring helping us to provide data from multiple context for the same method.
+             */
             $this->subscriptionModule->updateSubscriptionPaymentMethod(...func_get_args());
             return;
         }
