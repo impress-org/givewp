@@ -91,9 +91,13 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
              *
              * @unreleased
              */
-            $gatewayData = apply_filters('givewp_new_payment_gateway_data', null, $donation);
+            $gatewayData = apply_filters(
+                "givewp_new_payment_{$donation->gatewayId}_gateway_data",
+                [],
+                $donation
+            );
 
-            $command = $this->createPayment($donation, $gatewayData);
+            $command = $this->createPayment($donation, ...$gatewayData);
             $this->handleGatewayPaymentCommand($command, $donation);
         } catch (\Exception $exception) {
             PaymentGatewayLog::error(
@@ -126,9 +130,14 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
              *
              * @unreleased
              */
-            $gatewayData = apply_filters('givewp_new_subscription_gateway_data', null, $donation, $subscription);
+            $gatewayData = apply_filters(
+                "givewp_new_subscription_{$donation->gatewayId}_gateway_data",
+                [],
+                $donation,
+                $subscription
+            );
 
-            $command = $this->createSubscription($donation, $subscription, $gatewayData);
+            $command = $this->createSubscription($donation, $subscription, ...$gatewayData);
             $this->handleGatewaySubscriptionCommand($command, $donation, $subscription);
         } catch (\Exception $exception) {
             PaymentGatewayLog::error(
@@ -155,9 +164,9 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      *
      * @inheritDoc
      */
-    public function createSubscription(Donation $donation, Subscription $subscription): GatewayCommand
+    public function createSubscription(Donation $donation, Subscription $subscription, $gatewayData = null): GatewayCommand
     {
-        return $this->subscriptionModule->createSubscription($donation, $subscription);
+        return $this->subscriptionModule->createSubscription($donation, $subscription, $gatewayData);
     }
 
     /**

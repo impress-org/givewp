@@ -68,7 +68,7 @@ interface PaymentGatewayInterface extends SubscriptionModuleInterface
      * @throws PaymentGatewayException
      * @throws Exception
      */
-    public function createPayment(Donation $donation, $gatewayData = null);
+    public function createPayment(Donation $donation);
 
     /**
      * @since 2.20.0
