@@ -12,9 +12,10 @@ interface SubscriptionPaymentMethodEditable
     /**
      * Update subscription payment method.
      *
-     * Note: use "givewp_edit_{$subscription->gatewayId}_gateway_subscription_payment_method" filter to provide payment method data to function.
-     *       This filter will help to add additional arguments to this function which should be optional otherwise you will get PHP fatal error.
      *
+     * @unreleased Second parameter has been removed to aviod passing payment method data as an array.
+     *             For example a developer can use "givewp_edit_{$gateway->getId()}_gateway_subscription_payment_method_from_donor_dashboard" filter
+     *             To provide payment method request data to gateway before updating payment method (filter is in recurring donations  add-on).
      * @since 2.20.0
      */
     public function updateSubscriptionPaymentMethod(Subscription $subscription);
