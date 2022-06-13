@@ -168,8 +168,11 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      *
      * @inheritDoc
      */
-    public function createSubscription(Donation $donation, Subscription $subscription, $gatewayData = null): GatewayCommand
-    {
+    public function createSubscription(
+        Donation $donation,
+        Subscription $subscription,
+        $gatewayData = null
+    ): GatewayCommand {
         return $this->subscriptionModule->createSubscription($donation, $subscription, $gatewayData);
     }
 
@@ -252,10 +255,21 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      * @inheritDoc
      * @throws Exception
      */
-    public function updateSubscriptionPaymentMethod(Subscription $subscription, array $arg = [])
+    public function updateSubscriptionPaymentMethod(Subscription $subscription)
     {
         if ($this->subscriptionModule && $this->subscriptionModule->canUpdateSubscriptionPaymentMethod()) {
-            $this->subscriptionModule->updateSubscriptionPaymentMethod($subscription, $arg);
+            /**
+             * Filter hook to provide paymentn method data to edit subscription payment method on the gateway.
+             *
+             * @unreleased
+             */
+            $paymentMethodData = apply_filters(
+                "givewp_edit_{$subscription->gatewayId}_gateway_subscription_payment_method",
+                [],
+                $subscription
+            );
+
+            $this->subscriptionModule->updateSubscriptionPaymentMethod($subscription, ...$paymentMethodData);
             return;
         }
 
