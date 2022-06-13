@@ -258,18 +258,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     public function updateSubscriptionPaymentMethod(Subscription $subscription)
     {
         if ($this->subscriptionModule && $this->subscriptionModule->canUpdateSubscriptionPaymentMethod()) {
-            /**
-             * Filter hook to provide paymentn method data to edit subscription payment method on the gateway.
-             *
-             * @unreleased
-             */
-            $paymentMethodData = apply_filters(
-                "givewp_edit_{$subscription->gatewayId}_gateway_subscription_payment_method",
-                [],
-                $subscription
-            );
-
-            $this->subscriptionModule->updateSubscriptionPaymentMethod($subscription, ...$paymentMethodData);
+            $this->subscriptionModule->updateSubscriptionPaymentMethod(...func_get_args());
             return;
         }
 
