@@ -124,7 +124,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
     private function registerGatewayWithServiceContainer($gatewayClass, $gatewayId)
     {
         give()->singleton($gatewayClass, function (Container $container) use ($gatewayClass, $gatewayId) {
-            $subscriptionModule = apply_filters("give_gateway_{$gatewayId}_subscription_module", null);
+            $subscriptionModule = apply_filters("givewp_gateway_{$gatewayId}_subscription_module", null);
 
             return new $gatewayClass($subscriptionModule ? $container->make($subscriptionModule) : null);
         });
