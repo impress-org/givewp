@@ -23,7 +23,7 @@ class PaymentMethod
      * @since 2.19.0
      * @return string
      */
-    public function id()
+    public function id(): string
     {
         return $this->paymentMethodId;
     }
