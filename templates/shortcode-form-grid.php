@@ -25,12 +25,47 @@ $activeTemplate = FormUtils::isLegacyForm( $form_id ) ? 'legacy' : Template::get
 /* @var \Give\Form\Template $formTemplate */
 $formTemplate = Give()->templates->getTemplate( $activeTemplate );
 
+$renderTags = static function($wrapper_class, $apply_styles = true) use($form_id) {
+    if( !taxonomy_exists( 'give_forms_tag' ) ) {
+        return '';
+    }
+
+    $tags = wp_get_post_terms($form_id,'give_forms_tag');
+
+    $tag_bg_color = ! empty( $atts['tag_background_color'] )
+        ? $atts['tag_background_color']
+        : '#69b86b';
+
+    $tag_text_color = ! empty( $atts['tag_text_color'] )
+        ? $atts['tag_text_color']
+        : '#ffffff';
+
+    $tag_container_color = count($tags) >= 1
+        ? 'rgba(0, 0, 0, 0.35)'
+        : 'none';
+
+    $tag_elements = array_map(
+        static function($term)use($tag_text_color,$tag_bg_color){
+            return "<span style='color: $tag_text_color; background-color: $tag_bg_color;'>$term->name</span>";
+        }, $tags
+    );
+
+    $tag_elements = implode('', $tag_elements);
+    $styles = $apply_styles ? "style='background-color: $tag_container_color;'" : '';
+
+    return "
+         <div class='$wrapper_class' $styles >
+            $tag_elements
+         </div>
+    ";
+};
+
 ?>
 
 <div class="give-grid__item">
-	<?php
-	// Print the opening anchor tag based on display style.
-	if ( 'redirect' === $atts['display_style'] ) {
+    <?php
+    // Print the opening anchor tag based on display style.
+    if ( 'redirect' === $atts['display_style'] ) {
 
         $form_grid_option = give_get_meta( $form_id, '_give_form_grid_option', true );
         $form_grid_redirect_url = esc_url(give_get_meta( $form_id, '_give_form_grid_redirect_url', true ));
@@ -53,28 +88,6 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
 	?>
 		<div class="give-form-grid" style="flex-direction:<?php echo $flex_direction ?>">
                 <?php
-                $tags = wp_get_post_terms($form_id,'give_forms_tag');
-
-                $tag_bg_color = ! empty( $atts['tag_background_color'] )
-                    ? $atts['tag_background_color']
-                    : '#69b86b';
-
-                $tag_text_color = ! empty( $atts['tag_text_color'] )
-                    ? $atts['tag_text_color']
-                    : '#ffffff';
-
-                $tag_container_color = count($tags) >= 1
-                    ? 'rgba(0, 0, 0, 0.35)'
-                    : 'none';
-
-                $tag_elements = array_map(
-                    function($term)use($tag_text_color,$tag_bg_color){
-                        return "<span style='color: $tag_text_color; background-color: $tag_bg_color;'>$term->name</span>";
-                    }, $tags
-                );
-
-                $tag_elements_output = implode('', $tag_elements);
-
                 // Maybe display the featured image.
                 if (
                     give_is_setting_enabled($give_settings['form_featured_img'])
@@ -104,9 +117,7 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                         <div class='give-form-grid-media'>
                             <div class='give-card__media'> $image </div>
 
-                             <div class='give-form-grid-media__tags' style='background: $tag_container_color' >
-                                $tag_elements_output
-                             </div>
+                            {$renderTags('give-form-grid-media__tags')}
                         </div>
                     ";
                 } elseif(
@@ -119,9 +130,7 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                             <div id='row-media' class='give-form-grid-media'>
                                 <img class='give-form-grid-media' src='$imageSrc' alt='' />
 
-                                 <div class='give-form-grid-media__tags' style='background: $tag_container_color' >
-                                    $tag_elements_output
-                                 </div>
+                                {$renderTags('give-form-grid-media__tags')}
                             </div>
                         ";
                     }
@@ -133,9 +142,7 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                     if( !$atts['show_featured_image']){
                             echo "
                                  <div class='give-form-grid-media' >
-                                         <div class='give-form-grid-media__tags_no_image'>
-                                            $tag_elements_output
-                                         </div>
+                                        {$renderTags('give-form-grid-media__tags_no_image', false)}
                                    </div>
                             ";
                         }
