@@ -187,6 +187,10 @@ class Give_Donation_Form_Grid_Block {
                         'type'    => 'string',
                         'default' => 'auto',
                     ),
+                    'progressBarColor'  => array(
+                        'type' => 'string',
+                        'default' => '#69b86b'
+                    )
 				),
 			)
 		);
@@ -225,9 +229,8 @@ class Give_Donation_Form_Grid_Block {
             'image_size'          => $attributes['imageSize'],
             'image_height'        => $attributes['imageHeight'],
             'filter'              => $attributes['filter'],
-            'imageHeightOptions'  => $attributes['imageHeightOptions']
-
-
+            'image_height_options' => $attributes['imageHeightOptions'],
+            'progress_bar_color'  => $attributes['progressBarColor']
         );
 
 		$html = give_form_grid_shortcode( $parameters );
