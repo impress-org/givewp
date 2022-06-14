@@ -275,7 +275,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      * @inheritDoc
      * @throws Exception
      */
-    public function updateSubscriptionPaymentMethod(Subscription $subscription, $gatewayData = null)
+    public function updateSubscriptionPaymentMethod(Subscription $subscription, $gatewayData)
     {
         if ($this->subscriptionModule && $this->subscriptionModule->canUpdateSubscriptionPaymentMethod()) {
             $this->subscriptionModule->updateSubscriptionPaymentMethod($subscription, $gatewayData);
