@@ -114,16 +114,6 @@ class Give_API_V2 {
 				'permission_callback' => '__return_true',
 			]
 		);
-
-		register_rest_route(
-			$this->rest_base,
-			'/donor-wall',
-			[
-				'methods'             => 'GET',
-				'callback'            => [ $this, 'get_donor_wall' ],
-				'permission_callback' => '__return_true',
-			]
-		);
 	}
 
 	/**
@@ -176,20 +166,6 @@ class Give_API_V2 {
 		$parameters = $request->get_params();
 
 		return give_form_grid_shortcode( $parameters );
-	}
-
-	/**
-	 * Rest fetch form data callback
-	 *
-	 * @param WP_REST_Request $request
-	 *
-	 * @access public
-	 * @return array|mixed|object
-	 */
-	public function get_donor_wall( $request ) {
-		$parameters = $request->get_params();
-
-		return Give_Donor_Wall::get_instance()->render_shortcode( $parameters );
 	}
 
 	/**
