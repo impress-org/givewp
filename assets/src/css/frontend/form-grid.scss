@@ -38,14 +38,9 @@ $MIN_REM_SIZE: 16px;
             right: 0;
             display: flex;
             align-items: center;
-            height: 20%;
-            padding: 0 16px;
+            padding: 10px 16px;
             border-radius: 2px;
-
-
-            > span:first-child {
-                margin-right: 10px;
-            }
+            gap: 10px;
 
             > span {
                 padding: 4px 10px;
@@ -90,10 +85,7 @@ $MIN_REM_SIZE: 16px;
         background: none;
         margin-bottom: 12px;
         border-radius: 2px;
-
-        > span:first-child {
-            margin-right: 10px;
-        }
+        gap: 10px;
 
         > span {
             padding: 4px 10px;
