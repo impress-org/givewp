@@ -97,6 +97,9 @@ return [
                 'desc'    => __('This color is used to tint the header image (if set), or be the header color if no image is present, as well as the receipt page header color.', 'give'),
                 'type'    => 'colorpicker',
                 'default' => '#1E8CBE',
+                'attributes' => [
+                    'data-field-visibility' => htmlspecialchars(json_encode([ 'classic[visual_appearance][display_header]' => 'enabled' ])),
+                ],
             ],
             [
                 'id'      => 'secure_badge',
