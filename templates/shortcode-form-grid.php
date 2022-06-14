@@ -20,8 +20,6 @@ $excerpt          = ''; // Trimmed form excerpt ready for display.
 
 $flex_direction = $atts['columns'] === '1' ? "row" : "column";
 
-
-
 $activeTemplate = FormUtils::isLegacyForm( $form_id ) ? 'legacy' : Template::getActiveID( $form_id );
 
 /* @var \Give\Form\Template $formTemplate */
@@ -189,7 +187,6 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                             ? $atts['donate_button_text_color']
                             : '#fff';
                         ?>
-
                         <button style="text-decoration-color: <?php echo $button_text_color; ?>">
                                     <span style="color: <?php echo $button_text_color; ?>">
                                         <?php echo $button_text ?: __( 'Donate', 'give' ); ?>
@@ -206,7 +203,8 @@ $formTemplate = Give()->templates->getTemplate( $activeTemplate );
                     ) {
                         echo '<div class="give-form-grid-content__progress">';
                         give_show_goal_progress( $form_id, [
-                            'show_bar' => $atts['show_bar']
+                            'show_bar' => $atts['show_bar'],
+                            'progress_bar_color' => $atts['progress_bar_color'],
                         ] );
                         echo '</div>';
                     }
