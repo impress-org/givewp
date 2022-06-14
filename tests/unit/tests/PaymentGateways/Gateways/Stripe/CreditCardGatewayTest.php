@@ -4,6 +4,7 @@ use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway;
+use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
 
 /**
  * @since 2.19.0
@@ -22,27 +23,37 @@ class CreditCardGatewayTest extends Give_Unit_Test_Case
     /** @test */
     public function it_creates_a_payment_that_is_complete()
     {
-        $_POST['give_stripe_payment_method'] = 'pm_1234';
         $gateway = new CreditCardGateway();
 
         $this->mock(Give_Stripe_Payment_Intent::class, function () {
             return new Give_Stripe_Payment_Intent('succeeded');
         });
 
-        $this->assertInstanceOf(PaymentComplete::class, $gateway->createPayment($this->getDonationModel()));
+        $this->assertInstanceOf(
+            PaymentComplete::class,
+            $gateway->createPayment(
+                $this->getDonationModel(),
+                new PaymentMethod('pm_1234')
+            )
+        );
     }
 
     /** @test */
     public function it_creates_a_payment_that_is_processing()
     {
-        $_POST['give_stripe_payment_method'] = 'pm_1234';
         $gateway = new CreditCardGateway();
 
         $this->mock(Give_Stripe_Payment_Intent::class, function () {
             return new Give_Stripe_Payment_Intent('processing');
         });
 
-        $this->assertInstanceOf(PaymentProcessing::class, $gateway->createPayment($this->getDonationModel()));
+        $this->assertInstanceOf(
+            PaymentProcessing::class,
+            $gateway->createPayment(
+                $this->getDonationModel(),
+                new PaymentMethod('pm_1234')
+            )
+        );
     }
 
     /** @test */
@@ -55,7 +66,13 @@ class CreditCardGatewayTest extends Give_Unit_Test_Case
             return new Give_Stripe_Payment_Intent('requires_action');
         });
 
-        $this->assertInstanceOf(RedirectOffsite::class, $gateway->createPayment($this->getDonationModel()));
+        $this->assertInstanceOf(
+            RedirectOffsite::class,
+            $gateway->createPayment(
+                $this->getDonationModel(),
+                new PaymentMethod('pm_1234')
+            )
+        );
     }
 
     public function getDonationModel()
