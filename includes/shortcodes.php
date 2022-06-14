@@ -814,7 +814,7 @@ function give_form_grid_shortcode( $atts ) {
 			'order'               => 'DESC',
 			'cats'                => '',
 			'tags'                => '',
-			'columns'             => 'best-fit',
+			'columns'             => '1',
 			'show_title'          => true,
 			'show_goal'           => true,
 			'show_bar'            => false,
@@ -829,6 +829,7 @@ function give_form_grid_shortcode( $atts ) {
 			'image_height'        => 'auto',
 			'excerpt_length'      => 16,
 			'display_style'       => 'modal_reveal',
+            'progress_bar_color' => '#66bb6a',
 			'status'              => '', // open or closed.
 		],
 		$atts
