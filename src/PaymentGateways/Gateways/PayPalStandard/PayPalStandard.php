@@ -72,7 +72,7 @@ class PayPalStandard extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function createPayment(Donation $donation): RedirectOffsite
+    public function createPayment(Donation $donation, $gatewayData = null): RedirectOffsite
     {
         return new RedirectOffsite(
             Call::invoke(

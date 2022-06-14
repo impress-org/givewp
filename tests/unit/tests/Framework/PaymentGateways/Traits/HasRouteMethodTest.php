@@ -101,7 +101,7 @@ class GatewayRouteTestGateway extends PaymentGateway
         return self::id();
     }
 
-    public function createPayment(Donation $donation)
+    public function createPayment(Donation $donation, $gatewayData = null)
     {
     }
 
@@ -123,7 +123,8 @@ class GatewayRouteTestGatewaySubscriptionModule extends SubscriptionModule
 
     public function createSubscription(
         Donation $donation,
-        Subscription $subscription
+        Subscription $subscription,
+        $gatewayData = null
     ) {
     }
 

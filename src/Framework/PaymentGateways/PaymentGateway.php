@@ -95,11 +95,11 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
              */
             $gatewayData = apply_filters(
                 "givewp_new_payment_{$donation->gatewayId}_gateway_data",
-                [],
+                null,
                 $donation
             );
 
-            $command = $this->createPayment($donation, ...$gatewayData);
+            $command = $this->createPayment($donation, $gatewayData);
             $this->handleGatewayPaymentCommand($command, $donation);
         } catch (\Exception $exception) {
             PaymentGatewayLog::error(
@@ -136,12 +136,12 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
              */
             $gatewayData = apply_filters(
                 "givewp_new_subscription_{$donation->gatewayId}_gateway_data",
-                [],
+                null,
                 $donation,
                 $subscription
             );
 
-            $command = $this->createSubscription($donation, $subscription, ...$gatewayData);
+            $command = $this->createSubscription($donation, $subscription, $gatewayData);
             $this->handleGatewaySubscriptionCommand($command, $donation, $subscription);
         } catch (\Exception $exception) {
             PaymentGatewayLog::error(
@@ -275,17 +275,10 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      * @inheritDoc
      * @throws Exception
      */
-    public function updateSubscriptionPaymentMethod(Subscription $subscription)
+    public function updateSubscriptionPaymentMethod(Subscription $subscription, $gatewayData = null)
     {
         if ($this->subscriptionModule && $this->subscriptionModule->canUpdateSubscriptionPaymentMethod()) {
-            /*
-             * Donor can update payment method from legacy subscription page and donor dashboard.
-             * In this case, we need to update the payment method on the gateway.
-             * So we need to get data from different context.
-             *
-             * Array destructuring helping us to provide multiple context for the same method.
-             */
-            $this->subscriptionModule->updateSubscriptionPaymentMethod(...func_get_args());
+            $this->subscriptionModule->updateSubscriptionPaymentMethod($subscription, $gatewayData);
             return;
         }
 

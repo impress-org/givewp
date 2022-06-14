@@ -8,9 +8,8 @@ use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
-use Give\Helpers\Call;
-use Give\PaymentGateways\PayPalCommerce\Actions\GetPayPalOrderFromRequest;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
+use Give\PaymentGateways\PayPalCommerce\Models\PayPalOrder;
 
 /**
  * Class PayPalCommerce
@@ -80,24 +79,25 @@ class PayPalCommerce extends PaymentGateway
     /**
      * @since 2.19.0
      *
+     * @param PayPalOrder $payPalOrder
+     *
      * @throws PaymentGatewayException
      */
-    public function createPayment(Donation $donation): GatewayCommand
+    public function createPayment(Donation $donation, $payPalOrder): GatewayCommand
     {
-        $paypalOrder = Call::invoke(GetPayPalOrderFromRequest::class);
-        $command = PaymentComplete::make($paypalOrder->payment->id);
+        $command = PaymentComplete::make($payPalOrder->payment->id);
         $command->paymentNotes = [
             sprintf(
                 __('Transaction Successful. PayPal Transaction ID: %1$s    PayPal Order ID: %2$s', 'give'),
-                $paypalOrder->payment->id,
-                $paypalOrder->id
+                $payPalOrder->payment->id,
+                $payPalOrder->id
             )
         ];
 
         give('payment_meta')->update_meta(
             $donation->id,
             '_give_order_id',
-            $paypalOrder->id
+            $payPalOrder->id
         );
 
         return $command;
@@ -156,9 +156,9 @@ class PayPalCommerce extends PaymentGateway
                 'id' => 'paypal_commerce_accept_venmo',
                 'type' => 'radio_inline',
                 'desc' => esc_html__(
-                            'Displays a button allowing Donors to pay with Venmo (a PayPal Company). Donations still come into your PayPal account and are subject to normal PayPal transaction fees.',
-                            'give'
-                        ),
+                    'Displays a button allowing Donors to pay with Venmo (a PayPal Company). Donations still come into your PayPal account and are subject to normal PayPal transaction fees.',
+                    'give'
+                ),
                 'default' => 'disabled',
                 'options' => [
                     'enabled' => esc_html__('Enabled', 'give'),
