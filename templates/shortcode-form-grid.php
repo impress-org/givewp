@@ -25,7 +25,7 @@ $activeTemplate = FormUtils::isLegacyForm( $form_id ) ? 'legacy' : Template::get
 /* @var \Give\Form\Template $formTemplate */
 $formTemplate = Give()->templates->getTemplate( $activeTemplate );
 
-$renderTags = static function($wrapper_class, $apply_styles = true) use($form_id) {
+$renderTags = static function($wrapper_class, $apply_styles = true) use($form_id , $atts ) {
     if( !taxonomy_exists( 'give_forms_tag' ) ) {
         return '';
     }
