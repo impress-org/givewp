@@ -16,7 +16,7 @@ if ( ( isset( $args['show_goal'] ) && ! filter_var( $args['show_goal'], FILTER_V
 
 $goal_progress_stats = give_goal_progress_stats( $form );
 $goal_format         = $goal_progress_stats['format'];
-$color               = give_get_meta( $form_id, '_give_goal_color', true );
+$color               = $args['progress_bar_color'];
 $show_text           = isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
 $show_bar            = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
 
@@ -43,6 +43,7 @@ $shortcode_stats = apply_filters(
 
 $income = $shortcode_stats['income'];
 $goal   = $shortcode_stats['goal'];
+
 
 switch ( $goal_format ) {
 
@@ -81,10 +82,7 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 <div class="give-goal-progress">
     <?php if ( ! empty( $show_bar ) ) :
         $style = "width:$progress_bar_value%;";
-
-        if ( ! empty($color)) {
-            $style .= ";background: linear-gradient(180deg, {$color} 0%, {$color} 100%), linear-gradient(180deg, #fff 0%, #ccc 100%); background-blend-mode: multiply;";
-        }
+        $style .= "background: linear-gradient(180deg, {$color} 0%, {$color} 100%); background-blend-mode: multiply;";
         ?>
         <div class="progress-bar">
             <div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="<?php echo esc_attr( $progress_bar_value ); ?>">

@@ -53,7 +53,8 @@ const Inspector = ({attributes, setAttributes}) => {
         displayType,
         filter,
         tagTextColor,
-        imageHeightOptions
+        imageHeightOptions,
+        progressBarColor
     } = attributes;
 
     const saveSetting = (name, value) => {
@@ -127,7 +128,6 @@ const Inspector = ({attributes, setAttributes}) => {
               </p></>
       }
   }
-
 
     return (
         <InspectorControls key="inspector">
@@ -327,6 +327,11 @@ const Inspector = ({attributes, setAttributes}) => {
                         value: donateButtonTextColor,
                         onChange: (value) => saveSetting('donateButtonTextColor', value),
                         label: __('Donate Button Text Color', 'give')
+                    },
+                    {
+                        value: progressBarColor,
+                        onChange: (value) => saveSetting('progressBarColor', value),
+                        label: __('Progress Bar Color', 'give')
                     },
 
                 ] }

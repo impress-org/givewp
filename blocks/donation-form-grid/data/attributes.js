@@ -102,6 +102,10 @@ const blockAttributes = {
     filter: {
         type: 'string',
         default: 'tags',
+    },
+    progressBarColor: {
+        type: 'string',
+        default: '#69b86b'
     }
 };
 
