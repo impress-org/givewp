@@ -1,9 +1,15 @@
 @use 'fn';
 
 .give-donation-summary-section {
-    // Hide the heading
+
     .heading {
-        display: none;
+        margin-bottom: 2rem;
+        font-size: 1.1rem;
+        text-align: center;
+        font-weight: 500;
+        color: #6b6b6b;
+        font-style: italic;
+
     }
 
     table {
