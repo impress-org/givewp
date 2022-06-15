@@ -12,18 +12,15 @@ class Hooks
      * once the action is fired. This prevents the need to instantiate a class before adding it to hook.
      *
      * @since 2.8.0
-     *
-     * @param string $tag
-     * @param string $class
-     * @param string $method
-     * @param int    $priority
-     * @param int    $acceptedArgs
-     *
-     * @return void
      */
-    public static function addAction($tag, $class, $method = '__invoke', $priority = 10, $acceptedArgs = 1)
-    {
-        if ( ! method_exists($class, $method)) {
+    public static function addAction(
+        string $tag,
+        string $class,
+        string $method = '__invoke',
+        int $priority = 10,
+        int $acceptedArgs = 1
+    ) {
+        if (!method_exists($class, $method)) {
             throw new InvalidArgumentException("The method $method does not exist on $class");
         }
 
@@ -52,18 +49,15 @@ class Hooks
      * once the filter is fired. This prevents the need to instantiate a class before adding it to hook.
      *
      * @since 2.8.0
-     *
-     * @param string $tag
-     * @param string $class
-     * @param string $method
-     * @param int    $priority
-     * @param int    $acceptedArgs
-     *
-     * @return void
      */
-    public static function addFilter($tag, $class, $method = '__invoke', $priority = 10, $acceptedArgs = 1)
-    {
-        if ( ! method_exists($class, $method)) {
+    public static function addFilter(
+        string $tag,
+        string $class,
+        string $method = '__invoke',
+        int $priority = 10,
+        int $acceptedArgs = 1
+    ) {
+        if (!method_exists($class, $method)) {
             throw new InvalidArgumentException("The method $method does not exist on $class");
         }
 
@@ -92,11 +86,9 @@ class Hooks
      *
      * @since 2.19.6
      *
-     * @param  string  $hookName  The name of the action to be executed.
-     * @param  mixed  ...$args  Optional. Additional arguments which are passed on to the functions hooked to the action. Default empty.
-     * @return void
+     * @param mixed ...$args Optional. Additional arguments which are passed on to the functions hooked to the action. Default empty.
      */
-    public static function doAction($hookName, ...$args)
+    public static function doAction(string $hookName, ...$args)
     {
         do_action($hookName, ...$args);
 

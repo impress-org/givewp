@@ -146,7 +146,6 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      * @since 2.20.0 mutate model in repository and return void
      * @since 2.19.6
      *
-     * @return void
      * @throws Exception
      */
     public function save()

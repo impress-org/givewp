@@ -2,9 +2,6 @@
 
 namespace Give\Framework\PaymentGateways\Routes;
 
-use Give\Framework\Exceptions\Primitives\Exception;
-use Give\Framework\Http\Response\Types\RedirectResponse;
-use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
 use Give\Framework\PaymentGateways\DataTransferObjects\GatewayRouteData;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
@@ -26,15 +23,8 @@ class GatewayRoute
      *
      * @since 2.19.0 - validate secureRouteMethods
      * @since 2.18.0
-     *
-     * @since 2.18.0
-     * @since 2.19.0 - validate secureRouteMethods
-     *
-     * @return void
-     *
-     * @throws PaymentGatewayException
      */
-    public function __invoke()
+    public function __invoke(): PaymentGatewayException
     {
         if ($this->isValidListener()) {
             /** @var PaymentGatewayRegister $paymentGatewaysRegister */
@@ -117,13 +107,8 @@ class GatewayRoute
      * @since 2.19.5 replace nonce with hash
      * @since 2.19.4 replace RouteSignature args with unique donationId
      * @since 2.19.0
-     *
-     * @param string $routeSignature
-     * @param GatewayRouteData $data
-     *
-     * @return void
      */
-    private function validateSignature($routeSignature, GatewayRouteData $data)
+    private function validateSignature(string $routeSignature, GatewayRouteData $data)
     {
         $signature = new RouteSignature(
             $data->gatewayId,

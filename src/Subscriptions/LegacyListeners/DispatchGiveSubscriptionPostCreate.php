@@ -10,9 +10,6 @@ class DispatchGiveSubscriptionPostCreate
 {
     /**
      * @since 2.19.6
-     *
-     * @param  Subscription  $subscription
-     * @return void
      */
     public function __invoke(Subscription $subscription)
     {
