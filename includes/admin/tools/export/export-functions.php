@@ -48,10 +48,9 @@ function give_do_ajax_export() {
 
 	$step     = absint( $_POST['step'] );
 	$class    = sanitize_text_field( $form['give-export-class'] );
-	$filename = isset( $_POST['file_name'] ) ? sanitize_text_field( $_POST['file_name'] ) : null;
 
 	/* @var Give_Batch_Export $export */
-	$export = new $class( $step, $filename );
+	$export = new $class( $step );
 
 	if ( ! $export->can_export() ) {
 		die( '-1' );
@@ -110,7 +109,6 @@ function give_do_ajax_export() {
 				'class'       => $class,
 				'nonce'       => wp_create_nonce( 'give-batch-export' ),
 				'give_action' => 'form_batch_export',
-				'file_name'   => $export->filename,
 			]
 		);
 
