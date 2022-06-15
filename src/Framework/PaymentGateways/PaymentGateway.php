@@ -249,12 +249,13 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      */
     public function synchronizeSubscription(Subscription $subscription)
     {
-        if ($this->subscriptionModule && $this->subscriptionModule->hasGatewayDashboardSubscriptionUrl()) {
+        if ($this->subscriptionModule instanceof SubscriptionTransactionsSynchronizable) {
             $this->subscriptionModule->synchronizeSubscription($subscription);
+
             return;
         }
 
-        throw new Exception('Method has not been implemented yet.');
+        throw new Exception('Gateway does not support syncing subscriptions.');
     }
 
     /**
@@ -264,12 +265,13 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      */
     public function updateSubscriptionAmount(Subscription $subscription, Money $newRenewalAmount)
     {
-        if ($this->subscriptionModule && $this->subscriptionModule->canUpdateSubscriptionAmount()) {
+        if ($this->subscriptionModule instanceof SubscriptionAmountEditable) {
             $this->subscriptionModule->updateSubscriptionAmount($subscription, $newRenewalAmount);
+
             return;
         }
 
-        throw new Exception('Method has not been implemented yet.');
+        throw new Exception('Gateway does not support updating the subscription amount.');
     }
 
     /**
@@ -279,12 +281,13 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      */
     public function updateSubscriptionPaymentMethod(Subscription $subscription, $gatewayData)
     {
-        if ($this->subscriptionModule && $this->subscriptionModule->canUpdateSubscriptionPaymentMethod()) {
+        if ($this->subscriptionModule instanceof SubscriptionPaymentMethodEditable) {
             $this->subscriptionModule->updateSubscriptionPaymentMethod($subscription, $gatewayData);
+
             return;
         }
 
-        throw new Exception('Method has not been implemented yet.');
+        throw new Exception('Gateway does not support updating the subscription payment method.');
     }
 
     /**
@@ -294,11 +297,11 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      */
     public function gatewayDashboardSubscriptionUrl(Subscription $subscription): string
     {
-        if ($this->subscriptionModule && $this->subscriptionModule->hasGatewayDashboardSubscriptionUrl()) {
+        if ($this->subscriptionModule instanceof SubscriptionDashboardLinkable) {
             return $this->subscriptionModule->gatewayDashboardSubscriptionUrl($subscription);
         }
 
-        throw new Exception('Method has not been implemented yet.');
+        throw new Exception('Gateway does not support providing a dashboard link.');
     }
 
     /**
