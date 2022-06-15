@@ -9,6 +9,7 @@
 /tests
 /node_modules
 /assets/src
+/assets/dist/**/*.map
 /vendor/bin
 /vendor/composer/installers
 /vendor/**/*.phar
