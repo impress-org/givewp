@@ -24,6 +24,7 @@ trait Loggable
     /**
      * Returns an array with the basic context details
      *
+     * @unreleased Log meaningful data instead of exception object.
      * @since 2.11.1
      *
      * @return array
