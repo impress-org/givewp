@@ -1,0 +1,23 @@
+<?php
+
+use Give\Framework\Exceptions\Contracts\LoggableException;
+use Give\Framework\Exceptions\Traits\Loggable;
+
+class LoggableTest extends Give_Unit_Test_Case
+{
+    public function testExceptionHasContext()
+    {
+        $e = new MockLoggableException( 'This is a loggable exception.', 42 );
+
+        $logContext = $e->getLogContext();
+
+        // @NOTE: Not asserting the logged exception "Line" because the value is coupled to the test code itself.
+        $this->assertEquals( 'LoggableTest.php', $logContext[ 'exception' ][ 'File' ] );
+        $this->assertEquals( 'This is a loggable exception.', $logContext[ 'exception' ][ 'Message' ] );
+        $this->assertEquals( 42, $logContext[ 'exception' ][ 'Code' ] );
+    }
+}
+
+class MockLoggableException extends Exception implements LoggableException {
+    use Loggable;
+}
