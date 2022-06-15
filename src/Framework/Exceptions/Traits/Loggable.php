@@ -36,7 +36,7 @@ trait Loggable
             'exception' => [
                 'File' => basename($this->getFile()),
                 'Line' => $this->getLine(),
-                'Massage' => $this->getMessage(),
+                'Message' => $this->getMessage(),
                 'Code' => $this->getCode()
             ]
         ];
