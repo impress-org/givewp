@@ -30,7 +30,9 @@ use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Framework\PaymentGateways\Traits\HasRouteMethods;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Helpers\Call;
+use Give\Helpers\Gateways\Utils;
 use Give\Subscriptions\Models\Subscription;
+use ReflectionException;
 
 use function Give\Framework\Http\Response\response;
 
@@ -187,7 +189,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * @unreleased
      * @inheritDoc
-     * @throws Exception
+     * @throws ReflectionException
      */
     public function canSyncSubscriptionWithPaymentGateway(): bool
     {
@@ -195,13 +197,13 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             return $this->subscriptionModule->canSyncSubscriptionWithPaymentGateway();
         }
 
-        throw new Exception(esc_html__('Method has not been implemented yet.', 'give'));
+        return Utils::isFunctionImplementedInGatewayClass($this, 'synchronizeSubscription');
     }
 
     /**
      * @unreleased
      * @inheritDoc
-     * @throws Exception
+     * @throws ReflectionException
      */
     public function canUpdateSubscriptionAmount(): bool
     {
@@ -209,13 +211,13 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             return $this->subscriptionModule->canUpdateSubscriptionAmount();
         }
 
-        throw new Exception(esc_html__('Method has not been implemented yet.', 'give'));
+        return Utils::isFunctionImplementedInGatewayClass($this, 'updateSubscriptionAmount');
     }
 
     /**
      * @unreleased
      * @inheritDoc
-     * @throws Exception
+     * @throws ReflectionException
      */
     public function canUpdateSubscriptionPaymentMethod(): bool
     {
@@ -223,7 +225,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             return $this->subscriptionModule->canUpdateSubscriptionPaymentMethod();
         }
 
-        throw new Exception(esc_html__('Method has not been implemented yet.', 'give'));
+        return Utils::isFunctionImplementedInGatewayClass($this, 'updateSubscriptionPaymentMethod');
     }
 
     /**
