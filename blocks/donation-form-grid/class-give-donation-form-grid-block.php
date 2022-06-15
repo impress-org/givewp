@@ -121,7 +121,7 @@ class Give_Donation_Form_Grid_Block {
 					),
 					'columns'           => array(
 						'type'    => 'string',
-						'default' => 'best-fit',
+						'default' => '1',
 					),
                     'imageSize'           => array(
 						'type'    => 'string',
@@ -149,7 +149,7 @@ class Give_Donation_Form_Grid_Block {
 					),
                     'showProgressBar'          => array(
                         'type'    => 'boolean',
-                        'default' => false,
+                        'default' => true,
                     ),
 					'showFeaturedImage' => array(
 						'type'    => 'boolean',
@@ -157,15 +157,19 @@ class Give_Donation_Form_Grid_Block {
 					),
                     'showDonateButton' => array(
 						'type'    => 'boolean',
-						'default' => false,
+						'default' => true,
 					),
-                    'donateButtonBackgroundColor' => array(
+                    'tagBackgroundColor' => array(
 						'type'    => 'string',
-						'default' => '#66bb6a',
+						'default' => '#69b86b',
 					),
+                    'tagTextColor' => array(
+                        'type'    => 'string',
+                        'default' => '#ffffff',
+                    ),
                     'donateButtonTextColor' => array(
                         'type'    => 'string',
-                        'default' => '#fff',
+                        'default' => '#69b86b',
                     ),
 					'displayType'       => array(
 						'type'    => 'string',
@@ -175,6 +179,18 @@ class Give_Donation_Form_Grid_Block {
                         'type'    => 'boolean',
                         'default' => true,
                     ),
+                    'filter'       => array(
+                        'type'    => 'string',
+                        'default' => 'tags',
+                    ),
+                    'imageHeightOptions'       => array(
+                        'type'    => 'string',
+                        'default' => 'auto',
+                    ),
+                    'progressBarColor'  => array(
+                        'type' => 'string',
+                        'default' => '#69b86b'
+                    )
 				),
 			)
 		);
@@ -205,13 +221,17 @@ class Give_Donation_Form_Grid_Block {
             'excerpt_length'      => $attributes['excerptLength'],
 			'show_featured_image' => $attributes['showFeaturedImage'],
 			'show_donate_button'  => $attributes['showDonateButton'],
-			'donate_button_background_color' => $attributes['donateButtonBackgroundColor'],
-			'donate_button_text_color' => $attributes['donateButtonTextColor'],
+			'tag_background_color' => $attributes['tagBackgroundColor'],
+            'tag_text_color' => $attributes['tagTextColor'],
+            'donate_button_text_color' => $attributes['donateButtonTextColor'],
 			'display_style'       => $attributes['displayType'],
             'paged'               => $attributes['paged'],
             'image_size'          => $attributes['imageSize'],
             'image_height'        => $attributes['imageHeight'],
-		);
+            'filter'              => $attributes['filter'],
+            'image_height_options' => $attributes['imageHeightOptions'],
+            'progress_bar_color'  => $attributes['progressBarColor']
+        );
 
 		$html = give_form_grid_shortcode( $parameters );
 		$html = ! empty( $html ) ? $html : $this->blank_slate();
