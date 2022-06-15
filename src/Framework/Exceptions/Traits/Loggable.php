@@ -32,7 +32,12 @@ trait Loggable
     {
         return [
             'category' => 'Uncaught Exception',
-            'exception' => $this,
+            'exception' => [
+                'File' => basename($this->getFile()),
+                'Line' => $this->getLine(),
+                'Massage' => $this->getMessage(),
+                'Code' => $this->getCode()
+            ]
         ];
     }
 }
