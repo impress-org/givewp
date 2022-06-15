@@ -18,6 +18,7 @@ class LoggableTest extends Give_Unit_Test_Case
         $this->assertEquals('LoggableTest.php', $logContext['exception']['File']);
         $this->assertEquals('This is a loggable exception.', $logContext['exception']['Message']);
         $this->assertEquals(42, $logContext['exception']['Code']);
+        $this->arrayHasKey('Line')->evaluate($logContext['exception']);
     }
 }
 
