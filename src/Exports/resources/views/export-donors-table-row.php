@@ -1,19 +1,26 @@
 <tr class="give-export-donors">
     <td scope="row" class="row-title">
         <h3>
-            <span><?php esc_html_e( 'Export Donors', 'give' ); ?></span>
+            <span><?php
+                esc_html_e('Export Donors', 'give'); ?></span>
         </h3>
-        <p><?php esc_html_e( 'Download a CSV of donors.', 'give' ); ?></p>
+        <p><?php
+            esc_html_e('Download a CSV of donors.', 'give'); ?></p>
     </td>
     <td>
         <form method="post" id="give_donors_export" class="give-export-form">
 
+            <h4 class="give-export-form--heading">
+                <?php
+                esc_html_e('Select Date Range:', 'give'); ?>
+            </h4>
+
             <?php
             echo Give()->html->date_field(
                 [
-                    'id'           => 'giveDonorExport-startDate',
-                    'name'         => 'giveDonorExport-startDate',
-                    'placeholder'  => esc_attr__( 'Start Date', 'give' ),
+                    'id' => 'giveDonorExport-startDate',
+                    'name' => 'giveDonorExport-startDate',
+                    'placeholder' => esc_attr__('Start Date', 'give'),
                     'autocomplete' => 'off',
                 ]
             );
@@ -28,7 +35,7 @@
             );
 
             printf(
-                '<fieldset id="giveDonorExport-searchBy" style="display: none; line-height: 2rem;">
+                '<fieldset id="giveDonorExport-searchBy">
                     <label for="giveDonorExport-searchBy">
                         %s
                     </label>

@@ -2,7 +2,6 @@
 
 namespace Give\Exports;
 
-use DateTime;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give_Batch_Export;
@@ -15,8 +14,8 @@ class DonorsExport extends Give_Batch_Export
     /** @inheritdoc */
     public $export_type = 'donors';
 
-    /** @inheritdoc */
-    protected $posted_data;
+    /** @var array */
+    protected $postedData;
 
     /** @var String */
     protected $startDate;
@@ -30,57 +29,60 @@ class DonorsExport extends Give_Batch_Export
     /**
      * @inheritdoc
      */
-    public function set_properties( $posted_data ) {
-        $this->posted_data = $posted_data;
+    public function set_properties($request)
+    {
+        $this->postedData = $request;
 
-        if( $this->posted_data['giveDonorExport-startDate'] ) {
-            $this->startDate = date('Y-m-d', strtotime($this->posted_data['giveDonorExport-startDate']));
+        if ($this->postedData['giveDonorExport-startDate']) {
+            $this->startDate = date('Y-m-d', strtotime($this->postedData['giveDonorExport-startDate']));
         }
 
-        if( $this->posted_data['giveDonorExport-endDate'] ) {
-            $this->endDate = date('Y-m-d', strtotime($this->posted_data['giveDonorExport-endDate']));
+        if ($this->postedData['giveDonorExport-endDate']) {
+            $this->endDate = date('Y-m-d', strtotime($this->postedData['giveDonorExport-endDate']));
         }
 
-        if( $this->posted_data['searchBy'] ) {
-            $this->searchBy = $this->posted_data['searchBy'];
+        if ($this->postedData['searchBy']) {
+            $this->searchBy = $this->postedData['searchBy'];
         }
     }
 
     /**
-     * @inheritdoc
+     * @unreleased
      */
-    public function csv_cols() {
+    public function csv_cols(): array
+    {
         return $this->flattenAddressColumn(
             array_intersect_key([
-                'full_name' => __( 'Name', 'give' ),
-                'email' => __( 'Email', 'give' ),
+                'full_name' => __('Name', 'give'),
+                'email' => __('Email', 'give'),
                 'address' => [
-                    'address_line1'      => __( 'Address', 'give' ),
-                    'address_line2'      => __( 'Address 2', 'give' ),
-                    'address_city'       => __( 'City', 'give' ),
-                    'address_state'      => __( 'State', 'give' ),
-                    'address_zip'        => __( 'Zip', 'give' ),
-                    'address_country'    => __( 'Country', 'give' ),
+                    'address_line1' => __('Address', 'give'),
+                    'address_line2' => __('Address 2', 'give'),
+                    'address_city' => __('City', 'give'),
+                    'address_state' => __('State', 'give'),
+                    'address_zip' => __('Zip', 'give'),
+                    'address_country' => __('Country', 'give'),
                 ],
-                'userid' => __( 'User ID', 'give' ),
-                'donations' => __( 'Number of donations', 'give' ),
-                'donation_sum' => __( 'Total Donated', 'give' ),
-        ], $this->posted_data[ 'give_export_columns' ] ));
+                'userid' => __('User ID', 'give'),
+                'donations' => __('Number of donations', 'give'),
+                'donation_sum' => __('Total Donated', 'give'),
+            ], $this->postedData['give_export_columns'])
+        );
     }
 
     /**
-     * @inheritdoc
+     * @unreleased
      */
-    public function get_data()
+    public function get_data(): array
     {
         $donorQuery = DB::table('give_donors', 'donors')
             ->distinct()
             ->select(
-                [ 'donors.name', 'full_name' ],
-                [ 'donors.email', 'email' ],
-                [ 'donors.user_id', 'userid' ],
-                [ 'donors.purchase_count', 'donations' ],
-                [ 'donors.purchase_value', 'donation_sum' ]
+                ['donors.name', 'full_name'],
+                ['donors.email', 'email'],
+                ['donors.user_id', 'userid'],
+                ['donors.purchase_count', 'donations'],
+                ['donors.purchase_value', 'donation_sum']
             );
 
         $donationQuery = DB::table('posts', 'donations')
@@ -135,46 +137,42 @@ class DonorsExport extends Give_Batch_Export
     }
 
     /**
-     * @return bool
+     * @unreleased
      */
-    protected function shouldIncludeAddress()
+    protected function shouldIncludeAddress(): bool
     {
-        return isset( $this->posted_data[ 'give_export_columns' ][ 'address' ] );
+        return isset($this->postedData['give_export_columns']['address']);
     }
 
     /**
-     * @param array $columnarData
-     * @return array
+     * @unreleased
      */
-    protected function flattenAddressColumn( $columnarData )
+    protected function flattenAddressColumn(array $columnarData): array
     {
-        return $this->flattenColumn( $columnarData, 'address' );
+        return $this->flattenColumn($columnarData, 'address');
     }
 
     /**
-     * @param array $columnarData
-     * @param string $columnName
-     * @return array
+     * @unreleased
      */
-    protected function flattenColumn( $columnarData, $columnName )
+    protected function flattenColumn(array $columnarData, string $columnName): array
     {
-        if( isset( $columnarData[ $columnName ])) {
-            $columnarData = array_merge( $columnarData, $columnarData[ $columnName ] );
-            unset( $columnarData[ $columnName ] );
+        if (isset($columnarData[$columnName])) {
+            $columnarData = array_merge($columnarData, $columnarData[$columnName]);
+            unset($columnarData[$columnName]);
         }
         return $columnarData;
     }
 
     /**
-     * @param array $exportData
-     * @return array
+     * @unreleased
      */
-    protected function filterExportData( $exportData )
+    protected function filterExportData(array $exportData): array
     {
         /**
          * @unreleased
          * @param $exportData
          */
-        return apply_filters( "give_export_get_data_{$this->export_type}", $exportData );
+        return apply_filters("give_export_get_data_{$this->export_type}", $exportData);
     }
 }

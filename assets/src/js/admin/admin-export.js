@@ -49,68 +49,42 @@ jQuery( document ).ready( function( $ ) {
 						form_ids.push( item.id );
 					} );
 
-					select.prepend( '<option value="0" selected>' + select.data( 'placeholder' ) + '</option>' );
-				} else {
-					// Trigger no result message event.
-					select.prepend( '<option value="0">' + select.data( 'no-form' ) + '</option>' );
+                    select.prepend('<option value="0" selected>' + select.data('placeholder') + '</option>');
+                } else {
+                    // Trigger no result message event.
+                    select.prepend('<option value="0">' + select.data('no-form') + '</option>');
 
-					$form.find( '.give-export-donation-button' ).prop( 'disabled', true );
-				}
+                    $form.find('.give-export-donation-button').prop('disabled', true);
+                }
 
-				$form.find( '.form_ids' ).val( form_ids.join() );
+                $form.find('.form_ids').val(form_ids.join());
 
-				// Trigger update event.
-				$container.prev( 'select.give-select-chosen' ).trigger( 'chosen:updated' );
+                // Trigger update event.
+                $container.prev('select.give-select-chosen').trigger('chosen:updated');
 
-			 	output_give_donations_fields( response );
-			},
-		} );
-	}
+                output_give_donations_fields(response);
+            },
+        });
+    }
 
-
-    let donorExportStartDate, donorExportEndDate;
-    $.datepicker.setDefaults({
-        onSelect: showHideSearchBy,
-        onClose: showHideSearchBy,
+    /**
+     * Update export Donation Form when cat or tag are change
+     *
+     * @since 2.1
+     */
+    $('.give-export_donations #give-export_donations-form .give_forms_categories , .give-export_donations #give-export_donations-form .give_forms_tags').change(function () {
+        give_export_update_donation_form();
     });
 
     /**
-     * Show/hide Donor Export 'Search By' option if the date inputs change
-     *
-     * @unreleased
+     * Ajax call to get donation fields.
      */
-    function showHideSearchBy(dateText, instance){
-        if(instance.id === 'giveDonorExport-startDate'){
-            donorExportStartDate = dateText;
-        }
-        if(instance.id === 'giveDonorExport-endDate'){
-            donorExportEndDate = dateText;
-        }
-        if (donorExportStartDate || donorExportEndDate) {
-            $('#giveDonorExport-searchBy').show();
-        } else {
-            $('#giveDonorExport-searchBy').hide();
-        }
-    }
+    $('.give-export_donations #give-export_donations-form #give_payment_form_select').change(function () {
+        $('.give-export-donations-hide').addClass('give-hidden');
 
-	/**
-	 * Update export Donation Form when cat or tag are change
-	 *
-	 * @since 2.1
-	 */
-	$( '.give-export_donations #give-export_donations-form .give_forms_categories , .give-export_donations #give-export_donations-form .give_forms_tags' ).change( function() {
-		give_export_update_donation_form();
-	} );
+        $('li.give-export-donation-checkbox-remove').remove();
 
-	/**
-	 * Ajax call to get donation fields.
-	 */
-	$( '.give-export_donations #give-export_donations-form #give_payment_form_select' ).change( function() {
-		$( '.give-export-donations-hide' ).addClass( 'give-hidden' );
-
-		$( 'li.give-export-donation-checkbox-remove' ).remove();
-
-		jQuery( document ).trigger( 'give_export_donations_form_change' );
+        jQuery(document).trigger('give_export_donations_form_change');
 
 		let give_form_id;
 
