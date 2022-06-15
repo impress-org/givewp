@@ -123,19 +123,15 @@ class Give_Batch_Export extends Give_Export {
 	 * @param string|null $filename
 	 */
 	public function __construct( $_step = 1, $filename = null ) {
-        if( $filename ) {
-            _deprecated_argument(
-                __CLASS__ . '::' . __FUNCTION__,
-                '2.9.0',
-                'GiveWP provides file name. You can not change file name by giving filename as argument.'
-            );
-        }
-
-		$upload_dir     = wp_upload_dir();
+        $upload_dir     = wp_upload_dir();
 		$this->filetype = '.csv';
-        $this->filename = "give-{$this->export_type}{$this->filetype}";
 
-		$this->file = trailingslashit( $upload_dir['basedir'] ) . $this->filename;
+        if ( null === $filename ) {
+            $hash           = uniqid();
+            $this->filename = "give-{$hash}-{$this->export_type}{$this->filetype}";
+        } else {
+            $this->filename = $filename;
+        }
 
 		if ( ! is_writable( $upload_dir['basedir'] ) ) {
 			$this->is_writable = false;
