@@ -103,7 +103,7 @@ const Content = () => {
                 <SubscriptionTable />
             </Fragment>
         );
-    } else if (subscriptions) {
+    } else if (subscriptions.length > 0) {
         return (
             <Fragment>
                 <Heading>{`${Object.entries(subscriptions).length} ${__('Total Subscriptions', 'give')}`}</Heading>

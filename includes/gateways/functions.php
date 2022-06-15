@@ -129,7 +129,7 @@ function give_get_gateway_admin_label( $gateway ) {
 	$gateways = give_get_payment_gateways();
 	$label    = isset( $gateways[ $gateway ] ) ? $gateways[ $gateway ]['admin_label'] : $gateway;
 
-	if ( $gateway == 'manual' ) {
+	if ( $gateway == 'manual' || $gateway == 'manual_donation' ) {
 		$label = __( 'Test Donation', 'give' );
 	}
 

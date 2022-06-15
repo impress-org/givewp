@@ -2,6 +2,8 @@
 
 namespace Give\DonorDashboards\Routes\Captcha;
 
+use WP_REST_Request;
+
 /**
  * Note: Functionality forked from `give_email_access_login()`.
  *
@@ -15,33 +17,26 @@ trait ProtectedRoute
      *
      * @return bool
      */
-    public function isCaptchaEnabled()
+    public function isCaptchaEnabled(): bool
     {
         $recaptcha_key = give_get_option('recaptcha_key');
         $recaptcha_secret = give_get_option('recaptcha_secret');
-        $recaptcha_enabled = (give_is_setting_enabled(
-            give_get_option('enable_recaptcha')
-        )) && ! empty($recaptcha_key) && ! empty($recaptcha_secret) ? true : false;
 
-        return $recaptcha_enabled;
+        return (give_is_setting_enabled(give_get_option('enable_recaptcha'))) &&
+            !empty($recaptcha_key) &&
+            !empty($recaptcha_secret);
     }
 
     /**
      * @since 2.10.2
-     *
-     * @param string $value
-     * @param WP_REST_Request $request
-     * @param string $param The name of the parameter.
-     *
-     * @return bool
      */
-    public function validateRecaptcha($value, $request, $param)
+    public function validateRecaptcha(string $value, WP_REST_Request $request, string $param): bool
     {
-        if ( ! $this->isCaptchaEnabled()) {
+        if (!$this->isCaptchaEnabled()) {
             return true;
         }
 
-        if ( ! $value) {
+        if (!$value) {
             return false;
         }
 
@@ -66,6 +61,6 @@ trait ProtectedRoute
 
         $response = json_decode($request['body'], true);
 
-        return ! ! $response['success'];
+        return (bool)$response['success'];
     }
 }

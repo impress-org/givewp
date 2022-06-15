@@ -119,7 +119,7 @@ class Classic extends Template implements Hookable, Scriptable
          */
         // Remove goal.
         remove_action('give_pre_form', 'give_show_goal_progress');
-        // Remove intermediate continue button which appear when display style set to other then onpage.
+        // Remove intermediate continue button which appears when display style set to  anything other than "onpage".
         remove_action('give_after_donation_levels', 'give_display_checkout_button');
         // Hide title.
         add_filter('give_form_title', '__return_empty_string');

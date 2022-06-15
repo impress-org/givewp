@@ -61,7 +61,7 @@ function give_get_current_page_url() {
 	 *
 	 * @since 1.0
 	 */
-	return apply_filters( 'give_get_current_page_url', $current_uri );
+	return esc_url_raw( apply_filters( 'give_get_current_page_url', $current_uri ) );
 
 }
 
@@ -1985,7 +1985,7 @@ function give_goal_progress_stats( $form ) {
 	// Define Actual Goal based on the goal format.
 	switch ( $goal_format ) {
 		case 'percentage':
-			$actual     = "{$actual}%";
+			$actual     = "{$progress}%";
 			$total_goal = '';
 			break;
 

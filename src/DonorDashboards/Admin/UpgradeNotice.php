@@ -6,7 +6,7 @@ class UpgradeNotice
 {
 
     /**
-     * Reigster upgrade notice
+     * Register upgrade notice
      *
      * @since 2.10.0
      * @return void

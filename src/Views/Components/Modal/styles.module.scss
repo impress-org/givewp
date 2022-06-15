@@ -20,6 +20,8 @@
 .modal {
     display: block;
     max-width: 600px;
+    max-height: calc(100% - 2rem);
+    overflow-y: auto;
     width: 100%;
     position: absolute;
     top: 50%;
@@ -94,7 +96,7 @@
     padding: 10px 20px;
     height: auto;
     min-height: 40px;
-    max-height: 240px;
+    max-height: 500px;
     overflow-x: auto;
     font-size: 15px;
 
@@ -102,6 +104,10 @@
         font-weight: 600;
         margin-right: 10px;
         margin-bottom: 10px;
+    }
+
+    pre {
+        white-space: break-spaces;
     }
 }
 

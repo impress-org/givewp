@@ -1,11 +1,11 @@
 === GiveWP - Donation Plugin and Fundraising Platform ===
-Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, jason_the_adams, henryholtgeerts, kbjohnson90, alaca, benmeredithgmailcom
+Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, jason_the_adams, henryholtgeerts, kbjohnson90, alaca, benmeredithgmailcom, jonwaldstein, joshuadinh
 Donate link: https://go.givewp.com/home
 Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
-Tested up to: 5.9
-Requires PHP: 5.6
-Stable tag: 2.19.8
+Tested up to: 6.0
+Requires PHP: 7.0
+Stable tag: 2.20.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -83,12 +83,13 @@ For new users, we suggest reviewing our [Getting Started Guide](https://go.givew
 
 If you are a GiveWP customer with an active license of any of our popular add-ons, we'd love to hear from you and support you via our [Priority Support channel](https://go.givewp.com/support).
 
-=== 💳 Accept Credit Card Donations ===
+=== 💳 Accept Credit Card Donations and More ===
 
 GiveWP comes with several payment gateway options:
 
 * **Stripe Donations** -- Our Stripe integration allows you to accept credit card donations on your website. There is a small 2% fee associated with these donations. Want no additional fees? Upgrade to our Stripe Premium add-on to start accepting [Stripe Donations]](https://go.givewp.com/addon-stripe).
 * **PayPal Donations** -- Allow worldwide donations with PayPal Donations. No additional fees applied.
+* **Venmo Donations** -- Give donors the option to pay through Venmo with their account balance or connected bank account. 
 * **Offline Donations** -- Enable your donors to send checks or physical donations with an offline gateway with instructions.
 * **Test Gateway** -- use the Test Gateway to see exactly how your donors will walk through the donation process.
 * **And many more Gateways** - View additional payment gateways on our website. These include Authorize.net, Bitpay, Square, Razorpay, Paytm, and more.
@@ -250,6 +251,35 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.20.2: June 8th, 2022 =
+* Security: Donors are no longer able to view the Donor Dashboard for the email they donated in without logging in
+* Security: Added additional URL escaping around the codebase to protect against XSS attacks
+* Fix: Subscriptions can now be changed again by donors using the legacy subscriptions shortcode
+
+= 2.20.1: May 19th, 2022 =
+* Fix: Corrected an issue where admin notices were displaying strangely
+* Fix: Removed the "Switch to New View" button that would show up in strange admin places when switched to the legacy donor or donation lists
+
+= 2.20.0: May 11th, 2022 =
+* New: Refreshed the donor and donation list screens in the admin
+* New: Significant improvements to the donor wall and form grid blocks
+* Enhancement: Optimized deleting a donation and all of its meta
+* Enhancement: Many under-the-hood improvements Gateway API
+* Enhancement: Updated Romanian currency symbol to RON
+* Enhancement: Logging system has built-in checks to redact sensitive information
+* Fix: Resolved a 3D Secure issue with PayPal Donations
+* Fix: Tags now work properly in the Offline Donations content
+* Fix: Improved error handling if an error occurs with PayPal Donations
+* Fix: Viewing a receipt in the legacy donation history page now works
+* Fix: Prevent a "donation_decimals" notice when adding and updating forms
+* Fix: Percentage goals display properly on the form list
+* Fix: The correct donation form title is shown on the Stripe checkout page
+* Fix: Donor Wall can no longer be accessed outside of the website
+* Fix: Equal operator for conditional fields works again (also affects Form Field Manager)
+* Fix: Improved Multi-Step content to provide a default and avoid confusion
+* Fix: Clicking the main "Donations" menu item goes to the forms list instead of making a new form
+* Fix: Corrected PayPal Donations design when used in Classic template
+
 = 2.19.8: April 6th, 2022 =
 * Fix: Corrected an issue with our javascript translations
 

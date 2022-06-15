@@ -129,7 +129,7 @@ class LoadTemplate
             return;
         }
 
-        // Remove protocol before url comparision.
+        // Remove protocol before url comparison.
         $referer = preg_replace('/^https?:\/\//i', '', untrailingslashit(wp_get_referer()));
         $successPageUrl = preg_replace('/^https?:\/\//i', '', untrailingslashit(FormUtils::getSuccessPageURL()));
 

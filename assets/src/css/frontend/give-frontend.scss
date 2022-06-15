@@ -16,6 +16,7 @@
 @import 'receipt';
 @import 'float-labels';
 @import 'forms';
+@import 'form-grid';
 @import 'embed-form';
 @import 'alerts';
 @import 'layouts';
@@ -49,7 +50,7 @@
 }
 
 .give-grid-ie-utility {
-	margin: 0 -12px;
+	margin: 0 -12px
 }
 
 @supports (display: grid) {

@@ -239,7 +239,7 @@ class DB
         $wpError = self::getQueryErrors($errorCount);
 
         if (!empty($wpError->errors)) {
-            throw DatabaseQueryException::create($wpError->get_error_messages());
+            throw new DatabaseQueryException($wpdb->last_query, $wpError->errors);
         }
 
         return $output;

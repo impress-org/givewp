@@ -1,0 +1,34 @@
+.star {
+    color: #ffba00;
+}
+
+.goalProgress {
+    width: 100%;
+    height: 0.5rem;
+    position: relative;
+    background: rgba(238, 238, 238);
+    border-radius: 1.5625rem;
+    overflow: hidden;
+    margin: 0.3125rem 0 0.125rem;
+
+    & > span {
+        display: block;
+        height: 100%;
+        border-radius: 1.25rem 0.5rem 0.5rem 1.25rem;
+        background-color: rgba(43, 194, 83);
+        position: relative;
+        overflow: hidden;
+    }
+}
+
+
+.shortcode {
+    min-inline-size: 0;
+    inline-size: 100%;
+    color: #2c3338;
+    background-color: #f6f7f7;
+}
+
+.monetary {
+    color: var(--give-primary-color);
+}

@@ -72,7 +72,7 @@ function give_donation_history( $atts, $content = false ) {
 		if ( give_get_receipt_session() || is_user_logged_in() ) {
 			echo sprintf(
 				'<a href="%s">%s</a>',
-				esc_url( give_get_history_page_uri() ),
+				esc_url($_SERVER['HTTP_REFERER'] ),
 				__( '&laquo; Return to All Donations', 'give' )
 			);
 		}
@@ -555,9 +555,9 @@ function give_process_profile_editor_updates( $data ) {
 		 * If the password is changed, then logout and redirect to the same page.
 		 */
 		if ( '2' === $update_code || '3' === $update_code ) {
-			wp_logout( wp_redirect( add_query_arg( $profile_edit_redirect_args, $data['give_redirect'] ) ) );
+			wp_logout();
 		} else {
-			wp_redirect( add_query_arg( $profile_edit_redirect_args, $data['give_redirect'] ) );
+			wp_redirect( esc_url_raw( add_query_arg( $profile_edit_redirect_args, $data['give_redirect'] ) ) );
 		}
 
 		give_die();
@@ -792,11 +792,11 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
  * @type string $display_style       How the form is displayed, either in new page or modal popup.
  *                                       Default 'redirect'. Accepts 'redirect', 'modal'.
  *
- * @unreleased string $show_donate_button Option to show donate button
- * @unreleased string $donate_button_text Default Donate
- * @unreleased string $donate_button_background_color Default #66bb6a
- * @unreleased string $donate_button_text_color Default #fff
- * @unreleased bool $show_bar Default false
+ * @since 2.20.0 string $show_donate_button Option to show donate button
+ * @since 2.20.0 string $donate_button_text Default Donate
+ * @since 2.20.0 string $donate_button_background_color Default #66bb6a
+ * @since 2.20.0 string $donate_button_text_color Default #fff
+ * @since 2.20.0 bool $show_bar Default false
  *
  * @return string|bool The markup of the form grid or false.
  */
@@ -821,7 +821,7 @@ function give_form_grid_shortcode( $atts ) {
 			'show_excerpt'        => true,
 			'show_featured_image' => true,
 			'show_donate_button'  => false,
-			'donate_button_text'  => __('Donate', 'give'),
+            'donate_button_text'  => '',
 			'donate_button_background_color' => '#66bb6a',
 			'donate_button_text_color' => '#fff',
 			'image_size'          => 'medium',

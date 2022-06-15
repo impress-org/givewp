@@ -74,13 +74,15 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 				$value = $item[ $column_name ] ?
 					sprintf(
 						'<a href="%s">%s</a>',
-						add_query_arg(
-							array(
-								'status'  => 'publish',
-								'gateway' => $item['ID'],
-							),
-							$donation_list_page_url
-						),
+                        esc_url(
+                            add_query_arg(
+                                array(
+                                    'status'  => 'publish',
+                                    'gateway' => $item['ID'],
+                                ),
+                                $donation_list_page_url
+                            )
+                        ),
 						$item[ $column_name ]
 					) :
 					$item[ $column_name ];
@@ -90,13 +92,15 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 				$value = $item[ $column_name ] ?
 					sprintf(
 						'<a href="%s">%s</a>',
-						add_query_arg(
-							array(
-								'status'  => 'pending',
-								'gateway' => $item['ID'],
-							),
-							$donation_list_page_url
-						),
+                        esc_url(
+                            add_query_arg(
+                                array(
+                                    'status'  => 'pending',
+                                    'gateway' => $item['ID'],
+                                ),
+                                $donation_list_page_url
+                            )
+                        ),
 						$item[ $column_name ]
 					) :
 					$item[ $column_name ];
@@ -106,12 +110,14 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 				$value = $item[ $column_name ] ?
 					sprintf(
 						'<a href="%s">%s</a>',
-						add_query_arg(
-							array(
-								'gateway' => $item['ID'],
-							),
-							$donation_list_page_url
-						),
+                        esc_url(
+                            add_query_arg(
+                                array(
+                                    'gateway' => $item['ID'],
+                                ),
+                                $donation_list_page_url
+                            )
+                        ),
 						$item[ $column_name ]
 					) :
 					$item[ $column_name ];

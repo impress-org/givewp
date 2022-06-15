@@ -2,7 +2,7 @@
 
 namespace Give\Framework\PaymentGateways;
 
-use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
+use Give\Donations\Models\Donation;
 
 /**
  * @since 2.19.0
@@ -12,17 +12,15 @@ class DonationSummary
     /** @var int */
     protected $length = 255;
 
-    /** @var GatewayPaymentData */
-    protected $paymentData;
+    /** @var Donation */
+    protected $donation;
 
     /**
      * @since 2.19.0
-     *
-     * @param GatewayPaymentData $paymentData
      */
-    public function __construct(GatewayPaymentData $paymentData)
+    public function __construct(Donation $donation)
     {
-        $this->paymentData = $paymentData;
+        $this->donation = $donation;
     }
 
     /**
@@ -30,7 +28,7 @@ class DonationSummary
      *
      * @param int $length
      */
-    public function setLength($length)
+    public function setLength(int $length)
     {
         $this->length = $length;
     }
@@ -40,7 +38,7 @@ class DonationSummary
      *
      * @return string
      */
-    public function getSummaryWithDonor()
+    public function getSummaryWithDonor(): string
     {
         return $this->trimAndFilter(
             implode(' - ', [
@@ -55,7 +53,7 @@ class DonationSummary
      *
      * @return string
      */
-    public function getSummary()
+    public function getSummary(): string
     {
         return $this->trimAndFilter(
             implode(
@@ -71,25 +69,11 @@ class DonationSummary
     /**
      * @since 2.19.0
      *
-     * @param string $property
-     *
-     * @return mixed|void
-     */
-    protected function get($property)
-    {
-        if (property_exists($this->paymentData, $property)) {
-            return $this->paymentData->$property;
-        }
-    }
-
-    /**
-     * @since 2.19.0
-     *
      * @return string
      */
-    protected function getLabel()
+    protected function getLabel(): string
     {
-        $formId = give_get_payment_form_id($this->get('donationId'));
+        $formId = give_get_payment_form_id($this->donation->id);
         $formTitle = get_the_title($formId);
         return $formTitle ?: sprintf(__('Donation Form ID: %d', 'give'), $formId);
     }
@@ -98,28 +82,25 @@ class DonationSummary
      * @since 2.19.0
      * @return string
      */
-    protected function getPriceLabel()
+    protected function getPriceLabel(): string
     {
-        $formId = give_get_payment_form_id($this->get('donationId'));
-        $priceId = $this->get('priceId');
+        $priceId = $this->donation->levelId;
 
         return is_numeric($priceId)
-            ? give_get_price_option_name($formId, $this->get('priceId'))
+            ? give_get_price_option_name($this->donation->formId, $this->donation->levelId)
             : '';
     }
 
     /**
      * @since 2.19.0
-     *
-     * @return string
      */
-    protected function getDonorLabel()
+    protected function getDonorLabel(): string
     {
         return sprintf(
             '%s %s (%s)',
-            $this->get('donorInfo')->firstName,
-            $this->get('donorInfo')->lastName,
-            $this->get('donorInfo')->email
+            $this->donation->firstName,
+            $this->donation->lastName,
+            $this->donation->email
         );
     }
 
@@ -130,7 +111,7 @@ class DonationSummary
      *
      * @return string
      */
-    protected function trimAndFilter($text)
+    protected function trimAndFilter(string $text): string
     {
         /**
          * @since 1.8.12

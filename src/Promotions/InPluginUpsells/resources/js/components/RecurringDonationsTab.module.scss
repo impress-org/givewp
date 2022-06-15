@@ -52,7 +52,7 @@
 .features {
     margin: 0;
     padding: 0;
-    /* Sass doesn’t like that max-content isn’t a number */
+    /* Sass does not like that max-content isn’t a number */
     width: string.unquote('max(max-content, 100%)');
     display: grid;
     row-gap: 0.5rem;

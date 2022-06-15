@@ -22,7 +22,7 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 	/**
 	 * Filter the main form tab.
 	 *
-	 * Note: You can stop print main form if you want to.filter dynamically fire on basis of setting page slug
+	 * Note: You can stop print main form if you want to filter dynamically fire on basis of setting page slug
 	 * For example: if you register a setting page with give-settings menu slug
 	 *              then filter will be give-settings_open_form, give-settings_close_form
 	 *              We are using this filter in includes/admin/tools/class-settings-data.php#L52
@@ -41,6 +41,7 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 		)
 	);
 	?>
+
 	<div class="wrap give-settings-page <?php echo esc_html( $wrapper_class ); ?>">
 
 		<?php echo $form_open_tag; ?>
@@ -69,7 +70,15 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 
 		</div>
 
-		<div class="nav-tab-wrapper give-nav-tab-wrapper">
+        <?php
+        /*
+            Default behavior of WordPress places admin notices directly after the first h-tag inside any element
+            with the class of wrap. The tag below will instruct WordPress to place these notices below the header.
+        */
+        ?>
+        <hr class="wp-header-end hidden">
+
+        <div class="nav-tab-wrapper give-nav-tab-wrapper">
 				<?php
 				foreach ( $tabs as $name => $label ) {
 					echo '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=' . self::$setting_filter_prefix . "&tab={$name}" ) . '" class="nav-tab ' . ( $current_tab === $name ? 'nav-tab-active' : 'give-mobile-hidden' ) . '">' . $label . '</a>';

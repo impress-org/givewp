@@ -59,6 +59,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 			$settings = [];
 
 			$current_section = give_get_current_setting_section();
+            $setupPage = esc_url(admin_url('edit.php?post_type=give_forms&page=give-setup'));
 
 			switch ( $current_section ) {
 				case 'advanced-options':
@@ -125,17 +126,21 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'name'          => __( 'Setup Page', 'give' ),
 							/* translators: %s: about page URL */
 							'desc'          => sprintf(
-								wp_kses(
-									__( 'This option controls the display of the <a href="%s" target="_blank">GiveWP Setup page</a> when GiveWP is first installed.', 'give' ),
-									[
-										'a' => [
-											'href'   => [],
-											'target' => [],
-										],
-									]
-								),
-								esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-setup' ) )
-							),
+                                wp_kses(
+                                    __(
+                                        'This option controls the display of the %s when GiveWP is first installed.',
+                                        'give'
+                                    ),
+                                    [
+                                        'a' => [
+                                            'href' => [],
+                                            'target' => [],
+                                        ],
+                                    ]
+                                ),
+                                SetupPage::getSetupPageEnabledOrDisabled(
+                                ) === SetupPage::ENABLED ? "<a href='$setupPage' target='_blank'>GiveWP Setup page</a>" : 'GiveWP Setup page'
+                            ),
 							'id'            => 'setup_page_enabled',
 							'type'          => 'radio_inline',
 							'default'       => give_is_setting_enabled(

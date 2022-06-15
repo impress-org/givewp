@@ -247,22 +247,22 @@ class AccountManagerSettingField
             return;
         }
 
-        $disconnectUrl = add_query_arg(
+        $disconnectUrl = esc_url_raw(add_query_arg(
             [
                 'account_type' => $stripeAccount['type'],
                 'action' => 'disconnect_stripe_account',
                 'account_slug' => $stripeAccountSlug,
             ],
             wp_nonce_url(admin_url('admin-ajax.php'), 'give_disconnect_connected_stripe_account_' . $stripeAccountSlug)
-        );
+        ));
 
-        $editStatementDescriptorUrl = add_query_arg(
+        $editStatementDescriptorUrl = esc_url_raw(add_query_arg(
             [
                 'action' => 'edit_stripe_account_statement_descriptor',
                 'account-slug' => $stripeAccountSlug,
             ],
             admin_url('admin-ajax.php')
-        );
+        ));
 
         $classes = $stripeAccountSlug === $this->defaultStripeAccountSlug ? ' give-stripe-boxshadow-option-wrap__selected' : '';
         ?>
