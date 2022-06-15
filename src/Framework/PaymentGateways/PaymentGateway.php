@@ -30,9 +30,7 @@ use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Framework\PaymentGateways\Traits\HasRouteMethods;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Helpers\Call;
-use Give\Helpers\Gateways\Utils;
 use Give\Subscriptions\Models\Subscription;
-use ReflectionException;
 
 use function Give\Framework\Http\Response\response;
 
@@ -188,8 +186,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
 
     /**
      * @unreleased
+     *
      * @inheritDoc
-     * @throws ReflectionException
      */
     public function canSyncSubscriptionWithPaymentGateway(): bool
     {
@@ -197,13 +195,13 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             return $this->subscriptionModule->canSyncSubscriptionWithPaymentGateway();
         }
 
-        return Utils::isFunctionImplementedInGatewayClass($this, 'synchronizeSubscription');
+        return false;
     }
 
     /**
      * @unreleased
+     *
      * @inheritDoc
-     * @throws ReflectionException
      */
     public function canUpdateSubscriptionAmount(): bool
     {
@@ -211,13 +209,13 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             return $this->subscriptionModule->canUpdateSubscriptionAmount();
         }
 
-        return Utils::isFunctionImplementedInGatewayClass($this, 'updateSubscriptionAmount');
+        return false;
     }
 
     /**
      * @unreleased
+     *
      * @inheritDoc
-     * @throws ReflectionException
      */
     public function canUpdateSubscriptionPaymentMethod(): bool
     {
@@ -225,13 +223,11 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             return $this->subscriptionModule->canUpdateSubscriptionPaymentMethod();
         }
 
-        return Utils::isFunctionImplementedInGatewayClass($this, 'updateSubscriptionPaymentMethod');
+        return false;
     }
 
     /**
      * @unreleased
-     * @unreleased
-     * @throws Exception
      */
     public function hasGatewayDashboardSubscriptionUrl(): bool
     {
@@ -239,7 +235,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             return $this->subscriptionModule->hasGatewayDashboardSubscriptionUrl();
         }
 
-        throw new Exception('Method has not been implemented yet.');
+        return false;
     }
 
     /**
