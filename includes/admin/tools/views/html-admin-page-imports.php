@@ -49,7 +49,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 							<p><?php esc_html_e( 'Import a CSV of Donations.', 'give' ); ?></p>
 						</td>
 						<td>
-							<a class="button" href="<?php echo add_query_arg( array( 'importer-type' => 'import_donations' ) ); ?>">
+							<a class="button" href="<?php echo esc_url( add_query_arg( array( 'importer-type' => 'import_donations' ) ) ); ?>">
 								<?php esc_html_e( 'Import CSV', 'give' ); ?>
 							</a>
 						</td>
@@ -63,7 +63,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 							<p><?php esc_html_e( 'Import Give\'s settings in JSON format.', 'give' ); ?></p>
 						</td>
 						<td>
-							<a class="button" href="<?php echo add_query_arg( array( 'importer-type' => 'import_core_setting' ) ); ?>">
+							<a class="button" href="<?php echo esc_url( add_query_arg( array( 'importer-type' => 'import_core_setting' ) ) ); ?>">
 								<?php esc_html_e( 'Import JSON', 'give' ); ?>
 							</a>
 						</td>

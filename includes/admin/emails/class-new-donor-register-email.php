@@ -169,7 +169,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 			// Remove user id query param if set from request url.
 			$query = remove_query_arg( array( 'user_id' ), $query );
 
-			$request_url = home_url( '/?' . str_replace( '', '', $query ) );
+			$request_url = esc_url( home_url( '/?' . str_replace( '', '', $query ) ) );
 			?>
 			<script type="text/javascript">
 				function change_preview() {

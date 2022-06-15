@@ -74,7 +74,7 @@ $give_updates = Give_Updates::get_instance();
 													give_test_ajax_works() ? ' ' . __( 'in the background.', 'give' ) : '.'
 												)
 												: __( 'GiveWP needs to update the database.', 'give' ),
-											$db_update_url,
+											esc_url( $db_update_url ),
 											( $is_doing_updates ? 'give-hidden' : '' ),
 											__( 'Update now', 'give' )
 										);
@@ -173,7 +173,7 @@ $give_updates = Give_Updates::get_instance();
 											'give'
 										),
 										$plugin_updates,
-										$plugin_update_url
+										esc_url( $plugin_update_url )
 									);
 									?>
 								</p>

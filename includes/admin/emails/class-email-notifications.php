@@ -396,7 +396,7 @@ class Give_Email_Notifications {
 		}
 
 		// Remove the test email query arg.
-		wp_redirect( remove_query_arg( 'give_action' ) );
+		wp_redirect( esc_url_raw( remove_query_arg( 'give_action' ) ) );
 		exit;
 	}
 

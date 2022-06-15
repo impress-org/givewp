@@ -34,18 +34,18 @@ class NewStripeAccountOnBoardingController
      */
     public function __invoke()
     {
-        if ( ! current_user_can('manage_give_settings')) {
+        if (!current_user_can('manage_give_settings')) {
             return;
         }
 
         $requestedData = NewStripeAccountOnBoardingDto::fromArray(give_clean($_GET));
 
-        if ( ! $requestedData->hasValidateData()) {
+        if (!$requestedData->hasValidateData()) {
             return;
         }
 
         $stripe_accounts = give_stripe_get_all_accounts();
-        $secret_key = ! give_is_test_mode() ? $requestedData->stripeAccessToken : $requestedData->stripeAccessTokenTest;
+        $secret_key = !give_is_test_mode() ? $requestedData->stripeAccessToken : $requestedData->stripeAccessTokenTest;
 
         Stripe::setApiKey($secret_key);
 
@@ -69,7 +69,7 @@ class NewStripeAccountOnBoardingController
             return;
         }
 
-        $account_name = ! empty($account_details->business_profile->name) ?
+        $account_name = !empty($account_details->business_profile->name) ?
             $account_details->business_profile->name :
             $account_details->settings->dashboard->display_name;
         $account_slug = $account_details->id;
@@ -77,7 +77,7 @@ class NewStripeAccountOnBoardingController
         $account_country = $account_details->country;
 
         // Set first Stripe account as default.
-        if ( ! $stripe_accounts) {
+        if (!$stripe_accounts) {
             give_update_option('_give_stripe_default_account', $account_slug);
         }
 
@@ -101,7 +101,7 @@ class NewStripeAccountOnBoardingController
             $this->settings->addNewStripeAccount($accountDetailModel);
 
             if ($requestedData->formId) {
-                if ( ! Settings::getDefaultStripeAccountSlugForDonationForm($requestedData->formId)) {
+                if (!Settings::getDefaultStripeAccountSlugForDonationForm($requestedData->formId)) {
                     Settings::setDefaultStripeAccountSlugForDonationForm(
                         $requestedData->formId,
                         $accountDetailModel->accountSlug
@@ -116,15 +116,17 @@ class NewStripeAccountOnBoardingController
             }
 
             wp_redirect(
-                add_query_arg(
-                    ['stripe_account' => 'connected'],
-                    $requestedData->formId ?
-                        admin_url(
-                            "post.php?post=$requestedData->formId&action=edit&give_tab=stripe_form_account_options"
-                        ) :
-                        admin_url(
-                            'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings'
-                        )
+                esc_url_raw(
+                    add_query_arg(
+                        ['stripe_account' => 'connected'],
+                        $requestedData->formId ?
+                            admin_url(
+                                "post.php?post=$requestedData->formId&action=edit&give_tab=stripe_form_account_options"
+                            ) :
+                            admin_url(
+                                'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings'
+                            )
+                    )
                 )
             );
             exit();

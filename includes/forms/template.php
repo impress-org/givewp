@@ -1493,7 +1493,7 @@ function give_get_login_fields( $form_id ) {
 		<?php if ( $show_register_form == 'both' ) { ?>
 			<p class="give-new-account-link">
 				<?php _e( 'Don\'t have an account?', 'give' ); ?>&nbsp;
-				<a href="<?php echo remove_query_arg( 'login' ); ?>" class="give-checkout-register-cancel"
+				<a href="<?php echo esc_url( remove_query_arg( 'login' ) ); ?>" class="give-checkout-register-cancel"
 				   data-action="give_checkout_register">
 					<?php
 					if ( give_logged_in_only( $form_id ) ) {
@@ -2421,7 +2421,7 @@ function give_redirect_and_popup_form( $redirect, $args ) {
 	}
 
 	// Return the modified URL.
-	return $redirect;
+	return esc_url( $redirect );
 }
 
 add_filter( 'give_send_back_to_checkout', 'give_redirect_and_popup_form', 10, 2 );

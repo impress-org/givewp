@@ -77,7 +77,7 @@ class AdminActionHandler
 
         $this->usageTrackingOnBoarding->disableNotice($timestamp);
 
-        wp_safe_redirect(remove_query_arg('give_action'));
+        wp_safe_redirect(esc_url_raw(remove_query_arg('give_action')));
         exit();
     }
 
@@ -101,7 +101,7 @@ class AdminActionHandler
             $this->settings->saveUsageTrackingOptionValue('disabled');
         }
 
-        wp_safe_redirect(remove_query_arg('give_action'));
+        wp_safe_redirect(esc_url_raw(remove_query_arg('give_action')));
         exit();
     }
 

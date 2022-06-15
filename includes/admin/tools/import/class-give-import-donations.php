@@ -350,7 +350,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 
 					<p>
 						<a class="button button-large button-secondary"
-						   href="<?php echo add_query_arg( $query_arg, admin_url( 'edit.php' ) ); ?>"><?php echo $text; ?></a>
+						   href="<?php echo esc_url( add_query_arg( $query_arg, admin_url( 'edit.php' ) ) ); ?>"><?php echo $text; ?></a>
 					</p>
 				</th>
 			</tr>
