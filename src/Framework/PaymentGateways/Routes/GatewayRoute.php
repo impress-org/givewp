@@ -23,8 +23,10 @@ class GatewayRoute
      *
      * @since 2.19.0 - validate secureRouteMethods
      * @since 2.18.0
+     *
+     * @throws PaymentGatewayException
      */
-    public function __invoke(): PaymentGatewayException
+    public function __invoke()
     {
         if ($this->isValidListener()) {
             /** @var PaymentGatewayRegister $paymentGatewaysRegister */
