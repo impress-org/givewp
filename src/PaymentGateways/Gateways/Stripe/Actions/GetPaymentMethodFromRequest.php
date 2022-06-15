@@ -30,7 +30,7 @@ class GetPaymentMethodFromRequest
 
         DonationNote::create([
             'donationId' => $donation->id,
-            'content' => "Stripe Source/Payment Method ID: {$paymentMethod->id()}"
+            'content' => sprintf(__('Stripe Source/Payment Method ID: %s', 'give'), $paymentMethod->id())
         ]);
 
         return $paymentMethod;
