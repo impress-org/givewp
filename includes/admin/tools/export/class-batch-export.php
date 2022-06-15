@@ -127,7 +127,7 @@ class Give_Batch_Export extends Give_Export {
             _deprecated_argument(
                 __CLASS__ . '::' . __FUNCTION__,
                 '2.9.0',
-                'GiveWP gives provides file name. You can not change file name by giving filename as argument.'
+                'GiveWP provides file name. You can not change file name by giving filename as argument.'
             );
         }
 
