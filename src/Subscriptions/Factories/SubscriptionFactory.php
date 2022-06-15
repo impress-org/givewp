@@ -56,6 +56,7 @@ class SubscriptionFactory extends ModelFactory
      * @since 2.19.6
      *
      * @param $model
+     * @return void
      * @throws Exception
      */
     public function afterCreating($model)

@@ -110,12 +110,18 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
     }
 
     /**
+     *
      * Register Gateway with Service Container as Singleton
      * with option of adding Subscription Module through filter "give_gateway_{$gatewayId}_subscription_module"
      *
      * @since 2.18.0
+     *
+     * @param string $gatewayClass
+     * @param string $gatewayId
+     *
+     * @return void
      */
-    private function registerGatewayWithServiceContainer(string $gatewayClass, string $gatewayId)
+    private function registerGatewayWithServiceContainer($gatewayClass, $gatewayId)
     {
         give()->singleton($gatewayClass, function (Container $container) use ($gatewayClass, $gatewayId) {
             $subscriptionModule = apply_filters("givewp_gateway_{$gatewayId}_subscription_module", null);

@@ -24,6 +24,8 @@ class GatewayRoute
      * @since 2.19.0 - validate secureRouteMethods
      * @since 2.18.0
      *
+     * @return void
+     *
      * @throws PaymentGatewayException
      */
     public function __invoke()
@@ -109,8 +111,13 @@ class GatewayRoute
      * @since 2.19.5 replace nonce with hash
      * @since 2.19.4 replace RouteSignature args with unique donationId
      * @since 2.19.0
+     *
+     * @param string $routeSignature
+     * @param GatewayRouteData $data
+     *
+     * @return void
      */
-    private function validateSignature(string $routeSignature, GatewayRouteData $data)
+    private function validateSignature($routeSignature, GatewayRouteData $data)
     {
         $signature = new RouteSignature(
             $data->gatewayId,

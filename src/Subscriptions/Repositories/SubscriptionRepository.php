@@ -50,8 +50,7 @@ class SubscriptionRepository
     /**
      * @since 2.19.6
      *
-     * @param int $subscriptionId
-     *
+     * @param  int  $subscriptionId
      * @return ModelQueryBuilder<Subscription>
      */
     public function queryById(int $subscriptionId): ModelQueryBuilder
@@ -76,8 +75,7 @@ class SubscriptionRepository
     /**
      * @since 2.19.6
      *
-     * @param int $donationId
-     *
+     * @param  int  $donationId
      * @return ModelQueryBuilder<Subscription>
      */
     public function queryByDonationId(int $donationId): ModelQueryBuilder
@@ -89,8 +87,7 @@ class SubscriptionRepository
     /**
      * @since 2.19.6
      *
-     * @param int $donorId
-     *
+     * @param  int  $donorId
      * @return ModelQueryBuilder<Subscription>
      */
     public function queryByDonorId(int $donorId): ModelQueryBuilder
@@ -127,6 +124,7 @@ class SubscriptionRepository
      * @unreleased replace actions with givewp_subscription_creating and givewp_subscription_created
      * @since 2.19.6
      *
+     * @return void
      * @throws Exception
      */
     public function insert(Subscription $subscription)
@@ -149,8 +147,7 @@ class SubscriptionRepository
                 'frequency' => $subscription->frequency,
                 'initial_amount' => $subscription->amount->formatToDecimal(),
                 'recurring_amount' => $subscription->amount->formatToDecimal(),
-                'recurring_fee_amount' => $subscription->feeAmountRecovered !== null ? $subscription->feeAmountRecovered->formatToDecimal(
-                ) : 0,
+                'recurring_fee_amount' => $subscription->feeAmountRecovered !== null ? $subscription->feeAmountRecovered->formatToDecimal() : 0,
                 'bill_times' => $subscription->installments,
                 'transaction_id' => $subscription->transactionId ?? '',
                 'product_id' => $subscription->donationFormId,
@@ -181,6 +178,7 @@ class SubscriptionRepository
      * @unreleased replace actions with givewp_subscription_updating and givewp_subscription_updated
      * @since 2.19.6
      *
+     * @return void
      * @throws Exception
      */
     public function update(Subscription $subscription)
@@ -202,8 +200,7 @@ class SubscriptionRepository
                     'frequency' => $subscription->frequency,
                     'initial_amount' => $subscription->amount->formatToDecimal(),
                     'recurring_amount' => $subscription->amount->formatToDecimal(),
-                    'recurring_fee_amount' => isset($subscription->feeAmountRecovered) ? $subscription->feeAmountRecovered->formatToDecimal(
-                    ) : 0,
+                    'recurring_fee_amount' => isset($subscription->feeAmountRecovered) ? $subscription->feeAmountRecovered->formatToDecimal() : 0,
                     'bill_times' => $subscription->installments,
                     'transaction_id' => $subscription->transactionId ?? '',
                     'product_id' => $subscription->donationFormId,
@@ -310,6 +307,8 @@ class SubscriptionRepository
 
     /**
      * @since 2.19.6
+     *
+     * @return void
      */
     private function validateSubscription(Subscription $subscription)
     {
