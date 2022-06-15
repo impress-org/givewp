@@ -19,7 +19,7 @@ class GetPaymentMethodFromRequest
     public function __invoke(Donation $donation): PaymentMethod
     {
         if (!isset($_POST['give_stripe_payment_method'])) {
-            throw new PaymentMethodException(esc_html__('Payment Method Not Found', 'give'));
+            throw new PaymentMethodException('Payment Method Not Found');
         }
 
         $paymentMethod = new PaymentMethod(
@@ -30,7 +30,7 @@ class GetPaymentMethodFromRequest
 
         DonationNote::create([
             'donationId' => $donation->id,
-            'content' => sprintf(__('Stripe Source/Payment Method ID: %s', 'give'), $paymentMethod->id())
+            'content' => "Stripe Source/Payment Method ID: {$paymentMethod->id()}"
         ]);
 
         return $paymentMethod;

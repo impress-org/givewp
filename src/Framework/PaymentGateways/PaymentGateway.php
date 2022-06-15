@@ -239,7 +239,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             return $this->subscriptionModule->hasGatewayDashboardSubscriptionUrl();
         }
 
-        throw new Exception(esc_html__('Method has not been implemented yet.', 'give'));
+        throw new Exception('Method has not been implemented yet.');
     }
 
     /**
@@ -254,7 +254,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             return;
         }
 
-        throw new Exception(esc_html__('Method has not been implemented yet.', 'give'));
+        throw new Exception('Method has not been implemented yet.');
     }
 
     /**
@@ -269,7 +269,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             return;
         }
 
-        throw new Exception(esc_html__('Method has not been implemented yet.', 'give'));
+        throw new Exception('Method has not been implemented yet.');
     }
 
     /**
@@ -284,7 +284,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             return;
         }
 
-        throw new Exception(esc_html__('Method has not been implemented yet.', 'give'));
+        throw new Exception('Method has not been implemented yet.');
     }
 
     /**
@@ -298,7 +298,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             return $this->subscriptionModule->gatewayDashboardSubscriptionUrl($subscription);
         }
 
-        throw new Exception(esc_html__('Method has not been implemented yet.', 'give'));
+        throw new Exception('Method has not been implemented yet.');
     }
 
     /**
