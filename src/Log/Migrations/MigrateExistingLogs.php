@@ -88,6 +88,7 @@ class MigrateExistingLogs extends Migration
 
         // Check if legacy table exist
         if ( ! $this->legacyLogsTable->exist()) {
+            give_set_upgrade_complete(self::id());
             return;
         }
 
