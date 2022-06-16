@@ -68,32 +68,38 @@ class DonationResponseData implements Arrayable
      * @var string
      */
     public $donationType;
+    /**
+     * @var string
+     */
+    public $name;
 
     /**
      * Convert data from object to Donation
      *
-     * @param object $donation
+     * @param  object  $donation
      *
+     * @unreleased use meta keys as camelcase
      * @since 2.20.0
-     *
-     * @return self
      */
-    public static function fromObject($donation)
+    public static function fromObject($donation): DonationResponseData
     {
         $self = new static();
 
         $self->id = (int)$donation->id;
-        $self->formId = (int)$donation->{DonationMetaKeys::FORM_ID()};
-        $self->formTitle = $donation->{DonationMetaKeys::FORM_TITLE()};
-        $self->amount = html_entity_decode(give_currency_filter(give_format_amount($donation->{DonationMetaKeys::AMOUNT()})));
-        $self->donorId = (int)$donation->{DonationMetaKeys::DONOR_ID()};
-        $self->name = $donation->{DonationMetaKeys::FIRST_NAME()} . ' ' . $donation->{DonationMetaKeys::LAST_NAME()};
-        $self->email = $donation->{DonationMetaKeys::EMAIL()};
-        $self->gateway = give_get_gateway_admin_label($donation->{DonationMetaKeys::GATEWAY()});
+        $self->formId = (int)$donation->{DonationMetaKeys::FORM_ID()->getKeyAsCamelCase()};
+        $self->formTitle = $donation->{DonationMetaKeys::FORM_TITLE()->getKeyAsCamelCase()};
+        $self->amount = html_entity_decode(
+            give_currency_filter(give_format_amount($donation->{DonationMetaKeys::AMOUNT()->getKeyAsCamelCase()}))
+        );
+        $self->donorId = (int)$donation->{DonationMetaKeys::DONOR_ID()->getKeyAsCamelCase()};
+        $self->name = $donation->{DonationMetaKeys::FIRST_NAME()->getKeyAsCamelCase(
+            )} . ' ' . $donation->{DonationMetaKeys::LAST_NAME()->getKeyAsCamelCase()};
+        $self->email = $donation->{DonationMetaKeys::EMAIL()->getKeyAsCamelCase()};
+        $self->gateway = give_get_gateway_admin_label($donation->{DonationMetaKeys::GATEWAY()->getKeyAsCamelCase()});
         $self->createdAt = Date::getDateTime($donation->createdAt);
         $self->status = new DonationStatus($donation->status);
-        $self->paymentMode = $donation->{DonationMetaKeys::MODE()};
-        $self->anonymous = (bool)$donation->{DonationMetaKeys::ANONYMOUS()};
+        $self->paymentMode = $donation->{DonationMetaKeys::MODE()->getKeyAsCamelCase()};
+        $self->anonymous = (bool)$donation->{DonationMetaKeys::ANONYMOUS()->getKeyAsCamelCase()};
         $self->donationType = self::getDonationType($donation);
 
         return $self;
@@ -103,9 +109,8 @@ class DonationResponseData implements Arrayable
      * Convert DTO to array
      *
      * @since 2.20.0
-     * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return get_object_vars($this);
     }
@@ -113,18 +118,30 @@ class DonationResponseData implements Arrayable
     /**
      * Get donation type to display on front-end
      *
+     * @unreleased refactor conditional for subscription renewals
      * @since 2.20.0
-     * @param object $donation
-     * @return string
+     * @param  object  $donation
      */
-    private static function getDonationType($donation)
+    private static function getDonationType($donation): string
     {
-        if ($donation->{DonationMetaKeys::IS_RECURRING()}) {
-            if ($donation->{DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION()}) {
-                return 'subscription';
-            }
+        /**
+         * Initial donations will have a special meta key
+         */
+        if ($donation->{DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION()->getKeyAsCamelCase()}) {
+            return 'subscription';
+        }
+
+        $hasRenewalStatus = $donation->status === DonationStatus::RENEWAL;
+        $hasSubscriptionId = !empty($donation->{DonationMetaKeys::SUBSCRIPTION_ID()->getKeyAsCamelCase()});
+        $hasRenewalMetaKey = !empty($donation->{DonationMetaKeys::IS_RECURRING()->getKeyAsCamelCase()});
+
+        /**
+         * Renewals are determined by a few different ways through GiveWP versions
+         */
+        if ($hasRenewalStatus || $hasSubscriptionId || $hasRenewalMetaKey) {
             return 'renewal';
         }
+
         return 'single';
     }
 }

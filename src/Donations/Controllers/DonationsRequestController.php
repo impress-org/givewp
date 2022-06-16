@@ -48,18 +48,7 @@ class DonationsRequestController
                 'give_donationmeta',
                 'id',
                 'donation_id',
-                DonationMetaKeys::FORM_ID,
-                DonationMetaKeys::FORM_TITLE,
-                DonationMetaKeys::AMOUNT,
-                DonationMetaKeys::DONOR_ID,
-                DonationMetaKeys::FIRST_NAME,
-                DonationMetaKeys::LAST_NAME,
-                DonationMetaKeys::EMAIL,
-                DonationMetaKeys::GATEWAY,
-                DonationMetaKeys::MODE,
-                DonationMetaKeys::ANONYMOUS,
-                DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION,
-                DonationMetaKeys::IS_RECURRING
+                ...DonationMetaKeys::getColumnsForAttachMetaQuery()
             )
             ->where('post_type', 'give_payment');
 
