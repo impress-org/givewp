@@ -133,6 +133,8 @@ class Give_Batch_Export extends Give_Export {
             $this->filename = $filename;
         }
 
+        $this->file = trailingslashit( $upload_dir['basedir'] ) . $this->filename;
+
 		if ( ! is_writable( $upload_dir['basedir'] ) ) {
 			$this->is_writable = false;
 		}
