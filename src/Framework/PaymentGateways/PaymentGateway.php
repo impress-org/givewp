@@ -30,9 +30,9 @@ use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Framework\PaymentGateways\Traits\HasRouteMethods;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Helpers\Call;
-use Give\Helpers\Gateways\Utils;
 use Give\Subscriptions\Models\Subscription;
 use ReflectionException;
+use ReflectionMethod;
 
 use function Give\Framework\Http\Response\response;
 
@@ -197,7 +197,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             return $this->subscriptionModule->canSyncSubscriptionWithPaymentGateway();
         }
 
-        return Utils::isFunctionImplementedInGatewayClass($this, 'synchronizeSubscription');
+        return $this->isFunctionImplementedInGatewayClass('synchronizeSubscription');
     }
 
     /**
@@ -211,7 +211,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             return $this->subscriptionModule->canUpdateSubscriptionAmount();
         }
 
-        return Utils::isFunctionImplementedInGatewayClass($this, 'updateSubscriptionAmount');
+        return $this->isFunctionImplementedInGatewayClass('updateSubscriptionAmount');
     }
 
     /**
@@ -225,7 +225,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             return $this->subscriptionModule->canUpdateSubscriptionPaymentMethod();
         }
 
-        return Utils::isFunctionImplementedInGatewayClass($this, 'updateSubscriptionPaymentMethod');
+        return $this->isFunctionImplementedInGatewayClass('updateSubscriptionPaymentMethod');
     }
 
     /**
@@ -476,5 +476,15 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
         }
 
         return $this->callOwnRouteMethod($method, $queryParams);
+    }
+
+    /**
+     * @unreleased
+     * @throws ReflectionException
+     */
+    private function isFunctionImplementedInGatewayClass(string $method): bool
+    {
+        $reflector = new ReflectionMethod($this, $method);
+        return ($reflector->getDeclaringClass()->getName() === get_class($this));
     }
 }
