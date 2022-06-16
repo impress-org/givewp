@@ -45,7 +45,7 @@ function give_process_batch_export_form() {
 	 */
 	do_action( 'give_batch_export_class_include', $_REQUEST['class'] );
 
-    $filename = basename(sanitize_file_name($_REQUEST['file_name']));
+    $filename = basename(sanitize_file_name($_REQUEST['file_name']), '.csv');
 
     $export = new $_REQUEST['class']( 1, $filename );
 	$export->export();

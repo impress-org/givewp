@@ -130,7 +130,7 @@ class Give_Batch_Export extends Give_Export {
             $hash           = uniqid();
             $this->filename = "give-{$hash}-{$this->export_type}{$this->filetype}";
         } else {
-            $this->filename = $filename;
+            $this->filename = "{$filename}{$this->filetype}";
         }
 
         $this->file = trailingslashit( $upload_dir['basedir'] ) . $this->filename;
