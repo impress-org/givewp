@@ -116,6 +116,7 @@ class Give_Batch_Export extends Give_Export {
 	/**
 	 * Give_Batch_Export constructor.
 	 *
+     * @unreleased Create only csv file.
 	 * @since 2.9.0 add hash to filename to avoid collisions
 	 * @since 1.5
 	 *
@@ -123,18 +124,17 @@ class Give_Batch_Export extends Give_Export {
 	 * @param string|null $filename
 	 */
 	public function __construct( $_step = 1, $filename = null ) {
-
-		$upload_dir     = wp_upload_dir();
+        $upload_dir     = wp_upload_dir();
 		$this->filetype = '.csv';
 
-		if ( null === $filename ) {
-			$hash           = uniqid();
-			$this->filename = "give-{$hash}-{$this->export_type}{$this->filetype}";
-		} else {
-			$this->filename = $filename;
-		}
+        if ( null === $filename ) {
+            $hash           = uniqid();
+            $this->filename = "give-{$hash}-{$this->export_type}{$this->filetype}";
+        } else {
+            $this->filename = "{$filename}{$this->filetype}";
+        }
 
-		$this->file = trailingslashit( $upload_dir['basedir'] ) . $this->filename;
+        $this->file = trailingslashit( $upload_dir['basedir'] ) . $this->filename;
 
 		if ( ! is_writable( $upload_dir['basedir'] ) ) {
 			$this->is_writable = false;
