@@ -337,7 +337,6 @@ function give_show_upgrade_notices( $give_updates ) {
 			'callback' => 'give_v20_rename_donor_tables_callback',
 			'depend'   => [
 				'v20_move_metadata_into_new_table',
-				'v20_logs_upgrades',
 				'v20_upgrades_form_metadata',
 				'v20_upgrades_payment_metadata',
 				'v20_upgrades_user_address',
