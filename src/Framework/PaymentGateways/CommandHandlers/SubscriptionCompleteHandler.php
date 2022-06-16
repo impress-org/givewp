@@ -2,58 +2,30 @@
 
 namespace Give\Framework\PaymentGateways\CommandHandlers;
 
+use Exception;
+use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
-use Give_Subscription;
-use Give_Subscriptions_DB;
+use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
-class SubscriptionCompleteHandler  {
+class SubscriptionCompleteHandler
+{
     /**
+     * @since 2.21.0 replace logic with models
      * @since 2.18.0
      *
-     * @param  SubscriptionComplete  $subscriptionComplete
-     * @param  int  $subscriptionId
-     * @param  int  $donationId
-     * @return void
+     * @throws Exception
      */
-    public function __invoke(SubscriptionComplete $subscriptionComplete, $subscriptionId, $donationId)
+    public function __invoke(SubscriptionComplete $subscriptionComplete, Subscription $subscription, Donation $donation)
     {
-        give_update_payment_status($donationId);
-        give_set_payment_transaction_id($donationId, $subscriptionComplete->gatewayTransactionId);
+        $donation->status = DonationStatus::COMPLETE();
+        $donation->gatewayTransactionId = $subscriptionComplete->gatewayTransactionId;
+        $donation->save();
 
-        if (function_exists('give_recurring_update_subscription_status') && class_exists('Give_Subscriptions_DB')) {
-            give_recurring_update_subscription_status($subscriptionId, 'active');
-
-            $subscription = $this->getSubscription($subscriptionId);
-
-            $subscription->update([
-                'profile_id' => $subscriptionComplete->gatewaySubscriptionId,
-                'transaction_id' => $subscriptionComplete->gatewayTransactionId
-            ]);
-        }
-    }
-
-     /**
-     * @since 2.18.0
-     *
-     * @return Give_Subscriptions_DB
-     */
-    private function subscriptions()
-    {
-        /**
-         * @var Give_Subscriptions_DB $subscriptions
-         */
-        return give(Give_Subscriptions_DB::class);
-    }
-
-    /**
-     * @since 2.18.0
-     *
-     * @param  int  $subscriptionId
-     *
-     * @return Give_Subscription
-     */
-    private function getSubscription($subscriptionId)
-    {
-        return current($this->subscriptions()->get_subscriptions(['id' => $subscriptionId]));
+        $subscription->status = SubscriptionStatus::ACTIVE();
+        $subscription->gatewaySubscriptionId = $subscriptionComplete->gatewaySubscriptionId;
+        $subscription->transactionId = $subscriptionComplete->gatewayTransactionId;
+        $subscription->save();
     }
 }

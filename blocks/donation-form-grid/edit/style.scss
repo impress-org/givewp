@@ -1,0 +1,62 @@
+.give-form-grid-inspector{
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    &__filter {
+        margin-top: -18px !important;
+    }
+
+    &__help {
+        font-size: 0.75rem;
+        color: rgb(117, 117, 117);
+        font-style: normal;
+        margin: -15px  0 15px 0 !important;
+    }
+
+
+
+    .components-base-control__label {
+        margin: 0 !important;
+    }
+
+    .components-base-control__field {
+        display: flex !important;
+        flex-direction: row!important;
+        align-items: center !important;
+        justify-content: space-between !important;
+
+        .components-text-control__input {
+            flex: .7 !important;
+        }
+    }
+
+    .components-flex-item {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        .components-input-control__label{
+            flex: 1 !important;
+            margin: 0 !important;
+        }
+    }
+
+    .components-input-control__container {
+        max-width: 135px !important;
+
+            > select {
+                line-height: 1.2 !important;
+            }
+        }
+    }
+
+    .components-form-token-field{
+        label { display: none !important;}
+    }
+
+    .exclude__form {
+        margin-top: 20px !important;
+        border: 1px solid transparent;
+    }
+

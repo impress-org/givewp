@@ -8,7 +8,7 @@ Generate test data using CLI
 
 There is a specific order which you have to follow when generating the test data
 
-1. Generate Donation Forms 
+1. Generate Donation Forms
     - *If there are no Donation Forms available on the site, it's important to generate them first*
 
 2. Generate Donors
@@ -26,25 +26,25 @@ There is a specific order which you have to follow when generating the test data
 `[--count=<count>]`
 
  Number of donations to generate
- 
+
  default: `10`
- 
- 
+
+
 `[--template=<template>]`
 
  Form template
 
  default: `random`
- 
- options: 
+
+ options:
  - `sequoia`
  - `legacy`
  - `random`
- 
+
  `[--set-goal=<bool>]`
- 
+
  Set donation form goal
- 
+
  default: `false`
 
 `[--set-terms=<bool>]`
@@ -68,20 +68,20 @@ default: `false`
 
 **Example usage**
 
- `wp give test-donation-form --count=10 --template=legacy --set-goal=true --set-terms=true --consistent=true`  
- 
- 
+ `wp give test-donation-form --count=10 --template=legacy --set-goal=true --set-terms=true --consistent=true`
+
+
  **Help**
- 
+
  `wp help give test-donation-form`
- 
- 
+
+
  ### Generate Donors
- 
+
  `wp give test-donors`
- 
+
  **Options**
- 
+
 `[--count=<count>]`
 
 Number of donors to generate
@@ -105,16 +105,16 @@ default: `false`
 `wp give test-donors --count=10 --preview=true --consistent=true`
 
  **Help**
- 
+
  `wp help give test-donors`
 
 
  ### Generate Donations
- 
+
  `wp give test-donations`
- 
+
  **Options**
- 
+
 `[--count=<count>]`
 
 Number of donations to generate
@@ -161,7 +161,7 @@ default: `false`
 
 Used for passing additional parameters
 
-Example usage: 
+Example usage:
 
 `--params=donation_currency=EUR\&donation_cover_fees=true`
 
@@ -173,14 +173,14 @@ Make generated data consistent
 
 default: `false`
 
-### Generate GiveWP demonstartion page
+### Generate GiveWP demonstration page
 
 `wp give test-demonstration-page`
 
-Generates GiveWP demonstartion page with all GiveWP shortcodes included
+Generates GiveWP demonstration page with all GiveWP shortcodes included
 
  **Options**
- 
+
 `[--preview=<preview>]`
 
 Preview generated data
@@ -192,5 +192,5 @@ default: `false`
 `wp give test-demonstration-page --count=10 --preview=true`
 
  **Help**
- 
+
  `wp help give test-demonstration-page`

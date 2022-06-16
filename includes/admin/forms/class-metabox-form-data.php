@@ -1483,8 +1483,7 @@ class Give_MetaBox_Form_Data {
 			'give_forms' === get_post_type( $post_id ) &&
 			! empty( $_POST['give_form_active_tab'] )
 		) {
-			$location = add_query_arg( 'give_tab', give_clean( $_POST['give_form_active_tab'] ), $location );
-		}
+			$location = esc_url_raw( add_query_arg( 'give_tab', give_clean( $_POST['give_form_active_tab'] ), $location ) ); }
 
 		return $location;
 	}

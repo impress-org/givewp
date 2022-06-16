@@ -7,38 +7,58 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
+
+
 .give-goal-progress {
-  margin-bottom: 20px;
-  clear:both;
+    background: #F6F6F6;
+    padding: 16px 20px;
+}
 
-  .income {
-	font-size: 46px;
-	line-height: 48px;
-	letter-spacing: -1px;
-	color: #333;
-  }
+.raised {
+    display: flex;
+    justify-content: space-between;
 
-  .raised {
-	margin-bottom: 15px;
-  }
+    &__details {
+        display: flex;
+        flex-direction: column;
+        font-size: 1rem;
+
+        & > span:first-child {
+            font-weight: 700 !important;
+            font-size: 1rem;
+        }
+
+        &  > span:last-child {
+            font-size: 14px;
+            font-weight: 400;
+
+        }
+
+        &_donations{
+            text-align: right;
+        }
+    }
+
 }
 
 .give-progress-bar {
-  height: 20px;
-  position: relative;
-  background: #EEE;
-  border-radius: 25px;
-  overflow: hidden;
+    position: relative;
+    height: 12px;
+    //background: #F1F1F1;
+    margin-bottom: 10px;
+    border-radius: 25px;
 
-  > span {
-	display: block;
-	height: 100%;
-	border-top-right-radius: 8px;
-	border-bottom-right-radius: 8px;
-	border-top-left-radius: 20px;
-	border-bottom-left-radius: 20px;
-	background-color: rgb(43, 194, 83);
-	position: relative;
-	overflow: hidden;
-  }
+    > span {
+        display: block;
+        height: 100%;
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+        //background-color: rgb(43, 194, 83);
+        position: relative;
+        overflow: hidden;
+    }
 }
+
+

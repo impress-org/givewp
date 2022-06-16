@@ -161,7 +161,7 @@ function give_edit_donor( $args ) {
 
 	if ( $output['success'] ) {
 		wp_safe_redirect(
-            esc_url(
+            esc_url_raw(
                  add_query_arg(
                      array(
                          'post_type'       => 'give_forms',
@@ -358,7 +358,7 @@ function give_disconnect_donor_user_id( $args ) {
 		give_set_error( 'give-disconnect-user-fail', __( 'Failed to disconnect user from donor.', 'give' ) );
 	}
 
-	$output['redirect'] = $redirect_url;
+	$output['redirect'] = esc_url_raw( $redirect_url );
 
 	/**
 	 * Fires after disconnecting user ID from a donor.
@@ -516,7 +516,7 @@ function give_remove_donor_email() {
 		$url = add_query_arg( 'give-messages[]', 'email-remove-failed', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ) );
 	}
 
-	wp_safe_redirect( $url );
+	wp_safe_redirect( esc_url_raw( $url ) );
 	exit;
 }
 
@@ -569,7 +569,7 @@ function give_set_donor_primary_email() {
 		$url = add_query_arg( 'give-messages[]', 'primary-email-failed', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ) );
 	}
 
-	wp_safe_redirect( $url );
+	wp_safe_redirect( esc_url_raw( $url ) );
 	exit;
 }
 
@@ -673,7 +673,7 @@ function give_process_donor_deletion( $args ) {
 		admin_url( 'edit.php?post_type=give_forms&page=give-donors' )
 	);
 
-	wp_safe_redirect( $redirect_url );
+	wp_safe_redirect( esc_url_raw( $redirect_url ) );
 	give_die();
 
 }

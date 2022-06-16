@@ -2,12 +2,12 @@
 
 namespace Give\Donations\Repositories;
 
-use Exception;
 use Give\Donations\Actions\GeneratePurchaseKey;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Framework\Database\DB;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
@@ -15,8 +15,6 @@ use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Call;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
-use Give\ValueObjects\Money;
-use WP_REST_Request;
 
 /**
  * @since 2.20.0 update amount type, fee recovered, and exchange rate
@@ -24,6 +22,18 @@ use WP_REST_Request;
  */
 class DonationRepository
 {
+    /**
+     * @var DonationNotesRepository
+     */
+    public $notes;
+
+    /**
+     * @since 2.21.0
+     */
+    public function __construct()
+    {
+        $this->notes = give(DonationNotesRepository::class);
+    }
 
     /**
      * @since 2.19.6
@@ -45,11 +55,9 @@ class DonationRepository
      *
      * @since 2.19.6
      *
-     * @param int $donationId
-     *
      * @return Donation|null
      */
-    public function getById($donationId)
+    public function getById(int $donationId)
     {
         return $this->prepareQuery()
             ->where('ID', $donationId)
@@ -57,13 +65,49 @@ class DonationRepository
     }
 
     /**
+     * @since 2.21.0
+     * @return Donation|null
+     */
+    public function getByGatewayTransactionId($gatewayTransactionId)
+    {
+        return $this->queryByGatewayTransactionId($gatewayTransactionId)->get();
+    }
+
+    /**
+     * @since 2.21.0
+     * @return ModelQueryBuilder
+     */
+    public function queryByGatewayTransactionId($gatewayTransactionId)
+    {
+        return $this->prepareQuery()
+            ->where('post_type', 'give_payment')
+            ->where('ID', function (QueryBuilder $builder) use ($gatewayTransactionId) {
+                $builder
+                    ->select('donation_id')
+                    ->from('give_donationmeta')
+                    ->where('meta_key', DonationMetaKeys::GATEWAY_TRANSACTION_ID()->getValue())
+                    ->where('meta_value', $gatewayTransactionId);
+            });
+    }
+
+    /**
      * @since 2.19.6
      *
-     * @param int $subscriptionId
+     * @param  int  $donationId
+     * @return ModelQueryBuilder<Donation>
+     */
+    public function queryById(int $donationId): ModelQueryBuilder
+    {
+        return $this->prepareQuery()
+            ->where('ID', $donationId);
+    }
+
+    /**
+     * @since 2.19.6
      *
      * @return Donation[]|null
      */
-    public function getBySubscriptionId($subscriptionId)
+    public function getBySubscriptionId(int $subscriptionId)
     {
         return $this->queryBySubscriptionId($subscriptionId)->getAll();
     }
@@ -71,11 +115,10 @@ class DonationRepository
     /**
      * @since 2.19.6
      *
-     * @param int $subscriptionId
-     *
-     * @return ModelQueryBuilder
+     * @param  int  $subscriptionId
+     * @return ModelQueryBuilder<Donation>
      */
-    public function queryBySubscriptionId($subscriptionId)
+    public function queryBySubscriptionId(int $subscriptionId): ModelQueryBuilder
     {
         $initialDonationId = give()->subscriptions->getInitialDonationId($subscriptionId);
 
@@ -96,11 +139,10 @@ class DonationRepository
     /**
      * @since 2.19.6
      *
-     * @param int $donorId
-     *
-     * @return ModelQueryBuilder
+     * @param  int  $donorId
+     * @return ModelQueryBuilder<Donation>
      */
-    public function queryByDonorId($donorId)
+    public function queryByDonorId(int $donorId): ModelQueryBuilder
     {
         return $this->prepareQuery()
             ->where('post_type', 'give_payment')
@@ -115,10 +157,10 @@ class DonationRepository
     }
 
     /**
+     *
+     * @since 2.21.0 replace actions with givewp_donation_creating and givewp_donation_created
      * @since 2.20.0 mutate model and return void
      * @since 2.19.6
-     *
-     * @param Donation $donation
      *
      * @return void
      * @throws Exception|InvalidArgumentException
@@ -127,7 +169,7 @@ class DonationRepository
     {
         $this->validateDonation($donation);
 
-        Hooks::doAction('give_donation_creating', $donation);
+        Hooks::doAction('givewp_donation_creating', $donation);
 
         $dateCreated = Temporal::withoutMicroseconds($donation->createdAt ?: Temporal::getCurrentDateTime());
         $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
@@ -143,7 +185,7 @@ class DonationRepository
                     'post_modified_gmt' => get_gmt_from_date($dateCreatedFormatted),
                     'post_status' => $donation->status->getValue(),
                     'post_type' => 'give_payment',
-                    'post_parent' => isset($donation->parentId) ? $donation->parentId : 0,
+                    'post_parent' => $donation->parentId ?? 0
                 ]);
 
             $donationId = DB::last_insert_id();
@@ -184,14 +226,13 @@ class DonationRepository
             $donation->purchaseKey = $donationMeta[DonationMetaKeys::PURCHASE_KEY];
         }
 
-        Hooks::doAction('give_donation_created', $donation);
+        Hooks::doAction('givewp_donation_created', $donation);
     }
 
     /**
+     * @since 2.21.0 replace actions with givewp_donation_updating and givewp_donation_updated
      * @since 2.20.0 return void
      * @since 2.19.6
-     *
-     * @param Donation $donation
      *
      * @return void
      * @throws Exception|InvalidArgumentException
@@ -200,7 +241,7 @@ class DonationRepository
     {
         $this->validateDonation($donation);
 
-        Hooks::doAction('give_donation_updating', $donation);
+        Hooks::doAction('givewp_donation_updating', $donation);
 
         $date = Temporal::getCurrentFormattedDateForDatabase();
 
@@ -214,7 +255,7 @@ class DonationRepository
                     'post_modified_gmt' => get_gmt_from_date($date),
                     'post_status' => $donation->status->getValue(),
                     'post_type' => 'give_payment',
-                    'post_parent' => isset($donation->parentId) ? $donation->parentId : 0,
+                    'post_parent' => $donation->parentId ?? 0
                 ]);
 
             foreach ($this->getCoreDonationMetaForDatabase($donation) as $metaKey => $metaValue) {
@@ -235,23 +276,21 @@ class DonationRepository
 
         DB::query('COMMIT');
 
-        Hooks::doAction('give_donation_updated', $donation);
+        Hooks::doAction('givewp_donation_updated', $donation);
     }
 
     /**
+     * @since 2.21.0 replace actions with givewp_donation_deleting and givewp_donation_deleted
      * @since 2.20.0 consolidate meta deletion into a single query
      * @since 2.19.6
      *
-     * @param Donation $donation
-     *
-     * @return bool
      * @throws Exception
      */
-    public function delete(Donation $donation)
+    public function delete(Donation $donation): bool
     {
         DB::query('START TRANSACTION');
 
-        Hooks::doAction('give_donation_deleting', $donation);
+        Hooks::doAction('givewp_donation_deleting', $donation);
 
         try {
             DB::table('posts')
@@ -271,7 +310,7 @@ class DonationRepository
 
         DB::query('COMMIT');
 
-        Hooks::doAction('give_donation_deleted', $donation);
+        Hooks::doAction('givewp_donation_deleted', $donation);
 
         return true;
     }
@@ -279,15 +318,15 @@ class DonationRepository
     /**
      * @since 2.20.0 update amount to use new type, and add currency and exchange rate
      * @since 2.19.6
-     *
-     * @param Donation $donation
-     *
-     * @return array
      */
-    private function getCoreDonationMetaForDatabase(Donation $donation)
+    private function getCoreDonationMetaForDatabase(Donation $donation): array
     {
         $meta = [
-            DonationMetaKeys::AMOUNT => $donation->amount->formatToDecimal(),
+            DonationMetaKeys::GATEWAY_TRANSACTION_ID => $donation->gatewayTransactionId,
+            DonationMetaKeys::AMOUNT => give_sanitize_amount_for_db(
+                $donation->amount->formatToDecimal(),
+                ['currency' => $donation->amount->getCurrency()]
+            ),
             DonationMetaKeys::CURRENCY => $donation->amount->getCurrency()->getCode(),
             DonationMetaKeys::EXCHANGE_RATE => $donation->exchangeRate,
             DonationMetaKeys::GATEWAY => $donation->gatewayId,
@@ -296,19 +335,17 @@ class DonationRepository
             DonationMetaKeys::LAST_NAME => $donation->lastName,
             DonationMetaKeys::EMAIL => $donation->email,
             DonationMetaKeys::FORM_ID => $donation->formId,
-            DonationMetaKeys::FORM_TITLE => isset($donation->formTitle) ? $donation->formTitle : $this->getFormTitle(
-                $donation->formId
-            ),
-            DonationMetaKeys::MODE => isset($donation->mode) ? $donation->mode->getValue(
-            ) : $this->getDefaultDonationMode()->getValue(),
-            DonationMetaKeys::PURCHASE_KEY => isset($donation->purchaseKey)
-                ? $donation->purchaseKey
-                : Call::invoke(
+            DonationMetaKeys::FORM_TITLE => $donation->formTitle ?? $this->getFormTitle($donation->formId),
+            DonationMetaKeys::MODE => isset($donation->mode) ?
+                $donation->mode->getValue() :
+                $this->getDefaultDonationMode()->getValue(),
+            DonationMetaKeys::PURCHASE_KEY => $donation->purchaseKey ?? Call::invoke(
                     GeneratePurchaseKey::class,
                     $donation->email
                 ),
-            DonationMetaKeys::DONOR_IP => isset($donation->donorIp) ? $donation->donorIp : give_get_ip(),
-            DonationMetaKeys::GATEWAY_TRANSACTION_ID => $donation->gatewayTransactionId
+            DonationMetaKeys::DONOR_IP => $donation->donorIp ?? give_get_ip(),
+            DonationMetaKeys::LEVEL_ID => $donation->levelId,
+            DonationMetaKeys::ANONYMOUS => (int)$donation->anonymous
         ];
 
         if ($donation->feeAmountRecovered !== null) {
@@ -328,14 +365,6 @@ class DonationRepository
             $meta[DonationMetaKeys::SUBSCRIPTION_ID] = $donation->subscriptionId;
         }
 
-        if (isset($donation->anonymous)) {
-            $meta[DonationMetaKeys::ANONYMOUS] = $donation->anonymous;
-        }
-
-        if (isset($donation->levelId)) {
-            $meta[DonationMetaKeys::LEVEL_ID] = $donation->levelId;
-        }
-
         return $meta;
     }
 
@@ -347,7 +376,7 @@ class DonationRepository
      *
      * @throws Exception
      */
-    public function updateLegacyDonationMetaAsInitialSubscriptionDonation($donationId)
+    public function updateLegacyDonationMetaAsInitialSubscriptionDonation($donationId): bool
     {
         DB::query('START TRANSACTION');
 
@@ -383,14 +412,11 @@ class DonationRepository
     }
 
     /**
-     *
      * @since 2.19.6
-     *
-     * @param int $donationId
      *
      * @return int|null
      */
-    public function getSequentialId($donationId)
+    public function getSequentialId(int $donationId)
     {
         $query = DB::table('give_sequential_ordering')->where('payment_id', $donationId)->get();
 
@@ -404,11 +430,9 @@ class DonationRepository
     /**
      * @since 2.19.6
      *
-     * @param int $id
-     *
      * @return object[]
      */
-    public function getNotesByDonationId($id)
+    public function getNotesByDonationId(int $id): array
     {
         $notes = DB::table('give_comments')
             ->select(
@@ -430,8 +454,6 @@ class DonationRepository
     /**
      * @since 2.19.6
      *
-     * @param Donation $donation
-     *
      * @return void
      */
     private function validateDonation(Donation $donation)
@@ -449,10 +471,8 @@ class DonationRepository
 
     /**
      * @since 2.19.6
-     *
-     * @return DonationMode
      */
-    private function getDefaultDonationMode()
+    private function getDefaultDonationMode(): DonationMode
     {
         $mode = give_is_test_mode() ? 'test' : 'live';
 
@@ -461,12 +481,8 @@ class DonationRepository
 
     /**
      * @since 2.19.6
-     *
-     * @param int $formId
-     *
-     * @return string
      */
-    public function getFormTitle($formId)
+    public function getFormTitle(int $formId): string
     {
         $form = DB::table('posts')
             ->where('id', $formId)
@@ -482,7 +498,7 @@ class DonationRepository
     /**
      * @return ModelQueryBuilder<Donation>
      */
-    public function prepareQuery()
+    public function prepareQuery(): ModelQueryBuilder
     {
         $builder = new ModelQueryBuilder(Donation::class);
 
@@ -505,12 +521,8 @@ class DonationRepository
 
     /**
      * @since 2.19.6
-     *
-     * @param $donorId
-     *
-     * @return int
      */
-    public function getTotalDonationCountByDonorId($donorId)
+    public function getTotalDonationCountByDonorId(int $donorId): int
     {
         return (int)DB::table('posts')
             ->where('post_type', 'give_payment')
@@ -527,11 +539,9 @@ class DonationRepository
     /**
      * @since 2.19.6
      *
-     * @param $donorId
-     *
      * @return array|bool|null
      */
-    public function getAllDonationIdsByDonorId($donorId)
+    public function getAllDonationIdsByDonorId(int $donorId)
     {
         return array_column(
             DB::table('give_donationmeta')
@@ -541,149 +551,5 @@ class DonationRepository
                 ->getAll(),
             'donation_id'
         );
-    }
-
-    /**
-     * @param WP_REST_Request $request
-     *
-     * @since 2.20.0
-     *
-     * @return array
-     */
-    public function getDonationsForRequest(WP_REST_Request $request)
-    {
-        $page = $request->get_param('page');
-        $perPage = $request->get_param('perPage');
-
-        $query = DB::table('posts')
-            ->distinct()
-            ->select(
-                'id',
-                ['post_date', 'createdAt'],
-                ['post_status', 'status']
-            )
-            ->attachMeta(
-                'give_donationmeta',
-                'id',
-                'donation_id',
-                DonationMetaKeys::FORM_ID,
-                DonationMetaKeys::FORM_TITLE,
-                DonationMetaKeys::AMOUNT,
-                DonationMetaKeys::DONOR_ID,
-                DonationMetaKeys::FIRST_NAME,
-                DonationMetaKeys::LAST_NAME,
-                DonationMetaKeys::EMAIL,
-                DonationMetaKeys::GATEWAY,
-                DonationMetaKeys::MODE,
-                DonationMetaKeys::ANONYMOUS,
-                DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION,
-                DonationMetaKeys::IS_RECURRING
-            )
-            ->where('post_type', 'give_payment');
-
-        $query = $this->getWhereConditionsForRequest($query, $request);
-
-        $query->limit($perPage)
-            ->orderBy('id', 'DESC')
-            ->offset(($page - 1) * $perPage);
-
-        $donations = $query->getAll();
-
-        if (!$donations) {
-            return [];
-        }
-
-        return $donations;
-    }
-
-    /**
-     * @param WP_REST_Request $request
-     *
-     * @since 2.20.0
-     *
-     * @return int
-     */
-    public function getTotalDonationsCountForRequest(WP_REST_Request $request)
-    {
-        $query = DB::table('posts')
-            ->where('post_type', 'give_payment');
-
-        $query = $this->getWhereConditionsForRequest($query, $request);
-
-        return $query->count();
-    }
-
-    /**
-     * @param QueryBuilder $query
-     * @param WP_REST_Request $request
-     *
-     * @return QueryBuilder
-     * @since 2.20.0
-     *
-     */
-    private function getWhereConditionsForRequest(QueryBuilder $query, WP_REST_Request $request)
-    {
-        $search = $request->get_param('search');
-        $start = $request->get_param('start');
-        $end = $request->get_param('end');
-        $form = $request->get_param('form');
-        $donor = $request->get_param('donor');
-
-        if ($form || $donor || ($search && !ctype_digit($search))) {
-            $query->leftJoin(
-                'give_donationmeta',
-                'id',
-                'metaTable.donation_id',
-                'metaTable'
-            );
-        }
-
-        if ($search) {
-            if (ctype_digit($search)) {
-                $query->where('id', $search);
-            } else {
-                if (strpos($search, '@') !== false) {
-                    $query
-                        ->where('metaTable.meta_key', DonationMetaKeys::EMAIL)
-                        ->whereLike('metaTable.meta_value', $search);
-                } else {
-                    $query
-                        ->where('metaTable.meta_key', DonationMetaKeys::FIRST_NAME)
-                        ->whereLike('metaTable.meta_value', $search)
-                        ->orWhere('metaTable.meta_key', DonationMetaKeys::LAST_NAME)
-                        ->whereLike('metaTable.meta_value', $search);
-                }
-            }
-        }
-
-        if ($donor) {
-            if (ctype_digit($donor)) {
-                $query
-                    ->where('metaTable.meta_key', DonationMetaKeys::DONOR_ID)
-                    ->where('metaTable.meta_value', $donor);
-            } else {
-                $query
-                    ->where('metaTable.meta_key', DonationMetaKeys::FIRST_NAME)
-                    ->whereLike('metaTable.meta_value', $donor)
-                    ->orWhere('metaTable.meta_key', DonationMetaKeys::LAST_NAME)
-                    ->whereLike('metaTable.meta_value', $donor);
-            }
-        }
-
-        if ($form) {
-            $query
-                ->where('metaTable.meta_key', DonationMetaKeys::FORM_ID)
-                ->where('metaTable.meta_value', $form);
-        }
-
-        if ($start && $end) {
-            $query->whereBetween('post_date', $start, $end);
-        } elseif ($start) {
-            $query->where('post_date', $start, '>=');
-        } elseif ($end) {
-            $query->where('post_date', $end, '<=');
-        }
-
-        return $query;
     }
 }

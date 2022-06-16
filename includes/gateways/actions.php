@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_process_gateway_select( $data ) {
 	if ( isset( $_POST['gateway_submit'] ) ) {
-		wp_redirect( esc_url( add_query_arg( 'payment-mode', $_POST['payment-mode'] ) ) );
+		wp_redirect( esc_url_raw( add_query_arg( 'payment-mode', $_POST['payment-mode'] ) ) );
 		exit;
 	}
 }

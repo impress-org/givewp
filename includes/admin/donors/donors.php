@@ -827,9 +827,9 @@ function give_donor_view( $donor ) {
 									'give-remove-donor-email'
 								);
 								?>
-								<a href="<?php echo $promote_url; ?>"><?php _e( 'Make Primary', 'give' ); ?></a>
+								<a href="<?php echo esc_url( $promote_url ); ?>"><?php _e( 'Make Primary', 'give' ); ?></a>
 								&nbsp;|&nbsp;
-								<a href="<?php echo $remove_url; ?>" class="delete"><?php _e( 'Remove', 'give' ); ?></a>
+								<a href="<?php echo esc_url( $remove_url ); ?>" class="delete"><?php _e( 'Remove', 'give' ); ?></a>
 							<?php endif; ?>
 						</td>
 					</tr>

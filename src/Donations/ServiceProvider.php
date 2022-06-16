@@ -11,6 +11,7 @@ use Give\Donations\LegacyListeners\RemoveSequentialId;
 use Give\Donations\LegacyListeners\UpdateDonorPaymentIds;
 use Give\Donations\LegacyListeners\UpdateSequentialId;
 use Give\Donations\Models\Donation;
+use Give\Donations\Repositories\DonationNotesRepository;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Helpers\Call;
 use Give\Helpers\Hooks;
@@ -24,6 +25,7 @@ class ServiceProvider implements ServiceProviderInterface
     public function register()
     {
         give()->singleton('donations', DonationRepository::class);
+        give()->singleton('donationNotes', DonationNotesRepository::class);
     }
 
     /**
@@ -42,9 +44,9 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function bootLegacyListeners()
     {
-        Hooks::addAction('give_donation_creating', DispatchGivePreInsertPayment::class);
+        Hooks::addAction('givewp_donation_creating', DispatchGivePreInsertPayment::class);
 
-        add_action('give_donation_created', function (Donation $donation) {
+        add_action('givewp_donation_created', function (Donation $donation) {
             Call::invoke(InsertSequentialId::class, $donation);
             Call::invoke(DispatchGiveInsertPayment::class, $donation);
             Call::invoke(UpdateDonorPaymentIds::class, $donation);
@@ -63,12 +65,12 @@ class ServiceProvider implements ServiceProviderInterface
             //Call::invoke(UpdateDonorPurchaseValueAndCount::class, $donation);
         });
 
-        add_action('give_donation_updated', function (Donation $donation) {
+        add_action('givewp_donation_updated', function (Donation $donation) {
             Call::invoke(DispatchGiveUpdatePaymentStatus::class, $donation);
             Call::invoke(UpdateSequentialId::class, $donation);
         });
 
-        Hooks::addAction('give_donation_deleted', RemoveSequentialId::class);
+        Hooks::addAction('givewp_donation_deleted', RemoveSequentialId::class);
     }
 
     /**

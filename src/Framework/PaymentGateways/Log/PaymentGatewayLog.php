@@ -2,11 +2,11 @@
 
 namespace Give\Framework\PaymentGateways\Log;
 
+use Give\Donations\Models\Donation;
 use Give\Log\Log;
-use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
-use Give\ValueObjects\CardInfo;
 
 /**
+ * @since 2.21.0 Remove GatewayPaymentData related code and Update 'source' to payment gateway name
  * @since 2.19.6 remove cardInfo from log
  * @since 2.18.0
  */
@@ -20,15 +20,11 @@ class PaymentGatewayLog extends Log
         $arguments[1]['category'] = 'Payment Gateway';
         $arguments[1]['source'] = 'Payment Gateway';
 
-
-        foreach ($arguments[1] as $argument) {
-            if ($argument instanceof GatewayPaymentData) {
-                unset($argument->cardInfo, $argument->legacyPaymentData['card_info']);
-            }
-
-            if ($argument instanceof CardInfo) {
-                unset($argument);
-            }
+        if (
+            array_key_exists('Donation', $arguments[1]) &&
+            $arguments[1]['Donation'] instanceof Donation
+        ) {
+            $arguments[1]['source'] = $arguments[1]['Donation']->gateway()->getName();
         }
 
         parent::__callStatic($name, $arguments);

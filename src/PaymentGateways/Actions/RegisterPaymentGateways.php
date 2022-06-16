@@ -10,6 +10,7 @@ use Give\PaymentGateways\Gateways\Stripe\BECSGateway as StripeBECSGateway;
 use Give\PaymentGateways\Gateways\Stripe\CheckoutGateway as StripeCheckoutGateway;
 use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway as StripeCreditCardGateway;
 use Give\PaymentGateways\Gateways\Stripe\SEPAGateway as StripeSEPAGateway;
+use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 
 class RegisterPaymentGateways
@@ -21,7 +22,7 @@ class RegisterPaymentGateways
      */
     public $gateways = [
         // When complete, the Test Gateway will eventually replace The legacy Manual Gateway.
-        //TestGateway::class,
+        TestGateway::class,
         //TestGatewayOffsite::class,
         StripeBECSGateway::class,
         StripeCheckoutGateway::class,
@@ -43,7 +44,7 @@ class RegisterPaymentGateways
      * @throws InvalidArgumentException|Exception
      *
      */
-    public function __invoke(array $gateways)
+    public function __invoke(array $gateways): array
     {
         /** @var PaymentGatewayRegister $paymentGatewayRegister */
         $paymentGatewayRegister = give(PaymentGatewayRegister::class);
@@ -61,24 +62,26 @@ class RegisterPaymentGateways
     /**
      * Register 3rd party payment gateways
      *
+     * @since 2.21.0 use givewp prefix for action
      * @since 2.18.0
      *
      * @param  PaymentGatewayRegister  $paymentGatewayRegister
      */
     private function register3rdPartyPaymentGateways(PaymentGatewayRegister $paymentGatewayRegister)
     {
-        do_action('give_register_payment_gateway', $paymentGatewayRegister);
+        do_action('givewp_register_payment_gateway', $paymentGatewayRegister);
     }
 
     /**
      * Unregister 3rd party payment gateways
      *
+     * @since 2.21.0 use givewp prefix for action
      * @since 2.18.0
      *
      * @param  PaymentGatewayRegister  $paymentGatewayRegister
      */
     private function unregister3rdPartyPaymentGateways(PaymentGatewayRegister $paymentGatewayRegister)
     {
-        do_action('give_unregister_payment_gateway', $paymentGatewayRegister);
+        do_action('givewp_unregister_payment_gateway', $paymentGatewayRegister);
     }
 }

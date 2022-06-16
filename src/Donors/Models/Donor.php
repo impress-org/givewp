@@ -11,7 +11,6 @@ use Give\Donors\Factories\DonorFactory;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
-use Give\Framework\Models\Factories\ModelFactory;
 use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Models\ValueObjects\Relationship;
@@ -64,7 +63,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
      *
      * @param $id
      *
-     * @return Donor
+     * @return Donor|null
      */
     public static function find($id)
     {
@@ -74,11 +73,9 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     /**
      * @since 2.19.6
      *
-     * @param string $email
-     *
-     * @return Donor
+     * @return Donor|null
      */
-    public static function whereEmail($email)
+    public static function whereEmail(string $email)
     {
         return give()->donors->getByEmail($email);
     }
@@ -86,11 +83,23 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     /**
      * @since 2.19.6
      *
-     * @param int $userId
-     *
-     * @return Donor
+     * @param  string  $donorEmail
+     * @return bool
      */
-    public static function whereUserId($userId)
+    public function hasEmail(string $donorEmail): bool
+    {
+        $emails = array_merge($this->additionalEmails ?? [], [$this->email]);
+
+        return in_array($donorEmail, $emails, true);
+    }
+
+    /**
+     * @since 2.21.0
+     *
+     * @param  int  $userId
+     * @return Donor|null
+     */
+    public static function whereUserId(int $userId)
     {
         return give()->donors->getByWpUserId($userId);
     }
@@ -105,7 +114,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
      *
      * @throws Exception|InvalidArgumentException
      */
-    public static function create(array $attributes)
+    public static function create(array $attributes): Donor
     {
         $donor = new static($attributes);
 
@@ -146,7 +155,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
      *
      * @return ModelQueryBuilder<Donation>
      */
-    public function donations()
+    public function donations(): ModelQueryBuilder
     {
         return give()->donations->queryByDonorId($this->id);
     }
@@ -156,7 +165,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
      *
      * @return ModelQueryBuilder<Subscription>
      */
-    public function subscriptions()
+    public function subscriptions(): ModelQueryBuilder
     {
         return give()->subscriptions->queryByDonorId($this->id);
     }
@@ -166,7 +175,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
      *
      * @return int
      */
-    public function totalDonations()
+    public function totalDonations(): int
     {
         return give()->donations->getTotalDonationCountByDonorId($this->id);
     }
@@ -176,7 +185,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
      *
      * @return int
      */
-    public function totalAmountDonated()
+    public function totalAmountDonated(): int
     {
         return array_sum(array_column($this->donations, DonationMetaKeys::AMOUNT()->getKeyAsCamelCase()));
     }
@@ -186,7 +195,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
      *
      * @return ModelQueryBuilder<Donor>
      */
-    public static function query()
+    public static function query(): ModelQueryBuilder
     {
         return give()->donors->prepareQuery();
     }
@@ -198,15 +207,17 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
      *
      * @return Donor
      */
-    public static function fromQueryBuilderObject($object)
+    public static function fromQueryBuilderObject($object): Donor
     {
         return DonorQueryData::fromObject($object)->toDonor();
     }
 
     /**
-     * @return ModelFactory<Donor>
+     * @since 2.19.6
+     *
+     * @return DonorFactory
      */
-    public static function factory()
+    public static function factory(): DonorFactory
     {
         return new DonorFactory(static::class);
     }

@@ -83,7 +83,7 @@
                         ),
                         'action' => sprintf(
                             '<a href="%1$s"><i class="fab fa-paypal"></i>&nbsp;&nbsp;%2$s</a>',
-                            add_query_arg(
+                            esc_url(add_query_arg(
                                 [
                                     'post_type' => 'give_forms',
                                     'page' => 'give-settings',
@@ -91,8 +91,8 @@
                                     'section' => 'paypal',
                                     'group' => 'paypal-commerce',
                                 ],
-                                esc_url_raw(admin_url('edit.php'))
-                            ),
+                                admin_url('edit.php')
+                            )),
                             ! $this->isPayPalSetup() ? esc_html__('Connect to PayPal', 'give') : esc_html__(
                                 'PayPal Settings',
                                 'give'
@@ -116,15 +116,15 @@
                         ),
                         'action' => ($this->isStripeSetup()) ? sprintf(
                             '<a href="%s"><i class="fab fa-stripe-s"></i>&nbsp;&nbsp;Stripe Settings</a>',
-                            add_query_arg(
+                            esc_url(add_query_arg(
                                 [
                                     'post_type' => 'give_forms',
                                     'page' => 'give-settings',
                                     'tab' => 'gateways',
                                     'section' => 'stripe-settings',
                                 ],
-                                esc_url_raw(admin_url('edit.php'))
-                            )
+                                admin_url('edit.php')
+                            ))
                         )
                             : sprintf(
                                 '<a href="%s"><i class="fab fa-stripe-s"></i>&nbsp;&nbsp;Connect to Stripe</a>',

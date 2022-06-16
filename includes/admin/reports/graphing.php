@@ -809,7 +809,7 @@ function give_parse_report_dates( $data ) {
 	$tab  = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'earnings';
 	$id   = isset( $_GET['form-id'] ) ? $_GET['form-id'] : null;
 
-	wp_redirect( esc_url(add_query_arg( $dates, admin_url( 'edit.php?post_type=give_forms&page=give-reports&legacy=true&tab=' . esc_attr( $tab ) . '&view=' . esc_attr( $view ) . '&form-id=' . absint( $id ) ) ) ) );
+	wp_redirect( esc_url_raw(add_query_arg( $dates, admin_url( 'edit.php?post_type=give_forms&page=give-reports&legacy=true&tab=' . esc_attr( $tab ) . '&view=' . esc_attr( $view ) . '&form-id=' . absint( $id ) ) ) ) );
 	give_die();
 }
 
@@ -839,7 +839,7 @@ function give_reports_refresh_button() {
 		[
 			'label'       => esc_attr__( 'Clicking this will clear the reports cache.', 'give' ),
 			'tag_content' => '<span class="give-admin-button-icon give-admin-button-icon-update"></span>' . esc_html__( 'Refresh Report Data', 'give' ),
-			'link'        => $url,
+			'link'        => esc_url( $url ),
 			'position'    => 'left',
 			'attributes'  => [
 				'class' => 'button alignright give-admin-button',

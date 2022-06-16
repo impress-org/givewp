@@ -5,7 +5,6 @@ namespace Give\Subscriptions\Models;
 use DateTime;
 use Exception;
 use Give\Donations\Models\Donation;
-use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
@@ -88,7 +87,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      *
      * @return ModelQueryBuilder<Donor>
      */
-    public function donor()
+    public function donor(): ModelQueryBuilder
     {
         return give()->donors->queryById($this->donorId);
     }
@@ -98,7 +97,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      *
      * @return ModelQueryBuilder<Donation>
      */
-    public function donations()
+    public function donations(): ModelQueryBuilder
     {
         return give()->donations->queryBySubscriptionId($this->id);
     }
@@ -110,7 +109,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      *
      * @return object[]
      */
-    public function getNotes()
+    public function getNotes(): array
     {
         return give()->subscriptions->getNotesBySubscriptionId($this->id);
     }
@@ -162,10 +161,9 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     /**
      * @since 2.19.6
      *
-     * @return bool
      * @throws Exception
      */
-    public function delete()
+    public function delete(): bool
     {
         return give()->subscriptions->delete($this);
     }
@@ -177,7 +175,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      *
      * @throws Exception
      */
-    public function cancel($force = false)
+    public function cancel(bool $force = false)
     {
         if (!$force && $this->status->isCanceled()) {
             return;
@@ -191,7 +189,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      *
      * @return ModelQueryBuilder<Subscription>
      */
-    public static function query()
+    public static function query(): ModelQueryBuilder
     {
         return give()->subscriptions->prepareQuery();
     }
@@ -200,10 +198,8 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      * @since 2.19.6
      *
      * @param object $object
-     *
-     * @return Subscription
      */
-    public static function fromQueryBuilderObject($object)
+    public static function fromQueryBuilderObject($object): Subscription
     {
         return SubscriptionQueryData::fromObject($object)->toSubscription();
     }
@@ -212,10 +208,8 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      * Expiration / End Date / Renewal
      *
      * @since 2.19.6
-     *
-     * @return string
      */
-    public function expiration()
+    public function expiration(): string
     {
         $frequency = $this->frequency;
         $period = $this->period;
@@ -232,15 +226,15 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     /**
      * @return PaymentGateway
      */
-    public function gateway()
+    public function gateway(): PaymentGateway
     {
         return give()->gateways->getPaymentGateway($this->gatewayId);
     }
 
     /**
-     * @return SubscriptionFactory<Subscription>
+     * @since 2.19.6
      */
-    public static function factory()
+    public static function factory(): SubscriptionFactory
     {
         return new SubscriptionFactory(static::class);
     }

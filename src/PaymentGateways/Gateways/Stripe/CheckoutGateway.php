@@ -11,7 +11,6 @@ use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Call;
 use Give\Helpers\Gateways\Stripe;
-use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Gateways\Stripe\Exceptions\CheckoutException;
 
@@ -31,22 +30,22 @@ class CheckoutGateway extends PaymentGateway
      * @throws Exceptions\PaymentIntentException
      * @throws InvalidPropertyName
      */
-    protected function createPaymentModal( GatewayPaymentData $paymentData )
+    protected function createPaymentModal(Donation $donation)
     {
-        $paymentMethod = Call::invoke( Actions\GetPaymentMethodFromRequest::class, $paymentData );
-        $donationSummary = Call::invoke( Actions\SaveDonationSummary::class, $paymentData );
-        $stripeCustomer = Call::invoke( Actions\GetOrCreateStripeCustomer::class, $paymentData );
+        $paymentMethod = Call::invoke(Actions\GetPaymentMethodFromRequest::class, $donation);
+        $donationSummary = Call::invoke(Actions\SaveDonationSummary::class, $donation);
+        $stripeCustomer = Call::invoke(Actions\GetOrCreateStripeCustomer::class, $donation);
 
         $createIntentAction = new Actions\CreatePaymentIntent([]);
 
         return $this->handlePaymentIntentStatus(
             $createIntentAction(
-                $paymentData,
+                $donation,
                 $donationSummary,
                 $stripeCustomer,
                 $paymentMethod
             ),
-            $paymentData->donationId
+            $donation
         );
     }
 
@@ -55,16 +54,15 @@ class CheckoutGateway extends PaymentGateway
     /**
      * @inheritDoc
      * @since 2.19.0
-     * @return GatewayCommand
      * @throws PaymentGatewayException
      */
-    public function createPayment(GatewayPaymentData $paymentData)
+    public function createPayment(Donation $donation): GatewayCommand
     {
         switch (give_stripe_get_checkout_type()) {
             case 'modal':
-                return $this->createPaymentModal($paymentData);
+                return $this->createPaymentModal($donation);
             case 'redirect':
-                return $this->createPaymentRedirect($paymentData);
+                return $this->createPaymentRedirect($donation);
             default:
                 throw new CheckoutException('Invalid Checkout Error');
         }
@@ -73,24 +71,22 @@ class CheckoutGateway extends PaymentGateway
     /**
      * @since 2.19.7 fix argument order of CreateCheckoutSession
      * @since 2.19.0
-     *
-     * @return RedirectOffsite
      */
-    protected function createPaymentRedirect(GatewayPaymentData $paymentData)
+    protected function createPaymentRedirect(Donation $donation): RedirectOffsite
     {
-        $donationSummary = Call::invoke(Actions\SaveDonationSummary::class, $paymentData);
-        $stripeCustomer = Call::invoke(Actions\GetOrCreateStripeCustomer::class, $paymentData);
-        $session = Call::invoke(Actions\CreateCheckoutSession::class, $paymentData, $donationSummary, $stripeCustomer);
+        $donationSummary = Call::invoke(Actions\SaveDonationSummary::class, $donation);
+        $stripeCustomer = Call::invoke(Actions\GetOrCreateStripeCustomer::class, $donation);
+        $session = Call::invoke(Actions\CreateCheckoutSession::class, $donation, $donationSummary, $stripeCustomer);
 
         return new RedirectOffsite(
-            $this->getRedirectUrl( $session->id(), give_get_payment_form_id( $paymentData->donationId ) )
+            $this->getRedirectUrl($session->id(), give_get_payment_form_id($donation->id))
         );
     }
 
     /**
      * @inheritDoc
      */
-    public static function id()
+    public static function id(): string
     {
         return 'stripe_checkout';
     }
@@ -98,7 +94,7 @@ class CheckoutGateway extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getId()
+    public function getId(): string
     {
         return self::id();
     }
@@ -106,7 +102,7 @@ class CheckoutGateway extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getName()
+    public function getName(): string
     {
         return __('Stripe - Checkout', 'give');
     }
@@ -114,22 +110,24 @@ class CheckoutGateway extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getPaymentMethodLabel()
+    public function getPaymentMethodLabel(): string
     {
         return __('Stripe - Checkout', 'give');
     }
 
     /**
      * @inheritDoc
+     *
+     * @return string|void
      */
-    public function getLegacyFormFieldMarkup($formId, $args)
+    public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
-        Stripe::canShowBillingAddress( $formId, $args );
+        Stripe::canShowBillingAddress($formId, $args);
 
-        switch( give_stripe_get_checkout_type() ) {
+        switch (give_stripe_get_checkout_type()) {
             case 'modal':
                 return $this->getCheckoutInstructions()
-                     . $this->getCheckoutModalHTML( $formId, $args );
+                    . $this->getCheckoutModalHTML($formId, $args);
             case 'redirect':
                 return $this->getCheckoutInstructions();
         }

@@ -49,7 +49,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 							<p><?php esc_html_e( 'Download a CSV of all donations recorded.', 'give' ); ?></p>
 						</td>
 						<td>
-							<a class="button" href="<?php echo add_query_arg( [ 'type' => 'export_donations' ] ); ?>">
+							<a class="button" href="<?php echo esc_url( add_query_arg( [ 'type' => 'export_donations' ] ) ); ?>">
 								<?php esc_html_e( 'Generate CSV', 'give' ); ?>
 							</a>
 						</td>
@@ -63,7 +63,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 							<p><?php esc_html_e( 'Download a PDF of Donations and Revenue reports for all forms for the current year.', 'give' ); ?></p>
 						</td>
 						<td>
-							<a class="button" href="<?php echo wp_nonce_url( add_query_arg( [ 'give-action' => 'generate_pdf' ] ), 'give_generate_pdf' ); ?>">
+							<a class="button" href="<?php echo esc_url( wp_nonce_url( add_query_arg( [ 'give-action' => 'generate_pdf' ] ), 'give_generate_pdf' ) ); ?>">
 								<?php esc_html_e( 'Generate PDF', 'give' ); ?>
 							</a>
 						</td>

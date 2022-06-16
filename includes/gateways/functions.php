@@ -119,21 +119,19 @@ function give_get_default_gateway( $form_id ) {
 /**
  * Returns the admin label for the specified gateway
  *
+ * @since 2.21.0 remove hard coded admin_labels
  * @since 1.0
  *
- * @param string $gateway Name of the gateway to retrieve a label for
+ * @param  string  $gateway  Name of the gateway to retrieve a label for
  *
  * @return string Gateway admin label
  */
-function give_get_gateway_admin_label( $gateway ) {
-	$gateways = give_get_payment_gateways();
-	$label    = isset( $gateways[ $gateway ] ) ? $gateways[ $gateway ]['admin_label'] : $gateway;
+function give_get_gateway_admin_label($gateway)
+{
+    $gateways = give_get_payment_gateways();
+    $label = isset($gateways[$gateway]) ? $gateways[$gateway]['admin_label'] : $gateway;
 
-	if ( $gateway == 'manual' || $gateway == 'manual_donation' ) {
-		$label = __( 'Test Donation', 'give' );
-	}
-
-	return apply_filters( 'give_gateway_admin_label', $label, $gateway );
+    return apply_filters('give_gateway_admin_label', $label, $gateway);
 }
 
 /**

@@ -2,6 +2,10 @@
 
 namespace Give\Framework\PaymentGateways\CommandHandlers;
 
+use Give\Donations\Models\Donation;
+use Give\Donations\Models\DonationNote;
+use Give\Donations\ValueObjects\DonationStatus;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Commands\PaymentCommand;
 
 abstract class PaymentHandler
@@ -12,10 +16,11 @@ abstract class PaymentHandler
     protected $paymentCommand;
 
     /**
+     * @since 2.21.0 change return type to DonationStatus
+     *
      * @since 2.18.0
-     * @return string
      */
-    abstract protected function getPaymentStatus();
+    abstract protected function getPaymentStatus(): DonationStatus;
 
     /**
      * @param PaymentCommand $paymentCommand
@@ -26,30 +31,30 @@ abstract class PaymentHandler
     }
 
     /**
-     * @param PaymentCommand $paymentCommand
-     * @return static
+     * @since 2.18.0
      */
-    public static function make(PaymentCommand $paymentCommand)
+    public static function make(PaymentCommand $paymentCommand): PaymentHandler
     {
         return new static($paymentCommand);
     }
 
     /**
+     * @since 2.21.0 replace $donationId with Donation model
      * @since 2.18.0
      *
-     * @param  int  $donationId
-     * @return void
+     * @throws Exception
      */
-    public function handle($donationId)
+    public function handle(Donation $donation)
     {
-        give_update_payment_status($donationId, $this->getPaymentStatus());
+        $donation->status = $this->getPaymentStatus();
+        $donation->gatewayTransactionId = $this->paymentCommand->gatewayTransactionId;
+        $donation->save();
 
-        if( $this->paymentCommand->gatewayTransactionId ) {
-            give_set_payment_transaction_id($donationId, $this->paymentCommand->gatewayTransactionId);
-        }
-
-        foreach( $this->paymentCommand->paymentNotes as $paymentNote ) {
-            give_insert_payment_note( $donationId, $paymentNote );
+        foreach ($this->paymentCommand->paymentNotes as $paymentNote) {
+            DonationNote::create([
+                'donationId' => $donation->id,
+                'content' => $paymentNote
+            ]);
         }
     }
 }

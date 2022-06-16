@@ -1,6 +1,7 @@
 <?php
 
-use Give\DonationForms\Repositories\DonationFormsRepository as DonationFormsRepository;
+use Give\DonationForms\Controllers\DonationFormsRequestController;
+use Give\Framework\Database\DB;
 
 final class DonationFormsTest extends Give_Unit_Test_Case {
 
@@ -9,18 +10,21 @@ final class DonationFormsTest extends Give_Unit_Test_Case {
     public function setUp()
     {
         parent::setUp();
-        $this->testingForms[] = Give_Helper_Form::create_simple_form();
-        $this->testingForms[] = Give_Helper_Form::create_simple_form();
+
+        // Delete previous donation forms
+        $posts = DB::prefix('posts');
+        DB::query("TRUNCATE TABLE $posts");
+
+        Give_Helper_Form::create_simple_form();
+        Give_Helper_Form::create_simple_form();
     }
 
     public function tearDown()
     {
         parent::tearDown();
-        foreach ( $this->testingForms as $form )
-        {
-            Give_Helper_Form::delete_form( $form->id );
-        }
-        $this->testingForms = [];
+
+        $posts = DB::prefix('posts');
+        DB::query("TRUNCATE TABLE $posts");
     }
 
     public function testListDonationForms()
@@ -31,15 +35,15 @@ final class DonationFormsTest extends Give_Unit_Test_Case {
         $request->set_param('perPage', 30);
         $request->set_param('status', 'any');
 
-        $class = new ReflectionClass(DonationFormsRepository::class);
-        $getFormsForRequest = $class->getMethod('getFormsForRequest');
-        $getFormsForRequest->setAccessible(true);
-        $forms = $getFormsForRequest->invokeArgs(new DonationFormsRepository, [$request]);
+        $controller = new DonationFormsRequestController($request);
+        $forms = $controller->getForms();
+
         $this->assertEquals(2, count($forms), 'Repository retrieves correct number of total forms');
     }
 
-    public function testSearchRetrievesCorrectDonationForm(){
-        $this->testingForms[] = Give_Helper_Form::create_simple_form(
+    public function testSearchRetrievesCorrectDonationForm()
+    {
+        Give_Helper_Form::create_simple_form(
             [
                 'form' =>
                     [
@@ -54,10 +58,9 @@ final class DonationFormsTest extends Give_Unit_Test_Case {
         $request->set_param('perPage', 30);
         $request->set_param('status', 'any');
 
-        $class = new ReflectionClass(DonationFormsRepository::class);
-        $getFormsForRequest = $class->getMethod('getFormsForRequest');
-        $getFormsForRequest->setAccessible(true);
-        $forms = $getFormsForRequest->invokeArgs(new DonationFormsRepository, [$request]);
+        $controller = new DonationFormsRequestController($request);
+        $forms = $controller->getForms();
+
         $this->assertEquals(1, count($forms), 'Search retrieves a single form');
         $this->assertEquals('My Simple Form', $forms[0]->title, 'Search retrieves correct form');
     }

@@ -167,6 +167,7 @@ function give_send_to_success_page( $query_string = null ) {
  * @param array|string $args
  *
  * @access public
+ * @since 2.21.0 Auto set "payment-mode" in redirect url.
  * @since  1.0
  * @return Void
  */
@@ -174,21 +175,23 @@ function give_send_back_to_checkout( $args = [] ) {
 
 	$url     = isset( $_POST['give-current-url'] ) ? sanitize_text_field( $_POST['give-current-url'] ) : '';
 	$form_id = 0;
+    $defaults = [];
 
 	// Set the form_id.
 	if ( isset( $_POST['give-form-id'] ) ) {
-		$form_id = sanitize_text_field( $_POST['give-form-id'] );
+        $defaults['form-id'] = (int) sanitize_text_field( $_POST['give-form-id'] );
 	}
+
+    // Set the payment mode.
+    if ( isset( $_POST['payment-mode'] ) ) {
+        $defaults['payment-mode'] = sanitize_text_field( $_POST['payment-mode'] );
+    }
 
 	// Need a URL to continue. If none, redirect back to single form.
 	if ( empty( $url ) ) {
 		wp_safe_redirect( get_permalink( $form_id ) );
 		give_die();
 	}
-
-	$defaults = [
-		'form-id' => (int) $form_id,
-	];
 
 	// Set the $level_id.
 	if ( isset( $_POST['give-price-id'] ) ) {
@@ -616,7 +619,7 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 	$prices     = give_get_variable_prices( $form_id );
 	$price_name = '';
 
-	if ( false === $prices ) {
+	if ( ! $prices ) {
 		return $price_name;
 	}
 

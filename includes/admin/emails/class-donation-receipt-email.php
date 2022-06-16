@@ -329,13 +329,15 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			);
 
 			wp_redirect(
-				add_query_arg(
-					array(
-						'give-messages[]' => 'email-sent',
-						'give-action'     => false,
-						'purchase_id'     => false,
-					)
-				)
+                esc_url_raw(
+                    add_query_arg(
+                        array(
+                            'give-messages[]' => 'email-sent',
+                            'give-action'     => false,
+                            'purchase_id'     => false,
+                        )
+                    )
+                )
 			);
 			exit;
 		}

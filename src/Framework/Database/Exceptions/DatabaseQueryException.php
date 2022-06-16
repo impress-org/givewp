@@ -2,7 +2,8 @@
 
 namespace Give\Framework\Database\Exceptions;
 
-use Exception;
+use Give\Framework\Exceptions\Primitives\Exception;
+use Throwable;
 
 /**
  * Class DatabaseQueryException
@@ -10,6 +11,7 @@ use Exception;
  * An exception for when errors occurred within the database while performing a query, which stores the SQL errors the
  * database returned
  *
+ * @since 2.21.0 Use the GiveWP exception class
  * @since 2.9.2
  */
 class DatabaseQueryException extends Exception
@@ -20,23 +22,25 @@ class DatabaseQueryException extends Exception
     private $queryErrors;
 
     /**
-     * Creates a new instance wih the query errors
-     *
-     * @since 2.9.2
-     *
-     * @param string|string[] $queryErrors
-     * @param string|null     $message
-     *
-     * @return DatabaseQueryException
+     * @var string
      */
-    public static function create($queryErrors, $message = null)
-    {
-        $error = new self();
+    private $query;
 
-        $error->message = $message ?: 'Query failed in database';
-        $error->queryErrors = (array)$queryErrors;
+    /**
+     * @since 2.21.0 include query and query errors, and make auto-logging compatible
+     * @since 2.9.2
+     */
+    public function __construct(
+        string $query,
+        array $queryErrors,
+        string $message = 'Database Query',
+        $code = 0,
+        Throwable $previous = null
+    ) {
+        $this->query = $query;
+        $this->queryErrors = $queryErrors;
 
-        return $error;
+        parent::__construct($message, $code, $previous);
     }
 
     /**
@@ -46,32 +50,25 @@ class DatabaseQueryException extends Exception
      *
      * @return string[]
      */
-    public function getQueryErrors()
+    public function getQueryErrors(): array
     {
         return $this->queryErrors;
     }
 
-    /**
-     * Returns a human readable form of the exception for logging
-     *
-     * @since 2.9.2
-     *
-     * @return string
-     */
-    public function getLogOutput()
+    public function getQuery(): string
     {
-        $queryErrors = array_map(
-            function ($error) {
-                return " - {$error}";
-            },
-            $this->queryErrors
-        );
+        return $this->query;
+    }
 
-        return "
-			Code: {$this->getCode()}\n
-			Message: {$this->getMessage()}\n
-			DB Errors: \n
-			{$queryErrors}
-		";
+    /**
+     * @inheritDoc
+     */
+    public function getLogContext(): array
+    {
+        return [
+            'category' => 'Uncaught database exception',
+            'Query' => $this->query,
+            'Query Errors' => $this->queryErrors,
+        ];
     }
 }

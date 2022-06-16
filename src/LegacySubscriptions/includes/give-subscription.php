@@ -801,7 +801,7 @@ class Give_Subscription {
 			'sub_id'      => $this->id,
 		) ), "give-recurring-cancel-{$this->id}" );
 
-		return apply_filters( 'give_subscription_cancel_url', $url, $this );
+		return apply_filters( 'give_subscription_cancel_url', esc_url($url), $this );
 	}
 
 
@@ -1062,7 +1062,7 @@ class Give_Subscription {
 	 * @param  integer $length The number of notes to get
 	 * @param  integer $paged  What note to start at
 	 *
-	 * @return array           The notes requsted
+	 * @return array           The notes requested
 	 */
 	public function get_notes( $length = 20, $paged = 1 ) {
 

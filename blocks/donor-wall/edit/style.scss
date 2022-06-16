@@ -1,0 +1,44 @@
+.give-donor-wall-inspector{
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    .components-base-control__label {
+        margin: 0 !important;
+    }
+
+    .components-base-control__field {
+        display: flex !important;
+        flex-direction: row!important;
+        align-items: center !important;
+        justify-content: space-between !important;
+
+        .components-text-control__input {
+            flex: .7 !important;
+        }
+    }
+
+    .components-flex-item {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        .components-input-control__label{
+            flex: 1 !important;
+            margin: 0 !important;
+        }
+    }
+
+    .components-input-control__container {
+        max-width: 165px !important;
+
+            > select {
+                line-height: 1.2 !important;
+            }
+        }
+    }
+
+.components-form-token-field {
+    margin-top: -18px !important;
+    label { display: none !important;}
+}

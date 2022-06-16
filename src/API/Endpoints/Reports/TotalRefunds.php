@@ -112,7 +112,7 @@ class TotalRefunds extends Endpoint
             'give'
         );
 
-        // Create data objec to be returned, with 'highlights' object containing total and average figures to display
+        // Create data object to be returned, with 'highlights' object containing total and average figures to display
         $data = [
             'datasets' => [
                 [
@@ -145,7 +145,7 @@ class TotalRefunds extends Endpoint
 
         // Check that prev value and current value are > 0 (can't divide by 0)
         if ($prevRefunds > 0 && $currentRefunds > 0) {
-            // Check if it is a percent decreate, or increase
+            // Check if it is a percent decrease, or increase
             if ($prevRefunds > $currentRefunds) {
                 // Calculate a percent decrease
                 $trend = ((($prevRefunds - $currentRefunds) / $prevRefunds) * 100) * -1;

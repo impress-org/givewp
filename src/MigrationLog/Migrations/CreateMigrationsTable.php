@@ -43,14 +43,16 @@ class CreateMigrationsTable extends Migration
         return strtotime('1970-01-01 00:00');
     }
 
+    /**
+     * @since 2.21.0 Add Check whether table installed before adding it to database.
+     * @throws DatabaseMigrationException
+     */
     public function run()
     {
-        global $wpdb;
-
-        $table = "{$wpdb->prefix}give_migrations";
+        $table = DB::prefix('give_migrations');
         $charset = DB::get_charset_collate();
 
-        $sql = "CREATE TABLE {$table} (
+        $sql = "CREATE TABLE IF NOT EXISTS {$table} (
 			id VARCHAR(180) NOT NULL,
 			status VARCHAR(16) NOT NULL,
 			error text NULL,

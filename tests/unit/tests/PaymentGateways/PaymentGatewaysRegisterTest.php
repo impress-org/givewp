@@ -6,7 +6,6 @@ use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\PaymentGateways\Exceptions\OverflowException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -93,7 +92,7 @@ class MockStripe extends PaymentGateway
     /**
      * @return string
      */
-    public static function id()
+    public static function id(): string
     {
         return 'mock-stripe';
     }
@@ -101,7 +100,7 @@ class MockStripe extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getId()
+    public function getId(): string
     {
         return self::id();
     }
@@ -109,7 +108,7 @@ class MockStripe extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getName()
+    public function getName(): string
     {
         return 'Stripe Payment Method';
     }
@@ -117,17 +116,17 @@ class MockStripe extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getPaymentMethodLabel()
+    public function getPaymentMethodLabel(): string
     {
         return 'Credit Card';
     }
 
-    public function getLegacyFormFieldMarkup($formId, $args)
+    public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
         // TODO: Implement getLegacyFormFieldMarkup() method.
     }
 
-    public function createPayment(GatewayPaymentData $paymentData)
+    public function createPayment(Donation $donation)
     {
         // TODO: Implement createPayment() method.
     }
@@ -146,7 +145,7 @@ class MockPaypal extends PaymentGateway
     /**
      * @return string
      */
-    public static function id()
+    public static function id(): string
     {
         return 'mock-paypal';
     }
@@ -154,7 +153,7 @@ class MockPaypal extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getId()
+    public function getId(): string
     {
         return self::id();
     }
@@ -162,7 +161,7 @@ class MockPaypal extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getName()
+    public function getName(): string
     {
         return 'PayPal Payment Method';
     }
@@ -170,17 +169,17 @@ class MockPaypal extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getPaymentMethodLabel()
+    public function getPaymentMethodLabel(): string
     {
         return 'PayPal';
     }
 
-    public function getLegacyFormFieldMarkup($formId, $args)
+    public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
         // TODO: Implement getLegacyFormFieldMarkup() method.
     }
 
-    public function createPayment(GatewayPaymentData $paymentData)
+    public function createPayment(Donation $donation)
     {
         // TODO: Implement createPayment() method.
     }

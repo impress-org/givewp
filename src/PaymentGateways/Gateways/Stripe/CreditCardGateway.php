@@ -5,12 +5,10 @@ namespace Give\PaymentGateways\Gateways\Stripe;
 use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
-use Give\Framework\PaymentGateways\Contracts\SubscriptionModuleInterface;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\SubscriptionModule;
 use Give\Helpers\Call;
-use Give\PaymentGateways\DataTransferObjects\GatewayPaymentData;
 
 /**
  * @since 2.19.0
@@ -45,32 +43,32 @@ class CreditCardGateway extends PaymentGateway
      * @inheritDoc
      * @since 2.19.7 fix handlePaymentIntentStatus not receiving extra param
      * @since 2.19.0
-     * @return GatewayCommand
+     *
      * @throws PaymentGatewayException
      */
-    public function createPayment(GatewayPaymentData $paymentData)
+    public function createPayment(Donation $donation): GatewayCommand
     {
-        $paymentMethod = Call::invoke( Actions\GetPaymentMethodFromRequest::class, $paymentData );
-        $donationSummary = Call::invoke( Actions\SaveDonationSummary::class, $paymentData );
-        $stripeCustomer = Call::invoke( Actions\GetOrCreateStripeCustomer::class, $paymentData );
+        $paymentMethod = Call::invoke(Actions\GetPaymentMethodFromRequest::class, $donation);
+        $donationSummary = Call::invoke(Actions\SaveDonationSummary::class, $donation);
+        $stripeCustomer = Call::invoke(Actions\GetOrCreateStripeCustomer::class, $donation);
 
         $createIntentAction = new Actions\CreatePaymentIntent([]);
 
         return $this->handlePaymentIntentStatus(
             $createIntentAction(
-                $paymentData,
+                $donation,
                 $donationSummary,
                 $stripeCustomer,
                 $paymentMethod
             ),
-            $paymentData->donationId
+            $donation
         );
     }
 
     /**
      * @inheritDoc
      */
-    public static function id()
+    public static function id(): string
     {
         return 'stripe';
     }
@@ -78,7 +76,7 @@ class CreditCardGateway extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getId()
+    public function getId(): string
     {
         return self::id();
     }
@@ -86,7 +84,7 @@ class CreditCardGateway extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getName()
+    public function getName(): string
     {
         return __('Stripe - Credit Card', 'give');
     }
@@ -94,7 +92,7 @@ class CreditCardGateway extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getPaymentMethodLabel()
+    public function getPaymentMethodLabel(): string
     {
         return __('Stripe - Credit Card', 'give');
     }
@@ -102,7 +100,7 @@ class CreditCardGateway extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function getLegacyFormFieldMarkup($formId, $args)
+    public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
         return $this->getCreditCardFormHTML($formId, $args);
     }

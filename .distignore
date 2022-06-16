@@ -9,6 +9,7 @@
 /tests
 /node_modules
 /assets/src
+/assets/dist/**/*.map
 /vendor/bin
 /vendor/composer/installers
 /vendor/**/*.phar
@@ -32,7 +33,6 @@ jsconfig.json
 globals.d.ts
 tsconfig.json
 
-cypress.json
 sample-data/wordpress.sql
 sample-data/sample-data.numbers
 bower.json

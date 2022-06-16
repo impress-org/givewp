@@ -1,0 +1,16 @@
+.give-toggle {
+    display: flex;
+    min-height: 42px;
+    margin-bottom: 20px;
+    border: 1px solid #757575;
+    border-radius: 2px;
+
+    &__option {
+        flex:1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 3px;
+        cursor: pointer;
+    }
+}
