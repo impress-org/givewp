@@ -95,7 +95,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased add actions givewp_donor_creating and givewp_donor_created
+     * @since 2.21.0 add actions givewp_donor_creating and givewp_donor_created
      * @since 2.20.0 mutate model and return void
      * @since 2.19.6
      *
@@ -160,7 +160,7 @@ class DonorRepository
 
     /**
      *
-     * @unreleased add actions givewp_donor_updating and givewp_donor_updated
+     * @since 2.21.0 add actions givewp_donor_updating and givewp_donor_updated
      * @since 2.20.0 return void
      * @since 2.19.6
      *
@@ -243,7 +243,7 @@ class DonorRepository
 
     /**
      *
-     * @unreleased add actions givewp_donor_deleting and givewp_donor_deleted
+     * @since 2.21.0 add actions givewp_donor_deleting and givewp_donor_deleted
      * @since 2.20.0 consolidate meta deletion into a single query
      * @since 2.19.6
      *

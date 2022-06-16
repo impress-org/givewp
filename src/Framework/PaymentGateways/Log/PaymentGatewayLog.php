@@ -6,7 +6,7 @@ use Give\Donations\Models\Donation;
 use Give\Log\Log;
 
 /**
- * @unreleased Remove GatewayPaymentData related code and Update 'source' to payment gateway name
+ * @since 2.21.0 Remove GatewayPaymentData related code and Update 'source' to payment gateway name
  * @since 2.19.6 remove cardInfo from log
  * @since 2.18.0
  */

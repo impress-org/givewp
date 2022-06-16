@@ -78,7 +78,7 @@ class DonationResponseData implements Arrayable
      *
      * @param  object  $donation
      *
-     * @unreleased use meta keys as camelcase
+     * @since 2.21.0 use meta keys as camelcase
      * @since 2.20.0
      */
     public static function fromObject($donation): DonationResponseData
@@ -118,7 +118,7 @@ class DonationResponseData implements Arrayable
     /**
      * Get donation type to display on front-end
      *
-     * @unreleased refactor conditional for subscription renewals
+     * @since 2.21.0 refactor conditional for subscription renewals
      * @since 2.20.0
      * @param  object  $donation
      */

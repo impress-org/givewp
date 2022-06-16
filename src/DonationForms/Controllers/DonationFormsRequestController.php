@@ -9,7 +9,7 @@ use WP_REST_Request;
 /**
  * Donation Forms Request Controller class
  *
- * @unreleased
+ * @since 2.21.0
  */
 class DonationFormsRequestController
 {

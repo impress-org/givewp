@@ -119,7 +119,7 @@ function give_get_default_gateway( $form_id ) {
 /**
  * Returns the admin label for the specified gateway
  *
- * @unreleased remove hard coded admin_labels
+ * @since 2.21.0 remove hard coded admin_labels
  * @since 1.0
  *
  * @param  string  $gateway  Name of the gateway to retrieve a label for

@@ -10,13 +10,13 @@ use Stripe\Checkout\Session;
 use Stripe\Event;
 
 /**
- * @unreleased
+ * @since 2.21.0
  */
 class CheckoutSessionCompleted extends StripeEventListener
 {
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @inerhitDoc
      */
@@ -36,7 +36,7 @@ class CheckoutSessionCompleted extends StripeEventListener
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      * @return void
      */
     private function addSupportForLegacyActionHook($donationId, $event)

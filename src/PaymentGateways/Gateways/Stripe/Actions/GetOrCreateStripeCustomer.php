@@ -14,7 +14,7 @@ class GetOrCreateStripeCustomer
     /**
      * @since 2.20.0 add second param support to function.
      *             This param is optional because we use it only when donor subscribe for recurring donation.
-     * @unreleased Update function first argument type to Donation model
+     * @since 2.21.0 Update function first argument type to Donation model
      * @since 2.19.0
      *
      * @throws StripeCustomerException|Exception
@@ -33,7 +33,7 @@ class GetOrCreateStripeCustomer
     }
 
     /**
-     * @unreleased Update function first argument type to Donation model
+     * @since 2.21.0 Update function first argument type to Donation model
      * @since 2.19.0
      * @throws Exception
      */

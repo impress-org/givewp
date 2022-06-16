@@ -167,7 +167,7 @@ function give_send_to_success_page( $query_string = null ) {
  * @param array|string $args
  *
  * @access public
- * @unreleased Auto set "payment-mode" in redirect url.
+ * @since 2.21.0 Auto set "payment-mode" in redirect url.
  * @since  1.0
  * @return Void
  */

@@ -40,7 +40,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @param string $gatewayTransactionId
      *
@@ -64,7 +64,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @param string $gatewayTransactionId
      *
@@ -125,7 +125,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased replace actions with givewp_subscription_creating and givewp_subscription_created
+     * @since 2.21.0 replace actions with givewp_subscription_creating and givewp_subscription_created
      * @since 2.19.6
      *
      * @return void
@@ -179,7 +179,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased replace actions with givewp_subscription_updating and givewp_subscription_updated
+     * @since 2.21.0 replace actions with givewp_subscription_updating and givewp_subscription_updated
      * @since 2.19.6
      *
      * @return void
@@ -223,7 +223,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased replace actions with givewp_subscription_deleting and givewp_subscription_deleted
+     * @since 2.21.0 replace actions with givewp_subscription_deleting and givewp_subscription_deleted
      * @since 2.20.0 consolidate meta deletion into a single query
      * @since 2.19.6
      *

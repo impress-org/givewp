@@ -12,7 +12,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class SubscriptionCompleteHandler
 {
     /**
-     * @unreleased replace logic with models
+     * @since 2.21.0 replace logic with models
      * @since 2.18.0
      *
      * @throws Exception

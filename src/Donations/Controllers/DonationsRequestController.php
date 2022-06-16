@@ -10,7 +10,7 @@ use WP_REST_Request;
 /**
  * Donations Request Controller class
  *
- * @unreleased
+ * @since 2.21.0
  */
 class DonationsRequestController
 {
@@ -28,7 +28,7 @@ class DonationsRequestController
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @return array
      */
@@ -68,7 +68,7 @@ class DonationsRequestController
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @return int
      */
@@ -84,7 +84,7 @@ class DonationsRequestController
 
     /**
      * @param QueryBuilder $query
-     * @unreleased
+     * @since 2.21.0
      *
      * @return QueryBuilder
      */

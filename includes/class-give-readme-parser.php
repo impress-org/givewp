@@ -53,7 +53,7 @@ class Give_Readme_Parser
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      */
     protected function get_readme_file_content(): string
     {

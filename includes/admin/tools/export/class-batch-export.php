@@ -116,7 +116,7 @@ class Give_Batch_Export extends Give_Export {
 	/**
 	 * Give_Batch_Export constructor.
 	 *
-     * @unreleased Create only csv file.
+     * @since 2.21.0 Create only csv file.
 	 * @since 2.9.0 add hash to filename to avoid collisions
 	 * @since 1.5
 	 *

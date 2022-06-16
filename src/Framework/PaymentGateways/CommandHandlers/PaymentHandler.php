@@ -16,7 +16,7 @@ abstract class PaymentHandler
     protected $paymentCommand;
 
     /**
-     * @unreleased change return type to DonationStatus
+     * @since 2.21.0 change return type to DonationStatus
      *
      * @since 2.18.0
      */
@@ -39,7 +39,7 @@ abstract class PaymentHandler
     }
 
     /**
-     * @unreleased replace $donationId with Donation model
+     * @since 2.21.0 replace $donationId with Donation model
      * @since 2.18.0
      *
      * @throws Exception

@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Process batch exports via ajax
  *
- * @unreleased Sanitize file name. Allow plain file name only.
+ * @since 2.21.0 Sanitize file name. Allow plain file name only.
  * @since 1.5
  * @return void
  */

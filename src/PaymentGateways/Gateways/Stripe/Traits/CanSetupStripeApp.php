@@ -3,12 +3,12 @@
 namespace Give\PaymentGateways\Gateways\Stripe\Traits;
 
 /**
- * @unreleased
+ * @since 2.21.0
  */
 trait CanSetupStripeApp
 {
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @param int $formId
      *
