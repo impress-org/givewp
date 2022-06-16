@@ -482,9 +482,9 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      * @unreleased
      * @throws ReflectionException
      */
-    private function isFunctionImplementedInGatewayClass(string $method): bool
+    private function isFunctionImplementedInGatewayClass(string $methodName): bool
     {
-        $reflector = new ReflectionMethod($this, $method);
+        $reflector = new ReflectionMethod($this, $methodName);
         return ($reflector->getDeclaringClass()->getName() === get_class($this));
     }
 }
