@@ -68,6 +68,10 @@ const blockAttributes = {
 		type: 'boolean',
 		default: true,
 	},
+    showTributes: {
+        type: 'boolean',
+        default: true,
+    },
 	showAnonymous: {
 		type: 'boolean',
 		default: true,
@@ -98,16 +102,12 @@ const blockAttributes = {
     },
     filter: {
         type: 'string',
-        default: 'formID',
+        default: 'Donor ID',
     },
     color: {
         type: 'string',
         default: '#219653',
     },
-    showTributes: {
-        type: 'boolean',
-        default: false,
-    }
 };
 
 export default blockAttributes;

@@ -41,13 +41,17 @@ const blockAttributes = {
 	},
 	columns: {
 		type: 'string',
-		default: 'best-fit',
+		default: '1',
 	},
     imageSize: {
         type: 'string',
         default: 'medium',
     },
     imageHeight: {
+        type: 'string',
+        default: 'auto',
+    },
+    imageHeightOptions: {
         type: 'string',
         default: 'auto',
     },
@@ -65,7 +69,7 @@ const blockAttributes = {
 	},
     showProgressBar: {
         type: 'boolean',
-        default: false,
+        default: true,
     },
 	showFeaturedImage: {
 		type: 'boolean',
@@ -73,15 +77,19 @@ const blockAttributes = {
 	},
     showDonateButton: {
 		type: 'boolean',
-		default: false,
+		default: true,
 	},
-    donateButtonBackgroundColor: {
+    tagBackgroundColor: {
 		type: 'string',
-		default: '#66bb6a',
+		default: '#69b86b',
 	},
+    tagTextColor: {
+        type: 'string',
+        default: '#ffffff',
+    },
     donateButtonTextColor: {
 		type: 'string',
-		default: '#fff',
+		default: '#69b86b',
 	},
 	displayType: {
 		type: 'string',
@@ -91,6 +99,14 @@ const blockAttributes = {
         type: 'integer',
         default: 16
     },
+    filter: {
+        type: 'string',
+        default: 'tags',
+    },
+    progressBarColor: {
+        type: 'string',
+        default: '#69b86b'
+    }
 };
 
 export default blockAttributes;

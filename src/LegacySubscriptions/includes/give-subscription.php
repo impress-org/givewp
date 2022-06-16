@@ -801,7 +801,7 @@ class Give_Subscription {
 			'sub_id'      => $this->id,
 		) ), "give-recurring-cancel-{$this->id}" );
 
-		return apply_filters( 'give_subscription_cancel_url', $url, $this );
+		return apply_filters( 'give_subscription_cancel_url', esc_url($url), $this );
 	}
 
 

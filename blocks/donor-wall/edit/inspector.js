@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n'
+
 import {InspectorControls, ColorPalette,} from '@wordpress/block-editor';
 import {PanelBody, Panel, SelectControl, ToggleControl, TextControl, FormTokenField } from '@wordpress/components';
 
@@ -13,8 +14,8 @@ import giveDonorWallOptions from '../data/options';
 import ColumnSelector from '../../components/column-selector';
 import ToggleOptions from '../../components/toggle';
 
-
 import './style.scss'
+import Toggle from "../../components/toggle";
 
 /**
  * Render Inspector Controls
@@ -88,7 +89,6 @@ const Inspector = ( { attributes, setAttributes } ) => {
             </>
         }
     };
-
     return (
 		<InspectorControls key="inspector">
                 <Panel>
@@ -166,7 +166,6 @@ const Inspector = ( { attributes, setAttributes } ) => {
                                             label={ __( 'Show Tributes', 'give' ) }
                                             checked={ !! showTributes }
                                             onChange={ ( value ) => saveSetting( 'showTributes', value ) } />}
-
                                         <ToggleControl
                                             className="give-donor-wall-inspector"
                                             name="showComments"
@@ -223,7 +222,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
                     </PanelBody>
                 </Panel>
                 <Panel>
-                    <PanelBody title= {__('Wall Interaction', 'give')} initialOpen={ false }>
+                    <PanelBody title= {__('Wall Interaction', 'give')} initialOpen={ true }>
                         <TextControl
                             className="give-donor-wall-inspector"
                             name="donorsPerPage"

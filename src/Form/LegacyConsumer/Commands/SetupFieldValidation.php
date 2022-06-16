@@ -2,6 +2,7 @@
 
 namespace Give\Form\LegacyConsumer\Commands;
 
+use Give\Form\LegacyConsumer\Actions\DetermineVisibilityForRequest;
 use Give\Form\LegacyConsumer\Validators\FileUploadValidator;
 use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\File;
@@ -60,6 +61,10 @@ class SetupFieldValidation implements HookCommandInterface
      */
     public function validate(Field $field)
     {
+        if( ! $this->isFieldVisible( $field ) ) {
+            return;
+        }
+
         if ($field->getType() === Types::FILE) {
             // Are we processing donation form validation on ajax?
             if (isset($_POST['give_ajax'])) {
@@ -69,11 +74,13 @@ class SetupFieldValidation implements HookCommandInterface
             $validator = new FileUploadValidator($field);
             $validator();
         } elseif (in_array($field->getType(), Types::all(), true)) {
-            if ($field->isRequired() && ! isset($_POST[$field->getName()])) {
-                give_set_error(
-                    "give-{$field->getName()}-required-field-missing",
-                    $field->getRequiredError()['error_message']
-                );
+            if ( $field->isRequired() ) {
+                if( ! isset($_POST[$field->getName()]) || empty($_POST[$field->getName()]) ) {
+                    give_set_error(
+                        "give-{$field->getName()}-required-field-missing",
+                        $field->getRequiredError()['error_message']
+                    );
+                }
             }
 
             if (
@@ -101,5 +108,15 @@ class SetupFieldValidation implements HookCommandInterface
              */
             do_action('give_fields_legacy_consumer_validate_field', $field, $this->formId);
         }
+    }
+
+    /**
+     * @param Field $field
+     * @return bool
+     */
+    protected function isFieldVisible(Field $field)
+    {
+        $determineVisibilityAction = new DetermineVisibilityForRequest( $field, $_POST );
+        return $determineVisibilityAction->__invoke();
     }
 }

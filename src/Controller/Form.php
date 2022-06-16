@@ -283,7 +283,7 @@ class Form
             $redirect
         );
 
-        $url = explode('?', $redirect, 2);
+        $url = explode('?', esc_url_raw($redirect), 2);
         $url[0] = Give()->routeForm->getURL(get_post_field('post_name', absint($_REQUEST['give-form-id'])));
 
         return implode('?', $url);

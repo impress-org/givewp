@@ -111,9 +111,11 @@ class IframeView
      */
     public function setURL($url = null)
     {
-        $this->url = add_query_arg(
-            ['giveDonationFormInIframe' => 1],
-            $url
+        $this->url = esc_url(
+            add_query_arg(
+                ['giveDonationFormInIframe' => 1],
+                $url
+            )
         );
 
         return $this;
@@ -199,9 +201,11 @@ class IframeView
         // We can prevent live donation on in appropriate situation like: previewing donation form (with draft status)
         if (FormTemplateUtils\Utils\Frontend::getPreviewDonationFormId(
             ) || $this->isDonationFormBlockRendererApiRequest()) {
-            $this->url = add_query_arg(
-                ['giveDisableDonateNowButton' => 1],
-                $this->url
+            $this->url = esc_url(
+                add_query_arg(
+                    ['giveDisableDonateNowButton' => 1],
+                    $this->url
+                )
             );
         }
     }
@@ -283,7 +287,7 @@ class IframeView
     {
         $query_string = array_map('give_clean', wp_parse_args($_SERVER['QUERY_STRING']));
         $donationHistory = give_get_purchase_session();
-        $hasAction = ! empty($query_string['giveDonationAction']);
+        $hasAction = !empty($query_string['giveDonationAction']);
         $this->autoScroll = absint($hasAction);
         $donationFormHasSession = null;
 
@@ -294,8 +298,8 @@ class IframeView
         // Do not pass donation acton by query param if does not belong to current form.
         if (
             $hasAction &&
-            ! empty($donationHistory) &&
-            ! $donationFormHasSession
+            !empty($donationHistory) &&
+            !$donationFormHasSession
         ) {
             unset($query_string['giveDonationAction']);
             $hasAction = false;
