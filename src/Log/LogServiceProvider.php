@@ -6,6 +6,7 @@ use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\Log\Commands\FlushLogsCommand;
 use Give\Log\Helpers\Environment;
+use Give\Log\Migrations\CompleteRemovedLegacyLogMigration;
 use Give\Log\Migrations\CreateNewLogTable;
 use Give\Log\Migrations\DeleteOldLogTables;
 use Give\Log\Migrations\MigrateExistingLogs;
@@ -61,6 +62,7 @@ class LogServiceProvider implements ServiceProvider
         give(MigrationsRegister::class)->addMigrations([
             CreateNewLogTable::class,
             RemoveSensitiveLogs::class,
+            CompleteRemovedLegacyLogMigration::class
         ]);
 
         // Check if Logs migration batch processing is completed
