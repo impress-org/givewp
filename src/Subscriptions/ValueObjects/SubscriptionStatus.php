@@ -14,7 +14,7 @@ use Give\Framework\Support\ValueObjects\Enum;
  * @method static SubscriptionStatus REFUNDED()
  * @method static SubscriptionStatus ABANDONED()
  * @method static SubscriptionStatus FAILING()
- * @method static SubscriptionStatus CANCELED()
+ * @method static SubscriptionStatus CANCELLED()
  * @method static SubscriptionStatus SUSPENDED()
  * @method bool isPending()
  * @method bool isActive()

@@ -126,7 +126,7 @@ class MockStripe extends PaymentGateway
         // TODO: Implement getLegacyFormFieldMarkup() method.
     }
 
-    public function createPayment(Donation $donation)
+    public function createPayment(Donation $donation, $gatewayData = null)
     {
         // TODO: Implement createPayment() method.
     }
@@ -179,7 +179,7 @@ class MockPaypal extends PaymentGateway
         // TODO: Implement getLegacyFormFieldMarkup() method.
     }
 
-    public function createPayment(Donation $donation)
+    public function createPayment(Donation $donation, $gatewayData = null)
     {
         // TODO: Implement createPayment() method.
     }

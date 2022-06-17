@@ -11,12 +11,15 @@ interface SubscriptionModuleInterface
 {
     /**
      * Create a subscription with gateway
+     * Note: You can use "givewp_new_subscription_{$gatewayId}_gateway_data" filter hook to pass additional data for gateway which helps/require to process initial subscription transaction.
+     *       This filter will help to add additional arguments to this function which should be optional otherwise you will get PHP fatal error.
      *
+     * @unreleased Add third param to function to pass gateway data to process transaction
      * @since 2.18.0
      *
      * @return GatewayCommand|RedirectOffsite
      */
-    public function createSubscription(Donation $donation, Subscription $subscription);
+    public function createSubscription(Donation $donation, Subscription $subscription, $gatewayData);
 
     /**
      * Cancel subscription.

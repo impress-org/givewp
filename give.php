@@ -48,7 +48,9 @@ use Give\DonationForms\ServiceProvider as DonationFormsServiceProvider;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ServiceProvider as DonationServiceProvider;
 use Give\DonationSummary\ServiceProvider as DonationSummaryServiceProvider;
+use Give\DonorDashboards\Profile;
 use Give\DonorDashboards\ServiceProvider as DonorDashboardsServiceProvider;
+use Give\DonorDashboards\Tabs\TabsRegister;
 use Give\Donors\Repositories\DonorRepositoryProxy;
 use Give\Donors\ServiceProvider as DonorsServiceProvider;
 use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
@@ -116,6 +118,8 @@ if (!defined('ABSPATH')) {
  * @property-read DonorRepositoryProxy $donors
  * @property-read SubscriptionRepository $subscriptions
  * @property-read DonationFormsRepository $donationFormsRepository
+ * @property-read Profile $donorDashboard
+ * @property-read TabsRegister $donorDashboardTabs
  * @property-read Give_Recurring_DB_Subscription_Meta $subscription_meta
  *
  * @mixin Container

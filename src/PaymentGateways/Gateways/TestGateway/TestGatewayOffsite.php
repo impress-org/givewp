@@ -85,7 +85,7 @@ class TestGatewayOffsite extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function createPayment(Donation $donation)
+    public function createPayment(Donation $donation, $gatewayData = null)
     {
         $redirectUrl = $this->generateSecureGatewayRouteUrl(
             'securelyReturnFromOffsiteRedirect',
@@ -102,7 +102,7 @@ class TestGatewayOffsite extends PaymentGateway
      * @since 2.21.0 update to use Donation model
      * @since 2.19.0
      *
-     * @param  array  $queryParams
+     * @param array $queryParams
      *
      * @return RedirectResponse
      * @throws Exception
@@ -123,7 +123,7 @@ class TestGatewayOffsite extends PaymentGateway
      * @since 2.21.0 update to use Donation model
      * @since 2.19.0
      *
-     * @param  array  $queryParams
+     * @param array $queryParams
      *
      * @return RedirectResponse
      * @throws Exception
@@ -138,7 +138,7 @@ class TestGatewayOffsite extends PaymentGateway
     }
 
     /**
-     * @param  Donation  $donation
+     * @param Donation $donation
      *
      * @return void
      * @throws Exception

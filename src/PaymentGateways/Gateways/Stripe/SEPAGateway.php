@@ -11,6 +11,7 @@ use Give\Framework\PaymentGateways\SubscriptionModule;
 use Give\Helpers\Call;
 use Give\PaymentGateways\Gateways\Stripe\Traits\HandlePaymentIntentStatus;
 use Give\PaymentGateways\Gateways\Stripe\Traits\SEPAMandateForm;
+use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
 
 /**
  * @since 2.19.0
@@ -48,12 +49,14 @@ class SEPAGateway extends PaymentGateway
      * @inheritDoc
      * @since 2.19.7 fix handlePaymentIntentStatus not receiving extra param
      * @since 2.19.0
+     *
+     * @param PaymentMethod $paymentMethod
+     *
      * @return GatewayCommand
      * @throws PaymentGatewayException
      */
-    public function createPayment(Donation $donation): GatewayCommand
+    public function createPayment(Donation $donation, $paymentMethod): GatewayCommand
     {
-        $paymentMethod = Call::invoke(Actions\GetPaymentMethodFromRequest::class, $donation);
         $donationSummary = Call::invoke(Actions\SaveDonationSummary::class, $donation);
         $stripeCustomer = Call::invoke(Actions\GetOrCreateStripeCustomer::class, $donation);
 

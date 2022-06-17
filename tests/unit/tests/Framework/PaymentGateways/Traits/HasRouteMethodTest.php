@@ -59,7 +59,7 @@ class HasRouteMethodTest extends WP_UnitTestCase
 
     private function registerGateway()
     {
-        add_filter("give_gateway_GatewayRouteTestGateway_subscription_module", function () {
+        add_filter("givewp_gateway_GatewayRouteTestGateway_subscription_module", function () {
             return GatewayRouteTestGatewaySubscriptionModule::class;
         });
 
@@ -101,7 +101,7 @@ class GatewayRouteTestGateway extends PaymentGateway
         return self::id();
     }
 
-    public function createPayment(Donation $donation)
+    public function createPayment(Donation $donation, $gatewayData = null)
     {
     }
 
@@ -123,7 +123,8 @@ class GatewayRouteTestGatewaySubscriptionModule extends SubscriptionModule
 
     public function createSubscription(
         Donation $donation,
-        Subscription $subscription
+        Subscription $subscription,
+        $gatewayData = null
     ) {
     }
 

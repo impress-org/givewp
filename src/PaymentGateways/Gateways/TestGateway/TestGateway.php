@@ -66,7 +66,7 @@ class TestGateway extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function createPayment(Donation $donation): GatewayCommand
+    public function createPayment(Donation $donation, $gatewayData = null): GatewayCommand
     {
         $transactionId = "test-gateway-transaction-id-{$donation->id}";
 

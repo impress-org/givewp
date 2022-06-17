@@ -11,15 +11,14 @@ class Call
      *
      * @since 2.17.0
      *
-     * @param string $class
-     * @param mixed  $args
+     * @param mixed $args
      *
      * @return mixed
      */
-    public static function invoke($class, ...$args)
+    public static function invoke(string $class, ...$args)
     {
-        if ( ! method_exists($class, '__invoke')) {
-            throw new InvalidArgumentException("This class is not invokable");
+        if (!method_exists($class, '__invoke')) {
+            throw new InvalidArgumentException("{$class} class is not invokable");
         }
 
         /** @var callable $instance */
