@@ -1,11 +1,10 @@
-import axios from 'axios';
-import {getAPIRoot} from '../../../utils';
+import {donorDashboardApi} from '../../../utils';
 import {fetchSubscriptionsDataFromAPI} from '../../../tabs/recurring-donations/utils';
 
 export const cancelSubscriptionWithAPI = (id) => {
-    return axios
+    return donorDashboardApi
         .post(
-            getAPIRoot() + 'give-api/v2/donor-dashboard/recurring-donations/subscription/cancel',
+            'recurring-donations/subscription/cancel',
             {
                 id: id,
             },

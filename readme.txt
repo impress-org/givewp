@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 7.0
-Stable tag: 2.20.2
+Stable tag: 2.21.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -251,6 +251,27 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.21.0: June 16th, 2022 =
+* New: Fresh new look for the Donor Wall block and shortcode!
+* New: Form Grid looks has a great new look and more visual options!
+* Enhancement: The new Gateway API now uses he new Models
+* Enhancement: All failed queries are now logged with extra data to troubleshoot
+* Enhancement: Some minor visual improvements on the Logs admin page
+* Security: Remove an unused donor wall endpoint that made donor wall data too easy to access
+* Security: Donors can no longer immediately access the Donor Dashboard without authentication
+* Security: Further tightening of XSS protection per WordPress security guidelines
+* Security: Tighten up file exposure to GiveWP Managers in the Exporter
+* Fix: Prevent a notice and database error on fresh installs
+* Fix: Cleared up some notices that logging was causing
+* Fix: Admin notices no longer scrunch all weird-like up at the top of the page
+* Fix: Further compatibility fixes for PHP 8.1
+* Fix: Text aligns better for offline donations in the form
+* Fix: Stripe gracefully ignores events that come in from another platform
+* Fix: Brought back accidentally removed income goal stat filters. Thanks sc0ttkclark!
+* Fix: Make sure that all donation errors are caught and gracefully handled to inform the donor
+* Fix: Renewals now display the correct payment type in the admin donations list
+* Fix: Checkboxes (also created via Form Field Manager) no longer require being checked when conditionally hidden
+
 = 2.20.2: June 8th, 2022 =
 * Security: Donors are no longer able to view the Donor Dashboard for the email they donated in without logging in
 * Security: Added additional URL escaping around the codebase to protect against XSS attacks

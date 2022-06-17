@@ -35,7 +35,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * First we create a payment, then move on to the gateway processing
      *
-     * @unreleased Replace give_insert_payment with donation model. Store legacy subscription data in donation meta.
+     * @since 2.21.0 Replace give_insert_payment with donation model. Store legacy subscription data in donation meta.
      *             Attach subscription id to donation.
      * @since 2.19.0 Replace is_recurring with is_donation_recurring to detect recurring donations.
      * @since 2.18.0
@@ -110,7 +110,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * Set donation id to purchase session for use in the donation receipt.
      *
-     * @unreleased
+     * @since 2.21.0
      *
      * @param $donationId
      *
@@ -127,7 +127,7 @@ class LegacyPaymentGatewayAdapter
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @param int|null $userId
      * @param string $donorEmail

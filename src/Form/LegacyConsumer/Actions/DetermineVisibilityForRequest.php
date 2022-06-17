@@ -9,7 +9,7 @@ use Give\Framework\FieldsAPI\Field;
 use Give\ValueObjects\Money;
 
 /**
- * @unreleased
+ * @since 2.21.0
  */
 class DetermineVisibilityForRequest
 {
@@ -23,7 +23,7 @@ class DetermineVisibilityForRequest
     protected $postData;
 
     /**
-     * @unreleased
+     * @since 2.21.0
      * @param Field $field
      * @param array $postData
      */
@@ -34,7 +34,7 @@ class DetermineVisibilityForRequest
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      */
     public function __invoke()
     {
@@ -47,7 +47,7 @@ class DetermineVisibilityForRequest
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      * @return bool
      */
     protected function fieldHasVisibilityConditions()
@@ -57,7 +57,7 @@ class DetermineVisibilityForRequest
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      * @param bool $visibility
      * @param Condition $condition
      * @return bool
@@ -72,7 +72,7 @@ class DetermineVisibilityForRequest
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      * @param Condition $condition
      * @return bool
      */
@@ -87,7 +87,7 @@ class DetermineVisibilityForRequest
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      * @param BasicCondition $condition
      * @return bool
      */
@@ -120,7 +120,7 @@ class DetermineVisibilityForRequest
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      * @param $amount
      * @return int
      */

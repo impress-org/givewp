@@ -19,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Process batch exports via ajax
  *
+ * @since 2.21.0 Sanitize file name. Allow plain file name only.
  * @since 1.5
  * @return void
  */
@@ -48,7 +49,9 @@ function give_do_ajax_export() {
 
 	$step     = absint( $_POST['step'] );
 	$class    = sanitize_text_field( $form['give-export-class'] );
-	$filename = isset( $_POST['file_name'] ) ? sanitize_text_field( $_POST['file_name'] ) : null;
+	$filename = isset( $_POST['file_name'] ) ?
+        basename(sanitize_file_name( $_POST['file_name'] ), '.csv') :
+        null;
 
 	/* @var Give_Batch_Export $export */
 	$export = new $class( $step, $filename );

@@ -10,7 +10,7 @@ class PaymentIntentPaymentFailed extends StripeEventListener
 {
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @inerhitDoc
      */
@@ -29,7 +29,7 @@ class PaymentIntentPaymentFailed extends StripeEventListener
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      */
     private function addSupportForLegacyActionHook(Event $event)
     {

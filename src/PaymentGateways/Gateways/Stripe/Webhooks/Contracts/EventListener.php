@@ -5,12 +5,12 @@ namespace Give\PaymentGateways\Gateways\Stripe\Webhooks\Contracts;
 use Stripe\Event;
 
 /**
- * @unreleased
+ * @since 2.21.0
  */
 interface EventListener
 {
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @return void
      */

@@ -32,7 +32,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 
 
 		/**
-         * @unreleased recover method for legacy give-recurring usage.
+         * @since 2.21.0 recover method for legacy give-recurring usage.
          * @since  1.0
          *
 		 * Stripe uses it's own credit card form because the card details are tokenized.
@@ -49,7 +49,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 		 */
 		public function addCreditCardForm( $form_id, $args, $echo = true ) {
             $form = $this->getCreditCardFormHTML($form_id, $args);
-            
+
             if ( false !== $echo ) {
 				echo $form;
 			}

@@ -80,7 +80,7 @@ class RegisterPaymentGateways
     /**
      * Register 3rd party payment gateways
      *
-     * @unreleased use givewp prefix for action
+     * @since 2.21.0 use givewp prefix for action
      * @since 2.18.0
      *
      * @param PaymentGatewayRegister $paymentGatewayRegister
@@ -93,7 +93,7 @@ class RegisterPaymentGateways
     /**
      * Unregister 3rd party payment gateways
      *
-     * @unreleased use givewp prefix for action
+     * @since 2.21.0 use givewp prefix for action
      * @since 2.18.0
      *
      * @param PaymentGatewayRegister $paymentGatewayRegister

@@ -82,9 +82,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * @unreleased Handle PHP exception.
-     *
-     * @unreleased Add filter hook to provide gateway data before donation is processed by the gateway.
+     * @unreleased Add new filter hook to provide gateway data before donation is processed by the gateway.
+     * @since 2.21.0 Handle PHP exception.
      * @since 2.19.0
      */
     public function handleCreatePayment(Donation $donation)
@@ -122,9 +121,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * @unreleased Handle PHP exception.
-     *
      * @unreleased Add filter hook to provide gateway data before subscription is processed by the gateway.
+     * @since 2.21.0 Handle PHP exception.
      * @since 2.19.0
      *
      */
@@ -357,7 +355,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * Handle gateway subscription command
      *
-     * @unreleased Handle RedirectOffsite response.
+     * @since 2.21.0 Handle RedirectOffsite response.
      * @since 2.18.0
      *
      * @throws TypeNotSupported
@@ -433,7 +431,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      * 1. Redirect to donation form if donation form submit.
      * 2. Return json response if processing payment on ajax.
      *
-     * @unreleased Handle PHP exception.
+     * @since 2.21.0 Handle PHP exception.
      * @since 2.19.0
      */
     private function handleExceptionResponse(\Exception $exception, string $message)

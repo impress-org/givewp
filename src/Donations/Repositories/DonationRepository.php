@@ -28,7 +28,7 @@ class DonationRepository
     public $notes;
 
     /**
-     * @unreleased
+     * @since 2.21.0
      */
     public function __construct()
     {
@@ -65,7 +65,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      * @return Donation|null
      */
     public function getByGatewayTransactionId($gatewayTransactionId)
@@ -74,7 +74,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      * @return ModelQueryBuilder
      */
     public function queryByGatewayTransactionId($gatewayTransactionId)
@@ -158,7 +158,7 @@ class DonationRepository
 
     /**
      *
-     * @unreleased replace actions with givewp_donation_creating and givewp_donation_created
+     * @since 2.21.0 replace actions with givewp_donation_creating and givewp_donation_created
      * @since 2.20.0 mutate model and return void
      * @since 2.19.6
      *
@@ -230,7 +230,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased replace actions with givewp_donation_updating and givewp_donation_updated
+     * @since 2.21.0 replace actions with givewp_donation_updating and givewp_donation_updated
      * @since 2.20.0 return void
      * @since 2.19.6
      *
@@ -280,7 +280,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased replace actions with givewp_donation_deleting and givewp_donation_deleted
+     * @since 2.21.0 replace actions with givewp_donation_deleting and givewp_donation_deleted
      * @since 2.20.0 consolidate meta deletion into a single query
      * @since 2.19.6
      *

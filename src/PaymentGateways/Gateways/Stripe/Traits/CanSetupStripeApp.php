@@ -5,12 +5,16 @@ namespace Give\PaymentGateways\Gateways\Stripe\Traits;
 use Stripe\Stripe;
 
 /**
- * @unreleased
+ * @since 2.21.0
  */
 trait CanSetupStripeApp
 {
     /**
-     * @unreleased
+     * @since 2.21.0
+     *
+     * @param int $formId
+     *
+     * @return void
      */
     protected function setupStripeApp(int $formId)
     {

@@ -94,7 +94,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @param  int  $userId
      * @return Donor|null
