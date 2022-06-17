@@ -179,13 +179,17 @@ class Give_Donor_Wall_Block {
                         'type'    => 'string',
                         'default' => 'Donor ID',
                     ],
-                    'color'      => [
+                    'color'                => [
                         'type'    => 'string',
                         'default' => '#219653',
                     ],
-                    'showTributes'      => [
+                    'showTributes'         => [
                         'type'    => 'boolean',
                         'default' => false,
+                    ],
+                    'showDate'             => [
+                        'type'    => 'boolean',
+                        'default' => true,
                     ],
 				],
 			]
@@ -228,7 +232,8 @@ class Give_Donor_Wall_Block {
             'toggle_options'    => $attributes['toggleOptions'],
             'filter'            => $attributes['filter'],
 			'avatar_size'       => $avatarSize ?: 75,
-            'color'             => $attributes['color']
+            'color'             => $attributes['color'],
+            'show_time'         => $attributes['showDate'],
 		];
 
 		$html = Give_Donor_Wall::get_instance()->render_shortcode( $parameters );
