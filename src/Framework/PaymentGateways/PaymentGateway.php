@@ -479,6 +479,9 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
+     * Checks to see if the provided method is being used by the child gateway class. This is used as a helper in the "can" methods 
+     * to see if the gateway is implementing a recurring feature without using a subscription module.
+     *     
      * @unreleased
      * @throws ReflectionException
      */
