@@ -107,7 +107,7 @@ trait MetaQuery
                 $this->groupBy($foreignKey);
 
                 // Group concat same key values into faux array
-                // @example [key: ['value1', 'value2']]
+                // @example key => ["value1", "value2"]
                 $this->selectRaw(
                     "CONCAT('[',GROUP_CONCAT(DISTINCT CONCAT('\"',%1s,'\"')),']') AS %2s",
                     $tableAlias . '.' . $metaTable->valueColumnName,
