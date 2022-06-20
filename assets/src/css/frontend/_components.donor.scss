@@ -104,14 +104,12 @@ $donor-space-triple: $donor-space * 3;
                 margin: 0 0 10px 0 !important;
                 font-size: safe-rem(1.5);
                 font-weight: 600;
-                //text-align: center;
                 line-height: 20px;
             }
 
             &__timestamp {
                 margin: 0 0 10px 0 !important;
                 color: #525252;
-                //text-align: center;
                 font-size: safe-rem(0.75);
             }
         }
