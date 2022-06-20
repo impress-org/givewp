@@ -187,7 +187,7 @@ class Give_Donor_Wall_Block {
                         'type'    => 'boolean',
                         'default' => false,
                     ],
-                    'showDate'             => [
+                    'showTimestamp'             => [
                         'type'    => 'boolean',
                         'default' => true,
                     ],
@@ -233,7 +233,7 @@ class Give_Donor_Wall_Block {
             'filter'            => $attributes['filter'],
 			'avatar_size'       => $avatarSize ?: 75,
             'color'             => $attributes['color'],
-            'show_time'         => $attributes['showDate'],
+            'show_timestamp'         => $attributes['showTimestamp'],
 		];
 
 		$html = Give_Donor_Wall::get_instance()->render_shortcode( $parameters );

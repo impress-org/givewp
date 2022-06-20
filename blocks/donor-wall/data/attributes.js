@@ -108,7 +108,7 @@ const blockAttributes = {
         type: 'string',
         default: '#219653',
     },
-    showDate: {
+    showTimestamp: {
         type: 'boolean',
         default: true,
     },
