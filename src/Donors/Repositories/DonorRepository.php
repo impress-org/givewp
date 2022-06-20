@@ -305,21 +305,26 @@ class DonorRepository
     }
 
     /**
+     * @unreleased optimize query by skipping prepareQuery until found
      * @since 2.19.6
      *
      * @return Donor|null
      */
     public function getByEmail(string $email)
     {
-        $donorObjectByPrimaryEmail = $this->prepareQuery()
+        $queryByPrimaryEmail = DB::table('give_donors')
+            ->select(
+                'id',
+                'email'
+            )
             ->where('email', $email)
             ->get();
 
-        if (!$donorObjectByPrimaryEmail) {
-            return $this->getByAdditionalEmail($email);
+        if ($queryByPrimaryEmail) {
+            return $this->queryById($queryByPrimaryEmail->id)->get();
         }
 
-        return $donorObjectByPrimaryEmail;
+        return $this->getByAdditionalEmail($email);
     }
 
     /**
