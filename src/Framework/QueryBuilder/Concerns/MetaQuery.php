@@ -71,10 +71,14 @@ trait MetaQuery
     /**
      * Select meta columns
      *
-     * @param string|RawSQL $table
-     * @param string $foreignKey
-     * @param string $primaryKey
-     * @param array $columns
+     * @unreleased optimize group concat functionality
+     * @since 2.19.6 add group concat functionality
+     * @since 2.19.0
+     *
+     * @param  string|RawSQL  $table
+     * @param  string  $foreignKey
+     * @param  string  $primaryKey
+     * @param  array  $columns
      *
      * @return $this
      */
@@ -95,10 +99,15 @@ trait MetaQuery
 
             // Check if we have meta columns that dev wants to group concat
             if ($concat) {
-                // Include foreign key so that dev doesn't have to
-                // he will be confused why he needs this if we don't do it for him, and we also want to prevent errors if sql_mode is only_full_group_by
+                /**
+                 * Include foreign key to prevent errors if sql_mode is only_full_group_by
+                 *
+                 * @see https://dev.mysql.com/doc/refman/5.7/en/group-by-handling.html
+                 */
                 $this->groupBy($foreignKey);
 
+                // Group concat same key values into faux array
+                // @example [key: ['value1', 'value2']]
                 $this->selectRaw(
                     "CONCAT('[',GROUP_CONCAT(DISTINCT CONCAT('\"',%1s,'\"')),']') AS %2s",
                     $tableAlias . '.' . $metaTable->valueColumnName,
@@ -109,7 +118,14 @@ trait MetaQuery
             }
 
             $this->join(
-                function (JoinQueryBuilder $builder) use ($table, $foreignKey, $primaryKey, $tableAlias, $column, $metaTable) {
+                function (JoinQueryBuilder $builder) use (
+                    $table,
+                    $foreignKey,
+                    $primaryKey,
+                    $tableAlias,
+                    $column,
+                    $metaTable
+                ) {
                     $builder
                         ->leftJoin($table, $tableAlias)
                         ->on($foreignKey, "{$tableAlias}.{$primaryKey}")
