@@ -2,9 +2,9 @@
 
 namespace Give\Framework\QueryBuilder\Concerns;
 
-use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\Clauses\MetaTable;
 use Give\Framework\QueryBuilder\Clauses\RawSQL;
+use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
@@ -80,22 +80,7 @@ trait MetaQuery
      */
     public function attachMeta($table, $foreignKey, $primaryKey, ...$columns)
     {
-        $groupConcat = false;
         $metaTable = $this->getMetaTable($table);
-
-        // Check if we have meta columns that dev wants to group concat
-        foreach ($columns as $definition) {
-            if (is_array($definition)) {
-                list (, , $concat) = array_pad($definition, 3, false);
-                if ($concat) {
-                    $groupConcat = true;
-                    // Include foreign key so that dev doesn't have to
-                    // he will be confused why he needs this if we don't do it for him, and we also want to prevent errors if sql_mode is only_full_group_by
-                    $this->groupBy($foreignKey);
-                    break;
-                }
-            }
-        }
 
         foreach ($columns as $i => $definition) {
             if (is_array($definition)) {
@@ -108,7 +93,12 @@ trait MetaQuery
             // Set dynamic alias
             $tableAlias = sprintf('%s_%s_%d', ($table instanceof RawSQL) ? $table->sql : $table, 'attach_meta', $i);
 
+            // Check if we have meta columns that dev wants to group concat
             if ($concat) {
+                // Include foreign key so that dev doesn't have to
+                // he will be confused why he needs this if we don't do it for him, and we also want to prevent errors if sql_mode is only_full_group_by
+                $this->groupBy($foreignKey);
+
                 $this->selectRaw(
                     "CONCAT('[',GROUP_CONCAT(DISTINCT CONCAT('\"',%1s,'\"')),']') AS %2s",
                     $tableAlias . '.' . $metaTable->valueColumnName,
@@ -126,12 +116,6 @@ trait MetaQuery
                         ->andOn("{$tableAlias}.{$metaTable->keyColumnName}", $column, true);
                 }
             );
-
-            // If this is non-aggregate column - we have to include it in the GROUP BY statement
-            // otherwise the query will fail on servers that have sql_mode flag set to only_full_group_by
-            if ($groupConcat && !$concat) {
-                $this->groupBy($columnAlias ?: $column);
-            }
         }
 
         return $this;
