@@ -95,8 +95,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
              * @unreleased
              */
             $gatewayData = apply_filters(
-                "givewp_new_payment_{$donation->gatewayId}_gateway_data",
-                null,
+                "givewp_create_payment_{$donation->gatewayId}_gateway_data",
+                !empty($_REQUEST['gatewayData']) ? give_clean($_REQUEST['gatewayData']) : null,
                 $donation
             );
 
@@ -135,8 +135,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
              * @unreleased
              */
             $gatewayData = apply_filters(
-                "givewp_new_subscription_{$donation->gatewayId}_gateway_data",
-                null,
+                "givewp_create_subscription_{$donation->gatewayId}_gateway_data",
+                !empty($_REQUEST['gatewayData']) ? give_clean($_REQUEST['gatewayData']) : null,
                 $donation,
                 $subscription
             );
@@ -477,9 +477,9 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * Checks to see if the provided method is being used by the child gateway class. This is used as a helper in the "can" methods 
+     * Checks to see if the provided method is being used by the child gateway class. This is used as a helper in the "can" methods
      * to see if the gateway is implementing a recurring feature without using a subscription module.
-     *     
+     *
      * @unreleased
      * @throws ReflectionException
      */
