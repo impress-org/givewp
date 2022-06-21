@@ -85,7 +85,7 @@ class Give_Subscriptions_API extends Give_API {
 		}
 
 		if ( null !== $input_status && '' === $status ) {
-			$error['error'] = sprintf( __( '\'%s\' is not a valid status.', 'give-recurring' ), $input_status );
+			$error['error'] = sprintf( __( '\'%s\' is not a valid status.', 'give' ), $input_status );
 
 			return $error;
 		} else {
@@ -149,7 +149,7 @@ class Give_Subscriptions_API extends Give_API {
 		$donor     = new Give_Donor( $queried_c );
 
 		if ( ! empty( $queried_c ) && ( ! $donor || ! $donor->id > 0 ) ) {
-			$error['error'] = sprintf( __( 'No donor found for %s!', 'give-recurring' ), $queried_c );
+			$error['error'] = sprintf( __( 'No donor found for %s!', 'give' ), $queried_c );
 
 			return $error;
 		}
@@ -255,13 +255,13 @@ class Give_Subscriptions_API extends Give_API {
 			}
 		} elseif ( ! empty( $queried_c ) ) {
 
-			$error['error'] = sprintf( __( 'No subscriptions found for %s!', 'give-recurring' ), $queried_c );
+			$error['error'] = sprintf( __( 'No subscriptions found for %s!', 'give' ), $queried_c );
 
 			return $error;
 
 		} else {
 
-			$error['error'] = __( 'No subscriptions found!', 'give-recurring' );
+			$error['error'] = __( 'No subscriptions found!', 'give' );
 
 			return $error;
 
