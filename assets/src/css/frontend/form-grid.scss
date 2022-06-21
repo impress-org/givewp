@@ -172,7 +172,7 @@ $MIN_REM_SIZE: 16px;
         }
 
         &  > span:last-child {
-            font-size: 14px;
+            font-size: safe-rem(0.875);
             font-weight: 400;
 
         }
