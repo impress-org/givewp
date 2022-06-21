@@ -37,18 +37,20 @@ function give_process_batch_export_form() {
 
 	require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-batch-export.php';
 
-	/**
+    $classname = give_clean($_REQUEST['class']);
+
+    /**
 	 * Fires before batch export.
 	 *
 	 * @since 1.5
 	 *
-	 * @param string $class Export class.
+	 * @param string $classname Export class.
 	 */
-	do_action( 'give_batch_export_class_include', $_REQUEST['class'] );
+	do_action( 'give_batch_export_class_include', $classname );
 
     $filename = basename(sanitize_file_name($_REQUEST['file_name']), '.csv');
 
-    $export = new $_REQUEST['class']( 1, $filename );
+    $export = new $classname( 1, $filename );
 	$export->export();
 }
 
