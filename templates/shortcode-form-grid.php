@@ -403,7 +403,7 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
                                             echo sprintf( /* translators: 1: total number of donors completed 2: total number of donors set as goal */
                                                 _n(
                                                     '<div class="form-grid-raised__details">
-                                                           <span class="amount">%1$s</spanclass>
+                                                           <span class="amount">%1$s</span>
                                                            <span class="goal"><span>of</span> %2$s <span>Donors</span> </span>
                                                 </div>',
                                                     '<div class="form-grid-raised__details">
