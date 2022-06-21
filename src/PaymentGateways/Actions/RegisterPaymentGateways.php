@@ -136,7 +136,7 @@ class RegisterPaymentGateways
                 PayPalCommerce::id()
             ),
             function ($gatewayData) {
-                $gatewayData['paypalOrderId'] = (new GetPayPalOrderFromRequest())();
+                $gatewayData['paypalOrder'] = (new GetPayPalOrderFromRequest())();
                 return $gatewayData;
             }
         );
