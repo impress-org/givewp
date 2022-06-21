@@ -70,7 +70,7 @@ ob_start();
         <?php if ('enabled' === $option('social_sharing') && ! $hasDonationFailed()) : ?>
             <div class="social-sharing">
                 <p class="instruction">
-                    <?= esc_html__($option('sharing_instructions')); ?>
+                    <?= esc_html__($option('sharing_instructions'),'give' ); ?>
                 </p>
                 <div class="btn-row">
                     <button class="give-btn social-btn facebook-btn" onclick="GiveClassicTemplate.share(this);">

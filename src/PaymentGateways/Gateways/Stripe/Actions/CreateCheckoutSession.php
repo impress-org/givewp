@@ -65,7 +65,11 @@ class CreateCheckoutSession
 
         DonationNote::create([
             'donationId' => $donation->id,
-            'content' => 'Stripe Checkout Session ID: ' . $session->id()
+            'content' => sprintf(
+                /* translators: 1: Stripe checkout payment method session id */
+                esc_html__( 'Stripe Checkout Session ID: %s', 'give'),
+                $session->id()
+            )
         ]);
 
         $donation->gatewayTransactionId = $session->id();
