@@ -86,8 +86,8 @@ class DonorsExport extends Give_Batch_Export
             );
 
         $donationQuery = DB::table('posts', 'donations')
-            ->select('donations.ID', [ 'meta.meta_value', 'donorId'])
-            ->join(function(JoinQueryBuilder $builder) {
+            ->select('donations.ID', ['meta.meta_value', 'donorId'])
+            ->join(function (JoinQueryBuilder $builder) {
                 $builder
                     ->leftJoin('give_donationmeta', 'meta')
                     ->on('donations.ID', 'meta.donation_id')
@@ -97,20 +97,20 @@ class DonorsExport extends Give_Batch_Export
 
         if($this->searchBy === 'donor') {
             if( $this->startDate && $this->endDate ) {
-                $donorQuery->whereBetween('donors.date_created', $this->startDate, $this->endDate );
+                $donorQuery->whereBetween('DATE(donors.date_created)', $this->startDate, $this->endDate);
             } elseif( $this->startDate ) {
-                $donorQuery->where('donors.date_created', $this->startDate, '>=');
+                $donorQuery->where('DATE(donors.date_created)', $this->startDate, '>=');
             } elseif( $this->endDate ) {
-                $donorQuery->where('donors.date_created', $this->endDate, '<');
+                $donorQuery->where('DATE(donors.date_created)', $this->endDate, '<=');
             }
         }
         else {
             if( $this->startDate && $this->endDate ) {
-                $donationQuery->whereBetween('donations.post_date', $this->startDate, $this->endDate );
+                $donationQuery->whereBetween('DATE(donations.post_date)', $this->startDate, $this->endDate);
             } elseif( $this->startDate ) {
-                $donationQuery->where('donations.post_date', $this->startDate, '>=');
+                $donationQuery->where('DATE(donations.post_date)', $this->startDate, '>=');
             } elseif( $this->endDate ) {
-                $donationQuery->where('donations.post_date', $this->endDate, '<');
+                $donationQuery->where('DATE(donations.post_date)', $this->endDate, '<=');
             }
         }
 
