@@ -57,6 +57,7 @@ class SEPAGateway extends PaymentGateway
      */
     public function createPayment(Donation $donation, $paymentMethod): GatewayCommand
     {
+
         $donationSummary = Call::invoke(Actions\SaveDonationSummary::class, $donation);
         $stripeCustomer = Call::invoke(Actions\GetOrCreateStripeCustomer::class, $donation);
 

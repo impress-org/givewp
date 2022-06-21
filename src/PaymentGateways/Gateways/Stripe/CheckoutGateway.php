@@ -30,12 +30,12 @@ class CheckoutGateway extends PaymentGateway
      * @inheritDoc
      * @since 2.19.0
      *
-     * @param PaymentMethod $donation
-     *
      * @throws PaymentGatewayException
      */
-    public function createPayment(Donation $donation, $paymentMethod): GatewayCommand
+    public function createPayment(Donation $donation, $gatewayData): GatewayCommand
     {
+        /* @var PaymentMethod $paymentMethod */
+        $paymentMethod = $gatewayData['stripePaymentMethod'];
         switch ($this->getCheckoutType()) {
             case 'modal':
                 return  give(PaymentGatewayRegister::class)
