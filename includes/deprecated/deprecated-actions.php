@@ -140,7 +140,7 @@ function give_deprecated_action_mapping( $data, $arg_1 = '', $arg_2 = '', $arg_3
 
 			if ( ! defined( 'DOING_AJAX' ) ) {
 				// translators: %s: action name.
-				_give_deprecated_function( sprintf( __( 'The %s action' ), $give_map_deprecated_actions[ $action ] ), '1.7', $action );
+				_give_deprecated_function( sprintf( __( 'The %s action', 'give' ), $give_map_deprecated_actions[ $action ] ), '1.7', $action );
 			}
 		}
 	}

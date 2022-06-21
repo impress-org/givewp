@@ -22,15 +22,15 @@
 	<?php endif; ?>
 
 	<?php if ( ! empty( $content['heading'] ) ) : ?>
-		<h2 class="give-blank-slate__heading"><?php esc_html_e( $content['heading'] ); ?></h2>
+		<h2 class="give-blank-slate__heading"><?php esc_html_e( $content['heading'], 'give' ); ?></h2>
 	<?php endif; ?>
 
 	<?php if ( ! empty( $content['message'] ) ) : ?>
-		<p class="give-blank-slate__message"><?php esc_html_e( $content['message'] ); ?></p>
+		<p class="give-blank-slate__message"><?php esc_html_e( $content['message'], 'give' ); ?></p>
 	<?php endif; ?>
 
 	<?php if ( ! empty( $content['cta_text'] ) && ! empty( $content['cta_link'] ) ) : ?>
-		<a class="give-blank-slate__cta button button-primary" href="<?php echo esc_url( $content['cta_link'] ); ?>"><?php esc_html_e( $content['cta_text'] ); ?></a>
+		<a class="give-blank-slate__cta button button-primary" href="<?php echo esc_url( $content['cta_link'] ); ?>"><?php esc_html_e( $content['cta_text'], 'give' ); ?></a>
 	<?php endif; ?>
 
 	<?php if ( ! empty( $content['help'] ) ) : ?>
