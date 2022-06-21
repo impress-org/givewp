@@ -80,11 +80,7 @@ class PayPalCommerce extends PaymentGateway
      * @inerhitDoc
      * @since 2.19.0
      *
-     * @param array $gatewayData  {
-     * @type PayPalOrder $paypalOrder PayPal order model.
-     * }
-     *
-     * @throws PaymentGatewayException
+     * @param array{paypalOrder: PayPalOrder} $gatewayData
      */
     public function createPayment(Donation $donation, $gatewayData): GatewayCommand
     {

@@ -45,9 +45,7 @@ class CreditCardGateway extends PaymentGateway
      * @since 2.19.7 fix handlePaymentIntentStatus not receiving extra param
      * @since 2.19.0
      *
-     * @param array $gatewayData  {
-     * @type PaymentMethod $stripePaymentMethod Stripe Payment method id.
-     * }
+     * @param array{stripePaymentMethod: PaymentMethod} $gatewayData
      *
      * @throws PaymentGatewayException
      */

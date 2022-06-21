@@ -5,14 +5,12 @@ namespace Give\PaymentGateways\Gateways\Stripe;
 use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
-use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Helpers\Call;
 use Give\Helpers\Gateways\Stripe;
-use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Gateways\Stripe\Exceptions\CheckoutException;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
 
@@ -29,16 +27,16 @@ class CheckoutGateway extends PaymentGateway
     /**
      * @inheritDoc
      * @since 2.19.0
-     * @param array $gatewayData  {
-     * @type PaymentMethod $stripePaymentMethod Stripe Payment method id.
-     * }
+     *
+     * @param array{stripePaymentMethod: PaymentMethod} $gatewayData
+     *
      * @throws PaymentGatewayException
      */
     public function createPayment(Donation $donation, $gatewayData): GatewayCommand
     {
         switch ($this->getCheckoutType()) {
             case 'modal':
-                return  give(PaymentGatewayRegister::class)
+                return give(PaymentGatewayRegister::class)
                     ->getPaymentGateway(CreditCardGateway::id())
                     ->createPayment($donation, $gatewayData['stripePaymentMethod']);
             case 'redirect':
