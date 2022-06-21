@@ -109,7 +109,7 @@ $MIN_REM_SIZE: 16px;
 
     & > button {
         background-color: transparent!important;
-        padding: 0;
+        padding: 0 !important;
         border: none;
         font-size: safe-rem(1);
         font-weight: 400;
@@ -138,17 +138,6 @@ $MIN_REM_SIZE: 16px;
     transition-duration: 200ms;
     transition-timing-function: ease-in;
 }
-
-/**
- * Give Frontend Progress Bar SCSS
- *
- * @package     Give
- * @subpackage  SCSS/Frontend
- * @copyright   Copyright (c) 2016, GiveWP
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
-*/
-
-
 
 .give-form-grid-progress {
     background: #F6F6F6;
