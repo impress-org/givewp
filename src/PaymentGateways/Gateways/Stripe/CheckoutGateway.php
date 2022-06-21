@@ -29,18 +29,18 @@ class CheckoutGateway extends PaymentGateway
     /**
      * @inheritDoc
      * @since 2.19.0
-     *
+     * @param array $gatewayData  {
+     * @type PaymentMethod $stripePaymentMethod Stripe Payment method id.
+     * }
      * @throws PaymentGatewayException
      */
     public function createPayment(Donation $donation, $gatewayData): GatewayCommand
     {
-        /* @var PaymentMethod $paymentMethod */
-        $paymentMethod = $gatewayData['stripePaymentMethod'];
         switch ($this->getCheckoutType()) {
             case 'modal':
                 return  give(PaymentGatewayRegister::class)
                     ->getPaymentGateway(CreditCardGateway::id())
-                    ->createPayment($donation, $paymentMethod);
+                    ->createPayment($donation, $gatewayData['stripePaymentMethod']);
             case 'redirect':
                 return $this->createPaymentRedirect($donation);
             default:

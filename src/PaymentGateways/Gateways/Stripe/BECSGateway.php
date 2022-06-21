@@ -50,13 +50,15 @@ class BECSGateway extends PaymentGateway
      * @since 2.19.7 fix handlePaymentIntentStatus not receiving extra param
      * @since 2.19.0
      *
+     * @param array $gatewayData  {
+     * @type PaymentMethod $stripePaymentMethod Stripe Payment method id.
+     * }
+     *
      * @return GatewayCommand
      * @throws PaymentGatewayException
      */
     public function createPayment(Donation $donation, $gatewayData): GatewayCommand
     {
-        /* @var PaymentMethod $paymentMethod */
-        $paymentMethod = $gatewayData['stripePaymentMethod'];
         $donationSummary = Call::invoke(Actions\SaveDonationSummary::class, $donation);
         $stripeCustomer = Call::invoke(Actions\GetOrCreateStripeCustomer::class, $donation);
 
@@ -67,7 +69,7 @@ class BECSGateway extends PaymentGateway
                 $donation,
                 $donationSummary,
                 $stripeCustomer,
-                $paymentMethod
+                $gatewayData['stripePaymentMethod']
             ),
             $donation
         );
