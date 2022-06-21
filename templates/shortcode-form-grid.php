@@ -259,11 +259,9 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
                                     $style .= "background: linear-gradient(180deg, {$color} 0%, {$color} 100%); background-blend-mode: multiply;";
                                         echo "
                                             <div class='give-form-grid-progress-bar'>
-                                                 <div class='progress-bar'>
                                                     <div class='give-progress-bar' role='progressbar' aria-valuemin='0' aria-valuemax='100' aria-valuenow='$progress_bar_value'>
                                                         <span style='$style'></span>
                                                     </div>
-                                                </div>
                                             </div>
                                         ";
                                     }
