@@ -305,7 +305,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased optimize query by skipping prepareQuery until found
+     * @since 2.21.1 optimize query by skipping prepareQuery until found
      * @since 2.19.6
      *
      * @return Donor|null

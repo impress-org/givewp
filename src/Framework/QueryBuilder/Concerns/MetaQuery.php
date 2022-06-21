@@ -71,7 +71,7 @@ trait MetaQuery
     /**
      * Select meta columns
      *
-     * @unreleased optimize group concat functionality
+     * @since 2.21.1 optimize group concat functionality
      * @since 2.19.6 add group concat functionality
      * @since 2.19.0
      *
