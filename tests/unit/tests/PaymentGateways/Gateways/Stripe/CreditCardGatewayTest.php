@@ -33,7 +33,7 @@ class CreditCardGatewayTest extends Give_Unit_Test_Case
             PaymentComplete::class,
             $gateway->createPayment(
                 $this->getDonationModel(),
-                new PaymentMethod('pm_1234')
+                [ 'stripePaymentMethod' => new PaymentMethod('pm_1234') ]
             )
         );
     }
@@ -51,7 +51,7 @@ class CreditCardGatewayTest extends Give_Unit_Test_Case
             PaymentProcessing::class,
             $gateway->createPayment(
                 $this->getDonationModel(),
-                new PaymentMethod('pm_1234')
+                [ 'stripePaymentMethod' => new PaymentMethod('pm_1234') ]
             )
         );
     }
@@ -70,7 +70,7 @@ class CreditCardGatewayTest extends Give_Unit_Test_Case
             RedirectOffsite::class,
             $gateway->createPayment(
                 $this->getDonationModel(),
-                new PaymentMethod('pm_1234')
+                [ 'stripePaymentMethod' => new PaymentMethod('pm_1234') ]
             )
         );
     }
