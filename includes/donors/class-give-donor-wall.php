@@ -213,7 +213,7 @@ class Give_Donor_Wall {
 				'order'             => 'DESC',
 				'hide_empty'        => true,  // Deprecated in 2.3.0
 				'only_donor_html'   => false, // Only for internal use.,
-                'show_timestamp'         => true,
+                'show_timestamp'    => true,
 			],
 			$atts
 		);
