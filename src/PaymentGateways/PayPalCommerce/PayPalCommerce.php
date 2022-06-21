@@ -77,14 +77,15 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
+     * @inerhitDoc
      * @since 2.19.0
-     *
-     * @param PayPalOrder $payPalOrder
      *
      * @throws PaymentGatewayException
      */
-    public function createPayment(Donation $donation, $payPalOrder): GatewayCommand
+    public function createPayment(Donation $donation, $gatewayData): GatewayCommand
     {
+        /* @var PayPalOrder $payPalOrder */
+        $payPalOrder = $gatewayData['paypalOrder'];
         $command = PaymentComplete::make($payPalOrder->payment->id);
         $command->paymentNotes = [
             sprintf(
