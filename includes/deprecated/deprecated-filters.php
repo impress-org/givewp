@@ -84,7 +84,7 @@ function give_deprecated_filter_mapping( $data, $arg_1 = '', $arg_2 = '', $arg_3
 			if ( ! defined( 'DOING_AJAX' ) ) {
 				_give_deprecated_function(
 					sprintf( /* translators: %s: filter name */
-						__( 'The %s filter' ),
+						__( 'The %s filter', 'give' ),
 						$give_map_deprecated_filters[ $filter ]
 					),
 					'1.7',

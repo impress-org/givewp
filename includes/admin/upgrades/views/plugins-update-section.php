@@ -49,7 +49,7 @@ foreach ( $plugins as $plugin_data ) {
 			echo sprintf(
 				' &ndash; %s &ndash; %s',
 				sprintf( _x( 'by %s', 'by author', 'give' ), wp_kses( $author_name, wp_kses_allowed_html( 'post' ) ) ),
-				sprintf( __( '(Latest Version: %s)' ), $plugin_data['update']->new_version )
+				sprintf( __( '(Latest Version: %s)', 'give' ), $plugin_data['update']->new_version )
 			);
 			?>
 		</td>

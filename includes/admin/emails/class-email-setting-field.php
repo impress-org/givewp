@@ -172,7 +172,7 @@ class Give_Email_Setting_Field {
 		// Add global options.
 		if ( $form_id || give_is_add_new_form_page() ) {
 			$option = array(
-				'global'   => __( 'Global Options' ),
+				'global'   => __( 'Global Options', 'give' ),
 				'enabled'  => __( 'Customize', 'give' ),
 				'disabled' => __( 'Disabled', 'give' ),
 			);
