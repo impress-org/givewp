@@ -111,7 +111,10 @@ $donor-space-triple: $donor-space * 3;
         flex: 1;
         display: flex;
         justify-content: center;
+        width: 70%;
         align-items: center;
+        word-break: normal !important;
+        white-space: nowrap;
     }
 
     &-content {
