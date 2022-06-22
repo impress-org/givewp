@@ -822,14 +822,14 @@ function give_form_grid_shortcode( $atts ) {
 			'show_featured_image' => true,
 			'show_donate_button'  => false,
 			'donate_button_text'  => '',
-			'tag_background_color' => '#66bb6a',
-            'tag_text_color'      => '#000000',
+			'tag_background_color' => '#69b868',
+            'tag_text_color'      => '#333333',
             'donate_button_text_color' => '#fff',
 			'image_size'          => 'medium',
 			'image_height'        => 'auto',
 			'excerpt_length'      => 16,
 			'display_style'       => 'modal_reveal',
-            'progress_bar_color' => '#66bb6a',
+            'progress_bar_color' => '#69b868',
 			'status'              => '', // open or closed.
 		],
 		$atts
