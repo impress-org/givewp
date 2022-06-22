@@ -30,6 +30,7 @@ use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Framework\PaymentGateways\Traits\HasRouteMethods;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Helpers\Call;
+use Give\PaymentGateways\Actions\GetGatewayDataFromRequest;
 use Give\Subscriptions\Models\Subscription;
 use ReflectionException;
 use ReflectionMethod;
@@ -96,7 +97,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
              */
             $gatewayData = apply_filters(
                 "givewp_create_payment_gateway_data_{$donation->gatewayId}",
-                !empty($_REQUEST['gatewayData']) ? give_clean($_REQUEST['gatewayData']) : [],
+                (new GetGatewayDataFromRequest())(),
                 $donation
             );
 
@@ -136,7 +137,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
              */
             $gatewayData = apply_filters(
                 "givewp_create_subscription_gateway_data_{$donation->gatewayId}",
-                !empty($_REQUEST['gatewayData']) ? give_clean($_REQUEST['gatewayData']) : [],
+                (new GetGatewayDataFromRequest())(),
                 $donation,
                 $subscription
             );
