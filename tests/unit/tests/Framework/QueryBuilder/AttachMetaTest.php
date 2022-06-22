@@ -44,7 +44,7 @@ final class AttachMetaTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      */
     public function testAttachMetaGroupConcatQuery()
     {

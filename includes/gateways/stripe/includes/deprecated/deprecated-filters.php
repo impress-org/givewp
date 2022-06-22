@@ -57,7 +57,7 @@ function give_stripe_deprecated_filter_mapping( $data, $arg_1 = '', $arg_2 = '',
 			if ( ! defined( 'DOING_AJAX' ) ) {
 				_give_deprecated_function(
 					sprintf( /* translators: %s: filter name */
-						__( 'The %s filter' ),
+						__( 'The %s filter', 'give' ),
 						$give_stripe_map_deprecated_filters[ $filter ]
 					),
 					'2.5.0',
