@@ -8,11 +8,13 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+/** @var $args array */
+/** @var $donation array kind of like Give_Payment */
 /** @var $donor Give_Donor */
-$donation = $args[0];
+/** @var $atts array  Shortcode attributes */
+/** @var $give_settings array  Give settings */
 
-$give_settings = $args[1]; // Give settings.
-$atts = $args[2]; // Shortcode attributes.
+list($donation, $give_settings, $atts, $donor) = $args;
 
 $primary_color = $atts['color'];
 $avatarSize = (int)$atts['avatar_size'];
