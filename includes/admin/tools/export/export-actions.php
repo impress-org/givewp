@@ -26,13 +26,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_process_batch_export_form() {
 
-	if ( ! wp_verify_nonce( $_REQUEST['nonce'], 'give-batch-export' ) ) {
+	if (! wp_verify_nonce( $_REQUEST['nonce'], 'give-batch-export' )) {
 		wp_die(
 			esc_html__( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ),
 			esc_html__( 'Error', 'give' ),
-			[
-				'response' => 403,
-			]
+			['response' => 403,]
 		);
 	}
 
@@ -48,6 +46,17 @@ function give_process_batch_export_form() {
 	 * @param string $classname Export class.
 	 */
 	do_action( 'give_batch_export_class_include', $classname );
+
+    if (!is_subclass_of($classname, \Give_Batch_Export::class)) {
+        wp_die(
+            esc_html__(
+                'We\'re unable to recognize exporter class. Please refresh the screen to try again; otherwise contact your website administrator for assistance.',
+                'give'
+            ),
+            esc_html__('Error', 'give'),
+            ['response' => 403,]
+        );
+    }
 
     $filename = basename(sanitize_file_name($_REQUEST['file_name']), '.csv');
 
