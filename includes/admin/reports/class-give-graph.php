@@ -242,7 +242,7 @@ endforeach;
 							hoverable      : true
 						},
 
-						colors: ["#66bb6a", "#546e7a"], //Give Colors
+						colors: ["#69B868", "#546e7a"], //Give Colors
 
 						xaxis: {
 							mode        : "<?php echo $this->options['x_mode']; ?>",
