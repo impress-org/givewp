@@ -131,10 +131,10 @@ const Inspector = ( { attributes, setAttributes } ) => {
                 <Panel>
                     <PanelBody title= {__('Display Elements', 'give')} initialOpen={ false }>
                         <ToggleOptions
-                            options={[__( 'Donor info', 'give' ), __( 'Wall attributes', 'give' ) ]}
+                            options={giveDonorWallOptions.toggleOptions}
                             onClick={( value ) => saveSetting( 'toggleOptions', value ) }
                             selected={toggleOptions}/>
-                                {toggleOptions === 'Donor info' ?
+                                {toggleOptions === 'donorInfo' ?
                                     <>
                                         <ToggleControl
                                             className="give-donor-wall-inspector"
