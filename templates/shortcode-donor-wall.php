@@ -118,10 +118,14 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                             $excerpt = trim($excerpt, '.!,:;');
 
                             echo "<p class='give-donor-content__excerpt'>$excerpt &hellip;
-                                    <span> <a class='give-donor-content__read-more' style='color: {$primary_color}'> $read_more_text </a></span>
+                                    <span> <a class='give-donor-content__read-more' style='color: $primary_color'> $read_more_text </a></span>
                                    </p>";
 
                             echo "<p class='give-donor-content__comment'> $comment </p>";
+                        } else {
+                            echo "<p class='give-donor-content__excerpt'>
+                                    $comment
+                            </p>";
                         }
                         ?>
                     </div>
