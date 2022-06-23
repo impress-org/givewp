@@ -18,9 +18,13 @@ class GetGatewayDataFromRequest
     {
         $gatewayData = [];
 
-        $contentType = $_SERVER['CONTENT_TYPE']['data'];
+        if (!isset($_SERVER['CONTENT_TYPE'])) {
+            return $gatewayData;
+        }
 
-        if (($contentType === "application/x-www-form-urlencoded") && !empty($_REQUEST['gatewayData'])) {
+        $contentType = $_SERVER['CONTENT_TYPE'];
+
+        if (($contentType === "application/x-www-form-urlencoded") && isset($_REQUEST['gatewayData'])) {
             $gatewayData = give_clean($_REQUEST['gatewayData']);
         }
 

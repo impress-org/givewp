@@ -97,7 +97,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
              */
             $gatewayData = apply_filters(
                 "givewp_create_payment_gateway_data_{$donation->gatewayId}",
-                (new GetGatewayDataFromRequest())(),
+                (new GetGatewayDataFromRequest)(),
                 $donation
             );
 
@@ -137,7 +137,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
              */
             $gatewayData = apply_filters(
                 "givewp_create_subscription_gateway_data_{$donation->gatewayId}",
-                (new GetGatewayDataFromRequest())(),
+                (new GetGatewayDataFromRequest)(),
                 $donation,
                 $subscription
             );
