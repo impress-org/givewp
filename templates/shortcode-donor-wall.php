@@ -89,7 +89,6 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                 $atts['show_comments']
                 && absint($atts['comment_length'])
                 && !empty($donation['donor_comment'])
-                && !empty($donation['_give_anonymous_donation'])
             ) :
                 ?>
                 <div class="give-donor-wrapper">
