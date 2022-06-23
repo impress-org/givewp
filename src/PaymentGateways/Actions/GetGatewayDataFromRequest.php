@@ -24,10 +24,12 @@ class GetGatewayDataFromRequest
 
         $contentType = $_SERVER['CONTENT_TYPE'];
 
+        // this content type is typically used throughout legacy with jQuery and wp-ajax
         if (($contentType === "application/x-www-form-urlencoded") && isset($_REQUEST['gatewayData'])) {
             $gatewayData = give_clean($_REQUEST['gatewayData']);
         }
 
+        // this content type is typically used with the fetch api and our custom routes
         if ($contentType === "application/json") {
             $requestData = file_get_contents('php://input');
             $requestData = json_decode($requestData, true);
