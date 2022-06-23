@@ -24,7 +24,7 @@ $show_bar            = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'
  * @unreleased
  *
  * @param  array  $stats  The income and goal values for this form goal.
- * @param  int  $form_id  Donation Form ID.
+ * @param  int    $form_id  Donation Form ID.
  * @param  array  $goal_progress_stats  The full goal progress stats.
  * @param  array  $args  The full list of shortcode arguments passed.
  */
