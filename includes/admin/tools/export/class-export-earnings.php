@@ -147,28 +147,28 @@ class Give_Earnings_Export extends Give_Export
         $dates->startMonth = (string)absint($_POST['start_month']);
         $dates->endMonth = (string)absint($_POST['end_month']);
 
-        // Start/End year can not lesser than first donation year and month.
-        // If lesser than correct them.
+        // Start/End year can not lesser than first donation year and month. Throw exception upon invalid year.
         if ($firstDonationDate) {
-            $dates->startYear = $firstDonationDate->format('Y') > $dates->startYear ?
-                $firstDonationDate->format('Y') :
-                $dates->startYear;
-
-            $dates->endYear = $firstDonationDate->format('Y') > $dates->endYear ?
-                $firstDonationDate->format('Y') :
-                $dates->endYear;
+            if(
+                $firstDonationDate->format('Y') > $dates->startYear ||
+                $firstDonationDate->format('Y') > $dates->endYear
+            ) {
+                throw new \Give\Framework\Exceptions\Primitives\InvalidArgumentException(
+                    'Start year or End year can not be lesser that first donation year. Please enter validate dates to export revenue and donation stats.'
+                );
+            }
         }
 
-        // Start/End year can not greater than last donation year and month.
-        // If greater than correct them.
+        // Start/End year can not greater than last donation year and month. Throw exception upon invalid year
         if ($lastDonationDate) {
-            $dates->startYear = $lastDonationDate->format('Y') < $dates->startYear ?
-                $lastDonationDate->format('Y') :
-                $dates->startYear;
-
-            $dates->endYear = $lastDonationDate->format('Y') < $dates->endYear ?
-                $lastDonationDate->format('Y') :
-                $dates->endYear;
+            if(
+                $firstDonationDate->format('Y') < $dates->startYear ||
+                $firstDonationDate->format('Y') < $dates->endYear
+            ) {
+                throw new \Give\Framework\Exceptions\Primitives\InvalidArgumentException(
+                    'Start year or End year can not be greater that last donation year. Please enter validate dates to export revenue and donation stats.'
+                );
+            }
         }
 
         return $dates;
