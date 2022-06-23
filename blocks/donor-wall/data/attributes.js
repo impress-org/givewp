@@ -100,9 +100,9 @@ const blockAttributes = {
         type: 'string',
         default: 'Donor info',
     },
-    filter: {
+    filterOptions: {
         type: 'string',
-        default: 'Donor ID',
+        default: 'ids',
     },
     color: {
         type: 'string',
