@@ -111,17 +111,16 @@ $donor-space-triple: $donor-space * 3;
         flex: 1;
         display: flex;
         justify-content: center;
-        width: 70%;
         align-items: center;
+        width: 70%;
         word-break: normal !important;
-        white-space: nowrap;
     }
 
     &-content {
         flex: 1;
         width: 100%;
-        margin-bottom: 20px;
         line-height: 20px;
+        margin: 12px 0;
         padding-left: 16px;
         border-left: 2px solid #219653;
         font-weight: 400;
