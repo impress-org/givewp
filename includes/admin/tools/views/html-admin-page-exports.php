@@ -3,6 +3,8 @@
  * Admin View: Exports
  */
 
+use Give\Donations\Repositories\DonationRepository;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } ?>
@@ -77,14 +79,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 						</td>
 						<td>
 							<form method="post">
-								<?php
-								printf(
-									/* translators: 1: start date dropdown 2: end date dropdown */
-									esc_html__( '%1$s to %2$s', 'give' ),
-									Give()->html->year_dropdown( 'start_year' ) . ' ' . Give()->html->month_dropdown( 'start_month' ),
-									Give()->html->year_dropdown( 'end_year' ) . ' ' . Give()->html->month_dropdown( 'end_month' )
-								);
-								?>
+                                <?php
+                                $firstDonationDate = give(DonationRepository::class)->getFirstDonationDate();
+                                $currentYear = date('Y', current_time('timestamp'));
+
+                                $start_year_dropdown = Give()->html->year_dropdown(
+                                    'start_year',
+                                    0,
+                                    $firstDonationDate ? ($currentYear - $firstDonationDate->format('Y')) : 0
+                                );
+
+                                $end_year_dropdown = Give()->html->year_dropdown(
+                                    'end_year',
+                                    0,
+                                    $firstDonationDate ? ($currentYear - $firstDonationDate->format('Y')) : 0
+                                );
+                                printf(
+                                    esc_html__('%1$s to %2$s', 'give'),
+                                    $start_year_dropdown . ' ' . Give()->html->month_dropdown('start_month'),
+                                    $end_year_dropdown . ' ' . Give()->html->month_dropdown('end_month')
+                                );
+                                ?>
 								<input type="hidden" name="give-action" value="earnings_export"/>
 								<input type="submit" value="<?php esc_attr_e( 'Generate CSV', 'give' ); ?>" class="button-secondary"/>
 							</form>
