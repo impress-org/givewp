@@ -2,6 +2,7 @@
 
 namespace Give\Donations\Repositories;
 
+use DateTimeInterface;
 use Give\Donations\Actions\GeneratePurchaseKey;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
@@ -551,5 +552,50 @@ class DonationRepository
                 ->getAll(),
             'donation_id'
         );
+    }
+
+
+    /**
+     * @unreleased
+     *
+     * @return DateTimeInterface|null
+     */
+    public function getLastDonationDate(){
+        /**
+         * @var array{createdAt:string} $date
+         */
+        $date = DB::table('posts')
+            ->select(['post_date', 'createdAt'])
+            ->where('post_type', 'give_payment')
+            ->limit(1)->orderBy('post_date', 'DESC')
+            ->get();
+
+        if( $date ) {
+            return  Temporal::toDateTime($date->createdAt);
+        }
+
+        return null;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return DateTimeInterface|null
+     */
+    public function getFirstDonationDate(){
+        /**
+         * @var array{createdAt:string} $date
+         */
+        $date = DB::table('posts')
+            ->select(['post_date', 'createdAt'])
+            ->where('post_type', 'give_payment')
+            ->limit(1)->orderBy('post_date', 'ASC')
+            ->get();
+
+        if( $date ) {
+            return  Temporal::toDateTime($date->createdAt);
+        }
+
+        return null;
     }
 }
