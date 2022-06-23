@@ -175,9 +175,9 @@ class Give_Donor_Wall_Block {
                         'type'    => 'string',
                         'default' => 'Donor info',
                     ],
-                    'filter'      => [
+                    'filterOptions'      => [
                         'type'    => 'string',
-                        'default' => 'Donor ID',
+                        'default' => 'ids',
                     ],
                     'color'      => [
                         'type'    => 'string',
@@ -226,7 +226,7 @@ class Give_Donor_Wall_Block {
 			'readmore_text'     => $attributes['readMoreText'],
 			'loadmore_text'     => $attributes['loadMoreText'],
             'toggle_options'    => $attributes['toggleOptions'],
-            'filter'            => $attributes['filter'],
+            'filter_options'    => $attributes['filterOptions'],
 			'avatar_size'       => $avatarSize ?: 75,
             'color'             => $attributes['color']
 		];
