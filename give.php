@@ -188,6 +188,8 @@ final class Give
         Give\Email\ServiceProvider::class,
         DonationSummaryServiceProvider::class,
         PaymentGatewaysServiceProvider::class,
+        LegacySubscriptionsServiceProvider::class,
+        Give\Exports\ServiceProvider::class,
         DonationServiceProvider::class,
         DonorsServiceProvider::class,
         SubscriptionServiceProvider::class,
