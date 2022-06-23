@@ -50,7 +50,7 @@ jobs:
                 image: mysql:8.0
                 ports:
                     - 3306
-                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 -e MYSQL_ROOT_PASSWORD=N0Tweak!@123! --entrypoint sh mysql:8.0 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password --sort_buffer_size=512K"
+                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 -e MYSQL_ROOT_PASSWORD=N0Tweak!@123! --entrypoint sh mysql:8.0 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
 
         # Steps represent a sequence of tasks that will be executed as part of the job
         steps:
@@ -91,7 +91,7 @@ jobs:
                     MYSQL_VERSION: ${{ matrix.mysql }}
 
             -   name: Configure MySQL
-                run: mysql -uroot --password='${{ env.mysql_pass}}' -h127.0.0.1 --port=${{env.mysql_port}} -e "SET @@GLOBAL.sort_buffer_size=1024*512"
+                run: mysql -uroot --password='${{ env.mysql_pass}}' -h127.0.0.1 --port=${{env.mysql_port}}
 
             -   name: Set Up Tests
                 run: bash tests/unit/bin/install.sh wordpress_test root ${{ env.mysql_pass }} 127.0.0.1:${{ env.mysql_port }} ${{ matrix.wordpress }}

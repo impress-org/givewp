@@ -81,6 +81,8 @@ class MigrateExistingLogs extends Migration
 
     /**
      * @inheritDoc
+     *
+     * @unreleased Migration should complete when log table does not exist.
      */
     public function run()
     {
@@ -88,6 +90,7 @@ class MigrateExistingLogs extends Migration
 
         // Check if legacy table exist
         if ( ! $this->legacyLogsTable->exist()) {
+            give_set_upgrade_complete(self::id());
             return;
         }
 

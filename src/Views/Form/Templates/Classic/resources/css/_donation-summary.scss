@@ -1,16 +1,33 @@
 @use 'fn';
 
+.give-donation-form-summary-section {
+    background: none!important;
+    padding: 0;
+}
+
 .give-donation-summary-section {
-    // Hide the heading
+
     .heading {
-        display: none;
+        margin-bottom: 2rem;
+        text-align: center;
+        font-weight: 500;
+        color: #6b6b6b;
+        font-style: italic;
     }
+
+    .give-donation-summary-table-wrapper {
+        color: #333333;
+        background-color: #f9f9f9;
+        padding-block: fn.scaleBetween(1.75rem, 3.375rem);
+        padding-inline: fn.scaleBetween(1rem, 4.375rem);    }
 
     table {
         inline-size: 100%;
         border-collapse: collapse;
         line-height: 1.2;
     }
+
+
 
     button {
         flex-shrink: 0;

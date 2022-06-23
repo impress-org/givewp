@@ -42,7 +42,7 @@ class MigrateCompletedMigrations extends Migration
      */
     public static function title()
     {
-        return esc_html__('Migrate completed migrations to give_migrations table');
+        return esc_html__('Migrate completed migrations to give_migrations table','give' );
     }
 
     /**

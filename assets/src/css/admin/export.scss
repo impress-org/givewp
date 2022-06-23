@@ -142,6 +142,18 @@
 	}
 }
 
+#giveDonorExport-searchBy {
+    display: flex;
+    align-items: center;
+    line-height: 1;
+    column-gap: 0.5em;
+    padding: 0.5rem 0;
+
+    input[type="radio"] {
+        margin: 0;
+    }
+}
+
 @media only screen and ( max-width: 1080px ) {
 	.give-tools-setting-page #give-export_donations-form .give-export-option > li {
 		width: 49.5%;
@@ -149,15 +161,33 @@
 }
 
 @media only screen and ( max-width: 782px ) {
-	.give-tools-setting-page #give-export_donations-form .give-export-option > li {
-		width: 49.5%;
-	}
+    .give-tools-setting-page #give-export_donations-form .give-export-option > li {
+        width: 49.5%;
+    }
 
-	.give-tools-setting-page #give-export_donations-form .give-export-option ul li label {
-		padding-left: 32px;
-	}
+    .give-tools-setting-page #give-export_donations-form .give-export-option ul li label {
+        padding-left: 32px;
+    }
 
-	.give-tools-setting-page #give-export_donations-form .give-export-option ul li label input {
-		top: 0;
-	}
+    .give-tools-setting-page #give-export_donations-form .give-export-option ul li label input {
+        top: 0;
+    }
+}
+
+#give_donor_export_form_chosen {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.give-export-form--heading {
+    margin-top: 0;
+    color: #2c3338;
+}
+
+table.give-table .give-export-donors > td {
+    vertical-align: top;
+}
+
+.give-export-form .give_price_options_select {
+    display: block;
 }

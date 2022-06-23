@@ -468,9 +468,9 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 					<th colspan="2">
 						<h2 id="give-import-title"><?php _e( 'Map CSV fields to donations', 'give' ); ?></h2>
 
-						<p class="give-import-donation-required-fields-title"><?php _e( 'Required Fields' ); ?></p>
+						<p class="give-import-donation-required-fields-title"><?php _e( 'Required Fields', 'give' ); ?></p>
 
-						<p class="give-field-description"><?php _e( 'These fields are required for the import to submitted' ); ?></p>
+						<p class="give-field-description"><?php _e( 'These fields are required for the import to submitted', 'give' ); ?></p>
 
 						<ul class="give-import-donation-required-fields">
 							<li class="give-import-donation-required-email"
