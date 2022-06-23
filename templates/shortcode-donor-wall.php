@@ -99,7 +99,8 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                         $total_chars = strlen($comment);
                         $max_chars = $atts['comment_length'];
                         $read_more_text = $atts['readmore_text'];
-
+                        $stripped_comment = str_replace(' ', '', $comment);
+                        $stripped_comment_length = strlen($stripped_comment);
 
                         // A truncated excerpt is displayed if the comment is too long.
                         if ($max_chars < $total_chars) {
@@ -122,7 +123,9 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                                    </p>";
 
                             echo "<p class='give-donor-content__comment'> $comment </p>";
-                        } else {
+
+                        }
+                        else if ($stripped_comment_length <= $max_chars) {
                             echo "<p class='give-donor-content__excerpt'>
                                     $comment
                             </p>";
