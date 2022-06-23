@@ -2,9 +2,9 @@
 
 namespace Give\Framework\QueryBuilder\Concerns;
 
-use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\Clauses\MetaTable;
 use Give\Framework\QueryBuilder\Clauses\RawSQL;
+use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
@@ -71,31 +71,20 @@ trait MetaQuery
     /**
      * Select meta columns
      *
-     * @param string|RawSQL $table
-     * @param string $foreignKey
-     * @param string $primaryKey
-     * @param array $columns
+     * @since 2.21.1 optimize group concat functionality
+     * @since 2.19.6 add group concat functionality
+     * @since 2.19.0
+     *
+     * @param  string|RawSQL  $table
+     * @param  string  $foreignKey
+     * @param  string  $primaryKey
+     * @param  array  $columns
      *
      * @return $this
      */
     public function attachMeta($table, $foreignKey, $primaryKey, ...$columns)
     {
-        $groupConcat = false;
         $metaTable = $this->getMetaTable($table);
-
-        // Check if we have meta columns that dev wants to group concat
-        foreach ($columns as $definition) {
-            if (is_array($definition)) {
-                list (, , $concat) = array_pad($definition, 3, false);
-                if ($concat) {
-                    $groupConcat = true;
-                    // Include foreign key so that dev doesn't have to
-                    // he will be confused why he needs this if we don't do it for him, and we also want to prevent errors if sql_mode is only_full_group_by
-                    $this->groupBy($foreignKey);
-                    break;
-                }
-            }
-        }
 
         foreach ($columns as $i => $definition) {
             if (is_array($definition)) {
@@ -108,7 +97,17 @@ trait MetaQuery
             // Set dynamic alias
             $tableAlias = sprintf('%s_%s_%d', ($table instanceof RawSQL) ? $table->sql : $table, 'attach_meta', $i);
 
+            // Check if we have meta columns that dev wants to group concat
             if ($concat) {
+                /**
+                 * Include foreign key to prevent errors if sql_mode is only_full_group_by
+                 *
+                 * @see https://dev.mysql.com/doc/refman/5.7/en/group-by-handling.html
+                 */
+                $this->groupBy($foreignKey);
+
+                // Group concat same key values into faux array
+                // @example key => ["value1", "value2"]
                 $this->selectRaw(
                     "CONCAT('[',GROUP_CONCAT(DISTINCT CONCAT('\"',%1s,'\"')),']') AS %2s",
                     $tableAlias . '.' . $metaTable->valueColumnName,
@@ -119,19 +118,20 @@ trait MetaQuery
             }
 
             $this->join(
-                function (JoinQueryBuilder $builder) use ($table, $foreignKey, $primaryKey, $tableAlias, $column, $metaTable) {
+                function (JoinQueryBuilder $builder) use (
+                    $table,
+                    $foreignKey,
+                    $primaryKey,
+                    $tableAlias,
+                    $column,
+                    $metaTable
+                ) {
                     $builder
                         ->leftJoin($table, $tableAlias)
                         ->on($foreignKey, "{$tableAlias}.{$primaryKey}")
                         ->andOn("{$tableAlias}.{$metaTable->keyColumnName}", $column, true);
                 }
             );
-
-            // If this is non-aggregate column - we have to include it in the GROUP BY statement
-            // otherwise the query will fail on servers that have sql_mode flag set to only_full_group_by
-            if ($groupConcat && !$concat) {
-                $this->groupBy($columnAlias ?: $column);
-            }
         }
 
         return $this;

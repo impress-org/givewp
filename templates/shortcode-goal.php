@@ -18,16 +18,16 @@ $color               = give_get_meta( $form_id, '_give_goal_color', true );
 $show_text           = isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
 $show_bar            = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
 
-    /**
-     * Allow filtering the goal stats used for this shortcode context.
-     *
-     * @unreleased
-     *
-     * @param  array  $stats  The income and goal values for this form goal.
-     * @param  int  $form_id  Donation Form ID.
-     * @param  array  $goal_progress_stats  The full goal progress stats.
-     * @param  array  $args  The full list of shortcode arguments passed.
-     */
+/**
+ * Allow filtering the goal stats used for this shortcode context.
+ *
+ * @unreleased
+ *
+ * @param  array  $stats  The income and goal values for this form goal.
+ * @param  int  $form_id  Donation Form ID.
+ * @param  array  $goal_progress_stats  The full goal progress stats.
+ * @param  array  $args  The full list of shortcode arguments passed.
+ */
 $shortcode_stats = apply_filters(
     'give_goal_shortcode_stats',
     array(
@@ -65,18 +65,18 @@ switch ( $goal_format ) {
 
 }
 
-    /**
-     * Filter the goal progress output
-     *
-     * @since 1.8.8
-     */
+/**
+ * Filter the goal progress output
+ *
+ * @since 1.8.8
+ */
 $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progress, $form_id, $form );
 ?>
 <div class="give-goal-progress">
     <?php if ( ! empty( $show_text ) ) : ?>
         <div class="raised">
             <?php
-			if ( 'amount' === $goal_format ) :
+            if ( 'amount' === $goal_format ) :
                 /**
                  * Filter the give currency.
                  *
@@ -165,8 +165,8 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
                     esc_attr( $formatted_income ),
                     esc_attr( wp_json_encode( $goal_amounts, JSON_PRETTY_PRINT ) ),
 
-            esc_attr( $formatted_goal )
-				);
+                    esc_attr( $formatted_goal )
+                );
             elseif ( 'percentage' === $goal_format ) :
 
                 echo sprintf( /* translators: %s: percentage of the amount raised compared to the goal target */
@@ -201,7 +201,7 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
                 );
 
             endif;
-			?>
+            ?>
         </div>
     <?php endif; ?>
 

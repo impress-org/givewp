@@ -211,7 +211,7 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 									<?php
 									else :
 										printf(
-											__( 'Because of security reasons you can not upload add-ons from here. Please <a href="%1$s" target="_blank">visit network plugin install page</a> to install add-ons.' ),
+											__( 'Because of security reasons you can not upload add-ons from here. Please <a href="%1$s" target="_blank">visit network plugin install page</a> to install add-ons.', 'give' ),
 											network_admin_url( 'plugin-install.php' )
 										);
 										?>
