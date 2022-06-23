@@ -58,6 +58,7 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                            </div>
                         ";
                 }
+            }
                 ?>
                 <div class="give-donor-container-variation"
                      style="
@@ -88,37 +89,6 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                         </p>
                     <?php endif; ?>
                 </div>
-
-                <?php
-                if (
-                    $atts['show_comments']
-                    && absint( $atts['comment_length'] )
-                    && ! empty( $donation['donor_comment'] )
-                    && ! $donation['_give_anonymous_donation']
-                ) :
-            ?>
-
-            <?php if ($atts['show_name']) : ?>
-                <h3 class="give-donor-container__name"
-                    style='<?php echo ($atts['show_avatar']) ? "text-align: center" : "text-align: left" ?>'>
-                    <?php
-                    // Get donor name based on donation parameter.
-                    $donor_name = !empty($donation['_give_anonymous_donation'])
-                        ? esc_html__('Anonymous', 'give')
-                        : trim(
-                            $donation['_give_donor_billing_first_name'] . ' ' . $donation['_give_donor_billing_last_name']
-                        );
-                    ?>
-                    <?php echo esc_html($donor_name); ?>
-                </h3>
-            <?php endif; ?>
-
-            <?php if ($atts['show_company_name'] && isset($donation['_give_donation_company'])) : ?>
-                <h3 class="give-donor-container__name">
-                    <?php echo esc_html($donation['_give_donation_company']); ?>
-                </h3>
-            <?php endif; ?>
-
             <?php
             if (
                 $atts['show_comments']
@@ -239,5 +209,3 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
         ?>
     </div>
 </div>
-
-
