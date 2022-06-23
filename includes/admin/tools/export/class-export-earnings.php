@@ -156,7 +156,7 @@ class Give_Earnings_Export extends Give_Export
 
             $dates->endYear = $firstDonationDate->format('Y') > $dates->endYear ?
                 $firstDonationDate->format('Y') :
-                $dates->startYear;
+                $dates->endYear;
         }
 
         // Start/End year can not greater than last donation year and month.
