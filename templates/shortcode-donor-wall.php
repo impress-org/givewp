@@ -126,7 +126,7 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
 
                         }
                         else     {
-                            echo "<p class='give-donor-content__excerpt'>
+                            echo "<p class='give-donor-content__comment'>
                                     $comment
                             </p>";
                         }
