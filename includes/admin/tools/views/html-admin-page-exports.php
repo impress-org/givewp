@@ -3,8 +3,6 @@
  * Admin View: Exports
  */
 
-use Give\Donations\Repositories\DonationRepository;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } ?>
