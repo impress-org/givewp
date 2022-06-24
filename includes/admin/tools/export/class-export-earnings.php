@@ -12,7 +12,6 @@
  */
 
 // Exit if accessed directly.
-use Give\Donations\Repositories\DonationRepository;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -133,8 +132,8 @@ class Give_Earnings_Export extends Give_Export
     private function getDatesFromRequest(): \stdClass
     {
         $dates = new \stdClass();
-        $firstDonationDate = give(DonationRepository::class)->getFirstDonationDate();
-        $lastDonationDate = give(DonationRepository::class)->getLastDonationDate();
+        $firstDonationDate = give()->donations->getFirstDonationDate();
+        $lastDonationDate = give()->donations->getLastDonationDate();
 
         if (!isset($_POST['start_year'], $_POST['end_year'], $_POST['start_month'], $_POST['end_month'])) {
             throw new \Give\Framework\Exceptions\Primitives\InvalidArgumentException(
@@ -149,7 +148,7 @@ class Give_Earnings_Export extends Give_Export
 
         // Start/End year can not lesser than first donation year and month. Throw exception upon invalid year.
         if ($firstDonationDate) {
-            if(
+            if (
                 $firstDonationDate->format('Y') > $dates->startYear ||
                 $firstDonationDate->format('Y') > $dates->endYear
             ) {
@@ -161,7 +160,7 @@ class Give_Earnings_Export extends Give_Export
 
         // Start/End year can not greater than last donation year and month. Throw exception upon invalid year
         if ($lastDonationDate) {
-            if(
+            if (
                 $firstDonationDate->format('Y') < $dates->startYear ||
                 $firstDonationDate->format('Y') < $dates->endYear
             ) {

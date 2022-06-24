@@ -81,8 +81,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 							<form method="post">
                                 <?php
                                 // @unreleased
-                                // Year in year downdown should begin from first donation year instead of only display first five recent year.
-                                $firstDonationDate = give(DonationRepository::class)->getFirstDonationDate();
+                                // Year in year dropdown should begin from first donation year instead of only display first five recent year.
+                                $firstDonationDate = give()->donations->getFirstDonationDate();
                                 $currentYear = date('Y', current_time('timestamp'));
 
                                 $start_year_dropdown = Give()->html->year_dropdown(
