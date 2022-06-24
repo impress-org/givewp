@@ -406,6 +406,7 @@
 
                             if ($(node).attr('id') && $(node).attr('id').includes('give-checkout-login-register')) {
                                 setupRegistrationFormInputFields();
+                                setupInputIcons();
                             }
 
                             if ($(node).prop('tagName') && $(node).prop('tagName').toLowerCase() === 'select') {
