@@ -161,8 +161,8 @@ class Give_Earnings_Export extends Give_Export
         // Start/End year can not greater than last donation year and month. Throw exception upon invalid year
         if ($lastDonationDate) {
             if (
-                $firstDonationDate->format('Y') < $dates->startYear ||
-                $firstDonationDate->format('Y') < $dates->endYear
+                $lastDonationDate->format('Y') < $dates->startYear ||
+                $lastDonationDate->format('Y') < $dates->endYear
             ) {
                 throw new \Give\Framework\Exceptions\Primitives\InvalidArgumentException(
                     'Start year or End year can not be greater that last donation year. Please enter validate dates to export revenue and donation stats.'
