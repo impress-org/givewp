@@ -484,7 +484,7 @@
     /**
      * Limited scope of optional input labels, specifically to User Info, see issue #5160.
      */
-    setupOptionalInputLabels(Array.from(document.querySelectorAll('#give_checkout_user_info input[type="text"]')));
+    setupOptionalInputLabels(Array.from(document.querySelectorAll('.give-form .required[placeholder]')));
 
     /**
      * Denote non-required fields as optional.
@@ -494,12 +494,8 @@
      * @param {array} inputs An iteratable list of input elements.
      */
     function setupOptionalInputLabels(inputs) {
-        inputs
-            .filter(function (input) {
-                return !input.required;
-            })
-            .map(function (input) {
-                input.placeholder += templateL10n.optionalLabel;
+        inputs.map(function (input) {
+                input.placeholder += '*';
             });
     }
 
