@@ -95,7 +95,7 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                     <div class="give-donor-content"
                          style="border-color: <?php echo !empty($atts['color']) ? $atts['color'] : '#219653' ?>">
                         <?php
-                        $comment = trim($donation['donor_comment']);
+                        $comment = esc_html($donation['donor_comment']);
                         $stripped_comment = str_replace(' ', '', $comment);
 
                         $total_chars = strlen($stripped_comment);
