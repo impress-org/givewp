@@ -406,6 +406,7 @@
 
                             if ($(node).attr('id') && $(node).attr('id').includes('give-checkout-login-register')) {
                                 setupRegistrationFormInputFields();
+                                setupInputIcons();
                             }
 
                             if ($(node).prop('tagName') && $(node).prop('tagName').toLowerCase() === 'select') {
@@ -413,6 +414,10 @@
                                 if (placeholder) {
                                     $(node).prepend(`<option value="" disabled selected>${placeholder}</option>`);
                                 }
+                            }
+
+                            if ($(node).find('.required[placeholder]').length) {
+                                setupRequiredFieldPlaceholders(Array.from($(node).get(0).querySelectorAll('.required[placeholder]')));
                             }
                         }
                     });
@@ -480,27 +485,22 @@
     setupRegistrationFormInputFields();
     setupFFMInputs();
     setupInputIcons();
+    setupRequiredFieldPlaceholders(Array.from(document.querySelectorAll('.give-form .required[placeholder]')));
 
     /**
-     * Limited scope of optional input labels, specifically to User Info, see issue #5160.
-     */
-    setupOptionalInputLabels(Array.from(document.querySelectorAll('#give_checkout_user_info input[type="text"]')));
-
-    /**
-     * Denote non-required fields as optional.
+     * Denote required fields as required by adding a asterisks (*) prefix to placeholder.
      *
-     * @since 2.8.0
+     * @unreleased
      *
      * @param {array} inputs An iteratable list of input elements.
      */
-    function setupOptionalInputLabels(inputs) {
-        inputs
-            .filter(function (input) {
-                return !input.required;
-            })
-            .map(function (input) {
-                input.placeholder += templateL10n.optionalLabel;
-            });
+    function setupRequiredFieldPlaceholders(inputs) {
+        inputs.map(function (input) {
+            if ('*' !== input.placeholder.trim().slice(-1)) {
+                input.placeholder = `${input.placeholder.trim()}*`;
+            }
+
+        });
     }
 
     /**
