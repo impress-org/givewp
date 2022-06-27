@@ -130,9 +130,18 @@ class Give_Donor_Wall {
 			ob_start();
 
 			foreach ( $donations as $donation ) {
-				// Give/templates/shortcode-donor-wall.php.
-				give_get_template( 'shortcode-donor-wall', [ $donation, $give_settings, $atts ] );
-			}
+                $donor = new Give_Donor($donation['_give_payment_donor_id']);
+                // Give/templates/shortcode-donor-wall.php.
+                give_get_template(
+                    'shortcode-donor-wall',
+                    [
+                        $donation,
+                        $give_settings,
+                        $atts,
+                        $donor
+                    ]
+                );
+            }
 
 			$html = ob_get_clean();
 

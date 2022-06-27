@@ -8,11 +8,13 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+/** @var $args array */
+/** @var $donation array kind of like Give_Payment */
 /** @var $donor Give_Donor */
-$donation = $args[0];
+/** @var $atts array  Shortcode attributes */
+/** @var $give_settings array  Give settings */
 
-$give_settings = $args[1]; // Give settings.
-$atts = $args[2]; // Shortcode attributes.
+list($donation, $give_settings, $atts, $donor) = $args;
 
 $primary_color = $atts['color'];
 $avatarSize = (int)$atts['avatar_size'];
@@ -87,18 +89,18 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                 $atts['show_comments']
                 && absint($atts['comment_length'])
                 && !empty($donation['donor_comment'])
-                && !$donation['_give_anonymous_donation']
             ) :
                 ?>
                 <div class="give-donor-wrapper">
                     <div class="give-donor-content"
                          style="border-color: <?php echo !empty($atts['color']) ? $atts['color'] : '#219653' ?>">
                         <?php
-                        $comment = trim($donation['donor_comment']);
-                        $total_chars = strlen($comment);
+                        $comment = esc_html($donation['donor_comment']);
+                        $stripped_comment = str_replace(' ', '', $comment);
+
+                        $total_chars = strlen($stripped_comment);
                         $max_chars = $atts['comment_length'];
                         $read_more_text = $atts['readmore_text'];
-
 
                         // A truncated excerpt is displayed if the comment is too long.
                         if ($max_chars < $total_chars) {
@@ -117,10 +119,16 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                             $excerpt = trim($excerpt, '.!,:;');
 
                             echo "<p class='give-donor-content__excerpt'>$excerpt &hellip;
-                                    <span> <a class='give-donor-content__read-more' style='color: {$primary_color}'> $read_more_text </a></span>
+                                    <span> <a class='give-donor-content__read-more' style='color: $primary_color'> $read_more_text </a></span>
                                    </p>";
 
                             echo "<p class='give-donor-content__comment'> $comment </p>";
+
+                        }
+                        else     {
+                            echo "<p class='give-donor-content__comment'>
+                                    $comment
+                            </p>";
                         }
                         ?>
                     </div>
