@@ -87,87 +87,87 @@ class Give_Donor_Wall_Block {
 			[
 				'render_callback' => [ $this, 'render_block' ],
 				'attributes'      => [
-					'donorsPerPage'   => [
+					'donorsPerPage'     => [
 						'type'    => 'string',
 						'default' => '12',
 					],
-					'formID'          => [
+					'formID'            => [
 						'type'    => 'array',
 						'default' => [],
 					],
-					'ids'             => [
+					'ids'               => [
 						'type'    => 'array',
 						'default' => [],
 					],
-                    'categories'             => [
+                    'categories'        => [
                         'type'    => 'array',
                         'default' => [],
                     ],
-                    'tags'             => [
+                    'tags'              => [
                         'type'    => 'array',
                         'default' => [],
                     ],
-					'orderBy'         => [
+					'orderBy'           => [
 						'type'    => 'string',
 						'default' => 'post_date',
 					],
-					'order'           => [
+					'order'             => [
 						'type'    => 'string',
 						'default' => 'DESC',
 					],
-					'paged'           => [
+					'paged'             => [
 						'type'    => 'string',
 						'default' => '1',
 					],
-					'columns'         => [
+					'columns'           => [
 						'type'    => 'string',
 						'default' => '3',
 					],
-					'showAvatar'      => [
+					'showAvatar'          => [
 						'type'    => 'boolean',
 						'default' => true,
 					],
-					'showName'        => [
+					'showName'            => [
 						'type'    => 'boolean',
 						'default' => true,
 					],
-					'showCompanyName' => [
+					'showCompanyName'     => [
 						'type'    => 'boolean',
 						'default' => false,
 					],
-                    'showForm' => [
+                    'showForm'            => [
 						'type'    => 'boolean',
 						'default' => true,
 					],
-					'showTotal'       => [
+					'showTotal'           => [
 						'type'    => 'boolean',
 						'default' => true,
 					],
-					'showComments'    => [
+					'showComments'        => [
 						'type'    => 'boolean',
 						'default' => true,
 					],
-					'showAnonymous'   => [
+					'showAnonymous'       => [
 						'type'    => 'boolean',
 						'default' => true,
 					],
-					'onlyComments'    => [
+					'onlyComments'        => [
 						'type'    => 'boolean',
 						'default' => false,
 					],
-					'commentLength'   => [
+					'commentLength'      => [
 						'type'    => 'string',
 						'default' => '80',
 					],
-					'readMoreText'    => [
+					'readMoreText'       => [
 						'type'    => 'string',
 						'default' => __( 'Read more', 'give' ),
 					],
-					'loadMoreText'    => [
+					'loadMoreText'       => [
 						'type'    => 'string',
 						'default' => __( 'Load more', 'give' ),
 					],
-					'avatarSize'      => [
+					'avatarSize'         => [
 						'type'    => 'string',
 						'default' => '75',
 					],
@@ -175,17 +175,21 @@ class Give_Donor_Wall_Block {
                         'type'    => 'string',
                         'default' => 'Donor info',
                     ],
-                    'filter'      => [
+                    'filter'             => [
                         'type'    => 'string',
                         'default' => 'Donor ID',
                     ],
-                    'color'      => [
+                    'color'              => [
                         'type'    => 'string',
                         'default' => '#219653',
                     ],
-                    'showTributes'      => [
+                    'showTributes'        => [
                         'type'    => 'boolean',
                         'default' => false,
+                    ],
+                    'showTimestamp'       => [
+                        'type'    => 'boolean',
+                        'default' => true,
                     ],
 				],
 			]
@@ -228,7 +232,8 @@ class Give_Donor_Wall_Block {
             'toggle_options'    => $attributes['toggleOptions'],
             'filter'            => $attributes['filter'],
 			'avatar_size'       => $avatarSize ?: 75,
-            'color'             => $attributes['color']
+            'color'             => $attributes['color'],
+            'show_timestamp'    => $attributes['showTimestamp'],
 		];
 
 		$html = Give_Donor_Wall::get_instance()->render_shortcode( $parameters );

@@ -61,29 +61,36 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                         ";
                 }
             }
-            ?>
+                ?>
+                <div class="give-donor-container-variation"
+                     style="
+                            flex-direction: <?php echo $atts['show_avatar'] ? 'column' : 'row'; ?>;
+                            align-items:  <?php echo $atts['show_avatar'] ? 'center' : 'flex-end'; ?>;
+                         ">
+                    <?php if ( $atts['show_name'] ) : ?>
+                        <h3 class="give-donor-container-variation__name">
+                            <?php
+                            // Get donor name based on donation parameter.
+                            $donor_name = ! empty( $donation['_give_anonymous_donation'] )
+                                ? esc_html__( 'Anonymous', 'give' )
+                                : trim( $donation['_give_donor_billing_first_name'] . ' ' . $donation['_give_donor_billing_last_name'] );
+                            ?>
+                            <?php echo esc_html( $donor_name ); ?>
+                        </h3>
+                    <?php endif; ?>
 
-            <?php if ($atts['show_name']) : ?>
-                <h3 class="give-donor-container__name"
-                    style='<?php echo ($atts['show_avatar']) ? "text-align: center" : "text-align: left" ?>'>
-                    <?php
-                    // Get donor name based on donation parameter.
-                    $donor_name = !empty($donation['_give_anonymous_donation'])
-                        ? esc_html__('Anonymous', 'give')
-                        : trim(
-                            $donation['_give_donor_billing_first_name'] . ' ' . $donation['_give_donor_billing_last_name']
-                        );
-                    ?>
-                    <?php echo esc_html($donor_name); ?>
-                </h3>
-            <?php endif; ?>
+                    <?php if ( $atts['show_company_name'] && isset( $donation['_give_donation_company'] ) ) : ?>
+                        <h3 class="give-donor-container-variation__name">
+                            <?php echo esc_html( $donation['_give_donation_company'] ); ?>
+                        </h3>
+                    <?php endif; ?>
 
-            <?php if ($atts['show_company_name'] && isset($donation['_give_donation_company'])) : ?>
-                <h3 class="give-donor-container__name">
-                    <?php echo esc_html($donation['_give_donation_company']); ?>
-                </h3>
-            <?php endif; ?>
-
+                    <?php if ( $atts['show_timestamp'] ) : ?>
+                        <p class="give-donor-container-variation__timestamp">
+                            <?php echo esc_html( give_get_formatted_date( $donation['donation_date'], give_date_format(), 'Y-m-d H:i:s', true ) ); ?>
+                        </p>
+                    <?php endif; ?>
+                </div>
             <?php
             if (
                 $atts['show_comments']
@@ -210,5 +217,3 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
         ?>
     </div>
 </div>
-
-

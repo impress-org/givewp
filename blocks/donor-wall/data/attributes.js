@@ -108,6 +108,10 @@ const blockAttributes = {
         type: 'string',
         default: '#219653',
     },
+    showTimestamp: {
+        type: 'boolean',
+        default: true,
+    },
 };
 
 export default blockAttributes;

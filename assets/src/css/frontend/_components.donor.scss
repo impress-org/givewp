@@ -96,13 +96,22 @@ $donor-space-triple: $donor-space * 3;
             }
         }
 
-        &__name {
-            width: 100%;
-            margin: 0 0 10px 0 !important;
-            font-size: safe-rem(1.5);
-            font-weight: 600;
-            text-align: center;
-            line-height: 20px;
+        &-variation {
+            display: flex;
+            justify-content: space-between;
+
+            &__name {
+                margin: 0 0 10px 0 !important;
+                font-size: safe-rem(1.5);
+                font-weight: 600;
+                line-height: 20px;
+            }
+
+            &__timestamp {
+                margin: 0 0 10px 0 !important;
+                color: #525252;
+                font-size: safe-rem(0.75);
+            }
         }
     }
 

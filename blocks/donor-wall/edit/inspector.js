@@ -22,7 +22,7 @@ import Toggle from "../../components/toggle";
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { donorsPerPage, ids, formID, categories, tags, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, onlyComments, showForm, showTotal, showComments, showAnonymous,  commentLength, readMoreText, loadMoreText, toggleOptions, filter, color, showTributes  } = attributes;
+	const { donorsPerPage, ids, formID, categories, tags, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, onlyComments, showForm, showTotal, showComments, showAnonymous,  commentLength, readMoreText, loadMoreText, toggleOptions, filter, color, showTributes, showTimestamp  } = attributes;
 
 	const saveSetting = ( name, value ) => {
 		setAttributes( {
@@ -160,6 +160,12 @@ const Inspector = ( { attributes, setAttributes } ) => {
                                             label={ __( 'Show Total', 'give' ) }
                                             checked={ !! showTotal }
                                             onChange={ ( value ) => saveSetting( 'showTotal', value ) } />
+                                        <ToggleControl
+                                            className="give-donor-wall-inspector"
+                                            name="showTimestamp"
+                                            label={ __( 'Show Time', 'give' ) }
+                                            checked={ !! showTimestamp }
+                                            onChange={ ( value ) => saveSetting( 'showTimestamp', value ) } />
                                         { !!window.Give_Tribute && <ToggleControl
                                             className="give-donor-wall-inspector"
                                             name="showTributes"

@@ -98,12 +98,13 @@ class Give_Donor_Wall {
 	 * @type bool   $show_comments       Whether to display the donor's comment if they left one. Default 'true'.
 	 * @type int    $comment_length      The number of words to display for the comments before a "Read more" field
 	 * @type int    $only_comments       Whether to display the donors only with comment. Default 'false'.
+     * @type bool   $show_time Whether to display date of the last donation. Default 'true'.
 	 *
 	 * @type string $readmore_text       Link label for modal in which donor can read full comment.
 	 * @type string $loadmore_text       Button label which will load more donor comments.
 	 * @type int    $avatar_size         Avatar image size in pixels without the "px". Default "75"
 	 * @type string $orderby             The order in which you want the donations to appear.
-	 *                                   Currently we are using this attribute internally and it will sort donations by created date.
+	 *                                   Currently we are using this attribute internally and, it will sort donations by created date.
 	 * @type string $order               The order in which you want the donors to appear. Accepts "ASC". "DESC".
 	 *
 	 * }
@@ -202,7 +203,7 @@ class Give_Donor_Wall {
 				'ids'               => '',
                 'cats'              => '',
                 'tags'              => '',
-				'columns'           => 'best-fit',
+				'columns'           => '3',
 				'anonymous'         => true,
 				'show_avatar'       => true,
 				'show_name'         => true,
@@ -220,7 +221,8 @@ class Give_Donor_Wall {
 				'orderby'           => 'post_date',
 				'order'             => 'DESC',
 				'hide_empty'        => true,  // Deprecated in 2.3.0
-				'only_donor_html'   => false, // Only for internal use.
+				'only_donor_html'   => false, // Only for internal use.,
+                'show_timestamp'    => true,
 			],
 			$atts
 		);
@@ -237,6 +239,7 @@ class Give_Donor_Wall {
 			'hide_empty',
 			'only_comments',
 			'only_donor_html',
+            'show_timestamp'
 		];
 
 		foreach ( $boolean_attributes as $att ) {
