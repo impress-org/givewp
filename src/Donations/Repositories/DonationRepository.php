@@ -2,6 +2,7 @@
 
 namespace Give\Donations\Repositories;
 
+use DateTimeInterface;
 use Give\Donations\Actions\GeneratePurchaseKey;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
@@ -551,5 +552,29 @@ class DonationRepository
                 ->getAll(),
             'donation_id'
         );
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return Donation|null
+     */
+    public function getFirstDonation() {
+        return $this->prepareQuery()
+            ->limit(1)
+            ->orderBy('post_date', 'DESC')
+            ->get();
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return Donation|null
+     */
+    public function getLatestDonation() {
+        return $this->prepareQuery()
+            ->limit(1)
+            ->orderBy('post_date', 'ASC')
+            ->get();
     }
 }
