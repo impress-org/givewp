@@ -80,7 +80,8 @@ if ( ! defined( 'ABSPATH' ) ) {
                                 <?php
                                 // @unreleased
                                 // Year in year dropdown should begin from first donation year instead of only display first five recent year.
-                                $firstDonationDate = give()->donations->getFirstDonationDate();
+                                $firstDonation = give()->donations->getFirstDonation();
+                                $firstDonationDate = $firstDonation->createdAt ?? null;
                                 $currentYear = date('Y', current_time('timestamp'));
 
                                 $start_year_dropdown = Give()->html->year_dropdown(

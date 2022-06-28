@@ -554,48 +554,23 @@ class DonationRepository
         );
     }
 
-
     /**
-     * @unreleased
-     *
-     * @return DateTimeInterface|null
+     * @return Donation|null
      */
-    public function getLastDonationDate(){
-        /**
-         * @var array{createdAt:string} $date
-         */
-        $date = DB::table('posts')
-            ->select(['post_date', 'createdAt'])
-            ->where('post_type', 'give_payment')
-            ->limit(1)->orderBy('post_date', 'DESC')
+    public function getFirstDonation() {
+        return $this->prepareQuery()
+            ->limit(1)
+            ->orderBy('post_date', 'DESC')
             ->get();
-
-        if( $date ) {
-            return  Temporal::toDateTime($date->createdAt);
-        }
-
-        return null;
     }
 
     /**
-     * @unreleased
-     *
-     * @return DateTimeInterface|null
+     * @return Donation|null
      */
-    public function getFirstDonationDate(){
-        /**
-         * @var array{createdAt:string} $date
-         */
-        $date = DB::table('posts')
-            ->select(['post_date', 'createdAt'])
-            ->where('post_type', 'give_payment')
-            ->limit(1)->orderBy('post_date', 'ASC')
+    public function getLatestDonation() {
+        return $this->prepareQuery()
+            ->limit(1)
+            ->orderBy('post_date', 'ASC')
             ->get();
-
-        if( $date ) {
-            return  Temporal::toDateTime($date->createdAt);
-        }
-
-        return null;
     }
 }
