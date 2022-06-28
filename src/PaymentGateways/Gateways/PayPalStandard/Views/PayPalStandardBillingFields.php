@@ -40,7 +40,7 @@ class PayPalStandardBillingFields
                 esc_html__('Make your donation quickly and securely with PayPal', 'give'),
                 esc_html__('How it works:', 'give'),
                 esc_html__(
-                    'You will be redirected to PayPal to complete your donation with your debit card, credit card, or with your PayPal account. Once complete, you\'ll be redirected back to this site to view your receipt.',
+                    'You will be redirected to PayPal to complete your donation with your debit card, credit card, or with your PayPal account. Once complete, you will be redirected back to this site to view your receipt.',
                     'give'
                 ),
                 $this->getLogo()
