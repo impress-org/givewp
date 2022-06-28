@@ -456,7 +456,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 			}
 		}
 
-		return apply_filters( 'give_donors_column_query_data', $data );
+		return apply_filters( 'give_donors_column_query_data', $data, $donors );
 	}
 
 	/**
