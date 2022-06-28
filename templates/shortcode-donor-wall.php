@@ -173,8 +173,7 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                 </div>
 
                 <?php
-                $donation_total = give_donation_amount($donation['donation_id'], true);
-                $donation_amount = esc_html($donation_total);
+                $donation_amount = give_donation_amount(esc_html($donation['donation_id']), true);
 
                 if ($atts['show_total']) {
                     echo "
