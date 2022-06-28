@@ -231,7 +231,7 @@ class Give_Donor_Wall_Block {
 			'loadmore_text'     => $attributes['loadMoreText'],
 			'avatar_size'       => $avatarSize ?: 75,
             'color'             => $attributes['color'],
-            'show_timestamp'    => $attributes['showTimestamp'],
+            'show_time'         => $attributes['showTimestamp'],
 		];
 
 		$html = Give_Donor_Wall::get_instance()->render_shortcode( $parameters );
