@@ -109,7 +109,7 @@ $MIN_REM_SIZE: 16px;
 
     & > button {
         background-color: transparent!important;
-        padding: 0;
+        padding: 0 !important;
         border: none;
         font-size: safe-rem(1);
         font-weight: 400;
@@ -138,3 +138,59 @@ $MIN_REM_SIZE: 16px;
     transition-duration: 200ms;
     transition-timing-function: ease-in;
 }
+
+.give-form-grid-progress {
+    background: #F6F6F6;
+    padding: 10px 20px;
+}
+
+.form-grid-raised {
+    display: flex;
+    justify-content: space-between;
+    background: #F6F6F6;
+
+
+    &__details {
+        display: flex;
+        flex-direction: column;
+        font-size: 1rem;
+
+        & > span:first-child {
+            font-weight: 700 !important;
+            font-size: 1rem;
+        }
+
+        &  > span:last-child {
+            font-size: safe-rem(0.875);
+            font-weight: 400;
+
+        }
+
+        &_donations{
+            text-align: right;
+        }
+    }
+
+}
+
+.give-form-grid-progress-bar {
+    margin: 12px 0;
+    .give-progress-bar {
+        position: relative;
+        height: 12px;
+        border-radius: 25px;
+
+
+        > span {
+            display: block;
+            height: 100%;
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+    }
+}
+
