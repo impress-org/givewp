@@ -555,6 +555,8 @@ class DonationRepository
     }
 
     /**
+     * @unreleased
+     *
      * @return Donation|null
      */
     public function getFirstDonation() {
@@ -565,6 +567,8 @@ class DonationRepository
     }
 
     /**
+     * @unreleased
+     *
      * @return Donation|null
      */
     public function getLatestDonation() {
