@@ -231,8 +231,6 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
 
                 $income = $shortcode_stats['income'];
                 $goal   = $shortcode_stats['goal'];
-//                var_dump($goal_option);
-//                die();
 
                 switch ( $goal_format ) {
 
