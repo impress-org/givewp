@@ -205,53 +205,59 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
                 <?php
                 $form        = new Give_Donate_Form( $form_id );
                 $goal_option = give_get_meta( $form->ID, '_give_goal_option', true );
-                $goal_progress_stats = give_goal_progress_stats( $form );
-                $goal_format         = $goal_progress_stats['format'];
-                $color               = $atts['progress_bar_color'];
-                $show_bar            = isset( $atts['show_bar'] ) ? filter_var( $atts['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
-                $shortcode_stats = apply_filters(
-                    'give_goal_shortcode_stats',
-                    array(
-                        'income' => $form->get_earnings(),
-                        'goal'   => $goal_progress_stats['raw_goal'],
-                    ),
-                    $form_id,
-                    $goal_progress_stats,
-                    $args
-                );
 
+                // Sanity check - ensure form has pass all condition to show goal.
+                $hide_goal = ( isset( $atts['show_goal'] ) && ! filter_var( $atts['show_goal'], FILTER_VALIDATE_BOOLEAN ) )
+                    || empty( $form->ID )
+                    || ( is_singular( 'give_forms' ) && ! give_is_setting_enabled( $goal_option ) )
+                    || ! give_is_setting_enabled( $goal_option ) || 0 === $form->goal;
 
-                $income = $shortcode_stats['income'];
-                $goal   = $shortcode_stats['goal'];
+                // Maybe display the goal progress bar.
 
+                if (!$hide_goal) :
+                    $goal_progress_stats = give_goal_progress_stats( $form );
+                    $goal_format         = $goal_progress_stats['format'];
+                    $color               = $atts['progress_bar_color'];
+                    $show_bar            = isset( $atts['show_bar'] ) ? filter_var( $atts['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
+                    $shortcode_stats = apply_filters(
+                        'give_goal_shortcode_stats',
+                        array(
+                            'income' => $form->get_earnings(),
+                            'goal'   => $goal_progress_stats['raw_goal'],
+                        ),
+                        $form_id,
+                        $goal_progress_stats,
+                        $args
+                    );
 
-                switch ( $goal_format ) {
+                    $income = $shortcode_stats['income'];
+                    $goal   = $shortcode_stats['goal'];
 
-                    case 'donation':
-                        $progress           = $goal ? round( ( $form->get_sales() / $goal ) * 100, 2 ) : 0;
-                        $progress_bar_value = $form->get_sales() >= $goal ? 100 : $progress;
-                        break;
+                    switch ( $goal_format ) {
 
-                    case 'donors':
-                        $progress           = $goal ? round( ( give_get_form_donor_count( $form->ID ) / $goal ) * 100, 2 ) : 0;
-                        $progress_bar_value = give_get_form_donor_count( $form->ID ) >= $goal ? 100 : $progress;
-                        break;
+                        case 'donation':
+                            $progress           = $goal ? round( ( $form->get_sales() / $goal ) * 100, 2 ) : 0;
+                            $progress_bar_value = $form->get_sales() >= $goal ? 100 : $progress;
+                            break;
 
-                    case 'percentage':
-                        $progress           = $goal ? round( ( $income / $goal ) * 100, 2 ) : 0;
-                        $progress_bar_value = $income >= $goal ? 100 : $progress;
-                        break;
+                        case 'donors':
+                            $progress           = $goal ? round( ( give_get_form_donor_count( $form->ID ) / $goal ) * 100, 2 ) : 0;
+                            $progress_bar_value = give_get_form_donor_count( $form->ID ) >= $goal ? 100 : $progress;
+                            break;
 
-                    default:
-                        $progress           = $goal ? round( ( $income / $goal ) * 100, 2 ) : 0;
-                        $progress_bar_value = $income >= $goal ? 100 : $progress;
-                        break;
+                        case 'percentage':
+                            $progress           = $goal ? round( ( $income / $goal ) * 100, 2 ) : 0;
+                            $progress_bar_value = $income >= $goal ? 100 : $progress;
+                            break;
 
-                }
+                        default:
+                            $progress           = $goal ? round( ( $income / $goal ) * 100, 2 ) : 0;
+                            $progress_bar_value = $income >= $goal ? 100 : $progress;
+                            break;
 
-                    // Maybe display the goal progress bar.
+                    }
 
-                if ($atts['show_goal'] && give_is_setting_enabled( get_post_meta( $form_id, '_give_goal_option', true ) )) :?>
+                    ?>
                     <div class="give-form-grid-progress">
                         <?php
                             if ($atts['show_bar']){
