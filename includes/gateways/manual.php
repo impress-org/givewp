@@ -97,6 +97,8 @@ function give_manual_payment( $purchase_data ) {
 	$payment = give_insert_payment( $payment_data );
 
 	if ( $payment ) {
+        $is_anonymous = isset($purchase_data['post_data']['give_anonymous_donation']) && absint($purchase_data['post_data']['give_anonymous_donation']);
+        update_post_meta($payment, '_give_anonymous_donation', (int)$is_anonymous);
 		give_update_payment_status( $payment, 'publish' );
 		give_send_to_success_page();
 	} else {
