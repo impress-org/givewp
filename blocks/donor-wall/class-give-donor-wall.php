@@ -175,9 +175,9 @@ class Give_Donor_Wall_Block {
                         'type'    => 'string',
                         'default' => 'Donor info',
                     ],
-                    'filter'             => [
+                    'filterOptions'      => [
                         'type'    => 'string',
-                        'default' => 'Donor ID',
+                        'default' => 'ids',
                     ],
                     'color'              => [
                         'type'    => 'string',
@@ -229,11 +229,9 @@ class Give_Donor_Wall_Block {
 			'only_comments'     => $attributes['onlyComments'],
 			'readmore_text'     => $attributes['readMoreText'],
 			'loadmore_text'     => $attributes['loadMoreText'],
-            'toggle_options'    => $attributes['toggleOptions'],
-            'filter'            => $attributes['filter'],
 			'avatar_size'       => $avatarSize ?: 75,
             'color'             => $attributes['color'],
-            'show_timestamp'    => $attributes['showTimestamp'],
+            'show_time'         => $attributes['showTimestamp'],
 		];
 
 		$html = Give_Donor_Wall::get_instance()->render_shortcode( $parameters );

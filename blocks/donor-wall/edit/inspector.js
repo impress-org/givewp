@@ -22,7 +22,30 @@ import Toggle from "../../components/toggle";
 */
 
 const Inspector = ( { attributes, setAttributes } ) => {
-	const { donorsPerPage, ids, formID, categories, tags, orderBy, order, columns, avatarSize, showAvatar, showName, showCompanyName, onlyComments, showForm, showTotal, showComments, showAnonymous,  commentLength, readMoreText, loadMoreText, toggleOptions, filter, color, showTributes, showTimestamp  } = attributes;
+
+const { donorsPerPage,
+        ids,
+        formID,
+        categories,
+        tags, orderBy,
+        order,
+        columns,
+        avatarSize,
+        showAvatar,
+        showName,
+        showCompanyName,
+        onlyComments,
+        showForm,
+        showTotal,
+        showComments,
+        showAnonymous,
+        commentLength, readMoreText,
+        loadMoreText,
+        toggleOptions,
+        filterOptions,
+        color,
+        showTimestamp,
+        showTributes  } = attributes;
 
 	const saveSetting = ( name, value ) => {
 		setAttributes( {
@@ -44,7 +67,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
     };
 
     const filterValue = () => {
-        if(filter === 'categories'){
+        if(filterOptions === 'categories'){
             return <> <FormTokenField
                 className="give-donor-wall-inspector"
                 onChange ={(value) => saveSetting('categories', value)}
@@ -54,7 +77,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
                 </p>
             </>
 
-        } else if (filter === 'tags'){
+        } else if (filterOptions === 'tags'){
             return <> <FormTokenField
                 className="give-donor-wall-inspector"
                 name="tags"
@@ -65,7 +88,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
                 </p>
             </>
 
-        } else if (filter === 'ids'){
+        } else if (filterOptions === 'ids'){
             return  <> <FormTokenField
                 className="give-donor-wall-inspector"
                 name="ids"
@@ -76,7 +99,7 @@ const Inspector = ( { attributes, setAttributes } ) => {
                 </p>
             </>
 
-        } else if (filter === 'formID' ){
+        } else if (filterOptions === 'formID' ){
             return <> <FormTokenField
                 className="give-donor-wall-inspector"
                 help={__('By Default, donations to all forms will display. Use this setting to restrict the donor to display only donations to certains forms. Use a comma-separated list of form IDs.', 'give')}
@@ -110,10 +133,10 @@ const Inspector = ( { attributes, setAttributes } ) => {
                 <Panel>
                     <PanelBody title= {__('Display Elements', 'give')} initialOpen={ false }>
                         <ToggleOptions
-                            options={[__( 'Donor info', 'give' ), __( 'Wall attributes', 'give' ) ]}
+                            options={giveDonorWallOptions.toggleOptions}
                             onClick={( value ) => saveSetting( 'toggleOptions', value ) }
                             selected={toggleOptions}/>
-                                {toggleOptions === 'Donor info' ?
+                                {toggleOptions === 'donorInfo' ?
                                     <>
                                         <ToggleControl
                                             className="give-donor-wall-inspector"
@@ -220,11 +243,12 @@ const Inspector = ( { attributes, setAttributes } ) => {
                         <SelectControl
                             className="give-donor-wall-inspector"
                             label={ __( 'Filter', 'give' ) }
-                            name="filter" value={ filter }
+                            name="filter"
+                            value={ filterOptions }
                             options={ giveDonorWallOptions.filter }
-                            onChange={ ( value ) => saveSetting( 'filter', value ) } />
+                            onChange={ ( value ) => saveSetting( 'filterOptions', value ) } />
 
-                        {filterValue(filter)}
+                        {filterValue(filterOptions)}
                     </PanelBody>
                 </Panel>
                 <Panel>

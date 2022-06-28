@@ -4,12 +4,12 @@ import './style.scss';
 export default function ({options, onClick, selected}) {
     return (
         <div className="give-toggle">
-            {options.map((value, i) => {
+            {options.map(({value, label}, i) => {
                 return  (<div
                             key={i}
                             onClick={() => onClick(value)}
                             className="give-toggle__option" style={ selected === value ? {background: '#007cba', color: 'white'} : {}}>
-                            {value}
+                            {label}
                         </div>)
             })}
         </div>

@@ -85,7 +85,7 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                         </h3>
                     <?php endif; ?>
 
-                    <?php if ( $atts['show_timestamp'] ) : ?>
+                    <?php if ( $atts['show_time'] ) : ?>
                         <p class="give-donor-container-variation__timestamp">
                             <?php echo esc_html( give_get_formatted_date( $donation['donation_date'], give_date_format(), 'Y-m-d H:i:s', true ) ); ?>
                         </p>

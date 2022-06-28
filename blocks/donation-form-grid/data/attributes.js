@@ -99,7 +99,7 @@ const blockAttributes = {
         type: 'integer',
         default: 16
     },
-    filter: {
+    filterOptions: {
         type: 'string',
         default: 'tags',
     },
