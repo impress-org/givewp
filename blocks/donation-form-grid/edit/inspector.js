@@ -51,7 +51,7 @@ const Inspector = ({attributes, setAttributes}) => {
         tagBackgroundColor,
         donateButtonTextColor,
         displayType,
-        filter,
+        filterOptions,
         tagTextColor,
         imageHeightOptions,
         progressBarColor
@@ -89,7 +89,7 @@ const Inspector = ({attributes, setAttributes}) => {
     }
 
   const filterValue = () => {
-      if (filter === 'categories') {
+      if (filterOptions === 'categories') {
         return  <>
             <FormTokenField
                 className="give-form-grid-inspector__filter"
@@ -102,7 +102,7 @@ const Inspector = ({attributes, setAttributes}) => {
                 {__('Type the name of your category to add it to the list. Only forms within the categories you choose will be displayed in this grid.', 'give')}
             </p>
         </>
-      } else if (filter === 'tags') {
+      } else if (filterOptions === 'tags') {
           return <>
               <FormTokenField
                   className="give-form-grid-inspector__filter"
@@ -114,7 +114,7 @@ const Inspector = ({attributes, setAttributes}) => {
               <p className="components-form-token-field__help">
                   {__('Type the name of your tag to add it to the list. Only forms with these tags you choose will be displayed in this grid.', 'give')}
               </p></>
-      } else if (filter === 'formIDs'){
+      } else if (filterOptions === 'formIDs'){
           return <>
               <FormTokenField
                   className="give-form-grid-inspector__filter"
@@ -244,11 +244,11 @@ const Inspector = ({attributes, setAttributes}) => {
                     <SelectControl
                         className="give-form-grid-inspector"
                         label={ __( 'Filter', 'give' ) }
-                        name="filter" value={filter}
+                        name="filter" value={filterOptions}
                         options={ giveFormOptions.filter }
-                        onChange={ ( value ) => saveSetting( 'filter', value ) } />
+                        onChange={ ( value ) => saveSetting( 'filterOptions', value ) } />
 
-                    {filterValue(filter)}
+                    {filterValue(filterOptions)}
 
                     <ToggleControl
                         className="give-form-grid-inspector  exclude__form"

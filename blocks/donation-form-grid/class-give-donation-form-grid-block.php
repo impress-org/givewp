@@ -179,7 +179,7 @@ class Give_Donation_Form_Grid_Block {
                         'type'    => 'boolean',
                         'default' => true,
                     ),
-                    'filter'       => array(
+                    'filterOptions'       => array(
                         'type'    => 'string',
                         'default' => 'tags',
                     ),
@@ -228,7 +228,6 @@ class Give_Donation_Form_Grid_Block {
             'paged'               => $attributes['paged'],
             'image_size'          => $attributes['imageSize'],
             'image_height'        => $attributes['imageHeight'],
-            'filter'              => $attributes['filter'],
             'image_height_options' => $attributes['imageHeightOptions'],
             'progress_bar_color'  => $attributes['progressBarColor']
         );

@@ -7,58 +7,52 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
-
-
 .give-goal-progress {
-    background: #F6F6F6;
-    padding: 16px 20px;
-}
-
-.raised {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    width:100%;
+    margin-bottom: 20px;
+    clear:both;
 
-    &__details {
-        display: flex;
-        flex-direction: column;
-        font-size: 1rem;
-
-        & > span:first-child {
-            font-weight: 700 !important;
-            font-size: 1rem;
-        }
-
-        &  > span:last-child {
-            font-size: 14px;
-            font-weight: 400;
-
-        }
-
-        &_donations{
-            text-align: right;
-        }
+    .income {
+        font-size: 46px;
+        line-height: 48px;
+        letter-spacing: -1px;
+        color: #333;
     }
 
-}
+    .raised {
+        margin-bottom: 15px;
+    }
 
-.give-progress-bar {
-    position: relative;
-    height: 12px;
-    //background: #F1F1F1;
-    margin-bottom: 10px;
-    border-radius: 25px;
+    .progress-bar {
+        width: 100%;
+        background: none;
+        padding-bottom: 10px;
+    }
 
-    > span {
-        display: block;
-        height: 100%;
-        border-top-right-radius: 8px;
-        border-bottom-right-radius: 8px;
-        border-top-left-radius: 20px;
-        border-bottom-left-radius: 20px;
-        //background-color: rgb(43, 194, 83);
+    .give-progress-bar {
+        width: 100%;
+        height: 20px;
         position: relative;
+        background: #EEE;
+        border-radius: 25px;
         overflow: hidden;
+
+        > span {
+            display: block;
+            height: 100%;
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            background: none;
+        }
     }
+
 }
+
 
 

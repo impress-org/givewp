@@ -8,14 +8,8 @@ use WP_REST_Server;
 
 class CompleteRestApiEndpoint
 {
-    use CheckOfferStatus;
-
     public function __invoke()
     {
-        if ( ! $this->displayModal()) {
-            return;
-        }
-
         register_rest_route('give/v1', '/promotions/free-addon-modal/complete', [
             'methods' => WP_REST_Server::EDITABLE,
             'callback' => [$this, 'handleModalCompletion'],
