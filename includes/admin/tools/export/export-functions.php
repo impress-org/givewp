@@ -32,9 +32,9 @@ function give_do_ajax_export() {
 	$_REQUEST = $form = (array) $form;
 
 	if (
-		! wp_verify_nonce( $_REQUEST['give_ajax_export'], 'give_ajax_export' )
-		|| ! current_user_can( 'manage_give_settings' )
-	) {
+		! wp_verify_nonce( $_REQUEST['give_ajax_export'], 'give_ajax_export' ) ||
+		! current_user_can( 'manage_give_settings' )
+    ) {
 		die( '-2' );
 	}
 
@@ -46,6 +46,10 @@ function give_do_ajax_export() {
 	 * @param string $class Export class.
 	 */
 	do_action( 'give_batch_export_class_include', $form['give-export-class'] );
+
+    if(  ! is_subclass_of( $form['give-export-class'], \Give_Batch_Export::class ) ) {
+        die(-2);
+    }
 
 	$step     = absint( $_POST['step'] );
 	$class    = sanitize_text_field( $form['give-export-class'] );
