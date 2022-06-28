@@ -222,7 +222,7 @@ class Give_Donor_Wall {
 				'order'             => 'DESC',
 				'hide_empty'        => true,  // Deprecated in 2.3.0
 				'only_donor_html'   => false, // Only for internal use.,
-                'show_time'    => true,
+                'show_time'         => true,
 			],
 			$atts
 		);
@@ -239,7 +239,7 @@ class Give_Donor_Wall {
 			'hide_empty',
 			'only_comments',
 			'only_donor_html',
-            'show_timestamp'
+            'show_time'
 		];
 
 		foreach ( $boolean_attributes as $att ) {
