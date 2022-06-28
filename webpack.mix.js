@@ -49,7 +49,6 @@ mix.setPublicPath('assets/dist')
     .ts('src/Donors/resources/admin-donors.tsx', 'js/give-admin-donors.js')
     .ts('src/Donations/resources/index.tsx', 'js/give-admin-donations.js')
     .js('src/Promotions/InPluginUpsells/resources/js/sale-banner.js', 'js/admin-upsell-sale-banner.js')
-    .js('src/Promotions/FreeAddonModal/resources/App.js', 'js/admin-free-addon-modal.js')
     .react()
     .sourceMaps(false, 'source-map')
 
@@ -57,7 +56,7 @@ mix.setPublicPath('assets/dist')
     .copyDirectory('assets/src/fonts', 'assets/dist/fonts');
 
 mix.webpackConfig({
-   resolve: {
+    resolve: {
         alias: {
             '@givewp/components': path.resolve(__dirname, 'src/Views/Components/'),
             '@givewp/css': path.resolve(__dirname, 'assets/src/css/'),
@@ -71,50 +70,49 @@ mix.webpackConfig({
          * - jquery
          * - lodash, lodash-es
          */
-        new DependencyExtractionWebpackPlugin(
-            {
-                useDefaults: false,
-                requestToExternal: (request) => {
-                    const WORDPRESS_NAMESPACE = '@wordpress/';
+        new DependencyExtractionWebpackPlugin({
+            useDefaults: false,
+            requestToExternal: (request) => {
+                const WORDPRESS_NAMESPACE = '@wordpress/';
 
-                    if (request.startsWith(WORDPRESS_NAMESPACE)) {
-                        return [
-                            'wp',
+                if (request.startsWith(WORDPRESS_NAMESPACE)) {
+                    return [
+                        'wp',
 
-                            /* Transform @wordpress dependencies:
-                            * - request @wordpress/api-fetch becomes [ 'wp', 'apiFetch' ]
-                            * - request @wordpress/i18n becomes [ 'wp', 'i18n' ]
-                            */
-                            request.substring(WORDPRESS_NAMESPACE.length)
-                                .replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()),
-                        ];
-                    } else if (['lodash', 'lodash-es'].includes(request)) {
-                        return 'lodash';
-                    } else if (request === 'jquery') {
-                        return 'jQuery';
-                    }
-                },
-                requestToHandle: (request) => {
-                    const WORDPRESS_NAMESPACE = '@wordpress/';
-
-                    if (request === 'lodash-es') {
-                        return 'lodash';
-                    }
-
-                    if (request.startsWith(WORDPRESS_NAMESPACE)) {
-                        return 'wp-' + request.substring(WORDPRESS_NAMESPACE.length);
-                    }
+                        /* Transform @wordpress dependencies:
+                         * - request @wordpress/api-fetch becomes [ 'wp', 'apiFetch' ]
+                         * - request @wordpress/i18n becomes [ 'wp', 'i18n' ]
+                         */
+                        request
+                            .substring(WORDPRESS_NAMESPACE.length)
+                            .replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()),
+                    ];
+                } else if (['lodash', 'lodash-es'].includes(request)) {
+                    return 'lodash';
+                } else if (request === 'jquery') {
+                    return 'jQuery';
                 }
-            }
-        )
-    ]
+            },
+            requestToHandle: (request) => {
+                const WORDPRESS_NAMESPACE = '@wordpress/';
+
+                if (request === 'lodash-es') {
+                    return 'lodash';
+                }
+
+                if (request.startsWith(WORDPRESS_NAMESPACE)) {
+                    return 'wp-' + request.substring(WORDPRESS_NAMESPACE.length);
+                }
+            },
+        }),
+    ],
 });
 
 mix.options({
-// Don't perform any css url rewriting by default
+    // Don't perform any css url rewriting by default
     processCssUrls: false,
 
-// Prevent LICENSE files from showing up in JS builds
+    // Prevent LICENSE files from showing up in JS builds
     terser: {
         extractComments: (astNode, comment) => false,
         terserOptions: {
@@ -133,8 +131,8 @@ if (mix.inProduction()) {
                     suffix: '-rtl',
                     minify: true,
                 }),
-                ...config.plugins
+                ...config.plugins,
             ],
-        }
+        };
     });
 }
