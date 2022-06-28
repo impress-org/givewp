@@ -44,6 +44,7 @@ const { donorsPerPage,
         toggleOptions,
         filterOptions,
         color,
+        showTimestamp,
         showTributes  } = attributes;
 
 	const saveSetting = ( name, value ) => {
