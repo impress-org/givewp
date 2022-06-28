@@ -205,6 +205,15 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
                 <?php
                 $form        = new Give_Donate_Form( $form_id );
                 $goal_option = give_get_meta( $form->ID, '_give_goal_option', true );
+
+                // Sanity check - ensure form has pass all condition to show goal.
+                if ( ( isset( $atts['show_goal'] ) && ! filter_var( $atts['show_goal'], FILTER_VALIDATE_BOOLEAN ) )
+                    || empty( $form->ID )
+                    || ( is_singular( 'give_forms' ) && ! give_is_setting_enabled( $goal_option ) )
+                    || ! give_is_setting_enabled( $goal_option ) || 0 === $form->goal ) {
+                    return false;
+                }
+
                 $goal_progress_stats = give_goal_progress_stats( $form );
                 $goal_format         = $goal_progress_stats['format'];
                 $color               = $atts['progress_bar_color'];
@@ -220,10 +229,10 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
                     $args
                 );
 
-
                 $income = $shortcode_stats['income'];
                 $goal   = $shortcode_stats['goal'];
-
+//                var_dump($goal_option);
+//                die();
 
                 switch ( $goal_format ) {
 
