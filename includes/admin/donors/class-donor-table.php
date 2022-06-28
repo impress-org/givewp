@@ -421,7 +421,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	/**
 	 * Retrieves the donor data from db.
 	 *
-	 * @access public
+	 * @unreleased Add second param to "give_donors_column_query_data" filter hook.
 	 * @since  1.0
 	 *
 	 * @return array $data The Donor data.
