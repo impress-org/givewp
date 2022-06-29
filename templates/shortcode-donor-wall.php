@@ -8,11 +8,13 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+/** @var $args array */
+/** @var $donation array kind of like Give_Payment */
 /** @var $donor Give_Donor */
-$donation = $args[0];
+/** @var $atts array  Shortcode attributes */
+/** @var $give_settings array  Give settings */
 
-$give_settings = $args[1]; // Give settings.
-$atts = $args[2]; // Shortcode attributes.
+list($donation, $give_settings, $atts, $donor) = $args;
 
 $primary_color = $atts['color'];
 $avatarSize = (int)$atts['avatar_size'];
@@ -59,46 +61,53 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                         ";
                 }
             }
-            ?>
+                ?>
+                <div class="give-donor-container-variation"
+                     style="
+                            flex-direction: <?php echo $atts['show_avatar'] ? 'column' : 'row'; ?>;
+                            align-items:  <?php echo $atts['show_avatar'] ? 'center' : 'flex-end'; ?>;
+                         ">
+                    <?php if ( $atts['show_name'] ) : ?>
+                        <h3 class="give-donor-container-variation__name">
+                            <?php
+                            // Get donor name based on donation parameter.
+                            $donor_name = ! empty( $donation['_give_anonymous_donation'] )
+                                ? esc_html__( 'Anonymous', 'give' )
+                                : trim( $donation['_give_donor_billing_first_name'] . ' ' . $donation['_give_donor_billing_last_name'] );
+                            ?>
+                            <?php echo esc_html( $donor_name ); ?>
+                        </h3>
+                    <?php endif; ?>
 
-            <?php if ($atts['show_name']) : ?>
-                <h3 class="give-donor-container__name"
-                    style='<?php echo ($atts['show_avatar']) ? "text-align: center" : "text-align: left" ?>'>
-                    <?php
-                    // Get donor name based on donation parameter.
-                    $donor_name = !empty($donation['_give_anonymous_donation'])
-                        ? esc_html__('Anonymous', 'give')
-                        : trim(
-                            $donation['_give_donor_billing_first_name'] . ' ' . $donation['_give_donor_billing_last_name']
-                        );
-                    ?>
-                    <?php echo esc_html($donor_name); ?>
-                </h3>
-            <?php endif; ?>
+                    <?php if ( $atts['show_company_name'] && isset( $donation['_give_donation_company'] ) ) : ?>
+                        <h3 class="give-donor-container-variation__name">
+                            <?php echo esc_html( $donation['_give_donation_company'] ); ?>
+                        </h3>
+                    <?php endif; ?>
 
-            <?php if ($atts['show_company_name'] && isset($donation['_give_donation_company'])) : ?>
-                <h3 class="give-donor-container__name">
-                    <?php echo esc_html($donation['_give_donation_company']); ?>
-                </h3>
-            <?php endif; ?>
-
+                    <?php if ( $atts['show_time'] ) : ?>
+                        <p class="give-donor-container-variation__timestamp">
+                            <?php echo esc_html( give_get_formatted_date( $donation['donation_date'], give_date_format(), 'Y-m-d H:i:s', true ) ); ?>
+                        </p>
+                    <?php endif; ?>
+                </div>
             <?php
             if (
                 $atts['show_comments']
                 && absint($atts['comment_length'])
                 && !empty($donation['donor_comment'])
-                && !$donation['_give_anonymous_donation']
             ) :
                 ?>
                 <div class="give-donor-wrapper">
                     <div class="give-donor-content"
                          style="border-color: <?php echo !empty($atts['color']) ? $atts['color'] : '#219653' ?>">
                         <?php
-                        $comment = trim($donation['donor_comment']);
-                        $total_chars = strlen($comment);
+                        $comment = esc_html($donation['donor_comment']);
+                        $stripped_comment = str_replace(' ', '', $comment);
+
+                        $total_chars = strlen($stripped_comment);
                         $max_chars = $atts['comment_length'];
                         $read_more_text = $atts['readmore_text'];
-
 
                         // A truncated excerpt is displayed if the comment is too long.
                         if ($max_chars < $total_chars) {
@@ -117,10 +126,16 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                             $excerpt = trim($excerpt, '.!,:;');
 
                             echo "<p class='give-donor-content__excerpt'>$excerpt &hellip;
-                                    <span> <a class='give-donor-content__read-more' style='color: {$primary_color}'> $read_more_text </a></span>
+                                    <span> <a class='give-donor-content__read-more' style='color: $primary_color'> $read_more_text </a></span>
                                    </p>";
 
                             echo "<p class='give-donor-content__comment'> $comment </p>";
+
+                        }
+                        else     {
+                            echo "<p class='give-donor-content__comment'>
+                                    $comment
+                            </p>";
                         }
                         ?>
                     </div>
@@ -158,12 +173,11 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                 </div>
 
                 <?php
-                $donation_total = give_donation_amount($donation['donation_id'], true);
-                $donation_amount = esc_html(substr($donation_total, 0, strpos($donation_total, ".")));
+                $donation_amount = give_donation_amount(esc_html($donation['donation_id']), true);
 
                 if ($atts['show_total']) {
                     echo "
-                             <span class= 'give-donor-details__total' style='color: {$primary_color}'> $donation_amount </span>
+                             <span class= 'give-donor-details__total' style='color: $primary_color'> $donation_amount </span>
                         ";
                 }
                 ?>
@@ -202,5 +216,3 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
         ?>
     </div>
 </div>
-
-

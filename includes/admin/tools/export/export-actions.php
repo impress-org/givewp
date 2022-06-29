@@ -126,30 +126,3 @@ function give_register_batch_exporters() {
 
 add_action( 'plugins_loaded', 'give_register_batch_exporters' );
 
-/**
- * Register the donors batch exporter.
- *
- * @since  1.5.2
- */
-function give_register_donors_batch_export() {
-	add_action( 'give_batch_export_class_include', 'give_include_donors_batch_processor', 10, 1 );
-}
-
-add_action( 'give_register_batch_exporter', 'give_register_donors_batch_export', 10 );
-
-/**
- * Loads the donors batch process if needed.
- *
- * @since  1.5.2
- *
- * @param  string $class The class being requested to run for the batch export.
- *
- * @return void
- */
-function give_include_donors_batch_processor( $class ) {
-
-	if ( 'Give_Batch_Donors_Export' === $class ) {
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-batch-export-donors.php';
-	}
-
-}

@@ -6,7 +6,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.21.1
+ * Version: 2.21.2
  * Requires at least: 5.0
  * Requires PHP: 7.0
  * Text Domain: give
@@ -48,7 +48,9 @@ use Give\DonationForms\ServiceProvider as DonationFormsServiceProvider;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ServiceProvider as DonationServiceProvider;
 use Give\DonationSummary\ServiceProvider as DonationSummaryServiceProvider;
+use Give\DonorDashboards\Profile;
 use Give\DonorDashboards\ServiceProvider as DonorDashboardsServiceProvider;
+use Give\DonorDashboards\Tabs\TabsRegister;
 use Give\Donors\Repositories\DonorRepositoryProxy;
 use Give\Donors\ServiceProvider as DonorsServiceProvider;
 use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
@@ -116,6 +118,8 @@ if (!defined('ABSPATH')) {
  * @property-read DonorRepositoryProxy $donors
  * @property-read SubscriptionRepository $subscriptions
  * @property-read DonationFormsRepository $donationFormsRepository
+ * @property-read Profile $donorDashboard
+ * @property-read TabsRegister $donorDashboardTabs
  * @property-read Give_Recurring_DB_Subscription_Meta $subscription_meta
  *
  * @mixin Container
@@ -184,6 +188,8 @@ final class Give
         Give\Email\ServiceProvider::class,
         DonationSummaryServiceProvider::class,
         PaymentGatewaysServiceProvider::class,
+        LegacySubscriptionsServiceProvider::class,
+        Give\Exports\ServiceProvider::class,
         DonationServiceProvider::class,
         DonorsServiceProvider::class,
         SubscriptionServiceProvider::class,
@@ -294,7 +300,7 @@ final class Give
     {
         // Plugin version.
         if (!defined('GIVE_VERSION')) {
-            define('GIVE_VERSION', '2.21.1');
+            define('GIVE_VERSION', '2.21.2');
         }
 
         // Plugin Root File.

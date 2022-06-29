@@ -2,6 +2,7 @@
 
 namespace Give\Framework\PaymentGateways\Contracts\Subscription;
 
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
 
 /**
@@ -12,11 +13,8 @@ interface SubscriptionAmountEditable
     /**
      * Update subscription amount.
      *
+     * @since 2.21.2 Add second argument to specify the new amount.
      * @since 2.20.0
-     *
-     * @param Subscription $subscriptionModel
-     *
-     * @return void
      */
-    public function updateSubscriptionAmount(Subscription $subscriptionModel);
+    public function updateSubscriptionAmount(Subscription $subscription, Money $newRenewalAmount);
 }

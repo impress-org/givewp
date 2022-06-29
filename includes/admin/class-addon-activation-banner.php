@@ -538,7 +538,7 @@ class Give_Addon_Activation_Banner {
 			div.give-addon-alert.updated {
 				padding: 20px;
 				position: relative;
-				border-color: #66BB6A;
+				border-color: #69B868;
 				min-height: 85px;
 			}
 
@@ -560,11 +560,11 @@ class Give_Addon_Activation_Banner {
 
 			div.give-addon-alert h3 span {
 				font-weight: 700;
-				color: #66BB6A;
+				color: #69B868;
 			}
 
 			div.give-addon-alert a {
-				color: #66BB6A;
+				color: #69B868;
 			}
 
 			div.give-addon-alert .alert-actions a {

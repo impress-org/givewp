@@ -211,12 +211,12 @@ class Give_i18n_Banner {
 			div.give-addon-alert.updated {
 				padding: 10px 20px;
 				position: relative;
-				border-color: #66BB6A;
+				border-color: #69B868;
 				overflow: hidden;
 			}
 
 			div.give-addon-alert a {
-				color: #66BB6A;
+				color: #69B868;
 			}
 
 			#give-i18n-notice > .give-i18n-icon {

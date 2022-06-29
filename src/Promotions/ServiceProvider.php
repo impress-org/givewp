@@ -40,7 +40,8 @@ class ServiceProvider implements ServiceProviderContract
      *
      * @since 2.19.0
      */
-    private function bootPluginUpsells() {
+    private function bootPluginUpsells()
+    {
         Hooks::addAction('admin_menu', AddonsAdminPage::class, 'register');
         Hooks::addAction('rest_api_init', HideSaleBannerRoute::class, 'registerRoute');
 
@@ -65,9 +66,8 @@ class ServiceProvider implements ServiceProviderContract
      */
     private function bootFreeAddonModal()
     {
-        Hooks::addAction('admin_init', PreventFreshInstallPromotion::class);
-        Hooks::addAction('admin_enqueue_scripts', EnqueueModal::class, 'enqueueScripts');
-        Hooks::addAction('rest_api_init', CompleteRestApiEndpoint::class);
-        Hooks::addAction('give_settings_page_header', DisplaySettingsButton::class);
+        if (is_admin()) {
+            Hooks::addAction('rest_api_init', CompleteRestApiEndpoint::class);
+        }
     }
 }
