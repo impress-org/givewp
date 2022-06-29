@@ -63,7 +63,7 @@ interface PaymentGatewayInterface extends SubscriptionModuleInterface
      * Note: You can use "givewp_new_payment_{$gatewayId}_gateway_data" filter hook to pass additional data for gateway which helps/require to process transaction.
      *       This filter will help to add additional arguments to this function which should be optional otherwise you will get PHP fatal error.
      *
-     * @unreleased Add second param to function to pass gateway data to process transaction
+     * @since 2.21.2 Add second param to function to pass gateway data to process transaction
      * @since 2.18.0
      *
      * @return GatewayCommand|RedirectOffsite|void

@@ -7,7 +7,7 @@ use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give_Batch_Export;
 
 /**
- * @unreleased
+ * @since 2.21.2
  */
 class DonorsExport extends Give_Batch_Export
 {
@@ -47,7 +47,7 @@ class DonorsExport extends Give_Batch_Export
     }
 
     /**
-     * @unreleased
+     * @since 2.21.2
      */
     public function csv_cols(): array
     {
@@ -71,7 +71,7 @@ class DonorsExport extends Give_Batch_Export
     }
 
     /**
-     * @unreleased
+     * @since 2.21.2
      */
     public function get_data(): array
     {
@@ -137,7 +137,7 @@ class DonorsExport extends Give_Batch_Export
     }
 
     /**
-     * @unreleased
+     * @since 2.21.2
      */
     protected function shouldIncludeAddress(): bool
     {
@@ -145,7 +145,7 @@ class DonorsExport extends Give_Batch_Export
     }
 
     /**
-     * @unreleased
+     * @since 2.21.2
      */
     protected function flattenAddressColumn(array $columnarData): array
     {
@@ -153,7 +153,7 @@ class DonorsExport extends Give_Batch_Export
     }
 
     /**
-     * @unreleased
+     * @since 2.21.2
      */
     protected function flattenColumn(array $columnarData, string $columnName): array
     {
@@ -165,12 +165,12 @@ class DonorsExport extends Give_Batch_Export
     }
 
     /**
-     * @unreleased
+     * @since 2.21.2
      */
     protected function filterExportData(array $exportData): array
     {
         /**
-         * @unreleased
+         * @since 2.21.2
          * @param $exportData
          */
         return apply_filters("give_export_get_data_{$this->export_type}", $exportData);

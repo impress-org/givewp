@@ -5,12 +5,12 @@ namespace Give\Log\Migrations;
 use Give\Framework\Migrations\Contracts\Migration;
 
 /**
- * @unreleased
+ * @since 2.21.2
  */
 class CompleteRemovedLegacyLogMigration extends Migration
 {
     /**
-     * @unreleased
+     * @since 2.21.2
      * @inheritdoc
      */
     public static function id(): string
@@ -19,7 +19,7 @@ class CompleteRemovedLegacyLogMigration extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 2.21.2
      * @inheritdoc
      */
     public static function timestamp()
@@ -28,7 +28,7 @@ class CompleteRemovedLegacyLogMigration extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 2.21.2
      * @inheritdoc
      */
     public static function title()
@@ -37,7 +37,7 @@ class CompleteRemovedLegacyLogMigration extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 2.21.2
      * @inheritdoc
      */
     public function run()

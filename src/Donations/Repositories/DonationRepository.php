@@ -555,7 +555,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.21.2
      *
      * @return Donation|null
      */
@@ -567,7 +567,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.21.2
      *
      * @return Donation|null
      */

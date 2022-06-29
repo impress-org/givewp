@@ -3,7 +3,7 @@
 namespace Give\Exports;
 
 /**
- * @unreleased
+ * @since 2.21.2
  */
 class ServiceProvider implements \Give\ServiceProviders\ServiceProvider {
 

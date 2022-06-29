@@ -78,7 +78,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<td>
 							<form method="post">
                                 <?php
-                                // @unreleased
+                                // @since 2.21.2
                                 // Year in year dropdown should begin from first donation year instead of only display first five recent year.
                                 $firstDonation = give()->donations->getFirstDonation();
                                 $firstDonationDate = $firstDonation->createdAt ?? null;
@@ -109,14 +109,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 
                     <?php
                     /**
-                     * @unreleased
+                     * @since 2.21.2
                      */
                     do_action( 'give_tools_tab_export_after_donation_history' );
                     ?>
 
                     <?php
                     /**
-                     * @unreleased
+                     * @since 2.21.2
                      */
                     do_action( 'give_tools_tab_export_before_core_settings' );
                     ?>

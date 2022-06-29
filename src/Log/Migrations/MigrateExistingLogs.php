@@ -82,7 +82,7 @@ class MigrateExistingLogs extends Migration
     /**
      * @inheritDoc
      *
-     * @unreleased Migration should complete when log table does not exist.
+     * @since 2.21.2 Migration should complete when log table does not exist.
      */
     public function run()
     {

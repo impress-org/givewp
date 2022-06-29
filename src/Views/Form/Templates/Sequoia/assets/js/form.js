@@ -206,8 +206,8 @@
                     const value = $(this).attr('value');
                     const text = $(this).text();
                     const $form = $('form');
-                    const symbol = Give.form.fn.getInfo( 'currency_symbol', $form );
-                    const position = Give.form.fn.getInfo( 'currency_position', $form );
+                    const symbol = Give.form.fn.getInfo('currency_symbol', $form);
+                    const position = Give.form.fn.getInfo('currency_position', $form);
 
                     if (value !== 'custom') {
                         const html =
@@ -417,7 +417,9 @@
                             }
 
                             if ($(node).find('.required[placeholder]').length) {
-                                setupRequiredFieldPlaceholders(Array.from($(node).get(0).querySelectorAll('.required[placeholder]')));
+                                setupRequiredFieldPlaceholders(
+                                    Array.from($(node).get(0).querySelectorAll('.required[placeholder]'))
+                                );
                             }
                         }
                     });
@@ -490,7 +492,7 @@
     /**
      * Denote required fields as required by adding a asterisks (*) prefix to placeholder.
      *
-     * @unreleased
+     * @since 2.21.2
      *
      * @param {array} inputs An iteratable list of input elements.
      */
@@ -499,7 +501,6 @@
             if ('*' !== input.placeholder.trim().slice(-1)) {
                 input.placeholder = `${input.placeholder.trim()}*`;
             }
-
         });
     }
 

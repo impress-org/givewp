@@ -127,7 +127,7 @@ class Give_Earnings_Export extends Give_Export
     }
 
     /**
-     * @unreleased
+     * @since 2.21.2
      */
     private function getDatesFromRequest(): \stdClass
     {

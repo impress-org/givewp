@@ -82,7 +82,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * @unreleased Add new filter hook to provide gateway data before donation is processed by the gateway.
+     * @since 2.21.2 Add new filter hook to provide gateway data before donation is processed by the gateway.
      * @since 2.21.0 Handle PHP exception.
      * @since 2.19.0
      */
@@ -92,7 +92,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             /**
              * Filter hook to provide gateway data before transaction is processed by the gateway.
              *
-             * @unreleased
+             * @since 2.21.2
              */
             $gatewayData = apply_filters(
                 "givewp_new_payment_{$donation->gatewayId}_gateway_data",
@@ -121,7 +121,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * @unreleased Add filter hook to provide gateway data before subscription is processed by the gateway.
+     * @since 2.21.2 Add filter hook to provide gateway data before subscription is processed by the gateway.
      * @since 2.21.0 Handle PHP exception.
      * @since 2.19.0
      *
@@ -132,7 +132,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             /**
              * Filter hook to provide gateway data before initial transaction for subscription is processed by the gateway.
              *
-             * @unreleased
+             * @since 2.21.2
              */
             $gatewayData = apply_filters(
                 "givewp_new_subscription_{$donation->gatewayId}_gateway_data",
@@ -185,7 +185,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * @unreleased
+     * @since 2.21.2
      * @inheritDoc
      * @throws ReflectionException
      */
@@ -199,7 +199,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * @unreleased
+     * @since 2.21.2
      * @inheritDoc
      * @throws ReflectionException
      */
@@ -213,7 +213,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * @unreleased
+     * @since 2.21.2
      * @inheritDoc
      * @throws ReflectionException
      */
@@ -227,8 +227,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * @unreleased
-     * @unreleased
+     * @since 2.21.2
+     * @since 2.21.2
      * @throws Exception
      */
     public function hasGatewayDashboardSubscriptionUrl(): bool
@@ -241,7 +241,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * @unreleased
+     * @since 2.21.2
      * @inheritDoc
      * @throws Exception
      */
@@ -257,7 +257,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * @unreleased
+     * @since 2.21.2
      * @inheritDoc
      * @throws Exception
      */
@@ -273,7 +273,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * @unreleased
+     * @since 2.21.2
      * @inheritDoc
      * @throws Exception
      */
@@ -289,7 +289,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * @unreleased
+     * @since 2.21.2
      * @inheritDoc
      * @throws Exception
      */
@@ -477,10 +477,10 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * Checks to see if the provided method is being used by the child gateway class. This is used as a helper in the "can" methods 
+     * Checks to see if the provided method is being used by the child gateway class. This is used as a helper in the "can" methods
      * to see if the gateway is implementing a recurring feature without using a subscription module.
-     *     
-     * @unreleased
+     *
+     * @since 2.21.2
      * @throws ReflectionException
      */
     private function isFunctionImplementedInGatewayClass(string $methodName): bool

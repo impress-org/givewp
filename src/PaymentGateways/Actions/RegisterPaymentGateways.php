@@ -104,7 +104,7 @@ class RegisterPaymentGateways
     }
 
     /**
-     * @unreleased
+     * @since 2.21.2
      */
     private function addGatewayDataToStripPaymentMethods()
     {
@@ -124,7 +124,7 @@ class RegisterPaymentGateways
     }
 
     /**
-     * @unreleased
+     * @since 2.21.2
      */
     private function addGatewayDataToPayPalCommerce()
     {
