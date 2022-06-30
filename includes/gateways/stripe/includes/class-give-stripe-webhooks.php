@@ -76,11 +76,9 @@ if (!class_exists('Give_Stripe_Webhooks')) {
             $payload = json_decode($payload, true);
 
             try {
-                $event = \Stripe\Event::retrieve(
-                    Event::constructFrom(
+                $event = Event::constructFrom(
                         $payload
-                    )->id
-                );
+                    );
             } catch (\Exception $exception) {
                 Log::warning(
                     'Stripe - Webhook Received',

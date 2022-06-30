@@ -26,6 +26,7 @@ abstract class StripeEventListener implements EventListener
             $this->setupStripeApp($formId);
             $this->logEventReceiveTime();
 
+            $event = \Stripe\Event::retrieve($event->id);
             $this->processEvent($this->getEventFromStripe($event->id));
         }
     }
