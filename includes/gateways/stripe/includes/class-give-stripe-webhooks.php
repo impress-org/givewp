@@ -57,7 +57,8 @@ if (!class_exists('Give_Stripe_Webhooks')) {
         /**
          * Listen for Stripe events.
          *
-         * @access public
+         * @unreleased fetching event detail in this function can cause of 400 HTTP response for Stripe webhook because
+         *             stripe app setup with correct account in event listener class.
          * @since  2.5.0
          *
          * @return void

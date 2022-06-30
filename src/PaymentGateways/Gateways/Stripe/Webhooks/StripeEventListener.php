@@ -17,6 +17,7 @@ abstract class StripeEventListener implements EventListener
     use CanSetupStripeApp;
 
     /**
+     * @unreleased fetch event detail to validate stripe webhook event.
      * @since 2.21.0
      * @throws Exception
      */
