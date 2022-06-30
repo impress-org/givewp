@@ -97,7 +97,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
      * @inheritDoc
      * @throws ApiErrorException
      */
-    public function createPayment(Donation $donation): GatewayCommand
+    public function createPayment(Donation $donation, $gatewayData): GatewayCommand
     {
         /**
          * Get data from client request
