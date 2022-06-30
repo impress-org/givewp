@@ -14,7 +14,7 @@ use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
- * @unreleased
+ * @since 2.21.0
  *
  * @property int $id
  * @property int $donationId
@@ -42,7 +42,7 @@ class DonationNote extends Model implements ModelCrud, ModelHasFactory
     ];
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @return DonationNote|null
      */
@@ -53,7 +53,7 @@ class DonationNote extends Model implements ModelCrud, ModelHasFactory
 
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @return $this
      * @throws Exception|InvalidArgumentException
@@ -68,7 +68,7 @@ class DonationNote extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @return void
      * @throws Exception|InvalidArgumentException
@@ -83,7 +83,7 @@ class DonationNote extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @throws Exception|InvalidArgumentException
      */
@@ -93,7 +93,7 @@ class DonationNote extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @return ModelQueryBuilder<DonationNote>
      */
@@ -103,7 +103,7 @@ class DonationNote extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @return ModelQueryBuilder<Donation>
      */
@@ -113,7 +113,7 @@ class DonationNote extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @param  object  $object
      */
@@ -128,7 +128,7 @@ class DonationNote extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      */
     public static function factory(): DonationNoteFactory
     {

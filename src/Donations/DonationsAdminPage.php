@@ -17,10 +17,16 @@ class DonationsAdminPage
      */
     private $apiNonce;
 
+    /**
+     * @var string
+     */
+    private $adminUrl;
+
     public function __construct()
     {
         $this->apiRoot = esc_url_raw(rest_url('give-api/v2/admin/donations'));
         $this->apiNonce = wp_create_nonce('wp_rest');
+        $this->adminUrl = admin_url();
     }
 
     /**
@@ -51,6 +57,7 @@ class DonationsAdminPage
 
     /**
      * @since 2.20.0
+     * @since 2.21.2 Localized the admin URL as a base for URL concatenation.
      */
     public function loadScripts()
     {
@@ -59,6 +66,7 @@ class DonationsAdminPage
             'apiNonce' => $this->apiNonce,
             'preload' => $this->preloadDonations(),
             'forms' => $this->getForms(),
+            'adminUrl' => $this->adminUrl,
         ];
 
         EnqueueScript::make('give-admin-donations', 'assets/dist/js/give-admin-donations.js')
@@ -117,10 +125,10 @@ class DonationsAdminPage
             $queryParameters['search'] = urldecode($_GET['search']);
         }
 
-        $request = WP_REST_Request::from_url(add_query_arg(
+        $request = WP_REST_Request::from_url(esc_url(add_query_arg(
             $queryParameters,
             $this->apiRoot
-        ));
+        )));
 
         return rest_do_request($request)->get_data();
     }
@@ -139,10 +147,10 @@ class DonationsAdminPage
             'status' => 'any'
         ];
 
-        $request = WP_REST_Request::from_url(add_query_arg(
+        $request = WP_REST_Request::from_url(esc_url_raw(add_query_arg(
             $queryParameters,
-            esc_url_raw(rest_url('give-api/v2/admin/forms'))
-        ));
+            rest_url('give-api/v2/admin/forms')
+        )));
 
         $data = rest_do_request($request)->get_data();
 

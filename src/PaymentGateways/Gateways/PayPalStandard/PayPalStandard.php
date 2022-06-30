@@ -21,12 +21,12 @@ use Give_Payment;
 class PayPalStandard extends PaymentGateway
 {
     public $routeMethods = [
-        'handleIpnNotification'
+        'handleIpnNotification',
     ];
 
     public $secureRouteMethods = [
         'handleSuccessPaymentReturn',
-        'handleFailedPaymentReturn'
+        'handleFailedPaymentReturn',
     ];
 
     /**
@@ -72,7 +72,7 @@ class PayPalStandard extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function createPayment(Donation $donation): RedirectOffsite
+    public function createPayment(Donation $donation, $gatewayData = null): RedirectOffsite
     {
         return new RedirectOffsite(
             Call::invoke(
@@ -114,9 +114,11 @@ class PayPalStandard extends PaymentGateway
         $donationId = (int)$queryParams['donation-id'];
 
         return new RedirectResponse(
-            add_query_arg(
-                ['payment-confirmation' => $this->getId()],
-                Call::invoke(GenerateDonationReceiptPageUrl::class, $donationId)
+            esc_url_raw(
+                add_query_arg(
+                    ['payment-confirmation' => $this->getId()],
+                    Call::invoke(GenerateDonationReceiptPageUrl::class, $donationId)
+                )
             )
         );
     }

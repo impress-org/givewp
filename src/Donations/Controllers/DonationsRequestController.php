@@ -10,7 +10,7 @@ use WP_REST_Request;
 /**
  * Donations Request Controller class
  *
- * @unreleased
+ * @since 2.21.0
  */
 class DonationsRequestController
 {
@@ -28,7 +28,7 @@ class DonationsRequestController
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @return array
      */
@@ -48,18 +48,7 @@ class DonationsRequestController
                 'give_donationmeta',
                 'id',
                 'donation_id',
-                DonationMetaKeys::FORM_ID,
-                DonationMetaKeys::FORM_TITLE,
-                DonationMetaKeys::AMOUNT,
-                DonationMetaKeys::DONOR_ID,
-                DonationMetaKeys::FIRST_NAME,
-                DonationMetaKeys::LAST_NAME,
-                DonationMetaKeys::EMAIL,
-                DonationMetaKeys::GATEWAY,
-                DonationMetaKeys::MODE,
-                DonationMetaKeys::ANONYMOUS,
-                DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION,
-                DonationMetaKeys::IS_RECURRING
+                ...DonationMetaKeys::getColumnsForAttachMetaQuery()
             )
             ->where('post_type', 'give_payment');
 
@@ -79,7 +68,7 @@ class DonationsRequestController
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @return int
      */
@@ -95,7 +84,7 @@ class DonationsRequestController
 
     /**
      * @param QueryBuilder $query
-     * @unreleased
+     * @since 2.21.0
      *
      * @return QueryBuilder
      */

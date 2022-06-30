@@ -12,13 +12,13 @@ use Give\Helpers\Hooks;
 use Give\Log\Log;
 
 /**
- * @unreleased
+ * @since 2.21.0
  */
 class DonationNotesRepository
 {
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @var string[]
      */
@@ -28,7 +28,7 @@ class DonationNotesRepository
     ];
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @param int $noteId
      *
@@ -42,7 +42,7 @@ class DonationNotesRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @param DonationNote $donationNote
      *
@@ -86,7 +86,7 @@ class DonationNotesRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @param DonationNote $donationNote
      *
@@ -122,7 +122,7 @@ class DonationNotesRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @param DonationNote $donationNote
      *
@@ -155,7 +155,7 @@ class DonationNotesRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @param  int  $donationId
      *
@@ -169,7 +169,7 @@ class DonationNotesRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @param DonationNote $donationNote
      *

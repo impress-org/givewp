@@ -2,7 +2,7 @@
 /**
  * Insert donor comment to donation.
  *
- * @unreleased remove anonymous
+ * @since 2.21.0 remove anonymous
  * @since 2.2.0
  *
  * @param  int  $donation_id

@@ -167,7 +167,7 @@ function give_send_to_success_page( $query_string = null ) {
  * @param array|string $args
  *
  * @access public
- * @unreleased Auto set "payment-mode" in redirect url.
+ * @since 2.21.0 Auto set "payment-mode" in redirect url.
  * @since  1.0
  * @return Void
  */
@@ -222,7 +222,7 @@ function give_send_back_to_checkout( $args = [] ) {
 	/**
 	 * Filter the redirect url
 	 */
-	wp_safe_redirect( apply_filters( 'give_send_back_to_checkout', $redirect, $args ) );
+	wp_safe_redirect( esc_url_raw( apply_filters( 'give_send_back_to_checkout', $redirect, $args ) ) );
 
 	give_die();
 }

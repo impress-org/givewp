@@ -1,3 +1,0 @@
-[mysqld]
-
-sort_buffer_size=512k

@@ -13,10 +13,6 @@ interface SubscriptionTransactionsSynchronizable
      * Synchronizes a subscription and its transactions with the gateway.
      *
      * @since 2.20.0
-     *
-     * @param Subscription $subscriptionModel
-     *
-     * @return void
      */
-    public function synchronizeSubscription(Subscription $subscriptionModel);
+    public function synchronizeSubscription(Subscription $subscription);
 }

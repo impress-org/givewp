@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * @@since [[UNRELEASED]]
+     * @since 2.20.0
      * @param {object} $form
      */
     function loadPayPalSDKScriptForDonationForm($form) {

@@ -8,7 +8,7 @@ use Give\Helpers\Date;
 /**
  * Class DonationFormsResponseData
  *
- * @unreleased
+ * @since 2.21.0
  */
 class DonationFormsResponseData implements Arrayable
 {
@@ -63,7 +63,7 @@ class DonationFormsResponseData implements Arrayable
      *
      * @param object $form
      *
-     * @unreleased
+     * @since 2.21.0
      */
     public static function fromObject($form): self
     {
@@ -87,7 +87,7 @@ class DonationFormsResponseData implements Arrayable
     /**
      * Convert DTO to array
      *
-     * @unreleased
+     * @since 2.21.0
      */
     public function toArray(): array
     {
@@ -99,7 +99,7 @@ class DonationFormsResponseData implements Arrayable
      *
      * @return array
      *
-     * @unreleased
+     * @since 2.21.0
      */
     private function getGoal(int $formId): array
     {
@@ -137,7 +137,7 @@ class DonationFormsResponseData implements Arrayable
      *
      * @return string
      *
-     * @unreleased
+     * @since 2.21.0
      */
     private function getFormAmount($form): string
     {
@@ -158,7 +158,7 @@ class DonationFormsResponseData implements Arrayable
      *
      * @return string
      *
-     * @unreleased
+     * @since 2.21.0
      */
     private function formatAmount(string $amount): string
     {

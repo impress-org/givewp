@@ -9,9 +9,9 @@
 
 .give-card {
 	background-color: white;
-	border:  1px solid $give-card-border;
-	box-shadow: 0 1px 1px rgba( 0, 0, 0, 0.04 );
-	color: inherit;
+	border-radius: 8px;
+    box-shadow: 0px 0px 8px rgba(112, 111, 111, 0.25);
+    color: inherit;
 	display: flex;
 	flex-direction: column;
 	width: 100%;

@@ -9,10 +9,12 @@ use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Helpers\Call;
 use Give\Helpers\Gateways\Stripe;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Gateways\Stripe\Exceptions\CheckoutException;
+use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
 
 /**
  * @since 2.19.0
@@ -22,50 +24,36 @@ class CheckoutGateway extends PaymentGateway
     use Traits\CheckoutInstructions;
     use Traits\CheckoutModal;
     use Traits\CheckoutRedirect;
-
-    /**
-     * @since 2.19.7 fix handlePaymentIntentStatus not receiving extra param
-     * @since 2.19.0
-     * @return PaymentProcessing|RedirectOffsite
-     * @throws Exceptions\PaymentIntentException
-     * @throws InvalidPropertyName
-     */
-    protected function createPaymentModal(Donation $donation)
-    {
-        $paymentMethod = Call::invoke(Actions\GetPaymentMethodFromRequest::class, $donation);
-        $donationSummary = Call::invoke(Actions\SaveDonationSummary::class, $donation);
-        $stripeCustomer = Call::invoke(Actions\GetOrCreateStripeCustomer::class, $donation);
-
-        $createIntentAction = new Actions\CreatePaymentIntent([]);
-
-        return $this->handlePaymentIntentStatus(
-            $createIntentAction(
-                $donation,
-                $donationSummary,
-                $stripeCustomer,
-                $paymentMethod
-            ),
-            $donation
-        );
-    }
-
     use Traits\HandlePaymentIntentStatus;
 
     /**
      * @inheritDoc
      * @since 2.19.0
+     *
+     * @param PaymentMethod $donation
+     *
      * @throws PaymentGatewayException
      */
-    public function createPayment(Donation $donation): GatewayCommand
+    public function createPayment(Donation $donation, $paymentMethod): GatewayCommand
     {
-        switch (give_stripe_get_checkout_type()) {
+        switch ($this->getCheckoutType()) {
             case 'modal':
-                return $this->createPaymentModal($donation);
+                return  give(PaymentGatewayRegister::class)
+                    ->getPaymentGateway(CreditCardGateway::id())
+                    ->createPayment($donation, $paymentMethod);
             case 'redirect':
                 return $this->createPaymentRedirect($donation);
             default:
                 throw new CheckoutException('Invalid Checkout Error');
         }
+    }
+
+    /**
+     * @since 2.21.2
+     */
+    public function getCheckoutType(): string
+    {
+        return give_stripe_get_checkout_type();
     }
 
     /**

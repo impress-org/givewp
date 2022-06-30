@@ -62,7 +62,9 @@ const SubscriptionManager = ({id, subscription}) => {
 
         setIsUpdating(true);
 
-        const paymentMethod = await gatewayRef.current.getPaymentMethod();
+        const paymentMethod = gatewayRef.current ?
+            await gatewayRef.current.getPaymentMethod() :
+            {};
 
         if ('error' in paymentMethod) {
             setIsUpdating(false);
@@ -99,7 +101,7 @@ const SubscriptionManager = ({id, subscription}) => {
                     <Button onClick={handleUpdate}>
                         {updated ? (
                             <Fragment>
-                                {__('Updated', 'give')} <FontAwesomeIcon icon="check" fixedWidth />
+                                {__('Updated', 'give')} <FontAwesomeIcon icon="check" fixedWidth/>
                             </Fragment>
                         ) : (
                             <Fragment>

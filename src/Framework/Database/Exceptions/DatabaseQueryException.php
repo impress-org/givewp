@@ -11,7 +11,7 @@ use Throwable;
  * An exception for when errors occurred within the database while performing a query, which stores the SQL errors the
  * database returned
  *
- * @unreleased Use the GiveWP exception class
+ * @since 2.21.0 Use the GiveWP exception class
  * @since 2.9.2
  */
 class DatabaseQueryException extends Exception
@@ -27,7 +27,7 @@ class DatabaseQueryException extends Exception
     private $query;
 
     /**
-     * @unreleased include query and query errors, and make auto-logging compatible
+     * @since 2.21.0 include query and query errors, and make auto-logging compatible
      * @since 2.9.2
      */
     public function __construct(

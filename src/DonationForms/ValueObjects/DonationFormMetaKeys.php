@@ -7,7 +7,7 @@ use Give\Framework\Support\ValueObjects\Enum;
 /**
  * Donation Form Meta keys
  *
- * @unreleased
+ * @since 2.21.0
  *
  * @method static DonationFormMetaKeys FORM_EARNINGS()
  * @method static DonationFormMetaKeys DONATION_LEVELS()

@@ -16,7 +16,7 @@ class PaymentCompleteHandler extends PaymentHandler
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      */
     protected function getPaymentStatus(): DonationStatus
     {

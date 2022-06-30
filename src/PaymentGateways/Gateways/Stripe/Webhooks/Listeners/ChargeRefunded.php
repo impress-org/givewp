@@ -9,12 +9,12 @@ use Stripe\Charge;
 use Stripe\Event;
 
 /**
- * @unreleased
+ * @since 2.21.0
  */
 class ChargeRefunded extends StripeEventListener
 {
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @inerhitDoc
      */
@@ -37,7 +37,7 @@ class ChargeRefunded extends StripeEventListener
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      */
     private function addSupportForLegacyActionHook(Event $event)
     {
@@ -50,7 +50,7 @@ class ChargeRefunded extends StripeEventListener
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      * @inerhitDoc
      */
     protected function getDonation(Event $event)

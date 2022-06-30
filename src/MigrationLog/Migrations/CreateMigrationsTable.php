@@ -44,7 +44,7 @@ class CreateMigrationsTable extends Migration
     }
 
     /**
-     * @unreleased Add Check whether table installed before adding it to database.
+     * @since 2.21.0 Add Check whether table installed before adding it to database.
      * @throws DatabaseMigrationException
      */
     public function run()

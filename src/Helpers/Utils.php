@@ -68,7 +68,7 @@ class Utils
             }
         }
 
-        return $url;
+        return esc_url_raw($url);
     }
 
     /**
@@ -82,7 +82,7 @@ class Utils
      */
     public static function removeDonationAction($url)
     {
-        return add_query_arg(['giveDonationAction' => false], $url);
+        return esc_url_raw( add_query_arg(['giveDonationAction' => false], $url) );
     }
 
     /**

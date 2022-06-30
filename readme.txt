@@ -3,9 +3,9 @@ Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman
 Donate link: https://go.givewp.com/home
 Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
-Tested up to: 5.9
+Tested up to: 6.0
 Requires PHP: 7.0
-Stable tag: 2.20.1
+Stable tag: 2.21.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -251,6 +251,60 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.21.2: June 29th, 2022 =
+Feature: Exporting donors now supports limiting by their donation date — useful for getting donors who gave in the last year
+Enhancement: the new Gateway API now supports recurring under the hood
+Enhancement: donors are now passed to the give_donors_column_query_data hook (thanks Genevieve!)
+Security: Updated some internal dependencies that had security fixes
+Security: Better protection against invalid dates when exporting donation statistics
+Security: Prevent overreach hack when using the exporters
+Fix: For some folks a really old migration got stuck, and now it's unstuck
+Fix: Summary Heading for the classic Form field displays as it should
+Fix: The "Display Header" setting for Classic Form shows/hides the corresponding settings
+Fix: Made the default Form Grid colors a bit nicer
+Fix: Some of our greens weren't the right GiveWP green. All greens have been made right
+Fix: Cleaned up some PHP warnings in the Donor Wall caused by other add-ons
+Fix: Put the donation date back in on the Donor Wall
+Fix: Donation links weren't working on sub-directory WordPress installs on the Donation List table, now they do
+Fix: Required fields on the Multi-Step form now have an asterisk to help communicate to the donor
+Fix: Resolved a styling conflict introduce by the updated Form Grid on the Goal shortcode and Legacy template
+Fix: Improved some grammar and wording in our PayPal instructions
+Fix: Updated the PayPal logo to their latest and greatest
+Fix: Improved translations on the Donor Wall
+Fix: Updated the currency symbol for LKR (thanks pxydigital!)
+Fix: Donations made with 0-decimals now display properly on the Donor Wall
+Fix: Form goal settings are better reflected on the Form Grid
+
+= 2.21.1: June 21st, 2022 =
+* Fix: Resolved a "sort buffer" error on MySQL 5.7 and older
+* Fix: Added and corrected some missing translations
+
+= 2.21.0: June 16th, 2022 =
+* New: Fresh new look for the Donor Wall block and shortcode!
+* New: Form Grid looks has a great new look and more visual options!
+* Enhancement: The new Gateway API now uses he new Models
+* Enhancement: All failed queries are now logged with extra data to troubleshoot
+* Enhancement: Some minor visual improvements on the Logs admin page
+* Security: Remove an unused donor wall endpoint that made donor wall data too easy to access
+* Security: Donors can no longer immediately access the Donor Dashboard without authentication
+* Security: Further tightening of XSS protection per WordPress security guidelines
+* Security: Tighten up file exposure to GiveWP Managers in the Exporter
+* Fix: Prevent a notice and database error on fresh installs
+* Fix: Cleared up some notices that logging was causing
+* Fix: Admin notices no longer scrunch all weird-like up at the top of the page
+* Fix: Further compatibility fixes for PHP 8.1
+* Fix: Text aligns better for offline donations in the form
+* Fix: Stripe gracefully ignores events that come in from another platform
+* Fix: Brought back accidentally removed income goal stat filters. Thanks sc0ttkclark!
+* Fix: Make sure that all donation errors are caught and gracefully handled to inform the donor
+* Fix: Renewals now display the correct payment type in the admin donations list
+* Fix: Checkboxes (also created via Form Field Manager) no longer require being checked when conditionally hidden
+
+= 2.20.2: June 8th, 2022 =
+* Security: Donors are no longer able to view the Donor Dashboard for the email they donated in without logging in
+* Security: Added additional URL escaping around the codebase to protect against XSS attacks
+* Fix: Subscriptions can now be changed again by donors using the legacy subscriptions shortcode
+
 = 2.20.1: May 19th, 2022 =
 * Fix: Corrected an issue where admin notices were displaying strangely
 * Fix: Removed the "Switch to New View" button that would show up in strange admin places when switched to the legacy donor or donation lists

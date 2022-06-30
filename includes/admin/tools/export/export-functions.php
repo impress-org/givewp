@@ -19,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Process batch exports via ajax
  *
+ * @since 2.21.0 Sanitize file name. Allow plain file name only.
  * @since 1.5
  * @return void
  */
@@ -31,9 +32,9 @@ function give_do_ajax_export() {
 	$_REQUEST = $form = (array) $form;
 
 	if (
-		! wp_verify_nonce( $_REQUEST['give_ajax_export'], 'give_ajax_export' )
-		|| ! current_user_can( 'manage_give_settings' )
-	) {
+		! wp_verify_nonce( $_REQUEST['give_ajax_export'], 'give_ajax_export' ) ||
+		! current_user_can( 'manage_give_settings' )
+    ) {
 		die( '-2' );
 	}
 
@@ -46,9 +47,15 @@ function give_do_ajax_export() {
 	 */
 	do_action( 'give_batch_export_class_include', $form['give-export-class'] );
 
+    if(  ! is_subclass_of( $form['give-export-class'], \Give_Batch_Export::class ) ) {
+        die(-2);
+    }
+
 	$step     = absint( $_POST['step'] );
 	$class    = sanitize_text_field( $form['give-export-class'] );
-	$filename = isset( $_POST['file_name'] ) ? sanitize_text_field( $_POST['file_name'] ) : null;
+	$filename = isset( $_POST['file_name'] ) ?
+        basename(sanitize_file_name( $_POST['file_name'] ), '.csv') :
+        null;
 
 	/* @var Give_Batch_Export $export */
 	$export = new $class( $step, $filename );
@@ -116,7 +123,7 @@ function give_do_ajax_export() {
 
 		$json_data = [
 			'step' => 'done',
-			'url'  => add_query_arg( $args, admin_url() ),
+			'url'  => esc_url_raw(add_query_arg( $args, admin_url() )),
 		];
 
 	}

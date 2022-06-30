@@ -1,101 +1,117 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n'
+import {__} from '@wordpress/i18n'
 
 /**
  * Block Attributes
-*/
+ */
 
 const blockAttributes = {
-	donorsPerPage: {
-		type: 'string',
-		default: '12',
-	},
-	formID: {
-		type: 'string',
-		default: '0',
-	},
-	ids: {
-		type: 'string',
-		default: '',
-	},
-    categories: {
+    donorsPerPage: {
         type: 'string',
-        default: '',
+        default: '12',
+    },
+    formID: {
+        type: 'array',
+        default: [],
+    },
+    ids: {
+        type: 'array',
+        default: [],
+    },
+    categories: {
+        type: 'array',
+        default: [],
     },
     tags: {
         type: 'string',
-        default: '',
+        default: [],
     },
-	orderBy: {
-		type: 'string',
-		default: 'post_date',
-	},
-	order: {
-		type: 'string',
-		default: 'DESC',
-	},
-	paged: {
-		type: 'string',
-		default: '1',
-	},
-	columns: {
-		type: 'string',
-		default: 'best-fit',
-	},
-	showAvatar: {
-		type: 'boolean',
-		default: true,
-	},
-	showName: {
-		type: 'boolean',
-		default: true,
-	},
-	showCompanyName: {
-		type: 'boolean',
-		default: false,
-	},
+    orderBy: {
+        type: 'string',
+        default: 'post_date',
+    },
+    order: {
+        type: 'string',
+        default: 'DESC',
+    },
+    paged: {
+        type: 'string',
+        default: '1',
+    },
+    columns: {
+        type: 'string',
+        default: '3',
+    },
+    showAvatar: {
+        type: 'boolean',
+        default: true,
+    },
+    showName: {
+        type: 'boolean',
+        default: true,
+    },
+    showCompanyName: {
+        type: 'boolean',
+        default: false,
+    },
     showForm: {
-		type: 'boolean',
-		default: false,
-	},
-	showTotal: {
-		type: 'boolean',
-		default: true,
-	},
-	showDate: {
-		type: 'boolean',
-		default: true,
-	},
-	showComments: {
-		type: 'boolean',
-		default: true,
-	},
-	showAnonymous: {
-		type: 'boolean',
-		default: true,
-	},
-	onlyComments: {
-		type: 'boolean',
-		default: false,
-	},
-	commentLength: {
-		type: 'string',
-		default: '140',
-	},
-	readMoreText: {
-		type: 'string',
-		default: __( 'Read more', 'give' ),
-	},
-	loadMoreText: {
-		type: 'string',
-		default: __( 'Load more', 'give' ),
-	},
-	avatarSize: {
-		type: 'string',
-		default: '60',
-	},
+        type: 'boolean',
+        default: true,
+    },
+    showTotal: {
+        type: 'boolean',
+        default: true,
+    },
+    showComments: {
+        type: 'boolean',
+        default: true,
+    },
+    showTributes: {
+        type: 'boolean',
+        default: true,
+    },
+    showAnonymous: {
+        type: 'boolean',
+        default: true,
+    },
+    onlyComments: {
+        type: 'boolean',
+        default: false,
+    },
+    commentLength: {
+        type: 'string',
+        default: '80',
+    },
+    readMoreText: {
+        type: 'string',
+        default: __('Read more', 'give'),
+    },
+    loadMoreText: {
+        type: 'string',
+        default: __('Load more', 'give'),
+    },
+    avatarSize: {
+        type: 'string',
+        default: '75',
+    },
+    toggleOptions: {
+        type: 'string',
+        default: 'donorInfo',
+    },
+    filterOptions: {
+        type: 'string',
+        default: 'ids',
+    },
+    color: {
+        type: 'string',
+        default: '#219653',
+    },
+    showTimestamp: {
+        type: 'boolean',
+        default: true,
+    },
 };
 
 export default blockAttributes;

@@ -3,8 +3,10 @@
 namespace Give\DonorDashboards\Routes;
 
 use Give\API\RestRoute;
+use Give\DonorDashboards\Helpers as DonorDashboardHelpers;
 use WP_REST_Request;
 use WP_REST_Response;
+
 
 /**
  * @since 2.10.0
@@ -40,10 +42,10 @@ class LogoutRoute implements RestRoute
      *
      * @param WP_REST_Request $request
      *
-     * @return WP_REST_Request
+     * @return WP_REST_Response
      *
      */
-    public function handleRequest(WP_REST_Request $request)
+    public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
         // Check if WP user is logged in
         if (get_current_user_id() !== 0) {
@@ -83,11 +85,9 @@ class LogoutRoute implements RestRoute
 
     /**
      * Check permissions
-     *
-     * @return bool
      */
-    public function permissionsCheck()
+    public function permissionsCheck(): bool
     {
-        return Give()->session->get_session_expiration() !== false || is_user_logged_in();
+        return DonorDashboardHelpers::isDonorLoggedIn();
     }
 }

@@ -8,13 +8,13 @@ use Stripe\Event;
 use Stripe\PaymentIntent;
 
 /**
- * @unreleased
+ * @since 2.21.0
  */
 class PaymentIntentSucceeded extends StripeEventListener
 {
 
     /**
-     * @unreleased
+     * @since 2.21.0
      * @inerhitDoc
      */
     public function processEvent(Event $event)
@@ -37,7 +37,7 @@ class PaymentIntentSucceeded extends StripeEventListener
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      */
     private function addSupportForLegacyActionHook(Event $event)
     {

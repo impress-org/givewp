@@ -525,7 +525,7 @@ function __give_get_tables()
  * Register classes
  * Note: only for internal purpose use
  *
- * @unreleased Install migration table on fresh install because this table is required to run migrations.
+ * @since 2.21.0 Install migration table on fresh install because this table is required to run migrations.
  * @since 2.3.1
  * @throws DatabaseMigrationException
  */

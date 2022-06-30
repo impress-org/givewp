@@ -10,14 +10,14 @@ use Give\PaymentGateways\Gateways\Stripe\Webhooks\Contracts\EventListener;
 use Stripe\Event;
 
 /**
- * @unreleased
+ * @since 2.21.0
  */
 abstract class StripeEventListener implements EventListener
 {
     use CanSetupStripeApp;
 
     /**
-     * @unreleased
+     * @since 2.21.0
      * @throws Exception
      */
     public function __invoke(Event $event)
@@ -31,7 +31,7 @@ abstract class StripeEventListener implements EventListener
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @param string $eventId
      *
@@ -48,7 +48,7 @@ abstract class StripeEventListener implements EventListener
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      * @return void
      */
     private function logEventReceiveTime()
@@ -58,7 +58,7 @@ abstract class StripeEventListener implements EventListener
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @return int|null
      */
@@ -72,7 +72,7 @@ abstract class StripeEventListener implements EventListener
     }
 
     /**
-     * @unreleased
+     * @since 2.21.0
      *
      * @return Donation
      */

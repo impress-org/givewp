@@ -8,37 +8,51 @@
 */
 
 .give-goal-progress {
-  margin-bottom: 20px;
-  clear:both;
+    display: flex;
+    flex-direction: column;
+    width:100%;
+    margin-bottom: 20px;
+    clear:both;
 
-  .income {
-	font-size: 46px;
-	line-height: 48px;
-	letter-spacing: -1px;
-	color: #333;
-  }
+    .income {
+        font-size: 46px;
+        line-height: 48px;
+        letter-spacing: -1px;
+        color: #333;
+    }
 
-  .raised {
-	margin-bottom: 15px;
-  }
+    .raised {
+        margin-bottom: 15px;
+    }
+
+    .progress-bar {
+        width: 100%;
+        background: none;
+        padding-bottom: 10px;
+    }
+
+    .give-progress-bar {
+        width: 100%;
+        height: 20px;
+        position: relative;
+        background: #EEE;
+        border-radius: 25px;
+        overflow: hidden;
+
+        > span {
+            display: block;
+            height: 100%;
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            background: none;
+        }
+    }
+
 }
 
-.give-progress-bar {
-  height: 20px;
-  position: relative;
-  background: #EEE;
-  border-radius: 25px;
-  overflow: hidden;
 
-  > span {
-	display: block;
-	height: 100%;
-	border-top-right-radius: 8px;
-	border-bottom-right-radius: 8px;
-	border-top-left-radius: 20px;
-	border-bottom-left-radius: 20px;
-	background-color: rgb(43, 194, 83);
-	position: relative;
-	overflow: hidden;
-  }
-}
+

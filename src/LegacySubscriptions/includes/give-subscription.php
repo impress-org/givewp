@@ -205,7 +205,7 @@ class Give_Subscription {
 
 		} else {
 
-			return new WP_Error( 'give-subscription-invalid-property', sprintf( __( 'Can\'t get property %s', 'give-recurring' ), $key ) );
+			return new WP_Error( 'give-subscription-invalid-property', sprintf( __( 'Can\'t get property %s', 'give' ), $key ) );
 
 		}
 
@@ -293,7 +293,7 @@ class Give_Subscription {
 	public function update( $args ) {
 
 		if ( isset( $args['status'] ) && strtolower( $this->status ) !== strtolower( $args['status'] ) ) {
-			$this->add_note( sprintf( __( 'Status changed from %s to %s', 'give-recurring' ), $this->status, $args['status'] ) );
+			$this->add_note( sprintf( __( 'Status changed from %s to %s', 'give' ), $this->status, $args['status'] ) );
 		}
 
 		$ret = $this->subs_db->update( $this->id, $args );
@@ -750,11 +750,11 @@ class Give_Subscription {
 
 			} else {
 
-				$user = __( 'gateway', 'give-recurring' );
+				$user = __( 'gateway', 'give' );
 
 			}
 
-			$note = sprintf( __( 'Subscription #%1$d cancelled by %2$s', 'give-recurring' ), $this->id, $user );
+			$note = sprintf( __( 'Subscription #%1$d cancelled by %2$s', 'give' ), $this->id, $user );
 			$this->donor->add_note( $note );
 			$this->status = 'cancelled';
 
@@ -801,7 +801,7 @@ class Give_Subscription {
 			'sub_id'      => $this->id,
 		) ), "give-recurring-cancel-{$this->id}" );
 
-		return apply_filters( 'give_subscription_cancel_url', $url, $this );
+		return apply_filters( 'give_subscription_cancel_url', esc_url($url), $this );
 	}
 
 
@@ -835,10 +835,10 @@ class Give_Subscription {
 	 */
 	public function get_update_url() {
 
-		$url = add_query_arg( array(
+		$url = esc_url(add_query_arg( array(
 			'action'          => 'update',
 			'subscription_id' => $this->id,
-		) );
+		) ) );
 
 		return apply_filters( 'give_subscription_update_url', $url, $this );
 	}
@@ -851,10 +851,10 @@ class Give_Subscription {
 	 */
 	public function get_edit_subscription_url() {
 
-		$url = add_query_arg( array(
+		$url = esc_url(add_query_arg( array(
 			'action'          => 'edit_subscription',
 			'subscription_id' => $this->id,
-		), give_get_subscriptions_page_uri() );
+		), give_get_subscriptions_page_uri() ));
 
 		return apply_filters( 'give_subscription_edit_subscription_url', $url, $this );
 	}
@@ -951,7 +951,7 @@ class Give_Subscription {
 		return sprintf(
 			'%1$s / %2$s',
 			$this->get_total_payments(),
-			0 === intval( $this->bill_times ) ? __( 'Ongoing', 'give-recurring' ) : $this->bill_times
+			0 === intval( $this->bill_times ) ? __( 'Ongoing', 'give' ) : $this->bill_times
 		);
 	}
 

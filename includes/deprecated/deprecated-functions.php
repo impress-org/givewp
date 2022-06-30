@@ -1175,7 +1175,7 @@ function give_get_premium_add_ons() {
  * Displays Stripe Connect Button.
  *
  * @since 2.5.0
- * @deprecated @unrelesed
+ * @deprecated 2.20.2
  *
  * @return string
  */
@@ -1194,7 +1194,7 @@ function give_stripe_connect_button() {
 			'website_url'           => get_bloginfo( 'url' ),
 			'give_stripe_connected' => '0',
 		],
-		esc_url_raw( 'https://connect.givewp.com/stripe/connect.php' )
+		'https://connect.givewp.com/stripe/connect.php'
 	);
 
 	return sprintf(
@@ -1234,8 +1234,8 @@ function give_stripe_disconnect_url( $account_id = '', $account_name = '' ) {
 	}
 
 	// Prepare Stripe Disconnect URL.
-	return add_query_arg(
+	return esc_url_raw( add_query_arg(
 		$args,
-		esc_url_raw( 'https://connect.givewp.com/stripe/connect.php' )
-	);
+		'https://connect.givewp.com/stripe/connect.php'
+    ) );
 }

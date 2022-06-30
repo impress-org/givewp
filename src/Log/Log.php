@@ -11,7 +11,7 @@ use Give\Log\ValueObjects\LogType;
  *
  * The static facade intended to be the primary way of logging within GiveWP to make life easier.
  *
- * @unreleased Use array_diff_key to filter context data to prevent php warning with multi-dimension array
+ * @since 2.21.0 Use array_diff_key to filter context data to prevent php warning with multi-dimension array
  * @since 2.20.0 add sensitive information redaction; store context as arrays for JSON serialization
  * @since 2.19.6 added debug
  * @since 2.10.0
