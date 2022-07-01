@@ -13,7 +13,7 @@ use Give\NextGen\ServiceProvider as NextGenServiceProvider;
  * Plugin URI:          https://givewp.com/addons/BOILERPLATE/
  * Description:         Create the donation form of your dreams using an easy-to-use visual donation form builder.
  * Version:             1.0.0
- * Requires at least:   5.0
+ * Requires at least:   5.5
  * Requires PHP:        7.2
  * Author:              GiveWP
  * Author URI:          https://givewp.com/
