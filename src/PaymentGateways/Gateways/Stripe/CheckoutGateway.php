@@ -47,7 +47,7 @@ class CheckoutGateway extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 2.21.2
      */
     public function getCheckoutType(): string
     {

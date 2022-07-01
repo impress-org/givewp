@@ -5,12 +5,12 @@ namespace Give\Framework\PaymentGateways\Contracts\Subscription;
 use Give\Subscriptions\Models\Subscription;
 
 /**
- * @unreleased
+ * @since 2.21.2
  */
 interface SubscriptionDashboardLinkable
 {
     /**
-     * @unreleased
+     * @since 2.21.2
      */
     public function gatewayDashboardSubscriptionUrl(Subscription $subscription): string;
 }

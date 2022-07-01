@@ -160,7 +160,7 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 			),
 			array(
 				'type'        => 'listbox',
-				'name'        => 'show_time',
+				'name'        => 'show_timestamp',
 				'label'       => esc_attr__( 'Donation Date:', 'give' ),
 				'tooltip'     => esc_attr__( 'Determines whether the date of the donation is visible.', 'give' ),
 				'options'     => array(

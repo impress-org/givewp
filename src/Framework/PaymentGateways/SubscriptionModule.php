@@ -56,7 +56,7 @@ abstract class SubscriptionModule implements SubscriptionModuleInterface
     }
 
     /**
-     * @unreleased
+     * @since 2.21.2
      */
     public function hasGatewayDashboardSubscriptionUrl(): bool
     {

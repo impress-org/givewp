@@ -46,7 +46,7 @@ export default function () {
         return (
             <>
                 <RowAction
-                    href={`/wp-admin/edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=${item.id}`}
+                    href={window.GiveDonations.adminUrl + `edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=${item.id}`}
                     displayText={__('View/Edit', 'give')}
                 />
                 <RowAction
@@ -94,7 +94,7 @@ export default function () {
             text: __('Donor Name', 'give'),
             inlineSize: '9rem',
             render: (donation: { name, donorId }) => (
-                <a href={`edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donation.donorId}`}>
+                <a href={window.GiveDonations.adminUrl + `edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donation.donorId}`}>
                     {donation.name}
                 </a>
             ),
@@ -104,7 +104,7 @@ export default function () {
             text: __('Donation Form', 'give'),
             inlineSize: '9rem',
             render: (donation: { formTitle, formId }) => (
-                <a href={`post.php?post=${donation.formId}&action=edit`}>
+                <a href={window.GiveDonations.adminUrl + `post.php?post=${donation.formId}&action=edit`}>
                     {donation.formTitle}
                 </a>
             )
@@ -234,7 +234,7 @@ export default function () {
             filterSettings={filters}
         >
             <a className={tableStyles.addFormButton}
-               href={'edit.php?post_type=give_forms&page=give-tools&tab=import&importer-type=import_donations'}
+               href={window.GiveDonations.adminUrl + 'edit.php?post_type=give_forms&page=give-tools&tab=import&importer-type=import_donations'}
             >
                 {__('Import Donations', 'give')}
             </a>
