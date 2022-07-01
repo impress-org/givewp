@@ -2,7 +2,7 @@
 Contributors: givewp, dlocc, webdevmattcrom
 Donate link: https://givewp.com/
 Tags: givewp, donation, donations, donation plugin, wordpress donation plugin, wp donation, donors, display donors, give donors, anonymous donations
-Requires at least: 5.2
+Requires at least: 5.5
 Tested up to: 6.0
 Requires PHP: 7.2
 Stable tag: 1.0.0
