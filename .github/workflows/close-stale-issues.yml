@@ -2,6 +2,4 @@ name: 'Close stale issues'
 
 jobs:
     stale:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: impress-org/givewp-github-actions/.github/workflows/close-stale-issues.yml@master
+        uses: impress-org/givewp-github-actions/.github/workflows/close-stale-issues.yml@master
