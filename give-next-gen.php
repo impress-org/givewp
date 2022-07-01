@@ -9,12 +9,12 @@ use Give\Addon\ServiceProvider as AddonServiceProvider;
 use Give\NextGen\ServiceProvider as NextGenServiceProvider;
 
 /**
- * Plugin Name:         Give - Next Gen
+ * Plugin Name:         GiveWP - Visual Donation Form Builder
  * Plugin URI:          https://givewp.com/addons/BOILERPLATE/
- * Description:         A feature plugin for the next generation GiveWP donation forms.
+ * Description:         Create the donation form of your dreams using an easy-to-use visual donation form builder.
  * Version:             1.0.0
- * Requires at least:   4.9
- * Requires PHP:        5.6
+ * Requires at least:   5.0
+ * Requires PHP:        7.2
  * Author:              GiveWP
  * Author URI:          https://givewp.com/
  * Text Domain:         give
@@ -23,7 +23,7 @@ use Give\NextGen\ServiceProvider as NextGenServiceProvider;
 defined('ABSPATH') or exit;
 
 // Add-on name
-define('GIVE_NEXT_GEN_NAME', 'Give - Next Gen');
+define('GIVE_NEXT_GEN_NAME', 'GiveWP - Visual Donation Form Builder');
 
 // Versions
 define('GIVE_NEXT_GEN_VERSION', '1.0.0');
