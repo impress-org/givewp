@@ -204,7 +204,7 @@ function give_get_preview_email_header() {
 	$query            = $request_url_data['query'];
 	$query            = remove_query_arg( array( 'preview_id' ), $query );
 
-	$request_url = esc_url( home_url( '/?' . str_replace( '', '', $query ) ) );
+	$request_url = esc_url_raw( home_url( '/?' . str_replace( '', '', $query ) ) );
 
 	$transaction_header .= '<script>
 				 function change_preview(){

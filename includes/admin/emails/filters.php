@@ -44,7 +44,7 @@ function give_email_notification_row_actions_callback( $row_actions, $email ) {
 				esc_html__( 'Click this link to send a test email to yourself at %s', 'give' ),
 				wp_get_current_user()->user_email
 			),
-			'link'        => esc_url(wp_nonce_url(
+			'link'        => esc_url_raw(wp_nonce_url(
 				add_query_arg(
 					array(
 						'give_action'     => 'send_preview_email',
