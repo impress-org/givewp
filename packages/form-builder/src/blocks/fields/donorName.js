@@ -11,7 +11,7 @@ const DonorName = ( props ) => {
 
     const requiredText = ( text, isRequired = true ) => {
         if( isRequired ) {
-            return text + '(' + __('required', 'give') + ')'
+            return text + ' (' + __('required', 'give') + ')'
         }
         return text
     }
