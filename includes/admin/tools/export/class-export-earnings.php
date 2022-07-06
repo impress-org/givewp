@@ -128,12 +128,23 @@ class Give_Earnings_Export extends Give_Export
 
     /**
      * @since 2.21.2
+     *
+     * @return object|null
      */
-    private function getDatesFromRequest(): \stdClass
+    private function getDatesFromRequest()
     {
-        $dates = new \stdClass();
+        $dates = new stdClass();
         $firstDonation = give()->donations->getFirstDonation();
         $lastDonation = give()->donations->getLatestDonation();
+
+        if ($firstDonation === null ) {
+            return (object)[
+                'startYear' => date('Y'),
+                'endYear' => date('Y' ),
+                'startMonth' => date('m'),
+                'endMonth' => date('m')
+            ];
+        }
 
         if (!isset($_POST['start_year'], $_POST['end_year'], $_POST['start_month'], $_POST['end_month'])) {
             throw new \Give\Framework\Exceptions\Primitives\InvalidArgumentException(
