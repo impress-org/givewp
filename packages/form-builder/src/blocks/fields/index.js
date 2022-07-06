@@ -2,6 +2,7 @@ import {registerBlockType} from "@wordpress/blocks";
 import {Icon} from '@wordpress/icons';
 import {__} from "@wordpress/i18n"
 import settings from "./settings"
+import DonorName from "./donorName";
 
 /**
  * @note Blocks in the appender are listed in the order that the blocks are registered.
@@ -119,4 +120,27 @@ registerBlockType('custom-block-editor/payment-gateways', {
         textAlign: 'center',
         backgroundColor: '#fafafa'
     }}>{'Payment Gateways Go Here'}</div>
+});
+
+registerBlockType('custom-block-editor/donor-name', {
+    ...settings,
+    title: __('Donor Name', 'custom-block-editor'),
+    supports: {
+        multiple: false,
+    },
+    attributes: {
+        lock: {remove: true},
+        showHonorific: {
+            type: 'boolean',
+        },
+        honoriphics: {
+            type: 'array',
+            default: true,
+        },
+        requireLastName: {
+            type: 'boolean',
+            default: false,
+        }
+    },
+    edit: DonorName
 });

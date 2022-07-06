@@ -39,7 +39,7 @@ registerBlockType('custom-block-editor/donor-info', {
         },
         innerBlocksTemplate: {
             default: [
-                ['custom-block-editor/name-field-group', {lock: {remove: true}}],
+                ['custom-block-editor/donor-name'],
                 ['custom-block-editor/email-field'],
             ]
         },
