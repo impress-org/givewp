@@ -97,21 +97,20 @@ add_action( 'give_payment_deleted', '__give_remove_donor_donation_comment', 10 )
  *
  * @unreleased
  *
- * @param $donationId
- *
+ * @retrun void
  */
-function updateAnonymousDonationForLegacyGateways($donationId)
+function giveUpdateAnonymousDonationForLegacyGateways(int $donationId)
 {
-    $gatewayId = give_get_meta($donationId,'_give_payment_gateway');
+    $gatewayId = give_get_meta($donationId,'_give_payment_gateway', true);
 
     /** @var PaymentGatewayRegister $registrar */
     $registrar = give(PaymentGatewayRegister::class);
 
     if (!$registrar->hasPaymentGateway($gatewayId)){
-        $isAnonymousDonation = isset( $_POST['give_anonymous_donation'] ) ? absint( $_POST['give_anonymous_donation'] ) : 0;
+        $isAnonymousDonation = isset( $_POST['give_anonymous_donation'] ) ? absint( give_clean($_POST['give_anonymous_donation']) ) : 0;
 
         give_update_meta( $donationId, '_give_anonymous_donation', $isAnonymousDonation );
     }
 }
 
-add_action('give_insert_payment', 'updateAnonymousDonationForLegacyGateways', 10, 2);
+add_action('give_insert_payment', 'giveUpdateAnonymousDonationForLegacyGateways');
