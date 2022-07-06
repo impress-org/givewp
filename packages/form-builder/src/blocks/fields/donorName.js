@@ -16,13 +16,14 @@ const DonorName = ( props ) => {
         return text
     }
 
+    const titleLabelTransform = ( token = '' ) => token.charAt(0).toUpperCase() + token.slice(1)
+    const titleValueTransform = ( token = '' ) => token.trim().toLowerCase()
+
     return (
         <>
             <div style={{display: 'flex', gap: '15px'}}>
                 { !! showHonorific && (<select style={{ width: '80px'}}>
-                    <option value="mr">Mr.</option>
-                    <option value="ms">Ms.</option>
-                    <option value="mrs">Mrs.</option>
+                    {honoriphics.map( title => <option value={titleLabelTransform(title)}>{titleLabelTransform(title)}</option>)}
                 </select>)}
                 <input type="text" placeholder={requiredText(__('First Name', 'give'))} />
                 <input type="text" placeholder={requiredText(__('Last Name', 'give'), requireLastName )} />
@@ -47,8 +48,8 @@ const DonorName = ( props ) => {
                                 suggestions={ [ 'Mr', 'Ms', 'Mrs' ] }
                                 placeholder={ __('Select some options', 'give')}
                                 onChange={ ( tokens ) => setAttributes( { honoriphics: tokens } ) }
-                                displayTransform={ ( token ) => token[0].toUpperCase() + token.slice(1) }
-                                saveTransform={ ( token ) => token.trim().toLowerCase() }
+                                displayTransform={ titleLabelTransform }
+                                saveTransform={ titleValueTransform }
                             />)}
                         </div>
                     </PanelRow>
