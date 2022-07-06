@@ -1,5 +1,7 @@
 <?php
 
+use Give\Donations\Models\Donation;
+use Give\Framework\Database\DB;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
@@ -18,6 +20,31 @@ class CreditCardGatewayTest extends Give_Unit_Test_Case
 
         $this->form = Give_Helper_Form::create_simple_form();
         $_POST['give-form-id'] = $this->form->get_ID();
+    }
+
+     /**
+     * @unreleased
+     *
+     * @return void
+     */
+    public function tearDown()
+    {
+        parent::tearDown();
+        $donationsTable = DB::prefix('posts');
+        $donationMetaTable = DB::prefix('give_donationmeta');
+        $donorTable = DB::prefix('give_donors');
+        $donorMetaTable = DB::prefix('give_donormeta');
+        $subscriptionsTable = DB::prefix('give_subscriptions');
+        $sequentialOrderingTable = DB::prefix('give_sequential_ordering');
+        $notesTable = DB::prefix('give_comments');
+
+        DB::query("TRUNCATE TABLE $donorTable");
+        DB::query("TRUNCATE TABLE $donorMetaTable");
+        DB::query("TRUNCATE TABLE $donationMetaTable");
+        DB::query("TRUNCATE TABLE $donationsTable");
+        DB::query("TRUNCATE TABLE $subscriptionsTable");
+        DB::query("TRUNCATE TABLE $sequentialOrderingTable");
+        DB::query("TRUNCATE TABLE $notesTable");
     }
 
     /** @test */
@@ -75,13 +102,17 @@ class CreditCardGatewayTest extends Give_Unit_Test_Case
         );
     }
 
-    public function getDonationModel()
+    /**
+     * @throws Exception
+     */
+    public function getDonationModel(): Donation
     {
-        $donationId = Give_Helper_Payment::create_simple_payment();
-
-        return \Give\Donations\Models\Donation::find($donationId);
+        return Donation::factory()->create();
     }
 
+    /**
+     * @return void
+     */
     private function setUpStripeAccounts()
     {
         give_update_option(
