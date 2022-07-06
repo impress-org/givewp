@@ -9,6 +9,13 @@ const DonorName = ( props ) => {
         setAttributes,
     } = props;
 
+    const requiredText = ( text, isRequired = true ) => {
+        if( isRequired ) {
+            return text + '(' + __('required', 'give') + ')'
+        }
+        return text
+    }
+
     return (
         <>
             <div style={{display: 'flex', gap: '15px'}}>
@@ -17,8 +24,8 @@ const DonorName = ( props ) => {
                     <option value="ms">Ms.</option>
                     <option value="mrs">Mrs.</option>
                 </select>)}
-                <input type="text" placeholder={'First Name'} />
-                <input type="text" placeholder={'Last Name'} />
+                <input type="text" placeholder={requiredText(__('First Name', 'give'))} />
+                <input type="text" placeholder={requiredText(__('Last Name', 'give'), requireLastName )} />
             </div>
 
             <InspectorControls>
