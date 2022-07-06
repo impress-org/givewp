@@ -75,19 +75,25 @@ class ServiceProvider implements ServiceProviderInterface
         } );
 
         add_action( 'admin_init', function() {
-            if( isset( $_GET['page']) && 'givenberg' === $_GET['page'] ) {
+            if( isset( $_GET['page']) && 'campaign-builder' === $_GET['page'] ) {
+                // Little hack for alpha users to make sure the form builder is loaded.
                 if( ! isset( $_GET['donationFormID'] ) ) {
-                    wp_redirect( 'edit.php?post_type=give_forms&page=give-forms' );
+                    wp_redirect( 'edit.php?post_type=give_forms&page=campaign-builder&donationFormID=new' );
                     exit();
                 }
                 if( 'new' === $_GET['donationFormID'] ) {
                     $newPostID = wp_insert_post([
                         'post_type' => 'give_forms',
                         'post_status' => 'publish',
-                        'post_title' => 'Next Gen Donation Form',
                         'post_content' => json_encode(null),
                     ]);
-                    wp_redirect( 'edit.php?post_type=give_forms&page=givenberg&donationFormID=' . $newPostID );
+
+                    wp_update_post([
+                        'ID'       => $newPostID,
+                        'post_title' => "Next Gen Donation Form ID:$newPostID",
+                    ]);
+
+                    wp_redirect( 'edit.php?post_type=give_forms&page=campaign-builder&donationFormID=' . $newPostID );
                     exit();
                 }
             }
@@ -97,7 +103,7 @@ class ServiceProvider implements ServiceProviderInterface
            if( isset( $_GET[ 'post' ] ) && isset( $_GET[ 'action' ] ) && 'edit' === $_GET[ 'action' ] ) {
                $post = get_post( abs( $_GET[ 'post' ] ) );
                if( 'give_forms' === $post->post_type && $post->post_content ){
-                   wp_redirect( 'edit.php?post_type=give_forms&page=givenberg&donationFormID=' . $post->ID );
+                   wp_redirect( 'edit.php?post_type=give_forms&page=campaign-builder&donationFormID=' . $post->ID );
                    exit();
                }
            }
@@ -105,11 +111,11 @@ class ServiceProvider implements ServiceProviderInterface
 
         add_action( 'admin_menu', function (){
             add_submenu_page(
-                null,
-                __( 'Form Builder', 'givewp' ),
-                __( 'Form Builder', 'givewp' ),
+                'edit.php?post_type=give_forms',
+                __( 'Visual Builder <span class="awaiting-mod">Alpha</span>', 'givewp' ),
+                __( 'Visual Builder <span class="awaiting-mod">Alpha</span>', 'givewp' ),
                 'manage_options',
-                'givenberg',
+                'campaign-builder',
                 function() {
 
                     $manifest = json_decode( file_get_contents( GIVE_NEXT_GEN_DIR . 'packages/form-builder/build/asset-manifest.json' ) );

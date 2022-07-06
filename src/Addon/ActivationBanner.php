@@ -31,7 +31,7 @@ class ActivationBanner
             'file' => GIVE_NEXT_GEN_FILE,
             'name' => GIVE_NEXT_GEN_NAME,
             'version' => GIVE_NEXT_GEN_VERSION,
-            'settings_url' => admin_url('edit.php?post_type=give_forms&page=give-settings&tab=give-next-gen'),
+            'settings_url' => '',
             'documentation_url' => 'https://givewp.com/documentation/add-ons/boilerplate/',
             'support_url' => 'https://givewp.com/support/',
             'testing' => false, // Never leave true.

@@ -16,9 +16,11 @@ const Component = ({ saveCallback, toggleSecondarySidebar, toggleShowSidebar }) 
     return (
         <header style={{height: '60px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
             <section style={{display: 'flex', gap: '20px', alignItems: 'center'}}>
-                <div style={{ height: '60px', width: '60px', backgroundColor: '#66bb6a', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <div style={{ height: '60px', width: '60px', backgroundColor: '#FFF', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <div style={{ marginLeft: '-7px' }}>
-                        <GiveIcon />
+                        <a href={'edit.php?post_type=give_forms&page=give-forms'} title={'Return to GiveWP'}>
+                            <GiveIcon />
+                        </a>
                     </div>
                 </div>
                 <ToolbarButton onClick={toggleSecondarySidebar}>
