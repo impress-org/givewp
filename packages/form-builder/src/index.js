@@ -15,21 +15,14 @@ import './blocks/donation-amount-levels/index'
 
 import sectionBlocks, { sectionBlockNames } from './blocks/section'
 
-import fieldBlocks, { fieldBlockNames } from './blocks/fields'
+import fieldBlocks from './blocks/fields'
 
-sectionBlocks.map( ({ name, settings }) => {
+sectionBlocks.map( ({ name, settings }) => registerBlockType( name, settings ))
 
-    registerBlockType( name, {
-        ...settings,
-    } )
-} )
-
-fieldBlocks.map( ({ name, settings }) => {
-    registerBlockType( name, {
-        ...settings,
-        parent: sectionBlockNames
-    } )
-} )
+fieldBlocks.map( ({ name, settings }) => registerBlockType( name, {
+    ...settings,
+    parent: sectionBlockNames
+}))
 
 ReactDOM.render(
   <React.StrictMode>

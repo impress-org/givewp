@@ -1,4 +1,3 @@
-import { registerBlockType } from "@wordpress/blocks";
 import { Icon } from '@wordpress/icons';
 import { __ } from "@wordpress/i18n"
 import settings from "./settings"

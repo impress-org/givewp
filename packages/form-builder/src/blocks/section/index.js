@@ -1,4 +1,3 @@
-import { registerBlockType } from "@wordpress/blocks";
 import { __ } from "@wordpress/i18n"
 import Edit from './edit.js'
 import Defaults from './defaults'
