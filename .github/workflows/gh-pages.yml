@@ -19,7 +19,7 @@ jobs:
               run: |
                   npm install -g npm@7
                   npm ci
-                  npm run dev
+                  npm run build -w @givewp/form-builder
             - name: Deploy to Github Pages
               uses: JamesIves/github-pages-deploy-action@v4.3.3
               with:
