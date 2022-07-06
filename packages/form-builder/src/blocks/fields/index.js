@@ -132,10 +132,11 @@ registerBlockType('custom-block-editor/donor-name', {
         lock: {remove: true},
         showHonorific: {
             type: 'boolean',
+            default: true,
         },
         honoriphics: {
             type: 'array',
-            default: true,
+            default: [ 'Mr', 'Ms', 'Mrs' ],
         },
         requireLastName: {
             type: 'boolean',
