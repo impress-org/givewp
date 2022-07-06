@@ -44,7 +44,7 @@ export default function Edit( props ) {
                 </header>
 
                 <InnerBlocks
-                    allowedBlocks={ props.attributes.allowedBlocks }
+                    allowedBlocks={ [] /* This prevents nested sections. Empty array is overwritten by child blocks specifying a parent. */ }
                     template={ props.attributes.innerBlocksTemplate }
                     renderAppender={ !! isSelectedOrIsInnerBlockSelected && InnerBlocks.ButtonBlockAppender }
                 />
