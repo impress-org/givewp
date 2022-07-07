@@ -180,7 +180,7 @@ function give_currency_symbols( $decode_currencies = false ) {
  * Given a currency determine the symbol to use. If no currency given, site default is used. If no symbol is determine,
  * the currency string is returned.
  *
- * @unreleased escape the currency symbol to prevent XSS attacks
+ * @since 2.21.3 escape the currency symbol to prevent XSS attacks
  * @since      1.0
  *
  * @param  string $currency        The currency string.

@@ -95,7 +95,7 @@ add_action( 'give_payment_deleted', '__give_remove_donor_donation_comment', 10 )
 /**
  * Update anonymous donation for legacy gateways
  *
- * @unreleased
+ * @since 2.21.3
  *
  * @retrun void
  */

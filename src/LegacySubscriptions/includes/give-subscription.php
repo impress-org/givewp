@@ -457,7 +457,7 @@ class Give_Subscription {
 	 *
 	 * Records a new payment on the subscription.
 	 *
-	 * @unreleased add support for anonymous donations
+	 * @since 2.21.3 add support for anonymous donations
 	 * @since 1.12.7 Set donor first and last name in new donation
 	 *
 	 * @param array $args Array of values for the payment, including amount and transaction ID.

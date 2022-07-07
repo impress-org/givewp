@@ -88,7 +88,7 @@ class CurrencyRoute implements RestRoute
     /**
      * Limits the symbol to a 3-letter currency code
      *
-     * @unreleased
+     * @since 2.21.3
      */
     public function validateSetting($value): bool
     {
