@@ -102,6 +102,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                                 );
                                 ?>
 								<input type="hidden" name="give-action" value="earnings_export"/>
+								<input type="hidden" name="give-nonce" value="<?= wp_create_nonce('give_earnings_export') ?>"/>
 								<input type="submit" value="<?php esc_attr_e( 'Generate CSV', 'give' ); ?>" class="button-secondary"/>
 							</form>
 						</td>
