@@ -10,10 +10,8 @@ trait HasName
 
     /**
      * Get the field’s name.
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

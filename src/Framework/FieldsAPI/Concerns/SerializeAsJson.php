@@ -9,12 +9,15 @@ trait SerializeAsJson
 
     /**
      * {@inheritdoc}
+     *
+     * @unreleased add nodeTye to the json
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return array_merge(
         // These values must be serialized for all types
             [
+                'nodeType' => $this->getNodeType(),
                 'type' => $this->getType(),
                 'name' => $this->getName(),
             ],

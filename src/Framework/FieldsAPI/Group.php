@@ -11,8 +11,6 @@ use Give\Framework\FieldsAPI\Contracts\Node;
  */
 class Group implements Node, Collection
 {
-
-    use Concerns\HasLabel;
     use Concerns\HasName;
     use Concerns\HasNodes;
     use Concerns\HasType;
@@ -37,6 +35,14 @@ class Group implements Node, Collection
     public function __construct($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getNodeType(): string
+    {
+        return 'group';
     }
 
     /**
