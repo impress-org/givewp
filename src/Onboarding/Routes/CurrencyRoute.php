@@ -16,15 +16,12 @@ class CurrencyRoute implements RestRoute
     protected $endpoint = 'onboarding/settings/currency';
 
     /**
-     * @var SettingsRepository
+     * @var SettingsRepositoryFactory
      */
     protected $settingsRepository;
 
     /**
      * @since 2.8.0
-     *
-     * @param SettingsRepository $settingsRepository
-     *
      */
     public function __construct(SettingsRepositoryFactory $settingsRepositoryFactory)
     {
@@ -95,6 +92,6 @@ class CurrencyRoute implements RestRoute
      */
     public function validateSetting($value): bool
     {
-        return preg_match('/^[A-Z]{3}$/i', $value) === 1;
+        return array_key_exists(json_decode($value, false), give_get_currencies_list());
     }
 }
