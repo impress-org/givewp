@@ -24,6 +24,16 @@
     left: 4.6125rem;
     display: flex;
     align-items: center;
-    column-gap: 2rem;
+    column-gap: 1.25rem;
     word-break: keep-all;
+
+    > * + ::before {
+        position: absolute;
+        content: "";
+        inset-block: auto;
+        inset-inline-start: calc(2.1925rem);
+        block-size: 100%;
+        inline-size: 0.125rem;
+        background-color: #dedede;
+    }
 }

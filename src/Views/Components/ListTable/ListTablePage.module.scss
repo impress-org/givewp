@@ -30,6 +30,10 @@
         white-space: nowrap;
         border-width: 0;
     }
+
+    #wpcontent {
+        padding: 0;
+    }
 }
 
 .page {
@@ -52,7 +56,6 @@
     background-color: #fff;
     padding-block: 1em;
     padding-inline: 1.5em;
-    margin-left: -20px;
     border-bottom: 0.0625rem solid #dbdbdb;
 
     & > * {
@@ -150,7 +153,6 @@
     background-color: rgba(248, 248, 248);
     padding-inline: 1.5em;
     padding-block: 1em;
-    margin: 0 -20px 0 -22px;
     border-bottom: 0.0625rem solid #dbdbdb;
 }
 
