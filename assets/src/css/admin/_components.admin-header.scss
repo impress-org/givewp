@@ -32,12 +32,15 @@
 	// Remove padding so admin banner can stretch full width.
 	#wpcontent {
 		padding: 0;
+
+        .wrap {
+            padding-left: 20px;
+        }
 	}
 
 	// Add padding to #wpbody accept on builder and settings screens.
 	#wpbody {
 		color: #000;
-		padding-left: 20px;
 		position: relative;
 
 		// Create a faux toolbar to position at the top of edit pages.

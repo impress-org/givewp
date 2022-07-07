@@ -27,7 +27,7 @@ tr.duplicated {
 
     display: flex;
     align-items: center;
-    column-gap: 2rem;
+    column-gap: 1.25rem;
     word-break: keep-all;
     transition: opacity 150ms ease-in-out;
 
@@ -43,7 +43,7 @@ tr.duplicated {
         position: absolute;
         content: "";
         inset-block: auto;
-        inset-inline-start: calc(-1.0625rem);
+        inset-inline-start: calc(-.6725rem);
         block-size: 110%;
         inline-size: 0.125rem;
         background-color: #dedede;

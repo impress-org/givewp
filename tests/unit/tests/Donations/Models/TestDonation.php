@@ -8,6 +8,7 @@ use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
+use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\Models\Subscription;
@@ -61,6 +62,13 @@ class TestDonation extends \Give_Unit_Test_Case
     public function testCreateShouldInsertDonation()
     {
         $donor = Donor::factory()->create();
+
+        /** @var PaymentGatewayRegister $registrar */
+        $registrar = give(PaymentGatewayRegister::class);
+
+        if (!$registrar->hasPaymentGateway(TestGateway::id())){
+            $registrar->registerGateway(TestGateway::class);
+        }
 
         $donation = Donation::create([
             'status' => DonationStatus::PENDING(),

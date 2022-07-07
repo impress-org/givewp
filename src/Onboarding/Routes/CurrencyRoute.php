@@ -16,15 +16,12 @@ class CurrencyRoute implements RestRoute
     protected $endpoint = 'onboarding/settings/currency';
 
     /**
-     * @var SettingsRepository
+     * @var SettingsRepositoryFactory
      */
     protected $settingsRepository;
 
     /**
      * @since 2.8.0
-     *
-     * @param SettingsRepository $settingsRepository
-     *
      */
     public function __construct(SettingsRepositoryFactory $settingsRepositoryFactory)
     {
@@ -80,36 +77,21 @@ class CurrencyRoute implements RestRoute
                         'value' => [
                             'type' => 'string',
                             'required' => true,
-                            // 'validate_callback' => [ $this, 'validateSetting' ],
-                            'sanitize_callback' => 'sanitize_text_field',
+                            'validate_callback' => [$this, 'validateSetting'],
                         ],
                     ],
                 ],
-                'schema' => [$this, 'getSchema'],
             ]
         );
     }
 
     /**
-     * @since 2.8.0
-     * @return array
+     * Limits the symbol to a 3-letter currency code
      *
+     * @since 2.21.3
      */
-    public function getSchema()
+    public function validateSetting($value): bool
     {
-        return [
-            // This tells the spec of JSON Schema we are using which is draft 4.
-            '$schema' => 'http://json-schema.org/draft-04/schema#',
-            // The title property marks the identity of the resource.
-            'title' => 'onboarding',
-            'type' => 'object',
-            // In JSON Schema you can specify object properties in the properties attribute.
-            'properties' => [
-                'currencyCode' => [
-                    'description' => esc_html__('Two letter code representing a country.', 'give'),
-                    'type' => 'string',
-                ],
-            ],
-        ];
+        return array_key_exists(json_decode($value, false), give_get_currencies_list());
     }
 }
