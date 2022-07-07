@@ -205,7 +205,7 @@ function give_currency_symbol( $currency = '', $decode_currency = false ) {
 	 * @param string $symbol
 	 * @param string $currency
 	 */
-	return esc_js(apply_filters( 'give_currency_symbol', $symbol, $currency ));
+	return apply_filters( 'give_currency_symbol', $symbol, $currency );
 }
 
 
