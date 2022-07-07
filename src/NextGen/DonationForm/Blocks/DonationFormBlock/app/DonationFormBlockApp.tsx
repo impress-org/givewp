@@ -1,5 +1,5 @@
 import {render} from '@wordpress/element';
-import getDefaultValuesFromFieldsCollection from './utilities/getDefaultValuesFromFieldsCollection';
+import getDefaultValuesFromSections from './utilities/getDefaultValuesFromSections';
 import Form from './form/Form';
 import {GiveDonationFormStoreProvider} from './store';
 import getWindowData from './utilities/getWindowData';
@@ -12,7 +12,7 @@ const {attributes, form} = getWindowData();
 /**
  * Prepare default values for form
  */
-const defaultValues = getDefaultValuesFromFieldsCollection(form.nodes);
+const defaultValues = getDefaultValuesFromSections(form.nodes);
 
 const initialState = {
     gateways: window.givewp.gateways.getAll(),
@@ -21,7 +21,7 @@ const initialState = {
 function App() {
     return (
         <GiveDonationFormStoreProvider initialState={initialState}>
-            <Form fields={form.nodes} defaultValues={defaultValues} />
+            <Form sections={form.nodes} defaultValues={defaultValues} />
         </GiveDonationFormStoreProvider>
     );
 }
