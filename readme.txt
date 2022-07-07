@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 7.0
-Stable tag: 2.21.2
+Stable tag: 2.21.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -251,29 +251,38 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.21.3: July 7th, 2022 =
+* Security: Protect against CSRF and DOS attacks against the donation stats exporter
+* Security: Protect against XSS attacks for the currency endpoint
+* Fix: Styling corrections for the donation, donor, and form admin lists
+* Fix: Selecting a specific donation when previewing an email no longer throws an error
+* Fix: Renewal reminder emails are once again being sent
+* Fix: Prevent a 400 error from occurring in Stripe webhooks
+* Fix: Anonymous donations are working properly again for subscriptions
+
 = 2.21.2: June 29th, 2022 =
-Feature: Exporting donors now supports limiting by their donation date — useful for getting donors who gave in the last year
-Enhancement: the new Gateway API now supports recurring under the hood
-Enhancement: donors are now passed to the give_donors_column_query_data hook (thanks Genevieve!)
-Security: Updated some internal dependencies that had security fixes
-Security: Better protection against invalid dates when exporting donation statistics
-Security: Prevent overreach hack when using the exporters
-Fix: For some folks a really old migration got stuck, and now it's unstuck
-Fix: Summary Heading for the classic Form field displays as it should
-Fix: The "Display Header" setting for Classic Form shows/hides the corresponding settings
-Fix: Made the default Form Grid colors a bit nicer
-Fix: Some of our greens weren't the right GiveWP green. All greens have been made right
-Fix: Cleaned up some PHP warnings in the Donor Wall caused by other add-ons
-Fix: Put the donation date back in on the Donor Wall
-Fix: Donation links weren't working on sub-directory WordPress installs on the Donation List table, now they do
-Fix: Required fields on the Multi-Step form now have an asterisk to help communicate to the donor
-Fix: Resolved a styling conflict introduce by the updated Form Grid on the Goal shortcode and Legacy template
-Fix: Improved some grammar and wording in our PayPal instructions
-Fix: Updated the PayPal logo to their latest and greatest
-Fix: Improved translations on the Donor Wall
-Fix: Updated the currency symbol for LKR (thanks pxydigital!)
-Fix: Donations made with 0-decimals now display properly on the Donor Wall
-Fix: Form goal settings are better reflected on the Form Grid
+* Feature: Exporting donors now supports limiting by their donation date — useful for getting donors who gave in the last year
+* Enhancement: the new Gateway API now supports recurring under the hood
+* Enhancement: donors are now passed to the give_donors_column_query_data hook (thanks Genevieve!)
+* Security: Updated some internal dependencies that had security fixes
+* Security: Better protection against invalid dates when exporting donation statistics
+* Security: Prevent overreach hack when using the exporters
+* Fix: For some folks a really old migration got stuck, and now it's unstuck
+* Fix: Summary Heading for the classic Form field displays as it should
+* Fix: The "Display Header" setting for Classic Form shows/hides the corresponding settings
+* Fix: Made the default Form Grid colors a bit nicer
+* Fix: Some of our greens weren't the right GiveWP green. All greens have been made right
+* Fix: Cleaned up some PHP warnings in the Donor Wall caused by other add-ons
+* Fix: Put the donation date back in on the Donor Wall
+* Fix: Donation links weren't working on sub-directory WordPress installs on the Donation List table, now they do
+* Fix: Required fields on the Multi-Step form now have an asterisk to help communicate to the donor
+* Fix: Resolved a styling conflict introduce by the updated Form Grid on the Goal shortcode and Legacy template
+* Fix: Improved some grammar and wording in our PayPal instructions
+* Fix: Updated the PayPal logo to their latest and greatest
+* Fix: Improved translations on the Donor Wall
+* Fix: Updated the currency symbol for LKR (thanks pxydigital!)
+* Fix: Donations made with 0-decimals now display properly on the Donor Wall
+* Fix: Form goal settings are better reflected on the Form Grid
 
 = 2.21.1: June 21st, 2022 =
 * Fix: Resolved a "sort buffer" error on MySQL 5.7 and older

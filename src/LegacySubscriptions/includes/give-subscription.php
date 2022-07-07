@@ -457,6 +457,7 @@ class Give_Subscription {
 	 *
 	 * Records a new payment on the subscription.
 	 *
+	 * @since 2.21.3 add support for anonymous donations
 	 * @since 1.12.7 Set donor first and last name in new donation
 	 *
 	 * @param array $args Array of values for the payment, including amount and transaction ID.
@@ -541,6 +542,10 @@ class Give_Subscription {
 		$payment->update_meta( 'subscription_id', $this->id );
 		$donor->increase_purchase_count( 1 );
 		$donor->increase_value( $args['amount'] );
+
+        if ($parent->get_meta('_give_anonymous_donation')) {
+            $payment->update_meta('_give_anonymous_donation', 1);
+        }
 
 		// Add give recurring subscription notification
 		do_action( 'give_recurring_add_subscription_payment', $payment, $this );
