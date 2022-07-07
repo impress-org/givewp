@@ -81,7 +81,6 @@ class CurrencyRoute implements RestRoute
                             'type' => 'string',
                             'required' => true,
                             'validate_callback' => [$this, 'validateSetting'],
-                            'sanitize_callback' => 'sanitize_text_field',
                         ],
                     ],
                 ],
@@ -90,12 +89,12 @@ class CurrencyRoute implements RestRoute
     }
 
     /**
-     * Limits the symbol to a 2-letter country code
+     * Limits the symbol to a 3-letter currency code
      *
      * @unreleased
      */
     public function validateSetting($value): bool
     {
-        return preg_match('/^[A-Z]{2}$/i', $value) === 1;
+        return preg_match('/^[A-Z]{3}$/i', $value) === 1;
     }
 }
