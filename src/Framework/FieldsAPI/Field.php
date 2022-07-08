@@ -44,6 +44,14 @@ abstract class Field implements Node
     }
 
     /**
+     * @inheritDoc
+     */
+    public function getNodeType(): string
+    {
+        return 'field';
+    }
+
+    /**
      * Create a named field.
      *
      * @since 2.12.0

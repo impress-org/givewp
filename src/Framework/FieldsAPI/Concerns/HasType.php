@@ -7,10 +7,8 @@ trait HasType
 
     /**
      * Get the field’s type.
-     *
-     * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return static::TYPE;
     }

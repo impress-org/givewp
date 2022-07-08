@@ -36,11 +36,14 @@ trait HasNodes
                 return $node;
             }
             if ($node instanceof Collection) {
-                return $node->getNodeByName($name);
+                $nestedNode = $node->getNodeByName($name);
+                if ( $nestedNode !== null ) {
+                    return $nestedNode;
+                }
             }
         }
 
-        return false;
+        return null;
     }
 
     /**
