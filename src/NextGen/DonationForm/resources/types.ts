@@ -1,7 +1,17 @@
 import {FC} from 'react';
 
+/**
+ * Used for a single currency. The amount is an integer in the smallest unit of the currency.
+ */
 export interface Currency {
-    amount: number;
+    /**
+     * Amount as an integer in the smallest unit of the currency.
+     */
+    amount: bigint;
+
+    /**
+     * 3-Character Currency code (e.g. USD, EUR, GBP, etc.)
+     */
     currency: string;
 }
 
@@ -14,21 +24,12 @@ export interface FormData {
     company?: string;
 }
 
-export interface Field {
-    type: string;
-    name: string;
-    label: string;
-    readOnly: boolean;
-    validationRules: {required: boolean};
-    nodes?: Field[];
-}
-
 export interface FormServerExports {
     gatewaySettings: {
-        [key: string]: GatewaySettings;
+        [key: string]: GatewaySettings; // key is the gateway ID
     };
     form: {
-        nodes: Field[];
+        nodes: Section[];
     };
     attributes: object;
     donateUrl: string;
@@ -82,4 +83,58 @@ export interface Gateway {
     afterCreatePayment?(response: object): Promise<void> | Error;
 }
 
-export interface Template {}
+export interface Template {
+    id: string;
+}
+
+export interface VisibilityCondition {
+    type: string;
+    field: string;
+    value: any;
+    operator: '==' | '!=' | '>' | '<' | '>=' | '<=';
+    boolean: 'AND' | 'OR';
+}
+
+export interface Node {
+    name: string;
+    type: string;
+    nodeType: string;
+    VisibilityConditions: VisibilityCondition[];
+}
+
+export interface Field extends Node {
+    nodeType: 'field';
+    label: string;
+    validationRules: {
+        [key: string]: any;
+    };
+    readOnly: boolean;
+    defaultValue: any;
+    fieldError: string | null;
+}
+
+export interface Group extends Node {
+    nodeType: 'group';
+    nodes: Node[];
+}
+
+export interface Element extends Node {
+    nodeType: 'element';
+}
+
+export interface Section extends Group {
+    label: string;
+    description: string;
+}
+
+export function isField(node: Node): node is Field {
+    return node.nodeType === 'field';
+}
+
+export function isElement(node: Node): node is Element {
+    return node.nodeType === 'element';
+}
+
+export function isGroup(node: Node): node is Group {
+    return node.nodeType === 'group';
+}
