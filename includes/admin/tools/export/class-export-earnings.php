@@ -74,6 +74,13 @@ class Give_Earnings_Export extends Give_Export
         return $cols;
     }
 
+    /**
+     * Include a nonce check when authenticating
+     *
+     * @since 2.21.4
+     *
+     * @return bool
+     */
     public function can_export() {
         return (bool) apply_filters( 'give_export_capability', current_user_can( 'export_give_reports' ) && wp_verify_nonce($_REQUEST['give-nonce'], 'give_earnings_export'));
     }
