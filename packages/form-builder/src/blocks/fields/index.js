@@ -1,4 +1,3 @@
-import {registerBlockType} from "@wordpress/blocks";
 import {Icon} from '@wordpress/icons';
 import {__} from "@wordpress/i18n"
 import settings from "./settings"
@@ -39,59 +38,30 @@ const fieldBlocks = [
         },
     },
     {
-        name: 'custom-block-editor/honorific-name-field',
+        name: 'custom-block-editor/donor-name',
         settings: {
             ...settings,
-            title: __('Honorific', 'custom-block-editor'),
+            title: __('Donor Name', 'custom-block-editor'),
             supports: {
                 multiple: false,
             },
             attributes: {
                 lock: {remove: true},
-                label: {
-                    default: __('Honorific'),
+                showHonorific: {
+                    type: 'boolean',
+                    default: true,
                 },
-                options: {
-                    default: [
-                        {label: __('Mr.', 'give'), value: 'mr'},
-                        {label: __('Ms.', 'give'), value: 'ms'},
-                        {label: __('Mrs.', 'give'), value: 'mrs'},
-                    ],
+                honoriphics: {
+                    type: 'array',
+                    default: ['Mr', 'Ms', 'Mrs'],
                 },
+                requireLastName: {
+                    type: 'boolean',
+                    default: false,
+                }
             },
-        },
-    },
-    {
-        name: 'custom-block-editor/first-name-field',
-        settings: {
-            ...settings,
-            title: __('First Name', 'custom-block-editor'),
-            supports: {
-                multiple: false,
-            },
-            attributes: {
-                lock: {remove: true},
-                label: {
-                    default: __('First Name'),
-                },
-            },
-        },
-    },
-    {
-        name: 'custom-block-editor/last-name-field',
-        settings: {
-            ...settings,
-            title: __('Last Name', 'custom-block-editor'),
-            supports: {
-                multiple: false,
-            },
-            attributes: {
-                lock: {remove: true},
-                label: {
-                    default: __('Last Name'),
-                },
-            },
-        },
+            edit: DonorName
+        }
     },
     {
         name: 'custom-block-editor/email-field',

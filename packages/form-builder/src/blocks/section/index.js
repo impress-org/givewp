@@ -1,5 +1,8 @@
+import {__} from "@wordpress/i18n"
 import Edit from './edit.js'
-import Defaults, {attributes} from './defaults'
+import Defaults from './defaults'
+
+const {attributes} = Defaults
 
 const sectionBlocks = [
     {
