@@ -4,9 +4,9 @@ export const FormSettingsContext = createContext();
 
 export const FormSettingsProvider = ({formSettings, setFormSettings, children}) => {
 
-    const setFormSettingsObserver = ( settings ) => {
-        console.log( settings )
-        setFormSettings( settings )
+    const setFormSettingsObserver = (settings) => {
+        console.log(settings)
+        setFormSettings(settings)
     }
 
     return (
@@ -18,7 +18,7 @@ export const FormSettingsProvider = ({formSettings, setFormSettings, children}) 
 
 export const useFormSettings = () => {
     const [formSettings, setFormSettings] = useContext(FormSettingsContext)
-    const updateSetting = ( newSettings ) => {
+    const updateSetting = (newSettings) => {
         setFormSettings({
             ...formSettings,
             ...newSettings,

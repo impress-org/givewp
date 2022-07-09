@@ -1,10 +1,10 @@
 import {InspectorControls} from "@wordpress/block-editor";
 import {PanelBody, PanelRow, TextControl} from "@wordpress/components";
-import { __ } from "@wordpress/i18n"
+import {__} from "@wordpress/i18n"
 
 const settings = {
 
-    title: __( 'Field', 'custom-block-editor' ),
+    title: __('Field', 'custom-block-editor'),
 
     supports: {
         html: false, // Removes support for an HTML mode.
@@ -21,10 +21,10 @@ const settings = {
         }
     },
 
-    edit: function( props ) {
+    edit: function (props) {
 
         const {
-            attributes: { label, options },
+            attributes: {label, options},
             setAttributes,
         } = props;
 
@@ -32,18 +32,19 @@ const settings = {
             <>
                 <div>
                     {'undefined' === typeof options
-                        ? <input style={{width: '100%'}} type="text" placeholder={label} />
-                        : <select>{options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select>
+                        ? <input style={{width: '100%'}} type="text" placeholder={label}/>
+                        : <select>{options.map((option) => <option key={option.value}
+                                                                   value={option.value}>{option.label}</option>)}</select>
                     }
                 </div>
 
                 <InspectorControls>
-                    <PanelBody title={ __( 'Field Settings', 'give' ) } initialOpen={true}>
+                    <PanelBody title={__('Field Settings', 'give')} initialOpen={true}>
                         <PanelRow>
                             <TextControl
                                 label={'Label'}
-                                value={ label }
-                                onChange={ ( val ) => setAttributes( { label: val } ) }
+                                value={label}
+                                onChange={(val) => setAttributes({label: val})}
                             />
                         </PanelRow>
                     </PanelBody>
@@ -52,7 +53,7 @@ const settings = {
         )
     },
 
-    save: function() {
+    save: function () {
         return null; // Save as attributes - not rendered HTML.
     }
 }
