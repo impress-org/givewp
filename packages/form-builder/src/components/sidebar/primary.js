@@ -2,13 +2,13 @@ import {
     createSlotFill,
     TabPanel,
 } from '@wordpress/components';
-import { __ } from '@wordpress/i18n';
+import {__} from '@wordpress/i18n';
 
 import {DonationGoalSettings, FormTitleSettings, OfflineDonationsSettings} from '../../settings'
 import FormFields from "../../settings/form-fields";
 import {PopoutSlot} from "./popout";
 
-const { Slot: InspectorSlot, Fill: InspectorFill } = createSlotFill(
+const {Slot: InspectorSlot, Fill: InspectorFill} = createSlotFill(
     'StandAloneBlockEditorSidebarInspector'
 );
 
@@ -19,10 +19,10 @@ const tabs = [
         className: 'tab-form',
         content: () => (
             <>
-                <FormTitleSettings />
-                <DonationGoalSettings />
-                <OfflineDonationsSettings />
-                <FormFields />
+                <FormTitleSettings/>
+                <DonationGoalSettings/>
+                <OfflineDonationsSettings/>
+                <FormFields/>
             </>
         )
     },
@@ -32,7 +32,7 @@ const tabs = [
         className: 'tab-block',
         content: () => (
             <>
-                <InspectorSlot bubblesVirtually />
+                <InspectorSlot bubblesVirtually/>
             </>
         )
     },
@@ -44,16 +44,16 @@ function Sidebar() {
         <div
             className="givewp-next-gen-sidebar givewp-next-gen-sidebar-primary"
             role="region"
-            aria-label={ __( 'Standalone Block Editor advanced settings.' ) }
+            aria-label={__('Standalone Block Editor advanced settings.')}
             tabIndex="-1"
         >
-            <PopoutSlot />
+            <PopoutSlot/>
             <TabPanel
                 className="sidebar-panel"
                 activeClass="active-tab"
-                tabs={ tabs }
+                tabs={tabs}
             >
-                { ( tab ) => <tab.content /> }
+                {(tab) => <tab.content/>}
             </TabPanel>
         </div>
     );

@@ -3,11 +3,13 @@
 namespace Give\NextGen\DonationForm\Blocks\DonationFormBlock;
 
 use Give\Framework\EnqueueScript;
+use Give\Framework\FieldsAPI\Amount;
+use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\Form;
-use Give\Framework\FieldsAPI\Group;
 use Give\Framework\FieldsAPI\Hidden;
+use Give\Framework\FieldsAPI\Name;
 use Give\Framework\FieldsAPI\Radio;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
@@ -15,6 +17,7 @@ use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Helpers\Call;
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
+use stdClass;
 
 class Block
 {
@@ -26,7 +29,7 @@ class Block
     /**
      * @unreleased
      *
-     * @param  PaymentGatewayRegister  $paymentGatewayRegister
+     * @param PaymentGatewayRegister $paymentGatewayRegister
      */
     public function __construct(PaymentGatewayRegister $paymentGatewayRegister)
     {
@@ -72,7 +75,7 @@ class Block
             'form' => $donationForm->jsonSerialize(),
             'donateUrl' => $donateUrl,
             'successUrl' => give_get_success_page_uri(),
-            'gatewaySettings' => $formDataGateways
+            'gatewaySettings' => $formDataGateways,
         ];
 
         ob_start();
@@ -108,21 +111,16 @@ class Block
 
         $formBlockData = json_decode(get_post($formId)->post_content, false);
 
-        foreach( $formBlockData as $block ) {
-            $donationForm->append($this->convertFormBlockDataToFieldsAPI($block));
+        foreach ($formBlockData as $block) {
+            $donationForm->append($this->convertFormBlocksToSection($block));
         }
 
-        /**
-         * @todo for some reason, `getNodeByName()` isn't working...
-         */
-        foreach( $donationForm->all() as $node ) {
-            if( 'paymentDetails' === $node->getName() ) {
-                $node->append(...$gatewayOptions);
-            }
-        }
+        /** @var Section $paymentDetails */
+        $paymentDetails = $donationForm->getNodeByName('payment-gateways');
 
-        $donationForm->append(
+        $paymentDetails->append(...$gatewayOptions);
 
+        $paymentDetails->append(
             Hidden::make('formId')
                 ->defaultValue($formId),
 
@@ -164,57 +162,27 @@ class Block
 
     /**
      * @unreleased
-     *
-     * @param  object  $block
-     * @return Section|Text
-     * @throws EmptyNameException
      */
-    protected function convertFormBlockDataToFieldsAPI($block)
+    protected function convertFormBlocksToSection(stdClass $block): Section
     {
-        if( 'custom-block-editor/payment-gateways' === $block->name ) {
-            return Section::make('paymentDetails')
-                    ->label($block->attributes->title);
-        }
+        return Section::make(substr($block->name, strpos($block->name, '/') + 1))
+            ->label($block->attributes->title)
+            ->description($block->attributes->description)
+            ->append(...array_map([$this, 'convertBlockToNode'], $block->innerBlocks));
+    }
 
-        if ($block->innerBlocks) {
-
-            /**
-             * @todo Currently re-purposing sections for groups so that they render for the prototype.
-             */
-            $section = (false && $block->name === "custom-block-editor/name-field-group")
-                ? Group::make('name-group')
-                : Section::make($block->clientId);
-
-            if (property_exists($block->attributes, 'title')) {
-                $section->label($block->attributes->title);
-            }
-
-            foreach ($block->innerBlocks as $innerBlock) {
-                $section->append($this->convertFormBlockDataToFieldsAPI($innerBlock));
-            }
-
-            return $section;
-        }
-
-
-        /*
-         * I'm considering refactoring the `namespace/block-type` to be
-         * used as `field-category/block-type` for easier parsing.
-         *
-         * For example:
-         *  `section/donor-information`
-         *      `group/donor-name`
-         *          `text/donor-first-name`
-         *          `text/donor-last-name`
-         *      `email/donor-email`
-         */
-
+    /**
+     * @unreleased
+     */
+    protected function convertBlockToNode(stdClass $block): Node
+    {
         if ($block->name === "custom-block-editor/donation-amount-levels") {
-            $field = Text::make('amount')->required();
-        } elseif ($block->name === "custom-block-editor/first-name-field") {
-            $field = Text::make('firstName')->required();
-        } elseif ($block->name === "custom-block-editor/last-name-field") {
-            $field = Text::make('lastName')->required();
+            $field = Amount::make('amount')
+                ->levels(...array_map('absint', $block->attributes->levels))
+                ->allowCustomAmount()
+                ->required();
+        } elseif ($block->name === "custom-block-editor/name-field-group") {
+            $field = Name::make('name');
         } elseif ($block->name === "custom-block-editor/email-field") {
             $field = Email::make('email')->required()->emailTag('email');
         } else {
@@ -240,7 +208,7 @@ class Block
 
             $formDataGateways[$gatewayId] = array_merge(
                 [
-                    'label' => give_get_gateway_checkout_label($gatewayId) ?? $gateway->getPaymentMethodLabel()
+                    'label' => give_get_gateway_checkout_label($gatewayId) ?? $gateway->getPaymentMethodLabel(),
                 ],
                 method_exists($gateway, 'formSettings') ? $gateway->formSettings($formId) : []
             );

@@ -1,6 +1,7 @@
 import GatewayRegistrar from './GatewayRegistrar';
 import TemplateRegistrar from './TemplateRegistrar';
 import {FormServerExports} from '@givewp/forms/types';
+import {UseFormReturn} from 'react-hook-form';
 
 if (!window.givewp) {
     // @ts-ignore
@@ -15,6 +16,16 @@ declare global {
         givewp: {
             gateways: GatewayRegistrar;
             template: TemplateRegistrar;
+            form: {
+                useFormContext(): UseFormReturn;
+                useWatch(options: {
+                    name: string | string[];
+                    defaultValue?: any;
+                    control?: object;
+                    disabled?: boolean;
+                    exact?: boolean;
+                }): any;
+            };
         };
         giveNextGenExports: FormServerExports;
     }

@@ -6,27 +6,22 @@ import './index.scss';
 
 import App from './App';
 
-
-import './blocks/nameFieldGroup'
-
-import './blocks/nameFieldGroup/style.scss'
-
 import './blocks/donation-amount-levels/index'
 
-import sectionBlocks, { sectionBlockNames } from './blocks/section'
+import sectionBlocks, {sectionBlockNames} from './blocks/section'
 
 import fieldBlocks from './blocks/fields'
 
-sectionBlocks.map( ({ name, settings }) => registerBlockType( name, settings ))
+sectionBlocks.map(({name, settings}) => registerBlockType(name, settings))
 
-fieldBlocks.map( ({ name, settings }) => registerBlockType( name, {
+fieldBlocks.map(({name, settings}) => registerBlockType(name, {
     ...settings,
     parent: sectionBlockNames
 }))
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <App/>
+    </React.StrictMode>,
+    document.getElementById('root')
 );

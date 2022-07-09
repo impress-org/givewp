@@ -1,20 +1,17 @@
-import { __ } from "@wordpress/i18n"
 import Edit from './edit.js'
-import Defaults from './defaults'
-
-const { attributes } = Defaults
+import Defaults, {attributes} from './defaults'
 
 const sectionBlocks = [
     {
         name: 'custom-block-editor/section',
         settings: {
             ...Defaults,
-            title: __( 'Custom Section', 'custom-block-editor' ),
+            title: __('Custom Section', 'custom-block-editor'),
             attributes: {
                 ...attributes,
                 innerBlocksTemplate: {
                     default: [
-                        [ 'custom-block-editor/field', {}  ],
+                        ['custom-block-editor/field', {}],
                     ]
                 },
             },
@@ -25,7 +22,7 @@ const sectionBlocks = [
         name: 'custom-block-editor/donor-info',
         settings: {
             ...Defaults,
-            title: __( 'Donor Information', 'custom-block-editor' ),
+            title: __('Donor Information', 'custom-block-editor'),
             supports: {
                 multiple: false,
             },
@@ -43,8 +40,8 @@ const sectionBlocks = [
                 },
                 innerBlocksTemplate: {
                     default: [
-                        [ 'custom-block-editor/name-field-group', { lock: { remove: true } }  ],
-                        [ 'custom-block-editor/email-field' ],
+                        ['custom-block-editor/name-field-group', {lock: {remove: true}}],
+                        ['custom-block-editor/email-field'],
                     ]
                 },
             },
@@ -55,7 +52,7 @@ const sectionBlocks = [
         name: 'custom-block-editor/donation-amount',
         settings: {
             ...Defaults,
-            title: __( 'Donation Amount', 'custom-block-editor' ),
+            title: __('Donation Amount', 'custom-block-editor'),
             supports: {
                 multiple: false,
             },
@@ -69,7 +66,7 @@ const sectionBlocks = [
                 },
                 innerBlocksTemplate: {
                     default: [
-                        [ 'custom-block-editor/donation-amount-levels', { lock: { remove: true } }  ],
+                        ['custom-block-editor/donation-amount-levels', {lock: {remove: true}}],
                     ]
                 },
             },
@@ -80,21 +77,21 @@ const sectionBlocks = [
         name: 'custom-block-editor/payment-details',
         settings: {
             ...Defaults,
-            title: __( 'Payment Details', 'custom-block-editor' ),
+            title: __('Payment Details', 'custom-block-editor'),
             supports: {
                 multiple: false,
             },
             attributes: {
                 ...attributes,
                 title: {
-                    default:__( 'Payment Details', 'custom-block-editor' )
+                    default: __('Payment Details', 'custom-block-editor')
                 },
                 description: {
                     default: 'PAYMENT DETAILS WILL GO HERE :)',
                 },
                 innerBlocksTemplate: {
                     default: [
-                        [ 'custom-block-editor/payment-gateways', { lock: { remove: true } }  ],
+                        ['custom-block-editor/payment-gateways', {lock: {remove: true}}],
                     ]
                 },
             },
@@ -103,7 +100,7 @@ const sectionBlocks = [
     },
 ]
 
-const sectionBlockNames = sectionBlocks.map( section => section.name )
+const sectionBlockNames = sectionBlocks.map(section => section.name)
 
 export default sectionBlocks
 export {

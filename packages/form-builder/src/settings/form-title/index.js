@@ -4,15 +4,15 @@ import {useFormSettings} from "../context";
 
 const FormTitleSettings = () => {
 
-    const [ { formTitle }, updateFormSetting ] = useFormSettings();
+    const [{formTitle}, updateFormSetting] = useFormSettings();
 
     return (
         <PanelBody>
             <PanelRow>
                 <TextControl
                     label={__('Form Title')}
-                    value={ formTitle }
-                    onChange={ ( formTitle ) => updateFormSetting( { formTitle } ) }
+                    value={formTitle}
+                    onChange={(formTitle) => updateFormSetting({formTitle})}
                 />
             </PanelRow>
         </PanelBody>

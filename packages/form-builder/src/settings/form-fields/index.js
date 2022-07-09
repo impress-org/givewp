@@ -4,52 +4,52 @@ import {PanelBody, PanelRow, SelectControl, ToggleControl} from "@wordpress/comp
 
 const FormFieldSettings = () => {
 
-    const [ { registration, anonymousDonations, guestDonations }, updateSetting ] = useFormSettings()
+    const [{registration, anonymousDonations, guestDonations}, updateSetting] = useFormSettings()
 
 
     const registrationOptions = [
         {
             value: 'none',
-            label: __( 'None', 'give' ),
+            label: __('None', 'give'),
         },
         {
             value: 'registration',
-            label: __( 'Registration', 'give' ),
+            label: __('Registration', 'give'),
         },
         {
             value: 'login',
-            label: __( 'Login', 'give' ),
+            label: __('Login', 'give'),
         },
         {
             value: 'register_and_login',
-            label: __( 'Registration + Login', 'give' ),
+            label: __('Registration + Login', 'give'),
         },
     ]
 
     return (
-        <PanelBody title={ __( 'Form Fields', 'give' ) } initialOpen={false}>
+        <PanelBody title={__('Form Fields', 'give')} initialOpen={false}>
             <PanelRow>
                 <SelectControl
                     labelPosition={'left'}
-                    label={ __('Registration', 'give') }
-                    help={ __('Display the registration and/or login forms in the payment section for non-logged-in users.', 'give') }
-                    value={ registration }
-                    options={ registrationOptions }
-                    onChange={ ( registration ) => updateSetting( { registration: registration } ) }
+                    label={__('Registration', 'give')}
+                    help={__('Display the registration and/or login forms in the payment section for non-logged-in users.', 'give')}
+                    value={registration}
+                    options={registrationOptions}
+                    onChange={(registration) => updateSetting({registration: registration})}
                 />
             </PanelRow>
             <PanelRow>
                 <ToggleControl
-                    label={ __('Anonymous Donations', 'give') }
+                    label={__('Anonymous Donations', 'give')}
                     checked={anonymousDonations}
-                    onChange={ () => updateSetting( { anonymousDonations: ! anonymousDonations } ) }
+                    onChange={() => updateSetting({anonymousDonations: !anonymousDonations})}
                 />
             </PanelRow>
             <PanelRow>
                 <ToggleControl
-                    label={ __('Allow Guest Donations', 'give') }
+                    label={__('Allow Guest Donations', 'give')}
                     checked={guestDonations}
-                    onChange={ () => updateSetting( { guestDonations: ! guestDonations } ) }
+                    onChange={() => updateSetting({guestDonations: !guestDonations})}
                 />
             </PanelRow>
         </PanelBody>

@@ -1,6 +1,8 @@
-import { Icon } from '@wordpress/icons';
-import { __ } from "@wordpress/i18n"
+import {registerBlockType} from "@wordpress/blocks";
+import {Icon} from '@wordpress/icons';
+import {__} from "@wordpress/i18n"
 import settings from "./settings"
+import DonorName from "./donorName";
 
 /**
  * @note Blocks in the appender are listed in the order that the blocks are registered.
@@ -11,14 +13,14 @@ const fieldBlocks = [
         name: 'custom-block-editor/field',
         settings: {
             ...settings,
-            title: __( 'Custom Field', 'custom-block-editor' ),
+            title: __('Custom Field', 'custom-block-editor'),
         },
     },
     {
         name: 'custom-block-editor/company-field',
         settings: {
             ...settings,
-            title: __( 'Company', 'custom-block-editor' ),
+            title: __('Company', 'custom-block-editor'),
             supports: {
                 multiple: false,
             },
@@ -33,27 +35,27 @@ const fieldBlocks = [
                           d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z"
                           clipRule="evenodd"/>
                 </svg>
-            } />,
+            }/>,
         },
     },
     {
         name: 'custom-block-editor/honorific-name-field',
         settings: {
             ...settings,
-            title: __( 'Honorific', 'custom-block-editor' ),
+            title: __('Honorific', 'custom-block-editor'),
             supports: {
                 multiple: false,
             },
             attributes: {
-                lock: { remove: true },
+                lock: {remove: true},
                 label: {
                     default: __('Honorific'),
                 },
                 options: {
                     default: [
-                        { label: __('Mr.', 'give'), value: 'mr' },
-                        { label: __('Ms.', 'give'), value: 'ms' },
-                        { label: __('Mrs.', 'give'), value: 'mrs' },
+                        {label: __('Mr.', 'give'), value: 'mr'},
+                        {label: __('Ms.', 'give'), value: 'ms'},
+                        {label: __('Mrs.', 'give'), value: 'mrs'},
                     ],
                 },
             },
@@ -63,12 +65,12 @@ const fieldBlocks = [
         name: 'custom-block-editor/first-name-field',
         settings: {
             ...settings,
-            title: __( 'First Name', 'custom-block-editor' ),
+            title: __('First Name', 'custom-block-editor'),
             supports: {
                 multiple: false,
             },
             attributes: {
-                lock: { remove: true },
+                lock: {remove: true},
                 label: {
                     default: __('First Name'),
                 },
@@ -79,12 +81,12 @@ const fieldBlocks = [
         name: 'custom-block-editor/last-name-field',
         settings: {
             ...settings,
-            title: __( 'Last Name', 'custom-block-editor' ),
+            title: __('Last Name', 'custom-block-editor'),
             supports: {
                 multiple: false,
             },
             attributes: {
-                lock: { remove: true },
+                lock: {remove: true},
                 label: {
                     default: __('Last Name'),
                 },
@@ -95,12 +97,12 @@ const fieldBlocks = [
         name: 'custom-block-editor/email-field',
         settings: {
             ...settings,
-            title: __( 'Email', 'custom-block-editor' ),
+            title: __('Email', 'custom-block-editor'),
             supports: {
                 multiple: false,
             },
             attributes: {
-                lock: { remove: true },
+                lock: {remove: true},
                 label: {
                     default: __('Email Address'),
                 },
@@ -110,26 +112,31 @@ const fieldBlocks = [
                     <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
                     <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
                 </svg>
-            } />,
+            }/>,
         },
     },
     {
         name: 'custom-block-editor/payment-gateways',
         settings: {
             ...settings,
-            title: __( 'Payment Gateways', 'custom-block-editor' ),
+            title: __('Payment Gateways', 'custom-block-editor'),
             supports: {
                 multiple: false,
             },
             attributes: {
-                lock: { remove: true },
+                lock: {remove: true},
             },
-            edit: () => <div style={{padding:'20px',margin:'20px 0',textAlign:'center',backgroundColor:'#fafafa'}}>{'Payment Gateways Go Here'}</div>
+            edit: () => <div style={{
+                padding: '20px',
+                margin: '20px 0',
+                textAlign: 'center',
+                backgroundColor: '#fafafa'
+            }}>{'Payment Gateways Go Here'}</div>
         },
     },
 ]
 
-const fieldBlockNames = fieldBlocks.map( field => field.name )
+const fieldBlockNames = fieldBlocks.map(field => field.name)
 
 export default fieldBlocks
 export {
