@@ -90,7 +90,7 @@ const sectionBlocks = [
                     default: __('Payment Details', 'custom-block-editor')
                 },
                 description: {
-                    default: 'PAYMENT DETAILS WILL GO HERE :)',
+                    default: __('How would you like to pay for your donation?', 'give'),
                 },
                 innerBlocksTemplate: {
                     default: [
