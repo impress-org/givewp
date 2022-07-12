@@ -29,3 +29,21 @@ To compile your CSS & JS assets, run one of the following:
 - `npm run watch` — Compiles all assets for development one time and then watches for changes, supporting [BrowserSync](https://laravel-mix.com/docs/5.0/browsersync)
 - `npm run hot` — Compiles all assets for development one time and then watches for [hot replacement](https://laravel-mix.com/docs/5.0/hot-module-replacement)
 - `npm run dev` — Compiles all assets for production one time
+
+## Packages
+
+Parts of the codebase are separated out into packages, making the repository a "monorepo". This allows for related functionality to be maintained in the same repository, but allows for technical differences in development.0
+
+Packages are managed using NPM "workspaces" and NPM commands can be passed to individial packages using the `-w` flag and are namespaced as `@givewp/{package-name}`.
+
+### Form Builder Packages
+
+`@givewp/form-builder`
+
+The Form Builder package, also known internally as Givenberg, uses WordPress Gutenberg components to create a custom block editor (not to be confused with THE WordPress Block Editor, which is the main product built with the Gutenberg components).
+
+Local development uses Create React App and can be run outside of the context of WordPress.Packages
+
+To develop the Form Builder locally run `npm run start -w @givewp/form-builder` to start the local environment.
+
+To build the Form Builder for use in the context of WordPress run `npm run build -w @givewp/form-builder`. This will create a build inside of the plugin which is used by the corresponding domain in the `src/FormBuilder` directory.
