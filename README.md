@@ -36,7 +36,7 @@ Parts of the codebase are separated out into packages, making the repository a "
 
 Packages are managed using NPM "workspaces" and NPM commands can be passed to individial packages using the `-w` flag and are namespaced as `@givewp/{package-name}`.
 
-### Form Builder Packages `@givewp/form-builder`
+### Form Builder - `@givewp/form-builder`
 
 The Form Builder package, also known internally as Givenberg, uses WordPress Gutenberg components to create a custom block editor (not to be confused with THE WordPress Block Editor, which is the main product built with the Gutenberg components).
 
