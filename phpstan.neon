@@ -2,9 +2,9 @@ includes:
     - vendor/szepeviktor/phpstan-wordpress/extension.neon
 
 parameters:
-    level: 1
+    level: 0
     paths:
-        - src
+        - src/Framework/Database
     bootstrapFiles:
       - give.php
     scanDirectories:
