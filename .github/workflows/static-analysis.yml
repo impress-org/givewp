@@ -1,0 +1,38 @@
+name: Static Analysis
+
+on:
+    workflow_call: # Allows you to use this workflow as part of another workflow
+    workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+
+jobs:
+    analyse:
+        runs-on: ubuntu-18.04
+        strategy:
+            matrix:
+                php: [ 7.4 ]
+
+        steps:
+            # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+            -   uses: actions/checkout@v2
+            -   name: Cache dependencies
+                uses: actions/cache@v1
+                with:
+                    path: ~/.composer/cache/files
+                    key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+
+            # @link https://github.com/spatie/laravel-activitylog/blob/master/.github/workflows/run-tests.yml
+            -   name: Set Up PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: 7.4
+                    extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+                    coverage: none
+
+            -   name: Install composer dependencies
+                run: composer install --no-progress --no-interaction
+
+            -   name: Install PHPStan
+                run: composer require --dev phpstan/phpstan szepeviktor/phpstan-wordpress --ignore-platform-reqs --no-progress --no-interaction
+
+            -   name: Analyse
+                run: php -d memory_limit=-1 vendor/bin/phpstan analyse -c phpstan.neon
