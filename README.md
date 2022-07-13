@@ -42,6 +42,6 @@ The Visual Donation Form Builder package, also known internally as "Givenberg", 
 
 Local development uses Create React App and can be run outside the context of WordPress.
 
-To develop the Visual Donation Form Builder locally run `npm run start -w @givewp/form-builder` to start the local environment.
+To develop the Visual Donation Form Builder locally run `npm run start -w @givewp/form-builder` to start the local environment. If this does not work, you can always change into the `/packages/form-builder` directory and run `npm run start` from there.
 
 To build the Form Builder for use in the context of WordPress run `npm run build -w @givewp/form-builder`. This will create a build inside the plugin which is used by the corresponding domain in the `src/FormBuilder` directory.
