@@ -1,6 +1,6 @@
 import {InspectorControls} from "@wordpress/block-editor";
 import {PanelBody, PanelRow, TextControl} from "@wordpress/components";
-import {__} from "@wordpress/i18n"
+import {__} from "@wordpress/i18n";
 
 const settings = {
 
@@ -18,7 +18,7 @@ const settings = {
         },
         options: {
             type: 'array',
-        }
+        },
     },
 
     edit: function (props) {
@@ -32,7 +32,7 @@ const settings = {
             <>
                 <div>
                     {'undefined' === typeof options
-                        ? <input style={{width: '100%'}} type="text" placeholder={label}/>
+                        ? <input style={{width: '100%'}} type="text" placeholder={label} />
                         : <select>{options.map((option) => <option key={option.value}
                                                                    value={option.value}>{option.label}</option>)}</select>
                     }
@@ -50,12 +50,12 @@ const settings = {
                     </PanelBody>
                 </InspectorControls>
             </>
-        )
+        );
     },
 
     save: function () {
         return null; // Save as attributes - not rendered HTML.
-    }
-}
+    },
+};
 
-export default settings
+export default settings;

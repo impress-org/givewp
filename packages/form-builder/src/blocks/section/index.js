@@ -1,8 +1,8 @@
-import {__} from "@wordpress/i18n"
-import Edit from './edit.js'
-import Defaults from './defaults'
+import {__} from "@wordpress/i18n";
+import Edit from './edit.js';
+import Defaults from './defaults';
 
-const {attributes} = Defaults
+const {attributes} = Defaults;
 
 const sectionBlocks = [
     {
@@ -15,7 +15,7 @@ const sectionBlocks = [
                 innerBlocksTemplate: {
                     default: [
                         ['custom-block-editor/field', {}],
-                    ]
+                    ],
                 },
             },
             edit: Edit,
@@ -45,7 +45,7 @@ const sectionBlocks = [
                     default: [
                         ['custom-block-editor/donor-name', {lock: {remove: true}}],
                         ['custom-block-editor/email-field'],
-                    ]
+                    ],
                 },
             },
             edit: Edit,
@@ -70,7 +70,7 @@ const sectionBlocks = [
                 innerBlocksTemplate: {
                     default: [
                         ['custom-block-editor/donation-amount-levels', {lock: {remove: true}}],
-                    ]
+                    ],
                 },
             },
             edit: Edit,
@@ -87,7 +87,7 @@ const sectionBlocks = [
             attributes: {
                 ...attributes,
                 title: {
-                    default: __('Payment Details', 'custom-block-editor')
+                    default: __('Payment Details', 'custom-block-editor'),
                 },
                 description: {
                     default: __('How would you like to pay for your donation?', 'give'),
@@ -95,17 +95,17 @@ const sectionBlocks = [
                 innerBlocksTemplate: {
                     default: [
                         ['custom-block-editor/payment-gateways', {lock: {remove: true}}],
-                    ]
+                    ],
                 },
             },
             edit: Edit,
         },
     },
-]
+];
 
-const sectionBlockNames = sectionBlocks.map(section => section.name)
+const sectionBlockNames = sectionBlocks.map(section => section.name);
 
-export default sectionBlocks
+export default sectionBlocks;
 export {
-    sectionBlockNames
-}
+    sectionBlockNames,
+};

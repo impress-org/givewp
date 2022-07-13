@@ -1,5 +1,5 @@
-import useToggleState from "./useToggleState"
+import useToggleState from "./useToggleState";
 
 export {
-    useToggleState
-}
+    useToggleState,
+};

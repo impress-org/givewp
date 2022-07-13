@@ -1,5 +1,5 @@
-import LocalStorage from './local'
+import LocalStorage from './local';
 
-const Storage = window.storage || LocalStorage
+const Storage = window.storage || LocalStorage;
 
-export default Storage
+export default Storage;

@@ -8,10 +8,10 @@ export default function Popout({children}) {
                 {children}
             </div>
         </Fill>
-    )
+    );
 }
 
-export const PopoutSlot = () => <Slot name="InspectorPopout"/>
+export const PopoutSlot = () => <Slot name="InspectorPopout" />;
 
 export const PopoutContainer = ({children}) => <div
-    className="givewp-next-gen-inspector-popout--container">{children}</div>
+    className="givewp-next-gen-inspector-popout--container">{children}</div>;

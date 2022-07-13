@@ -31,14 +31,14 @@ registerBlockType('custom-block-editor/donation-amount-levels', {
             <>
                 <div>
                     <div>
-                        <input style={{width: '100%', marginBottom: '20px'}} type="text"/>
+                        <input style={{width: '100%', marginBottom: '20px'}} type="text" />
                     </div>
                     {props.attributes.levels.length > 0 && (
                         <div style={{
                             textAlign: 'center',
                             display: 'grid',
                             gap: '20px',
-                            gridTemplateColumns: '1fr 1fr 1fr'
+                            gridTemplateColumns: '1fr 1fr 1fr',
                         }}>
                             {
                                 props.attributes.levels.map((level, index) => {
@@ -46,13 +46,13 @@ registerBlockType('custom-block-editor/donation-amount-levels', {
                                         <div key={'level-option-' + index}
                                              style={{padding: '15px', border: '1px solid black', borderRadius: '3px'}}>
                                             <sup>$</sup>{level}</div>
-                                    )
+                                    );
                                 })
                             }
                             <div style={{
                                 padding: '20px',
                                 border: '1px solid black',
-                                borderRadius: '3px'
+                                borderRadius: '3px',
                             }}>{__('Custom Amount')}</div>
                         </div>
                     )}
@@ -61,7 +61,7 @@ registerBlockType('custom-block-editor/donation-amount-levels', {
                 <InspectorControls>
                     <PanelBody title={__('Donation Levels', 'give')} initialOpen={true}>
                         {props.attributes.levels.length > 0 && (
-                            <ul style={{listStyleType: 'none', padding: 0,}}>
+                            <ul style={{listStyleType: 'none', padding: 0}}>
                                 {
                                     props.attributes.levels.map((label, index) => {
                                         return (
@@ -73,9 +73,9 @@ registerBlockType('custom-block-editor/donation-amount-levels', {
                                                 <TextControl
                                                     value={label}
                                                     onChange={(val) => {
-                                                        const levels = [...props.attributes.levels]
+                                                        const levels = [...props.attributes.levels];
                                                         levels[index] = val;
-                                                        props.setAttributes({levels: levels})
+                                                        props.setAttributes({levels: levels});
                                                     }}
                                                 />
                                                 <button
@@ -83,7 +83,7 @@ registerBlockType('custom-block-editor/donation-amount-levels', {
                                                         background: 'transparent',
                                                         border: 'none',
                                                         cursor: 'pointer',
-                                                        color: 'red'
+                                                        color: 'red',
                                                     }}
                                                     onClick={() => {
                                                         props.attributes.levels.splice(index, 1);
@@ -98,17 +98,17 @@ registerBlockType('custom-block-editor/donation-amount-levels', {
                             </ul>
                         )}
                         <Button onClick={() => {
-                            const levels = [...props.attributes.levels]
-                            levels.push('')
+                            const levels = [...props.attributes.levels];
+                            levels.push('');
                             props.setAttributes({levels: levels});
                         }}>Add new level</Button>
                     </PanelBody>
                 </InspectorControls>
             </>
-        )
+        );
     },
 
     save: function () {
         return null; // Save as attributes - not rendered HTML.
-    }
+    },
 });

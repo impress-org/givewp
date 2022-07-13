@@ -5,12 +5,12 @@ import {
     PanelBody,
     PanelRow,
     SelectControl,
-    ToggleControl
+    ToggleControl,
 } from "@wordpress/components";
 
 const DonationGoalSettings = () => {
 
-    const [{enableDonationGoal, enableAutoClose, goalFormat, goalAmount}, updateSetting] = useFormSettings()
+    const [{enableDonationGoal, enableAutoClose, goalFormat, goalAmount}, updateSetting] = useFormSettings();
 
     const goalFormatOptions = [
         {
@@ -29,7 +29,7 @@ const DonationGoalSettings = () => {
             value: 'number-donors',
             label: __('Number of Donors', 'give'),
         },
-    ]
+    ];
 
     return (
         <PanelBody title={__('Donation Goal', 'give')} initialOpen={false}>
@@ -39,7 +39,7 @@ const DonationGoalSettings = () => {
                     help={__('Do you want to set a donation goal for this form?', 'give')}
                     checked={enableDonationGoal}
                     onChange={() => {
-                        updateSetting({enableDonationGoal: !enableDonationGoal})
+                        updateSetting({enableDonationGoal: !enableDonationGoal});
                     }}
                 />
             </PanelRow>
@@ -74,7 +74,7 @@ const DonationGoalSettings = () => {
                 </>
             )}
         </PanelBody>
-    )
-}
+    );
+};
 
 export default DonationGoalSettings;

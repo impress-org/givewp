@@ -8,31 +8,31 @@
         left: 0;
     }
 
-  background: white;
-  border: 1px solid lightgray;
-  bottom: 0;
-  //color: slategray;
-  height: 100vh;
-  //overflow: hidden; // The Inspector Popout needs to be visible.
-  position: fixed !important; // !important override added when migrated to WordPress - not sure why this is necessary...
-  top: 60px; // Account for header @todo move this to layout, not in the component.
-  width: 20%;
-  z-index: 99999999;
+    background: white;
+    border: 1px solid lightgray;
+    bottom: 0;
+    //color: slategray;
+    height: 100vh;
+    //overflow: hidden; // The Inspector Popout needs to be visible.
+    position: fixed !important; // !important override added when migrated to WordPress - not sure why this is necessary...
+    top: 60px; // Account for header @todo move this to layout, not in the component.
+    width: 20%;
+    z-index: 99999999;
 
-  > .components-panel {
-    border-left: 0;
-    border-right: 0;
-    margin-bottom: -1px;
-    margin-top: -1px;
+    > .components-panel {
+        border-left: 0;
+        border-right: 0;
+        margin-bottom: -1px;
+        margin-top: -1px;
 
-    > .components-panel__header {
-      background: white;
+        > .components-panel__header {
+            background: white;
+        }
     }
-  }
 
-  .block-editor-block-inspector__card {
-    margin: 0;
-  }
+    .block-editor-block-inspector__card {
+        margin: 0;
+    }
 }
 
 .sidebar-panel .active-tab {

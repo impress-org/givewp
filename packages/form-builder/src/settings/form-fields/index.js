@@ -4,7 +4,7 @@ import {PanelBody, PanelRow, SelectControl, ToggleControl} from "@wordpress/comp
 
 const FormFieldSettings = () => {
 
-    const [{registration, anonymousDonations, guestDonations}, updateSetting] = useFormSettings()
+    const [{registration, anonymousDonations, guestDonations}, updateSetting] = useFormSettings();
 
 
     const registrationOptions = [
@@ -24,7 +24,7 @@ const FormFieldSettings = () => {
             value: 'register_and_login',
             label: __('Registration + Login', 'give'),
         },
-    ]
+    ];
 
     return (
         <PanelBody title={__('Form Fields', 'give')} initialOpen={false}>
@@ -53,7 +53,7 @@ const FormFieldSettings = () => {
                 />
             </PanelRow>
         </PanelBody>
-    )
-}
+    );
+};
 
-export default FormFieldSettings
+export default FormFieldSettings;

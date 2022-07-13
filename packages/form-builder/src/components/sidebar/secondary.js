@@ -3,7 +3,7 @@ import {__experimentalListView} from '@wordpress/block-editor';
 import {__} from '@wordpress/i18n';
 
 const {Fill: InspectorFill} = createSlotFill(
-    'StandAloneBlockEditorSidebarInspector'
+    'StandAloneBlockEditorSidebarInspector',
 );
 
 function Sidebar() {
@@ -16,8 +16,8 @@ function Sidebar() {
             aria-label={__('Standalone Block Editor advanced settings.')}
             tabIndex="-1"
         >
-            <PanelHeader label={__('Fields')}/>
-            <__experimentalListView showNestedBlocks={true} expandNested={true}/>
+            <PanelHeader label={__('Fields')} />
+            <__experimentalListView showNestedBlocks={true} expandNested={true} />
 
         </div>
     );

@@ -5,7 +5,7 @@ import {
     ObserveTyping,
     WritingFlow,
     ButtonBlockAppender,
-    RichText
+    RichText,
 } from "@wordpress/block-editor";
 import {useFormSettings} from "../../settings/context";
 
@@ -29,7 +29,7 @@ const Component = () => {
                 </ObserveTyping>
             </WritingFlow>
         </BlockTools>
-    )
-}
+    );
+};
 
-export default Component
+export default Component;

@@ -16,7 +16,7 @@ const FormTitleSettings = () => {
                 />
             </PanelRow>
         </PanelBody>
-    )
-}
+    );
+};
 
-export default FormTitleSettings
+export default FormTitleSettings;

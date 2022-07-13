@@ -35,7 +35,7 @@ export default function Edit(props) {
                 marginBottom: '20px',
                 outline: '1px solid ' + borderColor,
                 borderRadius: '5px',
-                padding: '0 40px'
+                padding: '0 40px',
             }}>
                 <header>
                     <RichText
@@ -78,5 +78,5 @@ export default function Edit(props) {
                 </PanelBody>
             </InspectorControls>
         </>
-    )
+    );
 }

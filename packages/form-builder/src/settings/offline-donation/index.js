@@ -1,11 +1,11 @@
 import {useFormSettings} from "../context";
 import {PanelBody, PanelRow, ToggleControl} from "@wordpress/components";
 import {__} from "@wordpress/i18n";
-import DonationInstructions from './donation-instructions'
+import DonationInstructions from './donation-instructions';
 
 const OfflineDonationsSettings = () => {
 
-    const [{enableOfflineDonations, enableBillingFields}, updateSetting] = useFormSettings()
+    const [{enableOfflineDonations, enableBillingFields}, updateSetting] = useFormSettings();
 
     return (
         <PanelBody title={__('Offline Donations', 'give')} initialOpen={false}>
@@ -28,12 +28,12 @@ const OfflineDonationsSettings = () => {
                         />
                     </PanelRow>
                     <PanelRow>
-                        <DonationInstructions/>
+                        <DonationInstructions />
                     </PanelRow>
                 </>
             )}
         </PanelBody>
-    )
-}
+    );
+};
 
-export default OfflineDonationsSettings
+export default OfflineDonationsSettings;
