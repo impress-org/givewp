@@ -3,13 +3,13 @@ import React, {useState} from 'react';
 import {parse} from '@wordpress/blocks';
 import {ShortcutProvider} from '@wordpress/keyboard-shortcuts';
 import {BlockEditorProvider, BlockInspector} from '@wordpress/block-editor';
-import {SlotFillProvider, Popover} from '@wordpress/components';
+import {Popover, SlotFillProvider} from '@wordpress/components';
 import {InterfaceSkeleton} from "@wordpress/interface";
 
-import Header from './components/header';
-import {Sidebar, SecondarySidebar} from './components/sidebar';
-import Content from './components/content';
-import {FormSettingsProvider, defaultFormSettings} from './settings/context';
+import HeaderContainer from './containers/HeaderContainer';
+import {Content, SecondarySidebar, Sidebar} from './components';
+import {defaultFormSettings, FormSettingsProvider} from './settings/context';
+import {Storage} from './common';
 
 import {useToggleState} from "./hooks";
 
@@ -17,8 +17,6 @@ import '@wordpress/components/build-style/style.css';
 import '@wordpress/block-editor/build-style/style.css';
 
 import './App.scss';
-
-import Storage from './components/storage';
 
 
 function App() {
@@ -65,19 +63,21 @@ function App() {
                 >
                     <SlotFillProvider>
                         <Sidebar.InspectorFill>
-                            <BlockInspector />
+                            <BlockInspector/>
                         </Sidebar.InspectorFill>
                         <InterfaceSkeleton
-                            header={<Header
+                            header={<HeaderContainer
                                 saveCallback={saveCallback}
+                                showSecondarySidebar={showSecondarySidebar}
                                 toggleSecondarySidebar={toggleSecondarySidebar}
+                                showSidebar={showSidebar}
                                 toggleShowSidebar={toggleShowSidebar}
                             />}
-                            content={<Content />}
-                            sidebar={!!showSidebar && <Sidebar />}
-                            secondarySidebar={!!showSecondarySidebar && <SecondarySidebar />}
+                            content={<Content/>}
+                            sidebar={!!showSidebar && <Sidebar/>}
+                            secondarySidebar={!!showSecondarySidebar && <SecondarySidebar/>}
                         />
-                        <Popover.Slot />
+                        <Popover.Slot/>
                     </SlotFillProvider>
                 </BlockEditorProvider>
             </ShortcutProvider>

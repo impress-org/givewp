@@ -1,3 +1,14 @@
+#root {
+    // Gutenberg color mappings
+    --wp-admin-theme-color: var(--give-primary-500);
+    --wp-admin-theme-color--rgb: var(--give-primary-500--rgb);
+    --wp-admin-theme-color-darker-10: var(--give-primary-700);
+    --wp-admin-theme-color-darker-10--rgb: var(--give-primary-700--rgb);
+    --wp-admin-theme-color-darker-20: var(--give-primary-800);
+    --wp-admin-theme-color-darker-20--rgb: var(--give-primary-800--rgb);
+    --wp-admin-border-width-focus: 2px;
+}
+
 .interface-interface-skeleton__editor {
     //height: 60px;
     background-color: white;
@@ -21,7 +32,7 @@
 .interface-interface-skeleton__content {
     width: 824px;
     margin: auto;
-    padding: 80px 0; /* Leave room for toolbar above first block. */
+    padding: 120px 0; /* Leave room for toolbar above first block. */
 
     box-sizing: border-box;
 
@@ -84,4 +95,18 @@ select {
 .components-select-control__input {
     padding: 8px;
     font-weight: normal;
+}
+
+.components-button {
+    &.has-icon {
+        padding: 0 6px;
+
+        &.is-pressed {
+            background-color: var(--give-neutral-100);
+
+            &:hover {
+                background-color: var(--give-neutral-110);
+            }
+        }
+    }
 }
