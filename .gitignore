@@ -56,3 +56,5 @@ build
 **/build.*
 **/build.asset.*
 
+.phpunit.result.cache
+
