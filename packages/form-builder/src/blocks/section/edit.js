@@ -36,6 +36,7 @@ export default function Edit(props) {
                 outline: '1px solid ' + borderColor,
                 borderRadius: '5px',
                 padding: '0 40px',
+                backgroundColor: 'white',
             }}>
                 <header>
                     <RichText
