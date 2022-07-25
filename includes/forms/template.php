@@ -399,7 +399,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = [] ) {
 	$allow_custom_amount = give_get_meta( $form_id, '_give_custom_amount', true );
 	$currency_position   = isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before';
 	$symbol              = give_currency_symbol( give_get_currency( $form_id, $args ) );
-	$currency_output     = '<span class="give-currency-symbol give-currency-position-' . $currency_position . '">' . $symbol . '</span>';
+	$currency_output     = '<span class="give-currency-symbol give-currency-position-' . esc_attr($currency_position) . '">' . esc_html($symbol) . '</span>';
 	$default_amount      = give_format_amount(
 		give_get_default_form_amount( $form_id ),
 		[
@@ -424,7 +424,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = [] ) {
 		?>
 		<label class="give-hidden" for="give-amount"><?php esc_html_e( 'Donation Amount:', 'give' ); ?></label>
 		<input id="give-amount" class="give-amount-hidden" type="hidden" name="give-amount"
-			   value="<?php echo $default_amount; ?>" required aria-required="true"/>
+			   value="<?php echo esc_attr($default_amount); ?>" required aria-required="true"/>
 		<div class="set-price give-donation-amount form-row-wide">
 			<?php
 			if ( 'before' === $currency_position ) {
@@ -451,7 +451,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = [] ) {
 				?>
 				<label class="give-hidden" for="give-amount"><?php esc_html_e( 'Donation Amount:', 'give' ); ?></label>
 				<input class="give-text-input give-amount-top" id="give-amount" name="give-amount" type="text" inputmode="decimal"
-					   placeholder="" value="<?php echo $default_amount; ?>" autocomplete="off">
+					   placeholder="" value="<?php echo esc_attr($default_amount); ?>" autocomplete="off">
 				<?php
 				if ( 'after' === $currency_position ) {
 					echo $currency_output;
@@ -475,7 +475,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = [] ) {
 	// Custom Amount Text
 	if ( ! $variable_pricing && give_is_setting_enabled( $allow_custom_amount ) && ! empty( $custom_amount_text ) ) {
 		?>
-		<p class="give-custom-amount-text"><?php echo $custom_amount_text; ?></p>
+		<p class="give-custom-amount-text"><?php echo esc_html($custom_amount_text); ?></p>
 		<?php
 	}
 
@@ -547,11 +547,11 @@ function give_output_levels( $form_id ) {
 
 				$output .= sprintf(
 					'<li><button type="button" data-price-id="%1$s" class="%2$s" value="%3$s" data-default="%4$s">%5$s</button></li>',
-					$price['_give_id']['level_id'],
-					$level_classes,
-					$formatted_amount,
+					esc_attr($price['_give_id']['level_id']),
+					esc_attr($level_classes),
+					esc_attr($formatted_amount),
 					array_key_exists( '_give_default', $price ) ? 1 : 0,
-					$level_text
+					esc_html($level_text)
 				);
 			}
 
@@ -588,12 +588,12 @@ function give_output_levels( $form_id ) {
 
 				$output .= sprintf(
 					'<li><input type="radio" data-price-id="%1$s" class="%2$s" value="%3$s" name="give-radio-donation-level" id="give-radio-level-%1$s" %4$s data-default="%5$s"><label for="give-radio-level-%1$s">%6$s</label></li>',
-					$price['_give_id']['level_id'],
-					$level_classes,
-					$formatted_amount,
+					esc_attr($price['_give_id']['level_id']),
+					esc_attr($level_classes),
+					esc_attr($formatted_amount),
 					( give_is_default_level_id( $price ) ? 'checked="checked"' : '' ),
 					array_key_exists( '_give_default', $price ) ? 1 : 0,
-					$level_text
+					esc_html($level_text)
 				);
 			}
 
@@ -636,12 +636,12 @@ function give_output_levels( $form_id ) {
 
 				$output .= sprintf(
 					'<option data-price-id="%1$s" class="%2$s" value="%3$s" %4$s data-default="%5$s">%6$s</option>',
-					$price['_give_id']['level_id'],
-					$level_classes,
-					$formatted_amount,
+					esc_attr($price['_give_id']['level_id']),
+					esc_attr($level_classes),
+					esc_attr($formatted_amount),
 					( give_is_default_level_id( $price ) ? 'selected="selected"' : '' ),
 					array_key_exists( '_give_default', $price ) ? 1 : 0,
-					$level_text
+					esc_html($level_text)
 				);
 			}
 
@@ -689,7 +689,7 @@ function give_display_checkout_button( $form_id, $args ) {
 	$display_label_field = give_get_meta( $form_id, '_give_reveal_label', true );
 	$display_label       = ! empty( $args['continue_button_title'] ) ? $args['continue_button_title'] : ( ! empty( $display_label_field ) ? $display_label_field : esc_html__( 'Donate Now', 'give' ) );
 
-	$output = '<button type="button" class="give-btn give-btn-' . $display_option . '">' . $display_label . '</button>';
+	$output = '<button type="button" class="give-btn give-btn-' . esc_attr($display_option) . '">' . esc_html($display_label) . '</button>';
 
 	/**
 	 * filter the button html
@@ -721,7 +721,7 @@ function give_add_button_open_form( $form_id, $args ) {
 
 	$output = sprintf(
 		'<button type="button" class="give-btn give-btn-modal">%1$s</button>',
-		$display_label
+		esc_html($display_label)
 	);
 
 	/**
@@ -1490,7 +1490,7 @@ function give_get_login_fields( $form_id ) {
 			}
 			?>
 		</legend>
-		<?php if ( $show_register_form == 'both' ) { ?>
+		<?php if ( $show_register_form === 'both' ) { ?>
 			<p class="give-new-account-link">
 				<?php _e( 'Don\'t have an account?', 'give' ); ?>&nbsp;
 				<a href="<?php echo esc_url( remove_query_arg( 'login' ) ); ?>" class="give-checkout-register-cancel"
