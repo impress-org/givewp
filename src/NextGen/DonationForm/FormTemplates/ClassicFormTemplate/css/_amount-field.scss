@@ -1,0 +1,92 @@
+.givewp-fields-amount {
+    display: grid;
+    row-gap: clamp(1.5rem, 0.679487rem + 2.5641vw, 2rem);
+
+    &__input {
+        inline-size: 100%;
+        padding-inline: 0.45em;
+        background-color: rgb(255, 255, 255);
+        text-align: right;
+        font-family: inherit;
+        font-size: clamp(2.625rem, 1.80449rem + 2.5641vw, 3.125rem);
+        font-weight: 600;
+        line-height: 1.2;
+        color: rgb(51, 51, 51);
+        outline: 0;
+        border: 0;
+        width: 100%;
+
+        &--container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-width: 0.125rem;
+            border-style: solid;
+            border-color: rgb(66, 66, 66);
+            border-radius: 0.5rem;
+
+            &.invalid {
+                border-color: red;
+            }
+        }
+
+        &--currency-symbol {
+            display: block;
+            padding: clamp(1.375rem, 0.933564rem + 1.37949vw, 1.644rem);
+            color: rgb(85, 85, 85);
+            font-size: 1.375rem;
+            font-weight: 500;
+        }
+    }
+
+    &__levels--container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(clamp(6.625rem, 0.471154rem + 19.2308vw, 10.375rem), 1fr));
+        grid-auto-rows: 1fr;
+        gap: clamp(0.3125rem, -2.2516rem + 8.01282vw, 1.875rem);
+        inline-size: 100%;
+        list-style: none;
+    }
+
+    &__level {
+        list-style: none;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 0.125rem solid var(--give-primary-color);
+        border-radius: 0.5rem;
+        background-color: var(--give-primary-color);
+        color: rgb(255, 255, 255);
+        text-align: center;
+        font-family: inherit;
+        font-weight: 600;
+        line-height: 1.2;
+        block-size: 100%;
+        font-size: clamp(1.5rem, 0.474359rem + 3.20513vw, 2.125rem);
+        padding: 1.5rem 0.5rem;
+        transition-property: background-color, color, filter, box-shadow, transform;
+        transition-duration: 200ms;
+        transition-timing-function: ease-in;
+        width: 100%;
+        margin-bottom: 0.5rem;
+
+        &:hover {
+            filter: brightness(1.2);
+        }
+
+        &--custom {
+            word-spacing: 9999px;
+            font-size: 1.5rem;
+            line-height: 1.25;
+
+        }
+
+        &--selected {
+            background-color: rgb(255, 255, 255);
+            color: var(--give-primary-color);
+        }
+    }
+}
+
+

@@ -1,5 +1,6 @@
-import {FieldProps} from '../index';
+import type {FieldProps} from '@givewp/forms/propTypes';
 import {useMemo} from 'react';
+import {useFormContext, useWatch} from 'react-hook-form';
 
 interface AmountProps extends FieldProps {
     levels: bigint[];
@@ -7,7 +8,6 @@ interface AmountProps extends FieldProps {
 }
 
 export default function Amount({name, label, inputProps, levels, allowCustomAmount, fieldError}: AmountProps) {
-    const {useFormContext, useWatch} = window.givewp.form;
     const {setValue} = useFormContext();
     const currency = useWatch({name: 'currency'});
     const formatter: Intl.NumberFormat = useMemo(

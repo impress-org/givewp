@@ -1,4 +1,4 @@
-import {ElementProps} from '../index';
+import type {ElementProps} from '@givewp/forms/propTypes';
 
 interface HtmlProps extends ElementProps {
     html: string;

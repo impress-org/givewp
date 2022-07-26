@@ -2,7 +2,7 @@
     "private": true,
     "scripts": {
         "build": "wp-scripts build && npm run build --workspaces",
-        "dev": "wp-scripts build && npm run build --workspaces",
+        "dev": "wp-scripts build",
         "start": "wp-scripts start",
         "packages-update": "wp-scripts packages-update",
         "plugin-zip": "wp-scripts plugin-zip",
@@ -13,7 +13,7 @@
     ],
     "dependencies": {
         "@hookform/error-message": "^2.0.0",
-        "@hookform/resolvers": "^2.8.8",
+        "@hookform/resolvers": "^2.9.6",
         "@stripe/react-stripe-js": "^1.2.2",
         "@stripe/stripe-js": "^1.12.1",
         "@wordpress/block-editor": "^8.0.17",
@@ -24,11 +24,11 @@
         "@wordpress/i18n": "^3.19.0",
         "@wordpress/server-side-render": "^3.1.3",
         "accounting": "latest",
-        "classnames": "^2.2.6",
+        "classnames": "^2.3.1",
         "iframe-resizer": "^4.2.10",
         "joi": "^17.6.0",
         "prop-types": "^15.7.2",
-        "react-hook-form": "^7.28.1",
+        "react-hook-form": "^7.33.1",
         "swr": "^1.2.0"
     },
     "devDependencies": {

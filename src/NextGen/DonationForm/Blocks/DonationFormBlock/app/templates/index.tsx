@@ -1,7 +1,7 @@
-import {FC, ReactNode} from 'react';
+import {ElementType, FC, ReactNode} from 'react';
 import {applyFilters} from '@wordpress/hooks';
-import {Element, Field, Group} from '@givewp/forms/types';
-import {UseFormRegisterReturn} from 'react-hook-form';
+import type {Element} from '@givewp/forms/types';
+import type {ElementProps, FieldProps, GroupProps} from '@givewp/forms/propTypes';
 import TextField from './fields/Text';
 import TextAreaField from './fields/TextArea';
 import EmailField from './fields/Email';
@@ -11,34 +11,39 @@ import NameGroup from './groups/Name';
 import SectionLayout, {SectionProps} from './layouts/Section';
 import Form, {FormProps} from './layouts/Form';
 import AmountField from './fields/Amount';
+import classNames from "classnames";
 
-export interface FieldProps extends Field {
-    inputProps: UseFormRegisterReturn;
+export function NodeWrapper({
+                                type,
+                                nodeType,
+                                htmlTag: Element = 'div',
+                                name,
+                                children,
+                            }: { type: string; nodeType: string; htmlTag?: ElementType; name?: string; children: ReactNode }) {
+    return (
+        <Element className={
+            classNames(
+                `givewp-${nodeType}`,
+                `givewp-${nodeType}-${type}`,
+                {[`givewp-${nodeType}-${type}-${name}`]: name},
+            )
+        }>
+            {children}
+        </Element>
+    );
 }
 
-export interface ElementProps extends Element {}
-
-export interface GroupProps extends Group {
-    inputProps: {
-        [key: string]: UseFormRegisterReturn;
-    };
-}
-
-function NodeWrapper({type, nodeType, children}: {type: string; nodeType: string; children: ReactNode}) {
-    return <div className={`givewp-${nodeType} givewp-${nodeType}-${type}`}>{children}</div>;
-}
-
-function withWrapper(NodeComponent, section, type) {
+export function withWrapper(NodeComponent, section, type, htmlTag) {
     return (props) => {
         return (
-            <NodeWrapper type={type} nodeType={section}>
+            <NodeWrapper type={type} nodeType={section} htmlTag={htmlTag}>
                 <NodeComponent {...props} />
             </NodeWrapper>
         );
     };
 }
 
-const templates = {
+const defaultTemplate = {
     fields: {
         amount: AmountField,
         text: TextField,
@@ -58,8 +63,29 @@ const templates = {
     },
 };
 
-function getTemplate<NodeProps>(type: string, section: string): FC<NodeProps> {
-    const Node = templates[section].hasOwnProperty(type) ? withWrapper(templates[section][type], section, type) : null;
+const activeTemplate = window.givewp.template.get();
+
+const template = {
+    fields: {
+        ...defaultTemplate.fields,
+        ...activeTemplate?.fields
+    },
+    elements: {
+        ...defaultTemplate.elements,
+        ...activeTemplate?.elements
+    },
+    groups: {
+        ...defaultTemplate.groups,
+        ...activeTemplate?.groups
+    },
+    layouts: {
+        ...defaultTemplate.layouts,
+        ...activeTemplate?.layouts
+    },
+}
+
+function getTemplate<NodeProps>(type: string, section: string, htmlTag?: string): FC<NodeProps> {
+    const Node = template[section].hasOwnProperty(type) ? withWrapper(template[section][type], section, type, htmlTag) : null;
 
     let FilteredNode = applyFilters(`givewp/form/${section}/${type}`, Node);
     FilteredNode = applyFilters(`givewp/form/${section}`, Node, type);
@@ -84,7 +110,7 @@ export function getGroupTemplate(type: string): FC<GroupProps> {
 }
 
 export function getSectionTemplate(): FC<SectionProps> {
-    return getTemplate<SectionProps>('section', 'layouts');
+    return getTemplate<SectionProps>('section', 'layouts', 'section');
 }
 
 export function getFormTemplate(): FC<FormProps> {

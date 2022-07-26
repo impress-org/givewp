@@ -1,4 +1,4 @@
-import {FC} from 'react';
+import {FC, ReactNode} from 'react';
 
 /**
  * Used for a single currency. The amount is an integer in the smallest unit of the currency.
@@ -85,6 +85,24 @@ export interface Gateway {
 
 export interface Template {
     id: string;
+    fields?: {
+        amount?: ReactNode,
+        text?: ReactNode,
+        textarea?: ReactNode,
+        email?: ReactNode,
+        hidden?: ReactNode,
+    },
+    elements?: {
+        html?: ReactNode,
+    },
+    groups?: {
+        name?: ReactNode,
+    },
+    layouts?: {
+        section?: ReactNode,
+        form?: ReactNode,
+    },
+
 }
 
 export interface VisibilityCondition {

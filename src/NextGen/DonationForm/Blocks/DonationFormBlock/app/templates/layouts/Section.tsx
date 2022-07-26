@@ -10,8 +10,8 @@ export default function Section({section: {name, label, description}, children}:
     return (
         <fieldset aria-labelledby={name}>
             <div>
-                <h2 id={name}>{label}</h2>
-                <em>{description}</em>
+                <legend id={name}>{label}</legend>
+                <p><em>{description}</em></p>
             </div>
             <div className="givewp-section-nodes">{children}</div>
         </fieldset>

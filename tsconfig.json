@@ -19,7 +19,12 @@
             }
         ],
         "paths": {
-            "@givewp/forms/types": ["./src/NextGen/DonationForm/resources/types.ts"]
+            "@givewp/forms/types": [
+                "./src/NextGen/DonationForm/resources/types.ts"
+            ],
+            "@givewp/forms/propTypes": [
+                "./src/NextGen/DonationForm/resources/propTypes.ts"
+            ]
         }
     },
     "include": [

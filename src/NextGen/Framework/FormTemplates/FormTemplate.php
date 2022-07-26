@@ -67,4 +67,17 @@ abstract class FormTemplate implements FormTemplateInterface {
     {
         return false;
     }
+
+    /**
+     * An array of dependencies compatible with the `$deps` parameter in wp_enqueue_script
+     *
+     * @see https://developer.wordpress.org/reference/functions/wp_enqueue_script/
+     * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-dependency-extraction-webpack-plugin/#wordpress
+     *
+     * @return array
+     */
+    public function dependencies(): array
+    {
+        return [];
+    }
 }

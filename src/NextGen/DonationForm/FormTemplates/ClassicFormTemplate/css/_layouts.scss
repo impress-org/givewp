@@ -1,0 +1,17 @@
+#root-give-next-gen-donation-form-block {
+    width: 100%;
+    max-width: 100%;
+    // TODO: make these css variables dynamic
+    --give-primary-color: #1E8CBE;
+    --give-header-background-color--for-rgb: 30, 140, 190;
+    --give-header-stats-progressbar-color: #2bc253;
+    --give-primary-font: 'Montserrat';
+}
+
+.givewp-layouts-form {
+    border-radius: 0.5rem;
+    box-shadow: rgb(0 0 0 / 30%) 0 0.125rem 0.3125rem;
+    background-color: #fff;
+    max-width: min(100%,51.5rem);
+    margin: 0 auto;
+}
