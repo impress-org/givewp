@@ -5,9 +5,10 @@ const defaults = {
     category: 'layout',
 
     icon: () => <Icon icon={
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
-                d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
+                d="M5 3H3V5H5V3ZM9 3H7V5H9V3ZM7 19H9V21H7V19ZM5 7H3V9H5V7ZM19 7H21V9H19V7ZM5 11H3V13H5V11ZM19 11H21V13H19V11ZM5 15H3V17H5V15ZM19 15H21V17H19V15ZM5 19H3V21H5V19ZM11 3H13V5H11V3ZM13 19H11V21H13V19ZM15 3H17V5H15V3ZM17 19H15V21H17V19ZM19 3H21V5H19V3ZM21 19H19V21H21V19Z"
+                fill="#000C00" />
         </svg>
     } />,
 

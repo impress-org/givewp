@@ -1,5 +1,5 @@
 import Sidebar from './primary';
-import SecondarySidebar from './secondary';
+import SecondarySidebar from './secondary.tsx';
 
 import './styles.scss';
 

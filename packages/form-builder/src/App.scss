@@ -102,11 +102,19 @@ select {
     &.has-icon {
         padding: 0 6px;
 
+        svg {
+            transition: transform .2s cubic-bezier(.165, .84, .44, 1);
+        }
+
         &.is-pressed {
             background-color: var(--give-neutral-100);
 
             &:hover {
                 background-color: var(--give-neutral-110);
+            }
+
+            .components-icon--add {
+                transform: rotate(45deg);
             }
         }
     }

@@ -8,6 +8,7 @@ const settings = {
 
     supports: {
         html: false, // Removes support for an HTML mode.
+        multiple: true,
     },
 
     attributes: {

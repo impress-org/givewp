@@ -2,6 +2,7 @@ import {registerBlockType} from "@wordpress/blocks";
 import {InspectorControls} from "@wordpress/block-editor";
 import {PanelBody, TextControl, Button} from "@wordpress/components";
 import {__} from "@wordpress/i18n";
+import {Icon} from "@wordpress/icons";
 
 registerBlockType('custom-block-editor/donation-amount-levels', {
 
@@ -11,6 +12,14 @@ registerBlockType('custom-block-editor/donation-amount-levels', {
         multiple: false,
         html: false, // Removes support for an HTML mode.
     },
+
+    icon: () => <Icon icon={
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M11.5789 4.44118H20M4 7.52941L7.36842 4M7.36842 4V19M11.5789 8.85294H18.3158M11.5789 13.2647H16.6316M11.5789 17.6765H14.9474"
+                stroke="#000C00" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+    } />,
 
     attributes: {
         levels: {
