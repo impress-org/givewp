@@ -38,7 +38,11 @@
 }
 
 .sidebar-panel .active-tab {
-    border-top: 3px solid #66bb6a;
+    border-bottom: 3px solid #66bb6a;
+}
+
+.sidebar-panel .components-button:focus:not(:disabled) {
+    box-shadow: inset 0 0 0 var(--wp-admin-border-width-focus) var(--wp-admin-theme-color), inset 0 -4px 0 0 var(--wp-admin-theme-color);
 }
 
 .givewp-next-gen-inspector-popout {
