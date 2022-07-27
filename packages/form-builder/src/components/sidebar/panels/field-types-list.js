@@ -2,7 +2,7 @@ import {useSelect} from "@wordpress/data";
 import {store as blockEditorStore} from "@wordpress/block-editor/build/store";
 import fieldBlocks from "../../../blocks/fields";
 import {__} from "@wordpress/i18n";
-import BlockTypesList from "@wordpress/block-editor/build/components/block-types-list";
+import BlockTypesList from "../../forks/block-types-list";
 import {SearchControl} from "@wordpress/components";
 import {useState} from "react";
 
