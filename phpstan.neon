@@ -10,6 +10,7 @@ parameters:
         - src/Framework/Http/
         - src/Framework/LegacyPaymentGateways/
         - src/Framework/QueryBuilder/
+        - src/Framework/Support/
     bootstrapFiles:
       - give.php
     scanDirectories:
