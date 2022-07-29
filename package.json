@@ -87,7 +87,7 @@
         "jquery.payment": "latest",
         "lodash": "^4.17.21",
         "magnific-popup": "latest",
-        "moment": "^2.29.2",
+        "moment": "^2.29.4",
         "prop-types": "^15.7.2",
         "react": "^16.12.0",
         "react-a11y-dialog": "^6.1.5",
