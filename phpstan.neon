@@ -1,5 +1,4 @@
 includes:
-    - phpstan/extension.neon
     - vendor/szepeviktor/phpstan-wordpress/extension.neon
 
 parameters:
@@ -12,3 +11,9 @@ parameters:
       - give.php
     scanDirectories:
       - includes
+
+services:
+  -
+    class: Give\PHPStan\Log\LogMethodsReflectionExtension
+    tags:
+      - phpstan.broker.methodsClassReflectionExtension

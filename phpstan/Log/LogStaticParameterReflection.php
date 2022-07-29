@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PHPStan\Reflection;
+namespace Give\PHPStan\Log;
 
 use PHPStan\Reflection\PassedByReference;
 use PHPStan\Reflection\ParameterReflection;

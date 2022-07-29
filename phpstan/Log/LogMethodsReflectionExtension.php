@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PHPStan\Reflection;
+namespace Give\PHPStan\Log;
 
 use Give\Log\Log;
 use PHPStan\Reflection\ClassReflection;

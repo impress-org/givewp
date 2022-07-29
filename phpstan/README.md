@@ -4,13 +4,4 @@
 
 ## Custom Extensions
 
-- `Reflection\LogMethodsReflectionExtension` adds support for virtual static method calls to `Give\Log\Log`.
-
-## Usage
-
-Include extension.neon in `phpstan.neon`:
-
-```
-includes:
-	- phpstan/extension.neon
-```
+- [Log\LogMethodsReflectionExtension](phpstan/Log/LogMethodsReflectionExtension.php) adds support for the `Give\Log\Log` static facade methods.
