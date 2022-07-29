@@ -29,7 +29,7 @@ class Group implements Node, Collection
 
     /**
      * @since      2.12.0
-     * @unreleased Make constructor as final to avoid unsafe usage of `new static()`.
+     * @unreleased Make constructor final to avoid unsafe usage of `new static()`.
      *
      * @param $name
      */
