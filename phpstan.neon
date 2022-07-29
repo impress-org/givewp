@@ -1,4 +1,5 @@
 includes:
+    - vendor/timeweb/phpstan-enum/extension.neon
     - vendor/szepeviktor/phpstan-wordpress/extension.neon
 
 parameters:
@@ -9,6 +10,7 @@ parameters:
         - src/Framework/FieldsAPI/
         - src/Framework/Http/
         - src/Framework/LegacyPaymentGateways/
+        - src/Framework/Models/
         - src/Framework/QueryBuilder/
         - src/Framework/Support/
         - src/Framework/WordPressShims/

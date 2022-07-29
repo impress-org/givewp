@@ -34,7 +34,7 @@ jobs:
                 run: composer install --no-progress --no-interaction
 
             -   name: Install PHPStan
-                run: composer require --dev phpstan/phpstan szepeviktor/phpstan-wordpress --ignore-platform-reqs --no-progress --no-interaction
+                run: composer require --dev phpstan/phpstan szepeviktor/phpstan-wordpress timeweb/phpstan-enum --ignore-platform-reqs --no-progress --no-interaction
 
             -   name: Analyse
                 run: php -d memory_limit=-1 vendor/bin/phpstan analyse -c phpstan.neon
