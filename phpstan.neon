@@ -12,6 +12,7 @@ parameters:
         - src/Framework/QueryBuilder/
         - src/Framework/Support/
         - src/Framework/WordPressShims/
+        - src/Framework/EnqueueScript.php
     bootstrapFiles:
       - give.php
     scanDirectories:
