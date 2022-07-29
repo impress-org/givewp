@@ -5,6 +5,7 @@ parameters:
     level: 0
     paths:
         - src/Framework/Database/
+        - src/Framework/Exceptions/
         - src/Framework/FieldsAPI/
     bootstrapFiles:
       - give.php
