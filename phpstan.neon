@@ -9,6 +9,7 @@ parameters:
         - src/Framework/FieldsAPI/
         - src/Framework/Http/
         - src/Framework/LegacyPaymentGateways/
+        - src/Framework/QueryBuilder/
     bootstrapFiles:
       - give.php
     scanDirectories:
