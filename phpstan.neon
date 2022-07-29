@@ -11,6 +11,7 @@ parameters:
         - src/Framework/LegacyPaymentGateways/
         - src/Framework/QueryBuilder/
         - src/Framework/Support/
+        - src/Framework/WordPressShims/
     bootstrapFiles:
       - give.php
     scanDirectories:
