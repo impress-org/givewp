@@ -1,0 +1,5 @@
+services:
+  -
+    class: Give\PHPStan\Reflection\LogMethodsReflectionExtension
+    tags:
+      - phpstan.broker.methodsClassReflectionExtension

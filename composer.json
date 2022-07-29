@@ -54,6 +54,11 @@
             "src/Framework/Http/Response/functions.php"
         ]
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Give\\PHPStan\\": "phpstan/"
+        }
+    },
     "config": {
         "platform": {
             "php": "7.0"

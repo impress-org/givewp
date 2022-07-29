@@ -1,10 +1,12 @@
 includes:
+    - phpstan/extension.neon
     - vendor/szepeviktor/phpstan-wordpress/extension.neon
 
 parameters:
     level: 0
     paths:
         - src/Framework/Database/
+        - src/Framework/Exceptions/
         - src/Framework/FieldsAPI/
     bootstrapFiles:
       - give.php
