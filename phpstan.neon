@@ -7,6 +7,7 @@ parameters:
     paths:
         - src/Framework/
     excludePaths:
+        - src/Framework/FieldsAPI/Concerns/HasType.php
         - src/Framework/Migrations/
         - src/Framework/PaymentGateways/
     bootstrapFiles:
