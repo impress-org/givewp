@@ -11,13 +11,12 @@ use Give\Log\ValueObjects\LogType;
  *
  * The static facade intended to be the primary way of logging within GiveWP to make life easier.
  *
- * @since        2.21.0 Use array_diff_key to filter context data to prevent php warning with multi-dimension array
- * @since        2.20.0 add sensitive information redaction; store context as arrays for JSON serialization
- * @since        2.19.6 added debug
- * @since        2.10.0
- * @unreleased   Re-ordered `__callStatic` before `__call` for PHPStan parsing order.
+ * @since 2.21.0 Use array_diff_key to filter context data to prevent php warning with multi-dimension array
+ * @since 2.20.0 add sensitive information redaction; store context as arrays for JSON serialization
+ * @since 2.19.6 added debug
+ * @since 2.10.0
  *
- * @note         There are two special keywords used in the context that are representing category and source.
+ * @note There are two special keywords used in the context that are representing category and source.
  * The default value for the Category is "Core" and for the source is "Give Core"
  * If you want to change the category and/or source, you should provide them as context attributes.
  * Source and category attributes should be written lowercase.
@@ -29,7 +28,7 @@ use Give\Log\ValueObjects\LogType;
  *     'source' => 'Stripe add-on'
  * ] );
  *
- * @note         Use as many contexts attributes as you need. The more the better.
+ * @note Use as many contexts attributes as you need. The more the better.
  *
  * @example
  *
@@ -40,7 +39,7 @@ use Give\Log\ValueObjects\LogType;
  *     'donor_id' => $donorId
  * ] );
  *
- * @note         You can use an array or object as a context attribute value.
+ * @note You can use an array or object as a context attribute value.
  *
  * @example
  *
@@ -67,35 +66,9 @@ use Give\Log\ValueObjects\LogType;
  */
 class Log
 {
-
-    /**
-     * Static helper for calling the logger methods
-     *
-     * @since 2.19.6 added conditional for logging debug()
-     * @since 2.18.0 - always log errors, warnings & only log all if WP_DEBUG_LOG is enabled
-     * @since 2.11.1
-     *
-     * @param array  $arguments
-     *
-     * @param string $name
-     */
-    public static function __callStatic($name, $arguments)
-    {
-        /** @var Log $logger */
-        $logger = give(__CLASS__);
-
-        if ($name !== LogType::DEBUG && (in_array($name, ['error', 'warning']) || Environment::isWPDebugLogEnabled())) {
-            call_user_func_array([$logger, $name], $arguments);
-        }
-
-        if (Environment::isGiveDebugEnabled()) {
-            call_user_func_array([$logger, $name], $arguments);
-        }
-    }
-
     public function __call($name, $arguments)
     {
-        [$message, $context] = array_pad($arguments, 2, null);
+        list ($message, $context) = array_pad($arguments, 2, null);
 
         if (is_array($context)) {
             $context = $this->serializeAndRedactContext($context);
@@ -117,7 +90,7 @@ class Log
         }
 
         // Set message
-        if ( ! is_null($message)) {
+        if (!is_null($message)) {
             $data['message'] = $message;
         }
 
@@ -166,6 +139,31 @@ class Log
         }
 
         return $redactedData;
+    }
+
+    /**
+     * Static helper for calling the logger methods
+     *
+     * @since 2.19.6 added conditional for logging debug()
+     * @since 2.18.0 - always log errors, warnings & only log all if WP_DEBUG_LOG is enabled
+     * @since 2.11.1
+     *
+     * @param array $arguments
+     *
+     * @param string $name
+     */
+    public static function __callStatic($name, $arguments)
+    {
+        /** @var Log $logger */
+        $logger = give(__CLASS__);
+
+        if ($name !== LogType::DEBUG && (in_array($name, ['error', 'warning']) || Environment::isWPDebugLogEnabled())) {
+            call_user_func_array([$logger, $name], $arguments);
+        }
+
+        if (Environment::isGiveDebugEnabled()) {
+            call_user_func_array([$logger, $name], $arguments);
+        }
     }
 
     /**
