@@ -5,16 +5,10 @@ includes:
 parameters:
     level: 0
     paths:
-        - src/Framework/Database/
-        - src/Framework/Exceptions/
-        - src/Framework/FieldsAPI/
-        - src/Framework/Http/
-        - src/Framework/LegacyPaymentGateways/
-        - src/Framework/Models/
-        - src/Framework/QueryBuilder/
-        - src/Framework/Support/
-        - src/Framework/WordPressShims/
-        - src/Framework/EnqueueScript.php
+        - src/Framework/
+    excludePaths:
+        - src/Framework/Migrations/
+        - src/Framework/PaymentGateways/
     bootstrapFiles:
       - give.php
     scanDirectories:
