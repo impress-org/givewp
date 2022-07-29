@@ -8,6 +8,7 @@ parameters:
         - src/Framework/Exceptions/
         - src/Framework/FieldsAPI/
         - src/Framework/Http/
+        - src/Framework/LegacyPaymentGateways/
     bootstrapFiles:
       - give.php
     scanDirectories:
