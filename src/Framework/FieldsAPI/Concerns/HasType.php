@@ -10,6 +10,6 @@ trait HasType
      */
     public function getType(): string
     {
-        return static::TYPE;
+        return static::TYPE; // @phpstan-ignore-line
     }
 }
