@@ -13,8 +13,7 @@
         "fakerphp/faker": "^1.9",
         "myclabs/php-enum": "^1.6",
         "symfony/http-foundation": "^3.4",
-        "moneyphp/money": "v3.3.1",
-        "ext-json": "*"
+        "moneyphp/money": "v3.3.1"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
@@ -24,9 +23,7 @@
         "kjohnson/since-unreleased": "^1.0.0",
         "wp-cli/wp-cli-bundle": "^2.5",
         "yoast/phpunit-polyfills": "^1.0",
-        "wordpress/wordpress": "dev-trunk",
-        "timeweb/phpstan-enum": "^3.0",
-        "szepeviktor/phpstan-wordpress": "^1.1"
+        "wordpress/wordpress": "dev-trunk"
     },
     "keywords": [
         "wordpress",
@@ -55,11 +52,6 @@
         "files": [
             "src/Framework/Http/Response/functions.php"
         ]
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Give\\PHPStan\\": "phpstan/"
-        }
     },
     "config": {
         "platform": {
