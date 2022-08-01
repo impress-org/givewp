@@ -36,6 +36,148 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 			$this->enable_save = ! ( Give_Admin_Settings::is_setting_page( 'emails', 'donor-email' ) || Give_Admin_Settings::is_setting_page( 'emails', 'admin-email' ) );
 
 			add_action( 'give_admin_field_email_notification', array( $this, 'email_notification_setting' ) );
+            add_action( 'give_admin_field_give_sendwp_button', [ $this, '_render_give_sendwp_button' ], 10, 3 );
+		}
+
+        /**
+		 * Render give_currency_code_preview field type
+		 *
+		 * @since  2.3.0
+		 * @access public
+		 *
+		 * @param array $field Field Attributes array.
+		 *
+		 * @return void
+		 */
+		public function _render_give_sendwp_button( $field, $value ) {
+            // Connection status partial label based on the state of the SendWP email sending setting (Tools -> SendWP)
+            $connected  = '<a href="https://app.sendwp.com/dashboard" target="_blank" rel="noopener noreferrer">';
+            $connected .= __( 'Access your SendWP account', 'give' );
+            $connected .= '</a>.';
+
+            $disconnected = sprintf(
+                __( '<em><strong>Note:</strong> Email sending is currently disabled. <a href="' . admin_url( '/tools.php?page=sendwp' ) . '">Click here</a> to enable it.</em>', 'give' )
+            );
+
+            // Checks if SendWP is connected
+            $client_connected = function_exists( 'sendwp_client_connected' ) && sendwp_client_connected() ? true : false;
+
+            // Checks if email sending is enabled in SendWP
+            $forwarding_enabled = function_exists( 'sendwp_forwarding_enabled' ) && sendwp_forwarding_enabled() ? true : false;
+
+            // Output the appropriate button and label based on connection status
+            if( $client_connected ) :
+                ?>
+                <tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . $field['wrapper_class'] . '"' : ''; ?>>
+                    <th scope="row" class="titledesc">
+                        <label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ); ?></label>
+                    </th>
+                    <td class="give-forminp">
+                        <p><?php _e( 'SendWP plugin activated.', 'give' ); ?> <?php echo $forwarding_enabled ? $connected : $disconnected ; ?></p>
+
+                        <br style="margin-bottom: 0.5rem;"/>
+
+                        <button id="give-sendwp-disconnect" class="button"><?php _e( 'Disconnect SendWP', 'give' ); ?></button>
+                    </td>
+                </tr>
+                <?php
+            else :
+                ?>
+                <tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . $field['wrapper_class'] . '"' : ''; ?>>
+                    <th scope="row" class="titledesc">
+                        <label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ); ?></label>
+                    </th>
+                    <td class="give-forminp">
+                        <div class="give-field-description">
+                            <?php _e( 'GiveWP recommends SendWP to ensure quick and reliable delivery of all emails sent from your site, such as donation receipts, recurring donation renewal reminders, password resets, and more.', 'give' ); ?> <?php printf( __( '%sLearn more%s', 'give' ), '<a href="https://go.givewp.com/sendwpinternal" target="_blank" rel="noopener noreferrer">', '</a>' ); ?>
+                        </div>
+
+                        <br style="margin-bottom: 0.5rem;"/>
+
+                        <button type="button" id="give-sendwp-connect" class="button button-primary"><?php esc_html_e( 'Connect with SendWP', 'give' ); ?>
+                    </button>
+                    </td>
+                </tr>
+
+                <script>
+                    jQuery('#give-sendwp-connect').on('click', function(e) {
+
+                        e.preventDefault();
+                        jQuery(this).html( 'Connecting <span class="give-loading"></span>' );
+                        document.body.style.cursor = 'wait';
+                        give_sendwp_remote_install();
+
+                    });
+
+                    jQuery('#give-sendwp-disconnect').on('click', function(e) {
+                        e.preventDefault();
+                        jQuery(this).html( 'Disconnecting <span class="give-loading dark"></span>' );
+                        document.body.style.cursor = 'wait';
+                        give_sendwp_disconnect();
+
+                    });
+
+                    function give_sendwp_remote_install() {
+                        var data = {
+                            'action': 'give_sendwp_remote_install',
+                        };
+
+                        // since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
+                        jQuery.post(ajaxurl, data, function( response ) {
+
+                            if( ! response.success ) {
+
+                                if( confirm( response.data.error ) ) {
+                                    location.reload();
+                                    return;
+                                }
+                            }
+
+                            give_sendwp_register_client(
+                                response.data.register_url,
+                                response.data.client_name,
+                                response.data.client_secret,
+                                response.data.client_redirect,
+                                response.data.partner_id
+                            );
+                        });
+                    }
+
+                    function give_sendwp_disconnect() {
+                        var data = {
+                            'action': 'give_sendwp_disconnect',
+                        };
+
+                        jQuery.post(ajaxurl, data, function( response ) {
+                            location.reload();
+                        });
+                    }
+
+                    function give_sendwp_register_client(register_url, client_name, client_secret, client_redirect, partner_id) {
+
+                        var form = document.createElement("form");
+                        form.setAttribute("method", 'POST');
+                        form.setAttribute("action", register_url);
+
+                        function give_sendwp_append_form_input(name, value) {
+                            var input = document.createElement("input");
+                            input.setAttribute("type", "hidden");
+                            input.setAttribute("name", name);
+                            input.setAttribute("value", value);
+                            form.appendChild(input);
+                        }
+
+                        give_sendwp_append_form_input('client_name', client_name);
+                        give_sendwp_append_form_input('client_secret', client_secret);
+                        give_sendwp_append_form_input('client_redirect', client_redirect);
+                        give_sendwp_append_form_input('partner_id', partner_id);
+
+                        document.body.appendChild(form);
+                        form.submit();
+                    }
+                </script>
+                <?php
+            endif;
 		}
 
 		/**
@@ -83,6 +225,12 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 							'desc'    => esc_html__( 'Email address from which all GiveWP emails are sent from. This will act as the "from" and "reply-to" email address.', 'give' ),
 							'default' => get_bloginfo( 'admin_email' ),
 							'type'    => 'text',
+						),
+                        array(
+							'id'      => 'sendwp',
+							'name'    => esc_html__( 'SendWP', 'give' ),
+							'desc'    => esc_html__( 'We recommend SendWP to ensure quick and reliable delivery of all emails sent from your store, such as donation receipts, recurring donation renewal reminders, password resets, and more.', 'give' ),
+							'type'    => 'give_sendwp_button',
 						),
 						array(
 							'name'  => esc_html__( 'Donation Notification Settings Docs Link', 'give' ),
