@@ -19,6 +19,7 @@
         "@wordpress/block-editor": "^8.0.17",
         "@wordpress/components": "^19.2.3",
         "@wordpress/compose": "^5.6.0",
+        "@wordpress/core-data": "^4.12.0",
         "@wordpress/data": "^6.1.5",
         "@wordpress/hooks": "^3.3.1",
         "@wordpress/i18n": "^3.19.0",
@@ -29,11 +30,15 @@
         "joi": "^17.6.0",
         "prop-types": "^15.7.2",
         "react-hook-form": "^7.33.1",
+        "react-select": "^5.4.0",
         "swr": "^1.2.0"
     },
     "devDependencies": {
         "@types/react": "^17.0.38",
         "@types/react-dom": "^17.0.11",
+        "@types/wordpress__blocks": "^11.0.5",
+        "@types/wordpress__components": "^19.10.1",
+        "@types/wordpress__compose": "^4.0.1",
         "@wordpress/env": "^4",
         "@wordpress/scripts": "^23.1.0",
         "autoprefixer": "^9.5.0",
@@ -49,7 +54,7 @@
         "wp-textdomain": "^1.0.1"
     },
     "volta": {
-        "node": "12.22.6",
-        "npm": "7.24.2"
+        "node": "16.16.0",
+        "npm": "8.11.0"
     }
 }

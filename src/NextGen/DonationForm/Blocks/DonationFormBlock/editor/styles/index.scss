@@ -1,0 +1,58 @@
+.givewp-form-block {
+    &--container {
+        display: grid;
+        row-gap: 1rem;
+        padding: 2rem 4rem;
+        background: #f6f6f6;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    &__option {
+        height: 48px;
+    }
+
+    &__select {
+        &__input {
+            &:focus {
+                box-shadow: none !important;
+            }
+        }
+
+        &--label {
+            color: #4f4f4f;
+        }
+    }
+
+    &__logo {
+        &--container {
+            text-align: center;
+        }
+    }
+
+    &__submit-button {
+        width: 100%;
+        background-color: #27ae60;
+        color: #fff;
+        padding: 1rem;
+        border-radius: 5px;
+        font-weight: bold;
+        text-align: center;
+        outline: none;
+        border: 0;
+        transition: 0.2s;
+
+        &:disabled {
+            background-color: #e0e0e0;
+        }
+
+        &:hover:not(:disabled) {
+            cursor: pointer;
+            filter: brightness(1.2);
+        }
+
+        &--container {
+            margin-top: 1rem;
+        }
+    }
+}

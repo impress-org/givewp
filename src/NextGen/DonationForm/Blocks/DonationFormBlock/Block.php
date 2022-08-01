@@ -63,8 +63,12 @@ class Block
             return null;
         }
 
-        $formId = $attributes['formId'];
-        $formTemplateId = $attributes['formTemplateId'];
+        $formId = $attributes['formId'] ?? null;
+        $formTemplateId = $attributes['formTemplateId'] ?? null;
+
+        if (!$formId) {
+            return null;
+        }
 
         $donationForm = $this->createForm($formId);
 

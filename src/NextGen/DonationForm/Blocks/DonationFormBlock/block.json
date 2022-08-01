@@ -12,7 +12,7 @@
     },
     "attributes": {
         "formId": {
-            "type": "number"
+            "type": "string"
         },
         "formTemplateId": {
             "type": "string",
@@ -20,5 +20,6 @@
         }
     },
     "textdomain": "give",
+    "editorStyle": "file:../../../../../build/donationFormBlockStyle.css",
     "editorScript": "file:../../../../../build/donationFormBlock.js"
 }
