@@ -52,6 +52,7 @@ use Give\Subscriptions\Models\Subscription;
  * @property Donor $donor
  * @property Subscription $subscription
  * @property DonationNote[] $notes
+ * @property string $company
  */
 class Donation extends Model implements ModelCrud, ModelHasFactory
 {
@@ -82,6 +83,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
         'anonymous' => ['bool', false],
         'levelId' => ['string', ''],
         'gatewayTransactionId' => 'string',
+        'company' => 'string',
     ];
 
     /**

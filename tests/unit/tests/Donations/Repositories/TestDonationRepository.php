@@ -89,6 +89,8 @@ final class TestDonationRepository extends \Give_Unit_Test_Case
         $this->assertEquals($query->email, $donation->email);
         $this->assertEquals($query->createdAt->format('Y-m-d H:i:s'), $donation->createdAt->format('Y-m-d H:i:s'));
         $this->assertEquals($query->parentId, $donation->parentId);
+        $this->assertEquals($query->anonymous, $donation->anonymous);
+        $this->assertEquals($query->company, $donation->company);
     }
 
     /**

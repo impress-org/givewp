@@ -110,6 +110,10 @@ class DonationQueryData
      * @var string
      */
     public $gatewayTransactionId;
+    /**
+     * @var string|null
+     */
+    public $company;
 
     /**
      * Convert data from object to Donation
@@ -117,7 +121,7 @@ class DonationQueryData
      * @since 2.20.0 update for new amount property, fee amount recovered, and exchange rate
      * @since 2.19.6
      *
-     * @param object $donationQueryObject
+     * @param  object  $donationQueryObject
      *
      * @return self
      */
@@ -158,6 +162,8 @@ class DonationQueryData
         $self->anonymous = (bool)$donationQueryObject->{DonationMetaKeys::ANONYMOUS()->getKeyAsCamelCase()};
         $self->levelId = (string)$donationQueryObject->{DonationMetaKeys::LEVEL_ID()->getKeyAsCamelCase()};
         $self->gatewayTransactionId = $donationQueryObject->{DonationMetaKeys::GATEWAY_TRANSACTION_ID()
+            ->getKeyAsCamelCase()};
+        $self->company = $donationQueryObject->{DonationMetaKeys::COMPANY()
             ->getKeyAsCamelCase()};
 
         return $self;
