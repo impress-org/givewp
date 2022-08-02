@@ -18,8 +18,10 @@ const paymentGateways = {
             padding: '20px',
             margin: '20px 0',
             textAlign: 'center',
-            backgroundColor: '#fafafa',
-        }}>{'Payment Gateways Go Here'}</div>,
+            border: '1px dashed var(--give-gray-100)',
+            borderRadius: '5px',
+            backgroundColor: 'var(--give-gray-10)',
+        }}>{'Payment gateway goes here'}</div>,
         icon: () => <Icon icon={
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path

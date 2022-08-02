@@ -7,6 +7,7 @@ import TextAreaField from './fields/TextArea';
 import EmailField from './fields/Email';
 import HiddenField from './fields/Hidden';
 import HtmlElement from './elements/Html';
+import DonationSummaryElement from './elements/DonationSummary'
 import NameGroup from './groups/Name';
 import SectionLayout, {SectionProps} from './layouts/Section';
 import Form, {FormProps} from './layouts/Form';
@@ -53,6 +54,7 @@ const defaultTemplate = {
     },
     elements: {
         html: HtmlElement,
+        donationSummary: DonationSummaryElement,
     },
     groups: {
         name: NameGroup,

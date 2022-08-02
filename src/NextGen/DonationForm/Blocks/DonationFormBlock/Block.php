@@ -5,6 +5,7 @@ namespace Give\NextGen\DonationForm\Blocks\DonationFormBlock;
 use Give\Framework\EnqueueScript;
 use Give\Framework\FieldsAPI\Amount;
 use Give\Framework\FieldsAPI\Contracts\Node;
+use Give\Framework\FieldsAPI\DonationSummary;
 use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
@@ -59,7 +60,7 @@ class Block
     public function render(array $attributes)
     {
         // return early if we're still inside the editor to avoid server side effects
-        if (!empty($_REQUEST)) {
+        if ( ! empty($_REQUEST)) {
             return null;
         }
 
@@ -177,28 +178,31 @@ class Block
 
     /**
      * @unreleased
+     * @throws EmptyNameException
      */
     protected function convertBlockToNode(stdClass $block): Node
     {
         if ($block->name === "custom-block-editor/donation-amount-levels") {
-            $field = Amount::make('amount')
+            $node = Amount::make('amount')
                 ->levels(...array_map('absint', $block->attributes->levels))
                 ->allowCustomAmount()
                 ->defaultValue(50)
                 ->required();
         } elseif ($block->name === "custom-block-editor/donor-name") {
-            $field = Name::make('name');
+            $node = Name::make('name');
         } elseif ($block->name === "custom-block-editor/email-field") {
-            $field = Email::make('email')->required()->emailTag('email');
+            $node = Email::make('email')->required()->emailTag('email');
+        } elseif ($block->name === "custom-block-editor/donation-summary") {
+            $node = DonationSummary::make('donation-summary');
         } else {
-            $field = Text::make($block->clientId);
+            $node = Text::make($block->clientId);
         }
 
-        if (property_exists($block->attributes, 'label')) {
-            $field->label($block->attributes->label);
+        if (property_exists($block->attributes, 'label') && 'field' === $node->getNodeType()) {
+            $node->label($block->attributes->label);
         }
 
-        return $field;
+        return $node;
     }
 
     /**

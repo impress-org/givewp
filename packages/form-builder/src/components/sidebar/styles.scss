@@ -1,13 +1,15 @@
 .givewp-next-gen-sidebar {
 
-    min-width: 350px;
+    max-width: 100%;
 
     &.givewp-next-gen-sidebar-primary {
         right: 0;
+        width: 284px;
     }
 
     &.givewp-next-gen-sidebar-secondary {
         left: 0;
+        width: 320px;
     }
 
     background: white;
@@ -18,7 +20,6 @@
     //overflow: hidden; // The Inspector Popout needs to be visible.
     position: fixed !important; // !important override added when migrated to WordPress - not sure why this is necessary...
     top: 60px; // Account for header @todo move this to layout, not in the component.
-    width: 20%;
     z-index: 99999999;
 
     > .components-panel {

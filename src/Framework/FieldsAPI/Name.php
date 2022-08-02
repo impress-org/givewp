@@ -8,21 +8,20 @@ class Name extends Group
 {
     const TYPE = 'name';
 
-    public function __construct($name)
+    public static function make($name)
     {
-        parent::__construct($name);
+        return parent::make($name)
+            ->append(
+                Text::make('firstName')
+                    ->label('First Name')
+                    ->required(),
 
-        $this->append(
-            Text::make('firstName')
-                ->label('First Name')
-                ->required(),
+                Text::make('lastName')
+                    ->label('Last Name'),
 
-            Text::make('lastName')
-                ->label('Last Name'),
-
-            Select::make('honorific')
-                ->label('Honorific')
-                ->options('Mr.', 'Mrs.', 'Ms.')
-        );
+                Select::make('honorific')
+                    ->label('Honorific')
+                    ->options('Mr.', 'Mrs.', 'Ms.')
+            );
     }
 }
