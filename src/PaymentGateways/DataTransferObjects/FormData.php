@@ -104,6 +104,10 @@ class FormData
 
     /** @var bool */
     public $anonymous;
+    /**
+     * @var string|null
+     */
+    public $company;
 
     /**
      * Convert data from request into DTO
@@ -159,6 +163,8 @@ class FormData
                 $request['post_data']['give_anonymous_donation']
             );
 
+        $self->company = !empty($request['post_data']['give_company_name']) ? $request['post_data']['give_company_name'] : null;
+
         return $self;
     }
 
@@ -187,7 +193,8 @@ class FormData
                 'address2' => $this->billingAddress->line2
             ]),
             'levelId' => $this->priceId,
-            'anonymous' => $this->anonymous
+            'anonymous' => $this->anonymous,
+            'company' => $this->company
         ]);
     }
 }
