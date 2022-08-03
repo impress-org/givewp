@@ -80,7 +80,8 @@ class TestDonation extends \Give_Unit_Test_Case
             'email' => 'billMurray@givewp.com',
             'formId' => 1,
             'levelId' => 'custom',
-            'anonymous' => true
+            'anonymous' => true,
+            'company' => 'GiveWP'
         ]);
 
         $donationFromDatabase = Donation::find($donation->id);
