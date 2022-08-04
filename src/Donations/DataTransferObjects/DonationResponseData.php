@@ -68,10 +68,6 @@ final class DonationResponseData implements Arrayable
      * @var string
      */
     public $donationType;
-    /**
-     * @var string
-     */
-    public $name;
 
     /**
      * Convert data from object to Donation
