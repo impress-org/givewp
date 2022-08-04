@@ -63,7 +63,7 @@ class DonateRoute
             $postData = json_decode($request, true);
 
             // create DTO from POST request
-            $formData = DonateFormData::fromRequest($postData);
+            $formData = DonateFormData::fromRequest(give_clean($postData));
 
             // get all registered gateways
             $paymentGateways = $this->paymentGatewayRegister->getPaymentGateways();

@@ -33,8 +33,7 @@ const schema = Joi.object({
     gatewayId: Joi.string().required().label('Payment Gateway').messages(messages),
     formId: Joi.number().required(),
     currency: Joi.string().required(),
-    formTitle: Joi.string().required(),
-    userId: Joi.number().required(),
+    company: Joi.string().optional().allow(null, '')
 }).unknown();
 
 const handleSubmitRequest = async (values, setError, gateway: Gateway) => {

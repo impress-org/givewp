@@ -129,12 +129,6 @@ class Block
             Hidden::make('formId')
                 ->defaultValue($formId),
 
-            Hidden::make('formTitle')
-                ->defaultValue('Give Next Gen Form'),
-
-            Hidden::make('userId')
-                ->defaultValue(get_current_user_id()),
-
             Hidden::make('currency')
                 ->defaultValue(give_get_currency($formId))
         );
@@ -194,6 +188,8 @@ class Block
             $node = Email::make('email')->required()->emailTag('email');
         } elseif ($block->name === "custom-block-editor/donation-summary") {
             $node = DonationSummary::make('donation-summary');
+        } elseif ($block->name === "custom-block-editor/company-field") {
+            $node = Text::make('company');
         } else {
             $node = Text::make($block->clientId);
         }

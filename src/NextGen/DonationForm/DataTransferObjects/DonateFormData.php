@@ -47,6 +47,10 @@ class DonateFormData
      * @var string
      */
     public $formTitle;
+    /**
+     * @var string|null
+     */
+    public $company;
 
     /**
      * Convert data from request into DTO
@@ -66,9 +70,10 @@ class DonateFormData
         $self->firstName = $request['firstName'];
         $self->lastName = $request['lastName'];
         $self->email = $request['email'];
-        $self->wpUserId = (int)$request['userId'];
+        $self->wpUserId = get_current_user_id();
         $self->formId = (int)$request['formId'];
-        $self->formTitle = $request['formTitle'];
+        $self->formTitle = get_the_title($request['formId']);
+        $self->company = !empty($request['company']) ? $request['company'] : null;
 
         return $self;
     }
@@ -88,6 +93,7 @@ class DonateFormData
             'email' => $this->email,
             'formId' => $this->formId,
             'formTitle' => $this->formTitle,
+            'company' => $this->company
         ]);
     }
 }
