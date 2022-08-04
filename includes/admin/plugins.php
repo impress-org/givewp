@@ -610,16 +610,18 @@ function give_deactivation_form_submit() {
 	$delete_data = isset( $form_data['confirm_reset_store'] ) ? $form_data['confirm_reset_store'] : '';
 
     // Send data to survey server. It doesn't matter if it fails.
-	wp_remote_post(
-		'http://survey.givewp.com/wp-json/give/v2/survey/',
-		[
-			'body' => [
-				'radio_value'        => $radio_value,
-				'user_reason'        => $user_reason,
-			],
-            'timeout' => 0.1
-		]
-	);
+    if ( wp_get_environment_type() === 'production' ) {
+        wp_remote_post(
+            'http://survey.givewp.com/wp-json/give/v2/survey/',
+            [
+                'body' => [
+                    'radio_value'        => $radio_value,
+                    'user_reason'        => $user_reason,
+                ],
+                'timeout' => 0.1
+            ]
+        );
+    }
 
     if ( '1' === $delete_data ) {
         give_update_option( 'uninstall_on_delete', 'enabled' );
