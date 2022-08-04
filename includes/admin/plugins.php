@@ -617,6 +617,7 @@ function give_deactivation_form_submit() {
 				'radio_value'        => $radio_value,
 				'user_reason'        => $user_reason,
 			],
+            'timeout' => 0.1
 		]
 	);
 
