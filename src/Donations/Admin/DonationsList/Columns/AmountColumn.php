@@ -47,6 +47,9 @@ class AmountColumn extends AdvancedColumn
         return new Money($row->_give_payment_total, $row->_give_payment_currency);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getCellValueType(): CellValueType
     {
         return CellValueType::CURRENCY();
