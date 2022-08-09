@@ -111,11 +111,13 @@ class RegisterPaymentGateways
         foreach ($this->stripePaymentMethods as $gatewayClass) {
             add_filter(
                 sprintf(
-                    'givewp_new_payment_%1$s_gateway_data',
+                    'givewp_create_payment_gateway_data_%1$s',
                     $gatewayClass::id()
                 ),
                 function ($gatewayData, Donation $donation) {
-                    return (new GetPaymentMethodFromRequest)($donation);
+                    $gatewayData['stripePaymentMethod'] = (new GetPaymentMethodFromRequest)($donation);
+
+                    return $gatewayData;
                 },
                 10,
                 2
@@ -130,11 +132,12 @@ class RegisterPaymentGateways
     {
         add_filter(
             sprintf(
-                'givewp_new_payment_%1$s_gateway_data',
+                'givewp_create_payment_gateway_data_%1$s',
                 PayPalCommerce::id()
             ),
-            function () {
-                return (new GetPayPalOrderFromRequest())();
+            function ($gatewayData) {
+                $gatewayData['paypalOrder'] = (new GetPayPalOrderFromRequest())();
+                return $gatewayData;
             }
         );
     }

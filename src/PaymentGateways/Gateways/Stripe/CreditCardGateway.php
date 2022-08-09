@@ -45,11 +45,11 @@ class CreditCardGateway extends PaymentGateway
      * @since 2.19.7 fix handlePaymentIntentStatus not receiving extra param
      * @since 2.19.0
      *
-     * @param PaymentMethod $paymentMethod
+     * @param array{stripePaymentMethod: PaymentMethod} $gatewayData
      *
      * @throws PaymentGatewayException
      */
-    public function createPayment(Donation $donation, $paymentMethod): GatewayCommand
+    public function createPayment(Donation $donation, $gatewayData): GatewayCommand
     {
         $donationSummary = Call::invoke(Actions\SaveDonationSummary::class, $donation);
         $stripeCustomer = Call::invoke(Actions\GetOrCreateStripeCustomer::class, $donation);
@@ -61,7 +61,7 @@ class CreditCardGateway extends PaymentGateway
                 $donation,
                 $donationSummary,
                 $stripeCustomer,
-                $paymentMethod
+                $gatewayData['stripePaymentMethod']
             ),
             $donation
         );
