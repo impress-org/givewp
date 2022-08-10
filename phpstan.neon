@@ -38,7 +38,8 @@ parameters:
         - src/Framework/FieldsAPI/Concerns/HasType.php
         - src/Framework/Migrations/
         - src/Framework/PaymentGateways/
-        - src/PaymentGateways/Actions/CreateSubscriptionAction # phpstan isn't finding inherited constructor for LegacySubscriber
+        - src/PaymentGateways/Actions/CreateSubscriptionAction/ # phpstan isn't finding inherited constructor for LegacySubscriber
+        - src/TestData/ # Non-production code.
     bootstrapFiles:
       - give.php
     scanDirectories:
