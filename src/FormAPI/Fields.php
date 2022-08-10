@@ -13,7 +13,7 @@ use Give\FormAPI\Form\Textarea;
 use Give\FormAPI\Form\Wysiwyg;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 
-class Fields
+final class Fields
 {
     /**
      * Field vs class name mapping array
@@ -52,7 +52,7 @@ class Fields
          *
          * @since 2.7.0
          *
-         * @param Form\Field[]
+         * @param Form\Field[] $fieldClasses
          */
         $field->fieldClasses = apply_filters('give_form_api_field_classes', $field->fieldClasses);
 

@@ -15,6 +15,7 @@ parameters:
         - src/Email/
         - src/Exports/
         - src/Form/
+        - src/FormAPI/
         - src/Framework/
     excludePaths:
         - src/Form/LegacyConsumer/ServiceProvider.php # Needs a closer look
