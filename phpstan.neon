@@ -25,6 +25,7 @@ parameters:
         - src/MultiFormGoals/
         - src/Onboarding/
         - src/PaymentGateways/
+        - src/Promotions/
     excludePaths:
         - src/Form/LegacyConsumer/ServiceProvider.php # Needs a closer look
         - src/Framework/FieldsAPI/Concerns/HasType.php
