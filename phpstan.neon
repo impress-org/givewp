@@ -24,6 +24,7 @@ parameters:
         - src/Framework/FieldsAPI/Concerns/HasType.php
         - src/Framework/Migrations/
         - src/Framework/PaymentGateways/
+        - src/LegacySubscriptions/
     bootstrapFiles:
       - give.php
     scanDirectories:
