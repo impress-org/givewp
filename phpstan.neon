@@ -8,7 +8,6 @@ parameters:
         - src/API/
         - src/ConnectClient/
         - src/Container/
-        - src/Donations/
         - src/Framework/
     excludePaths:
         - src/Framework/FieldsAPI/Concerns/HasType.php
