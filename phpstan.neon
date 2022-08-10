@@ -5,53 +5,22 @@ includes:
 parameters:
     level: 0
     paths:
-        - src/API/
-        - src/ConnectClient/
-        - src/Container/
-        - src/Controller/
-        - src/DonationForms/
-        - src/Donations/
-        - src/DonationSummary/
-        - src/DonorDashboards/
-        - src/Donors/
-        - src/Email/
-        - src/Exports/
-        - src/Form/
-        - src/FormAPI/
-        - src/Framework/
-        - src/Helpers/
-        - src/LegacyPaymentGateways/
-        - src/License/
-        - src/Log/
-        - src/MigrationLog/
-        - src/MultiFormGoals/
-        - src/Onboarding/
-        - src/PaymentGateways/
-        - src/Promotions/
-        - src/Receipt/
-        - src/Repositories/
-        - src/Revenue/
-        - src/Route/
-        - src/ServiceProviders/
-        - src/Session/
-        - src/Subscriptions/
-        - src/Tracking/
-        - src/Traits/
-        - src/ValueObjects/
-        - src/Views/
-    excludePaths:
-        - src/Form/LegacyConsumer/ServiceProvider.php # Needs a closer look
-        - src/Framework/FieldsAPI/Concerns/HasType.php
-        - src/Framework/Migrations/
-        - src/Framework/PaymentGateways/
-        - src/PaymentGateways/Actions/CreateSubscriptionAction/ # phpstan isn't finding inherited constructor for LegacySubscriber
-        - src/TestData/ # Non-production code.
-        - src/Tracking/Events/ThemeTracking.php # Unsure how undefined property $trackId is supposed to be declared or used.
+        - src/
     bootstrapFiles:
-      - give.php
+        - give.php
     scanDirectories:
-      - includes/
-      - src/LegacySubscriptions/includes/
+        - includes/
+    excludePaths:
+        analyse:
+            - src/LegacySubscriptions/includes/ # Scan but do not analyse
+        analyseAndScan:
+            - src/Form/LegacyConsumer/ServiceProvider.php # Needs a closer look
+            - src/Framework/FieldsAPI/Concerns/HasType.php
+            - src/Framework/Migrations/
+            - src/Framework/PaymentGateways/
+            - src/PaymentGateways/Actions/CreateSubscriptionAction/ # phpstan isn't finding inherited constructor for LegacySubscriber
+            - src/TestData/ # Non-production code.
+            - src/Tracking/Events/ThemeTracking.php # Unsure how undefined property $trackId is supposed to be declared or used.
 
 services:
   -
