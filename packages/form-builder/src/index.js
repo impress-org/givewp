@@ -6,8 +6,6 @@ import './index.scss';
 
 import App from './App';
 
-import './blocks/donation-amount-levels/index';
-
 import sectionBlocks, {sectionBlockNames} from './blocks/section';
 
 import fieldBlocks from './blocks/fields';
