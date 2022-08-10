@@ -36,7 +36,7 @@ class LegacyPaymentGatewayRegisterAdapter
         add_action(
             "give_gateway_{$registeredGatewayId}",
             static function ($legacyPaymentData) use ($registeredGateway, $legacyPaymentGatewayAdapter) {
-                $legacyPaymentGatewayAdapter->handleBeforeGateway($legacyPaymentData, $registeredGateway);
+                $legacyPaymentGatewayAdapter->handleBeforeGateway(give_clean($legacyPaymentData), $registeredGateway);
             }
         );
     }

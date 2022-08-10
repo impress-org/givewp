@@ -1,0 +1,5 @@
+name: 'Close stale issues'
+
+jobs:
+    stale:
+        uses: impress-org/givewp-github-actions/.github/workflows/close-stale-issues.yml@master
