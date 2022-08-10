@@ -2,6 +2,8 @@
 
 namespace Give\MultiFormGoals\ProgressBar;
 
+use wpdb;
+
 /**
  * Get the Total, Count, and Average of the payment totals for published donations of a given set of forms.
  */
@@ -10,6 +12,11 @@ class Query
 
     /** @var array */
     protected $formIDs;
+
+    /**
+     * @var wpdb
+     */
+    protected $wpdb;
 
     /**
      * @var array $formIDs
