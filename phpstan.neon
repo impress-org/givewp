@@ -9,7 +9,6 @@ parameters:
         - src/ConnectClient/
         - src/Container/
         - src/Donations/
-        - src/DonationSummary/
         - src/Framework/
     excludePaths:
         - src/Framework/FieldsAPI/Concerns/HasType.php

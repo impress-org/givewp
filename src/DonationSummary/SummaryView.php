@@ -49,7 +49,7 @@ class SummaryView
     public function maybeRender()
     {
         if ($this->isDonationSummaryEnabled()) {
-            if (in_array(Template::getActiveID($this->formID), ['sequoia', 'classic'])) {
+            if (in_array(Template::getActiveID($this->formID), [ 'sequoia', 'classic'])) {
                 $this->render();
             }
         }
@@ -60,9 +60,9 @@ class SummaryView
      */
     public function render()
     {
-        do_action('give_donation_summary_top');
+        do_action( 'give_donation_summary_top' );
         include 'resources/views/summary.php';
-        do_action('give_donation_summary_bottom');
+        do_action( 'give_donation_summary_bottom' );
     }
 
     public function getPrimaryColor()
@@ -122,12 +122,12 @@ class SummaryView
 
     /**
      * @since 2.19.0 - remove check for Give_Recurring
-     * @since 2.17.0
      * @return bool
+     * @since 2.17.0
      */
     protected function isRecurringEnabled()
     {
-        return function_exists('give_recurring_is_recurring') && give_recurring_is_recurring($this->formID);
+        return give_recurring_is_recurring($this->formID);
     }
 
     /**
