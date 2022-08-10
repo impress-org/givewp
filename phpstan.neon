@@ -36,6 +36,7 @@ parameters:
         - src/Tracking/
         - src/Traits/
         - src/ValueObjects/
+        - src/Views/
     excludePaths:
         - src/Form/LegacyConsumer/ServiceProvider.php # Needs a closer look
         - src/Framework/FieldsAPI/Concerns/HasType.php
