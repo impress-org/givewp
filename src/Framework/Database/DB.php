@@ -6,7 +6,6 @@ use Exception;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\QueryBuilder\Clauses\RawSQL;
 use Give\Framework\QueryBuilder\QueryBuilder;
-use Give\Framework\Support\Facades\Str;
 use Give\Helpers\Hooks;
 use WP_Error;
 
@@ -89,8 +88,8 @@ class DB
             static function () use ($name, $arguments) {
                 global $wpdb;
 
-                if (Str::contains($name, 'get')) {
-                    Hooks::doAction('givewp_db_pre_query', $wpdb);
+                if (in_array($name, ['get_row', 'get_col', 'get_results', 'query'], true)) {
+                    Hooks::doAction('givewp_db_pre_query', current($arguments));
                 }
 
                 return call_user_func_array([$wpdb, $name], $arguments);
