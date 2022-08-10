@@ -8,6 +8,7 @@ parameters:
         - src/API/
         - src/ConnectClient/
         - src/Container/
+        - src/Controller/
         - src/DonationForms/
         - src/Donations/
         - src/DonationSummary/
