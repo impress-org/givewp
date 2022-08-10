@@ -284,4 +284,22 @@ class DB
 
         return $wpError;
     }
+
+    /**
+     * @unreleased
+     *
+     * Enables mysql big selects for the session
+     */
+    public static function enableBigSelects()
+    {
+        static $bigSelects = false;
+
+        if (!$bigSelects) {
+            global $wpdb;
+
+            $wpdb->query('SET SESSION SQL_BIG_SELECTS=1');
+
+            $bigSelects = true;
+        }
+    }
 }
