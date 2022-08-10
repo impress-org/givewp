@@ -14,8 +14,10 @@ parameters:
         - src/Donors/
         - src/Email/
         - src/Exports/
+        - src/Form/
         - src/Framework/
     excludePaths:
+        - src/Form/LegacyConsumer/ServiceProvider.php # Needs a closer look
         - src/Framework/FieldsAPI/Concerns/HasType.php
         - src/Framework/Migrations/
         - src/Framework/PaymentGateways/
