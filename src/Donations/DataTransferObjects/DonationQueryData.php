@@ -16,7 +16,7 @@ use Give\Framework\Support\ValueObjects\Money;
  *
  * @since 2.19.6
  */
-class DonationQueryData
+final class DonationQueryData
 {
     /**
      * @var Money
@@ -131,7 +131,8 @@ class DonationQueryData
         $self->id = (int)$donationQueryObject->id;
         $self->formId = (int)$donationQueryObject->{DonationMetaKeys::FORM_ID()->getKeyAsCamelCase()};
         $self->formTitle = $donationQueryObject->{DonationMetaKeys::FORM_TITLE()->getKeyAsCamelCase()};
-        $self->amount = Money::fromDecimal($donationQueryObject->{DonationMetaKeys::AMOUNT()->getKeyAsCamelCase()}, $currency);
+        $self->amount = Money::fromDecimal($donationQueryObject->{DonationMetaKeys::AMOUNT()->getKeyAsCamelCase()},
+            $currency);
         $self->feeAmountRecovered = $feeAmountRecovered ? Money::fromDecimal($feeAmountRecovered, $currency) : null;
         $self->exchangeRate = $donationQueryObject->{DonationMetaKeys::EXCHANGE_RATE()->getKeyAsCamelCase()};
         $self->donorId = (int)$donationQueryObject->{DonationMetaKeys::DONOR_ID()->getKeyAsCamelCase()};

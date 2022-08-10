@@ -14,7 +14,7 @@ use Give\Helpers\Date;
  *
  * @since 2.20.0
  */
-class DonationResponseData implements Arrayable
+final class DonationResponseData implements Arrayable
 {
     /**
      * @var int
@@ -76,10 +76,11 @@ class DonationResponseData implements Arrayable
     /**
      * Convert data from object to Donation
      *
-     * @param  object  $donation
-     *
      * @since 2.21.0 use meta keys as camelcase
      * @since 2.20.0
+     *
+     * @param object $donation
+     *
      */
     public static function fromObject($donation): DonationResponseData
     {
@@ -92,8 +93,7 @@ class DonationResponseData implements Arrayable
             give_currency_filter(give_format_amount($donation->{DonationMetaKeys::AMOUNT()->getKeyAsCamelCase()}))
         );
         $self->donorId = (int)$donation->{DonationMetaKeys::DONOR_ID()->getKeyAsCamelCase()};
-        $self->name = $donation->{DonationMetaKeys::FIRST_NAME()->getKeyAsCamelCase(
-            )} . ' ' . $donation->{DonationMetaKeys::LAST_NAME()->getKeyAsCamelCase()};
+        $self->name = $donation->{DonationMetaKeys::FIRST_NAME()->getKeyAsCamelCase()} . ' ' . $donation->{DonationMetaKeys::LAST_NAME()->getKeyAsCamelCase()};
         $self->email = $donation->{DonationMetaKeys::EMAIL()->getKeyAsCamelCase()};
         $self->gateway = give_get_gateway_admin_label($donation->{DonationMetaKeys::GATEWAY()->getKeyAsCamelCase()});
         $self->createdAt = Date::getDateTime($donation->createdAt);
@@ -120,7 +120,8 @@ class DonationResponseData implements Arrayable
      *
      * @since 2.21.0 refactor conditional for subscription renewals
      * @since 2.20.0
-     * @param  object  $donation
+     *
+     * @param object $donation
      */
     private static function getDonationType($donation): string
     {
@@ -132,8 +133,8 @@ class DonationResponseData implements Arrayable
         }
 
         $hasRenewalStatus = $donation->status === DonationStatus::RENEWAL;
-        $hasSubscriptionId = !empty($donation->{DonationMetaKeys::SUBSCRIPTION_ID()->getKeyAsCamelCase()});
-        $hasRenewalMetaKey = !empty($donation->{DonationMetaKeys::IS_RECURRING()->getKeyAsCamelCase()});
+        $hasSubscriptionId = ! empty($donation->{DonationMetaKeys::SUBSCRIPTION_ID()->getKeyAsCamelCase()});
+        $hasRenewalMetaKey = ! empty($donation->{DonationMetaKeys::IS_RECURRING()->getKeyAsCamelCase()});
 
         /**
          * Renewals are determined by a few different ways through GiveWP versions

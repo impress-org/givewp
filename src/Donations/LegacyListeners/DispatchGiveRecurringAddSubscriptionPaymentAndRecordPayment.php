@@ -12,12 +12,15 @@ class DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment
     /**
      * @since 2.19.6
      *
-     * @param  Donation  $donation
+     * @param Donation $donation
+     *
      * @return void
      */
     public function __invoke(Donation $donation)
     {
+        /* @phpstan-ignore-next-line */
         $subscription = new Give_Subscription($donation->subscriptionId);
+
         $payment = new Give_Payment($donation->id);
         $parent = new Give_Payment($donation->parentId);
 
