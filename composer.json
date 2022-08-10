@@ -55,7 +55,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Give\\PHPStan\\": "phpstan/"
+            "Give\\PHPStan\\": ".phpstan/"
         }
     },
     "config": {
