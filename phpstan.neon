@@ -21,6 +21,7 @@ parameters:
         - src/LegacyPaymentGateways/
         - src/License/
         - src/Log/
+        - src/MigrationLog/
     excludePaths:
         - src/Form/LegacyConsumer/ServiceProvider.php # Needs a closer look
         - src/Framework/FieldsAPI/Concerns/HasType.php
