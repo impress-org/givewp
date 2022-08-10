@@ -33,6 +33,7 @@ parameters:
         - src/ServiceProviders/
         - src/Session/
         - src/Subscriptions/
+        - src/Tracking/
     excludePaths:
         - src/Form/LegacyConsumer/ServiceProvider.php # Needs a closer look
         - src/Framework/FieldsAPI/Concerns/HasType.php
@@ -40,6 +41,7 @@ parameters:
         - src/Framework/PaymentGateways/
         - src/PaymentGateways/Actions/CreateSubscriptionAction/ # phpstan isn't finding inherited constructor for LegacySubscriber
         - src/TestData/ # Non-production code.
+        - src/Tracking/Events/ThemeTracking.php # Unsure how undefined property $trackId is supposed to be declared or used.
     bootstrapFiles:
       - give.php
     scanDirectories:
