@@ -27,6 +27,9 @@ parameters:
         - src/PaymentGateways/
         - src/Promotions/
         - src/Receipt/
+        - src/Repositories/
+        - src/Revenue/
+        - src/Route/
     excludePaths:
         - src/Form/LegacyConsumer/ServiceProvider.php # Needs a closer look
         - src/Framework/FieldsAPI/Concerns/HasType.php
