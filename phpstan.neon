@@ -5,6 +5,9 @@ includes:
 parameters:
     level: 0
     paths:
+        - src/API/
+        - src/ConnectClient/
+        - src/Container/
         - src/Framework/
     excludePaths:
         - src/Framework/FieldsAPI/Concerns/HasType.php
