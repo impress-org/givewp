@@ -17,6 +17,8 @@ parameters:
         - src/Form/
         - src/FormAPI/
         - src/Framework/
+        - src/Helpers/
+        - src/LegacyPaymentGateways/
     excludePaths:
         - src/Form/LegacyConsumer/ServiceProvider.php # Needs a closer look
         - src/Framework/FieldsAPI/Concerns/HasType.php
