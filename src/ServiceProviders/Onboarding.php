@@ -38,7 +38,6 @@ class Onboarding implements ServiceProvider
         give()->singleton(SetupPage::class);
         give()->singleton(WizardPage::class);
         give()->singleton(FormPreview::class);
-        give()->bind(DonationsRedirect::class);
         give()->bind(SettingsRoute::class);
         give()->bind(CurrencyRoute::class);
         give()->bind(AddonsRoute::class);
@@ -118,7 +117,7 @@ class Onboarding implements ServiceProvider
     private function registerMigrations()
     {
         give(MigrationsRegister::class)->addMigrations([
-                                                           SetFormDonationLevelsToStrings::class,
-                                                       ]);
+            SetFormDonationLevelsToStrings::class,
+        ]);
     }
 }

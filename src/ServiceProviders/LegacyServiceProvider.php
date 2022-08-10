@@ -224,10 +224,10 @@ class LegacyServiceProvider implements ServiceProvider
      *
      * @since 2.8.0
      *
-     * @param string $alias
+     * @param string         $alias
      * @param string|Closure $class
-     * @param string $includesPath
-     * @param bool $singleton
+     * @param string         $includesPath
+     * @param bool           $singleton
      */
     private function bindInstance($alias, $class, $includesPath, $singleton = false)
     {
@@ -264,6 +264,8 @@ class LegacyServiceProvider implements ServiceProvider
                 return ( ! is_admin() || defined('DOING_AJAX')) && ! defined('DOING_CRON') && ! defined('REST_REQUEST');
             case 'wpcli':
                 return defined('WP_CLI') && WP_CLI;
+            default:
+                return false;
         }
     }
 }

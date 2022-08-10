@@ -30,6 +30,7 @@ parameters:
         - src/Repositories/
         - src/Revenue/
         - src/Route/
+        - src/ServiceProviders/
     excludePaths:
         - src/Form/LegacyConsumer/ServiceProvider.php # Needs a closer look
         - src/Framework/FieldsAPI/Concerns/HasType.php
