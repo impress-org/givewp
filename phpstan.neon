@@ -8,6 +8,8 @@ parameters:
         - src/API/
         - src/ConnectClient/
         - src/Container/
+        - src/Donations/
+        - src/DonationSummary/
         - src/Framework/
     excludePaths:
         - src/Framework/FieldsAPI/Concerns/HasType.php
@@ -16,7 +18,8 @@ parameters:
     bootstrapFiles:
       - give.php
     scanDirectories:
-      - includes
+      - includes/
+      - src/LegacySubscriptions/includes/
 
 services:
   -
