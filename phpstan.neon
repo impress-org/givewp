@@ -11,6 +11,7 @@ parameters:
         - src/Donations/
         - src/DonationSummary/
         - src/DonorDashboards/
+        - src/Donors/
         - src/Framework/
     excludePaths:
         - src/Framework/FieldsAPI/Concerns/HasType.php
