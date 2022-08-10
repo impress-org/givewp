@@ -38,7 +38,7 @@ class CheckoutGateway extends PaymentGateway
     {
         switch ($this->getCheckoutType()) {
             case 'modal':
-                return  give(PaymentGatewayRegister::class)
+                return give(PaymentGatewayRegister::class)
                     ->getPaymentGateway(CreditCardGateway::id())
                     ->createPayment($donation, $paymentMethod);
             case 'redirect':
@@ -113,11 +113,12 @@ class CheckoutGateway extends PaymentGateway
         Stripe::canShowBillingAddress($formId, $args);
 
         switch (give_stripe_get_checkout_type()) {
-            case 'modal':
-                return $this->getCheckoutInstructions()
-                    . $this->getCheckoutModalHTML($formId, $args);
             case 'redirect':
                 return $this->getCheckoutInstructions();
+            case 'modal':
+            default:
+                return $this->getCheckoutInstructions()
+                       . $this->getCheckoutModalHTML($formId, $args);
         }
     }
 

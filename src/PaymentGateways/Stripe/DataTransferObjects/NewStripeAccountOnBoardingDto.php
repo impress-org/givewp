@@ -6,9 +6,9 @@ namespace Give\PaymentGateways\Stripe\DataTransferObjects;
  * Class NewStripeAccountOnBoardingDto
  * @package Give\PaymentGateways\Stripe\DataTransferObjects
  *
- * @since 2.13.0
+ * @since   2.13.0
  */
-class NewStripeAccountOnBoardingDto
+final class NewStripeAccountOnBoardingDto
 {
     /**
      * @var mixed|string

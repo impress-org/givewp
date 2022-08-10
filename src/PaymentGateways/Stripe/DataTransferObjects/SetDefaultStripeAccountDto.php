@@ -6,9 +6,9 @@ namespace Give\PaymentGateways\Stripe\DataTransferObjects;
  * Class SetDefaultStripeAccountDto
  * @package Give\PaymentGateways\Stripe\DataTransferObjects
  *
- * @since 2.13.0
+ * @since   2.13.0
  */
-class SetDefaultStripeAccountDto
+final class SetDefaultStripeAccountDto
 {
     /**
      * @var mixed|string

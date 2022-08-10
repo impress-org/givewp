@@ -36,7 +36,7 @@ class PayPalStandardWebhook
         $eventData = file_get_contents('php://input');
         $eventData = wp_parse_args($eventData);
 
-        if (!$this->webhookValidator->verifyEventSignature($eventData)) {
+        if ( ! $this->webhookValidator->verifyEventSignature($eventData)) {
             exit();
         }
 
@@ -45,12 +45,12 @@ class PayPalStandardWebhook
 
         // ipn verification can be disabled in GiveWP (<=2.15.0).
         // This check will prevent anonymous requests from editing donation, if ipn verification disabled.
-        if (!$this->verifyDonationId($donationId)) {
+        if ( ! $this->verifyDonationId($donationId)) {
             Log::error(
                 'PayPal Standard IPN Error',
                 [
                     'Message' => 'Donation id (from IPN) does not exist.',
-                    'Event Data' => $eventData
+                    'Event Data' => $eventData,
                 ]
             );
             exit();
@@ -73,7 +73,7 @@ class PayPalStandardWebhook
     /**
      * @since 2.19.0
      *
-     * @param int $donationId
+     * @param int   $donationId
      *
      * @param array $eventData
      */
@@ -125,8 +125,8 @@ class PayPalStandardWebhook
      * @since 2.19.0
      *
      * @param string $txnType
-     * @param array $eventData
-     * @param int $donationId
+     * @param array  $eventData
+     * @param int    $donationId
      *
      * @return void
      */
@@ -140,9 +140,8 @@ class PayPalStandardWebhook
              *
              * @since 1.0
              *
-             * @param int $donationId donation id.
-             *
-             * @param array $eventData Encoded data.
+             * @param array $eventData  Encoded data.
+             * @param int   $donationId donation id.
              */
             do_action("give_paypal_{$txnType}", $eventData, $donationId);
         } else {
@@ -153,9 +152,8 @@ class PayPalStandardWebhook
              *
              * @since 1.0
              *
-             * @param int $donationId donation id.
-             *
-             * @param array $eventData Encoded data.
+             * @param array $eventData  Encoded data.
+             * @param int   $donationId donation id.
              */
             do_action('give_paypal_web_accept', $eventData, $donationId);
         }

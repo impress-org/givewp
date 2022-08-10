@@ -24,12 +24,14 @@ parameters:
         - src/MigrationLog/
         - src/MultiFormGoals/
         - src/Onboarding/
+        - src/PaymentGateways/
     excludePaths:
         - src/Form/LegacyConsumer/ServiceProvider.php # Needs a closer look
         - src/Framework/FieldsAPI/Concerns/HasType.php
         - src/Framework/Migrations/
         - src/Framework/PaymentGateways/
         - src/LegacySubscriptions/
+        - src/PaymentGateways/Actions/CreateSubscriptionAction # phpstan isn't finding inherited constructor for LegacySubscriber
     bootstrapFiles:
       - give.php
     scanDirectories:
