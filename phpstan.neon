@@ -31,6 +31,7 @@ parameters:
         - src/Revenue/
         - src/Route/
         - src/ServiceProviders/
+        - src/Session/
     excludePaths:
         - src/Form/LegacyConsumer/ServiceProvider.php # Needs a closer look
         - src/Framework/FieldsAPI/Concerns/HasType.php
