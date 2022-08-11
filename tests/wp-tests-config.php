@@ -1,7 +1,7 @@
 <?php
 
 /* Path to the WordPress codebase you'd like to test. Add a forward slash in the end. */
-define( 'ABSPATH', __DIR__ . '/../../vendor/wordpress/wordpress/src/' );
+define( 'ABSPATH', __DIR__ . '/../vendor/wordpress/wordpress/src/' );
 
 /*
  * Path to the theme to test with.
@@ -26,6 +26,8 @@ define( 'WP_DEFAULT_THEME', 'default' );
 // Test with WordPress debug mode (default).
 define( 'WP_DEBUG', true );
 
+define('WP_ALLOW_REPAIR', true);
+
 // ** MySQL settings ** //
 
 /*
@@ -37,9 +39,9 @@ define( 'WP_DEBUG', true );
  * DO NOT use a production database or one that is shared with something else.
  */
 
-define( 'DB_NAME', 'wordpress_test' );
+define( 'DB_NAME', 'givewptest' );
 define( 'DB_USER', 'root' );
-define( 'DB_PASSWORD', 'N0Tweak!@123!' );
+define( 'DB_PASSWORD', '' );
 define( 'DB_HOST', '127.0.0.1:3306' );
 define( 'DB_CHARSET', 'utf8' );
 define( 'DB_COLLATE', '' );

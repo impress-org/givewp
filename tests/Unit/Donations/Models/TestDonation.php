@@ -1,6 +1,6 @@
 <?php
 
-namespace unit\tests\Donations\Models;
+namespace GiveTests\Unit\Donations\Models;
 
 use Exception;
 use Give\Donations\Models\Donation;

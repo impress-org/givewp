@@ -18,7 +18,7 @@ if( file_exists( $testConfig[ 'workflow' ] ) ) {
     require_once '/tmp/wordpress-tests-lib/includes/functions.php';
 
     tests_add_filter('muplugins_loaded', function() {
-        require_once __DIR__ . '/../../give.php';
+        require_once __DIR__ . '/../give.php';
     });
     tests_add_filter('setup_theme', function() {
         echo 'Installing GiveWP.....' . PHP_EOL;
@@ -36,26 +36,25 @@ if( file_exists( $testConfig[ 'workflow' ] ) ) {
     define('WP_TESTS_CONFIG_FILE_PATH', $testConfig[ 'local' ] );
 
     require_once WP_TESTS_CONFIG_FILE_PATH;
-    require_once __DIR__ . '/../../vendor/wordpress/wordpress/tests/phpunit/includes/functions.php';
+    require_once __DIR__ . '/../vendor/wordpress/wordpress/tests/phpunit/includes/functions.php';
 
     tests_add_filter('muplugins_loaded', function() {
-        require_once __DIR__ . '/../../give.php';
+        require_once __DIR__ . '/../give.php';
     });
-    tests_add_filter('setup_theme', function() {
+    tests_add_filter('setup_theme', function () {
         echo 'Installing GiveWP.....' . PHP_EOL;
         give()->install();
     });
-    require_once __DIR__ . '/../../vendor/wordpress/wordpress/tests/phpunit/includes/bootstrap.php';
-
+    require_once __DIR__ . '/../vendor/wordpress/wordpress/tests/phpunit/includes/bootstrap.php';
 } else {
     die('wp-tests-config.php not found');
 }
 
 // test cases
-require_once __DIR__ . '/framework/class-give-unit-test-case.php';
+require_once __DIR__ . '/includes/framework/class-give-unit-test-case.php';
 
 // Helpers
-require_once __DIR__ . '/framework/helpers/shims.php';
-require_once __DIR__ . '/framework/helpers/class-helper-form.php';
-require_once __DIR__ . '/framework/helpers/class-helper-payment.php';
+require_once __DIR__ . '/includes/framework/helpers/shims.php';
+require_once __DIR__ . '/includes/framework/helpers/class-helper-form.php';
+require_once __DIR__ . '/includes/framework/helpers/class-helper-payment.php';
 
