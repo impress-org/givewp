@@ -4,6 +4,7 @@ namespace GiveTests;
 
 use Give\Framework\Support\ValueObjects\Money;
 use Give_Cache_Setting;
+use GiveTests\TestTraits\RefreshDatabase;
 use WP_UnitTestCase;
 
 /**
@@ -49,6 +50,8 @@ class TestCase extends WP_UnitTestCase
         if (!defined('GIVE_USE_PHP_SESSIONS')) {
             define('GIVE_USE_PHP_SESSIONS', false);
         }
+
+        $this->setUpTraits();
     }
 
     public function tearDown()
@@ -57,6 +60,8 @@ class TestCase extends WP_UnitTestCase
         update_option('give_settings', self::$saved_settings);
 
         parent::tearDown();
+
+        $this->tearDownTraits();
     }
 
     /**
@@ -186,5 +191,35 @@ class TestCase extends WP_UnitTestCase
         });
 
         return $mock;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
+    protected function setUpTraits()
+    {
+        $uses = array_flip(class_uses(static::class));
+
+//        if (isset($uses[RefreshDatabase::class])) {
+//            /** @var $this RefreshDatabase */
+//            $this->refreshDatabase();
+//        }
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
+    protected function tearDownTraits()
+    {
+        $uses = array_flip(class_uses(static::class));
+
+        if (isset($uses[RefreshDatabase::class])) {
+            /** @var $this RefreshDatabase */
+            $this->refreshDatabase();
+        }
     }
 }

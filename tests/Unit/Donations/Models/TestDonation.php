@@ -7,15 +7,17 @@ use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
-use Give\Framework\Database\DB;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\Models\Subscription;
 use Give_Subscriptions_DB;
+use GiveTests\TestCase;
+use GiveTests\TestTraits\RefreshDatabase;
 
-class TestDonation extends \Give_Unit_Test_Case
+class TestDonation extends TestCase
 {
+    use RefreshDatabase;
 
     public function setUp()
     {
@@ -25,31 +27,6 @@ class TestDonation extends \Give_Unit_Test_Case
         $legacySubscriptionDb = give(Give_Subscriptions_DB::class);
 
         $legacySubscriptionDb->create_table();
-    }
-
-    /**
-     * @unreleased
-     *
-     * @return void
-     */
-    public function tearDown()
-    {
-        parent::tearDown();
-        $donationsTable = DB::prefix('posts');
-        $donationMetaTable = DB::prefix('give_donationmeta');
-        $donorTable = DB::prefix('give_donors');
-        $donorMetaTable = DB::prefix('give_donormeta');
-        $subscriptionsTable = DB::prefix('give_subscriptions');
-        $sequentialOrderingTable = DB::prefix('give_sequential_ordering');
-        $notesTable = DB::prefix('give_comments');
-
-        DB::query("TRUNCATE TABLE $donorTable");
-        DB::query("TRUNCATE TABLE $donorMetaTable");
-        DB::query("TRUNCATE TABLE $donationMetaTable");
-        DB::query("TRUNCATE TABLE $donationsTable");
-        DB::query("TRUNCATE TABLE $subscriptionsTable");
-        DB::query("TRUNCATE TABLE $sequentialOrderingTable");
-        DB::query("TRUNCATE TABLE $notesTable");
     }
 
     /**
