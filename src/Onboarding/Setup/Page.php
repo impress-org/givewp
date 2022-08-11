@@ -59,7 +59,7 @@ class Page
     {
         add_submenu_page(
             'edit.php?post_type=give_forms',
-            esc_html__('Setup GiveWP', 'give'),
+            esc_html__('Set up GiveWP', 'give'),
             esc_html__('Setup', 'give'),
             'manage_give_settings',
             'give-setup',

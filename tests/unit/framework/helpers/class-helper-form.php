@@ -163,7 +163,7 @@ class Give_Helper_Form extends Give_Unit_Test_Case {
 			if ( ! empty( $form_args ) ) {
 				$form_id = wp_insert_post( $form_args );
 			} else {
-				throw new Exception( __( 'Empty form argument is not valid to setup donation form.', 'give' ) );
+				throw new Exception( __( 'Empty form argument is not valid to set up donation form.', 'give' ) );
 			}
 
 			if ( ! is_wp_error( $form_id ) && ! empty( $meta ) ) {
