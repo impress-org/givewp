@@ -16,7 +16,7 @@ return [
      */
     'local' => [
         'config' => __DIR__ . '/wp-tests-config.php',
-        'functions' => '/../vendor/wordpress/wordpress/tests/phpunit/includes/functions.php',
-        'bootstrap' => '/../vendor/wordpress/wordpress/tests/phpunit/includes/bootstrap.php'
+        'functions' => __DIR__ . '/../vendor/wordpress/wordpress/tests/phpunit/includes/functions.php',
+        'bootstrap' => __DIR__ . '/../vendor/wordpress/wordpress/tests/phpunit/includes/bootstrap.php'
     ],
 ];

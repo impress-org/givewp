@@ -17,7 +17,7 @@ if (file_exists($testConfig['workflow']['config'])) {
 define('WP_TESTS_CONFIG_FILE_PATH', $config['config']);
 
 require_once WP_TESTS_CONFIG_FILE_PATH;
-require_once __DIR__ . $config['functions'];
+require_once $config['functions'];
 
 tests_add_filter('muplugins_loaded', static function () {
     require_once __DIR__ . '/../give.php';
@@ -28,7 +28,7 @@ tests_add_filter('setup_theme', static function () {
     give()->install();
 });
 
-require_once __DIR__ . $config['bootstrap'];
+require_once $config['bootstrap'];
 
 // Test cases
 require_once __DIR__ . '/includes/framework/class-give-unit-test-case.php';
