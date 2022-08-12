@@ -2,22 +2,22 @@
 
 const WP_CONTENT_DIR = __DIR__;
 
-$testConfig = require __DIR__ . '/config.php';
+$bootstrapConfig = require __DIR__ . '/bootstrapConfig.php';
 
-if (!file_exists($testConfig['workflow']['config']) && !file_exists($testConfig['local']['config'])) {
+if (!file_exists($bootstrapConfig['workflow']['config']) && !file_exists($bootstrapConfig['local']['config'])) {
     die('wp-tests-config.php not found');
 }
 
-if (file_exists($testConfig['workflow']['config'])) {
-    $config = $testConfig['workflow'];
+if (file_exists($bootstrapConfig['workflow']['config'])) {
+    $currentBootstrapConfig = $bootstrapConfig['workflow'];
 } else {
-    $config = $testConfig['local'];
+    $currentBootstrapConfig = $bootstrapConfig['local'];
 }
 
-define('WP_TESTS_CONFIG_FILE_PATH', $config['config']);
+define('WP_TESTS_CONFIG_FILE_PATH', $currentBootstrapConfig['config']);
 
 require_once WP_TESTS_CONFIG_FILE_PATH;
-require_once $config['functions'];
+require_once $currentBootstrapConfig['functions'];
 
 tests_add_filter('muplugins_loaded', static function () {
     require_once __DIR__ . '/../give.php';
@@ -28,7 +28,7 @@ tests_add_filter('setup_theme', static function () {
     give()->install();
 });
 
-require_once $config['bootstrap'];
+require_once $currentBootstrapConfig['bootstrap'];
 
 // Test cases
 require_once __DIR__ . '/includes/framework/class-give-unit-test-case.php';
