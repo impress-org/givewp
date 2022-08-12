@@ -14,10 +14,11 @@ trait RefreshDatabase {
      */
     public function refreshDatabase()
     {
-	    $giveTables = DB::get_col( "SHOW TABLES LIKE '%give%'" );
+	    $giveTables = DB::get_col("SHOW TABLES LIKE '%give%'");
+        $wpTables = DB::get_col("SHOW TABLES LIKE '%post%'");
 
-        foreach($giveTables as $table){
-            DB::query( "TRUNCATE TABLE $table" );
+        foreach (array_merge($giveTables, $wpTables) as $table) {
+            DB::query("TRUNCATE TABLE $table");
         }
     }
 }
