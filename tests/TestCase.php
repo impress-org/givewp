@@ -2,7 +2,9 @@
 
 namespace GiveTests;
 
+use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give_Cache_Setting;
 use GiveTests\TestTraits\RefreshDatabase;
 use WP_UnitTestCase;
@@ -50,6 +52,8 @@ class TestCase extends WP_UnitTestCase
         if (!defined('GIVE_USE_PHP_SESSIONS')) {
             define('GIVE_USE_PHP_SESSIONS', false);
         }
+
+        $this->registerTestGateway();
 
         $this->setUpTraits();
     }
@@ -200,12 +204,7 @@ class TestCase extends WP_UnitTestCase
      */
     protected function setUpTraits()
     {
-        $uses = array_flip(class_uses(static::class));
-
-//        if (isset($uses[RefreshDatabase::class])) {
-//            /** @var $this RefreshDatabase */
-//            $this->refreshDatabase();
-//        }
+        //$uses = array_flip(class_uses(static::class));
     }
 
     /**
@@ -220,6 +219,24 @@ class TestCase extends WP_UnitTestCase
         if (isset($uses[RefreshDatabase::class])) {
             /** @var $this RefreshDatabase */
             $this->refreshDatabase();
+        }
+    }
+
+
+    /**
+     * Registers Test Gateway to be used in tests to avoid any side effects caused by gateway not being registered.
+     *
+     * @unreleased
+     *
+     * @return void
+     */
+    private function registerTestGateway()
+    {
+        /** @var PaymentGatewayRegister $registrar */
+        $registrar = give(PaymentGatewayRegister::class);
+
+        if (!$registrar->hasPaymentGateway(TestGateway::id())) {
+            $registrar->registerGateway(TestGateway::class);
         }
     }
 }
