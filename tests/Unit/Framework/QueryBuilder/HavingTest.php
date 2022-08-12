@@ -3,6 +3,7 @@ namespace GiveTests\Unit\Framework\QueryBuilder;
 
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class HavingTest extends TestCase
