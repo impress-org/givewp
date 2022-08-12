@@ -3,6 +3,7 @@
 namespace GiveTests\Unit\Framework\PaymentGateways\Traits;
 
 use Give\Donations\Models\Donation;
+use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\PaymentGateways\SubscriptionModule;
@@ -50,9 +51,7 @@ class HasRouteMethodTest extends TestCase
         $gateway = give(GatewayRouteTestGateway::class);
         $routeMethod = 'UnRegisteredRoute';
 
-        $this->expectExceptionMessage(
-            'UnRegisteredRoute route method is not supported by GatewayRouteTestGateway and GatewayRouteTestGatewaySubscriptionModule'
-        );
+        $this->expectException(PaymentGatewayException::class);
 
         $this->assertEquals(
             GatewayRouteTestGatewaySubscriptionModule::class . $routeMethod,

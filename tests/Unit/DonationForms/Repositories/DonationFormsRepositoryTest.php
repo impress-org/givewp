@@ -4,7 +4,9 @@ namespace GiveTests\Unit\DonationForms\Repositories;
 
 use Give\DonationForms\Controllers\DonationFormsRequestController;
 use Give\Framework\Database\DB;
+use Give_Helper_Form;
 use GiveTests\TestCase;
+use WP_REST_Request;
 
 final class DonationFormsRepositoryTest extends TestCase
 {
