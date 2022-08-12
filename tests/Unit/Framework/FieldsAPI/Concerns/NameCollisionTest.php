@@ -1,4 +1,5 @@
 <?php
+namespace GiveTests\Unit\Framework\FieldsAPI\Concerns;
 
 namespace unit\tests\Framework\FieldsAPI\Concerns;
 

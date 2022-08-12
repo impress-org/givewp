@@ -1,15 +1,18 @@
 <?php
 
+namespace GiveTests\Unit\Framework\PaymentGateways\Traits;
+
 use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\PaymentGateways\SubscriptionModule;
 use Give\Subscriptions\Models\Subscription;
+use GiveTests\TestCase;
 
 /**
  * @unreleased
  */
-class HasRouteMethodTest extends WP_UnitTestCase
+class HasRouteMethodTest extends TestCase
 {
     /**
      * @unreleased

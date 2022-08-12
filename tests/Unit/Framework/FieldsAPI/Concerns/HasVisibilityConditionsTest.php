@@ -1,14 +1,17 @@
 <?php
+namespace GiveTests\Unit\Framework\FieldsAPI\Concerns;
 
 use Give\Framework\FieldsAPI\Concerns\HasVisibilityConditions;
 use Give\Framework\FieldsAPI\Conditions\BasicCondition;
 use PHPUnit\Framework\TestCase;
 
-final class HasVisibilityConditionsTest extends TestCase {
+final class HasVisibilityConditionsTest extends TestCase
+{
 
-	public function testCanAccessVisibilityConditions() {
-		/** @var HasVisibilityConditions $mock */
-		$mock = $this->getMockForTrait( HasVisibilityConditions::class );
+    public function testCanAccessVisibilityConditions()
+    {
+        /** @var HasVisibilityConditions $mock */
+        $mock = $this->getMockForTrait(HasVisibilityConditions::class);
 
 		$this->assertEquals( [], $mock->getVisibilityConditions() );
 	}

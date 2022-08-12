@@ -8,11 +8,12 @@ use Give\Donations\LegacyListeners\DispatchGivePreInsertPayment;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
+use GiveTests\TestCase;
 
 /**
  * @coversDefaultClass DispatchGivePreInsertPayment
  */
-class DispatchGivePreInsertPaymentTest extends \GiveTests\TestCase
+class DispatchGivePreInsertPaymentTest extends TestCase
 {
     /**
      * @unreleased

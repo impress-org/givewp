@@ -1,6 +1,6 @@
 <?php
 
-namespace unit\tests\PaymentGateways\PayPalStandard\Actions;
+namespace GiveTests\Unit\PaymentGateways\PayPalStandard\Actions;
 
 use Give\Helpers\Call;
 use Give\PaymentGateways\Gateways\PayPalStandard\Actions\ProcessIpnDonationRefund;

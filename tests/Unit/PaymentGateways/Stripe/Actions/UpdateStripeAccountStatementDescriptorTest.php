@@ -1,17 +1,20 @@
 <?php
 
+namespace GiveTests\Unit\PaymentGateways\Stripe\Actions;
+
 use Give\Helpers\Call;
 use Give\PaymentGateways\Gateways\Stripe\Actions\UpdateStripeAccountStatementDescriptor;
 use Give\PaymentGateways\Stripe\Repositories\Settings;
-use PHPUnit\Framework\TestCase;
+use GiveTests\TestCase;
 
 /**
  * @since 2.19.0
  */
 class UpdateStripeAccountStatementDescriptorTest extends TestCase
 {
-    protected function setUp()
+    public function setUp()
     {
+        parent::setUp();
         $this->setUpStripeAccounts();
     }
 

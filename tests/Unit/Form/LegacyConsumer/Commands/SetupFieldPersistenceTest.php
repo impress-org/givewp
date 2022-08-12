@@ -2,14 +2,15 @@
 
 use Give\Framework\FieldsAPI\Text;
 
-final class SetupFieldPersistenceTest extends Give_Unit_Test_Case {
+final class SetupFieldPersistenceTest extends \GiveTests\TestCase
+{
 
-    public function testFieldPersistence() {
-
-        add_action( 'give_fields_donation_form', function( $form ) {
+    public function testFieldPersistence()
+    {
+        add_action('give_fields_donation_form', function ($form) {
             $form->append(
-                Text::make( 'my-text-field' )
-                    ->emailTag( 'myTextField' )
+                Text::make('my-text-field')
+                    ->emailTag('myTextField')
             );
         });
 

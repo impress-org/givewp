@@ -1,7 +1,9 @@
 <?php
 
+namespace GiveTests\Unit\PaymentGateways\Stripe\Traits;
+
 use Give\PaymentGateways\Stripe\Traits\HasStripeStatementDescriptorText;
-use PHPUnit\Framework\TestCase;
+use GiveTests\TestCase;
 
 /**
  * @since 2.19.0

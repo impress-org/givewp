@@ -1,14 +1,17 @@
 <?php
+namespace GiveTests\Unit\Framework\FieldsAPI\Concerns;
 
 use Give\Framework\FieldsAPI\Exceptions\ReferenceNodeNotFoundException;
 use Give\Framework\FieldsAPI\Group;
 use Give\Framework\FieldsAPI\Text;
 use PHPUnit\Framework\TestCase;
 
-final class InsertNodeTest extends TestCase {
+final class InsertNodeTest extends TestCase
+{
 
-    public function testInsertAfter() {
-        $group = Group::make( 'group' )
+    public function testInsertAfter()
+    {
+        $group = Group::make('group')
 	        ->append( Text::make( 'firstTextField' ) )
 	        ->insertAfter( 'firstTextField', Text::make( 'secondTextField' ) );
 

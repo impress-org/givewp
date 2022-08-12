@@ -1,16 +1,18 @@
 <?php
 
-namespace unit\tests\PaymentGateways\PayPalStandard\Actions;
+namespace GiveTests\Unit\PaymentGateways\PayPalStandard\Actions;
 
 use PHPUnit\Framework\TestCase;
 
 class CreatePayPalStandardPaymentURLTest extends TestCase
 {
-    public function testHasCorrectPartnerCode(){
+    public function testHasCorrectPartnerCode()
+    {
         $this->markTestIncomplete();
     }
 
-    public function testUsingGatewayRouteForSuccessAndFailedRedirect(){
+    public function testUsingGatewayRouteForSuccessAndFailedRedirect()
+    {
         $this->markTestIncomplete();
     }
 

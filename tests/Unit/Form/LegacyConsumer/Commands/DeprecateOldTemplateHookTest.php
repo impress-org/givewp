@@ -1,20 +1,22 @@
 <?php
+namespace GiveTests\Unit\Form\LegacyConsumer\Commands;
 
-use PHPUnit\Framework\TestCase;
-use Give\Form\LegacyConsumer\TemplateHooks;
 use Give\Form\LegacyConsumer\Commands\DeprecateOldTemplateHook;
+use Give\Form\LegacyConsumer\TemplateHooks;
+use GiveTests\TestCase;
 
-final class DeprecateOldTemplateHookTest extends Give_Unit_Test_Case {
-    
-    public function testDeprecatedHooksShowNotice() {
+final class DeprecateOldTemplateHookTest extends TestCase
+{
 
+    public function testDeprecatedHooksShowNotice()
+    {
         /**
          * Spying on `_give_deprecated_function` by listening to an action hook.
          */
         $count = 0;
-        add_action( 'give_deprecated_function_run', function( $function, $replacement, $version ) use ( &$count ) {
+        add_action('give_deprecated_function_run', function ($function, $replacement, $version) use (&$count) {
             $count += 1;
-        }, 10, 3 );
+        }, 10, 3);
 
         /**
          * Add deprecated actions and then deprecate them.

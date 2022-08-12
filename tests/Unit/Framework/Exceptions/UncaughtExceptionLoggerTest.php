@@ -1,10 +1,14 @@
 <?php
 
+namespace GiveTests\Unit\Framework\Exceptions;
+
 use Give\Framework\Exceptions\Contracts\LoggableException;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Log\Log;
+use GiveTests\TestCase;
+use PHPUnit_Framework_MockObject_MockBuilder;
 
-class UncaughtExceptionLoggerTest extends Give_Unit_Test_Case
+class UncaughtExceptionLoggerTest extends TestCase
 {
     public function testShouldLogException()
     {
@@ -26,12 +30,15 @@ class UncaughtExceptionLoggerTest extends Give_Unit_Test_Case
     }
 }
 
-class ExceptionLogged extends Exception implements LoggableException {
-	public function getLogMessage(): string {
-		return '';
-	}
+class ExceptionLogged extends \Exception implements LoggableException
+{
+    public function getLogMessage(): string
+    {
+        return '';
+    }
 
-	public function getLogContext(): array {
-		return [];
-	}
+    public function getLogContext(): array
+    {
+        return [];
+    }
 }

@@ -1,8 +1,12 @@
 <?php
 
-use Give\Framework\FieldsAPI\Text;
+namespace GiveTests\Unit\Form\LegacyConsumer\Commands;
 
-final class SetupFieldConfirmationTest extends Give_Unit_Test_Case {
+use Give\Framework\FieldsAPI\Text;
+use GiveTests\TestCase;
+
+final class SetupFieldConfirmationTest extends TestCase
+{
 
 
     /*
@@ -11,19 +15,19 @@ final class SetupFieldConfirmationTest extends Give_Unit_Test_Case {
     |--------------------------------------------------------------------------
     */
 
-    public function testConfirmationHasDonationMeta() {
-
-        add_action( 'give_fields_donation_form', function( $form ) {
+    public function testConfirmationHasDonationMeta()
+    {
+        add_action('give_fields_donation_form', function ($form) {
             $form->append(
-                Text::make( 'my-text-field' )
-                    ->label( 'My Text Field' )
+                Text::make('my-text-field')
+                    ->label('My Text Field')
                     ->showInReceipt()
             );
         });
 
         $paymentID = Give_Helper_Payment::create_simple_payment();
 
-        give_update_payment_meta( $paymentID, 'my-text-field', 'foobar' );
+        give_update_payment_meta($paymentID, 'my-text-field', 'foobar');
 
         ob_start();
         do_action( 'give_payment_receipt_after', get_post( $paymentID ), [] );
@@ -34,7 +38,6 @@ final class SetupFieldConfirmationTest extends Give_Unit_Test_Case {
     }
 
     public function testNotConfirmationHasEmptyDonationMeta() {
-
         add_action( 'give_fields_donation_form', function( $form ) {
             $form->append(
                 Text::make( 'my-text-field' )
@@ -56,12 +59,11 @@ final class SetupFieldConfirmationTest extends Give_Unit_Test_Case {
     }
 
     public function testNotConfirmationHasDonationMeta() {
-
         add_action( 'give_fields_donation_form', function( $form ) {
             $form->append(
                 Text::make( 'my-text-field' )
                     ->label( 'My Text Field' )
-                    // NOTE: Not shown in receipt.
+            // NOTE: Not shown in receipt.
             );
         });
 
@@ -84,7 +86,6 @@ final class SetupFieldConfirmationTest extends Give_Unit_Test_Case {
     */
 
     public function testConfirmationHasDonorMeta() {
-
         add_action( 'give_fields_donation_form', function( $form ) {
             $form->append(
                 Text::make( 'my-text-field' )
@@ -108,7 +109,6 @@ final class SetupFieldConfirmationTest extends Give_Unit_Test_Case {
     }
 
     public function testNotConfirmationHasEmptyDonorMeta() {
-
         add_action( 'give_fields_donation_form', function( $form ) {
             $form->append(
                 Text::make( 'my-text-field' )
@@ -132,13 +132,12 @@ final class SetupFieldConfirmationTest extends Give_Unit_Test_Case {
     }
 
     public function testNotConfirmationHasDonorMeta() {
-
         add_action( 'give_fields_donation_form', function( $form ) {
             $form->append(
                 Text::make( 'my-text-field' )
                     ->label( 'My Text Field' )
                     ->storeAsDonorMeta()
-                    // NOTE: Not shown in receipt.
+            // NOTE: Not shown in receipt.
             );
         });
 

@@ -1,19 +1,20 @@
 <?php
 
-namespace unit\tests\Framework\Models;
+namespace GiveTests\Unit\Framework\Models;
 
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Model;
 use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use GiveTests\TestCase;
 
 /**
  * @unreleased
  *
  * @coversDefaultClass Model
  */
-class TestModel extends \Give_Unit_Test_Case
+class TestModel extends TestCase
 {
     /**
      * @unreleased

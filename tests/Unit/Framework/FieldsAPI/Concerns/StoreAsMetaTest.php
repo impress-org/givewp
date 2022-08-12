@@ -1,13 +1,16 @@
 <?php
+namespace GiveTests\Unit\Framework\FieldsAPI\Concerns;
 
 use Give\Framework\FieldsAPI\Concerns\StoreAsMeta;
 use PHPUnit\Framework\TestCase;
 
-final class StoreAsMetaTest extends TestCase {
+final class StoreAsMetaTest extends TestCase
+{
 
-    public function testStoreAsDonorMeta() {
-    	/** @var StoreAsMeta $mock */
-    	$mock = $this->getMockForTrait( StoreAsMeta::class );
+    public function testStoreAsDonorMeta()
+    {
+        /** @var StoreAsMeta $mock */
+        $mock = $this->getMockForTrait(StoreAsMeta::class);
         $mock->storeAsDonorMeta();
         $this->assertTrue( $mock->shouldStoreAsDonorMeta() );
     }

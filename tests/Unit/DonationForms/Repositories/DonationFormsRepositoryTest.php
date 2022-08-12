@@ -1,9 +1,13 @@
 <?php
 
+namespace GiveTests\Unit\DonationForms\Repositories;
+
 use Give\DonationForms\Controllers\DonationFormsRequestController;
 use Give\Framework\Database\DB;
+use GiveTests\TestCase;
 
-final class DonationFormsTest extends Give_Unit_Test_Case {
+final class DonationFormsRepositoryTest extends TestCase
+{
 
     public $testingForms = [];
 

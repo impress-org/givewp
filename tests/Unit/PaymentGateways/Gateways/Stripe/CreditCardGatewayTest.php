@@ -1,5 +1,7 @@
 <?php
 
+namespace GiveTests\Unit\PaymentGateways\Gateways\Stripe;
+
 use Give\Donations\Models\Donation;
 use Give\Framework\Database\DB;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
@@ -7,11 +9,12 @@ use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
+use GiveTests\TestCase;
 
 /**
  * @since 2.19.0
  */
-class CreditCardGatewayTest extends Give_Unit_Test_Case
+class CreditCardGatewayTest extends TestCase
 {
     public function setUp()
     {
@@ -22,7 +25,7 @@ class CreditCardGatewayTest extends Give_Unit_Test_Case
         $_POST['give-form-id'] = $this->form->get_ID();
     }
 
-     /**
+    /**
      * @unreleased
      *
      * @return void

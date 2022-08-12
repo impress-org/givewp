@@ -1,9 +1,7 @@
 <?php
-
-namespace unit\tests\Framework\PaymentGateways\Routes;
+namespace GiveTests\Unit\Framework\PaymentGateways\Routes;
 
 use Give\Framework\PaymentGateways\Routes\RouteSignature;
-use Give\Framework\Shims\Shim;
 use PHPUnit\Framework\TestCase;
 
 /**

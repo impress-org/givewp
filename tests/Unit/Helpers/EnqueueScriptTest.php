@@ -1,11 +1,11 @@
 <?php
 
-namespace unit\tests\Helpers;
+namespace GiveTests\Unit\Helpers;
 
 use Give\Helpers\EnqueueScript;
-use Give_Unit_Test_Case;
+use GiveTests\TestCase;
 
-class EnqueueScriptTest extends Give_Unit_Test_Case
+class EnqueueScriptTest extends TestCase
 {
     public function setUp()
     {

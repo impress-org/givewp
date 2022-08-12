@@ -1,9 +1,13 @@
 <?php
 
+namespace GiveTests\Unit\Form\LegacyConsumer\Actions;
+
 use Give\Form\LegacyConsumer\Actions\DetermineVisibilityForRequest;
 use Give\Framework\FieldsAPI\Text;
+use Give_Helper_Form;
+use GiveTests\TestCase;
 
-final class DetermineVisibilityForRequestTest extends Give_Unit_Test_Case
+final class DetermineVisibilityForRequestTest extends TestCase
 {
     public function testItDeterminesAFieldIsVisibleComparedToString()
     {

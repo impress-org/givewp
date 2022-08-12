@@ -5,12 +5,11 @@ namespace unit\tests\Framework\PaymentGateways;
 use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\DonationSummary;
 use Give_Helper_Payment;
-use Give_Unit_Test_Case;
 
 /**
  * @since 2.19.0
  */
-class DonationSummaryTest extends Give_Unit_Test_Case
+class DonationSummaryTest extends \GiveTests\TestCase
 {
     /** @test */
     public function it_summarizes_a_simple_donation()

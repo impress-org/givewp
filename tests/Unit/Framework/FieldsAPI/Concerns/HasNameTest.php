@@ -1,14 +1,17 @@
 <?php
+namespace GiveTests\Unit\Framework\FieldsAPI\Concerns;
 
 use Give\Framework\FieldsAPI\Concerns\HasName;
 use PHPUnit\Framework\TestCase;
 
-final class HasNameTest extends TestCase {
+final class HasNameTest extends TestCase
+{
 
-	public function testHasName() {
-		$mock = new HasNameMock( 'Name' );
-		$this->assertEquals( 'Name', $mock->getName() );
-	}
+    public function testHasName()
+    {
+        $mock = new HasNameMock('Name');
+        $this->assertEquals('Name', $mock->getName());
+    }
 }
 
 final class HasNameMock {

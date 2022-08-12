@@ -1,4 +1,5 @@
 <?php
+namespace GiveTests\Unit\Framework\QueryBuilder;
 
 namespace GiveTests\Unit\Framework\QueryBuilder;
 

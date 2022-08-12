@@ -1,4 +1,5 @@
 <?php
+namespace GiveTests\Unit\Framework\FieldsAPI\Concerns;
 
 use Give\Framework\FieldsAPI\Form;
 use Give\Framework\FieldsAPI\Section;

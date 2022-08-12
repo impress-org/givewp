@@ -1,5 +1,7 @@
 <?php
 
+namespace GiveTests\Unit\PaymentGateways;
+
 use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;

@@ -1,5 +1,9 @@
 <?php
 
+namespace GiveTests\Unit\Helpers;
+
+use GiveTests\TestCase;
+
 /**
  * Class DonationFormVariablePricesDropdownTest
  *
@@ -7,56 +11,64 @@
  *
  * @since 2.19.0
  */
-class DonationFormVariablePricesDropdownTest extends Give_Unit_Test_Case {
-	/**
-	 * @var Give_Payment
-	 */
-	private $donation;
+class DonationFormVariablePricesDropdownTest extends TestCase
+{
+    /**
+     * @var Give_Payment
+     */
+    private $donation;
 
-	public function setUp() {
-		parent::setUp();
+    public function setUp()
+    {
+        parent::setUp();
 
-		$this->donation = new Give_Payment( Give_Helper_Payment::create_multilevel_payment() );
-	}
+        $this->donation = new Give_Payment(Give_Helper_Payment::create_multilevel_payment());
+    }
 
-	public function tearDown() {
-		parent::tearDown();
-	}
+    public function tearDown()
+    {
+        parent::tearDown();
+    }
 
-	public function testShowCustomDonationLevelChoiceInDropDownIfDonationFormCustomAmountModeActivated() {
-		give()->form_meta->update_meta( $this->donation->form_id, '_give_custom_amount', 'enabled' );
+    public function testShowCustomDonationLevelChoiceInDropDownIfDonationFormCustomAmountModeActivated()
+    {
+        give()->form_meta->update_meta($this->donation->form_id, '_give_custom_amount', 'enabled');
 
-		$args = [
-			'id'       => $this->donation->form_id,
-			'selected' => $this->donation->price_id
-		];
+        $args = [
+            'id' => $this->donation->form_id,
+            'selected' => $this->donation->price_id
+        ];
 
-		$this->assertContains( 'Custom', give_get_form_variable_price_dropdown( $args ) );
-	}
+        $this->assertContains('Custom', give_get_form_variable_price_dropdown($args));
+    }
 
-	public function testShowCustomDonationLevelChoiceInDropDownIfDonationFormCustomAmountModeDisabledAndDonationDonatedWithCustomLevel() {
-		give()->form_meta->update_meta( $this->donation->form_id, '_give_custom_amount', 'disabled' );
-		$this->donation->price_id = 'custom';
-		$this->donation->save();
+    public function testShowCustomDonationLevelChoiceInDropDownIfDonationFormCustomAmountModeDisabledAndDonationDonatedWithCustomLevel(
+    )
+    {
+        give()->form_meta->update_meta($this->donation->form_id, '_give_custom_amount', 'disabled');
+        $this->donation->price_id = 'custom';
+        $this->donation->save();
 
-		$args = [
-			'id'       => $this->donation->form_id,
-			'selected' => $this->donation->price_id
-		];
+        $args = [
+            'id' => $this->donation->form_id,
+            'selected' => $this->donation->price_id
+        ];
 
-		$this->assertContains( 'Custom', give_get_form_variable_price_dropdown( $args ) );
-	}
+        $this->assertContains('Custom', give_get_form_variable_price_dropdown($args));
+    }
 
-	public function testDoNotShowCustomDonationLevelChoiceInDropDownIfDonationFormCustomAmountModeDisabledAndDonationNotDonatedWithCustomLevel() {
-		give()->form_meta->update_meta( $this->donation->form_id, '_give_custom_amount', 'disabled' );
-		$this->donation->price_id = 1;
-		$this->donation->save();
+    public function testDoNotShowCustomDonationLevelChoiceInDropDownIfDonationFormCustomAmountModeDisabledAndDonationNotDonatedWithCustomLevel(
+    )
+    {
+        give()->form_meta->update_meta($this->donation->form_id, '_give_custom_amount', 'disabled');
+        $this->donation->price_id = 1;
+        $this->donation->save();
 
-		$args = [
-			'id'       => $this->donation->form_id,
-			'selected' => $this->donation->price_id
-		];
+        $args = [
+            'id' => $this->donation->form_id,
+            'selected' => $this->donation->price_id
+        ];
 
-		$this->assertNotContains( 'Custom', give_get_form_variable_price_dropdown( $args ) );
-	}
+        $this->assertNotContains('Custom', give_get_form_variable_price_dropdown($args));
+    }
 }

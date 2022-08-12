@@ -1,9 +1,13 @@
 <?php
 
+namespace GiveTests\Unit\Framework\Exceptions\Traits;
+
+use GiveTests\TestCase;
+
 /**
  * @unreleased
  */
-class LoggableTest extends Give_Unit_Test_Case
+class LoggableTest extends TestCase
 {
     /**
      * @unreleased

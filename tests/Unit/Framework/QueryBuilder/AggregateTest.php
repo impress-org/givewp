@@ -1,6 +1,5 @@
 <?php
-
-namespace unit\tests\Framework\QueryBuilder;
+namespace GiveTests\Unit\Framework\QueryBuilder;
 
 use Give\Framework\Database\DB;
 use PHPUnit\Framework\TestCase;

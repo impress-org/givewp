@@ -1,15 +1,18 @@
 <?php
+namespace GiveTests\Unit\Framework\FieldsAPI\Concerns;
 
 use Give\Framework\FieldsAPI\Concerns\HasMaxLength;
 use Give\Framework\FieldsAPI\Concerns\ValidationRules;
 use PHPUnit\Framework\TestCase;
 
-final class HasMaxLengthTest extends TestCase {
+final class HasMaxLengthTest extends TestCase
+{
 
-	public function testHasMaxLength() {
-		$mock = new HasMaxLengthMock();
+    public function testHasMaxLength()
+    {
+        $mock = new HasMaxLengthMock();
 
-		$mock->maxLength( 8 );
+        $mock->maxLength( 8 );
 
 		$this->assertEquals( 8, $mock->getMaxLength() );
 

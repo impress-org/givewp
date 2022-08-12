@@ -1,14 +1,17 @@
 <?php
+namespace GiveTests\Unit\Framework\FieldsAPI\Concerns;
 
 use Give\Framework\FieldsAPI\Concerns\IsRequired;
 use Give\Framework\FieldsAPI\Concerns\ValidationRules;
 use PHPUnit\Framework\TestCase;
 
-final class FieldRequiredTest extends TestCase {
+final class FieldRequiredTest extends TestCase
+{
 
-    public function testRequiredDefault() {
-    	$mock = new IsRequiredMock();
-        $this->assertFalse( $mock->isRequired() );
+    public function testRequiredDefault()
+    {
+        $mock = new IsRequiredMock();
+        $this->assertFalse($mock->isRequired());
     }
 
     public function testRequiredEnable() {

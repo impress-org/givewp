@@ -1,15 +1,18 @@
 <?php
+namespace GiveTests\Unit\Framework\FieldsAPI\Concerns;
 
 use Give\Framework\FieldsAPI\Concerns\HasMinLength;
 use Give\Framework\FieldsAPI\Concerns\ValidationRules;
 use PHPUnit\Framework\TestCase;
 
-final class HasMinLengthTest extends TestCase {
+final class HasMinLengthTest extends TestCase
+{
 
-	public function testHasMinLength() {
-		$mock = new HasMinLengthMock();
+    public function testHasMinLength()
+    {
+        $mock = new HasMinLengthMock();
 
-		$mock->minLength( 8 );
+        $mock->minLength( 8 );
 
 		$this->assertEquals( 8, $mock->getMinLength() );
 
