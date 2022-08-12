@@ -7,27 +7,15 @@ use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
-use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\Models\Subscription;
-use Give_Subscriptions_DB;
 use GiveTests\TestCase;
 use GiveTests\TestTraits\RefreshDatabase;
 
 class TestDonation extends TestCase
 {
     use RefreshDatabase;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        /** @var Give_Subscriptions_DB $legacySubscriptionDb */
-        $legacySubscriptionDb = give(Give_Subscriptions_DB::class);
-
-        $legacySubscriptionDb->create_table();
-    }
 
     /**
      * @unreleased
@@ -39,13 +27,6 @@ class TestDonation extends TestCase
     public function testCreateShouldInsertDonation()
     {
         $donor = Donor::factory()->create();
-
-        /** @var PaymentGatewayRegister $registrar */
-        $registrar = give(PaymentGatewayRegister::class);
-
-        if (!$registrar->hasPaymentGateway(TestGateway::id())){
-            $registrar->registerGateway(TestGateway::class);
-        }
 
         $donation = Donation::create([
             'status' => DonationStatus::PENDING(),

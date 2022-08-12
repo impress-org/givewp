@@ -2,40 +2,18 @@
 
 declare(strict_types=1);
 
+namespace GiveTests\Unit\Donations\LegacyListeners;
+
 use Give\Donations\LegacyListeners\DispatchGivePreInsertPayment;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
-use Give\Framework\Database\DB;
 
 /**
  * @coversDefaultClass DispatchGivePreInsertPayment
  */
-class DispatchGivePreInsertPaymentTest extends Give_Unit_Test_Case
+class DispatchGivePreInsertPaymentTest extends \GiveTests\TestCase
 {
-    /**
-     * @unreleased
-     *
-     * @return void
-     */
-    public function tearDown()
-    {
-        parent::tearDown();
-        $donationsTable = DB::prefix('posts');
-        $donationMetaTable = DB::prefix('give_donationmeta');
-        $donorTable = DB::prefix('give_donors');
-        $donorMetaTable = DB::prefix('give_donormeta');
-        $subscriptionsTable = DB::prefix('give_subscriptions');
-        $sequentialOrderingTable = DB::prefix('give_sequential_ordering');
-
-        DB::query("TRUNCATE TABLE $donorTable");
-        DB::query("TRUNCATE TABLE $donorMetaTable");
-        DB::query("TRUNCATE TABLE $donationMetaTable");
-        DB::query("TRUNCATE TABLE $donationsTable");
-        DB::query("TRUNCATE TABLE $subscriptionsTable");
-        DB::query("TRUNCATE TABLE $sequentialOrderingTable");
-    }
-
     /**
      * @unreleased
      */

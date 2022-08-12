@@ -1,6 +1,6 @@
 <?php
 
-namespace unit\tests\Donations\Repositories;
+namespace GiveTests\Unit\Donations\Repositories;
 
 use Exception;
 use Give\Donations\Models\Donation;
@@ -12,31 +12,15 @@ use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
+use GiveTests\TestCase;
+use GiveTests\TestTraits\RefreshDatabase;
 
 /**
  * @coversDefaultClass DonationRepository
  */
-final class TestDonationRepository extends \Give_Unit_Test_Case
+final class TestDonationRepository extends TestCase
 {
-
-    /**
-     * @unreleased - truncate donationMetaTable to avoid duplicate records
-     *
-     * @return void
-     */
-    public function tearDown()
-    {
-        parent::tearDown();
-        $donationMetaTable = DB::prefix('give_donationmeta');
-        $donationsTable = DB::prefix('posts');
-        $donorsTable = DB::prefix('give_donors');
-        $donorMetaTable = DB::prefix('give_donormeta');
-
-        DB::query("TRUNCATE TABLE $donationMetaTable");
-        DB::query("TRUNCATE TABLE $donationsTable");
-        DB::query("TRUNCATE TABLE $donorsTable");
-        DB::query("TRUNCATE TABLE $donorMetaTable");
-    }
+    use RefreshDatabase;
 
     /**
      * @unreleased
@@ -47,7 +31,6 @@ final class TestDonationRepository extends \Give_Unit_Test_Case
      */
     public function testGetByIdShouldReturnDonation()
     {
-        $donor = Donor::factory()->create();
         $donationFactory = Donation::factory()->create();
         $repository = new DonationRepository();
 
@@ -73,24 +56,9 @@ final class TestDonationRepository extends \Give_Unit_Test_Case
         $repository->insert($donation);
 
         /** @var Donation $query */
-        $query = $repository->prepareQuery()
-            ->where('ID', $donation->id)
-            ->get();
+        $query = $repository->getById($donation->id);
 
-        // simulate asserting database has values
-        $this->assertInstanceOf(Donation::class, $donation);
-        $this->assertEquals($query->id, $donation->id);
-        $this->assertEquals($query->status, $donation->status->getValue());
-        $this->assertEquals($query->amount, $donation->amount);
-        $this->assertEquals($query->gatewayId, $donation->gatewayId);
-        $this->assertEquals($query->donorId, $donation->donorId);
-        $this->assertEquals($query->firstName, $donation->firstName);
-        $this->assertEquals($query->lastName, $donation->lastName);
-        $this->assertEquals($query->email, $donation->email);
-        $this->assertEquals($query->createdAt->format('Y-m-d H:i:s'), $donation->createdAt->format('Y-m-d H:i:s'));
-        $this->assertEquals($query->parentId, $donation->parentId);
-        $this->assertEquals($query->anonymous, $donation->anonymous);
-        $this->assertEquals($query->company, $donation->company);
+        $this->assertEquals($query->getAttributes(), $donation->getAttributes());
     }
 
     /**
