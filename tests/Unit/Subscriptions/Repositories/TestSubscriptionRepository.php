@@ -1,6 +1,6 @@
 <?php
 
-namespace unit\tests\Subscriptions\Repositories;
+namespace GiveTests\Unit\Subscriptions\Repositories;
 
 use Exception;
 use Give\Donors\Models\Donor;
@@ -12,41 +12,17 @@ use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
-use Give_Subscriptions_DB;
-use Give_Unit_Test_Case;
+use GiveTests\TestCase;
+use GiveTests\TestTraits\RefreshDatabase;
 
 /**
  * @unreleased
  *
  * @coversDefaultClass SubscriptionRepository
  */
-class TestSubscriptionRepository extends Give_Unit_Test_Case
+class TestSubscriptionRepository extends TestCase
 {
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        /** @var Give_Subscriptions_DB $legacySubscriptionDb */
-        $legacySubscriptionDb = give(Give_Subscriptions_DB::class);
-
-        $legacySubscriptionDb->create_table();
-    }
-
-    /**
-     * @unreleased - truncate donationMetaTable to avoid duplicate records
-     *
-     * @return void
-     */
-    public function tearDown()
-    {
-        parent::tearDown();
-        $donationMetaTable = DB::prefix('give_donationmeta');
-        $subscriptionsTable = DB::prefix('give_subscriptions');
-
-        DB::query("TRUNCATE TABLE $donationMetaTable");
-        DB::query("TRUNCATE TABLE $subscriptionsTable");
-    }
+    use RefreshDatabase;
 
     /**
      * @unreleased

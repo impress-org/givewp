@@ -1,6 +1,6 @@
 <?php
 
-namespace unit\tests\Donors\Repositories;
+namespace GiveTests\Unit\Donors\Repositories;
 
 use Exception;
 use Give\Donors\Models\Donor;
@@ -8,30 +8,17 @@ use Give\Donors\Repositories\DonorRepository;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
-use Give_Unit_Test_Case;
+use GiveTests\TestCase;
+use GiveTests\TestTraits\RefreshDatabase;
 
 /**
  * @unreleased
  *
  * @coversDefaultClass SubscriptionRepository
  */
-class TestDonorRepository extends Give_Unit_Test_Case
+class TestDonorRepository extends TestCase
 {
-
-    /**
-     * @unreleased
-     *
-     * @return void
-     */
-    public function tearDown()
-    {
-        parent::tearDown();
-        $donorTable = DB::prefix('give_donors');
-        $donorMetaTable = DB::prefix('give_donormeta');
-
-        DB::query("TRUNCATE TABLE $donorTable");
-        DB::query("TRUNCATE TABLE $donorMetaTable");
-    }
+    use RefreshDatabase;
 
     /**
      * @unreleased
