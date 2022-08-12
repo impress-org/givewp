@@ -1,7 +1,5 @@
 <?php
 
-namespace GiveTests\Unit\PaymentGateways\Gateways\Stripe;
-
 use Give\Donations\Models\Donation;
 use Give\Framework\Database\DB;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
@@ -9,12 +7,11 @@ use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
-use GiveTests\TestCase;
 
 /**
  * @since 2.19.0
  */
-class CreditCardGatewayTest extends TestCase
+class CreditCardGatewayTest extends \GiveTests\TestCase
 {
     public function setUp()
     {

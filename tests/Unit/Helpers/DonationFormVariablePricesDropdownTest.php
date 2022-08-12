@@ -2,6 +2,8 @@
 
 namespace GiveTests\Unit\Helpers;
 
+use Give_Helper_Payment;
+use Give_Payment;
 use GiveTests\TestCase;
 
 /**

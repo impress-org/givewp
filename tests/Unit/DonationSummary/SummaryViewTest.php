@@ -3,6 +3,7 @@
 namespace GiveTests\Unit\DonationSummary;
 
 use Give\DonationSummary\SummaryView;
+use Give_Helper_Form;
 use GiveTests\TestCase;
 
 final class SummaryViewTest extends TestCase

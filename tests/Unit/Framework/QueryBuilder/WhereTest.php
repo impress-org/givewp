@@ -4,6 +4,7 @@ namespace GiveTests\Unit\Framework\QueryBuilder;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\QueryBuilder\WhereQueryBuilder;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class WhereTest extends TestCase
