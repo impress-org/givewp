@@ -33,87 +33,90 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	 * @cover give_email_tag_first_name
 	 */
 	function test_give_email_tag_first_name() {
-		/*
-		 * Case 1: First name from payment.
-		 */
-		$payment_id = Give_Helper_Payment::create_simple_payment();
-		$firstname  = give_email_tag_first_name( array( 'payment_id' => $payment_id ) );
+        /*
+         * Case 1: First name from payment.
+         */
+        $payment_id = Give_Helper_Payment::create_simple_payment();
+        $donor_id = give_get_payment_donor_id($payment_id);
+        $firstname = give_email_tag_first_name(array('payment_id' => $payment_id));
 
-		$this->assertEquals( 'Admin', $firstname );
+        $this->assertEquals('Admin', $firstname);
 
-		/*
-		 * Case 2: First name from user_id.
-		 */
-		$firstname = give_email_tag_first_name( array( 'user_id' => 1 ) );
-		$this->assertEquals( 'Admin', $firstname );
+        /*
+         * Case 2: First name from user_id.
+         */
+        $firstname = give_email_tag_first_name(array('user_id' => 1));
+        $this->assertEquals('Admin', $firstname);
 
-		/*
-		 * Case 3: First name from donor_id.
-		 */
-		$firstname = give_email_tag_first_name( array( 'donor_id' => 1 ) );
-		$this->assertEquals( 'Admin', $firstname );
+        /*
+         * Case 3: First name from donor_id.
+         */
+        $firstname = give_email_tag_first_name(array('donor_id' => $donor_id));
+        $this->assertEquals('Admin', $firstname);
 
-		/*
-		 * Case 4: First name with filter
-		 */
-		add_filter( 'give_email_tag_first_name', array( $this, 'give_first_name' ), 10, 2 );
+        /*
+         * Case 4: First name with filter
+         */
+        add_filter('give_email_tag_first_name', array($this, 'give_first_name'), 10, 2);
 
-		$firstname = give_email_tag_first_name( array( 'donor_id' => 1 ) );
-		$this->assertEquals( 'Give', $firstname );
+        $firstname = give_email_tag_first_name(array('donor_id' => $donor_id));
+        $this->assertEquals('Give', $firstname);
 
-		remove_filter( 'give_email_tag_first_name', array( $this, 'give_first_name' ), 10 );
-	}
+        remove_filter('give_email_tag_first_name', array($this, 'give_first_name'), 10);
+    }
 
-	/**
-	 * Add give_email_tag_first_name filter to give_email_tag_first_name function.
-	 *
-	 * @since 2.0
-	 *
-	 * @param string $firstname
-	 * @param array  $tag_args
-	 *
-	 * @return string
-	 */
-	public function give_first_name( $firstname, $tag_args ) {
-		if ( array_key_exists( 'donor_id', $tag_args ) ) {
-			$firstname = 'Give';
-		}
+    /**
+     * Add give_email_tag_first_name filter to give_email_tag_first_name function.
+     *
+     * @since 2.0
+     *
+     * @param  string  $firstname
+     * @param  array  $tag_args
+     *
+     * @return string
+     */
+    public function give_first_name($firstname, $tag_args)
+    {
+        if (array_key_exists('donor_id', $tag_args)) {
+            $firstname = 'Give';
+        }
 
-		return $firstname;
-	}
+        return $firstname;
+    }
 
-	/**
-	 * Test function give_email_tag_fullname
-	 *
-	 * @since 2.0
-	 * @cover give_email_tag_fullname
-	 */
-	function test_give_email_tag_fullname() {
-		/*
-		 * Case 1: Full name from payment.
-		 */
-		$payment_id = Give_Helper_Payment::create_simple_payment();
-		$fullname   = give_email_tag_fullname( array( 'payment_id' => $payment_id ) );
+    /**
+     * Test function give_email_tag_fullname
+     *
+     * @since 2.0
+     * @cover give_email_tag_fullname
+     */
+    function test_give_email_tag_fullname()
+    {
+        /*
+         * Case 1: Full name from payment.
+         */
+        $payment_id = Give_Helper_Payment::create_simple_payment();
+        $fullname = give_email_tag_fullname(array('payment_id' => $payment_id));
 
-		$this->assertEquals( 'Admin User', $fullname );
+        $this->assertEquals('Admin User', $fullname);
 
-		/*
-		 * Case 2: Full name from user_id.
-		 */
-		$fullname = give_email_tag_fullname( array( 'user_id' => 1 ) );
+        /*
+         * Case 2: Full name from user_id.
+         */
+        $fullname = give_email_tag_fullname(array('user_id' => 1));
 
-        $this->assertEquals( 'Admin User', $fullname );
+        $this->assertEquals('Admin User', $fullname);
 
-		/*
-		 * Case 3: Full name with filter
-		 */
-		add_filter( 'give_email_tag_fullname', array( $this, 'give_fullname' ), 10, 2 );
+        /*
+         * Case 3: Full name with filter
+         */
+        add_filter('give_email_tag_fullname', array($this, 'give_fullname'), 10, 2);
 
-		$fullname = give_email_tag_fullname( array( 'donor_id' => 1 ) );
-		$this->assertEquals( 'Give WP', $fullname );
+        $fullname = give_email_tag_fullname(array('donor_id' => 1));
+        $this->assertEquals('Give WP', $fullname);
 
-		remove_filter( 'give_email_tag_fullname', array( $this, 'give_fullname' ), 10 );
-	}
+        remove_filter('give_email_tag_fullname', array($this, 'give_fullname'), 10);
+    }
 
 	/**
 	 * Add give_email_tag_fullname filter to give_email_tag_fullname function.
@@ -123,47 +126,50 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	 * @param string $fullname
 	 * @param array  $tag_args
 	 *
-	 * @return string
-	 */
-	public function give_fullname( $fullname, $tag_args ) {
-		if ( array_key_exists( 'donor_id', $tag_args ) ) {
-			$fullname = 'Give WP';
-		}
+     * @return string
+     */
+    public function give_fullname($fullname, $tag_args)
+    {
+        if (array_key_exists('donor_id', $tag_args)) {
+            $fullname = 'Give WP';
+        }
 
-		return $fullname;
-	}
+        return $fullname;
+    }
 
-	/**
-	 * Test function give_email_tag_username
-	 *
-	 * @since 2.0
-	 * @cover give_email_tag_username
-	 */
-	function test_give_email_tag_username() {
-		/*
-		 * Case 1: User name from payment.
-		 */
-		$payment_id = Give_Helper_Payment::create_simple_payment();
-		$username   = give_email_tag_username( array( 'payment_id' => $payment_id ) );
+    /**
+     * Test function give_email_tag_username
+     *
+     * @since 2.0
+     * @cover give_email_tag_username
+     */
+    function test_give_email_tag_username()
+    {
+        /*
+         * Case 1: User name from payment.
+         */
+        $payment_id = Give_Helper_Payment::create_simple_payment();
+        $donor_id = give_get_payment_donor_id($payment_id);
+        $username = give_email_tag_username(array('payment_id' => $payment_id));
 
-		$this->assertEquals( 'admin', $username );
+        $this->assertEquals('admin', $username);
 
-		/*
-		 * Case 2: User name from user_id.
-		 */
-		$username = give_email_tag_username( array( 'user_id' => 1 ) );
-		$this->assertEquals( 'admin', $username );
+        /*
+         * Case 2: User name from user_id.
+         */
+        $username = give_email_tag_username(array('user_id' => 1));
+        $this->assertEquals('admin', $username);
 
-		/*
-		 * Case 3: User name with filter
-		 */
-		add_filter( 'give_email_tag_username', array( $this, 'give_username' ), 10, 2 );
+        /*
+         * Case 3: User name with filter
+         */
+        add_filter('give_email_tag_username', array($this, 'give_username'), 10, 2);
 
-		$username = give_email_tag_username( array( 'donor_id' => 1 ) );
-		$this->assertEquals( 'give', $username );
+        $username = give_email_tag_username(array('donor_id' => $donor_id));
+        $this->assertEquals('give', $username);
 
-		remove_filter( 'give_email_tag_username', array( $this, 'give_username' ), 10 );
-	}
+        remove_filter('give_email_tag_username', array($this, 'give_username'), 10);
+    }
 
 	/**
 	 * Add give_email_tag_username filter to give_email_tag_username function.
@@ -180,40 +186,42 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 			$username = 'give';
 		}
 
-		return $username;
-	}
+        return $username;
+    }
 
-	/**
-	 * Test function give_email_tag_user_email
-	 *
-	 * @since 2.0
-	 * @cover give_email_tag_user_email
-	 */
-	function test_give_email_tag_user_email() {
-		/*
-		 * Case 1: User email from payment.
-		 */
-		$payment_id = Give_Helper_Payment::create_simple_payment();
-		$user_email = give_email_tag_user_email( array( 'payment_id' => $payment_id ) );
+    /**
+     * Test function give_email_tag_user_email
+     *
+     * @since 2.0
+     * @cover give_email_tag_user_email
+     */
+    function test_give_email_tag_user_email()
+    {
+        /*
+         * Case 1: User email from payment.
+         */
+        $payment_id = Give_Helper_Payment::create_simple_payment();
+        $donor_id = give_get_payment_donor_id($payment_id);
+        $user_email = give_email_tag_user_email(array('payment_id' => $payment_id));
 
-		$this->assertEquals( 'admin@example.org', $user_email );
+        $this->assertEquals('admin@example.org', $user_email);
 
-		/*
-		 * Case 2: User email from user_id.
-		 */
-		$user_email = give_email_tag_user_email( array( 'user_id' => 1 ) );
-		$this->assertEquals( 'admin@example.org', $user_email );
+        /*
+         * Case 2: User email from user_id.
+         */
+        $user_email = give_email_tag_user_email(array('user_id' => 1));
+        $this->assertEquals('admin@example.org', $user_email);
 
-		/*
-		 * Case 3: User email with filter
-		 */
-		add_filter( 'give_email_tag_user_email', array( $this, 'give_user_email' ), 10, 2 );
+        /*
+         * Case 3: User email with filter
+         */
+        add_filter('give_email_tag_user_email', array($this, 'give_user_email'), 10, 2);
 
-		$user_email = give_email_tag_user_email( array( 'donor_id' => 1 ) );
-		$this->assertEquals( 'give@givewp.com', $user_email );
+        $user_email = give_email_tag_user_email(array('donor_id' => 1));
+        $this->assertEquals('give@givewp.com', $user_email);
 
-		remove_filter( 'give_email_tag_user_email', array( $this, 'give_user_email' ), 10 );
-	}
+        remove_filter('give_email_tag_user_email', array($this, 'give_user_email'), 10);
+    }
 
 	/**
 	 * Add give_email_tag_user_email filter to give_email_tag_user_email function.
@@ -239,22 +247,24 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	 * @since 2.0
 	 * @cover give_email_tag_billing_address
 	 */
-	function test_give_email_tag_billing_address() {
-		/*
-		 * Case 1: Billing Address from payment.
-		 */
-		$payment_id      = Give_Helper_Payment::create_simple_payment();
-		$billing_address = give_email_tag_billing_address( array( 'payment_id' => $payment_id ) );
+	function test_give_email_tag_billing_address()
+    {
+        /*
+         * Case 1: Billing Address from payment.
+         */
+        $payment_id = Give_Helper_Payment::create_simple_payment();
+        $donor_id = give_get_payment_donor_id($payment_id);
+        $billing_address = give_email_tag_billing_address(array('payment_id' => $payment_id));
 
-		$this->assertEquals( ',', trim( str_replace( "\n", '', $billing_address ) ) );
+        $this->assertEquals(',', trim(str_replace("\n", '', $billing_address)));
 
-		/*
-		 * Case 2: Billing Address with filter
-		 */
-		add_filter( 'give_email_tag_billing_address', array( $this, 'give_billing_address' ), 10, 2 );
+        /*
+         * Case 2: Billing Address with filter
+         */
+        add_filter('give_email_tag_billing_address', array($this, 'give_billing_address'), 10, 2);
 
-		$billing_address = give_email_tag_billing_address( array( 'user_id' => 1 ) );
-		$this->assertEquals( 'San Diego, CA', $billing_address );
+        $billing_address = give_email_tag_billing_address(array('user_id' => 1));
+        $this->assertEquals('San Diego, CA', $billing_address);
 
 		remove_filter( 'give_email_tag_billing_address', array( $this, 'give_billing_address' ), 10 );
 	}
