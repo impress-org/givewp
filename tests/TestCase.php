@@ -15,6 +15,7 @@ use WP_UnitTestCase;
  * Provides Give-specific setup/tear down/assert methods
  * and helper functions.
  *
+ * @unreleased migrated Give_Unit_Test_Case to GiveTests namespace
  * @since 1.0
  */
 class TestCase extends WP_UnitTestCase
@@ -30,8 +31,9 @@ class TestCase extends WP_UnitTestCase
     private static $saved_settings;
 
     /**
-     * Setup test case.
+     * @inheritDoc
      *
+     * @unreleased add setUpTraits
      * @since 1.0
      */
     public function setUp()
@@ -58,6 +60,12 @@ class TestCase extends WP_UnitTestCase
         $this->setUpTraits();
     }
 
+    /**
+     *
+     * @unreleased add setUpTraits
+     * @since 1.0
+     * @inheritDoc
+     */
     public function tearDown()
     {
         // Reset Give setting to prevent failing test which happen we update setting in test function.
@@ -198,16 +206,20 @@ class TestCase extends WP_UnitTestCase
     }
 
     /**
+     * * Interact with specific traits during setUp
+     *
      * @unreleased
      *
      * @return void
      */
     protected function setUpTraits()
     {
-        //$uses = array_flip(class_uses(static::class));
+        //
     }
 
     /**
+     * Interact with specific traits during tearDown
+     *
      * @unreleased
      *
      * @return void
