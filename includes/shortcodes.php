@@ -819,7 +819,6 @@ function give_form_grid_shortcode( $atts ) {
 			'columns'             => '1',
 			'show_title'          => true,
 			'show_goal'           => true,
-			'show_bar'            => false,
 			'show_excerpt'        => true,
 			'show_featured_image' => true,
 			'show_donate_button'  => false,
