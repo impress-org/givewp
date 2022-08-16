@@ -20,6 +20,7 @@ class Group implements Node, Collection
     use Concerns\NameCollision;
     use Concerns\RemoveNode;
     use Concerns\SerializeAsJson;
+    use Concerns\TapNode;
     use Concerns\WalkNodes;
 
     /**

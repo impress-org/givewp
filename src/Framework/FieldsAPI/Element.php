@@ -10,11 +10,11 @@ use Give\Framework\FieldsAPI\Contracts\Node;
  */
 abstract class Element implements Node
 {
-
     use Concerns\HasName;
     use Concerns\HasType;
     use Concerns\HasVisibilityConditions;
     use Concerns\SerializeAsJson;
+    use Concerns\TapNode;
 
     /**
      * @since 2.12.0

@@ -22,6 +22,7 @@ abstract class Field implements Node
     use Concerns\IsRequired;
     use Concerns\Macroable;
     use Concerns\SerializeAsJson;
+    use Concerns\TapNode;
 
     /** @var ValidationRules */
     protected $validationRules;
@@ -35,7 +36,7 @@ abstract class Field implements Node
      */
     public function __construct($name)
     {
-        if ( ! $name) {
+        if (!$name) {
             throw new EmptyNameException();
         }
 
@@ -63,7 +64,7 @@ abstract class Field implements Node
      */
     public static function make($name)
     {
-        if ( ! $name) {
+        if (!$name) {
             throw new EmptyNameException();
         }
 
