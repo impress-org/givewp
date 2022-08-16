@@ -5,8 +5,9 @@ namespace Give\Framework\FieldsAPI;
 use Give\Framework\FieldsAPI\Contracts\Node;
 
 /**
- * @since 2.12.0
- * @since 2.13.0 Support visibility conditions
+ * @since      2.12.0
+ * @since      2.13.0 Support visibility conditions
+ * @unreleased Add TapNode trait
  */
 abstract class Element implements Node
 {
