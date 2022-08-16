@@ -36,7 +36,7 @@ define('GIVE_NEXT_GEN_DIR', plugin_dir_path(GIVE_NEXT_GEN_FILE));
 define('GIVE_NEXT_GEN_URL', plugin_dir_url(GIVE_NEXT_GEN_FILE));
 define('GIVE_NEXT_GEN_BASENAME', plugin_basename(GIVE_NEXT_GEN_FILE));
 
-require 'vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
 // Activate add-on hook.
 register_activation_hook(GIVE_NEXT_GEN_FILE, [Activation::class, 'activateAddon']);
