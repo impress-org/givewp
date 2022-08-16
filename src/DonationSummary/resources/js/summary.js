@@ -205,12 +205,15 @@ window.GiveDonationSummary = {
      *
      * @param {string/number} amount
      * @param {jQuery} $form
+     * @param {boolean} normalize
      */
-    format_amount: function (amount, $form) {
+    format_amount: function (amount, $form, normalize = true) {
         // Normalize amounts to JS number format
-        amount = amount
-            .replace(Give.form.fn.getInfo('thousands_separator', $form), '')
-            .replace(Give.form.fn.getInfo('decimal_separator', $form), '.');
+        if (normalize) {
+            amount = amount
+                .replace(Give.form.fn.getInfo('thousands_separator', $form), '')
+                .replace(Give.form.fn.getInfo('decimal_separator', $form), '.');
+        }
 
         const currency = Give.form.fn.getInfo('currency_code', $form);
         const precision = GiveDonationSummaryData.currencyPrecisionLookup[currency];
