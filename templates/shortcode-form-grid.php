@@ -260,7 +260,6 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
                     ?>
                     <div class="give-form-grid-progress">
                         <?php
-                            if ($atts['show_goal']){
                                     $style = "width:$progress_bar_value%;";
                                     $style .= "background: linear-gradient(180deg, {$color} 0%, {$color} 100%); background-blend-mode: multiply;";
                                         echo "
@@ -270,7 +269,7 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
                                                     </div>
                                             </div>
                                         ";
-                                    }
+
                             ?>
                                     <div class="form-grid-raised">
                                         <?php
