@@ -4,17 +4,23 @@ declare(strict_types=1);
 
 namespace Give\Donations\Admin\DonationsList\Columns;
 
-use Give\Framework\ListTable\AdvancedColumn;
-use Give\Framework\QueryBuilder\QueryBuilder;
+use DateTime;
+use Give\Donations\Models\Donation;
+use Give\Framework\ListTable\ModelColumn;
 
-class CreatedAtColumn extends AdvancedColumn
+/**
+ * @extends ModelColumn<Donation>
+ */
+class CreatedAtColumn extends ModelColumn
 {
+    public $sortColumn = 'createdAt';
+
     /**
      * @inheritDoc
      */
     public function getId(): string
     {
-        return 'created_at';
+        return 'createdAt';
     }
 
     /**
@@ -27,33 +33,11 @@ class CreatedAtColumn extends AdvancedColumn
 
     /**
      * @inheritDoc
+     *
+     * @param Donation $model
      */
-    public function modifyQuery(QueryBuilder $query)
+    public function getCellValue($model): DateTime
     {
-        $query->select(['post_date', 'createdAt']);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getSortingKey(): string
-    {
-        return 'createdAt';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function isSortable(): bool
-    {
-        return true;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getCellValue($row)
-    {
-        return $row->createdAt;
+        return $model->createdAt;
     }
 }

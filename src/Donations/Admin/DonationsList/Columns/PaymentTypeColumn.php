@@ -7,11 +7,15 @@ namespace Give\Donations\Admin\DonationsList\Columns;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\ListTable\AdvancedColumn;
+use Give\Framework\ListTable\ModelColumn;
 use Give\Framework\ListTable\SimpleColumn;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\QueryBuilder\QueryBuilder;
 
-class PaymentTypeColumn extends AdvancedColumn
+/**
+ * @extends ModelColumn<Donation>
+ */
+class PaymentTypeColumn extends ModelColumn
 {
     /**
      * @inheritDoc
@@ -27,21 +31,6 @@ class PaymentTypeColumn extends AdvancedColumn
     public function getLabel(): string
     {
         return __('Payment Type', 'give');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function modifyQuery(QueryBuilder $query)
-    {
-        $query->attachMeta(
-            'give_donationmeta',
-            'id',
-            'donation_id',
-            DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION,
-            DonationMetaKeys::SUBSCRIPTION_ID,
-            DonationMetaKeys::IS_RECURRING
-        );
     }
 
     /**
@@ -75,17 +64,15 @@ class PaymentTypeColumn extends AdvancedColumn
 
     /**
      * @inheritDoc
+     *
+     * @param Donation $model
      */
-    public function getSortingKey()
+    public function getCellValue($model)
     {
-        return null;
-    }
+        if ( $model->subscriptionId || $model->status->isRenewal()) {
+            return 'renewal';
+        }
 
-    /**
-     * @inheritDoc
-     */
-    public function isSortable(): bool
-    {
-        return false;
+        return 'single';
     }
 }

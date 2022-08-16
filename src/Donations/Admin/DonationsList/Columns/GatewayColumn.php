@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace Give\Donations\Admin\DonationsList\Columns;
 
-use Give\Donations\ValueObjects\DonationMetaKeys;
-use Give\Framework\ListTable\AdvancedColumn;
-use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Donations\Models\Donation;
+use Give\Framework\ListTable\ModelColumn;
 
-class GatewayColumn extends AdvancedColumn
+/**
+ * @extends ModelColumn<Donation>
+ */
+class GatewayColumn extends ModelColumn
 {
+    public $sortColumn = 'gateway';
+
     /**
      * @inheritDoc
      */
@@ -28,33 +32,11 @@ class GatewayColumn extends AdvancedColumn
 
     /**
      * @inheritDoc
+     *
+     * @param Donation $model
      */
-    public function modifyQuery(QueryBuilder $query)
+    public function getCellValue($model): string
     {
-        $query->attachMeta('give_donationmeta', 'id', 'donation_id', DonationMetaKeys::GATEWAY);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getSortingKey()
-    {
-        return DonationMetaKeys::GATEWAY;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function isSortable(): bool
-    {
-        return true;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getCellValue($row): string
-    {
-        return give_get_gateway_admin_label($row->{DonationMetaKeys::GATEWAY});
+        return give_get_gateway_admin_label($model->gatewayId);
     }
 }

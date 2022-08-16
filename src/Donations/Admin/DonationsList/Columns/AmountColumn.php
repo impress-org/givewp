@@ -4,47 +4,45 @@ declare(strict_types=1);
 
 namespace Give\Donations\Admin\DonationsList\Columns;
 
-use Give\Framework\ListTable\AdvancedColumn;
+use Give\Donations\Models\Donation;
 use Give\Framework\ListTable\Enums\CellValueType;
-use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Framework\ListTable\ModelColumn;
 use Give\Framework\Support\ValueObjects\Money;
 
-class AmountColumn extends AdvancedColumn
+/**
+ * @extends ModelColumn<Donation>
+ */
+class AmountColumn extends ModelColumn
 {
+    /**
+     * @inheritDoc
+     */
+    public $sortColumn = 'amount';
+
+    /**
+     * @inheritDoc
+     */
     public function getId(): string
     {
         return 'amount';
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getLabel(): string
     {
         return __('Amount', 'give');
     }
 
-    public function modifyQuery(QueryBuilder $query)
-    {
-        $query->attachMeta('give_donationmeta', 'id', 'donation_id', '_give_payment_total', '_give_payment_currency');
-    }
-
-    public function getSortingKey(): string
-    {
-        return '_give_payment_total';
-    }
-
     /**
      * @inheritDoc
+     *
+     * @param Donation $model
      */
-    public function isSortable(): bool
+    public function getCellValue($model): Money
     {
-        return true;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getCellValue($row): Money
-    {
-        return new Money($row->_give_payment_total, $row->_give_payment_currency);
+        return $model->amount;
     }
 
     /**

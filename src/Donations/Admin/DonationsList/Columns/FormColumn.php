@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace Give\Donations\Admin\DonationsList\Columns;
 
-use Give\Donations\ValueObjects\DonationMetaKeys;
-use Give\Framework\ListTable\AdvancedColumn;
-use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Donations\Models\Donation;
+use Give\Framework\ListTable\ModelColumn;
 
-class FormColumn extends AdvancedColumn
+/**
+ * @extends ModelColumn<Donation>
+ */
+class FormColumn extends ModelColumn
 {
+    public $sortColumn = 'formTitle';
+
     /**
      * @inheritDoc
      */
@@ -28,33 +32,11 @@ class FormColumn extends AdvancedColumn
 
     /**
      * @inheritDoc
+     *
+     * @param Donation $model
      */
-    public function modifyQuery(QueryBuilder $query)
+    public function getCellValue($model): string
     {
-        $query->attachMeta('give_donationmeta', 'id', 'donation_id', DonationMetaKeys::FORM_TITLE);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getSortingKey()
-    {
-        return DonationMetaKeys::FORM_TITLE;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function isSortable(): bool
-    {
-        return true;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getCellValue($row)
-    {
-        return $row->{DonationMetaKeys::FORM_TITLE};
+        return $model->formTitle;
     }
 }
