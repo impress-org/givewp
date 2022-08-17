@@ -325,7 +325,7 @@ function give_validate_username( $username, $form_id = 0 ) {
 
 		// Check if guest checkout is disable for form.
 		if ( $form_id && give_logged_in_only( $form_id ) ) {
-			give_set_error( 'registration_required', __( 'You must register or login to complete your donation.', 'give' ) );
+			give_set_error( 'registration_required', __( 'You must register or log in to complete your donation.', 'give' ) );
 			$valid = false;
 		}
 	}
