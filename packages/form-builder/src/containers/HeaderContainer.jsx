@@ -55,6 +55,7 @@ const HeaderContainer = ({
                     tagName="div"
                     value={formTitle}
                     onChange={(value) => updateFormSetting({formTitle: value})}
+                    style={{fontSize: '16px'}}
                 />
             }
             contentRight={

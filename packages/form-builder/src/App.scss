@@ -59,7 +59,7 @@
     }
 
     .components-select-control__input {
-        height: 55px !important;
+        height: 52px !important;
 
         & ~ .components-input-control__suffix {
 
@@ -97,15 +97,16 @@
     //display: none; /* CSS Hack to hide root level inserter @todo Move to a JS or config solution. */
 }
 
-[data-type="custom-block-editor/section"] > div > .block-editor-inner-blocks > .block-editor-block-list__layout,
-[data-type="custom-block-editor/donor-info"] > div > .block-editor-inner-blocks > .block-editor-block-list__layout,
-[data-type="custom-block-editor/donation-amount"] > div > .block-editor-inner-blocks > .block-editor-block-list__layout,
-[data-type="custom-block-editor/payment-details"] > .block-editor-inner-blocks > .block-editor-block-list__layout,
-[data-type="custom-block-editor/custom-fields"] > .block-editor-inner-blocks > .block-editor-block-list__layout {
-    display: flex;
-    gap: 20px;
-    flex-direction: column;
-    margin-bottom: 40px;
+[data-type="custom-block-editor/section"],
+[data-type="custom-block-editor/donor-info"],
+[data-type="custom-block-editor/donation-amount"],
+[data-type="custom-block-editor/payment-details"] {
+    & > div > .block-editor-inner-blocks > .block-editor-block-list__layout {
+        display: flex;
+        gap: 24px;
+        flex-direction: column;
+        margin-bottom: 40px;
+    }
 }
 
 .block-editor-block-list__block .block-list-appender {
@@ -154,3 +155,53 @@
         }
     }
 }
+
+/**
+ * Remove outline from popover
+ */
+
+.components-popover__content {
+    outline: 0 !important;
+}
+
+/** ------------------------------- */
+
+/**
+ * Adjust inserter alignment
+ */
+
+.components-popover__content {
+    margin-top: -25px;
+}
+
+// Direct children of the root container are sections.
+.is-root-container.block-editor-block-list__layout > .block-editor-block-list__block:not(.is-selected) {
+    padding-top: 15px; // Better aligns section blocks with inserter when not selected
+}
+
+/** ------------------------------- */
+
+/**
+ * Set spacing between field sub-components, ie label and input
+ */
+
+.interface-interface-skeleton__content {
+    .components-select-control, // Select control has a different structure, apparently.
+    .components-base-control__field {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+
+/** ------------------------------- */
+
+/**
+ * @todo The suffix isn't being displayed properly.
+ */
+
+.components-input-control__suffix {
+    display: none;
+}
+
+/** ------------------------------- */
