@@ -9,7 +9,7 @@ interface Node extends JsonSerializable
     /**
      * The primitive node type, one of "field", "element", or "group".
      *
-     * @unreleased
+     * @since 2.22.0
      */
     public function getNodeType(): string;
 

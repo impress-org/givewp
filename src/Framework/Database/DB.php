@@ -73,7 +73,7 @@ class DB
     /**
      * Magic method which calls the static method on the $wpdb while performing error checking
      *
-     * @unreleased add givewp_db_pre_query action
+     * @since 2.22.0 add givewp_db_pre_query action
      * @since 2.9.6
      *
      * @param $name

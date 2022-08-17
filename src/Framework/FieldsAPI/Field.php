@@ -10,7 +10,7 @@ use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
  * @since      2.17.0 allow fields to be macroable
  * @since      2.12.0
  * @since      2.13.0 Support visibility conditions
- * @unreleased Add TapNode trait
+ * @since 2.22.0 Add TapNode trait
  */
 abstract class Field implements Node
 {

@@ -3,12 +3,12 @@
 namespace Give\Framework\FieldsAPI\Concerns;
 
 /**
- * @unreleased
+ * @since 2.22.0
  */
 trait TapNode
 {
     /**
-     * @unreleased
+     * @since 2.22.0
      *
      * @param callable $callback
      *

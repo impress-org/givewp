@@ -112,7 +112,7 @@ class FormData
     /**
      * Convert data from request into DTO
      *
-     * @unreleased add support for company field
+     * @since 2.22.0 add support for company field
      * @since 2.18.0
      */
     public static function fromRequest(array $request): FormData
@@ -170,7 +170,7 @@ class FormData
     }
 
     /**
-     * @unreleased add support for company field
+     * @since 2.22.0 add support for company field
      * @since 2.19.6
      * @throws Exception
      */

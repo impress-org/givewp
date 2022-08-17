@@ -7,7 +7,7 @@ namespace Give\Framework\Database\Actions;
 class EnableBigSqlSelects
 {
     /**
-     * @unreleased
+     * @since 2.22.0
      *
      * Enables mysql big selects for the session using a session system variable.
      *
