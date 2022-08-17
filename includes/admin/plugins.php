@@ -570,12 +570,6 @@ function give_deactivation_popup() {
 				</section>
 			</p>
 		</div>
-		<?php
-		$current_user       = wp_get_current_user();
-		$current_user_email = $current_user->user_email;
-		?>
-		<input type="hidden" name="current-user-email" value="<?php echo $current_user_email; ?>">
-		<input type="hidden" name="current-site-url" value="<?php echo esc_url( get_bloginfo( 'url' ) ); ?>">
 		<input type="hidden" name="give-export-class" value="Give_Tools_Reset_Stats">
 		<?php wp_nonce_field( 'give_ajax_export', 'give_ajax_export' ); ?>
 	</form>
@@ -612,43 +606,27 @@ function give_deactivation_form_submit() {
 	// Get the reason if any radio button has an optional text field.
 	$user_reason = isset( $form_data['user-reason'] ) ? $form_data['user-reason'] : '';
 
-	// Get the email of the user who deactivated the plugin.
-	$user_email = isset( $form_data['current-user-email'] ) ? $form_data['current-user-email'] : '';
-
-	// Get the URL of the website on which Give plugin is being deactivated.
-	$site_url = isset( $form_data['current-site-url'] ) ? $form_data['current-site-url'] : '';
-
 	// Get the value of the checkbox for deleting Give's data.
 	$delete_data = isset( $form_data['confirm_reset_store'] ) ? $form_data['confirm_reset_store'] : '';
 
-	/**
-	 * Make a POST request to the endpoint to send the survey data.
-	 */
-	$response = wp_remote_post(
-		'http://survey.givewp.com/wp-json/give/v2/survey/',
-		[
-			'body' => [
-				'radio_value'        => $radio_value,
-				'user_reason'        => $user_reason,
-				'current_user_email' => $user_email,
-				'site_url'           => $site_url,
-			],
-		]
-	);
+    // Send data to survey server. It doesn't matter if it fails.
+    wp_remote_post(
+        'http://survey.givewp.com/wp-json/give/v2/survey/',
+        [
+            'body' => [
+                'radio_value'        => $radio_value,
+                'user_reason'        => $user_reason,
+            ],
+            'timeout' => 0.1
+        ]
+    );
 
-	// Check if the data is sent and stored correctly.
-	$response = wp_remote_retrieve_body( $response );
+    if ( '1' === $delete_data ) {
+        give_update_option( 'uninstall_on_delete', 'enabled' );
+        wp_send_json_success( [ 'delete_data' => true ] );
+    }
 
-	if ( 'true' === $response ) {
-		if ( '1' === $delete_data ) {
-			give_update_option( 'uninstall_on_delete', 'enabled' );
-			wp_send_json_success( [ 'delete_data' => true ] );
-		}
-
-		wp_send_json_success( [ 'delete_data' => false ] );
-	}
-
-	wp_send_json_error();
+    wp_send_json_success( [ 'delete_data' => false ] );
 }
 
 add_action( 'wp_ajax_deactivation_form_submit', 'give_deactivation_form_submit' );
