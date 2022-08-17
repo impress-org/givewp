@@ -58,4 +58,11 @@ class Group implements Node, Collection
     {
         return new static($name);
     }
+
+    public function tapNode($name, callable $callback)
+    {
+        call_user_func($callback, $this->getNodeByName($name));
+
+        return $this;
+    }
 }
