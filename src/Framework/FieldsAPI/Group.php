@@ -59,9 +59,17 @@ class Group implements Node, Collection
         return new static($name);
     }
 
-    public function tapNode($name, callable $callback)
+    /**
+     * Gives th ability to fluently "tap" a specific node within the group. This is useful when fluently calling methods
+     * on the group, and making a change to a specific node without breaking the fluency.
+     *
+     * @unreleased
+     *
+     * @return $this
+     */
+    public function tapNode(string $name, callable $callback)
     {
-        call_user_func($callback, $this->getNodeByName($name));
+        $callback($this->getNodeByName($name));
 
         return $this;
     }
