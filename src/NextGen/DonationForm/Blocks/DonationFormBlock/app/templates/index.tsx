@@ -7,28 +7,33 @@ import TextAreaField from './fields/TextArea';
 import EmailField from './fields/Email';
 import HiddenField from './fields/Hidden';
 import HtmlElement from './elements/Html';
-import DonationSummaryElement from './elements/DonationSummary'
+import DonationSummaryElement from './elements/DonationSummary';
 import NameGroup from './groups/Name';
 import SectionLayout, {SectionProps} from './layouts/Section';
 import Form, {FormProps} from './layouts/Form';
 import AmountField from './fields/Amount';
-import classNames from "classnames";
+import classNames from 'classnames';
+import Gateways from './fields/Gateways';
 
 export function NodeWrapper({
-                                type,
-                                nodeType,
-                                htmlTag: Element = 'div',
-                                name,
-                                children,
-                            }: { type: string; nodeType: string; htmlTag?: ElementType; name?: string; children: ReactNode }) {
+    type,
+    nodeType,
+    htmlTag: Element = 'div',
+    name,
+    children,
+}: {
+    type: string;
+    nodeType: string;
+    htmlTag?: ElementType;
+    name?: string;
+    children: ReactNode;
+}) {
     return (
-        <Element className={
-            classNames(
-                `givewp-${nodeType}`,
-                `givewp-${nodeType}-${type}`,
-                {[`givewp-${nodeType}-${type}-${name}`]: name},
-            )
-        }>
+        <Element
+            className={classNames(`givewp-${nodeType}`, `givewp-${nodeType}-${type}`, {
+                [`givewp-${nodeType}-${type}-${name}`]: name,
+            })}
+        >
             {children}
         </Element>
     );
@@ -51,6 +56,7 @@ const defaultTemplate = {
         textarea: TextAreaField,
         email: EmailField,
         hidden: HiddenField,
+        gateways: Gateways,
     },
     elements: {
         html: HtmlElement,
@@ -70,24 +76,26 @@ const activeTemplate = window.givewp.template.get();
 const template = {
     fields: {
         ...defaultTemplate.fields,
-        ...activeTemplate?.fields
+        ...activeTemplate?.fields,
     },
     elements: {
         ...defaultTemplate.elements,
-        ...activeTemplate?.elements
+        ...activeTemplate?.elements,
     },
     groups: {
         ...defaultTemplate.groups,
-        ...activeTemplate?.groups
+        ...activeTemplate?.groups,
     },
     layouts: {
         ...defaultTemplate.layouts,
-        ...activeTemplate?.layouts
+        ...activeTemplate?.layouts,
     },
-}
+};
 
 function getTemplate<NodeProps>(type: string, section: string, htmlTag?: string): FC<NodeProps> {
-    const Node = template[section].hasOwnProperty(type) ? withWrapper(template[section][type], section, type, htmlTag) : null;
+    const Node = template[section].hasOwnProperty(type)
+        ? withWrapper(template[section][type], section, type, htmlTag)
+        : null;
 
     let FilteredNode = applyFilters(`givewp/form/${section}/${type}`, Node);
     FilteredNode = applyFilters(`givewp/form/${section}`, Node, type);

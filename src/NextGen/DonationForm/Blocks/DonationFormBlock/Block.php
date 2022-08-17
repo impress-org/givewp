@@ -12,6 +12,7 @@ use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 use Give\Framework\FieldsAPI\Form;
 use Give\Framework\FieldsAPI\Hidden;
 use Give\Framework\FieldsAPI\Name;
+use Give\Framework\FieldsAPI\PaymentGateways;
 use Give\Framework\FieldsAPI\Radio;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Select;
@@ -108,11 +109,6 @@ class Block
      */
     private function createForm(int $formId): Form
     {
-        $gatewayOptions = [];
-        foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
-            $gatewayOptions[] = Radio::make($gateway->getId())->label($gateway->getPaymentMethodLabel());
-        }
-
         $donationForm = new Form($formId);
 
         $formBlockData = json_decode(get_post($formId)->post_content, false);
@@ -123,8 +119,6 @@ class Block
 
         /** @var Section $paymentDetails */
         $paymentDetails = $donationForm->getNodeByName('payment-details');
-
-        $paymentDetails->append(...$gatewayOptions);
 
         $paymentDetails->append(
             Hidden::make('formId')
@@ -204,6 +198,8 @@ class Block
             });
         } elseif ($block->name === "custom-block-editor/email-field") {
             $node = Email::make('email')->emailTag('email');
+        } elseif ($block->name === "custom-block-editor/payment-gateways") {
+            $node = PaymentGateways::make('gatewayId');
         } elseif ($block->name === "custom-block-editor/donation-summary") {
             $node = DonationSummary::make('donation-summary');
         } elseif ($block->name === "custom-block-editor/company-field") {

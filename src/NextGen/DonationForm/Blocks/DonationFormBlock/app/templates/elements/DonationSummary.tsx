@@ -1,5 +1,5 @@
-import {useMemo} from "react";
-import {__} from "@wordpress/i18n";
+import {useMemo} from 'react';
+import {__} from '@wordpress/i18n';
 
 export default function DonationSummary() {
     const {useWatch} = window.givewp.form;
@@ -12,23 +12,25 @@ export default function DonationSummary() {
                 currency: currency,
             }),
         [currency, navigator.language]
-    )
-
-    return (
-        <ul className="givewp-elements-donationSummary__list">
-            <LineItem label={__('Payment Amount', 'give')} value={formatter.format(Number(amount))}/>
-            <LineItem label={__('Giving Frequency', 'give')} value={__('One time', 'give')}/>
-            <LineItem label={__('Donation Total', 'give')} value={formatter.format(Number(amount))}/>
-        </ul>
     );
 
+    return (
+        <>
+            <strong>Donation Summary</strong>
+            <ul className="givewp-elements-donationSummary__list">
+                <LineItem label={__('Payment Amount', 'give')} value={formatter.format(Number(amount))} />
+                <LineItem label={__('Giving Frequency', 'give')} value={__('One time', 'give')} />
+                <LineItem label={__('Donation Total', 'give')} value={formatter.format(Number(amount))} />
+            </ul>
+        </>
+    );
 }
 
-const LineItem = ({label, value}: { label: string, value: string }) => {
+const LineItem = ({label, value}: {label: string; value: string}) => {
     return (
         <li className="givewp-elements-donationSummary__list-item">
             <div>{label}</div>
             <div>{value}</div>
         </li>
-    )
-}
+    );
+};
