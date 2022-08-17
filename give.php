@@ -57,6 +57,7 @@ use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvide
 use Give\Form\Templates;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Framework\Migrations\MigrationsServiceProvider;
+use Give\Framework\Database\ServiceProvider as DatabaseServiceProvider;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\WordPressShims\ServiceProvider as WordPressShimsServiceProvider;
 use Give\LegacySubscriptions\ServiceProvider as LegacySubscriptionsServiceProvider;
@@ -197,6 +198,7 @@ final class Give
         PromotionsServiceProvider::class,
         LegacySubscriptionsServiceProvider::class,
         WordPressShimsServiceProvider::class,
+        DatabaseServiceProvider::class,
     ];
 
     /**
