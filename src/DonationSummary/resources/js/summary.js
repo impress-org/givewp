@@ -120,7 +120,7 @@ window.GiveDonationSummary = {
         // Hack: (Currency Switcher) The total is always stored using a the decimal separator as set by the primary currency.
         const formData = new FormData($form[0]);
         const fee = formData.get('give-fee-amount');
-        $form.find('[data-tag="fees"]').html(GiveDonationSummary.format_amount(fee, $form, false));
+        $form.find('[data-tag="fees"]').html(GiveDonationSummary.format_amount(fee, $form));
     },
 
     /**
@@ -129,7 +129,7 @@ window.GiveDonationSummary = {
     initTotal: function () {
         GiveDonationSummary.observe('.give-final-total-amount', function (targetNode, $form) {
             // Hack: (Currency Switcher) The total is always stored using a the decimal seperator as set by the primary currency.
-            const total = targetNode.dataset.total.replace('.', Give.form.fn.getInfo('decimal_separator', $form));
+            const total = targetNode.dataset.total;
             $form.find('[data-tag="total"]').html(GiveDonationSummary.format_amount(total, $form));
         });
 
@@ -207,12 +207,10 @@ window.GiveDonationSummary = {
      * @param {jQuery} $form
      * @param {boolean} normalize
      */
-    format_amount: function (amount, $form, normalize = true) {
+    format_amount: function (amount, $form) {
         // Normalize amounts to JS number format
-        if (normalize) {
-            amount = amount
-                .replace(Give.form.fn.getInfo('thousands_separator', $form), '')
-                .replace(Give.form.fn.getInfo('decimal_separator', $form), '.');
+        if (amount.includes(',')) {
+            amount = Give.fn.unFormatCurrency(amount, Give.form.fn.getInfo('decimal_separator', $form));
         }
 
         const currency = Give.form.fn.getInfo('currency_code', $form);
