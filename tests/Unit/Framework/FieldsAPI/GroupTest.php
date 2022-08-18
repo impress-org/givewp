@@ -14,23 +14,25 @@ final class GroupTest extends TestCase
         $this->assertEquals('group', Group::make('group')->getName());
     }
 
-    public function testGetNodeByName() {
-        $group = Group::make( 'group')->append(
-            Text::make( 'firstTextField' ),
-            Text::make( 'secondTextField' )
+    public function testGetNodeByName()
+    {
+        $group = Group::make('group')->append(
+            Text::make('firstTextField'),
+            Text::make('secondTextField')
         );
 
-        $this->assertEquals( 'secondTextField', $group->getNodeByName( 'secondTextField' )->getName() );
+        $this->assertEquals('secondTextField', $group->getNodeByName('secondTextField')->getName());
     }
 
-    public function testGetNestedNodeByName() {
-        $group = Group::make( 'group')->append(
-            Text::make( 'firstTextField' ),
-            Group::make( 'nestedGroup' )->append(
-                Text::make( 'secondTextField' )
+    public function testGetNestedNodeByName()
+    {
+        $group = Group::make('group')->append(
+            Text::make('firstTextField'),
+            Group::make('nestedGroup')->append(
+                Text::make('secondTextField')
             )
         );
 
-        $this->assertEquals( 'secondTextField', $group->getNodeByName( 'secondTextField' )->getName() );
+        $this->assertEquals('secondTextField', $group->getNodeByName('secondTextField')->getName());
     }
 }

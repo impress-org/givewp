@@ -207,7 +207,7 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
 
 
     <?php if ( ! empty( $show_bar ) ) :
-        $style = "width:{$progress_bar_value}%;";
+        $style = "width:{$progress_bar_value}%";
 
         if ( ! empty($color)) {
             $style .= ";background: linear-gradient(180deg, {$color} 0%, {$color} 100%), linear-gradient(180deg, #fff 0%, #ccc 100%); background-blend-mode: multiply;";
