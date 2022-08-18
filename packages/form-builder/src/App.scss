@@ -109,6 +109,11 @@
     }
 }
 
+[data-type="custom-block-editor/paragraph"] .rich-text {
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
 .block-editor-block-list__block .block-list-appender {
     position: unset !important;
 }

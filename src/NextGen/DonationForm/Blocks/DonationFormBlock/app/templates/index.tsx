@@ -14,6 +14,7 @@ import Form, {FormProps} from './layouts/Form';
 import AmountField from './fields/Amount';
 import classNames from 'classnames';
 import Gateways from './fields/Gateways';
+import Paragraph from './elements/Paragraph';
 
 export function NodeWrapper({
     type,
@@ -59,6 +60,7 @@ const defaultTemplate = {
         gateways: Gateways,
     },
     elements: {
+        paragraph: Paragraph,
         html: HtmlElement,
         donationSummary: DonationSummaryElement,
     },

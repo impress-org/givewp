@@ -12,6 +12,7 @@ use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 use Give\Framework\FieldsAPI\Form;
 use Give\Framework\FieldsAPI\Hidden;
 use Give\Framework\FieldsAPI\Name;
+use Give\Framework\FieldsAPI\Paragraph;
 use Give\Framework\FieldsAPI\PaymentGateways;
 use Give\Framework\FieldsAPI\Radio;
 use Give\Framework\FieldsAPI\Section;
@@ -196,6 +197,9 @@ class Block
                     $group->remove('honorific');
                 }
             });
+        } elseif ($block->name === "custom-block-editor/paragraph") {
+            $node = Paragraph::make(substr(md5(mt_rand()), 0, 7))
+                ->content($block->attributes->content);
         } elseif ($block->name === "custom-block-editor/email-field") {
             $node = Email::make('email')->emailTag('email');
         } elseif ($block->name === "custom-block-editor/payment-gateways") {
