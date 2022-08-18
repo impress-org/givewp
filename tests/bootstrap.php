@@ -1,23 +1,23 @@
 <?php
 
+use GiveTests\TestEnvironment;
+
+require __DIR__ . '/../vendor/autoload.php';
+
 const WP_CONTENT_DIR = __DIR__;
 
-$bootstrapConfig = require __DIR__ . '/bootstrapConfig.php';
+$testEnvironment = new TestEnvironment();
 
-if (!file_exists($bootstrapConfig['workflow']['config']) && !file_exists($bootstrapConfig['local']['config'])) {
+if (!$testEnvironment->hasConfig()) {
     die('wp-tests-config.php not found');
 }
 
-if (file_exists($bootstrapConfig['workflow']['config'])) {
-    $currentBootstrapConfig = $bootstrapConfig['workflow'];
-} else {
-    $currentBootstrapConfig = $bootstrapConfig['local'];
-}
+$currentTestEnvironment = $testEnvironment->current();
 
-define('WP_TESTS_CONFIG_FILE_PATH', $currentBootstrapConfig['config']);
+define('WP_TESTS_CONFIG_FILE_PATH', $currentTestEnvironment->config());
 
 require_once WP_TESTS_CONFIG_FILE_PATH;
-require_once $currentBootstrapConfig['functions'];
+require_once $currentTestEnvironment->functions();
 
 tests_add_filter('muplugins_loaded', static function () {
     require_once __DIR__ . '/../give.php';
@@ -28,7 +28,7 @@ tests_add_filter('setup_theme', static function () {
     give()->install();
 });
 
-require_once $currentBootstrapConfig['bootstrap'];
+require_once $currentTestEnvironment->bootstrap();
 
 // Include legacy test case
 require_once __DIR__ . '/includes/legacy/framework/class-give-unit-test-case.php';
