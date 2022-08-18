@@ -12,9 +12,9 @@ This folder contains instructions and test code for Give WordPress unit testing 
 
 ## Testing Environment
 
-Your WordPress testing environment can be configured in `tests/unit/wp-tests-config.dist.php`.
+Your WordPress testing environment can be configured in `tests/wp-tests-config.dist.php`.
 
-If `tests/unit/wp-tests-config.php` does not exist, copy `tests/unit/wp-tests-config.dist.php` as a new file.
+If `tests/wp-tests-config.php` does not exist, copy `tests/wp-tests-config.dist.php` as a new file.
 
 If you need to use a socket for your database, then your host will be colon-delimited: `localhost:/path/to/socket`
 
