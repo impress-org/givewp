@@ -24,4 +24,20 @@ final class FormatListTest extends TestCase
         ];
         $this->assertEquals($expectedList, $formattedList);
     }
+
+    /**
+     * @return void
+     */
+    public function testFromValueKey()
+    {
+        $data = ['foo' => 'bar'];
+        $formattedList = FormatList::fromValueKey($data);
+        $expectedList = [
+            [
+                'value' => 'bar',
+                'label' => 'foo',
+            ],
+        ];
+        $this->assertEquals($expectedList, $formattedList);
+    }
 }
