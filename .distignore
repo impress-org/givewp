@@ -7,6 +7,7 @@
 
 /tests
 /node_modules
+/packages/form-builder/node_modules
 /assets/src
 /vendor/bin
 /vendor/composer/installers
