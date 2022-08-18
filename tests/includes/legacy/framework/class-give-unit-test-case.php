@@ -8,6 +8,8 @@ use Give\Framework\Support\ValueObjects\Money;
  * Provides Give-specific setup/tear down/assert methods
  * and helper functions.
  *
+ * @deprecated @unreleased use GiveTests\TestCase instead
+ *
  * @since 1.0
  */
 class Give_Unit_Test_Case extends WP_UnitTestCase
