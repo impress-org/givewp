@@ -115,7 +115,6 @@ window.GiveDonationSummary = {
             return;
         }
 
-        // Hack: (Currency Switcher) The total is always stored using a the decimal separator as set by the primary currency.
         const formData = new FormData($form[0]);
         const fee = formData.get('give-fee-amount');
         $form.find('[data-tag="fees"]').html(GiveDonationSummary.format_amount(fee, $form, false));
