@@ -12,8 +12,10 @@ use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 use Give\Framework\FieldsAPI\Form;
 use Give\Framework\FieldsAPI\Hidden;
 use Give\Framework\FieldsAPI\Name;
+use Give\Framework\FieldsAPI\PaymentGateways;
 use Give\Framework\FieldsAPI\Radio;
 use Give\Framework\FieldsAPI\Section;
+use Give\Framework\FieldsAPI\Select;
 use Give\Framework\FieldsAPI\Text;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
@@ -67,7 +69,7 @@ class Block
         $formId = $attributes['formId'] ?? null;
         $formTemplateId = $attributes['formTemplateId'] ?? null;
 
-        if (!$formId) {
+        if ( ! $formId) {
             return null;
         }
 
@@ -107,11 +109,6 @@ class Block
      */
     private function createForm(int $formId): Form
     {
-        $gatewayOptions = [];
-        foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
-            $gatewayOptions[] = Radio::make($gateway->getId())->label($gateway->getPaymentMethodLabel());
-        }
-
         $donationForm = new Form($formId);
 
         $formBlockData = json_decode(get_post($formId)->post_content, false);
@@ -122,8 +119,6 @@ class Block
 
         /** @var Section $paymentDetails */
         $paymentDetails = $donationForm->getNodeByName('payment-details');
-
-        $paymentDetails->append(...$gatewayOptions);
 
         $paymentDetails->append(
             Hidden::make('formId')
@@ -183,9 +178,28 @@ class Block
                 ->defaultValue(50)
                 ->required();
         } elseif ($block->name === "custom-block-editor/donor-name") {
-            $node = Name::make('name');
+            $node = Name::make('name')->tap(function ($group) use ($block) {
+                $group->getNodeByName('firstName')
+                    ->label($block->attributes->firstNameLabel)
+                    ->placeholder($block->attributes->firstNamePlaceholder);
+
+                $group->getNodeByName('lastName')
+                    ->label($block->attributes->lastNameLabel)
+                    ->placeholder($block->attributes->lastNamePlaceholder)
+                    ->required($block->attributes->requireLastName);
+
+                if ($block->attributes->showHonorific) {
+                    $group->getNodeByName('honorific')
+                        ->label('Title')
+                        ->options(...$block->attributes->honorifics);
+                } else {
+                    $group->remove('honorific');
+                }
+            });
         } elseif ($block->name === "custom-block-editor/email-field") {
-            $node = Email::make('email')->required()->emailTag('email');
+            $node = Email::make('email')->emailTag('email');
+        } elseif ($block->name === "custom-block-editor/payment-gateways") {
+            $node = PaymentGateways::make('gatewayId');
         } elseif ($block->name === "custom-block-editor/donation-summary") {
             $node = DonationSummary::make('donation-summary');
         } elseif ($block->name === "custom-block-editor/company-field") {
@@ -194,8 +208,21 @@ class Block
             $node = Text::make($block->clientId);
         }
 
-        if (property_exists($block->attributes, 'label') && 'field' === $node->getNodeType()) {
-            $node->label($block->attributes->label);
+        if ('field' === $node->getNodeType()) {
+            // Label
+            if (property_exists($block->attributes, 'label')) {
+                $node->label($block->attributes->label);
+            }
+
+            // Placeholder
+            if (property_exists($block->attributes, 'placeholder')) {
+                $node->placeholder($block->attributes->placeholder);
+            }
+
+            // Required
+            if (property_exists($block->attributes, 'isRequired')) {
+                $node->required($block->attributes->isRequired);
+            }
         }
 
         return $node;

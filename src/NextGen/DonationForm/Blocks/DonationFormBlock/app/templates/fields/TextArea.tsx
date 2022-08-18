@@ -5,7 +5,11 @@ export default function TextArea({label, fieldError, inputProps}: FieldProps) {
         <label>
             {label}
             <textarea {...inputProps} />
-            {fieldError && <p>{fieldError}</p>}
+            {fieldError && (
+                <div className="error-message">
+                    <p role="alert">{fieldError}</p>
+                </div>
+            )}
         </label>
     );
 }

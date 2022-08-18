@@ -1,8 +1,9 @@
 import {Icon} from '@wordpress/icons';
 import {__} from "@wordpress/i18n";
 import {InspectorControls} from "@wordpress/block-editor";
-import {FormTokenField, PanelBody, PanelRow, ToggleControl} from "@wordpress/components";
+import {FormTokenField, PanelBody, PanelRow, SelectControl, TextControl, ToggleControl} from "@wordpress/components";
 import settings from "./settings";
+import {useState} from "react";
 
 const donorName = {
     name: 'custom-block-editor/donor-name',
@@ -19,9 +20,29 @@ const donorName = {
                 type: 'boolean',
                 default: true,
             },
-            honoriphics: {
+            honorifics: {
                 type: 'array',
                 default: ['Mr', 'Ms', 'Mrs'],
+            },
+            firstNameLabel: {
+                type: 'string',
+                source: 'attribute',
+                default: __('First name', 'give'),
+            },
+            firstNamePlaceholder: {
+                type: 'string',
+                source: 'attribute',
+                default: __('First name', 'give'),
+            },
+            lastNameLabel: {
+                type: 'string',
+                source: 'attribute',
+                default: __('Last name', 'give'),
+            },
+            lastNamePlaceholder: {
+                type: 'string',
+                source: 'attribute',
+                default: __('Last name', 'give'),
             },
             requireLastName: {
                 type: 'boolean',
@@ -31,29 +52,30 @@ const donorName = {
         edit: (props) => {
 
             const {
-                attributes: {showHonorific, honoriphics, requireLastName},
+                attributes: {
+                    showHonorific,
+                    honorifics,
+                    firstNameLabel,
+                    firstNamePlaceholder,
+                    lastNameLabel,
+                    lastNamePlaceholder,
+                    requireLastName,
+                },
                 setAttributes,
             } = props;
 
-            const requiredText = (text, isRequired = true) => {
-                if (isRequired) {
-                    return text + ' (' + __('required', 'give') + ')';
-                }
-                return text;
-            };
-
-            const titleLabelTransform = (token = '') => token.charAt(0).toUpperCase() + token.slice(1);
-            const titleValueTransform = (token = '') => token.trim().toLowerCase();
-
             return (
                 <>
-                    <div style={{display: 'flex', gap: '15px'}}>
-                        {!!showHonorific && (<select style={{width: '80px'}}>
-                            {honoriphics.map(title => <option
-                                value={titleLabelTransform(title)}>{titleLabelTransform(title)}</option>)}
-                        </select>)}
-                        <input type="text" placeholder={requiredText(__('First Name', 'give'))} />
-                        <input type="text" placeholder={requiredText(__('Last Name', 'give'), requireLastName)} />
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: showHonorific ? '1fr 2fr 2fr' : '1fr 1fr',
+                        gap: '15px',
+                    }}>
+                        {!!showHonorific && <HonorificSelect honorifics={honorifics} />}
+                        <TextControl label={firstNameLabel} placeholder={firstNamePlaceholder} required={true}
+                                     className={'give-is-required'} />
+                        <TextControl label={lastNameLabel} placeholder={lastNamePlaceholder} required={requireLastName}
+                                     className={`${requireLastName ? 'give-is-required' : ''}`} />
                     </div>
 
                     <InspectorControls>
@@ -71,20 +93,38 @@ const donorName = {
                                     {!!showHonorific && (<FormTokenField
                                         tokenizeOnSpace={true}
                                         label={__('Title Prefixes', 'give')}
-                                        value={honoriphics}
+                                        value={honorifics}
                                         suggestions={['Mr', 'Ms', 'Mrs']}
                                         placeholder={__('Select some options', 'give')}
-                                        onChange={(tokens) => setAttributes({honoriphics: tokens})}
+                                        onChange={(tokens) => setAttributes({honorifics: tokens})}
                                         displayTransform={titleLabelTransform}
                                         saveTransform={titleValueTransform}
                                     />)}
                                 </div>
                             </PanelRow>
                         </PanelBody>
+                        <PanelBody title={__('First Name', 'give')} initialOpen={true}>
+                            <PanelRow>
+                                <TextControl label={__('Label')} value={firstNameLabel}
+                                             onChange={(value) => setAttributes({firstNameLabel: value})} />
+                            </PanelRow>
+                            <PanelRow>
+                                <TextControl label={__('Placeholder')} value={firstNamePlaceholder}
+                                             onChange={(value) => setAttributes({firstNamePlaceholder: value})} />
+                            </PanelRow>
+                        </PanelBody>
                         <PanelBody title={__('Last Name', 'give')} initialOpen={true}>
                             <PanelRow>
+                                <TextControl label={__('Label')} value={lastNameLabel}
+                                             onChange={(value) => setAttributes({lastNameLabel: value})} />
+                            </PanelRow>
+                            <PanelRow>
+                                <TextControl label={__('Placeholder')} value={lastNamePlaceholder}
+                                             onChange={(value) => setAttributes({lastNamePlaceholder: value})} />
+                            </PanelRow>
+                            <PanelRow>
                                 <ToggleControl
-                                    label={__('Require Last Name', 'give')}
+                                    label={__('Required', 'give')}
                                     checked={requireLastName}
                                     onChange={() => setAttributes({requireLastName: !requireLastName})}
                                     help={__('Do you want to force the Last Name field to be required?', 'give')}
@@ -105,5 +145,21 @@ const donorName = {
         } />,
     },
 };
+
+const HonorificSelect = ({honorifics}) => {
+    const [selectedTitle, setSelectedTitle] = useState(honorifics[0] ?? '');
+    const honorificOptions = honorifics.map(token => {
+        return {
+            label: titleLabelTransform(token),
+            value: titleValueTransform(token),
+        };
+    });
+    return <SelectControl label={__('Title', 'give')} options={honorificOptions} value={selectedTitle}
+                          onChange={setSelectedTitle} />;
+};
+
+
+const titleLabelTransform = (token = '') => token.charAt(0).toUpperCase() + token.slice(1);
+const titleValueTransform = (token = '') => token.trim().toLowerCase();
 
 export default donorName;

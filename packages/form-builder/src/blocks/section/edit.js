@@ -31,24 +31,25 @@ export default function Edit(props) {
             <div style={{
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '20px',
-                marginBottom: '20px',
+                gap: '24px',
+                marginBottom: '36px',
                 outline: '1px solid ' + borderColor,
                 borderRadius: '5px',
-                padding: '0 40px',
+                padding: '36px 40px',
                 backgroundColor: 'white',
             }}>
-                <header>
+                <header style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
                     <RichText
                         tagName="h2"
                         value={title}
                         onChange={(val) => setAttributes({title: val})}
-                        style={{borderBottom: '0.0625rem solid #ddd'}}
+                        style={{margin: '0', fontSize: '22px', fontWeight: 700}}
                     />
                     <RichText
                         tagName="p"
                         value={description}
                         onChange={(val) => setAttributes({description: val})}
+                        style={{fontSize: '16px', fontWeight: 500}}
                     />
                 </header>
 

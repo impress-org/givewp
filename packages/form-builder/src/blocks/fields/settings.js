@@ -1,5 +1,5 @@
 import {InspectorControls} from "@wordpress/block-editor";
-import {PanelBody, PanelRow, TextControl} from "@wordpress/components";
+import {PanelBody, PanelRow, TextControl, ToggleControl} from "@wordpress/components";
 import {__} from "@wordpress/i18n";
 
 const settings = {
@@ -17,6 +17,16 @@ const settings = {
             source: 'attribute',
             default: __('Text Field', 'give'),
         },
+        placeholder: {
+            type: 'string',
+            source: 'attribute',
+            default: '',
+        },
+        isRequired: {
+            type: 'boolean',
+            source: 'attribute',
+            default: false,
+        },
         options: {
             type: 'array',
         },
@@ -25,15 +35,18 @@ const settings = {
     edit: function (props) {
 
         const {
-            attributes: {label, options},
+            attributes: {label, placeholder, isRequired, options},
             setAttributes,
         } = props;
+
+        const requiredClass = isRequired ? "give-is-required" : "";
 
         return (
             <>
                 <div>
                     {'undefined' === typeof options
-                        ? <input style={{width: '100%'}} type="text" placeholder={label} />
+                        ? <TextControl label={label} placeholder={placeholder} required={isRequired}
+                                       className={requiredClass} />
                         : <select>{options.map((option) => <option key={option.value}
                                                                    value={option.value}>{option.label}</option>)}</select>
                     }
@@ -46,6 +59,20 @@ const settings = {
                                 label={'Label'}
                                 value={label}
                                 onChange={(val) => setAttributes({label: val})}
+                            />
+                        </PanelRow>
+                        <PanelRow>
+                            <TextControl
+                                label={'Placeholder'}
+                                value={placeholder}
+                                onChange={(val) => setAttributes({placeholder: val})}
+                            />
+                        </PanelRow>
+                        <PanelRow>
+                            <ToggleControl
+                                label={'Required'}
+                                checked={isRequired}
+                                onChange={() => setAttributes({isRequired: !isRequired})}
                             />
                         </PanelRow>
                     </PanelBody>

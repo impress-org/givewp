@@ -33,7 +33,11 @@ export default function Amount({name, label, inputProps, levels, allowCustomAmou
                 {label}
                 <input type={allowCustomAmount ? 'text' : 'hidden'} {...inputProps} />
             </label>
-            {fieldError && <p>{fieldError}</p>}
+            {fieldError && (
+                <div className="error-message">
+                    <p role="alert">{fieldError}</p>
+                </div>
+            )}
         </div>
     );
 }

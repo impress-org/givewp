@@ -9,9 +9,8 @@ import {useGiveDonationFormStore} from '../store';
 import type {Gateway, Section} from '@givewp/forms/types';
 import postData from '../utilities/postData';
 import {getFormTemplate, getSectionTemplate} from '../templates';
-import {useCallback} from "react";
-import PaymentDetails from "../fields/PaymentDetails";
-import SectionNode from "../fields/SectionNode";
+import {useCallback} from 'react';
+import SectionNode from '../fields/SectionNode';
 
 window.givewp.form = {
     useFormContext,
@@ -33,7 +32,7 @@ const schema = Joi.object({
     gatewayId: Joi.string().required().label('Payment Gateway').messages(messages),
     formId: Joi.number().required(),
     currency: Joi.string().required(),
-    company: Joi.string().optional().allow(null, '')
+    company: Joi.string().optional().allow(null, ''),
 }).unknown();
 
 const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
@@ -75,12 +74,7 @@ export default function Form({defaultValues, sections}: PropTypes) {
         resolver: joiResolver(schema),
     });
 
-    const {
-        handleSubmit,
-        setError,
-        getValues,
-        control
-    } = methods;
+    const {handleSubmit, setError, getValues, control} = methods;
 
     const {errors, isSubmitting, isSubmitSuccessful} = useFormState({control});
 
@@ -117,13 +111,11 @@ export default function Form({defaultValues, sections}: PropTypes) {
             >
                 <>
                     {sections.map((section) => {
-                        if (section.name === 'payment-details') {
-                            return <PaymentDetails gateways={gateways} key={section.name} {...section} />;
-                        }
-
                         return (
                             <FormSectionTemplate key={section.name} section={section}>
-                                {section.nodes.map((node) => <SectionNode key={node.name} node={node}/>)}
+                                {section.nodes.map((node) => (
+                                    <SectionNode key={node.name} node={node} />
+                                ))}
                             </FormSectionTemplate>
                         );
                     })}
