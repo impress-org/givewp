@@ -9,7 +9,9 @@ use PHPUnit\Framework\TestCase;
 
 final class FormatListTest extends TestCase
 {
-
+    /**
+     * @return void
+     */
     public function testFromKeyValue()
     {
         $data = ['foo' => 'bar'];
@@ -18,19 +20,6 @@ final class FormatListTest extends TestCase
             [
                 'value' => 'foo',
                 'label' => 'bar',
-            ],
-        ];
-        $this->assertEquals($expectedList, $formattedList);
-    }
-
-    public function testFromValueKey(): void
-    {
-        $data = ['foo' => 'bar'];
-        $formattedList = FormatList::fromValueKey($data);
-        $expectedList = [
-            [
-                'value' => 'bar',
-                'label' => 'foo',
             ],
         ];
         $this->assertEquals($expectedList, $formattedList);
