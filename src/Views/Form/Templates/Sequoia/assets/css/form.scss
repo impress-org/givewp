@@ -88,7 +88,7 @@ p {
     flex-direction: column;
     background-color: #fff;
     -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2),
-        0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    0 1px 5px 0 rgba(0, 0, 0, 0.12);
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
     width: 100%;
     overflow: hidden;
@@ -106,10 +106,12 @@ p {
     font-size: 30px;
     padding-top: 15px;
     padding-bottom: 15px;
+
     &:focus {
         outline: none;
         box-shadow: 0 0 8px #28c77b;
     }
+
     &:hover {
         filter: brightness(1.2);
     }
@@ -424,6 +426,8 @@ p {
     box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.09487);
 
     > span {
+        display: block;
+        height: 100%;
         border-radius: 20px;
         background: linear-gradient(180deg, #28c77b 0%, #28c77b 100%), linear-gradient(180deg, #fff 0%, #ccc 100%);
         background-blend-mode: multiply;
@@ -893,6 +897,7 @@ p {
         margin-right: 20px;
         margin-left: 20px;
     }
+
     .heading {
         padding: 39px 3px 0;
         font-size: 16px;
@@ -904,22 +909,27 @@ p {
             padding: 20px 3px 0;
         }
     }
+
     .subheading {
         @media screen and (max-width: $break-phone) {
             padding-left: 20px !important;
             padding-right: 20px !important;
         }
     }
+
     .give_notices {
         width: 100%;
         order: 1;
     }
+
     .give_notices + .heading {
         padding: 28px 3px 0;
     }
+
     .give_error + .heading {
         padding: 28px 3px 0;
     }
+
     .subheading {
         padding: 5px 0 34px 0;
         font-style: italic;
@@ -945,6 +955,7 @@ p {
             display: none;
         }
     }
+
     #give-payment-mode-select {
         .gateway-stripe-google_pay,
         .gateway-stripe-apple_pay {
@@ -954,6 +965,7 @@ p {
         legend {
             display: none;
         }
+
         ul {
             @include before-after-content-none;
             display: grid;
@@ -1117,6 +1129,7 @@ fieldset {
     legend {
         display: none;
     }
+
     p {
         position: relative;
 
@@ -1372,7 +1385,7 @@ form.give-form .form-row select.multiselect {
 // This is popup used by PayPal to verify 3ds card.
 // Exclude Give Aid add-on popup too by adding give-modal to the selector
 body
-    > *:not([class^='give']):not([id^='give']):not([class*='payments-sdk-contingency-handler']):not([class*='give-modal']) {
+> *:not([class^='give']):not([id^='give']):not([class*='payments-sdk-contingency-handler']):not([class*='give-modal']) {
     display: none;
 }
 

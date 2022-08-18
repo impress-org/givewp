@@ -41,10 +41,11 @@ abstract class PaymentCommand implements GatewayCommand
     }
 
     /**
-     * @param  string|string[]  ...$paymentNotes
+     * @since 2.22.0 add type, so it is typesafe
+     *
      * @return $this
      */
-    public function setPaymentNotes(...$paymentNotes): PaymentCommand
+    public function setPaymentNotes(string ...$paymentNotes): PaymentCommand
     {
         $this->paymentNotes = $paymentNotes;
 
@@ -58,7 +59,7 @@ abstract class PaymentCommand implements GatewayCommand
     public function setTransactionId(string $gatewayTransactionId): PaymentCommand
     {
         $this->gatewayTransactionId = $gatewayTransactionId;
-        
+
         return $this;
     }
 }

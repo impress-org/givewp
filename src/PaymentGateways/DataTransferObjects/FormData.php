@@ -104,10 +104,15 @@ class FormData
 
     /** @var bool */
     public $anonymous;
+    /**
+     * @var string|null
+     */
+    public $company;
 
     /**
      * Convert data from request into DTO
      *
+     * @since 2.22.0 add support for company field
      * @since 2.18.0
      */
     public static function fromRequest(array $request): FormData
@@ -159,16 +164,19 @@ class FormData
                 $request['post_data']['give_anonymous_donation']
             );
 
+        $self->company = !empty($request['post_data']['give_company_name']) ? $request['post_data']['give_company_name'] : null;
+
         return $self;
     }
 
     /**
+     * @since 2.22.0 add support for company field
      * @since 2.19.6
      * @throws Exception
      */
     public function toDonation($donorId): Donation
     {
-        return new Donation([
+        $donation = new Donation([
             'status' => DonationStatus::PENDING(),
             'gatewayId' => $this->paymentGateway,
             'amount' => Money::fromDecimal($this->price, $this->currency),
@@ -187,7 +195,20 @@ class FormData
                 'address2' => $this->billingAddress->line2
             ]),
             'levelId' => $this->priceId,
-            'anonymous' => $this->anonymous
+            'anonymous' => $this->anonymous,
+            'company' => $this->company
         ]);
+
+        /**
+         * Since 2018, we have been updating the donor's company field based on their donation.
+         * The company in donation meta never changes, but the company in donor meta gets updated based on the most recent donation in which that donor supplied a company.
+         *
+         * @see https://github.com/impress-org/givewp/issues/2453#issuecomment-373103211
+         */
+        if ($donation->company) {
+            give()->donor_meta->update_meta($donorId, '_give_donor_company', $donation->company);
+        }
+
+        return $donation;
     }
 }

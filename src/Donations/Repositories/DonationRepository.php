@@ -2,7 +2,6 @@
 
 namespace Give\Donations\Repositories;
 
-use DateTimeInterface;
 use Give\Donations\Actions\GeneratePurchaseKey;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
@@ -364,6 +363,10 @@ class DonationRepository
 
         if (isset($donation->subscriptionId)) {
             $meta[DonationMetaKeys::SUBSCRIPTION_ID] = $donation->subscriptionId;
+        }
+
+        if ($donation->company !== null) {
+            $meta[DonationMetaKeys::COMPANY] = $donation->company;
         }
 
         return $meta;

@@ -6,7 +6,6 @@ use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
-use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Models\PayPalOrder;
@@ -77,27 +76,29 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
+     * @inerhitDoc
      * @since 2.19.0
      *
-     * @param PayPalOrder $payPalOrder
-     *
-     * @throws PaymentGatewayException
+     * @param array{paypalOrder: PayPalOrder} $gatewayData
      */
-    public function createPayment(Donation $donation, $payPalOrder): GatewayCommand
+    public function createPayment(Donation $donation, $gatewayData): GatewayCommand
     {
-        $command = PaymentComplete::make($payPalOrder->payment->id);
-        $command->paymentNotes = [
-            sprintf(
-                __('Transaction Successful. PayPal Transaction ID: %1$s    PayPal Order ID: %2$s', 'give'),
-                $payPalOrder->payment->id,
-                $payPalOrder->id
-            )
-        ];
+        /** @var PayPalOrder $paypalOrder */
+        $paypalOrder = $gatewayData['paypalOrder'];
 
-        give('payment_meta')->update_meta(
+        $command = PaymentComplete::make($paypalOrder->payment->id)
+            ->setPaymentNotes(
+                sprintf(
+                    __('Transaction Successful. PayPal Transaction ID: %1$s    PayPal Order ID: %2$s', 'give'),
+                    $paypalOrder->payment->id,
+                    $paypalOrder->id
+                )
+            );
+
+        give()->payment_meta->update_meta(
             $donation->id,
             '_give_order_id',
-            $payPalOrder->id
+            $paypalOrder->id
         );
 
         return $command;
