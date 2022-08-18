@@ -1,5 +1,3 @@
-import accounting from 'accounting';
-
 /**
  * @since 2.17.0
  */
@@ -120,7 +118,7 @@ window.GiveDonationSummary = {
         // Hack: (Currency Switcher) The total is always stored using a the decimal separator as set by the primary currency.
         const formData = new FormData($form[0]);
         const fee = formData.get('give-fee-amount');
-        $form.find('[data-tag="fees"]').html(GiveDonationSummary.format_amount(fee, $form));
+        $form.find('[data-tag="fees"]').html(GiveDonationSummary.format_amount(fee, $form, false));
     },
 
     /**
@@ -143,7 +141,8 @@ window.GiveDonationSummary = {
     /**
      * Hack: Placeholder callback, which is only used when the gateway changes.
      */
-    handleNavigateBack: function () {},
+    handleNavigateBack: function () {
+    },
 
     /**
      * Hack: Changing gateways re-renders parts of the form via AJAX.
@@ -207,23 +206,14 @@ window.GiveDonationSummary = {
      * @param {jQuery} $form
      * @param {boolean} normalize
      */
-    format_amount: function (amount, $form) {
+    format_amount: function (amount, $form, normalize = true) {
         // Normalize amounts to JS number format
-        if (amount.includes(',')) {
+        if (normalize) {
             amount = Give.fn.unFormatCurrency(amount, Give.form.fn.getInfo('decimal_separator', $form));
         }
 
-        const currency = Give.form.fn.getInfo('currency_code', $form);
-        const precision = GiveDonationSummaryData.currencyPrecisionLookup[currency];
-
         // Format with accounting.js, according to the configuration
-        return accounting.formatMoney(amount, {
-            symbol: Give.form.fn.getInfo('currency_symbol', $form),
-            format: 'before' === Give.form.fn.getInfo('currency_position', $form) ? '%s%v' : '%v%s',
-            decimal: Give.form.fn.getInfo('decimal_separator', $form),
-            thousand: Give.form.fn.getInfo('thousands_separator', $form),
-            precision: precision,
-        });
+        return Give.fn.formatCurrency(amount, {}, $form);
     },
 };
 
