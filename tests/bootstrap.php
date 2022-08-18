@@ -30,11 +30,11 @@ tests_add_filter('setup_theme', static function () {
 
 require_once $currentBootstrapConfig['bootstrap'];
 
-// Test cases
-require_once __DIR__ . '/includes/framework/class-give-unit-test-case.php';
+// Include legacy test case
+require_once __DIR__ . '/includes/legacy/framework/class-give-unit-test-case.php';
 
-// Helpers
-require_once __DIR__ . '/includes/framework/helpers/shims.php';
-require_once __DIR__ . '/includes/framework/helpers/class-helper-form.php';
-require_once __DIR__ . '/includes/framework/helpers/class-helper-payment.php';
+// Include Helpers
+require_once __DIR__ . '/includes/legacy/framework/helpers/shims.php';
+require_once __DIR__ . '/includes/legacy/framework/helpers/class-helper-form.php';
+require_once __DIR__ . '/includes/legacy/framework/helpers/class-helper-payment.php';
 
