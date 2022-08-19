@@ -102,6 +102,10 @@ window.GiveDonationSummary = {
      */
     initFees: function () {
         GiveDonationSummary.observe('.give_fee_mode_checkbox', GiveDonationSummary.handleFees);
+        const checkbox = document.querySelector('.give_fee_mode_checkbox');
+        if (!checkbox) {
+            GiveDonationSummary.observe('.give-fee-message-label-text', GiveDonationSummary.handleFees);
+        }
     },
 
     /**
