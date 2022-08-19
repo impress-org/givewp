@@ -16,11 +16,17 @@
     border: 1px solid lightgray;
     bottom: 0;
     //color: slategray;
-    height: 100vh;
+    height: calc(100vh - 60px); // Account for header height above sidebar
     //overflow: hidden; // The Inspector Popout needs to be visible.
     position: fixed !important; // !important override added when migrated to WordPress - not sure why this is necessary...
     top: 60px; // Account for header @todo move this to layout, not in the component.
     z-index: 99999999;
+
+    overflow-y: scroll;
+
+    .components-panel__row {
+        margin-right: 10px; // Account for scrollbar
+    }
 
     > .components-panel {
         border-left: 0;
