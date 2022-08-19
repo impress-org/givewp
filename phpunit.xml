@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
-	bootstrap="tests/unit/bootstrap.php"
-	backupGlobals="false"
-	colors="true"
-	convertErrorsToExceptions="true"
-	convertNoticesToExceptions="true"
-	convertWarningsToExceptions="true"
-	verbose="true"
-	syntaxCheck="true"
-	>
-	<testsuites>
-		<testsuite name="Legacy Unit Tests">
-			<directory prefix="tests-" suffix=".php">./tests/unit/legacy</directory>
-		</testsuite>
-		<testsuite name="Unit Tests">
-			<directory suffix="Test.php">./tests/unit/tests</directory>
-			<directory prefix="Test" suffix=".php">./tests/unit/tests</directory>
-		</testsuite>
-	</testsuites>
-	<filter>
-		<blacklist>
-			<directory suffix=".php">./templates/</directory>
-			<directory suffix=".php">./tests/</directory>
-			<directory suffix=".php">./tmp/</directory>
-			<directory suffix=".php">./languages/</directory>
-			<directory suffix=".php">./tests/</directory>
-			<directory suffix=".php">./templates/</directory>
-			<directory suffix=".php">./includes/libraries/</directory>
-			<directory suffix=".php">./includes/admin/tools/export</directory>
-			<directory suffix=".php">./includes/admin/reporting/tools/</directory>
-		</blacklist>
-	</filter>
-	<logging>
-		<log type="coverage-clover" target="./tmp/clover.xml" charset="UTF-8" />
-	</logging>
+    bootstrap="tests/bootstrap.php"
+    backupGlobals="false"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    verbose="true"
+    syntaxCheck="true"
+>
+    <testsuites>
+        <testsuite name="Legacy Unit Tests">
+            <directory prefix="tests-" suffix=".php">./tests/includes/legacy</directory>
+        </testsuite>
+        <testsuite name="Unit Tests">
+            <directory suffix="Test.php">./tests/Unit</directory>
+            <directory prefix="Test" suffix=".php">./tests/Unit</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <blacklist>
+            <directory suffix=".php">./templates/</directory>
+            <directory suffix=".php">./tests/</directory>
+            <directory suffix=".php">./tmp/</directory>
+            <directory suffix=".php">./languages/</directory>
+            <directory suffix=".php">./tests/</directory>
+            <directory suffix=".php">./templates/</directory>
+            <directory suffix=".php">./includes/libraries/</directory>
+            <directory suffix=".php">./includes/admin/tools/export</directory>
+            <directory suffix=".php">./includes/admin/reporting/tools/</directory>
+        </blacklist>
+    </filter>
+    <logging>
+        <log type="coverage-clover" target="./tmp/clover.xml" charset="UTF-8"/>
+    </logging>
 </phpunit>
