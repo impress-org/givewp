@@ -6,7 +6,7 @@ use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\NextGen\Framework\FormTemplates\Exceptions\OverflowException;
 use Give\NextGen\Framework\FormTemplates\FormTemplate;
 use Give\NextGen\Framework\FormTemplates\Registrars\FormTemplateRegistrar;
-use TestsNextGen\TestCase;
+use GiveTests\TestCase;
 
 /**
  * @unreleased
