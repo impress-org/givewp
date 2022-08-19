@@ -125,9 +125,8 @@ window.GiveDonationSummary = {
      */
     initTotal: function () {
         GiveDonationSummary.observe('.give-final-total-amount', function (targetNode, $form) {
-            // Hack: (Currency Switcher) The total is always stored using a the decimal seperator as set by the primary currency.
-            const total = targetNode.dataset.total.replace('.', Give.form.fn.getInfo('decimal_separator', $form));
-            $form.find('[data-tag="total"]').html(GiveDonationSummary.format_amount(total, $form));
+            const total = targetNode.dataset.total;
+            $form.find('[data-tag="total"]').html(GiveDonationSummary.format_amount(total, $form, false));
         });
 
         // Hack: Force an initial mutation for the Total Amount observer
@@ -140,8 +139,7 @@ window.GiveDonationSummary = {
     /**
      * Hack: Placeholder callback, which is only used when the gateway changes.
      */
-    handleNavigateBack: function () {
-    },
+    handleNavigateBack: function () {},
 
     /**
      * Hack: Changing gateways re-renders parts of the form via AJAX.
@@ -211,8 +209,14 @@ window.GiveDonationSummary = {
             amount = Give.fn.unFormatCurrency(amount, Give.form.fn.getInfo('decimal_separator', $form));
         }
 
+        const fee_recovery_enabled = document.querySelector('.give-fee-message-label-text');
+        format_args = {
+            symbol: Give.form.fn.getInfo('currency_symbol', $form),
+            precision: fee_recovery_enabled ? 2 : Give.form.fn.getInfo('number_decimals', $form),
+        };
+
         // Format with accounting.js, according to the configuration
-        return Give.fn.formatCurrency(amount, {}, $form);
+        return Give.fn.formatCurrency(amount, format_args, $form);
     },
 };
 
