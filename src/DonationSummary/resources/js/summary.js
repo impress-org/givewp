@@ -119,9 +119,10 @@ window.GiveDonationSummary = {
             return;
         }
 
-        const formData = new FormData($form[0]);
-        const fee = formData.get('give-fee-amount');
-        $form.find('[data-tag="fees"]').html(GiveDonationSummary.format_amount(fee, $form, false));
+        const feeMessageTemplateParts = $form.find('.give-fee-message-label').attr('data-feemessage').split(' ');
+        const feeMessageParts = $form.find('.give-fee-message-label-text').text().split(' ');
+        const formattedFeeAmount = feeMessageParts.filter( messagePart => ! feeMessageTemplateParts.includes(messagePart)).pop()
+        $form.find('[data-tag="fees"]').html(formattedFeeAmount);
     },
 
     /**
@@ -129,21 +130,21 @@ window.GiveDonationSummary = {
      */
     initTotal: function () {
         GiveDonationSummary.observe('.give-final-total-amount', function (targetNode, $form) {
-            const total = targetNode.dataset.total;
-            $form.find('[data-tag="total"]').html(GiveDonationSummary.format_amount(total, $form, false));
+            $form.find('[data-tag="total"]').html(targetNode.textContent);
         });
 
         // Hack: Force an initial mutation for the Total Amount observer
         const totalAmount = document.querySelector('.give-final-total-amount');
         if (totalAmount) {
-            totalAmount.dataset.total = totalAmount.dataset.total;
+            totalAmount.textContent = totalAmount.textContent;
         }
     },
 
     /**
      * Hack: Placeholder callback, which is only used when the gateway changes.
      */
-    handleNavigateBack: function () {},
+    handleNavigateBack: function () {
+    },
 
     /**
      * Hack: Changing gateways re-renders parts of the form via AJAX.
@@ -213,10 +214,8 @@ window.GiveDonationSummary = {
             amount = Give.fn.unFormatCurrency(amount, Give.form.fn.getInfo('decimal_separator', $form));
         }
 
-        const fee_recovery_enabled = document.querySelector('.give-fee-message-label-text');
-        format_args = {
+        const format_args = {
             symbol: Give.form.fn.getInfo('currency_symbol', $form),
-            precision: fee_recovery_enabled ? 2 : Give.form.fn.getInfo('number_decimals', $form),
         };
 
         // Format with accounting.js, according to the configuration
