@@ -186,7 +186,8 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
                         $goal,
                         'give'
                     ),
-                    $form->get_sales(),
+
+                    give_format_amount( $form->get_sales(), array( 'decimal' => false )),
                     give_format_amount( $goal, array( 'decimal' => false ))
                 );
 
@@ -199,7 +200,8 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
                         $goal,
                         'give'
                     ),
-                    give_get_form_donor_count( $form->ID ),
+
+                    give_format_amount(  give_get_form_donor_count( $form->ID ), array( 'decimal' => false ) ),
                     give_format_amount( $goal, array( 'decimal' => false ) )
                 );
 
