@@ -8,7 +8,7 @@ use Give\Framework\FieldsAPI\Contracts\Node;
 /**
  * @since      2.12.0
  * @since      2.13.0 Support visibility conditions
- * @unreleased Add TapNode trait
+ * @since 2.22.0 Add TapNode trait
  */
 class Group implements Node, Collection
 {
@@ -57,5 +57,20 @@ class Group implements Node, Collection
     public static function make($name)
     {
         return new static($name);
+    }
+
+    /**
+     * Gives th ability to fluently "tap" a specific node within the group. This is useful when fluently calling methods
+     * on the group, and making a change to a specific node without breaking the fluency.
+     *
+     * @since 2.22.0
+     *
+     * @return $this
+     */
+    public function tapNode(string $name, callable $callback)
+    {
+        $callback($this->getNodeByName($name));
+
+        return $this;
     }
 }

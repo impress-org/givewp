@@ -38,7 +38,7 @@ class CheckoutGateway extends PaymentGateway
             case 'modal':
                 return give(PaymentGatewayRegister::class)
                     ->getPaymentGateway(CreditCardGateway::id())
-                    ->createPayment($donation, $gatewayData['stripePaymentMethod']);
+                    ->createPayment($donation, $gatewayData);
             case 'redirect':
                 return $this->createPaymentRedirect($donation);
             default:

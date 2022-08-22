@@ -7,7 +7,7 @@ use Give\Framework\FieldsAPI\Contracts\Node;
 /**
  * @since      2.12.0
  * @since      2.13.0 Support visibility conditions
- * @unreleased Add TapNode trait
+ * @since 2.22.0 Add TapNode trait
  */
 abstract class Element implements Node
 {

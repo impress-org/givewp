@@ -87,13 +87,13 @@ class PayPalCommerce extends PaymentGateway
         $paypalOrder = $gatewayData['paypalOrder'];
 
         $command = PaymentComplete::make($paypalOrder->payment->id)
-            ->setPaymentNotes([
+            ->setPaymentNotes(
                 sprintf(
                     __('Transaction Successful. PayPal Transaction ID: %1$s    PayPal Order ID: %2$s', 'give'),
                     $paypalOrder->payment->id,
                     $paypalOrder->id
                 )
-            ]);
+            );
 
         give()->payment_meta->update_meta(
             $donation->id,

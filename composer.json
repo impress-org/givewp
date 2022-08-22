@@ -37,7 +37,7 @@
         "test": "./vendor/bin/phpunit --colors --stop-on-failure",
         "unreleased": "./vendor/bin/since-unreleased.sh",
         "post-install-cmd": [
-            "@php -r \"file_exists('tests/unit/wp-tests-config.php') || copy('tests/unit/wp-tests-config.dist.php', 'tests/unit/wp-tests-config.php');\""
+            "@php -r \"file_exists('tests/wp-tests-config.php') || copy('tests/wp-tests-config.dist.php', 'tests/wp-tests-config.php');\""
         ],
         "bundle": [
             "@copy-fonts",
@@ -52,6 +52,11 @@
         "files": [
             "src/Framework/Http/Response/functions.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "GiveTests\\": "tests/"
+        }
     },
     "config": {
         "platform": {

@@ -14,7 +14,7 @@ class DonationFactory extends ModelFactory
 {
 
     /**
-     * @unreleased add optional support for anonymous and company properties
+     * @since 2.22.0 add optional support for anonymous and company properties
      * @since 2.20.0 update default donorId to create factory
      * @since 2.19.6
      *
@@ -34,7 +34,7 @@ class DonationFactory extends ModelFactory
             'email' => $this->faker->email,
             'formId' => 1,
             'formTitle' => 'Form Title',
-            'anonymous' => $this->faker->optional()->boolean,
+            'anonymous' => $this->faker->optional(0.5, false)->boolean(true),
             'company' => $this->faker->optional()->company
         ];
     }
