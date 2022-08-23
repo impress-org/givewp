@@ -313,7 +313,7 @@ function attachFeeEvents() {
 }
 
 function updateFeesAmount() {
-    window.GiveDonationSummary.handleFees(document.querySelector('.give_fee_mode_checkbox'), jQuery('.give-form'));
+    window.GiveDonationSummary.handleFees(jQuery('.give-form'));
 }
 
 function splitGatewayResponse() {

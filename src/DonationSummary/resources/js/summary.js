@@ -5,7 +5,7 @@ window.GiveDonationSummary = {
     init: function () {
         GiveDonationSummary.initAmount();
         GiveDonationSummary.initFrequency();
-        GiveDonationSummary.initFees();
+        // GiveDonationSummary.initFees();
         GiveDonationSummary.initTotal();
     },
 
@@ -98,30 +98,21 @@ window.GiveDonationSummary = {
     },
 
     /**
-     * @since 2.17.0
-     */
-    initFees: function () {
-        GiveDonationSummary.observe('.give_fee_mode_checkbox', GiveDonationSummary.handleFees);
-        const checkbox = document.querySelector('.give_fee_mode_checkbox');
-        if (!checkbox) {
-            GiveDonationSummary.observe('.give-fee-message-label-text', GiveDonationSummary.handleFees);
-        }
-    },
-
-    /**
+     * @unreleased Remove dependency on checkbox. Removed first argument.
      * @since 2.18.0
      */
-    handleFees: function (targetNode, $form) {
-        $form.find('.fee-break-down-message').hide();
-        $form.find('.js-give-donation-summary-fees').toggle(targetNode.checked);
-
-        if (!targetNode.checked) {
+    handleFees: function ($form) {
+        //$form.find('.fee-break-down-message').hide();
+        if ('true' !== $form.find('[name="give-fee-mode-enable"]').val()) {
+            $form.find('.js-give-donation-summary-fees').toggle(false);
             return;
         }
 
+        $form.find('.js-give-donation-summary-fees').toggle(true);
+
         const feeMessageTemplateParts = $form.find('.give-fee-message-label').attr('data-feemessage').split(' ');
         const feeMessageParts = $form.find('.give-fee-message-label-text').text().split(' ');
-        const formattedFeeAmount = feeMessageParts.filter( messagePart => ! feeMessageTemplateParts.includes(messagePart)).pop()
+        const formattedFeeAmount = feeMessageParts.filter(messagePart => !feeMessageTemplateParts.includes(messagePart)).pop()
         $form.find('[data-tag="fees"]').html(formattedFeeAmount);
     },
 
@@ -129,8 +120,12 @@ window.GiveDonationSummary = {
      * @since 2.17.0
      */
     initTotal: function () {
+        const handleFees = this.handleFees;
+
         GiveDonationSummary.observe('.give-final-total-amount', function (targetNode, $form) {
             $form.find('[data-tag="total"]').html(targetNode.textContent);
+
+            handleFees($form);
         });
 
         // Hack: Force an initial mutation for the Total Amount observer
