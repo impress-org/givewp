@@ -192,30 +192,7 @@ window.GiveDonationSummary = {
         if (callImmediately) {
             callback(targetNode, $form);
         }
-    },
-
-    /**
-     * Helper function to get the formatted amount
-     *
-     * @since 2.17.0
-     *
-     * @param {string/number} amount
-     * @param {jQuery} $form
-     * @param {boolean} normalize
-     */
-    format_amount: function (amount, $form, normalize = true) {
-        // Normalize amounts to JS number format
-        if (normalize) {
-            amount = Give.fn.unFormatCurrency(amount, Give.form.fn.getInfo('decimal_separator', $form));
-        }
-
-        const format_args = {
-            symbol: Give.form.fn.getInfo('currency_symbol', $form),
-        };
-
-        // Format with accounting.js, according to the configuration
-        return Give.fn.formatCurrency(amount, format_args, $form);
-    },
+    }
 };
 
 jQuery(document).on('give:postInit', GiveDonationSummary.init);
