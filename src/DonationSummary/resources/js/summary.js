@@ -14,7 +14,7 @@ window.GiveDonationSummary = {
      */
     initAmount: function () {
         GiveDonationSummary.observe('[name="give-amount"]', function (targetNode, $form) {
-            $form.find('[data-tag="amount"]').html(GiveDonationSummary.format_amount(targetNode.value, $form));
+            $form.find('[data-tag="amount"]').html(targetNode.value);
         });
     },
 

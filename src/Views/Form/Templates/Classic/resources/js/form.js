@@ -294,7 +294,7 @@ function updateDonationSummaryAmount() {
 
 function updateDonationSummaryAmountOnChange() {
     document.querySelector('#give-amount').addEventListener('change', function(e){
-        document.querySelector('[data-tag="amount"]').innerHTML = GiveDonationSummary.format_amount(e.target.value, jQuery('.give-form'));
+        document.querySelector('[data-tag="amount"]').innerHTML = e.target.value;
     } );
 }
 
