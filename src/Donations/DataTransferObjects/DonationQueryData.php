@@ -118,7 +118,7 @@ class DonationQueryData
     /**
      * Convert data from object to Donation
      *
-     * @unreleased add support for company field
+     * @since 2.22.0 add support for company field
      * @since 2.20.0 update for new amount property, fee amount recovered, and exchange rate
      * @since 2.19.6
      *

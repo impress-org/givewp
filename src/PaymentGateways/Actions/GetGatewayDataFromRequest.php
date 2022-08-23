@@ -3,7 +3,7 @@
 namespace Give\PaymentGateways\Actions;
 
 /**
- * @unreleased
+ * @since 2.22.0
  */
 class GetGatewayDataFromRequest
 {
@@ -12,7 +12,7 @@ class GetGatewayDataFromRequest
      * In order for the $gatewayData to be automatically accessible the data will need to come in
      * through a specific key called `gatewayData`.
      *
-     * @unreleased
+     * @since 2.22.0
      */
     public function __invoke(): array
     {
