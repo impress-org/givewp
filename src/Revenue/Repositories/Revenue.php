@@ -9,11 +9,12 @@ use Give\Framework\Support\ValueObjects\Money;
 
 /**
  * Class Revenue
- * @package Give\Revenue\Repositories
+ * @package    Give\Revenue\Repositories
  *
  * Use this class to get data from "give_revenue" table.
  *
- * @since   2.9.0
+ * @since      2.9.0
+ * @unreleased Added the `updateRevenueAmount()` method
  */
 class Revenue
 {
