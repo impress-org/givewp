@@ -101,7 +101,9 @@ window.GiveDonationSummary = {
      * @since 2.18.0
      */
     handleFees: function ($form) {
-        if ('true' !== $form.find('[name="give-fee-mode-enable"]').val()) {
+        const feeModeEnableElement = $form.find('[name="give-fee-mode-enable"]');
+
+        if ( ! feeModeEnableElement || 'true' !== $form.find('[name="give-fee-mode-enable"]').val()) {
             $form.find('.js-give-donation-summary-fees').toggle(false);
             return;
         }
