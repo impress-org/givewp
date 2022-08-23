@@ -5,7 +5,6 @@ window.GiveDonationSummary = {
     init: function () {
         GiveDonationSummary.initAmount();
         GiveDonationSummary.initFrequency();
-        // GiveDonationSummary.initFees();
         GiveDonationSummary.initTotal();
     },
 
@@ -102,7 +101,6 @@ window.GiveDonationSummary = {
      * @since 2.18.0
      */
     handleFees: function ($form) {
-        //$form.find('.fee-break-down-message').hide();
         if ('true' !== $form.find('[name="give-fee-mode-enable"]').val()) {
             $form.find('.js-give-donation-summary-fees').toggle(false);
             return;
