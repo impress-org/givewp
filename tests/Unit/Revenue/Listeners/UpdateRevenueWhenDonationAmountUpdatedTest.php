@@ -27,10 +27,6 @@ class UpdateRevenueWhenDonationAmountUpdatedTest extends TestCase
             'amount' => Money::fromDecimal(250.00, 'USD'),
         ]);
 
-        var_dump($donation->id);
-        var_dump(Donation::find($donation->id));
-        exit;
-
         $donation->amount = Money::fromDecimal(25.00, 'USD');
         $donation->save();
 

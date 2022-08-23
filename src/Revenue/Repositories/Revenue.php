@@ -74,8 +74,6 @@ class Revenue
      */
     public function updateRevenueAmount(Donation $donation)
     {
-        var_dump($donation);
-        exit;
         global $wpdb;
 
         return DB::update(
