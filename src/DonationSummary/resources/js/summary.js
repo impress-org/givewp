@@ -13,7 +13,16 @@ window.GiveDonationSummary = {
      */
     initAmount: function () {
         GiveDonationSummary.observe('[name="give-amount"]', function (targetNode, $form) {
-            $form.find('[data-tag="amount"]').html(targetNode.value);
+            const unformatted_amount = Give.fn.unFormatCurrency(
+                targetNode.value,
+                Give.form.fn.getInfo('decimal_separator', $form)
+            );
+            const formatted_amount = Give.fn.formatCurrency(
+                unformatted_amount,
+                {symbol: Give.form.fn.getInfo('currency_symbol', $form)},
+                $form
+            );
+            $form.find('[data-tag="amount"]').html(formatted_amount);
         });
     },
 
@@ -103,7 +112,7 @@ window.GiveDonationSummary = {
     handleFees: function ($form) {
         const feeModeEnableElement = $form.find('[name="give-fee-mode-enable"]');
 
-        if ( ! feeModeEnableElement || 'true' !== $form.find('[name="give-fee-mode-enable"]').val()) {
+        if (!feeModeEnableElement || 'true' !== $form.find('[name="give-fee-mode-enable"]').val()) {
             $form.find('.js-give-donation-summary-fees').toggle(false);
             return;
         }
@@ -112,7 +121,9 @@ window.GiveDonationSummary = {
 
         const feeMessageTemplateParts = $form.find('.give-fee-message-label').attr('data-feemessage').split(' ');
         const feeMessageParts = $form.find('.give-fee-message-label-text').text().split(' ');
-        const formattedFeeAmount = feeMessageParts.filter(messagePart => !feeMessageTemplateParts.includes(messagePart)).pop()
+        const formattedFeeAmount = feeMessageParts
+            .filter((messagePart) => !feeMessageTemplateParts.includes(messagePart))
+            .pop();
         $form.find('[data-tag="fees"]').html(formattedFeeAmount);
     },
 
@@ -138,8 +149,7 @@ window.GiveDonationSummary = {
     /**
      * Hack: Placeholder callback, which is only used when the gateway changes.
      */
-    handleNavigateBack: function () {
-    },
+    handleNavigateBack: function () {},
 
     /**
      * Hack: Changing gateways re-renders parts of the form via AJAX.
@@ -192,7 +202,7 @@ window.GiveDonationSummary = {
         if (callImmediately) {
             callback(targetNode, $form);
         }
-    }
+    },
 };
 
 jQuery(document).on('give:postInit', GiveDonationSummary.init);
