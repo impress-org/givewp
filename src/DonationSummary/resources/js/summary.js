@@ -9,20 +9,32 @@ window.GiveDonationSummary = {
     },
 
     /**
+     * This function returns formated donation amount.
+     *
+     * @unreleased
+     * @return {string}
+     */
+    getFormattedDonationAmount: function($form) {
+        const unFormattedAmount = Give.fn.unFormatCurrency(
+            $form.find('[name="give-amount"]').val(),
+            Give.form.fn.getInfo('decimal_separator', $form)
+        );
+
+        return Give.fn.formatCurrency(
+            unFormattedAmount,
+            {symbol: Give.form.fn.getInfo('currency_symbol', $form)},
+            $form
+        );
+    },
+
+    /**
      * @since 2.17.0
      */
     initAmount: function () {
+        const getFormattedDonationAmount = this.getFormattedDonationAmount;
+
         GiveDonationSummary.observe('[name="give-amount"]', function (targetNode, $form) {
-            const unformatted_amount = Give.fn.unFormatCurrency(
-                targetNode.value,
-                Give.form.fn.getInfo('decimal_separator', $form)
-            );
-            const formatted_amount = Give.fn.formatCurrency(
-                unformatted_amount,
-                {symbol: Give.form.fn.getInfo('currency_symbol', $form)},
-                $form
-            );
-            $form.find('[data-tag="amount"]').html(formatted_amount);
+            $form.find('[data-tag="amount"]').html(getFormattedDonationAmount($form));
         });
     },
 
@@ -149,7 +161,8 @@ window.GiveDonationSummary = {
     /**
      * Hack: Placeholder callback, which is only used when the gateway changes.
      */
-    handleNavigateBack: function () {},
+    handleNavigateBack: function () {
+    },
 
     /**
      * Hack: Changing gateways re-renders parts of the form via AJAX.

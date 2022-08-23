@@ -47,7 +47,6 @@ domIsReady(() => {
     moveTestModeMessage();
     IS_CURRENCY_SWITCHING_ACTIVE && moveCurrencySwitcherMessageOutsideOfWrapper();
     addFancyBorderWhenChecked();
-    IS_DONATION_SUMMARY_ACTIVE && updateDonationSummaryAmountOnChange();
 });
 
 /**
@@ -290,12 +289,6 @@ function updateRecurringDonationFrequency() {
 
 function updateDonationSummaryAmount() {
     document.querySelector('[data-tag="amount"]').innerHTML = document.querySelector('#give-amount').value;
-}
-
-function updateDonationSummaryAmountOnChange() {
-    document.querySelector('#give-amount').addEventListener('change', function(e){
-        document.querySelector('[data-tag="amount"]').innerHTML = e.target.value;
-    } );
 }
 
 
