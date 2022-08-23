@@ -5,6 +5,7 @@ namespace Give\Revenue;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\Revenue\Listeners\DeleteRevenueWhenDonationDeleted;
+use Give\Revenue\Listeners\UpdateRevenueWhenDonationAmountUpdated;
 use Give\Revenue\Migrations\AddPastDonationsToRevenueTable;
 use Give\Revenue\Migrations\CreateRevenueTable;
 use Give\Revenue\Migrations\RemoveRevenueForeignKeys;
@@ -36,6 +37,7 @@ class RevenueServiceProvider implements ServiceProvider
         Hooks::addAction('delete_post', DeleteRevenueWhenDonationDeleted::class, '__invoke', 10, 1);
         Hooks::addAction('give_insert_payment', DonationHandler::class, 'handle', 999, 1);
         Hooks::addAction('give_register_updates', AddPastDonationsToRevenueTable::class, 'register', 10, 1);
+        Hooks::addAction('give_updated_edited_donation', UpdateRevenueWhenDonationAmountUpdated::class);
     }
 
     /**
