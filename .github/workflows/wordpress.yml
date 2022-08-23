@@ -94,7 +94,7 @@ jobs:
                 run: mysql -uroot --password='${{ env.mysql_pass}}' -h127.0.0.1 --port=${{env.mysql_port}}
 
             -   name: Set Up Tests
-                run: bash tests/unit/bin/install.sh wordpress_test root ${{ env.mysql_pass }} 127.0.0.1:${{ env.mysql_port }} ${{ matrix.wordpress }}
+                run: bash tests/includes/bin/install.sh wordpress_test root ${{ env.mysql_pass }} 127.0.0.1:${{ env.mysql_port }} ${{ matrix.wordpress }}
 
             -   name: Run Tests
                 run: php -d memory_limit=-1 vendor/bin/phpunit

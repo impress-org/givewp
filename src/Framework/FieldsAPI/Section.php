@@ -5,14 +5,14 @@ namespace Give\Framework\FieldsAPI;
 use Give\Framework\FieldsAPI\Concerns\HasLabel;
 
 /**
- * @unreleased
+ * @since 2.22.0
  */
 class Section extends Group
 {
     use HasLabel;
 
     /**
-     * @unreleased
+     * @since 2.22.0
      */
     const TYPE = 'section';
 
@@ -22,7 +22,7 @@ class Section extends Group
     protected $description;
 
     /**
-     * @unreleased
+     * @since 2.22.0
      */
     public function description(string $description): self
     {
@@ -31,7 +31,7 @@ class Section extends Group
     }
 
     /**
-     * @unreleased
+     * @since 2.22.0
      */
     public function getDescription(): string
     {

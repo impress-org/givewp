@@ -43,11 +43,13 @@ abstract class PaymentCommand implements GatewayCommand
     }
 
     /**
+     * @since 2.22.0 add type, so it is typesafe
+     *
      * @param string|string[] ...$paymentNotes
      *
      * @return $this
      */
-    public function setPaymentNotes(...$paymentNotes): PaymentCommand
+    public function setPaymentNotes(string ...$paymentNotes): PaymentCommand
     {
         $this->paymentNotes = $paymentNotes;
 

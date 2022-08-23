@@ -10,7 +10,7 @@ trait SerializeAsJson
     /**
      * {@inheritdoc}
      *
-     * @unreleased add nodeTye to the json
+     * @since 2.22.0 add nodeTye to the json
      */
     public function jsonSerialize(): array
     {
