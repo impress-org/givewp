@@ -50,7 +50,7 @@ class IframeContentView
      *
      * @return int|null
      */
-    protected function getFormId() {
+    protected function getFormIdFromBody() {
 
         $form_id = null;
 
@@ -122,7 +122,7 @@ class IframeContentView
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title><?php
-                echo apply_filters( 'the_title', $this->title, $this->getFormId() ); ?></title>
+                echo apply_filters( 'the_title', $this->title, $this->getFormIdFromBody() ); ?></title>
             <?php
             /**
              * Fire the action hook in header
