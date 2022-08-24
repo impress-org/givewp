@@ -45,6 +45,11 @@ class IframeContentView
      */
     protected $bodyClasses = [ 'give-form-templates' ];
 
+    /**
+     * Get the Form ID based on the body content.
+     *
+     * @return int|null
+     */
     protected function getFormId() {
 
         $form_id = null;
