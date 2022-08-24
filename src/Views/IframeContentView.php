@@ -43,7 +43,20 @@ class IframeContentView
      * @since 2.7.0
      * @var array
      */
-    protected $bodyClasses = ['give-form-templates'];
+    protected $bodyClasses = [ 'give-form-templates' ];
+
+    protected function getFormId() {
+
+        $form_id = null;
+
+        $prefix = '<input type="hidden" name="give-form-id" value';
+        $re     = '/' . preg_quote( $prefix ) . '=([\'"])?((?(1).+?|[^\s>]+))(?(1)\1)/is';
+        if ( preg_match( $re, $this->body, $match ) ) {
+            $form_id = absint( $match[2] );
+        }
+
+        return $form_id;
+    }
 
     /**
      * Set document page title.
@@ -52,8 +65,7 @@ class IframeContentView
      *
      * @return IframeContentView $this
      */
-    public function setTitle($title)
-    {
+    public function setTitle( $title ) {
         $this->title = $title;
 
         return $this;
@@ -95,8 +107,7 @@ class IframeContentView
      *
      * @since 2.7.0
      */
-    public function render()
-    {
+    public function render() {
         ob_start();
         ?>
         <!DOCTYPE html>
@@ -106,23 +117,23 @@ class IframeContentView
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title><?php
-                echo apply_filters('the_title', $this->title); ?></title>
+                echo apply_filters( 'the_title', $this->title, $this->getFormId() ); ?></title>
             <?php
             /**
              * Fire the action hook in header
              */
-            do_action('give_embed_head');
+            do_action( 'give_embed_head' );
             ?>
         </head>
         <body class="<?php
-        echo implode(' ', $this->bodyClasses); ?>">
+        echo implode( ' ', $this->bodyClasses ); ?>">
         <?php
         echo $this->body;
 
         /**
          * Fire the action hook in footer
          */
-        do_action('give_embed_footer');
+        do_action( 'give_embed_footer' );
         ?>
         </body>
         </html>
