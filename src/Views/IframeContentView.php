@@ -60,7 +60,7 @@ class IframeContentView
     }
 
     /**
-     * Set document page title.
+     * Set document page body.
      *
      * @param string $body
      *
@@ -74,7 +74,7 @@ class IframeContentView
     }
 
     /**
-     * Set document page title.
+     * Set body classes.
      *
      * @param array $classes
      *
