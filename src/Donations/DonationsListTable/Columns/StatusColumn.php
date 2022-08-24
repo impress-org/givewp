@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Give\Donations\Admin\DonationsList\Columns;
+namespace Give\Donations\DonationsListTable\Columns;
 
 use Give\Framework\ListTable\AdvancedColumn;
 use Give\Framework\QueryBuilder\QueryBuilder;

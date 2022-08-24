@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Give\Donations\Admin\DonationsList\Columns;
+namespace Give\Donations\DonationsListTable\Columns;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\ListTable\ModelColumn;
@@ -10,16 +10,16 @@ use Give\Framework\ListTable\ModelColumn;
 /**
  * @extends ModelColumn<Donation>
  */
-class IdColumn extends ModelColumn
+class DonorColumn extends ModelColumn
 {
-    public $sortColumn = 'id';
+    public $sortColumn = 'CONCAT(lastName, ",", firstName)';
 
     /**
      * @inheritDoc
      */
     public function getId(): string
     {
-        return 'id';
+        return 'donor_name';
     }
 
     /**
@@ -27,7 +27,7 @@ class IdColumn extends ModelColumn
      */
     public function getLabel(): string
     {
-        return __('ID', 'give');
+        return __('Donor Name', 'give');
     }
 
     /**
@@ -35,8 +35,8 @@ class IdColumn extends ModelColumn
      *
      * @param Donation $model
      */
-    public function getCellValue($model)
+    public function getCellValue($model): string
     {
-        return $model->id;
+        return "$model->firstName $model->lastName";
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Give\Donations\Admin\DonationsList\Columns;
+namespace Give\Donations\DonationsListTable\Columns;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\ListTable\ModelColumn;
@@ -10,16 +10,16 @@ use Give\Framework\ListTable\ModelColumn;
 /**
  * @extends ModelColumn<Donation>
  */
-class FormColumn extends ModelColumn
+class GatewayColumn extends ModelColumn
 {
-    public $sortColumn = 'formTitle';
+    public $sortColumn = 'gateway';
 
     /**
      * @inheritDoc
      */
     public function getId(): string
     {
-        return 'form';
+        return 'gateway';
     }
 
     /**
@@ -27,7 +27,7 @@ class FormColumn extends ModelColumn
      */
     public function getLabel(): string
     {
-        return __('Donation Form', 'give');
+        return __('Gateway', 'give');
     }
 
     /**
@@ -37,6 +37,6 @@ class FormColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        return $model->formTitle;
+        return give_get_gateway_admin_label($model->gatewayId);
     }
 }

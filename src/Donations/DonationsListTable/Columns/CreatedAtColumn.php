@@ -2,24 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Give\Donations\Admin\DonationsList\Columns;
+namespace Give\Donations\DonationsListTable\Columns;
 
+use DateTime;
 use Give\Donations\Models\Donation;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
  * @extends ModelColumn<Donation>
  */
-class GatewayColumn extends ModelColumn
+class CreatedAtColumn extends ModelColumn
 {
-    public $sortColumn = 'gateway';
+    public $sortColumn = 'createdAt';
 
     /**
      * @inheritDoc
      */
     public function getId(): string
     {
-        return 'gateway';
+        return 'createdAt';
     }
 
     /**
@@ -27,7 +28,7 @@ class GatewayColumn extends ModelColumn
      */
     public function getLabel(): string
     {
-        return __('Gateway', 'give');
+        return __('Created At', 'give');
     }
 
     /**
@@ -35,8 +36,8 @@ class GatewayColumn extends ModelColumn
      *
      * @param Donation $model
      */
-    public function getCellValue($model): string
+    public function getCellValue($model): DateTime
     {
-        return give_get_gateway_admin_label($model->gatewayId);
+        return $model->createdAt;
     }
 }
