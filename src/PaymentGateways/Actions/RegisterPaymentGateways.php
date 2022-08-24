@@ -2,16 +2,19 @@
 
 namespace Give\PaymentGateways\Actions;
 
-use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\Helpers\Hooks;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
-use Give\PaymentGateways\Gateways\Stripe\Actions\GetPaymentMethodFromRequest;
+use Give\PaymentGateways\Gateways\Stripe\Actions\GetStripeGatewayData;
 use Give\PaymentGateways\Gateways\Stripe\BECSGateway as StripeBECSGateway;
 use Give\PaymentGateways\Gateways\Stripe\CheckoutGateway as StripeCheckoutGateway;
 use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway as StripeCreditCardGateway;
 use Give\PaymentGateways\Gateways\Stripe\SEPAGateway as StripeSEPAGateway;
+use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
+use Give\PaymentGateways\Gateways\TestGateway\TestGatewayOffsite;
 use Give\PaymentGateways\PayPalCommerce\Actions\GetPayPalOrderFromRequest;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 
@@ -36,8 +39,8 @@ class RegisterPaymentGateways
      */
     public $gateways = [
         // When complete, the Test Gateway will eventually replace The legacy Manual Gateway.
-        //TestGateway::class,
-        //TestGatewayOffsite::class,
+        TestGateway::class,
+        TestGatewayOffsite::class,
         PayPalStandard::class,
         PayPalCommerce::class,
     ];
@@ -108,17 +111,15 @@ class RegisterPaymentGateways
      */
     private function addGatewayDataToStripPaymentMethods()
     {
+        /** @var PaymentGateway $gatewayClass */
         foreach ($this->stripePaymentMethods as $gatewayClass) {
-            add_filter(
+            Hooks::addFilter(
                 sprintf(
                     'givewp_create_payment_gateway_data_%1$s',
                     $gatewayClass::id()
                 ),
-                function ($gatewayData, Donation $donation) {
-                    $gatewayData['stripePaymentMethod'] = (new GetPaymentMethodFromRequest)($donation);
-
-                    return $gatewayData;
-                },
+                GetStripeGatewayData::class,
+                '__invoke',
                 10,
                 2
             );

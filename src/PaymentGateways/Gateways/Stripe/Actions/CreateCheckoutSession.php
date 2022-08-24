@@ -41,7 +41,7 @@ class CreateCheckoutSession
                     'name' => Donation::find($donation->id)->formTitle,
                     'description' => $donationSummary->getSummaryWithDonor(),
                     'amount' => $donation->amount->formatToMinorAmount(),
-                    'currency' => $donation->amount->getCurrency(),
+                    'currency' => $donation->amount->getCurrency()->getCode(),
                     'quantity' => 1,
                 ],
             ],

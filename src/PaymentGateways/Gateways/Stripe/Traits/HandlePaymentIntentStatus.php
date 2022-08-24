@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\Gateways\Stripe\Traits;
 
 use Give\Donations\Models\Donation;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Commands\PaymentCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
@@ -17,7 +18,7 @@ trait HandlePaymentIntentStatus
      * @since 2.19.7 fix param order and only pass donationId
      *
      * @return PaymentCommand|RedirectOffsite
-     * @throws PaymentIntentException
+     * @throws PaymentIntentException|Exception
      */
     public function handlePaymentIntentStatus(PaymentIntent $paymentIntent, Donation $donation)
     {

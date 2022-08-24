@@ -9,7 +9,7 @@ use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\SubscriptionModule;
 use Give\Helpers\Call;
-use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
+use Stripe\PaymentMethod;
 
 /**
  * @since 2.19.0
