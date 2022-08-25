@@ -55,7 +55,7 @@ class Block
                 'onload="',
                 sprintf(
                     'onload="%s;',
-                    'const iframe = this;this.contentWindow.document.addEventListener(\'mouseup\', function(){iframe.parentElement.parentElement.parentElement.focus({preventScroll: true});})'
+                    'const iframe = this;this.contentWindow.document.addEventListener(\'click\', function(){iframe.closest(\'.wp-block\').focus({preventScroll: true});})'
                 ),
                 $output
             );
