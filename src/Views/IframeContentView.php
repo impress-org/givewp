@@ -46,14 +46,14 @@ class IframeContentView
     protected $bodyClasses = ['give-form-templates'];
 
     /**
-     * Form ID.
+     * Post ID.
      *
      * This will be use as parameter for 'the_title' filter.
      *
      * @unreleased
      * @var int
      */
-    protected $formId;
+    protected $postId;
 
     /**
      * Set document page title.
@@ -98,16 +98,16 @@ class IframeContentView
     }
 
     /**
-     * Set form ID.
+     * Set post ID.
      *
-     * @param $formId
+     * @param $postId
      *
      * @unreleased
      * @return IframeContentView $this
      */
-    public function setFormId($formId)
+    public function setPostId($postId)
     {
-        $this->formId = $formId;
+        $this->postId = $postId;
 
         return $this;
     }
@@ -131,7 +131,7 @@ class IframeContentView
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title><?php
-                echo apply_filters('the_title', $this->title, $this->formId); ?></title>
+                echo apply_filters('the_title', $this->title, $this->postId); ?></title>
             <?php
             /**
              * Fire the action hook in header
