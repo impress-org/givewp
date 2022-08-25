@@ -1,6 +1,7 @@
 <?php
 
 use Give\Helpers\Form\Template as FormTemplateUtils;
+use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 use Give\Receipt\DonationReceipt;
 use Give\Receipt\LineItem;
 use Give\Receipt\Section;
@@ -122,8 +123,10 @@ ob_start();
     </div>
 
 <?php
+
+$formId     = FrontendFormTemplateUtils::getFormId();
 $iframeView = new IframeContentView();
 
-echo $iframeView->setTitle(esc_html__('Donation Receipt', 'give'))
-    ->setBody(ob_get_clean())
-    ->renderBody();
+echo $iframeView->setTitle(esc_html__('Donation Receipt', 'give'))->setFormId($formId)
+                ->setBody(ob_get_clean())
+                ->renderBody();
