@@ -46,7 +46,20 @@ class Block
      **/
     public function renderCallback($attributes)
     {
-        return $this->donorDashboard->getOutput($attributes);
+        $output =  $this->donorDashboard->getOutput($attributes);
+
+        if( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+            $output = str_replace(
+                'onload="',
+                sprintf(
+                    'onload="%s;',
+                    'const iframe = this;this.contentWindow.document.addEventListener(\'mouseup\', function(){iframe.parentElement.parentElement.parentElement.focus();})'
+                ),
+                $output
+            );
+        }
+
+        return $output;
     }
 
     /**
