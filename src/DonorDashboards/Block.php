@@ -53,7 +53,7 @@ class Block
                 'onload="',
                 sprintf(
                     'onload="%s;',
-                    'const iframe = this;this.contentWindow.document.addEventListener(\'mouseup\', function(){iframe.parentElement.parentElement.parentElement.focus();})'
+                    'const iframe = this;this.contentWindow.document.addEventListener(\'mouseup\', function(){iframe.parentElement.parentElement.parentElement.focus({preventScroll: true});})'
                 ),
                 $output
             );
