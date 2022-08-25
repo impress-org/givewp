@@ -46,22 +46,13 @@ class IframeContentView
     protected $bodyClasses = ['give-form-templates'];
 
     /**
-     * Get the Form ID based on the body content.
+     * Form ID.
      *
-     * @return int|null
+     * This will be use as parameter for 'the_title' filter.
+     *
+     * @var int
      */
-    protected function getFormIdFromBody()
-    {
-        $form_id = null;
-
-        $prefix = '<input type="hidden" name="give-form-id" value';
-        $re     = '/' . preg_quote($prefix) . '=([\'"])?((?(1).+?|[^\s>]+))(?(1)\1)/is';
-        if (preg_match($re, $this->body, $match)) {
-            $form_id = absint($match[2]);
-        }
-
-        return $form_id;
-    }
+    protected $formId;
 
     /**
      * Set document page title.
@@ -106,6 +97,20 @@ class IframeContentView
     }
 
     /**
+     * Set form ID.
+     *
+     * @param $formId
+     *
+     * @return IframeContentView $this
+     */
+    public function setFormId($formId)
+    {
+        $this->formId = $formId;
+
+        return $this;
+    }
+
+    /**
      * Render view.
      *
      * Note: if you want to overwrite this function then do not forget to add action hook in footer and header.
@@ -124,7 +129,7 @@ class IframeContentView
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title><?php
-                echo apply_filters('the_title', $this->title, $this->getFormIdFromBody()); ?></title>
+                echo apply_filters('the_title', $this->title, $this->formId); ?></title>
             <?php
             /**
              * Fire the action hook in header
