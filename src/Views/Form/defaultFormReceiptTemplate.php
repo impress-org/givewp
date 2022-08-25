@@ -5,11 +5,10 @@
  * @since 2.7.0
  */
 
-use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 use Give\Views\IframeContentView;
 
-$formId     = FrontendFormTemplateUtils::getFormId();
+$pageId     = give_get_option('success_page');
 $iframeView = new IframeContentView();
 
-echo $iframeView->setTitle(esc_html__('Donation Receipt', 'give'))->setFormId($formId)
+echo $iframeView->setTitle(esc_html__('Donation Receipt', 'give'))->setPostId($pageId)
                 ->setBody('<div id="give-receipt"></div>')->render();
