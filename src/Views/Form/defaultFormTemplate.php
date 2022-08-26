@@ -15,6 +15,6 @@ $iframeView = new IframeContentView();
 ob_start();
 give_get_donation_form(['id' => $formId]);
 
-echo $iframeView->setTitle(get_post_field('post_title', $formId))
-    ->setBody(ob_get_clean())
-    ->render();
+echo $iframeView->setTitle(get_post_field('post_title', $formId))->setPostId($formId)
+                ->setBody(ob_get_clean())
+                ->render();
