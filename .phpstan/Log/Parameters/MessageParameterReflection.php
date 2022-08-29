@@ -1,17 +1,22 @@
 <?php
 
-namespace Give\PHPStan\Log;
+namespace Give\PHPStan\Log\Parameters;
 
-use PHPStan\Reflection\PassedByReference;
 use PHPStan\Reflection\ParameterReflection;
-use PHPStan\Type\IntegerType;
+use PHPStan\Reflection\PassedByReference;
+use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
 
-class LogStaticParameterReflection implements ParameterReflection
+/**
+ * Adds support for the \Give\Log\Log::$message parameter reflection to the MagicCallStaticMethodReflection
+ *
+ * @unreleased
+ */
+class MessageParameterReflection implements ParameterReflection
 {
     public function getName(): string
     {
-        return 'amount';
+        return 'message';
     }
 
     public function isOptional(): bool
@@ -21,7 +26,7 @@ class LogStaticParameterReflection implements ParameterReflection
 
     public function getType(): Type
     {
-        return new IntegerType();
+        return new StringType();
     }
 
     public function passedByReference(): PassedByReference

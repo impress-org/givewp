@@ -24,6 +24,6 @@ parameters:
 
 services:
   -
-    class: Give\PHPStan\Log\LogMethodsReflectionExtension
+    class: Give\PHPStan\Log\StaticFacadeMethodsReflectionExtension
     tags:
       - phpstan.broker.methodsClassReflectionExtension

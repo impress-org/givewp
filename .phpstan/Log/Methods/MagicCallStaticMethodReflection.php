@@ -1,8 +1,10 @@
 <?php
 
-namespace Give\PHPStan\Log;
+namespace Give\PHPStan\Log\Methods;
 
 use Give\Log\Log;
+use Give\PHPStan\Log\Parameters\ContextParameterReflection;
+use Give\PHPStan\Log\Parameters\MessageParameterReflection;
 use PHPStan\Analyser\OutOfClassScope;
 use PHPStan\Reflection\ClassMemberReflection;
 use PHPStan\Reflection\ClassReflection;
@@ -11,7 +13,12 @@ use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\Generic\TemplateTypeMap;
 use PHPStan\Type\ObjectType;
 
-class LogStaticMethodReflection implements MethodReflection
+/**
+ * Adds support for __callStatic method reflection to the LogMethodsReflectionExtension.
+ *
+ * @unreleased
+ */
+class MagicCallStaticMethodReflection implements MethodReflection
 {
     private $classReflection;
     private $name;
@@ -68,7 +75,10 @@ class LogStaticMethodReflection implements MethodReflection
             new FunctionVariant(
                 TemplateTypeMap::createEmpty(),
                 TemplateTypeMap::createEmpty(),
-                [new LogStaticParameterReflection()],
+                [
+                    new MessageParameterReflection(),
+                    new ContextParameterReflection(),
+                ],
                 false,
                 new ObjectType(Log::class)
             ),
