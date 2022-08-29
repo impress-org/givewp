@@ -13,12 +13,12 @@ class UpdateRevenueWhenDonationAmountUpdated
     /**
      * @unreleased
      *
-     * @param int $paymentID The ID of the payment.
+     * @param int $donationId The ID of the Donation.
      */
-    public function __invoke($paymentID)
+    public function __invoke($donationId)
     {
         give(Revenue::class)->updateRevenueAmount(
-            Donation::find($paymentID)
+            Donation::find($donationId)
         );
     }
 }
