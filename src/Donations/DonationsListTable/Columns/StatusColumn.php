@@ -4,11 +4,17 @@ declare(strict_types=1);
 
 namespace Give\Donations\DonationsListTable\Columns;
 
-use Give\Framework\ListTable\AdvancedColumn;
-use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationStatus;
+use Give\Framework\ListTable\ModelColumn;
 
-class StatusColumn extends AdvancedColumn
+/**
+ * @extends ModelColumn<Donation>
+ */
+class StatusColumn extends ModelColumn
 {
+    public $sortColumn = 'status';
+
     public function getId(): string
     {
         return 'status';
@@ -19,29 +25,13 @@ class StatusColumn extends AdvancedColumn
         return __('Status', 'give');
     }
 
-    public function modifyQuery(QueryBuilder $query)
-    {
-        $query->select(['post_status', 'status']);
-    }
-
-    public function getSortingKey(): string
-    {
-        return 'status';
-    }
-
     /**
      * @inheritDoc
+     *
+     * @param Donation $model
      */
-    public function isSortable(): bool
+    public function getCellValue($model): DonationStatus
     {
-        return true;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getCellValue($row)
-    {
-        return $row->status;
+        return $model->status;
     }
 }
