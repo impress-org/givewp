@@ -14,7 +14,7 @@ window.GiveDonationSummary = {
      * @unreleased
      * @return {string}
      */
-    getFormattedDonationAmount: function($form) {
+    getFormattedDonationAmount: function ($form) {
         const unFormattedAmount = Give.fn.unFormatCurrency(
             $form.find('[name="give-amount"]').val(),
             Give.form.fn.getInfo('decimal_separator', $form)
@@ -31,10 +31,8 @@ window.GiveDonationSummary = {
      * @since 2.17.0
      */
     initAmount: function () {
-        const getFormattedDonationAmount = this.getFormattedDonationAmount;
-
         GiveDonationSummary.observe('[name="give-amount"]', function (targetNode, $form) {
-            $form.find('[data-tag="amount"]').html(getFormattedDonationAmount($form));
+            $form.find('[data-tag="amount"]').html(GiveDonationSummary.getFormattedDonationAmount($form));
         });
     },
 
@@ -143,15 +141,13 @@ window.GiveDonationSummary = {
      * @since 2.17.0
      */
     initTotal: function () {
-        const handleFees = this.handleFees;
-
         GiveDonationSummary.observe('.give-final-total-amount', function (targetNode, $form) {
             $form.find('[data-tag="total"]').html(targetNode.textContent);
 
-            handleFees($form);
+            GiveDonationSummary.handleFees($form);
         });
 
-        // Hack: Force an initial mutation for the Total Amount observer
+        // Force an initial mutation for the Total Amount observer
         const totalAmount = document.querySelector('.give-final-total-amount');
         if (totalAmount) {
             totalAmount.textContent = totalAmount.textContent;
@@ -159,13 +155,12 @@ window.GiveDonationSummary = {
     },
 
     /**
-     * Hack: Placeholder callback, which is only used when the gateway changes.
+     * Placeholder callback, which is only used when the gateway changes.
      */
-    handleNavigateBack: function () {
-    },
+    handleNavigateBack: function () {},
 
     /**
-     * Hack: Changing gateways re-renders parts of the form via AJAX.
+     * Changing gateways re-renders parts of the form via AJAX.
      */
     onGatewayLoadSuccess: function () {
         const inserted = jQuery('#give_purchase_form_wrap .give-donation-summary-section').detach();
