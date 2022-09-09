@@ -1,23 +1,21 @@
 <?php
 
-namespace Give\NextGen\DonationForm\Actions;
+namespace TestsNextGen\Unit\Actions;
 
-
+use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
 use Give\NextGen\DonationForm\Routes\DonateRouteSignature;
+use GiveTests\TestCase;
 
-/**
- * @unreleased
- */
-class GenerateDonateRouteUrl
-{
+class GenerateDonateRouteUrlTest extends TestCase {
     /**
      * @unreleased
      *
-     * @return string
-     *
+     * @return void
      */
-    public function __invoke(): string
+    public function testShouldReturnValidUrl()
     {
+        $url = (new GenerateDonateRouteUrl())();
+
         $signature = new DonateRouteSignature('give-donate');
 
         $queryArgs = [
@@ -27,11 +25,8 @@ class GenerateDonateRouteUrl
             'give-route-signature-expiration' => $signature->expiration,
         ];
 
-        return esc_url_raw(
-            add_query_arg(
-                $queryArgs,
-                home_url()
-            )
-        );
+        $mockUrl = esc_url_raw(add_query_arg($queryArgs, home_url()));
+
+        $this->assertSame($mockUrl, $url);
     }
 }

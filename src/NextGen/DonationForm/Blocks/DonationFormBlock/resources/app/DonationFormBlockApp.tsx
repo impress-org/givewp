@@ -7,7 +7,7 @@ import getWindowData from './utilities/getWindowData';
 /**
  * Get data from the server
  */
-const {attributes, form} = getWindowData();
+const {form} = getWindowData();
 
 /**
  * Prepare default values for form
@@ -26,4 +26,4 @@ function App() {
     );
 }
 
-render(<App />, document.getElementById('root-give-next-gen-donation-form-block'));
+render(<App/>, document.getElementById('root-give-next-gen-donation-form-block'));

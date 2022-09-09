@@ -1,4 +1,4 @@
-import schema from './block.json';
+import schema from '../block.json';
 import {BlockConfiguration, registerBlockType} from '@wordpress/blocks';
 import Edit from './editor/Edit';
 
