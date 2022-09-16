@@ -1,6 +1,6 @@
 import CurrencyInput, {formatValue} from "react-currency-input-field";
 
-const {currency = 'USD'} = window.giveCurrency ?? {};
+const {currency = 'USD'} = window.storageData.currency ?? {};
 
 const Currency = ({amount}) => {
     return formatValue({
