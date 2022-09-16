@@ -1,5 +1,7 @@
 <?php
 
+namespace TestsNextGen\Feature\Controllers;
+
 use Give\NextGen\DonationForm\Actions\GenerateDonationFormViewRouteUrl;
 use Give\NextGen\DonationForm\Blocks\DonationFormBlock\Controllers\BlockRenderController;
 use GiveTests\TestCase;
@@ -8,10 +10,10 @@ class BlockRenderControllerTest extends TestCase
 {
     /**
      * @unreleased
-     * 
+     *
      * @return void
      */
-     public function testShouldReturnIframe()
+    public function testShouldReturnIframe()
     {
         $formId = 1;
         $formTemplateId = 'classic';

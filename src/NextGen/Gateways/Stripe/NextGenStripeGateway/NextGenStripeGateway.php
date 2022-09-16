@@ -102,9 +102,8 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
         /**
          * Get data from client request
          */
-        $request = $this->request();
-        $stripeConnectedAccountKey = $request->get('stripeConnectedAccountKey');
-        $stripePaymentIntentId = $request->get('stripePaymentIntentId');
+        $stripeConnectedAccountKey = $gatewayData['stripeConnectedAccountKey'];
+        $stripePaymentIntentId = $gatewayData['stripePaymentIntentId'];
 
         /**
          * Get or create a Stripe customer
