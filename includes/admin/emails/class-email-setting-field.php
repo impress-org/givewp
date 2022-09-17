@@ -356,7 +356,7 @@ class Give_Email_Setting_Field {
 			$recipient['desc']                   = __( 'This email is automatically sent to the donor and the recipient cannot be customized.', 'give' );
 		}
 
-		return $recipient;
+        return apply_filters('give_get_recipient_setting_field', $recipient, $email, $form_id, $edit_recipient);
 	}
 
 	/**
