@@ -278,6 +278,8 @@ class Give_Email_Notification_Table extends WP_List_Table {
 					$email_notifications[] = $email_notification;
 				}
 			}
+            $email_notifications = apply_filters('give_email_notification_table_items', $email_notifications,
+                $email_notification, $current_section);
 		}
 
 		$total_items = count( $email_notifications );
