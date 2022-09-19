@@ -107,6 +107,10 @@ class TestSubscription extends TestCase
      */
     public function testSubscriptionShouldCancel()
     {
-        $this->markTestIncomplete();
+        $subscription = Subscription::factory()->createWithDonation();
+
+        $subscription->cancel();
+
+        $this->assertTrue($subscription->status->isCancelled());
     }
 }

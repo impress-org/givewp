@@ -74,6 +74,17 @@ class TestGateway extends PaymentGateway
     }
 
     /**
+     * @unreleased
+     *
+     * @return void
+     */
+    public function cancelSubscription(Subscription $subscription)
+    {
+        $subscription->status = SubscriptionStatus::CANCELLED();
+        $subscription->save();
+    }
+
+    /**
      * @since 2.20.0
      * @inerhitDoc
      * @throws Exception
