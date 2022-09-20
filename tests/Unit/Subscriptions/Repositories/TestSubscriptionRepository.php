@@ -66,6 +66,10 @@ class TestSubscriptionRepository extends TestCase
             Temporal::toDateTime($subscriptionQuery->created)->format('Y-m-d H:i:s'),
             $subscriptionInstance->createdAt->format('Y-m-d H:i:s')
         );
+        $this->assertEquals(
+            Temporal::toDateTime($subscriptionQuery->expiration)->format('Y-m-d H:i:s'),
+            $subscriptionInstance->renewsAt->format('Y-m-d H:i:s')
+        );
         $this->assertEquals($subscriptionQuery->customer_id, $subscriptionInstance->donorId);
         $this->assertEquals($subscriptionQuery->profile_id, $subscriptionInstance->gatewaySubscriptionId);
         $this->assertEquals($subscriptionQuery->product_id, $subscriptionInstance->donationFormId);
