@@ -21,10 +21,8 @@ class CurrencyFacade
      *
      * @param Money $amount
      * @param int|float $exchangeRate
-     *
-     * @return Money
      */
-    public function convertToBaseCurrency(Money $amount, $exchangeRate = 1)
+    public function convertToBaseCurrency(Money $amount, $exchangeRate = 1): Money
     {
         $baseCurrency = $this->getBaseCurrency();
 
@@ -49,11 +47,8 @@ class CurrencyFacade
      * @since 2.20.0
      *
      * @param string|float|int $amount
-     * @param string $currency
-     *
-     * @return Money
      */
-    public function parseFromDecimal($amount, $currency)
+    public function parseFromDecimal($amount, string $currency): Money
     {
         return (new DecimalMoneyParser(new ISOCurrencies()))->parse((string)$amount, new Currency($currency));
     }
@@ -63,12 +58,8 @@ class CurrencyFacade
      * - $1,500.25 -> 1500.25
      *
      * @since 2.20.0
-     *
-     * @param Money $amount
-     *
-     * @return string
      */
-    public function formatToDecimal(Money $amount)
+    public function formatToDecimal(Money $amount): string
     {
         return (new DecimalMoneyFormatter(new ISOCurrencies()))->format($amount);
     }
@@ -83,7 +74,7 @@ class CurrencyFacade
      *
      * @return string
      */
-    public function formatToLocale(Money $amount, $locale = null)
+    public function formatToLocale(Money $amount, $locale = null): string
     {
         if ($locale === null) {
             $locale = get_locale();
@@ -102,7 +93,7 @@ class CurrencyFacade
      *
      * @return Currency
      */
-    public function getBaseCurrency()
+    public function getBaseCurrency(): Currency
     {
         return new Currency(give_get_option('currency', 'USD'));
     }
