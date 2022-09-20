@@ -24,6 +24,7 @@ use Give\Subscriptions\Models\Subscription;
 /**
  * Class Donation
  *
+ * @unreleased add type property; remove initialDonationId property
  * @since 2.20.0 update amount type, fee recovered, and exchange rate
  * @since 2.19.6
  *
@@ -43,7 +44,6 @@ use Give\Subscriptions\Models\Subscription;
  * @property string $firstName
  * @property string $lastName
  * @property string $email
- * @property int $initialDonationId if the donation is a renewal, this is the id of the original donation that created the subscription
  * @property int $subscriptionId
  * @property BillingAddress $billingAddress
  * @property string $purchaseKey
@@ -80,7 +80,6 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
         'firstName' => 'string',
         'lastName' => 'string',
         'email' => 'string',
-        'initialDonationId' => ['int', 0],
         'subscriptionId' => ['int', 0],
         'billingAddress' => BillingAddress::class,
         'anonymous' => ['bool', false],
@@ -103,7 +102,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      *
      * @since 2.19.6
      *
-     * @param  int  $id
+     * @param int $id
      *
      * @return Donation|null
      */

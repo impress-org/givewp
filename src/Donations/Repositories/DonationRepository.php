@@ -158,7 +158,7 @@ class DonationRepository
     }
 
     /**
-     *
+     * @unreleased retrieve the post_parent instead of relying on initialDonationId property
      * @since 2.21.0 replace actions with givewp_donation_creating and givewp_donation_created
      * @since 2.20.0 mutate model and return void
      * @since 2.19.6
@@ -186,7 +186,7 @@ class DonationRepository
                     'post_modified_gmt' => get_gmt_from_date($dateCreatedFormatted),
                     'post_status' => $this->getPersistedDonationStatus($donation)->getValue(),
                     'post_type' => 'give_payment',
-                    'post_parent' => $donation->initialDonationId ?? 0
+                    'post_parent' => $donation->type->isRenewal() ? give()->subscriptions->getInitialDonationId($donation->subscriptionId) : 0,
                 ]);
 
             $donationId = DB::last_insert_id();
@@ -231,6 +231,7 @@ class DonationRepository
     }
 
     /**
+     * @unreleased retrieve the post_parent instead of relying on initialDonationId property
      * @since 2.21.0 replace actions with givewp_donation_updating and givewp_donation_updated
      * @since 2.20.0 return void
      * @since 2.19.6
@@ -256,7 +257,7 @@ class DonationRepository
                     'post_modified_gmt' => get_gmt_from_date($date),
                     'post_status' => $this->getPersistedDonationStatus($donation)->getValue(),
                     'post_type' => 'give_payment',
-                    'post_parent' => $donation->initialDonationId ?? 0
+                    'post_parent' => $donation->type->isRenewal() ? give()->subscriptions->getInitialDonationId($donation->subscriptionId) : 0,
                 ]);
 
             foreach ($this->getCoreDonationMetaForDatabase($donation) as $metaKey => $metaValue) {
@@ -464,6 +465,8 @@ class DonationRepository
     }
 
     /**
+     * @unreleased no longer retrieve the post_parent from the database as initialDonationId is deprecated
+     *
      * @return ModelQueryBuilder<Donation>
      */
     public function prepareQuery(): ModelQueryBuilder
@@ -475,8 +478,7 @@ class DonationRepository
                 ['ID', 'id'],
                 ['post_date', 'createdAt'],
                 ['post_modified', 'updatedAt'],
-                ['post_status', 'status'],
-                ['post_parent', 'initialDonationId']
+                ['post_status', 'status']
             )
             ->attachMeta(
                 'give_donationmeta',

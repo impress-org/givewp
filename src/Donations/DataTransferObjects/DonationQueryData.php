@@ -15,6 +15,7 @@ use Give\Framework\Support\ValueObjects\Money;
 /**
  * Class DonationData
  *
+ * @unreleased remove initialDonationId property
  * @since 2.19.6
  */
 class DonationQueryData
@@ -55,10 +56,6 @@ class DonationQueryData
      * @var DonationStatus
      */
     public $status;
-    /**
-     * @var int
-     */
-    public $initialDonationId;
     /**
      * @var int
      */
@@ -123,6 +120,7 @@ class DonationQueryData
     /**
      * Convert data from object to Donation
      *
+     * @unreleased remove initialDonationId property
      * @since 2.22.0 add support for company field
      * @since 2.20.0 update for new amount property, fee amount recovered, and exchange rate
      * @since 2.19.6
@@ -155,7 +153,6 @@ class DonationQueryData
         $self->createdAt = Temporal::toDateTime($donationQueryObject->createdAt);
         $self->updatedAt = Temporal::toDateTime($donationQueryObject->updatedAt);
         $self->status = new DonationStatus($donationQueryObject->status);
-        $self->initialDonationId = (int)$donationQueryObject->initialDonationId;
         $self->subscriptionId = (int)$donationQueryObject->{DonationMetaKeys::SUBSCRIPTION_ID()->getKeyAsCamelCase()};
         $self->mode = new DonationMode($donationQueryObject->{DonationMetaKeys::MODE()->getKeyAsCamelCase()});
         $self->billingAddress = BillingAddress::fromArray([

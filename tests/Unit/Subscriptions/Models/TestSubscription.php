@@ -91,6 +91,9 @@ class TestSubscription extends TestCase
         self::assertMoneyEquals(new Money(9500, 'USD'), $subscription->intendedAmount());
     }
 
+    /**
+     * @unreleased
+     */
     public function testShouldBumpRenewalDate()
     {
         $subscription = Subscription::factory()->create([
@@ -102,6 +105,15 @@ class TestSubscription extends TestCase
         $subscription->bumpRenewalDate();
 
         $this->assertEquals('2020-02-01 00:00:00', $subscription->renewsAt->format('Y-m-d H:i:s'));
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testShouldRetrieveInitialDonationForSubscription()
+    {
+        $subscription = Subscription::factory()->createWithDonation();
+        $this->assertEquals($subscription->donations[0]->id, $subscription->initialDonation()->id);
     }
 
     /**

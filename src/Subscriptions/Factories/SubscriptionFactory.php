@@ -85,7 +85,6 @@ class SubscriptionFactory extends ModelFactory
                 'status' => DonationStatus::COMPLETE(),
                 'type' => DonationType::RENEWAL(),
                 'subscriptionId' => $subscription->id,
-                'initialDonationId' => give()->subscriptions->getInitialDonationId($subscription->id),
             ], $attributes)
         );
     }

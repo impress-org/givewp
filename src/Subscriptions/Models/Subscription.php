@@ -146,6 +146,16 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
+     * Returns the donation that began the subscription.
+     *
+     * @unreleased
+     */
+    public function initialDonation(): Donation
+    {
+        return Donation::find(give()->subscriptions->getInitialDonationId($this->id));
+    }
+
+    /**
      * @since 2.20.0 return mutated model instance
      * @since 2.19.6
      *
