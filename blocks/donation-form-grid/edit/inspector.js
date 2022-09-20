@@ -45,7 +45,6 @@ const Inspector = ({attributes, setAttributes}) => {
         showExcerpt,
         excerptLength,
         showGoal,
-        showProgressBar,
         showFeaturedImage,
         showDonateButton,
         tagBackgroundColor,
@@ -168,13 +167,6 @@ const Inspector = ({attributes, setAttributes}) => {
                         label={__('Show Excerpt', 'give')}
                         checked={!!showExcerpt}
                         onChange={(value) => saveSetting('showExcerpt', value)}
-                    />
-                    <ToggleControl
-                        className="give-form-grid-inspector"
-                        name="showProgressBar"
-                        label={__('Show Progress Bar', 'give')}
-                        checked={!!showProgressBar}
-                        onChange={(value) => saveSetting('showProgressBar', value)}
                     />
                     <ToggleControl
                         className="give-form-grid-inspector"
