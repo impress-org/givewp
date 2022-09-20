@@ -306,6 +306,7 @@ class SubscriptionRepository
     }
 
     /**
+     * @unreleased update to no longer rely on parent_payment_id column as it will be deprecated
      * @since 2.19.6
      *
      * @return int|null
