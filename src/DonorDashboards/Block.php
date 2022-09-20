@@ -42,11 +42,26 @@ class Block
     /**
      * Returns Donor Profile block markup
      *
+     * @since 2.22.1 Add script for iframe onload event to activate gutenberg edit mode.
+     *             Gutenberg block edit mode activates when focus set to block container.
      * @since 2.10.0
      **/
     public function renderCallback($attributes)
     {
-        return $this->donorDashboard->getOutput($attributes);
+        $output =  $this->donorDashboard->getOutput($attributes);
+
+        if( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+            $output = str_replace(
+                'onload="',
+                sprintf(
+                    'onload="%s;',
+                    'const iframe = this;this.contentWindow.document.addEventListener(\'click\', function(){iframe.closest(\'[data-block]\').focus({preventScroll: true});})'
+                ),
+                $output
+            );
+        }
+
+        return $output;
     }
 
     /**

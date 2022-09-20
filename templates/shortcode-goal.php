@@ -2,13 +2,16 @@
 /**
  * This template is used to display the goal with [give_goal]
  */
+
+$form_id          = get_the_ID(); // Form ID.
 $form        = new Give_Donate_Form( $form_id );
+
 $goal_option = give_get_meta( $form->ID, '_give_goal_option', true );
 // Sanity check - ensure form has pass all condition to show goal.
 if ( ( isset( $args['show_goal'] ) && ! filter_var( $args['show_goal'], FILTER_VALIDATE_BOOLEAN ) )
-    || empty( $form->ID )
-    || ( is_singular( 'give_forms' ) && ! give_is_setting_enabled( $goal_option ) )
-    || ! give_is_setting_enabled( $goal_option ) || 0 === $form->goal ) {
+     || empty( $form->ID )
+     || ( is_singular( 'give_forms' ) && ! give_is_setting_enabled( $goal_option ) )
+     || ! give_is_setting_enabled( $goal_option ) || 0 === $form->goal ) {
     return false;
 }
 
@@ -44,13 +47,13 @@ $goal   = $shortcode_stats['goal'];
 switch ( $goal_format ) {
 
     case 'donation':
-        $progress           = $goal ? round( ( $income / $goal ) * 100, 2 ) : 0;
-        $progress_bar_value = $income >= $goal ? 100 : $progress;
+        $progress           = $goal ? round( ( $form->get_sales() / $goal ) * 100, 2 ) : 0;
+        $progress_bar_value = $form->get_sales() >= $goal ? 100 : $progress;
         break;
 
     case 'donors':
-        $progress_bar_value = $goal ? round( ( $income / $goal ) * 100, 2 ) : 0;
-        $progress           = $progress_bar_value;
+        $progress           = $goal ? round( ( give_get_form_donor_count( $form->ID ) / $goal ) * 100, 2 ) : 0;
+        $progress_bar_value = give_get_form_donor_count( $form->ID ) >= $goal ? 100 : $progress;
         break;
 
     case 'percentage':
@@ -183,8 +186,9 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
                         $goal,
                         'give'
                     ),
-                    give_format_amount( $income, array( 'decimal' => false ) ),
-                    give_format_amount( $goal, array( 'decimal' => false ) )
+
+                    give_format_amount( $form->get_sales(), array( 'decimal' => false )),
+                    give_format_amount( $goal, array( 'decimal' => false ))
                 );
 
             elseif ( 'donors' === $goal_format ) :
@@ -196,7 +200,8 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
                         $goal,
                         'give'
                     ),
-                    give_format_amount( $income, array( 'decimal' => false ) ),
+
+                    give_format_amount(  give_get_form_donor_count( $form->ID ), array( 'decimal' => false ) ),
                     give_format_amount( $goal, array( 'decimal' => false ) )
                 );
 
@@ -221,3 +226,4 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
     <?php endif; ?>
 
 </div><!-- /.goal-progress -->
+

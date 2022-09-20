@@ -170,7 +170,6 @@ $MIN_REM_SIZE: 16px;
             text-align: right;
         }
     }
-
 }
 
 .give-form-grid-progress-bar {
@@ -179,7 +178,8 @@ $MIN_REM_SIZE: 16px;
         position: relative;
         height: 12px;
         border-radius: 25px;
-
+        background: #D9DFDB;
+        box-shadow: 0px 2px 2px -1px #0000001C inset;
 
         > span {
             display: block;

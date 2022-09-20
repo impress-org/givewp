@@ -122,29 +122,34 @@ ob_start();
                                 <dd class="value"
                                     data-value="<?= esc_attr($lineItem->value) ?>"><?= $lineItem->value ?></dd>
                             </div>
-                        <?php endforeach; ?>
+                        <?php
+                        endforeach; ?>
 
                     </dl>
                 </div>
 
-            <?php endforeach; ?>
+            <?php
+            endforeach; ?>
         </div>
 
         <div class="dashboard-link-container">
             <a class="dashboard-link" href="<?= esc_url($donorDashboardUrl); ?>" target="_parent">
                 <?= esc_html__('Go to my Donor Dashboard', 'give'); ?><i class="fas fa-long-arrow-alt-right"></i>
             </a>
-            <?php if (isset($section['receiptLink'])) : ?>
+            <?php
+            if (isset($section['receiptLink'])) : ?>
                 <div class="give-btn download-btn">
                     <?= $section['receiptLink']->value; ?>
                 </div>
-            <?php endif; ?>
+            <?php
+            endif; ?>
         </div>
     </article>
 
 <?php
 
+$pageId = give_get_option('success_page');
 echo (new IframeContentView())
-    ->setTitle(esc_html__('Donation Receipt', 'give'))
+    ->setTitle(esc_html__('Donation Receipt', 'give'))->setPostId($pageId)
     ->setBody(ob_get_clean())
     ->renderBody();
