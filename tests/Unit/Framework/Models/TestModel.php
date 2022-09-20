@@ -252,6 +252,30 @@ class TestModel extends TestCase
 
     /**
      * @unreleased
+     */
+    public function testShouldThrowExceptionForGettingMissingProperty()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $model = new MockModel();
+
+        $model->iDontExist;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testShouldThrowExceptionForSettingMissingProperty()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $model = new MockModel();
+
+        $model->iDontExist = 'foo';
+    }
+
+    /**
+     * @unreleased
      *
      * @return array
      */
