@@ -158,7 +158,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased retrieve the post_parent instead of relying on initialDonationId property
+     * @unreleased retrieve the post_parent instead of relying on parentId property
      * @since 2.21.0 replace actions with givewp_donation_creating and givewp_donation_created
      * @since 2.20.0 mutate model and return void
      * @since 2.19.6
@@ -231,7 +231,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased retrieve the post_parent instead of relying on initialDonationId property
+     * @unreleased retrieve the post_parent instead of relying on parentId property
      * @since 2.21.0 replace actions with givewp_donation_updating and givewp_donation_updated
      * @since 2.20.0 return void
      * @since 2.19.6
@@ -465,7 +465,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased no longer retrieve the post_parent from the database as initialDonationId is deprecated
+     * @unreleased no longer retrieve the post_parent from the database as parentId is deprecated
      *
      * @return ModelQueryBuilder<Donation>
      */
