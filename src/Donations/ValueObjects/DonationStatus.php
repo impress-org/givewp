@@ -11,7 +11,7 @@ use Give\Framework\Support\ValueObjects\Enum;
  * @method static DonationStatus COMPLETE()
  * @method static DonationStatus REFUNDED()
  * @method static DonationStatus FAILED()
- * @method static DonationStatus CANCELED()
+ * @method static DonationStatus CANCELLED()
  * @method static DonationStatus ABANDONED()
  * @method static DonationStatus PREAPPROVAL()
  * @method static DonationStatus PROCESSING()
@@ -21,7 +21,7 @@ use Give\Framework\Support\ValueObjects\Enum;
  * @method bool isComplete()
  * @method bool isRefunded()
  * @method bool isFailed()
- * @method bool isCanceled()
+ * @method bool isCancelled()
  * @method bool isAbandoned()
  * @method bool isPreapproval()
  * @method bool isProcessing()
@@ -35,7 +35,7 @@ class DonationStatus extends Enum
     const COMPLETE = 'publish';
     const REFUNDED = 'refunded';
     const FAILED = 'failed';
-    const CANCELED = 'cancelled';
+    const CANCELLED = 'cancelled';
     const ABANDONED = 'abandoned';
     const PREAPPROVAL = 'preapproval';
     const REVOKED = 'revoked';
