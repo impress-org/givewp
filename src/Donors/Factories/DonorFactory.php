@@ -8,8 +8,6 @@ class DonorFactory extends ModelFactory
 {
     /**
      * @since 2.19.6
-     *
-     * @return array
      */
     public function definition(): array
     {
