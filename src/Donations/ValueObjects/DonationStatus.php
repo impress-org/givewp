@@ -16,7 +16,7 @@ use Give\Framework\Support\ValueObjects\Enum;
  * @method static DonationStatus PREAPPROVAL()
  * @method static DonationStatus PROCESSING()
  * @method static DonationStatus REVOKED()
- * @method static DonationStatus RENEWAL()
+ * @method static DonationStatus RENEWAL() @deprecated
  * @method bool isPending()
  * @method bool isComplete()
  * @method bool isRefunded()
@@ -26,7 +26,7 @@ use Give\Framework\Support\ValueObjects\Enum;
  * @method bool isPreapproval()
  * @method bool isProcessing()
  * @method bool isRevoked()
- * @method bool isRenewal()
+ * @method bool isRenewal() @deprecated
  */
 class DonationStatus extends Enum
 {
@@ -39,5 +39,9 @@ class DonationStatus extends Enum
     const ABANDONED = 'abandoned';
     const PREAPPROVAL = 'preapproval';
     const REVOKED = 'revoked';
+
+    /**
+     * @deprecated 2.23.0 Use DonationStatus::COMPLETE
+     */
     const RENEWAL = 'give_subscription';
 }
