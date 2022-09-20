@@ -13,7 +13,7 @@ export default function getDefaultValuesFromSections(sections: Section[]) {
     return sections.reduce((values, section) => {
         const fields = getGroupFields(section);
 
-        fields.forEach((field) => (values[field.name] = field.defaultValue));
+        fields.forEach((field) => field.defaultValue && (values[field.name] = field.defaultValue));
 
         return values;
     }, {});

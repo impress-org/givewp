@@ -12,6 +12,7 @@ import NameGroup from './groups/Name';
 import SectionLayout, {SectionProps} from './layouts/Section';
 import Form, {FormProps} from './layouts/Form';
 import AmountField from './fields/Amount';
+import SelectField from './fields/Select';
 import classNames from 'classnames';
 import Gateways from './fields/Gateways';
 import Paragraph from './elements/Paragraph';
@@ -58,6 +59,7 @@ const defaultTemplate = {
         email: EmailField,
         hidden: HiddenField,
         gateways: Gateways,
+        select: SelectField,
     },
     elements: {
         paragraph: Paragraph,

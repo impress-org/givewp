@@ -1,10 +1,10 @@
 import type {FieldProps} from '@givewp/forms/propTypes';
 
-export default function TextArea({label, fieldError, inputProps}: FieldProps) {
+export default function TextArea({label, placeholder, fieldError, inputProps}: FieldProps) {
     return (
         <label>
             {label}
-            <textarea {...inputProps} />
+            <textarea {...inputProps} placeholder={placeholder}/>
             {fieldError && (
                 <div className="error-message">
                     <p role="alert">{fieldError}</p>

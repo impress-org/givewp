@@ -12,6 +12,7 @@ export default function FieldNode({node}: { node: Field }) {
     const inputProps = register(node.name, buildRegisterValidationOptions(node.validationRules));
 
     return <Field key={node.name} inputProps={inputProps}
+                  placeholder={node.placeholder}
                   fieldError={getErrorByFieldName(errors, node.name)}
                   {...node} />;
 }

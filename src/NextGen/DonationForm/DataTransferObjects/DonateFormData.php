@@ -51,6 +51,10 @@ class DonateFormData
      * @var string|null
      */
     public $company;
+    /**
+     * @var string|null
+     */
+    public $honorific;
 
     /**
      * Convert data from request into DTO
@@ -74,6 +78,7 @@ class DonateFormData
         $self->formId = (int)$request['formId'];
         $self->formTitle = get_the_title($request['formId']);
         $self->company = !empty($request['company']) ? $request['company'] : null;
+        $self->honorific = !empty($request['honorific']) ? $request['honorific'] : null;
 
         return $self;
     }

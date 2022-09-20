@@ -123,6 +123,7 @@ export interface Node {
 export interface Field extends Node {
     nodeType: 'field';
     label: string;
+    placeholder: string | null;
     validationRules: {
         [key: string]: any;
     };
@@ -156,3 +157,10 @@ export function isElement(node: Node): node is Element {
 export function isGroup(node: Node): node is Group {
     return node.nodeType === 'group';
 }
+
+export interface SelectOption {
+    label: string;
+    value: string;
+    disabled?: boolean;
+}
+
