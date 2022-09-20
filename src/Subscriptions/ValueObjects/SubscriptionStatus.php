@@ -23,7 +23,7 @@ use Give\Framework\Support\ValueObjects\Enum;
  * @method bool isRefunded()
  * @method bool isAbandoned()
  * @method bool isFailing()
- * @method bool isCanceled()
+ * @method bool isCancelled()
  * @method bool isSuspended()
  */
 class SubscriptionStatus extends Enum {

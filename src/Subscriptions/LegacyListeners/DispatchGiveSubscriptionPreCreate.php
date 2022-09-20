@@ -26,7 +26,7 @@ class DispatchGiveSubscriptionPreCreate
             'parent_payment_id' => 0,
             'form_id' => $subscription->donationFormId,
             'created' => null,
-            'expiration' => $subscription->expiration(),
+            'expiration' => $subscription->renewsAt->format('Y-m-d H:i:s'),
             'status' => $subscription->status->getValue(),
             'profile_id' => $subscription->gatewaySubscriptionId,
         ];

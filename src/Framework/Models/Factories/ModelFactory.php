@@ -42,8 +42,6 @@ abstract class ModelFactory
 
     /**
      * Define the model's default state.
-     *
-     * @return array
      */
     abstract public function definition(): array;
 
@@ -58,14 +56,7 @@ abstract class ModelFactory
     {
         $results = [];
         for ($i = 0; $i < $this->count; $i++) {
-            /** @var ModelCrud $model */
-            $model = $this->model;
-
-            $instance = new $model(
-                array_merge($this->definition(), $attributes)
-            );
-
-            $this->afterMaking($instance);
+            $instance = $this->makeInstance($attributes);
 
             $results[] = $instance;
         }
@@ -89,12 +80,22 @@ abstract class ModelFactory
         DB::transaction(function () use ($instances) {
             foreach ($instances as $instance) {
                 $instance->save();
-
-                $this->afterCreating($instance);
             }
         });
 
         return $this->count === 1 ? $instances[0] : $instances;
+    }
+
+    /**
+     * Creates an instance of the model from the attributes and definition.
+     *
+     * @unreleased
+     *
+     * @return M
+     */
+    protected function makeInstance(array $attributes)
+    {
+        return new $this->model(array_merge($this->definition(), $attributes));
     }
 
     /**
@@ -127,29 +128,5 @@ abstract class ModelFactory
         $this->count = $count;
 
         return $this;
-    }
-
-    /**
-     * @since 2.20.0
-     *
-     * @param  M  $model
-     *
-     * @return void
-     */
-    public function afterCreating($model)
-    {
-        //
-    }
-
-    /**
-     * @since 2.20.0
-     *
-     * @param  M  $model
-     *
-     * @return void
-     */
-    public function afterMaking($model)
-    {
-        //
     }
 }

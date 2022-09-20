@@ -5,6 +5,7 @@ namespace Give\Subscriptions\Repositories;
 use Exception;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
+use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
@@ -27,6 +28,7 @@ class SubscriptionRepository
         'amount',
         'status',
         'donationFormId',
+        'renewsAt',
     ];
 
     /**
@@ -41,8 +43,6 @@ class SubscriptionRepository
 
     /**
      * @since 2.21.0
-     *
-     * @param string $gatewayTransactionId
      */
     public function getByGatewaySubscriptionId(string $gatewaySubscriptionId): Subscription
     {
@@ -52,7 +52,8 @@ class SubscriptionRepository
     /**
      * @since 2.19.6
      *
-     * @param  int  $subscriptionId
+     * @param int $subscriptionId
+     *
      * @return ModelQueryBuilder<Subscription>
      */
     public function queryById(int $subscriptionId): ModelQueryBuilder
@@ -66,9 +67,9 @@ class SubscriptionRepository
      *
      * @param string $gatewayTransactionId
      *
-     * @return ModelQueryBuilder
+     * @return ModelQueryBuilder<Subscription>
      */
-    public function queryByGatewaySubscriptionId($gatewayTransactionId)
+    public function queryByGatewaySubscriptionId(string $gatewayTransactionId): ModelQueryBuilder
     {
         return $this->prepareQuery()
             ->where('profile_id', $gatewayTransactionId);
@@ -77,7 +78,8 @@ class SubscriptionRepository
     /**
      * @since 2.19.6
      *
-     * @param  int  $donationId
+     * @param int $donationId
+     *
      * @return ModelQueryBuilder<Subscription>
      */
     public function queryByDonationId(int $donationId): ModelQueryBuilder
@@ -89,7 +91,8 @@ class SubscriptionRepository
     /**
      * @since 2.19.6
      *
-     * @param  int  $donorId
+     * @param int $donorId
+     *
      * @return ModelQueryBuilder<Subscription>
      */
     public function queryByDonorId(int $donorId): ModelQueryBuilder
@@ -142,6 +145,7 @@ class SubscriptionRepository
         try {
             DB::table('give_subscriptions')->insert([
                 'created' => Temporal::getFormattedDateTime($dateCreated),
+                'expiration' => Temporal::getFormattedDateTime($subscription->renewsAt),
                 'status' => $subscription->status->getValue(),
                 'profile_id' => $subscription->gatewaySubscriptionId ?? '',
                 'customer_id' => $subscription->donorId,
@@ -149,7 +153,8 @@ class SubscriptionRepository
                 'frequency' => $subscription->frequency,
                 'initial_amount' => $subscription->amount->formatToDecimal(),
                 'recurring_amount' => $subscription->amount->formatToDecimal(),
-                'recurring_fee_amount' => $subscription->feeAmountRecovered !== null ? $subscription->feeAmountRecovered->formatToDecimal() : 0,
+                'recurring_fee_amount' => $subscription->feeAmountRecovered !== null ? $subscription->feeAmountRecovered->formatToDecimal(
+                ) : 0,
                 'bill_times' => $subscription->installments,
                 'transaction_id' => $subscription->transactionId ?? '',
                 'product_id' => $subscription->donationFormId,
@@ -168,10 +173,6 @@ class SubscriptionRepository
 
         $subscription->id = $subscriptionId;
         $subscription->createdAt = $dateCreated;
-
-        if (!isset($subscription->expiresAt)) {
-            $subscription->expiresAt = null;
-        }
 
         Hooks::doAction('givewp_subscription_created', $subscription);
     }
@@ -202,7 +203,8 @@ class SubscriptionRepository
                     'frequency' => $subscription->frequency,
                     'initial_amount' => $subscription->amount->formatToDecimal(),
                     'recurring_amount' => $subscription->amount->formatToDecimal(),
-                    'recurring_fee_amount' => isset($subscription->feeAmountRecovered) ? $subscription->feeAmountRecovered->formatToDecimal() : 0,
+                    'recurring_fee_amount' => isset($subscription->feeAmountRecovered) ? $subscription->feeAmountRecovered->formatToDecimal(
+                    ) : 0,
                     'bill_times' => $subscription->installments,
                     'transaction_id' => $subscription->transactionId ?? '',
                     'product_id' => $subscription->donationFormId,
@@ -257,6 +259,21 @@ class SubscriptionRepository
     }
 
     /**
+     * @param int $subscriptionId
+     * @param int $donationId
+     *
+     * @return void
+     */
+    public function updateLegacyParentPaymentId(int $subscriptionId, int $donationId)
+    {
+        DB::table('give_subscriptions')
+            ->where('id', $subscriptionId)
+            ->update([
+                'parent_payment_id' => $donationId,
+            ]);
+    }
+
+    /**
      * @since 2.19.6
      *
      * @throws Exception
@@ -295,16 +312,28 @@ class SubscriptionRepository
      */
     public function getInitialDonationId(int $subscriptionId)
     {
-        $query = DB::table('give_subscriptions')
-            ->where('id', $subscriptionId)
-            ->select(['parent_payment_id', 'initialDonationId'])
+        $query = DB::table('posts')
+            ->select('ID')
+            ->attachMeta(
+                'give_donationmeta',
+                'ID',
+                'donation_id',
+                [DonationMetaKeys::SUBSCRIPTION_ID, 'subscriptionId'],
+                [DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION, 'initialDonationId']
+            )
+            ->where('give_donationmeta_attach_meta_0.meta_value', $subscriptionId)
+            ->where('give_donationmeta_attach_meta_1.meta_value', 1)
             ->get();
 
         if (!$query) {
             return null;
         }
 
-        return (int)$query->initialDonationId;
+        return (int)$query->ID;
+    }
+
+    private function getCoreSubscriptionMetaForDatabase(Subscription $subscription): array
+    {
     }
 
     /**
@@ -338,7 +367,7 @@ class SubscriptionRepository
             ->select(
                 'id',
                 ['created', 'createdAt'],
-                ['expiration', 'expiresAt'],
+                ['expiration', 'renewsAt'],
                 ['customer_id', 'donorId'],
                 'period',
                 ['frequency', 'frequency'],

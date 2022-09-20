@@ -3,6 +3,7 @@
 namespace Give\LegacyPaymentGateways\Adapters;
 
 use Exception;
+use Give\Donations\ValueObjects\DonationType;
 use Give\Donors\Models\Donor;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\PaymentGateways\DataTransferObjects\FormData;
@@ -47,6 +48,7 @@ class LegacyPaymentGatewayAdapter
         $formData = FormData::fromRequest($legacyDonationData);
 
         $this->validateGatewayNonce($formData->gatewayNonce);
+        $isRecurring = give_recurring_is_donation_recurring($legacyDonationData);
 
         $donor = $this->getOrCreateDonor(
             $formData->donorInfo->wpUserId,
@@ -56,11 +58,10 @@ class LegacyPaymentGatewayAdapter
         );
 
         $donation = $formData->toDonation($donor->id);
+        $donation->type = $isRecurring ? DonationType::SUBSCRIPTION() : DonationType::SINGLE();
         $donation->save();
 
-        $this->setSession($donation->id);
-
-        if (give_recurring_is_donation_recurring($legacyDonationData)) {
+        if ($isRecurring) {
             $subscriptionData = SubscriptionData::fromRequest($legacyDonationData);
 
             $subscription = Subscription::create([
@@ -70,17 +71,10 @@ class LegacyPaymentGatewayAdapter
                 'donorId' => $donor->id,
                 'installments' => (int)$subscriptionData->times,
                 'status' => SubscriptionStatus::PENDING(),
-                'donationFormId' => $formData->formId
+                'donationFormId' => $formData->formId,
             ]);
 
-            give()->donations->updateLegacyDonationMetaAsInitialSubscriptionDonation($donation->id);
-            give()->subscriptions->updateLegacyColumns(
-                $subscription->id,
-                [
-                    'parent_payment_id' => $donation->id,
-                    'expiration' => $subscription->expiration()
-                ]
-            );
+            give()->subscriptions->updateLegacyParentPaymentId($subscription->id, $donation->id);
 
             $registeredGateway->handleCreateSubscription($donation, $subscription);
         }
@@ -164,7 +158,7 @@ class LegacyPaymentGatewayAdapter
                 'firstName' => $firstName,
                 'lastName' => $lastName,
                 'email' => $donorEmail,
-                'userId' => $userId ?: null
+                'userId' => $userId ?: null,
             ]);
         }
 
