@@ -22,7 +22,7 @@ class SubscriptionFactory extends ModelFactory
      * @return array
      * @throws Exception
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'amount' => new Money($this->faker->numberBetween(25, 50000), 'USD'),

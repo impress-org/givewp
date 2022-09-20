@@ -45,7 +45,7 @@ abstract class ModelFactory
      *
      * @return array
      */
-    abstract public function definition();
+    abstract public function definition(): array;
 
     /**
      * @since 2.20.0
@@ -100,9 +100,9 @@ abstract class ModelFactory
     /**
      * Get a new Faker instance.
      *
-     * @return Generator
+     * @since 2.20.0
      */
-    protected function withFaker()
+    protected function withFaker(): Generator
     {
         return give()->make(Generator::class);
     }
@@ -110,19 +110,19 @@ abstract class ModelFactory
     /**
      * Configure the factory.
      *
-     * @return $this
+     * @since 2.20.0
      */
-    public function configure()
+    public function configure(): self
     {
         return $this;
     }
 
     /**
-     * @param int $count
+     * Sets the number of models to generate.
      *
-     * @return $this
+     * @since 2.20.0
      */
-    public function count($count)
+    public function count(int $count): self
     {
         $this->count = $count;
 

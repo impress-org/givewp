@@ -11,7 +11,7 @@ class DonorFactory extends ModelFactory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         $firstName = $this->faker->firstName;
         $lastName = $this->faker->lastName;
