@@ -9,6 +9,8 @@ use MyCLabs\Enum\Enum;
  *
  * @method static DonationMode TEST()
  * @method static DonationMode LIVE()
+ * @method bool isTest()
+ * @method bool isLive()
  */
 class DonationMode extends Enum {
     const TEST = 'test';

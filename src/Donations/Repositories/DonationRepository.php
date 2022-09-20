@@ -6,6 +6,7 @@ use Give\Donations\Actions\GeneratePurchaseKey;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -47,6 +48,7 @@ class DonationRepository
         'amount',
         'donorId',
         'firstName',
+        'type',
         'email',
     ];
 
@@ -75,9 +77,8 @@ class DonationRepository
 
     /**
      * @since 2.21.0
-     * @return ModelQueryBuilder
      */
-    public function queryByGatewayTransactionId($gatewayTransactionId)
+    public function queryByGatewayTransactionId($gatewayTransactionId): ModelQueryBuilder
     {
         return $this->prepareQuery()
             ->where('post_type', 'give_payment')
@@ -183,9 +184,9 @@ class DonationRepository
                     'post_date_gmt' => get_gmt_from_date($dateCreatedFormatted),
                     'post_modified' => $dateCreatedFormatted,
                     'post_modified_gmt' => get_gmt_from_date($dateCreatedFormatted),
-                    'post_status' => $donation->status->getValue(),
+                    'post_status' => $this->getPersistedDonationStatus($donation)->getValue(),
                     'post_type' => 'give_payment',
-                    'post_parent' => $donation->parentId ?? 0
+                    'post_parent' => $donation->initialDonationId ?? 0
                 ]);
 
             $donationId = DB::last_insert_id();
@@ -253,9 +254,9 @@ class DonationRepository
                 ->update([
                     'post_modified' => $date,
                     'post_modified_gmt' => get_gmt_from_date($date),
-                    'post_status' => $donation->status->getValue(),
+                    'post_status' => $this->getPersistedDonationStatus($donation)->getValue(),
                     'post_type' => 'give_payment',
-                    'post_parent' => $donation->parentId ?? 0
+                    'post_parent' => $donation->initialDonationId ?? 0
                 ]);
 
             foreach ($this->getCoreDonationMetaForDatabase($donation) as $metaKey => $metaValue) {
@@ -365,54 +366,16 @@ class DonationRepository
             $meta[DonationMetaKeys::SUBSCRIPTION_ID] = $donation->subscriptionId;
         }
 
+        if ( $donation->type->isSubscription()) {
+            $meta[DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION] = 1;
+            $meta[DonationMetaKeys::IS_RECURRING] = 1;
+        }
+
         if ($donation->company !== null) {
             $meta[DonationMetaKeys::COMPANY] = $donation->company;
         }
 
         return $meta;
-    }
-
-    /**
-     * In Legacy terms, the Initial Donation acts as the parent ID for subscription renewals.
-     * This function inserts those specific meta columns that accompany this concept.
-     *
-     * @since 2.19.6
-     *
-     * @throws Exception
-     */
-    public function updateLegacyDonationMetaAsInitialSubscriptionDonation($donationId): bool
-    {
-        DB::query('START TRANSACTION');
-
-        try {
-            DB::table('give_donationmeta')
-                ->insert(
-                    [
-                        'donation_id' => $donationId,
-                        'meta_key' => '_give_subscription_payment',
-                        'meta_value' => true,
-                    ]
-                );
-
-            DB::table('give_donationmeta')
-                ->insert(
-                    [
-                        'donation_id' => $donationId,
-                        'meta_key' => '_give_is_donation_recurring',
-                        'meta_value' => true,
-                    ]
-                );
-        } catch (Exception $exception) {
-            DB::query('ROLLBACK');
-
-            Log::error('Failed updating a donation as initial legacy subscription donation', compact('donationId'));
-
-            throw new $exception('Failed updating a donation as initial legacy subscription donation');
-        }
-
-        DB::query('COMMIT');
-
-        return true;
     }
 
     /**
@@ -434,30 +397,6 @@ class DonationRepository
     /**
      * @since 2.19.6
      *
-     * @return object[]
-     */
-    public function getNotesByDonationId(int $id): array
-    {
-        $notes = DB::table('give_comments')
-            ->select(
-                ['comment_content', 'note'],
-                ['comment_date', 'date']
-            )
-            ->where('comment_parent', $id)
-            ->where('comment_type', 'donation')
-            ->orderBy('comment_date', 'DESC')
-            ->getAll();
-
-        if (!$notes) {
-            return [];
-        }
-
-        return $notes;
-    }
-
-    /**
-     * @since 2.19.6
-     *
      * @return void
      */
     private function validateDonation(Donation $donation)
@@ -468,9 +407,34 @@ class DonationRepository
             }
         }
 
+        if ( $donation->subscriptionId && $donation->type->isSingle()) {
+            throw new InvalidArgumentException('Subscription ID can only be set for recurring donations.');
+        }
+
+        if ( !$donation->subscriptionId && ( $donation->type->isRenewal() || $donation->type->isSubscription() ) ) {
+            throw new InvalidArgumentException('Subscription ID is required for recurring donations.');
+        }
+
         if (!$donation->donor) {
             throw new InvalidArgumentException("Invalid donorId, Donor does not exist");
         }
+    }
+
+    /**
+     * Provides the donation status with consideration for the donation type. If a donation is a renewal type and its
+     * status is "complete", then the status will return "renewal". In the future, "renewal" will no longer be a valid
+     * status, at which point this function will be unnecessary.
+     *
+     * New renewal donations moving forward should set the type as "renewal" and the status as "complete".
+     *
+     * @unreleased
+     */
+    private function getPersistedDonationStatus(Donation $donation): DonationStatus {
+        if ( $donation->status->isComplete() && $donation->type->isRenewal() ) {
+            return DonationStatus::RENEWAL();
+        }
+
+        return $donation->status;
     }
 
     /**
@@ -512,7 +476,7 @@ class DonationRepository
                 ['post_date', 'createdAt'],
                 ['post_modified', 'updatedAt'],
                 ['post_status', 'status'],
-                ['post_parent', 'parentId']
+                ['post_parent', 'initialDonationId']
             )
             ->attachMeta(
                 'give_donationmeta',
@@ -528,7 +492,7 @@ class DonationRepository
      */
     public function getTotalDonationCountByDonorId(int $donorId): int
     {
-        return (int)DB::table('posts')
+        return DB::table('posts')
             ->where('post_type', 'give_payment')
             ->whereIn('ID', function (QueryBuilder $builder) use ($donorId) {
                 $builder

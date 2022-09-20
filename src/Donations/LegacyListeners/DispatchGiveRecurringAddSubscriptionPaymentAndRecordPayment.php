@@ -19,7 +19,7 @@ class DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment
     {
         $subscription = new Give_Subscription($donation->subscriptionId);
         $payment = new Give_Payment($donation->id);
-        $parent = new Give_Payment($donation->parentId);
+        $parent = new Give_Payment($donation->initialDonationId);
 
         $payment->parent_payment = $subscription->parent_payment_id;
         $payment->total = $donation->amount;

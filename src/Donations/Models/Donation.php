@@ -8,6 +8,7 @@ use Give\Donations\Factories\DonationFactory;
 use Give\Donations\Properties\BillingAddress;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donations\ValueObjects\DonationType;
 use Give\Donors\Models\Donor;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -33,6 +34,7 @@ use Give\Subscriptions\Models\Subscription;
  * @property DateTime $updatedAt
  * @property DonationStatus $status
  * @property DonationMode $mode
+ * @property DonationType $type
  * @property Money $amount amount charged to the gateway
  * @property Money $feeAmountRecovered
  * @property string $exchangeRate
@@ -41,7 +43,7 @@ use Give\Subscriptions\Models\Subscription;
  * @property string $firstName
  * @property string $lastName
  * @property string $email
- * @property int $parentId
+ * @property int $initialDonationId if the donation is a renewal, this is the id of the original donation that created the subscription
  * @property int $subscriptionId
  * @property BillingAddress $billingAddress
  * @property string $purchaseKey
@@ -68,6 +70,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
         'createdAt' => DateTime::class,
         'updatedAt' => DateTime::class,
         'status' => DonationStatus::class,
+        'type' => DonationType::class,
         'mode' => DonationMode::class,
         'amount' => Money::class,
         'feeAmountRecovered' => Money::class,
@@ -77,7 +80,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
         'firstName' => 'string',
         'lastName' => 'string',
         'email' => 'string',
-        'parentId' => ['int', 0],
+        'initialDonationId' => ['int', 0],
         'subscriptionId' => ['int', 0],
         'billingAddress' => BillingAddress::class,
         'anonymous' => ['bool', false],
