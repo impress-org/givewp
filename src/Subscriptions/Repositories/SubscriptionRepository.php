@@ -333,10 +333,6 @@ class SubscriptionRepository
         return (int)$query->ID;
     }
 
-    private function getCoreSubscriptionMetaForDatabase(Subscription $subscription): array
-    {
-    }
-
     /**
      * @since 2.19.6
      *
