@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 7.0
-Stable tag: 2.22.0
+Stable tag: 2.22.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -160,8 +160,8 @@ Here’s a few ways you can contribute to GiveWP:
 
 = Minimum Requirements =
 
-* WordPress 4.9 or greater
-* PHP version 5.6 or greater
+* WordPress 5.0 or greater
+* PHP version 7.0 or greater
 * MySQL version 5.6 or greater
 * MariaDB version 10 or later
 * Some payment gateways require fsockopen support (for IPN access)
@@ -251,13 +251,21 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.22.1: September, 20th 2022 =
+* Security: Updated a number of 3rd party packages we use to include security fixes
+* Fix: Legacy template now displays the correct amount for the donor and donation goals
+* Fix: Donor Dashboard block is now selectable within the Block Editor
+* Fix: A fatal error is now prevented when other plugins or themes use the_title filter
+* Fix: Fund and revenue totals now properly reflect the amount when a donation is edited
+* Fix: The progress bar displays/hides correctly when the show_goal property for give_form_grid is used
+
 = 2.22.0: August 18th, 2022 =
-Feature: SendWP integration to easily connect emails to their service
-Enhancement: Improvement to the GatewayAPI to allow gateways to pass custom data to the server
-Fix: Prevent the MAX_JOIN_SIZE error from breaking queries that affected some folks
-Fix: Goal percentage on the Multi-Step form has been fixed to accurately reflect amount raised
-Fix: When filling out the deactivation survey, deactivation will no longer be prevented if our server is down
-Fix: Added more escaping to secure against vulnerabilities
+* Feature: SendWP integration to easily connect emails to their service
+* Enhancement: Improvement to the GatewayAPI to allow gateways to pass custom data to the server
+* Fix: Prevent the MAX_JOIN_SIZE error from breaking queries that affected some folks
+* Fix: Goal percentage on the Multi-Step form has been fixed to accurately reflect amount raised
+* Fix: When filling out the deactivation survey, deactivation will no longer be prevented if our server is down
+* Fix: Added more escaping to secure against vulnerabilities
 
 = 2.21.4: July 8th, 2022 =
 * Fix: The CSRF patch for the stats exporter was breaking other exporters. The patch is still in place but the other exporters are working again.

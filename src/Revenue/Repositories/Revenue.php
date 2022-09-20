@@ -14,7 +14,7 @@ use Give\Framework\Support\ValueObjects\Money;
  * Use this class to get data from "give_revenue" table.
  *
  * @since      2.9.0
- * @unreleased Added the `updateRevenueAmount()` method
+ * @since 2.22.1 Added the `updateRevenueAmount()` method
  */
 class Revenue
 {
@@ -67,7 +67,7 @@ class Revenue
     }
 
     /**
-     * @unreleased
+     * @since 2.22.1
      *
      * @param Donation $donation
      *

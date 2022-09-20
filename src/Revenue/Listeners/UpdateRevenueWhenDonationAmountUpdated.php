@@ -6,12 +6,12 @@ use Give\Donations\Models\Donation;
 use Give\Revenue\Repositories\Revenue;
 
 /**
- * @unreleased
+ * @since 2.22.1
  */
 class UpdateRevenueWhenDonationAmountUpdated
 {
     /**
-     * @unreleased
+     * @since 2.22.1
      *
      * @param int $donationId The ID of the Donation.
      */
