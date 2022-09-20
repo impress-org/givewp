@@ -34,7 +34,7 @@ class TestSubscriptionRepository extends TestCase
     public function testGetByIdShouldReturnSubscription()
     {
         $donor = Donor::factory()->create();
-        $subscription = Subscription::factory()->create(['donorId' => $donor->id]);
+        $subscription = Subscription::factory()->createWithDonation(['donorId' => $donor->id]);
         $repository = new SubscriptionRepository();
 
         $subscriptionById = $repository->getById($subscription->id);
