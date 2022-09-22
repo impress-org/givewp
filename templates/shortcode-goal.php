@@ -209,7 +209,6 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
         </div>
     <?php endif; ?>
 
-
     <?php if ( ! empty( $show_bar ) ) :
         $style = "width:{$progress_bar_value}%";
 
