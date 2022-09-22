@@ -42,7 +42,7 @@ class Block
     /**
      * Returns Donor Profile block markup
      *
-     * @unreleased Add script for iframe onload event to activate gutenberg edit mode.
+     * @since 2.22.1 Add script for iframe onload event to activate gutenberg edit mode.
      *             Gutenberg block edit mode activates when focus set to block container.
      * @since 2.10.0
      **/

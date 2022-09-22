@@ -50,7 +50,7 @@ class IframeContentView
      *
      * This will be use as parameter for 'the_title' filter.
      *
-     * @unreleased
+     * @since 2.22.1
      * @var int
      */
     protected $postId;
@@ -102,7 +102,7 @@ class IframeContentView
      *
      * @param $postId
      *
-     * @unreleased
+     * @since 2.22.1
      * @return IframeContentView $this
      */
     public function setPostId($postId)
