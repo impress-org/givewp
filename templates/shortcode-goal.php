@@ -3,7 +3,6 @@
  * This template is used to display the goal with [give_goal]
  */
 
-$form_id          = get_the_ID(); // Form ID.
 $form        = new Give_Donate_Form( $form_id );
 
 $goal_option = give_get_meta( $form->ID, '_give_goal_option', true );
