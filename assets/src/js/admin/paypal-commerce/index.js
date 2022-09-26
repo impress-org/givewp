@@ -162,14 +162,14 @@ window.addEventListener( 'DOMContentLoaded', function() {
 					desc: givePayPalCommerce.translations.disconnectPayPalAccount,
 				},
 				successConfirm: () => {
+					fetch( ajaxurl + '?action=give_paypal_commerce_disconnect_account' );
+					
 					connectionSettingContainer.classList.remove( 'give-hidden' );
 					disConnectionSettingContainer.classList.add( 'give-hidden' );
 					countryField.parentElement.parentElement.classList.remove( 'hide-with-position' );
 
 					let billingSettingContainer = document.querySelector('label[for=\'paypal_commerce_collect_billing_details\']');
-					billingSettingContainer.parentElement.parentElement.classList.add('give-hidden');
-
-					fetch( ajaxurl + '?action=give_paypal_commerce_disconnect_account' );
+					billingSettingContainer.parentElement.parentElement.classList.add('give-hidden');					
 				},
 			} ).render();
 
