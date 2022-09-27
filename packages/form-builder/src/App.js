@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 
-import {parse} from '@wordpress/blocks';
 import {ShortcutProvider} from '@wordpress/keyboard-shortcuts';
 import {BlockEditorProvider, BlockInspector} from '@wordpress/block-editor';
 import {Popover, SlotFillProvider} from '@wordpress/components';
@@ -18,6 +17,7 @@ import '@wordpress/block-editor/build-style/style.css';
 
 import './App.scss';
 
+import defaultBlocks from './blocks.json'
 
 function App() {
 
@@ -40,11 +40,7 @@ function App() {
         ...initialFormSettings,
     });
 
-    const [blocks, updateBlocks] = useState(initialBlocks || parse(`
-        <!-- wp:custom-block-editor/donation-amount /-->
-        <!-- wp:custom-block-editor/donor-info /-->
-        <!-- wp:custom-block-editor/payment-details /-->
-    `));
+    const [blocks, updateBlocks] = useState(initialBlocks || defaultBlocks);
 
     const saveCallback = () => {
         return Storage.save({blocks, formSettings})

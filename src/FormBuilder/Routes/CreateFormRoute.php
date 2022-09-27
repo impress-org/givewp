@@ -2,6 +2,11 @@
 
 namespace Give\FormBuilder\Routes;
 
+use Exception;
+use Give\NextGen\DonationForm\Models\DonationForm;
+use Give\NextGen\DonationForm\ValueObjects\DonationFormStatus;
+use Give\NextGen\Framework\Blocks\BlockCollection;
+
 /**
  * Route to create a new form
  */
@@ -11,6 +16,7 @@ class CreateFormRoute
      * @unreleased
      *
      * @return void
+     * @throws Exception
      */
     public function __invoke()
     {
@@ -21,18 +27,21 @@ class CreateFormRoute
                 exit();
             }
             if ('new' === $_GET['donationFormID']) {
-                $newPostID = wp_insert_post([
-                    'post_type' => 'give_forms',
-                    'post_status' => 'publish',
-                    'post_content' => json_encode(null),
+                $blocksJson = file_get_contents(GIVE_NEXT_GEN_DIR . 'packages/form-builder/src/blocks.json');
+
+                $form = DonationForm::create([
+                    'title' => __('GiveWP Donation Form', 'give'),
+                    'status' => DonationFormStatus::PUBLISHED(),
+                    'settings' => [
+                        'enableDonationGoal' => false,
+                        'enableAutoClose' => false,
+                        'registration' => 'none',
+                        'goalFormat' => 'amount-raised',
+                    ],
+                    'blocks' => BlockCollection::fromJson($blocksJson)
                 ]);
 
-                wp_update_post([
-                    'ID' => $newPostID,
-                    'post_title' => "Next Gen Donation Form ID:$newPostID",
-                ]);
-
-                wp_redirect('edit.php?post_type=give_forms&page=campaign-builder&donationFormID=' . $newPostID);
+                wp_redirect('edit.php?post_type=give_forms&page=campaign-builder&donationFormID=' . $form->id);
                 exit();
             }
         }

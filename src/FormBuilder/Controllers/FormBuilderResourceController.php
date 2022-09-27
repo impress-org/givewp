@@ -2,6 +2,10 @@
 
 namespace Give\FormBuilder\Controllers;
 
+use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Framework\FieldsAPI\Form;
+use Give\NextGen\DonationForm\Models\DonationForm;
+use Give\NextGen\Framework\Blocks\BlockCollection;
 use WP_Error;
 use WP_HTTP_Response;
 use WP_REST_Request;
@@ -12,9 +16,6 @@ class FormBuilderResourceController
     /**
      * Get the form builder instance
      *
-     * TODO: replace logic with form model
-     * TODO: handle more validation and errors
-     *
      * @unreleased
      *
      * @param  WP_REST_Request  $request
@@ -24,50 +25,89 @@ class FormBuilderResourceController
     {
         $formId = $request->get_param('id');
 
-        if (!get_post($formId)) {
+        /** @var DonationForm $form */
+        $form = DonationForm::find($formId);
+
+        if (!$form) {
             return rest_ensure_response(new WP_Error(404, 'Form not found.'));
         }
 
-        $formData = get_post($formId)->post_content;
-        $formBuilderSettings = get_post_meta($formId, 'formBuilderSettings', true);
+        if ($requiredFieldsError = $this->validateRequiredFields($form->schema())) {
+            return rest_ensure_response($requiredFieldsError);
+        }
 
         return rest_ensure_response([
-            'blocks' => $formData,
-            'settings' => $formBuilderSettings
+            'blocks' => $form->blocks->toJson(),
+            'settings' => json_encode($form->settings)
         ]);
     }
 
     /**
      * Update the form builder
      *
-     * TODO: replace logic with form model
-     * TODO: handle more validation and errors
-     *
      * @unreleased
      *
      * @return WP_Error|WP_HTTP_Response|WP_REST_Response
+     * @throws Exception
      */
     public function update(WP_REST_Request $request)
     {
         $formId = $request->get_param('id');
         $formBuilderSettings = $request->get_param('settings');
-        $data = $request->get_param('blocks');
+        $rawBlocks = $request->get_param('blocks');
 
-        if (!get_post($formId)) {
-            return rest_ensure_response(new WP_Error(404, 'Form not found.'));
+        /** @var DonationForm $form */
+        $form = DonationForm::find($formId);
+
+        if (!$form) {
+            return rest_ensure_response(new WP_Error(404, __('Form not found.', 'give')));
         }
 
-        $meta = update_post_meta($formId, 'formBuilderSettings', $formBuilderSettings);
+        $blocks = BlockCollection::fromJson($rawBlocks);
 
-        $post = wp_update_post([
-            'ID' => $formId,
-            'post_content' => $data,
-            'post_title' => json_decode($formBuilderSettings, false)->formTitle,
-        ]);
+        $updatedSettings = json_decode($formBuilderSettings, true);
+        $form->settings = array_merge($form->settings ?? [], $updatedSettings);
+        $form->title = $updatedSettings['formTitle'];
+        $form->blocks = $blocks;
+
+        if ($requiredFieldsError = $this->validateRequiredFields($form->schema())) {
+            return rest_ensure_response($requiredFieldsError);
+        }
+
+        $form->save();
 
         return rest_ensure_response([
-            'settings' => $meta,
-            'form' => $post,
+            'settings' => json_encode($form->settings),
+            'form' => $form->id,
         ]);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return string[]
+     */
+    protected function getRequiredFieldNames(): array
+    {
+        return [
+            'amount',
+            'name',
+            'email',
+            'gatewayId',
+        ];
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return WP_Error|void
+     */
+    protected function validateRequiredFields(Form $schema)
+    {
+        foreach ($this->getRequiredFieldNames() as $requiredFieldName) {
+            if (!$schema->getNodeByName($requiredFieldName)) {
+                return new WP_Error(404, __("Required field '$requiredFieldName' not found.", 'give'));
+            }
+        }
     }
 }

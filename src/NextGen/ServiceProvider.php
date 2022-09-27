@@ -5,6 +5,7 @@ namespace Give\NextGen;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\NextGen\DonationForm\FormTemplates\ClassicFormTemplate\ClassicFormTemplate;
+use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\Framework\FormTemplates\Registrars\FormTemplateRegistrar;
 use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
@@ -20,7 +21,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register()
     {
-        //
+        give()->singleton('forms', DonationFormRepository::class);
     }
 
     /**

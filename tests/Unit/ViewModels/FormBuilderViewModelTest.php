@@ -2,26 +2,28 @@
 
 namespace TestsNextGen\Unit\VieModels;
 
+use Exception;
 use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
+use Give\NextGen\DonationForm\Models\DonationForm;
 use GiveTests\TestCase;
 use GiveTests\TestTraits\RefreshDatabase;
-use TestsNextGen\TestTraits\HasMockForm;
 
 class FormBuilderViewModelTest extends TestCase
 {
     use RefreshDatabase;
-    use HasMockForm;
 
     /**
-     * @unreleased 
+     * @unreleased
      *
      * @return void
+     * @throws Exception
      */
     public function testShouldReturnStorageData()
     {
         $viewModel = new FormBuilderViewModel();
-        $mockForm = $this->createMockForm();
+        /** @var DonationForm $mockForm */
+        $mockForm = DonationForm::factory()->create();
         $formId = $mockForm->id;
 
         $this->assertSame(

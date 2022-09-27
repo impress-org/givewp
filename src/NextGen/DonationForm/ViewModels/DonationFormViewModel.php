@@ -3,6 +3,7 @@
 namespace Give\NextGen\DonationForm\ViewModels;
 
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
+use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 
 /**
@@ -36,11 +37,13 @@ class DonationFormViewModel
         $donationFormRepository = give(DonationFormRepository::class);
 
         $donateUrl = (new GenerateDonateRouteUrl())();
-        $donationForm = $donationFormRepository->createFieldsApiForm($this->formId);
+
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::find($this->formId);
         $formDataGateways = $donationFormRepository->getFormDataGateways($this->formId);
 
         return [
-            'form' => $donationForm->jsonSerialize(),
+            'form' => $donationForm->schema()->jsonSerialize(),
             'donateUrl' => $donateUrl,
             'successUrl' => give_get_success_page_uri(),
             'gatewaySettings' => $formDataGateways
