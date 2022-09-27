@@ -1,4 +1,7 @@
 <?php
+
+use Give\Log\Log;
+
 /**
  * This template is used to display the goal with [give_goal]
  */
@@ -8,7 +11,7 @@
  */
 
 if ( empty($form_id) ) {
-    Log::error(...);
+    Log::error('Error: Form ID can not be empty.');
     return false;
 }
 
