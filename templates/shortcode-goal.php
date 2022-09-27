@@ -3,7 +3,16 @@
  * This template is used to display the goal with [give_goal]
  */
 
-$form        = new Give_Donate_Form( $form_id );
+/**
+ * @var int $form_id form id passed from the give_show_goal_progress() context
+ */
+
+if ( empty($form_id) ) {
+    Log::error(...);
+    return false;
+}
+
+$form = new Give_Donate_Form( $form_id );
 
 $goal_option = give_get_meta( $form->ID, '_give_goal_option', true );
 // Sanity check - ensure form has pass all condition to show goal.
