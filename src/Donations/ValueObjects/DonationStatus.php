@@ -26,7 +26,7 @@ use Give\Framework\Support\ValueObjects\Enum;
  * @method bool isPreapproval()
  * @method bool isProcessing()
  * @method bool isRevoked()
- * @method bool isRenewal() @deprecated
+ * @method bool isRenewal() @deprecated Do not use this. Instead, set the donation type to "renewal" and use COMPLETE status.
  */
 class DonationStatus extends Enum
 {
