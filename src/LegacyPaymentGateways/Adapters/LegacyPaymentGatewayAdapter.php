@@ -3,6 +3,7 @@
 namespace Give\LegacyPaymentGateways\Adapters;
 
 use Exception;
+use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Donors\Models\Donor;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
@@ -48,8 +49,6 @@ class LegacyPaymentGatewayAdapter
         $formData = FormData::fromRequest($legacyDonationData);
 
         $this->validateGatewayNonce($formData->gatewayNonce);
-        $isRecurring = give_recurring_is_donation_recurring($legacyDonationData);
-
         $donor = $this->getOrCreateDonor(
             $formData->donorInfo->wpUserId,
             $formData->donorInfo->email,
@@ -58,10 +57,8 @@ class LegacyPaymentGatewayAdapter
         );
 
         $donation = $formData->toDonation($donor->id);
-        $donation->type = $isRecurring ? DonationType::SUBSCRIPTION() : DonationType::SINGLE();
-        $donation->save();
 
-        if ($isRecurring) {
+        if (give_recurring_is_donation_recurring($legacyDonationData)) {
             $subscriptionData = SubscriptionData::fromRequest($legacyDonationData);
 
             $subscription = Subscription::create([
@@ -74,12 +71,20 @@ class LegacyPaymentGatewayAdapter
                 'donationFormId' => $formData->formId,
             ]);
 
+            $donation->type = DonationType::SUBSCRIPTION();
+            $donation->save();
+
             give()->subscriptions->updateLegacyParentPaymentId($subscription->id, $donation->id);
 
+            $this->setSession($donation->id);
             $registeredGateway->handleCreateSubscription($donation, $subscription);
-        }
+        } else {
+            $donation->type = DonationType::SINGLE();
+            $donation->save();
 
-        $registeredGateway->handleCreatePayment($donation);
+            $this->setSession($donation->id);
+            $registeredGateway->handleCreatePayment($donation);
+        }
     }
 
     /**
