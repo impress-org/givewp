@@ -259,8 +259,14 @@ class SubscriptionRepository
     }
 
     /**
-     * @param int $subscriptionId
-     * @param int $donationId
+     * Up to this point the donation is created first and then the subscription, and the donation is stored as the
+     * parent_payment_id of the subscription. This is backwards and should not be the case. But legacy code depends on
+     * this value, so we still need to store it for now.
+     *
+     * This should only be used when creating a new Subscription with its corresponding Donation. Do not add this value
+     * to the Subscription model as it should not be reference moving forward.
+     *
+     * @unreleased
      *
      * @return void
      */
