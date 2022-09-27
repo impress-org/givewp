@@ -13,8 +13,8 @@ use Give\Log\Log;
 if ( empty($form_id) ) {
     Log::error('Failed to render [give_goal] shortcode.',
         ['form_id' => $form_id,
-         'file'    => '__includes/forms/template.php__',
-         'line'    => '1947'
+         'file'    => '__templates/shortcode-goal.php__',
+         'line'    => '10'
         ]);
     return false;
 }
