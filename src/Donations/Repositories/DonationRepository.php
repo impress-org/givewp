@@ -186,7 +186,7 @@ class DonationRepository
                     'post_modified_gmt' => get_gmt_from_date($dateCreatedFormatted),
                     'post_status' => $this->getPersistedDonationStatus($donation)->getValue(),
                     'post_type' => 'give_payment',
-                    'post_parent' => $donation->type->isRenewal() ? give()->subscriptions->getInitialDonationId($donation->subscriptionId) : 0,
+                    'post_parent' => $this->deriveLegacyDonationParentId($donation),
                 ]);
 
             $donationId = DB::last_insert_id();
@@ -257,7 +257,7 @@ class DonationRepository
                     'post_modified_gmt' => get_gmt_from_date($date),
                     'post_status' => $this->getPersistedDonationStatus($donation)->getValue(),
                     'post_type' => 'give_payment',
-                    'post_parent' => $donation->type->isRenewal() ? give()->subscriptions->getInitialDonationId($donation->subscriptionId) : 0,
+                    'post_parent' => $this->deriveLegacyDonationParentId($donation),
                 ]);
 
             foreach ($this->getCoreDonationMetaForDatabase($donation) as $metaKey => $metaValue) {
@@ -446,6 +446,17 @@ class DonationRepository
         $mode = give_is_test_mode() ? 'test' : 'live';
 
         return new DonationMode($mode);
+    }
+
+    /**
+     * We're moving away from using the parent_id column for donations, but we still need to support it for now as
+     * legacy code still relies on it. It is only stored and should never be used in the model.
+     *
+     * @unreleased
+     */
+    private function deriveLegacyDonationParentId(Donation $donation): int
+    {
+        return $donation->type->isRenewal() ? give()->subscriptions->getInitialDonationId($donation->subscriptionId) : 0;
     }
 
     /**
