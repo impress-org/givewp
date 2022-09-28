@@ -72,6 +72,7 @@ class LegacyPaymentGatewayAdapter
             ]);
 
             $donation->type = DonationType::SUBSCRIPTION();
+            $donation->subscriptionId = $subscription->id;
             $donation->save();
 
             give()->subscriptions->updateLegacyParentPaymentId($subscription->id, $donation->id);
