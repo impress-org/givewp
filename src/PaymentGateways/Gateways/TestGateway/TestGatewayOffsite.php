@@ -7,11 +7,16 @@ use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Http\Response\Types\RedirectResponse;
+use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
+
+use Give\Subscriptions\Models\Subscription;
+
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 use function Give\Framework\Http\Response\response;
 
@@ -96,6 +101,23 @@ class TestGatewayOffsite extends PaymentGateway
         return new RedirectOffsite($redirectUrl);
     }
 
+    public function createSubscription(
+        Donation $donation,
+        Subscription $subscription,
+        $gatewayData = null
+    ): GatewayCommand {
+        $redirectUrl = $this->generateSecureGatewayRouteUrl(
+            'securelyReturnFromOffsiteRedirect',
+            $donation->id,
+            [
+                'give-donation-id' => $donation->id,
+                'give-subscription-id' => $subscription->id,
+            ]
+        );
+
+        return new RedirectOffsite($redirectUrl);
+    }
+
     /**
      * An example of using a routeMethod for extending the Gateway API to handle a redirect.
      *
@@ -113,6 +135,11 @@ class TestGatewayOffsite extends PaymentGateway
         $donation = Donation::find($queryParams['give-donation-id']);
 
         $this->updateDonation($donation);
+
+        if ( $donation->type->isSubscription() ) {
+            $subscription = Subscription::find($queryParams['give-subscription-id']);
+            $this->updateSubscription($subscription);
+        }
 
         return response()->redirectTo(give_get_success_page_uri());
     }
@@ -153,6 +180,18 @@ class TestGatewayOffsite extends PaymentGateway
             'donationId' => $donation->id,
             'content' => 'Donation Completed from Test Gateway Offsite.'
         ]);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
+    private function updateSubscription(Subscription $subscription)
+    {
+        $subscription->status = SubscriptionStatus::ACTIVE();
+        $subscription->transactionId = "test-gateway-transaction-id";
+        $subscription->save();
     }
 
     /**
