@@ -1,7 +1,7 @@
-( function( globalSope ) {
-	'use strict';
+(function (globalSope) {
+    'use strict';
 
-	/**
+    /**
      * Including this file adds the `addDynamicListener` to the ELement prototype.
      *
      * The dynamic listener gets an extra `selector` parameter that only calls the callback
@@ -13,43 +13,28 @@
      * Browser support: IE9+
      */
 
-	// Polyfil Element.matches
-	// https://developer.mozilla.org/en/docs/Web/API/Element/matches#Polyfill
-	if ( ! Element.prototype.matches ) {
-		Element.prototype.matches =
-            Element.prototype.matchesSelector ||
-            Element.prototype.mozMatchesSelector ||
-            Element.prototype.msMatchesSelector ||
-            Element.prototype.oMatchesSelector ||
-            Element.prototype.webkitMatchesSelector ||
-            function( s ) {
-            	let matches = ( this.document || this.ownerDocument ).querySelectorAll( s ),
-            		i = matches.length;
-            	while ( --i >= 0 && matches.item( i ) !== this ) {}
-            	return i > -1;
-            };
-	}
-
-	/**
+    /**
      * Returns a modified callback function that calls the
      * initial callback function only if the target element matches the given selector
+     *
+     * @unreleased check to see if the target element is a child of the container element
      *
      * @param {string} selector
      * @param {function} callback
      */
-	function getConditionalCallback( selector, callback ) {
-		return function( e ) {
-			if ( ! e.target ) {
-				return;
-			}
-			if ( ! e.target.matches( selector ) ) {
-				return;
-			}
-			callback.apply( this, arguments );
-		};
-	}
+    function getConditionalCallback(selector, callback) {
+        return function (e) {
+            if (!e.target) {
+                return;
+            }
+            if (!e.target.matches(selector) && !e.target.closest(selector)) {
+                return;
+            }
+            callback.apply(this, arguments);
+        };
+    }
 
-	/**
+    /**
      *
      *
      * @param {Element} rootElement The root element to add the linster too.
@@ -60,7 +45,7 @@
      *                                 Set to `true` to use capture.
      *                                 Usually used as an object to add the listener as `passive`
      */
-	globalSope.addDynamicEventListener = function( rootElement, eventType, selector, callback, options ) {
-		rootElement.addEventListener( eventType, getConditionalCallback( selector, callback ), options );
-	};
-}( window ) );
+    globalSope.addDynamicEventListener = function (rootElement, eventType, selector, callback, options) {
+        rootElement.addEventListener(eventType, getConditionalCallback(selector, callback), options);
+    };
+})(window);
