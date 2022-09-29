@@ -7,12 +7,12 @@ use Give\Helpers\Form\Utils;
 /**
  * This class handle donation form billing field markup for PayPal Standard.
  *
- * @unlreased
+ * @since 2.22.2
  */
 class PayPalStandardBillingFields
 {
     /**
-     * @unlreased
+     * @since 2.22.2
      *
      * @param int $formId
      *

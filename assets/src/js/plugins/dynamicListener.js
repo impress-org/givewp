@@ -17,7 +17,7 @@
      * Returns a modified callback function that calls the
      * initial callback function only if the target element matches the given selector
      *
-     * @unreleased check to see if the target element is a child of the container element
+     * @since 2.22.2 check to see if the target element is a child of the container element
      *
      * @param {string} selector
      * @param {function} callback
