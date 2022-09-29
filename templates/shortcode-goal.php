@@ -1,10 +1,25 @@
 <?php
+
+use Give\Log\Log;
+
 /**
  * This template is used to display the goal with [give_goal]
  */
 
-$form_id          = get_the_ID(); // Form ID.
-$form        = new Give_Donate_Form( $form_id );
+/**
+ * @var int $form_id form id passed from the give_show_goal_progress() context
+ */
+
+if ( empty($form_id) ) {
+    Log::error('Failed to render [give_goal] shortcode.',
+        ['form_id' => $form_id,
+         'file'    => '__templates/shortcode-goal.php__',
+         'line'    => '10'
+        ]);
+    return false;
+}
+
+$form = new Give_Donate_Form( $form_id );
 
 $goal_option = give_get_meta( $form->ID, '_give_goal_option', true );
 // Sanity check - ensure form has pass all condition to show goal.
@@ -209,7 +224,6 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
             ?>
         </div>
     <?php endif; ?>
-
 
     <?php if ( ! empty( $show_bar ) ) :
         $style = "width:{$progress_bar_value}%";
