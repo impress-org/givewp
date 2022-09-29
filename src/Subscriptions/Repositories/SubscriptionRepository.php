@@ -28,7 +28,6 @@ class SubscriptionRepository
         'amount',
         'status',
         'donationFormId',
-        'renewsAt',
     ];
 
     /**
@@ -136,6 +135,10 @@ class SubscriptionRepository
     {
         $this->validateSubscription($subscription);
 
+        if ( $subscription->renewsAt === null ) {
+            $subscription->bumpRenewalDate();
+        }
+
         Hooks::doAction('givewp_subscription_creating', $subscription);
 
         $dateCreated = Temporal::withoutMicroseconds($subscription->createdAt ?: Temporal::getCurrentDateTime());
@@ -187,6 +190,10 @@ class SubscriptionRepository
     public function update(Subscription $subscription)
     {
         $this->validateSubscription($subscription);
+
+        if ( $subscription->renewsAt === null ) {
+            throw new InvalidArgumentException('renewsAt is required.');
+        }
 
         Hooks::doAction('givewp_subscription_updating', $subscription);
 

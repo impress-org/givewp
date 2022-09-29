@@ -164,8 +164,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     public static function create(array $attributes)
     {
         $subscription = new static($attributes);
-
-        give()->subscriptions->insert($subscription);
+        $subscription->save();
 
         return $subscription;
     }
