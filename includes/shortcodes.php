@@ -798,7 +798,7 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
  * @since 2.20.0 $donate_button_background_color Default #66bb6a
  * @since 2.20.0 $donate_button_text_color Default #fff
  * @since 2.20.0 $show_bar Default false
- * @unreleased remove $show_bar attribute in favor of show_goal
+ * @since 2.22.2 remove $show_bar attribute in favor of show_goal
  *
  * @return string|bool The markup of the form grid or false.
  */

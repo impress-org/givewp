@@ -8,7 +8,7 @@ use Give\Framework\PaymentGateways\DonationSummary;
 /**
  * This class create PayPal Standard payment gateway one time payment url on basis of donor donation query.
  *
- * @unlreased
+ * @since 2.22.2
  */
 class CreatePayPalStandardPaymentURL
 {
