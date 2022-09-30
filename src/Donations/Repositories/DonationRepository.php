@@ -244,7 +244,8 @@ class DonationRepository
 
         Hooks::doAction('givewp_donation_updating', $donation);
 
-        $date = Temporal::getCurrentFormattedDateForDatabase();
+        $now = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
+        $nowFormatted = Temporal::getFormattedDateTime($now);
 
         DB::query('START TRANSACTION');
 
@@ -252,8 +253,8 @@ class DonationRepository
             DB::table('posts')
                 ->where('ID', $donation->id)
                 ->update([
-                    'post_modified' => $date,
-                    'post_modified_gmt' => get_gmt_from_date($date),
+                    'post_modified' => $nowFormatted,
+                    'post_modified_gmt' => get_gmt_from_date($nowFormatted),
                     'post_status' => $this->getPersistedDonationStatus($donation)->getValue(),
                     'post_type' => 'give_payment',
                     'post_parent' => $this->deriveLegacyDonationParentId($donation),
@@ -274,6 +275,8 @@ class DonationRepository
 
             throw new $exception('Failed updating a donation');
         }
+
+        $donation->updatedAt = $now;
 
         DB::query('COMMIT');
 
