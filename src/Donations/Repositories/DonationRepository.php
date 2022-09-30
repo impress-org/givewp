@@ -174,6 +174,8 @@ class DonationRepository
 
         $dateCreated = Temporal::withoutMicroseconds($donation->createdAt ?: Temporal::getCurrentDateTime());
         $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
+        $dateUpdated = $donation->updatedAt ?? $dateCreated;
+        $dateUpdatedFormatted = Temporal::getFormattedDateTime($dateUpdated);
 
         DB::query('START TRANSACTION');
 
@@ -182,8 +184,8 @@ class DonationRepository
                 ->insert([
                     'post_date' => $dateCreatedFormatted,
                     'post_date_gmt' => get_gmt_from_date($dateCreatedFormatted),
-                    'post_modified' => $dateCreatedFormatted,
-                    'post_modified_gmt' => get_gmt_from_date($dateCreatedFormatted),
+                    'post_modified' => $dateUpdatedFormatted,
+                    'post_modified_gmt' => get_gmt_from_date($dateUpdatedFormatted),
                     'post_status' => $this->getPersistedDonationStatus($donation)->getValue(),
                     'post_type' => 'give_payment',
                     'post_parent' => $this->deriveLegacyDonationParentId($donation),
@@ -214,10 +216,7 @@ class DonationRepository
         $donation->id = $donationId;
 
         $donation->createdAt = $dateCreated;
-
-        if (!isset($donation->updatedAt)) {
-            $donation->updatedAt = $donation->createdAt;
-        }
+        $donation->updatedAt = $dateUpdated;
 
         if (!isset($donation->formTitle)) {
             $donation->formTitle = $this->getFormTitle($donation->formId);
