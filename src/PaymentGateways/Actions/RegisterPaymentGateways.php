@@ -38,8 +38,8 @@ class RegisterPaymentGateways
      */
     public $gateways = [
         // When complete, the Test Gateway will eventually replace The legacy Manual Gateway.
-        TestGateway::class,
-        TestGatewayOffsite::class,
+//        TestGateway::class,
+//        TestGatewayOffsite::class,
         PayPalStandard::class,
         PayPalCommerce::class,
     ];
