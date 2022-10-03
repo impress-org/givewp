@@ -12,6 +12,7 @@ const email = {
             multiple: false,
         },
         attributes: {
+            ...settings.attributes,
             lock: {remove: true},
             label: {
                 default: __('Email Address'),

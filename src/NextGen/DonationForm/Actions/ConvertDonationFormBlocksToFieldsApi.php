@@ -109,7 +109,8 @@ class ConvertDonationFormBlocksToFieldsApi
                 return Text::make('company');
 
             default:
-                return Text::make(md5($block->name)); // @todo Replace hashed name with programmatic name.
+                $fieldName = $block->hasAttribute('fieldName') ? $block->getAttribute('fieldName') : $block->clientId;
+                return Text::make($fieldName);
         }
     }
 

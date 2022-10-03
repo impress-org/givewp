@@ -20,9 +20,5 @@ const fieldBlocks = [
     amount,
 ];
 
-const fieldBlockNames = fieldBlocks.map(field => field.name);
 
 export default fieldBlocks;
-export {
-    fieldBlockNames,
-};
