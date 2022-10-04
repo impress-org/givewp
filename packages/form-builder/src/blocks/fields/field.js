@@ -4,12 +4,12 @@ import defaultSettings from './settings';
 import DefaultFieldSettings from './settings/DefaultFieldSettings';
 import {useFieldNameValidator} from '../../hooks';
 import {InspectorAdvancedControls} from '@wordpress/block-editor';
-import {ExternalLink, PanelRow, TextControl} from '@wordpress/components';
+import {ExternalLink, PanelRow, TextControl, ToggleControl} from '@wordpress/components';
 import {slugify} from '../../common';
 import {useCallback} from '@wordpress/element';
 
 function FieldSettings({attributes, setAttributes}) {
-    const {fieldName, label} = attributes;
+    const {fieldName, label, storeAsDonorMeta} = attributes;
     const validateFieldName = useFieldNameValidator();
 
     const updateFieldName = useCallback(
@@ -67,6 +67,14 @@ function FieldSettings({attributes, setAttributes}) {
                         }}
                     />
                 </PanelRow>
+                <PanelRow>
+                    <ToggleControl
+                        label={__('Store as Donor Meta', 'give')}
+                        checked={storeAsDonorMeta}
+                        onChange={() => setAttributes({storeAsDonorMeta: !storeAsDonorMeta})}
+                        help={__('By default, fields are stored as Donation Meta', 'give')}
+                    />
+                </PanelRow>
             </InspectorAdvancedControls>
         </>
     );
@@ -77,6 +85,14 @@ const field = {
     category: 'custom',
     settings: {
         ...defaultSettings,
+        attributes: {
+            ...defaultSettings.attributes,
+            storeAsDonorMeta: {
+                type: 'boolean',
+                source: 'attribute',
+                default: false,
+            },
+        },
         title: __('Text', 'custom-block-editor'),
         icon: () => (
             <Icon

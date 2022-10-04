@@ -109,8 +109,11 @@ class ConvertDonationFormBlocksToFieldsApi
                 return Text::make('company');
 
             default:
-                $fieldName = $block->hasAttribute('fieldName') ? $block->getAttribute('fieldName') : $block->clientId;
-                return Text::make($fieldName);
+                return Text::make(
+                    $block->hasAttribute('fieldName') ? $block->getAttribute('fieldName') : $block->clientId
+                )->storeAsDonorMeta(
+                    $block->hasAttribute('storeAsDonorMeta') ? $block->getAttribute('storeAsDonorMeta') : false
+                );
         }
     }
 
