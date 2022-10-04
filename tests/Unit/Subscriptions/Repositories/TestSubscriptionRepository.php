@@ -34,7 +34,7 @@ class TestSubscriptionRepository extends TestCase
     public function testGetByIdShouldReturnSubscription()
     {
         $donor = Donor::factory()->create();
-        $subscription = Subscription::factory()->create(['donorId' => $donor->id]);
+        $subscription = Subscription::factory()->createWithDonation(['donorId' => $donor->id]);
         $repository = new SubscriptionRepository();
 
         $subscriptionById = $repository->getById($subscription->id);
@@ -66,6 +66,10 @@ class TestSubscriptionRepository extends TestCase
             Temporal::toDateTime($subscriptionQuery->created)->format('Y-m-d H:i:s'),
             $subscriptionInstance->createdAt->format('Y-m-d H:i:s')
         );
+        $this->assertEquals(
+            Temporal::toDateTime($subscriptionQuery->expiration)->format('Y-m-d H:i:s'),
+            $subscriptionInstance->renewsAt->format('Y-m-d H:i:s')
+        );
         $this->assertEquals($subscriptionQuery->customer_id, $subscriptionInstance->donorId);
         $this->assertEquals($subscriptionQuery->profile_id, $subscriptionInstance->gatewaySubscriptionId);
         $this->assertEquals($subscriptionQuery->product_id, $subscriptionInstance->donationFormId);
@@ -73,7 +77,10 @@ class TestSubscriptionRepository extends TestCase
         $this->assertEquals($subscriptionQuery->frequency, $subscriptionInstance->frequency);
         $this->assertEquals($subscriptionQuery->initial_amount, $subscriptionInstance->amount->formatToDecimal());
         $this->assertEquals($subscriptionQuery->recurring_amount, $subscriptionInstance->amount->formatToDecimal());
-        $this->assertEquals($subscriptionQuery->recurring_fee_amount, $subscriptionInstance->feeAmountRecovered->formatToDecimal());
+        $this->assertEquals(
+            $subscriptionQuery->recurring_fee_amount,
+            $subscriptionInstance->feeAmountRecovered->formatToDecimal()
+        );
         $this->assertEquals($subscriptionQuery->bill_times, $subscriptionInstance->installments);
         $this->assertEquals($subscriptionQuery->transaction_id, $subscriptionInstance->transactionId);
         $this->assertEquals($subscriptionQuery->status, $subscriptionInstance->status->getValue());
@@ -96,7 +103,7 @@ class TestSubscriptionRepository extends TestCase
             'donorId' => 1,
             'transactionId' => 'transaction-id',
             'status' => SubscriptionStatus::PENDING(),
-            'donationFormId' => 1
+            'donationFormId' => 1,
         ]);
 
         $repository = new SubscriptionRepository();
@@ -121,7 +128,7 @@ class TestSubscriptionRepository extends TestCase
             'donorId' => 1,
             'transactionId' => 'transaction-id',
             'status' => SubscriptionStatus::PENDING(),
-            'donationFormId' => 1
+            'donationFormId' => 1,
         ]);
 
         $repository = new SubscriptionRepository();
@@ -154,6 +161,20 @@ class TestSubscriptionRepository extends TestCase
 
         $this->assertEquals(20, $subscriptionQuery->recurring_amount);
         $this->assertSame(SubscriptionPeriod::YEAR, $subscriptionQuery->period);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testShouldRetrieveInitialDonationIdForSubscription()
+    {
+        $donor = Donor::factory()->create();
+        $subscription = Subscription::factory()->createWithDonation(['donorId' => $donor->id]);
+        $repository = new SubscriptionRepository();
+
+        $donationId = $repository->getInitialDonationId($subscription->id);
+
+        $this->assertSame($subscription->donations[0]->id, $donationId);
     }
 
     /**

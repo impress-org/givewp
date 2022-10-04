@@ -151,11 +151,8 @@ class Money
      * @since 2.20.0
      *
      * @param string|float|int $amount
-     * @param string $currency
-     *
-     * @return Money
      */
-    public static function fromDecimal($amount, $currency)
+    public static function fromDecimal($amount, string $currency): Money
     {
         return self::fromMoney(Currency::parseFromDecimal($amount, $currency));
     }

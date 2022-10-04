@@ -13,6 +13,7 @@ use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\Subscriptions\Actions\GenerateNextRenewalForSubscription;
 use Give\Subscriptions\DataTransferObjects\SubscriptionQueryData;
 use Give\Subscriptions\Factories\SubscriptionFactory;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
@@ -21,15 +22,17 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 /**
  * Class Subscription
  *
+ * @unreleased added the renewsAt property
  * @since 2.19.6
  *
  * @property int $id
  * @property int $donationFormId
  * @property DateTime $createdAt
+ * @property DateTime $renewsAt The date the subscription will renew next
  * @property int $donorId
  * @property SubscriptionPeriod $period
  * @property int $frequency
- * @property int $installments
+ * @property int $installments The total number of installments for the subscription; discontinues after this number of installments
  * @property string $transactionId
  * @property Money $amount
  * @property Money $feeAmountRecovered
@@ -48,6 +51,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
         'id' => 'int',
         'donationFormId' => 'int',
         'createdAt' => DateTime::class,
+        'renewsAt' => DateTime::class,
         'donorId' => 'int',
         'period' => SubscriptionPeriod::class,
         'frequency' => 'int',
@@ -128,6 +132,30 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
+     * Bumps the subscription's renewsAt date to the next renewal date.
+     *
+     * @return void
+     */
+    public function bumpRenewalDate()
+    {
+        $this->renewsAt = give(GenerateNextRenewalForSubscription::class)(
+            $this->period,
+            $this->frequency,
+            $this->renewsAt
+        );
+    }
+
+    /**
+     * Returns the donation that began the subscription.
+     *
+     * @unreleased
+     */
+    public function initialDonation(): Donation
+    {
+        return Donation::find(give()->subscriptions->getInitialDonationId($this->id));
+    }
+
+    /**
      * @since 2.20.0 return mutated model instance
      * @since 2.19.6
      *
@@ -136,8 +164,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     public static function create(array $attributes)
     {
         $subscription = new static($attributes);
-
-        give()->subscriptions->insert($subscription);
+        $subscription->save();
 
         return $subscription;
     }
@@ -177,7 +204,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      */
     public function cancel(bool $force = false)
     {
-        if (!$force && $this->status->isCanceled()) {
+        if (!$force && $this->status->isCancelled()) {
             return;
         }
 
@@ -202,25 +229,6 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     public static function fromQueryBuilderObject($object): Subscription
     {
         return SubscriptionQueryData::fromObject($object)->toSubscription();
-    }
-
-    /**
-     * Expiration / End Date / Renewal
-     *
-     * @since 2.19.6
-     */
-    public function expiration(): string
-    {
-        $frequency = $this->frequency;
-        $period = $this->period;
-
-        // Calculate the quarter as times 3 months
-        if ($period->equals(SubscriptionPeriod::QUARTER())) {
-            $frequency *= 3;
-            $period = SubscriptionPeriod::MONTH();
-        }
-
-        return date('Y-m-d H:i:s', strtotime('+ ' . $frequency . $period->getValue() . ' 23:59:59'));
     }
 
     /**

@@ -6,6 +6,7 @@ use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donations\ValueObjects\DonationType;
 use Give\Donors\Models\Donor;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
@@ -30,6 +31,7 @@ class TestDonation extends TestCase
 
         $donation = Donation::create([
             'status' => DonationStatus::PENDING(),
+            'type' => DonationType::SINGLE(),
             'gatewayId' => TestGateway::id(),
             'amount' => new Money(5000, 'USD'),
             'donorId' => $donor->id,
@@ -72,10 +74,9 @@ class TestDonation extends TestCase
         $donor = Donor::factory()->create();
 
         /** @var Subscription $subscription */
-        $subscription = Subscription::factory()->create(['donorId' => $donor->id]);
+        $subscription = Subscription::factory()->createWithDonation(['donorId' => $donor->id]);
 
-        /** @var Donation $donation */
-        $donation = Donation::factory()->create(['donorId' => $donor->id, 'subscriptionId' => $subscription->id]);
+        $donation = $subscription->donations[0];
 
         $this->assertEquals($donation->subscription->id, $subscription->id);
     }
