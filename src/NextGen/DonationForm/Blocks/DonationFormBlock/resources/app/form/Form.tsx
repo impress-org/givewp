@@ -4,13 +4,15 @@ import Joi from 'joi';
 
 import getFieldErrorMessages from '../utilities/getFieldErrorMessages';
 import getWindowData from '../utilities/getWindowData';
-import DonationReceipt from './DonationReceipt';
 import {useGiveDonationFormStore} from '../store';
 import type {Gateway, Section} from '@givewp/forms/types';
 import postData from '../utilities/postData';
 import {getFormTemplate, getSectionTemplate} from '../templates';
 import {useCallback} from 'react';
 import SectionNode from '../fields/SectionNode';
+import generateRequestErrors from '../utilities/generateRequestErrors';
+import FormRequestError from '../errors/FormRequestError';
+import DonationReceipt from './DonationReceipt';
 
 window.givewp.form = {
     useFormContext,
@@ -42,25 +44,27 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
         if (gateway.beforeCreatePayment) {
             beforeCreatePaymentGatewayResponse = await gateway.beforeCreatePayment(values);
         }
-    } catch (error) {
-        return setError('FORM_ERROR', {message: error.message});
-    }
 
-    const request = await postData(donateUrl, {
-        ...values,
-        gatewayData: beforeCreatePaymentGatewayResponse,
-    });
+        const {response} = await postData(donateUrl, {
+            ...values,
+            gatewayData: beforeCreatePaymentGatewayResponse,
+        });
 
-    if (!request.response.ok) {
-        return setError('FORM_ERROR', {message: 'Something went wrong, please try again or contact support.'});
-    }
+        if (response.data?.errors) {
+            throw new FormRequestError(response.data.errors.errors);
+        }
 
-    try {
         if (gateway.afterCreatePayment) {
-            await gateway.afterCreatePayment(request.data);
+            await gateway.afterCreatePayment(response);
         }
     } catch (error) {
-        return setError('FORM_ERROR', {message: error.message});
+        if (error instanceof FormRequestError) {
+            return generateRequestErrors(values, error.errors, setError);
+        }
+
+        return setError('FORM_ERROR', {
+            message: error?.message ?? 'Something went wrong, please try again or contact support.',
+        });
     }
 };
 

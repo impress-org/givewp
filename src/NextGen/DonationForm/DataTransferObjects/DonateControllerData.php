@@ -5,11 +5,9 @@ namespace Give\NextGen\DonationForm\DataTransferObjects;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\NextGen\DonationForm\Models\DonationForm;
 
-/**
- * @unreleased
- */
-class DonateFormData
+class DonateControllerData
 {
     /**
      * @var float
@@ -57,37 +55,12 @@ class DonateFormData
     public $honorific;
 
     /**
-     * Convert data from request into DTO
-     *
-     * @unreleased
-     *
-     * @param  array  $request
-     * @return DonateFormData
-     */
-    public static function fromRequest(array $request): DonateFormData
-    {
-        $self = new static();
-
-        $self->gatewayId = $request['gatewayId'];
-        $self->amount = $request['amount'];
-        $self->currency = $request['currency'];
-        $self->firstName = $request['firstName'];
-        $self->lastName = $request['lastName'];
-        $self->email = $request['email'];
-        $self->wpUserId = get_current_user_id();
-        $self->formId = (int)$request['formId'];
-        $self->formTitle = get_the_title($request['formId']);
-        $self->company = !empty($request['company']) ? $request['company'] : null;
-        $self->honorific = !empty($request['honorific']) ? $request['honorific'] : null;
-
-        return $self;
-    }
-
-    /**
      * @unreleased
      */
     public function toDonation($donorId): Donation
     {
+        $form = $this->getDonationForm();
+
         return new Donation([
             'status' => DonationStatus::PENDING(),
             'gatewayId' => $this->gatewayId,
@@ -97,8 +70,48 @@ class DonateFormData
             'lastName' => $this->lastName,
             'email' => $this->email,
             'formId' => $this->formId,
-            'formTitle' => $this->formTitle,
+            'formTitle' => $form->title,
             'company' => $this->company
         ]);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getDonationForm(): DonationForm
+    {
+        return DonationForm::find($this->formId);
+    }
+
+    /**
+     * This is a hard-coded way of filtering through our dynamic properties
+     * and only returning custom fields.
+     *
+     * TODO: figure out a less static way of doing this
+     *
+     * @unreleased
+     */
+    public function getCustomFields(): array
+    {
+        $properties = get_object_vars($this);
+
+        return array_filter($properties, static function ($param) {
+            return !in_array(
+                $param,
+                [
+                    'amount',
+                    'gatewayId',
+                    'currency',
+                    'firstName',
+                    'lastName',
+                    'email',
+                    'wpUserId',
+                    'formId',
+                    'formTitle',
+                    'company',
+                    'honorific',
+                ]
+            );
+        }, ARRAY_FILTER_USE_KEY);
     }
 }

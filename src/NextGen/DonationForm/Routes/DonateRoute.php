@@ -10,8 +10,9 @@ use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Log\Log;
 use Give\NextGen\DonationForm\Controllers\DonateController;
-use Give\NextGen\DonationForm\DataTransferObjects\DonateFormData;
+use Give\NextGen\DonationForm\DataTransferObjects\DonateFormRouteData;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateRouteData;
+use Give\NextGen\DonationForm\Exceptions\DonationFormFieldErrorsException;
 
 /**
  * @unreleased
@@ -47,7 +48,6 @@ class DonateRoute
      * @return void
      *
      * @throws PaymentGatewayException
-     *
      */
     public function __invoke()
     {
@@ -63,7 +63,7 @@ class DonateRoute
             $postData = json_decode($request, true);
 
             // create DTO from POST request
-            $formData = DonateFormData::fromRequest(give_clean($postData));
+            $formData = DonateFormRouteData::fromRequest(give_clean($postData));
 
             // get all registered gateways
             $paymentGateways = $this->paymentGatewayRegister->getPaymentGateways();
@@ -78,12 +78,27 @@ class DonateRoute
             $gateway = give($paymentGateways[$formData->gatewayId]);
 
             try {
-                $this->donateController->donate($formData, $gateway);
-            } catch (Exception $e) {
+                $data = $formData->validated();
+
+                $this->donateController->donate($data, $gateway);
+            } catch (DonationFormFieldErrorsException $exception) {
+                Log::error(
+                    'Donation Form Field Errors',
+                    [
+                        'exceptionMessage' => $exception->getMessage(),
+                        'formData' => $formData,
+                        'errors' => $exception->getError()
+                    ]
+                );
+
+                wp_send_json_error(['errors' => $exception->getError()]);
+            } catch (Exception $exception) {
                 Log::error(
                     'Donation Error',
-                    ['message' => $e->getMessage(), 'formData' => $formData, 'gateway' => $gateway]
+                    ['exceptionMessage' => $exception->getMessage(), 'formData' => $formData, 'gateway' => $gateway]
                 );
+
+                wp_send_json_error();
             }
 
             exit;
@@ -94,10 +109,8 @@ class DonateRoute
      * Check if the listener is valid
      *
      * @unreleased
-     *
-     * @return bool
      */
-    private function isValidListener()
+    private function isValidListener(): bool
     {
         return isset($_GET['give-listener']) && $_GET['give-listener'] === 'give-donate';
     }
@@ -105,12 +118,9 @@ class DonateRoute
     /**
      * @unreleased
      *
-     * @param  string  $routeSignature
-     * @param  DonateRouteData  $data
-     *
      * @return void
      */
-    private function validateSignature($routeSignature, DonateRouteData $data)
+    private function validateSignature(string $routeSignature, DonateRouteData $data)
     {
         $signature = new DonateRouteSignature(
             $data->routeSignatureId,
@@ -137,12 +147,10 @@ class DonateRoute
     /**
      * @unreleased
      *
-     * @param  string  $paymentGateway
-     * @param  array  $gatewayIds
      * @return void
      * @throws PaymentGatewayException
      */
-    private function validateGateway($paymentGateway, $gatewayIds)
+    private function validateGateway(string $paymentGateway, array $gatewayIds)
     {
         if (!in_array($paymentGateway, $gatewayIds, true)) {
             throw new PaymentGatewayException('This gateway is not valid.');

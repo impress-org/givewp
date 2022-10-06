@@ -6,27 +6,25 @@ use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
 use Give\Framework\PaymentGateways\PaymentGateway;
-use Give\NextGen\DonationForm\DataTransferObjects\DonateFormData;
+use Give\NextGen\DonationForm\Actions\StoreCustomFields;
+use Give\NextGen\DonationForm\DataTransferObjects\DonateControllerData;
 use Give\NextGen\DonationForm\DataTransferObjects\LegacyPurchaseFormData;
+use Give\NextGen\DonationForm\Models\DonationForm;
 
 /**
  * @unreleased
  */
 class DonateController
 {
-
     /**
      * First we create a donation, then move on to the gateway processing
      *
      * @unreleased
      *
-     * @param  DonateFormData  $formData
-     * @param  PaymentGateway  $registeredGateway
-     *
      * @return void
      * @throws Exception
      */
-    public function donate(DonateFormData $formData, PaymentGateway $registeredGateway)
+    public function donate(DonateControllerData $formData, PaymentGateway $registeredGateway)
     {
         $donor = $this->getOrCreateDonor(
             $formData->wpUserId,
@@ -37,6 +35,10 @@ class DonateController
 
         $donation = $formData->toDonation($donor->id);
         $donation->save();
+
+        $form = $formData->getDonationForm();
+
+        $this->saveCustomFields($form, $donation, $formData->getCustomFields());
 
         // setting sessions is required for legacy receipts
         $this->setSession($donation, $donor);
@@ -112,5 +114,17 @@ class DonateController
 
             give_set_purchase_session($legacyPurchaseFormData->toPurchaseData());
         }
+    }
+
+    /**
+     * @unreleased
+     *
+     * TODO: add more validation based on the field settings.
+     *
+     * @return void
+     */
+    private function saveCustomFields(DonationForm $form, Donation $donation, array $customFields)
+    {
+        (new StoreCustomFields())($form, $donation, $customFields);
     }
 }
