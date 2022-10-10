@@ -453,19 +453,21 @@ div.give-field-description {
 
 .give-settings-email-settings-section,
 .give-settings-donor-email-section,
-.give-settings-admin-email-section {
-	// Nothing in table nav so hide it.
-	.tablenav {
-		display: none;
-	}
+.give-settings-admin-email-section,
+.give-settings-p2p-email-section,
+.give-settings-admin-p2p-email-section {
+    // Nothing in table nav so hide it.
+    .tablenav {
+        display: none;
+    }
 
-	.tablenav.bottom + .give-setting-tab-header-emails {
-		margin: 20px 0;
+    .tablenav.bottom + .give-setting-tab-header-emails {
+        margin: 20px 0;
 
-		hr {
-			display: block;
-		}
-	}
+        hr {
+            display: block;
+        }
+    }
 }
 
 // Email notification list.
