@@ -35,7 +35,7 @@ class DispatchGiveInsertPayment
             'currency' => $donation->amount->getCurrency()->getCode(),
             'paymentGateway' => $donation->gatewayId,
             'userInfo' => [
-                'id' => $donor->id,
+                'id' => $donor->userId,
                 'firstName' => $donor->firstName,
                 'lastName' => $donor->lastName,
                 'title' => $donor->prefix,
