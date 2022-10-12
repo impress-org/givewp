@@ -30,7 +30,7 @@ jobs:
                         wordpress: '5.0'
                     -   php: 8.0
                         wordpress: '5.0'
-        continue-on-error: ${{ matrix.wordpress == nightly }}
+        continue-on-error: ${{ matrix.wordpress == 'nightly' }}
         services:
             mysql56:
                 image: mysql:5.6
