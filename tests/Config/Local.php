@@ -25,13 +25,4 @@ class Local implements Config
     {
         return __DIR__ . '/../../vendor/wordpress/wordpress/tests/phpunit/includes/bootstrap.php';
     }
-
-    /**
-     * @inheritDoc
-     * @unreleased
-     */
-    public function functions(): string
-    {
-        return __DIR__ . '/../../vendor/wordpress/wordpress/tests/phpunit/includes/functions.php';
-    }
 }

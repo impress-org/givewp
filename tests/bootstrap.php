@@ -31,9 +31,6 @@ TestHooks::addFilter('setup_theme', static function () {
     give()->install();
 });
 
-// pull in wp test functions like tests_add_filter
-require_once $currentTestEnvironment->functions();
-
 // pull in WP bootstrap file which looks for WP_TESTS_CONFIG_FILE_PATH defined above
 require_once $currentTestEnvironment->bootstrap();
 
