@@ -49,7 +49,7 @@ install_wp() {
 	mkdir -p $WP_CORE_DIR
 
 	if [[ $WP_VERSION == 'nightly' || $WP_VERSION == 'trunk' ]]; then
-		svn export --quiet https://core.svn.wordpress.org/trunk $WP_CORE_DIR
+		svn export --quiet --force https://core.svn.wordpress.org/trunk $WP_CORE_DIR
     else
 
         if [ $WP_VERSION == 'latest' ]; then
