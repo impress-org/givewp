@@ -5,6 +5,14 @@ namespace GiveTests\Framework\Addons;
 use GiveTests\Framework\TestHooks;
 
 /**
+ * This is our api for bootstrapping GiveWP add-on test suites.
+ * It is intended to be used directly in an add-on's test/bootstrap.php file.
+ *
+ * All you need to do in tests/bootstrap.php is require the main give autoload file,
+ * instantiate this class with a path to the main root add-on file, then call the load() method.
+ *
+ * For more advanced use cases, addHooks can be used before load().
+ *
  * @unreleased
  */
 class Bootstrap
