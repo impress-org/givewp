@@ -338,8 +338,8 @@ class Give_Cache {
 				"SELECT option_name, option_value
 						FROM {$wpdb->options}
 						Where option_name
-						LIKE '%%%s%%'",
-				'give_cache'
+						LIKE '%s'",
+				'%give_cache%'
 			),
 			ARRAY_A
 		);
@@ -397,8 +397,8 @@ class Give_Cache {
 					"SELECT {$field_names }
 						FROM {$wpdb->options}
 						Where option_name
-						LIKE '%%%s%%'",
-					"give_cache_{$option_name}"
+						LIKE '%s'",
+					"%give_cache_{$option_name}%"
 				),
 				ARRAY_A
 			);
@@ -408,8 +408,8 @@ class Give_Cache {
 					"SELECT *
 						FROM {$wpdb->options}
 						Where option_name
-						LIKE '%%%s%%'",
-					"give_cache_{$option_name}"
+						LIKE '%s'",
+					"%give_cache_{$option_name}%"
 				),
 				1
 			);

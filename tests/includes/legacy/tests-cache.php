@@ -196,8 +196,8 @@ class Tests_Cache extends Give_Unit_Test_Case {
 					"SELECT option_name
 						FROM {$wpdb->options}
 						Where option_name
-						LIKE '%%%s%%'",
-					'give_cache'
+						LIKE '%s'",
+					'%give_cache%'
 				),
 				ARRAY_A
 			),
@@ -221,8 +221,8 @@ class Tests_Cache extends Give_Unit_Test_Case {
 				"SELECT option_name
 						FROM {$wpdb->options}
 						Where option_name
-						LIKE '%%%s%%'",
-				'give_cache'
+						LIKE '%s'",
+				'%give_cache%'
 			),
 			ARRAY_A
 		);

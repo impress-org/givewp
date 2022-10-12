@@ -640,8 +640,8 @@ class Give_Subscriptions_DB extends Give_DB
                     "
 				SELECT id,name FROM {$donors_db->table_name}
 				WHERE name
-				LIKE '%%%s%%'",
-                    $args['search']
+				LIKE '%s'",
+                    '%' . $args['search'] . '%'
                 );
                 $subscription_donor_id = [];
                 $donor_ids = $wpdb->get_results($query, ARRAY_A);
