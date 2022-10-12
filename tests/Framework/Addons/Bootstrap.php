@@ -10,20 +10,33 @@ use GiveTests\Framework\TestHooks;
 class Bootstrap
 {
     /**
+     * @var string
+     */
+    protected $addonPath;
+
+    /**
+     * @unreleased
+     */
+    public function __construct(string $pathToMainAddonFile)
+    {
+        $this->addonPath = $pathToMainAddonFile;
+    }
+
+    /**
      * This is the all-in-one solution for bootstrapping a test environment in an add-on.
-     * All you would need to do in tests/bootstrap.php is require the main give autoload file,
-     * then call this method.
+     * All you need to do in tests/bootstrap.php is require the main give autoload file,
+     * instantiate this class, then call this method.
      *
-     * For more advanced use cases, loadAddon and loadGiveWP can be called directly with flexibility of running addHooks..
+     * For more advanced use cases, addHooks can be called before this method.
      *
      * @unreleased
      *
      * @return void
      */
-    final public function load(string $pathToMainPluginFile)
+    final public function load()
     {
-        $this->loadAddon($pathToMainPluginFile);
-        $this->loadGiveWP();
+        $this->loadAddon();
+        $this->loadGiveWPBootstrapFile();
     }
 
     /**
@@ -32,24 +45,21 @@ class Bootstrap
      *
      * @unreleased
      */
-    public function loadAddon(string $pathToPluginFile): Bootstrap
+    protected function loadAddon(): Bootstrap
     {
-        TestHooks::addFilter('muplugins_loaded', static function () use ($pathToPluginFile) {
-            require_once $pathToPluginFile;
+        TestHooks::addFilter('muplugins_loaded', function () {
+            require_once $this->addonPath;
         });
 
         return $this;
     }
 
     /**
-     * This is the public way of loading the main GiveWP bootstrap file.
-     * It returns void so will only be called once.
-     *
      * @unreleased
      *
      * @return void
      */
-    final public function loadGiveWP()
+    final protected function loadGiveWPBootstrapFile()
     {
         require_once __DIR__ . '/../../../tests/bootstrap.php';
     }
