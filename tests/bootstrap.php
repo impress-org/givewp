@@ -20,9 +20,6 @@ $currentTestEnvironment = $testEnvironment->current();
 // define for use in WP bootstrap file
 define('WP_TESTS_CONFIG_FILE_PATH', $currentTestEnvironment->config());
 
-// pull in wp test functions like tests_add_filter
-require_once $currentTestEnvironment->functions();
-
 // load GiveWP
 TestHooks::addFilter('muplugins_loaded', static function () {
     require_once __DIR__ . '/../give.php';
@@ -33,6 +30,9 @@ TestHooks::addFilter('setup_theme', static function () {
     echo 'Installing GiveWP.....' . PHP_EOL;
     give()->install();
 });
+
+// pull in wp test functions like tests_add_filter
+require_once $currentTestEnvironment->functions();
 
 // pull in WP bootstrap file which looks for WP_TESTS_CONFIG_FILE_PATH defined above
 require_once $currentTestEnvironment->bootstrap();
