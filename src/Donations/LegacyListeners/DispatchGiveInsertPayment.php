@@ -9,8 +9,9 @@ use Give\PaymentGateways\DataTransferObjects\GiveInsertPaymentData;
 class DispatchGiveInsertPayment
 {
     /**
-     * @since 2.20.0 only run this listener if the legacy hook is used
-     * @since 2.19.6
+     * @since 2.22.3 Use $donor->userId instead of $donor->id on the userInfo key
+     * @since      2.20.0 only run this listener if the legacy hook is used
+     * @since      2.19.6
      *
      * @param Donation $donation
      *
@@ -35,7 +36,7 @@ class DispatchGiveInsertPayment
             'currency' => $donation->amount->getCurrency()->getCode(),
             'paymentGateway' => $donation->gatewayId,
             'userInfo' => [
-                'id' => $donor->id,
+                'id' => $donor->userId,
                 'firstName' => $donor->firstName,
                 'lastName' => $donor->lastName,
                 'title' => $donor->prefix,
