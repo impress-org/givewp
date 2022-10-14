@@ -6,7 +6,7 @@ use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway;
-use Stripe\PaymentMethod;
+use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
 
 /**
  * @since 2.19.0
@@ -60,7 +60,7 @@ class CreditCardGatewayTest extends \GiveTests\TestCase
             PaymentComplete::class,
             $gateway->createPayment(
                 $this->getDonationModel(),
-                ['stripePaymentMethod' => new \Stripe\PaymentMethod('pm_1234')]
+                ['stripePaymentMethod' => new PaymentMethod('pm_1234')]
             )
         );
     }

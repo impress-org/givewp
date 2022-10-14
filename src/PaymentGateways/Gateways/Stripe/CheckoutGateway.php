@@ -12,7 +12,8 @@ use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Helpers\Call;
 use Give\Helpers\Gateways\Stripe;
 use Give\PaymentGateways\Gateways\Stripe\Exceptions\CheckoutException;
-use Stripe\PaymentMethod;
+use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
+use Stripe\PaymentMethod as StripeApiPaymentMethod;
 
 ;
 
@@ -30,7 +31,7 @@ class CheckoutGateway extends PaymentGateway
      * @inheritDoc
      * @since 2.19.0
      *
-     * @param array{stripePaymentMethod: PaymentMethod} $gatewayData
+     * @param  array{stripePaymentMethod: PaymentMethod, paymentMethod: StripeApiPaymentMethod}  $gatewayData
      *
      * @throws PaymentGatewayException
      */

@@ -4,6 +4,7 @@ namespace Give\PaymentGateways\Gateways\Stripe\Actions;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
+use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
 use Stripe\Exception\ApiErrorException;
 
 class GetStripeGatewayData
@@ -18,7 +19,12 @@ class GetStripeGatewayData
     {
         $paymentMethod = (new GetPaymentMethodFromRequest())($donation);
 
-        $gatewayData['stripePaymentMethod'] = $paymentMethod;
+        $gatewayData['paymentMethod'] = $paymentMethod;
+        
+        /**
+         * @deprecated use 'paymentMethod'
+         */
+        $gatewayData['stripePaymentMethod'] = new PaymentMethod($paymentMethod->id);
 
         return $gatewayData;
     }

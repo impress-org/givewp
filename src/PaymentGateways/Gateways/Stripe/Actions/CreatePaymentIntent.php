@@ -8,8 +8,8 @@ use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\DonationSummary;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
+use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
 use Give_Stripe_Customer;
-use Stripe\PaymentMethod;
 
 /**
  * @since 2.19.0
@@ -54,7 +54,7 @@ class CreatePaymentIntent
                 'description' => $donationSummary->getSummaryWithDonor(),
                 'metadata' => give_stripe_prepare_metadata($donation->id),
                 'customer' => $giveStripeCustomer->get_id(),
-                'payment_method' => $paymentMethod->id,
+                'payment_method' => $paymentMethod->id(),
                 'confirm' => true,
                 'return_url' => give_get_success_page_uri(),
             ], $this->defaultIntentArgs)

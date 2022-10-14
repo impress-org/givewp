@@ -9,7 +9,8 @@ use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\SubscriptionModule;
 use Give\Helpers\Call;
-use Stripe\PaymentMethod;
+use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
+use Stripe\PaymentMethod as StripeApiPaymentMethod;
 
 /**
  * @since 2.19.0
@@ -45,7 +46,7 @@ class CreditCardGateway extends PaymentGateway
      * @since 2.19.7 fix handlePaymentIntentStatus not receiving extra param
      * @since 2.19.0
      *
-     * @param array{stripePaymentMethod: PaymentMethod} $gatewayData
+     * @param  array{stripePaymentMethod: PaymentMethod, paymentMethod: StripeApiPaymentMethod}  $gatewayData
      *
      * @throws PaymentGatewayException
      */
