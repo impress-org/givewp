@@ -4,27 +4,36 @@ namespace Give\PaymentGateways\Gateways\Stripe\Actions;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
 use Stripe\Exception\ApiErrorException;
 
 class GetStripeGatewayData
 {
     /**
-     * @unreleased
+     * Returns gatewayData array to be used in stripe gateways.
+     * This will eventually be moved into core
      *
-     * @throws Exception
-     * @throws ApiErrorException
+     * @unreleased add try / catch with exception logging
      */
     public function __invoke($gatewayData, Donation $donation): array
     {
-        $paymentMethod = (new GetPaymentMethodFromRequest())($donation);
+        try {
+            $paymentMethod = (new GetPaymentMethodFromRequest())($donation);
+            $gatewayData['stripePaymentMethod'] = $paymentMethod;
+            /**
+             * @deprecated use 'paymentMethod'
+             */
+            $gatewayData['stripePaymentMethod'] = new PaymentMethod($paymentMethod->id);
 
-        $gatewayData['paymentMethod'] = $paymentMethod;
-        
-        /**
-         * @deprecated use 'paymentMethod'
-         */
-        $gatewayData['stripePaymentMethod'] = new PaymentMethod($paymentMethod->id);
+            return $gatewayData;
+        } catch (ApiErrorException $exception) {
+            PaymentGatewayLog::error($exception->getMessage(), [
+                'StripeCode' => $exception->getStripeCode()
+            ]);
+        } catch (Exception $exception) {
+            PaymentGatewayLog::error($exception->getMessage());
+        }
 
         return $gatewayData;
     }
