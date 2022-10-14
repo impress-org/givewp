@@ -11,8 +11,7 @@ use Stripe\Exception\ApiErrorException;
 class GetStripeGatewayData
 {
     /**
-     * Returns gatewayData array to be used in stripe gateways.
-     * This will eventually be moved into core
+     * Returns $gatewayData array to be used in stripe gateways.
      *
      * @unreleased add try / catch with exception logging
      */
@@ -20,9 +19,14 @@ class GetStripeGatewayData
     {
         try {
             $paymentMethod = (new GetPaymentMethodFromRequest())($donation);
-            $gatewayData['stripePaymentMethod'] = $paymentMethod;
             /**
-             * @deprecated use 'paymentMethod'
+             * This supplies the actual Stripe Api PaymentMethod
+             */
+            $gatewayData['paymentMethod'] = $paymentMethod;
+            /**
+             * This internal ValueObject is currently being used throughout the Stripe gateways.
+             * Eventually this array key will be @deprecated in favor of using Stripe's PaymentMethod
+             * Object directly via $gatewayData['paymentMethod']
              */
             $gatewayData['stripePaymentMethod'] = new PaymentMethod($paymentMethod->id);
 
