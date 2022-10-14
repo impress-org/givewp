@@ -12,7 +12,9 @@ use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Helpers\Call;
 use Give\Helpers\Gateways\Stripe;
 use Give\PaymentGateways\Gateways\Stripe\Exceptions\CheckoutException;
-use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
+use Stripe\PaymentMethod;
+
+;
 
 /**
  * @since 2.19.0
