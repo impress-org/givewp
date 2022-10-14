@@ -15,8 +15,7 @@ class GetPaymentMethodFromRequest
      * @unreleased use Stripe's PaymentMethod class
      * @since 2.19.0
      *
-     * @throws PaymentMethodException
-     * @throws Exception|ApiErrorException
+     * @throws PaymentMethodException|Exception|ApiErrorException
      */
     public function __invoke(Donation $donation): StripePaymentMethod
     {
