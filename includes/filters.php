@@ -257,7 +257,11 @@ function give_akismet_is_email_logged( $email ) {
 	global $wpdb;
 
 	return (bool) DB::get_var(
-		DB::prepare( "SELECT COUNT(id) FROM {$wpdb->give_log} WHERE log_type = %s AND data LIKE '%%%s%%';", LogType::SPAM, esc_sql( $email ) )
+		DB::prepare(
+            "SELECT COUNT(id) FROM {$wpdb->give_log} WHERE log_type = %s AND data LIKE '%s';",
+            LogType::SPAM,
+            '%' . esc_sql( $email ) . '%'
+        )
 	);
 }
 
