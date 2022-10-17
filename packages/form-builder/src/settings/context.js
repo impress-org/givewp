@@ -5,7 +5,6 @@ export const FormSettingsContext = createContext();
 export const FormSettingsProvider = ({formSettings, setFormSettings, children}) => {
 
     const setFormSettingsObserver = (settings) => {
-        console.log(settings);
         setFormSettings(settings);
     };
 
