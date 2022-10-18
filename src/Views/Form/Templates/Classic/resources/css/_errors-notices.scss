@@ -2,8 +2,6 @@
 
 // This is specifically where the errors display after the header
 .give-form-header + .give_errors.give_notices {
-    display: grid;
-    row-gap: 1rem;
     padding-block-start: fn.scaleBetween(1.75rem, 3.375rem);
     padding-inline: fn.scaleBetween(1rem, 4.375rem);
 }
