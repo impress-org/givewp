@@ -272,6 +272,7 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
 
                             ?>
                                     <div class="form-grid-raised">
+                                        <div class="form-grid-raised__details">
                                         <?php
                                         if ( 'amount' === $goal_format ) :
 
@@ -364,10 +365,8 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
                                             );
                                             echo sprintf(
                                             /* translators: 1: amount of income raised 2: goal target amount. */
-                                                __( '<div class="form-grid-raised__details">
-                                                   <span class="amount"  data-amounts="%1$s">%2$s</span>
-                                                   <span class="goal" data-amounts="%3$s"><span>of </span>%4$s</span>
-                                         </div>', 'give' ),
+                                                __( '<span class="amount"  data-amounts="%1$s">%2$s</span>
+                                                     <span class="goal" data-amounts="%3$s"><span>of </span>%4$s</span>', 'give' ),
                                                 esc_attr( wp_json_encode( $income_amounts, JSON_PRETTY_PRINT ) ),
                                                 esc_attr( $formatted_income ),
                                                 esc_attr( wp_json_encode( $goal_amounts, JSON_PRETTY_PRINT ) ),
@@ -377,10 +376,9 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
                                         elseif ( 'percentage' === $goal_format ) :
 
                                             echo sprintf( /* translators: %s: percentage of the amount raised compared to the goal target */
-                                                __( '<div class="form-grid-raised__details">
+                                                __( '
                                                    <span class="amount">%s%%</span>
-                                                   <span class="goal"><span>of </span><span>100&#37;</span>
-                                         </div>', 'give' ),
+                                                   <span class="goal"><span>of </span><span>100&#37;</span>', 'give' ),
                                                 round( $progress )
                                             );
 
@@ -388,14 +386,12 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
 
                                             echo sprintf( /* translators: 1: total number of donations completed 2: total number of donations set as goal */
                                                 _n(
-                                                    '<div class="form-grid-raised__details">
+                                                    '
                                                            <span class="amount">%1$s</span>
-                                                           <span class="goal"><span>of</span> %2$s <span>Donation</span></span>
-                                                </div>',
-                                                    '<div class="form-grid-raised__details">
+                                                           <span class="goal"><span>of</span> %2$s <span>Donation</span></span>',
+                                                    '
                                                            <span class="amount">%1$s</span>
-                                                           <span class="goal"><span>of</span> %2$s <span>Donations</span></span>
-                                                </div>',
+                                                           <span class="goal"><span>of</span> %2$s <span>Donations</span></span>',
                                                     $goal,
                                                     'give'
                                                 ),
@@ -407,14 +403,12 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
 
                                             echo sprintf( /* translators: 1: total number of donors completed 2: total number of donors set as goal */
                                                 _n(
-                                                    '<div class="form-grid-raised__details">
+                                                    '
                                                            <span class="amount">%1$s</span>
-                                                           <span class="goal"><span>of</span> %2$s <span>Donors</span> </span>
-                                                </div>',
-                                                    '<div class="form-grid-raised__details">
+                                                           <span class="goal"><span>of</span> %2$s <span>Donors</span> </span>',
+                                                    '
                                                            <span class="amount">%1$s</span>
-                                                           <span class="goal"><span>of</span> %2$s <span>Donors</span></span>
-                                                </div>',
+                                                           <span class="goal"><span>of</span> %2$s <span>Donors</span></span>',
                                                     $goal,
                                                     'give'
                                                 ),
@@ -423,6 +417,7 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
                                             );
                                         endif;
                                         ?>
+                                        </div>
 
                                         <div class="form-grid-raised__details">
                                             <span class="amount form-grid-raised__details_donations"> <?php echo $form->get_sales(); ?></span>
