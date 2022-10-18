@@ -248,13 +248,15 @@ jQuery( document ).ready( function( $ ) {
 
 				this_form.trigger( 'give_form_validation_passed' );
 			} else {
+                var $giveFormHeader = this_form.parent().find( '.give-form-header' );
+
 				//There was an error / remove old errors and prepend new ones
 				$this.val( complete_purchase_val );
 				loading_animation.fadeOut();
-				this_form.find( '.give_errors' ).remove();
+				this_form.parent().find( '.give_errors' ).remove();
 
-                if ( this_form.has( '.give-payment-details-section .give-payment-mode-label' ) ) {
-                    this_form.find( '.give-payment-details-section .give-payment-mode-label' ).after( data );
+                if ( $giveFormHeader.length > 0 ) {
+                    $giveFormHeader.after( data );
                 } else {
                     this_form.find( '#give_purchase_submit input[type="submit"].give-submit' ).before( data );
                 }
