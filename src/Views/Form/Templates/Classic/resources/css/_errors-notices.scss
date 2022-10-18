@@ -8,6 +8,13 @@
     padding-inline: fn.scaleBetween(1rem, 4.375rem);
 }
 
+// This is specifically where the errors display into the payment section
+.give-payment-details-section {
+    :is(.give_errors,.give_notices):not(:last-child) {
+        margin-bottom: 0.9rem;
+    }
+}
+
 // Base error/notice class
 .give_error,
 .give_notice {
@@ -25,6 +32,10 @@
     padding-block: 0.625rem;
     padding-inline: 0.75rem;
     position: relative;
+
+    &:not(:last-child) {
+        margin-bottom: 0.9rem;
+    }
 
     &::before {
         --border: 0.0625rem solid rgb(0 0 0 / 0.05);
@@ -58,10 +69,6 @@
 }
 
 // Styles for error and notice types
-#give_error_test_mode {
-    margin-bottom: 0.9rem;
-}
-
 .give_error {
     --color: #ff3c00;
     --icon: '\f12a';
