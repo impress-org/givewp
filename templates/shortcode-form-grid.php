@@ -384,34 +384,21 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
 
                                         elseif ( 'donation' === $goal_format ) :
 
+                                            $goalText = _n('donation', 'donations',  $goal, 'give');
+
                                             echo sprintf( /* translators: 1: total number of donations completed 2: total number of donations set as goal */
-                                                _n(
-                                                    '
-                                                           <span class="amount">%1$s</span>
-                                                           <span class="goal"><span>of</span> %2$s <span>Donation</span></span>',
-                                                    '
-                                                           <span class="amount">%1$s</span>
-                                                           <span class="goal"><span>of</span> %2$s <span>Donations</span></span>',
-                                                    $goal,
-                                                    'give'
-                                                ),
+                                                '<span class="amount">%1$s</span>
+                                                        <span class="goal">of %2$s ' . $goalText . '</span>',
                                                 $form->get_sales(),
-                                                give_format_amount( $goal, array( 'decimal' => false ) )
-                                            );
+                                                give_format_amount( $goal, array( 'decimal' => false ) ));
 
                                         elseif ( 'donors' === $goal_format ) :
 
+                                            $goalText = _n('donor', 'donors',  $goal, 'give');
+
                                             echo sprintf( /* translators: 1: total number of donors completed 2: total number of donors set as goal */
-                                                _n(
-                                                    '
-                                                           <span class="amount">%1$s</span>
-                                                           <span class="goal"><span>of</span> %2$s <span>Donors</span> </span>',
-                                                    '
-                                                           <span class="amount">%1$s</span>
-                                                           <span class="goal"><span>of</span> %2$s <span>Donors</span></span>',
-                                                    $goal,
-                                                    'give'
-                                                ),
+                                                '<span class="amount">%1$s</span>
+                                                        <span class="goal">of %2$s ' . $goalText . '</span>',
                                                 give_get_form_donor_count( $form->ID ),
                                                 give_format_amount( $goal, array( 'decimal' => false ) )
                                             );
@@ -420,8 +407,12 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
                                         </div>
 
                                         <div class="form-grid-raised__details">
-                                            <span class="amount form-grid-raised__details_donations"> <?php echo $form->get_sales(); ?></span>
-                                            <span class="goal">Donations</span>
+                                            <?php
+                                            $amountText = _n('donation', 'donations',  $form->get_sales(), 'give');
+
+                                            echo sprintf(
+                                                '<span class="amount form-grid-raised__details_donations">%s</span>
+                                                        <span class="goal">%s</span>', $form->get_sales(), $amountText ) ?>
                                         </div>
                                 </div>
                             </div>
