@@ -258,10 +258,10 @@ jQuery( document ).ready( function( $ ) {
                 if ( $giveFormHeader.length > 0 ) {
                     $giveFormHeader.after( data );
                 } else {
-                    this_form.find( '#give_purchase_submit input[type="submit"].give-submit' ).before( data );
+                    this_form.parent().find( '.give-form-title' ).after( data );
                 }
 
-                this_form.closest( 'body' )[0].scrollIntoView({ behavior: 'smooth' });
+                this_form.parent()[0].scrollIntoView({ behavior: 'smooth' });
 
 				// Enable the form donation button.
 				Give.form.fn.disable( this_form, false );
