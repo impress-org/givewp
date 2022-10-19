@@ -7,11 +7,10 @@ use Give\Framework\Models\Factories\ModelFactory;
 class DonationNoteFactory extends ModelFactory
 {
     /**
+     * @unreleased add array return type
      * @since 2.21.0
-     *
-     * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'donationId' => 1,

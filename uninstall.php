@@ -121,9 +121,9 @@ if ( give_is_setting_enabled( give_get_option( 'uninstall_on_delete' ) ) ) {
 			"
 			SELECT option_name
 			FROM {$wpdb->options}
-			WHERE option_name LIKE '%%%s%%'
+			WHERE option_name LIKE '%s'
 			",
-			'give'
+			'%give%'
 		)
 	);
 

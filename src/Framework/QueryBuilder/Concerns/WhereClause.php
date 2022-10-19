@@ -487,7 +487,7 @@ trait WhereClause
                     $where->comparisonOperator,
                     strpos($where->value, '%') !== false
                         ? $where->value
-                        : sprintf('%%%s%%', $where->value )
+                        : '%' . $where->value . '%'
                 );
 
             // Handle NULL conditions

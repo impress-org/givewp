@@ -122,8 +122,10 @@ ob_start();
     </div>
 
 <?php
+
+$pageId     = give_get_option('success_page');
 $iframeView = new IframeContentView();
 
-echo $iframeView->setTitle(esc_html__('Donation Receipt', 'give'))
-    ->setBody(ob_get_clean())
-    ->renderBody();
+echo $iframeView->setTitle(esc_html__('Donation Receipt', 'give'))->setPostId($pageId)
+                ->setBody(ob_get_clean())
+                ->renderBody();

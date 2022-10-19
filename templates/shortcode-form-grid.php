@@ -218,7 +218,7 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
                     $goal_progress_stats = give_goal_progress_stats( $form );
                     $goal_format         = $goal_progress_stats['format'];
                     $color               = $atts['progress_bar_color'];
-                    $show_bar            = isset( $atts['show_bar'] ) ? filter_var( $atts['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
+                    $show_goal           = isset( $atts['show_goal'] ) ? filter_var( $atts['show_goal'], FILTER_VALIDATE_BOOLEAN ) : true;
                     $shortcode_stats = apply_filters(
                         'give_goal_shortcode_stats',
                         array(
@@ -260,7 +260,6 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
                     ?>
                     <div class="give-form-grid-progress">
                         <?php
-                            if ($atts['show_bar']){
                                     $style = "width:$progress_bar_value%;";
                                     $style .= "background: linear-gradient(180deg, {$color} 0%, {$color} 100%); background-blend-mode: multiply;";
                                         echo "
@@ -270,7 +269,7 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
                                                     </div>
                                             </div>
                                         ";
-                                    }
+
                             ?>
                                     <div class="form-grid-raised">
                                         <?php

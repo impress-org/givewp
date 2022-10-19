@@ -345,19 +345,23 @@ class Give_Email_Setting_Field {
 		// Disable field if email donor has recipient field.
 		// @see https://github.com/impress-org/give/issues/2657
 		if ( ! $edit_recipient ) {
-			if ( 'group' == $recipient['type'] ) {
-				$recipient         = current( $recipient['fields'] );
-				$recipient['type'] = 'text';
-			}
+            if ('group' == $recipient['type']) {
+                $recipient = current($recipient['fields']);
+                $recipient['type'] = 'text';
+            }
 
-			$recipient['attributes']['disabled'] = 'disabled';
-			$recipient['value']                  = $recipient['default'] = '{donor_email}';
-			$recipient['repeat']                 = false;
-			$recipient['desc']                   = __( 'This email is automatically sent to the donor and the recipient cannot be customized.', 'give' );
-		}
+            $recipient['attributes']['disabled'] = 'disabled';
+            $recipient['value'] = $recipient['default'] = '{donor_email}';
+            $recipient['repeat'] = false;
+            $recipient['desc'] = __('This email is automatically sent to the donor and the recipient cannot be customized.',
+                'give');
+        }
 
-		return $recipient;
-	}
+        /**
+         * @unreleased
+         */
+        return apply_filters('give_get_recipient_setting_field', $recipient, $email, $form_id, $edit_recipient);
+    }
 
 	/**
 	 * Get preview setting field.

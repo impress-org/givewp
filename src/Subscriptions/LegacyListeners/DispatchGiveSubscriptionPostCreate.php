@@ -27,7 +27,7 @@ class DispatchGiveSubscriptionPostCreate
             'parent_payment_id' => give()->subscriptions->getInitialDonationId($subscription->id),
             'form_id' => $subscription->donationFormId,
             'created' => Temporal::getFormattedDateTime($subscription->createdAt),
-            'expiration' => $subscription->expiration(),
+            'expiration' => $subscription->renewsAt->format('Y-m-d H:i:s'),
             'status' => $subscription->status->getValue(),
             'profile_id' => $subscription->gatewaySubscriptionId,
         ];
