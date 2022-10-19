@@ -366,7 +366,7 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
                                             echo sprintf(
                                             /* translators: 1: amount of income raised 2: goal target amount. */
                                                 __( '<span class="amount"  data-amounts="%1$s">%2$s</span>
-                                                     <span class="goal" data-amounts="%3$s"><span>of </span>%4$s</span>', 'give' ),
+                                                     <span class="goal" data-amounts="%3$s">of %4$s</span>', 'give' ),
                                                 esc_attr( wp_json_encode( $income_amounts, JSON_PRETTY_PRINT ) ),
                                                 esc_attr( $formatted_income ),
                                                 esc_attr( wp_json_encode( $goal_amounts, JSON_PRETTY_PRINT ) ),
@@ -378,29 +378,27 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
                                             echo sprintf( /* translators: %s: percentage of the amount raised compared to the goal target */
                                                 __( '
                                                    <span class="amount">%s%%</span>
-                                                   <span class="goal"><span>of </span><span>100&#37;</span>', 'give' ),
+                                                   <span class="goal">of 100&#37;</span>', 'give' ),
                                                 round( $progress )
                                             );
 
                                         elseif ( 'donation' === $goal_format ) :
 
-                                            $goalText = _n('donation', 'donations',  $goal, 'give');
-
                                             echo sprintf( /* translators: 1: total number of donations completed 2: total number of donations set as goal */
-                                                '<span class="amount">%1$s</span>
-                                                        <span class="goal">of %2$s ' . $goalText . '</span>',
+                                                __('<span class="amount">%1$s</span>
+                                                    <span class="goal">of %2$s %3$s </span>', 'give'),
                                                 $form->get_sales(),
-                                                give_format_amount( $goal, array( 'decimal' => false ) ));
+                                                give_format_amount( $goal, array( 'decimal' => false ) ),
+                                                _n('donation', 'donations',  $form->get_sales(), 'give'));
 
                                         elseif ( 'donors' === $goal_format ) :
 
-                                            $goalText = _n('donor', 'donors',  $goal, 'give');
-
                                             echo sprintf( /* translators: 1: total number of donors completed 2: total number of donors set as goal */
-                                                '<span class="amount">%1$s</span>
-                                                        <span class="goal">of %2$s ' . $goalText . '</span>',
+                                                __('<span class="amount">%1$s</span>
+                                                    <span class="goal">of %2$s %3$s</span>','give'),
                                                 give_get_form_donor_count( $form->ID ),
-                                                give_format_amount( $goal, array( 'decimal' => false ) )
+                                                give_format_amount( $goal, array( 'decimal' => false ) ),
+                                                _n('donor', 'donors',  $goal, 'give')
                                             );
                                         endif;
                                         ?>
@@ -408,11 +406,12 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
 
                                         <div class="form-grid-raised__details">
                                             <?php
-                                            $amountText = _n('donation', 'donations',  $form->get_sales(), 'give');
 
-                                            echo sprintf(
-                                                '<span class="amount form-grid-raised__details_donations">%s</span>
-                                                        <span class="goal">%s</span>', $form->get_sales(), $amountText ) ?>
+                                            echo sprintf( /* translators: 1: total number of donations completed */
+                                                __('<span class="amount form-grid-raised__details_donations">%1$s</span>
+                                                    <span class="goal">%2$s</span>', 'give'),
+                                                $form->get_sales(),
+                                                _n('donation', 'donations',  $form->get_sales(), 'give') ) ?>
                                         </div>
                                 </div>
                             </div>
