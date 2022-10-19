@@ -1243,9 +1243,9 @@ function give_v189_upgrades() {
 			"
 					DELETE FROM $wpdb->usermeta
 					WHERE meta_key
-					LIKE '%%%s%%'
+					LIKE '%s'
 					",
-			'_give_hide_license_notices_permanently'
+			'%_give_hide_license_notices_permanently%'
 		)
 	);
 
@@ -1255,9 +1255,9 @@ function give_v189_upgrades() {
 			"
 					DELETE FROM $wpdb->options
 					WHERE option_name
-					LIKE '%%%s%%'
+					LIKE '%s'
 					",
-			'__give_hide_license_notices_shortly_'
+			'%__give_hide_license_notices_shortly_%'
 		)
 	);
 }
