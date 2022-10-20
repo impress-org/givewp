@@ -79,7 +79,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      */
     public function supportsSubscriptions(): bool
     {
-        return isset($this->subscriptionModule);
+        return isset($this->subscriptionModule) || $this->isFunctionImplementedInGatewayClass('createSubscription');
     }
 
     /**
@@ -107,7 +107,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             PaymentGatewayLog::error(
                 $exception->getMessage(),
                 [
-                    'Payment Gateway' => $this->getId(),
+                    'Payment Gateway' => static::id(),
                     'Donation' => $donation,
                 ]
             );
@@ -148,7 +148,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             PaymentGatewayLog::error(
                 $exception->getMessage(),
                 [
-                    'Payment Gateway' => $this->getId(),
+                    'Payment Gateway' => static::id(),
                     'Donation' => $donation,
                     'Subscription' => $subscription,
                 ]
@@ -188,7 +188,6 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * @since 2.21.2
      * @inheritDoc
-     * @throws ReflectionException
      */
     public function canSyncSubscriptionWithPaymentGateway(): bool
     {
@@ -202,7 +201,6 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * @since 2.21.2
      * @inheritDoc
-     * @throws ReflectionException
      */
     public function canUpdateSubscriptionAmount(): bool
     {
@@ -216,7 +214,6 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * @since 2.21.2
      * @inheritDoc
-     * @throws ReflectionException
      */
     public function canUpdateSubscriptionPaymentMethod(): bool
     {
@@ -401,7 +398,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      */
     public function generateGatewayRouteUrl(string $gatewayMethod, array $args = []): string
     {
-        return Call::invoke(GenerateGatewayRouteUrl::class, $this->getId(), $gatewayMethod, $args);
+        return Call::invoke(GenerateGatewayRouteUrl::class, static::id(), $gatewayMethod, $args);
     }
 
     /**
@@ -413,11 +410,11 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      */
     public function generateSecureGatewayRouteUrl(string $gatewayMethod, int $donationId, array $args = []): string
     {
-        $signature = new RouteSignature($this->getId(), $gatewayMethod, $donationId);
+        $signature = new RouteSignature(static::id(), $gatewayMethod, $donationId);
 
         return Call::invoke(
             GenerateGatewayRouteUrl::class,
-            $this->getId(),
+            static::id(),
             $gatewayMethod,
             array_merge($args, [
                 'give-route-signature' => $signature->toHash(),
@@ -482,11 +479,11 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      * to see if the gateway is implementing a recurring feature without using a subscription module.
      *
      * @since 2.21.2
-     * @throws ReflectionException
      */
     private function isFunctionImplementedInGatewayClass(string $methodName): bool
     {
         $reflector = new ReflectionMethod($this, $methodName);
+
         return ($reflector->getDeclaringClass()->getName() === get_class($this));
     }
 }

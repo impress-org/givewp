@@ -17,8 +17,6 @@ interface PaymentGatewayInterface extends SubscriptionModuleInterface
      * Return a unique identifier for the gateway
      *
      * @since 2.18.0
-     *
-     * @return string
      */
     public static function id(): string;
 
@@ -27,7 +25,7 @@ interface PaymentGatewayInterface extends SubscriptionModuleInterface
      *
      * @since 2.18.0
      *
-     * @return string
+     * @deprecated 2.22.2 use static id() method instead, can use on an instance: $this::id() or $gateway::id() — even in strings
      */
     public function getId(): string;
 
@@ -67,6 +65,7 @@ interface PaymentGatewayInterface extends SubscriptionModuleInterface
      * @since 2.18.0
      *
      * @param array $gatewayData
+     *
      * @return GatewayCommand|RedirectOffsite|void
      *
      * @throws PaymentGatewayException

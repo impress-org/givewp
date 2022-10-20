@@ -27,7 +27,7 @@ class SubscriptionQueryData
     /**
      * @var DateTime
      */
-    public $expiresAt;
+    public $renewsAt;
     /**
      * @var string
      */
@@ -77,17 +77,15 @@ class SubscriptionQueryData
      * Convert data from Subscription Object to Subscription Model
      *
      * @since 2.19.6
-     *
-     * @return self
      */
-    public static function fromObject($subscriptionQueryObject)
+    public static function fromObject($subscriptionQueryObject): self
     {
         $self = new static();
 
         $self->id = (int)$subscriptionQueryObject->id;
         $self->createdAt = Temporal::toDateTime($subscriptionQueryObject->createdAt);
-        $self->expiresAt = isset($subscriptionQueryObject->expiration) ? Temporal::toDateTime(
-            $subscriptionQueryObject->expiration
+        $self->renewsAt = isset($subscriptionQueryObject->renewsAt) ? Temporal::toDateTime(
+            $subscriptionQueryObject->renewsAt
         ) : null;
         $self->donorId = (int)$subscriptionQueryObject->donorId;
         $self->period = new SubscriptionPeriod($subscriptionQueryObject->period);
@@ -106,10 +104,8 @@ class SubscriptionQueryData
 
     /**
      * Convert DTO to Subscription
-     *
-     * @return Subscription
      */
-    public function toSubscription()
+    public function toSubscription(): Subscription
     {
         $attributes = get_object_vars($this);
 

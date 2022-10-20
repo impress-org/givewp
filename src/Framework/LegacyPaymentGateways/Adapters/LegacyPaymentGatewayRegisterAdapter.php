@@ -22,7 +22,7 @@ class LegacyPaymentGatewayRegisterAdapter
 
         /** @var PaymentGatewayInterface $registeredGateway */
         $registeredGateway = give($gatewayClass);
-        $registeredGatewayId = $registeredGateway->getId();
+        $registeredGatewayId = $registeredGateway::id();
 
         add_action(
             "give_{$registeredGatewayId}_cc_form",
@@ -57,7 +57,7 @@ class LegacyPaymentGatewayRegisterAdapter
             /* @var PaymentGatewayInterface $paymentGateway */
             $paymentGateway = give($gatewayClassName);
 
-            $gatewaysData[$paymentGateway->getId()] = [
+            $gatewaysData[$paymentGateway::id()] = [
                 'admin_label' => $paymentGateway->getName(),
                 'checkout_label' => $paymentGateway->getPaymentMethodLabel(),
             ];

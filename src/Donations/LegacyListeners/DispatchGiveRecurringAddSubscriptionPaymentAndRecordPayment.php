@@ -10,6 +10,7 @@ use Give_Subscription;
 class DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment
 {
     /**
+     * @since 2.23.0 remove use of Donation::parentId
      * @since 2.19.6
      *
      * @param  Donation  $donation
@@ -19,7 +20,7 @@ class DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment
     {
         $subscription = new Give_Subscription($donation->subscriptionId);
         $payment = new Give_Payment($donation->id);
-        $parent = new Give_Payment($donation->parentId);
+        $parent = new Give_Payment(give()->subscriptions->getInitialDonationId($donation->subscriptionId));
 
         $payment->parent_payment = $subscription->parent_payment_id;
         $payment->total = $donation->amount;

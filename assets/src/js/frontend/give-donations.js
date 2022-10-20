@@ -396,13 +396,13 @@ jQuery( function( $ ) {
 	} );
 
 	// Multi-level Buttons: Update Amount Field based on Multi-level Donation Select
-	doc.on( 'click touchend', '.give-donation-level-btn', function( e ) {
+	doc.on( 'click', '.give-donation-level-btn', function( e ) {
 		e.preventDefault(); //don't let the form submit
 		Give.form.fn.autoSetMultiLevel( $( this ) );
 	} );
 
 	// Multi-level Radios: Update Amount Field based on Multi-level Donation Select
-	doc.on( 'click touchend', '.give-radio-input-level', function( e ) {
+	doc.on( 'click', '.give-radio-input-level', function( e ) {
 		Give.form.fn.autoSetMultiLevel( $( this ) );
 	} );
 

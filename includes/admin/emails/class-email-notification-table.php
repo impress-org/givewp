@@ -263,22 +263,28 @@ class Give_Email_Notification_Table extends WP_List_Table {
 		// Set email notifications.
 		/* @var Give_Email_Notification $email_notification */
 		foreach ( $this->email_notifications->get_email_notifications() as $email_notification ) {
-			if ( ! Give_Email_Notification_Util::is_show_on_emails_setting_page( $email_notification ) ) {
-				continue;
-			}
+            if ( ! Give_Email_Notification_Util::is_show_on_emails_setting_page($email_notification)) {
+                continue;
+            }
 
-			if ( 'donor-email' === $current_section ) {
-				// Add donor emails to email array list.
-				if ( empty( $email_notification->config['has_recipient_field'] ) ) {
-					$email_notifications[] = $email_notification;
-				}
-			} elseif ( 'admin-email' === $current_section ) {
-				// Add admin emails to email array list.
-				if ( ! empty( $email_notification->config['has_recipient_field'] ) ) {
-					$email_notifications[] = $email_notification;
-				}
-			}
-		}
+            if ('donor-email' === $current_section) {
+                // Add donor emails to email array list.
+                if (empty($email_notification->config['has_recipient_field'])) {
+                    $email_notifications[] = $email_notification;
+                }
+            } elseif ('admin-email' === $current_section) {
+                // Add admin emails to email array list.
+                if ( ! empty($email_notification->config['has_recipient_field'])) {
+                    $email_notifications[] = $email_notification;
+                }
+            }
+
+            /**
+             * @since 2.23.0
+             */
+            $email_notifications = apply_filters('give_email_notification_table_items', $email_notifications,
+                $email_notification, $current_section);
+        }
 
 		$total_items = count( $email_notifications );
 		$this->items = $email_notifications;

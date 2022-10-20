@@ -7,11 +7,16 @@ use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Http\Response\Types\RedirectResponse;
+use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
-use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
+use Give\PaymentGateways\Gateways\PayPalStandard\Actions\GenerateDonationReceiptPageUrl;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
+
+use Give\Subscriptions\Models\Subscription;
+
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 use function Give\Framework\Http\Response\response;
 
@@ -21,13 +26,6 @@ use function Give\Framework\Http\Response\response;
  */
 class TestGatewayOffsite extends PaymentGateway
 {
-    /**
-     * @inheritDoc
-     */
-    public $routeMethods = [
-        'returnFromOffsiteRedirect'
-    ];
-
     /**
      * @inheritDoc
      */
@@ -96,25 +94,21 @@ class TestGatewayOffsite extends PaymentGateway
         return new RedirectOffsite($redirectUrl);
     }
 
-    /**
-     * An example of using a routeMethod for extending the Gateway API to handle a redirect.
-     *
-     * @since 2.21.0 update to use Donation model
-     * @since 2.19.0
-     *
-     * @param array $queryParams
-     *
-     * @return RedirectResponse
-     * @throws Exception
-     * @throws PaymentGatewayException
-     */
-    protected function returnFromOffsiteRedirect(array $queryParams): RedirectResponse
-    {
-        $donation = Donation::find($queryParams['give-donation-id']);
+    public function createSubscription(
+        Donation $donation,
+        Subscription $subscription,
+        $gatewayData = null
+    ): GatewayCommand {
+        $redirectUrl = $this->generateSecureGatewayRouteUrl(
+            'securelyReturnFromOffsiteRedirect',
+            $donation->id,
+            [
+                'give-donation-id' => $donation->id,
+                'give-subscription-id' => $subscription->id,
+            ]
+        );
 
-        $this->updateDonation($donation);
-
-        return response()->redirectTo(give_get_success_page_uri());
+        return new RedirectOffsite($redirectUrl);
     }
 
     /**
@@ -134,7 +128,23 @@ class TestGatewayOffsite extends PaymentGateway
 
         $this->updateDonation($donation);
 
-        return response()->redirectTo(give_get_success_page_uri());
+        if ( $donation->type->isSubscription() ) {
+            $subscription = Subscription::find($queryParams['give-subscription-id']);
+            $this->updateSubscription($subscription);
+        }
+
+        return response()->redirectTo((new GenerateDonationReceiptPageUrl())($donation->id));
+    }
+
+    /**
+     * @since 2.20.0
+     * @inerhitDoc
+     * @throws Exception
+     */
+    public function refundDonation(Donation $donation)
+    {
+        $donation->status = DonationStatus::REFUNDED();
+        $donation->save();
     }
 
     /**
@@ -156,12 +166,14 @@ class TestGatewayOffsite extends PaymentGateway
     }
 
     /**
-     * @since 2.20.0
-     * @inerhitDoc
-     * @throws Exception
+     * @since 2.23.0
+     *
+     * @return void
      */
-    public function refundDonation(Donation $donation)
+    private function updateSubscription(Subscription $subscription)
     {
-        throw new Exception('Method has not been implemented yet. Please use the legacy method in the meantime.');
+        $subscription->status = SubscriptionStatus::ACTIVE();
+        $subscription->transactionId = "test-gateway-transaction-id";
+        $subscription->save();
     }
 }

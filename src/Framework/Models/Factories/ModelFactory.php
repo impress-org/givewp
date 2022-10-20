@@ -42,10 +42,8 @@ abstract class ModelFactory
 
     /**
      * Define the model's default state.
-     *
-     * @return array
      */
-    abstract public function definition();
+    abstract public function definition(): array;
 
     /**
      * @since 2.20.0
@@ -58,14 +56,7 @@ abstract class ModelFactory
     {
         $results = [];
         for ($i = 0; $i < $this->count; $i++) {
-            /** @var ModelCrud $model */
-            $model = $this->model;
-
-            $instance = new $model(
-                array_merge($this->definition(), $attributes)
-            );
-
-            $this->afterMaking($instance);
+            $instance = $this->makeInstance($attributes);
 
             $results[] = $instance;
         }
@@ -89,8 +80,6 @@ abstract class ModelFactory
         DB::transaction(function () use ($instances) {
             foreach ($instances as $instance) {
                 $instance->save();
-
-                $this->afterCreating($instance);
             }
         });
 
@@ -98,11 +87,23 @@ abstract class ModelFactory
     }
 
     /**
+     * Creates an instance of the model from the attributes and definition.
+     *
+     * @since 2.23.0
+     *
+     * @return M
+     */
+    protected function makeInstance(array $attributes)
+    {
+        return new $this->model(array_merge($this->definition(), $attributes));
+    }
+
+    /**
      * Get a new Faker instance.
      *
-     * @return Generator
+     * @since 2.20.0
      */
-    protected function withFaker()
+    protected function withFaker(): Generator
     {
         return give()->make(Generator::class);
     }
@@ -110,46 +111,22 @@ abstract class ModelFactory
     /**
      * Configure the factory.
      *
-     * @return $this
+     * @since 2.20.0
      */
-    public function configure()
+    public function configure(): self
     {
         return $this;
     }
 
     /**
-     * @param int $count
+     * Sets the number of models to generate.
      *
-     * @return $this
+     * @since 2.20.0
      */
-    public function count($count)
+    public function count(int $count): self
     {
         $this->count = $count;
 
         return $this;
-    }
-
-    /**
-     * @since 2.20.0
-     *
-     * @param  M  $model
-     *
-     * @return void
-     */
-    public function afterCreating($model)
-    {
-        //
-    }
-
-    /**
-     * @since 2.20.0
-     *
-     * @param  M  $model
-     *
-     * @return void
-     */
-    public function afterMaking($model)
-    {
-        //
     }
 }

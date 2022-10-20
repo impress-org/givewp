@@ -1,11 +1,11 @@
 === GiveWP - Donation Plugin and Fundraising Platform ===
-Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, jason_the_adams, henryholtgeerts, kbjohnson90, alaca, benmeredithgmailcom, jonwaldstein, joshuadinh
+Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, jason_the_adams, henryholtgeerts, kbjohnson90, alaca, benmeredithgmailcom, jonwaldstein, joshuadinh, glaubersilvawp, pauloiankoski
 Donate link: https://go.givewp.com/home
 Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
-Tested up to: 6.0
+Tested up to: 6.1
 Requires PHP: 7.0
-Stable tag: 2.22.3
+Stable tag: 2.23.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -162,7 +162,7 @@ Here’s a few ways you can contribute to GiveWP:
 
 * WordPress 5.0 or greater
 * PHP version 7.0 or greater
-* MySQL version 5.6 or greater
+* MySQL version 5.7 or greater
 * MariaDB version 10 or later
 * Some payment gateways require fsockopen support (for IPN access)
 * cURL version 5.40 or higher
@@ -251,6 +251,13 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.23.0: October 20th, 2022 =
+* Enhancement: Under the hood improvements to how recurrence is handled in donations and subscriptions
+* Enhancement: Added additional filters to email settings (for Peer-to-Peer)
+* Fix: Wrapped up some issues to make sure GiveWP is ready for WordPress 6.1
+* Fix: Scrolling a form on a mobile device will no longer select a amount level
+* Fix: Errors now display properly (and are auto-scrolled to) in the Classic template
+
 = 2.22.3: October 13th, 2022 =
 * Fix: When a donor creates an account the email is assured to be sent the right account
 

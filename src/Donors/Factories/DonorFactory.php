@@ -8,10 +8,8 @@ class DonorFactory extends ModelFactory
 {
     /**
      * @since 2.19.6
-     *
-     * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         $firstName = $this->faker->firstName;
         $lastName = $this->faker->lastName;

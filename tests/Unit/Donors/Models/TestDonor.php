@@ -73,8 +73,8 @@ class TestDonor extends TestCase
         /** @var Donor $donor */
         $donor = Donor::factory()->create();
 
-        $subscription1 = Subscription::factory()->create(['donorId' => $donor->id]);
-        $subscription2 = Subscription::factory()->create(['donorId' => $donor->id]);
+        Subscription::factory()->createWithDonation(['donorId' => $donor->id]);
+        Subscription::factory()->createWithDonation(['donorId' => $donor->id]);
 
         $this->assertCount(2, $donor->subscriptions);
     }
