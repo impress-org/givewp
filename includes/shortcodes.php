@@ -826,7 +826,7 @@ function give_form_grid_shortcode( $atts ) {
 			'donate_button_text'  => '',
 			'tag_background_color' => '#69b868',
             'tag_text_color'      => '#333333',
-            'donate_button_text_color' => 'inherit',
+            'donate_button_text_color' => '#000000',
 			'image_size'          => 'medium',
 			'image_height'        => 'auto',
 			'excerpt_length'      => 16,

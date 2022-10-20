@@ -195,7 +195,7 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
                           */
                         $button_text_color = ! empty( $atts['donate_button_text_color'] )
                             ? $atts['donate_button_text_color']
-                            : 'inherit';
+                            : '#000000';
                         ?>
                         <button style="text-decoration-color: <?php echo $button_text_color; ?>">
                                     <span style="color: <?php echo $button_text_color; ?>">
