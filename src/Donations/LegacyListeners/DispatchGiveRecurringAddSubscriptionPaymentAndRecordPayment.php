@@ -10,7 +10,7 @@ use Give_Subscription;
 class DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment
 {
     /**
-     * @unreleased remove use of Donation::parentId
+     * @since 2.23.0 remove use of Donation::parentId
      * @since 2.19.6
      *
      * @param  Donation  $donation

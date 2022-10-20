@@ -358,7 +358,7 @@ class Give_Email_Setting_Field {
         }
 
         /**
-         * @unreleased
+         * @since 2.23.0
          */
         return apply_filters('give_get_recipient_setting_field', $recipient, $email, $form_id, $edit_recipient);
     }

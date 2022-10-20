@@ -166,7 +166,7 @@ class TestGatewayOffsite extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 2.23.0
      *
      * @return void
      */

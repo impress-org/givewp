@@ -43,7 +43,7 @@ class SubscriptionFactory extends ModelFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.23.0
      *
      * @return Subscription|Subscription[]
      * @throws Exception
@@ -72,7 +72,7 @@ class SubscriptionFactory extends ModelFactory
     }
 
     /**
-     * @unreleased pass subscription model and update parentId property
+     * @since 2.23.0 pass subscription model and update parentId property
      * @since 2.19.6
      *
      * @throws Exception

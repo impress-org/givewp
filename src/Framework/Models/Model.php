@@ -165,7 +165,7 @@ abstract class Model implements Arrayable
     /**
      * Get an attribute from the model.
      *
-     * @unreleased use the existence validation method
+     * @since 2.23.0 use the existence validation method
      * @since 2.19.6
      *
      * @return mixed
@@ -182,7 +182,7 @@ abstract class Model implements Arrayable
     /**
      * Set a given attribute on the model.
      *
-     * @unreleased validate that the property exists before setting
+     * @since 2.23.0 validate that the property exists before setting
      * @since 2.19.6
      *
      * @param mixed $value
@@ -255,7 +255,7 @@ abstract class Model implements Arrayable
     /**
      * Validates that the given property exists
      *
-     * @unreleased
+     * @since 2.23.0
      *
      * @return void
      * @throws InvalidArgumentException

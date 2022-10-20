@@ -158,7 +158,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased retrieve the post_parent instead of relying on parentId property
+     * @since 2.23.0 retrieve the post_parent instead of relying on parentId property
      * @since 2.21.0 replace actions with givewp_donation_creating and givewp_donation_created
      * @since 2.20.0 mutate model and return void
      * @since 2.19.6
@@ -230,7 +230,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased retrieve the post_parent instead of relying on parentId property
+     * @since 2.23.0 retrieve the post_parent instead of relying on parentId property
      * @since 2.21.0 replace actions with givewp_donation_updating and givewp_donation_updated
      * @since 2.20.0 return void
      * @since 2.19.6
@@ -430,7 +430,7 @@ class DonationRepository
      *
      * New renewal donations moving forward should set the type as "renewal" and the status as "complete".
      *
-     * @unreleased
+     * @since 2.23.0
      */
     private function getPersistedDonationStatus(Donation $donation): DonationStatus {
         if ( $donation->status->isComplete() && $donation->type->isRenewal() ) {
@@ -454,7 +454,7 @@ class DonationRepository
      * We're moving away from using the parent_id column for donations, but we still need to support it for now as
      * legacy code still relies on it. It is only stored and should never be used in the model.
      *
-     * @unreleased
+     * @since 2.23.0
      */
     private function deriveLegacyDonationParentId(Donation $donation): int
     {
@@ -478,7 +478,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased no longer retrieve the post_parent from the database as parentId is deprecated
+     * @since 2.23.0 no longer retrieve the post_parent from the database as parentId is deprecated
      *
      * @return ModelQueryBuilder<Donation>
      */
