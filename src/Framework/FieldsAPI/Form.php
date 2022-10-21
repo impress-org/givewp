@@ -24,7 +24,12 @@ class Form implements Node, Collection
 
     const TYPE = 'form';
 
-    public function __construct($name)
+    /**
+     * @unreleased Make constructor as private to avoid unsafe usage of `new static()`.
+     *
+     * @param $name
+     */
+    final public function __construct($name)
     {
         $this->name = $name;
     }
@@ -52,7 +57,7 @@ class Form implements Node, Collection
     public function append(Node ...$nodes)
     {
         foreach ($nodes as $node) {
-            if ( !$node instanceof Section ) {
+            if ( ! $node instanceof Section) {
                 throw new TypeNotSupported($node->getType());
             }
 

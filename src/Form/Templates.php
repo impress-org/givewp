@@ -51,7 +51,7 @@ class Templates
          *
          * @since 2.7.0
          *
-         * @param Template[]
+         * @param array $templates
          */
         $this->templates = apply_filters(
             'give_register_form_template',

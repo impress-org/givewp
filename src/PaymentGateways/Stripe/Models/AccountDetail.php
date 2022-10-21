@@ -11,7 +11,7 @@ use Give\PaymentGateways\Stripe\Traits\HasStripeStatementDescriptorText;
  * Class AccountDetail
  *
  * @package Give\PaymentGateways\Stripe\Models
- * @since 2.10.2
+ * @since   2.10.2
  *
  * @property-read  string $type
  * @property-read  string $accountName
@@ -54,7 +54,7 @@ class AccountDetail
      *
      * @throws InvalidPropertyName
      */
-    public function __construct(array $args)
+    final public function __construct(array $args)
     {
         $this->args = $args;
         $args = $this->addSupportFormNewStatementDescriptorParam($args);
@@ -103,7 +103,7 @@ class AccountDetail
      */
     public function __get($key)
     {
-        if (!array_key_exists($key, $this->propertiesArgs)) {
+        if ( ! array_key_exists($key, $this->propertiesArgs)) {
             throw new InvalidPropertyName(
                 sprintf(
                     '$1%s property does not exist in %2$s class',
@@ -141,7 +141,7 @@ class AccountDetail
     /**
      * We decided to define statement descriptor per stripe account.
      * Statement descriptor default text for each account will be set to blog title.
-     * @see: https://github.com/impress-org/givewp/issues/6021
+     * @see   : https://github.com/impress-org/givewp/issues/6021
      *
      * @since 2.19.0
      * @since 2.19.1 Use old stripe statement descriptor requirements to filter text.
@@ -155,7 +155,7 @@ class AccountDetail
     private function addSupportFormNewStatementDescriptorParam($args)
     {
         $propertyName = 'statement_descriptor';
-        if (!array_key_exists($propertyName, $args) || empty($args[$propertyName])) {
+        if ( ! array_key_exists($propertyName, $args) || empty($args[$propertyName])) {
             $statementDescriptor = give_get_option('stripe_statement_descriptor', get_bloginfo('name'));
             $args[$propertyName] = $this->filterOldStatementDescriptor($statementDescriptor);
         }

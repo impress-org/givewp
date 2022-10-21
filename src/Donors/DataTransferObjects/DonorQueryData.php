@@ -11,7 +11,7 @@ use Give\Framework\Support\Facades\DateTime\Temporal;
  *
  * @since 2.19.6
  */
-class DonorQueryData
+final class DonorQueryData
 {
 
     /**
