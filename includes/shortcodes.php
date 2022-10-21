@@ -822,7 +822,7 @@ function give_form_grid_shortcode( $atts ) {
 			'show_goal'           => true,
 			'show_excerpt'        => true,
 			'show_featured_image' => true,
-			'show_donate_button'  => false,
+			'show_donate_button'  => true,
 			'donate_button_text'  => '',
 			'tag_background_color' => '#69b868',
             'tag_text_color'      => '#333333',
