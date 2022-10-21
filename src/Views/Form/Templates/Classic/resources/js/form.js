@@ -38,7 +38,6 @@ domIsReady(() => {
     setupDonationLevels();
     moveDefaultGatewayDataIntoActiveGatewaySection();
     IS_DONATION_SUMMARY_ACTIVE && moveDonationSummaryAfterDonationAmountSection();
-    IS_FEE_RECOVERY_ACTIVE && attachFeeEvents() && updateFeesAmount();
     IS_RECURRING_ACTIVE && attachRecurringDonationEvents();
     splitGatewayResponse();
     IS_CURRENCY_SWITCHING_ACTIVE && setupCurrencySwitcherSelector();
@@ -47,7 +46,6 @@ domIsReady(() => {
     moveTestModeMessage();
     IS_CURRENCY_SWITCHING_ACTIVE && moveCurrencySwitcherMessageOutsideOfWrapper();
     addFancyBorderWhenChecked();
-    IS_DONATION_SUMMARY_ACTIVE && updateDonationSummaryAmountOnChange();
 });
 
 /**
@@ -95,8 +93,6 @@ function moveDonationSummaryAfterDonationAmountSection() {
         // Move to before gateway section inside give-personal-info-section
         paymentDetails.parentNode.insertBefore(donationSummary, paymentDetails);
     }
-
-    updateDonationSummaryAmount();
 }
 
 function setPersonalInfoTitle() {
@@ -288,34 +284,6 @@ function updateRecurringDonationFrequency() {
     }
 }
 
-function updateDonationSummaryAmount() {
-    document.querySelector('[data-tag="amount"]').innerHTML = document.querySelector('#give-amount').value;
-}
-
-function updateDonationSummaryAmountOnChange() {
-    document.querySelector('#give-amount').addEventListener('change', function(e){
-        document.querySelector('[data-tag="amount"]').innerHTML = GiveDonationSummary.format_amount(e.target.value, jQuery('.give-form'));
-    } );
-}
-
-
-function attachFeeEvents() {
-    const coverFeesCheckbox = document.querySelector('.give_fee_mode_checkbox');
-
-    if (coverFeesCheckbox) {
-        coverFeesCheckbox.addEventListener('change', updateFeesAmount);
-        new MutationObserver(updateFeesAmount).observe(document.querySelector('.give-fee-message-label-text'), {
-            childList: true,
-        });
-    } else {
-        jQuery('.js-give-donation-summary-fees').hide();
-    }
-}
-
-function updateFeesAmount() {
-    window.GiveDonationSummary.handleFees(document.querySelector('.give_fee_mode_checkbox'), jQuery('.give-form'));
-}
-
 function splitGatewayResponse() {
     jQuery.ajaxPrefilter(function (options, originalOptions) {
         if (options.url.includes('?payment-mode=')) {
@@ -379,8 +347,6 @@ function splitGatewayResponse() {
                         );
 
                     window.GiveDonationSummary.initTotal();
-                    updateDonationSummaryAmount();
-                    IS_FEE_RECOVERY_ACTIVE && updateFeesAmount();
                 }
 
                 // Remove previous gateway data (just in case it was added again by multiple clicks)
