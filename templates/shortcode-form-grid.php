@@ -190,9 +190,12 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
                             ? $atts['donate_button_text']
                             : give_get_meta( $form_id, '_give_form_grid_donate_button_text', true );
 
+                         /**
+                          * @unreleased Updated the default text color for the donate button, see #6591.
+                          */
                         $button_text_color = ! empty( $atts['donate_button_text_color'] )
                             ? $atts['donate_button_text_color']
-                            : '#fff';
+                            : '#000000';
                         ?>
                         <button style="text-decoration-color: <?php echo $button_text_color; ?>">
                                     <span style="color: <?php echo $button_text_color; ?>">
