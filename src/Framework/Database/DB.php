@@ -18,7 +18,7 @@ use WP_Error;
  * @method static int|bool query(string $query)
  * @method static int|false insert(string $table, array $data, array|string $format)
  * @method static int|false delete(string $table, array $where, array|string $where_format)
- * @method static int|false update(string $table, array $data, array $where, array|string $format, array|string $where_format)
+ * @method static int|false update(string $table, array $data, array $where, array|string $format = null, array|string $where_format = null)
  * @method static int|false replace(string $table, array $data, array|string $format)
  * @method static null|string get_var(string $query = null, int $x = 0, int $y = 0)
  * @method static array|object|null|void get_row(string $query = null, string $output = OBJECT, int $y = 0)
@@ -33,14 +33,14 @@ class DB
     /**
      * Runs the dbDelta function and returns a WP_Error with any errors that occurred during the process
      *
-     * @see dbDelta() for parameter and return details
-     *
      * @since 2.9.2
      *
      * @param $delta
      *
      * @return array
      * @throws DatabaseQueryException
+     * @see   dbDelta() for parameter and return details
+     *
      */
     public static function delta($delta)
     {
@@ -54,14 +54,14 @@ class DB
     /**
      * A convenience method for the $wpdb->prepare method
      *
-     * @see WPDB::prepare() for usage details
-     *
      * @since 2.9.6
      *
      * @param string $query
-     * @param mixed ...$args
+     * @param mixed  ...$args
      *
      * @return false|mixed
+     * @see   WPDB::prepare() for usage details
+     *
      */
     public static function prepare($query, ...$args)
     {
@@ -127,7 +127,7 @@ class DB
     /**
      * Create QueryBuilder instance
      *
-     * @param string $table
+     * @param string      $table
      * @param null|string $alias
      *
      * @return QueryBuilder
@@ -209,7 +209,7 @@ class DB
      * If $args are provided, we will assume that dev wants to use DB::prepare method with raw SQL
      *
      * @param string $sql
-     * @param array ...$args
+     * @param array  ...$args
      *
      * @return RawSQL
      */
@@ -244,7 +244,7 @@ class DB
 
         $wpError = self::getQueryErrors($errorCount);
 
-        if (!empty($wpError->errors)) {
+        if ( ! empty($wpError->errors)) {
             throw new DatabaseQueryException($wpdb->last_query, $wpError->errors);
         }
 

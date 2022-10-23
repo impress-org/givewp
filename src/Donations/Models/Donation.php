@@ -24,7 +24,7 @@ use Give\Subscriptions\Models\Subscription;
 /**
  * Class Donation
  *
- * @unreleased add type property; remove parentId property
+ * @since 2.23.0 add type property; remove parentId property
  * @since 2.20.0 update amount type, fee recovered, and exchange rate
  * @since 2.19.6
  *

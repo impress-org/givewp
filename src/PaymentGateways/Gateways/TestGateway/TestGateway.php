@@ -77,7 +77,7 @@ class TestGateway extends PaymentGateway
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 2.23.0
      */
     public function createSubscription(
         Donation $donation,
@@ -91,7 +91,7 @@ class TestGateway extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 2.23.0
      *
      * @inheritDoc
      */

@@ -6,9 +6,9 @@ namespace Give\PaymentGateways\Stripe\DataTransferObjects;
  * Class GetStripeAccountDetailsDto
  * @package Give\PaymentGateways\Stripe\DataTransferObjects
  *
- * @since 2.13.0
+ * @since   2.13.0
  */
-class GetStripeAccountDetailsDto
+final class GetStripeAccountDetailsDto
 {
     /**
      * @var string

@@ -1,0 +1,29 @@
+includes:
+    - vendor/timeweb/phpstan-enum/extension.neon
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon
+
+parameters:
+    level: 0
+    paths:
+        - src/
+    bootstrapFiles:
+        - give.php
+    scanDirectories:
+        - includes/
+    excludePaths:
+        analyse:
+            - src/LegacySubscriptions/includes/ # Scan but do not analyse
+        analyseAndScan:
+            - src/Form/LegacyConsumer/ServiceProvider.php # Needs a closer look
+            - src/Framework/FieldsAPI/Concerns/HasType.php # Trait assumes class constant TYPE, which is defined on each Node class.
+            - src/Framework/Migrations/ # Give\Framework\Migrations\Actions has use of undefined constant MigrationsRunner::MIGRATION_OPTION
+            - src/Framework/PaymentGateways/ # Known use of unsafe static
+            - src/PaymentGateways/Actions/CreateSubscriptionAction/ # phpstan isn't finding inherited constructor for LegacySubscriber
+            - src/TestData/ # Non-production code.
+            - src/Tracking/Events/ThemeTracking.php # Unsure how undefined property $trackId is supposed to be declared or used.
+
+services:
+  -
+    class: Give\PHPStan\Log\StaticFacadeMethodsReflectionExtension
+    tags:
+      - phpstan.broker.methodsClassReflectionExtension

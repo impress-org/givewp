@@ -30,11 +30,12 @@ class Group implements Node, Collection
     const TYPE = 'group';
 
     /**
-     * @since 2.12.0
+     * @since      2.12.0
+     * @unreleased Make constructor final to avoid unsafe usage of `new static()`.
      *
      * @param $name
      */
-    public function __construct($name)
+    final public function __construct($name)
     {
         $this->name = $name;
     }

@@ -273,7 +273,7 @@ class SubscriptionRepository
      * This should only be used when creating a new Subscription with its corresponding Donation. Do not add this value
      * to the Subscription model as it should not be reference moving forward.
      *
-     * @unreleased
+     * @since 2.23.0
      *
      * @return void
      */
@@ -319,7 +319,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased update to no longer rely on parent_payment_id column as it will be deprecated
+     * @since 2.23.0 update to no longer rely on parent_payment_id column as it will be deprecated
      * @since 2.19.6
      *
      * @return int|null

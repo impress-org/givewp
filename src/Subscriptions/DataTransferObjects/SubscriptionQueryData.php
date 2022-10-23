@@ -14,7 +14,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
  *
  * @since 2.19.6
  */
-class SubscriptionQueryData
+final class SubscriptionQueryData
 {
     /**
      * @var int
@@ -93,7 +93,8 @@ class SubscriptionQueryData
         $self->installments = (int)$subscriptionQueryObject->installments;
         $self->transactionId = $subscriptionQueryObject->transactionId;
         $self->amount = Money::fromDecimal($subscriptionQueryObject->amount, $subscriptionQueryObject->currency);
-        $self->feeAmountRecovered = Money::fromDecimal($subscriptionQueryObject->feeAmount, $subscriptionQueryObject->currency);
+        $self->feeAmountRecovered = Money::fromDecimal($subscriptionQueryObject->feeAmount,
+            $subscriptionQueryObject->currency);
         $self->status = new SubscriptionStatus($subscriptionQueryObject->status);
         $self->gatewayId = $subscriptionQueryObject->gatewayId;
         $self->gatewaySubscriptionId = $subscriptionQueryObject->gatewaySubscriptionId;

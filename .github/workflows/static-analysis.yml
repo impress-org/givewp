@@ -1,0 +1,11 @@
+name: Static Analysis
+
+on:
+    push:
+    pull_request:
+    workflow_call: # Allows you to use this workflow as part of another workflow
+    workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+
+jobs:
+    build:
+        uses: impress-org/givewp-github-actions/.github/workflows/static-analysis.yml@master

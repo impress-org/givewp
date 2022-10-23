@@ -22,7 +22,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 /**
  * Class Subscription
  *
- * @unreleased added the renewsAt property
+ * @since 2.23.0 added the renewsAt property
  * @since 2.19.6
  *
  * @property int $id
@@ -148,7 +148,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     /**
      * Returns the donation that began the subscription.
      *
-     * @unreleased
+     * @since 2.23.0
      */
     public function initialDonation(): Donation
     {

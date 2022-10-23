@@ -15,7 +15,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
  * Generates the next renewal date for a subscription. A base date may be provided, otherwise it will default to the
  * current date.
  *
- * @unreleased
+ * @since 2.23.0
  */
 class GenerateNextRenewalForSubscription
 {

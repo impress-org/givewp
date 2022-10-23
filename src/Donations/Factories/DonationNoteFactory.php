@@ -7,7 +7,7 @@ use Give\Framework\Models\Factories\ModelFactory;
 class DonationNoteFactory extends ModelFactory
 {
     /**
-     * @unreleased add array return type
+     * @since 2.23.0 add array return type
      * @since 2.21.0
      */
     public function definition(): array

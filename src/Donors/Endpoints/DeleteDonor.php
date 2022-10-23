@@ -34,7 +34,7 @@ class DeleteDonor extends Endpoint
                         'required' => true,
                         'validate_callback' => function ($ids) {
                             foreach ($this->splitString($ids) as $id) {
-                                if (!$this->validateInt($id)) {
+                                if ( ! $this->validateInt($id)) {
                                     return false;
                                 }
                             }
@@ -45,23 +45,24 @@ class DeleteDonor extends Endpoint
                     'deleteDonationsAndRecords' => [
                         'type' => 'boolean',
                         'required' => 'false',
-                        'default' => 'false'
-                    ]
+                        'default' => 'false',
+                    ],
                 ],
             ]
         );
     }
 
     /**
-     * @param WP_REST_Request $request
+     * @since      2.20.0
+     * @unreleased Cast `$ids` as integers.
      *
-     * @since 2.20.0
+     * @param WP_REST_Request $request
      *
      * @return WP_REST_Response
      */
     public function handleRequest(WP_REST_Request $request)
     {
-        $ids = $this->splitString($request->get_param('ids'));
+        $ids = array_map('intval', $this->splitString($request->get_param('ids')));
         $delete_donation = $request->get_param('deleteDonationsAndRecords');
         $errors = $successes = [];
 
@@ -70,21 +71,20 @@ class DeleteDonor extends Endpoint
                 /**
                  * Fires before deleting donor.
                  *
-                 * @param int  $donor_id     The ID of the donor.
-                 * @param bool $delete_donor Confirm Donor Deletion.
-                 * @param bool $delete_donation  Confirm Donor related donations deletion.
-                 *
                  * @since 2.20.0
+                 *
+                 * @param int  $donor_id        The ID of the donor.
+                 * @param bool $delete_donor    Confirm Donor Deletion.
+                 * @param bool $delete_donation Confirm Donor related donations deletion.
                  */
-                do_action( 'give_pre_delete_donor', $id, true, $delete_donation );
+                do_action('give_pre_delete_donor', $id, true, $delete_donation);
                 $donor = Donor::find($id);
                 if ($delete_donation) {
-                    foreach( $donor->donations as $donation ) {
+                    foreach ($donor->donations as $donation) {
                         $donation->delete();
                     }
-                }
-                else {
-                    give_update_payment_meta( $id, '_give_payment_donor_id', 0 );
+                } else {
+                    give_update_payment_meta($id, '_give_payment_donor_id', 0);
                 }
                 $donor->delete();
                 $successes[] = $id;
@@ -95,7 +95,7 @@ class DeleteDonor extends Endpoint
 
         return new WP_REST_Response([
             'errors' => $errors,
-            'successes' => $successes
+            'successes' => $successes,
         ]);
     }
 
@@ -103,8 +103,9 @@ class DeleteDonor extends Endpoint
     /**
      * Split string
      *
-     * @param string $ids
      * @since 2.20.0
+     *
+     * @param string $ids
      *
      * @return string[]
      */

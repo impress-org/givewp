@@ -9,7 +9,7 @@ namespace Give\PaymentGateways\DataTransferObjects;
  *
  * @since 2.18.0
  */
-class GiveInsertPaymentData
+final class GiveInsertPaymentData
 {
     /**
      * @var float

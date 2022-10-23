@@ -10,7 +10,7 @@ use Give\FormAPI\Section;
  * @package Give\Form\Template
  * @since   2.7.0
  */
-class Options
+final class Options
 {
     /**
      * Theme Options

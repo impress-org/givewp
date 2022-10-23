@@ -11,6 +11,10 @@ use Give\Receipt\DonationReceipt;
  */
 class SetupFieldReceipt
 {
+    /**
+     * @var DonationReceipt
+     */
+    protected $receipt;
 
     /**
      * @since 2.10.2

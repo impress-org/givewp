@@ -15,7 +15,7 @@ use Give\ValueObjects\DonorInfo;
  * Class FormData
  * @since 2.18.0
  */
-class FormData
+final class FormData
 {
     /**
      * @var float
@@ -141,8 +141,8 @@ class FormData
             'firstName' => $request['user_info']['first_name'],
             'lastName' => $request['user_info']['last_name'],
             'email' => $request['user_info']['email'],
-            'honorific' => !empty($request['user_info']['title']) ? $request['user_info']['title'] : '',
-            'address' => $request['user_info']['address']
+            'honorific' => ! empty($request['user_info']['title']) ? $request['user_info']['title'] : '',
+            'address' => $request['user_info']['address'],
         ]);
         $self->cardInfo = CardInfo::fromArray([
             'name' => $request['card_info']['card_name'],
@@ -192,7 +192,7 @@ class FormData
                 'state' => $this->billingAddress->state,
                 'zip' => $this->billingAddress->postalCode,
                 'address1' => $this->billingAddress->line1,
-                'address2' => $this->billingAddress->line2
+                'address2' => $this->billingAddress->line2,
             ]),
             'levelId' => $this->priceId,
             'anonymous' => $this->anonymous,
