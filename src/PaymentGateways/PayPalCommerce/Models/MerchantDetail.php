@@ -8,9 +8,9 @@ use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
  * Class MerchantDetail
  * @package Give\PaymentGateways\PayPalCommerce
  *
- * @since 2.9.0
+ * @since   2.9.0
  */
-class MerchantDetail
+final class MerchantDetail
 {
     /**
      * PayPal merchant Id  (email address)

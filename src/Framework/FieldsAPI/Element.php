@@ -18,11 +18,12 @@ abstract class Element implements Node
     use Concerns\TapNode;
 
     /**
-     * @since 2.12.0
+     * @since      2.12.0
+     * @unreleased Make constructor final to avoid unsafe usage of `new static()`.
      *
      * @param string $name
      */
-    public function __construct($name)
+    final public function __construct($name)
     {
         $this->name = $name;
     }

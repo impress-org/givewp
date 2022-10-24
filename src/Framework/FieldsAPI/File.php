@@ -8,7 +8,8 @@ use function wp_max_upload_size;
 /**
  * A file upload field.
  *
- * @since 2.12.0
+ * @since      2.12.0
+ * @unreleased Moved default rule values inline since inherited constructor is final.
  */
 class File extends Field
 {
@@ -22,20 +23,6 @@ class File extends Field
     use Concerns\AllowMultiple;
 
     const TYPE = 'file';
-
-    /**
-     * @since 2.16.0 File size unit is bytes, so no need to convert WordPress max file upload size to kilo bytes.
-     *
-     * @param string $name
-     *
-     */
-    public function __construct($name)
-    {
-        parent::__construct($name);
-
-        $this->validationRules->rule('maxSize', wp_max_upload_size()); // in bytes
-        $this->validationRules->rule('allowedTypes', get_allowed_mime_types());
-    }
 
     /**
      * Set the maximum file size.
@@ -58,7 +45,7 @@ class File extends Field
      */
     public function getMaxSize()
     {
-        return $this->validationRules->getRule('maxSize');
+        return $this->validationRules->getRule('maxSize') || wp_max_upload_size();
     }
 
     /**
@@ -82,6 +69,6 @@ class File extends Field
      */
     public function getAllowedTypes()
     {
-        return $this->validationRules->getRule('allowedTypes');
+        return $this->validationRules->getRule('allowedTypes') || get_allowed_mime_types();
     }
 }

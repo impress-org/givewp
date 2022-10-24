@@ -10,7 +10,7 @@ use Give\Helpers\Date;
  *
  * @since 2.20.0
  */
-class DonorResponseData implements Arrayable
+final class DonorResponseData implements Arrayable
 {
     /**
      * @var int
@@ -69,9 +69,9 @@ class DonorResponseData implements Arrayable
     /**
      * Convert data from object to Donor
      *
-     * @param object $donor
-     *
      * @since 2.20.0
+     *
+     * @param object $donor
      *
      * @return self
      */
@@ -108,8 +108,9 @@ class DonorResponseData implements Arrayable
     }
 
     /**
-     * @param string $amount
      * @since 2.20.0
+     *
+     * @param string $amount
      *
      * @return string
      */

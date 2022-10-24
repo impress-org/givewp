@@ -12,6 +12,7 @@ use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Helpers\Call;
 use Give\Helpers\Gateways\Stripe;
 use Give\PaymentGateways\Gateways\Stripe\Exceptions\CheckoutException;
+use Give\PaymentGateways\Gateways\Stripe\Exceptions\CheckoutTypeException;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
 
 /**
@@ -104,18 +105,22 @@ class CheckoutGateway extends PaymentGateway
     /**
      * @inheritDoc
      *
+     * @unreleased
+     *
      * @return string|void
      */
     public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
         Stripe::canShowBillingAddress($formId, $args);
 
-        switch (give_stripe_get_checkout_type()) {
-            case 'modal':
-                return $this->getCheckoutInstructions()
-                    . $this->getCheckoutModalHTML($formId, $args);
+        switch ($checkoutType = give_stripe_get_checkout_type()) {
             case 'redirect':
                 return $this->getCheckoutInstructions();
+            case 'modal':
+                return $this->getCheckoutInstructions()
+                       . $this->getCheckoutModalHTML($formId, $args);
+            default:
+                throw new CheckoutTypeException($checkoutType);
         }
     }
 

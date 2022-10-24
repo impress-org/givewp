@@ -18,7 +18,7 @@ use Give\Framework\Support\ValueObjects\Money;
  * @since 2.23.0 remove parentId property
  * @since 2.19.6
  */
-class DonationQueryData
+final class DonationQueryData
 {
     /**
      * @var Money

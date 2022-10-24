@@ -2,7 +2,8 @@
 
 namespace Give\Donations\Properties;
 
-class BillingAddress {
+final class BillingAddress
+{
     /**
      * @var string
      */
@@ -32,9 +33,11 @@ class BillingAddress {
      * @since 2.19.6
      *
      * @param array $array
+     *
      * @return BillingAddress
      */
-    public static function fromArray($array){
+    public static function fromArray($array)
+    {
         $self = new static();
 
         $self->country = $array['country'];
