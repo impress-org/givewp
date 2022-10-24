@@ -537,6 +537,7 @@ class DonationRepository
     }
 
     /**
+     * @unreleased Fixed order by property, see https://github.com/impress-org/givewp/pull/6559
      * @since 2.21.2
      *
      * @return Donation|null
@@ -549,6 +550,7 @@ class DonationRepository
     }
 
     /**
+     * @unreleased Fixed order by property, see https://github.com/impress-org/givewp/pull/6559
      * @since 2.21.2
      *
      * @return Donation|null
