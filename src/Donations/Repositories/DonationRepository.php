@@ -544,7 +544,7 @@ class DonationRepository
     public function getFirstDonation() {
         return $this->prepareQuery()
             ->limit(1)
-            ->orderBy('post_date', 'DESC')
+            ->orderBy('post_date', 'ASC')
             ->get();
     }
 
@@ -556,7 +556,7 @@ class DonationRepository
     public function getLatestDonation() {
         return $this->prepareQuery()
             ->limit(1)
-            ->orderBy('post_date', 'ASC')
+            ->orderBy('post_date', 'DESC')
             ->get();
     }
 }

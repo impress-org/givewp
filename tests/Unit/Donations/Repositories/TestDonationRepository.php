@@ -2,6 +2,7 @@
 
 namespace GiveTests\Unit\Donations\Repositories;
 
+use DateTime;
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationRepository;
@@ -211,5 +212,25 @@ final class TestDonationRepository extends TestCase
 
         $this->assertNull($donationQuery);
         $this->assertEmpty($donationCoreMetaQuery);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     *
+     * @throws Exception
+     */
+    public function testFirstDonationLatestDonationSortOrder()
+    {
+        $this->refreshDatabase();
+        Donation::factory()->create(['createdAt' => new DateTime('2022-10-20 00:00:00')]);
+        Donation::factory()->create(['createdAt' => new DateTime('2022-10-21 00:00:00')]);
+
+        $repository = new DonationRepository();
+        $firstDonationId = $repository->getFirstDonation()->id;
+        $lastDonationId = $repository->getLatestDonation()->id;
+
+        $this->assertGreaterThan($firstDonationId, $lastDonationId);
     }
 }
