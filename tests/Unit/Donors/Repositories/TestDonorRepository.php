@@ -120,23 +120,14 @@ class TestDonorRepository extends TestCase
         $repository->update($donor);
 
         /** @var object $query */
-        $query = DB::table('give_donors')
-            ->select('*')
-            ->attachMeta(
-                'give_donormeta',
-                'ID',
-                'donor_id',
-                ['_give_donor_first_name', 'firstName'],
-                ['_give_donor_last_name', 'lastName'],
-                ['additional_email', 'additionalEmails', true]
-            )
+        $query = $repository->prepareQuery()
             ->where('id', $donor->id)
             ->get();
 
         // assert updated values from the database
         $this->assertEquals("Chris", $query->firstName);
         $this->assertEquals("Farley", $query->lastName);
-        $this->assertEquals($donor->additionalEmails, json_decode($query->additionalEmails, true));
+        $this->assertEquals($donor->additionalEmails, $query->additionalEmails);
     }
 
     /**
