@@ -24,7 +24,7 @@ final class TestDonationRepository extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -42,7 +42,7 @@ final class TestDonationRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -63,7 +63,7 @@ final class TestDonationRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -89,7 +89,7 @@ final class TestDonationRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -118,7 +118,7 @@ final class TestDonationRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -144,7 +144,8 @@ final class TestDonationRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @unreleased add company to test to catch cases where missing meta was not updated
+     * @since 2.19.6
      *
      * @return void
      *
@@ -185,7 +186,7 @@ final class TestDonationRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -217,7 +218,7 @@ final class TestDonationRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *

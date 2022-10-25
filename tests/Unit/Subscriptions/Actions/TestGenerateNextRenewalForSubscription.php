@@ -11,14 +11,14 @@ use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use GiveTests\TestCase;
 
 /**
- * @unreleased
+ * @since 2.19.6
  *
  * @coversDefaultClass GenerateNextRenewalForSubscription
  */
 class TestGenerateNextRenewalForSubscription extends TestCase
 {
     /**
-     * @unreleased
+     * @since 2.19.6
      */
     public function testShouldGenerateDateWithoutBaseDate()
     {
@@ -36,7 +36,7 @@ class TestGenerateNextRenewalForSubscription extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      */
     public function testShouldGenerateDateWithBaseDate()
     {
@@ -55,7 +55,7 @@ class TestGenerateNextRenewalForSubscription extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      */
     public function testShouldGenerateDateWithQuarterPeriod()
     {

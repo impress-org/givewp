@@ -12,7 +12,7 @@ use GiveTests\TestCase;
 use GiveTests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 2.19.6
  *
  * @coversDefaultClass SubscriptionRepository
  */
@@ -21,7 +21,7 @@ class TestDonorRepository extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -46,7 +46,7 @@ class TestDonorRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -79,7 +79,7 @@ class TestDonorRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -101,7 +101,7 @@ class TestDonorRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -131,7 +131,7 @@ class TestDonorRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -153,7 +153,7 @@ class TestDonorRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
