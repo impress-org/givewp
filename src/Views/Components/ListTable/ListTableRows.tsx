@@ -2,9 +2,9 @@ import styles from './ListTableRows.module.scss';
 import {__} from '@wordpress/i18n';
 import cx from 'classnames';
 import {useEffect, useState} from 'react';
-import TableCell, {IdBadge, StatusBadge} from "./TableCell";
-import TestLabel from "@givewp/components/ListTable/TestLabel";
-import {BulkActionCheckbox} from "@givewp/components/ListTable/BulkActionCheckbox";
+import TableCell, {IdBadge, StatusBadge} from './TableCell';
+import TestLabel from '@givewp/components/ListTable/TestLabel';
+import {BulkActionCheckbox} from '@givewp/components/ListTable/BulkActionCheckbox';
 
 const postStatusMap = {
     publish: __('published', 'give'),
@@ -14,7 +14,7 @@ const postStatusMap = {
     trash: __('trash', 'give'),
     inherit: __('inherit', 'give'),
     private: __('private', 'give'),
-}
+};
 
 const donationStatusMap = {
     publish: __('complete', 'give'),
@@ -27,51 +27,46 @@ const donationStatusMap = {
     processing: __('processing', 'give'),
     revoked: __('revoked', 'give'),
     give_subscription: __('renewal', 'give'),
-}
+};
 
-const RenderRow = ({ column, item }) => {
+const RenderRow = ({column, item}) => {
     let value = item?.[column.name];
-    if(value === undefined){
+    if (value === undefined) {
         value = null;
     }
-    switch(column?.preset){
+    switch (column?.preset) {
         case 'idBadge':
-            return (
-                <IdBadge key={column.name} id={value}/>
-            );
+            return <IdBadge key={column.name} id={value} />;
         case 'statusBadge':
-            return (
-                <StatusBadge key={column.name} className={styles[value]}
-                             text={value}
-                />
-            );
+            return <StatusBadge key={column.name} className={styles[value]} text={value} />;
         case 'postStatus':
-            return (
-                <StatusBadge key={column.name} className={styles[value]}
-                             text={postStatusMap[value]}
-                />
-            );
+            return <StatusBadge key={column.name} className={styles[value]} text={postStatusMap[value]} />;
         case 'donationStatus':
             return (
                 <div className={styles.donationStatus}>
-                    <StatusBadge key={column.name} className={styles[value]}
-                                 text={donationStatusMap[value]}
-                    />
-                    {(item.paymentMode === 'test') && <TestLabel/>}
+                    <StatusBadge key={column.name} className={styles[value]} text={donationStatusMap[value]} />
+                    {item.paymentMode === 'test' && <TestLabel />}
                 </div>
             );
         case 'monetary':
-            return (
-                <strong className={styles.monetary}>{value}</strong>
-            );
+            return <strong className={styles.monetary}>{value}</strong>;
         default:
-            if(column?.render instanceof Function) return column.render(item);
-            if(value === '' || value === null) return '-';
+            if (column?.render instanceof Function) return column.render(item);
+            if (value === '' || value === null) return '-';
             return value;
     }
-}
+};
 
-export default function ListTableRows({columns, data, isLoading, rowActions, setUpdateErrors, parameters, singleName, align}) {
+export default function ListTableRows({
+    columns,
+    data,
+    isLoading,
+    rowActions,
+    setUpdateErrors,
+    parameters,
+    singleName,
+    align,
+}) {
     const [removed, setRemoved] = useState([]);
     const [added, setAdded] = useState([]);
 
@@ -99,7 +94,7 @@ export default function ListTableRows({columns, data, isLoading, rowActions, set
             setRemoved([id]);
             await removeCallback(id);
             setRemoved([]);
-        }
+        };
     }
 
     function addRow(addCallback) {
@@ -107,14 +102,14 @@ export default function ListTableRows({columns, data, isLoading, rowActions, set
             const id = event.target.dataset.actionid;
             const addedItem = await addCallback(id);
             setAdded([...addedItem.successes]);
-        }
+        };
     }
 
-    if(!data?.items) {
+    if (!data) {
         return null;
     }
 
-    return data.items.map((item) => (
+    return data.map((item) => (
         <tr
             key={item.id}
             className={cx(styles.tableRow, {
@@ -123,23 +118,26 @@ export default function ListTableRows({columns, data, isLoading, rowActions, set
             })}
         >
             <TableCell>
-                <BulkActionCheckbox id={item.id} name={item?.name} singleName={singleName}/>
+                <BulkActionCheckbox id={item.id} name={item?.name} singleName={singleName} />
             </TableCell>
             <>
                 {columns.map((column) => (
-                    <TableCell key={column.name} className={cx(column?.addClass,
-                        {
-                            [styles[align]]: !(column?.alignColumn),
+                    <TableCell
+                        key={column.name}
+                        className={cx(column?.addClass, {
+                            [styles[align]]: !column?.alignColumn,
                             [styles.center]: column?.alignColumn === 'center',
                             [styles.start]: column?.alignColumn === 'start',
-                        }
-                    )} heading={column?.heading}>
-                        <RenderRow column={column} item={item}/>
-                        {!isLoading && rowActions &&
+                        })}
+                        heading={column?.heading}
+                    >
+                        <RenderRow column={column} item={item} />
+                        {!isLoading && rowActions && (
                             <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
-                                {column?.heading && rowActions({data, item, removeRow, addRow, setUpdateErrors, parameters})}
+                                {column?.heading &&
+                                    rowActions({data, item, removeRow, addRow, setUpdateErrors, parameters})}
                             </div>
-                        }
+                        )}
                     </TableCell>
                 ))}
             </>
