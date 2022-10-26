@@ -5,7 +5,8 @@ import cx from 'classnames';
 import styles from './ListTable.module.scss';
 import ListTableRows from './ListTableRows';
 import {Spinner} from '../index';
-import {BulkActionCheckboxAll} from "@givewp/components/ListTable/BulkActionCheckbox";
+import {BulkActionCheckboxAll} from '@givewp/components/ListTable/BulkActionCheckbox';
+import TableSort from '@givewp/components/ListTable/TableSort';
 
 export interface ListTableProps {
     //required
@@ -16,11 +17,11 @@ export interface ListTableProps {
     //optional
     pluralName?: string;
     singleName?: string;
-    rowActions?: (({item, data, addRow, removeRow}) => JSX.Element)|JSX.Element|JSX.Element[]|Function|null;
+    rowActions?: (({item, data, addRow, removeRow}) => JSX.Element) | JSX.Element | JSX.Element[] | Function | null;
     parameters?: {};
-    error?: {}|Boolean;
+    error?: {} | Boolean;
     isLoading?: Boolean;
-    align?: 'start'|'center'|'end';
+    align?: 'start' | 'center' | 'end';
 }
 
 export interface ListTableColumn {
@@ -32,39 +33,51 @@ export interface ListTableColumn {
     inlineSize?: string;
     preset?: string;
     heading?: boolean;
-    alignColumn?: 'start'|'center'|'end';
+    alignColumn?: 'start' | 'center' | 'end';
     addClass?: string;
-    render?: ((item: {}) => JSX.Element)|JSX.Element|JSX.Element[]|null;
+    render?: ((item: {}) => JSX.Element) | JSX.Element | JSX.Element[] | null;
 }
 
 export const ListTable = ({
-        columns,
-        singleName = __('item', 'give'),
-        pluralName = __('items', 'give'),
-        title,
-        data,
-        rowActions = null,
-        parameters = {},
-        error = false,
-        isLoading = false,
-        align = 'start',
+    columns,
+    singleName = __('item', 'give'),
+    pluralName = __('items', 'give'),
+    title,
+    data,
+    rowActions = null,
+    parameters = {},
+    error = false,
+    isLoading = false,
+    align = 'start',
 }: ListTableProps) => {
-    const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>, successes: Array<number>}>({errors: [], successes: []});
-    const [errorOverlay, setErrorOverlay] = useState<string|boolean>(false);
+    const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>; successes: Array<number>}>({
+        errors: [],
+        successes: [],
+    });
+    const [errorOverlay, setErrorOverlay] = useState<string | boolean>(false);
     const [initialLoad, setInitialLoad] = useState<boolean>(true);
-    const [loadingOverlay, setLoadingOverlay] = useState<string|boolean>(false);
+    const [loadingOverlay, setLoadingOverlay] = useState<string | boolean>(false);
     const [overlayWidth, setOverlayWidth] = useState(0);
-    const tableRef = useRef<null|HTMLTableElement>();
+    const [sortedData, setSortedData] = useState<Array<object>>([{}]);
+    const [sortingInfo, setSortingInfo] = useState<{sortColumn: string; sortDirection: string}>({
+        sortColumn: '',
+        sortDirection: '',
+    });
+
+    const tableRef = useRef<null | HTMLTableElement>();
     const isEmpty = !error && data?.items.length === 0;
+    const {sortColumn, sortDirection} = sortingInfo;
 
     useEffect(() => {
         initialLoad && data && setInitialLoad(false);
+        //@unreleased updated to set data to sorted state on load.
+        setSortedData(data.items);
     }, [data]);
 
     useEffect(() => {
         if (isLoading) {
             // we need to set the overlay width in JS because tables only respect 'position: relative' in FireFox
-            if(tableRef.current){
+            if (tableRef.current) {
                 setOverlayWidth(tableRef.current.getBoundingClientRect().width);
             }
             setLoadingOverlay(styles.appear);
@@ -92,24 +105,65 @@ export const ListTable = ({
         return () => clearTimeout(timeoutId);
     }, [updateErrors.errors]);
 
+    //@unreleased handle sorting when direction or column updates
+    useEffect(() => {
+        //ToDo post sortColumn & sortDirection to endpoint
+        handleSort(sortColumn, sortDirection, data);
+    }, [sortColumn, sortDirection]);
+
     const clearUpdateErrors = () => {
-        setUpdateErrors({errors: [], successes: []})
-    }
+        setUpdateErrors({errors: [], successes: []});
+    };
+
+    //@unreleased declare function to set column and direction for db & sorting.
+    const setSortDirectionForColumn = (column, direction) => {
+        setSortingInfo((previousState) => {
+            return {
+                ...previousState,
+                sortColumn: column,
+                sortDirection: direction,
+            };
+        });
+    };
+
+    //@unreleased sort data based on type and direction.
+    const handleSort = (sortColumn, sortDirection, data) => {
+        if (sortDirection === 'asc') {
+            if (sortColumn === 'createdAt') {
+                //ToDo Fix sorting by date -----
+                return setSortedData([...data?.items].sort((a, b) => a[sortColumn] - b[sortColumn]));
+            } else {
+                return setSortedData(
+                    [...data?.items].sort((a, b) =>
+                        a[sortColumn]?.toString().localeCompare(b[sortColumn]?.toString(), {
+                            numeric: a[sortColumn] !== isNaN,
+                        })
+                    )
+                );
+            }
+        } else if (sortDirection === 'desc') {
+            if (sortColumn === 'createdAt') {
+                //ToDo Fix sorting by date -----
+                return setSortedData([...data?.items].sort((a, b) => b[sortColumn] - a[sortColumn]));
+            } else {
+                return setSortedData(
+                    [...data?.items].sort((a, b) =>
+                        b[sortColumn]?.toString().localeCompare(a[sortColumn]?.toString(), {
+                            numeric: b[sortColumn] !== isNaN,
+                        })
+                    )
+                );
+            }
+        }
+    };
 
     return (
         <>
-
-            {( initialLoad && !error ) ? (
+            {initialLoad && !error ? (
                 <div className={styles.initialLoad}>
-                    <div
-                        role="dialog"
-                        aria-labelledby="giveListTableLoadingMessage"
-                        className={cx(styles.tableGroup)}
-                    >
+                    <div role="dialog" aria-labelledby="giveListTableLoadingMessage" className={cx(styles.tableGroup)}>
                         <Spinner size={'large'} />
-                        <h2 id="giveListTableLoadingMessage">
-                            {sprintf(__('Loading %s', 'give'), pluralName)}
-                        </h2>
+                        <h2 id="giveListTableLoadingMessage">{sprintf(__('Loading %s', 'give'), pluralName)}</h2>
                     </div>
                 </div>
             ) : (
@@ -121,7 +175,10 @@ export const ListTable = ({
                     tabIndex={0}
                 >
                     {loadingOverlay && (
-                        <div className={cx(styles.overlay, loadingOverlay)} style={{width: overlayWidth && overlayWidth + 'px'}}>
+                        <div
+                            className={cx(styles.overlay, loadingOverlay)}
+                            style={{width: overlayWidth && overlayWidth + 'px'}}
+                        >
                             <Spinner size={'medium'} />
                         </div>
                     )}
@@ -135,36 +192,43 @@ export const ListTable = ({
                                     scope="col"
                                     aria-sort="none"
                                     className={cx(styles.tableColumnHeader, styles.selectAll)}
-                                    data-column='select'
+                                    data-column="select"
                                 >
-                                    <BulkActionCheckboxAll pluralName={pluralName} data={data}/>
+                                    <BulkActionCheckboxAll pluralName={pluralName} data={data} />
                                 </th>
                                 <>
-                                    {columns.map(column =>
+                                    {columns.map((column) => (
                                         <th
                                             scope="col"
                                             aria-sort="none"
-                                            className={cx(styles.tableColumnHeader,
-                                                {
-                                                    [styles[align]]: !column?.alignColumn,
-                                                    [styles.center]: column?.alignColumn === 'center',
-                                                    [styles.start]: column?.alignColumn === 'start',
-                                                }
-                                            )}
+                                            className={cx(styles.tableColumnHeader, {
+                                                [styles[align]]: !column?.alignColumn,
+                                                [styles.center]: column?.alignColumn === 'center',
+                                                [styles.start]: column?.alignColumn === 'start',
+                                            })}
                                             data-column={column.name}
                                             key={column.name}
-                                            style={{inlineSize: (column?.inlineSize || '8rem')}}
+                                            style={{inlineSize: column?.inlineSize || '8rem'}}
                                         >
-                                            {column.text}
+                                            <div className={styles.wrapper}>
+                                                {column.text}
+                                                {/*{@unreleased new Table Sorting component.}*/}
+                                                <TableSort
+                                                    column={column}
+                                                    setSortDirectionForColumn={setSortDirectionForColumn}
+                                                    sortingInfo={sortingInfo}
+                                                />
+                                            </div>
                                         </th>
-                                    )}
+                                    ))}
                                 </>
                             </tr>
                         </thead>
                         <tbody className={styles.tableContent}>
                             <ListTableRows
                                 columns={columns}
-                                data={data}
+                                //@unreleased updated to pass sorted data.
+                                data={sortedData}
                                 isLoading={isLoading}
                                 singleName={singleName}
                                 rowActions={rowActions}
@@ -176,14 +240,11 @@ export const ListTable = ({
                     </table>
                     {errorOverlay && (
                         <div className={cx(styles.overlay, errorOverlay)}>
-                            <div
-                                id={styles.updateError}
-                                role="dialog"
-                                aria-labelledby="giveListTableErrorMessage"
-                            >
+                            <div id={styles.updateError} role="dialog" aria-labelledby="giveListTableErrorMessage">
                                 {Boolean(updateErrors.successes.length) && (
                                     <span>
-                                        {updateErrors.successes.length + ' ' +
+                                        {updateErrors.successes.length +
+                                            ' ' +
                                             // translators:
                                             // Like '1 item was updated successfully'
                                             // or '3 items were updated successfully'
@@ -192,8 +253,7 @@ export const ListTable = ({
                                                 sprintf('%s were updated successfully.', pluralName),
                                                 updateErrors.successes.length,
                                                 'give'
-                                            )
-                                        }
+                                            )}
                                     </span>
                                 )}
                                 <span id="giveListTableErrorMessage">
@@ -218,17 +278,19 @@ export const ListTable = ({
                     )}
                     <div id="giveListTableMessage">
                         {isEmpty && (
-                            <div role='status' className={styles.statusMessage}>
+                            <div role="status" className={styles.statusMessage}>
                                 {sprintf(__('No %s found.', 'give'), pluralName)}
                             </div>
                         )}
                         {error && (
                             <>
-                                <div role='alert' className={styles.statusMessage}>
+                                <div role="alert" className={styles.statusMessage}>
                                     {sprintf(__('There was a problem retrieving the %s.', 'give'), pluralName)}
                                 </div>
                                 <div className={styles.statusMessage}>
-                                    <a href={window.location.href.toString()}>{__('Click here to reload the page.', 'give')}</a>
+                                    <a href={window.location.href.toString()}>
+                                        {__('Click here to reload the page.', 'give')}
+                                    </a>
                                 </div>
                             </>
                         )}
@@ -237,4 +299,4 @@ export const ListTable = ({
             )}
         </>
     );
-}
+};
