@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Give\Donations\DonationsListTable\Columns;
+namespace Give\Donations\ListTable\Columns;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\ListTable\ModelColumn;

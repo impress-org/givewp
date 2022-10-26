@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Donations;
+namespace Give\Donations\ListTable;
 
 use Give\Framework\ListTable\Column;
 use Give\Framework\ListTable\ListTable;

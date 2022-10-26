@@ -2,7 +2,7 @@
 
 namespace unit\tests\Framework\ListTable;
 
-use Give\Donations\DonationsListTable;
+use Give\Donations\ListTable\DonationsListTable;
 use Give\Framework\ListTable\Column;
 use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
 use Give\Framework\ListTable\Exceptions\ReferenceColumnNotFoundException;

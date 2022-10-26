@@ -4,7 +4,7 @@ namespace Give\Donations\Endpoints;
 
 use Give\Donations\Controllers\DonationsRequestController;
 use Give\Donations\DataTransferObjects\DonationResponseData;
-use Give\Donations\DonationsListTable;
+use Give\Donations\ListTable\DonationsListTable;
 use WP_REST_Request;
 use WP_REST_Response;
 

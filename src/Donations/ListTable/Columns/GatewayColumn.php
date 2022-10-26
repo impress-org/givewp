@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Give\Donations\DonationsListTable\Columns;
+namespace Give\Donations\ListTable\Columns;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\ListTable\ModelColumn;
@@ -10,14 +10,16 @@ use Give\Framework\ListTable\ModelColumn;
 /**
  * @extends ModelColumn<Donation>
  */
-class PaymentTypeColumn extends ModelColumn
+class GatewayColumn extends ModelColumn
 {
+    public $sortColumn = 'gateway';
+
     /**
      * @inheritDoc
      */
     public function getId(): string
     {
-        return 'payment_type';
+        return 'gateway';
     }
 
     /**
@@ -25,7 +27,7 @@ class PaymentTypeColumn extends ModelColumn
      */
     public function getLabel(): string
     {
-        return __('Payment Type', 'give');
+        return __('Gateway', 'give');
     }
 
     /**
@@ -35,14 +37,6 @@ class PaymentTypeColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        if ( $model->startsSubscription ) {
-            return 'subscription';
-        }
-
-        if ( $model->subscriptionId || $model->status->isRenewal()) {
-            return 'renewal';
-        }
-
-        return 'single';
+        return give_get_gateway_admin_label($model->gatewayId);
     }
 }

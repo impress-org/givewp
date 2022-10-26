@@ -2,26 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Give\Donations\DonationsListTable\Columns;
+namespace Give\Donations\ListTable\Columns;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\ListTable\ModelColumn;
 
-use function Give\Donations\Admin\DonationsList\Columns\__;
-
 /**
  * @extends ModelColumn<Donation>
  */
-class IdColumn extends ModelColumn
+class FormColumn extends ModelColumn
 {
-    public $sortColumn = 'id';
+    public $sortColumn = 'formTitle';
 
     /**
      * @inheritDoc
      */
     public function getId(): string
     {
-        return 'id';
+        return 'form';
     }
 
     /**
@@ -29,7 +27,7 @@ class IdColumn extends ModelColumn
      */
     public function getLabel(): string
     {
-        return __('ID', 'give');
+        return __('Donation Form', 'give');
     }
 
     /**
@@ -37,8 +35,8 @@ class IdColumn extends ModelColumn
      *
      * @param Donation $model
      */
-    public function getCellValue($model): int
+    public function getCellValue($model): string
     {
-        return $model->id;
+        return $model->formTitle;
     }
 }

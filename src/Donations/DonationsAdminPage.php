@@ -2,6 +2,7 @@
 
 namespace Give\Donations;
 
+use Give\Donations\ListTable\DonationsListTable;
 use Give\Helpers\EnqueueScript;
 use WP_REST_Request;
 

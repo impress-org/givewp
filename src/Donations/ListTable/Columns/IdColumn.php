@@ -2,25 +2,26 @@
 
 declare(strict_types=1);
 
-namespace Give\Donations\DonationsListTable\Columns;
+namespace Give\Donations\ListTable\Columns;
 
-use DateTime;
 use Give\Donations\Models\Donation;
 use Give\Framework\ListTable\ModelColumn;
+
+use function Give\Donations\Admin\DonationsList\Columns\__;
 
 /**
  * @extends ModelColumn<Donation>
  */
-class CreatedAtColumn extends ModelColumn
+class IdColumn extends ModelColumn
 {
-    public $sortColumn = 'createdAt';
+    public $sortColumn = 'id';
 
     /**
      * @inheritDoc
      */
     public function getId(): string
     {
-        return 'createdAt';
+        return 'id';
     }
 
     /**
@@ -28,7 +29,7 @@ class CreatedAtColumn extends ModelColumn
      */
     public function getLabel(): string
     {
-        return __('Created At', 'give');
+        return __('ID', 'give');
     }
 
     /**
@@ -36,8 +37,8 @@ class CreatedAtColumn extends ModelColumn
      *
      * @param Donation $model
      */
-    public function getCellValue($model): DateTime
+    public function getCellValue($model): int
     {
-        return $model->createdAt;
+        return $model->id;
     }
 }
