@@ -10,7 +10,7 @@ use GiveTests\TestCase;
 use GiveTests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 2.19.6
  *
  * @coversDefaultClass \Give\Subscriptions\Models\Subscription
  */
@@ -19,7 +19,7 @@ class TestDonor extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *

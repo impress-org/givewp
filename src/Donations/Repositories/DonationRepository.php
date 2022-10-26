@@ -230,6 +230,7 @@ class DonationRepository
     }
 
     /**
+     * @unreleased Use give_update_meta() method to update entries on give_donationmeta table
      * @since 2.23.0 retrieve the post_parent instead of relying on parentId property
      * @since 2.21.0 replace actions with givewp_donation_updating and givewp_donation_updated
      * @since 2.20.0 return void
@@ -261,12 +262,7 @@ class DonationRepository
                 ]);
 
             foreach ($this->getCoreDonationMetaForDatabase($donation) as $metaKey => $metaValue) {
-                DB::table('give_donationmeta')
-                    ->where('donation_id', $donation->id)
-                    ->where('meta_key', $metaKey)
-                    ->update([
-                        'meta_value' => $metaValue,
-                    ]);
+                give()->payment_meta->update_meta($donation->id, $metaKey, $metaValue);
             }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');

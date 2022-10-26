@@ -16,7 +16,7 @@ use GiveTests\TestCase;
 class DispatchGivePreInsertPaymentTest extends TestCase
 {
     /**
-     * @unreleased
+     * @since 2.19.6
      */
     public function testShouldModifyDonationInsertionOnOldFilter()
     {
