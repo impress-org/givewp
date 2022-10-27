@@ -3,14 +3,14 @@ import {__, _n, sprintf} from '@wordpress/i18n';
 import cx from 'classnames';
 
 import styles from './ListTable.module.scss';
-import ListTableRows from './ListTableRows';
 import {Spinner} from '../index';
 import {BulkActionCheckboxAll} from '@givewp/components/ListTable/BulkActionCheckbox';
 import TableSort from '@givewp/components/ListTable/TableSort';
+import ListTableRows from '@givewp/components/ListTable/ListTableRows';
 
 export interface ListTableProps {
     //required
-    columns: Array<ListTableColumn>;
+    apiSettings: {columns: Array<ListTableColumn>};
     title: string;
     data: {items: Array<{}>};
 
@@ -39,7 +39,7 @@ export interface ListTableColumn {
 }
 
 export const ListTable = ({
-    columns,
+    apiSettings,
     singleName = __('item', 'give'),
     pluralName = __('items', 'give'),
     title,
@@ -67,6 +67,7 @@ export const ListTable = ({
     const tableRef = useRef<null | HTMLTableElement>();
     const isEmpty = !error && data?.items.length === 0;
     const {sortColumn, sortDirection} = sortingInfo;
+    const {columns} = apiSettings;
 
     useEffect(() => {
         initialLoad && data && setInitialLoad(false);
@@ -197,7 +198,7 @@ export const ListTable = ({
                                     <BulkActionCheckboxAll pluralName={pluralName} data={data} />
                                 </th>
                                 <>
-                                    {columns.map((column) => (
+                                    {columns?.map((column) => (
                                         <th
                                             scope="col"
                                             aria-sort="none"
