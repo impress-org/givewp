@@ -3,15 +3,6 @@ import styles from './style.module.scss';
 
 //@unreleased component used to handle sort direction and column.
 const TableSort = ({column, sortingInfo, setSortDirectionForColumn}) => {
-    //Do not release : FE Testing purposes only. -----
-    const shouldDisplaySort = (column) => {
-        const willNotDisplay = ['amount', 'paymentType', 'donationRevenue'];
-        const check = (name) => name === column.name;
-        return willNotDisplay.some(check);
-    };
-    column.isSortable = !shouldDisplaySort(column);
-    // End Test: -----
-
     const {sortColumn, sortDirection} = sortingInfo;
     return (
         <>

@@ -1,44 +1,57 @@
-import {__} from "@wordpress/i18n";
-import styles from "./DonationFormsColumns.module.scss";
-import cx from "classnames";
-import {ListTableColumn} from "@givewp/components";
+import {__} from '@wordpress/i18n';
+import styles from './DonationFormsColumns.module.scss';
+import cx from 'classnames';
+import {ListTableColumn} from '@givewp/components';
 
 export const donationFormsColumns: Array<ListTableColumn> = [
     {
         name: 'id',
         text: __('ID', 'give'),
         inlineSize: '4rem',
-        preset: 'idBadge'
+        preset: 'idBadge',
+        isSortable: true,
     },
     {
         name: 'name',
         text: __('Name', 'give'),
         inlineSize: '10rem',
         heading: true,
-        render: (form: {edit, name}) => <a href={form.edit}>{form.name}</a>,
+        isSortable: true,
+
+        render: (form: {edit; name}) => <a href={form.edit}>{form.name}</a>,
     },
     {
         name: 'amount',
         text: __('Donation Levels', 'give'),
         preset: 'monetary',
+        isSortable: false,
     },
     {
         name: 'goal',
         text: __('Goal', 'give'),
-        render: (form: {goal, edit, id}) => {
+        isSortable: false,
+
+        render: (form: {goal; edit; id}) => {
             if (!form.goal) {
                 return <>{__('No Goal Set', 'give')}</>;
             }
-            const goalPercentage = form.goal.format == 'percentage' ? form.goal.actual :
-                Math.max(Math.min(form.goal.progress, 100), 0) + '%';
+            const goalPercentage =
+                form.goal.format == 'percentage'
+                    ? form.goal.actual
+                    : Math.max(Math.min(form.goal.progress, 100), 0) + '%';
             return (
                 <>
-                    <div role="progressbar" aria-labelledby={`giveDonationFormsProgressBar-${form.id}`} aria-valuenow={goalPercentage.slice(0, -1)}
-                         aria-valuemin={0} aria-valuemax={100} className={styles.goalProgress}
+                    <div
+                        role="progressbar"
+                        aria-labelledby={`giveDonationFormsProgressBar-${form.id}`}
+                        aria-valuenow={goalPercentage.slice(0, -1)}
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                        className={styles.goalProgress}
                     >
                         <span
                             style={{
-                                width: goalPercentage
+                                width: goalPercentage,
                             }}
                         />
                     </div>
@@ -64,50 +77,56 @@ export const donationFormsColumns: Array<ListTableColumn> = [
                         )}
                     </div>
                 </>
-            )
-        }
+            );
+        },
     },
     {
         name: 'donations',
         text: __('Donations', 'give'),
         inlineSize: '6rem',
-        render: (form: {donations, id}) => (
-            <a href={`edit.php?post_type=give_forms&page=give-payment-history&form_id=${form.id}`}>
-                {form.donations}
-            </a>
+        isSortable: true,
+
+        render: (form: {donations; id}) => (
+            <a href={`edit.php?post_type=give_forms&page=give-payment-history&form_id=${form.id}`}>{form.donations}</a>
         ),
     },
     {
         name: 'revenue',
         text: __('Revenue', 'give'),
         inlineSize: '6rem',
-        render: (form: {revenue, id}) => (
+        isSortable: false,
+
+        render: (form: {revenue; id}) => (
             <a href={`edit.php?post_type=give_forms&page=give-reports&tab=forms&legacy=true&form-id=${form.id}`}>
                 {form.revenue}
             </a>
-        )
+        ),
     },
     {
         name: 'shortcode',
         text: __('Shortcode', 'give'),
         inlineSize: '10rem',
+        isSortable: true,
+
         render: (form: {shortcode}) => (
             <input
-                type={"text"}
+                type={'text'}
                 aria-label={__('Copy shortcode', 'give')}
                 readOnly
                 value={form.shortcode}
                 className={styles.shortcode}
             />
-        )
+        ),
     },
     {
         name: 'datetime',
         text: __('Date', 'give'),
+        isSortable: true,
     },
     {
         name: 'status',
         text: __('Status', 'give'),
-        preset: 'postStatus'
+        preset: 'postStatus',
+        isSortable: true,
     },
 ];

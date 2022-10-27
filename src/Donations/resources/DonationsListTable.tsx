@@ -74,29 +74,34 @@ export default function () {
             alignColumn: 'start',
             inlineSize: '5rem',
             preset: 'idBadge',
+            isSortable: true,
         },
         {
             name: 'amount',
             text: __('Amount', 'give'),
             inlineSize: '7rem',
             preset: 'monetary',
+            isSortable: false,
         },
         {
             name: 'paymentType',
             text: __('Payment Type'),
             inlineSize: '11rem',
             addClass: styles.paymentType,
+            isSortable: false,
             render: (donation: {donationType}) => <DonationType type={donation.donationType} />,
         },
         {
             name: 'createdAt',
             inlineSize: '9rem',
             text: __('Date / Time', 'give'),
+            isSortable: true,
         },
         {
             name: 'name',
             text: __('Donor Name', 'give'),
             inlineSize: '9rem',
+            isSortable: true,
             render: (donation: {name; donorId}) => (
                 <a
                     href={
@@ -112,22 +117,21 @@ export default function () {
             name: 'formTitle',
             text: __('Donation Form', 'give'),
             inlineSize: '9rem',
-            render: (donation: {formTitle; formId}) => (
-                <a href={window.GiveDonations.adminUrl + `post.php?post=${donation.formId}&action=edit`}>
-                    {donation.formTitle}
-                </a>
-            ),
+            render: (donation: {donationType}) => <DonationType type={donation.donationType} />,
+            isSortable: true,
         },
         {
             name: 'gateway',
             inlineSize: '11rem',
             text: __('Gateway', 'give'),
+            isSortable: true,
         },
         {
             name: 'status',
             text: __('Status', 'give'),
             inlineSize: '12rem',
             preset: 'donationStatus',
+            isSortable: true,
         },
     ];
     //ToDo : Remove Function when GiveDonors support columns
