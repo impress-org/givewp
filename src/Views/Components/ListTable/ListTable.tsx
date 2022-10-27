@@ -28,6 +28,9 @@ export interface ListTableColumn {
     //required
     name: string;
     text: string;
+    isSortable: boolean;
+    sortDirection: string;
+    sortColumn: string;
 
     //optional
     inlineSize?: string;
