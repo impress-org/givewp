@@ -10,7 +10,7 @@ import ListTableRows from '@givewp/components/ListTable/ListTableRows';
 
 export interface ListTableProps {
     //required
-    apiSettings: {columns: Array<ListTableColumn>};
+    table: {columns: Array<ListTableColumn>};
     title: string;
     data: {items: Array<{}>};
 
@@ -29,8 +29,6 @@ export interface ListTableColumn {
     name: string;
     text: string;
     isSortable: boolean;
-    sortDirection: string;
-    sortColumn: string;
 
     //optional
     inlineSize?: string;
@@ -42,7 +40,7 @@ export interface ListTableColumn {
 }
 
 export const ListTable = ({
-    apiSettings,
+    table,
     singleName = __('item', 'give'),
     pluralName = __('items', 'give'),
     title,
@@ -70,7 +68,8 @@ export const ListTable = ({
     const tableRef = useRef<null | HTMLTableElement>();
     const isEmpty = !error && data?.items.length === 0;
     const {sortColumn, sortDirection} = sortingInfo;
-    const {columns} = apiSettings;
+    const {columns} = table;
+    console.log(columns);
 
     useEffect(() => {
         initialLoad && data && setInitialLoad(false);

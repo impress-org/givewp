@@ -11,7 +11,7 @@ declare global {
             apiNonce: string;
             apiRoot: string;
             forms: Array<{value: string; text: string}>;
-            columns: Array<object>;
+            table: {columns: Array<object>};
         };
     }
 }
@@ -20,10 +20,10 @@ const API = new ListTableApi(window.GiveDonors);
 
 //ToDo : Remove Function when GiveDonors support columns
 // Do not release : Testing Purposes only
-const columns = donorsColumns;
+const table = {columns: donorsColumns};
 window.GiveDonors = {
     ...window?.GiveDonors,
-    columns,
+    table,
 };
 console.log(window.GiveDonors);
 //End Test: -----

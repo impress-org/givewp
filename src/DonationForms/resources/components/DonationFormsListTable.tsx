@@ -12,7 +12,7 @@ declare global {
             apiNonce: string;
             apiRoot: string;
             authors: Array<{id: string | number; name: string}>;
-            columns: Array<{}>;
+            table: {columns: Array<object>};
         };
     }
 }
@@ -21,11 +21,12 @@ const API = new ListTableApi(window.GiveDonationForms);
 
 //ToDo : Remove Function when GiveDonationForms support columns
 // Do not release : Testing Purposes only
-const columns = donationFormsColumns;
+const table = {columns: donationFormsColumns};
 window.GiveDonationForms = {
     ...window?.GiveDonationForms,
-    columns,
+    table,
 };
+console.log(window.GiveDonationForms);
 // End Test: ----------
 
 const donationStatus = [

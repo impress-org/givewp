@@ -18,7 +18,7 @@ import {BulkActionSelect} from '@givewp/components/ListTable/BulkActionSelect';
 export interface ListTablePageProps {
     //required
     title: string;
-    apiSettings: {apiRoot; apiNonce; columns};
+    apiSettings: {apiRoot; apiNonce; table};
 
     //optional
     bulkActions?: Array<BulkActionsConfig> | null;
@@ -177,7 +177,7 @@ export default function ListTablePage({
                     <CheckboxContext.Provider value={checkboxRefs}>
                         <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
                             <ListTable
-                                apiSettings={apiSettings}
+                                table={apiSettings.table}
                                 singleName={singleName}
                                 pluralName={pluralName}
                                 title={title}

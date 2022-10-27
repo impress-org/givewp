@@ -17,7 +17,7 @@ declare global {
             apiRoot: string;
             adminUrl: string;
             forms: Array<{value: string; text: string}>;
-            columns: Array<object>;
+            table: {columns: Array<object>};
         };
     }
 }
@@ -66,7 +66,7 @@ export default function () {
     };
     //Todo Remove column in favor of window object
     //To Do not release : FE Testing purposes only. -----
-    const columns = [
+    const donationsColumns = [
         {
             name: 'id',
             text: __('ID', 'give'),
@@ -136,11 +136,13 @@ export default function () {
     ];
     //ToDo : Remove Function when GiveDonors support columns
     // Do not release : Testing Purposes only
+
+    const table = {columns: donationsColumns};
     window.GiveDonations = {
         ...window?.GiveDonations,
-        columns,
+        table,
     };
-    console.log(window.GiveDonations);
+    console.log(table);
     //End Test: -----
 
     const filters: Array<FilterConfig> = [
