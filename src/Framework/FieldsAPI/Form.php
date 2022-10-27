@@ -29,17 +29,9 @@ class Form implements Node, Collection
      *
      * @param $name
      */
-    final public function __construct($name)
+    public function __construct($name)
     {
         $this->name = $name;
-    }
-
-    /**
-     * @since 2.14.0
-     */
-    public static function make($name)
-    {
-        return new static($name);
     }
 
     public function getNodeType(): string
