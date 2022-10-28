@@ -129,34 +129,28 @@ export const ListTable = ({
         });
     };
 
-    //@unreleased sort data based on type and direction.
+    // //@unreleased sort data based on type and direction.
     const handleSort = (sortColumn, sortDirection, data) => {
         if (sortDirection === 'asc') {
-            if (sortColumn === 'createdAt') {
-                //ToDo Fix sorting by date -----
-                return setSortedData([...data?.items].sort((a, b) => a[sortColumn] - b[sortColumn]));
-            } else {
-                return setSortedData(
-                    [...data?.items].sort((a, b) =>
-                        a[sortColumn]?.toString().localeCompare(b[sortColumn]?.toString(), {
-                            numeric: a[sortColumn] !== isNaN,
-                        })
-                    )
-                );
-            }
+            sortColumn === 'createdAt'
+                ? setSortedData([...data?.items].sort((a, b) => a[sortColumn] - b[sortColumn]))
+                : setSortedData(
+                      [...data?.items].sort((a, b) =>
+                          a[sortColumn]?.toString().localeCompare(b[sortColumn]?.toString(), {
+                              numeric: a[sortColumn] !== isNaN,
+                          })
+                      )
+                  );
         } else if (sortDirection === 'desc') {
-            if (sortColumn === 'createdAt') {
-                //ToDo Fix sorting by date -----
-                return setSortedData([...data?.items].sort((a, b) => b[sortColumn] - a[sortColumn]));
-            } else {
-                return setSortedData(
-                    [...data?.items].sort((a, b) =>
-                        b[sortColumn]?.toString().localeCompare(a[sortColumn]?.toString(), {
-                            numeric: b[sortColumn] !== isNaN,
-                        })
-                    )
-                );
-            }
+            sortColumn === 'createdAt'
+                ? setSortedData([...data?.items].sort((a, b) => b[sortColumn] - a[sortColumn]))
+                : setSortedData(
+                      [...data?.items].sort((a, b) =>
+                          b[sortColumn]?.toString().localeCompare(a[sortColumn]?.toString(), {
+                              numeric: b[sortColumn] !== isNaN,
+                          })
+                      )
+                  );
         }
     };
 
