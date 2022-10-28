@@ -22,8 +22,8 @@ class DonationFormViewRoute
             return;
         }
 
-        // create DTO from GET request
-        $routeData = DonationFormViewRouteData::fromRequest(give_clean($_GET));
+        // create DTO from GET or POST request
+        $routeData = DonationFormViewRouteData::fromRequest(give_clean($_REQUEST));
 
         // let the controller handle the request
         return give(DonationFormViewController::class)->show($routeData);
@@ -34,6 +34,6 @@ class DonationFormViewRoute
      */
     private function isViewValid(): bool
     {
-        return isset($_GET['givewp-view']) && $_GET['givewp-view'] === 'donation-form';
+        return isset($_REQUEST['givewp-view']) && $_REQUEST['givewp-view'] === 'donation-form';
     }
 }

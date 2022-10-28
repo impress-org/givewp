@@ -5,21 +5,26 @@ namespace Give\NextGen\DonationForm\Repositories;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\FieldsAPI\Form;
+use Give\Framework\FieldsAPI\Hidden;
+use Give\Framework\FieldsAPI\Section;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
+use Give\NextGen\DonationForm\Actions\ConvertDonationFormBlocksToFieldsApi;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\ValueObjects\DonationFormMetaKeys;
+use Give\NextGen\Framework\Blocks\BlockCollection;
 
 /**
  * @unreleased
  */
 class DonationFormRepository
 {
-      /**
+    /**
      * @var PaymentGatewayRegister
      */
     private $paymentGatewayRegister;
@@ -272,7 +277,7 @@ class DonationFormRepository
         return $gateways;
     }
 
-     /**
+    /**
      * @unreleased
      */
     public function getFormDataGateways(int $formId): array
@@ -291,5 +296,30 @@ class DonationFormRepository
         }
 
         return $formDataGateways;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getFormSchemaFromBlocks(int $formId, BlockCollection $blocks): Form
+    {
+        $form = (new ConvertDonationFormBlocksToFieldsApi())($blocks);
+
+        $formNodes = $form->all();
+
+        /** @var Section $lastSection */
+        $lastSection = $form->count() ? end($formNodes) : null;
+
+        if ($lastSection) {
+            $lastSection->append(
+                Hidden::make('formId')
+                    ->defaultValue($formId),
+
+                Hidden::make('currency')
+                    ->defaultValue(give_get_currency($formId))
+            );
+        }
+
+        return $form;
     }
 }

@@ -6,13 +6,10 @@ use DateTime;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\FieldsAPI\Form;
-use Give\Framework\FieldsAPI\Hidden;
-use Give\Framework\FieldsAPI\Section;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
-use Give\NextGen\DonationForm\Actions\ConvertDonationFormBlocksToFieldsApi;
 use Give\NextGen\DonationForm\Actions\ConvertQueryDataToDonationForm;
 use Give\NextGen\DonationForm\Factories\DonationFormFactory;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
@@ -137,23 +134,6 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
      */
     public function schema(): Form
     {
-        $form = (new ConvertDonationFormBlocksToFieldsApi())($this->blocks);
-
-        $formNodes = $form->all();
-
-        /** @var Section $lastSection */
-        $lastSection = $form->count() ? end($formNodes) : null;
-
-        if ($lastSection) {
-            $lastSection->append(
-                Hidden::make('formId')
-                    ->defaultValue($this->id),
-
-                Hidden::make('currency')
-                    ->defaultValue(give_get_currency($this->id))
-            );
-        }
-
-        return $form;
+        return give(DonationFormRepository::class)->getFormSchemaFromBlocks($this->id, $this->blocks);
     }
 }

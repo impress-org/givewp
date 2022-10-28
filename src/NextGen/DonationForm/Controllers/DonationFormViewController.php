@@ -14,7 +14,7 @@ class DonationFormViewController {
      */
     public function show(DonationFormViewRouteData $data): string
     {
-        $viewModel = new DonationFormViewModel($data->formId);
+        $viewModel = new DonationFormViewModel($data->formId, $data->formBlocks);
 
         ob_start();
         $this->head();
