@@ -2,12 +2,12 @@ import React from 'react';
 import styles from './style.module.scss';
 
 //@unreleased component used to handle sort direction and column.
-const TableSort = ({column, sortingInfo, setSortDirectionForColumn}) => {
-    const {sortColumn, sortDirection} = sortingInfo;
+const TableSort = ({column, sort, setSortDirectionForColumn}) => {
+    const {sortColumn, sortDirection} = sort;
     return (
         <>
-            {!column.isSortable ? null : (
-                <div className={styles.container}>
+            {column.isSortable ? (
+                <div key={column.name} id={column.name} className={styles.container}>
                     <svg
                         onClick={() => setSortDirectionForColumn(column.name, 'asc')}
                         width="16"
@@ -35,7 +35,7 @@ const TableSort = ({column, sortingInfo, setSortDirectionForColumn}) => {
                         />
                     </svg>
                 </div>
-            )}
+            ) : null}
         </>
     );
 };
