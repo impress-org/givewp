@@ -1,5 +1,16 @@
-.container {
-    display: inline-block;
+
+button {
+    display: flex;
+    align-items: center;
+    background: none;
+    color: #2271b1;
+    border: none;
+    cursor: pointer;
+    transform: translateX(-10px);
+
+    .text {
+        white-space: nowrap;
+    }
 
     svg {
         display: block;
@@ -12,5 +23,6 @@
             }
         }
     }
-
 }
+
+

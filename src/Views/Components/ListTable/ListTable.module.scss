@@ -53,12 +53,7 @@
     padding: 1em;
     inline-size: 8rem;
     text-align: start;
-
-    .wrapper {
-        display: flex;
-        align-items: center;
-    }
-
+    
     &.start {
         text-align: start;
     }
@@ -69,10 +64,6 @@
 
     &.end {
         text-align: end;
-    }
-
-    &.isSortable {
-        cursor: pointer;
     }
 }
 
