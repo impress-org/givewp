@@ -70,6 +70,10 @@
     &.end {
         text-align: end;
     }
+
+    &.isSortable {
+        cursor: pointer;
+    }
 }
 
 .tableContent {
