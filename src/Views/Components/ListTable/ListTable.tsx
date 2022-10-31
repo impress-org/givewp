@@ -60,16 +60,15 @@ export const ListTable = ({
     const [loadingOverlay, setLoadingOverlay] = useState<string | boolean>(false);
     const [overlayWidth, setOverlayWidth] = useState(0);
     const [sortedData, setSortedData] = useState<Array<object>>([{}]);
-    const [sortingInfo, setSortingInfo] = useState<{sortColumn: string; sortDirection: string}>({
-        sortColumn: '',
-        sortDirection: '',
+    const [sort, setSort] = useState<{sortColumn: string; sortDirection: string}>({
+        sortColumn: 'id',
+        sortDirection: 'desc',
     });
 
     const tableRef = useRef<null | HTMLTableElement>();
     const isEmpty = !error && data?.items.length === 0;
-    const {sortColumn, sortDirection} = sortingInfo;
+    const {sortDirection} = sort;
     const {columns} = table;
-    console.log(columns);
 
     useEffect(() => {
         initialLoad && data && setInitialLoad(false);
@@ -108,29 +107,24 @@ export const ListTable = ({
         return () => clearTimeout(timeoutId);
     }, [updateErrors.errors]);
 
-    //@unreleased handle sorting when direction or column updates
-    useEffect(() => {
-        //ToDo post sortColumn & sortDirection to endpoint
-        handleSort(sortColumn, sortDirection, data);
-    }, [sortColumn, sortDirection]);
-
     const clearUpdateErrors = () => {
         setUpdateErrors({errors: [], successes: []});
     };
 
     //@unreleased declare function to set column and direction for db & sorting.
     const setSortDirectionForColumn = (column, direction) => {
-        setSortingInfo((previousState) => {
+        setSort((previousState) => {
             return {
                 ...previousState,
                 sortColumn: column,
-                sortDirection: direction,
+                sortDirection: direction === 'asc' ? 'desc' : 'asc',
             };
         });
+        handleSortData(column, direction, data);
     };
 
     // //@unreleased sort data based on type and direction.
-    const handleSort = (sortColumn, sortDirection, data) => {
+    const handleSortData = (sortColumn, sortDirection, data) => {
         if (sortDirection === 'asc') {
             sortColumn === 'createdAt'
                 ? setSortedData([...data?.items].sort((a, b) => a[sortColumn] - b[sortColumn]))
@@ -196,12 +190,17 @@ export const ListTable = ({
                                 <>
                                     {columns?.map((column) => (
                                         <th
+                                            onClick={() =>
+                                                column.isSortable &&
+                                                setSortDirectionForColumn(column.name, sortDirection)
+                                            }
                                             scope="col"
                                             aria-sort="none"
                                             className={cx(styles.tableColumnHeader, {
                                                 [styles[align]]: !column?.alignColumn,
                                                 [styles.center]: column?.alignColumn === 'center',
                                                 [styles.start]: column?.alignColumn === 'start',
+                                                [styles.isSortable]: column?.isSortable && 'isSelected',
                                             })}
                                             data-column={column.name}
                                             key={column.name}
@@ -210,11 +209,7 @@ export const ListTable = ({
                                             <div className={styles.wrapper}>
                                                 {column.text}
                                                 {/*{@unreleased new Table Sorting component.}*/}
-                                                <TableSort
-                                                    column={column}
-                                                    setSortDirectionForColumn={setSortDirectionForColumn}
-                                                    sortingInfo={sortingInfo}
-                                                />
+                                                <TableSort column={column} sort={sort} />
                                             </div>
                                         </th>
                                     ))}
