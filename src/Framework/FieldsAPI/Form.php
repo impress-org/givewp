@@ -24,17 +24,14 @@ class Form implements Node, Collection
 
     const TYPE = 'form';
 
+    /**
+     * @since 2.23.1 Make constructor as private to avoid unsafe usage of `new static()`.
+     *
+     * @param $name
+     */
     public function __construct($name)
     {
         $this->name = $name;
-    }
-
-    /**
-     * @since 2.14.0
-     */
-    public static function make($name)
-    {
-        return new static($name);
     }
 
     public function getNodeType(): string
@@ -52,7 +49,7 @@ class Form implements Node, Collection
     public function append(Node ...$nodes)
     {
         foreach ($nodes as $node) {
-            if ( !$node instanceof Section ) {
+            if ( ! $node instanceof Section) {
                 throw new TypeNotSupported($node->getType());
             }
 

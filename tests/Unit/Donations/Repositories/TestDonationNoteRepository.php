@@ -19,7 +19,7 @@ final class TestDonationNoteRepository extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -39,7 +39,7 @@ final class TestDonationNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -69,7 +69,7 @@ final class TestDonationNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -89,7 +89,7 @@ final class TestDonationNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -110,7 +110,7 @@ final class TestDonationNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -130,7 +130,7 @@ final class TestDonationNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -163,7 +163,7 @@ final class TestDonationNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *

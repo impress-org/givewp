@@ -16,7 +16,7 @@ use GiveTests\TestCase;
 use GiveTests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 2.19.6
  *
  * @coversDefaultClass SubscriptionRepository
  */
@@ -25,7 +25,7 @@ class TestSubscriptionRepository extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -44,7 +44,7 @@ class TestSubscriptionRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      * @throws Exception
@@ -87,7 +87,7 @@ class TestSubscriptionRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -112,7 +112,7 @@ class TestSubscriptionRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -137,7 +137,7 @@ class TestSubscriptionRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -164,7 +164,7 @@ class TestSubscriptionRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      */
     public function testShouldRetrieveInitialDonationIdForSubscription()
     {
@@ -178,7 +178,7 @@ class TestSubscriptionRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *

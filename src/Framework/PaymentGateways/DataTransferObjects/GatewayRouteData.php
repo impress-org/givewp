@@ -4,9 +4,10 @@ namespace Give\Framework\PaymentGateways\DataTransferObjects;
 
 /**
  * Class GatewayRouteData
- * @since 2.18.0
+ * @since      2.18.0
+ * @since 2.23.1 Make class final to avoid unsafe usage of `new static()`.
  */
-class GatewayRouteData
+final class GatewayRouteData
 {
     /**
      * @var string
@@ -53,7 +54,7 @@ class GatewayRouteData
         $self->routeSignatureExpiration = isset($request['give-route-signature-expiration']) ? $request['give-route-signature-expiration'] : null;
 
         $self->queryParams = array_filter($request, static function ($param) {
-            return !in_array(
+            return ! in_array(
                 $param,
                 [
                     'give-listener',
@@ -61,7 +62,7 @@ class GatewayRouteData
                     'give-gateway-method',
                     'give-route-signature',
                     'give-route-signature-id',
-                    'give-route-signature-expiration'
+                    'give-route-signature-expiration',
                 ]
             );
         }, ARRAY_FILTER_USE_KEY);

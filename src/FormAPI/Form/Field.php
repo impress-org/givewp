@@ -79,6 +79,10 @@ abstract class Field
      */
     public $attributes = [];
 
+    final public function __construct()
+    {
+    }
+
     /**
      * Parse field arguments
      *

@@ -4,6 +4,10 @@ namespace Give\Form\LegacyConsumer;
 
 class FilterCallbackCollection
 {
+    /**
+     * @var array
+     */
+    protected $callbacks;
 
     /**
      * @param array $callbacks

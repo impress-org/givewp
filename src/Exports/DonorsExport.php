@@ -95,44 +95,43 @@ class DonorsExport extends Give_Batch_Export
             })
             ->where('donations.post_type', 'give_payment');
 
-        if($this->searchBy === 'donor') {
-            if( $this->startDate && $this->endDate ) {
+        if ($this->searchBy === 'donor') {
+            if ($this->startDate && $this->endDate) {
                 $donorQuery->whereBetween('DATE(donors.date_created)', $this->startDate, $this->endDate);
-            } elseif( $this->startDate ) {
+            } elseif ($this->startDate) {
                 $donorQuery->where('DATE(donors.date_created)', $this->startDate, '>=');
-            } elseif( $this->endDate ) {
+            } elseif ($this->endDate) {
                 $donorQuery->where('DATE(donors.date_created)', $this->endDate, '<=');
             }
-        }
-        else {
-            if( $this->startDate && $this->endDate ) {
+        } else {
+            if ($this->startDate && $this->endDate) {
                 $donationQuery->whereBetween('DATE(donations.post_date)', $this->startDate, $this->endDate);
-            } elseif( $this->startDate ) {
+            } elseif ($this->startDate) {
                 $donationQuery->where('DATE(donations.post_date)', $this->startDate, '>=');
-            } elseif( $this->endDate ) {
+            } elseif ($this->endDate) {
                 $donationQuery->where('DATE(donations.post_date)', $this->endDate, '<=');
             }
         }
 
-        $donorQuery->joinRaw( "JOIN ({$donationQuery->getSQL()}) AS sub ON donors.id = sub.donorId" );
+        $donorQuery->joinRaw("JOIN ({$donationQuery->getSQL()}) AS sub ON donors.id = sub.donorId");
 
-        if( $this->shouldIncludeAddress() ) {
+        if ($this->shouldIncludeAddress()) {
             $donorQuery->attachMeta('give_donormeta',
                 'donors.ID',
                 'donor_id',
-                [ '_give_donor_address_billing_line1_0', 'address_line1' ],
-                [ '_give_donor_address_billing_line2_0', 'address_line2' ],
-                [ '_give_donor_address_billing_city_0', 'address_city' ],
-                [ '_give_donor_address_billing_state_0', 'address_state' ],
-                [ '_give_donor_address_billing_country_0', 'address_country' ],
-                [ '_give_donor_address_billing_zip_0', 'address_zip' ]
+                ['_give_donor_address_billing_line1_0', 'address_line1'],
+                ['_give_donor_address_billing_line2_0', 'address_line2'],
+                ['_give_donor_address_billing_city_0',  'address_city'],
+                ['_give_donor_address_billing_state_0', 'address_state'],
+                ['_give_donor_address_billing_zip_0',   'address_zip'],
+                ['_give_donor_address_billing_country_0', 'address_country']
             );
         }
 
         return $this->filterExportData(
-            array_map(function( $row ) {
-                return array_intersect_key( $row, $this->csv_cols() );
-            }, $donorQuery->getAll(ARRAY_A) )
+            array_map(function ($row) {
+                return array_intersect_key($row, $this->csv_cols());
+            }, $donorQuery->getAll(ARRAY_A))
         );
     }
 
@@ -161,6 +160,7 @@ class DonorsExport extends Give_Batch_Export
             $columnarData = array_merge($columnarData, $columnarData[$columnName]);
             unset($columnarData[$columnName]);
         }
+
         return $columnarData;
     }
 
@@ -171,7 +171,8 @@ class DonorsExport extends Give_Batch_Export
     {
         /**
          * @since 2.21.2
-         * @param $exportData
+         *
+         * @param array $exportData
          */
         return apply_filters("give_export_get_data_{$this->export_type}", $exportData);
     }

@@ -12,7 +12,7 @@ use GiveTests\TestCase;
 use GiveTests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 2.19.6
  *
  * @coversDefaultClass \Give\Subscriptions\Models\Subscription
  */
@@ -21,7 +21,7 @@ class TestSubscription extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -70,7 +70,7 @@ class TestSubscription extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      */
     public function testIntendedAmount()
     {
@@ -92,7 +92,7 @@ class TestSubscription extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      */
     public function testShouldBumpRenewalDate()
     {
@@ -108,7 +108,7 @@ class TestSubscription extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      */
     public function testShouldRetrieveInitialDonationForSubscription()
     {

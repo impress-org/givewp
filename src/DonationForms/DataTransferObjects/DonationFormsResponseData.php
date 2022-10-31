@@ -10,7 +10,7 @@ use Give\Helpers\Date;
  *
  * @since 2.21.0
  */
-class DonationFormsResponseData implements Arrayable
+final class DonationFormsResponseData implements Arrayable
 {
     /**
      * @var int
@@ -61,9 +61,10 @@ class DonationFormsResponseData implements Arrayable
     /**
      * Convert from object to DonationForm
      *
+     * @since 2.21.0
+     *
      * @param object $form
      *
-     * @since 2.21.0
      */
     public static function fromObject($form): self
     {
@@ -95,11 +96,12 @@ class DonationFormsResponseData implements Arrayable
     }
 
     /**
+     * @since 2.21.0
+     *
      * @param int $formId
      *
      * @return array
      *
-     * @since 2.21.0
      */
     private function getGoal(int $formId): array
     {
@@ -128,16 +130,17 @@ class DonationFormsResponseData implements Arrayable
             'actual' => html_entity_decode($goal['actual']),
             'goal' => html_entity_decode($goal['goal']),
             'progress' => html_entity_decode($goal['progress']),
-            'format' => $getFormatFromGoal($goal)
+            'format' => $getFormatFromGoal($goal),
         ];
     }
 
     /**
+     * @since 2.21.0
+     *
      * @param object $form
      *
      * @return string
      *
-     * @since 2.21.0
      */
     private function getFormAmount($form): string
     {
@@ -154,11 +157,12 @@ class DonationFormsResponseData implements Arrayable
     }
 
     /**
+     * @since 2.21.0
+     *
      * @param string $amount
      *
      * @return string
      *
-     * @since 2.21.0
      */
     private function formatAmount(string $amount): string
     {

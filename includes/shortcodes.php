@@ -791,6 +791,7 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
  * @type string $display_style How the form is displayed, either in new page or modal popup.
  *                                       Default 'redirect'. Accepts 'redirect', 'modal'.
  *
+ * @since 2.23.1 Updated the default text color for the donate button, see #6591.
  * @since 2.21.2 change tag_background_color, progress_bar_color to official green color #69b868.
  *             change tag_text_color color to #333333.
  * @since 2.20.0 $show_donate_button Option to show donate button
@@ -821,11 +822,11 @@ function give_form_grid_shortcode( $atts ) {
 			'show_goal'           => true,
 			'show_excerpt'        => true,
 			'show_featured_image' => true,
-			'show_donate_button'  => false,
+			'show_donate_button'  => true,
 			'donate_button_text'  => '',
 			'tag_background_color' => '#69b868',
             'tag_text_color'      => '#333333',
-            'donate_button_text_color' => '#fff',
+            'donate_button_text_color' => '#000000',
 			'image_size'          => 'medium',
 			'image_height'        => 'auto',
 			'excerpt_length'      => 16,

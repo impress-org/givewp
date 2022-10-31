@@ -230,6 +230,7 @@ class DonationRepository
     }
 
     /**
+     * @since 2.23.1 Use give_update_meta() method to update entries on give_donationmeta table
      * @since 2.23.0 retrieve the post_parent instead of relying on parentId property
      * @since 2.21.0 replace actions with givewp_donation_updating and givewp_donation_updated
      * @since 2.20.0 return void
@@ -261,12 +262,7 @@ class DonationRepository
                 ]);
 
             foreach ($this->getCoreDonationMetaForDatabase($donation) as $metaKey => $metaValue) {
-                DB::table('give_donationmeta')
-                    ->where('donation_id', $donation->id)
-                    ->where('meta_key', $metaKey)
-                    ->update([
-                        'meta_value' => $metaValue,
-                    ]);
+                give()->payment_meta->update_meta($donation->id, $metaKey, $metaValue);
             }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -537,6 +533,7 @@ class DonationRepository
     }
 
     /**
+     * @since 2.23.1 Fixed order by property, see https://github.com/impress-org/givewp/pull/6559
      * @since 2.21.2
      *
      * @return Donation|null
@@ -544,11 +541,12 @@ class DonationRepository
     public function getFirstDonation() {
         return $this->prepareQuery()
             ->limit(1)
-            ->orderBy('post_date', 'DESC')
+            ->orderBy('post_date', 'ASC')
             ->get();
     }
 
     /**
+     * @since 2.23.1 Fixed order by property, see https://github.com/impress-org/givewp/pull/6559
      * @since 2.21.2
      *
      * @return Donation|null
@@ -556,7 +554,7 @@ class DonationRepository
     public function getLatestDonation() {
         return $this->prepareQuery()
             ->limit(1)
-            ->orderBy('post_date', 'ASC')
+            ->orderBy('post_date', 'DESC')
             ->get();
     }
 }

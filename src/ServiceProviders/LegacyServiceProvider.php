@@ -2,6 +2,7 @@
 
 namespace Give\ServiceProviders;
 
+use _PHPStan_9a6ded56a\Nette\Neon\Exception;
 use Closure;
 use Give\Route\Form;
 
@@ -44,11 +45,11 @@ class LegacyServiceProvider implements ServiceProvider
         /**
          * Load libraries.
          */
-        if ( ! class_exists('WP_Async_Request')) {
+        if (!class_exists('WP_Async_Request')) {
             include_once GIVE_PLUGIN_DIR . 'includes/libraries/wp-async-request.php';
         }
 
-        if ( ! class_exists('WP_Background_Process')) {
+        if (!class_exists('WP_Background_Process')) {
             include_once GIVE_PLUGIN_DIR . 'includes/libraries/wp-background-process.php';
         }
 
@@ -167,7 +168,7 @@ class LegacyServiceProvider implements ServiceProvider
 
         // This conditional check will add backward compatibility to older Stripe versions (i.e. < 2.2.0) when used with Give 2.5.0.
         if (
-            ! defined('GIVE_STRIPE_VERSION') ||
+            !defined('GIVE_STRIPE_VERSION') ||
             (
                 defined('GIVE_STRIPE_VERSION') &&
                 version_compare(GIVE_STRIPE_VERSION, '2.2.0', '>=')
@@ -224,10 +225,10 @@ class LegacyServiceProvider implements ServiceProvider
      *
      * @since 2.8.0
      *
-     * @param string $alias
+     * @param string         $alias
      * @param string|Closure $class
-     * @param string $includesPath
-     * @param bool $singleton
+     * @param string         $includesPath
+     * @param bool           $singleton
      */
     private function bindInstance($alias, $class, $includesPath, $singleton = false)
     {
@@ -250,20 +251,23 @@ class LegacyServiceProvider implements ServiceProvider
      * @param string $type admin, ajax, cron or frontend.
      *
      * @return bool
+     * @throws UnknownRequestTypeException
      */
     private function is_request($type)
     {
         switch ($type) {
-            case 'admin':
+            case RequestType::ADMIN:
                 return is_admin();
-            case 'ajax':
+            case RequestType::AJAX:
                 return defined('DOING_AJAX');
-            case 'cron':
+            case RequestType::CRON:
                 return defined('DOING_CRON');
-            case 'frontend':
-                return ( ! is_admin() || defined('DOING_AJAX')) && ! defined('DOING_CRON') && ! defined('REST_REQUEST');
-            case 'wpcli':
+            case RequestType::FRONTEND:
+                return (!is_admin() || defined('DOING_AJAX')) && !defined('DOING_CRON') && !defined('REST_REQUEST');
+            case RequestType::WPCLI:
                 return defined('WP_CLI') && WP_CLI;
+            default:
+                throw new UnknownRequestTypeException($type);
         }
     }
 }

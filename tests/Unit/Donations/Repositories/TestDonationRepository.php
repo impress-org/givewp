@@ -2,6 +2,7 @@
 
 namespace GiveTests\Unit\Donations\Repositories;
 
+use DateTime;
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationRepository;
@@ -23,7 +24,7 @@ final class TestDonationRepository extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -41,7 +42,7 @@ final class TestDonationRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -62,7 +63,7 @@ final class TestDonationRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -88,7 +89,7 @@ final class TestDonationRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -117,7 +118,7 @@ final class TestDonationRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -143,7 +144,8 @@ final class TestDonationRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.23.1 add company to test to catch cases where missing meta was not updated
+     * @since 2.19.6
      *
      * @return void
      *
@@ -163,6 +165,7 @@ final class TestDonationRepository extends TestCase
         $donation->amount = new Money(10000, 'USD');
         $donation->firstName = "Ron";
         $donation->lastName = "Swanson";
+        $donation->company = 'Very Good Building';
         $donation->email = "ron@swanson.com";
 
         // call update method
@@ -176,13 +179,14 @@ final class TestDonationRepository extends TestCase
         // assert updated values from the database
         $this->assertNotEquals(50, $query->amount);
         $this->assertMoneyEquals(new Money(10000, 'USD'), $query->amount);
-        $this->assertEquals("Ron", $query->firstName);
-        $this->assertEquals("Swanson", $query->lastName);
-        $this->assertEquals("ron@swanson.com", $query->email);
+        $this->assertEquals('Ron', $query->firstName);
+        $this->assertEquals('Swanson', $query->lastName);
+        $this->assertEquals('ron@swanson.com', $query->email);
+        $this->assertSame('Very Good Building', $query->company);
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -211,5 +215,25 @@ final class TestDonationRepository extends TestCase
 
         $this->assertNull($donationQuery);
         $this->assertEmpty($donationCoreMetaQuery);
+    }
+
+    /**
+     * @since 2.19.6
+     *
+     * @return void
+     *
+     * @throws Exception
+     */
+    public function testFirstDonationLatestDonationSortOrder()
+    {
+        $this->refreshDatabase();
+        Donation::factory()->create(['createdAt' => new DateTime('2022-10-20 00:00:00')]);
+        Donation::factory()->create(['createdAt' => new DateTime('2022-10-21 00:00:00')]);
+
+        $repository = new DonationRepository();
+        $firstDonationId = $repository->getFirstDonation()->id;
+        $lastDonationId = $repository->getLatestDonation()->id;
+
+        $this->assertGreaterThan($firstDonationId, $lastDonationId);
     }
 }

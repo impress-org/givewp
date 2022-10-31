@@ -10,7 +10,7 @@ class Local implements Config
 {
     /**
      * @inheritDoc
-     * @unreleased
+     * @since 2.22.1
      */
     public function config(): string
     {
@@ -19,19 +19,10 @@ class Local implements Config
 
     /**
      * @inheritDoc
-     * @unreleased
+     * @since 2.22.1
      */
     public function bootstrap(): string
     {
         return __DIR__ . '/../../vendor/wordpress/wordpress/tests/phpunit/includes/bootstrap.php';
-    }
-
-    /**
-     * @inheritDoc
-     * @unreleased
-     */
-    public function functions(): string
-    {
-        return __DIR__ . '/../../vendor/wordpress/wordpress/tests/phpunit/includes/functions.php';
     }
 }

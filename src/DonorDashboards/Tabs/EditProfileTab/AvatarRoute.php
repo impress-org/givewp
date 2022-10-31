@@ -31,7 +31,7 @@ class AvatarRoute extends RouteAbstract
     /**
      * @inheritDoc
      *
-     * @return array
+     * @return array|WP_REST_Response
      */
     public function handleRequest(WP_REST_Request $request)
     {
@@ -94,6 +94,16 @@ class AvatarRoute extends RouteAbstract
                 ];
             }
         }
+
+        return new WP_REST_Response(
+            [
+                'status' => 404,
+                'response' => 'not_found',
+                'body_response' => [
+                    'message' => __('No file with an upload URL was found', 'give'),
+                ],
+            ]
+        );
     }
 
 }

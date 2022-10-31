@@ -29,13 +29,14 @@ abstract class Field implements Node
     protected $validationRules;
 
     /**
-     * @since 2.12.0
+     * @since      2.12.0
+     * @since 2.23.1 Make constructor final to avoid unsafe usage of `new static()`.
      *
      * @param string $name
      *
      * @throws EmptyNameException
      */
-    public function __construct($name)
+    final public function __construct($name)
     {
         if (!$name) {
             throw new EmptyNameException();

@@ -6,21 +6,14 @@ interface Config {
     /**
      * Return the test config file path
      *
-     * @unreleased
+     * @since 2.22.1
      */
     public function config(): string;
 
     /**
      * Return the bootstrap file path
      *
-     * @unreleased
+     * @since 2.22.1
      */
     public function bootstrap(): string;
-
-    /**
-     * Return the functions file path
-     *
-     * @unreleased
-     */
-    public function functions(): string;
 }

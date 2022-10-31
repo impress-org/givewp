@@ -23,7 +23,7 @@ class CreditCardGatewayTest extends \GiveTests\TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.22.0
      *
      * @return void
      */
