@@ -11,7 +11,7 @@ window.GiveDonationSummary = {
     /**
      * This function returns formated donation amount.
      *
-     * @unreleased
+     * @since 2.23.1
      * @return {string}
      */
     getFormattedDonationAmount: function ($form) {
@@ -116,7 +116,7 @@ window.GiveDonationSummary = {
     },
 
     /**
-     * @unreleased Remove dependency on checkbox. Removed first argument.
+     * @since 2.23.1 Remove dependency on checkbox. Removed first argument.
      * @since 2.18.0
      */
     handleFees: function ($form) {

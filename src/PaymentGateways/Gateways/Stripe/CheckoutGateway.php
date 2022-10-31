@@ -105,7 +105,7 @@ class CheckoutGateway extends PaymentGateway
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 2.23.1
      *
      * @return string|void
      */

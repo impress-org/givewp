@@ -230,7 +230,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased Use give_update_meta() method to update entries on give_donationmeta table
+     * @since 2.23.1 Use give_update_meta() method to update entries on give_donationmeta table
      * @since 2.23.0 retrieve the post_parent instead of relying on parentId property
      * @since 2.21.0 replace actions with givewp_donation_updating and givewp_donation_updated
      * @since 2.20.0 return void
@@ -533,7 +533,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased Fixed order by property, see https://github.com/impress-org/givewp/pull/6559
+     * @since 2.23.1 Fixed order by property, see https://github.com/impress-org/givewp/pull/6559
      * @since 2.21.2
      *
      * @return Donation|null
@@ -546,7 +546,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased Fixed order by property, see https://github.com/impress-org/givewp/pull/6559
+     * @since 2.23.1 Fixed order by property, see https://github.com/impress-org/givewp/pull/6559
      * @since 2.21.2
      *
      * @return Donation|null

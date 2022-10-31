@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 7.0
-Stable tag: 2.23.0
+Stable tag: 2.23.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -251,6 +251,14 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.23.1: October 31st, 2022 =
+* Fix: Fee Recovered amount in the donation summary works better with currencies that use a comma as the thousands separator
+* Fix: Form Grid donate button color defaults to black to avoid being invisible in some cases
+* Fix: Made text translatable in the Form Grid that previously wasn't
+* Fix: The give()->donations->getLatestDonation now correctly grabs the most recent
+* Fix: Zip code and country are now in the correct order for donor exports
+* Fix: The Donor and Donation models correctly handle missing meta
+
 = 2.23.0: October 20th, 2022 =
 * Enhancement: Under the hood improvements to how recurrence is handled in donations and subscriptions
 * Enhancement: Added additional filters to email settings (for Peer-to-Peer)

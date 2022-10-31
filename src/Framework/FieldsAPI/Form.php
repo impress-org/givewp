@@ -25,7 +25,7 @@ class Form implements Node, Collection
     const TYPE = 'form';
 
     /**
-     * @unreleased Make constructor as private to avoid unsafe usage of `new static()`.
+     * @since 2.23.1 Make constructor as private to avoid unsafe usage of `new static()`.
      *
      * @param $name
      */

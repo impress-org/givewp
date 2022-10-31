@@ -3,7 +3,7 @@
 namespace Give\ServiceProviders;
 
 /**
- * @unreleased
+ * @since 2.23.1
  */
 class RequestType
 {

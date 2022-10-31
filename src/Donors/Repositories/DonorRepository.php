@@ -159,7 +159,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased use give()->donor_meta to update meta so data is upserted
+     * @since 2.23.1 use give()->donor_meta to update meta so data is upserted
      * @since 2.21.0 add actions givewp_donor_updating and givewp_donor_updated
      * @since 2.20.0 return void
      * @since 2.19.6
