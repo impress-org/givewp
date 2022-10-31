@@ -11,12 +11,12 @@ use Give\Subscriptions\Models\Subscription;
 use GiveTests\TestCase;
 
 /**
- * @unreleased
+ * @since 2.20.0
  */
 class HasRouteMethodTest extends TestCase
 {
     /**
-     * @unreleased
+     * @since 2.20.0
      */
     public function testRegisteredSubscriptionModuleRouteShouldExecute()
     {
@@ -43,7 +43,7 @@ class HasRouteMethodTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      */
     public function testThrowExceptionOnUnRegisteredRouteMethod()
     {

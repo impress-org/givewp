@@ -144,7 +144,7 @@ final class TestDonationRepository extends TestCase
     }
 
     /**
-     * @unreleased add company to test to catch cases where missing meta was not updated
+     * @since 2.23.1 add company to test to catch cases where missing meta was not updated
      * @since 2.19.6
      *
      * @return void

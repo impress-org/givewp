@@ -134,7 +134,8 @@ class MockStripe extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
+     *
      * @inerhitDoc
      */
     public function refundDonation(Donation $donation)
@@ -187,7 +188,8 @@ class MockPaypal extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
+     *
      * @inerhitDoc
      */
     public function refundDonation(Donation $donation)

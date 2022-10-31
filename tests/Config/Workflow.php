@@ -10,7 +10,7 @@ class Workflow implements Config
 {
     /**
      * @inheritDoc
-     * @unreleased
+     * @since 2.20.1
      */
     public function config(): string
     {
@@ -19,7 +19,7 @@ class Workflow implements Config
 
     /**
      * @inheritDoc
-     * @unreleased
+     * @since 2.20.1
      */
     public function bootstrap(): string
     {

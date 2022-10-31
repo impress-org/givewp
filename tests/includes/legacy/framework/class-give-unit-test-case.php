@@ -8,7 +8,7 @@ use Give\Framework\Support\ValueObjects\Money;
  * Provides Give-specific setup/tear down/assert methods
  * and helper functions.
  *
- * @deprecated @unreleased use GiveTests\TestCase instead
+ * @deprecated 2.22.1 use GiveTests\TestCase instead
  *
  * @since 1.0
  */
@@ -118,7 +118,7 @@ class Give_Unit_Test_Case extends WP_UnitTestCase
     /**
      * Asserts that two Money objects are equal.
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @param Money $expected
      * @param Money $actual
