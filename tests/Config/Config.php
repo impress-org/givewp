@@ -16,11 +16,4 @@ interface Config {
      * @unreleased
      */
     public function bootstrap(): string;
-
-    /**
-     * Return the functions file path
-     *
-     * @unreleased
-     */
-    public function functions(): string;
 }
