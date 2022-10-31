@@ -1,9 +1,9 @@
 import styles from './ListTableRows.module.scss';
 import {__} from '@wordpress/i18n';
 import cx from 'classnames';
+import {Markup} from 'interweave';
 import {useEffect, useState} from 'react';
-import TableCell, {IdBadge, StatusBadge} from './TableCell';
-import TestLabel from '@givewp/components/ListTable/TestLabel';
+import TableCell, {IdBadge} from './TableCell';
 import {BulkActionCheckbox} from '@givewp/components/ListTable/BulkActionCheckbox';
 
 const postStatusMap = {
@@ -34,26 +34,20 @@ const RenderRow = ({column, item}) => {
     if (value === undefined) {
         value = null;
     }
-    switch (column?.preset) {
-        case 'idBadge':
-            return <IdBadge key={column.name} id={value} />;
-        case 'statusBadge':
-            return <StatusBadge key={column.name} className={styles[value]} text={value} />;
-        case 'postStatus':
-            return <StatusBadge key={column.name} className={styles[value]} text={postStatusMap[value]} />;
-        case 'donationStatus':
-            return (
-                <div className={styles.donationStatus}>
-                    <StatusBadge key={column.name} className={styles[value]} text={donationStatusMap[value]} />
-                    {item.paymentMode === 'test' && <TestLabel />}
-                </div>
-            );
-        case 'monetary':
-            return <strong className={styles.monetary}>{value}</strong>;
-        default:
-            if (column?.render instanceof Function) return column.render(item);
-            if (value === '' || value === null) return '-';
-            return value;
+
+    function isHTML(column) {
+        const displaysHtml = ['paymentType', 'name', 'formTitle', 'status', 'donorType'];
+        return displaysHtml.some((name) => name === column.name);
+    }
+
+    if (column.name === 'id') {
+        return <IdBadge key={column.name} id={value} />;
+    } else if (isHTML(column)) {
+        // return <Markup content={"<a href='/tag'>html</a>"} />;
+        return <Markup content={"<img src='' alt=''/>"} />;
+    } else {
+        if (value === '' || value === null) return '-';
+        return value;
     }
 };
 
