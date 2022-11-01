@@ -18,13 +18,11 @@ class BlockAttributesTest extends TestCase
      public function attributesProvider(): array
      {
         return array(
-          ['formId' => 1, 'formTemplateId' => 1],
-          ['formId' => null, 'formTemplateId' => null],
-          ['formId' => null, 'formTemplateId' => 1],
-          ['formId' => 1, 'formTemplateId' => null],
-          ['formId' => 1, null],
-          [null, 'formTemplateId' => 1],
-          [null, null],
+            ['formId' => 1, 'formTemplateId' => 1],
+            ['formId' => 1, 'formTemplateId' => null],
+            ['formId' => null, 'formTemplateId' => 1],
+            ['formId' => null, 'formTemplateId' => null],
+            [null, null],
         );
     }
 

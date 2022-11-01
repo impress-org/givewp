@@ -30,6 +30,7 @@ class FormBuilderViewModelTest extends TestCase
             $viewModel->storageData($formId),
             [
                 'resourceURL' => rest_url(FormBuilderRestRouteConfig::NAMESPACE . '/form/' . $formId),
+                'previewURL' => site_url("?givewp-view=donation-form&form-id=$formId&form-template-id=classic"),
                 'nonce' => wp_create_nonce('wp_rest'),
                 'blockData' => get_post($formId)->post_content,
                 'settings' => get_post_meta($formId, 'formBuilderSettings', true),
