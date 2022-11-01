@@ -52,7 +52,7 @@ class DonationFormViewController
         exit();
     }
 
-    /**
+     /**
      * Loads scripts in order: [Registrars, Template, Gateways, Block]
      *
      * @unreleased

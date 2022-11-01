@@ -6,7 +6,7 @@ import {Popover, SlotFillProvider} from '@wordpress/components';
 import {InterfaceSkeleton} from "@wordpress/interface";
 
 import HeaderContainer from './containers/HeaderContainer';
-import {Content, SecondarySidebar, Sidebar} from './components';
+import {SecondarySidebar, Sidebar} from './components';
 import {defaultFormSettings, FormSettingsProvider} from './settings/context';
 import {Storage} from './common';
 
@@ -18,6 +18,7 @@ import '@wordpress/block-editor/build-style/style.css';
 import './App.scss';
 
 import defaultBlocks from './blocks.json'
+import {FormBlocks, DesignPreview} from "./components/canvas";
 
 function App() {
 
@@ -47,6 +48,8 @@ function App() {
                       .catch(error => alert(error.message));
     };
 
+    const [selectedTab, setSelectedTab] = useState('form');
+
     return (
         <FormSettingsProvider formSettings={formSettings} setFormSettings={setFormSettings}>
             <ShortcutProvider>
@@ -67,8 +70,8 @@ function App() {
                                 showSidebar={showSidebar}
                                 toggleShowSidebar={toggleShowSidebar}
                             />}
-                            content={<Content />}
-                            sidebar={!!showSidebar && <Sidebar />}
+                            content={'design' === selectedTab ? <DesignPreview blocks={blocks} /> : <FormBlocks />}
+                            sidebar={!!showSidebar && <Sidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab} />}
                             secondarySidebar={!!selectedSecondarySidebar &&
                                 <SecondarySidebar selected={selectedSecondarySidebar} />}
                         />

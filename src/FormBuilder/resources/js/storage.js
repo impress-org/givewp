@@ -27,4 +27,19 @@ window.storage = {
             settings: JSON.parse( window.storageData.settings || "{}" ),
         };
     },
+    preview: ( blocks ) => {
+        return new Promise((resolve, reject) => {
+            jQuery
+                .post({
+                    url: window.storageData.previewURL,
+                    headers: {
+                        'X-WP-Nonce': window.storageData.nonce,
+                    },
+                    data: {
+                        'form-blocks': JSON.stringify(blocks),
+                    },
+                })
+                .then(resolve);
+        });
+    },
 }

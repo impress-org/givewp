@@ -1,4 +1,4 @@
-import {createSlotFill} from '@wordpress/components';
+import {createSlotFill, PanelBody, PanelRow, TextControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 
 import TabPanel from './tab-panel';
@@ -6,7 +6,6 @@ import TabPanel from './tab-panel';
 import {DonationGoalSettings, FormTitleSettings, OfflineDonationsSettings} from '../../settings';
 import FormFields from "../../settings/form-fields";
 import {PopoutSlot} from "./popout";
-import {useState} from "@wordpress/element";
 import {useEffect} from "react";
 import useSelectedBlocks from "../../hooks/useSelectedBlocks";
 
@@ -38,11 +37,19 @@ const tabs = [
             </>
         ),
     },
+    {
+        name: 'design',
+        title: __('Design'),
+        className: 'tab-block',
+        content: () => (
+            <>
+                <span className={'block-editor-block-inspector__no-blocks'}>No template selected.</span>
+            </>
+        ),
+    },
 ];
 
-function Sidebar() {
-
-    const [selectedTab, setSelectedTab] = useState(null);
+function Sidebar({selectedTab, setSelectedTab}) {
 
     const selectedBlocks = useSelectedBlocks();
 
@@ -50,7 +57,7 @@ function Sidebar() {
         () => {
             if (selectedBlocks.length) setSelectedTab('block');
         }
-        , [selectedBlocks], // only run effect when selectedBlocks changes
+        , [selectedBlocks, setSelectedTab], // only run effect when selectedBlocks changes
     );
 
     return (

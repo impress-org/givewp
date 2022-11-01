@@ -16,6 +16,13 @@ const localStorageDriver = {
             settings,
         };
     },
+    preview: (blocks) => {
+        return new Promise((resolve, reject) => {
+            setTimeout(function () {
+                resolve(JSON.stringify(blocks));
+            }, 1000);
+        });
+    }
 };
 
 export default localStorageDriver;
