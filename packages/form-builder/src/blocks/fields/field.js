@@ -5,7 +5,7 @@ import DefaultFieldSettings from './settings/DefaultFieldSettings';
 import {useFieldNameValidator} from '../../hooks';
 import {InspectorAdvancedControls} from '@wordpress/block-editor';
 import {ExternalLink, PanelRow, TextControl, ToggleControl} from '@wordpress/components';
-import {slugify} from '../../common';
+import slugify from '../../common/slugify';
 import {useCallback} from '@wordpress/element';
 
 function FieldSettings({attributes, setAttributes}) {

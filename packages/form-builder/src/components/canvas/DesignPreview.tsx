@@ -1,13 +1,21 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
-import {Storage} from '../../common';
+import type {Block} from '../../types/block';
+
+import Storage from '../../common/storage/index.ts';
+
 import IframeResizer from 'iframe-resizer-react';
 
-const DesignPreview = ({blocks}) => {
+type PropTypes = {
+    blocks: Block[];
+};
+
+const DesignPreview = ({blocks}: PropTypes) => {
     const [sourceDocument, setSourceDocument] = useState('');
 
     useEffect(() => {
         Storage.preview(blocks).then(setSourceDocument);
+        // stringify to prevent re-renders caused by object as dep
     }, [JSON.stringify(blocks)]);
 
     return !sourceDocument ? (

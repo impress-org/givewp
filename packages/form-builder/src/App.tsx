@@ -1,9 +1,9 @@
-import React from 'react';
+import * as React from 'react';
 
 import {ShortcutProvider} from '@wordpress/keyboard-shortcuts';
 import BlockEditorContainer from './containers/BlockEditorContainer.tsx';
 import {FormSettingsProvider} from './stores/form-settings/index.tsx';
-import {Storage} from './common';
+import {Storage} from './common/index.ts';
 
 import '@wordpress/components/build-style/style.css';
 import '@wordpress/block-editor/build-style/style.css';

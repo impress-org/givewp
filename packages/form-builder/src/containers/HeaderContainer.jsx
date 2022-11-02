@@ -5,7 +5,7 @@ import {RichText} from '@wordpress/block-editor';
 import {Button} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {Header} from '../components';
-import {Storage} from '../common';
+import {Storage} from '../common/index.ts';
 
 const HeaderContainer = ({
     selectedSecondarySidebar,

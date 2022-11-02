@@ -1,5 +1,6 @@
 import {createContext, ReactNode, useContext, useReducer} from 'react';
 import formSettingsReducer, {setFormBlocks, setFormSettings} from './reducer.ts';
+import type {Block} from '../../types/block';
 
 const StoreContext = createContext(null);
 StoreContext.displayName = 'FormSettingsStoreContext';
@@ -8,12 +9,10 @@ const StoreContextDispatch = createContext(null);
 StoreContextDispatch.displayName = 'FormSettingsStoreContextDispatch';
 
 /**
- * TODO: format settings object by category
- *
  * @unreleased
  */
-type FormSettings = {
-    blocks: object;
+export type FormSettings = {
+    blocks: Block[];
     formTitle: string;
     enableDonationGoal: boolean;
     enableAutoClose: boolean;
@@ -31,7 +30,7 @@ type FormSettings = {
  *
  * @unreleased
  */
-const FormSettingsProvider = ({initialState, children}: {initialState: FormSettings,children: ReactNode}) => {
+const FormSettingsProvider = ({initialState, children}: {initialState: FormSettings; children: ReactNode}) => {
     const [state, dispatch] = useReducer(formSettingsReducer, initialState);
 
     return (
@@ -49,7 +48,7 @@ const FormSettingsProvider = ({initialState, children}: {initialState: FormSetti
  * @example
  *  const {formTitle} = useFormSettings();
  */
-const useFormSettings = () => useContext(StoreContext);
+const useFormSettings = () => useContext<FormSettings>(StoreContext);
 
 /**
  * This is a convenient way of retrieving the "dispatch" function from our provider
