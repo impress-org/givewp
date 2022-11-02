@@ -2,76 +2,9 @@ import styles from './ListTableRows.module.scss';
 import {__} from '@wordpress/i18n';
 import cx from 'classnames';
 import {useEffect, useState} from 'react';
-import TableCell, {IdBadge, StatusBadge} from './TableCell';
-import TestLabel from '@givewp/components/ListTable/TestLabel';
+import TableCell from './TableCell';
 import {BulkActionCheckbox} from '@givewp/components/ListTable/BulkActionCheckbox';
-
-const postStatusMap = {
-    publish: __('published', 'give'),
-    future: __('future', 'give'),
-    draft: __('draft', 'give'),
-    pending: __('pending', 'give'),
-    trash: __('trash', 'give'),
-    inherit: __('inherit', 'give'),
-    private: __('private', 'give'),
-};
-
-const donationStatusMap = {
-    publish: __('complete', 'give'),
-    pending: __('pending', 'give'),
-    refunded: __('refunded', 'give'),
-    failed: __('failed', 'give'),
-    cancelled: __('cancelled', 'give'),
-    abandoned: __('abandoned', 'give'),
-    preapproval: __('pre-approved', 'give'),
-    processing: __('processing', 'give'),
-    revoked: __('revoked', 'give'),
-    give_subscription: __('renewal', 'give'),
-};
-
-const RenderRow = ({column, item}) => {
-    let value = item?.[column.name];
-    if (value === undefined) {
-        value = null;
-    }
-
-    switch (column?.preset) {
-        case 'idBadge':
-            return <IdBadge key={column.name} id={value} />;
-        case 'statusBadge':
-            return <StatusBadge key={column.name} className={styles[value]} text={value} />;
-        case 'postStatus':
-            return <StatusBadge key={column.name} className={styles[value]} text={postStatusMap[value]} />;
-        case 'donationStatus':
-            return (
-                <div className={styles.donationStatus}>
-                    <StatusBadge key={column.name} className={styles[value]} text={donationStatusMap[value]} />
-                    {item.paymentMode === 'test' && <TestLabel />}
-                </div>
-            );
-        case 'monetary':
-            return <strong className={styles.monetary}>{value}</strong>;
-        default:
-            if (column?.render instanceof Function) return column.render(item);
-            if (value === '' || value === null) return '-';
-            return value;
-    }
-
-    // function isHTML(column) {
-    //     const displaysHtml = ['paymentType', 'name', 'formTitle', 'status', 'donorType'];
-    //     return displaysHtml.some((name) => name === column.name);
-    // }
-    //
-    // if (column.name === 'id') {
-    //     return <IdBadge key={column.name} id={value} />;
-    // } else if (isHTML(column)) {
-    //     // return <Markup content={"<a href='/tag'>html</a>"} />;
-    //     return <Markup content={"<img src='' alt=''/>"} />;
-    // } else {
-    //     if (value === '' || value === null) return '-';
-    //     return value;
-    // }
-};
+import Interweave from '@givewp/components/ListTable/Interweave/Interweave';
 
 export default function ListTableRows({
     columns,
@@ -125,7 +58,7 @@ export default function ListTableRows({
         return null;
     }
 
-    return data.map((item) => (
+    return data?.items.map((item) => (
         <tr
             key={item.id}
             className={cx(styles.tableRow, {
@@ -147,7 +80,7 @@ export default function ListTableRows({
                         })}
                         heading={column?.heading}
                     >
-                        <RenderRow column={column} item={item} />
+                        <Interweave column={column} item={item} />
                         {!isLoading && rowActions && (
                             <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
                                 {column?.heading &&
