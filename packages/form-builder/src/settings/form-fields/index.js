@@ -1,11 +1,10 @@
-import {useFormSettings} from "../context";
-import {__} from "@wordpress/i18n";
-import {PanelBody, PanelRow, SelectControl, ToggleControl} from "@wordpress/components";
+import {setFormSettings, useFormSettings, useFormSettingsDispatch} from '../../stores/form-settings/index.tsx';
+import {__} from '@wordpress/i18n';
+import {PanelBody, PanelRow, SelectControl, ToggleControl} from '@wordpress/components';
 
 const FormFieldSettings = () => {
-
-    const [{registration, anonymousDonations, guestDonations}, updateSetting] = useFormSettings();
-
+    const {registration, anonymousDonations, guestDonations} = useFormSettings();
+    const dispatch = useFormSettingsDispatch();
 
     const registrationOptions = [
         {
@@ -32,24 +31,27 @@ const FormFieldSettings = () => {
                 <SelectControl
                     labelPosition={'left'}
                     label={__('Registration', 'give')}
-                    help={__('Display the registration and/or login forms in the payment section for non-logged-in users.', 'give')}
+                    help={__(
+                        'Display the registration and/or login forms in the payment section for non-logged-in users.',
+                        'give'
+                    )}
                     value={registration}
                     options={registrationOptions}
-                    onChange={(registration) => updateSetting({registration: registration})}
+                    onChange={(registration) => dispatch(setFormSettings({registration}))}
                 />
             </PanelRow>
             <PanelRow>
                 <ToggleControl
                     label={__('Anonymous Donations', 'give')}
                     checked={anonymousDonations}
-                    onChange={() => updateSetting({anonymousDonations: !anonymousDonations})}
+                    onChange={() => dispatch(setFormSettings({anonymousDonations: !anonymousDonations}))}
                 />
             </PanelRow>
             <PanelRow>
                 <ToggleControl
                     label={__('Allow Guest Donations', 'give')}
                     checked={guestDonations}
-                    onChange={() => updateSetting({guestDonations: !guestDonations})}
+                    onChange={() => dispatch(setFormSettings({guestDonations: !guestDonations}))}
                 />
             </PanelRow>
         </PanelBody>
