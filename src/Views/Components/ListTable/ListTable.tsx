@@ -10,9 +10,10 @@ import ListTableRows from '@givewp/components/ListTable/ListTableRows';
 
 export interface ListTableProps {
     //required
-    table: {columns: Array<ListTableColumn>};
+    apiSettings: {table: {columns: Array<ListTableColumn>}};
     title: string;
     data: {items: Array<{}>};
+    postColumnData: (parameters: any, endpoint: string, data: object, method: string) => {};
 
     //optional
     pluralName?: string;
@@ -40,7 +41,6 @@ export interface ListTableColumn {
 }
 
 export const ListTable = ({
-    table,
     singleName = __('item', 'give'),
     pluralName = __('items', 'give'),
     title,
@@ -50,10 +50,16 @@ export const ListTable = ({
     error = false,
     isLoading = false,
     align = 'start',
+    apiSettings,
+    postColumnData,
 }: ListTableProps) => {
     const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>; successes: Array<number>}>({
         errors: [],
         successes: [],
+    });
+    const [sort, setSort] = useState<{sortColumn: string; sortDirection: string}>({
+        sortColumn: 'id',
+        sortDirection: 'desc',
     });
     const [errorOverlay, setErrorOverlay] = useState<string | boolean>(false);
     const [initialLoad, setInitialLoad] = useState<boolean>(true);
@@ -61,20 +67,15 @@ export const ListTable = ({
     const [overlayWidth, setOverlayWidth] = useState(0);
     const [sortedData, setSortedData] = useState<Array<object>>([{}]);
 
-    const [sort, setSort] = useState<{sortColumn: string; sortDirection: string}>({
-        sortColumn: 'id',
-        sortDirection: 'desc',
-    });
-
     const tableRef = useRef<null | HTMLTableElement>();
     const isEmpty = !error && data?.items.length === 0;
     const {sortColumn, sortDirection} = sort;
-    const {columns} = table;
+    const {columns} = apiSettings.table;
 
     useEffect(() => {
         initialLoad && data && setInitialLoad(false);
         //@unreleased updated to set data to sorted state on load.
-        setSortedData(data.items);
+        setSortedData(data?.items);
     }, [data]);
 
     useEffect(() => {
@@ -112,42 +113,21 @@ export const ListTable = ({
         setUpdateErrors({errors: [], successes: []});
     };
 
-    //@unreleased declare function to set column and direction for db & sorting.
-    const setSortDirectionForColumn = (column, direction, event) => {
+    const handleItemSort = (event, column) => {
         event.preventDefault();
+        const direction = sortDirection === 'desc' ? 'asc' : 'desc';
+        setSortDirectionForColumn(column, direction);
+        return postColumnData(parameters, '/column-direction', {column, direction}, 'POST');
+    };
+
+    const setSortDirectionForColumn = (column, direction) => {
         setSort((previousState) => {
             return {
                 ...previousState,
                 sortColumn: column,
-                sortDirection: direction === 'asc' ? 'desc' : 'asc',
+                sortDirection: direction,
             };
         });
-        handleSortData(column, direction, data);
-    };
-
-    // //@unreleased sort data based on type and direction.
-    const handleSortData = (column, sortDirection, data) => {
-        if (sortDirection === 'asc') {
-            column === 'createdAt'
-                ? setSortedData([...data?.items].sort((a, b) => a[sortColumn] - b[sortColumn]))
-                : setSortedData(
-                      [...data?.items].sort((a, b) =>
-                          a[sortColumn]?.toString().localeCompare(b[sortColumn]?.toString(), {
-                              numeric: a[sortColumn] !== isNaN,
-                          })
-                      )
-                  );
-        } else if (sortDirection === 'desc') {
-            column === 'createdAt'
-                ? setSortedData([...data?.items].sort((a, b) => b[sortColumn] - a[sortColumn]))
-                : setSortedData(
-                      [...data?.items].sort((a, b) =>
-                          b[sortColumn]?.toString().localeCompare(a[sortColumn]?.toString(), {
-                              numeric: b[sortColumn] !== isNaN,
-                          })
-                      )
-                  );
-        }
     };
 
     return (
@@ -193,7 +173,13 @@ export const ListTable = ({
                                     {columns?.map((column) => (
                                         <th
                                             scope="col"
-                                            aria-sort="none"
+                                            aria-sort={
+                                                column.name === sortColumn
+                                                    ? sortDirection === 'asc'
+                                                        ? 'ascending'
+                                                        : 'descending'
+                                                    : 'none'
+                                            }
                                             className={cx(styles.tableColumnHeader, {
                                                 [styles[align]]: !column?.alignColumn,
                                                 [styles.center]: column?.alignColumn === 'center',
@@ -208,8 +194,7 @@ export const ListTable = ({
                                                 column={column}
                                                 sort={sort}
                                                 onClick={(event) =>
-                                                    column.isSortable &&
-                                                    setSortDirectionForColumn(column.name, sortDirection, event)
+                                                    column.isSortable && handleItemSort(event, column.name)
                                                 }
                                             />
                                         </th>

@@ -8,7 +8,7 @@ const TableSort = ({column, sort, onClick}) => {
     return (
         <>
             {column.isSortable ? (
-                <button onClick={onClick}>
+                <button type="button" aria-label="sort" onClick={onClick}>
                     <div className={styles.text}>{column.text}</div>
                     <div key={column.name} id={column.name}>
                         <svg width="16" height="7" viewBox="0 0 16 7" fill="none" xmlns="http://www.w3.org/2000/svg">

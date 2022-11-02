@@ -150,6 +150,14 @@ export default function ListTablePage({
         </div>
     );
 
+    const postColumnData = async (parameters, endpoint = '', data = {direction: '', column: ''}, method = '') => {
+        const {column, direction} = data;
+        const response = await archiveApi.fetchWithArgs(endpoint, {column, direction}, method);
+        // setUpdateErrors(response);
+        await mutate(parameters);
+        return response;
+    };
+
     return (
         <>
             <article className={styles.page}>
@@ -177,7 +185,8 @@ export default function ListTablePage({
                     <CheckboxContext.Provider value={checkboxRefs}>
                         <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
                             <ListTable
-                                table={apiSettings.table}
+                                apiSettings={apiSettings}
+                                postColumnData={postColumnData}
                                 singleName={singleName}
                                 pluralName={pluralName}
                                 title={title}
