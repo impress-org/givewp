@@ -55,8 +55,19 @@ export default class ListTableApi {
     };
 
     // SWR Fetcher
-    useListTable = ({page, perPage, ...filters}) => {
-        const {data, error, mutate, isValidating} = useSWR({page, perPage, ...filters}, this.fetcher, this.swrOptions);
+    useListTable = ({page, perPage, columns, sortColumn, sortDirection, ...filters}) => {
+        const {data, error, mutate, isValidating} = useSWR(
+            {
+                page,
+                perPage,
+                columns,
+                sortColumn,
+                sortDirection,
+                ...filters,
+            },
+            this.fetcher,
+            this.swrOptions
+        );
         return {data, error, mutate, isValidating};
     };
 }

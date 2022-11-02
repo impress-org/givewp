@@ -13,7 +13,8 @@ export interface ListTableProps {
     apiSettings: {table: {columns: Array<ListTableColumn>}};
     title: string;
     data: {items: Array<{}>};
-    postColumnData: (parameters: any, endpoint: string, data: object, method: string) => {};
+    handleItemSort;
+    sortData;
 
     //optional
     pluralName?: string;
@@ -51,31 +52,26 @@ export const ListTable = ({
     isLoading = false,
     align = 'start',
     apiSettings,
-    postColumnData,
+    handleItemSort,
+    sortData,
 }: ListTableProps) => {
     const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>; successes: Array<number>}>({
         errors: [],
         successes: [],
     });
-    const [sort, setSort] = useState<{sortColumn: string; sortDirection: string}>({
-        sortColumn: 'id',
-        sortDirection: 'desc',
-    });
+
     const [errorOverlay, setErrorOverlay] = useState<string | boolean>(false);
     const [initialLoad, setInitialLoad] = useState<boolean>(true);
     const [loadingOverlay, setLoadingOverlay] = useState<string | boolean>(false);
     const [overlayWidth, setOverlayWidth] = useState(0);
-    const [sortedData, setSortedData] = useState<Array<object>>([{}]);
 
     const tableRef = useRef<null | HTMLTableElement>();
     const isEmpty = !error && data?.items.length === 0;
-    const {sortColumn, sortDirection} = sort;
     const {columns} = apiSettings.table;
 
     useEffect(() => {
         initialLoad && data && setInitialLoad(false);
         //@unreleased updated to set data to sorted state on load.
-        setSortedData(data?.items);
     }, [data]);
 
     useEffect(() => {
@@ -111,23 +107,6 @@ export const ListTable = ({
 
     const clearUpdateErrors = () => {
         setUpdateErrors({errors: [], successes: []});
-    };
-
-    const handleItemSort = (event, column) => {
-        event.preventDefault();
-        const direction = sortDirection === 'desc' ? 'asc' : 'desc';
-        setSortDirectionForColumn(column, direction);
-        return postColumnData(parameters, '/column-direction', {column, direction}, 'POST');
-    };
-
-    const setSortDirectionForColumn = (column, direction) => {
-        setSort((previousState) => {
-            return {
-                ...previousState,
-                sortColumn: column,
-                sortDirection: direction,
-            };
-        });
     };
 
     return (
@@ -174,8 +153,8 @@ export const ListTable = ({
                                         <th
                                             scope="col"
                                             aria-sort={
-                                                column.name === sortColumn
-                                                    ? sortDirection === 'asc'
+                                                column.name === sortData.sortColumn
+                                                    ? sortData.sortDirection === 'asc'
                                                         ? 'ascending'
                                                         : 'descending'
                                                     : 'none'
@@ -192,10 +171,8 @@ export const ListTable = ({
                                             {/*{@unreleased new Table Sorting component.}*/}
                                             <TableSort
                                                 column={column}
-                                                sort={sort}
-                                                onClick={(event) =>
-                                                    column.isSortable && handleItemSort(event, column.name)
-                                                }
+                                                sortData={sortData}
+                                                handleItemSort={handleItemSort}
                                             />
                                         </th>
                                     ))}
@@ -206,7 +183,7 @@ export const ListTable = ({
                             <ListTableRows
                                 columns={columns}
                                 //@unreleased updated to pass sorted data.
-                                data={sortedData}
+                                data={data}
                                 isLoading={isLoading}
                                 singleName={singleName}
                                 rowActions={rowActions}

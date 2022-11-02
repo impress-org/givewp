@@ -80,13 +80,21 @@ export default function ListTablePage({
     const [selectedNames, setSelectedNames] = useState([]);
     const dialog = useRef() as {current: A11yDialogInstance};
     const checkboxRefs = useRef([]);
+    const [sortData, setSortData] = useState<{sortColumn: string; sortDirection: string}>({
+        sortColumn: 'id',
+        sortDirection: 'desc',
+    });
+    const {sortColumn, sortDirection} = sortData;
+    const columns = apiSettings.table.columns.map((column) => column.name);
 
     const parameters = {
         page,
         perPage,
+        columns,
+        sortColumn,
+        sortDirection,
         ...filters,
     };
-
     const archiveApi = useRef(new ListTableApi(apiSettings)).current;
 
     const {data, error, isValidating, mutate} = archiveApi.useListTable(parameters);
@@ -150,12 +158,20 @@ export default function ListTablePage({
         </div>
     );
 
-    const postColumnData = async (parameters, endpoint = '', data = {direction: '', column: ''}, method = '') => {
-        const {column, direction} = data;
-        const response = await archiveApi.fetchWithArgs(endpoint, {column, direction}, method);
-        // setUpdateErrors(response);
-        await mutate(parameters);
-        return response;
+    const handleItemSort = (event, column) => {
+        event.preventDefault();
+        const direction = sortData.sortDirection === 'desc' ? 'asc' : 'desc';
+        setSortDirectionForColumn(column, direction);
+    };
+
+    const setSortDirectionForColumn = (column, direction) => {
+        setSortData((previousState) => {
+            return {
+                ...previousState,
+                sortColumn: column,
+                sortDirection: direction,
+            };
+        });
     };
 
     return (
@@ -186,7 +202,8 @@ export default function ListTablePage({
                         <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
                             <ListTable
                                 apiSettings={apiSettings}
-                                postColumnData={postColumnData}
+                                sortData={sortData}
+                                handleItemSort={handleItemSort}
                                 singleName={singleName}
                                 pluralName={pluralName}
                                 title={title}
