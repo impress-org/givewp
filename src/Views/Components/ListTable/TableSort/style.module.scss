@@ -1,14 +1,16 @@
 
-button {
-    display: flex;
-    align-items: center;
-    background: none;
-    color: #2271b1;
-    border: none;
-    cursor: pointer;
+th {
     transform: translateX(-10px);
 
-    .text {
+    button {
+        display: flex;
+        align-items: center;
+        background: none;
+        color: #2271b1;
+        border: none;
+        cursor: pointer;
+
+        .text {
         white-space: nowrap;
     }
 
@@ -22,6 +24,7 @@ button {
                 fill: #0878b0 !important;
             }
         }
+    }
     }
 }
 
