@@ -77,7 +77,6 @@
 
         .icon {
             display: inline;
-            padding: 0.42em;
             border-top-left-radius: 0.1875rem;
             border-bottom-left-radius: 0.1875rem;
             font-size: 1.125rem;
@@ -88,9 +87,11 @@
 
             &--single {
                 background: #556E79;
+                padding: 0.55em;
             }
 
             &--recurring {
+                padding: 0.42em;
                 background: linear-gradient(225.34deg, #59AD70 0%, #2EBBBB 101.17%);
             }
         }
@@ -116,13 +117,4 @@
         }
     }
 
-}
-
-
-.test {
-    //color: Red;
-    //border: 1px solid red;
-    //height: 20px;
-    //width: 20px;
-    //background: url('../images/RecurringIcon.svg') no-repeat;
 }

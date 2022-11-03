@@ -53,7 +53,7 @@
     padding: 1em;
     inline-size: 8rem;
     text-align: start;
-    
+
     &.start {
         text-align: start;
     }
@@ -144,6 +144,10 @@
     animation: appear 0.1s ease-in reverse;
 }
 
+.sortingIcon {
+    transform: translateX(-10px);
+}
+
 @keyframes appear {
     0% {
         opacity: 0;
@@ -152,3 +156,5 @@
         opacity: 1;
     }
 }
+
+

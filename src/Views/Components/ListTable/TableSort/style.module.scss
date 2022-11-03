@@ -1,7 +1,5 @@
 
 th {
-    transform: translateX(-10px);
-
     button {
         display: flex;
         align-items: center;
@@ -10,21 +8,22 @@ th {
         border: none;
         cursor: pointer;
 
+
         .text {
-        white-space: nowrap;
-    }
+            white-space: nowrap;
+        }
 
-    svg {
-        display: block;
-        transform: scale(112%);
-        margin: 3px 0 3px 8px;
+        svg {
+            display: block;
+            transform: scale(112%);
+            margin: 3px 0 3px 8px;
 
-        > path {
-            &:hover {
-                fill: #0878b0 !important;
+            > path {
+                &:hover {
+                    fill: #0878b0 !important;
+                }
             }
         }
-    }
     }
 }
 
