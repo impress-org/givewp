@@ -4,7 +4,7 @@ import cx from 'classnames';
 import {useEffect, useState} from 'react';
 import TableCell from './TableCell';
 import {BulkActionCheckbox} from '@givewp/components/ListTable/BulkActionCheckbox';
-import Interweave from '@givewp/components/ListTable/Interweave/Interweave';
+import RenderRow from '@givewp/components/ListTable/RenderRow';
 
 export default function ListTableRows({
     columns,
@@ -57,7 +57,6 @@ export default function ListTableRows({
     if (!data) {
         return null;
     }
-
     return data?.items.map((item) => (
         <tr
             key={item.id}
@@ -80,7 +79,7 @@ export default function ListTableRows({
                         })}
                         heading={column?.heading}
                     >
-                        <Interweave column={column} item={item} />
+                        <RenderRow item={item} />
                         {!isLoading && rowActions && (
                             <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
                                 {column?.heading &&

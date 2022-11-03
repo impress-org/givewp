@@ -13,8 +13,8 @@ export interface ListTableProps {
     apiSettings: {table: {columns: Array<ListTableColumn>}};
     title: string;
     data: {items: Array<{}>};
-    handleItemSort;
-    sortData;
+    handleItemSort: (event: React.MouseEvent<HTMLElement>, column: string) => void;
+    sortData: {sortColumn: string; sortDirection: string};
 
     //optional
     pluralName?: string;
@@ -71,7 +71,6 @@ export const ListTable = ({
 
     useEffect(() => {
         initialLoad && data && setInitialLoad(false);
-        //@unreleased updated to set data to sorted state on load.
     }, [data]);
 
     useEffect(() => {
@@ -163,6 +162,7 @@ export const ListTable = ({
                                                 [styles[align]]: !column?.alignColumn,
                                                 [styles.center]: column?.alignColumn === 'center',
                                                 [styles.start]: column?.alignColumn === 'start',
+                                                [styles.sortingIcon]: column.isSortable,
                                             })}
                                             data-column={column.name}
                                             key={column.name}
