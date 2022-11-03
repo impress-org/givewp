@@ -55,10 +55,8 @@
         padding-inline-end: 0.25em;
     }
 
-    .typeBadge {
-        display: inline-flex;
-        align-items: center;
-        justify-content: space-between;
+    .badge {
+        position: relative;
         font-family: Open Sans;
         background-color: white;
         border: 0;
@@ -69,46 +67,62 @@
         block-size: 2rem;
         margin: 0;
         padding: 0;
-
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
 
         & > * {
             flex: 0 0 auto;
         }
 
-        &__container {
-            display:inline-flex;
-            align-items: center;
-            justify-content: center;
+        .icon {
+            display: inline;
+            padding: 0.42em;
             border-top-left-radius: 0.1875rem;
             border-bottom-left-radius: 0.1875rem;
-            padding: 0.375em;
-
+            font-size: 1.125rem;
+            font-weight: 700;
+            letter-spacing: 0;
+            color: white;
+            box-sizing: content-box !important;
 
             &--single {
                 background: #556E79;
             }
 
-            &--recurring{
+            &--recurring {
                 background: linear-gradient(225.34deg, #59AD70 0%, #2EBBBB 101.17%);
             }
         }
 
-        &__badge {
-            color: #FFFFFF;
-            padding: 0 0.0975rem;
-            font-size: 1rem;
-            font-weight: 700;
-            line-height: 22px;
-            box-sizing: content-box !important;
-        }
 
         &__label {
-            padding: 0.875rem;
-            color: #555555;
-            font-size: .875rem;
+            margin: 0;
+            padding: 0.6125rem 0.5rem;
+            font-size: 0.75rem;
             font-weight: 400;
-            line-height: 1rem;
             text-transform: uppercase;
+            cursor: default;
+            flex-basis: fit-content;
+        }
+
+        .star {
+            display: inline;
+            color: rgba(255, 215, 0, 1);
+            position: absolute;
+            z-index: 2;
+            top: -0.5rem;
+            right: -0.5rem;
         }
     }
+
+}
+
+
+.test {
+    //color: Red;
+    //border: 1px solid red;
+    //height: 20px;
+    //width: 20px;
+    //background: url('../images/RecurringIcon.svg') no-repeat;
 }
