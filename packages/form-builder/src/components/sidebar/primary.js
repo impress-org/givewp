@@ -1,4 +1,4 @@
-import {createSlotFill, PanelBody, PanelRow, TextControl} from '@wordpress/components';
+import {createSlotFill} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 
 import TabPanel from './tab-panel';
