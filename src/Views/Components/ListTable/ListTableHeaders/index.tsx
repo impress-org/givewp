@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './style.module.scss';
 
 //@unreleased component used to handle sort direction and column.
-const TableSort = ({column, sortData, handleItemSort}) => {
+const ListTableHeaders = ({column, sortData, handleItemSort}) => {
     return (
         <>
             {column.isSortable ? (
@@ -41,4 +41,4 @@ const TableSort = ({column, sortData, handleItemSort}) => {
         </>
     );
 };
-export default TableSort;
+export default ListTableHeaders;
