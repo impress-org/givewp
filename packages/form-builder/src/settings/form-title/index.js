@@ -1,6 +1,6 @@
 import {PanelBody, PanelRow, TextControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
-import {setFormSettings, useFormSettings, useFormSettingsDispatch} from '../../stores/form-settings/index.tsx';
+import {setFormSettings, useFormSettings, useFormSettingsDispatch} from '@givewp/form-builder/stores/form-settings';
 
 const FormTitleSettings = () => {
     const {formTitle} = useFormSettings();

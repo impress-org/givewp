@@ -1,4 +1,4 @@
-import {setFormSettings, useFormSettings, useFormSettingsDispatch} from '../../stores/form-settings/index.tsx';
+import {setFormSettings, useFormSettings, useFormSettingsDispatch} from '@givewp/form-builder/stores/form-settings';
 import {__} from '@wordpress/i18n';
 import {PanelBody, PanelRow, SelectControl, ToggleControl} from '@wordpress/components';
 

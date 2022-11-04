@@ -1,4 +1,4 @@
-import {ElementType, FC, ReactNode} from 'react';
+import {FC, ReactNode} from 'react';
 import {applyFilters} from '@wordpress/hooks';
 import type {Element} from '@givewp/forms/types';
 import type {ElementProps, FieldProps, GroupProps} from '@givewp/forms/propTypes';
@@ -26,7 +26,7 @@ export function NodeWrapper({
 }: {
     type: string;
     nodeType: string;
-    htmlTag?: ElementType;
+    htmlTag?: keyof JSX.IntrinsicElements;
     name?: string;
     children: ReactNode;
 }) {

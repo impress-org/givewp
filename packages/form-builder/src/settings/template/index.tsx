@@ -1,6 +1,6 @@
 import {PanelBody, PanelRow, SelectControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
-import {setFormSettings, useFormSettings, useFormSettingsDispatch} from '../../stores/form-settings/index.tsx';
+import {setFormSettings, useFormSettings, useFormSettingsDispatch} from '../../stores/form-settings';
 
 const TemplateSettings = () => {
     const {template} = useFormSettings();
@@ -15,7 +15,6 @@ const TemplateSettings = () => {
         <PanelBody>
             <PanelRow>
                 <SelectControl
-                    labelPosition={'left'}
                     label={__('Form template', 'givewp')}
                     value={template}
                     onChange={(template) => dispatch(setFormSettings({template}))}

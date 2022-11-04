@@ -1,9 +1,12 @@
 {
     "private": true,
     "scripts": {
-        "build": "wp-scripts build && npm run build --workspaces",
         "dev": "wp-scripts build",
-        "start": "wp-scripts start",
+        "watch": "wp-scripts start",
+        "build": "wp-scripts build && npm run build --workspaces",
+        "dev:form-builder": "npm run dev --workspace=packages/form-builder",
+        "watch:form-builder": "npm run watch --workspace=packages/form-builder",
+        "build:form-builder": "npm run build --workspace=packages/form-builder",
         "packages-update": "wp-scripts packages-update",
         "plugin-zip": "wp-scripts plugin-zip",
         "env": "wp-env"
@@ -16,6 +19,7 @@
         "@hookform/resolvers": "^2.9.6",
         "@stripe/react-stripe-js": "^1.2.2",
         "@stripe/stripe-js": "^1.12.1",
+        "@svgr/webpack": "^6.5.1",
         "@wordpress/block-editor": "^8.0.17",
         "@wordpress/components": "^19.2.3",
         "@wordpress/compose": "5.6.0",

@@ -1,9 +1,10 @@
 import * as React from 'react';
 
 import {ShortcutProvider} from '@wordpress/keyboard-shortcuts';
-import BlockEditorContainer from './containers/BlockEditorContainer.tsx';
-import {FormSettingsProvider} from './stores/form-settings/index.tsx';
-import {Storage} from './common/index.ts';
+import BlockEditorContainer from './containers/BlockEditorContainer';
+import {FormSettingsProvider} from './stores/form-settings';
+import {Storage} from './common';
+import type {Block} from '@givewp/form-builder/types';
 
 import '@wordpress/components/build-style/style.css';
 import '@wordpress/block-editor/build-style/style.css';
@@ -11,12 +12,13 @@ import '@wordpress/block-editor/build-style/style.css';
 import './App.scss';
 
 import defaultBlocks from './blocks.json';
+import {__} from '@wordpress/i18n';
 
 const {blocks: initialBlocks, formSettings: initialFormSettings} = Storage.load();
 
 const initialState = {
-    blocks: initialBlocks || defaultBlocks,
-    formTitle: 'My Default Donation Form Title',
+    blocks: initialBlocks || (defaultBlocks as Block[]),
+    formTitle: __('My Default Donation Form Title'),
     enableDonationGoal: false,
     enableAutoClose: false,
     registration: 'none',

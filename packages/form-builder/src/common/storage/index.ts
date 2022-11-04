@@ -1,9 +1,9 @@
-import LocalStorage from './drivers/local.ts';
-import type {StorageDriver} from "./interface";
+import LocalStorage from './drivers/local';
+import type {StorageDriver} from './interface';
 
 declare global {
     interface Window {
-        storage?: StorageDriver
+        storage?: StorageDriver;
     }
 }
 

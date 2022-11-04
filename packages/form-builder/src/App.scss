@@ -1,3 +1,8 @@
+@import 'index.scss';
+@import "components/sidebar/styles";
+@import '@wordpress/components/build-style/style.css';
+@import '@wordpress/block-editor/build-style/style.css';
+
 #root {
     // Gutenberg color mappings
     --wp-admin-theme-color: var(--give-primary-500);

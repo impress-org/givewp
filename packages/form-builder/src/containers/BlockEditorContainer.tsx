@@ -13,7 +13,7 @@ import '@wordpress/components/build-style/style.css';
 import '@wordpress/block-editor/build-style/style.css';
 
 import '../App.scss';
-import {setFormBlocks, useFormSettings, useFormSettingsDispatch} from '../stores/form-settings/index.tsx';
+import {setFormBlocks, useFormSettings, useFormSettingsDispatch} from '../stores/form-settings';
 import {DesignPreview, FormBlocks} from '../components/canvas';
 
 export default function BlockEditorContainer() {

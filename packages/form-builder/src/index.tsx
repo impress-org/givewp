@@ -4,7 +4,7 @@ import {BlockConfiguration, registerBlockType} from '@wordpress/blocks';
 
 import './index.scss';
 
-import App from './App.tsx';
+import App from './App';
 
 import sectionBlocks, {sectionBlockNames} from './blocks/section';
 import fieldBlocks from './blocks/fields';

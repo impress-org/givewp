@@ -2,6 +2,8 @@
 
 namespace Give\FormBuilder;
 
+use Give\FormBuilder\Actions\DequeueAdminScriptsInFormBuilder;
+use Give\FormBuilder\Actions\DequeueAdminStylesInFormBuilder;
 use Give\FormBuilder\Routes\CreateFormRoute;
 use Give\FormBuilder\Routes\EditFormRoute;
 use Give\FormBuilder\Routes\RegisterFormBuilderPageRoute;
@@ -33,5 +35,9 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('admin_init', EditFormRoute::class);
 
         Hooks::addAction('admin_menu', RegisterFormBuilderPageRoute::class);
+
+        Hooks::addAction('admin_print_scripts', DequeueAdminScriptsInFormBuilder::class);
+
+        Hooks::addAction('admin_print_styles', DequeueAdminStylesInFormBuilder::class);
     }
 }

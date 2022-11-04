@@ -24,7 +24,7 @@ window.storage = {
     load: () => {
         return {
             blocks: JSON.parse(window.storageData.blockData),
-            settings: JSON.parse( window.storageData.settings || "{}" ),
+            formSettings: JSON.parse(window.storageData.settings || '{}'),
         };
     },
     preview: ( template, blocks ) => {

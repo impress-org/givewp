@@ -57,7 +57,10 @@ class RegisterFormBuilderPageRoute
             'give'
         ));
 
-        $formBuilderStorage->registerLocalizeData('storageData', $formBuilderViewModel->storageData($donationFormId));
+        $formBuilderStorage->dependencies(['jquery'])->registerLocalizeData(
+            'storageData',
+            $formBuilderViewModel->storageData($donationFormId)
+        );
 
         $formBuilderStorage->loadInFooter()->enqueue();
 
