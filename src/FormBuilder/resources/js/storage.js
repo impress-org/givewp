@@ -27,7 +27,7 @@ window.storage = {
             settings: JSON.parse( window.storageData.settings || "{}" ),
         };
     },
-    preview: ( blocks ) => {
+    preview: ( template, blocks ) => {
         return new Promise((resolve, reject) => {
             jQuery
                 .post({
@@ -36,6 +36,7 @@ window.storage = {
                         'X-WP-Nonce': window.storageData.nonce,
                     },
                     data: {
+                        'form-template-id': template,
                         'form-blocks': JSON.stringify(blocks),
                     },
                 })

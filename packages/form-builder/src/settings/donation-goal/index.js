@@ -72,7 +72,7 @@ const DonationGoalSettings = () => {
                                 'Do you want to display the total amount raised based on your monetary goal or a percentage? For instance, "$500 of $1,000 raised" or "50% funded" or "1 of 5 donations". You can also display a donor-based goal, such as "100 of 1,000 donors have given".',
                                 'give'
                             )}
-                            selected={goalFormat}
+                            value={goalFormat}
                             options={goalFormatOptions}
                             onChange={(goalFormat) => dispatch(setFormSettings({goalFormat}))}
                         />

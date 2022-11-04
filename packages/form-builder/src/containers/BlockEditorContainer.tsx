@@ -42,7 +42,7 @@ export default function BlockEditorContainer() {
                             toggleShowSidebar={toggleShowSidebar}
                         />
                     }
-                    content={'design' === selectedTab ? <DesignPreview blocks={blocks} /> : <FormBlocks />}
+                    content={'design' === selectedTab ? <DesignPreview /> : <FormBlocks />}
                     sidebar={!!showSidebar && <Sidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab} />}
                     secondarySidebar={
                         !!selectedSecondarySidebar && <SecondarySidebar selected={selectedSecondarySidebar} />

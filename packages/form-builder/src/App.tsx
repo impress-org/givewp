@@ -12,7 +12,7 @@ import './App.scss';
 
 import defaultBlocks from './blocks.json';
 
-const {blocks: initialBlocks, settings: initialFormSettings} = Storage.load();
+const {blocks: initialBlocks, formSettings: initialFormSettings} = Storage.load();
 
 const initialState = {
     blocks: initialBlocks || defaultBlocks,
@@ -21,6 +21,7 @@ const initialState = {
     enableAutoClose: false,
     registration: 'none',
     goalFormat: 'amount-raised',
+    template: 'classic',
     ...initialFormSettings,
 };
 

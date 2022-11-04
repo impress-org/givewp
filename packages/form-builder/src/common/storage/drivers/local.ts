@@ -35,12 +35,13 @@ const localStorageDriver: StorageDriver = {
     /**
      * Generate form preview
      *
+     * @param template
      * @param blocks
      */
-    preview: (blocks: Block[]) => {
+    preview: (template: string, blocks: Block[]) => {
         return new Promise<string>((resolve) => {
             setTimeout(function () {
-                resolve(JSON.stringify(blocks));
+                resolve(template + JSON.stringify(blocks));
             }, 1000);
         });
     }

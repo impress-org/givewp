@@ -13,7 +13,7 @@ class FormBuilderViewModel
     {
         return [
             'resourceURL' => rest_url(FormBuilderRestRouteConfig::NAMESPACE . '/form/' . $donationFormId),
-            'previewURL' => site_url("?givewp-view=donation-form&form-id=$donationFormId&form-template-id=classic"),
+            'previewURL' => site_url("?givewp-view=donation-form&form-id=$donationFormId"),
             'nonce' => wp_create_nonce('wp_rest'),
             'blockData' => get_post($donationFormId)->post_content,
             'settings' => get_post_meta($donationFormId, 'formBuilderSettings', true),

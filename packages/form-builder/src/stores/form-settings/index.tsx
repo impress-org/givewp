@@ -18,6 +18,7 @@ export type FormSettings = {
     enableAutoClose: boolean;
     registration: string;
     goalFormat: string;
+    template: string;
 };
 
 /**
