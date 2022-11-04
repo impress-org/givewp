@@ -4,11 +4,9 @@ import {ListTablePage} from '@givewp/components';
 import RowAction from '@givewp/components/ListTable/RowAction';
 import ListTableApi from '@givewp/components/ListTable/api';
 import tableStyles from '@givewp/components/ListTable/ListTablePage.module.scss';
-import styles from './ListTable.module.scss';
 import {IdBadge} from '@givewp/components/ListTable/TableCell';
 import {BulkActionsConfig, FilterConfig, ShowConfirmModalContext} from '@givewp/components/ListTable';
 import {useContext} from 'react';
-import {DonationType} from '@givewp/components/ListTable/TypeBadge';
 
 declare global {
     interface Window {
@@ -52,7 +50,7 @@ export default function () {
                         window.GiveDonations.adminUrl +
                         `edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=${item.id}`
                     }
-                    displayText={__('View/Edit', 'give')}
+                    displayText={__('Edit', 'give')}
                 />
                 <RowAction
                     onClick={confirmModal}
@@ -64,86 +62,6 @@ export default function () {
             </>
         );
     };
-    //Todo Remove column in favor of window object
-    //To Do not release : FE Testing purposes only. -----
-    const donationsColumns = [
-        {
-            name: 'id',
-            text: __('ID', 'give'),
-            heading: true,
-            alignColumn: 'start',
-            inlineSize: '5rem',
-            preset: 'idBadge',
-            isSortable: true,
-        },
-        {
-            name: 'amount',
-            text: __('Amount', 'give'),
-            inlineSize: '7rem',
-            preset: 'monetary',
-            isSortable: false,
-        },
-        {
-            name: 'paymentType',
-            text: __('Payment Type'),
-            inlineSize: '11rem',
-            addClass: styles.paymentType,
-            isSortable: false,
-            render: (donation: {donationType}) => <DonationType type={donation.donationType} />,
-        },
-        {
-            name: 'createdAt',
-            inlineSize: '9rem',
-            text: __('Date / Time', 'give'),
-            isSortable: true,
-        },
-        {
-            name: 'name',
-            text: __('Donor Name', 'give'),
-            inlineSize: '9rem',
-            isSortable: true,
-            render: (donation: {name; donorId}) => (
-                <a
-                    href={
-                        window.GiveDonations.adminUrl +
-                        `edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donation.donorId}`
-                    }
-                >
-                    {donation.name}
-                </a>
-            ),
-        },
-        {
-            name: 'formTitle',
-            text: __('Donation Form', 'give'),
-            inlineSize: '9rem',
-            render: (donation: {donationType}) => <DonationType type={donation.donationType} />,
-            isSortable: true,
-        },
-        {
-            name: 'gateway',
-            inlineSize: '11rem',
-            text: __('Gateway', 'give'),
-            isSortable: true,
-        },
-        {
-            name: 'status',
-            text: __('Status', 'give'),
-            inlineSize: '12rem',
-            preset: 'donationStatus',
-            isSortable: true,
-        },
-    ];
-    //ToDo : Remove Function when GiveDonors support columns
-    // Do not release : Testing Purposes only
-
-    const table = {columns: donationsColumns};
-    window.GiveDonations = {
-        ...window?.GiveDonations,
-        table,
-    };
-    console.log(table);
-    //End Test: -----
 
     const filters: Array<FilterConfig> = [
         {

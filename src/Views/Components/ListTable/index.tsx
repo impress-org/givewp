@@ -80,19 +80,19 @@ export default function ListTablePage({
     const [selectedNames, setSelectedNames] = useState([]);
     const dialog = useRef() as {current: A11yDialogInstance};
     const checkboxRefs = useRef([]);
-    const [sortData, setSortData] = useState<{sortColumn: string; sortDirection: string}>({
+    const [sortField, setSortField] = useState<{sortColumn: string; sortDirection: string}>({
         sortColumn: 'id',
         sortDirection: 'desc',
     });
-    const {sortColumn, sortDirection} = sortData;
-    const columns = apiSettings.table.columns.map((column) => column.name);
+    const {sortColumn, sortDirection} = sortField;
+    const locale = navigator.language || (navigator.languages || ['en'])[0];
 
     const parameters = {
         page,
         perPage,
-        columns,
         sortColumn,
         sortDirection,
+        locale,
         ...filters,
     };
     const archiveApi = useRef(new ListTableApi(apiSettings)).current;
@@ -160,12 +160,12 @@ export default function ListTablePage({
 
     const handleItemSort = (event, column) => {
         event.preventDefault();
-        const direction = sortData.sortDirection === 'desc' ? 'asc' : 'desc';
+        const direction = sortField.sortDirection === 'desc' ? 'asc' : 'desc';
         setSortDirectionForColumn(column, direction);
     };
 
     const setSortDirectionForColumn = (column, direction) => {
-        setSortData((previousState) => {
+        setSortField((previousState) => {
             return {
                 ...previousState,
                 sortColumn: column,
@@ -202,7 +202,7 @@ export default function ListTablePage({
                         <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
                             <ListTable
                                 apiSettings={apiSettings}
-                                sortData={sortData}
+                                sortField={sortField}
                                 handleItemSort={handleItemSort}
                                 singleName={singleName}
                                 pluralName={pluralName}
