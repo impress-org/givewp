@@ -5,7 +5,7 @@ import cx from 'classnames';
 import styles from './ListTable.module.scss';
 import {Spinner} from '../index';
 import {BulkActionCheckboxAll} from '@givewp/components/ListTable/BulkActionCheckbox';
-import TableSort from '@givewp/components/ListTable/TableSort';
+import ListTableHeaders from '@givewp/components/ListTable/ListTableHeaders';
 import ListTableRows from '@givewp/components/ListTable/ListTableRows';
 
 export interface ListTableProps {
@@ -14,7 +14,7 @@ export interface ListTableProps {
     title: string;
     data: {items: Array<{}>};
     handleItemSort: (event: React.MouseEvent<HTMLElement>, column: string) => void;
-    sortData: {sortColumn: string; sortDirection: string};
+    sortField: {sortColumn: string; sortDirection: string};
 
     //optional
     pluralName?: string;
@@ -53,7 +53,7 @@ export const ListTable = ({
     align = 'start',
     apiSettings,
     handleItemSort,
-    sortData,
+    sortField,
 }: ListTableProps) => {
     const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>; successes: Array<number>}>({
         errors: [],
@@ -152,8 +152,8 @@ export const ListTable = ({
                                         <th
                                             scope="col"
                                             aria-sort={
-                                                column.name === sortData.sortColumn
-                                                    ? sortData.sortDirection === 'asc'
+                                                column.name === sortField.sortColumn
+                                                    ? sortField.sortDirection === 'asc'
                                                         ? 'ascending'
                                                         : 'descending'
                                                     : 'none'
@@ -168,10 +168,10 @@ export const ListTable = ({
                                             key={column.name}
                                             style={{inlineSize: column?.inlineSize || '8rem'}}
                                         >
-                                            {/*{@unreleased new Table Sorting component.}*/}
-                                            <TableSort
+                                            {/*{@unreleased new table header with sort icon.}*/}
+                                            <ListTableHeaders
                                                 column={column}
-                                                sortData={sortData}
+                                                sortField={sortField}
                                                 handleItemSort={handleItemSort}
                                             />
                                         </th>
@@ -182,7 +182,6 @@ export const ListTable = ({
                         <tbody className={styles.tableContent}>
                             <ListTableRows
                                 columns={columns}
-                                //@unreleased updated to pass sorted data.
                                 data={data}
                                 isLoading={isLoading}
                                 singleName={singleName}

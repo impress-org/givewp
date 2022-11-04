@@ -57,6 +57,7 @@ export default function ListTableRows({
     if (!data) {
         return null;
     }
+
     return data?.items.map((item) => (
         <tr
             key={item.id}
@@ -79,7 +80,7 @@ export default function ListTableRows({
                         })}
                         heading={column?.heading}
                     >
-                        <RenderRow item={item} />
+                        <RenderRow column={column} item={item} />
                         {!isLoading && rowActions && (
                             <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
                                 {column?.heading &&
