@@ -77,14 +77,16 @@ export default function ListTableRows({
                             [styles[align]]: !column?.alignColumn,
                             [styles.center]: column?.alignColumn === 'center',
                             [styles.start]: column?.alignColumn === 'start',
+                            [styles.start]: column?.alignColumn === 'start',
                         })}
                         heading={column?.heading}
                     >
                         <RenderRow column={column} item={item} />
                         {!isLoading && rowActions && (
                             <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
-                                {column?.heading &&
-                                    rowActions({data, item, removeRow, addRow, setUpdateErrors, parameters})}
+                                {column?.name === 'id' ||
+                                    (column?.name === 'name' &&
+                                        rowActions({data, item, removeRow, addRow, setUpdateErrors, parameters}))}
                             </div>
                         )}
                     </TableCell>

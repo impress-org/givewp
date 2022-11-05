@@ -148,6 +148,11 @@
     transform: translateX(-10px);
 }
 
+.id {
+    inline-size: 5em;
+}
+
+
 @keyframes appear {
     0% {
         opacity: 0;
