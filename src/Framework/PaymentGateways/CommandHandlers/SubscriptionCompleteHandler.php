@@ -20,13 +20,13 @@ class SubscriptionCompleteHandler
      */
     public function __invoke(SubscriptionComplete $subscriptionComplete, Subscription $subscription, Donation $donation)
     {
-        $donation->status               = $subscriptionComplete->donationStatus ?: DonationStatus::COMPLETE();
+        $donation->status = $subscriptionComplete->donationStatus ?: DonationStatus::COMPLETE();
         $donation->gatewayTransactionId = $subscriptionComplete->gatewayTransactionId;
         $donation->save();
 
-        $subscription->status                = $subscriptionComplete->donationStatus ?: SubscriptionStatus::ACTIVE();
+        $subscription->status = $subscriptionComplete->donationStatus ?: SubscriptionStatus::ACTIVE();
         $subscription->gatewaySubscriptionId = $subscriptionComplete->gatewaySubscriptionId;
-        $subscription->transactionId         = $subscriptionComplete->gatewayTransactionId;
+        $subscription->transactionId = $subscriptionComplete->gatewayTransactionId;
         $subscription->save();
     }
 }

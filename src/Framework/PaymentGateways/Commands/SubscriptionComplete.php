@@ -45,9 +45,9 @@ class SubscriptionComplete implements GatewayCommand
         SubscriptionStatus $subscriptionStatus = null,
         DonationStatus $donationStatus = null
     ) {
-        $this->gatewayTransactionId  = $gatewayTransactionId;
+        $this->gatewayTransactionId = $gatewayTransactionId;
         $this->gatewaySubscriptionId = $gatewaySubscriptionId;
-        $this->subscriptionStatus    = $subscriptionStatus;
-        $this->donationStatus        = $donationStatus;
+        $this->subscriptionStatus = $subscriptionStatus;
+        $this->donationStatus = $donationStatus;
     }
 }
