@@ -24,7 +24,7 @@ class SubscriptionCompleteHandler
         $donation->gatewayTransactionId = $subscriptionComplete->gatewayTransactionId;
         $donation->save();
 
-        $subscription->status = $subscriptionComplete->donationStatus ?: SubscriptionStatus::ACTIVE();
+        $subscription->status = $subscriptionComplete->subscriptionStatus ?: SubscriptionStatus::ACTIVE();
         $subscription->gatewaySubscriptionId = $subscriptionComplete->gatewaySubscriptionId;
         $subscription->transactionId = $subscriptionComplete->gatewayTransactionId;
         $subscription->save();
