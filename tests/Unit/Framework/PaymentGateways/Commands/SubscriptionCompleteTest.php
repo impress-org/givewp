@@ -25,7 +25,7 @@ class SubscriptionCompleteTest extends TestCase
     public function testSubscriptionActiveAndDonationCompleted()
     {
         $subscription = Subscription::factory()->createWithDonation();
-        $donation = $subscription->donations()->limit(1)->orderBy('ID', 'ASC')->get();
+        $donation = $subscription->initialDonation();
 
         $subscriptionCompleteCommand = new SubscriptionComplete('1234', 'abdc');
 
@@ -47,7 +47,7 @@ class SubscriptionCompleteTest extends TestCase
     public function testSubscriptionPendingAndDonationProcessing()
     {
         $subscription = Subscription::factory()->createWithDonation();
-        $donation = $subscription->donations()->limit(1)->orderBy('ID', 'ASC')->get();
+        $donation = $subscription->initialDonation();
 
         $subscriptionCompleteCommand = new SubscriptionComplete(
             '1234',
