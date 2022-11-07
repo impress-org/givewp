@@ -62,12 +62,14 @@ class DonationsAdminPage
      */
     public function loadScripts()
     {
+        $donationsListTable = new DonationsListTable();
+
         $data = [
             'apiRoot' => $this->apiRoot,
             'apiNonce' => $this->apiNonce,
             'preload' => $this->preloadDonations(),
             'forms' => $this->getForms(),
-            'table' => give(DonationsListTable::class)->toArray(),
+            'table' => $donationsListTable->toArray(),
             'adminUrl' => $this->adminUrl,
         ];
 
