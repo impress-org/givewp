@@ -48,12 +48,12 @@ abstract class ListTable implements Arrayable
     abstract protected function getColumns(): array;
 
     /**
-     * Define visible table columns
+     * Define default visible table columns
      *
      * @unreleased
      * @return string[]
      */
-    abstract protected function getVisibleColumns(): array;
+    abstract protected function getDefaultVisibleColumns(): array;
 
     /**
      * Get table definitions

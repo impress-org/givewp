@@ -155,7 +155,7 @@ trait Columns
      */
     protected function setColumnVisibility($column)
     {
-        $column->visible(in_array($column->getId(), $this->getVisibleColumns()));
+        $column->visible(in_array($column->getId(), $this->getDefaultVisibleColumns()));
     }
 
     /**

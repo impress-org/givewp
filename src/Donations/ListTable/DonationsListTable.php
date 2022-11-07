@@ -45,7 +45,7 @@ class DonationsListTable extends ListTable
     /**
      * @inheritDoc
      */
-    public function getVisibleColumns(): array
+    public function getDefaultVisibleColumns(): array
     {
         return [
             IdColumn::getId(),
