@@ -12,12 +12,13 @@ use Give\Framework\ListTable\ModelColumn;
  */
 class FormColumn extends ModelColumn
 {
-    public $sortColumn = 'formTitle';
+
+    protected $sortColumn = 'formTitle';
 
     /**
      * @inheritDoc
      */
-    public function getId(): string
+    public static function getId(): string
     {
         return 'form';
     }
@@ -37,6 +38,11 @@ class FormColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        return $model->formTitle;
+        return sprintf(
+            '<a href="%s" aria-label="%s">%s</a>',
+            admin_url( "post.php?post={$model->formId}&action=edit" ),
+            __( 'Visit donation form page', 'give' ),
+            $model->formTitle
+        );
     }
 }

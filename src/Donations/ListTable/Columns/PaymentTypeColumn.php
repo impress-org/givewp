@@ -15,9 +15,9 @@ class PaymentTypeColumn extends ModelColumn
     /**
      * @inheritDoc
      */
-    public function getId(): string
+    public static function getId(): string
     {
-        return 'payment_type';
+        return 'paymentType';
     }
 
     /**
@@ -36,13 +36,30 @@ class PaymentTypeColumn extends ModelColumn
     public function getCellValue($model): string
     {
         if ( $model->startsSubscription ) {
-            return 'subscription';
-        }
+            <div class="badge">
+                <img role="img" aria-labelledby="badgeId-%1$d" class="icon icon--%2$s" src="%3$s" alt="%4$s" />
+                <p id="badgeId-%1$d" class="badge__label">%5$s</p>
+            </div>
+        ';
 
         if ( $model->subscriptionId || $model->status->isRenewal()) {
-            return 'renewal';
+            return sprintf(
+                $template,
+                $model->id,
+                'recurring',
+                GIVE_PLUGIN_URL . 'assets/dist/images/list-table/recurring-donation-icon.svg',
+                __('Recurring donation icon', 'give'),
+                __('recurring', 'give')
+            );
         }
 
-        return 'single';
+        return sprintf(
+            $template,
+            $model->id,
+            'onetime',
+            GIVE_PLUGIN_URL . 'assets/dist/images/list-table/onetime-donation-icon.svg',
+            __('One-time donation icon', 'give'),
+            __('one-time', 'give')
+        );
     }
 }

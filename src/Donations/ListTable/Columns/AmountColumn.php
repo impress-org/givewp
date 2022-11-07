@@ -5,24 +5,18 @@ declare(strict_types=1);
 namespace Give\Donations\ListTable\Columns;
 
 use Give\Donations\Models\Donation;
-use Give\Framework\ListTable\Enums\CellValueType;
 use Give\Framework\ListTable\ModelColumn;
-use Give\Framework\Support\ValueObjects\Money;
 
 /**
  * @extends ModelColumn<Donation>
  */
 class AmountColumn extends ModelColumn
 {
-    /**
-     * @inheritDoc
-     */
-    public $sortColumn = 'amount';
 
     /**
      * @inheritDoc
      */
-    public function getId(): string
+    public static function getId(): string
     {
         return 'amount';
     }
@@ -40,16 +34,8 @@ class AmountColumn extends ModelColumn
      *
      * @param Donation $model
      */
-    public function getCellValue($model): Money
+    public function getCellValue($model, $locale = 'asdsdfsd'): string
     {
-        return $model->amount;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getCellValueType(): CellValueType
-    {
-        return CellValueType::CURRENCY();
+        return '<div class="amount"><span>' . $model->amount->formatToLocale($locale) . '</span></div>';
     }
 }

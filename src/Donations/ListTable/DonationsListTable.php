@@ -2,7 +2,14 @@
 
 namespace Give\Donations\ListTable;
 
-use Give\Framework\ListTable\Column;
+use Give\Donations\ListTable\Columns\AmountColumn;
+use Give\Donations\ListTable\Columns\CreatedAtColumn;
+use Give\Donations\ListTable\Columns\DonorColumn;
+use Give\Donations\ListTable\Columns\FormColumn;
+use Give\Donations\ListTable\Columns\GatewayColumn;
+use Give\Donations\ListTable\Columns\IdColumn;
+use Give\Donations\ListTable\Columns\PaymentTypeColumn;
+use Give\Donations\ListTable\Columns\StatusColumn;
 use Give\Framework\ListTable\ListTable;
 
 /**
@@ -21,36 +28,33 @@ class DonationsListTable extends ListTable
     /**
      * @inheritDoc
      */
-    public function getDefaultColumns(): array
+    public function getColumns(): array
     {
         return [
-            Column::name('id')
-                ->text('ID')
-                ->sortable(true),
+            new IdColumn(),
+            new AmountColumn(),
+            new PaymentTypeColumn(),
+            new CreatedAtColumn(),
+            new DonorColumn(),
+            new FormColumn(),
+            new GatewayColumn(),
+            new StatusColumn(),
+        ];
+    }
 
-            Column::name('amount')
-                ->text(__('Amount', 'give'))
-                ->sortable(true),
-
-            Column::name('donationType')
-                ->text(__('Payment Type', 'give')),
-
-            Column::name('createdAt')
-                ->text(__('Date / Time', 'give'))
-                ->sortable(true),
-
-            Column::name('name')
-                ->text(__('Donor Name', 'give')),
-
-            Column::name('formTitle')
-                ->text(__('Donation Form', 'give'))
-                ->sortable(true),
-
-            Column::name('gateway')
-                ->text(__('Gateway', 'give')),
-
-            Column::name('status')
-                ->text(__('Status', 'give'))
+    /**
+     * @inheritDoc
+     */
+    public function getVisibleColumns(): array
+    {
+        return [
+            IdColumn::getId(),
+            AmountColumn::getId(),
+            PaymentTypeColumn::getId(),
+            CreatedAtColumn::getId(),
+            DonorColumn::getId(),
+            FormColumn::getId(),
+            StatusColumn::getId(),
         ];
     }
 }

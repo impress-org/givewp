@@ -12,14 +12,15 @@ use Give\Framework\ListTable\ModelColumn;
  */
 class DonorColumn extends ModelColumn
 {
-    public $sortColumn = 'CONCAT(lastName, ",", firstName)';
+
+    protected $sortColumn = ['lastName', 'firstName'];
 
     /**
      * @inheritDoc
      */
-    public function getId(): string
+    public static function getId(): string
     {
-        return 'donor_name';
+        return 'donor';
     }
 
     /**
@@ -37,6 +38,11 @@ class DonorColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        return "$model->firstName $model->lastName";
+        return sprintf(
+            '<a href="%s" aria-label="%s">%s</a>',
+            admin_url( "edit.php?post_type=give_forms&page=give-donors&view=overview&id={$model->donorId}" ),
+            __( 'View donor information', 'give' ),
+            trim( "$model->firstName $model->lastName" )
+        );
     }
 }

@@ -13,13 +13,19 @@ use Give\Framework\ListTable\ModelColumn;
  */
 class StatusColumn extends ModelColumn
 {
-    public $sortColumn = 'status';
+    protected $sortColumn = 'status';
 
-    public function getId(): string
+    /**
+     * @inheritDoc
+     */
+    public static function getId(): string
     {
         return 'status';
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getLabel(): string
     {
         return __('Status', 'give');

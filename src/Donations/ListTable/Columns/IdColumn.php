@@ -7,19 +7,18 @@ namespace Give\Donations\ListTable\Columns;
 use Give\Donations\Models\Donation;
 use Give\Framework\ListTable\ModelColumn;
 
-use function Give\Donations\Admin\DonationsList\Columns\__;
-
 /**
  * @extends ModelColumn<Donation>
  */
 class IdColumn extends ModelColumn
 {
-    public $sortColumn = 'id';
+
+    protected $sortColumn = 'id';
 
     /**
      * @inheritDoc
      */
-    public function getId(): string
+    public static function getId(): string
     {
         return 'id';
     }

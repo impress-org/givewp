@@ -12,12 +12,13 @@ use Give\Framework\ListTable\ModelColumn;
  */
 class GatewayColumn extends ModelColumn
 {
-    public $sortColumn = 'gateway';
+
+    protected $sortColumn = 'gateway';
 
     /**
      * @inheritDoc
      */
-    public function getId(): string
+    public static function getId(): string
     {
         return 'gateway';
     }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Give\Donations\ListTable\Columns;
 
-use DateTime;
 use Give\Donations\Models\Donation;
 use Give\Framework\ListTable\ModelColumn;
 
@@ -13,12 +12,13 @@ use Give\Framework\ListTable\ModelColumn;
  */
 class CreatedAtColumn extends ModelColumn
 {
-    public $sortColumn = 'createdAt';
+
+    protected $sortColumn = 'date';
 
     /**
      * @inheritDoc
      */
-    public function getId(): string
+    public static function getId(): string
     {
         return 'createdAt';
     }
@@ -36,8 +36,8 @@ class CreatedAtColumn extends ModelColumn
      *
      * @param Donation $model
      */
-    public function getCellValue($model): DateTime
+    public function getCellValue($model): string
     {
-        return $model->createdAt;
+        return wp_date( _x( 'm/d/Y \a\t g:i a', 'datetime format', 'give' ), $model->createdAt->getTimestamp() );
     }
 }
