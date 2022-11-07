@@ -45,6 +45,9 @@ class DonationStatus extends Enum
      */
     const RENEWAL = 'give_subscription';
 
+    /**
+     * @return array
+     */
     public static function labels(): array
     {
         return [
@@ -60,7 +63,10 @@ class DonationStatus extends Enum
         ];
     }
 
-    public function label()
+    /**
+     * @return string
+     */
+    public function label(): string
     {
         return self::labels()[ $this->getValue() ];
     }

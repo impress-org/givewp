@@ -148,11 +148,21 @@ trait Columns
         );
     }
 
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
     protected function setColumnVisibility($column)
     {
         $column->visible(in_array($column->getId(), $this->getVisibleColumns()));
     }
 
+    /**
+     * @unreleased
+     *
+     * @return string[]
+     */
     public function getSortColumnById(string $columnId): array
     {
         $column = $this->getColumnById($columnId);

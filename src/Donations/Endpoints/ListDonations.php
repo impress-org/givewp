@@ -2,7 +2,6 @@
 
 namespace Give\Donations\Endpoints;
 
-use Give\Donations\Controllers\DonationsRequestController;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
