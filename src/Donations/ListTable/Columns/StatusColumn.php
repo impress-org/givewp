@@ -38,11 +38,7 @@ class StatusColumn extends ModelColumn
     public function getCellValue($model): string
     {
         return sprintf(
-        '
-                <div class="statusBadge statusBadge--%1$s">
-                    <p>%2$s</p>
-                </div>
-            ',
+        '<div class="statusBadge statusBadge--%1$s"><p>%2$s</p></div>',
             $model->status->getValue(),
             $model->status->label()
         );

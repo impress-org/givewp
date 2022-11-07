@@ -36,6 +36,9 @@ class AmountColumn extends ModelColumn
      */
     public function getCellValue($model, $locale = 'asdsdfsd'): string
     {
-        return '<div class="amount"><span>' . $model->amount->formatToLocale($locale) . '</span></div>';
+        return sprintf(
+            '<div class="amount"><span>%s</span></div>',
+            $model->amount->formatToLocale($locale)
+        );
     }
 }

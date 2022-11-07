@@ -40,8 +40,8 @@ class FormColumn extends ModelColumn
     {
         return sprintf(
             '<a href="%s" aria-label="%s">%s</a>',
-            admin_url( "post.php?post={$model->formId}&action=edit" ),
-            __( 'Visit donation form page', 'give' ),
+            admin_url("post.php?post={$model->formId}&action=edit"),
+            __('Visit donation form page', 'give'),
             $model->formTitle
         );
     }

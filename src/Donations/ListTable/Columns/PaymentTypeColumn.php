@@ -42,7 +42,7 @@ class PaymentTypeColumn extends ModelColumn
             </div>
         ';
 
-        if ( $model->type->isRecurring() ) {
+        if ($model->type->isRecurring()) {
             return sprintf(
                 $template,
                 $model->id,

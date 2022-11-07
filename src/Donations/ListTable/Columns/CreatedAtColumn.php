@@ -38,6 +38,6 @@ class CreatedAtColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        return wp_date( _x( 'm/d/Y \a\t g:i a', 'datetime format', 'give' ), $model->createdAt->getTimestamp() );
+        return wp_date(_x('m/d/Y \a\t g:i a', 'datetime format', 'give'), $model->createdAt->getTimestamp());
     }
 }

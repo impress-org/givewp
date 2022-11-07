@@ -40,9 +40,9 @@ class DonorColumn extends ModelColumn
     {
         return sprintf(
             '<a href="%s" aria-label="%s">%s</a>',
-            admin_url( "edit.php?post_type=give_forms&page=give-donors&view=overview&id={$model->donorId}" ),
-            __( 'View donor information', 'give' ),
-            trim( "$model->firstName $model->lastName" )
+            admin_url("edit.php?post_type=give_forms&page=give-donors&view=overview&id={$model->donorId}"),
+            __('View donor information', 'give'),
+            trim("$model->firstName $model->lastName")
         );
     }
 }
