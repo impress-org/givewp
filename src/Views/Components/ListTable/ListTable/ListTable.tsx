@@ -3,10 +3,10 @@ import {__, _n, sprintf} from '@wordpress/i18n';
 import cx from 'classnames';
 
 import styles from './ListTable.module.scss';
-import {Spinner} from '../index';
-import {BulkActionCheckboxAll} from '@givewp/components/ListTable/BulkActionCheckbox';
+import {Spinner} from '../../index';
+import {BulkActionCheckboxAll} from '@givewp/components/ListTable/BulkActions/BulkActionCheckbox';
 import ListTableHeaders from '@givewp/components/ListTable/ListTableHeaders';
-import ListTableRows from '@givewp/components/ListTable/ListTableRows';
+import ListTableRows from '@givewp/components/ListTable/ListTableRows/ListTableRows';
 
 export interface ListTableProps {
     //required

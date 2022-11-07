@@ -2,9 +2,9 @@ import {__} from '@wordpress/i18n';
 import {ListTableApi, ListTablePage} from '@givewp/components';
 import {donationFormsColumns} from './DonationFormsColumns';
 import {DonationFormsRowActions} from './DonationFormsRowActions';
-import styles from '@givewp/components/ListTable/ListTablePage.module.scss';
-import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable';
-import Select from '@givewp/components/ListTable/Select';
+import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
+import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
+import Select from '@givewp/components/ListTable/Select/Select';
 
 declare global {
     interface Window {

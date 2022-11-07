@@ -1,9 +1,9 @@
-import {FormSelect} from "@givewp/components/ListTable/FormSelect";
-import Select from "@givewp/components/ListTable/Select";
-import Input from "@givewp/components/ListTable/Input";
+import {FormSelect} from '@givewp/components/ListTable/FormSelect/FormSelect';
+import Select from '@givewp/components/ListTable/Select/Select';
+import Input from '@givewp/components/ListTable/Input/Input';
 
-export const Filter = ({ filter, value = null, onChange, debouncedOnChange }) => {
-    switch(filter.type){
+export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
+    switch (filter.type) {
         case 'select':
             return (
                 <Select
@@ -48,7 +48,7 @@ export const Filter = ({ filter, value = null, onChange, debouncedOnChange }) =>
             return null;
             break;
     }
-}
+};
 
 // figure out what the initial filter state should be based on the filter configuration
 export const getInitialFilterState = (filters) => {
@@ -58,15 +58,14 @@ export const getInitialFilterState = (filters) => {
         // if the search parameters contained a value for the filter, use that
         const filterQuery = decodeURI(urlParams.get(filter.name));
         // only accept a string or number, we don't want any surprises
-        if(urlParams.has(filter.name) && (typeof filterQuery == "string" || typeof filterQuery == "number")) {
+        if (urlParams.has(filter.name) && (typeof filterQuery == 'string' || typeof filterQuery == 'number')) {
             state[filter.name] = filterQuery;
         }
         // otherwise, use the default value for the filter type
-        else
-        {
+        else {
             switch (filter.type) {
                 case 'select':
-                    state[filter.name] = filter.options?.[0].value
+                    state[filter.name] = filter.options?.[0].value;
                     break;
                 case 'search':
                 case 'formselect':
@@ -77,4 +76,4 @@ export const getInitialFilterState = (filters) => {
         }
     });
     return state;
-}
+};

@@ -1,11 +1,11 @@
 import {__, sprintf} from '@wordpress/i18n';
 import {useSWRConfig} from 'swr';
 import {ListTablePage} from '@givewp/components';
-import RowAction from '@givewp/components/ListTable/RowAction';
+import RowAction from '@givewp/components/ListTable/RowAction/RowAction';
 import ListTableApi from '@givewp/components/ListTable/api';
-import tableStyles from '@givewp/components/ListTable/ListTablePage.module.scss';
-import {IdBadge} from '@givewp/components/ListTable/TableCell';
-import {BulkActionsConfig, FilterConfig, ShowConfirmModalContext} from '@givewp/components/ListTable';
+import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
+import {IdBadge} from '@givewp/components/ListTable/TableCell/TableCell';
+import {BulkActionsConfig, FilterConfig, ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
 import {useContext} from 'react';
 
 declare global {

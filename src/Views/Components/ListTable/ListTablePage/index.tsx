@@ -5,15 +5,15 @@ import A11yDialogInstance from 'a11y-dialog';
 
 import {GiveIcon} from '@givewp/components';
 
-import {ListTable} from './ListTable';
-import Pagination from './Pagination';
-import {Filter, getInitialFilterState} from './Filters';
-import useDebounce from './hooks/useDebounce';
-import {useResetPage} from './hooks/useResetPage';
-import ListTableApi from './api';
+import {ListTable} from '../ListTable/ListTable';
+import Pagination from '../Pagination/Pagination';
+import {Filter, getInitialFilterState} from '../Filters/Filters';
+import useDebounce from '../hooks/useDebounce';
+import {useResetPage} from '../hooks/useResetPage';
+import ListTableApi from '../api';
 import styles from './ListTablePage.module.scss';
 import cx from 'classnames';
-import {BulkActionSelect} from '@givewp/components/ListTable/BulkActionSelect';
+import {BulkActionSelect} from '@givewp/components/ListTable/BulkActions/BulkActionSelect';
 
 export interface ListTablePageProps {
     //required

@@ -2,8 +2,8 @@ import styles from './ListTableRows.module.scss';
 import {__} from '@wordpress/i18n';
 import cx from 'classnames';
 import {useEffect, useState} from 'react';
-import TableCell from './TableCell';
-import {BulkActionCheckbox} from '@givewp/components/ListTable/BulkActionCheckbox';
+import TableCell from '../TableCell/TableCell';
+import {BulkActionCheckbox} from '@givewp/components/ListTable/BulkActions/BulkActionCheckbox';
 import RenderRow from '@givewp/components/ListTable/RenderRow';
 
 //@unreleased determines if row should display actions based on column.id
