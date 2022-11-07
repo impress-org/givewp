@@ -5,6 +5,10 @@ namespace Give\Donations\Endpoints;
 use Give\Donations\Controllers\DonationsRequestController;
 use Give\Donations\DataTransferObjects\DonationResponseData;
 use Give\Donations\ListTable\DonationsListTable;
+use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Framework\Database\DB;
+use Give\Framework\ListTable\ListTable;
+use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -14,6 +18,16 @@ class ListDonations extends Endpoint
      * @var string
      */
     protected $endpoint = 'admin/donations';
+
+    /**
+     * @var WP_REST_Request
+     */
+    protected $request;
+
+    /**
+     * @var ListTable
+     */
+    protected $listTable;
 
     /**
      * @inheritDoc
@@ -80,6 +94,11 @@ class ListDonations extends Endpoint
                             'desc'
                         ],
                     ],
+                    'locale' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'default' => get_locale(),
+                    ],
                 ],
             ]
         );
@@ -93,25 +112,18 @@ class ListDonations extends Endpoint
      */
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
-        $data = [];
-        $controller = new DonationsRequestController($request);
-        $donations = $controller->getDonations();
-        $donationsCount = $controller->getTotalDonationsCount();
-        $totalPages = (int)ceil($donationsCount / $request->get_param('perPage'));
+        $this->request = $request;
+        $this->listTable = new DonationsListTable($this->request->get_param('locale'));
 
-        foreach ($donations as $donation) {
-            $data[] = DonationResponseData::fromObject($donation)->toArray();
-        }
+        $donations = $this->getDonations();
+        $donationsCount = $this->getTotalDonationsCount();
+        $totalPages = (int)ceil($donationsCount / $this->request->get_param('perPage'));
 
-        /**
-         * @var DonationsListTable $listTable
-         */
-        $listTable = give(DonationsListTable::class);
-        $listTable->items($data);
+        $this->listTable->items($donations);
 
         return new WP_REST_Response(
             [
-                'items' => $listTable->getItems(),
+                'items' => $this->listTable->getItems(),
                 'totalItems' => $donationsCount,
                 'totalPages' => $totalPages
             ]
