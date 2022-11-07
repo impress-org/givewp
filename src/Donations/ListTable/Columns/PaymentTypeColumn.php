@@ -35,14 +35,14 @@ class PaymentTypeColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        if ( $model->startsSubscription ) {
+        $template = '
             <div class="badge">
                 <img role="img" aria-labelledby="badgeId-%1$d" class="icon icon--%2$s" src="%3$s" alt="%4$s" />
                 <p id="badgeId-%1$d" class="badge__label">%5$s</p>
             </div>
         ';
 
-        if ( $model->subscriptionId || $model->status->isRenewal()) {
+        if ( $model->type->isRecurring() ) {
             return sprintf(
                 $template,
                 $model->id,

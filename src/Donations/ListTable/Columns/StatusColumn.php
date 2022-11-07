@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Give\Donations\ListTable\Columns;
 
 use Give\Donations\Models\Donation;
-use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
@@ -36,8 +35,16 @@ class StatusColumn extends ModelColumn
      *
      * @param Donation $model
      */
-    public function getCellValue($model): DonationStatus
+    public function getCellValue($model): string
     {
-        return $model->status;
+        return sprintf(
+        '
+                <div class="statusBadge statusBadge--%1$s">
+                    <p>%2$s</p>
+                </div>
+            ',
+            $model->status->getValue(),
+            $model->status->label()
+        );
     }
 }
