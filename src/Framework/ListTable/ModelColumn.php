@@ -4,31 +4,36 @@ declare(strict_types=1);
 
 namespace Give\Framework\ListTable;
 
-use Give\Framework\ListTable\Enums\CellValueType;
+use Give\Framework\Support\Contracts\Arrayable;
 
 /**
  * @template M of Give\Framework\Models\Model
  */
-abstract class ModelColumn implements ColumnInterface
+abstract class ModelColumn implements Arrayable
 {
     /**
-     * The column when sorting the query by this column
-     *
-     * @unreleased
-     *
-     * @var string|null
+     * @var string|array Define the meta key to be used when sorting the query by this column
      */
-    public $sortColumn;
+    protected $sortColumn;
 
     /**
-     * Whether the query can be sorted by this column.
+     * @var bool Define if the column is visible
+     */
+    protected $visibleColumn;
+
+    /**
+     * Returns the id for that column.
      *
      * @unreleased
      */
-    public function isSortable(): bool
-    {
-        return !empty($this->sortColumn);
-    }
+    abstract public static function getId();
+
+    /**
+     * Returns the label for that column.
+     *
+     * @unreleased
+     */
+    abstract public function getLabel();
 
     /**
      * Returns the value to be displayed in the specific cell for that column and row.
@@ -40,13 +45,53 @@ abstract class ModelColumn implements ColumnInterface
     abstract public function getCellValue($model);
 
     /**
-     * Returns the type of value that should be displayed in the cell. This informs the front-end on how the value
-     * should be rendered.
+     * @return bool
+     */
+    public function isSortable(): bool
+    {
+        return null !== $this->sortColumn;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSortColumn(): array
+    {
+        if ( ! $this->isSortable() ) {
+            return [];
+        }
+
+        return is_array( $this->sortColumn ) ? $this->sortColumn : [$this->sortColumn];
+    }
+
+    /**
+     * @param bool $visible
      *
+     * @return void
+     */
+    public function visible(bool $visible)
+    {
+        $this->visibleColumn = $visible;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isVisible(): bool
+    {
+        return $this->visibleColumn;
+    }
+
+    /**
      * @unreleased
      */
-    public function getCellValueType(): CellValueType
+    public function toArray(): array
     {
-        return CellValueType::SIMPLE();
+        return [
+            'id' => $this->getId(),
+            'label' => $this->getLabel(),
+            'sortable' => $this->isSortable(),
+            'visible' => $this->isVisible(),
+        ];
     }
 }
