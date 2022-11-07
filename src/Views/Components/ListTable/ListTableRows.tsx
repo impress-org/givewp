@@ -84,9 +84,15 @@ export default function ListTableRows({
                         <RenderRow column={column} item={item} />
                         {!isLoading && rowActions && (
                             <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
-                                {column?.name === 'id' ||
-                                    (column?.name === 'name' &&
-                                        rowActions({data, item, removeRow, addRow, setUpdateErrors, parameters}))}
+                                {column?.heading &&
+                                    rowActions({
+                                        data,
+                                        item,
+                                        removeRow,
+                                        addRow,
+                                        setUpdateErrors,
+                                        parameters,
+                                    })}
                             </div>
                         )}
                     </TableCell>

@@ -5,11 +5,11 @@ import styles from './style.module.scss';
 const ListTableHeaders = ({column, sortField, handleItemSort}) => {
     return (
         <>
-            {column.isSortable ? (
+            {column.sortable ? (
                 <button
                     type="button"
                     aria-label="sort"
-                    onClick={(event) => column.isSortable && handleItemSort(event, column.name)}
+                    onClick={(event) => column.sortable && handleItemSort(event, column.name)}
                 >
                     <div className={styles.text}>{column.text}</div>
                     <div key={column.name} id={column.name}>
