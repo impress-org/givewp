@@ -1,132 +1,122 @@
 import {__} from '@wordpress/i18n';
-import styles from './DonationFormsColumns.module.scss';
-import cx from 'classnames';
 import {ListTableColumn} from '@givewp/components';
 
 export const donationFormsColumns: Array<ListTableColumn> = [
     {
-        name: 'id',
-        text: __('ID', 'give'),
-        inlineSize: '4rem',
-        preset: 'idBadge',
-        isSortable: true,
-    },
-    {
-        name: 'name',
-        text: __('Name', 'give'),
-        inlineSize: '10rem',
-        heading: true,
-        isSortable: true,
+        id: 'id',
+        label: __('ID', 'give'),
 
-        render: (form: {edit; name}) => <a href={form.edit}>{form.name}</a>,
+        sortable: true,
     },
     {
-        name: 'amount',
-        text: __('Donation Levels', 'give'),
-        preset: 'monetary',
-        isSortable: false,
-    },
-    {
-        name: 'goal',
-        text: __('Goal', 'give'),
-        isSortable: false,
+        id: 'name',
+        label: __('Name', 'give'),
+        sortable: true,
 
-        render: (form: {goal; edit; id}) => {
-            if (!form.goal) {
-                return <>{__('No Goal Set', 'give')}</>;
-            }
-            const goalPercentage =
-                form.goal.format == 'percentage'
-                    ? form.goal.actual
-                    : Math.max(Math.min(form.goal.progress, 100), 0) + '%';
-            return (
-                <>
-                    <div
-                        role="progressbar"
-                        aria-labelledby={`giveDonationFormsProgressBar-${form.id}`}
-                        aria-valuenow={goalPercentage.slice(0, -1)}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                        className={styles.goalProgress}
-                    >
-                        <span
-                            style={{
-                                width: goalPercentage,
-                            }}
-                        />
-                    </div>
-                    <div id={`giveDonationFormsProgressBar-${form.id}`}>
-                        <span className={cx({[styles.monetary]: form.goal.format == __('amount', 'give')})}>
-                            {form.goal.actual}
-                        </span>
-                        {form.goal.format != 'percentage' && (
-                            <>
-                                {' '}
-                                {__('of', 'give')}{' '}
-                                <a href={`${form.edit}&give_tab=donation_goal_options`}>
-                                    {form.goal.goal}
-                                    {form.goal.format != __('amount', 'give') ? ` ${form.goal.format}` : null}
-                                </a>
-                            </>
-                        )}
-                        {form.goal.progress >= 100 && (
-                            <p>
-                                <span className={cx('dashicons dashicons-star-filled', styles.star)}></span>
-                                {__('Goal achieved!', 'give')}
-                            </p>
-                        )}
-                    </div>
-                </>
-            );
-        },
+        // render: (form: {edit; name}) => <a href={form.edit}>{form.name}</a>,
     },
     {
-        name: 'donations',
-        text: __('Donations', 'give'),
-        inlineSize: '6rem',
-        isSortable: true,
+        id: 'amount',
+        label: __('Donation Levels', 'give'),
+        sortable: false,
+    },
+    {
+        id: 'goal',
+        label: __('Goal', 'give'),
+        sortable: false,
 
-        render: (form: {donations; id}) => (
-            <a href={`edit.php?post_type=give_forms&page=give-payment-history&form_id=${form.id}`}>{form.donations}</a>
-        ),
+        // render: (form: {goal; edit; id}) => {
+        //     if (!form.goal) {
+        //         return <>{__('No Goal Set', 'give')}</>;
+        //     }
+        //     const goalPercentage =
+        //         form.goal.format == 'percentage'
+        //             ? form.goal.actual
+        //             : Math.max(Math.min(form.goal.progress, 100), 0) + '%';
+        //     return (
+        //         <>
+        //             <div
+        //                 role="progressbar"
+        //                 aria-labelledby={`giveDonationFormsProgressBar-${form.id}`}
+        //                 aria-valuenow={goalPercentage.slice(0, -1)}
+        //                 aria-valuemin={0}
+        //                 aria-valuemax={100}
+        //                 className={styles.goalProgress}
+        //             >
+        //                 <span
+        //                     style={{
+        //                         width: goalPercentage,
+        //                     }}
+        //                 />
+        //             </div>
+        //             <div id={`giveDonationFormsProgressBar-${form.id}`}>
+        //                 <span className={cx({[styles.monetary]: form.goal.format == __('amount', 'give')})}>
+        //                     {form.goal.actual}
+        //                 </span>
+        //                 {form.goal.format != 'percentage' && (
+        //                     <>
+        //                         {' '}
+        //                         {__('of', 'give')}{' '}
+        //                         <a href={`${form.edit}&give_tab=donation_goal_options`}>
+        //                             {form.goal.goal}
+        //                             {form.goal.format != __('amount', 'give') ? ` ${form.goal.format}` : null}
+        //                         </a>
+        //                     </>
+        //                 )}
+        //                 {form.goal.progress >= 100 && (
+        //                     <p>
+        //                         <span className={cx('dashicons dashicons-star-filled', styles.star)}></span>
+        //                         {__('Goal achieved!', 'give')}
+        //                     </p>
+        //                 )}
+        //             </div>
+        //         </>
+        //     );
+        // },
     },
     {
-        name: 'revenue',
-        text: __('Revenue', 'give'),
-        inlineSize: '6rem',
-        isSortable: false,
+        id: 'donations',
+        label: __('Donations', 'give'),
+        sortable: true,
+        //
+        // render: (form: {donations; id}) => (
+        //     <a href={`edit.php?post_type=give_forms&page=give-payment-history&form_id=${form.id}`}>{form.donations}</a>
+        // ),
+    },
+    {
+        id: 'revenue',
+        label: __('Revenue', 'give'),
+        sortable: false,
 
-        render: (form: {revenue; id}) => (
-            <a href={`edit.php?post_type=give_forms&page=give-reports&tab=forms&legacy=true&form-id=${form.id}`}>
-                {form.revenue}
-            </a>
-        ),
+        // render: (form: {revenue; id}) => (
+        //     <a href={`edit.php?post_type=give_forms&page=give-reports&tab=forms&legacy=true&form-id=${form.id}`}>
+        //         {form.revenue}
+        //     </a>
+        // ),
     },
     {
-        name: 'shortcode',
-        text: __('Shortcode', 'give'),
-        inlineSize: '10rem',
-        isSortable: true,
+        id: 'shortcode',
+        label: __('Shortcode', 'give'),
+        sortable: true,
 
-        render: (form: {shortcode}) => (
-            <input
-                type={'text'}
-                aria-label={__('Copy shortcode', 'give')}
-                readOnly
-                value={form.shortcode}
-                className={styles.shortcode}
-            />
-        ),
+        // render: (form: {shortcode}) => (
+        //     <input
+        //         type={'text'}
+        //         aria-label={__('Copy shortcode', 'give')}
+        //         readOnly
+        //         value={form.shortcode}
+        //         className={styles.shortcode}
+        //     />
+        // ),
     },
     {
-        name: 'datetime',
-        text: __('Date', 'give'),
-        isSortable: true,
+        id: 'datetime',
+        label: __('Date', 'give'),
+        sortable: true,
     },
     {
-        name: 'status',
-        text: __('Status', 'give'),
-        preset: 'postStatus',
-        isSortable: true,
+        id: 'status',
+        label: __('Status', 'give'),
+        sortable: true,
     },
 ];

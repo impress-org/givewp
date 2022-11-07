@@ -130,12 +130,6 @@ div.abandoned {
     pointer-events: none;
 }
 
-.monetary {
-    font-size: 1.25em;
-    font-weight: 700;
-    color: var(--give-primary-color);
-}
-
 @media (hover: hover) and (pointer: fine) {
     .tableRowActions {
         opacity: 0;

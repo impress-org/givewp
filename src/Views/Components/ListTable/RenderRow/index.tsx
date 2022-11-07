@@ -2,7 +2,7 @@ import {Interweave} from 'interweave';
 import './styles.scss';
 
 const RenderRow = ({column, item}) => {
-    let value = item?.[column.name];
+    let value = item?.[column.id];
     if (value === undefined) {
         value = null;
     }

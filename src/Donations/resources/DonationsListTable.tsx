@@ -21,51 +21,7 @@ declare global {
 }
 
 const API = new ListTableApi(window.GiveDonations);
-const donationsColumns = [
-    {
-        name: 'id',
-        text: __('ID', 'give'),
-    },
-    {
-        name: 'amount',
-        text: __('Amount', 'give'),
-    },
-    {
-        name: 'paymentType',
-        text: __('Payment Type'),
-    },
-    {
-        name: 'createdAt',
-        text: __('Date / Time', 'give'),
-    },
-    {
-        name: 'name',
-        text: __('Donor Name', 'give'),
-    },
-    {
-        name: 'formTitle',
-        text: __('Donation Form', 'give'),
-    },
-    {
-        name: 'gateway',
-        text: __('Gateway', 'give'),
-    },
-    {
-        name: 'status',
-        text: __('Status', 'give'),
-    },
-];
-//ToDo : Remove Function when GiveDonors support columns
-// Do not release : Testing Purposes only
 
-const table = {columns: donationsColumns};
-window.GiveDonations = {
-    ...window?.GiveDonations,
-    table,
-};
-console.log(window.GiveDonations);
-console.log(table);
-//End Test: -----
 export default function () {
     const {mutate} = useSWRConfig();
 

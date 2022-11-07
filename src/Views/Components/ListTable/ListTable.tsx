@@ -28,17 +28,9 @@ export interface ListTableProps {
 
 export interface ListTableColumn {
     //required
-    name: string;
-    text: string;
-    isSortable: boolean;
-
-    //optional
-    inlineSize?: string;
-    preset?: string;
-    heading?: boolean;
-    alignColumn?: 'start' | 'center' | 'end';
-    addClass?: string;
-    render?: ((item: {}) => JSX.Element) | JSX.Element | JSX.Element[] | null;
+    id: string;
+    sortable: boolean;
+    label: string;
 }
 
 export const ListTable = ({
@@ -108,35 +100,6 @@ export const ListTable = ({
         setUpdateErrors({errors: [], successes: []});
     };
 
-    const test = {
-        items: [
-            {
-                id: 1,
-                name: '<div class="donorInformation"> <img class="donorInformation__gravatar" src="http://0.gravatar.com/avatar/374f5e13e8894888d3ce32be5cc419c9?s=64&d=mm&r=g" alt="donor name" loading="lazy" /> <a href="#" > Joshua Dinh </a> <address class="donorInformation__email">jd@gmail.com</address> </div>',
-                donationRevenue: "<div class='amount'><span>$10,000.00</span></div>",
-                donationCount:
-                    '<a href="https://repo.givewp.local/wp-admin/post.php?post=8&action=edit" aria-label="Visit donation form page">Donation Form CF</a>',
-                latestDonation: 'October 18, 2022 at 4:47 pm',
-                donorType:
-                    '<div class="badge"><img role="img" aria-labelledby="badgeId" class="icon icon--recurring" src="http://localhost:10003/wp-content/plugins/givewp/assets/src/images/list-table/recurring-donation-icon.svg" alt="Recurring donation icon"><p id="badgeId" class="badge__label">recurring</p></div> ',
-                dateCreated: 'October 18, 2022 at 4:47 pm',
-            },
-            {
-                id: 2,
-                name: '<div class="donorInformation"> <img class="donorInformation__gravatar" src="http://0.gravatar.com/avatar/374f5e13e8894888d3ce32be5cc419c9?s=64&d=mm&r=g" alt="donor name" loading="lazy" /> <a class="name" href="#" > Paulo Iankoski </a> <address>pk@gmail.com</address> </div>',
-                donationRevenue: "<div class='amount'><span>$10,000.00</span></div>",
-                donationCount:
-                    '<a href="https://repo.givewp.local/wp-admin/post.php?post=8&action=edit" aria-label="Visit donation form page">Donation Form CF</a>',
-                latestDonation: 'October 18, 2022 at 4:47 pm',
-                donorType:
-                    '<div class="badge"><img role="img" aria-labelledby="badgeId" class="icon icon--recurring" src="http://localhost:10003/wp-content/plugins/givewp/assets/src/images/list-table/recurring-donation-icon.svg" alt="Recurring donation icon"><p id="badgeId" class="badge__label">recurring</p></div> ',
-                dateCreated: 'October 18, 2022 at 4:47 pm',
-            },
-        ],
-        totalItems: 7,
-        totalPages: 1,
-    };
-    console.log(data);
     return (
         <>
             {initialLoad && !error ? (
@@ -181,21 +144,25 @@ export const ListTable = ({
                                         <th
                                             scope="col"
                                             aria-sort={
-                                                column.name === sortField.sortColumn
+                                                column.label === sortField.sortColumn
                                                     ? sortField.sortDirection === 'asc'
                                                         ? 'ascending'
                                                         : 'descending'
                                                     : 'none'
                                             }
                                             className={cx(styles.tableColumnHeader, {
-                                                [styles[align]]: !column?.alignColumn,
-                                                [styles.center]: column?.alignColumn === 'center',
-                                                [styles.start]: column?.alignColumn === 'start',
-                                                [styles.sortingIcon]: column.isSortable,
+                                                [styles.sortingIcon]: column.sortable,
                                             })}
-                                            data-column={column.name}
-                                            key={column.name}
-                                            style={{inlineSize: column.name === 'id' ? '4rem' : '8rem'}}
+                                            data-column={column.id}
+                                            key={column.id}
+                                            style={{
+                                                inlineSize:
+                                                    column.id === 'id'
+                                                        ? '3.75rem'
+                                                        : column.id === 'amount'
+                                                        ? '4.25rem'
+                                                        : '6rem',
+                                            }}
                                         >
                                             {/*{@unreleased new table header cells with sort icon.}*/}
                                             <ListTableHeaders
@@ -211,7 +178,7 @@ export const ListTable = ({
                         <tbody className={styles.tableContent}>
                             <ListTableRows
                                 columns={columns}
-                                data={test}
+                                data={data}
                                 isLoading={isLoading}
                                 singleName={singleName}
                                 rowActions={rowActions}

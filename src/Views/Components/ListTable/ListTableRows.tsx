@@ -6,6 +6,18 @@ import TableCell from './TableCell';
 import {BulkActionCheckbox} from '@givewp/components/ListTable/BulkActionCheckbox';
 import RenderRow from '@givewp/components/ListTable/RenderRow';
 
+//@unreleased determines if row should display actions based on column.id
+const displayRowActions = (column) => {
+    switch (column.id) {
+        case 'id':
+            return true;
+        case 'donorInformation':
+            return true;
+        default:
+            return false;
+    }
+};
+
 export default function ListTableRows({
     columns,
     data,
@@ -67,36 +79,38 @@ export default function ListTableRows({
             })}
         >
             <TableCell>
-                <BulkActionCheckbox id={item.id} name={item?.name} singleName={singleName} />
+                <BulkActionCheckbox id={item.id} name={item?.label} singleName={singleName} />
             </TableCell>
             <>
-                {columns.map((column) => (
-                    <TableCell
-                        key={column.name}
-                        className={cx(column?.addClass, {
-                            [styles[align]]: !column?.alignColumn,
-                            [styles.center]: column?.alignColumn === 'center',
-                            [styles.start]: column?.alignColumn === 'start',
-                            [styles.start]: column?.alignColumn === 'start',
-                        })}
-                        heading={column?.heading}
-                    >
-                        <RenderRow column={column} item={item} />
-                        {!isLoading && rowActions && (
-                            <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
-                                {column?.heading &&
-                                    rowActions({
-                                        data,
-                                        item,
-                                        removeRow,
-                                        addRow,
-                                        setUpdateErrors,
-                                        parameters,
-                                    })}
-                            </div>
-                        )}
-                    </TableCell>
-                ))}
+                {columns.map((column) => {
+                    return (
+                        <TableCell
+                            key={column.id}
+                            className={cx(column?.addClass, {
+                                [styles[align]]: !column?.alignColumn,
+                                [styles.center]: column?.alignColumn === 'center',
+                                [styles.start]: column?.alignColumn === 'start',
+                                [styles.start]: column?.alignColumn === 'start',
+                            })}
+                            heading={displayRowActions(column)}
+                        >
+                            <RenderRow column={column} item={item} />
+                            {!isLoading && rowActions && (
+                                <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
+                                    {displayRowActions(column) &&
+                                        rowActions({
+                                            data,
+                                            item,
+                                            removeRow,
+                                            addRow,
+                                            setUpdateErrors,
+                                            parameters,
+                                        })}
+                                </div>
+                            )}
+                        </TableCell>
+                    );
+                })}
             </>
         </tr>
     ));
