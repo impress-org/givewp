@@ -11,7 +11,7 @@ final class RemoveNodeTest extends TestCase
 
     public function testRemoveNode()
     {
-        $form = Form::make('form')
+        $form = (new Form('form'))
             ->append(
                 Section::make('form-section')
                     ->append(

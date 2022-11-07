@@ -5,7 +5,7 @@ namespace Give\PaymentGateways\Gateways\Stripe\Exceptions;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 
 /**
- * @unreleased
+ * @since 2.23.1
  */
 class CheckoutTypeException extends PaymentGatewayException
 {

@@ -10,14 +10,14 @@ use Give\Framework\QueryBuilder\QueryBuilder;
 use GiveTests\TestCase;
 
 /**
- * @unreleased
+ * @since 2.20.1
  *
  * @coversDefaultClass Model
  */
 class TestModel extends TestCase
 {
     /**
-     * @unreleased
+     * @since 2.20.1
      *
      * @return void
      */
@@ -33,7 +33,7 @@ class TestModel extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      *
      * @return void
      */
@@ -48,7 +48,7 @@ class TestModel extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.20.1
      *
      * @return void
      */
@@ -62,7 +62,7 @@ class TestModel extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.20.1
      *
      * @return void
      */
@@ -74,7 +74,7 @@ class TestModel extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.20.1
      *
      * @return void
      */
@@ -88,7 +88,7 @@ class TestModel extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.20.1
      *
      * @return void
      */
@@ -101,7 +101,7 @@ class TestModel extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.20.1
      *
      * @return void
      */
@@ -113,7 +113,7 @@ class TestModel extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.20.1
      *
      * @dataProvider invalidTypeProvider
      *
@@ -127,7 +127,7 @@ class TestModel extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.20.1
      *
      * @return void
      */
@@ -150,7 +150,7 @@ class TestModel extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.20.1
      *
      * @return void
      */
@@ -172,7 +172,7 @@ class TestModel extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.20.1
      *
      * @return void
      */
@@ -184,7 +184,7 @@ class TestModel extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.20.1
      *
      * @return void
      */
@@ -200,7 +200,7 @@ class TestModel extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.20.1
      *
      * @dataProvider invalidTypeProvider
      *
@@ -226,7 +226,7 @@ class TestModel extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.20.1
      *
      * @return void
      */
@@ -239,7 +239,7 @@ class TestModel extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.20.0
      */
     public function testModelRelationsShouldBeCached()
     {
@@ -251,7 +251,7 @@ class TestModel extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.22.3
      */
     public function testShouldThrowExceptionForGettingMissingProperty()
     {
@@ -263,7 +263,7 @@ class TestModel extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.22.3
      */
     public function testShouldThrowExceptionForSettingMissingProperty()
     {
@@ -275,7 +275,7 @@ class TestModel extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.20.1
      *
      * @return array
      */
@@ -290,7 +290,7 @@ class TestModel extends TestCase
 }
 
 /**
- * @unreleased
+ * @since 2.20.1
  *
  * @property int $id
  * @property string $firstName
@@ -307,7 +307,7 @@ class MockModel extends Model
 }
 
 /**
- * @unreleased
+ * @since 2.20.1
  *
  * @property int $id
  * @property string $firstName

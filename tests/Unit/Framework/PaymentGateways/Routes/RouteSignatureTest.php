@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 class RouteSignatureTest extends TestCase
 {
     /**
-     * @unreleased add expiration
+     * @since 2.19.5 add expiration
      * @since 2.19.4 replace RouteSignature args with unique donationId
      * @since 2.19.0
      *
@@ -33,7 +33,7 @@ class RouteSignatureTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.5
      *
      * @return void
      */
@@ -55,7 +55,7 @@ class RouteSignatureTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.5
      *
      * @return void
      */
@@ -76,7 +76,7 @@ class RouteSignatureTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.5
      *
      * @return void
      */
@@ -97,7 +97,7 @@ class RouteSignatureTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.5
      *
      * @return void
      */

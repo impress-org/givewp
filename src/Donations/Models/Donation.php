@@ -45,6 +45,7 @@ use Give\Subscriptions\Models\Subscription;
  * @property string $lastName
  * @property string $email
  * @property int $subscriptionId
+ * @property bool $startsSubscription
  * @property BillingAddress $billingAddress
  * @property string $purchaseKey
  * @property string $donorIp
@@ -81,6 +82,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
         'lastName' => 'string',
         'email' => 'string',
         'subscriptionId' => ['int', 0],
+        'startsSubscription' => 'bool',
         'billingAddress' => BillingAddress::class,
         'anonymous' => ['bool', false],
         'levelId' => ['string', ''],

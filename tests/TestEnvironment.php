@@ -17,7 +17,7 @@ class TestEnvironment {
     private $workflow;
 
     /**
-     * @unreleased
+     * @since 2.22.1
      */
     public function __construct() {
         $this->local = new Local();
@@ -25,7 +25,7 @@ class TestEnvironment {
     }
 
     /**
-     * @unreleased
+     * @since 2.22.1
      */
     public function isLocal(): bool
     {
@@ -33,7 +33,7 @@ class TestEnvironment {
     }
 
     /**
-     * @unreleased
+     * @since 2.22.1
      */
     public function isWorkflow(): bool
     {
@@ -41,7 +41,7 @@ class TestEnvironment {
     }
 
     /**
-     * @unreleased
+     * @since 2.22.1
      */
     public function hasConfig(): bool
     {
@@ -49,7 +49,7 @@ class TestEnvironment {
     }
 
     /**
-     * @unreleased
+     * @since 2.22.1
      */
     public function current(): Config
     {

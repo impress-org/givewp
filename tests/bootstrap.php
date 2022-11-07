@@ -1,5 +1,6 @@
 <?php
 
+use GiveTests\Framework\TestHooks;
 use GiveTests\TestEnvironment;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -19,16 +20,13 @@ $currentTestEnvironment = $testEnvironment->current();
 // define for use in WP bootstrap file
 define('WP_TESTS_CONFIG_FILE_PATH', $currentTestEnvironment->config());
 
-// pull in wp test functions like tests_add_filter
-require_once $currentTestEnvironment->functions();
-
 // load GiveWP
-tests_add_filter('muplugins_loaded', static function () {
+TestHooks::addFilter('muplugins_loaded', static function () {
     require_once __DIR__ . '/../give.php';
 });
 
 // install GiveWP
-tests_add_filter('setup_theme', static function () {
+TestHooks::addFilter('setup_theme', static function () {
     echo 'Installing GiveWP.....' . PHP_EOL;
     give()->install();
 });

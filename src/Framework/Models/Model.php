@@ -52,7 +52,7 @@ abstract class Model implements Arrayable
      *
      * @since      2.19.6
      * @since      2.20.0 add support for property defaults
-     * @unreleased Make constructor final to avoid unsafe usage of `new static()`.
+     * @since 2.23.1 Make constructor final to avoid unsafe usage of `new static()`.
      *
      * @param array $attributes
      *

@@ -44,4 +44,30 @@ class DonationStatus extends Enum
      * @deprecated 2.23.0 Use DonationStatus::COMPLETE
      */
     const RENEWAL = 'give_subscription';
+
+    /**
+     * @return array
+     */
+    public static function labels(): array
+    {
+        return [
+            self::PENDING => __( 'Pending', 'give' ),
+            self::PROCESSING => __( 'Processing', 'give' ),
+            self::COMPLETE => __( 'Completed', 'give' ),
+            self::REFUNDED => __( 'Refunded', 'give' ),
+            self::FAILED => __( 'Failed', 'give' ),
+            self::CANCELLED => __( 'Cancelled', 'give' ),
+            self::ABANDONED => __( 'Abandoned', 'give' ),
+            self::PREAPPROVAL => __( 'Preapproval Pending', 'give' ),
+            self::REVOKED => __( 'Revoked', 'give' ),
+        ];
+    }
+
+    /**
+     * @return string
+     */
+    public function label(): string
+    {
+        return self::labels()[ $this->getValue() ];
+    }
 }

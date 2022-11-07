@@ -17,7 +17,7 @@ final class NameCollisionTest extends TestCase
     {
         $this->expectException(NameCollisionException::class);
 
-        Form::make('form')
+        (new Form('form'))
             ->append(
                 Section::make('form-section')
                     ->append(
@@ -31,7 +31,7 @@ final class NameCollisionTest extends TestCase
     {
         $this->expectException(NameCollisionException::class);
 
-        Form::make('form')
+        (new Form('form'))
             ->append(
                 Section::make('form-section')
                     ->append(

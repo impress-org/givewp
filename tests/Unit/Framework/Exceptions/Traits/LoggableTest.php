@@ -5,12 +5,12 @@ namespace GiveTests\Unit\Framework\Exceptions\Traits;
 use GiveTests\TestCase;
 
 /**
- * @unreleased
+ * @since 2.21.0
  */
 class LoggableTest extends TestCase
 {
     /**
-     * @unreleased
+     * @since 2.21.0
      */
     public function testExceptionHasContext()
     {
@@ -27,7 +27,7 @@ class LoggableTest extends TestCase
 }
 
 /**
- * @unreleased
+ * @since 2.21.0
  */
 class MockLoggableException extends \Give\Framework\Exceptions\Primitives\Exception
 {

@@ -121,10 +121,10 @@ class DonorsExport extends Give_Batch_Export
                 'donor_id',
                 ['_give_donor_address_billing_line1_0', 'address_line1'],
                 ['_give_donor_address_billing_line2_0', 'address_line2'],
-                ['_give_donor_address_billing_city_0', 'address_city'],
+                ['_give_donor_address_billing_city_0',  'address_city'],
                 ['_give_donor_address_billing_state_0', 'address_state'],
-                ['_give_donor_address_billing_country_0', 'address_country'],
-                ['_give_donor_address_billing_zip_0', 'address_zip']
+                ['_give_donor_address_billing_zip_0',   'address_zip'],
+                ['_give_donor_address_billing_country_0', 'address_country']
             );
         }
 

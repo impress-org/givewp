@@ -2,8 +2,11 @@
 
 namespace Give\Donations\Endpoints;
 
-use Give\Donations\Controllers\DonationsRequestController;
-use Give\Donations\DataTransferObjects\DonationResponseData;
+use Give\Donations\ListTable\DonationsListTable;
+use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Framework\Database\DB;
+use Give\Framework\ListTable\ListTable;
+use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -13,6 +16,16 @@ class ListDonations extends Endpoint
      * @var string
      */
     protected $endpoint = 'admin/donations';
+
+    /**
+     * @var WP_REST_Request
+     */
+    protected $request;
+
+    /**
+     * @var ListTable
+     */
+    protected $listTable;
 
     /**
      * @inheritDoc
@@ -66,6 +79,24 @@ class ListDonations extends Endpoint
                         'required' => false,
                         'sanitize_callback' => 'sanitize_text_field',
                     ],
+                    'sortColumn' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                    'sortDirection' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'enum' => [
+                            'asc',
+                            'desc'
+                        ],
+                    ],
+                    'locale' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'default' => get_locale(),
+                    ],
                 ],
             ]
         );
@@ -79,22 +110,138 @@ class ListDonations extends Endpoint
      */
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
-        $data = [];
-        $controller = new DonationsRequestController($request);
-        $donations = $controller->getDonations();
-        $donationsCount = $controller->getTotalDonationsCount();
-        $totalPages = (int)ceil($donationsCount / $request->get_param('perPage'));
+        $this->request = $request;
+        $this->listTable = new DonationsListTable($this->request->get_param('locale'));
 
-        foreach ($donations as $donation) {
-            $data[] = DonationResponseData::fromObject($donation)->toArray();
-        }
+        $donations = $this->getDonations();
+        $donationsCount = $this->getTotalDonationsCount();
+        $totalPages = (int)ceil($donationsCount / $this->request->get_param('perPage'));
+
+        $this->listTable->items($donations);
 
         return new WP_REST_Response(
             [
-                'items' => $data,
+                'items' => $this->listTable->getItems(),
                 'totalItems' => $donationsCount,
                 'totalPages' => $totalPages
             ]
         );
+    }
+
+    /**
+     * @since 2.21.0
+     *
+     * @return array
+     */
+    public function getDonations(): array
+    {
+        $page = $this->request->get_param('page');
+        $perPage = $this->request->get_param('perPage');
+        $sortColumns = $this->listTable->getSortColumnById( $this->request->get_param('sortColumn') ?: 'id' );
+        $sortDirection = $this->request->get_param('sortDirection') ?: 'DESC';
+
+        $query = give()->donations->prepareQuery();
+
+        $query = $this->getWhereConditions($query);
+
+        foreach ( $sortColumns as $sortColumn ) {
+            $query->orderBy($sortColumn, $sortDirection);
+        }
+
+        $query->limit($perPage)
+            ->offset(($page - 1) * $perPage);
+
+        $donations = $query->getAll();
+
+        if (!$donations) {
+            return [];
+        }
+
+        return $donations;
+    }
+
+    /**
+     * @since 2.21.0
+     *
+     * @return int
+     */
+    public function getTotalDonationsCount(): int
+    {
+        $query = DB::table('posts')
+            ->where('post_type', 'give_payment');
+
+        $query = $this->getWhereConditions($query);
+
+        return $query->count();
+    }
+
+    /**
+     * @param QueryBuilder $query
+     * @since 2.21.0
+     *
+     * @return QueryBuilder
+     */
+    private function getWhereConditions(QueryBuilder $query): QueryBuilder
+    {
+        $search = $this->request->get_param('search');
+        $start = $this->request->get_param('start');
+        $end = $this->request->get_param('end');
+        $form = $this->request->get_param('form');
+        $donor = $this->request->get_param('donor');
+
+        if ($form || $donor || ($search && !ctype_digit($search))) {
+            $query->leftJoin(
+                'give_donationmeta',
+                'id',
+                'metaTable.donation_id',
+                'metaTable'
+            );
+        }
+
+        if ($search) {
+            if (ctype_digit($search)) {
+                $query->where('id', $search);
+            } else if (strpos($search, '@') !== false) {
+                $query
+                    ->where('metaTable.meta_key', DonationMetaKeys::EMAIL)
+                    ->whereLike('metaTable.meta_value', $search);
+            } else {
+                $query
+                    ->where('metaTable.meta_key', DonationMetaKeys::FIRST_NAME)
+                    ->whereLike('metaTable.meta_value', $search)
+                    ->orWhere('metaTable.meta_key', DonationMetaKeys::LAST_NAME)
+                    ->whereLike('metaTable.meta_value', $search);
+            }
+        }
+
+        if ($donor) {
+            if (ctype_digit($donor)) {
+                $query
+                    ->where('metaTable.meta_key', DonationMetaKeys::DONOR_ID)
+                    ->where('metaTable.meta_value', $donor);
+            } else {
+                $query
+                    ->where('metaTable.meta_key', DonationMetaKeys::FIRST_NAME)
+                    ->whereLike('metaTable.meta_value', $donor)
+                    ->orWhere('metaTable.meta_key', DonationMetaKeys::LAST_NAME)
+                    ->whereLike('metaTable.meta_value', $donor);
+            }
+        }
+
+        if ($form) {
+            $query
+                ->where('metaTable.meta_key', DonationMetaKeys::FORM_ID)
+                ->where('metaTable.meta_value', $form);
+        }
+
+        if ($start && $end) {
+            $query->whereBetween('post_date', $start, $end);
+        } else if ($start) {
+            $query->where('post_date', $start, '>=');
+        } else if ($end) {
+            $query->where('post_date', $end, '<=');
+        }
+
+        return $query;
     }
 }

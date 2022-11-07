@@ -125,7 +125,7 @@ abstract class Receipt implements Iterator, ArrayAccess
      *
      * @param array $array
      *
-     * @unreleased Method added to abstract base class as abstract method.
+     * @since 2.23.1 Method added to abstract base class as abstract method.
      */
     abstract protected function validateSection($array);
 

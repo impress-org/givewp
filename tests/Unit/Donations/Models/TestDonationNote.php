@@ -14,7 +14,7 @@ class TestDonationNote extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -36,7 +36,7 @@ class TestDonationNote extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      * @throws Exception
