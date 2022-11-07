@@ -34,7 +34,7 @@ class AmountColumn extends ModelColumn
      *
      * @param Donation $model
      */
-    public function getCellValue($model, $locale = 'asdsdfsd'): string
+    public function getCellValue($model, $locale = ''): string
     {
         return sprintf(
             '<div class="amount"><span>%s</span></div>',
