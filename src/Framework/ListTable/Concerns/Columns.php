@@ -2,9 +2,9 @@
 
 namespace Give\Framework\ListTable\Concerns;
 
-use Give\Framework\ListTable\Column;
 use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
 use Give\Framework\ListTable\Exceptions\ReferenceColumnNotFoundException;
+use Give\Framework\ListTable\ModelColumn;
 
 /**
  * @unreleased
@@ -12,7 +12,7 @@ use Give\Framework\ListTable\Exceptions\ReferenceColumnNotFoundException;
 trait Columns
 {
     /**
-     * @var Column[]
+     * @var ModelColumn[]
      */
     private $columns = [];
 
@@ -22,15 +22,16 @@ trait Columns
      * @unreleased
      * @throws ColumnIdCollisionException
      */
-    public function addColumn(Column $column)
+    public function addColumn(ModelColumn $column)
     {
-        $columnName = $column->getName();
+        $columnId = $column::getId();
 
-        if (isset($this->columns[$columnName])) {
-            throw new ColumnIdCollisionException($columnName);
+        if (isset($this->columns[$columnId])) {
+            throw new ColumnIdCollisionException($columnId);
         }
 
-        $this->columns[$columnName] = $column;
+        $this->setColumnVisibility($column);
+        $this->columns[$columnId] = $column;
     }
 
     /**
@@ -63,7 +64,7 @@ trait Columns
 
     /**
      * @unreleased
-     * @return Column[]
+     * @return ModelColumn[]
      */
     public function getColumns(): array
     {
@@ -75,7 +76,7 @@ trait Columns
      */
     public function getColumnsArray(): array
     {
-        return array_map(static function (Column $column) {
+        return array_map(static function (ModelColumn $column) {
             return $column->toArray();
         }, array_values($this->columns));
     }
@@ -86,14 +87,14 @@ trait Columns
      * @unreleased
      * @throws ReferenceColumnNotFoundException
      */
-    public function addColumnBefore(string $columnName, Column $column)
+    public function addColumnBefore(string $columnId, ModelColumn $column)
     {
-        if (is_int($index = $this->getColumnIndexByName($columnName))) {
+        if (is_int($index = $this->getColumnIndexById($columnId))) {
             $this->insertAtIndex($index, $column);
             return;
         }
 
-        throw new ReferenceColumnNotFoundException($columnName);
+        throw new ReferenceColumnNotFoundException($columnId);
     }
 
     /**
@@ -102,26 +103,26 @@ trait Columns
      * @unreleased
      * @throws ReferenceColumnNotFoundException
      */
-    public function addColumnAfter(string $columnName, Column $column)
+    public function addColumnAfter(string $columnId, ModelColumn $column)
     {
-        if (is_int($index = $this->getColumnIndexByName($columnName))) {
+        if (is_int($index = $this->getColumnIndexById($columnId))) {
             $this->insertAtIndex($index + 1, $column);
             return;
         }
 
-        throw new ReferenceColumnNotFoundException($columnName);
+        throw new ReferenceColumnNotFoundException($columnId);
     }
 
     /**
      * Get registered column by column id
      *
      * @unreleased
-     * @param string $name
-     * @return Column|null
+     * @param string $columnId
+     * @return ModelColumn|null
      */
-    public function getColumnByName(string $name)
+    public function getColumnById(string $columnId)
     {
-        return $this->columns[$name] ?? null;
+        return $this->columns[$columnId] ?? null;
     }
 
     /**
@@ -130,20 +131,32 @@ trait Columns
      * @unreleased
      * @return int|false
      */
-    public function getColumnIndexByName(string $columnName)
+    public function getColumnIndexById(string $columnId)
     {
-        return array_search($columnName, array_keys($this->columns), true);
+        return array_search($columnId, array_keys($this->columns), true);
     }
 
     /**
      * @unreleased
      */
-    protected function insertAtIndex(int $index, Column $column)
+    protected function insertAtIndex(int $index, ModelColumn $column)
     {
         $this->columns = array_merge(
             array_splice($this->columns, 0, $index),
-            [$column->getName() => $column],
+            [$column::getId() => $column],
             $this->columns
         );
+    }
+
+    protected function setColumnVisibility($column)
+    {
+        $column->visible(in_array($column->getId(), $this->getVisibleColumns()));
+    }
+
+    public function getSortColumnById(string $columnId): array
+    {
+        $column = $this->getColumnById($columnId);
+
+        return $column->getSortColumn() ?: ['id'];
     }
 }

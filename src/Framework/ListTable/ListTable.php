@@ -12,15 +12,25 @@ use Give\Framework\Support\Contracts\Arrayable;
 abstract class ListTable implements Arrayable
 {
     use Columns;
-    use Items;
+
+    /**
+     * @var string
+     */
+    protected $locale;
+
+    /**
+     * @var array
+     */
+    private $items = [];
 
     /**
      * @unreleased
      * @throws Exceptions\ColumnIdCollisionException
      */
-    public function __construct()
+    public function __construct(string $locale = '')
     {
-        $this->addColumns(...$this->getDefaultColumns());
+        $this->locale = $locale;
+        $this->addColumns(...$this->getColumns());
     }
 
     /**
@@ -34,9 +44,17 @@ abstract class ListTable implements Arrayable
      * Define table columns
      *
      * @unreleased
-     * @return Column[]
+     * @return ModelColumn[]
      */
-    abstract protected function getDefaultColumns(): array;
+    abstract protected function getColumns(): array;
+
+    /**
+     * Define visible table columns
+     *
+     * @unreleased
+     * @return string[]
+     */
+    abstract protected function getVisibleColumns(): array;
 
     /**
      * Get table definitions
