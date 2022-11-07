@@ -39,7 +39,7 @@ $show_bar            = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'
 /**
  * Allow filtering the goal stats used for this shortcode context.
  *
- * @unreleased
+ * @since 2.23.1
  *
  * @param  array  $stats  The income and goal values for this form goal.
  * @param  int    $form_id  Donation Form ID.

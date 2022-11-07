@@ -5,12 +5,12 @@ use PHPUnit\Framework\TestCase;
 require_once GIVE_PLUGIN_DIR . 'includes/class-give-readme-parser.php';
 
 /**
- * @unreleased
+ * @since 2.20.2
  */
 class Tests_Give_Readme_Parser extends TestCase
 {
     /**
-     * @unreleased
+     * @since 2.20.2
      */
     public function test_should_return_requires_give()
     {
@@ -18,7 +18,7 @@ class Tests_Give_Readme_Parser extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.20.2
      */
     public function test_should_return_requires_givewp()
     {
@@ -27,12 +27,12 @@ class Tests_Give_Readme_Parser extends TestCase
 }
 
 /**
- * @unreleased
+ * @since 2.20.2
  */
 class Mock_Give_Readme_Parser extends Give_Readme_Parser
 {
     /**
-     * @unreleased
+     * @since 2.20.2
      */
     protected function get_readme_file_content(): string
     {
@@ -46,12 +46,12 @@ Add-on for Give.';
 }
 
 /**
- * @unreleased
+ * @since 2.20.2
  */
 class Mock_GiveWP_Readme_Parser extends Give_Readme_Parser
 {
     /**
-     * @unreleased
+     * @since 2.20.2
      */
     protected function get_readme_file_content(): string
     {

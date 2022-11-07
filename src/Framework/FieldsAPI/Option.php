@@ -18,7 +18,7 @@ class Option implements JsonSerializable
     protected $value;
 
     /**
-     * @unreleased Make constructor final to avoid unsafe usage of `new static()`.
+     * @since 2.23.1 Make constructor final to avoid unsafe usage of `new static()`.
      *
      * @param string  $value
      * @param ?string $label

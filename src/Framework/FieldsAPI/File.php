@@ -9,7 +9,7 @@ use function wp_max_upload_size;
  * A file upload field.
  *
  * @since      2.12.0
- * @unreleased Moved default rule values inline since inherited constructor is final.
+ * @since 2.23.1 Moved default rule values inline since inherited constructor is final.
  */
 class File extends Field
 {

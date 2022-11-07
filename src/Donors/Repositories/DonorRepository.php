@@ -159,7 +159,7 @@ class DonorRepository
     }
 
     /**
-     *
+     * @since 2.23.1 use give()->donor_meta to update meta so data is upserted
      * @since 2.21.0 add actions givewp_donor_updating and givewp_donor_updated
      * @since 2.20.0 return void
      * @since 2.19.6
@@ -185,12 +185,7 @@ class DonorRepository
                 ]);
 
             foreach ($this->getCoreDonorMeta($donor) as $metaKey => $metaValue) {
-                DB::table('give_donormeta')
-                    ->where('donor_id', $donor->id)
-                    ->where('meta_key', $metaKey)
-                    ->update([
-                        'meta_value' => $metaValue,
-                    ]);
+                give()->donor_meta->update_meta($donor->id, $metaKey, $metaValue);
             }
 
             if (isset($donor->additionalEmails) && $donor->isDirty('additionalEmails')) {

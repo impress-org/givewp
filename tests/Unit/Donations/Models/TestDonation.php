@@ -19,7 +19,7 @@ class TestDonation extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @return void
      *
@@ -96,7 +96,7 @@ class TestDonation extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      *
      * @throws Exception
      */
@@ -120,7 +120,7 @@ class TestDonation extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      */
     public function testDonationShouldGetIntendedAmountInBaseCurrency()
     {
@@ -138,7 +138,7 @@ class TestDonation extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      */
     public function testDonationShouldReturnAmountInBaseCurrency()
     {
@@ -154,7 +154,7 @@ class TestDonation extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.19.6
      */
     public function testDonationShouldGetIntendedAmount()
     {

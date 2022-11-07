@@ -33,7 +33,7 @@ abstract class PaymentCommand implements GatewayCommand
 
     /**
      * @since      2.18.0
-     * @unreleased Make constructor final to avoid unsafe usage of `new static()`.
+     * @since 2.23.1 Make constructor final to avoid unsafe usage of `new static()`.
      *
      * @param string|null $gatewayTransactionId
      */

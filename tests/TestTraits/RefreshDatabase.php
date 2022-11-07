@@ -8,7 +8,7 @@ trait RefreshDatabase {
     /**
      * Truncate all Give database tables.
      *
-     * @unreleased
+     * @since 2.22.1
      *
      * @return void
      */

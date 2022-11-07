@@ -10,7 +10,7 @@ class Workflow implements Config
 {
     /**
      * @inheritDoc
-     * @unreleased
+     * @since 2.20.1
      */
     public function config(): string
     {
@@ -19,19 +19,10 @@ class Workflow implements Config
 
     /**
      * @inheritDoc
-     * @unreleased
+     * @since 2.20.1
      */
     public function bootstrap(): string
     {
         return '/tmp/wordpress-tests-lib/includes/bootstrap.php';
-    }
-
-    /**
-     * @inheritDoc
-     * @unreleased
-     */
-    public function functions(): string
-    {
-        return '/tmp/wordpress-tests-lib/includes/functions.php';
     }
 }

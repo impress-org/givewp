@@ -14,7 +14,7 @@ final class WalkNodesTest extends TestCase
     {
         $count = 0;
 
-        Form::make('form')
+        (new Form('form'))
             ->append(
                 Section::make('form-section')
                     ->append(
@@ -34,7 +34,7 @@ final class WalkNodesTest extends TestCase
     {
         $count = 0;
 
-        Form::make('form')
+        (new Form('form'))
             ->append(
                 Section::make('form-section')->append(
                     Text::make('firstTextField'),

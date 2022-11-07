@@ -5,7 +5,7 @@ namespace Give\ServiceProviders;
 use Give\Framework\Exceptions\Primitives\Exception;
 
 /**
- * @unreleased
+ * @since 2.23.1
  */
 class UnknownRequestTypeException extends Exception
 {

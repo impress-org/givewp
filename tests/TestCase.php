@@ -15,7 +15,7 @@ use WP_UnitTestCase;
  * Provides Give-specific setup/tear down/assert methods
  * and helper functions.
  *
- * @unreleased migrated Give_Unit_Test_Case to GiveTests namespace
+ * @since 2.22.1 migrated Give_Unit_Test_Case to GiveTests namespace
  * @since 1.0
  */
 class TestCase extends WP_UnitTestCase
@@ -33,7 +33,7 @@ class TestCase extends WP_UnitTestCase
     /**
      * @inheritDoc
      *
-     * @unreleased add setUpTraits
+     * @since 2.22.1 add setUpTraits
      * @since 1.0
      */
     public function setUp()
@@ -62,7 +62,7 @@ class TestCase extends WP_UnitTestCase
 
     /**
      *
-     * @unreleased add setUpTraits
+     * @since 2.22.1 add setUpTraits
      * @since 1.0
      * @inheritDoc
      */
@@ -137,7 +137,7 @@ class TestCase extends WP_UnitTestCase
     /**
      * Asserts that two Money objects are equal.
      *
-     * @unreleased
+     * @since 2.20.0
      *
      * @param Money $expected
      * @param Money $actual
@@ -208,7 +208,7 @@ class TestCase extends WP_UnitTestCase
     /**
      * * Interact with specific traits during setUp
      *
-     * @unreleased
+     * @since 2.22.1
      *
      * @return void
      */
@@ -220,7 +220,7 @@ class TestCase extends WP_UnitTestCase
     /**
      * Interact with specific traits during tearDown
      *
-     * @unreleased
+     * @since 2.22.1
      *
      * @return void
      */
@@ -238,7 +238,7 @@ class TestCase extends WP_UnitTestCase
     /**
      * Registers Test Gateway to be used in tests to avoid any side effects caused by gateway not being registered.
      *
-     * @unreleased
+     * @since 2.22.1
      *
      * @return void
      */

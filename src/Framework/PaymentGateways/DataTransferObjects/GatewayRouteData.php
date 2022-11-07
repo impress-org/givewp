@@ -5,7 +5,7 @@ namespace Give\Framework\PaymentGateways\DataTransferObjects;
 /**
  * Class GatewayRouteData
  * @since      2.18.0
- * @unreleased Make class final to avoid unsafe usage of `new static()`.
+ * @since 2.23.1 Make class final to avoid unsafe usage of `new static()`.
  */
 final class GatewayRouteData
 {

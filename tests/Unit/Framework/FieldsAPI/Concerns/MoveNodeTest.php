@@ -11,7 +11,7 @@ final class MoveNodeTest extends TestCase
 
     public function testMoveAfter()
     {
-        $form = Form::make('form')
+        $form = (new Form('form'))
             ->append(
                 Section::make('form-section')
                     ->append(

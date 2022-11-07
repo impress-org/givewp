@@ -14,12 +14,15 @@ use GiveTests\TestCase;
 use GiveTests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 2.20.1
  */
 class UpdateRevenueWhenDonationAmountUpdatedTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * @since 2.20.1
+     */
     public function testRevenueIsUpdatedWhenDonationIsUpdated()
     {
         $donation = Donation::factory()->create([

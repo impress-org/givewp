@@ -25,21 +25,13 @@ class Form implements Node, Collection
     const TYPE = 'form';
 
     /**
-     * @unreleased Make constructor as private to avoid unsafe usage of `new static()`.
+     * @since 2.23.1 Make constructor as private to avoid unsafe usage of `new static()`.
      *
      * @param $name
      */
-    final public function __construct($name)
+    public function __construct($name)
     {
         $this->name = $name;
-    }
-
-    /**
-     * @since 2.14.0
-     */
-    public static function make($name)
-    {
-        return new static($name);
     }
 
     public function getNodeType(): string

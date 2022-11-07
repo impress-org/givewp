@@ -54,7 +54,7 @@ class DeleteDonor extends Endpoint
 
     /**
      * @since      2.20.0
-     * @unreleased Cast `$ids` as integers.
+     * @since 2.23.1 Cast `$ids` as integers.
      *
      * @param WP_REST_Request $request
      *
