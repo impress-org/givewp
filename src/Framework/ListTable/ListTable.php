@@ -3,7 +3,6 @@
 namespace Give\Framework\ListTable;
 
 use Give\Framework\ListTable\Concerns\Columns;
-use Give\Framework\ListTable\Concerns\Items;
 use Give\Framework\Support\Contracts\Arrayable;
 
 /**
@@ -67,6 +66,38 @@ abstract class ListTable implements Arrayable
             'id' => $this->id(),
             'columns' => $this->getColumnsArray()
         ];
+    }
+
+    /**
+     * Set table items
+     *
+     * @unreleased
+     */
+    public function items(array $items)
+    {
+        $data = [];
+
+        $columns = $this->getColumns();
+
+        foreach ($items as $model) {
+            $row = [];
+
+            foreach ($columns as $column) {
+                $row[$column::getId()] = $column->getCellValue($model, $this->locale);
+            }
+
+            $data[] = $row;
+        }
+
+        $this->items = $data;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getItems(): array
+    {
+        return $this->items;
     }
 }
 
