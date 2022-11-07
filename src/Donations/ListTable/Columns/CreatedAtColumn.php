@@ -13,7 +13,7 @@ use Give\Framework\ListTable\ModelColumn;
 class CreatedAtColumn extends ModelColumn
 {
 
-    protected $sortColumn = 'date';
+    protected $sortColumn = 'createdAt';
 
     /**
      * @inheritDoc

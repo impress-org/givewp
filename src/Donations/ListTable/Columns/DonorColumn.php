@@ -13,7 +13,7 @@ use Give\Framework\ListTable\ModelColumn;
 class DonorColumn extends ModelColumn
 {
 
-    protected $sortColumn = ['lastName', 'firstName'];
+    protected $sortColumn = ['firstName', 'lastName'];
 
     /**
      * @inheritDoc
