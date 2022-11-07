@@ -61,10 +61,6 @@ final class DonationQueryData
      */
     public $subscriptionId;
     /**
-     * @var bool
-     */
-    public $startsSubscription;
-    /**
      * @var DateTime
      */
     public $updatedAt;
@@ -158,7 +154,6 @@ final class DonationQueryData
         $self->updatedAt = Temporal::toDateTime($donationQueryObject->updatedAt);
         $self->status = new DonationStatus($donationQueryObject->status);
         $self->subscriptionId = (int)$donationQueryObject->{DonationMetaKeys::SUBSCRIPTION_ID()->getKeyAsCamelCase()};
-        $self->startsSubscription = (bool)$donationQueryObject->{DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION()->getKeyAsCamelCase()};
         $self->mode = new DonationMode($donationQueryObject->{DonationMetaKeys::MODE()->getKeyAsCamelCase()});
         $self->billingAddress = BillingAddress::fromArray([
             'country' => $donationQueryObject->{DonationMetaKeys::BILLING_COUNTRY()->getKeyAsCamelCase()},
