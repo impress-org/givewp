@@ -29,8 +29,12 @@
             background: #F4C520;
         }
 
-        &--pending{
+        &--pending {
             background: #0878B0;
+        }
+
+        &--refunded {
+            background: #333333;
         }
     }
 
