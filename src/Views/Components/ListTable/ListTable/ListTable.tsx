@@ -151,18 +151,11 @@ export const ListTable = ({
                                                     : 'none'
                                             }
                                             className={cx(styles.tableColumnHeader, {
-                                                [styles.sortingIcon]: column.sortable,
+                                                [styles.id]: column.id === 'id',
+                                                [styles['amount']]: column.id === 'amount',
                                             })}
                                             data-column={column.id}
                                             key={column.id}
-                                            style={{
-                                                inlineSize:
-                                                    column.id === 'id'
-                                                        ? '3rem'
-                                                        : column.id === 'amount'
-                                                        ? '4.5rem'
-                                                        : '6rem',
-                                            }}
                                         >
                                             {/*{@unreleased new table header cells with sort icon.}*/}
                                             <ListTableHeaders

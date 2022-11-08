@@ -65,6 +65,7 @@
     &.end {
         text-align: end;
     }
+
 }
 
 .tableContent {
@@ -144,14 +145,13 @@
     animation: appear 0.1s ease-in reverse;
 }
 
-.sortingIcon {
-    transform: translateX(-10px);
-}
-
 .id {
-    inline-size: 5em;
+    inline-size: 3.25rem;
 }
 
+.amount {
+    inline-size: 6rem;
+}
 
 @keyframes appear {
     0% {

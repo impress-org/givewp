@@ -1,5 +1,4 @@
 import {Interweave} from 'interweave';
-
 import './styles.scss';
 
 //@unreleased renders all SSR data from backend
