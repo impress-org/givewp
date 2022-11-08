@@ -1,5 +1,9 @@
 .givewp-fields {
     width: 100%;
+
+    label span.givewp-field-required {
+        color: #cb0000;
+    }
 }
 
 .givewp-groups-name {

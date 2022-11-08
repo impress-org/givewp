@@ -7,14 +7,18 @@
  * @return {*}
  */
 import {Section} from '@givewp/forms/types';
-import {getGroupFields} from './groups';
+import {reduceFields} from './groups';
 
 export default function getDefaultValuesFromSections(sections: Section[]) {
-    return sections.reduce((values, section) => {
-        const fields = getGroupFields(section);
+    return reduceFields(
+        sections,
+        (values, field) => {
+            if (field.defaultValue) {
+                values[field.name] = field.defaultValue;
+            }
 
-        fields.forEach((field) => field.defaultValue && (values[field.name] = field.defaultValue));
-
-        return values;
-    }, {});
+            return values;
+        },
+        {}
+    );
 }

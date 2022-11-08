@@ -84,6 +84,7 @@ class ConvertDonationFormBlocksToFieldsApi
         switch ($block->name) {
             case "custom-block-editor/donation-amount-levels":
                 return Amount::make('amount')
+                    ->label(__('Donation Amount', 'give'))
                     ->levels(...array_map('absint', $block->attributes['levels']))
                     ->allowCustomAmount()
                     ->defaultValue(50)
@@ -97,10 +98,10 @@ class ConvertDonationFormBlocksToFieldsApi
                     ->content($block->attributes['content']);
 
             case "custom-block-editor/email-field":
-                return Email::make('email')->emailTag('email');
+                return Email::make('email')->emailTag('email')->required();
 
             case "custom-block-editor/payment-gateways":
-                return PaymentGateways::make('gatewayId');
+                return PaymentGateways::make('gatewayId')->required();
 
             case "custom-block-editor/donation-summary":
                 return DonationSummary::make('donation-summary');
@@ -129,7 +130,8 @@ class ConvertDonationFormBlocksToFieldsApi
         return Name::make('name')->tap(function ($group) use ($block) {
             $group->getNodeByName('firstName')
                 ->label($block->attributes['firstNameLabel'])
-                ->placeholder($block->attributes['firstNamePlaceholder']);
+                ->placeholder($block->attributes['firstNamePlaceholder'])
+                ->required();
 
             $group->getNodeByName('lastName')
                 ->label($block->attributes['lastNameLabel'])

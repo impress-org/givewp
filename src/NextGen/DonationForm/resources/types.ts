@@ -28,9 +28,7 @@ export interface FormServerExports {
     gatewaySettings: {
         [key: string]: GatewaySettings; // key is the gateway ID
     };
-    form: {
-        nodes: Section[];
-    };
+    form: Form;
     attributes: object;
     donateUrl: string;
     successUrl: string;
@@ -86,23 +84,22 @@ export interface Gateway {
 export interface Template {
     id: string;
     fields?: {
-        amount?: ReactNode,
-        text?: ReactNode,
-        textarea?: ReactNode,
-        email?: ReactNode,
-        hidden?: ReactNode,
-    },
+        amount?: ReactNode;
+        text?: ReactNode;
+        textarea?: ReactNode;
+        email?: ReactNode;
+        hidden?: ReactNode;
+    };
     elements?: {
-        html?: ReactNode,
-    },
+        html?: ReactNode;
+    };
     groups?: {
-        name?: ReactNode,
-    },
+        name?: ReactNode;
+    };
     layouts?: {
-        section?: ReactNode,
-        form?: ReactNode,
-    },
-
+        section?: ReactNode;
+        form?: ReactNode;
+    };
 }
 
 export interface VisibilityCondition {
@@ -135,6 +132,31 @@ export interface Field extends Node {
 export interface Group extends Node {
     nodeType: 'group';
     nodes: Node[];
+
+    /**
+     * Recursively walk the group and its children for all nodes.
+     *
+     * @unreleased
+     */
+    walkNodes(callback: (node: Node) => void, filter?: (node: Node) => boolean): void;
+
+    /**
+     * Recursively map the group and its children for all nodes.
+     *
+     * @unreleased
+     */
+    mapNodes(callback: (node: Node) => void, filter?: (node: Node) => boolean): Node[];
+
+    /**
+     * Recursively walk the group and its children for all nodes and reduce to a single value.
+     *
+     * @unreleased
+     */
+    reduceNodes(
+        callback: (accumulator: any, node: Node) => any,
+        initialValue: any,
+        filter?: (node: Node) => boolean
+    ): any;
 }
 
 export interface Element extends Node {
@@ -144,6 +166,10 @@ export interface Element extends Node {
 export interface Section extends Group {
     label: string;
     description: string;
+}
+
+export interface Form extends Group {
+    nodes: Section[];
 }
 
 export function isField(node: Node): node is Field {
@@ -163,4 +189,3 @@ export interface SelectOption {
     value: string;
     disabled?: boolean;
 }
-

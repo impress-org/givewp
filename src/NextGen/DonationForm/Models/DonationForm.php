@@ -68,7 +68,7 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @param  array  $attributes
+     * @param array $attributes
      *
      * @return DonationForm
      * @throws Exception
@@ -121,7 +121,7 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @param  object  $object
+     * @param object $object
      */
     public static function fromQueryBuilderObject($object): DonationForm
     {

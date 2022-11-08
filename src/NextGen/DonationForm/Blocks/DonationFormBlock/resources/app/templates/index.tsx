@@ -16,6 +16,8 @@ import SelectField from './fields/Select';
 import classNames from 'classnames';
 import Gateways from './fields/Gateways';
 import Paragraph from './elements/Paragraph';
+import FieldLabel, {FieldLabelProps} from './layouts/FieldLabel';
+import FieldError, {FieldErrorProps} from './layouts/FieldError';
 
 export function NodeWrapper({
     type,
@@ -72,9 +74,12 @@ const defaultTemplate = {
     layouts: {
         section: SectionLayout,
         form: Form,
+        fieldLabel: FieldLabel,
+        fieldError: FieldError,
     },
 };
 
+// Retrieve the active template and apply any overrides to generate the final templates.
 const activeTemplate = window.givewp.template.get();
 
 const template = {
@@ -96,6 +101,7 @@ const template = {
     },
 };
 
+// The following functions are used to retrieve the various templates for the form.
 function getTemplate<NodeProps>(type: string, section: string, htmlTag?: string): FC<NodeProps> {
     const Node = template[section].hasOwnProperty(type)
         ? withWrapper(template[section][type], section, type, htmlTag)
@@ -131,6 +137,23 @@ export function getFormTemplate(): FC<FormProps> {
     return getTemplate<FormProps>('form', 'layouts');
 }
 
+export function getFieldLabelTemplate(): FC<FieldLabelProps> {
+    return getTemplate('fieldLabel', 'layouts');
+}
+
+export function getFieldErrorTemplate(): FC<FieldErrorProps> {
+    return getTemplate('fieldError', 'layouts');
+}
+
 function nodeIsFunctionalComponent(Node: unknown): Node is FC {
     return typeof Node === 'function';
 }
+
+// Mount the templates to the window object, so they can be accessed within the form by third parties.
+window.givewp.templates = {
+    getFieldLabel: getFieldLabelTemplate,
+    getFieldError: getFieldErrorTemplate,
+    getField: getFieldTemplate,
+    getElement: getElementTemplate,
+    getGroup: getGroupTemplate,
+};

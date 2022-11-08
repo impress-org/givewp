@@ -1,24 +1,23 @@
-import buildRegisterValidationOptions from "../utilities/buildRegisterValidationOptions";
-import {Group} from '@givewp/forms/types';
+import {Field, Group, isField} from '@givewp/forms/types';
 import {getGroupTemplate} from '../templates';
-import {useFormContext} from "react-hook-form";
-import {useMemo} from "react";
-import getGroupFields from "../utilities/getGroupFields";
+import {useFormContext, useFormState} from 'react-hook-form';
+import {useMemo} from 'react';
+import registerFieldAndBuildProps from '../utilities/registerFieldAndBuildProps';
 
-export default function GroupNode({node}: { node: Group }) {
+export default function GroupNode({node}: {node: Group}) {
     const {register} = useFormContext();
+    const {errors} = useFormState();
     const Group = useMemo(() => getGroupTemplate(node.type), [node.type]);
-    const fields = node.nodes.reduce(getGroupFields, []);
 
-    const inputProps = fields.reduce((inputProps, field) => {
-        inputProps[field.name] = register(
-            field.name,
-            buildRegisterValidationOptions(field.validationRules)
-        );
+    const fieldProps = node.reduceNodes(
+        (fieldProps, field: Field) => {
+            fieldProps[field.name] = registerFieldAndBuildProps(field, register, errors);
 
-        return inputProps;
-    }, {});
+            return fieldProps;
+        },
+        {},
+        isField
+    );
 
-    return <Group key={node.name} inputProps={inputProps} {...node} />;
+    return <Group key={node.name} fieldProps={fieldProps} {...node} />;
 }
-
