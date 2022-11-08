@@ -1,8 +1,8 @@
-import {__} from "@wordpress/i18n";
-import styles from "./TestLabel.module.scss";
-import cx from "classnames";
+import {__} from '@wordpress/i18n';
+import styles from './TestLabel.module.scss';
+import cx from 'classnames';
 
-export default function TestLabel ({className = '', ...rest}) {
+export default function TestLabel({className = '', ...rest}) {
     return (
         <div className={cx(styles.test, className)} {...rest}>
             {__('test', 'give')}

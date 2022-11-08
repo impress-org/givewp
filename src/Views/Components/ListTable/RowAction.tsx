@@ -9,20 +9,17 @@ export default function RowAction({
     hiddenText = '',
     disabled = false,
     highlight = false,
-    href = ''
+    href = '',
 }) {
-    if(href) {
+    if (href) {
         return (
-            <a
-                href={href}
-                className={cx(styles.action, {[styles.delete]: highlight }, className)}
-            >
+            <a href={href} className={cx(styles.action, {[styles.delete]: highlight}, className)}>
                 {displayText} {hiddenText && <span className="give-visually-hidden">{hiddenText}</span>}
             </a>
         );
     }
 
-    if(!onClick) {
+    if (!onClick) {
         return null;
     }
 
@@ -31,7 +28,7 @@ export default function RowAction({
             type="button"
             onClick={onClick}
             data-actionid={actionId}
-            className={cx(styles.action, {[styles.delete]: highlight }, className)}
+            className={cx(styles.action, {[styles.delete]: highlight}, className)}
             disabled={disabled}
         >
             {displayText} {hiddenText && <span className="give-visually-hidden">{hiddenText}</span>}
