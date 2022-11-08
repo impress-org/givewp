@@ -1,10 +1,10 @@
 import {__} from '@wordpress/i18n';
 import {ListTableApi, ListTablePage} from '@givewp/components';
-import {donationFormsColumns} from './DonationFormsColumns';
 import {DonationFormsRowActions} from './DonationFormsRowActions';
 import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import Select from '@givewp/components/ListTable/Select/Select';
+import {Interweave} from 'interweave';
 
 declare global {
     interface Window {
@@ -18,16 +18,6 @@ declare global {
 }
 
 const API = new ListTableApi(window.GiveDonationForms);
-
-//ToDo : Remove Function when GiveDonationForms support columns
-// Do not release : Testing Purposes only
-const table = {columns: donationFormsColumns};
-window.GiveDonationForms = {
-    ...window?.GiveDonationForms,
-    table,
-};
-console.log(window.GiveDonationForms);
-// End Test: ----------
 
 const donationStatus = [
     {
@@ -92,7 +82,9 @@ const donationFormsBulkActions: Array<BulkActionsConfig> = [
                 <p>Donation forms to be edited:</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((id, index) => (
-                        <li key={id}>{names[index]}</li>
+                        <li key={id}>
+                            <Interweave content={names[index]} />
+                        </li>
                     ))}
                 </ul>
                 <div className={styles.flexRow}>
@@ -130,7 +122,9 @@ const donationFormsBulkActions: Array<BulkActionsConfig> = [
                 <p>{__('Really delete the following donation forms?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((id, index) => (
-                        <li key={id}>{names[index]}</li>
+                        <li key={id}>
+                            <Interweave content={names[index]} />
+                        </li>
                     ))}
                 </ul>
             </div>
@@ -147,7 +141,9 @@ const donationFormsBulkActions: Array<BulkActionsConfig> = [
                 <p>{__('Really trash the following donation forms?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((id, index) => (
-                        <li key={id}>{names[index]}</li>
+                        <li key={id}>
+                            <Interweave content={names[index]} />
+                        </li>
                     ))}
                 </ul>
             </div>
