@@ -4,10 +4,9 @@ namespace Give\Donations\Endpoints;
 
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\ValueObjects\DonationMetaKeys;
-use Give\Framework\Database\DB;
 use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
 use Give\Framework\ListTable\ListTable;
-use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Framework\Models\ModelQueryBuilder;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -146,7 +145,6 @@ class ListDonations extends Endpoint
         $sortDirection = $this->request->get_param('sortDirection') ?: 'DESC';
 
         $query = give()->donations->prepareQuery();
-
         $query = $this->getWhereConditions($query);
 
         foreach ( $sortColumns as $sortColumn ) {
@@ -181,13 +179,14 @@ class ListDonations extends Endpoint
     }
 
     /**
+     * @unreleased Remove joins as it uses ModelQueryBuilder and change clauses to use attach_meta
      * @since 2.21.0
      *
-     * @param QueryBuilder $query
+     * @param ModelQueryBuilder $query
      *
-     * @return QueryBuilder
+     * @return ModelQueryBuilder
      */
-    private function getWhereConditions(QueryBuilder $query): QueryBuilder
+    private function getWhereConditions(ModelQueryBuilder $query): ModelQueryBuilder
     {
         $search = $this->request->get_param('search');
         $start = $this->request->get_param('start');
@@ -195,49 +194,33 @@ class ListDonations extends Endpoint
         $form = $this->request->get_param('form');
         $donor = $this->request->get_param('donor');
 
-        if ($form || $donor || ($search && !ctype_digit($search))) {
-            $query->leftJoin(
-                'give_donationmeta',
-                'id',
-                'metaTable.donation_id',
-                'metaTable'
-            );
-        }
-
         if ($search) {
             if (ctype_digit($search)) {
                 $query->where('id', $search);
             } else if (strpos($search, '@') !== false) {
                 $query
-                    ->where('metaTable.meta_key', DonationMetaKeys::EMAIL)
-                    ->whereLike('metaTable.meta_value', $search);
+                    ->whereLike('give_donationmeta_attach_meta_email.meta_value', $search);
             } else {
                 $query
-                    ->where('metaTable.meta_key', DonationMetaKeys::FIRST_NAME)
-                    ->whereLike('metaTable.meta_value', $search)
-                    ->orWhere('metaTable.meta_key', DonationMetaKeys::LAST_NAME)
-                    ->whereLike('metaTable.meta_value', $search);
+                    ->whereLike('give_donationmeta_attach_meta_firstName.meta_value', $search)
+                    ->orWhereLike('give_donationmeta_attach_meta_lastName.meta_value', $search);
             }
         }
 
         if ($donor) {
             if (ctype_digit($donor)) {
                 $query
-                    ->where('metaTable.meta_key', DonationMetaKeys::DONOR_ID)
-                    ->where('metaTable.meta_value', $donor);
+                    ->where('give_donationmeta_attach_meta_donorId.meta_value', $donor);
             } else {
                 $query
-                    ->where('metaTable.meta_key', DonationMetaKeys::FIRST_NAME)
-                    ->whereLike('metaTable.meta_value', $donor)
-                    ->orWhere('metaTable.meta_key', DonationMetaKeys::LAST_NAME)
-                    ->whereLike('metaTable.meta_value', $donor);
+                    ->whereLike('give_donationmeta_attach_meta_firstName.meta_value', $donor)
+                    ->orWhereLike('give_donationmeta_attach_meta_lastName.meta_value', $donor);
             }
         }
 
         if ($form) {
             $query
-                ->where('metaTable.meta_key', DonationMetaKeys::FORM_ID)
-                ->where('metaTable.meta_value', $form);
+                ->where('give_donationmeta_attach_meta_formId.meta_value', $form);
         }
 
         if ($start && $end) {
