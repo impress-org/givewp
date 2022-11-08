@@ -1,7 +1,8 @@
 import {Interweave} from 'interweave';
 import './styles.scss';
 
-const RenderRow = ({column, item}) => {
+//@unreleased renders all SSR data from backend
+const InterweaveSSR = ({column, item}) => {
     let value = item?.[column.id];
     if (value === undefined) {
         value = null;
@@ -17,4 +18,4 @@ const RenderRow = ({column, item}) => {
 
     return <Interweave allowAttributes={true} attributes={{className: 'interweave'}} content={value} />;
 };
-export default RenderRow;
+export default InterweaveSSR;

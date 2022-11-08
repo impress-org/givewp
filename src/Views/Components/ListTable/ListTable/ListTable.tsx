@@ -158,9 +158,9 @@ export const ListTable = ({
                                             style={{
                                                 inlineSize:
                                                     column.id === 'id'
-                                                        ? '3.75rem'
+                                                        ? '3rem'
                                                         : column.id === 'amount'
-                                                        ? '4.25rem'
+                                                        ? '4.5rem'
                                                         : '6rem',
                                             }}
                                         >

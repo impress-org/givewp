@@ -4,7 +4,7 @@ import cx from 'classnames';
 import {useEffect, useState} from 'react';
 import TableCell from '../TableCell/TableCell';
 import {BulkActionCheckbox} from '@givewp/components/ListTable/BulkActions/BulkActionCheckbox';
-import RenderRow from '@givewp/components/ListTable/RenderRow';
+import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
 
 //@unreleased determines if row should display actions based on column.id
 const displayRowActions = (column) => {
@@ -94,7 +94,7 @@ export default function ListTableRows({
                             })}
                             heading={displayRowActions(column)}
                         >
-                            <RenderRow column={column} item={item} />
+                            <InterweaveSSR column={column} item={item} />
                             {!isLoading && rowActions && (
                                 <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
                                     {displayRowActions(column) &&
