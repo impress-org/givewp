@@ -7,6 +7,7 @@ import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePag
 import {IdBadge} from '@givewp/components/ListTable/TableCell/TableCell';
 import {BulkActionsConfig, FilterConfig, ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
 import {useContext} from 'react';
+import {Interweave} from 'interweave';
 
 declare global {
     interface Window {
@@ -95,7 +96,8 @@ export default function () {
                     <ul role="document" tabIndex={0}>
                         {selected.map((donationId, index) => (
                             <li key={donationId}>
-                                <IdBadge id={donationId} /> <span>{sprintf(__('from %s', 'give'), names[index])}</span>
+                                <IdBadge id={donationId} />{' '}
+                                <span>{sprintf(__('from %s', 'give'), <Interweave content={names[index]} />)}</span>
                             </li>
                         ))}
                     </ul>
@@ -134,8 +136,8 @@ export default function () {
                             <ul role="document" tabIndex={0}>
                                 {selected.map((donationId, index) => (
                                     <li key={donationId}>
-                                        <IdBadge id={donationId} />{' '}
-                                        <span>{sprintf(__('from %s', 'give'), names[index])}</span>
+                                        <IdBadge id={donationId} /> <span>{__('from', 'give')}</span>
+                                        <Interweave content={names[index]} />
                                     </li>
                                 ))}
                             </ul>
