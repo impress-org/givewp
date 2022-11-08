@@ -7,6 +7,8 @@ namespace Give\Framework\ListTable;
 use Give\Framework\Support\Contracts\Arrayable;
 
 /**
+ * @unreleased
+ *
  * @template M of Give\Framework\Models\Model
  */
 abstract class ModelColumn implements Arrayable
@@ -26,14 +28,14 @@ abstract class ModelColumn implements Arrayable
      *
      * @unreleased
      */
-    abstract public static function getId();
+    abstract public static function getId(): string;
 
     /**
      * Returns the label for that column.
      *
      * @unreleased
      */
-    abstract public function getLabel();
+    abstract public function getLabel(): string;
 
     /**
      * Returns the value to be displayed in the specific cell for that column and row.
@@ -41,10 +43,14 @@ abstract class ModelColumn implements Arrayable
      * @unreleased
      *
      * @param M $model
+     *
+     * @return int|string
      */
     abstract public function getCellValue($model);
 
     /**
+     * @unreleased
+     *
      * @return bool
      */
     public function isSortable(): bool
@@ -53,6 +59,8 @@ abstract class ModelColumn implements Arrayable
     }
 
     /**
+     * @unreleased
+     *
      * @return array
      */
     public function getSortColumn(): array
@@ -65,6 +73,8 @@ abstract class ModelColumn implements Arrayable
     }
 
     /**
+     * @unreleased
+     *
      * @param bool $visible
      *
      * @return void
@@ -75,6 +85,8 @@ abstract class ModelColumn implements Arrayable
     }
 
     /**
+     * @unreleased
+     *
      * @return bool
      */
     public function isVisible(): bool
@@ -84,6 +96,8 @@ abstract class ModelColumn implements Arrayable
 
     /**
      * @unreleased
+     *
+     * @return array
      */
     public function toArray(): array
     {

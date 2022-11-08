@@ -5,6 +5,7 @@ namespace Give\Donations\Endpoints;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
+use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
 use Give\Framework\ListTable\ListTable;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_REST_Request;
@@ -103,10 +104,13 @@ class ListDonations extends Endpoint
     }
 
     /**
+     * @unreleased Change this to use the new ListTable class
+     * @since      2.20.0
+     *
      * @param WP_REST_Request $request
-     * @since 2.20.0
      *
      * @return WP_REST_Response
+     * @throws ColumnIdCollisionException
      */
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
@@ -129,6 +133,7 @@ class ListDonations extends Endpoint
     }
 
     /**
+     * @unreleased Replace Query Builder with Donations model
      * @since 2.21.0
      *
      * @return array
@@ -176,8 +181,9 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @param QueryBuilder $query
      * @since 2.21.0
+     *
+     * @param QueryBuilder $query
      *
      * @return QueryBuilder
      */

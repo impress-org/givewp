@@ -18,6 +18,8 @@ use Give\Framework\ListTable\ListTable;
 class DonationsListTable extends ListTable
 {
     /**
+     * @unreleased
+     *
      * @inheritDoc
      */
     public function id(): string
@@ -26,6 +28,8 @@ class DonationsListTable extends ListTable
     }
 
     /**
+     * @unreleased
+     *
      * @inheritDoc
      */
     public function getColumns(): array
@@ -43,6 +47,8 @@ class DonationsListTable extends ListTable
     }
 
     /**
+     * @unreleased
+     *
      * @inheritDoc
      */
     public function getDefaultVisibleColumns(): array

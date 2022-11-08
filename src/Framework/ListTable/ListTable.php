@@ -3,6 +3,7 @@
 namespace Give\Framework\ListTable;
 
 use Give\Framework\ListTable\Concerns\Columns;
+use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
 use Give\Framework\Support\Contracts\Arrayable;
 
 /**
@@ -24,7 +25,10 @@ abstract class ListTable implements Arrayable
 
     /**
      * @unreleased
-     * @throws Exceptions\ColumnIdCollisionException
+     *
+     * @param string $locale
+     *
+     * @throws ColumnIdCollisionException
      */
     public function __construct(string $locale = '')
     {
@@ -43,6 +47,7 @@ abstract class ListTable implements Arrayable
      * Define table columns
      *
      * @unreleased
+     *
      * @return ModelColumn[]
      */
     abstract protected function getColumns(): array;
@@ -51,6 +56,7 @@ abstract class ListTable implements Arrayable
      * Define default visible table columns
      *
      * @unreleased
+     *
      * @return string[]
      */
     abstract protected function getDefaultVisibleColumns(): array;
@@ -59,6 +65,8 @@ abstract class ListTable implements Arrayable
      * Get table definitions
      *
      * @unreleased
+     *
+     * @return array
      */
     public function toArray(): array
     {
@@ -72,6 +80,8 @@ abstract class ListTable implements Arrayable
      * Set table items
      *
      * @unreleased
+     *
+     * @param array $items
      */
     public function items(array $items)
     {
@@ -94,6 +104,8 @@ abstract class ListTable implements Arrayable
 
     /**
      * @unreleased
+     *
+     * @return array
      */
     public function getItems(): array
     {

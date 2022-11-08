@@ -8,6 +8,8 @@ use Give\Donations\Models\Donation;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
+ * @unreleased
+ *
  * @extends ModelColumn<Donation>
  */
 class GatewayColumn extends ModelColumn
@@ -16,6 +18,8 @@ class GatewayColumn extends ModelColumn
     protected $sortColumn = 'gateway';
 
     /**
+     * @unreleased
+     *
      * @inheritDoc
      */
     public static function getId(): string
@@ -24,6 +28,8 @@ class GatewayColumn extends ModelColumn
     }
 
     /**
+     * @unreleased
+     *
      * @inheritDoc
      */
     public function getLabel(): string
@@ -32,6 +38,8 @@ class GatewayColumn extends ModelColumn
     }
 
     /**
+     * @unreleased
+     *
      * @inheritDoc
      *
      * @param Donation $model

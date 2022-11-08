@@ -20,6 +20,10 @@ trait Columns
      * Add List Table column
      *
      * @unreleased
+     *
+     * @param ModelColumn $column
+     *
+     * @return void
      * @throws ColumnIdCollisionException
      */
     public function addColumn(ModelColumn $column)
@@ -38,6 +42,10 @@ trait Columns
      * Add List Table columns
      *
      * @unreleased
+     *
+     * @param ModelColumn[] ...$columns
+     *
+     * @return void
      * @throws ColumnIdCollisionException
      */
     public function addColumns(...$columns)
@@ -51,6 +59,8 @@ trait Columns
      * Remove List Table column
      *
      * @unreleased
+     *
+     * @return void
      * @throws ReferenceColumnNotFoundException
      */
     public function removeColumn(string $columnId)
@@ -64,6 +74,7 @@ trait Columns
 
     /**
      * @unreleased
+     *
      * @return ModelColumn[]
      */
     public function getColumns(): array
@@ -73,6 +84,8 @@ trait Columns
 
     /**
      * @unreleased
+     *
+     * @return array
      */
     public function getColumnsArray(): array
     {
@@ -85,6 +98,8 @@ trait Columns
      * Add column before specific column
      *
      * @unreleased
+     *
+     * @return void
      * @throws ReferenceColumnNotFoundException
      */
     public function addColumnBefore(string $columnId, ModelColumn $column)
@@ -101,6 +116,8 @@ trait Columns
      * Add column after specific column
      *
      * @unreleased
+     *
+     * @return void
      * @throws ReferenceColumnNotFoundException
      */
     public function addColumnAfter(string $columnId, ModelColumn $column)
@@ -117,7 +134,9 @@ trait Columns
      * Get registered column by column id
      *
      * @unreleased
+     *
      * @param string $columnId
+     *
      * @return ModelColumn|null
      */
     public function getColumnById(string $columnId)
@@ -129,6 +148,7 @@ trait Columns
      * Get column position index
      *
      * @unreleased
+     *
      * @return int|false
      */
     public function getColumnIndexById(string $columnId)
@@ -138,6 +158,8 @@ trait Columns
 
     /**
      * @unreleased
+     *
+     * @return void
      */
     protected function insertAtIndex(int $index, ModelColumn $column)
     {
