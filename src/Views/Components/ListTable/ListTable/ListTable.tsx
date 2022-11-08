@@ -157,7 +157,6 @@ export const ListTable = ({
                                             data-column={column.id}
                                             key={column.id}
                                         >
-                                            {/*{@unreleased new table header cells with sort icon.}*/}
                                             <ListTableHeaders
                                                 column={column}
                                                 sortField={sortField}
