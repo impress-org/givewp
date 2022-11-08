@@ -1,5 +1,6 @@
 import {Interweave} from 'interweave';
 import './styles.scss';
+import {IdBadge} from '@givewp/components/ListTable/TableCell/TableCell';
 
 //@unreleased renders all SSR data from backend
 const InterweaveSSR = ({column, item}) => {
@@ -9,7 +10,7 @@ const InterweaveSSR = ({column, item}) => {
     }
 
     if (!isNaN(value)) {
-        return <div className={'idBadge'}>{value}</div>;
+        return <IdBadge id={value} />;
     }
 
     if (value === '' || value === null) {
