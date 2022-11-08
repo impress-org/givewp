@@ -119,7 +119,13 @@
         height: safe-rem(4);
         width: 100%;
 
-        & > .email {
+        & > a {
+            color: #0878B0;
+            font-size: 1.125rem;
+            font-weight: 700;
+        }
+
+        &__email {
             min-width: 0;
             overflow: hidden;
         }

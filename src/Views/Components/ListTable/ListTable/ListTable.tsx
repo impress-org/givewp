@@ -151,8 +151,7 @@ export const ListTable = ({
                                                     : 'none'
                                             }
                                             className={cx(styles.tableColumnHeader, {
-                                                [styles.id]: column.id === 'id',
-                                                [styles['amount']]: column.id === 'amount',
+                                                [styles[column.id]]: true,
                                             })}
                                             data-column={column.id}
                                             key={column.id}
