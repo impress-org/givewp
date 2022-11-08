@@ -79,7 +79,7 @@ export default function ListTableRows({
             })}
         >
             <TableCell>
-                <BulkActionCheckbox id={item.id} name={item?.label} singleName={singleName} />
+                <BulkActionCheckbox id={item.id} name={item?.donor} singleName={singleName} />
             </TableCell>
             <>
                 {columns.map((column) => {
