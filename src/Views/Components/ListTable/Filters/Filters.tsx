@@ -1,5 +1,5 @@
 import {FormSelect} from '@givewp/components/ListTable/FormSelect/FormSelect';
-import Select from '@givewp/components/ListTable/Select/Select';
+import Select from '@givewp/components/ListTable/Select';
 import Input from '@givewp/components/ListTable/Input/Input';
 
 export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {

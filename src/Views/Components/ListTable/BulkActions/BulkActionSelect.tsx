@@ -1,7 +1,7 @@
 import pageStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import styles from './BulkActionSelect.module.scss';
 import {__} from '@wordpress/i18n';
-import Select from '@givewp/components/ListTable/Select/Select';
+import Select from '@givewp/components/ListTable/Select';
 import {useState} from 'react';
 
 let selected = '';

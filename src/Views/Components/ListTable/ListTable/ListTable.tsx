@@ -33,7 +33,6 @@ export interface ListTableColumn {
 }
 
 export const ListTable = ({
-    columns,
     singleName = __('item', 'give'),
     pluralName = __('items', 'give'),
     title,
