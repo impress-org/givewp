@@ -43,7 +43,7 @@ trait Columns
      *
      * @unreleased
      *
-     * @param ModelColumn[] ...$columns
+     * @param ModelColumn ...$columns
      *
      * @return void
      * @throws ColumnIdCollisionException
