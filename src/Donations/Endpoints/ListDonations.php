@@ -114,7 +114,7 @@ class ListDonations extends Endpoint
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
         $this->request = $request;
-        $this->listTable = new DonationsListTable($this->request->get_param('locale'));
+        $this->listTable = give(DonationsListTable::class);
 
         $donations = $this->getDonations();
         $donationsCount = $this->getTotalDonationsCount();
