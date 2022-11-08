@@ -14,11 +14,6 @@ abstract class ListTable implements Arrayable
     use Columns;
 
     /**
-     * @var string
-     */
-    protected $locale;
-
-    /**
      * @var array
      */
     private $items = [];
@@ -26,13 +21,10 @@ abstract class ListTable implements Arrayable
     /**
      * @unreleased
      *
-     * @param string $locale
-     *
      * @throws ColumnIdCollisionException
      */
-    public function __construct(string $locale = '')
+    public function __construct()
     {
-        $this->locale = $locale;
         $this->addColumns(...$this->getColumns());
     }
 
@@ -81,9 +73,12 @@ abstract class ListTable implements Arrayable
      *
      * @unreleased
      *
-     * @param array $items
+     * @param array  $items
+     * @param string $locale
+     *
+     * @return void
      */
-    public function items(array $items)
+    public function items(array $items, string $locale = '')
     {
         $data = [];
 
@@ -93,7 +88,7 @@ abstract class ListTable implements Arrayable
             $row = [];
 
             foreach ($columns as $column) {
-                $row[$column::getId()] = $column->getCellValue($model, $this->locale);
+                $row[$column::getId()] = $column->getCellValue($model, $locale);
             }
 
             $data[] = $row;

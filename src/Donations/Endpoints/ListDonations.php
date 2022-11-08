@@ -120,7 +120,7 @@ class ListDonations extends Endpoint
         $donationsCount = $this->getTotalDonationsCount();
         $totalPages = (int)ceil($donationsCount / $this->request->get_param('perPage'));
 
-        $this->listTable->items($donations);
+        $this->listTable->items($donations, $this->request->get_param('locale'));
 
         return new WP_REST_Response(
             [
