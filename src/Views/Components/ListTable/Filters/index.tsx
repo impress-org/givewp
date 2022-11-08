@@ -1,6 +1,6 @@
-import {FormSelect} from '@givewp/components/ListTable/FormSelect/FormSelect';
+import {FormSelect} from '@givewp/components/ListTable/FormSelect';
 import Select from '@givewp/components/ListTable/Select';
-import Input from '@givewp/components/ListTable/Input/Input';
+import Input from '@givewp/components/ListTable/Input';
 
 export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
     switch (filter.type) {

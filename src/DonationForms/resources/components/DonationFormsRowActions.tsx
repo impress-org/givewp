@@ -1,6 +1,6 @@
 import {__, sprintf} from '@wordpress/i18n';
 import {useSWRConfig} from 'swr';
-import RowAction from '@givewp/components/ListTable/RowAction/RowAction';
+import RowAction from '@givewp/components/ListTable/RowAction';
 import ListTableApi from '@givewp/components/ListTable/api';
 import {useContext} from 'react';
 import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';

@@ -5,7 +5,7 @@ import styles from './ListTable.module.scss';
 import {Spinner} from '../../index';
 import {BulkActionCheckboxAll} from '@givewp/components/ListTable/BulkActions/BulkActionCheckbox';
 import ListTableHeaders from '@givewp/components/ListTable/ListTableHeaders';
-import ListTableRows from '@givewp/components/ListTable/ListTableRows/ListTableRows';
+import ListTableRows from '@givewp/components/ListTable/ListTableRows';
 
 export interface ListTableProps {
     //required

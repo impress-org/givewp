@@ -1,6 +1,6 @@
 import styles from './FormSelect.module.scss';
 import cx from 'classnames';
-import Input from '@givewp/components/ListTable/Input/Input';
+import Input from '@givewp/components/ListTable/Input';
 
 export const FormSelect = ({options, name, placeholder = '', ariaLabel = '', onChange, ...rest}) => {
     return (
