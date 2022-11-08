@@ -27,7 +27,12 @@ class ServiceProvider implements ServiceProviderInterface
     {
         give()->singleton('donations', DonationRepository::class);
         give()->singleton('donationNotes', DonationNotesRepository::class);
-        give()->singleton(DonationsListTable::class);
+        give()->singleton(DonationsListTable::class, function() {
+            $listTable = new DonationsListTable();
+            do_action('give_donations_list_table', $listTable);
+
+            return $listTable;
+        });
     }
 
     /**
