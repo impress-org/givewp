@@ -2,6 +2,7 @@
 
 namespace Give\Donations;
 
+use Give\Donations\ListTable\DonationsListTable;
 use Give\Helpers\EnqueueScript;
 use WP_REST_Request;
 
@@ -56,6 +57,7 @@ class DonationsAdminPage
     }
 
     /**
+     * @unreleased Add ListTable columns
      * @since 2.20.0
      * @since 2.21.2 Localized the admin URL as a base for URL concatenation.
      */
@@ -66,6 +68,7 @@ class DonationsAdminPage
             'apiNonce' => $this->apiNonce,
             'preload' => $this->preloadDonations(),
             'forms' => $this->getForms(),
+            'table' => give(DonationsListTable::class)->toArray(),
             'adminUrl' => $this->adminUrl,
         ];
 

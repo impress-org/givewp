@@ -335,8 +335,8 @@ class SubscriptionRepository
                 [DonationMetaKeys::SUBSCRIPTION_ID, 'subscriptionId'],
                 [DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION, 'initialDonationId']
             )
-            ->where('give_donationmeta_attach_meta_0.meta_value', $subscriptionId)
-            ->where('give_donationmeta_attach_meta_1.meta_value', 1)
+            ->where('give_donationmeta_attach_meta_subscriptionId.meta_value', $subscriptionId)
+            ->where('give_donationmeta_attach_meta_initialDonationId.meta_value', 1)
             ->get();
 
         if (!$query) {
