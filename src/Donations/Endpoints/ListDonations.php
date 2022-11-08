@@ -164,15 +164,14 @@ class ListDonations extends Endpoint
     }
 
     /**
+     * @unreleased Replace Query Builder with Donations model
      * @since 2.21.0
      *
      * @return int
      */
     public function getTotalDonationsCount(): int
     {
-        $query = DB::table('posts')
-            ->where('post_type', 'give_payment');
-
+        $query = give()->donations->prepareQuery();
         $query = $this->getWhereConditions($query);
 
         return $query->count();
