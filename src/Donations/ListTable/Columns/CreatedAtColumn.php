@@ -8,6 +8,8 @@ use Give\Donations\Models\Donation;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
+ * @unreleased
+ *
  * @extends ModelColumn<Donation>
  */
 class CreatedAtColumn extends ModelColumn
@@ -16,6 +18,8 @@ class CreatedAtColumn extends ModelColumn
     protected $sortColumn = 'createdAt';
 
     /**
+     * @unreleased
+     *
      * @inheritDoc
      */
     public static function getId(): string
@@ -24,6 +28,8 @@ class CreatedAtColumn extends ModelColumn
     }
 
     /**
+     * @unreleased
+     *
      * @inheritDoc
      */
     public function getLabel(): string
@@ -32,12 +38,16 @@ class CreatedAtColumn extends ModelColumn
     }
 
     /**
+     * @unreleased
+     *
      * @inheritDoc
      *
      * @param Donation $model
      */
     public function getCellValue($model): string
     {
-        return wp_date(_x('m/d/Y \a\t g:i a', 'datetime format', 'give'), $model->createdAt->getTimestamp());
+        $format = _x('m/d/Y \a\t g:i a', 'human-readable datetime format', 'give');
+
+        return $model->createdAt->format($format);
     }
 }

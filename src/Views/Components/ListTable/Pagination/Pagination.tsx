@@ -16,17 +16,18 @@ const Pagination = ({currentPage, totalPages, totalItems = -1, disabled, setPage
 
     return (
         <nav aria-label={sprintf(__('%s table', 'give'), pluralName)} className={styles.container}>
-            {totalItems >= 1 &&
+            {totalItems >= 1 && (
                 <span>
-                    {totalItems.toString() + " "}{totalItems == 1 ?  singleName : pluralName}
+                    {totalItems.toString() + ' '}
+                    {totalItems == 1 ? singleName : pluralName}
                 </span>
-            }
-            {1 < totalPages &&
+            )}
+            {1 < totalPages && (
                 <>
                     <button
                         className={cx(styles.navDirection, styles.navElement)}
                         aria-disabled={previousPage <= 1}
-                        aria-label={(__('first page'))}
+                        aria-label={__('first page')}
                         onClick={(e) => {
                             if (e.currentTarget.getAttribute('aria-disabled') === 'false') {
                                 setPage(1);
@@ -38,7 +39,7 @@ const Pagination = ({currentPage, totalPages, totalItems = -1, disabled, setPage
                     <button
                         className={cx(styles.navDirection, styles.navElement)}
                         aria-disabled={previousPage <= 0}
-                        aria-label={(__('previous page'))}
+                        aria-label={__('previous page')}
                         onClick={(e) => {
                             if (e.currentTarget.getAttribute('aria-disabled') === 'false') {
                                 setPage(parseInt(currentPage) - 1);
@@ -51,16 +52,22 @@ const Pagination = ({currentPage, totalPages, totalItems = -1, disabled, setPage
                         <label htmlFor={styles.currentPage} className={styles.visuallyHidden}>
                             {__('Current Page', 'give')}
                         </label>
-                        <input className={styles.navElement} id={styles.currentPage} name={'currentPageSelector'}
-                               type="number" min={1} max={totalPages} value={pageInput}
-                               onChange={(e) => {
-                                   const cleanValue = parseInt(e.target.value.replace(/[^0-9]/, ''));
-                                   const page = Number(cleanValue);
-                                   setPageInput(cleanValue);
-                                   if (totalPages >= page && page > 0) {
-                                       setPage(page);
-                                   }
-                               }}
+                        <input
+                            className={styles.navElement}
+                            id={styles.currentPage}
+                            name={'currentPageSelector'}
+                            type="number"
+                            min={1}
+                            max={totalPages}
+                            value={pageInput}
+                            onChange={(e) => {
+                                const cleanValue = parseInt(e.target.value.replace(/[^0-9]/, ''));
+                                const page = Number(cleanValue);
+                                setPageInput(cleanValue);
+                                if (totalPages >= page && page > 0) {
+                                    setPage(page);
+                                }
+                            }}
                         />
                         <span>
                             {' '}
@@ -70,7 +77,7 @@ const Pagination = ({currentPage, totalPages, totalItems = -1, disabled, setPage
                     <button
                         className={cx(styles.navDirection, styles.navElement)}
                         aria-disabled={nextPage > totalPages}
-                        aria-label={(__('next page'))}
+                        aria-label={__('next page')}
                         onClick={(e) => {
                             if (e.currentTarget.getAttribute('aria-disabled') === 'false') {
                                 setPage(parseInt(currentPage) + 1);
@@ -82,7 +89,7 @@ const Pagination = ({currentPage, totalPages, totalItems = -1, disabled, setPage
                     <button
                         className={cx(styles.navDirection, styles.navElement)}
                         aria-disabled={nextPage > totalPages - 1}
-                        aria-label={(__('final page'))}
+                        aria-label={__('final page')}
                         onClick={(e) => {
                             if (e.currentTarget.getAttribute('aria-disabled') === 'false') {
                                 setPage(totalPages);
@@ -92,7 +99,7 @@ const Pagination = ({currentPage, totalPages, totalItems = -1, disabled, setPage
                         <span aria-hidden={true}>»</span>
                     </button>
                 </>
-            }
+            )}
         </nav>
     );
 };

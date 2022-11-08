@@ -8,12 +8,16 @@ use Give\Donations\Models\Donation;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
+ * @unreleased
+ *
  * @extends ModelColumn<Donation>
  */
 class AmountColumn extends ModelColumn
 {
 
     /**
+     * @unreleased
+     *
      * @inheritDoc
      */
     public static function getId(): string
@@ -22,6 +26,8 @@ class AmountColumn extends ModelColumn
     }
 
     /**
+     * @unreleased
+     *
      * @inheritDoc
      */
     public function getLabel(): string
@@ -30,11 +36,13 @@ class AmountColumn extends ModelColumn
     }
 
     /**
+     * @unreleased
+     *
      * @inheritDoc
      *
      * @param Donation $model
      */
-    public function getCellValue($model, $locale = 'asdsdfsd'): string
+    public function getCellValue($model, $locale = ''): string
     {
         return sprintf(
             '<div class="amount"><span>%s</span></div>',

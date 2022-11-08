@@ -3,6 +3,7 @@
 namespace Give\Framework\ListTable;
 
 use Give\Framework\ListTable\Concerns\Columns;
+use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
 use Give\Framework\Support\Contracts\Arrayable;
 
 /**
@@ -13,22 +14,17 @@ abstract class ListTable implements Arrayable
     use Columns;
 
     /**
-     * @var string
-     */
-    protected $locale;
-
-    /**
      * @var array
      */
     private $items = [];
 
     /**
      * @unreleased
-     * @throws Exceptions\ColumnIdCollisionException
+     *
+     * @throws ColumnIdCollisionException
      */
-    public function __construct(string $locale = '')
+    public function __construct()
     {
-        $this->locale = $locale;
         $this->addColumns(...$this->getColumns());
     }
 
@@ -43,22 +39,26 @@ abstract class ListTable implements Arrayable
      * Define table columns
      *
      * @unreleased
+     *
      * @return ModelColumn[]
      */
     abstract protected function getColumns(): array;
 
     /**
-     * Define visible table columns
+     * Define default visible table columns
      *
      * @unreleased
+     *
      * @return string[]
      */
-    abstract protected function getVisibleColumns(): array;
+    abstract protected function getDefaultVisibleColumns(): array;
 
     /**
      * Get table definitions
      *
      * @unreleased
+     *
+     * @return array
      */
     public function toArray(): array
     {
@@ -72,8 +72,13 @@ abstract class ListTable implements Arrayable
      * Set table items
      *
      * @unreleased
+     *
+     * @param array  $items
+     * @param string $locale
+     *
+     * @return void
      */
-    public function items(array $items)
+    public function items(array $items, string $locale = '')
     {
         $data = [];
 
@@ -83,7 +88,7 @@ abstract class ListTable implements Arrayable
             $row = [];
 
             foreach ($columns as $column) {
-                $row[$column::getId()] = $column->getCellValue($model, $this->locale);
+                $row[$column::getId()] = $column->getCellValue($model, $locale);
             }
 
             $data[] = $row;
@@ -94,6 +99,8 @@ abstract class ListTable implements Arrayable
 
     /**
      * @unreleased
+     *
+     * @return array
      */
     public function getItems(): array
     {

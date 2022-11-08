@@ -1,7 +1,6 @@
 import {useEffect, useRef, useState} from 'react';
 import {__, _n, sprintf} from '@wordpress/i18n';
 import cx from 'classnames';
-
 import styles from './ListTable.module.scss';
 import {Spinner} from '../../index';
 import {BulkActionCheckboxAll} from '@givewp/components/ListTable/BulkActions/BulkActionCheckbox';
@@ -34,6 +33,7 @@ export interface ListTableColumn {
 }
 
 export const ListTable = ({
+    columns,
     singleName = __('item', 'give'),
     pluralName = __('items', 'give'),
     title,
@@ -51,12 +51,10 @@ export const ListTable = ({
         errors: [],
         successes: [],
     });
-
     const [errorOverlay, setErrorOverlay] = useState<string | boolean>(false);
     const [initialLoad, setInitialLoad] = useState<boolean>(true);
     const [loadingOverlay, setLoadingOverlay] = useState<string | boolean>(false);
     const [overlayWidth, setOverlayWidth] = useState(0);
-
     const tableRef = useRef<null | HTMLTableElement>();
     const isEmpty = !error && data?.items.length === 0;
     const {columns} = apiSettings.table;

@@ -41,7 +41,6 @@ class TestDonation extends TestCase
             'formId' => 1,
             'levelId' => 'custom',
             'anonymous' => true,
-            'startsSubscription' => false,
             'company' => 'GiveWP'
         ]);
 

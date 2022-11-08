@@ -2,9 +2,7 @@ import {createContext, useRef, useState} from 'react';
 import {__} from '@wordpress/i18n';
 import {A11yDialog} from 'react-a11y-dialog';
 import A11yDialogInstance from 'a11y-dialog';
-
 import {GiveIcon} from '@givewp/components';
-
 import {ListTable} from '../ListTable/ListTable';
 import Pagination from '../Pagination/Pagination';
 import {Filter, getInitialFilterState} from '../Filters/Filters';

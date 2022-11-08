@@ -8,11 +8,15 @@ use Give\Donations\Models\Donation;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
+ * @unreleased
+ *
  * @extends ModelColumn<Donation>
  */
 class PaymentTypeColumn extends ModelColumn
 {
     /**
+     * @unreleased
+     *
      * @inheritDoc
      */
     public static function getId(): string
@@ -21,6 +25,8 @@ class PaymentTypeColumn extends ModelColumn
     }
 
     /**
+     * @unreleased
+     *
      * @inheritDoc
      */
     public function getLabel(): string
@@ -29,6 +35,8 @@ class PaymentTypeColumn extends ModelColumn
     }
 
     /**
+     * @unreleased
+     *
      * @inheritDoc
      *
      * @param Donation $model

@@ -230,7 +230,7 @@
         gap: 0.5rem;
     }
 
-    & li+li {
+    & li + li {
         border-top: 1px solid rgba(196, 196, 196);
         padding-top: 0.75rem;
     }
