@@ -1,19 +1,19 @@
 <?php
 
-namespace Give\NextGen\DonationForm\FormTemplates\ClassicFormTemplate;
+namespace Give\NextGen\DonationForm\FormTemplates\DeveloperFormTemplate;
 
 use Give\NextGen\Framework\FormTemplates\FormTemplate;
 
 /**
  * @unreleased
  */
-class ClassicFormTemplate extends FormTemplate {
+class DeveloperFormTemplate extends FormTemplate {
     /**
      * @unreleased
      */
      public static function id(): string
     {
-        return 'classic';
+        return 'developer';
     }
 
     /**
@@ -21,7 +21,7 @@ class ClassicFormTemplate extends FormTemplate {
      */
     public static function name(): string
     {
-        return __('Classic Template', 'give');
+        return __('Developer Template', 'give');
     }
 
     /**
@@ -29,6 +29,6 @@ class ClassicFormTemplate extends FormTemplate {
      */
     public function css(): string
     {
-        return GIVE_NEXT_GEN_URL . 'build/classicTemplateCss.css';
+        return GIVE_NEXT_GEN_URL . 'build/developerTemplateCss.css';
     }
 }

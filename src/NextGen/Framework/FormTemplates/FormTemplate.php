@@ -25,26 +25,6 @@ abstract class FormTemplate implements FormTemplateInterface {
     abstract public static function name(): string;
 
     /**
-     * Returns the unique identifier of the template
-     *
-     * @unreleased
-     */
-    public function getId(): string
-    {
-        return static::id();
-    }
-
-    /**
-     * Returns the human-readable name of the template
-     *
-     * @unreleased
-     */
-    public function getName(): string
-    {
-        return static::name();
-    }
-
-    /**
      * Full URL of the stylesheet, or path of the stylesheet relative to the WordPress root directory.
      *
      * @unreleased

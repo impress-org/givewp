@@ -1,0 +1,89 @@
+.givewp-fields-amount {
+    display: grid;
+    row-gap: clamp(1.5rem, 0.679487rem + 2.5641vw, 2rem);
+
+    &__input {
+        inline-size: 100%;
+        padding-inline: 0.45em;
+        background-color: rgb(255, 255, 255);
+        text-align: left;
+        font-family: inherit;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1;
+        color: rgb(51, 51, 51);
+        outline: 0;
+        border: 0;
+        width: 100%;
+
+        &--container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-width: 0.078rem;
+            border-style: solid;
+            border-color: rgb(102, 102, 102);
+            border-radius: 0.25rem;
+
+            &.invalid {
+                border-color: red;
+            }
+        }
+
+        &--currency-symbol {
+            display: block;
+            padding: 1rem 1.5rem;
+            color: rgb(85, 85, 85);
+            font-size: 1.375rem;
+            font-weight: 500;
+        }
+    }
+
+    &__levels--container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(clamp(6.625rem, 0.471154rem + 19.2308vw, 10.375rem), 1fr));
+        grid-auto-rows: 1fr;
+        gap: clamp(0.3125rem, -2.2516rem + 8.01282vw, 1.875rem);
+        inline-size: 100%;
+        list-style: none;
+    }
+
+    &__level {
+        list-style: none;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 0.125rem solid var(--give-primary-color);
+        border-radius: 0.5rem;
+        //background-color: var(--give-primary-color);
+        //color: rgb(255, 255, 255);
+        text-align: center;
+        font-family: inherit;
+        font-weight: normal;
+        line-height: 1.2;
+        block-size: 100%;
+        font-size: 1em;
+        padding: 0.5rem 0.5rem;
+        transition-property: background-color, color, filter, box-shadow, transform;
+        transition-duration: 200ms;
+        transition-timing-function: ease-in;
+        width: 100%;
+        margin-bottom: 0.5rem;
+
+        &:hover {
+            //filter: brightness(1.2);
+        }
+
+        &--custom {
+            word-spacing: 9999px;
+            line-height: 1.25;
+        }
+
+        &--selected {
+            //
+        }
+    }
+}
+
+

@@ -3,6 +3,8 @@
 namespace Give\FormBuilder\ViewModels;
 
 use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
+use Give\NextGen\Framework\FormTemplates\FormTemplate;
+use Give\NextGen\Framework\FormTemplates\Registrars\FormTemplateRegistrar;
 
 class FormBuilderViewModel
 {
@@ -18,6 +20,15 @@ class FormBuilderViewModel
             'blockData' => get_post($donationFormId)->post_content,
             'settings' => get_post_meta($donationFormId, 'formBuilderSettings', true),
             'currency' => give_get_currency(),
+            'templates' => array_map(static function ($templateClass) {
+                /** @var FormTemplate $template */
+                $template = give($templateClass);
+                
+                return [
+                    'id' => $template::id(),
+                    'name' => $template::name(),
+                ];
+            }, give(FormTemplateRegistrar::class)->getTemplates()),
         ];
     }
 

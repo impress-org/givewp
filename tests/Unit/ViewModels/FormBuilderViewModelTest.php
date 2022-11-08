@@ -26,8 +26,7 @@ class FormBuilderViewModelTest extends TestCase
         $mockForm = DonationForm::factory()->create();
         $formId = $mockForm->id;
 
-        $this->assertSame(
-            $viewModel->storageData($formId),
+        $this->assertArraySubset(
             [
                 'resourceURL' => rest_url(FormBuilderRestRouteConfig::NAMESPACE . '/form/' . $formId),
                 'previewURL' => site_url("?givewp-view=donation-form&form-id=$formId"),
@@ -35,7 +34,8 @@ class FormBuilderViewModelTest extends TestCase
                 'blockData' => get_post($formId)->post_content,
                 'settings' => get_post_meta($formId, 'formBuilderSettings', true),
                 'currency' => give_get_currency(),
-            ]
+            ],
+            $viewModel->storageData($formId)
         );
     }
 }

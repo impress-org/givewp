@@ -5,6 +5,7 @@ namespace Give\NextGen;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\NextGen\DonationForm\FormTemplates\ClassicFormTemplate\ClassicFormTemplate;
+use Give\NextGen\DonationForm\FormTemplates\DeveloperFormTemplate\DeveloperFormTemplate;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\Framework\FormTemplates\Registrars\FormTemplateRegistrar;
 use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
@@ -37,6 +38,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         add_action('givewp_register_form_template', function (FormTemplateRegistrar $formTemplateRegistrar) {
             $formTemplateRegistrar->registerTemplate(ClassicFormTemplate::class);
+            $formTemplateRegistrar->registerTemplate(DeveloperFormTemplate::class);
         });
     }
 }

@@ -82,12 +82,12 @@ class DonationFormViewController
             $template = $formTemplateRegistrar->getTemplate($formTemplateId);
 
             if ($template->css()) {
-                wp_enqueue_style('givewp-form-template-' . $template->getId(), $template->css());
+                wp_enqueue_style('givewp-form-template-' . $template::id(), $template->css());
             }
 
             if ($template->js()) {
                 wp_enqueue_script(
-                    'givewp-form-template-' . $template->getId(),
+                    'givewp-form-template-' . $template::id(),
                     $template->js(),
                     array_merge(
                         ['givewp-donation-form-registrars-js'],
