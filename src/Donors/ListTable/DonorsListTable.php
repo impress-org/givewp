@@ -2,6 +2,7 @@
 
 namespace Give\Donors\ListTable;
 
+use Give\Donors\ListTable\Columns\DonorInformationColumn;
 use Give\Donors\ListTable\Columns\IdColumn;
 use Give\Framework\ListTable\ListTable;
 
@@ -29,6 +30,7 @@ class DonorsListTable extends ListTable
     {
         return [
             new IdColumn(),
+            new DonorInformationColumn(),
         ];
     }
 
@@ -40,6 +42,7 @@ class DonorsListTable extends ListTable
     public function getDefaultVisibleColumns(): array
     {
         return [
+            DonorInformationColumn::getId()
         ];
     }
 }
