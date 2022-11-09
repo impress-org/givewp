@@ -13,7 +13,7 @@ class SubscriptionComplete implements GatewayCommand
     /**
      * The Gateway Transaction / Charge Record ID
      *
-     * @var string
+     * @var string|null
      */
     public $gatewayTransactionId;
     /**
@@ -40,7 +40,7 @@ class SubscriptionComplete implements GatewayCommand
      * @since 2.18.0
      */
     public function __construct(
-        string $gatewayTransactionId,
+        $gatewayTransactionId,
         string $gatewaySubscriptionId,
         SubscriptionStatus $subscriptionStatus = null,
         DonationStatus $donationStatus = null

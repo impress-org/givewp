@@ -20,8 +20,17 @@ class SubscriptionCompleteHandler
      */
     public function __invoke(SubscriptionComplete $subscriptionComplete, Subscription $subscription, Donation $donation)
     {
-        $donation->status = $subscriptionComplete->donationStatus ?: DonationStatus::COMPLETE();
-        $donation->gatewayTransactionId = $subscriptionComplete->gatewayTransactionId;
+        $defaultDonationStatus = $subscriptionComplete->gatewayTransactionId ?
+            DonationStatus::COMPLETE() :
+            DonationStatus::PROCESSING();
+
+        $donation->status = $subscriptionComplete->donationStatus ?: $defaultDonationStatus;
+
+        // Only save no-empty gateway transaction ids.
+        if ($subscriptionComplete->gatewayTransactionId) {
+            $donation->gatewayTransactionId = $subscriptionComplete->gatewayTransactionId;
+        }
+
         $donation->save();
 
         $subscription->status = $subscriptionComplete->subscriptionStatus ?: SubscriptionStatus::ACTIVE();

@@ -22,6 +22,50 @@ class SubscriptionCompleteTest extends TestCase
      * @unreleased
      * @return void
      */
+    public function testNullGatewayTransactionId()
+    {
+        $subscription = Subscription::factory()->createWithDonation();
+        $donation = $subscription->initialDonation();
+
+        $subscriptionCompleteCommand = new SubscriptionComplete(null, '1234');
+
+        Call::invoke(
+            SubscriptionCompleteHandler::class,
+            $subscriptionCompleteCommand,
+            $subscription,
+            $donation
+        );
+
+        $this->assertEquals('active', $subscription->status->getValue());
+        $this->assertEquals('processing', $donation->status->getValue());
+    }
+
+    /**
+     * @unreleased
+     * @return void
+     */
+    public function testStringGatewayTransactionId()
+    {
+        $subscription = Subscription::factory()->createWithDonation();
+        $donation = $subscription->initialDonation();
+
+        $subscriptionCompleteCommand = new SubscriptionComplete('abcd', '1234');
+
+        Call::invoke(
+            SubscriptionCompleteHandler::class,
+            $subscriptionCompleteCommand,
+            $subscription,
+            $donation
+        );
+
+        $this->assertEquals('active', $subscription->status->getValue());
+        $this->assertEquals('publish', $donation->status->getValue());
+    }
+
+    /**
+     * @unreleased
+     * @return void
+     */
     public function testSubscriptionActiveAndDonationCompleted()
     {
         $subscription = Subscription::factory()->createWithDonation();
