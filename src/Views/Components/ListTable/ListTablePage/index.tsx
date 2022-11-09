@@ -2,24 +2,21 @@ import {createContext, useRef, useState} from 'react';
 import {__} from '@wordpress/i18n';
 import {A11yDialog} from 'react-a11y-dialog';
 import A11yDialogInstance from 'a11y-dialog';
-
 import {GiveIcon} from '@givewp/components';
-
-import {ListTable, ListTableColumn} from './ListTable';
-import Pagination from './Pagination';
-import {Filter, getInitialFilterState} from './Filters';
-import useDebounce from './hooks/useDebounce';
-import {useResetPage} from './hooks/useResetPage';
-import ListTableApi from './api';
+import {ListTable} from '../ListTable';
+import Pagination from '../Pagination';
+import {Filter, getInitialFilterState} from '../Filters';
+import useDebounce from '../hooks/useDebounce';
+import {useResetPage} from '../hooks/useResetPage';
+import ListTableApi from '../api';
 import styles from './ListTablePage.module.scss';
 import cx from 'classnames';
-import {BulkActionSelect} from '@givewp/components/ListTable/BulkActionSelect';
+import {BulkActionSelect} from '@givewp/components/ListTable/BulkActions/BulkActionSelect';
 
 export interface ListTablePageProps {
     //required
     title: string;
-    columns: Array<ListTableColumn>;
-    apiSettings: {apiRoot; apiNonce};
+    apiSettings: {apiRoot; apiNonce; table};
 
     //optional
     bulkActions?: Array<BulkActionsConfig> | null;
@@ -60,7 +57,6 @@ export const CheckboxContext = createContext(null);
 
 export default function ListTablePage({
     title,
-    columns,
     apiSettings,
     bulkActions = null,
     filterSettings = [],
@@ -82,13 +78,21 @@ export default function ListTablePage({
     const [selectedNames, setSelectedNames] = useState([]);
     const dialog = useRef() as {current: A11yDialogInstance};
     const checkboxRefs = useRef([]);
+    const [sortField, setSortField] = useState<{sortColumn: string; sortDirection: string}>({
+        sortColumn: 'id',
+        sortDirection: 'desc',
+    });
+    const {sortColumn, sortDirection} = sortField;
+    const locale = navigator.language || navigator.languages[0];
 
     const parameters = {
         page,
         perPage,
+        sortColumn,
+        sortDirection,
+        locale,
         ...filters,
     };
-
     const archiveApi = useRef(new ListTableApi(apiSettings)).current;
 
     const {data, error, isValidating, mutate} = archiveApi.useListTable(parameters);
@@ -152,6 +156,22 @@ export default function ListTablePage({
         </div>
     );
 
+    const handleItemSort = (event, column) => {
+        event.preventDefault();
+        const direction = sortField.sortDirection === 'desc' ? 'asc' : 'desc';
+        setSortDirectionForColumn(column, direction);
+    };
+
+    const setSortDirectionForColumn = (column, direction) => {
+        setSortField((previousState) => {
+            return {
+                ...previousState,
+                sortColumn: column,
+                sortDirection: direction,
+            };
+        });
+    };
+
     return (
         <>
             <article className={styles.page}>
@@ -179,7 +199,9 @@ export default function ListTablePage({
                     <CheckboxContext.Provider value={checkboxRefs}>
                         <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
                             <ListTable
-                                columns={columns}
+                                apiSettings={apiSettings}
+                                sortField={sortField}
+                                handleItemSort={handleItemSort}
                                 singleName={singleName}
                                 pluralName={pluralName}
                                 title={title}

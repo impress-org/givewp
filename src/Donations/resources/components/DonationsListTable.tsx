@@ -1,18 +1,23 @@
 import {__, sprintf} from '@wordpress/i18n';
 import {useSWRConfig} from 'swr';
-import {ListTableColumn, ListTablePage} from '@givewp/components';
+import {ListTablePage} from '@givewp/components';
 import RowAction from '@givewp/components/ListTable/RowAction';
 import ListTableApi from '@givewp/components/ListTable/api';
-import tableStyles from '@givewp/components/ListTable/ListTablePage.module.scss';
-import styles from './ListTable.module.scss';
+import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import {IdBadge} from '@givewp/components/ListTable/TableCell';
-import {BulkActionsConfig, FilterConfig, ShowConfirmModalContext} from '@givewp/components/ListTable';
+import {BulkActionsConfig, FilterConfig, ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
 import {useContext} from 'react';
-import {DonationType} from '@givewp/components/ListTable/TypeBadge';
+import {Interweave} from 'interweave';
 
 declare global {
     interface Window {
-        GiveDonations;
+        GiveDonations: {
+            apiNonce: string;
+            apiRoot: string;
+            adminUrl: string;
+            forms: Array<{value: string; text: string}>;
+            table: {columns: Array<object>};
+        };
     }
 }
 
@@ -46,7 +51,7 @@ export default function () {
                         window.GiveDonations.adminUrl +
                         `edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=${item.id}`
                     }
-                    displayText={__('View/Edit', 'give')}
+                    displayText={__('Edit', 'give')}
                 />
                 <RowAction
                     onClick={confirmModal}
@@ -58,71 +63,6 @@ export default function () {
             </>
         );
     };
-
-    const columns: Array<ListTableColumn> = [
-        {
-            name: 'id',
-            text: __('ID', 'give'),
-            heading: true,
-            alignColumn: 'start',
-            inlineSize: '5rem',
-            preset: 'idBadge',
-        },
-        {
-            name: 'amount',
-            text: __('Amount', 'give'),
-            inlineSize: '7rem',
-            preset: 'monetary',
-        },
-        {
-            name: 'paymentType',
-            text: __('Payment Type'),
-            inlineSize: '11rem',
-            addClass: styles.paymentType,
-            render: (donation: {donationType}) => <DonationType type={donation.donationType} />,
-        },
-        {
-            name: 'createdAt',
-            inlineSize: '9rem',
-            text: __('Date / Time', 'give'),
-        },
-        {
-            name: 'name',
-            text: __('Donor Name', 'give'),
-            inlineSize: '9rem',
-            render: (donation: {name; donorId}) => (
-                <a
-                    href={
-                        window.GiveDonations.adminUrl +
-                        `edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donation.donorId}`
-                    }
-                >
-                    {donation.name}
-                </a>
-            ),
-        },
-        {
-            name: 'formTitle',
-            text: __('Donation Form', 'give'),
-            inlineSize: '9rem',
-            render: (donation: {formTitle; formId}) => (
-                <a href={window.GiveDonations.adminUrl + `post.php?post=${donation.formId}&action=edit`}>
-                    {donation.formTitle}
-                </a>
-            ),
-        },
-        {
-            name: 'gateway',
-            inlineSize: '11rem',
-            text: __('Gateway', 'give'),
-        },
-        {
-            name: 'status',
-            text: __('Status', 'give'),
-            inlineSize: '12rem',
-            preset: 'donationStatus',
-        },
-    ];
 
     const filters: Array<FilterConfig> = [
         {
@@ -156,7 +96,8 @@ export default function () {
                     <ul role="document" tabIndex={0}>
                         {selected.map((donationId, index) => (
                             <li key={donationId}>
-                                <IdBadge id={donationId} /> <span>{sprintf(__('from %s', 'give'), names[index])}</span>
+                                <IdBadge id={donationId} />{' '}
+                                <span>{sprintf(__('from %s', 'give'), <Interweave content={names[index]} />)}</span>
                             </li>
                         ))}
                     </ul>
@@ -195,8 +136,8 @@ export default function () {
                             <ul role="document" tabIndex={0}>
                                 {selected.map((donationId, index) => (
                                     <li key={donationId}>
-                                        <IdBadge id={donationId} />{' '}
-                                        <span>{sprintf(__('from %s', 'give'), names[index])}</span>
+                                        <IdBadge id={donationId} /> <span>{__('from', 'give')}</span>
+                                        <Interweave content={names[index]} />
                                     </li>
                                 ))}
                             </ul>
@@ -230,7 +171,6 @@ export default function () {
             title={__('Donations', 'give')}
             singleName={__('donation', 'give')}
             pluralName={__('donations', 'give')}
-            columns={columns}
             rowActions={rowActions}
             bulkActions={bulkActions}
             apiSettings={window.GiveDonations}

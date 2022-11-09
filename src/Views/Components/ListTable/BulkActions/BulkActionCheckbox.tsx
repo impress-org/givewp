@@ -1,6 +1,6 @@
 import {__, sprintf} from '@wordpress/i18n';
 import {useCallback, useContext, useEffect, useState} from 'react';
-import {CheckboxContext} from '@givewp/components/ListTable/index';
+import {CheckboxContext} from '@givewp/components/ListTable/ListTablePage';
 
 export const BulkActionCheckbox = ({id, name, singleName}) => {
     const checkboxRefs = useContext(CheckboxContext);

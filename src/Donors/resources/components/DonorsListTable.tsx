@@ -1,13 +1,18 @@
 import {__} from '@wordpress/i18n';
 import {ListTableApi, ListTablePage} from '@givewp/components';
-import {donorsColumns} from './DonorsColumns';
 import {DonorsRowActions} from './DonorsRowActions';
-import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable';
-import styles from '@givewp/components/ListTable/ListTablePage.module.scss';
+import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
+import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
+import {Interweave} from 'interweave';
 
 declare global {
     interface Window {
-        GiveDonors;
+        GiveDonors: {
+            apiNonce: string;
+            apiRoot: string;
+            forms: Array<{value: string; text: string}>;
+            table: {columns: Array<object>};
+        };
     }
 }
 
@@ -46,7 +51,9 @@ const donorsBulkActions: Array<BulkActionsConfig> = [
                 <p>{__('Really delete the following donors?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((id, index) => (
-                        <li key={id}>{names[index]}</li>
+                        <li key={id}>
+                            <Interweave content={names[index]} />
+                        </li>
                     ))}
                 </ul>
                 <div>
@@ -66,7 +73,6 @@ export default function DonorsListTable() {
             title={__('Donors', 'give')}
             singleName={__('donors', 'give')}
             pluralName={__('donors', 'give')}
-            columns={donorsColumns}
             rowActions={DonorsRowActions}
             bulkActions={donorsBulkActions}
             apiSettings={window.GiveDonors}

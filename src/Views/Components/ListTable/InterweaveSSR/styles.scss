@@ -1,0 +1,207 @@
+@use 'assets/src/css/Safe-Rem/functions' as *;
+
+.interweave {
+
+    .statusBadge {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: safe-rem(7.5);
+        height: safe-rem(1.875);
+        background-color: var(--give-primary-color);
+        border-radius: safe-rem(0.1875);
+        color: #fff;
+        font-size: safe-rem(0.8125);
+        font-weight: 600;
+        column-gap: safe-rem(1);
+        text-transform: uppercase;
+
+        &--completed {
+            background: #69B868
+        }
+
+        &--failed {
+            background: #D75A4B;
+        }
+
+        &--abandoned {
+            background: #F4C520;
+        }
+
+        &--pending {
+            background: #0878B0;
+        }
+
+        &--refunded {
+            background: #333333;
+        }
+    }
+
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        min-width: 85%;
+        inline-size: -moz-fit-content;
+        max-inline-size: fit-content;
+        block-size: 2rem;
+        margin: 0;
+        padding: 0;
+        background-color: white;
+        font-family: Open Sans;
+        border: 0;
+        border-radius: safe-rem(0.1875);
+        box-shadow: inset 0 0 0 1px rgba(203, 203, 203, 1);
+        overflow: hidden;
+
+        & > * {
+            flex: 0 0 auto;
+        }
+
+        .icon {
+            flex: 1;
+            display: inline;
+            min-width: 2rem;
+            max-width: 2rem;
+            border-top-left-radius: 0.1875rem;
+            border-bottom-left-radius: 0.1875rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            letter-spacing: 0;
+            color: #555555;
+            box-sizing: content-box !important;
+            overflow: hidden;
+
+            &--onetime {
+                background: #556E79;
+                block-size: 1.125rem;
+                inline-size: 1.375rem;
+                padding-block: 0.4375rem;
+                padding-inline: 0.3125rem;
+            }
+
+            &--recurring, &--subscription {
+                background: linear-gradient(225.34deg, #59AD70 0%, #2EBBBB 101.17%);
+                block-size: 1.125rem;
+                inline-size: 1.375rem;
+                padding-block: 0.4375rem;
+                padding-inline: 0.3125rem;
+            }
+
+            &--repeat {
+                background: #F49420;
+                block-size: 1.125rem;
+                inline-size: 1.375rem;
+                padding-block: 0.4375rem;
+                padding-inline: 0.2025rem;
+                border-left: 4px solid #F49420;
+            }
+        }
+
+
+        &__label {
+            flex: 1;
+            flex-basis: fit-content;
+            margin: 0;
+            padding: safe-rem(0.6125) safe-rem(0.65);
+            color: #555555;
+            font-size: safe-rem(0.75);
+            font-weight: 400;
+            text-align: center;
+            text-transform: uppercase;
+            cursor: default;
+        }
+
+        .star {
+            display: inline;
+            color: rgba(255, 215, 0, 1);
+            position: absolute;
+            z-index: 2;
+            top: safe-rem(-0.5);
+            right: safe-rem(-0.5);
+        }
+    }
+
+    .donorInformation {
+        position: relative;
+        display: flex;
+        flex-flow: column wrap;
+        align-content: flex-start;
+        justify-content: center;
+        column-gap: safe-rem(0.6125);
+        row-gap: safe-rem(0.25);
+        height: safe-rem(4);
+        width: 100%;
+
+        & > a {
+            color: #0878B0;
+            font-size: 1.125rem;
+            font-weight: 700;
+        }
+
+        &__email {
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        &__gravatar {
+            border-radius: 9999px;
+            width: safe-rem(4);
+            height: safe-rem(4);
+        }
+
+        &__name {
+            display: inline;
+            inline-size: -webkit-fit-content;
+            inline-size: -moz-fit-content;
+            inline-size: fit-content;
+            font-size: safe-rem(1.125);
+            text-decoration: none;
+        }
+
+        &__email {
+            font-style: normal;
+            font-weight: 400;
+            line-height: 150%;
+            max-width: calc(100% - 4rem);
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    }
+
+    .date {
+        font-size: safe-rem(0.8);
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .amount > span {
+        font-size: safe-rem(1.125);
+        font-weight: 700;
+        color: #69B868;
+    }
+}
+
+.idBadge {
+    display: inline-flex;
+    flex-shrink: 0;
+    flex-grow: 0;
+    align-items: center;
+    background-color: #f3f2ec;
+    border: safe-rem(0.0625) solid #e0dfd9;
+    border-radius: 9999px;
+    color: #5f5f5f;
+    padding-block: 0.1em;
+    padding-inline: 0.5em;
+    text-align: center;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+}
+
+.idBadge::before {
+    content: '#';
+    font-size: 0.615em;
+    padding-inline-end: 0.25em;
+}

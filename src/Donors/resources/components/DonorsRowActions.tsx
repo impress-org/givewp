@@ -3,7 +3,7 @@ import {useSWRConfig} from 'swr';
 import RowAction from '@givewp/components/ListTable/RowAction';
 import ListTableApi from '@givewp/components/ListTable/api';
 import {useContext} from 'react';
-import {ShowConfirmModalContext} from '@givewp/components/ListTable';
+import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
 import styles from './DonorsRowActions.module.scss';
 
 const donorsApi = new ListTableApi(window.GiveDonors);
@@ -16,10 +16,7 @@ export function DonorsRowActions({item, setUpdateErrors, parameters}) {
         const deleteDonations = document.querySelector('#giveDonorsTableDeleteDonations') as HTMLInputElement;
         const response = await donorsApi.fetchWithArgs(
             endpoint,
-            {
-                ids: [id],
-                deleteDonationsAndRecords: deleteDonations.checked,
-            },
+            {ids: [id], deleteDonationsAndRecords: deleteDonations.checked},
             method
         );
         setUpdateErrors(response);

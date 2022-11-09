@@ -46,6 +46,7 @@
 }
 
 .tableColumnHeader {
+    vertical-align: middle;
     border-bottom: 0.0625em solid #ddd;
     color: #0878b0;
     font-weight: 700;
@@ -64,6 +65,7 @@
     &.end {
         text-align: end;
     }
+
 }
 
 .tableContent {
@@ -143,6 +145,14 @@
     animation: appear 0.1s ease-in reverse;
 }
 
+.id {
+    inline-size: 3.25rem;
+}
+
+.amount, .donationRevenue, .donationCount, .latestDonations, .donorType, .dateCreated {
+    inline-size: 6rem;
+}
+
 @keyframes appear {
     0% {
         opacity: 0;
@@ -151,3 +161,5 @@
         opacity: 1;
     }
 }
+
+

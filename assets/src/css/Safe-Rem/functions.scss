@@ -1,0 +1,17 @@
+@use "sass:string";
+
+$MIN_REM_SIZE: 16px;
+
+/**
+ * Safely use rem values in distributed code for unpredictable environments (e.g. for use inside a WordPress plugin).
+ *
+ * This does not support IE 11 and a few other outdated browser.
+ * A Sass mixin could be used to provide a fallback value for this.
+ *
+ * @param {Number} $value
+ * @return {String} e.g. for $value: 3 and $MIN_REM_SIZE: 16px => max(3rem, 48px)
+ */
+
+@function safe-rem($value) {
+    @return string.unquote("max(#{$value}rem, #{$value * $MIN_REM_SIZE})");
+}

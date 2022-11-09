@@ -1,14 +1,18 @@
 import {__} from '@wordpress/i18n';
 import {ListTableApi, ListTablePage} from '@givewp/components';
-import {donationFormsColumns} from './DonationFormsColumns';
 import {DonationFormsRowActions} from './DonationFormsRowActions';
-import styles from '@givewp/components/ListTable/ListTablePage.module.scss';
-import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable';
+import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
+import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import Select from '@givewp/components/ListTable/Select';
 
 declare global {
     interface Window {
-        GiveDonationForms: {apiNonce: string; apiRoot: string; authors: Array<{id: string | number; name: string}>};
+        GiveDonationForms: {
+            apiNonce: string;
+            apiRoot: string;
+            authors: Array<{id: string | number; name: string}>;
+            table: {columns: Array<object>};
+        };
     }
 }
 
@@ -146,7 +150,6 @@ export default function DonationFormsListTable() {
             title={__('Donation Forms', 'give')}
             singleName={__('donation form', 'give')}
             pluralName={__('donation forms', 'give')}
-            columns={donationFormsColumns}
             rowActions={DonationFormsRowActions}
             bulkActions={donationFormsBulkActions}
             apiSettings={window.GiveDonationForms}

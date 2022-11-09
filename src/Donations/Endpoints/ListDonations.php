@@ -141,13 +141,13 @@ class ListDonations extends Endpoint
     {
         $page = $this->request->get_param('page');
         $perPage = $this->request->get_param('perPage');
-        $sortColumns = $this->listTable->getSortColumnById( $this->request->get_param('sortColumn') ?: 'id' );
-        $sortDirection = $this->request->get_param('sortDirection') ?: 'DESC';
+        $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
+        $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
 
         $query = give()->donations->prepareQuery();
         $query = $this->getWhereConditions($query);
 
-        foreach ( $sortColumns as $sortColumn ) {
+        foreach ($sortColumns as $sortColumn) {
             $query->orderBy($sortColumn, $sortDirection);
         }
 

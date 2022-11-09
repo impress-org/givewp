@@ -1,17 +1,19 @@
 import {useEffect, useRef, useState} from 'react';
 import {__, _n, sprintf} from '@wordpress/i18n';
 import cx from 'classnames';
-
 import styles from './ListTable.module.scss';
-import ListTableRows from './ListTableRows';
-import {Spinner} from '../index';
-import {BulkActionCheckboxAll} from '@givewp/components/ListTable/BulkActionCheckbox';
+import {Spinner} from '../../index';
+import {BulkActionCheckboxAll} from '@givewp/components/ListTable/BulkActions/BulkActionCheckbox';
+import ListTableHeaders from '@givewp/components/ListTable/ListTableHeaders';
+import ListTableRows from '@givewp/components/ListTable/ListTableRows';
 
 export interface ListTableProps {
     //required
-    columns: Array<ListTableColumn>;
+    apiSettings: {table: {columns: Array<ListTableColumn>}};
     title: string;
     data: {items: Array<{}>};
+    handleItemSort: (event: React.MouseEvent<HTMLElement>, column: string) => void;
+    sortField: {sortColumn: string; sortDirection: string};
 
     //optional
     pluralName?: string;
@@ -25,20 +27,13 @@ export interface ListTableProps {
 
 export interface ListTableColumn {
     //required
-    name: string;
-    text: string;
-
-    //optional
-    inlineSize?: string;
-    preset?: string;
-    heading?: boolean;
-    alignColumn?: 'start' | 'center' | 'end';
-    addClass?: string;
-    render?: ((item: {}) => JSX.Element) | JSX.Element | JSX.Element[] | null;
+    id: string;
+    sortable: boolean;
+    visible: boolean;
+    label: string;
 }
 
 export const ListTable = ({
-    columns,
     singleName = __('item', 'give'),
     pluralName = __('items', 'give'),
     title,
@@ -48,6 +43,9 @@ export const ListTable = ({
     error = false,
     isLoading = false,
     align = 'start',
+    apiSettings,
+    handleItemSort,
+    sortField,
 }: ListTableProps) => {
     const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>; successes: Array<number>}>({
         errors: [],
@@ -59,6 +57,7 @@ export const ListTable = ({
     const [overlayWidth, setOverlayWidth] = useState(0);
     const tableRef = useRef<null | HTMLTableElement>();
     const isEmpty = !error && data?.items.length === 0;
+    const {columns} = apiSettings.table;
 
     useEffect(() => {
         initialLoad && data && setInitialLoad(false);
@@ -98,6 +97,8 @@ export const ListTable = ({
     const clearUpdateErrors = () => {
         setUpdateErrors({errors: [], successes: []});
     };
+
+    const visibleColumns = columns?.filter((column) => column.visible || column.visible === undefined);
 
     return (
         <>
@@ -139,20 +140,27 @@ export const ListTable = ({
                                     <BulkActionCheckboxAll pluralName={pluralName} data={data} />
                                 </th>
                                 <>
-                                    {columns.map((column) => (
+                                    {visibleColumns?.map((column) => (
                                         <th
                                             scope="col"
-                                            aria-sort="none"
+                                            aria-sort={
+                                                column.label === sortField.sortColumn
+                                                    ? sortField.sortDirection === 'asc'
+                                                        ? 'ascending'
+                                                        : 'descending'
+                                                    : 'none'
+                                            }
                                             className={cx(styles.tableColumnHeader, {
-                                                [styles[align]]: !column?.alignColumn,
-                                                [styles.center]: column?.alignColumn === 'center',
-                                                [styles.start]: column?.alignColumn === 'start',
+                                                [styles[column.id]]: true,
                                             })}
-                                            data-column={column.name}
-                                            key={column.name}
-                                            style={{inlineSize: column?.inlineSize || '8rem'}}
+                                            data-column={column.id}
+                                            key={column.id}
                                         >
-                                            {column.text}
+                                            <ListTableHeaders
+                                                column={column}
+                                                sortField={sortField}
+                                                handleItemSort={handleItemSort}
+                                            />
                                         </th>
                                     ))}
                                 </>
@@ -160,7 +168,7 @@ export const ListTable = ({
                         </thead>
                         <tbody className={styles.tableContent}>
                             <ListTableRows
-                                columns={columns}
+                                columns={visibleColumns}
                                 data={data}
                                 isLoading={isLoading}
                                 singleName={singleName}
