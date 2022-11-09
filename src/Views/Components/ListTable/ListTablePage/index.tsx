@@ -83,7 +83,7 @@ export default function ListTablePage({
         sortDirection: 'desc',
     });
     const {sortColumn, sortDirection} = sortField;
-    const locale = navigator.language || (navigator.languages || ['en'])[0];
+    const locale = navigator.language || navigator.languages[0];
 
     const parameters = {
         page,
