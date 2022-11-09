@@ -29,6 +29,7 @@ export interface ListTableColumn {
     //required
     id: string;
     sortable: boolean;
+    visible: boolean;
     label: string;
 }
 
@@ -97,6 +98,8 @@ export const ListTable = ({
         setUpdateErrors({errors: [], successes: []});
     };
 
+    const visibleColumns = columns?.filter((column) => column.visible || column.visible === undefined);
+
     return (
         <>
             {initialLoad && !error ? (
@@ -137,7 +140,7 @@ export const ListTable = ({
                                     <BulkActionCheckboxAll pluralName={pluralName} data={data} />
                                 </th>
                                 <>
-                                    {columns?.map((column) => (
+                                    {visibleColumns?.map((column) => (
                                         <th
                                             scope="col"
                                             aria-sort={
@@ -165,7 +168,7 @@ export const ListTable = ({
                         </thead>
                         <tbody className={styles.tableContent}>
                             <ListTableRows
-                                columns={columns}
+                                columns={visibleColumns}
                                 data={data}
                                 isLoading={isLoading}
                                 singleName={singleName}
