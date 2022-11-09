@@ -70,7 +70,7 @@ export default function ListTableRows({
                 <BulkActionCheckbox id={item.id} name={item?.donor} singleName={singleName} />
             </TableCell>
             <>
-                {columns.map((column) => {
+                {columns?.map((column) => {
                     return (
                         <TableCell key={column.id} heading={columns[0].id === column.id}>
                             <InterweaveSSR column={column} item={item} />
