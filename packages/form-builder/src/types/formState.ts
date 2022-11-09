@@ -1,7 +1,10 @@
 import type {Block} from './block';
 import type {FormSettings} from './formSettings';
 
-export interface FormData {
+/**
+ * @unreleased
+ */
+export type FormState = {
     blocks: Block[];
-    formSettings: FormSettings;
-}
+    settings: FormSettings;
+};

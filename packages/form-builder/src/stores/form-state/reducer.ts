@@ -2,7 +2,7 @@ const UPDATE_SETTINGS = 'update_settings';
 const UPDATE_BLOCKS = 'update_blocks';
 
 /**
- * This reducer is used within the FormSettingsProvider for state management
+ * This reducer is used within the FormStateProvider for state management
  *
  * @unreleased
  */
@@ -11,7 +11,10 @@ export default function reducer(state, action) {
         case UPDATE_SETTINGS:
             return {
                 ...state,
-                ...action.settings,
+                settings: {
+                    ...state.settings,
+                    ...action.settings,
+                },
             };
         case UPDATE_BLOCKS:
             return {

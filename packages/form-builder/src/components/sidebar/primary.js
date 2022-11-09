@@ -3,16 +3,18 @@ import {__} from '@wordpress/i18n';
 
 import TabPanel from './tab-panel';
 
-import {DonationGoalSettings, FormTitleSettings, OfflineDonationsSettings, TemplateSettings} from '../../settings/index.ts';
-import FormFields from "../../settings/form-fields";
-import {PopoutSlot} from "./popout";
-import {useEffect} from "react";
-import useSelectedBlocks from "../../hooks/useSelectedBlocks";
-import {useFormSettings, useFormSettingsDispatch} from "../../stores/form-settings/index.tsx";
+import {
+    DonationGoalSettings,
+    FormTitleSettings,
+    OfflineDonationsSettings,
+    TemplateSettings,
+} from '../../settings/index.ts';
+import FormFields from '../../settings/form-fields';
+import {PopoutSlot} from './popout';
+import {useEffect} from 'react';
+import useSelectedBlocks from '../../hooks/useSelectedBlocks';
 
-const {Slot: InspectorSlot, Fill: InspectorFill} = createSlotFill(
-    'StandAloneBlockEditorSidebarInspector',
-);
+const {Slot: InspectorSlot, Fill: InspectorFill} = createSlotFill('StandAloneBlockEditorSidebarInspector');
 
 const tabs = [
     {

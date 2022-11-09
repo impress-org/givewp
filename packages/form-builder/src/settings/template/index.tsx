@@ -1,31 +1,25 @@
 import {PanelBody, PanelRow, SelectControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
-import {setFormSettings, useFormSettings, useFormSettingsDispatch} from '../../stores/form-settings';
-import {FormTemplate} from "@givewp/form-builder/types";
+import {setFormSettings, useFormState, useFormStateDispatch} from '../../stores/form-state';
+import {getWindowData} from '@givewp/form-builder/common';
 
-declare global {
-    interface Window {
-        storageData?: {
-            templates: FormTemplate[],
-        }
-    }
-}
+const {templates} = getWindowData();
+
+const templateOptions = Object.values(templates).map(({id, name}) => ({value: id, label: name}));
 
 const TemplateSettings = () => {
-    const {template} = useFormSettings();
-    const dispatch = useFormSettingsDispatch();
-
-    const templateOptions = Object.values(window?.storageData?.templates).map(({id, name}) => {
-        return { value: id, label: name}
-    })
+    const {
+        settings: {templateId},
+    } = useFormState();
+    const dispatch = useFormStateDispatch();
 
     return (
         <PanelBody>
             <PanelRow>
                 <SelectControl
                     label={__('Form template', 'givewp')}
-                    value={template}
-                    onChange={(template) => dispatch(setFormSettings({template}))}
+                    value={templateId}
+                    onChange={(templateId) => dispatch(setFormSettings({templateId}))}
                     options={templateOptions}
                 />
             </PanelRow>

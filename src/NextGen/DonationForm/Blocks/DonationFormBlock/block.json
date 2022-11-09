@@ -13,10 +13,6 @@
     "attributes": {
         "formId": {
             "type": "string"
-        },
-        "formTemplateId": {
-            "type": "string",
-            "default": "classic"
         }
     },
     "textdomain": "give",

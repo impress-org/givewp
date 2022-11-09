@@ -1,25 +1,12 @@
 import {createContext, ReactNode, useContext, useReducer} from 'react';
 import formSettingsReducer, {setFormBlocks, setFormSettings} from './reducer';
-import type {Block} from '@givewp/form-builder/types';
+import {FormState} from '@givewp/form-builder/types';
 
 const StoreContext = createContext(null);
-StoreContext.displayName = 'FormSettingsStoreContext';
+StoreContext.displayName = 'FormState';
 
 const StoreContextDispatch = createContext(null);
-StoreContextDispatch.displayName = 'FormSettingsStoreContextDispatch';
-
-/**
- * @unreleased
- */
-export type FormSettings = {
-    blocks: Block[];
-    formTitle: string;
-    enableDonationGoal: boolean;
-    enableAutoClose: boolean;
-    registration: string;
-    goalFormat: string;
-    template: string;
-};
+StoreContextDispatch.displayName = 'FormStateDispatch';
 
 /**
  * This is our Form's store for its settings.
@@ -31,7 +18,7 @@ export type FormSettings = {
  *
  * @unreleased
  */
-const FormSettingsProvider = ({initialState, children}: {initialState: FormSettings; children: ReactNode}) => {
+const FormStateProvider = ({initialState, children}: { initialState: FormState; children: ReactNode }) => {
     const [state, dispatch] = useReducer(formSettingsReducer, initialState);
 
     return (
@@ -47,9 +34,9 @@ const FormSettingsProvider = ({initialState, children}: {initialState: FormSetti
  * @unreleased
  *
  * @example
- *  const {formTitle} = useFormSettings();
+ *  const {settings: {formTitle}} = useFormState();
  */
-const useFormSettings = () => useContext<FormSettings>(StoreContext);
+const useFormState = () => useContext<FormState>(StoreContext);
 
 /**
  * This is a convenient way of retrieving the "dispatch" function from our provider
@@ -58,11 +45,11 @@ const useFormSettings = () => useContext<FormSettings>(StoreContext);
  *
  * @example
  * // retrieve the "dispatch" function
- * const dispatch = useCampaignSettingsDispatch();
+ * const dispatch = useFormStateDispatch();
  *
  * // use the "dispatch" function
  * dispatch(setFormSettings({formTitle: 'new title'}));
  */
-const useFormSettingsDispatch = () => useContext(StoreContextDispatch);
+const useFormStateDispatch = () => useContext(StoreContextDispatch);
 
-export {FormSettingsProvider, useFormSettings, useFormSettingsDispatch, setFormSettings, setFormBlocks};
+export {FormStateProvider, useFormState, useFormStateDispatch, setFormSettings, setFormBlocks};

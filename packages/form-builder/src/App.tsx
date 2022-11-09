@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import {ShortcutProvider} from '@wordpress/keyboard-shortcuts';
 import BlockEditorContainer from './containers/BlockEditorContainer';
-import {FormSettingsProvider} from './stores/form-settings';
+import {FormStateProvider} from './stores/form-state';
 import {Storage} from './common';
 import type {Block} from '@givewp/form-builder/types';
 
@@ -18,13 +18,15 @@ const {blocks: initialBlocks, formSettings: initialFormSettings} = Storage.load(
 
 const initialState = {
     blocks: initialBlocks || (defaultBlocks as Block[]),
-    formTitle: __('My Default Donation Form Title'),
-    enableDonationGoal: false,
-    enableAutoClose: false,
-    registration: 'none',
-    goalFormat: 'amount-raised',
-    template: 'classic',
-    ...initialFormSettings,
+    settings: {
+        formTitle: __('My Default Donation Form Title'),
+        enableDonationGoal: false,
+        enableAutoClose: false,
+        registration: 'none',
+        goalFormat: 'amount-raised',
+        templateId: 'classic',
+        ...initialFormSettings,
+    },
 };
 
 if (initialBlocks instanceof Error) {
@@ -34,11 +36,11 @@ if (initialBlocks instanceof Error) {
 
 function App() {
     return (
-        <FormSettingsProvider initialState={initialState}>
+        <FormStateProvider initialState={initialState}>
             <ShortcutProvider>
                 <BlockEditorContainer />
             </ShortcutProvider>
-        </FormSettingsProvider>
+        </FormStateProvider>
     );
 }
 

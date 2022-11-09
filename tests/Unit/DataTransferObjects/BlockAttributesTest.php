@@ -10,37 +10,19 @@ use GiveTests\TestCase;
  */
 class BlockAttributesTest extends TestCase
 {
-      /**
-     * @unreleased
-     *
-     * @return array[]
-     */
-     public function attributesProvider(): array
-     {
-        return array(
-            ['formId' => 1, 'formTemplateId' => 1],
-            ['formId' => 1, 'formTemplateId' => null],
-            ['formId' => null, 'formTemplateId' => 1],
-            ['formId' => null, 'formTemplateId' => null],
-            [null, null],
-        );
-    }
 
     /**
      * @unreleased
      *
-     * @dataProvider attributesProvider
-     *
      * @return void
      */
-    public function testShouldReturnAttributesArray($formId, $formTemplateId)
+    public function testShouldReturnAttributesArray()
     {
         $blockAttributes = BlockAttributes::fromArray([
-            'formId' => $formId,
-            'formTemplateId' => $formTemplateId
+            'formId' => 1
         ]);
 
-        $this->assertSame(['formId' => $formId, 'formTemplateId' => $formTemplateId], $blockAttributes->toArray());
+        $this->assertSame(['formId' => 1], $blockAttributes->toArray());
     }
 
     /**

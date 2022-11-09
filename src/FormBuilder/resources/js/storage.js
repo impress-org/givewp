@@ -1,5 +1,5 @@
 window.storage = {
-    save: ( { blocks, formSettings } ) => {
+    save: ({blocks, formSettings}) => {
         return new Promise((resolve, reject) => {
             jQuery
                 .post({
@@ -27,7 +27,7 @@ window.storage = {
             formSettings: JSON.parse(window.storageData.settings || '{}'),
         };
     },
-    preview: ( template, blocks ) => {
+    preview: (templateId, blocks) => {
         return new Promise((resolve, reject) => {
             jQuery
                 .post({
@@ -36,11 +36,11 @@ window.storage = {
                         'X-WP-Nonce': window.storageData.nonce,
                     },
                     data: {
-                        'form-template-id': template,
+                        'form-template-id': templateId,
                         'form-blocks': JSON.stringify(blocks),
                     },
                 })
                 .then(resolve);
         });
     },
-}
+};

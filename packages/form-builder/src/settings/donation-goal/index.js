@@ -1,4 +1,4 @@
-import {setFormSettings, useFormSettings, useFormSettingsDispatch} from '@givewp/form-builder/stores/form-settings';
+import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 import {__} from '@wordpress/i18n';
 import {
     __experimentalNumberControl as NumberControl,
@@ -9,8 +9,10 @@ import {
 } from '@wordpress/components';
 
 const DonationGoalSettings = () => {
-    const {enableDonationGoal, enableAutoClose, goalFormat, goalAmount} = useFormSettings();
-    const dispatch = useFormSettingsDispatch();
+    const {
+        settings: {enableDonationGoal, enableAutoClose, goalFormat, goalAmount},
+    } = useFormState();
+    const dispatch = useFormStateDispatch();
 
     const goalFormatOptions = [
         {

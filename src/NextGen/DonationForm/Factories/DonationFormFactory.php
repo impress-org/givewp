@@ -23,6 +23,7 @@ class DonationFormFactory extends ModelFactory
                 'enableAutoClose' => false,
                 'registration' => 'none',
                 'goalFormat' => 'amount-raised',
+                'templateId' => 'classic'
             ],
             'blocks' => BlockCollection::fromJson($blocksJson),
         ];

@@ -1,11 +1,13 @@
-import {setFormSettings, useFormSettings, useFormSettingsDispatch} from '@givewp/form-builder/stores/form-settings';
+import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 import {PanelBody, PanelRow, ToggleControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import DonationInstructions from './donation-instructions';
 
 const OfflineDonationsSettings = () => {
-    const {enableOfflineDonations, enableBillingFields} = useFormSettings();
-    const dispatch = useFormSettingsDispatch();
+    const {
+        settings: {enableOfflineDonations, enableBillingFields},
+    } = useFormState();
+    const dispatch = useFormStateDispatch();
 
     return (
         <PanelBody title={__('Offline Donations', 'give')} initialOpen={false}>

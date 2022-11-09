@@ -5,6 +5,7 @@ namespace Give\NextGen\DonationForm\Blocks\DonationFormBlock\Controllers;
 use Give\Framework\EnqueueScript;
 use Give\NextGen\DonationForm\Actions\GenerateDonationFormViewRouteUrl;
 use Give\NextGen\DonationForm\Blocks\DonationFormBlock\DataTransferObjects\BlockAttributes;
+use Give\NextGen\DonationForm\Models\DonationForm;
 
 class BlockRenderController
 {
@@ -39,7 +40,11 @@ class BlockRenderController
             'give'
         ))->loadInFooter()->enqueue();
 
-        $viewUrl = (new GenerateDonationFormViewRouteUrl())($blockAttributes->formId, $blockAttributes->formTemplateId);
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::find($blockAttributes->formId);
+        $templateId = $donationForm->settings['templateId'] ?? '';
+
+        $viewUrl = (new GenerateDonationFormViewRouteUrl())($donationForm->id, $templateId);
 
         /**
          * Note: iframe-resizer uses querySelectorAll so using a data attribute makes the most sense to target.
