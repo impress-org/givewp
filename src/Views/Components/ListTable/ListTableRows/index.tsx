@@ -6,18 +6,6 @@ import TableCell from '../TableCell';
 import {BulkActionCheckbox} from '@givewp/components/ListTable/BulkActions/BulkActionCheckbox';
 import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
 
-//@unreleased determines if row should display actions based on column.id
-const displayRowActions = (column) => {
-    switch (column.id) {
-        case 'id':
-            return true;
-        case 'donorInformation':
-            return true;
-        default:
-            return false;
-    }
-};
-
 export default function ListTableRows({
     columns,
     data,
@@ -84,11 +72,11 @@ export default function ListTableRows({
             <>
                 {columns.map((column) => {
                     return (
-                        <TableCell key={column.id} heading={displayRowActions(column)}>
+                        <TableCell key={column.id} heading={columns[0].id === column.id}>
                             <InterweaveSSR column={column} item={item} />
                             {!isLoading && rowActions && (
                                 <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
-                                    {displayRowActions(column) &&
+                                    {columns[0].id === column.id &&
                                         rowActions({
                                             data,
                                             item,
