@@ -2,6 +2,7 @@
 
 namespace Give\Donors\ListTable;
 
+use Give\Donors\ListTable\Columns\IdColumn;
 use Give\Framework\ListTable\ListTable;
 
 /**
@@ -27,6 +28,7 @@ class DonorsListTable extends ListTable
     public function getColumns(): array
     {
         return [
+            new IdColumn(),
         ];
     }
 
