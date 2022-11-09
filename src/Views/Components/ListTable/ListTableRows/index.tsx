@@ -84,16 +84,7 @@ export default function ListTableRows({
             <>
                 {columns.map((column) => {
                     return (
-                        <TableCell
-                            key={column.id}
-                            className={cx(column?.addClass, {
-                                [styles[align]]: !column?.alignColumn,
-                                [styles.center]: column?.alignColumn === 'center',
-                                [styles.start]: column?.alignColumn === 'start',
-                                [styles.start]: column?.alignColumn === 'start',
-                            })}
-                            heading={displayRowActions(column)}
-                        >
+                        <TableCell key={column.id} heading={displayRowActions(column)}>
                             <InterweaveSSR column={column} item={item} />
                             {!isLoading && rowActions && (
                                 <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
