@@ -20,15 +20,15 @@
             background: #69B868
         }
 
-        &--failed {
+        &--failed, &--revoked {
             background: #D75A4B;
         }
 
-        &--abandoned {
+        &--abandoned, &--cancelled {
             background: #F4C520;
         }
 
-        &--pending {
+        &--pending, &--processing {
             background: #0878B0;
         }
 
@@ -95,6 +95,10 @@
                 padding-block: 0.4375rem;
                 padding-inline: 0.2025rem;
                 border-left: 4px solid #F49420;
+            }
+
+            &--no-dontion {
+                background: #000000;
             }
         }
 
