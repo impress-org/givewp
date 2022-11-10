@@ -7,6 +7,7 @@ use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\Exceptions\FailedDonorUpdateException;
 use Give\Donors\Models\Donor;
 use Give\Donors\ValueObjects\DonorMetaKeys;
+use Give\Donors\ValueObjects\DonorType;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
@@ -429,7 +430,7 @@ class DonorRepository
     /**
      * @since 2.20.0
      *
-     * @return string|null
+     * @return DonorType|null
      */
     public function getDonorType(int $donorId)
     {
@@ -447,7 +448,7 @@ class DonorRepository
         }
 
         if (!$donor->donationCount) {
-            return 'new';
+            return DonorType::NEW();
         }
 
         // Donation IDs
@@ -464,14 +465,14 @@ class DonorRepository
             ->count();
 
         if ($recurringDonations) {
-            return 'subscriber';
+            return DonorType::SUBSCRIBER();
         }
 
         if ((int)$donor->donationCount > 1) {
-            return 'repeat';
+            return DonorType::REPEAT();
         }
 
-        return 'single';
+        return DonorType::SINGLE();
     }
 
     /**
