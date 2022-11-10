@@ -2,6 +2,7 @@
 
 namespace Give\Donors\ListTable;
 
+use Give\Donors\ListTable\Columns\DateCreatedColumn;
 use Give\Donors\ListTable\Columns\DonationCountColumn;
 use Give\Donors\ListTable\Columns\DonorInformationColumn;
 use Give\Donors\ListTable\Columns\DonorTypeColumn;
@@ -37,6 +38,7 @@ class DonorsListTable extends ListTable
             new DonationCountColumn(),
             new LatestDonationColumn(),
             new DonorTypeColumn(),
+            new DateCreatedColumn(),
         ];
     }
 
@@ -51,7 +53,8 @@ class DonorsListTable extends ListTable
             DonorInformationColumn::getId(),
             DonationCountColumn::getId(),
             LatestDonationColumn::getId(),
-            DonorTypeColumn::getId()
+            DonorTypeColumn::getId(),
+            DateCreatedColumn::getId(),
         ];
     }
 }

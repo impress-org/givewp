@@ -45,7 +45,7 @@ class DonorTypeColumn extends ModelColumn
     public function getCellValue($model): string
     {
         $donorType = give()->donors->getDonorType($model->id);
-        
+
         $template = '
             <div class="badge">
                 <img role="img" aria-labelledby="badgeId-%1$d" class="icon icon--%2$s" src="%3$s" alt="%4$s" />
