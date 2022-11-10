@@ -5,6 +5,7 @@ namespace Give\Donors\ListTable;
 use Give\Donors\ListTable\Columns\DonationCountColumn;
 use Give\Donors\ListTable\Columns\DonorInformationColumn;
 use Give\Donors\ListTable\Columns\IdColumn;
+use Give\Donors\ListTable\Columns\LatestDonationColumn;
 use Give\Framework\ListTable\ListTable;
 
 /**
@@ -33,6 +34,7 @@ class DonorsListTable extends ListTable
             new IdColumn(),
             new DonorInformationColumn(),
             new DonationCountColumn(),
+            new LatestDonationColumn(),
         ];
     }
 
@@ -46,6 +48,7 @@ class DonorsListTable extends ListTable
         return [
             DonorInformationColumn::getId(),
             DonationCountColumn::getId(),
+            LatestDonationColumn::getId(),
         ];
     }
 }
