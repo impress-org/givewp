@@ -60,6 +60,7 @@ class DonationStatus extends Enum
             self::ABANDONED => __( 'Abandoned', 'give' ),
             self::PREAPPROVAL => __( 'Preapproval Pending', 'give' ),
             self::REVOKED => __( 'Revoked', 'give' ),
+            self::RENEWAL => __( 'Renewal', 'give' ),
         ];
     }
 
