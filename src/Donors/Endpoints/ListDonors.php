@@ -2,8 +2,8 @@
 
 namespace Give\Donors\Endpoints;
 
-use Give\Donors\Controllers\DonorsRequestController;
 use Give\Donors\DataTransferObjects\DonorResponseData;
+use Give\Donors\ListTable\DonorsListTable;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_REST_Request;
@@ -20,6 +20,11 @@ class ListDonors extends Endpoint
      * @var WP_REST_Request
      */
     protected $request;
+
+    /**
+     * @var DonorsListTable
+     */
+    protected $listTable;
 
     /**
      * @inheritDoc
@@ -104,19 +109,17 @@ class ListDonors extends Endpoint
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
         $this->request = $request;
-        
-        $data = [];
+        $this->listTable = give(DonorsListTable::class);
+
         $donors = $this->getDonors();
         $donorsCount = $this->getTotalDonorsCount();
         $pageCount = (int)ceil($donorsCount / $request->get_param('perPage'));
 
-        foreach ($donors as $donor) {
-            $data[] = DonorResponseData::fromObject($donor)->toArray();
-        }
+        $this->listTable->items($donors, $this->request->get_param('locale'));
 
         return new WP_REST_Response(
             [
-                'items' => $data,
+                'items' => $this->listTable->getItems(),
                 'totalItems' => $donorsCount,
                 'totalPages' => $pageCount
             ]
@@ -132,33 +135,26 @@ class ListDonors extends Endpoint
     {
         $page = $this->request->get_param('page');
         $perPage = $this->request->get_param('perPage');
+        $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
+        $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
 
-        $query = DB::table('give_donors')
-            ->select(
-                'id',
-                ['user_id', 'userId'],
-                'email',
-                'name',
-                ['purchase_value', 'donationRevenue'],
-                ['purchase_count', 'donationCount'],
-                ['payment_ids', 'paymentIds'],
-                ['date_created', 'createdAt']
-            )
-            ->attachMeta(
-                'give_donormeta',
-                'id',
-                'donor_id',
-                ['_give_donor_title_prefix', 'titlePrefix']
-            )
-            ->limit($perPage)
-            ->orderBy('id', 'DESC')
-            ->offset(($page - 1) * $perPage);
-
+        $query = give()->donors->prepareQuery();
         $query = $this->getWhereConditions($query);
 
-        $query->limit($perPage);
+        foreach ($sortColumns as $sortColumn) {
+            $query->orderBy($sortColumn, $sortDirection);
+        }
 
-        return $query->getAll();
+        $query->limit($perPage)
+            ->offset(($page - 1) * $perPage);
+
+        $donors = $query->getAll();
+
+        if (!$donors) {
+            return [];
+        }
+
+        return $donors;
     }
 
     /**
@@ -168,7 +164,7 @@ class ListDonors extends Endpoint
      */
     public function getTotalDonorsCount(): int
     {
-        $query = DB::table('give_donors');
+        $query = give()->donors->prepareQuery();
         $query = $this->getWhereConditions($query);
 
         return $query->count();
