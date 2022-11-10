@@ -4,6 +4,8 @@ namespace Give\Donors\Endpoints;
 
 use Give\Donors\Controllers\DonorsRequestController;
 use Give\Donors\DataTransferObjects\DonorResponseData;
+use Give\Framework\Database\DB;
+use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -13,6 +15,11 @@ class ListDonors extends Endpoint
      * @var string
      */
     protected $endpoint = 'admin/donors';
+
+    /**
+     * @var WP_REST_Request
+     */
+    protected $request;
 
     /**
      * @inheritDoc
@@ -78,10 +85,11 @@ class ListDonors extends Endpoint
      */
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
+        $this->request = $request;
+        
         $data = [];
-        $controller = new DonorsRequestController($request);
-        $donors = $controller->getDonors();
-        $donorsCount = $controller->getTotalDonorsCount();
+        $donors = $this->getDonors();
+        $donorsCount = $this->getTotalDonorsCount();
         $pageCount = (int)ceil($donorsCount / $request->get_param('perPage'));
 
         foreach ($donors as $donor) {
@@ -95,5 +103,107 @@ class ListDonors extends Endpoint
                 'totalPages' => $pageCount
             ]
         );
+    }
+
+    /**
+     * @since 2.21.0
+     *
+     * @return array
+     */
+    public function getDonors(): array
+    {
+        $page = $this->request->get_param('page');
+        $perPage = $this->request->get_param('perPage');
+
+        $query = DB::table('give_donors')
+            ->select(
+                'id',
+                ['user_id', 'userId'],
+                'email',
+                'name',
+                ['purchase_value', 'donationRevenue'],
+                ['purchase_count', 'donationCount'],
+                ['payment_ids', 'paymentIds'],
+                ['date_created', 'createdAt']
+            )
+            ->attachMeta(
+                'give_donormeta',
+                'id',
+                'donor_id',
+                ['_give_donor_title_prefix', 'titlePrefix']
+            )
+            ->limit($perPage)
+            ->orderBy('id', 'DESC')
+            ->offset(($page - 1) * $perPage);
+
+        $query = $this->getWhereConditions($query);
+
+        $query->limit($perPage);
+
+        return $query->getAll();
+    }
+
+    /**
+     * @since 2.21.0
+     *
+     * @return int
+     */
+    public function getTotalDonorsCount(): int
+    {
+        $query = DB::table('give_donors');
+        $query = $this->getWhereConditions($query);
+
+        return $query->count();
+    }
+
+    /**
+     * @param QueryBuilder $builder
+     * @since 2.21.0
+     *
+     * @return QueryBuilder
+     */
+    private function getWhereConditions(QueryBuilder $builder): QueryBuilder
+    {
+        $search = $this->request->get_param('search');
+        $start = $this->request->get_param('start');
+        $end = $this->request->get_param('end');
+        $form = $this->request->get_param('form');
+
+        if ($search) {
+            if (ctype_digit($search)) {
+                $builder->where('id', $search);
+            } else {
+                $builder->whereLike('name', $search);
+                $builder->orWhereLike('email', $search);
+            }
+        }
+
+        if ($start && $end) {
+            $builder->whereBetween('date_created', $start, $end);
+        } else if ($start) {
+            $builder->where('date_created', $start, '>=');
+        } else if ($end) {
+            $builder->where('date_created', $end, '<=');
+        }
+
+        if ($form) {
+            $builder
+                ->whereIn('id', static function (QueryBuilder $builder) use ($form) {
+                    $builder
+                        ->from('give_donationmeta')
+                        ->distinct()
+                        ->select('meta_value')
+                        ->where('meta_key', '_give_payment_donor_id')
+                        ->whereIn('donation_id', static function (QueryBuilder $builder) use ($form) {
+                            $builder
+                                ->from('give_donationmeta')
+                                ->select('donation_id')
+                                ->where('meta_key', '_give_payment_form_id')
+                                ->where('meta_value', $form);
+                        });
+                });
+        }
+
+        return $builder;
     }
 }
