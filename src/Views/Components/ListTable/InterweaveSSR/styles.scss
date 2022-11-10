@@ -1,7 +1,6 @@
 @use 'assets/src/css/Safe-Rem/functions' as *;
 
 .interweave {
-
     .statusBadge {
         display: flex;
         justify-content: center;
@@ -17,19 +16,22 @@
         text-transform: uppercase;
 
         &--completed {
-            background: #69B868
+            background: #69b868;
         }
 
-        &--failed, &--revoked {
-            background: #D75A4B;
+        &--failed,
+        &--revoked {
+            background: #d75a4b;
         }
 
-        &--abandoned, &--cancelled {
-            background: #F4C520;
+        &--abandoned,
+        &--cancelled {
+            background: #f4c520;
         }
 
-        &--pending, &--processing {
-            background: #0878B0;
+        &--pending,
+        &--processing {
+            background: #0878b0;
         }
 
         &--refunded {
@@ -71,8 +73,9 @@
             box-sizing: content-box !important;
             overflow: hidden;
 
-            &--onetime {
-                background: #556E79;
+            &--onetime,
+            &--single {
+                background: #556e79;
                 block-size: 1.125rem;
                 inline-size: 1.375rem;
                 padding-block: 0.4375rem;
@@ -80,8 +83,10 @@
                 padding-top: 13px;
             }
 
-            &--recurring, &--subscription {
-                background: linear-gradient(225.34deg, #59AD70 0%, #2EBBBB 101.17%);
+            &--recurring,
+            &--subscription,
+            &--subscriber {
+                background: linear-gradient(225.34deg, #59ad70 0%, #2ebbbb 101.17%);
                 block-size: 1.125rem;
                 inline-size: 1.375rem;
                 padding-block: 0.4375rem;
@@ -89,19 +94,23 @@
             }
 
             &--repeat {
-                background: #F49420;
+                background: #f49420;
                 block-size: 1.125rem;
                 inline-size: 1.375rem;
                 padding-block: 0.4375rem;
                 padding-inline: 0.2025rem;
-                border-left: 4px solid #F49420;
+                border-left: 4px solid #f49420;
             }
 
-            &--no-dontion {
+            &--new {
                 background: #000000;
+                block-size: 1.125rem;
+                inline-size: 1.375rem;
+                padding-block: 0.4375rem;
+                padding-inline: 0.2125rem;
+                padding: 16px 0 0 8px;
             }
         }
-
 
         &__label {
             flex-basis: fit-content;
@@ -137,7 +146,7 @@
         width: 100%;
 
         & > a {
-            color: #0878B0;
+            color: #0878b0;
             font-size: 1.125rem;
             font-weight: 700;
         }
@@ -181,7 +190,7 @@
     .amount > span {
         font-size: safe-rem(1.125);
         font-weight: 700;
-        color: #69B868;
+        color: #69b868;
     }
 }
 
