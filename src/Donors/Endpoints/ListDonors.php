@@ -72,6 +72,24 @@ class ListDonors extends Endpoint
                         'required' => false,
                         'validate_callback' => [$this, 'validateDate']
                     ],
+                    'sortColumn' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                    'sortDirection' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'enum' => [
+                            'asc',
+                            'desc'
+                        ],
+                    ],
+                    'locale' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'default' => get_locale(),
+                    ],
                 ],
             ]
         );
