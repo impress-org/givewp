@@ -15,9 +15,9 @@ use Give\Framework\Validation\Concerns\HasValidationRules;
  */
 abstract class Field implements Node
 {
-
     use Concerns\HasDefaultValue;
     use Concerns\HasName;
+    use Concerns\HasLabel;
     use Concerns\HasType;
     use Concerns\HasVisibilityConditions;
     use Concerns\IsReadOnly;

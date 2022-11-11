@@ -27,6 +27,11 @@ class Validator
     /**
      * @var array<string, string>
      */
+    private $labels;
+
+    /**
+     * @var array<string, string>
+     */
     private $errors = [];
 
     /**
@@ -46,13 +51,15 @@ class Validator
      */
     public static function fromForm(Form $form, array $values): self
     {
+        $labels = [];
         $rules = [];
 
         foreach ($form->getFields() as $field) {
             $rules[$field->getName()] = $field->getValidationRules();
+            $labels[$field->getName()] = $field->getLabel();
         }
 
-        return new self($rules, $values);
+        return new self($rules, $values, $labels);
     }
 
     /**
@@ -61,10 +68,11 @@ class Validator
      * @param array<string, ValidationRulesArray> $rules
      * @param array<string, mixed> $values
      */
-    public function __construct(array $rules, array $values)
+    public function __construct(array $rules, array $values, array $labels = [])
     {
         $this->rules = $rules;
         $this->values = $values;
+        $this->labels = $labels;
     }
 
     /**
@@ -130,10 +138,11 @@ class Validator
         }
 
         foreach($this->rules as $key => $fieldRule) {
+            $label = $this->labels[$key] ?? $key;
             $value = $this->values[$key] ?? null;
 
-            $fail = function (string $message) use ($key) {
-                $this->errors[] = str_replace('{field}', $key, $message);
+            $fail = function (string $message) use ($label) {
+                $this->errors[] = str_ireplace('{field}', $label, $message);
             };
 
             foreach ($fieldRule as $rule) {
