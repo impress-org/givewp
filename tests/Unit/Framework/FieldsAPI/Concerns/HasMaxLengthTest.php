@@ -1,13 +1,13 @@
 <?php
+
 namespace GiveTests\Unit\Framework\FieldsAPI\Concerns;
 
 use Give\Framework\FieldsAPI\Concerns\HasMaxLength;
-use Give\Framework\FieldsAPI\Concerns\ValidationRules;
+use Give\Framework\Validation\Concerns\HasValidationRules;
 use PHPUnit\Framework\TestCase;
 
 final class HasMaxLengthTest extends TestCase
 {
-
     public function testHasMaxLength()
     {
         $mock = new HasMaxLengthMock();
@@ -24,10 +24,5 @@ final class HasMaxLengthTest extends TestCase
 
 final class HasMaxLengthMock {
 	use HasMaxLength;
-
-	protected $validationRules;
-
-	public function __construct() {
-		$this->validationRules = new ValidationRules();
-	}
+    use HasValidationRules;
 }

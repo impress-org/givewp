@@ -8,12 +8,13 @@ use Give\Framework\FieldsAPI\Field;
 
 trait HasNodes
 {
-
-    /** @var Node[] */
+    /**
+     * @var Node[]
+     */
     protected $nodes = [];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getNodeIndexByName($name)
     {
@@ -23,11 +24,13 @@ trait HasNodes
             }
         }
 
-        return false;
+        return null;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
+     *
+     * @return Node|null
      */
     public function getNodeByName($name)
     {
@@ -37,7 +40,7 @@ trait HasNodes
             }
             if ($node instanceof Collection) {
                 $nestedNode = $node->getNodeByName($name);
-                if ( $nestedNode !== null ) {
+                if ($nestedNode !== null) {
                     return $nestedNode;
                 }
             }
@@ -47,17 +50,19 @@ trait HasNodes
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
-    public function all()
+    public function all(): array
     {
         return $this->nodes;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
+     *
+     * @return Field[]
      */
-    public function getFields()
+    public function getFields(): array
     {
         $fields = [];
 
@@ -73,9 +78,9 @@ trait HasNodes
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
-    public function count()
+    public function count(): int
     {
         return count($this->nodes);
     }

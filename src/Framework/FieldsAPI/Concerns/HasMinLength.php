@@ -2,26 +2,27 @@
 
 namespace Give\Framework\FieldsAPI\Concerns;
 
+use Give\Framework\Validation\Rules\Min;
+
 /**
+ * @unreleased update to new validation system
  * @since 2.14.0
- *
- * @property ValidationRules $validationRules
  */
 trait HasMinLength
 {
-
     /**
      * Set the value’s minimum length.
      *
+     * @unreleased update to new validation system
      * @since 2.14.0
-     *
-     * @param int $minLength
-     *
-     * @return $this
      */
-    public function minLength($minLength)
+    public function minLength(int $minLength): self
     {
-        $this->validationRules->rule('minLength', $minLength);
+        if ( $this->validationRules->hasRule('min') ) {
+            $this->validationRules->removeRuleWithId('min');
+        }
+
+        $this->validationRules->rules("min:$minLength");
 
         return $this;
     }
@@ -29,12 +30,15 @@ trait HasMinLength
     /**
      * Get the value’s minimum length.
      *
+     * @unreleased update to use the new validation system
      * @since 2.14.0
      *
      * @return int|null
      */
     public function getMinLength()
     {
-        return $this->validationRules->getRule('minLength');
+        $rule = $this->validationRules->getRule('min');
+
+        return $rule instanceof Min ? $rule->getSize() : null;
     }
 }
