@@ -56,7 +56,10 @@ class Validator
 
         foreach ($form->getFields() as $field) {
             $rules[$field->getName()] = $field->getValidationRules();
-            $labels[$field->getName()] = $field->getLabel();
+
+            if (method_exists($field, 'getLabel')) {
+                $labels[$field->getName()] = $field->getLabel();
+            }
         }
 
         return new self($rules, $values, $labels);
@@ -137,7 +140,7 @@ class Validator
             return;
         }
 
-        foreach($this->rules as $key => $fieldRule) {
+        foreach ($this->rules as $key => $fieldRule) {
             $label = $this->labels[$key] ?? $key;
             $value = $this->values[$key] ?? null;
 
