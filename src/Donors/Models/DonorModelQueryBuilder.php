@@ -82,9 +82,9 @@ class DonorModelQueryBuilder extends ModelQueryBuilder
      * @param array $donorIds Array of donor ids
      * @param bool  $single Return additional emails for the first donor id
      *
-     * @return array
+     * @return array|null
      */
-    private function getAdditionalEmails(array $donorIds, bool $single = false): array
+    private function getAdditionalEmails(array $donorIds, bool $single = false)
     {
         $results = DB::table('give_donormeta')
             ->select(['donor_id', 'donorId'])
@@ -94,11 +94,11 @@ class DonorModelQueryBuilder extends ModelQueryBuilder
                 'additionalEmails'
             )
             ->whereIn('donor_id', $donorIds)
-            ->where('meta_key', 'additional_emails')
+            ->where('meta_key', 'additional_email')
             ->getAll();
 
         if ( ! $results) {
-            return [];
+            return null;
         }
 
         $additionalEmails = [];
@@ -107,7 +107,7 @@ class DonorModelQueryBuilder extends ModelQueryBuilder
         }
 
         if ($single) {
-            return $additionalEmails[$donorIds[0]] ?? [];
+            return $additionalEmails[$donorIds[0]];
         }
 
         return $additionalEmails;
