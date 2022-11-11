@@ -6,11 +6,11 @@ use Exception;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\Exceptions\FailedDonorUpdateException;
 use Give\Donors\Models\Donor;
+use Give\Donors\Models\DonorModelQueryBuilder;
 use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Donors\ValueObjects\DonorType;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
@@ -36,9 +36,9 @@ class DonorRepository
      *
      * @since 2.19.6
      *
-     * @return ModelQueryBuilder<Donor>
+     * @return DonorModelQueryBuilder<Donor>
      */
-    public function queryById(int $donorId): ModelQueryBuilder
+    public function queryById(int $donorId): DonorModelQueryBuilder
     {
         return $this->prepareQuery()
             ->where('id', $donorId);
@@ -346,11 +346,11 @@ class DonorRepository
     /**
      * @since 2.19.6
      *
-     * @return ModelQueryBuilder<Donor>
+     * @return DonorModelQueryBuilder<Donor>
      */
-    public function prepareQuery(): ModelQueryBuilder
+    public function prepareQuery(): DonorModelQueryBuilder
     {
-        $builder = new ModelQueryBuilder(Donor::class);
+        $builder = new DonorModelQueryBuilder(Donor::class);
 
         return $builder->from('give_donors')
             ->select(
