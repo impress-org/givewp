@@ -42,9 +42,8 @@ class BlockRenderController
 
         /** @var DonationForm $donationForm */
         $donationForm = DonationForm::find($blockAttributes->formId);
-        $templateId = $donationForm->settings['templateId'] ?? '';
 
-        $viewUrl = (new GenerateDonationFormViewRouteUrl())($donationForm->id, $templateId);
+        $viewUrl = (new GenerateDonationFormViewRouteUrl())($donationForm->id);
 
         /**
          * Note: iframe-resizer uses querySelectorAll so using a data attribute makes the most sense to target.

@@ -11,6 +11,7 @@ use GiveTests\TestTraits\RefreshDatabase;
 class BlockRenderControllerTest extends TestCase
 {
     use RefreshDatabase;
+
     /**
      * @unreleased
      *
@@ -20,8 +21,7 @@ class BlockRenderControllerTest extends TestCase
     {
         /** @var DonationForm $donationForm */
         $donationForm = DonationForm::factory()->create();
-        $templateId = $donationForm->settings['templateId'];
-        $viewUrl = (new GenerateDonationFormViewRouteUrl())($donationForm->id, $templateId);
+        $viewUrl = (new GenerateDonationFormViewRouteUrl())($donationForm->id);
 
         $blockRenderController = new BlockRenderController();
 

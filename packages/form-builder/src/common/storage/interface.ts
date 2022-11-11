@@ -6,5 +6,5 @@ export interface StorageDriver {
 
     load(): FormData;
 
-    preview(templateId: string, blocks: Block[]): Promise<string>;
+    preview({blocks, formSettings}: FormData): Promise<string>;
 }

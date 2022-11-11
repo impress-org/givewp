@@ -11,15 +11,20 @@ class GenerateDonationFormViewRouteUrl
     /**
      * @unreleased
      */
-    public function __invoke(int $formId, string $formTemplateId): string
+    public function __invoke(int $formId, array $formSettings = []): string
     {
+        $args = [
+            'givewp-view' => 'donation-form',
+            'form-id' => $formId
+        ];
+
+        if (!empty($formSettings)) {
+            $args['form-settings'] = $formSettings;
+        }
+
         return esc_url_raw(
             add_query_arg(
-                [
-                    'givewp-view' => 'donation-form',
-                    'form-id' => $formId,
-                    'form-template-id' => $formTemplateId
-                ],
+                $args,
                 home_url()
             )
         );

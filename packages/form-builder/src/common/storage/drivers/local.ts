@@ -38,10 +38,10 @@ const localStorageDriver: StorageDriver = {
      * @param template
      * @param blocks
      */
-    preview: (template: string, blocks: Block[]) => {
+    preview: ({blocks, formSettings}: FormData) => {
         return new Promise<string>((resolve) => {
             setTimeout(function () {
-                resolve(template + JSON.stringify(blocks));
+                resolve(JSON.stringify(formSettings) + JSON.stringify(blocks));
             }, 1000);
         });
     }

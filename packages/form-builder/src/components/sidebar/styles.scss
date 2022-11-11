@@ -4,7 +4,7 @@
 
     &.givewp-next-gen-sidebar-primary {
         right: 0;
-        width: 284px;
+        width: var(--give-sidebar-width);
     }
 
     &.givewp-next-gen-sidebar-secondary {

@@ -13,14 +13,16 @@ class DonationFormViewRouteData
      * @var int
      */
     public $formId;
-    /**
-     * @var string|null
-     */
-    public $formTemplateId;
+
     /**
      * @var BlockCollection|null
      */
     public $formBlocks;
+
+    /**
+     * @var array
+     */
+    public $formSettings;
 
     /**
      * Convert data from request into DTO
@@ -32,7 +34,7 @@ class DonationFormViewRouteData
         $self = new static();
 
         $self->formId = (int)$request['form-id'];
-        $self->formTemplateId = !empty($request['form-template-id']) ? $request['form-template-id'] : '';
+        $self->formSettings = !empty($request['form-settings']) ? $request['form-settings'] : [];
         $self->formBlocks = !empty($request['form-blocks']) ? BlockCollection::fromJson(
             $request['form-blocks']
         ) : null;

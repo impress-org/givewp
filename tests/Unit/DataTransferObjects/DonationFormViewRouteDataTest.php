@@ -31,14 +31,16 @@ class DonationFormViewRouteDataTest extends TestCase
      *
      * @return void
      */
-    public function testShouldReturnFormTemplateId()
+    public function testShouldReturnFormSettings()
     {
         $data = DonationFormViewRouteData::fromRequest([
             'form-id' => '1',
-            'form-template-id' => 'classic',
+            'form-settings' => [
+                'templateId' => 'classic',
+            ],
         ]);
 
-        $this->assertSame('classic', $data->formTemplateId);
+        $this->assertSame('classic', $data->formSettings['templateId']);
     }
 
     /**

@@ -4,6 +4,7 @@ namespace Give\NextGen\DonationForm\Controllers;
 
 use Give\Framework\EnqueueScript;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormViewRouteData;
+use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\DonationForm\ViewModels\DonationFormViewModel;
 use Give\NextGen\Framework\FormTemplates\Registrars\FormTemplateRegistrar;
@@ -29,10 +30,17 @@ class DonationFormViewController
      */
     public function show(DonationFormViewRouteData $data): string
     {
-        $viewModel = new DonationFormViewModel($data->formId, $data->formBlocks);
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::find($data->formId);
+
+        $viewModel = new DonationFormViewModel($donationForm, $data->formBlocks, $data->formSettings);
 
         wp_enqueue_global_styles();
-        $this->enqueueFormScripts($data->formId, $data->formTemplateId);
+
+        $this->enqueueFormScripts(
+            $data->formId,
+            $viewModel->templateId()
+        );
 
         ob_start();
         wp_print_styles();
@@ -43,7 +51,13 @@ class DonationFormViewController
             window.giveNextGenExports = <?= wp_json_encode($viewModel->exports()) ?>;
         </script>
 
-        <div id="root-give-next-gen-donation-form-block"></div>
+        <div
+            id="root-give-next-gen-donation-form-block"
+            style="
+                --give-primary-color:<?= $viewModel->primaryColor() ?>;
+                --give-secondary-color:<?= $viewModel->secondaryColor() ?>;
+                "
+        ></div>
 
         <?php
         wp_print_footer_scripts();

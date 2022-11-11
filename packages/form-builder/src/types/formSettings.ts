@@ -8,4 +8,6 @@ export type FormSettings = {
     registration: string;
     goalFormat: string;
     templateId: string;
+    primaryColor: string;
+    secondaryColor: string;
 };

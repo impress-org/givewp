@@ -8,6 +8,9 @@
     --wp-admin-theme-color-darker-20--rgb: var(--give-primary-800--rgb);
     --wp-admin-border-width-focus: 2px;
 
+    // Layout
+    --give-sidebar-width: 284px;
+
     // Primary
     --give-primary-200: #E6FFE6;
     --give-primary-300: #C2F2C3;
@@ -296,4 +299,34 @@ svg {
 
 .components-panel__row:first-of-type {
     margin-top: 0.5rem;
+}
+
+/** ------------------------------- */
+
+// Add border around template color setting popovers.
+.block-editor-panel-color-gradient-settings__dropdown-content,
+.components-color-palette__custom-color-dropdown-content {
+    .components-popover__content,
+    .components-color-picker {
+        border: 1px solid var(--give-gray-40);
+    }
+}
+
+.block-editor-panel-color-gradient-settings__dropdown-content .components-popover__content {
+
+    // Move popover color panel out from underneath custom sidebar.
+    margin-right: var(--give-sidebar-width) !important;
+
+    // Remove fieldset border.
+    .block-editor-color-gradient-control__fieldset { border: 0; }
+}
+
+
+.components-color-palette__custom-color-dropdown-content .components-popover__content {
+
+    // Move popover color picker to not cover popover color panel.
+    margin-left: -115%;
+
+    // Prevent scrollbar in popover color picker.
+    .components-color-picker .components-h-stack { width: auto; }
 }
