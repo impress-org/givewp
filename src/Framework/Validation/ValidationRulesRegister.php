@@ -16,11 +16,25 @@ class ValidationRulesRegister
     protected $rules = [];
 
     /**
+     * Register one or many validation rules.
+     *
+     * @unreleased
+     */
+    public function register(string ...$rules): self
+    {
+        foreach ($rules as $rule) {
+            $this->registerClass($rule);
+        }
+
+        return $this;
+    }
+
+    /**
      * Register a validation rule.
      *
      * @unreleased
      */
-    public function register(string $class): self
+    private function registerClass(string $class): self
     {
         if (!is_subclass_of($class, ValidationRule::class)) {
             throw new InvalidArgumentException(
