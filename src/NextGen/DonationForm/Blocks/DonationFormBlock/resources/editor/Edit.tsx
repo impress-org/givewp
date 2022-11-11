@@ -1,13 +1,13 @@
 import {__} from '@wordpress/i18n';
 import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
-import {PanelBody, PanelRow, SelectControl} from '@wordpress/components';
+import {ExternalLink, PanelBody, PanelRow, SelectControl} from '@wordpress/components';
 import {Fragment} from '@wordpress/element';
 import useFormOptions from './hooks/useFormOptions';
 import ConfirmButton from './components/ConfirmButton';
 import Logo from './components/Logo';
 import {BlockEditProps} from "@wordpress/blocks";
 import ReactSelect from 'react-select';
-import {useCallback} from "react";
+import {useCallback} from 'react';
 
 
 /**
@@ -29,21 +29,31 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<any>) {
             <InspectorControls>
                 <PanelBody title={__('Form Settings', 'give')} initialOpen={true}>
                     <PanelRow>
-                        {!isResolving && formOptions.length === 0 ?
-                            <p>{__('No forms were found using the GiveWP form builder.', 'give')}</p> : (
-                                <SelectControl
-                                    label={__('Choose a donation form', 'give')}
-                                    value={formId ?? ''}
-                                    options={[
-                                        // add a disabled selector manually
-                                        ...[{value: '', label: __('Select...', 'give'), disabled: true}],
-                                        ...formOptions
-                                    ]}
-                                    onChange={(newFormId) => {
-                                        setAttributes({formId: newFormId});
-                                    }}
-                                />
-                            )}
+                        {!isResolving && formOptions.length === 0 ? (
+                            <p>{__('No forms were found using the GiveWP form builder.', 'give')}</p>
+                        ) : (
+                            <SelectControl
+                                label={__('Choose a donation form', 'give')}
+                                value={formId ?? ''}
+                                options={[
+                                    // add a disabled selector manually
+                                    ...[{value: '', label: __('Select...', 'give'), disabled: true}],
+                                    ...formOptions,
+                                ]}
+                                onChange={(newFormId) => {
+                                    setAttributes({formId: newFormId});
+                                }}
+                            />
+                        )}
+                    </PanelRow>
+                    <PanelRow>
+                        {formId && (
+                            <ExternalLink
+                                href={`/wp-admin/edit.php?post_type=give_forms&page=campaign-builder&donationFormID=${formId}`}
+                            >
+                                {__('Edit donation form', 'give')}
+                            </ExternalLink>
+                        )}
                     </PanelRow>
                 </PanelBody>
             </InspectorControls>
@@ -51,12 +61,11 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<any>) {
             {/*block preview*/}
             <div {...useBlockProps()}>
                 <div className="givewp-form-block--container">
-                    <Logo/>
+                    <Logo />
 
                     <div className="givewp-form-block__select--container">
-                        <label
-                            htmlFor="formId"
-                            className="givewp-form-block__select--label">{__('Choose a donation form', 'give')}
+                        <label htmlFor="formId" className="givewp-form-block__select--label">
+                            {__('Choose a donation form', 'give')}
                         </label>
 
                         <ReactSelect
@@ -64,14 +73,17 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<any>) {
                             name="formId"
                             inputId="formId"
                             value={getDefaultFormId()}
-                            placeholder={isResolving ? __('Loading Donation Forms...', 'give') : __('Select...', 'give')}
+                            placeholder={
+                                isResolving ? __('Loading Donation Forms...', 'give') : __('Select...', 'give')
+                            }
                             onChange={(option) => {
                                 if (option) {
                                     setAttributes({formId: option.value});
                                 }
                             }}
-                            noOptionsMessage={() =>
-                                <p>{__('No forms were found using the GiveWP form builder.', 'give')}</p>}
+                            noOptionsMessage={() => (
+                                <p>{__('No forms were found using the GiveWP form builder.', 'give')}</p>
+                            )}
                             options={formOptions}
                             loadingMessage={() => <>{__('Loading Donation Forms...', 'give')}</>}
                             isLoading={isResolving}
@@ -85,24 +97,23 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<any>) {
                             styles={{
                                 input: (provided, state) => ({
                                     ...provided,
-                                    height: '3rem'
+                                    height: '3rem',
                                 }),
                                 option: (provided, state) => ({
                                     ...provided,
                                     paddingTop: '0.8rem',
                                     paddingBottom: '0.8rem',
-                                    fontSize: '1rem'
+                                    fontSize: '1rem',
                                 }),
                                 control: (provided, state) => ({
                                     ...provided,
-                                    fontSize: '1rem'
-                                })
+                                    fontSize: '1rem',
+                                }),
                             }}
                         />
-
                     </div>
 
-                    <ConfirmButton/>
+                    <ConfirmButton />
                 </div>
             </div>
         </Fragment>
