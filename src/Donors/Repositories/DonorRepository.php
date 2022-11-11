@@ -370,7 +370,7 @@ class DonorRepository
                 'give_donormeta',
                 'ID',
                 'donor_id',
-                ...DonorMetaKeys::getColumnsForAttachMetaQueryWithAdditionalEmails()
+                ...DonorMetaKeys::getColumnsForAttachMetaQuery()
             );
     }
 
