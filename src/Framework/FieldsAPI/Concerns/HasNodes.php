@@ -16,7 +16,7 @@ trait HasNodes
     /**
      * @inheritdoc
      */
-    public function getNodeIndexByName($name)
+    public function getNodeIndexByName(string $name)
     {
         foreach ($this->nodes as $index => $node) {
             if ($node->getName() === $name) {
@@ -32,7 +32,7 @@ trait HasNodes
      *
      * @return Node|null
      */
-    public function getNodeByName($name)
+    public function getNodeByName(string $name)
     {
         foreach ($this->nodes as $node) {
             if ($node->getName() === $name) {

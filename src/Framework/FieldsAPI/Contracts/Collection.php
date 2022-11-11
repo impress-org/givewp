@@ -71,15 +71,19 @@ interface Collection
      * Inserts the given noe after the node with the given name.
      *
      * @since 2.10.2
+     *
+     * @return $this
      */
-    public function insertAfter(string $siblingName, Node $node): self;
+    public function insertAfter(string $siblingName, Node $node);
 
     /**
      * Inserts the given noe before the node with the given name.
      *
      * @since 2.10.2
+     *
+     * @return $this
      */
-    public function insertBefore(string $siblingName, Node $node): self;
+    public function insertBefore(string $siblingName, Node $node);
 
     /**
      * Walk through each node in the collection
