@@ -65,7 +65,6 @@
     &.end {
         text-align: end;
     }
-
 }
 
 .tableContent {
@@ -149,8 +148,22 @@
     inline-size: 3.25rem;
 }
 
-.amount, .donationRevenue, .donationCount, .latestDonations, .donorType, .dateCreated {
+.donationRevenue,
+.donationCount,
+.latestDonations,
+.donorType,
+.dateCreated,
+.donations,
+.name {
     inline-size: 6rem;
+}
+
+.formName {
+    inline-size: 7.25rem;
+}
+
+.revenue {
+    inline-size: 5rem;
 }
 
 @keyframes appear {
@@ -161,5 +174,3 @@
         opacity: 1;
     }
 }
-
-

@@ -15,7 +15,8 @@
         column-gap: safe-rem(1);
         text-transform: uppercase;
 
-        &--completed {
+        &--completed,
+        &--published {
             background: #69b868;
         }
 
@@ -27,6 +28,10 @@
         &--abandoned,
         &--cancelled {
             background: #f4c520;
+        }
+
+        &--draft {
+            background: #f49420;
         }
 
         &--pending,
@@ -178,6 +183,60 @@
             max-width: calc(100% - 4rem);
             white-space: nowrap;
             text-overflow: ellipsis;
+        }
+    }
+
+    .giveDonationFormsLink {
+        font-size: 1.125rem;
+        font-weight: 700;
+        text-decoration: none;
+        color: #2271b1;
+    }
+
+    .shortcode {
+        flex-shrink: 1;
+        min-inline-size: 0;
+        inline-size: 100%;
+        color: #2c3338;
+        background-color: #f6f7f7;
+        padding-block: 0.445rem;
+        padding-inline: 1.5rem;
+        text-indent: -1rem;
+        border: 1px solid grey;
+        border-radius: 4px;
+        cursor: text;
+        white-space: nowrap;
+        overflow: hidden;
+
+        &:hover {
+            border-color: #2271b1;
+            border-width: 2px;
+        }
+    }
+
+    .goalProgress {
+        width: 86%;
+        height: 0.5rem;
+        position: relative;
+        background: rgba(238, 238, 238);
+        border-radius: 1.5625rem;
+        overflow: hidden;
+        margin: 0.3125rem 0 0.125rem;
+
+        &--achieved {
+            position: absolute;
+            display: flex;
+            font-size: 0.8rem;
+            padding-block: 6px;
+        }
+
+        & > span {
+            display: block;
+            height: 100%;
+            border-radius: 1.25rem 0.5rem 0.5rem 1.25rem;
+            background-color: rgba(43, 194, 83);
+            position: relative;
+            overflow: hidden;
         }
     }
 
