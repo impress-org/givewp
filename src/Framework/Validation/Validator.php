@@ -158,8 +158,8 @@ class Validator
             $label = $this->labels[$key] ?? $key;
             $value = $this->values[$key] ?? null;
 
-            $fail = function (string $message) use ($label) {
-                $this->errors[] = str_ireplace('{field}', $label, $message);
+            $fail = function (string $message) use ($key, $label) {
+                $this->errors[$key] = str_ireplace('{field}', $label, $message);
             };
 
             foreach ($fieldRule as $rule) {
