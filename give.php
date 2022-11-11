@@ -59,6 +59,7 @@ use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\Framework\Database\ServiceProvider as DatabaseServiceProvider;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\Framework\Validation\ServiceProvider as ValidationsServiceProvider;
 use Give\Framework\WordPressShims\ServiceProvider as WordPressShimsServiceProvider;
 use Give\LegacySubscriptions\ServiceProvider as LegacySubscriptionsServiceProvider;
 use Give\License\LicenseServiceProvider;
@@ -199,6 +200,7 @@ final class Give
         LegacySubscriptionsServiceProvider::class,
         WordPressShimsServiceProvider::class,
         DatabaseServiceProvider::class,
+        ValidationsServiceProvider::class,
     ];
 
     /**
