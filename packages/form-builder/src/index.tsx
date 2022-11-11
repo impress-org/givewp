@@ -2,8 +2,6 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {BlockConfiguration, registerBlockType} from '@wordpress/blocks';
 
-import './index.scss';
-
 import App from './App';
 
 import sectionBlocks, {sectionBlockNames} from './blocks/section';

@@ -23,7 +23,7 @@ class FormBuilderViewModel
             'templates' => array_map(static function ($templateClass) {
                 /** @var FormTemplate $template */
                 $template = give($templateClass);
-                
+
                 return [
                     'id' => $template::id(),
                     'name' => $template::name(),
@@ -35,36 +35,8 @@ class FormBuilderViewModel
     /**
      * @unreleased
      */
-    public function shadowDomStyles(): string
+    public function jsPathFromRoot(): string
     {
-        return file_get_contents(trailingslashit(GIVE_NEXT_GEN_DIR) . 'packages/form-builder/build/' . $this->css());
-    }
-
-    /**
-     * @unreleased
-     */
-    public function attachShadowScript(): string
-    {
-        return "document.getElementById('app').attachShadow({mode: 'open'}).appendChild( document.getElementById('root') ).appendChild( document.getElementById('shadowDomStyles') )";
-    }
-
-    /**
-     * Get main css path
-     *
-     * @unreleased
-     */
-    public function css(): string
-    {
-        return 'givewp-form-builder.css';
-    }
-
-    /**
-     * Get main js path
-     *
-     * @unreleased
-     */
-    public function js(): string
-    {
-        return 'givewp-form-builder.js';
+        return 'packages/form-builder/build/givewp-form-builder.js';
     }
 }

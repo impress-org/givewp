@@ -66,19 +66,12 @@ class RegisterFormBuilderPageRoute
 
         (new EnqueueScript(
             '@givewp/form-builder/script',
-            'packages/form-builder/build/' . $formBuilderViewModel->js(),
+            $formBuilderViewModel->jsPathFromRoot(),
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
             'give'
         ))->loadInFooter()->enqueue();
 
-        wp_add_inline_script(
-            '@givewp/form-builder/script',
-            $formBuilderViewModel->attachShadowScript()
-        );
-
-        View::render('FormBuilder.admin-form-builder', [
-            'shadowDomStyles' => $formBuilderViewModel->shadowDomStyles(),
-        ]);
+        View::render('FormBuilder.admin-form-builder');
     }
 }

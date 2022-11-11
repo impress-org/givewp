@@ -6,9 +6,6 @@ import {FormStateProvider} from './stores/form-state';
 import {Storage} from './common';
 import type {Block} from '@givewp/form-builder/types';
 
-import '@wordpress/components/build-style/style.css';
-import '@wordpress/block-editor/build-style/style.css';
-
 import './App.scss';
 
 import defaultBlocks from './blocks.json';

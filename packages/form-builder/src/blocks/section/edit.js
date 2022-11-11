@@ -1,43 +1,37 @@
-import {__} from "@wordpress/i18n";
+import {__} from '@wordpress/i18n';
 
-import {
-    RichText,
-    InspectorControls,
-    InnerBlocks,
-} from "@wordpress/block-editor";
+import {InnerBlocks, InspectorControls, RichText} from '@wordpress/block-editor';
 
-import {
-    PanelBody,
-    PanelRow,
-    TextControl,
-    TextareaControl,
-} from "@wordpress/components";
+import {PanelBody, PanelRow, TextareaControl, TextControl} from '@wordpress/components';
 
 import {useSelect} from '@wordpress/data';
 
 export default function Edit(props) {
-
     const {
         attributes: {title, description},
         setAttributes,
     } = props;
 
-    const isParentOfSelectedBlock = useSelect((select) => select('core/block-editor').hasSelectedInnerBlock(props.clientId, true));
+    const isParentOfSelectedBlock = useSelect((select) =>
+        select('core/block-editor').hasSelectedInnerBlock(props.clientId, true)
+    );
     const isSelectedOrIsInnerBlockSelected = props.isSelected || isParentOfSelectedBlock;
     const borderColor = isSelectedOrIsInnerBlockSelected ? '#66bb6a' : 'lightgray';
 
     return (
         <>
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '24px',
-                marginBottom: '36px',
-                outline: '1px solid ' + borderColor,
-                borderRadius: '5px',
-                padding: '36px 40px',
-                backgroundColor: 'white',
-            }}>
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '24px',
+                    marginBottom: '36px',
+                    outline: '1px solid ' + borderColor,
+                    borderRadius: '5px',
+                    padding: '36px 40px',
+                    backgroundColor: 'white',
+                }}
+            >
                 <header style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
                     <RichText
                         tagName="h2"
@@ -54,21 +48,22 @@ export default function Edit(props) {
                 </header>
 
                 <InnerBlocks
-                    allowedBlocks={[] /* This prevents nested sections. Empty array is overwritten by child blocks specifying a parent. */}
+                    allowedBlocks={
+                        [] /* This prevents nested sections. Empty array is overwritten by child blocks specifying a parent. */
+                    }
                     template={props.attributes.innerBlocksTemplate}
-                    renderAppender={!!isSelectedOrIsInnerBlockSelected && InnerBlocks.ButtonBlockAppender}
+                    renderAppender={
+                        !!isSelectedOrIsInnerBlockSelected
+                            ? () => <InnerBlocks.ButtonBlockAppender isToggle={true} />
+                            : null
+                    }
                 />
-
             </div>
 
             <InspectorControls>
                 <PanelBody title={__('Attributes', 'give')} initialOpen={true}>
                     <PanelRow>
-                        <TextControl
-                            label={'Title'}
-                            value={title}
-                            onChange={(val) => setAttributes({title: val})}
-                        />
+                        <TextControl label={'Title'} value={title} onChange={(val) => setAttributes({title: val})} />
                     </PanelRow>
                     <PanelRow>
                         <TextareaControl

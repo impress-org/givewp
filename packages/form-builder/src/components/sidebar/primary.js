@@ -1,6 +1,8 @@
 import {createSlotFill} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 
+import './styles.scss';
+
 import TabPanel from './tab-panel';
 
 import {

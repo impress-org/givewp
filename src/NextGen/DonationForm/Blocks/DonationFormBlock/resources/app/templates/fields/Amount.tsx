@@ -75,7 +75,7 @@ function AmountButtons({name, currency, levels}: {name: string; currency: string
 
     return (
         <div className="givewp-fields-amount__levels--container">
-            {levels.map((levelAmount) => {
+            {levels.map((levelAmount, index) => {
                 const label = formatter.format(Number(levelAmount));
                 const selected = levelAmount === Number(amount);
                 return (
@@ -85,7 +85,7 @@ function AmountButtons({name, currency, levels}: {name: string; currency: string
                         })}
                         type="button"
                         onClick={() => setValue(name, levelAmount)}
-                        key={label}
+                        key={index}
                     >
                         {label}
                     </button>
