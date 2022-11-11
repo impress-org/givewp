@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Give\Framework\Validation;
 
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\FieldsAPI\Form;
 use Give\Framework\Validation\Contracts\Sanitizer;
 
@@ -68,12 +69,25 @@ class Validator
     /**
      * @unreleased
      *
-     * @param array<string, ValidationRulesArray> $rules
+     * @param array<string, ValidationRulesArray|array> $rules
      * @param array<string, mixed> $values
      */
     public function __construct(array $rules, array $values, array $labels = [])
     {
-        $this->rules = $rules;
+        $validatedRules = [];
+        foreach ($rules as $key => $rule) {
+            if (is_array($rule)) {
+                $validatedRules[$key] = give(ValidationRulesArray::class)->rules(...$rule);
+            } elseif ($rule instanceof ValidationRulesArray) {
+                $validatedRules[$key] = $rule;
+            } else {
+                throw new InvalidArgumentException(
+                    "Validation rules must be an instance of ValidationRulesArray or a compatible array"
+                );
+            }
+        }
+
+        $this->rules = $validatedRules;
         $this->values = $values;
         $this->labels = $labels;
     }
