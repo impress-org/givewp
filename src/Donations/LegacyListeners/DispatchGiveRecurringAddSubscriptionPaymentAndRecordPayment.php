@@ -23,7 +23,7 @@ class DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment
         $parent = new Give_Payment(give()->subscriptions->getInitialDonationId($donation->subscriptionId));
 
         $payment->parent_payment = $subscription->parent_payment_id;
-        $payment->total = $donation->amount;
+        $payment->total = $donation->amount->formatToDecimal();
         $payment->form_title = $donation->formTitle;
         $payment->form_id = $donation->formId;
         $payment->customer_id = $donation->donorId;
@@ -45,7 +45,7 @@ class DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment
             'give_recurring_record_payment',
             $payment,
             $subscription->parent_payment_id,
-            $donation->amount,
+            $donation->amount->formatToDecimal(),
             $donation->gatewayTransactionId
         );
     }
