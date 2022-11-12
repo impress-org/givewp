@@ -8,8 +8,10 @@ trait RemoveNode
 {
     /**
      * @since 2.10.2
+     *
+     * @return static
      */
-    public function remove(string $name): self
+    public function remove(string $name)
     {
         foreach ($this->nodes as $index => $node) {
             if ($node->getName() === $name) {
