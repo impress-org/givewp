@@ -12,6 +12,7 @@ use Give\Donors\ValueObjects\DonorType;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Support\Facades\DateTime\Temporal;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
 
@@ -481,5 +482,21 @@ class DonorRepository
     public function getDonorsCount(): int
     {
         return DB::table('give_donors')->count();
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param int $donorId
+     *
+     * @return Money
+     */
+    public function getTotalAmountDonated(int $donorId): Money
+    {
+        $totalAmountDonated = DB::table('give_donors')
+            ->where('id', $donorId)
+            ->value('purchase_value');
+
+        return Money::fromDecimal($totalAmountDonated, give_get_currency());
     }
 }

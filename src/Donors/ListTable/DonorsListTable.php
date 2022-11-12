@@ -3,6 +3,7 @@
 namespace Give\Donors\ListTable;
 
 use Give\Donors\ListTable\Columns\DateCreatedColumn;
+use Give\Donors\ListTable\Columns\DonationRevenueColumn;
 use Give\Donors\ListTable\Columns\DonationCountColumn;
 use Give\Donors\ListTable\Columns\DonorInformationColumn;
 use Give\Donors\ListTable\Columns\DonorTypeColumn;
@@ -35,6 +36,7 @@ class DonorsListTable extends ListTable
         return [
             new IdColumn(),
             new DonorInformationColumn(),
+            new DonationRevenueColumn(),
             new DonationCountColumn(),
             new LatestDonationColumn(),
             new DonorTypeColumn(),
@@ -51,6 +53,7 @@ class DonorsListTable extends ListTable
     {
         return [
             DonorInformationColumn::getId(),
+            DonationRevenueColumn::getId(),
             DonationCountColumn::getId(),
             LatestDonationColumn::getId(),
             DonorTypeColumn::getId(),
