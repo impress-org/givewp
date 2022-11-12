@@ -5,6 +5,7 @@ namespace Give\Donors\Endpoints;
 use Give\Donors\DataTransferObjects\DonorResponseData;
 use Give\Donors\ListTable\DonorsListTable;
 use Give\Framework\Database\DB;
+use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -171,12 +172,12 @@ class ListDonors extends Endpoint
     }
 
     /**
-     * @param QueryBuilder $builder
+     * @param ModelQueryBuilder $query
      * @since 2.21.0
      *
-     * @return QueryBuilder
+     * @return ModelQueryBuilder
      */
-    private function getWhereConditions(QueryBuilder $builder): QueryBuilder
+    private function getWhereConditions(ModelQueryBuilder $query): ModelQueryBuilder
     {
         $search = $this->request->get_param('search');
         $start = $this->request->get_param('start');
@@ -185,23 +186,23 @@ class ListDonors extends Endpoint
 
         if ($search) {
             if (ctype_digit($search)) {
-                $builder->where('id', $search);
+                $query->where('id', $search);
             } else {
-                $builder->whereLike('name', $search);
-                $builder->orWhereLike('email', $search);
+                $query->whereLike('name', $search);
+                $query->orWhereLike('email', $search);
             }
         }
 
         if ($start && $end) {
-            $builder->whereBetween('date_created', $start, $end);
+            $query->whereBetween('date_created', $start, $end);
         } else if ($start) {
-            $builder->where('date_created', $start, '>=');
+            $query->where('date_created', $start, '>=');
         } else if ($end) {
-            $builder->where('date_created', $end, '<=');
+            $query->where('date_created', $end, '<=');
         }
 
         if ($form) {
-            $builder
+            $query
                 ->whereIn('id', static function (QueryBuilder $builder) use ($form) {
                     $builder
                         ->from('give_donationmeta')
@@ -218,6 +219,6 @@ class ListDonors extends Endpoint
                 });
         }
 
-        return $builder;
+        return $query;
     }
 }
