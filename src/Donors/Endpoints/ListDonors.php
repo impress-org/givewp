@@ -102,8 +102,10 @@ class ListDonors extends Endpoint
     }
 
     /**
-     * @param WP_REST_Request $request
+     * @unreleased Change this to use the new ListTable class
      * @since 2.20.0
+     *
+     * @param WP_REST_Request $request
      *
      * @return WP_REST_Response
      */
@@ -128,6 +130,7 @@ class ListDonors extends Endpoint
     }
 
     /**
+     * @unreleased Replace Query Builder with Donations model
      * @since 2.21.0
      *
      * @return array
@@ -159,6 +162,7 @@ class ListDonors extends Endpoint
     }
 
     /**
+     * @unreleased Replace Query Builder with Donations model
      * @since 2.21.0
      *
      * @return int
@@ -172,8 +176,10 @@ class ListDonors extends Endpoint
     }
 
     /**
-     * @param ModelQueryBuilder $query
+     * @unreleased Replace Query Builder with Donors model
      * @since 2.21.0
+     *
+     * @param ModelQueryBuilder $query
      *
      * @return ModelQueryBuilder
      */

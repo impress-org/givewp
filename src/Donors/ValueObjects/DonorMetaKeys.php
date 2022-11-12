@@ -23,6 +23,8 @@ class DonorMetaKeys extends Enum
     const PREFIX = '_give_donor_title_prefix';
 
     /**
+     * @unreleased change function to remove ADDITIONAL_EMAILS from columns
+     *
      * @return array
      */
     public static function getColumnsForAttachMetaQueryWithoutAdditionalEmails()

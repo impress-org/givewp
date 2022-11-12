@@ -46,6 +46,8 @@ class DonationStatus extends Enum
     const RENEWAL = 'give_subscription';
 
     /**
+     * @unreleased
+     *
      * @return array
      */
     public static function labels(): array
@@ -65,6 +67,8 @@ class DonationStatus extends Enum
     }
 
     /**
+     * @unreleased
+     *
      * @return string
      */
     public function label(): string

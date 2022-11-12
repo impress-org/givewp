@@ -35,6 +35,7 @@ class DonorRepository
     /**
      * Query Donor By ID
      *
+     * @unreleased replace ModelQueryBuilder with DonorModelQueryBuilder
      * @since 2.19.6
      *
      * @return DonorModelQueryBuilder<Donor>
@@ -345,6 +346,7 @@ class DonorRepository
     }
 
     /**
+     * @unreleased replace ModelQueryBuilder with DonorModelQueryBuilder
      * @since 2.19.6
      *
      * @return DonorModelQueryBuilder<Donor>
@@ -429,6 +431,7 @@ class DonorRepository
     }
 
     /**
+     * @unreleased change return to DonorType
      * @since 2.20.0
      *
      * @return DonorType|null

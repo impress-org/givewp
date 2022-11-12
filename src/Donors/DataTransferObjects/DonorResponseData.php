@@ -69,6 +69,7 @@ final class DonorResponseData implements Arrayable
     /**
      * Convert data from object to Donor
      *
+     * @unreleased change how donor type is set
      * @since 2.20.0
      *
      * @param object $donor
