@@ -26,7 +26,7 @@ class DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment
         $payment = new Give_Payment($donation->id);
         $parent = new Give_Payment(give()->subscriptions->getInitialDonationId($donation->subscriptionId));
 
-        if (! $donation->type->isRenewal() ) {
+        if (! $donation->type->isRenewal()) {
             return;
         }
 
