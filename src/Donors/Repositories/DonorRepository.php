@@ -85,7 +85,7 @@ class DonorRepository
     {
         $additionalEmails = DB::table('give_donormeta')
             ->select(['meta_value', 'email'])
-            ->where('meta_key', 'additional_email')
+            ->where('meta_key', DonorMetaKeys::ADDITIONAL_EMAILS)
             ->where('donor_id', $donorId)
             ->getAll();
 
@@ -333,7 +333,7 @@ class DonorRepository
     {
         $donorMetaObject = DB::table('give_donormeta')
             ->select(['donor_id', 'id'])
-            ->where('meta_key', 'additional_email')
+            ->where('meta_key', DonorMetaKeys::ADDITIONAL_EMAILS)
             ->where('meta_value', $email)
             ->get();
 
@@ -371,7 +371,7 @@ class DonorRepository
                 'give_donormeta',
                 'ID',
                 'donor_id',
-                ...DonorMetaKeys::getColumnsForAttachMetaQuery()
+                ...DonorMetaKeys::getColumnsForAttachMetaQueryWithoutAdditionalEmails()
             );
     }
 
@@ -388,7 +388,7 @@ class DonorRepository
         foreach ($donor->additionalEmails as $additionalEmail) {
             DB::table('give_donormeta')
                 ->where('donor_id', $donor->id)
-                ->where('meta_key', 'additional_email')
+                ->where('meta_key', DonorMetaKeys::ADDITIONAL_EMAILS)
                 ->where('meta_value', $additionalEmail)
                 ->delete();
         }
@@ -398,7 +398,7 @@ class DonorRepository
                 ->where('donor_id', $donor->id)
                 ->insert([
                     'donor_id' => $donor->id,
-                    'meta_key' => 'additional_email',
+                    'meta_key' => DonorMetaKeys::ADDITIONAL_EMAILS,
                     'meta_value' => $additionalEmail,
                 ]);
         }
