@@ -10,6 +10,7 @@ use Give_Subscription;
 class DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment
 {
     /**
+     * @unreleased Assign int or string amount value to total property (Give_Payment class) and hook argument.
      * @since 2.23.0 remove use of Donation::parentId
      * @since 2.19.6
      *
