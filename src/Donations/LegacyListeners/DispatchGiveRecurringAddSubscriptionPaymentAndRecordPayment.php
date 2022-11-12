@@ -10,7 +10,7 @@ use Give_Subscription;
 class DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment
 {
     /**
-     * This function trigger legacy subscription renewal donation action hooks.
+     * This function triggers legacy subscription renewal donation action hooks.
      *
      * @unreleased Assign int or string amount value to total property (Give_Payment class) and hook argument.
      *
