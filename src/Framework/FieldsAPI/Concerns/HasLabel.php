@@ -19,8 +19,10 @@ trait HasLabel
 
     /**
      * @unreleased add types
+     *
+     * @return string|null
      */
-    public function getLabel(): string
+    public function getLabel()
     {
         return $this->label;
     }
