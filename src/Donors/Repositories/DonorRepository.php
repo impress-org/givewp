@@ -6,11 +6,13 @@ use Exception;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\Exceptions\FailedDonorUpdateException;
 use Give\Donors\Models\Donor;
+use Give\Donors\Models\DonorModelQueryBuilder;
 use Give\Donors\ValueObjects\DonorMetaKeys;
+use Give\Donors\ValueObjects\DonorType;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
 
@@ -33,11 +35,12 @@ class DonorRepository
     /**
      * Query Donor By ID
      *
+     * @unreleased replace ModelQueryBuilder with DonorModelQueryBuilder
      * @since 2.19.6
      *
-     * @return ModelQueryBuilder<Donor>
+     * @return DonorModelQueryBuilder<Donor>
      */
-    public function queryById(int $donorId): ModelQueryBuilder
+    public function queryById(int $donorId): DonorModelQueryBuilder
     {
         return $this->prepareQuery()
             ->where('id', $donorId);
@@ -83,7 +86,7 @@ class DonorRepository
     {
         $additionalEmails = DB::table('give_donormeta')
             ->select(['meta_value', 'email'])
-            ->where('meta_key', 'additional_email')
+            ->where('meta_key', DonorMetaKeys::ADDITIONAL_EMAILS)
             ->where('donor_id', $donorId)
             ->getAll();
 
@@ -331,7 +334,7 @@ class DonorRepository
     {
         $donorMetaObject = DB::table('give_donormeta')
             ->select(['donor_id', 'id'])
-            ->where('meta_key', 'additional_email')
+            ->where('meta_key', DonorMetaKeys::ADDITIONAL_EMAILS)
             ->where('meta_value', $email)
             ->get();
 
@@ -343,13 +346,14 @@ class DonorRepository
     }
 
     /**
+     * @unreleased replace ModelQueryBuilder with DonorModelQueryBuilder
      * @since 2.19.6
      *
-     * @return ModelQueryBuilder<Donor>
+     * @return DonorModelQueryBuilder<Donor>
      */
-    public function prepareQuery(): ModelQueryBuilder
+    public function prepareQuery(): DonorModelQueryBuilder
     {
-        $builder = new ModelQueryBuilder(Donor::class);
+        $builder = new DonorModelQueryBuilder(Donor::class);
 
         return $builder->from('give_donors')
             ->select(
@@ -369,7 +373,7 @@ class DonorRepository
                 'give_donormeta',
                 'ID',
                 'donor_id',
-                ...DonorMetaKeys::getColumnsForAttachMetaQueryWithAdditionalEmails()
+                ...DonorMetaKeys::getColumnsForAttachMetaQueryWithoutAdditionalEmails()
             );
     }
 
@@ -427,9 +431,10 @@ class DonorRepository
     }
 
     /**
+     * @unreleased change return to DonorType
      * @since 2.20.0
      *
-     * @return string|null
+     * @return DonorType|null
      */
     public function getDonorType(int $donorId)
     {
@@ -447,7 +452,7 @@ class DonorRepository
         }
 
         if (!$donor->donationCount) {
-            return 'new';
+            return DonorType::NEW();
         }
 
         // Donation IDs
@@ -464,14 +469,14 @@ class DonorRepository
             ->count();
 
         if ($recurringDonations) {
-            return 'subscriber';
+            return DonorType::SUBSCRIBER();
         }
 
         if ((int)$donor->donationCount > 1) {
-            return 'repeat';
+            return DonorType::REPEAT();
         }
 
-        return 'single';
+        return DonorType::SINGLE();
     }
 
     /**
@@ -480,5 +485,21 @@ class DonorRepository
     public function getDonorsCount(): int
     {
         return DB::table('give_donors')->count();
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param int $donorId
+     *
+     * @return Money
+     */
+    public function getTotalAmountDonated(int $donorId): Money
+    {
+        $totalAmountDonated = DB::table('give_donors')
+            ->where('id', $donorId)
+            ->value('purchase_value');
+
+        return Money::fromDecimal($totalAmountDonated, give_get_currency());
     }
 }

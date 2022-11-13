@@ -46,6 +46,8 @@ class DonationStatus extends Enum
     const RENEWAL = 'give_subscription';
 
     /**
+     * @unreleased
+     *
      * @return array
      */
     public static function labels(): array
@@ -60,10 +62,13 @@ class DonationStatus extends Enum
             self::ABANDONED => __( 'Abandoned', 'give' ),
             self::PREAPPROVAL => __( 'Preapproval Pending', 'give' ),
             self::REVOKED => __( 'Revoked', 'give' ),
+            self::RENEWAL => __( 'Renewal', 'give' ),
         ];
     }
 
     /**
+     * @unreleased
+     *
      * @return string
      */
     public function label(): string
