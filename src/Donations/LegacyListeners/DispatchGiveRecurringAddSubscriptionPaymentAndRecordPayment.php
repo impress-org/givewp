@@ -31,7 +31,7 @@ class DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment
         }
 
         $payment->parent_payment = $subscription->parent_payment_id;
-        $payment->total = $donation->amount->formatToDecimal();
+        $payment->total = (float) $donation->amount->formatToDecimal();
         $payment->form_title = $donation->formTitle;
         $payment->form_id = $donation->formId;
         $payment->customer_id = $donation->donorId;
@@ -53,7 +53,7 @@ class DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment
             'give_recurring_record_payment',
             $payment,
             $subscription->parent_payment_id,
-            $donation->amount->formatToDecimal(),
+            $payment->total,
             $donation->gatewayTransactionId
         );
     }
