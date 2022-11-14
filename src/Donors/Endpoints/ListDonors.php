@@ -2,9 +2,7 @@
 
 namespace Give\Donors\Endpoints;
 
-use Give\Donors\DataTransferObjects\DonorResponseData;
 use Give\Donors\ListTable\DonorsListTable;
-use Give\Framework\Database\DB;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_REST_Request;
