@@ -128,7 +128,7 @@ class ListDonors extends Endpoint
     }
 
     /**
-     * @unreleased Replace Query Builder with Donations model
+     * @unreleased Replace Query Builder with Donors model
      * @since 2.21.0
      *
      * @return array
@@ -160,7 +160,7 @@ class ListDonors extends Endpoint
     }
 
     /**
-     * @unreleased Replace Query Builder with Donations model
+     * @unreleased Replace Query Builder with Donors model
      * @since 2.21.0
      *
      * @return int
