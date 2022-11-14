@@ -99,6 +99,12 @@ class DonorModelQueryBuilder extends ModelQueryBuilder
             ->where('meta_key', 'additional_email')
             ->getAll();
 
+        // filter out any null objects
+        // for some reason our selectRaw statement will still return an object with null properties if empty
+        $results = array_filter($results, static function ($query) {
+            return (bool)$query->donorId;
+        });
+
         if (!$results) {
             return null;
         }
