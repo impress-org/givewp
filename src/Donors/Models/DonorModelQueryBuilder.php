@@ -53,6 +53,8 @@ class DonorModelQueryBuilder extends ModelQueryBuilder
     }
 
     /**
+     * Attach additional emails to query results later so that we can avoid additional Group By on the main query
+     *
      * @unreleased
      *
      * @param array|object $queryResults
