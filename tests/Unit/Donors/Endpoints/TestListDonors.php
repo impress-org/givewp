@@ -4,6 +4,8 @@ namespace GiveTests\Unit\Donors\Endpoints;
 
 use Exception;
 use Give\Donors\Endpoints\ListDonors;
+use Give\Donors\ListTable\DonorsListTable;
+use Give\Donors\Models\Donor;
 use GiveTests\TestCase;
 use GiveTests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
@@ -19,21 +21,57 @@ class TestListDonors extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testShowShouldReturnListDonorsData()
+    public function testShouldReturnListWithSameSize()
     {
+        $donors = Donor::factory()->count(5)->create();
+
         $mockRequest = $this->getMockRequest();
         // set_params
         $mockRequest->set_param('page', 1);
+        $mockRequest->set_param('perPage', 30);
+        $mockRequest->set_param('locale', 'us-US');
 
         $listDonors = new ListDonors();
 
         $response = $listDonors->handleRequest($mockRequest);
 
-        $this->assertSame([
-            'items' => [],
-            'totalItems' => 0,
-            'totalPages' => 1
-        ], $response);
+        $this->assertSameSize($donors, $response->data['items']);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testShouldReturnListWithSameData()
+    {
+        $donors = Donor::factory()->count(5)->create();
+        $sortDirection = ['asc', 'desc'][round(rand(0, 1))];
+        $mockRequest = $this->getMockRequest();
+        // set_params
+        $mockRequest->set_param('page', 1);
+        $mockRequest->set_param('perPage', 30);
+        $mockRequest->set_param('locale', 'us-US');
+        $mockRequest->set_param('sortColumn', 'id');
+        $mockRequest->set_param('sortDirection', $sortDirection);
+
+        $expectedItems = $this->getMockColumns($donors,$sortDirection);
+
+        $listDonors = new ListDonors();
+
+        $response = $listDonors->handleRequest($mockRequest);
+
+        foreach ( $response->data['items'] as $row => $item ) {
+            foreach ( $item as $key => &$value ) {
+                if ( 'donorInformation' === $key ) {
+                    $value = preg_replace('/(https?:\/\/)(\d\.)(gravatar.com)/', "$1$3", $value);
+                    $expectedItems[$row][$key] = preg_replace('/(https?:\/\/)(\d\.)(gravatar.com)/', "$1$3", $expectedItems[$row][$key]);
+                }
+
+                $this->assertEquals($expectedItems[$row][$key], $value);
+            }
+        }
     }
 
     /**
@@ -46,6 +84,32 @@ class TestListDonors extends TestCase
             WP_REST_Server::READABLE,
             '/wp/v2/admin/donors'
         );
+    }
+
+    /**
+     * @param string $sortDirection
+     *
+     * @return array
+     */
+    public function getMockColumns(array $donors, string $sortDirection = 'desc'): array
+    {
+        $listTable = new DonorsListTable();
+        $columns = $listTable->getColumns();
+
+        $expectedItems = [];
+        foreach ( $donors as $donor ) {
+            $expectedItem = [];
+            foreach ( $columns as $column ) {
+                $expectedItem[$column::getId()] = $column->getCellValue($donor);
+            }
+            $expectedItems[] = $expectedItem;
+        }
+
+        if ($sortDirection === 'desc') {
+            $expectedItems = array_reverse($expectedItems);
+        }
+
+        return $expectedItems;
     }
 }
 
