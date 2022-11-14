@@ -362,7 +362,7 @@ class DonorRepository
                 'email',
                 'name',
                 ['purchase_value', 'totalAmountDonated'],
-                ['purchase_count', 'totalDonations'],
+                ['purchase_count', 'totalNumberOfDonations'],
                 ['payment_ids', 'paymentIds'],
                 ['date_created', 'createdAt'],
                 'token',

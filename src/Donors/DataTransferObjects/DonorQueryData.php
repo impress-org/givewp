@@ -5,6 +5,7 @@ namespace Give\Donors\DataTransferObjects;
 use Give\Donors\Models\Donor;
 use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Framework\Support\Facades\DateTime\Temporal;
+use Give\Framework\Support\ValueObjects\Money;
 
 /**
  * Class DonorObjectData
@@ -50,10 +51,19 @@ final class DonorQueryData
      * @var string
      */
     public $prefix;
+    /**
+     * @var Money
+     */
+    public $totalAmountDonated;
+    /**
+     * @var int
+     */
+    public $totalNumberOfDonations;
 
     /**
      * Convert data from donor object to Donor Model
      *
+     * @unreleased add $totalAmountDonated and $totalNumberOfDonations
      * @since 2.20.0 add donor prefix property
      * @since 2.19.6
      *
@@ -72,6 +82,8 @@ final class DonorQueryData
         $self->lastName = $object->lastName;
         $self->createdAt = Temporal::toDateTime($object->createdAt);
         $self->additionalEmails = json_decode($object->additionalEmails, true);
+        $self->totalAmountDonated = Money::fromDecimal($object->totalAmountDonated, give_get_currency());
+        $self->totalNumberOfDonations = (int)$object->totalNumberOfDonations;
 
         return $self;
     }

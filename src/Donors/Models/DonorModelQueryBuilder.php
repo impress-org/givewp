@@ -2,6 +2,7 @@
 
 namespace Give\Donors\Models;
 
+use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Models\ModelQueryBuilder;
 
@@ -66,6 +67,7 @@ class DonorModelQueryBuilder extends ModelQueryBuilder
         if (is_array($queryResults)) {
             $donorIds = wp_list_pluck($queryResults, 'id');
             $additionalEmails = $this->getAdditionalEmails($donorIds);
+
             $queryResults = array_map(function ($donor) use ($additionalEmails) {
                 $donor->additionalEmails = $additionalEmails[$donor->id] ?? '';
 
@@ -91,15 +93,28 @@ class DonorModelQueryBuilder extends ModelQueryBuilder
         $results = DB::table('give_donormeta')
             ->select(['donor_id', 'donorId'])
             ->selectRaw(
+                " COALESCE(CONCAT('[',GROUP_CONCAT(DISTINCT CONCAT('\"',%1s,'\"')),']'), '') AS %2s",
+                'meta_value',
+                'additionalEmails'
+            )
+            ->whereIn('donor_id', $donorIds)
+            ->where('meta_key', DonorMetaKeys::ADDITIONAL_EMAILS)
+            ->whereIsNotNull('meta_value')
+            ->getAll();
+
+        $sql = DB::table('give_donormeta')
+            ->select(['donor_id', 'donorId'])
+            ->selectRaw(
                 "CONCAT('[',GROUP_CONCAT(DISTINCT CONCAT('\"',%1s,'\"')),']') AS %2s",
                 'meta_value',
                 'additionalEmails'
             )
             ->whereIn('donor_id', $donorIds)
-            ->where('meta_key', 'additional_email')
-            ->getAll();
+            ->where('meta_key', DonorMetaKeys::ADDITIONAL_EMAILS)
+            ->whereIsNotNull('meta_value')
+            ->getSQL();
 
-        if ( ! $results) {
+        if (!$results) {
             return null;
         }
 
