@@ -1,7 +1,6 @@
 @use 'assets/src/css/Safe-Rem/functions' as *;
 
 .interweave {
-
     .statusBadge {
         display: flex;
         justify-content: center;
@@ -16,20 +15,28 @@
         column-gap: safe-rem(1);
         text-transform: uppercase;
 
-        &--completed {
-            background: #69B868
+        &--completed,
+        &--published {
+            background: #69b868;
         }
 
-        &--failed {
-            background: #D75A4B;
+        &--failed,
+        &--revoked {
+            background: #d75a4b;
         }
 
-        &--abandoned {
-            background: #F4C520;
+        &--abandoned,
+        &--cancelled {
+            background: #f4c520;
         }
 
-        &--pending {
-            background: #0878B0;
+        &--draft {
+            background: #f49420;
+        }
+
+        &--pending,
+        &--processing {
+            background: #0878b0;
         }
 
         &--refunded {
@@ -42,7 +49,6 @@
         align-items: center;
         justify-content: space-between;
         position: relative;
-        min-width: 85%;
         inline-size: -moz-fit-content;
         max-inline-size: fit-content;
         block-size: 2rem;
@@ -60,10 +66,9 @@
         }
 
         .icon {
-            flex: 1;
             display: inline;
-            min-width: 2rem;
-            max-width: 2rem;
+            min-width: 1.75rem;
+            max-width: 1.75rem;
             border-top-left-radius: 0.1875rem;
             border-bottom-left-radius: 0.1875rem;
             font-size: 1.125rem;
@@ -73,16 +78,20 @@
             box-sizing: content-box !important;
             overflow: hidden;
 
-            &--onetime {
-                background: #556E79;
+            &--onetime,
+            &--single {
+                background: #556e79;
                 block-size: 1.125rem;
                 inline-size: 1.375rem;
                 padding-block: 0.4375rem;
                 padding-inline: 0.3125rem;
+                padding-top: 13px;
             }
 
-            &--recurring, &--subscription {
-                background: linear-gradient(225.34deg, #59AD70 0%, #2EBBBB 101.17%);
+            &--recurring,
+            &--subscription,
+            &--subscriber {
+                background: linear-gradient(225.34deg, #59ad70 0%, #2ebbbb 101.17%);
                 block-size: 1.125rem;
                 inline-size: 1.375rem;
                 padding-block: 0.4375rem;
@@ -90,18 +99,25 @@
             }
 
             &--repeat {
-                background: #F49420;
+                background: #f49420;
                 block-size: 1.125rem;
                 inline-size: 1.375rem;
                 padding-block: 0.4375rem;
                 padding-inline: 0.2025rem;
-                border-left: 4px solid #F49420;
+                border-left: 4px solid #f49420;
+            }
+
+            &--new {
+                background: #000000;
+                block-size: 1.125rem;
+                inline-size: 1.375rem;
+                padding-block: 0.4375rem;
+                padding-inline: 0.2125rem;
+                padding: 16px 0 0 8px;
             }
         }
 
-
         &__label {
-            flex: 1;
             flex-basis: fit-content;
             margin: 0;
             padding: safe-rem(0.6125) safe-rem(0.65);
@@ -135,7 +151,7 @@
         width: 100%;
 
         & > a {
-            color: #0878B0;
+            color: #0878b0;
             font-size: 1.125rem;
             font-weight: 700;
         }
@@ -170,6 +186,60 @@
         }
     }
 
+    .giveDonationFormsLink {
+        font-size: 1.125rem;
+        font-weight: 700;
+        text-decoration: none;
+        color: #2271b1;
+    }
+
+    .shortcode {
+        flex-shrink: 1;
+        min-inline-size: 0;
+        inline-size: 100%;
+        color: #2c3338;
+        background-color: #f6f7f7;
+        padding-block: 0.445rem;
+        padding-inline: 1.5rem;
+        text-indent: -1rem;
+        border: 1px solid grey;
+        border-radius: 4px;
+        cursor: text;
+        white-space: nowrap;
+        overflow: hidden;
+
+        &:hover {
+            border-color: #2271b1;
+            border-width: 2px;
+        }
+    }
+
+    .goalProgress {
+        width: 86%;
+        height: 0.5rem;
+        position: relative;
+        background: rgba(238, 238, 238);
+        border-radius: 1.5625rem;
+        overflow: hidden;
+        margin: 0.3125rem 0 0.125rem;
+
+        &--achieved {
+            position: absolute;
+            display: flex;
+            font-size: 0.8rem;
+            padding-block: 6px;
+        }
+
+        & > span {
+            display: block;
+            height: 100%;
+            border-radius: 1.25rem 0.5rem 0.5rem 1.25rem;
+            background-color: rgba(43, 194, 83);
+            position: relative;
+            overflow: hidden;
+        }
+    }
+
     .date {
         font-size: safe-rem(0.8);
         font-weight: 600;
@@ -179,7 +249,7 @@
     .amount > span {
         font-size: safe-rem(1.125);
         font-weight: 700;
-        color: #69B868;
+        color: #69b868;
     }
 }
 
