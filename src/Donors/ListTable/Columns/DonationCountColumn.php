@@ -46,7 +46,7 @@ class DonationCountColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        $totalDonations = $model->totalDonations();
+        $totalDonations = $model->totalNumberOfDonations;
 
         $label = $totalDonations > 0
             ? sprintf(
