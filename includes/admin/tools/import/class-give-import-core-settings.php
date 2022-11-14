@@ -486,6 +486,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 
 			$existing_mimes['json'] = 'application/json';
             $existing_mimes['text'] = 'text/plain';
+  			$existing_mimes['text'] = 'text/html';          
 
 			return $existing_mimes;
 		}
