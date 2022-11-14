@@ -3,9 +3,7 @@
 namespace Give\Donations\Endpoints;
 
 use Give\Donations\ListTable\DonationsListTable;
-use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
-use Give\Framework\ListTable\ListTable;
 use Give\Framework\Models\ModelQueryBuilder;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -23,7 +21,7 @@ class ListDonations extends Endpoint
     protected $request;
 
     /**
-     * @var ListTable
+     * @var DonationsListTable
      */
     protected $listTable;
 

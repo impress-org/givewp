@@ -2,6 +2,7 @@
 
 namespace Give\Donors;
 
+use Give\Donors\ListTable\DonorsListTable;
 use Give\Helpers\EnqueueScript;
 
 class DonorsAdminPage
@@ -19,12 +20,18 @@ class DonorsAdminPage
     private $apiNonce;
 
     /**
+     * @var string
+     */
+    private $adminUrl;
+
+    /**
      * @since 2.20.0
      */
     public function __construct()
     {
         $this->apiRoot = esc_url_raw(rest_url('give-api/v2/admin/donors'));
         $this->apiNonce = wp_create_nonce('wp_rest');
+        $this->adminUrl = admin_url();
     }
 
     /**
@@ -58,6 +65,8 @@ class DonorsAdminPage
             'apiNonce' => $this->apiNonce,
             'preload' => $this->preloadDonors(),
             'forms' => $this->getForms(),
+            'table' => give(DonorsListTable::class)->toArray(),
+            'adminUrl' => $this->adminUrl,
         ];
 
         EnqueueScript::make('give-admin-donors', 'assets/dist/js/give-admin-donors.js')
