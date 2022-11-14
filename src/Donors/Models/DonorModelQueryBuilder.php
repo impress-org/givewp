@@ -67,12 +67,12 @@ class DonorModelQueryBuilder extends ModelQueryBuilder
             $donorIds = wp_list_pluck($queryResults, 'id');
             $additionalEmails = $this->getAdditionalEmails($donorIds);
             $queryResults = array_map(function ($donor) use ($additionalEmails) {
-                $donor->additionalEmails = $additionalEmails[$donor->id] ?? '';
+                $donor->additionalEmails = $additionalEmails[$donor->id] ?? [];
 
                 return $donor;
             }, $queryResults);
         } else {
-            $queryResults->additionalEmails = $this->getAdditionalEmails([$queryResults->id], true) ?? '';
+            $queryResults->additionalEmails = $this->getAdditionalEmails([$queryResults->id], true) ?? [];
         }
 
         return $queryResults;
@@ -89,21 +89,10 @@ class DonorModelQueryBuilder extends ModelQueryBuilder
     private function getAdditionalEmails(array $donorIds, bool $single = false)
     {
         $results = DB::table('give_donormeta')
-            ->select(['donor_id', 'donorId'])
-            ->selectRaw(
-                "CONCAT('[',GROUP_CONCAT(DISTINCT CONCAT('\"',%1s,'\"')),']') AS %2s",
-                'meta_value',
-                'additionalEmails'
-            )
+            ->select(['donor_id', 'donorId'], ['meta_value', 'additionalEmails'])
             ->whereIn('donor_id', $donorIds)
             ->where('meta_key', 'additional_email')
             ->getAll();
-
-        // filter out any null objects
-        // for some reason our selectRaw statement will still return an object with null properties if empty
-        $results = array_filter($results, static function ($query) {
-            return (bool)$query->donorId;
-        });
 
         if (!$results) {
             return null;
@@ -111,7 +100,7 @@ class DonorModelQueryBuilder extends ModelQueryBuilder
 
         $additionalEmails = [];
         foreach ($results as $result) {
-            $additionalEmails[(int)$result->donorId] = $result->additionalEmails;
+            $additionalEmails[(int)$result->donorId][] = $result->additionalEmails;
         }
 
         if ($single) {

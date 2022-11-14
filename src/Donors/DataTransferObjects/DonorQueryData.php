@@ -44,7 +44,7 @@ final class DonorQueryData
      */
     public $lastName;
     /**
-     * @var mixed
+     * @var array
      */
     public $additionalEmails;
     /**
@@ -81,7 +81,7 @@ final class DonorQueryData
         $self->firstName = $object->firstName;
         $self->lastName = $object->lastName;
         $self->createdAt = Temporal::toDateTime($object->createdAt);
-        $self->additionalEmails = json_decode($object->additionalEmails, true);
+        $self->additionalEmails = $object->additionalEmails;
         $self->totalAmountDonated = Money::fromDecimal($object->totalAmountDonated, give_get_currency());
         $self->totalNumberOfDonations = (int)$object->totalNumberOfDonations;
 

@@ -51,7 +51,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
         'lastName' => 'string',
         'email' => 'string',
         'prefix' => 'string',
-        'additionalEmails' => 'array',
+        'additionalEmails' => ['array', []],
         'totalAmountDonated' => Money::class,
         'totalNumberOfDonations' => 'int'
     ];
