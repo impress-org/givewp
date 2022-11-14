@@ -46,11 +46,10 @@ class DonationCountColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        $totalDonations = $model->totalDonations();
-        $label = __('No donations', 'give');
+        $totalDonations = $model->totalNumberOfDonations;
 
-        if ($totalDonations > 0) {
-            $label = sprintf(
+        $label = $totalDonations > 0
+            ? sprintf(
                 _n(
                     '%1$s donation',
                     '%1$s donations',
@@ -58,8 +57,7 @@ class DonationCountColumn extends ModelColumn
                     'give'
                 ),
                 $totalDonations
-            );
-        }
+            ) : __('No donations', 'give');
 
         return sprintf(
             '<a href="%s" aria-label="%s">%s</a>',

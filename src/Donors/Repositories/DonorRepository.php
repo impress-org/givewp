@@ -12,7 +12,6 @@ use Give\Donors\ValueObjects\DonorType;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Support\Facades\DateTime\Temporal;
-use Give\Framework\Support\ValueObjects\Money;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
 
@@ -98,6 +97,7 @@ class DonorRepository
     }
 
     /**
+     * @unreleased add support for $donor->totalAmountDonated and $donor->totalNumberOfDonation
      * @since 2.21.0 add actions givewp_donor_creating and givewp_donor_created
      * @since 2.20.0 mutate model and return void
      * @since 2.19.6
@@ -115,14 +115,24 @@ class DonorRepository
 
         DB::query('START TRANSACTION');
 
+        $args = [
+            'date_created' => Temporal::getFormattedDateTime($dateCreated),
+            'user_id' => $donor->userId ?? 0,
+            'email' => $donor->email,
+            'name' => $donor->name,
+        ];
+
+        if (isset($donor->totalAmountDonated)) {
+            $args['purchase_value'] = $donor->totalAmountDonated->formatToDecimal();
+        }
+
+        if (isset($donor->totalNumberOfDonations)) {
+            $args['purchase_count'] = $donor->totalNumberOfDonations;
+        }
+
         try {
             DB::table('give_donors')
-                ->insert([
-                    'date_created' => Temporal::getFormattedDateTime($dateCreated),
-                    'user_id' => $donor->userId ?? 0,
-                    'email' => $donor->email,
-                    'name' => $donor->name
-                ]);
+                ->insert($args);
 
             $donorId = DB::last_insert_id();
 
@@ -162,6 +172,7 @@ class DonorRepository
     }
 
     /**
+     * @unreleased add support for $donor->totalAmountDonated and $donor->totalNumberOfDonation
      * @since 2.23.1 use give()->donor_meta to update meta so data is upserted
      * @since 2.21.0 add actions givewp_donor_updating and givewp_donor_updated
      * @since 2.20.0 return void
@@ -178,14 +189,24 @@ class DonorRepository
 
         DB::query('START TRANSACTION');
 
+        $args = [
+            'user_id' => $donor->userId,
+            'email' => $donor->email,
+            'name' => $donor->name
+        ];
+
+        if (isset($donor->totalAmountDonated) && $donor->isDirty('totalAmountDonated')) {
+            $args['purchase_value'] = $donor->totalAmountDonated->formatToDecimal();
+        }
+
+        if (isset($donor->totalNumberOfDonations) && $donor->isDirty('totalNumberOfDonations')) {
+            $args['purchase_count'] = $donor->totalNumberOfDonations;
+        }
+
         try {
             DB::table('give_donors')
                 ->where('id', $donor->id)
-                ->update([
-                    'user_id' => $donor->userId,
-                    'email' => $donor->email,
-                    'name' => $donor->name
-                ]);
+                ->update($args);
 
             foreach ($this->getCoreDonorMeta($donor) as $metaKey => $metaValue) {
                 give()->donor_meta->update_meta($donor->id, $metaKey, $metaValue);
@@ -362,7 +383,7 @@ class DonorRepository
                 'email',
                 'name',
                 ['purchase_value', 'totalAmountDonated'],
-                ['purchase_count', 'totalDonations'],
+                ['purchase_count', 'totalNumberOfDonations'],
                 ['payment_ids', 'paymentIds'],
                 ['date_created', 'createdAt'],
                 'token',
@@ -485,21 +506,5 @@ class DonorRepository
     public function getDonorsCount(): int
     {
         return DB::table('give_donors')->count();
-    }
-
-    /**
-     * @unreleased
-     *
-     * @param int $donorId
-     *
-     * @return Money
-     */
-    public function getTotalAmountDonated(int $donorId): Money
-    {
-        $totalAmountDonated = DB::table('give_donors')
-            ->where('id', $donorId)
-            ->value('purchase_value');
-
-        return Money::fromDecimal($totalAmountDonated, give_get_currency());
     }
 }

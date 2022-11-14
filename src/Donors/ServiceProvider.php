@@ -21,7 +21,7 @@ class ServiceProvider implements ServiceProviderInterface
         give()->singleton('donors', DonorRepositoryProxy::class);
         give()->singleton(DonorsListTable::class, function() {
             $listTable = new DonorsListTable();
-            do_action('give_donors_list_table', $listTable);
+            Hooks::doAction('givewp_donors_list_table', $listTable);
 
             return $listTable;
         });

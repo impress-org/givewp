@@ -2,9 +2,7 @@
 
 namespace Give\Donors\Endpoints;
 
-use Give\Donors\DataTransferObjects\DonorResponseData;
 use Give\Donors\ListTable\DonorsListTable;
-use Give\Framework\Database\DB;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_REST_Request;
@@ -130,7 +128,7 @@ class ListDonors extends Endpoint
     }
 
     /**
-     * @unreleased Replace Query Builder with Donations model
+     * @unreleased Replace Query Builder with Donors model
      * @since 2.21.0
      *
      * @return array
@@ -162,7 +160,7 @@ class ListDonors extends Endpoint
     }
 
     /**
-     * @unreleased Replace Query Builder with Donations model
+     * @unreleased Replace Query Builder with Donors model
      * @since 2.21.0
      *
      * @return int

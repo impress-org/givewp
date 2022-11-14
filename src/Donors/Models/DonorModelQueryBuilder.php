@@ -53,6 +53,8 @@ class DonorModelQueryBuilder extends ModelQueryBuilder
     }
 
     /**
+     * Attach additional emails to query results later so that we can avoid additional Group By on the main query
+     *
      * @unreleased
      *
      * @param array|object $queryResults
@@ -65,12 +67,12 @@ class DonorModelQueryBuilder extends ModelQueryBuilder
             $donorIds = wp_list_pluck($queryResults, 'id');
             $additionalEmails = $this->getAdditionalEmails($donorIds);
             $queryResults = array_map(function ($donor) use ($additionalEmails) {
-                $donor->additionalEmails = $additionalEmails[$donor->id] ?? '';
+                $donor->additionalEmails = $additionalEmails[$donor->id] ?? [];
 
                 return $donor;
             }, $queryResults);
         } else {
-            $queryResults->additionalEmails = $this->getAdditionalEmails([$queryResults->id], true) ?? '';
+            $queryResults->additionalEmails = $this->getAdditionalEmails([$queryResults->id], true) ?? [];
         }
 
         return $queryResults;
@@ -87,23 +89,18 @@ class DonorModelQueryBuilder extends ModelQueryBuilder
     private function getAdditionalEmails(array $donorIds, bool $single = false)
     {
         $results = DB::table('give_donormeta')
-            ->select(['donor_id', 'donorId'])
-            ->selectRaw(
-                "CONCAT('[',GROUP_CONCAT(DISTINCT CONCAT('\"',%1s,'\"')),']') AS %2s",
-                'meta_value',
-                'additionalEmails'
-            )
+            ->select(['donor_id', 'donorId'], ['meta_value', 'additionalEmails'])
             ->whereIn('donor_id', $donorIds)
             ->where('meta_key', 'additional_email')
             ->getAll();
 
-        if ( ! $results) {
+        if (!$results) {
             return null;
         }
 
         $additionalEmails = [];
         foreach ($results as $result) {
-            $additionalEmails[(int)$result->donorId] = $result->additionalEmails;
+            $additionalEmails[(int)$result->donorId][] = $result->additionalEmails;
         }
 
         if ($single) {

@@ -44,11 +44,9 @@ class DonationRevenueColumn extends ModelColumn
      */
     public function getCellValue($model, $locale = ''): string
     {
-        $totalAmountDonated = give()->donors->getTotalAmountDonated($model->id);
-
         return sprintf(
             '<div class="amount"><span>%s</span></div>',
-            $totalAmountDonated->formatToLocale($locale)
+            $model->totalAmountDonated->formatToLocale($locale)
         );
     }
 }
