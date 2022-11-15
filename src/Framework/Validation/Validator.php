@@ -168,9 +168,9 @@ class Validator
                 if ($rule instanceof Sanitizer) {
                     $value = $rule->sanitize($value);
                 }
-
-                $this->validatedValues[$key] = $value;
             }
+
+            $this->validatedValues[$key] = $value;
         }
 
         $this->ranValidationRules = true;
