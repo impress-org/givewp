@@ -485,7 +485,7 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
  *
  * @return void
  */
-function give_undo_purchase( $form_id = false, $payment_id ) {
+function give_undo_purchase( $form_id, $payment_id ) {
 
 	$backtrace = debug_backtrace();
 
@@ -546,7 +546,7 @@ function give_increase_purchase_count( $form_id = 0, $quantity = 1 ) {
  *
  * @return void
  */
-function give_record_sale_in_log( $give_form_id = 0, $payment_id, $price_id = false, $sale_date = null ) {
+function give_record_sale_in_log( $give_form_id, $payment_id, $price_id = false, $sale_date = null ) {
 	$backtrace = debug_backtrace();
 
 	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_record_donation_in_log', $backtrace );
@@ -777,7 +777,7 @@ function give_get_payment_amount( $payment_id ) {
  *
  * @return bool|int
  */
-function give_decrease_earnings( $form_id = 0, $amount ) {
+function give_decrease_earnings( $form_id, $amount ) {
 	return give_decrease_form_earnings( $form_id, $amount );
 }
 
