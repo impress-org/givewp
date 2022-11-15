@@ -125,6 +125,16 @@ class ValidationRulesArray implements IteratorAggregate, JsonSerializable
     }
 
     /**
+     * Returns whether the array has any rules set.
+     *
+     * @unreleased
+     */
+    public function hasRules(): bool
+    {
+        return !empty($this->rules);
+    }
+
+    /**
      * Along with the IteratorAggregate interface, we can iterate over the validation rules.
      *
      * @unreleased
