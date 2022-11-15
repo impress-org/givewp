@@ -12,8 +12,6 @@ class DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment
     /**
      * This function triggers legacy subscription renewal donation action hooks.
      *
-     * @unreleased Assign int or string amount value to total property (Give_Payment class) and hook argument.
-     *
      * @since 2.23.0 remove use of Donation::parentId
      * @since 2.19.6
      *
@@ -25,10 +23,6 @@ class DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment
         $subscription = new Give_Subscription($donation->subscriptionId);
         $payment = new Give_Payment($donation->id);
         $parent = new Give_Payment(give()->subscriptions->getInitialDonationId($donation->subscriptionId));
-
-        if (! $donation->type->isRenewal()) {
-            return;
-        }
 
         $payment->parent_payment = $subscription->parent_payment_id;
         $payment->total = (float) $donation->amount->formatToDecimal();
