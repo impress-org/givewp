@@ -1,6 +1,6 @@
 @use 'assets/src/css/Safe-Rem/functions' as *;
 
-.label {
+.container {
     position: relative;
     display: flex;
     align-items: center;
@@ -17,7 +17,7 @@
         height: safe-rem(1.715);
         width: safe-rem(3.75);
         border-radius: 100px;
-        background: grey;
+        background: #808080;
     }
 
     & .switch:before {
@@ -28,26 +28,19 @@
         height: safe-rem(1.328);
         width: safe-rem(1.328);
         border-radius: 100px;
-        background: white;
-        transition: 0.35s;
+        background: #ffffff;
     }
 
     & > span:last-child {
         transform: translateX(62px);
     }
 
-    input:checked + .switch {
+    input[type='checkbox']:checked + .switch {
         background: #f49420;
-        transition: 0.35s;
     }
 
-    input:checked + .switch:before {
+    input[type='checkbox']:checked + .switch:before {
         left: calc(100% - 3px);
         transform: translateX(-100%);
-        transition: 0.35s;
-    }
-
-    input:active + .switch:before {
-        width: safe-rem(2.125);
     }
 }
