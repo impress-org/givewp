@@ -36,7 +36,7 @@ trait InsertNode
     protected function insertAfterRecursive(string $siblingName, Node $node)
     {
         $siblingIndex = $this->getNodeIndexByName($siblingName);
-        if (false !== $siblingIndex) {
+        if (null !== $siblingIndex) {
             $this->insert(
                 $node,
                 $siblingIndex + 1
@@ -82,7 +82,7 @@ trait InsertNode
     protected function insertBeforeRecursive(string $siblingName, Node $node)
     {
         $siblingIndex = $this->getNodeIndexByName($siblingName);
-        if (false !== $siblingIndex) {
+        if (null !== $siblingIndex) {
             $this->insert(
                 $node,
                 $siblingIndex - 1
