@@ -67,11 +67,11 @@ class Max implements ValidationRule, ValidatesOnFrontEnd
     {
         if (is_int($value) || is_float($value)) {
             if ($value > $this->size) {
-                $fail("{field} must be less than or equal to $this->size");
+                $fail(sprintf(__('%s must be less than or equal to %d', 'give'), '{field}', $this->size));
             }
         } elseif (is_string($value)) {
             if (mb_strlen($value) > $this->size) {
-                $fail("{field} must be less than or equal to $this->size characters");
+                $fail(sprintf(__('%s must be less than or equal to %d characters', 'give'), '{field}', $this->size));
             }
         } else {
             throw new ValidationException("Field value must be a number or string");

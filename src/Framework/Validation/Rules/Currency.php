@@ -229,7 +229,7 @@ class Currency implements ValidationRule, ValidatesOnFrontEnd
     public function __invoke($value, Closure $fail, string $key, array $values)
     {
         if (!is_string($value) || !in_array(strtoupper($value), self::currencyCodes(), true)) {
-            $fail(sprintf('%s must be a valid currency', '{field}'));
+            $fail(sprintf(__('%s must be a valid currency', 'give'), '{field}'));
         }
     }
 }

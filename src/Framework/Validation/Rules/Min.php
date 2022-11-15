@@ -67,11 +67,11 @@ class Min implements ValidationRule, ValidatesOnFrontEnd
     {
         if (is_int($value) || is_float($value)) {
             if ($value < $this->size) {
-                $fail("{field} must be greater than $this->size");
+                $fail(sprintf(__('%s must be greater than or equal to %d', 'give'), '{field}', $this->size));
             }
         } elseif (is_string($value)) {
             if (mb_strlen($value) < $this->size) {
-                $fail("{field} must be more than $this->size characters");
+                $fail(sprintf(__('%s must be more than or equal to %d characters', 'give'), '{field}', $this->size));
             }
         } else {
             throw new ValidationException("Field value must be a number or string");
