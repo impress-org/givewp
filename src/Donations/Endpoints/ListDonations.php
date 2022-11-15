@@ -3,6 +3,7 @@
 namespace Give\Donations\Endpoints;
 
 use Give\Donations\ListTable\DonationsListTable;
+use Give\Donations\ValueObjects\DonationMode;
 use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
 use Give\Framework\Models\ModelQueryBuilder;
 use WP_REST_Request;
@@ -95,7 +96,7 @@ class ListDonations extends Endpoint
                         'required' => false,
                         'default' => get_locale(),
                     ],
-                    'mode' => [
+                    'testMode' => [
                         'type' => 'boolean',
                         'required' => false,
                         'default' => false,
@@ -195,12 +196,12 @@ class ListDonations extends Endpoint
         $end = $this->request->get_param('end');
         $form = $this->request->get_param('form');
         $donor = $this->request->get_param('donor');
-        $mode = $this->request->get_param('mode');
+        $testMode = $this->request->get_param('testMode');
 
         if ($search) {
             if (ctype_digit($search)) {
                 $query->where('id', $search);
-            } else if (strpos($search, '@') !== false) {
+            } elseif (strpos($search, '@') !== false) {
                 $query
                     ->whereLike('give_donationmeta_attach_meta_email.meta_value', $search);
             } else {
@@ -226,14 +227,6 @@ class ListDonations extends Endpoint
                 ->where('give_donationmeta_attach_meta_formId.meta_value', $form);
         }
 
-        if ($mode) {
-            $query
-                ->where('give_donationmeta_attach_meta_mode.meta_value', 'test');
-        } else {
-            $query
-                ->where('give_donationmeta_attach_meta_mode.meta_value', 'live');
-        }
-
         if ($start && $end) {
             $query->whereBetween('post_date', $start, $end);
         } elseif ($start) {
@@ -241,6 +234,9 @@ class ListDonations extends Endpoint
         } elseif ($end) {
             $query->where('post_date', $end, '<=');
         }
+
+        $query->where('give_donationmeta_attach_meta_mode.meta_value',
+            $testMode ? DonationMode::TEST : DonationMode::LIVE);
 
         return $query;
     }
