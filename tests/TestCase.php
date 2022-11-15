@@ -7,6 +7,7 @@ use Give\Framework\Support\ValueObjects\Money;
 use Give\Framework\Validation\Contracts\ValidationRule;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give_Cache_Setting;
+use GiveTests\TestTraits\AssertIsType;
 use GiveTests\TestTraits\RefreshDatabase;
 use WP_UnitTestCase;
 
@@ -21,6 +22,8 @@ use WP_UnitTestCase;
  */
 class TestCase extends WP_UnitTestCase
 {
+    use AssertIsType;
+
     /**
      * Cache Give setting
      * Note: we will use this variable to reset setting after each test to prevent test failure
