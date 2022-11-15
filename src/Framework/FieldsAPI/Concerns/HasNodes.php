@@ -70,7 +70,11 @@ trait HasNodes
             if ($node instanceof Field) {
                 $fields[] = $node;
             } elseif ($node instanceof Collection) {
-                $fields = array_merge($fields, $node->getFields());
+                $nestedFields = $node->getFields();
+
+                foreach($nestedFields as $field) {
+                    $fields[] = $field;
+                }
             }
         }
 
