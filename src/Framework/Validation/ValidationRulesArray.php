@@ -216,21 +216,21 @@ class ValidationRulesArray implements IteratorAggregate, JsonSerializable
         $parameterType = $parameters[1]->getType();
         if ($parameterType !== null && $parameterType->getName() !== 'Closure') {
             throw new InvalidArgumentException(
-                "Validation rule closure must accept a Closure as the second parameter, {$parameters[1]->getType()} given."
+                "Validation rule closure must accept a Closure as the second parameter, {$parameterType->getName()} given."
             );
         }
 
         $parameterType = $parameterCount > 2 ? $parameters[2]->getType() : null;
         if ($parameterType !== null && $parameterType->getName() !== 'string') {
             throw new InvalidArgumentException(
-                "Validation rule closure must accept a string as the third parameter, {$parameters[2]->getType()->getName()} given."
+                "Validation rule closure must accept a string as the third parameter, {$parameterType->getName()} given."
             );
         }
 
         $parameterType = $parameterCount > 3 ? $parameters[3]->getType() : null;
         if ($parameterType !== null && $parameterType->getName() !== 'array') {
             throw new InvalidArgumentException(
-                "Validation rule closure must accept a array as the fourth parameter, {$parameters[3]->getType()->getName()} given."
+                "Validation rule closure must accept a array as the fourth parameter, {$parameterType->getName()} given."
             );
         }
     }
