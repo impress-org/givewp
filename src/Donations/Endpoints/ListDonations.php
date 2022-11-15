@@ -87,13 +87,18 @@ class ListDonations extends Endpoint
                         'required' => false,
                         'enum' => [
                             'asc',
-                            'desc'
+                            'desc',
                         ],
                     ],
                     'locale' => [
                         'type' => 'string',
                         'required' => false,
                         'default' => get_locale(),
+                    ],
+                    'mode' => [
+                        'type' => 'boolean',
+                        'required' => false,
+                        'default' => false,
                     ],
                 ],
             ]
@@ -190,6 +195,7 @@ class ListDonations extends Endpoint
         $end = $this->request->get_param('end');
         $form = $this->request->get_param('form');
         $donor = $this->request->get_param('donor');
+        $mode = $this->request->get_param('mode');
 
         if ($search) {
             if (ctype_digit($search)) {
@@ -220,11 +226,19 @@ class ListDonations extends Endpoint
                 ->where('give_donationmeta_attach_meta_formId.meta_value', $form);
         }
 
+        if ($mode) {
+            $query
+                ->where('give_donationmeta_attach_meta_mode.meta_value', 'test');
+        } else {
+            $query
+                ->where('give_donationmeta_attach_meta_mode.meta_value', 'live');
+        }
+
         if ($start && $end) {
             $query->whereBetween('post_date', $start, $end);
-        } else if ($start) {
+        } elseif ($start) {
             $query->where('post_date', $start, '>=');
-        } else if ($end) {
+        } elseif ($end) {
             $query->where('post_date', $end, '<=');
         }
 
