@@ -1,4 +1,4 @@
-import {createContext, useRef, useState} from 'react';
+import {createContext, useCallback, useEffect, useRef, useState} from 'react';
 import {__} from '@wordpress/i18n';
 import {A11yDialog} from 'react-a11y-dialog';
 import A11yDialogInstance from 'a11y-dialog';
@@ -12,6 +12,7 @@ import ListTableApi from '../api';
 import styles from './ListTablePage.module.scss';
 import cx from 'classnames';
 import {BulkActionSelect} from '@givewp/components/ListTable/BulkActions/BulkActionSelect';
+import Switch from '@givewp/components/ListTable/Switch';
 
 export interface ListTablePageProps {
     //required
@@ -82,6 +83,8 @@ export default function ListTablePage({
         sortColumn: 'id',
         sortDirection: 'desc',
     });
+    const [mode, setMode] = useState(false);
+
     const {sortColumn, sortDirection} = sortField;
     const locale = navigator.language || navigator.languages[0];
 
@@ -91,6 +94,7 @@ export default function ListTablePage({
         sortColumn,
         sortDirection,
         locale,
+        mode,
         ...filters,
     };
     const archiveApi = useRef(new ListTableApi(apiSettings)).current;
@@ -144,7 +148,7 @@ export default function ListTablePage({
         />
     );
 
-    const PageActions = () => (
+    const PageActions = ({TestDonations}: any) => (
         <div className={cx(styles.pageActions, {[styles.alignEnd]: !bulkActions})}>
             <BulkActionSelect
                 parameters={parameters}
@@ -152,6 +156,7 @@ export default function ListTablePage({
                 bulkActions={bulkActions}
                 showModal={openBulkActionModal}
             />
+            {TestDonations}
             {page && setPage && showPagination()}
         </div>
     );
@@ -195,7 +200,11 @@ export default function ListTablePage({
                 </section>
                 <div className={cx('wp-header-end', 'hidden')} />
                 <div className={styles.pageContent}>
-                    <PageActions />
+                    <PageActions
+                        TestDonations={
+                            <Switch mode={mode} setMode={setMode} label={__('View Test Donations', 'give')} />
+                        }
+                    />
                     <CheckboxContext.Provider value={checkboxRefs}>
                         <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
                             <ListTable
