@@ -83,7 +83,7 @@ export default function ListTablePage({
         sortColumn: 'id',
         sortDirection: 'desc',
     });
-    const [mode, setMode] = useState(false);
+    const [testMode, setTestMode] = useState(false);
 
     const {sortColumn, sortDirection} = sortField;
     const locale = navigator.language || navigator.languages[0];
@@ -94,7 +94,7 @@ export default function ListTablePage({
         sortColumn,
         sortDirection,
         locale,
-        mode,
+        testMode,
         ...filters,
     };
     const archiveApi = useRef(new ListTableApi(apiSettings)).current;
@@ -202,7 +202,7 @@ export default function ListTablePage({
                 <div className={styles.pageContent}>
                     <PageActions
                         TestDonations={
-                            <Switch mode={mode} setMode={setMode} label={__('View Test Donations', 'give')} />
+                            <Switch checked={testMode} toggle={setTestMode} label={__('View Test Donations', 'give')} />
                         }
                     />
                     <CheckboxContext.Provider value={checkboxRefs}>
