@@ -3,6 +3,7 @@
 namespace GiveTests\Unit\Donations\LegacyListeners;
 
 use Give\Subscriptions\Models\Subscription;
+use Give_Payment;
 use GiveTests\TestCase;
 use GiveTests\TestTraits\RefreshDatabase;
 use InvalidArgumentException;
@@ -20,7 +21,6 @@ class DispatchGiveRecurringAddSubscriptionPaymentAndRecordPaymentTest extends Te
      */
     public function testShouldNotTriggerActionHookForSubscriptionInitialDonation()
     {
-
         Subscription::factory()->createWithDonation();
 
         $this->assertFalse((bool)did_action('give_recurring_add_subscription_payment'));
@@ -48,8 +48,8 @@ class DispatchGiveRecurringAddSubscriptionPaymentAndRecordPaymentTest extends Te
     {
         add_action(
             'give_recurring_add_subscription_payment',
-            function (\Give_Payment $payment) {
-                $tempPayment = new \Give_Payment($payment->ID);
+            function (Give_Payment $payment) {
+                $tempPayment = new Give_Payment($payment->ID);
 
                 if ($tempPayment->total !== $payment->total) {
                     throw new InvalidArgumentException();
@@ -62,11 +62,11 @@ class DispatchGiveRecurringAddSubscriptionPaymentAndRecordPaymentTest extends Te
         add_action(
             'give_recurring_record_payment',
             function (
-                \Give_Payment $payment,
+                Give_Payment $payment,
                 $parentDonationId,
                 $donationAmount
             ) {
-                $tempPayment = new \Give_Payment($payment->ID);
+                $tempPayment = new Give_Payment($payment->ID);
 
                 if ($tempPayment->total !== $donationAmount) {
                     throw new InvalidArgumentException();
