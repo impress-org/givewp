@@ -13,6 +13,7 @@ use IteratorAggregate;
 use JsonSerializable;
 use ReflectionException;
 use ReflectionFunction;
+use ReflectionParameter;
 use Traversable;
 
 class ValidationRulesArray implements IteratorAggregate, JsonSerializable
@@ -213,25 +214,48 @@ class ValidationRulesArray implements IteratorAggregate, JsonSerializable
             );
         }
 
-        $parameterType = $parameters[1]->getType();
-        if ($parameterType !== null && $parameterType->getName() !== 'Closure') {
+        $parameterType = $this->getParameterTypeName($parameters[1]);
+        if ($parameterType !== null && $parameterType !== 'Closure') {
             throw new InvalidArgumentException(
-                "Validation rule closure must accept a Closure as the second parameter, {$parameterType->getName()} given."
+                "Validation rule closure must accept a Closure as the second parameter, {$parameterType} given."
             );
         }
 
-        $parameterType = $parameterCount > 2 ? $parameters[2]->getType() : null;
-        if ($parameterType !== null && $parameterType->getName() !== 'string') {
+        $parameterType = $parameterCount > 2 ? $this->getParameterTypeName($parameters[2]) : null;
+        if ($parameterType !== null && $parameterType !== 'string') {
             throw new InvalidArgumentException(
-                "Validation rule closure must accept a string as the third parameter, {$parameterType->getName()} given."
+                "Validation rule closure must accept a string as the third parameter, {$parameterType} given."
             );
         }
 
-        $parameterType = $parameterCount > 3 ? $parameters[3]->getType() : null;
-        if ($parameterType !== null && $parameterType->getName() !== 'array') {
+        $parameterType = $parameterCount > 3 ? $this->getParameterTypeName($parameters[3]) : null;
+        if ($parameterType !== null && $parameterType !== 'array') {
             throw new InvalidArgumentException(
-                "Validation rule closure must accept a array as the fourth parameter, {$parameterType->getName()} given."
+                "Validation rule closure must accept a array as the fourth parameter, {$parameterType} given."
             );
         }
+    }
+
+    /**
+     * Retrieves the parameter type with PHP 7.0 compatibility.
+     *
+     * @unreleased
+     *
+     * @return string|null
+     */
+    private function getParameterTypeName(ReflectionParameter $parameter)
+    {
+        $type = $parameter->getType();
+
+        if ($type === null) {
+            return null;
+        }
+
+        // Check if the method exists for PHP 7.0 compatibility (it exits as of PHP 7.1)
+        if (method_exists($type, 'getName')) {
+            return $type->getName();
+        }
+
+        return (string)$type;
     }
 }
