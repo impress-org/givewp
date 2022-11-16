@@ -6,7 +6,7 @@ use Give\Addon\Activation;
 use Give\Addon\Environment;
 use Give\Addon\ServiceProvider as AddonServiceProvider;
 use Give\NextGen\DonationForm\ServiceProvider as DonationFormServiceProvider;
-use Give\NextGen\Framework\FormTemplates\ServiceProvider as FormTemplateServiceProvider;
+use Give\NextGen\Framework\FormDesigns\ServiceProvider as FormDesignServiceProvider;
 use Give\NextGen\ServiceProvider as NextGenServiceProvider;
 
 /**
@@ -57,7 +57,7 @@ add_action(
             give()->registerServiceProvider(DonationFormServiceProvider::class);
             give()->registerServiceProvider(NextGenServiceProvider::class);
             give()->registerServiceProvider(FormBuilder\ServiceProvider::class);
-            give()->registerServiceProvider(FormTemplateServiceProvider::class);
+            give()->registerServiceProvider(FormDesignServiceProvider::class);
         }
     }
 );

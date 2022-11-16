@@ -2,7 +2,7 @@ import {useMemo} from 'react';
 import {__} from '@wordpress/i18n';
 
 export default function DonationSummary() {
-    const {useWatch} = window.givewp.form;
+    const {useWatch} = window.givewp.form.hooks;
     const currency = useWatch({name: 'currency'});
     const amount = useWatch({name: 'amount'});
     const formatter = useMemo(

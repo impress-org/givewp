@@ -41,9 +41,9 @@ class DonationFormViewModel
     /**
      * @unreleased
      */
-    public function templateId(): string
+    public function designId(): string
     {
-        return $this->formSettingOverrides['templateId'] ?? ($this->donationForm->settings['templateId'] ?? '');
+        return $this->formSettingOverrides['designId'] ?? ($this->donationForm->settings['designId'] ?? '');
     }
 
     /**

@@ -7,7 +7,7 @@ use Give\NextGen\DonationForm\DataTransferObjects\DonationFormViewRouteData;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\DonationForm\ViewModels\DonationFormViewModel;
-use Give\NextGen\Framework\FormTemplates\Registrars\FormTemplateRegistrar;
+use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 
 class DonationFormViewController
 {
@@ -39,7 +39,7 @@ class DonationFormViewController
 
         $this->enqueueFormScripts(
             $data->formId,
-            $viewModel->templateId()
+            $viewModel->designId()
         );
 
         ob_start();
@@ -66,14 +66,14 @@ class DonationFormViewController
         exit();
     }
 
-     /**
-     * Loads scripts in order: [Registrars, Template, Gateways, Block]
+    /**
+     * Loads scripts in order: [Registrars, Designs, Gateways, Block]
      *
      * @unreleased
      *
      * @return void
      */
-    private function enqueueFormScripts(int $formId, string $formTemplateId)
+    private function enqueueFormScripts(int $formId, string $formDesignId)
     {
         /** @var DonationFormRepository $donationFormRepository */
         $donationFormRepository = give(DonationFormRepository::class);
@@ -88,24 +88,24 @@ class DonationFormViewController
         ))->loadInFooter()->enqueue();
 
         // load template
-        /** @var FormTemplateRegistrar $formTemplateRegistrar */
-        $formTemplateRegistrar = give(FormTemplateRegistrar::class);
+        /** @var FormDesignRegistrar $formDesignRegistrar */
+        $formDesignRegistrar = give(FormDesignRegistrar::class);
 
-        // silently fail if template is missing for some reason
-        if ($formTemplateRegistrar->hasTemplate($formTemplateId)) {
-            $template = $formTemplateRegistrar->getTemplate($formTemplateId);
+        // silently fail if design is missing for some reason
+        if ($formDesignRegistrar->hasDesign($formDesignId)) {
+            $design = $formDesignRegistrar->getDesign($formDesignId);
 
-            if ($template->css()) {
-                wp_enqueue_style('givewp-form-template-' . $template::id(), $template->css());
+            if ($design->css()) {
+                wp_enqueue_style('givewp-form-design-' . $design::id(), $design->css());
             }
 
-            if ($template->js()) {
+            if ($design->js()) {
                 wp_enqueue_script(
-                    'givewp-form-template-' . $template::id(),
-                    $template->js(),
+                    'givewp-form-design-' . $design::id(),
+                    $design->js(),
                     array_merge(
                         ['givewp-donation-form-registrars-js'],
-                        $template->dependencies()
+                        $design->dependencies()
                     ),
                     false,
                     true

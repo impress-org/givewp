@@ -1,19 +1,19 @@
 <?php
 
-namespace TestsNextGen\Unit\Framework\FormTemplates\Registrars;
+namespace TestsNextGen\Unit\Framework\FormDesigns\Registrars;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\NextGen\Framework\FormTemplates\Exceptions\OverflowException;
-use Give\NextGen\Framework\FormTemplates\FormTemplate;
-use Give\NextGen\Framework\FormTemplates\Registrars\FormTemplateRegistrar;
+use Give\NextGen\Framework\FormDesigns\Exceptions\OverflowException;
+use Give\NextGen\Framework\FormDesigns\FormDesign;
+use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use GiveTests\TestCase;
 
 /**
  * @unreleased
  */
-class TestFormTemplateRegistrar extends TestCase
+class TestFormDesignRegistrar extends TestCase
 {
-    /** @var FormTemplateRegistrar */
+    /** @var FormDesignRegistrar */
     public $registrar;
 
     /**
@@ -22,60 +22,61 @@ class TestFormTemplateRegistrar extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->registrar = new FormTemplateRegistrar();
+        $this->registrar = new FormDesignRegistrar();
     }
 
     /**
      * @unreleased
      */
-    public function testRegisterFormTemplateShouldAddTemplate()
+    public function testRegisterFormDesignShouldAddTemplate()
     {
-        $this->registrar->registerTemplate(MockFormTemplate::class);
+        $this->registrar->registerDesign(MockFormDesign::class);
 
-        $this->assertTrue($this->registrar->hasTemplate(MockFormTemplate::id()));
+        $this->assertTrue($this->registrar->hasDesign(MockFormDesign::id()));
     }
 
     /**
      * @unreleased
      */
-    public function testUnRegisterFormTemplateShouldRemoveTemplate()
+    public function testUnRegisterFormDesignShouldRemoveTemplate()
     {
-        $this->registrar->registerTemplate(MockFormTemplate::class);
-        $this->registrar->unregisterTemplate(MockFormTemplate::id());
+        $this->registrar->registerDesign(MockFormDesign::class);
+        $this->registrar->unregisterDesign(MockFormDesign::id());
 
-        $this->assertFalse($this->registrar->hasTemplate(MockFormTemplate::id()));
+        $this->assertFalse($this->registrar->hasDesign(MockFormDesign::id()));
     }
 
     /**
      * @unreleased
      */
-    public function testShouldThrowInvalidArgumentExceptionIfNotExtendingFormTemplateClass()
+    public function testShouldThrowInvalidArgumentExceptionIfNotExtendingFormDesignClass()
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->registrar->registerTemplate(MockFormTemplateDoesNotExtendFormTemplate::class);
+        $this->registrar->registerDesign(MockFormDesignDoesNotExtendFormDesign::class);
     }
 
     /**
      * @unreleased
      */
-    public function testShouldThrowOverFlowExceptionIfFormTemplateIdIsTaken()
+    public function testShouldThrowOverFlowExceptionIfFormDesignIdIsTaken()
     {
         $this->expectException(OverflowException::class);
-        $this->registrar->registerTemplate(MockFormTemplate::class);
-        $this->registrar->registerTemplate(MockFormTemplate::class);
+        $this->registrar->registerDesign(MockFormDesign::class);
+        $this->registrar->registerDesign(MockFormDesign::class);
     }
 
     /**
      * @unreleased
      */
-    public function testGetFormTemplatesShouldReturnArrayOfRegisteredTemplates()
+    public function testGetFormDesignsShouldReturnArrayOfRegisteredTemplates()
     {
-        $this->registrar->registerTemplate(MockFormTemplate::class);
-        $this->assertSame(['mock-form-template' => MockFormTemplate::class], $this->registrar->getTemplates());
+        $this->registrar->registerDesign(MockFormDesign::class);
+        $this->assertSame(['mock-form-template' => MockFormDesign::class], $this->registrar->getDesigns());
     }
 }
 
-class MockFormTemplate extends FormTemplate {
+class MockFormDesign extends FormDesign
+{
 
     public static function id(): string
     {
@@ -88,7 +89,8 @@ class MockFormTemplate extends FormTemplate {
     }
 }
 
-class MockFormTemplateDoesNotExtendFormTemplate {
+class MockFormDesignDoesNotExtendFormDesign
+{
     public static function id(): string
     {
         return 'mock-form-template';

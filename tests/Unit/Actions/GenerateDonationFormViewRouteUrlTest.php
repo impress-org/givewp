@@ -17,7 +17,7 @@ class GenerateDonationFormViewRouteUrlTest extends TestCase
      */
     public function testShouldReturnValidUrl()
     {
-        $viewUrl = (new GenerateDonationFormViewRouteUrl())(1, ['templateId' => 'classic']);
+        $viewUrl = (new GenerateDonationFormViewRouteUrl())(1, ['designId' => 'classic']);
 
         $this->assertSame(esc_url_raw(
             add_query_arg(
@@ -25,7 +25,7 @@ class GenerateDonationFormViewRouteUrlTest extends TestCase
                     'givewp-view' => 'donation-form',
                     'form-id' => 1,
                     'form-settings' => [
-                        'templateId' => 'classic'
+                        'designId' => 'classic'
                     ]
                 ],
                 home_url()

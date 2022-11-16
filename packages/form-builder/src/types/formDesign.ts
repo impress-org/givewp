@@ -1,4 +1,4 @@
-export interface FormTemplate {
+export interface FormDesign {
     id: string,
     name: string,
 }

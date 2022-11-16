@@ -7,7 +7,7 @@ export type FormSettings = {
     enableAutoClose: boolean;
     registration: string;
     goalFormat: string;
-    templateId: string;
+    designId: string;
     primaryColor: string;
     secondaryColor: string;
 };

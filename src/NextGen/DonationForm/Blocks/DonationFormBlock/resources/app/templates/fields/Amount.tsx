@@ -17,7 +17,7 @@ export default function Amount({
     allowCustomAmount,
     fieldError,
 }: AmountProps) {
-    const {useWatch} = window.givewp.form;
+    const {useWatch} = window.givewp.form.hooks;
     const currency = useWatch({name: 'currency'});
     const formatter = useMemo(
         () =>
@@ -61,7 +61,7 @@ export default function Amount({
 }
 
 function AmountButtons({name, currency, levels}: {name: string; currency: string; levels: Number[]}) {
-    const {useFormContext, useWatch} = window.givewp.form;
+    const {useFormContext, useWatch} = window.givewp.form.hooks;
     const {setValue, setFocus} = useFormContext();
     const amount = useWatch({name});
     const formatter = useMemo(

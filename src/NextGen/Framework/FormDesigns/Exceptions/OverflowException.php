@@ -1,11 +1,11 @@
 <?php
 
-namespace Give\NextGen\Framework\FormTemplates\Exceptions;
+namespace Give\NextGen\Framework\FormDesigns\Exceptions;
 
 use Give\Framework\Exceptions\Primitives\Exception;
 
 /**
- * @unreleased 
+ * @unreleased
  */
 class OverflowException extends Exception
 {

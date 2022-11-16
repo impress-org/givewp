@@ -1,24 +1,24 @@
 <?php
 
-namespace TestsNextGen\Unit\Framework\FormTemplates;
+namespace TestsNextGen\Unit\Framework\FormDesigns;
 
-use Give\NextGen\Framework\FormTemplates\Contracts\FormTemplateInterface;
-use Give\NextGen\Framework\FormTemplates\FormTemplate;
+use Give\NextGen\Framework\FormDesigns\Contracts\FormDesignInterface;
+use Give\NextGen\Framework\FormDesigns\FormDesign;
 use GiveTests\TestCase;
 
 /**
  * @unreleased
  */
-class TestFormTemplate extends TestCase
+class TestFormDesign extends TestCase
 {
     /**
      * @unreleased
      */
-    public function testFormTemplateImplementsInterface()
+    public function testFormDesignImplementsInterface()
     {
         $this->assertContains(
-            FormTemplateInterface::class,
-            class_implements(FormTemplate::class)
+            FormDesignInterface::class,
+            class_implements(FormDesign::class)
         );
     }
 }

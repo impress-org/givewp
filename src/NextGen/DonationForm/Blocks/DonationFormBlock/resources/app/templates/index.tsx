@@ -53,7 +53,7 @@ export function withWrapper(NodeComponent, section, type, htmlTag) {
     };
 }
 
-const defaultTemplate = {
+const defaultFormDesign = {
     fields: {
         amount: AmountField,
         text: TextField,
@@ -79,25 +79,25 @@ const defaultTemplate = {
     },
 };
 
-// Retrieve the active template and apply any overrides to generate the final templates.
-const activeTemplate = window.givewp.template.get();
+// Retrieve the active form design and apply any overrides to generate the final templates.
+const activeFormDesign = window.givewp.form.designs.get();
 
 const template = {
     fields: {
-        ...defaultTemplate.fields,
-        ...activeTemplate?.fields,
+        ...defaultFormDesign.fields,
+        ...activeFormDesign?.fields,
     },
     elements: {
-        ...defaultTemplate.elements,
-        ...activeTemplate?.elements,
+        ...defaultFormDesign.elements,
+        ...activeFormDesign?.elements,
     },
     groups: {
-        ...defaultTemplate.groups,
-        ...activeTemplate?.groups,
+        ...defaultFormDesign.groups,
+        ...activeFormDesign?.groups,
     },
     layouts: {
-        ...defaultTemplate.layouts,
-        ...activeTemplate?.layouts,
+        ...defaultFormDesign.layouts,
+        ...activeFormDesign?.layouts,
     },
 };
 

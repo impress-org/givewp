@@ -1,24 +1,25 @@
 <?php
 
-namespace Give\NextGen\Framework\FormTemplates;
+namespace Give\NextGen\Framework\FormDesigns;
 
-use Give\NextGen\Framework\FormTemplates\Contracts\FormTemplateInterface;
+use Give\NextGen\Framework\FormDesigns\Contracts\FormDesignInterface;
 
 /**
- * The FormTemplate is meant to be extended to create custom GiveWP form templates.
+ * The FormDesign is meant to be extended to create custom GiveWP form designs.
  *
  * @unreleased
  */
-abstract class FormTemplate implements FormTemplateInterface {
+abstract class FormDesign implements FormDesignInterface
+{
     /**
-     * The unique identifier of the template
+     * The unique identifier of the design
      *
      * @unreleased
      */
     abstract public static function id(): string;
 
     /**
-     * THe human-readable name of the template
+     * THe human-readable name of the design
      *
      * @unreleased
      */

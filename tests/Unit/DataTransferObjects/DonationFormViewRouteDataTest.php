@@ -36,11 +36,11 @@ class DonationFormViewRouteDataTest extends TestCase
         $data = DonationFormViewRouteData::fromRequest([
             'form-id' => '1',
             'form-settings' => [
-                'templateId' => 'classic',
+                'designId' => 'classic',
             ],
         ]);
 
-        $this->assertSame('classic', $data->formSettings['templateId']);
+        $this->assertSame('classic', $data->formSettings['designId']);
     }
 
     /**

@@ -81,7 +81,7 @@ export interface Gateway {
     afterCreatePayment?(response: object): Promise<void> | Error;
 }
 
-export interface Template {
+export interface FormDesign {
     id: string;
     fields?: {
         amount?: ReactNode;

@@ -13,14 +13,14 @@ import FormRequestError from '../errors/FormRequestError';
 import DonationReceipt from './DonationReceipt';
 import {ObjectSchema} from 'joi';
 
-window.givewp.form = {
+window.givewp.form.hooks = {
     useFormContext,
     useWatch,
 };
 
 const {donateUrl} = getWindowData();
 
-const FormTemplate = getFormTemplate();
+const FormDesign = getFormTemplate();
 const FormSectionTemplate = getSectionTemplate();
 
 const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
@@ -89,7 +89,7 @@ export default function Form({defaultValues, sections, validationSchema}: PropTy
 
     return (
         <FormProvider {...methods}>
-            <FormTemplate
+            <FormDesign
                 formProps={{
                     id: 'give-next-gen',
                     onSubmit: handleSubmit((values) =>
@@ -110,7 +110,7 @@ export default function Form({defaultValues, sections, validationSchema}: PropTy
                         );
                     })}
                 </>
-            </FormTemplate>
+            </FormDesign>
         </FormProvider>
     );
 }
