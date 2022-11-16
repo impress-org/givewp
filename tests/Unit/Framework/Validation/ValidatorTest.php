@@ -157,6 +157,26 @@ class ValidatorTest extends TestCase
     /**
      * @unreleased
      */
+    public function testRuleArraysWithoutRulesAreConsideredOptional()
+    {
+        // When no rules are specified, the field is considered optional. This simply means that
+        // whatever value is passed in will be returned as validated. Keep in mind that if the rule
+        // is entirely omitted then the value will also be omitted.
+        $validator = new Validator([
+            'foo' => [],
+        ], [
+            'foo' => 'foo',
+            'bar' => 'bar',
+        ]);
+
+        self::assertEquals([
+            'foo' => 'foo',
+        ], $validator->validated());
+    }
+
+    /**
+     * @unreleased
+     */
     public function testRulesWithSanitizationAreApplied()
     {
         $validator = new Validator([
