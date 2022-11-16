@@ -5,6 +5,7 @@ namespace Give\FormBuilder\Routes;
 use Exception;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\ValueObjects\DonationFormStatus;
+use Give\NextGen\DonationForm\ValueObjects\GoalTypeOptions;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 
 /**
@@ -36,7 +37,7 @@ class CreateFormRoute
                         'enableDonationGoal' => false,
                         'enableAutoClose' => false,
                         'registration' => 'none',
-                        'goalFormat' => 'amount-raised',
+                        'goalType' => GoalTypeOptions::AMOUNT,
                     ],
                     'blocks' => BlockCollection::fromJson($blocksJson)
                 ]);

@@ -4,6 +4,7 @@ namespace Give\NextGen\DonationForm\Factories;
 
 use Give\Framework\Models\Factories\ModelFactory;
 use Give\NextGen\DonationForm\ValueObjects\DonationFormStatus;
+use Give\NextGen\DonationForm\ValueObjects\GoalTypeOptions;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 
 class DonationFormFactory extends ModelFactory
@@ -22,7 +23,7 @@ class DonationFormFactory extends ModelFactory
                 'enableDonationGoal' => false,
                 'enableAutoClose' => false,
                 'registration' => 'none',
-                'goalFormat' => 'amount-raised',
+                'goalType' => GoalTypeOptions::AMOUNT,
                 'designId' => 'classic'
             ],
             'blocks' => BlockCollection::fromJson($blocksJson),

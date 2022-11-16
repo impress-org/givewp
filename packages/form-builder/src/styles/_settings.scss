@@ -1,0 +1,16 @@
+.components-flex {
+    // Move input labels inline.
+    &.components-number-control,
+    &.components-select-control {
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+
+        label {
+            // Adjust alignment for inline labels - remove bottom margin from label.
+            margin-bottom: 0 !important;
+            // Normalize font size across input labels to match the base-control-styles.
+            font-size: 13px;
+        }
+    }
+}

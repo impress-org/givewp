@@ -6,6 +6,7 @@ use Exception;
 use Give\FormBuilder\Controllers\FormBuilderResourceController;
 use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
 use Give\NextGen\DonationForm\Models\DonationForm;
+use Give\NextGen\DonationForm\ValueObjects\GoalTypeOptions;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
 use GiveTests\TestCase;
@@ -159,7 +160,7 @@ class FormBuilderResourceControllerTest extends TestCase
                 'enableDonationGoal' => false,
                 'enableAutoClose' => false,
                 'registration' => 'none',
-                'goalFormat' => 'amount-raised',
+                'goalType' => GoalTypeOptions::AMOUNT,
             ])
         );
         $mockRequest->set_param('blocks', json_encode($blockCollectionWithoutAmountField));

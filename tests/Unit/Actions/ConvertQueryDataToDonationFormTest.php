@@ -6,6 +6,7 @@ use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\NextGen\DonationForm\Actions\ConvertQueryDataToDonationForm;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\ValueObjects\DonationFormStatus;
+use Give\NextGen\DonationForm\ValueObjects\GoalTypeOptions;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
 use GiveTests\TestCase;
@@ -37,7 +38,7 @@ class ConvertQueryDataToDonationFormTest extends TestCase {
                 'enableDonationGoal' => false,
                 'enableAutoClose' => false,
                 'registration' => 'none',
-                'goalFormat' => 'amount-raised',
+                'goalType' => GoalTypeOptions::AMOUNT,
             ]),
             'blocks' =>  $blockCollection->toJson()
         ];
@@ -54,7 +55,7 @@ class ConvertQueryDataToDonationFormTest extends TestCase {
                 'enableDonationGoal' => false,
                 'enableAutoClose' => false,
                 'registration' => 'none',
-                'goalFormat' => 'amount-raised',
+                'goalType' => GoalTypeOptions::AMOUNT,
             ],
             'blocks' => $blockCollection
         ]);
