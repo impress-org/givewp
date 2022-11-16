@@ -1,11 +1,13 @@
 .givewp__component {
     &--DesignPreviewLoading {
+
+        position: absolute;
+        margin-top: -48px;
+
         width: 100%;
-        height: 100vh;
         display: flex;
         align-items: flex-start;
         justify-content: center;
-        padding-top: 1rem;
 
         svg {
             width: 32px;
