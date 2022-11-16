@@ -27,6 +27,7 @@ export interface ListTablePageProps {
     rowActions?: JSX.Element | JSX.Element[] | Function | null;
     filterSettings?;
     align?: 'start' | 'center' | 'end';
+    giveTestMode?: boolean;
 }
 
 export interface FilterConfig {
@@ -66,6 +67,7 @@ export default function ListTablePage({
     rowActions = null,
     children = null,
     align = 'start',
+    giveTestMode,
 }: ListTablePageProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(30);
@@ -84,9 +86,13 @@ export default function ListTablePage({
         sortDirection: 'desc',
     });
     const [testMode, setTestMode] = useState(false);
-
     const {sortColumn, sortDirection} = sortField;
     const locale = navigator.language || navigator.languages[0];
+
+    //@unreleased initialize testMode switch based on payment gateway mode.
+    useEffect(() => {
+        setTestMode(!!giveTestMode);
+    }, [giveTestMode]);
 
     const parameters = {
         page,
@@ -148,6 +154,7 @@ export default function ListTablePage({
         />
     );
 
+    //@unreleased Pass testMode switch to page actions for display
     const PageActions = ({TestDonations}: any) => (
         <div className={cx(styles.pageActions, {[styles.alignEnd]: !bulkActions})}>
             <BulkActionSelect

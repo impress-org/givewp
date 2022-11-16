@@ -17,6 +17,7 @@ declare global {
             adminUrl: string;
             forms: Array<{value: string; text: string}>;
             table: {columns: Array<object>};
+            testMode: boolean;
         };
     }
 }
@@ -174,6 +175,7 @@ export default function () {
             rowActions={rowActions}
             bulkActions={bulkActions}
             apiSettings={window.GiveDonations}
+            giveTestMode={window.GiveDonations.testMode}
             filterSettings={filters}
         >
             <a
