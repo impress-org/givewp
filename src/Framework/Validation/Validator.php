@@ -74,6 +74,8 @@ class Validator
      */
     public function __construct(array $ruleSets, array $values, array $labels = [])
     {
+        $this->validateRulesAndValues($ruleSets, $values);
+
         $validatedRules = [];
         foreach ($ruleSets as $key => $rule) {
             if (is_array($rule)) {
@@ -82,7 +84,7 @@ class Validator
                 $validatedRules[$key] = $rule;
             } else {
                 throw new InvalidArgumentException(
-                    "Validation rules must be an instance of ValidationRuleSet or a compatible array"
+                    'Validation rules must be an instance of ValidationRuleSet or a compatible array'
                 );
             }
         }
@@ -174,5 +176,23 @@ class Validator
         }
 
         $this->ranValidationRules = true;
+    }
+
+    /**
+     * Validates that all rules have a corresponding value with the same key.
+     *
+     * @unreleased
+     *
+     * @return void
+     */
+    private function validateRulesAndValues(array $rules, array $values)
+    {
+        $missingKeys = array_diff_key($rules, $values);
+
+        if (!empty($missingKeys)) {
+            throw new InvalidArgumentException(
+                "Missing values for rules: " . implode(', ', array_keys($missingKeys))
+            );
+        }
     }
 }

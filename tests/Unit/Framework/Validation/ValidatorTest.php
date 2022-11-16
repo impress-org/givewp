@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GiveTests\Unit\Framework\Validation;
 
 use Closure;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Validation\Contracts\Sanitizer;
 use Give\Framework\Validation\Contracts\ValidationRule;
 use Give\Framework\Validation\ValidationRuleSet;
@@ -191,6 +192,36 @@ class ValidatorTest extends TestCase
             'name' => 'Bill Murray',
             'age' => 72,
         ], $validator->validated());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testInvalidRulesThrowInvalidArgumentException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Validation rules must be an instance of ValidationRuleSet or a compatible array'
+        );
+
+        new Validator([
+            'foo' => 'wrong',
+        ], [
+            'foo' => 'foo',
+        ]);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testRulesWithoutValuesThrowsAnException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Missing values for rules');
+
+        new Validator([
+            'foo' => ['required'],
+        ], []);
     }
 
     /**
