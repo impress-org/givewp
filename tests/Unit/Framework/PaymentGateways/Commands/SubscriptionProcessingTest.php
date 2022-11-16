@@ -2,9 +2,7 @@
 
 namespace GiveTests\Unit\Framework\PaymentGateways\Commands;
 
-use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionCompleteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionProcessingHandler;
-use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
 use Give\Framework\PaymentGateways\Commands\SubscriptionProcessing;
 use Give\Helpers\Call;
 use Give\Subscriptions\Models\Subscription;

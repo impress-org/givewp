@@ -2,12 +2,10 @@
 
 namespace GiveTests\Unit\Framework\PaymentGateways\Commands;
 
-use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionCompleteHandler;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
 use Give\Helpers\Call;
 use Give\Subscriptions\Models\Subscription;
-use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use GiveTests\TestCase;
 use GiveTests\TestTraits\RefreshDatabase;
 
