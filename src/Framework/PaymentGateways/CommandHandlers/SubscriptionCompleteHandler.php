@@ -12,7 +12,6 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class SubscriptionCompleteHandler
 {
     /**
-     * @unreleased Assign donation and subscription status.
      * @since 2.21.0 replace logic with models
      * @since 2.18.0
      *
@@ -20,20 +19,11 @@ class SubscriptionCompleteHandler
      */
     public function __invoke(SubscriptionComplete $subscriptionComplete, Subscription $subscription, Donation $donation)
     {
-        $defaultDonationStatus = $subscriptionComplete->gatewayTransactionId ?
-            DonationStatus::COMPLETE() :
-            DonationStatus::PROCESSING();
-
-        $donation->status = $subscriptionComplete->donationStatus ?: $defaultDonationStatus;
-
-        // Only save no-empty gateway transaction ids.
-        if ($subscriptionComplete->gatewayTransactionId) {
-            $donation->gatewayTransactionId = $subscriptionComplete->gatewayTransactionId;
-        }
-
+        $donation->status = DonationStatus::COMPLETE();
+        $donation->gatewayTransactionId = $subscriptionComplete->gatewayTransactionId;
         $donation->save();
 
-        $subscription->status = $subscriptionComplete->subscriptionStatus ?: SubscriptionStatus::ACTIVE();
+        $subscription->status = SubscriptionStatus::ACTIVE();
         $subscription->gatewaySubscriptionId = $subscriptionComplete->gatewaySubscriptionId;
         $subscription->transactionId = $subscriptionComplete->gatewayTransactionId;
         $subscription->save();
