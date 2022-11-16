@@ -379,12 +379,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
         }
 
         if ($command instanceof SubscriptionProcessing) {
-            Call::invoke(
-                SubscriptionProcessingHandler::class,
-                $command,
-                $subscription,
-                $donation
-            );
+            $handler = new SubscriptionProcessingHandler($command, $subscription, $donation);
+            $handler();
 
             $response = response()->redirectTo(give_get_success_page_uri());
 
