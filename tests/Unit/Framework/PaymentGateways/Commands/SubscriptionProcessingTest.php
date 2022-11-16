@@ -24,12 +24,8 @@ class SubscriptionProcessingTest extends TestCase
 
         $subscriptionProcessingCommand = new SubscriptionProcessing('1234', null);
 
-        Call::invoke(
-            SubscriptionProcessingHandler::class,
-            $subscriptionProcessingCommand,
-            $subscription,
-            $donation
-        );
+        $handler = new SubscriptionProcessingHandler($subscriptionProcessingCommand, $subscription, $donation);
+        $handler();
 
         $this->assertEquals('pending', $subscription->status->getValue());
         $this->assertEquals('processing', $donation->status->getValue());
