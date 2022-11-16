@@ -16,7 +16,7 @@ use ReflectionFunction;
 use ReflectionParameter;
 use Traversable;
 
-class ValidationRulesArray implements IteratorAggregate, JsonSerializable
+class ValidationRuleSet implements IteratorAggregate, JsonSerializable
 {
     /**
      * @var ValidationRulesRegister

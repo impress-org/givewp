@@ -16,9 +16,9 @@ use Give\Framework\Validation\Contracts\Sanitizer;
 class Validator
 {
     /**
-     * @var array<string, ValidationRulesArray>
+     * @var array<string, ValidationRuleSet>
      */
-    private $rules;
+    private $ruleSets;
 
     /**
      * @var array<string, mixed>
@@ -69,25 +69,25 @@ class Validator
     /**
      * @unreleased
      *
-     * @param array<string, ValidationRulesArray|array> $rules
+     * @param array<string, ValidationRuleSet|array> $ruleSets
      * @param array<string, mixed> $values
      */
-    public function __construct(array $rules, array $values, array $labels = [])
+    public function __construct(array $ruleSets, array $values, array $labels = [])
     {
         $validatedRules = [];
-        foreach ($rules as $key => $rule) {
+        foreach ($ruleSets as $key => $rule) {
             if (is_array($rule)) {
-                $validatedRules[$key] = give(ValidationRulesArray::class)->rules(...$rule);
-            } elseif ($rule instanceof ValidationRulesArray) {
+                $validatedRules[$key] = give(ValidationRuleSet::class)->rules(...$rule);
+            } elseif ($rule instanceof ValidationRuleSet) {
                 $validatedRules[$key] = $rule;
             } else {
                 throw new InvalidArgumentException(
-                    "Validation rules must be an instance of ValidationRulesArray or a compatible array"
+                    "Validation rules must be an instance of ValidationRuleSet or a compatible array"
                 );
             }
         }
 
-        $this->rules = $validatedRules;
+        $this->ruleSets = $validatedRules;
         $this->values = $values;
         $this->labels = $labels;
     }
@@ -154,7 +154,7 @@ class Validator
             return;
         }
 
-        foreach ($this->rules as $key => $fieldRule) {
+        foreach ($this->ruleSets as $key => $ruleSet) {
             $label = $this->labels[$key] ?? $key;
             $value = $this->values[$key] ?? null;
 
@@ -162,7 +162,7 @@ class Validator
                 $this->errors[$key] = str_ireplace('{field}', $label, $message);
             };
 
-            foreach ($fieldRule as $rule) {
+            foreach ($ruleSet as $rule) {
                 $rule($value, $fail, $key, $this->values);
 
                 if ($rule instanceof Sanitizer) {

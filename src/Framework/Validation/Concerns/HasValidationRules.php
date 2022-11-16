@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Give\Framework\Validation\Concerns;
 
-use Give\Framework\Validation\ValidationRulesArray;
+use Give\Framework\Validation\ValidationRuleSet;
 
 trait HasValidationRules
 {
     /**
-     * @var ValidationRulesArray
+     * @var ValidationRuleSet
      */
     protected $validationRules;
 
     public function __construct()
     {
-        $this->validationRules = give(ValidationRulesArray::class);
+        $this->validationRules = give(ValidationRuleSet::class);
     }
 
     public function rules(...$rules): self
@@ -32,7 +32,7 @@ trait HasValidationRules
         return $this;
     }
 
-    public function getValidationRules(): ValidationRulesArray
+    public function getValidationRules(): ValidationRuleSet
     {
         return $this->validationRules;
     }

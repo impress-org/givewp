@@ -7,7 +7,7 @@ namespace GiveTests\Unit\Framework\Validation;
 use Closure;
 use Give\Framework\Validation\Contracts\Sanitizer;
 use Give\Framework\Validation\Contracts\ValidationRule;
-use Give\Framework\Validation\ValidationRulesArray;
+use Give\Framework\Validation\ValidationRuleSet;
 use Give\Framework\Validation\ValidationRulesRegister;
 use Give\Framework\Validation\Validator;
 use GiveTests\TestCase;
@@ -33,8 +33,8 @@ class ValidatorTest extends TestCase
     {
         $validator = new Validator(
             [
-                'name' => give(ValidationRulesArray::class)->rules('required'),
-                'email' => give(ValidationRulesArray::class)->rules('required'),
+                'name' => give(ValidationRuleSet::class)->rules('required'),
+                'email' => give(ValidationRuleSet::class)->rules('required'),
             ],
             [
                 'name' => 'Bill Murray',

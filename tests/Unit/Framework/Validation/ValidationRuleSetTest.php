@@ -7,23 +7,23 @@ namespace Unit\Framework\Validation;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Validation\Rules\Required;
 use Give\Framework\Validation\Rules\Size;
-use Give\Framework\Validation\ValidationRulesArray;
+use Give\Framework\Validation\ValidationRuleSet;
 use Give\Framework\Validation\ValidationRulesRegister;
 use GiveTests\TestCase;
 
 /**
- * @covers ValidationRulesArray
+ * @covers ValidationRuleSet
  *
  * @unreleased
  */
-class ValidationRulesArrayTest extends TestCase
+class ValidationRuleSetTest extends TestCase
 {
     /**
      * @unreleased
      */
     public function testRulesCanBePassedAsStrings()
     {
-        $rules = new ValidationRulesArray($this->getMockRulesRegister());
+        $rules = new ValidationRuleSet($this->getMockRulesRegister());
         $rules->rules('required', 'size:5');
 
         self::assertCount(2, $rules);
@@ -34,7 +34,7 @@ class ValidationRulesArrayTest extends TestCase
      */
     public function testRulesCanBePassedAsInstances()
     {
-        $rules = new ValidationRulesArray($this->getMockRulesRegister());
+        $rules = new ValidationRuleSet($this->getMockRulesRegister());
         $rules->rules(new Required(), new Size(5));
 
         self::assertCount(2, $rules);
@@ -45,7 +45,7 @@ class ValidationRulesArrayTest extends TestCase
      */
     public function testRulesCanBePassedAsClosures()
     {
-        $rules = new ValidationRulesArray($this->getMockRulesRegister());
+        $rules = new ValidationRuleSet($this->getMockRulesRegister());
         $rules->rules(static function ($value, $fail) {
         });
 
@@ -57,7 +57,7 @@ class ValidationRulesArrayTest extends TestCase
      */
     public function testCheckingHasRule()
     {
-        $rules = new ValidationRulesArray($this->getMockRulesRegister());
+        $rules = new ValidationRuleSet($this->getMockRulesRegister());
         $rules->rules('required', 'size:5');
 
         self::assertTrue($rules->hasRule('required'));
@@ -70,7 +70,7 @@ class ValidationRulesArrayTest extends TestCase
      */
     public function testGettingARule()
     {
-        $rules = new ValidationRulesArray($this->getMockRulesRegister());
+        $rules = new ValidationRuleSet($this->getMockRulesRegister());
         $rules->rules('required', 'size:5');
 
         self::assertInstanceOf(Required::class, $rules->getRule('required'));
@@ -83,7 +83,7 @@ class ValidationRulesArrayTest extends TestCase
      */
     public function testGettingAllRules()
     {
-        $rules = new ValidationRulesArray($this->getMockRulesRegister());
+        $rules = new ValidationRuleSet($this->getMockRulesRegister());
         $rules->rules('required', 'size:5');
 
         self::assertCount(2, $rules->getRules());
@@ -94,7 +94,7 @@ class ValidationRulesArrayTest extends TestCase
      */
     public function testForgettingARule()
     {
-        $rules = new ValidationRulesArray($this->getMockRulesRegister());
+        $rules = new ValidationRuleSet($this->getMockRulesRegister());
         $rules->rules('required', 'size:5');
         $rules->removeRuleWithId('required');
 
@@ -107,7 +107,7 @@ class ValidationRulesArrayTest extends TestCase
      */
     public function testRulesCanBeSerializedToJson()
     {
-        $rules = new ValidationRulesArray($this->getMockRulesRegister());
+        $rules = new ValidationRuleSet($this->getMockRulesRegister());
         $rules->rules('required', 'size:5');
 
         self::assertJsonStringEqualsJsonString(
@@ -124,7 +124,7 @@ class ValidationRulesArrayTest extends TestCase
      */
     public function testRulesAreIterable()
     {
-        self::assertIsIterable(new ValidationRulesArray($this->getMockRulesRegister()));
+        self::assertIsIterable(new ValidationRuleSet($this->getMockRulesRegister()));
     }
 
     /**
@@ -135,7 +135,7 @@ class ValidationRulesArrayTest extends TestCase
         self::expectException(InvalidArgumentException::class);
         self::expectExceptionMessage('Validation rule closure must accept between 2 and 4 parameters, 1 given.');
 
-        $rules = new ValidationRulesArray($this->getMockRulesRegister());
+        $rules = new ValidationRuleSet($this->getMockRulesRegister());
         $rules->rules(static function ($value) {
         });
     }
@@ -148,7 +148,7 @@ class ValidationRulesArrayTest extends TestCase
         self::expectException(InvalidArgumentException::class);
         self::expectExceptionMessage('Validation rule closure must accept between 2 and 4 parameters, 5 given.');
 
-        $rules = new ValidationRulesArray($this->getMockRulesRegister());
+        $rules = new ValidationRuleSet($this->getMockRulesRegister());
         $rules->rules(static function ($value, $fail, $message, $attribute, $extra) {
         });
     }
@@ -163,7 +163,7 @@ class ValidationRulesArrayTest extends TestCase
             'Validation rule closure must accept a Closure as the second parameter, int given.'
         );
 
-        $rules = new ValidationRulesArray($this->getMockRulesRegister());
+        $rules = new ValidationRuleSet($this->getMockRulesRegister());
         $rules->rules(static function ($value, int $fail) {
         });
     }
@@ -176,7 +176,7 @@ class ValidationRulesArrayTest extends TestCase
         self::expectException(InvalidArgumentException::class);
         self::expectExceptionMessage('Validation rule closure must accept a string as the third parameter, int given.');
 
-        $rules = new ValidationRulesArray($this->getMockRulesRegister());
+        $rules = new ValidationRuleSet($this->getMockRulesRegister());
         $rules->rules(static function ($value, $fail, int $message) {
         });
     }
@@ -189,7 +189,7 @@ class ValidationRulesArrayTest extends TestCase
         self::expectException(InvalidArgumentException::class);
         self::expectExceptionMessage('Validation rule closure must accept a array as the fourth parameter, int given.');
 
-        $rules = new ValidationRulesArray($this->getMockRulesRegister());
+        $rules = new ValidationRuleSet($this->getMockRulesRegister());
         $rules->rules(static function ($value, $fail, $message, int $attribute) {
         });
     }
