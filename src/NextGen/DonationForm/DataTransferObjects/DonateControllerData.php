@@ -4,6 +4,7 @@ namespace Give\NextGen\DonationForm\DataTransferObjects;
 
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\NextGen\DonationForm\Models\DonationForm;
 
@@ -71,7 +72,8 @@ class DonateControllerData
             'email' => $this->email,
             'formId' => $this->formId,
             'formTitle' => $form->title,
-            'company' => $this->company
+            'company' => $this->company,
+            'type' => DonationType::SINGLE()
         ]);
     }
 
