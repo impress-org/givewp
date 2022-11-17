@@ -3,6 +3,7 @@
 namespace Give\DonationForms\Models;
 
 use DateTime;
+use Give\DonationForms\DataTransferObjects\DonationFormQueryData;
 use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Contracts\ModelReadOnly;
 use Give\Framework\Models\Model;
@@ -17,11 +18,10 @@ use Give\Framework\Support\ValueObjects\Money;
  *
  * @property int $id
  * @property string $title
- * @property string $donationLevels
- * @property string $goal
- * @property int $donationsCount
- * @property Money $donationsRevenue
- * @property string $shortcode
+ * @property array $levels // TODO: Implement DonationFormLevel class and replace this with DonationFormLevel
+ * @property bool $goalOption
+ * @property int $totalNumberOfDonations
+ * @property Money $totalAmountDonated
  * @property DateTime $createdAt
  * @property DateTime $updatedAt
  * @property string $status // TODO: Implement DonationFormStatus class and replace this with DonationFormStatus
@@ -34,11 +34,10 @@ class DonationForm extends Model implements ModelReadOnly, ModelHasFactory
     protected $properties = [
         'id' => 'int',
         'title' => 'string',
-        'donationLevels' => 'string',
-        'goal' => 'string',
-        'donationsCount' => 'int',
-        'donationsRevenue' => Money::class,
-        'shortcode' => 'string',
+        'levels' => 'array', // TODO: Implement DonationFormLevel class and replace this with DonationFormLevel
+        'goalOption' => 'bool',
+        'totalNumberOfDonations' => 'int',
+        'totalAmountDonated' => Money::class,
         'createdAt' => DateTime::class,
         'updatedAt' => DateTime::class,
         'status' => 'string', // TODO: Implement DonationFormStatus class and replace this with DonationFormStatus::class
@@ -82,7 +81,7 @@ class DonationForm extends Model implements ModelReadOnly, ModelHasFactory
      */
     public static function fromQueryBuilderObject($object): DonationForm
     {
-        // TODO: Implement fromQueryBuilderObject() method.
+        return DonationFormQueryData::fromObject($object)->toDonationForm();
     }
 
     /**
