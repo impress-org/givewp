@@ -3,7 +3,7 @@
 namespace Give\Framework\PaymentGateways\Commands;
 
 /**
- * @unreleased
+ * @since 2.23.2
  */
 class SubscriptionProcessing implements GatewayCommand
 {
@@ -21,7 +21,7 @@ class SubscriptionProcessing implements GatewayCommand
     public $gatewaySubscriptionId;
 
     /**
-     * @unreleased
+     * @since 2.23.2
      */
     public function __construct(
         string $gatewaySubscriptionId,

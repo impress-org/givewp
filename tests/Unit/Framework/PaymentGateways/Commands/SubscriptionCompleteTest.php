@@ -10,14 +10,14 @@ use GiveTests\TestCase;
 use GiveTests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 2.23.2
  */
 class SubscriptionCompleteTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 2.23.2
      * @return void
      */
     public function testSubscriptionActiveAndDonationCompleted()

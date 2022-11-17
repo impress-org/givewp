@@ -9,14 +9,14 @@ use GiveTests\TestTraits\RefreshDatabase;
 use InvalidArgumentException;
 
 /**
- * @unreleased
+ * @since 2.23.2
  */
 class DispatchGiveRecurringAddSubscriptionPaymentAndRecordPaymentTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 2.23.2
      * @return void
      */
     public function testShouldNotTriggerActionHookForSubscriptionInitialDonation()
@@ -28,7 +28,7 @@ class DispatchGiveRecurringAddSubscriptionPaymentAndRecordPaymentTest extends Te
     }
 
     /**
-     * @unreleased
+     * @since 2.23.2
      * @return void
      */
     public function testShouldTriggerActionHookForSubscriptionRenewalDonation()
@@ -41,7 +41,7 @@ class DispatchGiveRecurringAddSubscriptionPaymentAndRecordPaymentTest extends Te
     }
 
     /**
-     * @unreleased
+     * @since 2.23.2
      * @return void
      */
     public function testActionHookShouldHaveDonationAmountWithFloatType()

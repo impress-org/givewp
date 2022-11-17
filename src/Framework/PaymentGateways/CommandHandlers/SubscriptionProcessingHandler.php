@@ -10,28 +10,28 @@ use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
- * @unreleased
+ * @since 2.23.2
  */
 class SubscriptionProcessingHandler
 {
     /**
-     * @unreleased
+     * @since 2.23.2
      * @var SubscriptionProcessing
      */
     private $subscriptionComplete;
     /**
-     * @unreleased
+     * @since 2.23.2
      * @var Subscription
      */
     private $subscription;
     /**
-     * @unreleased
+     * @since 2.23.2
      * @var Donation
      */
     private $donation;
 
     /**
-     * @unreleased
+     * @since 2.23.2
      */
     public function __construct(
         SubscriptionProcessing $subscriptionComplete,
@@ -44,7 +44,7 @@ class SubscriptionProcessingHandler
     }
 
     /**
-     * @unreleased
+     * @since 2.23.2
      * @return void
      * @throws Exception
      */

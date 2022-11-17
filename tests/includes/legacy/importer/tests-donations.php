@@ -72,7 +72,7 @@ class Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 	protected $total = '';
 
     /**
-     * @unreleased
+     * @since 2.23.2
      * @var string
      */
     protected $main_key = '';

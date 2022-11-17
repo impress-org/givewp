@@ -14,7 +14,7 @@ class SubscriptionProcessingTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 2.23.2
      * @return void
      */
     public function testSubscriptionPendingAndDonationProcessing()
