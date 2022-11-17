@@ -1,3 +1,4 @@
+import {useState} from 'react';
 import {__, sprintf} from '@wordpress/i18n';
 import {useSWRConfig} from 'swr';
 import {ListTablePage} from '@givewp/components';
@@ -5,9 +6,15 @@ import RowAction from '@givewp/components/ListTable/RowAction';
 import ListTableApi from '@givewp/components/ListTable/api';
 import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import {IdBadge} from '@givewp/components/ListTable/TableCell';
-import {BulkActionsConfig, FilterConfig, ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
+import {
+    BulkActionsConfig,
+    FilterConfig,
+    ShowConfirmModalContext,
+    ToggleActionConfig,
+} from '@givewp/components/ListTable/ListTablePage';
 import {useContext} from 'react';
 import {Interweave} from 'interweave';
+import Switch from '../../../Views/Components/ListTable/Switch';
 
 declare global {
     interface Window {
@@ -26,6 +33,7 @@ const API = new ListTableApi(window.GiveDonations);
 
 export default function () {
     const {mutate} = useSWRConfig();
+    const [testMode, setTestMode] = useState(false);
 
     const rowActions = ({item, removeRow, setUpdateErrors, parameters}) => {
         const showConfirmModal = useContext(ShowConfirmModalContext);
@@ -167,6 +175,12 @@ export default function () {
         },
     ];
 
+    const TestModeConfig: ToggleActionConfig = {
+        testMode: testMode,
+        setTestMode: (val) => setTestMode(val),
+        switch: <Switch selected={testMode} action={setTestMode} label={__('View Test Donations', 'give')} />,
+    };
+
     return (
         <ListTablePage
             title={__('Donations', 'give')}
@@ -177,6 +191,7 @@ export default function () {
             apiSettings={window.GiveDonations}
             giveTestMode={window.GiveDonations.testMode}
             filterSettings={filters}
+            toggleAction={TestModeConfig}
         >
             <a
                 className={tableStyles.addFormButton}

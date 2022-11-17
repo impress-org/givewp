@@ -1,9 +1,15 @@
 import styles from './style.module.scss';
 
-const Switch = ({label, toggle, checked}) => {
+interface SwitchProps {
+    label?: string;
+    action?: any;
+    selected?: boolean;
+}
+
+const Switch = ({label, selected, action}: SwitchProps) => {
     return (
         <label className={styles.container}>
-            <input type="checkbox" aria-label="switch" checked={checked} onChange={() => toggle(!checked)} />
+            <input type="checkbox" aria-label="switch" checked={selected} onChange={() => action(!selected)} />
             <span className={styles.switch} />
             <span>{label && label}</span>
         </label>
