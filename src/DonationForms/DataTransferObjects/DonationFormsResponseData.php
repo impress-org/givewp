@@ -74,7 +74,7 @@ final class DonationFormsResponseData implements Arrayable
         $self->name = $form->title;
         $self->status = $form->status;
         $self->goal = $form->goalEnabled === 'enabled' ? $self->getGoal($form->id) : false;
-        $self->donations = give()->donationFormsRepository->getFormDonationsCount($form->id);
+        $self->donations = give()->donationForms->getFormDonationsCount($form->id);
         $self->amount = $self->getFormAmount($form);
         $self->revenue = $self->formatAmount($form->revenue ?? '');
         $self->datetime = Date::getDateTime($form->createdAt);
