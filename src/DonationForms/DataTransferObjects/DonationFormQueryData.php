@@ -73,8 +73,8 @@ final class DonationFormQueryData
         $self->goalOption = ($object->{DonationFormMetaKeys::GOAL_OPTION()->getKeyAsCamelCase()} === 'enabled');
         $self->createdAt = Temporal::toDateTime($object->createdAt);
         $self->updatedAt = Temporal::toDateTime($object->updatedAt);
-        $self->totalAmountDonated = Money::fromDecimal(0, give_get_currency()); // TODO: Implement query to get the total amount donated
-        $self->totalNumberOfDonations = 0; // TODO: Implement query to get the total number of donations
+        $self->totalAmountDonated = Money::fromDecimal($object->{DonationFormMetaKeys::FORM_EARNINGS()->getKeyAsCamelCase()}, give_get_currency());
+        $self->totalNumberOfDonations = (int)$object->{DonationFormMetaKeys::FORM_SALES()->getKeyAsCamelCase()};
         $self->status = $object->status; // TODO: Implement DonationFormStatus class and replace this with to return an instance of DonationFormStatus
 
         return $self;
