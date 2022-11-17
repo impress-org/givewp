@@ -4,6 +4,7 @@ namespace Give\DonationForms\Models;
 
 use DateTime;
 use Give\DonationForms\DataTransferObjects\DonationFormQueryData;
+use Give\DonationForms\Properties\DonationFormLevel;
 use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Contracts\ModelReadOnly;
 use Give\Framework\Models\Model;
@@ -18,7 +19,7 @@ use Give\Framework\Support\ValueObjects\Money;
  *
  * @property int $id
  * @property string $title
- * @property array $levels // TODO: Implement DonationFormLevel class and replace this with DonationFormLevel
+ * @property DonationFormLevel[] $levels
  * @property bool $goalOption
  * @property int $totalNumberOfDonations
  * @property Money $totalAmountDonated
@@ -34,7 +35,7 @@ class DonationForm extends Model implements ModelReadOnly, ModelHasFactory
     protected $properties = [
         'id' => 'int',
         'title' => 'string',
-        'levels' => 'array', // TODO: Implement DonationFormLevel class and replace this with DonationFormLevel
+        'levels' => 'array',
         'goalOption' => 'bool',
         'totalNumberOfDonations' => 'int',
         'totalAmountDonated' => Money::class,

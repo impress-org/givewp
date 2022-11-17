@@ -4,6 +4,7 @@ namespace Give\DonationForms\DataTransferObjects;
 
 use DateTime;
 use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\Properties\DonationFormLevel;
 use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
@@ -58,15 +59,17 @@ final class DonationFormQueryData
      *
      * @unreleased
      *
-     * @return self
+     * @param $object
+     *
+     * @return DonationFormQueryData
      */
-    public static function fromObject($object)
+    public static function fromObject($object): DonationFormQueryData
     {
         $self = new static();
 
         $self->id = (int)$object->id;
         $self->title = $object->title;
-        $self->levels = maybe_unserialize($object->{DonationFormMetaKeys::DONATION_LEVELS()->getKeyAsCamelCase()}); // TODO: Implement DonationFormLevels class and replace this with DonationFormLevels
+        $self->levels = $self->getDonationFormLevels( maybe_unserialize($object->{DonationFormMetaKeys::DONATION_LEVELS()->getKeyAsCamelCase()}));
         $self->goalOption = ($object->{DonationFormMetaKeys::GOAL_OPTION()->getKeyAsCamelCase()} === 'enabled');
         $self->createdAt = Temporal::toDateTime($object->createdAt);
         $self->updatedAt = Temporal::toDateTime($object->updatedAt);
@@ -82,10 +85,28 @@ final class DonationFormQueryData
      *
      * @return DonationForm
      */
-    public function toDonationForm()
+    public function toDonationForm(): DonationForm
     {
         $attributes = get_object_vars($this);
 
         return new DonationForm($attributes);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param $array
+     *
+     * @return DonationFormLevel[]
+     */
+    public function getDonationFormLevels($array): array
+    {
+        $levels = [];
+
+        foreach ($array as $level) {
+            $levels[] = DonationFormLevel::fromArray($level);
+        }
+
+        return $levels;
     }
 }
