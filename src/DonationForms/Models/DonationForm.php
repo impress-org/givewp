@@ -5,6 +5,7 @@ namespace Give\DonationForms\Models;
 use DateTime;
 use Give\DonationForms\DataTransferObjects\DonationFormQueryData;
 use Give\DonationForms\Properties\DonationFormLevel;
+use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Contracts\ModelReadOnly;
 use Give\Framework\Models\Model;
@@ -25,7 +26,7 @@ use Give\Framework\Support\ValueObjects\Money;
  * @property Money $totalAmountDonated
  * @property DateTime $createdAt
  * @property DateTime $updatedAt
- * @property string $status // TODO: Implement DonationFormStatus class and replace this with DonationFormStatus
+ * @property DonationFormStatus $status
  */
 class DonationForm extends Model implements ModelReadOnly, ModelHasFactory
 {
@@ -41,7 +42,7 @@ class DonationForm extends Model implements ModelReadOnly, ModelHasFactory
         'totalAmountDonated' => Money::class,
         'createdAt' => DateTime::class,
         'updatedAt' => DateTime::class,
-        'status' => 'string', // TODO: Implement DonationFormStatus class and replace this with DonationFormStatus::class
+        'status' => DonationFormStatus::class,
     ];
 
     /**

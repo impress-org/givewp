@@ -6,6 +6,7 @@ use DateTime;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\DonationFormLevel;
 use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
+use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
 
@@ -75,7 +76,7 @@ final class DonationFormQueryData
         $self->updatedAt = Temporal::toDateTime($object->updatedAt);
         $self->totalAmountDonated = Money::fromDecimal($object->{DonationFormMetaKeys::FORM_EARNINGS()->getKeyAsCamelCase()}, give_get_currency());
         $self->totalNumberOfDonations = (int)$object->{DonationFormMetaKeys::FORM_SALES()->getKeyAsCamelCase()};
-        $self->status = $object->status; // TODO: Implement DonationFormStatus class and replace this with to return an instance of DonationFormStatus
+        $self->status = new DonationFormStatus($object->status);
 
         return $self;
     }
