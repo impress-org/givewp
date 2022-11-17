@@ -9,11 +9,12 @@ import ListTableRows from '@givewp/components/ListTable/ListTableRows';
 
 export interface ListTableProps {
     //required
-    apiSettings: {table: {columns: Array<ListTableColumn>}};
+    apiSettings: {table: {columns: Array<ListTableColumn>; id: string}};
     title: string;
     data: {items: Array<{}>};
     handleItemSort: (event: React.MouseEvent<HTMLElement>, column: string) => void;
     sortField: {sortColumn: string; sortDirection: string};
+    testMode: boolean;
 
     //optional
     pluralName?: string;
@@ -46,6 +47,7 @@ export const ListTable = ({
     apiSettings,
     handleItemSort,
     sortField,
+    testMode,
 }: ListTableProps) => {
     const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>; successes: Array<number>}>({
         errors: [],
@@ -134,7 +136,11 @@ export const ListTable = ({
                                 <th
                                     scope="col"
                                     aria-sort="none"
-                                    className={cx(styles.tableColumnHeader, styles.selectAll)}
+                                    className={cx(
+                                        styles.tableColumnHeader,
+                                        styles.selectAll,
+                                        testMode && apiSettings.table.id === 'donations' && styles.testMode
+                                    )}
                                     data-column="select"
                                 >
                                     <BulkActionCheckboxAll pluralName={pluralName} data={data} />
@@ -150,9 +156,13 @@ export const ListTable = ({
                                                         : 'descending'
                                                     : 'none'
                                             }
-                                            className={cx(styles.tableColumnHeader, {
-                                                [styles[column.id]]: true,
-                                            })}
+                                            className={cx(
+                                                styles.tableColumnHeader,
+                                                testMode && apiSettings.table.id === 'donations' && styles.testMode,
+                                                {
+                                                    [styles[column.id]]: true,
+                                                }
+                                            )}
                                             data-column={column.id}
                                             key={column.id}
                                         >
@@ -175,7 +185,6 @@ export const ListTable = ({
                                 rowActions={rowActions}
                                 parameters={parameters}
                                 setUpdateErrors={setUpdateErrors}
-                                align={align}
                             />
                         </tbody>
                     </table>

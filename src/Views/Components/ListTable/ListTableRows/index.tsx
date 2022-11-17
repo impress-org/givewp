@@ -6,16 +6,7 @@ import TableCell from '../TableCell';
 import {BulkActionCheckbox} from '@givewp/components/ListTable/BulkActions/BulkActionCheckbox';
 import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
 
-export default function ListTableRows({
-    columns,
-    data,
-    isLoading,
-    rowActions,
-    setUpdateErrors,
-    parameters,
-    singleName,
-    align,
-}) {
+export default function ListTableRows({columns, data, isLoading, rowActions, setUpdateErrors, parameters, singleName}) {
     const [removed, setRemoved] = useState([]);
     const [added, setAdded] = useState([]);
 

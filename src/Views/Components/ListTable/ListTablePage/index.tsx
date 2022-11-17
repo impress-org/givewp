@@ -93,12 +93,12 @@ export default function ListTablePage({
         sortDirection: 'desc',
     });
     const {sortColumn, sortDirection} = sortField;
-    const {testMode} = toggleAction;
+    const testMode = toggleAction?.testMode;
     const locale = navigator.language || navigator.languages[0];
 
     //@unreleased initialize testMode switch based on payment gateway mode.
     useEffect(() => {
-        toggleAction.setTestMode(!!giveTestMode);
+        toggleAction?.setTestMode(!!giveTestMode);
     }, [giveTestMode]);
 
     const parameters = {
@@ -198,6 +198,7 @@ export default function ListTablePage({
                     <div className={styles.flexRow}>
                         <GiveIcon size={'1.875rem'} />
                         <h1 className={styles.pageTitle}>{title}</h1>
+                        {testMode && <span>Test</span>}
                     </div>
                     {children && <div className={styles.flexRow}>{children}</div>}
                 </header>
@@ -214,7 +215,7 @@ export default function ListTablePage({
                 </section>
                 <div className={cx('wp-header-end', 'hidden')} />
                 <div className={styles.pageContent}>
-                    <PageActions toggle={toggleAction.switch} />
+                    <PageActions toggle={toggleAction?.switch} />
                     <CheckboxContext.Provider value={checkboxRefs}>
                         <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
                             <ListTable
