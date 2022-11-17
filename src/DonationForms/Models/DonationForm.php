@@ -52,12 +52,12 @@ class DonationForm extends Model implements ModelReadOnly, ModelHasFactory
 
     public static function find($id)
     {
-        // TODO: Implement find() method.
+        return give()->donationForms->getById($id);
     }
 
     public static function query()
     {
-        // TODO: Implement query() method.
+        return give()->donationForms->prepareQuery();
     }
 
     public static function fromQueryBuilderObject($object)

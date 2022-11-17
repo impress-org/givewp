@@ -3,6 +3,7 @@
 namespace Give\DonationForms\ValueObjects;
 
 use Give\Framework\Support\ValueObjects\Enum;
+use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
 
 /**
  * Donation Form Meta keys
@@ -16,6 +17,8 @@ use Give\Framework\Support\ValueObjects\Enum;
  */
 class DonationFormMetaKeys extends Enum
 {
+    use EnumInteractsWithQueryBuilder;
+
     const FORM_EARNINGS = '_give_form_earnings';
     const DONATION_LEVELS = '_give_donation_levels';
     const SET_PRICE = '_give_set_price';
