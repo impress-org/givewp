@@ -2,9 +2,8 @@
 
 namespace Give\DonationForms\Endpoints;
 
-use Give\DonationForms\DataTransferObjects\DonationFormsResponseData;
-use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
-use Give\Framework\Database\DB;
+use Give\DonationForms\ListTable\DonationFormsListTable;
+use Give\Framework\Models\ModelQueryBuilder;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -22,6 +21,11 @@ class ListForms extends Endpoint
      * @var WP_REST_Request
      */
     private $request;
+
+    /**
+     * @var DonationFormsListTable
+     */
+    protected $listTable;
 
     /**
      * @inheritDoc
@@ -75,25 +79,26 @@ class ListForms extends Endpoint
     }
 
     /**
+     * @unreleased Change this to use the new ListTable class
+     *
      * @param WP_REST_Request $request
      *
      * @return WP_REST_Response
      */
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
-        $data = [];
         $this->request = $request;
+        $this->listTable = give(DonationFormsListTable::class);
+
         $forms = $this->getForms();
         $totalForms = $this->getTotalFormsCount();
         $totalPages = (int)ceil($totalForms / $this->request->get_param('perPage'));
 
-        foreach ($forms as $form) {
-            $data[] = DonationFormsResponseData::fromObject($form)->toArray();
-        }
+        $this->listTable->items($forms);
 
         return new WP_REST_Response(
             [
-                'items' => $data,
+                'items' => $this->listTable->getItems(),
                 'totalItems' => $totalForms,
                 'totalPages' => $totalPages,
                 'trash' => defined('EMPTY_TRASH_DAYS') && EMPTY_TRASH_DAYS > 0,
@@ -102,33 +107,54 @@ class ListForms extends Endpoint
     }
 
     /**
+     * @unreleased Refactor to query through the ModelQueryBuilder
+     *
      * @return array
      */
     public function getForms(): array
     {
         $page = $this->request->get_param('page');
         $perPage = $this->request->get_param('perPage');
+
+        $query = give()->donationForms->prepareQuery();
+        $query = $this->getWhereConditions($query);
+
+        $query->limit($perPage)
+            ->offset(($page - 1) * $perPage);
+
+        $donationForms = $query->getAll();
+
+        if (!$donationForms) {
+            return [];
+        }
+
+        return $donationForms;
+    }
+
+    /**
+     * @unreleased Refactor to query through the ModelQueryBuilder
+     *
+     * @return int
+     */
+    public function getTotalFormsCount(): int
+    {
+        $query = give()->donationForms->prepareQuery();
+        $query = $this->getWhereConditions($query);
+
+        return $query->count();
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param ModelQueryBuilder $query
+     *
+     * @return ModelQueryBuilder
+     */
+    private function getWhereConditions(ModelQueryBuilder $query): ModelQueryBuilder
+    {
         $search = $this->request->get_param('search');
         $status = $this->request->get_param('status');
-
-        $query = DB::table('posts')
-            ->select(
-                'id',
-                ['post_date', 'createdAt'],
-                ['post_date_gmt', 'createdAtGmt'],
-                ['post_status', 'status'],
-                ['post_title', 'title']
-            )
-            ->attachMeta('give_formmeta', 'id', 'form_id',
-                [DonationFormMetaKeys::FORM_EARNINGS, 'revenue'],
-                [DonationFormMetaKeys::DONATION_LEVELS, 'donationLevels'],
-                [DonationFormMetaKeys::SET_PRICE, 'setPrice'],
-                [DonationFormMetaKeys::GOAL_OPTION, 'goalEnabled']
-            )
-            ->where('post_type', 'give_forms')
-            ->limit($perPage)
-            ->orderBy('id', 'DESC')
-            ->offset(($page - 1) * $perPage);
 
         // Status
         if ($status === 'any') {
@@ -151,37 +177,6 @@ class ListForms extends Endpoint
             }
         }
 
-        return $query->getAll();
-    }
-
-    /**
-     * @return int
-     */
-    public function getTotalFormsCount(): int
-    {
-        $search = $this->request->get_param('search');
-        $status = $this->request->get_param('status');
-        $perPage = $this->request->get_param('perPage');
-
-        $query = DB::table('posts')
-            ->where('post_type', 'give_forms');
-
-        if ($status === 'any') {
-            $query->whereIn('post_status', ['publish', 'draft', 'pending']);
-        } else {
-            $query->where('post_status', $status);
-        }
-
-        if ($search) {
-            if (ctype_digit($search)) {
-                $query->where('ID', $search);
-            } else {
-                $query->whereLike('post_title', $search);
-            }
-        }
-
-        $query->limit($perPage);
-
-        return $query->count();
+        return $query;
     }
 }
