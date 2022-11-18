@@ -41,4 +41,23 @@ final class DonationFormLevel
 
         return $self;
     }
+
+    /**
+     * @unreleased
+     *
+     * @param string $price
+     *
+     * @return DonationFormLevel
+     */
+    public static function fromPrice(string $price): DonationFormLevel
+    {
+        $self = new static();
+
+        $self->id = 0;
+        $self->amount = Money::fromDecimal($price, give_get_currency());
+        $self->label = '';
+        $self->isDefault = true;
+
+        return $self;
+    }
 }
