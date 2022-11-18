@@ -2,8 +2,9 @@
 
 namespace Give\DonationForms\Endpoints;
 
-use Give\DonationForms\Controllers\DonationFormsRequestController;
 use Give\DonationForms\DataTransferObjects\DonationFormsResponseData;
+use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
+use Give\Framework\Database\DB;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -16,6 +17,11 @@ class ListForms extends Endpoint
      * @var string
      */
     protected $endpoint = 'admin/forms';
+
+    /**
+     * @var WP_REST_Request
+     */
+    private $request;
 
     /**
      * @inheritDoc
@@ -76,10 +82,10 @@ class ListForms extends Endpoint
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
         $data = [];
-        $controller = new DonationFormsRequestController($request);
-        $forms = $controller->getForms();
-        $totalForms = $controller->getTotalFormsCount();
-        $totalPages = (int)ceil($totalForms / $request->get_param('perPage'));
+        $this->request = $request;
+        $forms = $this->getForms();
+        $totalForms = $this->getTotalFormsCount();
+        $totalPages = (int)ceil($totalForms / $this->request->get_param('perPage'));
 
         foreach ($forms as $form) {
             $data[] = DonationFormsResponseData::fromObject($form)->toArray();
@@ -93,5 +99,89 @@ class ListForms extends Endpoint
                 'trash' => defined('EMPTY_TRASH_DAYS') && EMPTY_TRASH_DAYS > 0,
             ]
         );
+    }
+
+    /**
+     * @return array
+     */
+    public function getForms(): array
+    {
+        $page = $this->request->get_param('page');
+        $perPage = $this->request->get_param('perPage');
+        $search = $this->request->get_param('search');
+        $status = $this->request->get_param('status');
+
+        $query = DB::table('posts')
+            ->select(
+                'id',
+                ['post_date', 'createdAt'],
+                ['post_date_gmt', 'createdAtGmt'],
+                ['post_status', 'status'],
+                ['post_title', 'title']
+            )
+            ->attachMeta('give_formmeta', 'id', 'form_id',
+                [DonationFormMetaKeys::FORM_EARNINGS, 'revenue'],
+                [DonationFormMetaKeys::DONATION_LEVELS, 'donationLevels'],
+                [DonationFormMetaKeys::SET_PRICE, 'setPrice'],
+                [DonationFormMetaKeys::GOAL_OPTION, 'goalEnabled']
+            )
+            ->where('post_type', 'give_forms')
+            ->limit($perPage)
+            ->orderBy('id', 'DESC')
+            ->offset(($page - 1) * $perPage);
+
+        // Status
+        if ($status === 'any') {
+            $query->whereIn('post_status', ['publish', 'draft', 'pending', 'private']);
+        } else {
+            $query->where('post_status', $status);
+        }
+
+        // Search
+        if ($search) {
+            if (ctype_digit($search)) {
+                $query->where('ID', $search);
+            } else {
+                $searchTerms = array_map('trim', explode(' ', $search));
+                foreach ($searchTerms as $term) {
+                    if ($term) {
+                        $query->whereLike('post_title', $term);
+                    }
+                }
+            }
+        }
+
+        return $query->getAll();
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalFormsCount(): int
+    {
+        $search = $this->request->get_param('search');
+        $status = $this->request->get_param('status');
+        $perPage = $this->request->get_param('perPage');
+
+        $query = DB::table('posts')
+            ->where('post_type', 'give_forms');
+
+        if ($status === 'any') {
+            $query->whereIn('post_status', ['publish', 'draft', 'pending']);
+        } else {
+            $query->where('post_status', $status);
+        }
+
+        if ($search) {
+            if (ctype_digit($search)) {
+                $query->where('ID', $search);
+            } else {
+                $query->whereLike('post_title', $search);
+            }
+        }
+
+        $query->limit($perPage);
+
+        return $query->count();
     }
 }
