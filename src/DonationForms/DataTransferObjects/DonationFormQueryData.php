@@ -111,10 +111,10 @@ final class DonationFormQueryData
             }
 
             return $levels;
-        } else {
-            return [
-                DonationFormLevel::fromPrice($object->{DonationFormMetaKeys::SET_PRICE()->getKeyAsCamelCase()}),
-            ];
         }
+
+        return [
+            DonationFormLevel::fromPrice($object->{DonationFormMetaKeys::SET_PRICE()->getKeyAsCamelCase()}),
+        ];
     }
 }
