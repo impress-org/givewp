@@ -5,6 +5,7 @@ namespace TestsNextGen\Unit\DataTransferObjects;
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donations\ValueObjects\DonationType;
 use Give\Donors\Models\Donor;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateFormRouteData;
@@ -56,7 +57,8 @@ class DonateFormDataTest extends TestCase
             'email' => $data->email,
             'formId' => $data->formId,
             'formTitle' => $data->formTitle,
-            'company' => $data->company
+            'company' => $data->company,
+            'type' => DonationType::SINGLE()
         ]);
 
         $formData = DonateFormRouteData::fromRequest((array)$data);
