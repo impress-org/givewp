@@ -33,11 +33,10 @@ const API = new ListTableApi(window.GiveDonations);
 
 export default function () {
     const {mutate} = useSWRConfig();
+    const showConfirmModal = useContext(ShowConfirmModalContext);
     const [testMode, setTestMode] = useState(false);
 
     const rowActions = ({item, removeRow, setUpdateErrors, parameters}) => {
-        const showConfirmModal = useContext(ShowConfirmModalContext);
-
         const fetchAndUpdateErrors = async (parameters, endpoint, id, method) => {
             const response = await API.fetchWithArgs(endpoint, {ids: [id]}, method);
             setUpdateErrors(response);

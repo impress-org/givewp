@@ -27,7 +27,7 @@ export interface ListTablePageProps {
     filterSettings?;
     align?: 'start' | 'center' | 'end';
     giveTestMode?: boolean;
-    toggleAction?: any;
+    toggleAction?: ToggleActionConfig;
 }
 
 export interface FilterConfig {
