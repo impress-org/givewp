@@ -27,7 +27,7 @@ final class DonationFormQueryData
      */
     public $title;
     /**
-     * @var array
+     * @var DonationFormLevel[]
      */
     public $levels;
     /**
@@ -70,7 +70,7 @@ final class DonationFormQueryData
 
         $self->id = (int)$object->id;
         $self->title = $object->title;
-        $self->levels = $self->getDonationFormLevels( maybe_unserialize($object->{DonationFormMetaKeys::DONATION_LEVELS()->getKeyAsCamelCase()}));
+        $self->levels = $self->getDonationFormLevels($object);
         $self->goalOption = ($object->{DonationFormMetaKeys::GOAL_OPTION()->getKeyAsCamelCase()} === 'enabled');
         $self->createdAt = Temporal::toDateTime($object->createdAt);
         $self->updatedAt = Temporal::toDateTime($object->updatedAt);
@@ -96,18 +96,25 @@ final class DonationFormQueryData
     /**
      * @unreleased
      *
-     * @param $array
+     * @param $object
      *
      * @return DonationFormLevel[]
      */
-    public function getDonationFormLevels($array): array
+    public function getDonationFormLevels($object): array
     {
-        $levels = [];
+        if ('multi' === $object->{DonationFormMetaKeys::PRICE_OPTION()->getKeyAsCamelCase()}) {
+            $levels = [];
+            $array = maybe_unserialize($object->{DonationFormMetaKeys::DONATION_LEVELS()->getKeyAsCamelCase()});
 
-        foreach ($array as $level) {
-            $levels[] = DonationFormLevel::fromArray($level);
+            foreach ($array as $level) {
+                $levels[] = DonationFormLevel::fromArray($level);
+            }
+
+            return $levels;
+        } else {
+            return [
+                DonationFormLevel::fromPrice($object->{DonationFormMetaKeys::SET_PRICE()->getKeyAsCamelCase()}),
+            ];
         }
-
-        return $levels;
     }
 }
