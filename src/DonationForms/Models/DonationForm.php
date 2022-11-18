@@ -28,7 +28,7 @@ use Give\Framework\Support\ValueObjects\Money;
  * @property DateTime $updatedAt
  * @property DonationFormStatus $status
  */
-class DonationForm extends Model implements ModelReadOnly, ModelHasFactory
+class DonationForm extends Model implements ModelReadOnly
 {
     /**
      * @inheritdoc
@@ -84,13 +84,5 @@ class DonationForm extends Model implements ModelReadOnly, ModelHasFactory
     public static function fromQueryBuilderObject($object): DonationForm
     {
         return DonationFormQueryData::fromObject($object)->toDonationForm();
-    }
-
-    /**
-     * @unreleased
-     */
-    public static function factory()
-    {
-        // TODO: Implement factory() method.
     }
 }
