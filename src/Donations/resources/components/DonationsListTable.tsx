@@ -10,9 +10,6 @@ import {BulkActionsConfig, FilterConfig, ShowConfirmModalContext} from '@givewp/
 import {useContext} from 'react';
 import {Interweave} from 'interweave';
 import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
-import cx from 'classnames';
-import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
-import {BulkActionSelect} from '@givewp/components/ListTable/BulkActions/BulkActionSelect';
 
 declare global {
     interface Window {
