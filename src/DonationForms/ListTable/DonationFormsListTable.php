@@ -2,6 +2,7 @@
 
 namespace Give\DonationForms\ListTable;
 
+use Give\DonationForms\ListTable\Columns\DateCreatedColumn;
 use Give\DonationForms\ListTable\Columns\DonationCountColumn;
 use Give\DonationForms\ListTable\Columns\DonationRevenueColumn;
 use Give\DonationForms\ListTable\Columns\IdColumn;
@@ -39,6 +40,7 @@ class DonationFormsListTable extends ListTable
             new DonationCountColumn(),
             new DonationRevenueColumn(),
             new ShortcodeColumn(),
+            new DateCreatedColumn(),
         ];
     }
 
@@ -56,6 +58,7 @@ class DonationFormsListTable extends ListTable
             DonationCountColumn::getId(),
             DonationRevenueColumn::getId(),
             ShortcodeColumn::getId(),
+            DateCreatedColumn::getId(),
         ];
     }
 }
