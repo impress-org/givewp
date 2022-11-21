@@ -3,6 +3,7 @@
 namespace Give\DonationForms\ListTable;
 
 use Give\DonationForms\ListTable\Columns\IdColumn;
+use Give\DonationForms\ListTable\Columns\TitleColumn;
 use Give\Framework\ListTable\ListTable;
 
 /**
@@ -29,6 +30,7 @@ class DonationFormsListTable extends ListTable
     {
         return [
             new IdColumn(),
+            new TitleColumn(),
         ];
     }
 
@@ -41,6 +43,7 @@ class DonationFormsListTable extends ListTable
     {
         return [
             IdColumn::getId(),
+            TitleColumn::getId(),
         ];
     }
 }
