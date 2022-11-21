@@ -73,6 +73,24 @@ class ListForms extends Endpoint
                         'type' => 'string',
                         'required' => false
                     ],
+                    'sortColumn' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                    'sortDirection' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'enum' => [
+                            'asc',
+                            'desc'
+                        ],
+                    ],
+                    'locale' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'default' => get_locale(),
+                    ],
                     'return' => [
                         'type' => 'string',
                         'required' => false,
@@ -129,9 +147,15 @@ class ListForms extends Endpoint
     {
         $page = $this->request->get_param('page');
         $perPage = $this->request->get_param('perPage');
+        $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
+        $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
 
         $query = give()->donationForms->prepareQuery();
         $query = $this->getWhereConditions($query);
+
+        foreach ($sortColumns as $sortColumn) {
+            $query->orderBy($sortColumn, $sortDirection);
+        }
 
         $query->limit($perPage)
             ->offset(($page - 1) * $perPage);
