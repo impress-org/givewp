@@ -147,7 +147,8 @@ class DonationsAdminPage
         $queryParameters = [
             'page' => 1,
             'perPage' => 50,
-            'status' => 'any'
+            'status' => 'any',
+            'return' => 'model',
         ];
 
         $request = WP_REST_Request::from_url(esc_url_raw(add_query_arg(
@@ -159,8 +160,8 @@ class DonationsAdminPage
 
         $options = array_map(static function ($form) {
             return [
-                'value' => $form['id'],
-                'text' => $form['name'],
+                'value' => $form->id,
+                'text' => $form->title,
             ];
         }, $data['items']);
 
