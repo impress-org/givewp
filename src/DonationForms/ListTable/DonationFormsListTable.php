@@ -3,6 +3,7 @@
 namespace Give\DonationForms\ListTable;
 
 use Give\DonationForms\ListTable\Columns\DonationCountColumn;
+use Give\DonationForms\ListTable\Columns\DonationRevenueColumn;
 use Give\DonationForms\ListTable\Columns\IdColumn;
 use Give\DonationForms\ListTable\Columns\LevelsColumn;
 use Give\DonationForms\ListTable\Columns\TitleColumn;
@@ -35,6 +36,7 @@ class DonationFormsListTable extends ListTable
             new TitleColumn(),
             new LevelsColumn(),
             new DonationCountColumn(),
+            new DonationRevenueColumn(),
         ];
     }
 
@@ -50,6 +52,7 @@ class DonationFormsListTable extends ListTable
             TitleColumn::getId(),
             LevelsColumn::getId(),
             DonationCountColumn::getId(),
+            DonationRevenueColumn::getId(),
         ];
     }
 }
