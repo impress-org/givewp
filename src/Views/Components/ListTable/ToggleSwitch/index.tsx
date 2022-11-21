@@ -1,9 +1,9 @@
 import styles from './style.module.scss';
 
 interface ToggleSwitchProps {
-    label?: string;
     setToggle: React.Dispatch<React.SetStateAction<boolean>>;
     toggle: boolean;
+    label?: string;
 }
 
 const ToggleSwitch = ({label, toggle, setToggle}: ToggleSwitchProps) => {

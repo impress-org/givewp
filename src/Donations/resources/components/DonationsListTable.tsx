@@ -6,15 +6,13 @@ import RowAction from '@givewp/components/ListTable/RowAction';
 import ListTableApi from '@givewp/components/ListTable/api';
 import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import {IdBadge} from '@givewp/components/ListTable/TableCell';
-import {
-    BulkActionsConfig,
-    FilterConfig,
-    ShowConfirmModalContext,
-    // ToggleActionConfig,
-} from '@givewp/components/ListTable/ListTablePage';
+import {BulkActionsConfig, FilterConfig, ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
 import {useContext} from 'react';
 import {Interweave} from 'interweave';
-import ToggleSwitch from '../../../Views/Components/ListTable/ToggleSwitch';
+import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
+import cx from 'classnames';
+import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
+import {BulkActionSelect} from '@givewp/components/ListTable/BulkActions/BulkActionSelect';
 
 declare global {
     interface Window {
@@ -34,6 +32,11 @@ const API = new ListTableApi(window.GiveDonations);
 export default function () {
     const {mutate} = useSWRConfig();
     const showConfirmModal = useContext(ShowConfirmModalContext);
+    const [testMode, setTestMode] = useState(null);
+
+    useEffect(() => {
+        setTestMode(!!window.GiveDonations.testMode);
+    }, []);
 
     const rowActions = ({item, removeRow, setUpdateErrors, parameters}) => {
         const fetchAndUpdateErrors = async (parameters, endpoint, id, method) => {
@@ -173,10 +176,6 @@ export default function () {
         },
     ];
 
-    const toggle = (testMode, setTestMode) => {
-        return <ToggleSwitch toggle={testMode} setToggle={setTestMode} label={__('View Test Donations', 'give')} />;
-    };
-
     return (
         <ListTablePage
             title={__('Donations', 'give')}
@@ -186,8 +185,11 @@ export default function () {
             bulkActions={bulkActions}
             apiSettings={window.GiveDonations}
             filterSettings={filters}
-            mode={!!window.GiveDonations.testMode}
-            toggle={toggle}
+            testMode={testMode}
+            titleBadge={testMode && <span>{__('Test', 'give')}</span>}
+            toggle={
+                <ToggleSwitch toggle={testMode} setToggle={setTestMode} label={__('View Test Donations', 'give')} />
+            }
         >
             <a
                 className={tableStyles.addFormButton}

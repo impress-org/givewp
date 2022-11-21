@@ -1,4 +1,4 @@
-import {createContext, useCallback, useEffect, useRef, useState} from 'react';
+import {createContext, useRef, memo, useState, useEffect} from 'react';
 import {__} from '@wordpress/i18n';
 import {A11yDialog} from 'react-a11y-dialog';
 import A11yDialogInstance from 'a11y-dialog';
@@ -12,7 +12,6 @@ import ListTableApi from '../api';
 import styles from './ListTablePage.module.scss';
 import cx from 'classnames';
 import {BulkActionSelect} from '@givewp/components/ListTable/BulkActions/BulkActionSelect';
-import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
 
 export interface ListTablePageProps {
     //required
@@ -27,8 +26,9 @@ export interface ListTablePageProps {
     rowActions?: JSX.Element | JSX.Element[] | Function | null;
     filterSettings?;
     align?: 'start' | 'center' | 'end';
-    mode?: boolean;
-    toggle?: any;
+    testMode?: boolean;
+    toggle?: JSX.Element | JSX.Element[] | Function | null;
+    titleBadge?: JSX.Element | JSX.Element[] | null;
 }
 
 export interface FilterConfig {
@@ -69,7 +69,8 @@ export default function ListTablePage({
     children = null,
     align = 'start',
     toggle,
-    mode,
+    testMode,
+    titleBadge,
 }: ListTablePageProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(30);
@@ -87,7 +88,6 @@ export default function ListTablePage({
         sortColumn: 'id',
         sortDirection: 'desc',
     });
-    const [testMode, setTestMode] = useState(mode);
 
     const {sortColumn, sortDirection} = sortField;
     const locale = navigator.language || navigator.languages[0];
@@ -152,7 +152,7 @@ export default function ListTablePage({
         />
     );
 
-    const PageActions = ({toggleSwitch}: any) => (
+    const PageActions = ({toggle}: {toggle?: JSX.Element | JSX.Element[] | Function | null}) => (
         <div className={cx(styles.pageActions, {[styles.alignEnd]: !bulkActions})}>
             <BulkActionSelect
                 parameters={parameters}
@@ -160,7 +160,7 @@ export default function ListTablePage({
                 bulkActions={bulkActions}
                 showModal={openBulkActionModal}
             />
-            {toggleSwitch}
+            {toggle}
             {page && setPage && showPagination()}
         </div>
     );
@@ -188,7 +188,7 @@ export default function ListTablePage({
                     <div className={styles.flexRow}>
                         <GiveIcon size={'1.875rem'} />
                         <h1 className={styles.pageTitle}>{title}</h1>
-                        {testMode && <span>Test</span>}
+                        {titleBadge}
                     </div>
                     {children && <div className={styles.flexRow}>{children}</div>}
                 </header>
@@ -205,7 +205,7 @@ export default function ListTablePage({
                 </section>
                 <div className={cx('wp-header-end', 'hidden')} />
                 <div className={styles.pageContent}>
-                    <PageActions toggleSwitch={toggle(testMode, setTestMode)} />
+                    <PageActions toggle={toggle} />
                     <CheckboxContext.Provider value={checkboxRefs}>
                         <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
                             <ListTable
