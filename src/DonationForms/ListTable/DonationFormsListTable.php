@@ -6,6 +6,7 @@ use Give\DonationForms\ListTable\Columns\DonationCountColumn;
 use Give\DonationForms\ListTable\Columns\DonationRevenueColumn;
 use Give\DonationForms\ListTable\Columns\IdColumn;
 use Give\DonationForms\ListTable\Columns\LevelsColumn;
+use Give\DonationForms\ListTable\Columns\ShortcodeColumn;
 use Give\DonationForms\ListTable\Columns\TitleColumn;
 use Give\Framework\ListTable\ListTable;
 
@@ -37,6 +38,7 @@ class DonationFormsListTable extends ListTable
             new LevelsColumn(),
             new DonationCountColumn(),
             new DonationRevenueColumn(),
+            new ShortcodeColumn(),
         ];
     }
 
@@ -53,6 +55,7 @@ class DonationFormsListTable extends ListTable
             LevelsColumn::getId(),
             DonationCountColumn::getId(),
             DonationRevenueColumn::getId(),
+            ShortcodeColumn::getId(),
         ];
     }
 }
