@@ -16,7 +16,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register()
     {
-        give()->singleton('donationFormsRepository', DonationFormsRepository::class);
+        give()->singleton('donationForms', DonationFormsRepository::class);
     }
 
     /**
