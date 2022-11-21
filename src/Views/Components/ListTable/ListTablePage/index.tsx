@@ -12,6 +12,7 @@ import ListTableApi from '../api';
 import styles from './ListTablePage.module.scss';
 import cx from 'classnames';
 import {BulkActionSelect} from '@givewp/components/ListTable/BulkActions/BulkActionSelect';
+import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
 
 export interface ListTablePageProps {
     //required
@@ -26,8 +27,8 @@ export interface ListTablePageProps {
     rowActions?: JSX.Element | JSX.Element[] | Function | null;
     filterSettings?;
     align?: 'start' | 'center' | 'end';
-    giveTestMode?: boolean;
-    toggleAction?: ToggleActionConfig;
+    mode?: boolean;
+    toggle?: any;
 }
 
 export interface FilterConfig {
@@ -54,12 +55,6 @@ export interface BulkActionsConfig {
     type?: 'normal' | 'warning' | 'danger';
 }
 
-export interface ToggleActionConfig {
-    testMode: boolean;
-    setTestMode: React.Dispatch<React.SetStateAction<boolean>>;
-    switch: JSX.Element | JSX.Element[] | null;
-}
-
 export const ShowConfirmModalContext = createContext((label, confirm, action, type = null) => {});
 export const CheckboxContext = createContext(null);
 
@@ -73,8 +68,8 @@ export default function ListTablePage({
     rowActions = null,
     children = null,
     align = 'start',
-    giveTestMode,
-    toggleAction,
+    toggle,
+    mode,
 }: ListTablePageProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(30);
@@ -92,14 +87,10 @@ export default function ListTablePage({
         sortColumn: 'id',
         sortDirection: 'desc',
     });
-    const {sortColumn, sortDirection} = sortField;
-    const testMode = toggleAction?.testMode;
-    const locale = navigator.language || navigator.languages[0];
+    const [testMode, setTestMode] = useState(mode);
 
-    //@unreleased initialize testMode switch based on payment gateway mode.
-    useEffect(() => {
-        toggleAction?.setTestMode(!!giveTestMode);
-    }, [giveTestMode]);
+    const {sortColumn, sortDirection} = sortField;
+    const locale = navigator.language || navigator.languages[0];
 
     const parameters = {
         page,
@@ -161,8 +152,7 @@ export default function ListTablePage({
         />
     );
 
-    //@unreleased Pass testMode switch to page actions for display
-    const PageActions = ({toggle}: any) => (
+    const PageActions = ({toggleSwitch}: any) => (
         <div className={cx(styles.pageActions, {[styles.alignEnd]: !bulkActions})}>
             <BulkActionSelect
                 parameters={parameters}
@@ -170,7 +160,7 @@ export default function ListTablePage({
                 bulkActions={bulkActions}
                 showModal={openBulkActionModal}
             />
-            {toggle}
+            {toggleSwitch}
             {page && setPage && showPagination()}
         </div>
     );
@@ -215,7 +205,7 @@ export default function ListTablePage({
                 </section>
                 <div className={cx('wp-header-end', 'hidden')} />
                 <div className={styles.pageContent}>
-                    <PageActions toggle={toggleAction?.switch} />
+                    <PageActions toggleSwitch={toggle(testMode, setTestMode)} />
                     <CheckboxContext.Provider value={checkboxRefs}>
                         <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
                             <ListTable

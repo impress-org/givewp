@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {__, sprintf} from '@wordpress/i18n';
 import {useSWRConfig} from 'swr';
 import {ListTablePage} from '@givewp/components';
@@ -10,11 +10,11 @@ import {
     BulkActionsConfig,
     FilterConfig,
     ShowConfirmModalContext,
-    ToggleActionConfig,
+    // ToggleActionConfig,
 } from '@givewp/components/ListTable/ListTablePage';
 import {useContext} from 'react';
 import {Interweave} from 'interweave';
-import Switch from '../../../Views/Components/ListTable/Switch';
+import ToggleSwitch from '../../../Views/Components/ListTable/ToggleSwitch';
 
 declare global {
     interface Window {
@@ -34,7 +34,6 @@ const API = new ListTableApi(window.GiveDonations);
 export default function () {
     const {mutate} = useSWRConfig();
     const showConfirmModal = useContext(ShowConfirmModalContext);
-    const [testMode, setTestMode] = useState(false);
 
     const rowActions = ({item, removeRow, setUpdateErrors, parameters}) => {
         const fetchAndUpdateErrors = async (parameters, endpoint, id, method) => {
@@ -174,10 +173,8 @@ export default function () {
         },
     ];
 
-    const TestModeConfig: ToggleActionConfig = {
-        testMode: testMode,
-        setTestMode: (val) => setTestMode(val),
-        switch: <Switch selected={testMode} action={setTestMode} label={__('View Test Donations', 'give')} />,
+    const toggle = (testMode, setTestMode) => {
+        return <ToggleSwitch toggle={testMode} setToggle={setTestMode} label={__('View Test Donations', 'give')} />;
     };
 
     return (
@@ -188,9 +185,9 @@ export default function () {
             rowActions={rowActions}
             bulkActions={bulkActions}
             apiSettings={window.GiveDonations}
-            giveTestMode={window.GiveDonations.testMode}
             filterSettings={filters}
-            toggleAction={TestModeConfig}
+            mode={!!window.GiveDonations.testMode}
+            toggle={toggle}
         >
             <a
                 className={tableStyles.addFormButton}
