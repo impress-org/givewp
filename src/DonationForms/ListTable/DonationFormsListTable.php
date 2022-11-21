@@ -5,6 +5,7 @@ namespace Give\DonationForms\ListTable;
 use Give\DonationForms\ListTable\Columns\DateCreatedColumn;
 use Give\DonationForms\ListTable\Columns\DonationCountColumn;
 use Give\DonationForms\ListTable\Columns\DonationRevenueColumn;
+use Give\DonationForms\ListTable\Columns\GoalColumn;
 use Give\DonationForms\ListTable\Columns\IdColumn;
 use Give\DonationForms\ListTable\Columns\LevelsColumn;
 use Give\DonationForms\ListTable\Columns\ShortcodeColumn;
@@ -38,6 +39,7 @@ class DonationFormsListTable extends ListTable
             new IdColumn(),
             new TitleColumn(),
             new LevelsColumn(),
+            new GoalColumn(),
             new DonationCountColumn(),
             new DonationRevenueColumn(),
             new ShortcodeColumn(),
@@ -57,6 +59,7 @@ class DonationFormsListTable extends ListTable
             IdColumn::getId(),
             TitleColumn::getId(),
             LevelsColumn::getId(),
+            GoalColumn::getId(),
             DonationCountColumn::getId(),
             DonationRevenueColumn::getId(),
             ShortcodeColumn::getId(),
