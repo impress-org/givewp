@@ -72,7 +72,16 @@ class ListForms extends Endpoint
                     'search' => [
                         'type' => 'string',
                         'required' => false
-                    ]
+                    ],
+                    'return' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'default' => 'columns',
+                        'enum' => [
+                            'model',
+                            'columns'
+                        ],
+                    ],
                 ],
             ]
         );
@@ -94,11 +103,16 @@ class ListForms extends Endpoint
         $totalForms = $this->getTotalFormsCount();
         $totalPages = (int)ceil($totalForms / $this->request->get_param('perPage'));
 
-        $this->listTable->items($forms);
+        if ('model' === $this->request->get_param('return')) {
+            $items = $forms;
+        } else {
+            $this->listTable->items($forms, $this->request->get_param('locale') ?? '');
+            $items = $this->listTable->getItems();
+        }
 
         return new WP_REST_Response(
             [
-                'items' => $this->listTable->getItems(),
+                'items' => $items,
                 'totalItems' => $totalForms,
                 'totalPages' => $totalPages,
                 'trash' => defined('EMPTY_TRASH_DAYS') && EMPTY_TRASH_DAYS > 0,

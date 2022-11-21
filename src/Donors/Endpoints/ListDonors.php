@@ -94,6 +94,15 @@ class ListDonors extends Endpoint
                         'required' => false,
                         'default' => get_locale(),
                     ],
+                    'return' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'default' => 'columns',
+                        'enum' => [
+                            'model',
+                            'columns'
+                        ],
+                    ],
                 ],
             ]
         );
@@ -116,11 +125,16 @@ class ListDonors extends Endpoint
         $donorsCount = $this->getTotalDonorsCount();
         $pageCount = (int)ceil($donorsCount / $request->get_param('perPage'));
 
-        $this->listTable->items($donors, $this->request->get_param('locale'));
+        if ('model' === $this->request->get_param('return')) {
+            $items = $donors;
+        } else {
+            $this->listTable->items($donors, $this->request->get_param('locale') ?? '');
+            $items = $this->listTable->getItems();
+        }
 
         return new WP_REST_Response(
             [
-                'items' => $this->listTable->getItems(),
+                'items' => $items,
                 'totalItems' => $donorsCount,
                 'totalPages' => $pageCount
             ]
