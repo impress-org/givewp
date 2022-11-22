@@ -2,12 +2,11 @@ import {useEffect, useState} from 'react';
 import {__, sprintf} from '@wordpress/i18n';
 import {useSWRConfig} from 'swr';
 import {ListTablePage} from '@givewp/components';
-import RowAction from '@givewp/components/ListTable/RowAction';
+import {DonationRowActions} from './DonationRowActions';
 import ListTableApi from '@givewp/components/ListTable/api';
 import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import {IdBadge} from '@givewp/components/ListTable/TableCell';
 import {BulkActionsConfig, FilterConfig, ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
-import {useContext} from 'react';
 import {Interweave} from 'interweave';
 import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
 
@@ -27,49 +26,11 @@ declare global {
 const API = new ListTableApi(window.GiveDonations);
 
 export default function () {
-    const {mutate} = useSWRConfig();
-    const showConfirmModal = useContext(ShowConfirmModalContext);
     const [testMode, setTestMode] = useState(null);
 
     useEffect(() => {
         setTestMode(!!window.GiveDonations.testMode);
     }, []);
-
-    const rowActions = ({item, removeRow, setUpdateErrors, parameters}) => {
-        const fetchAndUpdateErrors = async (parameters, endpoint, id, method) => {
-            const response = await API.fetchWithArgs(endpoint, {ids: [id]}, method);
-            setUpdateErrors(response);
-            await mutate(parameters);
-            return response;
-        };
-
-        const deleteItem = async (selected) => await fetchAndUpdateErrors(parameters, '/delete', item.id, 'DELETE');
-
-        const confirmDelete = (selected) => <p>{sprintf(__('Really delete donation #%d?', 'give'), item.id)}</p>;
-
-        const confirmModal = (event) => {
-            showConfirmModal(__('Delete', 'give'), confirmDelete, deleteItem, 'danger');
-        };
-
-        return (
-            <>
-                <RowAction
-                    href={
-                        window.GiveDonations.adminUrl +
-                        `edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=${item.id}`
-                    }
-                    displayText={__('Edit', 'give')}
-                />
-                <RowAction
-                    onClick={confirmModal}
-                    actionId={item.id}
-                    displayText={__('Delete', 'give')}
-                    hiddenText={item.name}
-                    highlight
-                />
-            </>
-        );
-    };
 
     const filters: Array<FilterConfig> = [
         {
@@ -178,7 +139,7 @@ export default function () {
             title={__('Donations', 'give')}
             singleName={__('donation', 'give')}
             pluralName={__('donations', 'give')}
-            rowActions={rowActions}
+            rowActions={DonationRowActions}
             bulkActions={bulkActions}
             apiSettings={window.GiveDonations}
             filterSettings={filters}
