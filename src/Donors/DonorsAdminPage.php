@@ -113,7 +113,8 @@ class DonorsAdminPage
             'page' => 1,
             'perPage' => 50,
             'search' => '',
-            'status' => 'any'
+            'status' => 'any',
+            'return' => 'model',
         ];
 
         $url = esc_url_raw(add_query_arg(
@@ -135,8 +136,8 @@ class DonorsAdminPage
         ];
         $formOptions = array_map(function($form){
             return [
-                'value' => $form['id'],
-                'text' => $form['name'],
+                'value' => $form->id,
+                'text' => $form->title,
             ];
         }, $forms);
         return array_merge($emptyOption, $formOptions);
