@@ -100,13 +100,14 @@ class ListDonations extends Endpoint
                         'type' => 'boolean',
                         'required' => false,
                         'default' => false,
+                    ],
                     'return' => [
                         'type' => 'string',
                         'required' => false,
                         'default' => 'columns',
                         'enum' => [
                             'model',
-                            'columns'
+                            'columns',
                         ],
                     ],
                 ],
