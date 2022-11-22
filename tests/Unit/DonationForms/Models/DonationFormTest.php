@@ -20,18 +20,14 @@ final class DonationFormTest extends TestCase
      */
     public function testFindShouldReturnDonationForm(string $mockFormType)
     {
-        $mockForm = $mockFormType === 'multi' ? \Give_Helper_Form::create_multilevel_form() : \Give_Helper_Form::create_simple_form();
+        $mockForm = $mockFormType === 'multi' ? $this->createMultiLevelDonationForm() : $this->createSimpleDonationForm(
+        );
 
-        // create form
-        $donationForm = DonationForm::find($mockForm->ID);
+        $donationForm = DonationForm::find($mockForm->id);
 
         $this->assertInstanceOf(DonationForm::class, $donationForm);
-
-        // create expected donation form model using mock form
-        $expectedDonationFormModel = $this->getDonationFormModelFromLegacyGiveDonateForm($mockForm);
-
-        $this->assertSame($mockForm->get_ID(), $donationForm->id);
-        $this->assertEquals($donationForm, $expectedDonationFormModel);
+        $this->assertSame($mockForm->id, $donationForm->id);
+        $this->assertEquals($donationForm, $mockForm);
     }
 
     /**
