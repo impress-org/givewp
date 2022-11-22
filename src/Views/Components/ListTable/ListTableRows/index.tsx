@@ -65,17 +65,16 @@ export default function ListTableRows({columns, data, isLoading, rowActions, set
                     return (
                         <TableCell key={column.id} heading={columns[0].id === column.id}>
                             <InterweaveSSR column={column} item={item} />
-                            {!isLoading && rowActions && (
+                            {columns[0].id === column.id && !isLoading && rowActions && (
                                 <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
-                                    {columns[0].id === column.id &&
-                                        rowActions({
-                                            data,
-                                            item,
-                                            removeRow,
-                                            addRow,
-                                            setUpdateErrors,
-                                            parameters,
-                                        })}
+                                    {rowActions({
+                                        data,
+                                        item,
+                                        removeRow,
+                                        addRow,
+                                        setUpdateErrors,
+                                        parameters,
+                                    })}
                                 </div>
                             )}
                         </TableCell>
