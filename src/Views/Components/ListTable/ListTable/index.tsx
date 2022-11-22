@@ -6,6 +6,7 @@ import {Spinner} from '../../index';
 import {BulkActionCheckboxAll} from '@givewp/components/ListTable/BulkActions/BulkActionCheckbox';
 import ListTableHeaders from '@givewp/components/ListTable/ListTableHeaders';
 import ListTableRows from '@givewp/components/ListTable/ListTableRows';
+import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
 
 export interface ListTableProps {
     //required
@@ -14,7 +15,6 @@ export interface ListTableProps {
     data: {items: Array<{}>};
     handleItemSort: (event: React.MouseEvent<HTMLElement>, column: string) => void;
     sortField: {sortColumn: string; sortDirection: string};
-    testMode: boolean;
 
     //optional
     pluralName?: string;
@@ -24,6 +24,7 @@ export interface ListTableProps {
     error?: {} | Boolean;
     isLoading?: Boolean;
     align?: 'start' | 'center' | 'end';
+    testMode?: boolean;
 }
 
 export interface ListTableColumn {
@@ -136,11 +137,9 @@ export const ListTable = ({
                                 <th
                                     scope="col"
                                     aria-sort="none"
-                                    className={cx(
-                                        styles.tableColumnHeader,
-                                        styles.selectAll,
-                                        testMode && apiSettings.table.id === 'donations' && styles.testMode
-                                    )}
+                                    className={cx(styles.tableColumnHeader, styles.selectAll, {
+                                        [styles['testMode']]: testMode,
+                                    })}
                                     data-column="select"
                                 >
                                     <BulkActionCheckboxAll pluralName={pluralName} data={data} />
@@ -156,13 +155,10 @@ export const ListTable = ({
                                                         : 'descending'
                                                     : 'none'
                                             }
-                                            className={cx(
-                                                styles.tableColumnHeader,
-                                                testMode && apiSettings.table.id === 'donations' && styles.testMode,
-                                                {
-                                                    [styles[column.id]]: true,
-                                                }
-                                            )}
+                                            className={cx(styles.tableColumnHeader, {
+                                                [styles[column.id]]: true,
+                                                [styles['testMode']]: testMode,
+                                            })}
                                             data-column={column.id}
                                             key={column.id}
                                         >
