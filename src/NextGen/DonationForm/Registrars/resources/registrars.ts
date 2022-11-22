@@ -8,8 +8,12 @@ import type {
     getFieldErrorTemplate,
     getFieldLabelTemplate,
     getFieldTemplate,
+    getGoalTemplate,
     getGroupTemplate,
-} from '../../Blocks/DonationFormBlock/resources/app/templates';
+    getHeaderDescriptionTemplate,
+    getHeaderTemplate,
+    getHeaderTitleTemplate,
+} from '@givewp/blocks/form/app/templates';
 
 if (!window.givewp) {
     // @ts-ignore
@@ -32,6 +36,10 @@ declare global {
                 getField: typeof getFieldTemplate;
                 getElement: typeof getElementTemplate;
                 getGroup: typeof getGroupTemplate;
+                getHeader: typeof getHeaderTemplate;
+                getHeaderTitle: typeof getHeaderTitleTemplate;
+                getHeaderDescription: typeof getHeaderDescriptionTemplate;
+                getGoal: typeof getGoalTemplate;
             };
             form: {
                 designs: FormDesignRegistrar;

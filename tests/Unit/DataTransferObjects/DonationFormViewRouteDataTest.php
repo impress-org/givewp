@@ -35,9 +35,9 @@ class DonationFormViewRouteDataTest extends TestCase
     {
         $data = DonationFormViewRouteData::fromRequest([
             'form-id' => '1',
-            'form-settings' => [
+            'form-settings' => json_encode([
                 'designId' => 'classic',
-            ],
+            ]),
         ]);
 
         $this->assertSame('classic', $data->formSettings['designId']);

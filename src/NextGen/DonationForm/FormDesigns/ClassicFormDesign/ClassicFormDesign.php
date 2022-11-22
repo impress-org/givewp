@@ -32,4 +32,22 @@ class ClassicFormDesign extends FormDesign
     {
         return GIVE_NEXT_GEN_URL . 'build/classicFormDesignCss.css';
     }
+
+    /**
+     * @unreleased
+     */
+    public function js(): string
+    {
+        return GIVE_NEXT_GEN_URL . 'build/classicFormDesignJs.js';
+    }
+
+    /**
+     * @unreleased
+     */
+    public function dependencies(): array
+    {
+        $scriptAsset = require GIVE_NEXT_GEN_DIR . 'build/classicFormDesignJs.asset.php';
+
+        return $scriptAsset['dependencies'];
+    }
 }

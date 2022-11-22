@@ -2,6 +2,7 @@
 
 namespace Give\NextGen\DonationForm\Repositories;
 
+use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -40,7 +41,7 @@ class DonationFormRepository
         'blocks',
     ];
 
-        /**
+    /**
      * @unreleased
      *
      * @param PaymentGatewayRegister $paymentGatewayRegister
@@ -160,7 +161,6 @@ class DonationFormRepository
                 ->update([
                     'meta_value' => json_encode($donationForm->settings),
                 ]);
-
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -176,8 +176,6 @@ class DonationFormRepository
 
     /**
      * @unreleased
-     *
-     * @param DonationForm $donationForm
      *
      * @throws Exception
      */
@@ -195,7 +193,6 @@ class DonationFormRepository
             DB::table('give_formmeta')
                 ->where('form_id', $donationForm->id)
                 ->delete();
-
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -254,7 +251,7 @@ class DonationFormRepository
             ->where('post_type', 'give_forms');
     }
 
-         /**
+    /**
      * @return PaymentGateway[]
      */
     public function getEnabledPaymentGateways($formId): array
@@ -296,6 +293,53 @@ class DonationFormRepository
         }
 
         return $formDataGateways;
+    }
+
+    /**
+     *
+     * @unreleased
+     */
+    public function getTotalNumberOfDonors(int $formId): int
+    {
+        return DB::table('give_donationmeta')
+            ->where('meta_key', DonationMetaKeys::DONOR_ID)
+            ->whereIn('donation_id', function ($builder) use ($formId) {
+                $builder
+                    ->select('donation_id')
+                    ->from('give_donationmeta')
+                    ->where('meta_key', DonationMetaKeys::FORM_ID)
+                    ->where('meta_value', $formId);
+            })->count('DISTINCT meta_value');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getTotalNumberOfDonations(int $formId): int
+    {
+        return DB::table('posts')
+            ->leftJoin('give_donationmeta', 'ID', 'donation_id')
+            ->where('meta_key', DonationMetaKeys::FORM_ID)
+            ->where('meta_value', $formId)
+            ->count();
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getTotalRevenue(int $formId): int
+    {
+        $query = DB::table('give_formmeta')
+            ->select('meta_value as totalRevenue')
+            ->where('form_id', $formId)
+            ->where('meta_key', '_give_form_earnings')
+            ->get();
+
+        if (!$query) {
+            return 0;
+        }
+
+        return $query->totalRevenue;
     }
 
     /**

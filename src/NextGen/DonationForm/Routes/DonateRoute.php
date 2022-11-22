@@ -95,7 +95,11 @@ class DonateRoute
             } catch (Exception $exception) {
                 Log::error(
                     'Donation Error',
-                    ['exceptionMessage' => $exception->getMessage(), 'formData' => $formData, 'gateway' => $gateway]
+                    [
+                        'exceptionMessage' => $exception->getMessage(),
+                        'formData' => $formData,
+                        'gateway' => $gateway,
+                    ]
                 );
 
                 wp_send_json_error();

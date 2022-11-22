@@ -1,4 +1,4 @@
-import {PanelBody, PanelRow, SelectControl, TextareaControl, TextControl} from '@wordpress/components';
+import {PanelBody, PanelRow, SelectControl, TextareaControl, TextControl, ToggleControl} from '@wordpress/components';
 import {PanelColorSettings} from '@wordpress/block-editor';
 import {__} from '@wordpress/i18n';
 import {setFormSettings, useFormState, useFormStateDispatch} from '../../stores/form-state';
@@ -11,7 +11,7 @@ const designOptions = Object.values(formDesigns).map(({id, name}) => ({value: id
 
 const FormDesignSettings = () => {
     const {
-        settings: {designId, heading, description, primaryColor, secondaryColor},
+        settings: {designId, showHeading, heading, showDescription, description, primaryColor, secondaryColor},
     } = useFormState();
     const dispatch = useFormStateDispatch();
 
@@ -38,6 +38,20 @@ const FormDesignSettings = () => {
                         label={__('Description', 'give')}
                         value={description}
                         onChange={(description) => dispatch(setFormSettings({description}))}
+                    />
+                </PanelRow>
+                <PanelRow>
+                    <ToggleControl
+                        label={__('Show Heading', 'give')}
+                        checked={showHeading}
+                        onChange={() => dispatch(setFormSettings({showHeading: !showHeading}))}
+                    />
+                </PanelRow>
+                <PanelRow>
+                    <ToggleControl
+                        label={__('Show Description', 'give')}
+                        checked={showDescription}
+                        onChange={() => dispatch(setFormSettings({showDescription: !showDescription}))}
                     />
                 </PanelRow>
             </PanelBody>

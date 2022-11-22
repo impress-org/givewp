@@ -33,7 +33,11 @@ class DonationFormViewController
         /** @var DonationForm $donationForm */
         $donationForm = DonationForm::find($data->formId);
 
-        $viewModel = new DonationFormViewModel($donationForm, $data->formBlocks, $data->formSettings);
+        $viewModel = new DonationFormViewModel(
+            $donationForm->id,
+            $data->formBlocks ?: $donationForm->blocks,
+            array_merge($donationForm->settings, $data->formSettings)
+        );
 
         wp_enqueue_global_styles();
 
@@ -53,6 +57,7 @@ class DonationFormViewController
 
         <div
             id="root-give-next-gen-donation-form-block"
+            class="givewp-donation-form-block"
             style="
                 --give-primary-color:<?= $viewModel->primaryColor() ?>;
                 --give-secondary-color:<?= $viewModel->secondaryColor() ?>;

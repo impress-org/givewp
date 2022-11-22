@@ -1,0 +1,12 @@
+@use 'sass:math';
+@use 'variables';
+
+// @see https://css-tricks.com/linearly-scale-font-size-with-css-clamp-based-on-the-viewport/
+@function scaleBetween($minFontSize, $maxFontSize) {
+    $maxWidth: variables.$containerMaxWidth;
+    $minWidth: variables.$desktopMinWidth;
+    $slope: math.div(($maxFontSize - $minFontSize), ($maxWidth - $minWidth));
+    $yAxisIntersection: -$minWidth * $slope + $minFontSize;
+
+    @return clamp($minFontSize, $yAxisIntersection + ($slope * 100vw), $maxFontSize);
+}

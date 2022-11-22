@@ -1,0 +1,57 @@
+.givewp-form-stats-panel {
+    inline-size: 100%;
+    border-color: #ddd;
+    border-style: solid;
+    border-inline-width: 0;
+    border-block-width: 0.0625rem;
+    background-color: #fff;
+    @media screen and (min-width: $desktopMinWidth) {
+        border: 0;
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+        background-color: #fbfbfb;
+    }
+
+    &-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-items: stretch;
+        justify-content: center;
+        border-radius: inherit;
+        color: #4c4c4c;
+        list-style: none;
+        padding-inline-start: 0;
+        margin: 0;
+        text-align: center;
+        inline-size: 100%;
+    }
+
+    &-stat {
+        padding: 1rem;
+        inline-size: calc(100% / 3);
+        font-weight: 600;
+        color: #767676;
+
+        &:first-child,
+        &:nth-child(2) {
+            position: relative;
+        }
+
+        &:first-child::after,
+        &:nth-child(2)::after {
+            content: '';
+            position: absolute;
+            inset-block-start: 0;
+            inset-inline-start: calc(100% + 0.03125rem);
+            display: block;
+            inline-size: 0.0625rem;
+            block-size: 100%;
+            background-color: #ddd;
+        }
+
+        &-number {
+            display: block;
+            color: #424242;
+        }
+    }
+}

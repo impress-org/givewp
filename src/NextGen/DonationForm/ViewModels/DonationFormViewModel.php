@@ -3,8 +3,9 @@
 namespace Give\NextGen\DonationForm\ViewModels;
 
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
-use Give\NextGen\DonationForm\Models\DonationForm;
+use Give\NextGen\DonationForm\DataTransferObjects\DonationFormGoalData;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
+use Give\NextGen\DonationForm\ValueObjects\GoalTypeOptions;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 
 /**
@@ -13,29 +14,36 @@ use Give\NextGen\Framework\Blocks\BlockCollection;
 class DonationFormViewModel
 {
     /**
-     * @var DonationForm
+     * @var int
      */
-    private $donationForm;
+    private $donationFormId;
     /**
      * @var BlockCollection
      */
-    private $formBlockOverrides;
+    private $formBlocks;
     /**
-     * @var array
+     * TODO: replace formSettings array with $donationForm->settings object when property gets updated
+     *
+     * @var array{designId: string, primaryColor: string, secondaryColor: string, goalType: string}
      */
-    private $formSettingOverrides;
+    private $formSettings;
+    /**
+     * @var DonationFormRepository
+     */
+    private $donationFormRepository;
 
     /**
      * @unreleased
      */
     public function __construct(
-        DonationForm $donationForm,
-        BlockCollection $formBlockOverrides = null,
-        array $formSettingOverrides = []
+        int $donationFormId,
+        BlockCollection $formBlocks,
+        array $formSettings = []
     ) {
-        $this->donationForm = $donationForm;
-        $this->formBlockOverrides = $formBlockOverrides;
-        $this->formSettingOverrides = $formSettingOverrides;
+        $this->donationFormId = $donationFormId;
+        $this->formBlocks = $formBlocks;
+        $this->formSettings = $formSettings;
+        $this->donationFormRepository = give(DonationFormRepository::class);
     }
 
     /**
@@ -43,7 +51,7 @@ class DonationFormViewModel
      */
     public function designId(): string
     {
-        return $this->formSettingOverrides['designId'] ?? ($this->donationForm->settings['designId'] ?? '');
+        return $this->formSettings['designId'] ?? '';
     }
 
     /**
@@ -51,7 +59,7 @@ class DonationFormViewModel
      */
     public function primaryColor(): string
     {
-        return $this->formSettingOverrides['primaryColor'] ?? ($this->donationForm->settings['primaryColor'] ?? '');
+        return $this->formSettings['primaryColor'] ?? '';
     }
 
     /**
@@ -59,7 +67,35 @@ class DonationFormViewModel
      */
     public function secondaryColor(): string
     {
-        return $this->formSettingOverrides['secondaryColor'] ?? ($this->donationForm->settings['secondaryColor'] ?? '');
+        return $this->formSettings['secondaryColor'] ?? '';
+    }
+
+    /**
+     * @unreleased
+     */
+    private function goalType(): GoalTypeOptions
+    {
+        return new GoalTypeOptions($this->formSettings['goalType'] ?? GoalTypeOptions::AMOUNT);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function formStatsData(): array
+    {
+        $totalRevenue = $this->donationFormRepository->getTotalRevenue($this->donationFormId);
+        $goalType = $this->goalType();
+
+        return [
+            'totalRevenue' => $totalRevenue,
+            'totalCountValue' => $goalType->isDonors() ?
+                $this->donationFormRepository->getTotalNumberOfDonors($this->donationFormId) :
+                $this->donationFormRepository->getTotalNumberOfDonations($this->donationFormId),
+            'totalCountLabel' => $goalType->isDonors() ? __('donors', 'give') : __(
+                'donations',
+                'give'
+            ),
+        ];
     }
 
     /**
@@ -67,22 +103,25 @@ class DonationFormViewModel
      */
     public function exports(): array
     {
-        /** @var DonationFormRepository $donationFormRepository */
-        $donationFormRepository = give(DonationFormRepository::class);
-
         $donateUrl = (new GenerateDonateRouteUrl())();
+        $donationFormGoalData = new DonationFormGoalData($this->donationFormId, $this->formSettings);
 
-        $formDataGateways = $donationFormRepository->getFormDataGateways($this->donationForm->id);
-        $formApi = $donationFormRepository->getFormSchemaFromBlocks(
-            $this->donationForm->id,
-            $this->formBlockOverrides ?: $this->donationForm->blocks
+        $formDataGateways = $this->donationFormRepository->getFormDataGateways($this->donationFormId);
+        $formApi = $this->donationFormRepository->getFormSchemaFromBlocks(
+            $this->donationFormId,
+            $this->formBlocks
         )->jsonSerialize();
 
         return [
-            'form' => $formApi,
             'donateUrl' => $donateUrl,
             'successUrl' => give_get_success_page_uri(),
-            'gatewaySettings' => $formDataGateways
+            'gatewaySettings' => $formDataGateways,
+            'form' => array_merge($formApi, [
+                'settings' => $this->formSettings,
+                'currency' => give_get_currency(),
+                'goal' => $donationFormGoalData->toArray(),
+                'stats' => $this->formStatsData()
+            ]),
         ];
     }
 }

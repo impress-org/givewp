@@ -1,7 +1,16 @@
+@import 'variables';
 @import 'reset';
+@import 'header';
+@import 'stats';
+@import 'goal';
 @import 'inputs';
 @import 'sections';
 @import 'layouts';
 @import 'amount-field';
 @import 'donation-summary';
 @import 'gateways';
+
+body,
+.givewp-donation-form-block {
+    font-family: 'system-ui', sans-serif;
+}

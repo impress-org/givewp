@@ -1,0 +1,8 @@
+.givewp-layouts {
+    &-header {
+        display: grid;
+        row-gap: 1.5rem;
+        padding-block: 1rem;
+        padding-inline: clamp(1rem, -4.53846rem + 17.3077vw, 4.375rem);
+    }
+}

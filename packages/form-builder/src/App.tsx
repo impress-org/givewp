@@ -22,6 +22,8 @@ const initialState = {
         registration: 'none',
         goalType: 'amount',
         designId: 'classic',
+        showHeading: true,
+        showDescription: true,
         heading: __('Support Our Cause', 'give'),
         description: __(
             'Help our organization by donating today! Donations go to making a difference for our cause.',

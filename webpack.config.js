@@ -19,6 +19,10 @@ module.exports = {
             ...defaultConfig.resolve.alias,
             '@givewp/forms/types': path.resolve(__dirname, 'src/NextGen/DonationForm/resources/types.ts'),
             '@givewp/forms/propTypes': path.resolve(__dirname, 'src/NextGen/DonationForm/resources/propTypes.ts'),
+            '@givewp/blocks/form': path.resolve(
+                __dirname,
+                'src/NextGen/DonationForm/Blocks/DonationFormBlock/resources'
+            ),
         },
     },
     entry: {
@@ -34,8 +38,9 @@ module.exports = {
         donationFormEmbedInside: srcPath('NextGen/DonationForm/resources/embedInside.ts'),
         nextGenStripeGateway: srcPath('NextGen/Gateways/Stripe/NextGenStripeGateway/nextGenStripeGateway.tsx'),
         nextGenTestGateway: srcPath('NextGen/Gateways/NextGenTestGateway/nextGenTestGateway.tsx'),
-        classicFormDesignCss: srcPath('NextGen/DonationForm/FormDesigns/ClassicFormDesign/css/main.scss'),
         developerFormDesignCss: srcPath('NextGen/DonationForm/FormDesigns/DeveloperFormDesign/css/main.scss'),
+        classicFormDesignCss: srcPath('NextGen/DonationForm/FormDesigns/ClassicFormDesign/css/main.scss'),
+        classicFormDesignJs: srcPath('NextGen/DonationForm/FormDesigns/ClassicFormDesign/js/main.ts'),
     },
 };
 

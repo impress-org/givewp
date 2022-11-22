@@ -5,6 +5,7 @@ import {GiveDonationFormStoreProvider} from './store';
 import getWindowData from './utilities/getWindowData';
 import prepareFormData from './utilities/PrepareFormData';
 import getJoiRulesForForm from './utilities/ConvertFieldAPIRulesToJoi';
+import Header from './form/Header';
 
 /**
  * Get data from the server
@@ -27,7 +28,10 @@ const initialState = {
 function App() {
     return (
         <GiveDonationFormStoreProvider initialState={initialState}>
-            <Form defaultValues={defaultValues} sections={form.nodes} validationSchema={schema} />
+            <>
+                <Header />
+                <Form defaultValues={defaultValues} sections={form.nodes} validationSchema={schema} />
+            </>
         </GiveDonationFormStoreProvider>
     );
 }

@@ -21,10 +21,18 @@ class DonationFormFactory extends ModelFactory
             'status' => DonationFormStatus::PUBLISHED(),
             'settings' => [
                 'enableDonationGoal' => false,
+                'goalAmount' => $this->faker->numberBetween(100, 5000),
                 'enableAutoClose' => false,
                 'registration' => 'none',
                 'goalType' => GoalTypeOptions::AMOUNT,
-                'designId' => 'classic'
+                'designId' => 'classic',
+                'showHeading' => true,
+                'showDescription' => true,
+                'heading' => __('Support Our Cause', 'give'),
+                'description' => __(
+                    'Help our organization by donating today! All donations go directly to making a difference for our cause.',
+                    'give'
+                )
             ],
             'blocks' => BlockCollection::fromJson($blocksJson),
         ];

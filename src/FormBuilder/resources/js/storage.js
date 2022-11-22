@@ -37,7 +37,7 @@ window.storage = {
                     },
                     data: {
                         'form-blocks': JSON.stringify(blocks),
-                        'form-settings': formSettings,
+                        'form-settings': JSON.stringify(formSettings),
                     },
                 })
                 .then(resolve);
