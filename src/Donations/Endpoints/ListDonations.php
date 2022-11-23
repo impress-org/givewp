@@ -99,7 +99,7 @@ class ListDonations extends Endpoint
                     'testMode' => [
                         'type' => 'boolean',
                         'required' => false,
-                        'default' => false,
+                        'default' => give_is_test_mode(),
                     ],
                     'return' => [
                         'type' => 'string',
