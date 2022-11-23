@@ -6,7 +6,6 @@ import {Spinner} from '../../index';
 import {BulkActionCheckboxAll} from '@givewp/components/ListTable/BulkActions/BulkActionCheckbox';
 import ListTableHeaders from '@givewp/components/ListTable/ListTableHeaders';
 import ListTableRows from '@givewp/components/ListTable/ListTableRows';
-import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
 
 export interface ListTableProps {
     //required
