@@ -67,6 +67,10 @@
     }
 }
 
+.testMode {
+    border-bottom: 2px solid #f49420;
+}
+
 .tableContent {
     overflow: auto;
 }
@@ -163,7 +167,11 @@
 }
 
 .revenue {
-    inline-size: 5rem;
+    inline-size: 4rem;
+}
+
+.goal {
+    inline-size: 9.5rem;
 }
 
 @keyframes appear {
