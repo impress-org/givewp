@@ -1,17 +1,17 @@
 import styles from './style.module.scss';
 
 interface ToggleSwitchProps {
-    setToggle: React.Dispatch<React.SetStateAction<boolean>>;
-    toggle: boolean;
-    label?: string;
+    onChange: React.Dispatch<React.SetStateAction<boolean>>;
+    checked: boolean;
+    ariaLabel?: string;
 }
 
-const ToggleSwitch = ({label, toggle, setToggle}: ToggleSwitchProps) => {
+const ToggleSwitch = ({ariaLabel, checked, onChange}: ToggleSwitchProps) => {
     return (
         <label className={styles.container}>
-            <input type="checkbox" aria-label="switch" checked={toggle} onChange={() => setToggle(!toggle)} />
+            <input type="checkbox" aria-label={ariaLabel} checked={checked} onChange={() => onChange(!checked)} />
             <span className={styles.switch} />
-            <span>{label && label}</span>
+            <span>{ariaLabel && ariaLabel}</span>
         </label>
     );
 };

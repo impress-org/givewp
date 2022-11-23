@@ -1,4 +1,4 @@
-import {createContext, useRef, useState} from 'react';
+import {createContext, useEffect, useRef, useState} from 'react';
 import {__} from '@wordpress/i18n';
 import {A11yDialog} from 'react-a11y-dialog';
 import A11yDialogInstance from 'a11y-dialog';
@@ -12,6 +12,7 @@ import ListTableApi from '../api';
 import styles from './ListTablePage.module.scss';
 import cx from 'classnames';
 import {BulkActionSelect} from '@givewp/components/ListTable/BulkActions/BulkActionSelect';
+import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
 
 export interface ListTablePageProps {
     //required
@@ -26,21 +27,20 @@ export interface ListTablePageProps {
     rowActions?: JSX.Element | JSX.Element[] | Function | null;
     filterSettings?;
     align?: 'start' | 'center' | 'end';
-    testMode?: boolean;
-    toggle?: JSX.Element | JSX.Element[] | Function | null;
-    titleBadge?: JSX.Element | JSX.Element[] | null;
+    paymentMode?: boolean;
 }
 
 export interface FilterConfig {
     // required
     name: string;
-    type: 'select' | 'formselect' | 'search';
+    type: 'select' | 'formselect' | 'search' | 'checkbox';
 
     // optional
     ariaLabel?: string;
     inlineSize?: string;
     text?: string;
     options?: Array<{text: string; value: string}>;
+    paymentMode?: boolean;
 }
 
 export interface BulkActionsConfig {
@@ -68,9 +68,7 @@ export default function ListTablePage({
     rowActions = null,
     children = null,
     align = 'start',
-    toggle,
-    testMode,
-    titleBadge,
+    paymentMode,
 }: ListTablePageProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(30);
@@ -88,10 +86,14 @@ export default function ListTablePage({
         sortColumn: 'id',
         sortDirection: 'desc',
     });
+    const [testMode, setTestMode] = useState(false);
+
+    useEffect(() => {
+        setTestMode(paymentMode);
+    }, []);
 
     const {sortColumn, sortDirection} = sortField;
     const locale = navigator.language || navigator.languages[0];
-
     const parameters = {
         page,
         perPage,
@@ -101,6 +103,7 @@ export default function ListTablePage({
         testMode,
         ...filters,
     };
+
     const archiveApi = useRef(new ListTableApi(apiSettings)).current;
 
     const {data, error, isValidating, mutate} = archiveApi.useListTable(parameters);
@@ -152,7 +155,7 @@ export default function ListTablePage({
         />
     );
 
-    const PageActions = ({toggle}: {toggle?: JSX.Element | JSX.Element[] | Function | null}) => (
+    const PageActions = ({PageActionsTop}: {PageActionsTop?: boolean}) => (
         <div className={cx(styles.pageActions, {[styles.alignEnd]: !bulkActions})}>
             <BulkActionSelect
                 parameters={parameters}
@@ -160,7 +163,7 @@ export default function ListTablePage({
                 bulkActions={bulkActions}
                 showModal={openBulkActionModal}
             />
-            {toggle}
+            {PageActionsTop && <TestModeFilter />}
             {page && setPage && showPagination()}
         </div>
     );
@@ -181,6 +184,22 @@ export default function ListTablePage({
         });
     };
 
+    const TestModeFilter = () => {
+        const filter = filterSettings.find((filter) => filter.name === 'toggle');
+        if (filter) {
+            return <ToggleSwitch ariaLabel={filter?.ariaLabel} onChange={setTestMode} checked={testMode} />;
+        }
+        return null;
+    };
+
+    const TestModeBadge = () => {
+        const filter = filterSettings.find((filter) => filter.name === 'toggle');
+        if (filter) {
+            return testMode && <span>{filter?.text}</span>;
+        }
+        return null;
+    };
+
     return (
         <>
             <article className={styles.page}>
@@ -188,7 +207,7 @@ export default function ListTablePage({
                     <div className={styles.flexRow}>
                         <GiveIcon size={'1.875rem'} />
                         <h1 className={styles.pageTitle}>{title}</h1>
-                        {titleBadge}
+                        <TestModeBadge />
                     </div>
                     {children && <div className={styles.flexRow}>{children}</div>}
                 </header>
@@ -205,7 +224,7 @@ export default function ListTablePage({
                 </section>
                 <div className={cx('wp-header-end', 'hidden')} />
                 <div className={styles.pageContent}>
-                    <PageActions toggle={toggle} />
+                    <PageActions PageActionsTop />
                     <CheckboxContext.Provider value={checkboxRefs}>
                         <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
                             <ListTable

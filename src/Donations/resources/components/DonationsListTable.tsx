@@ -1,14 +1,11 @@
-import {useEffect, useState} from 'react';
 import {__, sprintf} from '@wordpress/i18n';
-import {useSWRConfig} from 'swr';
 import {ListTablePage} from '@givewp/components';
 import {DonationRowActions} from './DonationRowActions';
 import ListTableApi from '@givewp/components/ListTable/api';
 import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import {IdBadge} from '@givewp/components/ListTable/TableCell';
-import {BulkActionsConfig, FilterConfig, ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
+import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import {Interweave} from 'interweave';
-import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
 
 declare global {
     interface Window {
@@ -18,122 +15,121 @@ declare global {
             adminUrl: string;
             forms: Array<{value: string; text: string}>;
             table: {columns: Array<object>};
-            testMode: boolean;
+            paymentMode: boolean;
         };
     }
 }
 
 const API = new ListTableApi(window.GiveDonations);
 
-export default function () {
-    const [testMode, setTestMode] = useState(null);
+const filters: Array<FilterConfig> = [
+    {
+        name: 'search',
+        type: 'search',
+        inlineSize: '14rem',
+        text: __('Name, Email, or Donation ID', 'give'),
+        ariaLabel: __('search donations', 'give'),
+    },
+    {
+        name: 'form',
+        type: 'formselect',
+        text: __('Select Form', 'give'),
+        ariaLabel: __('filter donation forms by status', 'give'),
+        options: window.GiveDonations.forms,
+    },
+    {
+        name: 'toggle',
+        type: 'checkbox',
+        text: __('Test', 'give'),
+        ariaLabel: __('View Test Donations', 'give'),
+    },
+];
 
-    useEffect(() => {
-        setTestMode(!!window.GiveDonations.testMode);
-    }, []);
-
-    const filters: Array<FilterConfig> = [
-        {
-            name: 'search',
-            type: 'search',
-            inlineSize: '14rem',
-            text: __('Name, Email, or Donation ID', 'give'),
-            ariaLabel: __('search donations', 'give'),
+const bulkActions: Array<BulkActionsConfig> = [
+    {
+        label: __('Delete', 'give'),
+        value: 'delete',
+        type: 'danger',
+        action: async (selected) => {
+            const response = await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
+            return response;
         },
-        {
-            name: 'form',
-            type: 'formselect',
-            text: __('Select Form', 'give'),
-            ariaLabel: __('filter donation forms by status', 'give'),
-            options: window.GiveDonations.forms,
-        },
-    ];
+        confirm: (selected, names) => (
+            <>
+                <p>{__('Really delete the following donations?', 'give')}</p>
+                <ul role="document" tabIndex={0}>
+                    {selected.map((donationId, index) => (
+                        <li key={donationId}>
+                            <IdBadge id={donationId} />{' '}
+                            <span>{sprintf(__('from %s', 'give'), <Interweave content={names[index]} />)}</span>
+                        </li>
+                    ))}
+                </ul>
+            </>
+        ),
+    },
+    ...(() => {
+        const donationStatuses = {
+            publish: __('Set To Completed', 'give'),
+            pending: __('Set To Pending', 'give'),
+            processing: __('Set To Processing', 'give'),
+            refunded: __('Set To Refunded', 'give'),
+            revoked: __('Set To Revoked', 'give'),
+            failed: __('Set To Failed', 'give'),
+            cancelled: __('Set To Cancelled', 'give'),
+            abandoned: __('Set To Abandoned', 'give'),
+            preapproval: __('Set To Preapproval', 'give'),
+        };
 
-    const bulkActions: Array<BulkActionsConfig> = [
-        {
-            label: __('Delete', 'give'),
-            value: 'delete',
-            type: 'danger',
-            action: async (selected) => {
-                const response = await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
-                return response;
-            },
-            confirm: (selected, names) => (
-                <>
-                    <p>{__('Really delete the following donations?', 'give')}</p>
-                    <ul role="document" tabIndex={0}>
-                        {selected.map((donationId, index) => (
-                            <li key={donationId}>
-                                <IdBadge id={donationId} />{' '}
-                                <span>{sprintf(__('from %s', 'give'), <Interweave content={names[index]} />)}</span>
-                            </li>
-                        ))}
-                    </ul>
-                </>
-            ),
-        },
-        ...(() => {
-            const donationStatuses = {
-                publish: __('Set To Completed', 'give'),
-                pending: __('Set To Pending', 'give'),
-                processing: __('Set To Processing', 'give'),
-                refunded: __('Set To Refunded', 'give'),
-                revoked: __('Set To Revoked', 'give'),
-                failed: __('Set To Failed', 'give'),
-                cancelled: __('Set To Cancelled', 'give'),
-                abandoned: __('Set To Abandoned', 'give'),
-                preapproval: __('Set To Preapproval', 'give'),
-            };
-
-            return Object.entries(donationStatuses).map(([value, label]) => {
-                return {
-                    label,
-                    value,
-                    action: async (selected) =>
-                        await API.fetchWithArgs(
-                            '/setStatus',
-                            {
-                                ids: selected.join(','),
-                                status: value,
-                            },
-                            'POST'
-                        ),
-                    confirm: (selected, names) => (
-                        <>
-                            <p>{__('Set status for the following donations?', 'give')}</p>
-                            <ul role="document" tabIndex={0}>
-                                {selected.map((donationId, index) => (
-                                    <li key={donationId}>
-                                        <IdBadge id={donationId} /> <span>{__('from', 'give')}</span>
-                                        <Interweave content={names[index]} />
-                                    </li>
-                                ))}
-                            </ul>
-                        </>
+        return Object.entries(donationStatuses).map(([value, label]) => {
+            return {
+                label,
+                value,
+                action: async (selected) =>
+                    await API.fetchWithArgs(
+                        '/setStatus',
+                        {
+                            ids: selected.join(','),
+                            status: value,
+                        },
+                        'POST'
                     ),
-                };
-            });
-        })(),
-        {
-            label: __('Resend Email Receipts', 'give'),
-            value: 'resendEmailReceipt',
-            action: async (selected) =>
-                await API.fetchWithArgs('/resendEmailReceipt', {ids: selected.join(',')}, 'POST'),
-            confirm: (selected, names) => (
-                <>
-                    <p>{__('Resend Email Receipts for following donations?', 'give')}</p>
-                    <ul role="document" tabIndex={0}>
-                        {selected.map((donationId, index) => (
-                            <li key={donationId}>
-                                <IdBadge id={donationId} /> <span>{sprintf(__('from %s', 'give'), names[index])}</span>
-                            </li>
-                        ))}
-                    </ul>
-                </>
-            ),
-        },
-    ];
+                confirm: (selected, names) => (
+                    <>
+                        <p>{__('Set status for the following donations?', 'give')}</p>
+                        <ul role="document" tabIndex={0}>
+                            {selected.map((donationId, index) => (
+                                <li key={donationId}>
+                                    <IdBadge id={donationId} /> <span>{__('from', 'give')}</span>
+                                    <Interweave content={names[index]} />
+                                </li>
+                            ))}
+                        </ul>
+                    </>
+                ),
+            };
+        });
+    })(),
+    {
+        label: __('Resend Email Receipts', 'give'),
+        value: 'resendEmailReceipt',
+        action: async (selected) => await API.fetchWithArgs('/resendEmailReceipt', {ids: selected.join(',')}, 'POST'),
+        confirm: (selected, names) => (
+            <>
+                <p>{__('Resend Email Receipts for following donations?', 'give')}</p>
+                <ul role="document" tabIndex={0}>
+                    {selected.map((donationId, index) => (
+                        <li key={donationId}>
+                            <IdBadge id={donationId} /> <span>{sprintf(__('from %s', 'give'), names[index])}</span>
+                        </li>
+                    ))}
+                </ul>
+            </>
+        ),
+    },
+];
 
+export default function DonationsListTable() {
     return (
         <ListTablePage
             title={__('Donations', 'give')}
@@ -143,11 +139,7 @@ export default function () {
             bulkActions={bulkActions}
             apiSettings={window.GiveDonations}
             filterSettings={filters}
-            testMode={testMode}
-            titleBadge={testMode && <span>{__('Test', 'give')}</span>}
-            toggle={
-                <ToggleSwitch toggle={testMode} setToggle={setTestMode} label={__('View Test Donations', 'give')} />
-            }
+            paymentMode={!!window.GiveDonations.paymentMode}
         >
             <a
                 className={tableStyles.addFormButton}
