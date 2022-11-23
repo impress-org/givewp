@@ -8,9 +8,26 @@ use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
 use Give_Donate_Form;
+use Give_Helper_Form;
 
 trait LegacyDonationFormAdapter
 {
+    /**
+     * @unreleased
+     */
+    public function createSimpleDonationForm(): DonationForm
+    {
+        return $this->getDonationFormModelFromLegacyGiveDonateForm(Give_Helper_Form::create_simple_form());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function createMultiLevelDonationForm(): DonationForm
+    {
+        return $this->getDonationFormModelFromLegacyGiveDonateForm(Give_Helper_Form::create_multilevel_form());
+    }
+
     /**
      * @unreleased
      */
