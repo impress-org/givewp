@@ -34,6 +34,12 @@ const filters: Array<FilterConfig> = [
         ariaLabel: __('filter donation forms by status', 'give'),
         options: window.GiveDonations.forms,
     },
+    {
+        name: 'toggle',
+        type: 'checkbox',
+        text: __('Test', 'give'),
+        ariaLabel: __('View Test Subscriptions', 'give'),
+    },
 ];
 
 const bulkActions: Array<BulkActionsConfig> = [
