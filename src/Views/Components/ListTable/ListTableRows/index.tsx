@@ -6,16 +6,7 @@ import TableCell from '../TableCell';
 import {BulkActionCheckbox} from '@givewp/components/ListTable/BulkActions/BulkActionCheckbox';
 import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
 
-export default function ListTableRows({
-    columns,
-    data,
-    isLoading,
-    rowActions,
-    setUpdateErrors,
-    parameters,
-    singleName,
-    align,
-}) {
+export default function ListTableRows({columns, data, isLoading, rowActions, setUpdateErrors, parameters, singleName}) {
     const [removed, setRemoved] = useState([]);
     const [added, setAdded] = useState([]);
 
@@ -74,17 +65,16 @@ export default function ListTableRows({
                     return (
                         <TableCell key={column.id} heading={columns[0].id === column.id}>
                             <InterweaveSSR column={column} item={item} />
-                            {!isLoading && rowActions && (
+                            {columns[0].id === column.id && !isLoading && rowActions && (
                                 <div role="group" aria-label={__('Actions', 'give')} className={styles.tableRowActions}>
-                                    {columns[0].id === column.id &&
-                                        rowActions({
-                                            data,
-                                            item,
-                                            removeRow,
-                                            addRow,
-                                            setUpdateErrors,
-                                            parameters,
-                                        })}
+                                    {rowActions({
+                                        data,
+                                        item,
+                                        removeRow,
+                                        addRow,
+                                        setUpdateErrors,
+                                        parameters,
+                                    })}
                                 </div>
                             )}
                         </TableCell>

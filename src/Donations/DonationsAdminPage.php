@@ -70,6 +70,7 @@ class DonationsAdminPage
             'forms' => $this->getForms(),
             'table' => give(DonationsListTable::class)->toArray(),
             'adminUrl' => $this->adminUrl,
+            'paymentMode' => give_is_test_mode(),
         ];
 
         EnqueueScript::make('give-admin-donations', 'assets/dist/js/give-admin-donations.js')

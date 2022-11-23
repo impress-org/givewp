@@ -3,6 +3,7 @@
 namespace Give\Donations\Endpoints;
 
 use Give\Donations\ListTable\DonationsListTable;
+use Give\Donations\ValueObjects\DonationMode;
 use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
 use Give\Framework\Models\ModelQueryBuilder;
 use WP_REST_Request;
@@ -87,7 +88,7 @@ class ListDonations extends Endpoint
                         'required' => false,
                         'enum' => [
                             'asc',
-                            'desc'
+                            'desc',
                         ],
                     ],
                     'locale' => [
@@ -95,13 +96,18 @@ class ListDonations extends Endpoint
                         'required' => false,
                         'default' => get_locale(),
                     ],
+                    'testMode' => [
+                        'type' => 'boolean',
+                        'required' => false,
+                        'default' => false,
+                    ],
                     'return' => [
                         'type' => 'string',
                         'required' => false,
                         'default' => 'columns',
                         'enum' => [
                             'model',
-                            'columns'
+                            'columns',
                         ],
                     ],
                 ],
@@ -204,11 +210,12 @@ class ListDonations extends Endpoint
         $end = $this->request->get_param('end');
         $form = $this->request->get_param('form');
         $donor = $this->request->get_param('donor');
+        $testMode = $this->request->get_param('testMode');
 
         if ($search) {
             if (ctype_digit($search)) {
                 $query->where('id', $search);
-            } else if (strpos($search, '@') !== false) {
+            } elseif (strpos($search, '@') !== false) {
                 $query
                     ->whereLike('give_donationmeta_attach_meta_email.meta_value', $search);
             } else {
@@ -236,11 +243,14 @@ class ListDonations extends Endpoint
 
         if ($start && $end) {
             $query->whereBetween('post_date', $start, $end);
-        } else if ($start) {
+        } elseif ($start) {
             $query->where('post_date', $start, '>=');
-        } else if ($end) {
+        } elseif ($end) {
             $query->where('post_date', $end, '<=');
         }
+
+        $query->where('give_donationmeta_attach_meta_mode.meta_value',
+            $testMode ? DonationMode::TEST : DonationMode::LIVE);
 
         return $query;
     }

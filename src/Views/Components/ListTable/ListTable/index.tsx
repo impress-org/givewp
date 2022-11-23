@@ -6,10 +6,11 @@ import {Spinner} from '../../index';
 import {BulkActionCheckboxAll} from '@givewp/components/ListTable/BulkActions/BulkActionCheckbox';
 import ListTableHeaders from '@givewp/components/ListTable/ListTableHeaders';
 import ListTableRows from '@givewp/components/ListTable/ListTableRows';
+import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
 
 export interface ListTableProps {
     //required
-    apiSettings: {table: {columns: Array<ListTableColumn>}};
+    apiSettings: {table: {columns: Array<ListTableColumn>; id: string}};
     title: string;
     data: {items: Array<{}>};
     handleItemSort: (event: React.MouseEvent<HTMLElement>, column: string) => void;
@@ -23,6 +24,7 @@ export interface ListTableProps {
     error?: {} | Boolean;
     isLoading?: Boolean;
     align?: 'start' | 'center' | 'end';
+    testMode?: boolean;
 }
 
 export interface ListTableColumn {
@@ -46,6 +48,7 @@ export const ListTable = ({
     apiSettings,
     handleItemSort,
     sortField,
+    testMode,
 }: ListTableProps) => {
     const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>; successes: Array<number>}>({
         errors: [],
@@ -134,7 +137,9 @@ export const ListTable = ({
                                 <th
                                     scope="col"
                                     aria-sort="none"
-                                    className={cx(styles.tableColumnHeader, styles.selectAll)}
+                                    className={cx(styles.tableColumnHeader, styles.selectAll, {
+                                        [styles['testMode']]: testMode,
+                                    })}
                                     data-column="select"
                                 >
                                     <BulkActionCheckboxAll pluralName={pluralName} data={data} />
@@ -152,6 +157,7 @@ export const ListTable = ({
                                             }
                                             className={cx(styles.tableColumnHeader, {
                                                 [styles[column.id]]: true,
+                                                [styles['testMode']]: testMode,
                                             })}
                                             data-column={column.id}
                                             key={column.id}
@@ -175,7 +181,6 @@ export const ListTable = ({
                                 rowActions={rowActions}
                                 parameters={parameters}
                                 setUpdateErrors={setUpdateErrors}
-                                align={align}
                             />
                         </tbody>
                     </table>
