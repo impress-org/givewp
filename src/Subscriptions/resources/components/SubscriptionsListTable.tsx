@@ -19,67 +19,12 @@ declare global {
 
 const API = new ListTableApi(window.GiveSubscriptions);
 
-const test = [
-    {
-        id: 'id',
-        label: 'ID',
-        sortable: true,
-        visible: true,
-    },
-    {
-        id: 'amount',
-        label: 'Amount',
-        sortable: true,
-        visible: true,
-    },
-    {
-        id: 'donorName',
-        label: 'Donor Name',
-        sortable: true,
-        visible: true,
-    },
-    {
-        id: 'donationForm',
-        label: 'Donation Form',
-        sortable: true,
-        visible: true,
-    },
-    {
-        id: 'billingPeriod',
-        label: 'Billing Period',
-        sortable: true,
-        visible: true,
-    },
-    {
-        id: 'nextPaymentDate',
-        label: 'Next Payment Date',
-        sortable: true,
-        visible: true,
-    },
-    {
-        id: 'status',
-        label: 'Status',
-        sortable: true,
-        visible: true,
-    },
-];
-
-//ToDo : Remove Function when GiveSubscriptionForms support columns
-// Do not release : Testing Purposes only
-const table = {columns: test};
-window.GiveSubscriptions = {
-    ...window?.GiveSubscriptions,
-    table,
-};
-console.log(window.GiveSubscriptions);
-// End Test: ----------
-
 const filters: Array<FilterConfig> = [
     {
         name: 'search',
         type: 'search',
         inlineSize: '14rem',
-        text: __('Name, Email, or Donation ID', 'give'),
+        text: __('Name, Email, or  ID', 'give'),
         ariaLabel: __('search donations', 'give'),
     },
     {
@@ -92,28 +37,6 @@ const filters: Array<FilterConfig> = [
 ];
 
 const bulkActions: Array<BulkActionsConfig> = [
-    {
-        label: __('Delete', 'give'),
-        value: 'delete',
-        type: 'danger',
-        action: async (selected) => {
-            const response = await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
-            return response;
-        },
-        confirm: (selected, names) => (
-            <>
-                <p>{__('Really delete the following donations?', 'give')}</p>
-                <ul role="document" tabIndex={0}>
-                    {selected.map((donationId, index) => (
-                        <li key={donationId}>
-                            <IdBadge id={donationId} />{' '}
-                            <span>{sprintf(__('from %s', 'give'), <Interweave content={names[index]} />)}</span>
-                        </li>
-                    ))}
-                </ul>
-            </>
-        ),
-    },
     ...(() => {
         const donationStatuses = {
             active: __('Set To Active', 'give'),
