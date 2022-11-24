@@ -2,7 +2,7 @@
 
 namespace Give\ServiceProviders;
 
-use Give\DonationForms\Endpoints\ListForms;
+use Give\DonationForms\Endpoints\ListDonationForms;
 use Give\Donations\Endpoints\DonationActions;
 use Give\Donations\Endpoints\ListDonations;
 use Give\Donors\Endpoints\SwitchDonorView;
@@ -47,7 +47,7 @@ class RestAPI implements ServiceProvider
         TotalRefunds::class,
         GetLogs::class,
         FlushLogs::class,
-        ListForms::class,
+        ListDonationForms::class,
         ListDonors::class,
         ListDonations::class,
         SwitchDonorView::class,

@@ -2,7 +2,7 @@
 
 namespace GiveTests\Unit\DonationForms\Repositories;
 
-use Give\DonationForms\Endpoints\ListForms;
+use Give\DonationForms\Endpoints\ListDonationForms;
 use Give\Framework\Database\DB;
 use Give_Helper_Form;
 use GiveTests\TestCase;
@@ -42,7 +42,7 @@ final class DonationFormsRepositoryTest extends TestCase
         $request->set_param('status', 'any');
         $request->set_param('return', 'model');
 
-        $listDonationForms = new ListForms();
+        $listDonationForms = new ListDonationForms();
         $response = $listDonationForms->handleRequest($request);
         $forms = $response->data['items'];
 
@@ -67,7 +67,7 @@ final class DonationFormsRepositoryTest extends TestCase
         $request->set_param('status', 'any');
         $request->set_param('return', 'model');
 
-        $listDonationForms = new ListForms();
+        $listDonationForms = new ListDonationForms();
         $response = $listDonationForms->handleRequest($request);
         $forms = $response->data['items'];
 
