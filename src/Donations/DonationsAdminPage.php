@@ -66,7 +66,6 @@ class DonationsAdminPage
         $data = [
             'apiRoot' => $this->apiRoot,
             'apiNonce' => $this->apiNonce,
-            'preload' => $this->preloadDonations(),
             'forms' => $this->getForms(),
             'table' => give(DonationsListTable::class)->toArray(),
             'adminUrl' => $this->adminUrl,
@@ -108,33 +107,6 @@ class DonationsAdminPage
     public static function isShowing()
     {
         return isset($_GET['page']) && $_GET['page'] === 'give-payment-history' && !isset($_GET['view']);
-    }
-
-
-    /**
-     * Get first page of results from REST API to display as initial table data
-     *
-     * @since 2.20.0
-     * @return array
-     */
-    private function preloadDonations()
-    {
-        $queryParameters = [
-            'page' => 1,
-            'perPage' => 30,
-        ];
-
-        if(isset($_GET['search']))
-        {
-            $queryParameters['search'] = urldecode($_GET['search']);
-        }
-
-        $request = WP_REST_Request::from_url(esc_url(add_query_arg(
-            $queryParameters,
-            $this->apiRoot
-        )));
-
-        return rest_do_request($request)->get_data();
     }
 
     /**
