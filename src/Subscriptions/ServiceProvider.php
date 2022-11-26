@@ -7,6 +7,7 @@ use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use Give\Subscriptions\LegacyListeners\DispatchGiveSubscriptionPostCreate;
 use Give\Subscriptions\LegacyListeners\DispatchGiveSubscriptionPreCreate;
+use Give\Subscriptions\ListTable\SubscriptionsListTable;
 use Give\Subscriptions\Migrations\CreateSubscriptionTables;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
 
@@ -18,6 +19,12 @@ class ServiceProvider implements ServiceProviderInterface
     public function register()
     {
         give()->singleton('subscriptions', SubscriptionRepository::class);
+        give()->singleton(SubscriptionsListTable::class, function() {
+            $listTable = new SubscriptionsListTable();
+            Hooks::doAction('givewp_subscriptions_list_table', $listTable);
+
+            return $listTable;
+        });
     }
 
     /**

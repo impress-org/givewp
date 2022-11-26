@@ -3,6 +3,7 @@
 namespace Give\Subscriptions;
 
 use Give\Helpers\EnqueueScript;
+use Give\Subscriptions\ListTable\SubscriptionsListTable;
 use WP_REST_Request;
 
 class SubscriptionsAdminPage
@@ -38,6 +39,7 @@ class SubscriptionsAdminPage
             'apiRoot' => $this->apiRoot,
             'apiNonce' => $this->apiNonce,
             'forms' => $this->getForms(),
+            'table' => give(SubscriptionsListTable::class)->toArray(),
             'adminUrl' => $this->adminUrl,
             'paymentMode' => give_is_test_mode(),
         ];
