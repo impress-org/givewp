@@ -1,20 +1,19 @@
 <?php
 
-namespace Give\Donations\Endpoints;
+namespace Give\Subscriptions\Endpoints;
 
-use Give\Donations\ListTable\DonationsListTable;
-use Give\Donations\ValueObjects\DonationMode;
-use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
+use Give\Subscriptions\ListTable\SubscriptionsListTable;
 use Give\Framework\Models\ModelQueryBuilder;
+use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_REST_Request;
 use WP_REST_Response;
 
-class ListDonations extends Endpoint
+class ListSubscriptions extends Endpoint
 {
     /**
      * @var string
      */
-    protected $endpoint = 'admin/donations';
+    protected $endpoint = 'admin/subscriptions';
 
     /**
      * @var WP_REST_Request
@@ -22,7 +21,7 @@ class ListDonations extends Endpoint
     protected $request;
 
     /**
-     * @var DonationsListTable
+     * @var SubscriptionsListTable
      */
     protected $listTable;
 
@@ -53,30 +52,29 @@ class ListDonations extends Endpoint
                         'default' => 30,
                         'minimum' => 1
                     ],
-                    'form' => [
+                    'donations' => [
                         'type' => 'integer',
                         'required' => false,
                         'default' => 0
                     ],
                     'search' => [
                         'type' => 'string',
-                        'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
+                        'required' => false
                     ],
                     'start' => [
                         'type' => 'string',
                         'required' => false,
                         'validate_callback' => [$this, 'validateDate']
                     ],
+                    'form' => [
+                        'type' => 'integer',
+                        'required' => false,
+                        'default' => 0
+                    ],
                     'end' => [
                         'type' => 'string',
                         'required' => false,
                         'validate_callback' => [$this, 'validateDate']
-                    ],
-                    'donor' => [
-                        'type' => 'string',
-                        'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
                     ],
                     'sortColumn' => [
                         'type' => 'string',
@@ -88,7 +86,7 @@ class ListDonations extends Endpoint
                         'required' => false,
                         'enum' => [
                             'asc',
-                            'desc',
+                            'desc'
                         ],
                     ],
                     'locale' => [
@@ -96,18 +94,13 @@ class ListDonations extends Endpoint
                         'required' => false,
                         'default' => get_locale(),
                     ],
-                    'testMode' => [
-                        'type' => 'boolean',
-                        'required' => false,
-                        'default' => give_is_test_mode(),
-                    ],
                     'return' => [
                         'type' => 'string',
                         'required' => false,
                         'default' => 'columns',
                         'enum' => [
                             'model',
-                            'columns',
+                            'columns'
                         ],
                     ],
                 ],
@@ -116,53 +109,50 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @unreleased Change this to use the new ListTable class
-     * @since      2.20.0
+     * @unreleased
      *
      * @param WP_REST_Request $request
      *
      * @return WP_REST_Response
-     * @throws ColumnIdCollisionException
      */
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
         $this->request = $request;
-        $this->listTable = give(DonationsListTable::class);
+        $this->listTable = give(SubscriptionsListTable::class);
 
-        $donations = $this->getDonations();
-        $donationsCount = $this->getTotalDonationsCount();
-        $totalPages = (int)ceil($donationsCount / $this->request->get_param('perPage'));
+        $subscriptions = $this->getSubscriptions();
+        $subscriptionsCount = $this->getTotalSubscriptionsCount();
+        $pageCount = (int)ceil($subscriptionsCount / $request->get_param('perPage'));
 
         if ('model' === $this->request->get_param('return')) {
-            $items = $donations;
+            $items = $subscriptions;
         } else {
-            $this->listTable->items($donations, $this->request->get_param('locale') ?? '');
+            $this->listTable->items($subscriptions, $this->request->get_param('locale') ?? '');
             $items = $this->listTable->getItems();
         }
 
         return new WP_REST_Response(
             [
                 'items' => $items,
-                'totalItems' => $donationsCount,
-                'totalPages' => $totalPages
+                'totalItems' => $subscriptionsCount,
+                'totalPages' => $pageCount
             ]
         );
     }
 
     /**
-     * @unreleased Replace Query Builder with Donations model
-     * @since 2.21.0
+     * @unreleased
      *
      * @return array
      */
-    public function getDonations(): array
+    public function getSubscriptions(): array
     {
         $page = $this->request->get_param('page');
         $perPage = $this->request->get_param('perPage');
         $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
         $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
 
-        $query = give()->donations->prepareQuery();
+        $query = give()->subscriptions->prepareQuery();
         $query = $this->getWhereConditions($query);
 
         foreach ($sortColumns as $sortColumn) {
@@ -172,31 +162,30 @@ class ListDonations extends Endpoint
         $query->limit($perPage)
             ->offset(($page - 1) * $perPage);
 
-        $donations = $query->getAll();
+        $subscriptions = $query->getAll();
 
-        if (!$donations) {
+        if (!$subscriptions) {
             return [];
         }
 
-        return $donations;
+        return $subscriptions;
     }
 
     /**
-     * @unreleased Replace Query Builder with Donations model
-     * @since 2.21.0
+     * @unreleased
      *
      * @return int
      */
-    public function getTotalDonationsCount(): int
+    public function getTotalSubscriptionsCount(): int
     {
-        $query = give()->donations->prepareQuery();
+        $query = give()->subscriptions->prepareQuery();
         $query = $this->getWhereConditions($query);
 
         return $query->count();
     }
 
     /**
-     * @unreleased Remove joins as it uses ModelQueryBuilder and change clauses to use attach_meta
+     * @unreleased Replace Query Builder with Subscriptions model
      * @since 2.21.0
      *
      * @param ModelQueryBuilder $query
@@ -209,48 +198,41 @@ class ListDonations extends Endpoint
         $start = $this->request->get_param('start');
         $end = $this->request->get_param('end');
         $form = $this->request->get_param('form');
-        $donor = $this->request->get_param('donor');
-        $testMode = $this->request->get_param('testMode');
 
         if ($search) {
             if (ctype_digit($search)) {
                 $query->where('id', $search);
-            } elseif (strpos($search, '@') !== false) {
-                $query
-                    ->whereLike('give_donationmeta_attach_meta_email.meta_value', $search);
             } else {
-                $query
-                    ->whereLike('give_donationmeta_attach_meta_firstName.meta_value', $search)
-                    ->orWhereLike('give_donationmeta_attach_meta_lastName.meta_value', $search);
+                $query->whereLike('name', $search);
+                $query->orWhereLike('email', $search);
             }
         }
 
-        if ($donor) {
-            if (ctype_digit($donor)) {
-                $query
-                    ->where('give_donationmeta_attach_meta_donorId.meta_value', $donor);
-            } else {
-                $query
-                    ->whereLike('give_donationmeta_attach_meta_firstName.meta_value', $donor)
-                    ->orWhereLike('give_donationmeta_attach_meta_lastName.meta_value', $donor);
-            }
+        if ($start && $end) {
+            $query->whereBetween('date_created', $start, $end);
+        } else if ($start) {
+            $query->where('date_created', $start, '>=');
+        } else if ($end) {
+            $query->where('date_created', $end, '<=');
         }
 
         if ($form) {
             $query
-                ->where('give_donationmeta_attach_meta_formId.meta_value', $form);
+                ->whereIn('id', static function (QueryBuilder $builder) use ($form) {
+                    $builder
+                        ->from('give_donationmeta')
+                        ->distinct()
+                        ->select('meta_value')
+                        ->where('meta_key', '_give_payment_subscription_id')
+                        ->whereIn('donation_id', static function (QueryBuilder $builder) use ($form) {
+                            $builder
+                                ->from('give_donationmeta')
+                                ->select('donation_id')
+                                ->where('meta_key', '_give_payment_form_id')
+                                ->where('meta_value', $form);
+                        });
+                });
         }
-
-        if ($start && $end) {
-            $query->whereBetween('post_date', $start, $end);
-        } elseif ($start) {
-            $query->where('post_date', $start, '>=');
-        } elseif ($end) {
-            $query->where('post_date', $end, '<=');
-        }
-
-        $query->where('give_donationmeta_attach_meta_mode.meta_value',
-            $testMode ? DonationMode::TEST : DonationMode::LIVE);
 
         return $query;
     }

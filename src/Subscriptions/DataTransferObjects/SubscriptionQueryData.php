@@ -92,9 +92,9 @@ final class SubscriptionQueryData
         $self->frequency = (int)$subscriptionQueryObject->frequency;
         $self->installments = (int)$subscriptionQueryObject->installments;
         $self->transactionId = $subscriptionQueryObject->transactionId;
-        $self->amount = Money::fromDecimal($subscriptionQueryObject->amount, $subscriptionQueryObject->currency);
+        $self->amount = Money::fromDecimal($subscriptionQueryObject->amount, $subscriptionQueryObject->currency ?? give_get_currency());
         $self->feeAmountRecovered = Money::fromDecimal($subscriptionQueryObject->feeAmount,
-            $subscriptionQueryObject->currency);
+            $subscriptionQueryObject->currency ?? give_get_currency());
         $self->status = new SubscriptionStatus($subscriptionQueryObject->status);
         $self->gatewayId = $subscriptionQueryObject->gatewayId;
         $self->gatewaySubscriptionId = $subscriptionQueryObject->gatewaySubscriptionId;
