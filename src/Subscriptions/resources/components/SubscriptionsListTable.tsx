@@ -14,6 +14,7 @@ declare global {
             apiRoot: string;
             table: {columns: Array<object>};
             forms: Array<{value: string; text: string}>;
+            paymentMode: boolean;
         };
     }
 }
@@ -97,6 +98,7 @@ export default function SubscriptionsListTable() {
             bulkActions={bulkActions}
             apiSettings={window.GiveSubscriptions}
             filterSettings={filters}
+            paymentMode={!!window.GiveSubscriptions.paymentMode}
         >
             <button className={tableStyles.addFormButton} onClick={showLegacyDonations}>
                 {__('Switch to Legacy View')}
