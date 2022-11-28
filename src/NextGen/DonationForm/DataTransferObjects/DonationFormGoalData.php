@@ -3,8 +3,9 @@
 namespace Give\NextGen\DonationForm\DataTransferObjects;
 
 use Give\Framework\Support\Contracts\Arrayable;
+use Give\NextGen\DonationForm\Properties\FormSettings;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
-use Give\NextGen\DonationForm\ValueObjects\GoalTypeOptions;
+use Give\NextGen\DonationForm\ValueObjects\GoalType;
 
 /**
  * @unreleased
@@ -24,7 +25,7 @@ class DonationFormGoalData implements Arrayable
      */
     public $isEnabled;
     /**
-     * @var GoalTypeOptions
+     * @var GoalType
      */
     public $goalType;
     /**
@@ -35,13 +36,13 @@ class DonationFormGoalData implements Arrayable
     /**
      * @unreleased
      */
-    public function __construct(int $formId, array $formSettings)
+    public function __construct(int $formId, FormSettings $formSettings)
     {
         $this->formId = $formId;
         $this->formSettings = $formSettings;
-        $this->isEnabled = $formSettings['enableDonationGoal'] ?? false;
-        $this->goalType = new GoalTypeOptions($formSettings['goalType'] ?? GoalTypeOptions::AMOUNT);
-        $this->targetAmount = $this->formSettings['goalAmount'] ?? 0;
+        $this->isEnabled = $formSettings->enableDonationGoal ?? false;
+        $this->goalType = $formSettings->goalType ?? GoalType::AMOUNT();
+        $this->targetAmount = $this->formSettings->goalAmount ?? 0;
     }
 
     /**

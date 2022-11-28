@@ -7,14 +7,14 @@ use Give\Framework\Support\ValueObjects\Enum;
 /**
  * @unreleased
  *
- * @method static GoalTypeOptions AMOUNT()
- * @method static GoalTypeOptions DONATIONS()
- * @method static GoalTypeOptions DONORS()
+ * @method static GoalType AMOUNT()
+ * @method static GoalType DONATIONS()
+ * @method static GoalType DONORS()
  * @method bool isAmount()
  * @method bool isDonations()
  * @method bool isDonors()
  */
-class GoalTypeOptions extends Enum
+class GoalType extends Enum
 {
     const AMOUNT = 'amount';
     const DONATIONS = 'donations';

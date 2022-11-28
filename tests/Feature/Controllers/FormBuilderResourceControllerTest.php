@@ -6,7 +6,7 @@ use Exception;
 use Give\FormBuilder\Controllers\FormBuilderResourceController;
 use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
 use Give\NextGen\DonationForm\Models\DonationForm;
-use Give\NextGen\DonationForm\ValueObjects\GoalTypeOptions;
+use Give\NextGen\DonationForm\ValueObjects\GoalType;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
 use GiveTests\TestCase;
@@ -44,7 +44,7 @@ class FormBuilderResourceControllerTest extends TestCase
         $this->assertSame($response->data, [
             // we just need to compare the json stringified representation of the data so need to remove escaping from encode
             'blocks' => $mockForm->blocks->toJson(),
-            'settings' => json_encode($mockForm->settings)
+            'settings' => $mockForm->settings->toJson()
         ]);
     }
 
@@ -61,10 +61,11 @@ class FormBuilderResourceControllerTest extends TestCase
 
         $mockRequest = $this->getMockRequest(WP_REST_Server::CREATABLE);
 
-        $updatedSettings = array_merge($mockForm->settings, ['formTitle' => 'Updated Next Gen Form Builder Title']);
+        $updatedSettings = $mockForm->settings;
+        $updatedSettings->formTitle = 'Updated Next Gen Form Builder Title';
 
         $mockRequest->set_param('id', $mockForm->id);
-        $mockRequest->set_param('settings', json_encode($updatedSettings, JSON_UNESCAPED_SLASHES));
+        $mockRequest->set_param('settings', $updatedSettings->toJson());
         $mockRequest->set_param('blocks', $mockForm->blocks->toJson());
 
         $formBuilderResourceController = new FormBuilderResourceController();
@@ -74,11 +75,11 @@ class FormBuilderResourceControllerTest extends TestCase
         $this->assertInstanceOf(WP_REST_Response::class, $response);
 
         $this->assertSame($response->data, [
-            'settings' => json_encode($updatedSettings),
+            'settings' => $updatedSettings->toJson(),
             'form' => $mockForm->id,
         ]);
 
-        $this->assertSame(json_encode($updatedSettings, JSON_UNESCAPED_SLASHES), get_post_meta($mockForm->id, 'formBuilderSettings', true));
+        $this->assertSame($updatedSettings->toJson(), get_post_meta($mockForm->id, 'formBuilderSettings', true));
     }
 
     /**
@@ -160,7 +161,7 @@ class FormBuilderResourceControllerTest extends TestCase
                 'enableDonationGoal' => false,
                 'enableAutoClose' => false,
                 'registration' => 'none',
-                'goalType' => GoalTypeOptions::AMOUNT,
+                'goalType' => GoalType::AMOUNT,
             ])
         );
         $mockRequest->set_param('blocks', json_encode($blockCollectionWithoutAmountField));

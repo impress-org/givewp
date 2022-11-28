@@ -103,7 +103,7 @@ class DonationFormRepository
                 ->insert([
                     'form_id' => $donationFormId,
                     'meta_key' => DonationFormMetaKeys::SETTINGS()->getValue(),
-                    'meta_value' => json_encode($donationForm->settings),
+                    'meta_value' => $donationForm->settings->toJson()
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -159,7 +159,7 @@ class DonationFormRepository
                 ->where('form_id', $donationForm->id)
                 ->where('meta_key', DonationFormMetaKeys::SETTINGS()->getValue())
                 ->update([
-                    'meta_value' => json_encode($donationForm->settings),
+                    'meta_value' => $donationForm->settings->toJson()
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');

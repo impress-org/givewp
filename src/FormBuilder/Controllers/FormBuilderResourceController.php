@@ -5,6 +5,7 @@ namespace Give\FormBuilder\Controllers;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\FieldsAPI\Form;
 use Give\NextGen\DonationForm\Models\DonationForm;
+use Give\NextGen\DonationForm\Properties\FormSettings;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use WP_Error;
 use WP_HTTP_Response;
@@ -38,7 +39,7 @@ class FormBuilderResourceController
 
         return rest_ensure_response([
             'blocks' => $form->blocks->toJson(),
-            'settings' => json_encode($form->settings)
+            'settings' => $form->settings->toJson()
         ]);
     }
 
@@ -65,9 +66,10 @@ class FormBuilderResourceController
 
         $blocks = BlockCollection::fromJson($rawBlocks);
 
-        $updatedSettings = json_decode($formBuilderSettings, true);
-        $form->settings = array_merge($form->settings ?? [], $updatedSettings);
-        $form->title = $updatedSettings['formTitle'];
+        $updatedSettings = FormSettings::fromJson($formBuilderSettings);
+
+        $form->settings = $updatedSettings;
+        $form->title = $updatedSettings->formTitle;
         $form->blocks = $blocks;
 
         if ($requiredFieldsError = $this->validateRequiredFields($form->schema())) {
@@ -77,7 +79,7 @@ class FormBuilderResourceController
         $form->save();
 
         return rest_ensure_response([
-            'settings' => json_encode($form->settings),
+            'settings' => $form->settings->toJson(),
             'form' => $form->id,
         ]);
     }

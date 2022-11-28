@@ -12,6 +12,7 @@ use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\NextGen\DonationForm\Actions\ConvertQueryDataToDonationForm;
 use Give\NextGen\DonationForm\Factories\DonationFormFactory;
+use Give\NextGen\DonationForm\Properties\FormSettings;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\DonationForm\ValueObjects\DonationFormStatus;
 use Give\NextGen\Framework\Blocks\BlockCollection;
@@ -24,7 +25,7 @@ use Give\NextGen\Framework\Blocks\BlockCollection;
  * @property DateTime $createdAt
  * @property DateTime $updatedAt
  * @property DonationFormStatus $status
- * @property array $settings
+ * @property FormSettings $settings
  * @property BlockCollection $blocks
  */
 class DonationForm extends Model implements ModelCrud, ModelHasFactory
@@ -38,7 +39,7 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
         'createdAt' => DateTime::class,
         'updatedAt' => DateTime::class,
         'status' => DonationFormStatus::class,
-        'settings' => 'array',
+        'settings' => FormSettings::class,
         'blocks' => BlockCollection::class,
     ];
 

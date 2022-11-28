@@ -3,12 +3,12 @@
 namespace Give\NextGen\DonationForm\Routes;
 
 use Give\NextGen\DonationForm\Controllers\DonationFormViewController;
-use Give\NextGen\DonationForm\DataTransferObjects\DonationFormViewRouteData;
+use Give\NextGen\DonationForm\DataTransferObjects\DonationFormPreviewRouteData;
 
 /**
  * @unreleased
  */
-class DonationFormViewRoute
+class DonationFormPreviewRoute
 {
     /**
      * @unreleased
@@ -23,10 +23,10 @@ class DonationFormViewRoute
         }
 
         // create DTO from GET or POST request
-        $routeData = DonationFormViewRouteData::fromRequest(give_clean($_GET));
+        $routeData = DonationFormPreviewRouteData::fromRequest(give_clean($_REQUEST));
 
         // let the controller handle the request
-        return give(DonationFormViewController::class)->show($routeData);
+        return give(DonationFormViewController::class)->preview($routeData);
     }
 
     /**
@@ -34,6 +34,6 @@ class DonationFormViewRoute
      */
     private function isViewValid(): bool
     {
-        return isset($_GET['givewp-view']) && $_GET['givewp-view'] === 'donation-form';
+        return isset($_REQUEST['givewp-view']) && $_REQUEST['givewp-view'] === 'donation-form-preview';
     }
 }
