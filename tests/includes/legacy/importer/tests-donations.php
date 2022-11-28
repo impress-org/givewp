@@ -71,6 +71,12 @@ class Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 	 */
 	protected $total = '';
 
+    /**
+     * @since 2.23.2
+     * @var string
+     */
+    protected $main_key = '';
+
 	/**
 	 * Set it up.
 	 *
@@ -167,6 +173,7 @@ class Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 	 * Run importer in Dry run stage
 	 *
 	 * @since 2.1
+     * @test
 	 */
 	public function import_donation_in_dry_run() {
 		$import_setting = $this->import_setting;
@@ -175,9 +182,6 @@ class Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 
 		// data from CSV
 		$raw_data = $this->raw_data;
-
-		// donation meta key name
-		$main_key = $this->main_key;
 
 		// first add donation in dry run mode
 		$import_setting['dry_run'] = 1;
@@ -196,7 +200,7 @@ class Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 		$current_key = 1;
 		foreach ( $raw_data as $row_data ) {
 			$import_setting['donation_key'] = $current_key;
-			$payment_id                     = give_save_import_donation_to_db( $raw_key, $row_data, $main_key, $import_setting );
+			$payment_id                     = give_save_import_donation_to_db( $raw_key, $row_data, [], $import_setting );
 			$current_key ++;
 		}
 	}

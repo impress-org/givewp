@@ -194,8 +194,8 @@ export default function ListTablePage({
 
     const TestModeBadge = () => {
         const filter = filterSettings.find((filter) => filter.name === 'toggle');
-        if (filter) {
-            return testMode && <span>{filter?.text}</span>;
+        if (filter && testMode) {
+            return <span>{filter?.text}</span>;
         }
         return null;
     };
