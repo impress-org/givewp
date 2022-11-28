@@ -10,7 +10,7 @@ use WP_REST_Response;
 /**
  * @since 2.19.0
  */
-class ListForms extends Endpoint
+class ListDonationForms extends Endpoint
 {
     /**
      * @var string
