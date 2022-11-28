@@ -13,6 +13,7 @@ declare global {
             apiNonce: string;
             apiRoot: string;
             table: {columns: Array<object>};
+            forms: Array<{value: string; text: string}>;
         };
     }
 }
@@ -32,7 +33,7 @@ const filters: Array<FilterConfig> = [
         type: 'formselect',
         text: __('Select Form', 'give'),
         ariaLabel: __('filter donation forms by status', 'give'),
-        options: window.GiveDonations.forms,
+        options: window.GiveSubscriptions.forms,
     },
     {
         name: 'toggle',
