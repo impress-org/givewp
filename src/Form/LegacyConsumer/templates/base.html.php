@@ -19,6 +19,10 @@
     echo $field->isRequired() ? 'required' : ''; ?>
     <?php
     echo $field->isReadOnly() ? 'readonly' : ''; ?>
+
     <?php
-    echo ($maxLength = $field->getMaxLength()) ? "maxlength=\"$maxLength\"" : ''; ?>
+    if( method_exists( $field, 'getMaxLength' ) ) {
+        echo ($maxLength = $field->getMaxLength()) ? "maxlength=\"$maxLength\"" : '';
+    }
+    ?>
 >
