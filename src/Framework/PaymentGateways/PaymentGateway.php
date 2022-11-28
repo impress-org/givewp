@@ -12,12 +12,14 @@ use Give\Framework\PaymentGateways\CommandHandlers\PaymentProcessingHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\RedirectOffsiteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\RespondToBrowserHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionCompleteHandler;
+use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionProcessingHandler;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
+use Give\Framework\PaymentGateways\Commands\SubscriptionProcessing;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionAmountEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionDashboardLinkable;
@@ -370,6 +372,15 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
                 $subscription,
                 $donation
             );
+
+            $response = response()->redirectTo(give_get_success_page_uri());
+
+            $this->handleResponse($response);
+        }
+
+        if ($command instanceof SubscriptionProcessing) {
+            $handler = new SubscriptionProcessingHandler($command, $subscription, $donation);
+            $handler();
 
             $response = response()->redirectTo(give_get_success_page_uri());
 

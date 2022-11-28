@@ -58,7 +58,7 @@ class ServiceProvider implements ServiceProviderInterface
             Call::invoke(DispatchGiveInsertPayment::class, $donation);
             Call::invoke(UpdateDonorPaymentIds::class, $donation);
 
-            if ($donation->subscriptionId) {
+            if ($donation->subscriptionId && $donation->type->isRenewal()) {
                 Call::invoke(DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment::class, $donation);
             }
 
