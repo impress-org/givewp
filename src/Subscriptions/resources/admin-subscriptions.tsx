@@ -6,5 +6,5 @@ ReactDOM.render(
     <StrictMode>
         <SubscriptionsListTable />
     </StrictMode>,
-    document.getElementById('give-admin-donors-root')
+    document.getElementById('give-admin-subscriptions-root')
 );

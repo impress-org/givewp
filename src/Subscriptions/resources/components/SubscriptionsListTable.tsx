@@ -44,7 +44,7 @@ const filters: Array<FilterConfig> = [
 
 const bulkActions: Array<BulkActionsConfig> = [
     ...(() => {
-        const donationStatuses = {
+        const subscriptionStatuses = {
             active: __('Set To Active', 'give'),
             expired: __('Set To Expired', 'give'),
             processing: __('Set To Completed', 'give'),
@@ -55,7 +55,7 @@ const bulkActions: Array<BulkActionsConfig> = [
             abandoned: __('Set To Abandoned', 'give'),
         };
 
-        return Object.entries(donationStatuses).map(([value, label]) => {
+        return Object.entries(subscriptionStatuses).map(([value, label]) => {
             return {
                 label,
                 value,
