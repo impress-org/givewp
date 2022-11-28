@@ -71,14 +71,14 @@ class StatusColumn extends ModelColumn
             $extra = [
                 'label' => __('indefinite', 'give'),
                 'status' => 'indefinite',
-                'text' => __('This subscription continues <strong> indefinitely </strong>', 'give'),
+                'text' => __('This subscription continues <strong>&nbsp;indefinitely&nbsp;</strong>', 'give'),
             ];
         } elseif (count($model->donations) < $model->installments) {
             $extra = [
                 'label' => __('limited', 'give'),
                 'status' => 'limited',
                 'text' => sprintf(
-                    __('This subscription has <strong> %d </strong> remaining donations', 'give'),
+                    __('This subscription has <strong>&nbsp;%d&nbsp;</strong> remaining donations', 'give'),
                     $model->installments - count($model->donations)
                 )
             ];
