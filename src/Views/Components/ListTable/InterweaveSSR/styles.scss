@@ -11,7 +11,6 @@
         border-radius: safe-rem(0.1875);
         color: #fff;
         font-size: safe-rem(0.8125);
-        font-weight: 600;
         column-gap: safe-rem(1);
         text-transform: uppercase;
 
@@ -54,7 +53,6 @@
 
     .subscriptionStatus {
         display: flex;
-        font-weight: initial;
 
         &__container {
             position: relative;
@@ -77,18 +75,15 @@
             height: max-content;
             padding-inline: 1.25rem;
             font-size: 0.75rem;
+            font-weight: 400;
             line-height: 2.5rem;
             border-radius: 2px;
             background: #ffffff;
             visibility: hidden;
             z-index: 999;
 
-            & > img {
+            & img {
                 margin-right: 10px;
-            }
-
-            & > strong {
-                font-weight: bolder;
             }
 
             &--failed {
