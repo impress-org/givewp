@@ -25,6 +25,10 @@
             background: #d75a4b;
         }
 
+        &--failing {
+            background: #e5301b;
+        }
+
         &--abandoned,
         &--cancelled {
             background: #f4c520;
@@ -50,10 +54,7 @@
 
     .subscriptionStatus {
         display: flex;
-
-        .statusBadge--failed {
-            background: #e5301b;
-        }
+        font-weight: initial;
 
         &__container {
             position: relative;
@@ -324,7 +325,7 @@
         white-space: nowrap;
     }
 
-    .amount > span {
+    .amount {
         font-size: safe-rem(1.125);
         font-weight: 700;
         color: #69b868;
