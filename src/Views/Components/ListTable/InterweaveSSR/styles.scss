@@ -54,16 +54,13 @@
 
     .subscriptionStatus {
         display: flex;
+        gap: 10px;
 
         &__container {
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-
-            & > img {
-                margin-left: 1.5rem;
-            }
         }
 
         &__message {
