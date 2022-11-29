@@ -61,7 +61,7 @@ class StatusColumn extends ModelColumn
             </div>
         ';
 
-        if ('failed' === $model->status->getvalue()) {
+        if ('failing' === $model->status->getvalue()) {
             $extra = [
                 'label' => __('failed', 'give'),
                 'status' => 'failed',
