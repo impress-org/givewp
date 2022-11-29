@@ -36,7 +36,7 @@ final class DonationFormLevel
 
         $self->id = $array['_give_id']['level_id'];
         $self->amount = Money::fromDecimal($array['_give_amount'], give_get_currency());
-        $self->label = $array['_give_text'];
+        $self->label = $array['_give_text'] ?? '';
         $self->isDefault = isset($array['_give_default']) && $array['_give_default'] === 'default';
 
         return $self;
