@@ -15,7 +15,7 @@
     & .switch {
         position: absolute;
         height: safe-rem(1.715);
-        width: safe-rem(3.75);
+        width: safe-rem(3.5);
         border-radius: 100px;
         background: #808080;
         transition: 0.35s;
@@ -35,7 +35,7 @@
     }
 
     & > span:last-child {
-        transform: translateX(62px);
+        transform: translateX(47px);
     }
 
     input[type='checkbox']:checked + .switch {
