@@ -40,7 +40,6 @@ export interface FilterConfig {
     inlineSize?: string;
     text?: string;
     options?: Array<{text: string; value: string}>;
-    paymentMode?: boolean;
 }
 
 export interface BulkActionsConfig {
@@ -94,6 +93,8 @@ export default function ListTablePage({
 
     const {sortColumn, sortDirection} = sortField;
     const locale = navigator.language || navigator.languages[0];
+    const testModeFilter = filterSettings.find((filter) => filter.name === 'toggle');
+
     const parameters = {
         page,
         perPage,
@@ -163,7 +164,7 @@ export default function ListTablePage({
                 bulkActions={bulkActions}
                 showModal={openBulkActionModal}
             />
-            {PageActionsTop && <TestModeFilter />}
+            {PageActionsTop && paymentMode && <TestModeFilter />}
             {page && setPage && showPagination()}
         </div>
     );
@@ -185,19 +186,11 @@ export default function ListTablePage({
     };
 
     const TestModeFilter = () => {
-        const filter = filterSettings.find((filter) => filter.name === 'toggle');
-        if (filter) {
-            return <ToggleSwitch ariaLabel={filter?.ariaLabel} onChange={setTestMode} checked={testMode} />;
-        }
-        return null;
+        return <ToggleSwitch ariaLabel={testModeFilter?.ariaLabel} onChange={setTestMode} checked={testMode} />;
     };
 
     const TestModeBadge = () => {
-        const filter = filterSettings.find((filter) => filter.name === 'toggle');
-        if (filter && testMode) {
-            return <span>{filter?.text}</span>;
-        }
-        return null;
+        return <span>{testModeFilter?.text}</span>;
     };
 
     return (
@@ -207,7 +200,7 @@ export default function ListTablePage({
                     <div className={styles.flexRow}>
                         <GiveIcon size={'1.875rem'} />
                         <h1 className={styles.pageTitle}>{title}</h1>
-                        <TestModeBadge />
+                        {paymentMode && testMode && <TestModeBadge />}
                     </div>
                     {children && <div className={styles.flexRow}>{children}</div>}
                 </header>
