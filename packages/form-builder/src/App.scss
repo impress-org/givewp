@@ -16,6 +16,7 @@
     --give-primary-300: #C2F2C3;
     --give-primary-400: #AAF2AC;
     --give-primary-500: #68BF6B;
+    --give-primary-600: #15AE56;
     --give-primary-700: #5BA65E;
     --give-primary-800: #3F7341;
 
@@ -323,3 +324,15 @@ svg {
     // Prevent scrollbar in popover color picker.
     .components-color-picker .components-h-stack { width: auto; }
 }
+
+/** ------------------------------- */
+
+/**
+ * Add space to avoid overlap with elements fixed to the bottom right of the editor.
+ */
+
+.sidebar-panel {
+    padding-bottom: 80px;
+}
+
+/** ------------------------------- */

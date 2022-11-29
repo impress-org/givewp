@@ -10,6 +10,7 @@ import './App.scss';
 
 import defaultBlocks from './blocks.json';
 import {__} from '@wordpress/i18n';
+import Feedback from "@givewp/form-builder/feedback";
 
 const {blocks: initialBlocks, formSettings: initialFormSettings} = Storage.load();
 
@@ -45,6 +46,7 @@ function App() {
         <FormStateProvider initialState={initialState}>
             <ShortcutProvider>
                 <BlockEditorContainer />
+                <Feedback />
             </ShortcutProvider>
         </FormStateProvider>
     );
