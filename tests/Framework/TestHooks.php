@@ -7,14 +7,14 @@ use Closure;
 /**
  * A convenient facade for using WordPress test suite hooks.
  *
- * @unreleased
+ * @since 2.23.2
  */
 class TestHooks
 {
     /**
      * Extracts the WordPress tests_add_filter method for use in our bootstrapping process.
      *
-     * @unreleased
+     * @since 2.23.2
      */
     public static function addFilter(
         string $tag,
@@ -43,7 +43,7 @@ class TestHooks
      *
      * Fork from WordPress _test_filter_build_unique_id()
      *
-     * @unreleased
+     * @since 2.23.2
      *
      * @param $function
      * @return string|void

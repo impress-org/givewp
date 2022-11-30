@@ -13,7 +13,7 @@ use GiveTests\Framework\TestHooks;
  *
  * For more advanced use cases, addHooks can be used before load().
  *
- * @unreleased
+ * @since 2.23.2
  */
 class Bootstrap
 {
@@ -23,7 +23,7 @@ class Bootstrap
     protected $addonPath;
 
     /**
-     * @unreleased
+     * @since 2.23.2
      */
     public function __construct(string $pathToMainAddonFile)
     {
@@ -37,7 +37,7 @@ class Bootstrap
      *
      * For more advanced use cases, addHooks can be called before this method.
      *
-     * @unreleased
+     * @since 2.23.2
      *
      * @return void
      */
@@ -51,7 +51,7 @@ class Bootstrap
      * A declarative method for loading a plugin (GiveWP add-on) before the main WordPress testing environment boots.
      * This will ensure the add-on files will be available within testing.
      *
-     * @unreleased
+     * @since 2.23.2
      */
     protected function loadAddon(): Bootstrap
     {
@@ -63,7 +63,7 @@ class Bootstrap
     }
 
     /**
-     * @unreleased
+     * @since 2.23.2
      *
      * @return void
      */
@@ -75,7 +75,7 @@ class Bootstrap
     /**
      * If the add-on needs to run additional hooks, this method can be used to do so within a callback.
      *
-     * @unreleased
+     * @since 2.23.2
      */
     public function addHooks(callable $callback): Bootstrap
     {

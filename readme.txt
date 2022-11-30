@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 7.0
-Stable tag: 2.23.1
+Stable tag: 2.23.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -87,7 +87,7 @@ If you are a GiveWP customer with an active license of any of our popular add-on
 
 GiveWP comes with several payment gateway options:
 
-* **Stripe Donations** -- Our Stripe integration allows you to accept credit card donations on your website. There is a small 2% fee associated with these donations. Want no additional fees? Upgrade to our Stripe Premium add-on to start accepting [Stripe Donations]](https://go.givewp.com/addon-stripe).
+* **Stripe Donations** -- Our Stripe integration allows you to accept credit card donations on your website. There is a small 2% fee associated with these donations. Want no additional fees? Upgrade to our Stripe Premium add-on to start accepting [Stripe Donations](https://go.givewp.com/addon-stripe).
 * **PayPal Donations** -- Allow worldwide donations with PayPal Donations. No additional fees applied.
 * **Venmo Donations** -- Give donors the option to pay through Venmo with their account balance or connected bank account. 
 * **Offline Donations** -- Enable your donors to send checks or physical donations with an offline gateway with instructions.
@@ -251,6 +251,11 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.23.2: November 17th, 2022 =
+* Enhancement: Added support for gateways that need to mark a new subscription as processing
+* Fix: Fixed a Stripe issue in conjunction with Stripe that would throw an error when processing a renewal
+* Fix: Prevent some PHP notices when being used on PHP 8
+
 = 2.23.1: October 31st, 2022 =
 * Fix: Fee Recovered amount in the donation summary works better with currencies that use a comma as the thousands separator
 * Fix: Form Grid donate button color defaults to black to avoid being invisible in some cases
