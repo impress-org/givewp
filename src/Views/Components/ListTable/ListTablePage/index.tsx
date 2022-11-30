@@ -85,11 +85,7 @@ export default function ListTablePage({
         sortColumn: 'id',
         sortDirection: 'desc',
     });
-    const [testMode, setTestMode] = useState(false);
-
-    useEffect(() => {
-        setTestMode(paymentMode);
-    }, []);
+    const [testMode, setTestMode] = useState(paymentMode);
 
     const {sortColumn, sortDirection} = sortField;
     const locale = navigator.language || navigator.languages[0];
