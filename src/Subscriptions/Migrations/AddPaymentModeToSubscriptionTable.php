@@ -29,25 +29,6 @@ class AddPaymentModeToSubscriptionTable extends Migration
     }
 
     /**
-     * Register background update.
-     *
-     * @unreleased
-     *
-     * @param Give_Updates $give_updates
-     *
-     */
-    public function register(Give_Updates $give_updates)
-    {
-        $give_updates->register(
-            [
-                'id' => self::id(),
-                'version' => '2.24.0',
-                'callback' => [$this, 'run'],
-            ]
-        );
-    }
-
-    /**
      * @inheritDoc
      *
      * @unreleased
@@ -66,10 +47,7 @@ class AddPaymentModeToSubscriptionTable extends Migration
      */
     public function run()
     {
-        if (! $this->hasPaymentModeColumn()) {
-            $this->addPaymentModeColumn();
-        }
-
+        $this->addPaymentModeColumn();
         $this->processPaymentModeForExistingSubscriptions();
     }
 
@@ -101,23 +79,6 @@ class AddPaymentModeToSubscriptionTable extends Migration
         }
     }
 
-    private function hasPaymentModeColumn()
-    {
-        global $wpdb;
-
-        $subscriptionTableName = "{$wpdb->prefix}give_subscriptions";
-
-        return 0 < DB::get_var(
-            "
-                SELECT COUNT(*)
-                FROM information_schema.COLUMNS
-                WHERE TABLE_SCHEMA = '{$wpdb->dbname}'
-                AND TABLE_NAME = '$subscriptionTableName'
-                AND COLUMN_NAME = 'payment_mode';
-        "
-        );
-    }
-
     /**
      * Process payment mode for existing subscriptions.
      *
@@ -133,56 +94,21 @@ class AddPaymentModeToSubscriptionTable extends Migration
         $subscriptionTableName = "{$wpdb->prefix}give_subscriptions";
         $donationMetaTableName = "{$wpdb->prefix}give_donationmeta";
 
-        $give_updates = Give_Updates::get_instance();
-
-        $perBatch = 500;
-
-        $offset = ($give_updates->step - 1) * $perBatch;
-
-        $result = DB::get_results(
-            DB::prepare(
-                "SELECT * FROM $subscriptionTableName LIMIT %d OFFSET %d",
-                $perBatch,
-                $offset
-            )
-        );
-
-        $totalSubscriptions = DB::get_var("SELECT COUNT(id) FROM $subscriptionTableName");
-
-        if ($result) {
-            $give_updates->set_percentage(
-                $totalSubscriptions,
-                $give_updates->step * $perBatch
+        try {
+            DB::query(
+                "
+                UPDATE
+                    $subscriptionTableName subscription
+                    LEFT JOIN $donationMetaTableName donationMeta ON subscription.parent_payment_id = donationMeta.donation_id
+                SET
+                    subscription.payment_mode = donationMeta.meta_value
+                WHERE
+                    donationMeta.meta_key = '_give_payment_mode'
+            "
             );
-
-            foreach ($result as $subscription) {
-                // Get old parent payment id meta
-                $paymentMode = DB::get_var(
-                    DB::prepare("SELECT meta_value FROM $donationMetaTableName WHERE meta_key = '_give_payment_mode' AND donation_id = %d",
-                        $subscription->parent_payment_id)
-                );
-
-                if ($paymentMode) {
-                    try {
-                        DB::update(
-                            $subscriptionTableName,
-                            ['payment_mode' => $paymentMode],
-                            ['id' => $subscription->id],
-                            ['%s'],
-                            ['%d']
-                        );
-                    } catch (DatabaseQueryException $exception) {
-                        $give_updates->__pause_db_update(true);
-                        update_option('give_upgrade_error', 1, false);
-
-                        throw new DatabaseMigrationException('An error occurred processing the payment mode for existing subscriptions',
-                            0, $exception);
-
-                    }
-                }
-            }
-        } else {
-            give_set_upgrade_complete(self::id());
+        } catch (DatabaseQueryException $exception) {
+            throw new DatabaseMigrationException('An error occurred processing the payment mode for existing subscriptions',
+                0, $exception);
         }
     }
 }

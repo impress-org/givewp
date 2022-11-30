@@ -66,8 +66,9 @@ class ServiceProvider implements ServiceProviderInterface
     {
         /** @var MigrationsRegister $register */
         $register = give(MigrationsRegister::class);
-        $register->addMigration(CreateSubscriptionTables::class);
-
-        Hooks::addAction('give_register_updates', AddPaymentModeToSubscriptionTable::class, 'register');
+        $register->addMigrations([
+            CreateSubscriptionTables::class,
+            AddPaymentModeToSubscriptionTable::class,
+        ]);
     }
 }
