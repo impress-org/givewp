@@ -144,6 +144,16 @@ export default function ListTablePage({
         }
     };
 
+    const setSortDirectionForColumn = (column, direction) => {
+        setSortField((previousState) => {
+            return {
+                ...previousState,
+                sortColumn: column,
+                sortDirection: direction,
+            };
+        });
+    };
+
     const showPagination = () => (
         <Pagination
             currentPage={page}
@@ -169,29 +179,11 @@ export default function ListTablePage({
         </div>
     );
 
-    const handleItemSort = (event, column) => {
-        event.preventDefault();
-        const direction = sortField.sortDirection === 'desc' ? 'asc' : 'desc';
-        setSortDirectionForColumn(column, direction);
-    };
+    const TestModeFilter = () => (
+        <ToggleSwitch ariaLabel={testModeFilter?.ariaLabel} onChange={setTestMode} checked={testMode} />
+    );
 
-    const setSortDirectionForColumn = (column, direction) => {
-        setSortField((previousState) => {
-            return {
-                ...previousState,
-                sortColumn: column,
-                sortDirection: direction,
-            };
-        });
-    };
-
-    const TestModeFilter = () => {
-        return <ToggleSwitch ariaLabel={testModeFilter?.ariaLabel} onChange={setTestMode} checked={testMode} />;
-    };
-
-    const TestModeBadge = () => {
-        return <span>{testModeFilter?.text}</span>;
-    };
+    const TestModeBadge = () => <span>{testModeFilter?.text}</span>;
 
     return (
         <>
@@ -223,7 +215,7 @@ export default function ListTablePage({
                             <ListTable
                                 apiSettings={apiSettings}
                                 sortField={sortField}
-                                handleItemSort={handleItemSort}
+                                setSortDirectionForColumn={setSortDirectionForColumn}
                                 singleName={singleName}
                                 pluralName={pluralName}
                                 title={title}

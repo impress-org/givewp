@@ -12,7 +12,7 @@ export interface ListTableProps {
     apiSettings: {table: {columns: Array<ListTableColumn>; id: string}};
     title: string;
     data: {items: Array<{}>};
-    handleItemSort: (event: React.MouseEvent<HTMLElement>, column: string) => void;
+    setSortDirectionForColumn: (event: React.MouseEvent<HTMLElement>, column: string) => void;
     sortField: {sortColumn: string; sortDirection: string};
 
     //optional
@@ -45,7 +45,7 @@ export const ListTable = ({
     isLoading = false,
     align = 'start',
     apiSettings,
-    handleItemSort,
+    setSortDirectionForColumn,
     sortField,
     testMode,
 }: ListTableProps) => {
@@ -165,7 +165,7 @@ export const ListTable = ({
                                             <ListTableHeaders
                                                 column={column}
                                                 sortField={sortField}
-                                                handleItemSort={handleItemSort}
+                                                setSortDirectionForColumn={setSortDirectionForColumn}
                                             />
                                         </th>
                                     ))}
