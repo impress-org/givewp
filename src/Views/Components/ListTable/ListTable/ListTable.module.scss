@@ -152,26 +152,68 @@
     inline-size: 3.25rem;
 }
 
-.donationRevenue,
-.donationCount,
-.latestDonations,
-.donorType,
-.dateCreated,
-.donations,
-.name {
+.donationForms .levels {
+    inline-size: 8rem;
+}
+
+.donationForms .goal {
+    inline-size: 9.5rem;
+}
+
+.donationForms .donationCount {
+    inline-size: 6.5rem;
+}
+
+.donationForms .donationRevenue {
+    inline-size: 5rem;
+}
+
+.donationForms .shortcode {
+    inline-size: 9rem;
+}
+
+.donations .amount {
+    inline-size: 5.5rem;
+}
+
+.donors .donorInformation {
+    inline-size: 10rem;
+}
+
+.donors .donationRevenue {
+    inline-size: 6.5rem;
+}
+
+.donors .donationCount {
+    inline-size: 6.5rem;
+}
+
+.donors .dateCreated {
+    inline-size: 6.5rem;
+}
+
+.donors .donorType {
+    inline-size: 6.5rem;
+}
+
+.subscriptions .amount {
     inline-size: 6rem;
 }
 
-.formName {
-    inline-size: 7.25rem;
+.subscriptions .donor {
+    inline-size: 6.5rem;
 }
 
-.revenue {
-    inline-size: 4rem;
+.subscriptions .form {
+    inline-size: 6.5rem;
 }
 
-.goal {
-    inline-size: 9.5rem;
+.subscriptions .billingPeriod {
+    inline-size: 6.5rem;
+}
+
+.subscriptions .status {
+    inline-size: 6.5rem;
 }
 
 @keyframes appear {

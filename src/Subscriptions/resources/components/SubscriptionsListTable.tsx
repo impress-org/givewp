@@ -14,6 +14,7 @@ declare global {
             apiRoot: string;
             table: {columns: Array<object>};
             forms: Array<{value: string; text: string}>;
+            paymentMode: boolean;
         };
     }
 }
@@ -48,10 +49,10 @@ const bulkActions: Array<BulkActionsConfig> = [
         const subscriptionStatuses = {
             active: __('Set To Active', 'give'),
             expired: __('Set To Expired', 'give'),
-            processing: __('Set To Completed', 'give'),
+            completed: __('Set To Completed', 'give'),
             cancelled: __('Set To Cancelled', 'give'),
             pending: __('Set To Pending', 'give'),
-            failed: __('Set To Failing', 'give'),
+            failing: __('Set To Failing', 'give'),
             suspended: __('Set To Suspended', 'give'),
             abandoned: __('Set To Abandoned', 'give'),
         };
@@ -97,6 +98,7 @@ export default function SubscriptionsListTable() {
             bulkActions={bulkActions}
             apiSettings={window.GiveSubscriptions}
             filterSettings={filters}
+            paymentMode={!!window.GiveSubscriptions.paymentMode}
         >
             <button className={tableStyles.addFormButton} onClick={showLegacyDonations}>
                 {__('Switch to Legacy View')}

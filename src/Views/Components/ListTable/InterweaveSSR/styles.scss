@@ -11,7 +11,6 @@
         border-radius: safe-rem(0.1875);
         color: #fff;
         font-size: safe-rem(0.8125);
-        font-weight: 600;
         column-gap: safe-rem(1);
         text-transform: uppercase;
 
@@ -25,8 +24,13 @@
             background: #d75a4b;
         }
 
+        &--failing {
+            background: #e5301b;
+        }
+
         &--abandoned,
-        &--cancelled {
+        &--cancelled,
+        &--expired {
             background: #f4c520;
         }
 
@@ -50,20 +54,13 @@
 
     .subscriptionStatus {
         display: flex;
-
-        .statusBadge--failed {
-            background: #e5301b;
-        }
+        gap: 10px;
 
         &__container {
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-
-            & > img {
-                margin-left: 1.5rem;
-            }
         }
 
         &__message {
@@ -76,18 +73,15 @@
             height: max-content;
             padding-inline: 1.25rem;
             font-size: 0.75rem;
+            font-weight: 400;
             line-height: 2.5rem;
             border-radius: 2px;
             background: #ffffff;
             visibility: hidden;
             z-index: 999;
 
-            & > img {
+            & img {
                 margin-right: 10px;
-            }
-
-            & > strong {
-                font-weight: bolder;
             }
 
             &--failed {
@@ -293,7 +287,7 @@
     }
 
     .goalProgress {
-        width: 86%;
+        width: 95%;
         height: 0.5rem;
         position: relative;
         background: rgba(238, 238, 238);
@@ -324,7 +318,7 @@
         white-space: nowrap;
     }
 
-    .amount > span {
+    .amount {
         font-size: safe-rem(1.125);
         font-weight: 700;
         color: #69b868;

@@ -6,14 +6,13 @@ import {Spinner} from '../../index';
 import {BulkActionCheckboxAll} from '@givewp/components/ListTable/BulkActions/BulkActionCheckbox';
 import ListTableHeaders from '@givewp/components/ListTable/ListTableHeaders';
 import ListTableRows from '@givewp/components/ListTable/ListTableRows';
-import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
 
 export interface ListTableProps {
     //required
     apiSettings: {table: {columns: Array<ListTableColumn>; id: string}};
     title: string;
     data: {items: Array<{}>};
-    handleItemSort: (event: React.MouseEvent<HTMLElement>, column: string) => void;
+    setSortDirectionForColumn: (event: React.MouseEvent<HTMLElement>, column: string) => void;
     sortField: {sortColumn: string; sortDirection: string};
 
     //optional
@@ -46,7 +45,7 @@ export const ListTable = ({
     isLoading = false,
     align = 'start',
     apiSettings,
-    handleItemSort,
+    setSortDirectionForColumn,
     sortField,
     testMode,
 }: ListTableProps) => {
@@ -60,7 +59,6 @@ export const ListTable = ({
     const [overlayWidth, setOverlayWidth] = useState(0);
     const tableRef = useRef<null | HTMLTableElement>();
     const isEmpty = !error && data?.items.length === 0;
-    const {columns} = apiSettings.table;
 
     useEffect(() => {
         initialLoad && data && setInitialLoad(false);
@@ -101,7 +99,9 @@ export const ListTable = ({
         setUpdateErrors({errors: [], successes: []});
     };
 
-    const visibleColumns = columns?.filter((column) => column.visible || column.visible === undefined);
+    const visibleColumns = apiSettings.table.columns?.filter(
+        (column) => column.visible || column.visible === undefined
+    );
 
     return (
         <>
@@ -132,7 +132,7 @@ export const ListTable = ({
                         <caption id="giveListTableCaption" className={styles.tableCaption}>
                             {title}
                         </caption>
-                        <thead>
+                        <thead className={styles[apiSettings.table.id]}>
                             <tr>
                                 <th
                                     scope="col"
@@ -165,7 +165,7 @@ export const ListTable = ({
                                             <ListTableHeaders
                                                 column={column}
                                                 sortField={sortField}
-                                                handleItemSort={handleItemSort}
+                                                setSortDirectionForColumn={setSortDirectionForColumn}
                                             />
                                         </th>
                                     ))}

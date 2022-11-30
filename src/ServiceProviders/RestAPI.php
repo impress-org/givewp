@@ -12,6 +12,7 @@ use Give\Donors\Endpoints\DeleteDonor;
 use Give\Donors\Endpoints\ListDonors;
 use Give\Donors\Endpoints\SwitchDonorView;
 use Give\Subscriptions\Endpoints\ListSubscriptions;
+use Give\Subscriptions\Endpoints\SubscriptionActions;
 use Give\Subscriptions\Endpoints\SwitchSubscriptionView;
 use Give\API\Endpoints\Logs\FlushLogs;
 use Give\API\Endpoints\Logs\GetLogs;
@@ -62,6 +63,7 @@ class RestAPI implements ServiceProvider
         FormActions::class,
         GetMigrations::class,
         RunMigration::class,
+        SubscriptionActions::class,
     ];
 
     /**

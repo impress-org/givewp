@@ -40,7 +40,6 @@ export interface FilterConfig {
     inlineSize?: string;
     text?: string;
     options?: Array<{text: string; value: string}>;
-    paymentMode?: boolean;
 }
 
 export interface BulkActionsConfig {
@@ -86,14 +85,12 @@ export default function ListTablePage({
         sortColumn: 'id',
         sortDirection: 'desc',
     });
-    const [testMode, setTestMode] = useState(false);
-
-    useEffect(() => {
-        setTestMode(paymentMode);
-    }, []);
+    const [testMode, setTestMode] = useState(paymentMode);
 
     const {sortColumn, sortDirection} = sortField;
     const locale = navigator.language || navigator.languages[0];
+    const testModeFilter = filterSettings.find((filter) => filter.name === 'toggle');
+
     const parameters = {
         page,
         perPage,
@@ -143,6 +140,16 @@ export default function ListTablePage({
         }
     };
 
+    const setSortDirectionForColumn = (column, direction) => {
+        setSortField((previousState) => {
+            return {
+                ...previousState,
+                sortColumn: column,
+                sortDirection: direction,
+            };
+        });
+    };
+
     const showPagination = () => (
         <Pagination
             currentPage={page}
@@ -163,42 +170,16 @@ export default function ListTablePage({
                 bulkActions={bulkActions}
                 showModal={openBulkActionModal}
             />
-            {PageActionsTop && <TestModeFilter />}
+            {PageActionsTop && testModeFilter && <TestModeFilter />}
             {page && setPage && showPagination()}
         </div>
     );
 
-    const handleItemSort = (event, column) => {
-        event.preventDefault();
-        const direction = sortField.sortDirection === 'desc' ? 'asc' : 'desc';
-        setSortDirectionForColumn(column, direction);
-    };
+    const TestModeFilter = () => (
+        <ToggleSwitch ariaLabel={testModeFilter?.ariaLabel} onChange={setTestMode} checked={testMode} />
+    );
 
-    const setSortDirectionForColumn = (column, direction) => {
-        setSortField((previousState) => {
-            return {
-                ...previousState,
-                sortColumn: column,
-                sortDirection: direction,
-            };
-        });
-    };
-
-    const TestModeFilter = () => {
-        const filter = filterSettings.find((filter) => filter.name === 'toggle');
-        if (filter) {
-            return <ToggleSwitch ariaLabel={filter?.ariaLabel} onChange={setTestMode} checked={testMode} />;
-        }
-        return null;
-    };
-
-    const TestModeBadge = () => {
-        const filter = filterSettings.find((filter) => filter.name === 'toggle');
-        if (filter && testMode) {
-            return <span>{filter?.text}</span>;
-        }
-        return null;
-    };
+    const TestModeBadge = () => <span>{testModeFilter?.text}</span>;
 
     return (
         <>
@@ -207,7 +188,7 @@ export default function ListTablePage({
                     <div className={styles.flexRow}>
                         <GiveIcon size={'1.875rem'} />
                         <h1 className={styles.pageTitle}>{title}</h1>
-                        <TestModeBadge />
+                        {testModeFilter && testMode && <TestModeBadge />}
                     </div>
                     {children && <div className={styles.flexRow}>{children}</div>}
                 </header>
@@ -230,7 +211,7 @@ export default function ListTablePage({
                             <ListTable
                                 apiSettings={apiSettings}
                                 sortField={sortField}
-                                handleItemSort={handleItemSort}
+                                setSortDirectionForColumn={setSortDirectionForColumn}
                                 singleName={singleName}
                                 pluralName={pluralName}
                                 title={title}
