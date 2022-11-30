@@ -59,11 +59,11 @@ class RestAPI implements ServiceProvider
         SwitchDonationFormView::class,
         SwitchSubscriptionView::class,
         DonationActions::class,
+        SubscriptionActions::class,
         DeleteDonor::class,
         FormActions::class,
         GetMigrations::class,
         RunMigration::class,
-        SubscriptionActions::class,
     ];
 
     /**

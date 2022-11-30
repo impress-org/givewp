@@ -2,6 +2,9 @@
 
 namespace Give\Subscriptions\Endpoints;
 
+use Exception;
+use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -31,6 +34,13 @@ class SubscriptionActions extends Endpoint
                     'permission_callback' => [$this, 'permissionsCheck'],
                 ],
                 'args' => [
+                    'action' => [
+                        'type' => 'string',
+                        'required' => true,
+                        'enum' => [
+                            'setStatus',
+                        ],
+                    ],
                     'ids' => [
                         'type' => 'string',
                         'required' => true,
@@ -47,16 +57,7 @@ class SubscriptionActions extends Endpoint
                     'status' => [
                         'type' => 'string',
                         'required' => false,
-                        'enum' => [
-                            'active',
-                            'expired',
-                            'completed',
-                            'cancelled',
-                            'pending',
-                            'failing',
-                            'suspended',
-                            'abandoned',
-                        ],
+                        'enum' => array_values(SubscriptionStatus::toArray()),
                     ],
                 ],
             ]
@@ -74,13 +75,27 @@ class SubscriptionActions extends Endpoint
         $ids = $this->splitString($request->get_param('ids'));
         $errors = $successes = [];
 
+        switch ($request->get_param('action')) {
+            case 'setStatus':
                 foreach ($ids as $id) {
-                    $updated = give_recurring_update_subscription_status( $id, $request->get_param('status'));
+                    $subscription = Subscription::find($id);
 
-                    $updated ? $successes[] = $id : $errors[] = $id;
+                    if ( ! $subscription) {
+                        $errors[] = $id;
+                        continue;
+                    }
+
+                    try {
+                        $subscription->status = new SubscriptionStatus($request->get_param('status'));
+                        $subscription->save();
+                        $successes[] = $id;
+                    } catch (Exception $e) {
+                        $errors[] = $id;
+                    }
                 }
 
-
+                break;
+        }
 
         return new WP_REST_Response([
             'errors' => $errors,
