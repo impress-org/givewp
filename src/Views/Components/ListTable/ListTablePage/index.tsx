@@ -174,7 +174,7 @@ export default function ListTablePage({
                 bulkActions={bulkActions}
                 showModal={openBulkActionModal}
             />
-            {PageActionsTop && paymentMode && <TestModeFilter />}
+            {PageActionsTop && testModeFilter && <TestModeFilter />}
             {page && setPage && showPagination()}
         </div>
     );
@@ -192,7 +192,7 @@ export default function ListTablePage({
                     <div className={styles.flexRow}>
                         <GiveIcon size={'1.875rem'} />
                         <h1 className={styles.pageTitle}>{title}</h1>
-                        {paymentMode && testMode && <TestModeBadge />}
+                        {testModeFilter && testMode && <TestModeBadge />}
                     </div>
                     {children && <div className={styles.flexRow}>{children}</div>}
                 </header>
