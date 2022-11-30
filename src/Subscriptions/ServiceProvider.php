@@ -8,6 +8,7 @@ use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use Give\Subscriptions\LegacyListeners\DispatchGiveSubscriptionPostCreate;
 use Give\Subscriptions\LegacyListeners\DispatchGiveSubscriptionPreCreate;
 use Give\Subscriptions\ListTable\SubscriptionsListTable;
+use Give\Subscriptions\Migrations\AddPaymentModeToSubscriptionTable;
 use Give\Subscriptions\Migrations\CreateSubscriptionTables;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
 
@@ -33,8 +34,7 @@ class ServiceProvider implements ServiceProviderInterface
     public function boot()
     {
         $this->bootLegacyListeners();
-
-        give(MigrationsRegister::class)->addMigration(CreateSubscriptionTables::class);
+        $this->registerMigrations();
 
         $userId = get_current_user_id();
         $showLegacy = get_user_meta($userId, '_give_subscriptions_archive_show_legacy', true);
@@ -55,5 +55,20 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction('givewp_subscription_creating', DispatchGiveSubscriptionPreCreate::class);
         Hooks::addAction('givewp_subscription_created', DispatchGiveSubscriptionPostCreate::class);
+    }
+
+    /**
+     * Registers database migrations with the MigrationsRunner
+     *
+     * @unreleased
+     */
+    private function registerMigrations()
+    {
+        /** @var MigrationsRegister $register */
+        $register = give(MigrationsRegister::class);
+        $register->addMigrations([
+            CreateSubscriptionTables::class,
+            AddPaymentModeToSubscriptionTable::class,
+        ]);
     }
 }

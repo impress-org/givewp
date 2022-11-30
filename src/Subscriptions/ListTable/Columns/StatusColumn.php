@@ -47,7 +47,7 @@ class StatusColumn extends ModelColumn
     {
         $template = '
             <div class="subscriptionStatus">
-                <div class="statusBadge statusBadge--%1$s"><p>%2$s</p></div>
+                <div class="statusBadge statusBadge--%1$s"><div>%2$s</div></div>
                 %3$s
             </div>
         ';
@@ -56,7 +56,8 @@ class StatusColumn extends ModelColumn
             <div class="subscriptionStatus__container">
                 <img src="%1$s" alt="%2$s"/>
                 <div class="subscriptionStatus__message subscriptionStatus__message--%3$s">
-                    <img src="%1$s" alt="%2$s"/>%4$s</div>
+                    <img src="%1$s" alt="%2$s"/>
+                    <p>%4$s</p>
                 </div>
             </div>
         ';
@@ -71,14 +72,14 @@ class StatusColumn extends ModelColumn
             $extra = [
                 'label' => __('indefinite', 'give'),
                 'status' => 'indefinite',
-                'text' => __('This subscription continues <strong> indefinitely </strong>', 'give'),
+                'text' => __('This subscription continues <strong>indefinitely</strong>', 'give'),
             ];
         } elseif (count($model->donations) < $model->installments) {
             $extra = [
                 'label' => __('limited', 'give'),
                 'status' => 'limited',
                 'text' => sprintf(
-                    __('This subscription has <strong> %d </strong> remaining donations', 'give'),
+                    __('This subscription has <strong>%d</strong> remaining donations', 'give'),
                     $model->installments - count($model->donations)
                 )
             ];
@@ -88,7 +89,7 @@ class StatusColumn extends ModelColumn
             $template,
             $model->status->getValue(),
             $model->status->label(),
-            is_array( $extra ) ? sprintf(
+            isset( $extra ) ? sprintf(
                 $extraTemplate,
                 GIVE_PLUGIN_URL . 'assets/dist/images/list-table/' . $extra['status'] . '-subscription-icon.svg',
                 $extra['label'],
