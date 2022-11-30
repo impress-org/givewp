@@ -2,9 +2,10 @@
 
 namespace Give\Subscriptions\Endpoints;
 
-use Give\Subscriptions\ListTable\SubscriptionsListTable;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Subscriptions\ListTable\SubscriptionsListTable;
+use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -86,7 +87,7 @@ class ListSubscriptions extends Endpoint
                         'required' => false,
                         'enum' => [
                             'asc',
-                            'desc'
+                            'desc',
                         ],
                     ],
                     'locale' => [
@@ -94,13 +95,18 @@ class ListSubscriptions extends Endpoint
                         'required' => false,
                         'default' => get_locale(),
                     ],
+                    'testMode' => [
+                        'type' => 'boolean',
+                        'required' => false,
+                        'default' => give_is_test_mode(),
+                    ],
                     'return' => [
                         'type' => 'string',
                         'required' => false,
                         'default' => 'columns',
                         'enum' => [
                             'model',
-                            'columns'
+                            'columns',
                         ],
                     ],
                 ],
@@ -198,6 +204,7 @@ class ListSubscriptions extends Endpoint
         $start = $this->request->get_param('start');
         $end = $this->request->get_param('end');
         $form = $this->request->get_param('form');
+        $testMode = $this->request->get_param('testMode');
 
         if ($search) {
             if (ctype_digit($search)) {
@@ -233,6 +240,8 @@ class ListSubscriptions extends Endpoint
                         });
                 });
         }
+
+        $query->where('payment_mode', $testMode ? SubscriptionMode::TEST : SubscriptionMode::LIVE);
 
         return $query;
     }

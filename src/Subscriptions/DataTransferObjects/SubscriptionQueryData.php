@@ -6,6 +6,7 @@ use DateTime;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
@@ -53,6 +54,10 @@ final class SubscriptionQueryData
      */
     public $transactionId;
     /**
+     * @var SubscriptionMode
+     */
+    public $mode;
+    /**
      * @var Money
      */
     public $amount;
@@ -92,6 +97,7 @@ final class SubscriptionQueryData
         $self->frequency = (int)$subscriptionQueryObject->frequency;
         $self->installments = (int)$subscriptionQueryObject->installments;
         $self->transactionId = $subscriptionQueryObject->transactionId;
+        $self->mode = new SubscriptionMode($subscriptionQueryObject->mode);
         $self->amount = Money::fromDecimal($subscriptionQueryObject->amount, $subscriptionQueryObject->currency ?? give_get_currency());
         $self->feeAmountRecovered = Money::fromDecimal($subscriptionQueryObject->feeAmount,
             $subscriptionQueryObject->currency ?? give_get_currency());

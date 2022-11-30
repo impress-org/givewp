@@ -89,7 +89,7 @@ class StatusColumn extends ModelColumn
             $template,
             $model->status->getValue(),
             $model->status->label(),
-            is_array( $extra ) ? sprintf(
+            isset( $extra ) ? sprintf(
                 $extraTemplate,
                 GIVE_PLUGIN_URL . 'assets/dist/images/list-table/' . $extra['status'] . '-subscription-icon.svg',
                 $extra['label'],

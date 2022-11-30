@@ -383,6 +383,7 @@ class SubscriptionRepository
                 ['frequency', 'frequency'],
                 ['bill_times', 'installments'],
                 ['transaction_id', 'transactionId'],
+                ['payment_mode', 'mode'],
                 ['recurring_amount', 'amount'],
                 ['recurring_fee_amount', 'feeAmount'],
                 'status',

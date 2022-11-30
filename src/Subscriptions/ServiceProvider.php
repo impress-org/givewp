@@ -8,6 +8,7 @@ use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use Give\Subscriptions\LegacyListeners\DispatchGiveSubscriptionPostCreate;
 use Give\Subscriptions\LegacyListeners\DispatchGiveSubscriptionPreCreate;
 use Give\Subscriptions\ListTable\SubscriptionsListTable;
+use Give\Subscriptions\Migrations\AddPaymentModeToSubscriptionTable;
 use Give\Subscriptions\Migrations\CreateSubscriptionTables;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
 
@@ -65,11 +66,8 @@ class ServiceProvider implements ServiceProviderInterface
     {
         /** @var MigrationsRegister $register */
         $register = give(MigrationsRegister::class);
+        $register->addMigration(CreateSubscriptionTables::class);
 
-        $register->addMigrations(
-            [
-                CreateSubscriptionTables::class,
-            ]
-        );
+        Hooks::addAction('give_register_updates', AddPaymentModeToSubscriptionTable::class, 'register');
     }
 }
