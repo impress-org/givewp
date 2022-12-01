@@ -66,6 +66,7 @@ class SubscriptionActions extends Endpoint
     }
 
     /**
+     * @unreleased
      *
      * @param WP_REST_Request $request
      *
@@ -127,6 +128,7 @@ class SubscriptionActions extends Endpoint
     /**
      * Split string
      *
+     * @unreleased
      *
      * @param string $ids
      *
