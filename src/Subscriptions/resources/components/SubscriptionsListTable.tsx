@@ -45,6 +45,30 @@ const filters: Array<FilterConfig> = [
 ];
 
 const bulkActions: Array<BulkActionsConfig> = [
+    {
+        label: __('Delete', 'give'),
+        value: 'delete',
+        type: 'danger',
+        action: async (selected) => {
+            const response = await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
+            return response;
+        },
+        confirm: (selected, names) => (
+            <>
+                <p>{__('Really delete the following subscriptions?', 'give')}</p>
+                <ul role="document" tabIndex={0}>
+                    {selected.map((donationId, index) => (
+                        <li key={donationId}>
+                            <IdBadge id={donationId} />{' '}
+                            <span>
+                                {__('from ', 'give')} <Interweave content={names[index]} />
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+            </>
+        ),
+    },
     ...(() => {
         const subscriptionStatuses = {
             active: __('Set To Active', 'give'),
