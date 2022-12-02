@@ -23,6 +23,11 @@ class AddPaymentModeToSubscriptionTable extends Migration
         return 'Add payment mode column to subscription table';
     }
 
+    /**
+     * @inheritDoc
+     *
+     * @unreleased
+     */
     public static function timestamp()
     {
         return strtotime('2022-11-30');
