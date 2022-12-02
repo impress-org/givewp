@@ -62,32 +62,32 @@ class StatusColumn extends ModelColumn
             </div>
         ';
 
-        if ('failing' === $model->status->getvalue()) {
+        if ($model->status->isFailing()) {
             $extra = [
                 'label' => __('failed', 'give'),
                 'status' => 'failed',
                 'text' => __('This subscription has failed', 'give'),
             ];
-        } elseif (0 === $model->installments) {
+        } elseif ($model->isIndefinite()) {
             $extra = [
                 'label' => __('indefinite', 'give'),
                 'status' => 'indefinite',
                 'text' => __('This subscription continues <strong>indefinitely</strong>', 'give'),
             ];
-        } elseif (count($model->donations) < $model->installments) {
+        } elseif (0 < ($remainingInstallments = $model->remainingInstallments())) {
             $extra = [
                 'label' => __('limited', 'give'),
                 'status' => 'limited',
                 'text' => sprintf(
                     __('This subscription has <strong>%d</strong> remaining donations', 'give'),
-                    $model->installments - count($model->donations)
+                    $remainingInstallments
                 )
             ];
         }
 
         return sprintf(
             $template,
-            $model->status->getValue(),
+            $model->status,
             $model->status->label(),
             isset( $extra ) ? sprintf(
                 $extraTemplate,

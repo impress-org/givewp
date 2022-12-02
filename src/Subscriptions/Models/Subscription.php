@@ -215,6 +215,24 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
+     * @unreleased
+     */
+    public function isIndefinite(): bool
+    {
+        return $this->installments === 0;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return int|float
+     */
+    public function remainingInstallments()
+    {
+        return $this->isIndefinite() ? INF : ($this->installments - $this->donations()->count());
+    }
+
+    /**
      * @since 2.19.6
      *
      * @return ModelQueryBuilder<Subscription>
