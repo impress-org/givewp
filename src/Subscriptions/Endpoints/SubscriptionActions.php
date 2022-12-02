@@ -29,7 +29,7 @@ class SubscriptionActions extends Endpoint
             $this->endpoint,
             [
                 [
-                    'methods' => ['POST'],
+                    'methods' => ['POST', 'DELETE'],
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => [$this, 'permissionsCheck'],
                 ],
@@ -38,6 +38,7 @@ class SubscriptionActions extends Endpoint
                         'type' => 'string',
                         'required' => true,
                         'enum' => [
+                            'delete',
                             'setStatus',
                         ],
                     ],
@@ -65,6 +66,7 @@ class SubscriptionActions extends Endpoint
     }
 
     /**
+     * @unreleased
      *
      * @param WP_REST_Request $request
      *
@@ -76,6 +78,25 @@ class SubscriptionActions extends Endpoint
         $errors = $successes = [];
 
         switch ($request->get_param('action')) {
+            case 'delete':
+                foreach ($ids as $id) {
+                    $subscription = Subscription::find($id);
+
+                    if ( ! $subscription) {
+                        $errors[] = $id;
+                        continue;
+                    }
+
+                    try {
+                        $subscription->delete();
+                        $successes[] = $id;
+                    } catch (Exception $e) {
+                        $errors[] = $id;
+                    }
+                }
+
+                break;
+
             case 'setStatus':
                 foreach ($ids as $id) {
                     $subscription = Subscription::find($id);
@@ -107,6 +128,7 @@ class SubscriptionActions extends Endpoint
     /**
      * Split string
      *
+     * @unreleased
      *
      * @param string $ids
      *
