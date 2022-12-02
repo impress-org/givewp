@@ -14,4 +14,5 @@ export type FormSettings = {
     description: string;
     primaryColor: string;
     secondaryColor: string;
+    customCss: string;
 };

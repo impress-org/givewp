@@ -57,6 +57,7 @@ const FormDesignSettings = () => {
             </PanelBody>
             <PanelColorSettings
                 title={__('Colors', 'give')}
+                initialOpen={false}
                 colorSettings={[
                     {
                         value: primaryColor,

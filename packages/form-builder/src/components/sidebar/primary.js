@@ -10,6 +10,7 @@ import {
     FormDesignSettings,
     FormTitleSettings,
     OfflineDonationsSettings,
+    CustomStyleSettings,
 } from '../../settings/index.ts';
 import FormFields from '../../settings/form-fields';
 import {PopoutSlot} from './popout';
@@ -50,6 +51,7 @@ const tabs = [
             <>
                 <FormDesignSettings />
                 <DonationGoalSettings />
+                <CustomStyleSettings />
             </>
         )
     },

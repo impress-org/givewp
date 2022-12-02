@@ -60,6 +60,10 @@ class FormSettings implements Arrayable, Jsonable {
      * @var string
      */
     public $registration;
+    /**
+     * @var string
+     */
+    public $customCss;
 
     /**
      * @unreleased
@@ -84,6 +88,7 @@ class FormSettings implements Arrayable, Jsonable {
         $self->secondaryColor = $array['secondaryColor'] ?? '#f49420';
         $self->goalAmount = $array['goalAmount'] ?? 0;
         $self->registration = $array['registration'] ?? 'none';
+        $self->customCss = $array['customCss'] ?? '';
 
         return $self;
     }

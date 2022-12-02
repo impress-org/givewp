@@ -34,6 +34,7 @@
         "iframe-resizer-react": "^1.1.0",
         "joi": "^17.6.0",
         "prop-types": "^15.7.2",
+        "react-ace": "^10.1.0",
         "react-hook-form": "^7.33.1",
         "react-select": "^5.4.0",
         "swr": "^1.2.0"

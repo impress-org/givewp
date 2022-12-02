@@ -336,3 +336,13 @@ svg {
 }
 
 /** ------------------------------- */
+
+.components-modal__screen-overlay {
+    z-index: 9999999999;
+
+    &--givewp-custom-css {
+        background-color: transparent;
+    }
+}
+
+/** ------------------------------- */
