@@ -1,5 +1,5 @@
-import {FC, ReactNode} from 'react';
-import {FormSettings} from '@givewp/form-builder/src/types';
+import type {FC} from 'react';
+import type {FormSettings} from '@givewp/form-builder/src/types';
 
 /**
  * Used for a single currency. The amount is an integer in the smallest unit of the currency.
@@ -80,31 +80,6 @@ export interface Gateway {
      * A hook after the form is submitted.
      */
     afterCreatePayment?(response: object): Promise<void> | Error;
-}
-
-export interface FormDesign {
-    id: string;
-    fields?: {
-        amount?: ReactNode;
-        text?: ReactNode;
-        textarea?: ReactNode;
-        email?: ReactNode;
-        hidden?: ReactNode;
-    };
-    elements?: {
-        html?: ReactNode;
-    };
-    groups?: {
-        name?: ReactNode;
-    };
-    layouts?: {
-        section?: ReactNode;
-        form?: ReactNode;
-        header?: ReactNode;
-        title?: ReactNode;
-        description?: ReactNode;
-        goal?: ReactNode;
-    };
 }
 
 export interface VisibilityCondition {

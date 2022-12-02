@@ -1,10 +1,5 @@
-import Header from './layouts/Header';
 import Goal from './layouts/Goal';
+import Header from './layouts/Header';
 
-window.givewp.form.designs.mount({
-    id: 'classic',
-    layouts: {
-        header: Header,
-        goal: Goal,
-    },
-});
+window.givewp.form.templates.layouts.goal = Goal;
+window.givewp.form.templates.layouts.header = Header;

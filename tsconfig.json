@@ -25,8 +25,8 @@
             "@givewp/forms/propTypes": [
                 "./src/NextGen/DonationForm/resources/propTypes.ts"
             ],
-            "@givewp/blocks/form/*": [
-                "./src/NextGen/DonationForm/Blocks/DonationFormBlock/resources/*"
+            "@givewp/forms/app/*": [
+                "./src/NextGen/DonationForm/resources/app/*"
             ]
         }
     },

@@ -161,8 +161,8 @@ class DonationFormViewModel
         </script>
 
         <div
-            id="root-give-next-gen-donation-form-block"
-            class="givewp-donation-form-block"
+            id="root-givewp-donation-form"
+            class="givewp-donation-form"
             style="
                 --give-primary-color:<?= $this->primaryColor() ?>;
                 --give-secondary-color:<?= $this->secondaryColor() ?>;
@@ -238,8 +238,8 @@ class DonationFormViewModel
 
         // load block - since this is using render_callback viewScript in blocks.json will not work.
         (new EnqueueScript(
-            'givewp-next-gen-donation-form-block-js',
-            'build/donationFormBlockApp.js',
+            'givewp-next-gen-donation-form-js',
+            'build/donationFormApp.js',
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
             'give'
