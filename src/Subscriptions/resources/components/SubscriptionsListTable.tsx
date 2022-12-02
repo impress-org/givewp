@@ -1,33 +1,32 @@
 import {__, sprintf} from '@wordpress/i18n';
 import {ListTablePage} from '@givewp/components';
-import {DonationRowActions} from './DonationRowActions';
 import ListTableApi from '@givewp/components/ListTable/api';
 import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
-import {IdBadge} from '@givewp/components/ListTable/TableCell';
 import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
+import {SubscriptionsRowActions} from './SubscriptionsRowActions';
+import {IdBadge} from '@givewp/components/ListTable/TableCell';
 import {Interweave} from 'interweave';
 
 declare global {
     interface Window {
-        GiveDonations: {
+        GiveSubscriptions: {
             apiNonce: string;
             apiRoot: string;
-            adminUrl: string;
-            forms: Array<{value: string; text: string}>;
             table: {columns: Array<object>};
+            forms: Array<{value: string; text: string}>;
             paymentMode: boolean;
         };
     }
 }
 
-const API = new ListTableApi(window.GiveDonations);
+const API = new ListTableApi(window.GiveSubscriptions);
 
 const filters: Array<FilterConfig> = [
     {
         name: 'search',
         type: 'search',
         inlineSize: '14rem',
-        text: __('Name, Email, or Donation ID', 'give'),
+        text: __('Name, Email, or  ID', 'give'),
         ariaLabel: __('search donations', 'give'),
     },
     {
@@ -35,13 +34,13 @@ const filters: Array<FilterConfig> = [
         type: 'formselect',
         text: __('Select Form', 'give'),
         ariaLabel: __('filter donation forms by status', 'give'),
-        options: window.GiveDonations.forms,
+        options: window.GiveSubscriptions.forms,
     },
     {
         name: 'toggle',
         type: 'checkbox',
         text: __('Test', 'give'),
-        ariaLabel: __('View Test Donations', 'give'),
+        ariaLabel: __('View Test Subscriptions', 'give'),
     },
 ];
 
@@ -56,7 +55,7 @@ const bulkActions: Array<BulkActionsConfig> = [
         },
         confirm: (selected, names) => (
             <>
-                <p>{__('Really delete the following donations?', 'give')}</p>
+                <p>{__('Really delete the following subscriptions?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((donationId, index) => (
                         <li key={donationId}>
@@ -71,19 +70,18 @@ const bulkActions: Array<BulkActionsConfig> = [
         ),
     },
     ...(() => {
-        const donationStatuses = {
-            publish: __('Set To Completed', 'give'),
-            pending: __('Set To Pending', 'give'),
-            processing: __('Set To Processing', 'give'),
-            refunded: __('Set To Refunded', 'give'),
-            revoked: __('Set To Revoked', 'give'),
-            failed: __('Set To Failed', 'give'),
+        const subscriptionStatuses = {
+            active: __('Set To Active', 'give'),
+            expired: __('Set To Expired', 'give'),
+            completed: __('Set To Completed', 'give'),
             cancelled: __('Set To Cancelled', 'give'),
+            pending: __('Set To Pending', 'give'),
+            failing: __('Set To Failing', 'give'),
+            suspended: __('Set To Suspended', 'give'),
             abandoned: __('Set To Abandoned', 'give'),
-            preapproval: __('Set To Preapproval', 'give'),
         };
 
-        return Object.entries(donationStatuses).map(([value, label]) => {
+        return Object.entries(subscriptionStatuses).map(([value, label]) => {
             return {
                 label,
                 value,
@@ -112,46 +110,20 @@ const bulkActions: Array<BulkActionsConfig> = [
             };
         });
     })(),
-    {
-        label: __('Resend Email Receipts', 'give'),
-        value: 'resendEmailReceipt',
-        action: async (selected) => await API.fetchWithArgs('/resendEmailReceipt', {ids: selected.join(',')}, 'POST'),
-        confirm: (selected, names) => (
-            <>
-                <p>{__('Resend Email Receipts for following donations?', 'give')}</p>
-                <ul role="document" tabIndex={0}>
-                    {selected.map((donationId, index) => (
-                        <li key={donationId}>
-                            <IdBadge id={donationId} /> <span>{sprintf(__('from %s', 'give'), names[index])}</span>
-                        </li>
-                    ))}
-                </ul>
-            </>
-        ),
-    },
 ];
 
-export default function DonationsListTable() {
+export default function SubscriptionsListTable() {
     return (
         <ListTablePage
-            title={__('Donations', 'give')}
-            singleName={__('donation', 'give')}
-            pluralName={__('donations', 'give')}
-            rowActions={DonationRowActions}
+            title={__('Subscriptions', 'give')}
+            singleName={__('subscription', 'give')}
+            pluralName={__('subscriptions', 'give')}
+            rowActions={SubscriptionsRowActions}
             bulkActions={bulkActions}
-            apiSettings={window.GiveDonations}
+            apiSettings={window.GiveSubscriptions}
             filterSettings={filters}
-            paymentMode={!!window.GiveDonations.paymentMode}
+            paymentMode={!!window.GiveSubscriptions.paymentMode}
         >
-            <a
-                className={tableStyles.addFormButton}
-                href={
-                    window.GiveDonations.adminUrl +
-                    'edit.php?post_type=give_forms&page=give-tools&tab=import&importer-type=import_donations'
-                }
-            >
-                {__('Import Donations', 'give')}
-            </a>
             <button className={tableStyles.addFormButton} onClick={showLegacyDonations}>
                 {__('Switch to Legacy View')}
             </button>

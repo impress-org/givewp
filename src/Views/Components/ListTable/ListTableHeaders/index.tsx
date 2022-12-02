@@ -2,7 +2,12 @@ import React from 'react';
 import styles from './style.module.scss';
 
 //@unreleased used to handle sort direction and column id.
-const ListTableHeaders = ({column, sortField, handleItemSort}) => {
+const ListTableHeaders = ({column, sortField, setSortDirectionForColumn}) => {
+    const handleItemSort = (event, column) => {
+        event.preventDefault();
+        const direction = sortField.sortDirection === 'desc' ? 'asc' : 'desc';
+        setSortDirectionForColumn(column, direction);
+    };
     return (
         <>
             {column.sortable ? (

@@ -273,16 +273,20 @@ class SubscriptionRepository
      * This should only be used when creating a new Subscription with its corresponding Donation. Do not add this value
      * to the Subscription model as it should not be reference moving forward.
      *
+     * @unreleased Save payment mode to subscription meta
      * @since 2.23.0
      *
      * @return void
      */
     public function updateLegacyParentPaymentId(int $subscriptionId, int $donationId)
     {
+        $mode = give_get_meta( $donationId, DonationMetaKeys::MODE, true ) ?? (give_is_test_mode() ? 'test' : 'live');
+
         DB::table('give_subscriptions')
             ->where('id', $subscriptionId)
             ->update([
                 'parent_payment_id' => $donationId,
+                'payment_mode' => $mode
             ]);
     }
 
@@ -383,6 +387,7 @@ class SubscriptionRepository
                 ['frequency', 'frequency'],
                 ['bill_times', 'installments'],
                 ['transaction_id', 'transactionId'],
+                ['payment_mode', 'mode'],
                 ['recurring_amount', 'amount'],
                 ['recurring_fee_amount', 'feeAmount'],
                 'status',

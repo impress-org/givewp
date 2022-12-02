@@ -63,7 +63,6 @@ class DonorsAdminPage
         $data = [
             'apiRoot' => $this->apiRoot,
             'apiNonce' => $this->apiNonce,
-            'preload' => $this->preloadDonors(),
             'forms' => $this->getForms(),
             'table' => give(DonorsListTable::class)->toArray(),
             'adminUrl' => $this->adminUrl,
@@ -80,28 +79,6 @@ class DonorsAdminPage
             [],
             null
         );
-    }
-
-    /**
-     * Make REST request to Donors endpoint before page load
-     * @since 2.20.0
-     */
-    public function preloadDonors(){
-        $queryParameters = [
-            'page' => 1,
-            'perPage' => 30,
-            'search' => '',
-        ];
-
-        $url = add_query_arg(
-            $queryParameters,
-            $this->apiRoot
-        );
-
-        $request = \WP_REST_Request::from_url($url);
-        $response = rest_do_request($request);
-
-        return $response->get_data();
     }
 
     /**

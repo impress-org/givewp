@@ -1,29 +1,28 @@
 <?php
 
-namespace Give\DonationForms\Endpoints;
+namespace Give\Subscriptions\Endpoints;
 
-use Give\DonationForms\ListTable\DonationFormsListTable;
 use Give\Framework\Models\ModelQueryBuilder;
+use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Subscriptions\ListTable\SubscriptionsListTable;
+use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use WP_REST_Request;
 use WP_REST_Response;
 
-/**
- * @since 2.19.0
- */
-class ListForms extends Endpoint
+class ListSubscriptions extends Endpoint
 {
     /**
      * @var string
      */
-    protected $endpoint = 'admin/forms';
+    protected $endpoint = 'admin/subscriptions';
 
     /**
      * @var WP_REST_Request
      */
-    private $request;
+    protected $request;
 
     /**
-     * @var DonationFormsListTable
+     * @var SubscriptionsListTable
      */
     protected $listTable;
 
@@ -54,24 +53,29 @@ class ListForms extends Endpoint
                         'default' => 30,
                         'minimum' => 1
                     ],
-                    'status' => [
-                        'type' => 'string',
+                    'donations' => [
+                        'type' => 'integer',
                         'required' => false,
-                        'default' => 'any',
-                        'enum' => [
-                            'publish',
-                            'future',
-                            'draft',
-                            'pending',
-                            'trash',
-                            'auto-draft',
-                            'inherit',
-                            'any'
-                        ]
+                        'default' => 0
                     ],
                     'search' => [
                         'type' => 'string',
                         'required' => false
+                    ],
+                    'start' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'validate_callback' => [$this, 'validateDate']
+                    ],
+                    'form' => [
+                        'type' => 'integer',
+                        'required' => false,
+                        'default' => 0
+                    ],
+                    'end' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'validate_callback' => [$this, 'validateDate']
                     ],
                     'sortColumn' => [
                         'type' => 'string',
@@ -83,7 +87,7 @@ class ListForms extends Endpoint
                         'required' => false,
                         'enum' => [
                             'asc',
-                            'desc'
+                            'desc',
                         ],
                     ],
                     'locale' => [
@@ -91,13 +95,18 @@ class ListForms extends Endpoint
                         'required' => false,
                         'default' => get_locale(),
                     ],
+                    'testMode' => [
+                        'type' => 'boolean',
+                        'required' => false,
+                        'default' => give_is_test_mode(),
+                    ],
                     'return' => [
                         'type' => 'string',
                         'required' => false,
                         'default' => 'columns',
                         'enum' => [
                             'model',
-                            'columns'
+                            'columns',
                         ],
                     ],
                 ],
@@ -106,7 +115,7 @@ class ListForms extends Endpoint
     }
 
     /**
-     * @unreleased Change this to use the new ListTable class
+     * @unreleased
      *
      * @param WP_REST_Request $request
      *
@@ -115,42 +124,41 @@ class ListForms extends Endpoint
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
         $this->request = $request;
-        $this->listTable = give(DonationFormsListTable::class);
+        $this->listTable = give(SubscriptionsListTable::class);
 
-        $forms = $this->getForms();
-        $totalForms = $this->getTotalFormsCount();
-        $totalPages = (int)ceil($totalForms / $this->request->get_param('perPage'));
+        $subscriptions = $this->getSubscriptions();
+        $subscriptionsCount = $this->getTotalSubscriptionsCount();
+        $pageCount = (int)ceil($subscriptionsCount / $request->get_param('perPage'));
 
         if ('model' === $this->request->get_param('return')) {
-            $items = $forms;
+            $items = $subscriptions;
         } else {
-            $this->listTable->items($forms, $this->request->get_param('locale') ?? '');
+            $this->listTable->items($subscriptions, $this->request->get_param('locale') ?? '');
             $items = $this->listTable->getItems();
         }
 
         return new WP_REST_Response(
             [
                 'items' => $items,
-                'totalItems' => $totalForms,
-                'totalPages' => $totalPages,
-                'trash' => defined('EMPTY_TRASH_DAYS') && EMPTY_TRASH_DAYS > 0,
+                'totalItems' => $subscriptionsCount,
+                'totalPages' => $pageCount
             ]
         );
     }
 
     /**
-     * @unreleased Refactor to query through the ModelQueryBuilder
+     * @unreleased
      *
      * @return array
      */
-    public function getForms(): array
+    public function getSubscriptions(): array
     {
         $page = $this->request->get_param('page');
         $perPage = $this->request->get_param('perPage');
         $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
         $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
 
-        $query = give()->donationForms->prepareQuery();
+        $query = give()->subscriptions->prepareQuery();
         $query = $this->getWhereConditions($query);
 
         foreach ($sortColumns as $sortColumn) {
@@ -160,30 +168,31 @@ class ListForms extends Endpoint
         $query->limit($perPage)
             ->offset(($page - 1) * $perPage);
 
-        $donationForms = $query->getAll();
+        $subscriptions = $query->getAll();
 
-        if (!$donationForms) {
+        if (!$subscriptions) {
             return [];
         }
 
-        return $donationForms;
+        return $subscriptions;
     }
 
     /**
-     * @unreleased Refactor to query through the ModelQueryBuilder
+     * @unreleased
      *
      * @return int
      */
-    public function getTotalFormsCount(): int
+    public function getTotalSubscriptionsCount(): int
     {
-        $query = give()->donationForms->prepareQuery();
+        $query = give()->subscriptions->prepareQuery();
         $query = $this->getWhereConditions($query);
 
         return $query->count();
     }
 
     /**
-     * @unreleased
+     * @unreleased Replace Query Builder with Subscriptions model
+     * @since 2.21.0
      *
      * @param ModelQueryBuilder $query
      *
@@ -192,28 +201,47 @@ class ListForms extends Endpoint
     private function getWhereConditions(ModelQueryBuilder $query): ModelQueryBuilder
     {
         $search = $this->request->get_param('search');
-        $status = $this->request->get_param('status');
+        $start = $this->request->get_param('start');
+        $end = $this->request->get_param('end');
+        $form = $this->request->get_param('form');
+        $testMode = $this->request->get_param('testMode');
 
-        // Status
-        if ($status === 'any') {
-            $query->whereIn('post_status', ['publish', 'draft', 'pending', 'private']);
-        } else {
-            $query->where('post_status', $status);
-        }
-
-        // Search
         if ($search) {
             if (ctype_digit($search)) {
-                $query->where('ID', $search);
+                $query->where('id', $search);
             } else {
-                $searchTerms = array_map('trim', explode(' ', $search));
-                foreach ($searchTerms as $term) {
-                    if ($term) {
-                        $query->whereLike('post_title', $term);
-                    }
-                }
+                $query->whereLike('name', $search);
+                $query->orWhereLike('email', $search);
             }
         }
+
+        if ($start && $end) {
+            $query->whereBetween('date_created', $start, $end);
+        } else if ($start) {
+            $query->where('date_created', $start, '>=');
+        } else if ($end) {
+            $query->where('date_created', $end, '<=');
+        }
+
+        if ($form) {
+            $query
+                ->whereIn('id', static function (QueryBuilder $builder) use ($form) {
+                    $builder
+                        ->from('give_donationmeta')
+                        ->distinct()
+                        ->select('meta_value')
+                        ->where('meta_key', '_give_payment_subscription_id')
+                        ->whereIn('donation_id', static function (QueryBuilder $builder) use ($form) {
+                            $builder
+                                ->from('give_donationmeta')
+                                ->select('donation_id')
+                                ->where('meta_key', '_give_payment_form_id')
+                                ->where('meta_value', $form);
+                        });
+                });
+        }
+
+        $query->where('payment_mode', $testMode ? SubscriptionMode::TEST : SubscriptionMode::LIVE);
 
         return $query;
     }

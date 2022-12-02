@@ -11,7 +11,6 @@
         border-radius: safe-rem(0.1875);
         color: #fff;
         font-size: safe-rem(0.8125);
-        font-weight: 600;
         column-gap: safe-rem(1);
         text-transform: uppercase;
 
@@ -25,8 +24,13 @@
             background: #d75a4b;
         }
 
+        &--failing {
+            background: #e5301b;
+        }
+
         &--abandoned,
-        &--cancelled {
+        &--cancelled,
+        &--expired {
             background: #f4c520;
         }
 
@@ -42,6 +46,74 @@
         &--refunded {
             background: #333333;
         }
+
+        &--complete {
+            background: #666666;
+        }
+    }
+
+    .subscriptionStatus {
+        display: flex;
+        gap: 10px;
+
+        &__container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        &__message {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            top: -55px;
+            right: 0;
+            width: max-content;
+            height: max-content;
+            padding-inline: 1.25rem;
+            font-size: 0.75rem;
+            font-weight: 400;
+            line-height: 2.5rem;
+            border-radius: 2px;
+            background: #ffffff;
+            visibility: hidden;
+            z-index: 999;
+
+            & img {
+                margin-right: 10px;
+            }
+
+            &--failed {
+                border: 1px solid #e5301b;
+            }
+
+            &--indefinite {
+                border: 1px solid #69b868;
+            }
+
+            &--limited {
+                border: 1px solid #f49420;
+            }
+
+            &:before {
+                content: '';
+                position: absolute;
+                bottom: -4.775px;
+                right: 6px;
+                display: inline-block;
+                height: 9px;
+                width: 9px;
+                background: #ffffff;
+                transform: rotate(45deg);
+                border-bottom: inherit;
+                border-right: inherit;
+            }
+        }
+    }
+
+    .subscriptionStatus:hover .subscriptionStatus__message {
+        visibility: visible;
     }
 
     .badge {
@@ -83,9 +155,9 @@
                 background: #556e79;
                 block-size: 1.125rem;
                 inline-size: 1.375rem;
-                padding-block: 0.4375rem;
-                padding-inline: 0.3125rem;
-                padding-top: 13px;
+                padding-block: 0.575rem;
+                padding-inline: 0.3rem;
+                transform: translateY(2px);
             }
 
             &--recurring,
@@ -215,7 +287,7 @@
     }
 
     .goalProgress {
-        width: 86%;
+        width: 95%;
         height: 0.5rem;
         position: relative;
         background: rgba(238, 238, 238);
@@ -240,13 +312,13 @@
         }
     }
 
-    .date {
+    .subscriptions .date {
         font-size: safe-rem(0.8);
         font-weight: 600;
         white-space: nowrap;
     }
 
-    .amount > span {
+    .amount {
         font-size: safe-rem(1.125);
         font-weight: 700;
         color: #69b868;
