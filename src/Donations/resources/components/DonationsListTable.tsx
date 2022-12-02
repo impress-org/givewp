@@ -61,7 +61,9 @@ const bulkActions: Array<BulkActionsConfig> = [
                     {selected.map((donationId, index) => (
                         <li key={donationId}>
                             <IdBadge id={donationId} />{' '}
-                            <span>{sprintf(__('from %s', 'give'), <Interweave content={names[index]} />)}</span>
+                            <span>
+                                {__('from ', 'give')} <Interweave content={names[index]} />
+                            </span>
                         </li>
                     ))}
                 </ul>
