@@ -171,6 +171,14 @@ class ConvertDonationFormBlocksToFieldsApi
             if ($block->hasAttribute('isRequired')) {
                 $node->required($block->attributes['isRequired']);
             }
+
+            if($block->hasAttribute('displayInAdmin') && $block->attributes['displayInAdmin']) {
+                $node->displayInAdmin = $block->attributes['displayInAdmin'];
+            }
+
+            if($block->hasAttribute('displayInReceipt') && $block->attributes['displayInReceipt']) {
+                $node->displayInAdmin = $block->attributes['displayInReceipt'];
+            }
         }
 
         return $node;

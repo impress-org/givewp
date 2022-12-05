@@ -5,6 +5,7 @@ namespace Give;
 use Give\Addon\Activation;
 use Give\Addon\Environment;
 use Give\Addon\ServiceProvider as AddonServiceProvider;
+use Give\NextGen\CustomFields\ServiceProvider as CustomFieldsServiceProvider;
 use Give\NextGen\DonationForm\ServiceProvider as DonationFormServiceProvider;
 use Give\NextGen\Framework\FormDesigns\ServiceProvider as FormDesignServiceProvider;
 use Give\NextGen\ServiceProvider as NextGenServiceProvider;
@@ -58,6 +59,7 @@ add_action(
             give()->registerServiceProvider(NextGenServiceProvider::class);
             give()->registerServiceProvider(FormBuilder\ServiceProvider::class);
             give()->registerServiceProvider(FormDesignServiceProvider::class);
+            give()->registerServiceProvider(CustomFieldsServiceProvider::class);
         }
     }
 );

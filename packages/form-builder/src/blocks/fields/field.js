@@ -3,13 +3,13 @@ import {__} from '@wordpress/i18n';
 import defaultSettings from './settings';
 import DefaultFieldSettings from './settings/DefaultFieldSettings';
 import {useFieldNameValidator} from '../../hooks';
-import {InspectorAdvancedControls} from '@wordpress/block-editor';
-import {ExternalLink, PanelRow, TextControl, ToggleControl} from '@wordpress/components';
+import {InspectorAdvancedControls, InspectorControls} from '@wordpress/block-editor';
+import {ExternalLink, PanelBody, PanelRow, TextControl, ToggleControl} from '@wordpress/components';
 import slugify from '../../common/slugify';
 import {useCallback} from '@wordpress/element';
 
 function FieldSettings({attributes, setAttributes}) {
-    const {fieldName, label, storeAsDonorMeta} = attributes;
+    const {fieldName, label, storeAsDonorMeta, displayInAdmin, displayInReceipt} = attributes;
     const validateFieldName = useFieldNameValidator();
 
     const updateFieldName = useCallback(
@@ -46,7 +46,33 @@ function FieldSettings({attributes, setAttributes}) {
                     }
                 }}
             />
+            <InspectorControls>
+                <PanelBody title={__('Display Settings', 'give')} initialOpen={true}>
+                    <PanelRow>
+                        <ToggleControl
+                            label={__('Display in Admin', 'give')}
+                            checked={displayInAdmin}
+                            onChange={() => setAttributes({displayInAdmin: !displayInAdmin})}
+                        />
+                    </PanelRow>
+                    <PanelRow>
+                        <ToggleControl
+                            label={__('Display in Receipt', 'give')}
+                            checked={displayInReceipt}
+                            onChange={() => setAttributes({displayInReceipt: !displayInReceipt})}
+                        />
+                    </PanelRow>
+                </PanelBody>
+            </InspectorControls>
             <InspectorAdvancedControls>
+                <PanelRow>
+                    <ToggleControl
+                        label={__('Store as Donor Meta', 'give')}
+                        checked={storeAsDonorMeta}
+                        onChange={() => setAttributes({storeAsDonorMeta: !storeAsDonorMeta})}
+                        help={__('By default, fields are stored as Donation Meta', 'give')}
+                    />
+                </PanelRow>
                 <PanelRow>
                     <TextControl
                         label={__('Field Name', 'give')}
@@ -67,14 +93,6 @@ function FieldSettings({attributes, setAttributes}) {
                         }}
                     />
                 </PanelRow>
-                <PanelRow>
-                    <ToggleControl
-                        label={__('Store as Donor Meta', 'give')}
-                        checked={storeAsDonorMeta}
-                        onChange={() => setAttributes({storeAsDonorMeta: !storeAsDonorMeta})}
-                        help={__('By default, fields are stored as Donation Meta', 'give')}
-                    />
-                </PanelRow>
             </InspectorAdvancedControls>
         </>
     );
@@ -91,6 +109,11 @@ const field = {
                 type: 'boolean',
                 source: 'attribute',
                 default: false,
+            },
+            displayInAdmin: {
+                type: 'boolean',
+                source: 'attribute',
+                default: true,
             },
         },
         title: __('Text', 'custom-block-editor'),
