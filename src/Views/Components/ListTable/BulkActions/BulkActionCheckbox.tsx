@@ -12,9 +12,11 @@ export const BulkActionCheckbox = ({id, name, singleName}) => {
     }, []);
 
     useEffect(() => {
-        // cleanup function to remove the ref when the component unmounts
+        // cleanup function to remove the ref checked value when the component unmounts
         return () => {
-            checkboxRefs.current = checkboxRefs.current.filter((checkbox) => checkbox.dataset.id === id);
+            checkboxRefs.current.forEach((checkbox) => {
+                checkbox.checked = false;
+            });
         };
     }, []);
 
