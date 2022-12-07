@@ -78,10 +78,15 @@ class StatusColumn extends ModelColumn
             $extra = [
                 'label' => __('limited', 'give'),
                 'status' => 'limited',
-                'text' => sprintf(_n('This subscription has <strong>%s</strong> remaining donation',
-                    'This subscription has <strong>%s</strong> remaining donations', $remainingInstallments,
-                    'give'), $remainingInstallments),
-
+                'text' => sprintf(
+                    _n(
+                        'This subscription has <strong>%s</strong> remaining donation',
+                        'This subscription has <strong>%s</strong> remaining donations',
+                        $remainingInstallments,
+                        'give'
+                    ),
+                    $remainingInstallments
+                ),
             ];
         }
 
@@ -89,7 +94,7 @@ class StatusColumn extends ModelColumn
             $template,
             $model->status,
             $model->status->label(),
-            isset( $extra ) ? sprintf(
+            isset($extra) ? sprintf(
                 $extraTemplate,
                 GIVE_PLUGIN_URL . 'assets/dist/images/list-table/' . $extra['status'] . '-subscription-icon.svg',
                 $extra['label'],
