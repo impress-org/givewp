@@ -76,8 +76,8 @@ class StatusColumn extends ModelColumn
             ];
         } elseif ($model->isOverrun()) {
             $extra = [
-                'label' => __('failed', 'give'),
-                'status' => 'failed',
+                'label' => __('overrun', 'give'),
+                'status' => 'overrun',
                 'text' => __('This subscription has <strong>exceeded</strong> the expected donations. Try syncing with the gateway and cancelling if necessary.',
                     'give'),
             ];

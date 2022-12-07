@@ -68,7 +68,7 @@
             position: absolute;
             top: -55px;
             right: 0;
-            max-width: 21.75rem;
+            max-width: 27.75rem;
             width: max-content;
             height: max-content;
             padding-inline: 1.25rem;
@@ -84,7 +84,11 @@
                 margin-right: 10px;
             }
 
-            &--failed {
+            &--overrun {
+                top: -75px;
+            }
+
+            &--failed, &--overrun {
                 border: 1px solid #e5301b;
             }
 
