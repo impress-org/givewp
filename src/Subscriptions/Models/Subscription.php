@@ -235,7 +235,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      *
-     * @return int|float
+     * @return boolean
      */
     public function isOverrun(): bool
     {
