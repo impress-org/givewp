@@ -233,6 +233,16 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
+     * @unreleased
+     *
+     * @return int|float
+     */
+    public function isOverrun(): bool
+    {
+        return 0 > $this->remainingInstallments();
+    }
+
+    /**
      * @since 2.19.6
      *
      * @return ModelQueryBuilder<Subscription>

@@ -74,6 +74,12 @@ class StatusColumn extends ModelColumn
                 'status' => 'indefinite',
                 'text' => __('This subscription continues <strong>indefinitely</strong>', 'give'),
             ];
+        } elseif ($model->isOverrun()) {
+            $extra = [
+                'label' => __('limited', 'give'),
+                'status' => 'overrun',
+                'text' => __('This subscription continues <strong>indefinitely</strong>', 'give'),
+            ];
         } elseif (0 < ($remainingInstallments = $model->remainingInstallments())) {
             $extra = [
                 'label' => __('limited', 'give'),
@@ -81,7 +87,7 @@ class StatusColumn extends ModelColumn
                 'text' => sprintf(
                     __('This subscription has <strong>%d</strong> remaining donations', 'give'),
                     $remainingInstallments
-                )
+                ),
             ];
         }
 
