@@ -66,7 +66,7 @@ class StatusColumn extends ModelColumn
             $extra = [
                 'label' => __('failed', 'give'),
                 'status' => 'failed',
-                'text' => __('This subscription has failed', 'give'),
+                'text' => __('This subscription has <strong>failed</strong>', 'give'),
             ];
         } elseif ($model->isIndefinite()) {
             $extra = [
