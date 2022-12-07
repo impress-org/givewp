@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Give\Subscriptions\ListTable\Columns;
 
-use Give\Subscriptions\Models\Subscription;
 use Give\Framework\ListTable\ModelColumn;
+use Give\Subscriptions\Models\Subscription;
 
 /**
  * @unreleased
@@ -78,10 +78,10 @@ class StatusColumn extends ModelColumn
             $extra = [
                 'label' => __('limited', 'give'),
                 'status' => 'limited',
-                'text' => sprintf(
-                    __('This subscription has <strong>%d</strong> remaining donations', 'give'),
-                    $remainingInstallments
-                )
+                'text' => sprintf(_n('This subscription has <strong>%s</strong> remaining donation',
+                    'This subscription has <strong>%s</strong> remaining donations', $remainingInstallments,
+                    'give'), $remainingInstallments),
+
             ];
         }
 
