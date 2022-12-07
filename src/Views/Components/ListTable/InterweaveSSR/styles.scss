@@ -51,7 +51,6 @@
             background: #666666;
         }
     }
-
     .subscriptionStatus {
         display: flex;
         gap: 10px;
@@ -69,6 +68,7 @@
             position: absolute;
             top: -55px;
             right: 0;
+            max-width: 21.75rem;
             width: max-content;
             height: max-content;
             padding-inline: 1.25rem;
