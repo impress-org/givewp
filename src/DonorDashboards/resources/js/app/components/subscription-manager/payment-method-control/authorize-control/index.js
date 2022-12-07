@@ -55,6 +55,12 @@ const AuthorizeControl = ({label, value, forwardedRef, gateway}) => {
                 cardData.year = cardFullExpiryYear.slice(-2);
                 cardData.cardCode = cardCVC;
 
+                const isCardDataFilled = Object.values(cardData).every(x => x !== null && x !== '');
+
+                if (!isCardDataFilled) {
+                    return {};
+                }
+
                 // Dispatch CC data to Authorize.net and receive payment nonce for use on your server
                 const response = await dispatchData({cardData});
 
@@ -70,8 +76,8 @@ const AuthorizeControl = ({label, value, forwardedRef, gateway}) => {
                 }
 
                 return {
-                    give_authorize_data_descriptor: response.opaqueData.dataDescriptor,
-                    give_authorize_data_value: response.opaqueData.dataValue,
+                    give_authorize_data_descriptor: (response.opaqueData.dataDescriptor) ? response.opaqueData.dataDescriptor : '',
+                    give_authorize_data_value: (response.opaqueData.dataValue) ? response.opaqueData.dataValue : '',
                 };
             },
         }),
