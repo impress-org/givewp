@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Give\Subscriptions\ListTable\Columns;
 
-use Give\Subscriptions\Models\Subscription;
 use Give\Framework\ListTable\ModelColumn;
+use Give\Subscriptions\Models\Subscription;
 
 /**
  * @unreleased
@@ -66,7 +66,7 @@ class StatusColumn extends ModelColumn
             $extra = [
                 'label' => __('failed', 'give'),
                 'status' => 'failed',
-                'text' => __('This subscription has failed', 'give'),
+                'text' => __('This subscription has <strong>failed</strong>', 'give'),
             ];
         } elseif ($model->isIndefinite()) {
             $extra = [
@@ -85,7 +85,12 @@ class StatusColumn extends ModelColumn
                 'label' => __('limited', 'give'),
                 'status' => 'limited',
                 'text' => sprintf(
-                    __('This subscription has <strong>%d</strong> remaining donations', 'give'),
+                    _n(
+                        'This subscription has <strong>%s</strong> remaining donation',
+                        'This subscription has <strong>%s</strong> remaining donations',
+                        $remainingInstallments,
+                        'give'
+                    ),
                     $remainingInstallments
                 ),
             ];
@@ -95,7 +100,7 @@ class StatusColumn extends ModelColumn
             $template,
             $model->status,
             $model->status->label(),
-            isset( $extra ) ? sprintf(
+            isset($extra) ? sprintf(
                 $extraTemplate,
                 GIVE_PLUGIN_URL . 'assets/dist/images/list-table/' . $extra['status'] . '-subscription-icon.svg',
                 $extra['label'],
