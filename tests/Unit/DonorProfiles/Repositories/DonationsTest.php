@@ -1,10 +1,10 @@
 <?php
 
-namespace GiveTests\Unit\DonorProfiles\Repositories;
+namespace Give\Tests\Unit\DonorProfiles\Repositories;
 
 use Give\DonorDashboards\Repositories\Donations as DonationsRepository;
 use Give_Helper_Payment;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 use ReflectionClass;
 
 final class DonationsTest extends TestCase

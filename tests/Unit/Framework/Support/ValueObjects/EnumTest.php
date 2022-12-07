@@ -1,6 +1,6 @@
 <?php
 
-namespace GiveTests\Unit\Framework\Support\ValueObjects;
+namespace Give\Tests\Unit\Framework\Support\ValueObjects;
 
 use Give\Framework\Support\ValueObjects\Enum;
 use PHPUnit\Framework\TestCase;

@@ -1,8 +1,8 @@
 <?php
 
-namespace GiveTests\Framework\Addons;
+namespace Give\Tests\Framework\Addons;
 
-use GiveTests\Framework\TestHooks;
+use Give\Tests\Framework\TestHooks;
 
 /**
  * This is our api for bootstrapping GiveWP add-on test suites.

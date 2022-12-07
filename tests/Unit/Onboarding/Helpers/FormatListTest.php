@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GiveTests\Unit\Onboarding\Helpers;
+namespace Give\Tests\Unit\Onboarding\Helpers;
 
 use Give\Onboarding\Helpers\FormatList;
 use PHPUnit\Framework\TestCase;

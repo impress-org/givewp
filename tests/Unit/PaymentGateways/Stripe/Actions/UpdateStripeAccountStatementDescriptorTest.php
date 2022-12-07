@@ -1,11 +1,11 @@
 <?php
 
-namespace GiveTests\Unit\PaymentGateways\Stripe\Actions;
+namespace Give\Tests\Unit\PaymentGateways\Stripe\Actions;
 
 use Give\Helpers\Call;
 use Give\PaymentGateways\Gateways\Stripe\Actions\UpdateStripeAccountStatementDescriptor;
 use Give\PaymentGateways\Stripe\Repositories\Settings;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 /**
  * @since 2.19.0

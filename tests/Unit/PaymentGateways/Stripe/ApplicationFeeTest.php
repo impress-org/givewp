@@ -1,10 +1,10 @@
 <?php
 
-namespace GiveTests\Unit\PaymentGateways\Stripe;
+namespace Give\Tests\Unit\PaymentGateways\Stripe;
 
 use Give\PaymentGateways\Stripe\ApplicationFee;
 use Give\PaymentGateways\Stripe\Repositories\AccountDetail as AccountDetailRepository;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 /**
  * Class ApplicationFeeTest
@@ -25,7 +25,7 @@ final class ApplicationFeeTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        
+
         $this->setUpStripeAccounts();
         $this->repository = new AccountDetailRepository();
         $this->gate = new ApplicationFee($this->repository->getAccountDetail('account_1'));

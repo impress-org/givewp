@@ -1,6 +1,6 @@
 <?php
 
-namespace GiveTests\Unit\Donations\Repositories;
+namespace Give\Tests\Unit\Donations\Repositories;
 
 use Exception;
 use Give\Donations\Models\Donation;
@@ -8,8 +8,8 @@ use Give\Donations\Models\DonationNote;
 use Give\Donations\Repositories\DonationNotesRepository;
 use Give\Donors\Models\Donor;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
  * @coversDefaultClass DonationNotesRepository
