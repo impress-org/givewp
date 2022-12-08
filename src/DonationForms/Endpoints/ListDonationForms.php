@@ -3,9 +3,7 @@
 namespace Give\DonationForms\Endpoints;
 
 use Give\DonationForms\ListTable\DonationFormsListTable;
-use Give\DonationForms\Models\DonationForm;
 use Give\Framework\Database\DB;
-use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_REST_Request;
 use WP_REST_Response;
