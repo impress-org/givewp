@@ -74,10 +74,10 @@ class StatusColumn extends ModelColumn
                 'status' => 'indefinite',
                 'text' => __('This subscription continues <strong>indefinitely</strong>', 'give'),
             ];
-        } elseif ($model->isOverrun()) {
+        } elseif ($model->hasExceededTheMaxInstallments()) {
             $extra = [
-                'label' => __('overrun', 'give'),
-                'status' => 'overrun',
+                'label' => __('exceeded', 'give'),
+                'status' => 'exceeded',
                 'text' => __('This subscription has <strong>exceeded</strong> the expected donations. Try syncing with the gateway and cancelling if necessary.',
                     'give'),
             ];

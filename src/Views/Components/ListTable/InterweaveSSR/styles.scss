@@ -84,11 +84,11 @@
                 margin-right: 10px;
             }
 
-            &--overrun {
+            &--exceeded {
                 top: -75px;
             }
 
-            &--failed, &--overrun {
+            &--failed, &--exceeded {
                 border: 1px solid #e5301b;
             }
 

@@ -237,7 +237,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      *
      * @return boolean
      */
-    public function isOverrun(): bool
+    public function hasExceededTheMaxInstallments(): bool
     {
         return 0 > $this->remainingInstallments();
     }
