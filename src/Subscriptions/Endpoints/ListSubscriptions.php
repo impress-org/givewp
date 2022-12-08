@@ -2,7 +2,7 @@
 
 namespace Give\Subscriptions\Endpoints;
 
-use Give\Framework\Models\ModelQueryBuilder;
+use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Subscriptions\ListTable\SubscriptionsListTable;
 use Give\Subscriptions\ValueObjects\SubscriptionMode;
@@ -184,7 +184,7 @@ class ListSubscriptions extends Endpoint
      */
     public function getTotalSubscriptionsCount(): int
     {
-        $query = give()->subscriptions->prepareQuery();
+        $query = DB::table('give_subscriptions');
         $query = $this->getWhereConditions($query);
 
         return $query->count();
@@ -194,11 +194,11 @@ class ListSubscriptions extends Endpoint
      * @unreleased Replace Query Builder with Subscriptions model
      * @since 2.21.0
      *
-     * @param ModelQueryBuilder $query
+     * @param QueryBuilder $query
      *
-     * @return ModelQueryBuilder
+     * @return QueryBuilder
      */
-    private function getWhereConditions(ModelQueryBuilder $query): ModelQueryBuilder
+    private function getWhereConditions(QueryBuilder $query): QueryBuilder
     {
         $search = $this->request->get_param('search');
         $start = $this->request->get_param('start');

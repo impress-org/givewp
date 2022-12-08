@@ -3,6 +3,7 @@
 namespace Give\Donations;
 
 use Give\Donations\ListTable\DonationsListTable;
+use Give\Framework\Database\DB;
 use Give\Helpers\EnqueueScript;
 use WP_REST_Request;
 
@@ -117,26 +118,14 @@ class DonationsAdminPage
      */
     private function getForms()
     {
-        $queryParameters = [
-            'page' => 1,
-            'perPage' => 50,
-            'status' => 'any',
-            'return' => 'model',
-        ];
-
-        $request = WP_REST_Request::from_url(esc_url_raw(add_query_arg(
-            $queryParameters,
-            rest_url('give-api/v2/admin/forms')
-        )));
-
-        $data = rest_do_request($request)->get_data();
-
-        $options = array_map(static function ($form) {
-            return [
-                'value' => $form->id,
-                'text' => $form->title,
-            ];
-        }, $data['items']);
+        $options = DB::table('posts')
+            ->select(
+                ['ID', 'value'],
+                ['post_title', 'text']
+            )
+            ->where('post_type', 'give_forms')
+            ->whereIn('post_status', ['publish', 'draft', 'pending', 'private'])
+            ->getAll(ARRAY_A);
 
         return array_merge([
             [
