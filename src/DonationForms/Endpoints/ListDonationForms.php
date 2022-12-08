@@ -4,7 +4,9 @@ namespace Give\DonationForms\Endpoints;
 
 use Give\DonationForms\ListTable\DonationFormsListTable;
 use Give\DonationForms\Models\DonationForm;
+use Give\Framework\Database\DB;
 use Give\Framework\Models\ModelQueryBuilder;
+use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -177,9 +179,7 @@ class ListDonationForms extends Endpoint
      */
     public function getTotalFormsCount(): int
     {
-        $builder = new ModelQueryBuilder(DonationForm::class);
-
-        $query = $builder->from('posts')
+        $query = DB::table('posts')
             ->where('post_type', 'give_forms');
 
         $query = $this->getWhereConditions($query);
@@ -190,11 +190,11 @@ class ListDonationForms extends Endpoint
     /**
      * @unreleased
      *
-     * @param ModelQueryBuilder $query
+     * @param QueryBuilder $query
      *
-     * @return ModelQueryBuilder
+     * @return QueryBuilder
      */
-    private function getWhereConditions(ModelQueryBuilder $query): ModelQueryBuilder
+    private function getWhereConditions(QueryBuilder $query): QueryBuilder
     {
         $search = $this->request->get_param('search');
         $status = $this->request->get_param('status');

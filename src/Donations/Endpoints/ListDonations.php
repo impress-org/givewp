@@ -6,8 +6,10 @@ use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
+use Give\Framework\Database\DB;
 use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
 use Give\Framework\Models\ModelQueryBuilder;
+use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -191,8 +193,6 @@ class ListDonations extends Endpoint
      */
     public function getTotalDonationsCount(): int
     {
-        $builder = new ModelQueryBuilder(Donation::class);
-
         $columnsForAttachMetaQuery = [
             DonationMetaKeys::EMAIL(),
             DonationMetaKeys::FIRST_NAME(),
@@ -202,7 +202,7 @@ class ListDonations extends Endpoint
             DonationMetaKeys::MODE(),
         ];
 
-        $query = $builder->from('posts')
+        $query = DB::table('posts')
             ->attachMeta(
                 'give_donationmeta',
                 'ID',
@@ -220,11 +220,11 @@ class ListDonations extends Endpoint
      * @unreleased Remove joins as it uses ModelQueryBuilder and change clauses to use attach_meta
      * @since 2.21.0
      *
-     * @param ModelQueryBuilder $query
+     * @param QueryBuilder $query
      *
-     * @return ModelQueryBuilder
+     * @return QueryBuilder
      */
-    private function getWhereConditions(ModelQueryBuilder $query): ModelQueryBuilder
+    private function getWhereConditions(QueryBuilder $query): QueryBuilder
     {
         $search = $this->request->get_param('search');
         $start = $this->request->get_param('start');

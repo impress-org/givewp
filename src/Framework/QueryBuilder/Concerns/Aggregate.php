@@ -21,6 +21,9 @@ trait Aggregate
     {
         $column = ( ! $column || $column === '*') ? '1' : trim($column);
 
+        if ('1' === $column) {
+            $this->selects = [];
+        }
         $this->selects[] = new RawSQL('SELECT COUNT(%1s) AS count', $column);
 
         return +$this->get()->count;

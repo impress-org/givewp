@@ -2,7 +2,6 @@
 
 namespace Give\Framework\Models;
 
-use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
@@ -44,8 +43,10 @@ class ModelQueryBuilder extends QueryBuilder
     {
         $column = ( ! $column || $column === '*') ? '1' : trim($column);
 
-        $this->selects = [];
-        $this->selectRaw('SELECT COUNT(%1s) AS count', $column);
+        if ('1' === $column) {
+            $this->selects = [];
+        }
+        $this->selects[] = new RawSQL('SELECT COUNT(%1s) AS count', $column);
 
         return +parent::get()->count;
     }
