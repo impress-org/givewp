@@ -1,10 +1,10 @@
 <?php
 
-namespace GiveTests;
+namespace Give\Tests;
 
-use GiveTests\Config\Config;
-use GiveTests\Config\Local;
-use GiveTests\Config\Workflow;
+use Give\Tests\Config\Config;
+use Give\Tests\Config\Local;
+use Give\Tests\Config\Workflow;
 
 class TestEnvironment {
     /**

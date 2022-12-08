@@ -56,7 +56,7 @@
     "autoload-dev": {
         "psr-4": {
             "Give\\PHPStan\\": ".phpstan/",
-            "GiveTests\\": "tests/"
+            "Give\\Tests\\": "tests/"
         }
     },
     "config": {

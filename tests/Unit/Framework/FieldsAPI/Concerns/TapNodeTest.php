@@ -1,5 +1,5 @@
 <?php
-namespace GiveTests\Unit\Framework\FieldsAPI\Concerns;
+namespace Give\Tests\Unit\Framework\FieldsAPI\Concerns;
 
 use Give\Framework\FieldsAPI\Concerns\TapNode;
 use PHPUnit\Framework\TestCase;

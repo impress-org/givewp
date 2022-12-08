@@ -1,7 +1,7 @@
 <?php
 
-use GiveTests\Framework\TestHooks;
-use GiveTests\TestEnvironment;
+use Give\Tests\Framework\TestHooks;
+use Give\Tests\TestEnvironment;
 
 require __DIR__ . '/../vendor/autoload.php';
 

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace GiveTests\Unit\Subscriptions\Actions;
+namespace Give\Tests\Unit\Subscriptions\Actions;
 
 use DateInterval;
 use DateTime;
 use Give\Subscriptions\Actions\GenerateNextRenewalForSubscription;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 /**
  * @since 2.19.6

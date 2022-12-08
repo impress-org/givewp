@@ -1,10 +1,10 @@
 <?php
 
-namespace GiveTests\Unit\DonationSummary;
+namespace Give\Tests\Unit\DonationSummary;
 
 use Give\DonationSummary\SummaryView;
 use Give_Helper_Form;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 final class SummaryViewTest extends TestCase
 {

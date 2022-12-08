@@ -1,11 +1,11 @@
 <?php
 
-namespace GiveTests\Unit\Form\LegacyConsumer\Actions;
+namespace Give\Tests\Unit\Form\LegacyConsumer\Actions;
 
 use Give\Form\LegacyConsumer\Actions\DetermineVisibilityForRequest;
 use Give\Framework\FieldsAPI\Text;
 use Give_Helper_Form;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 final class DetermineVisibilityForRequestTest extends TestCase
 {
