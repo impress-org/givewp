@@ -19,6 +19,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class SubscriptionFactory extends ModelFactory
 {
     /**
+     * @unreleased add mode property
      * @since 2.20.0 update default donorId to create factory
      * @since 2.19.6
      *
