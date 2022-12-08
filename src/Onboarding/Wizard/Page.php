@@ -123,7 +123,7 @@ class Page
 
         wp_enqueue_style(
             'give-google-font-open-sans',
-            'https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap',
+            'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400...700&display=swap',
             [],
             null
         );
