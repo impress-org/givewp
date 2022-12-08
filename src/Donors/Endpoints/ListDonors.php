@@ -3,6 +3,7 @@
 namespace Give\Donors\Endpoints;
 
 use Give\Donors\ListTable\DonorsListTable;
+use Give\Donors\Models\Donor;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_REST_Request;
@@ -181,7 +182,9 @@ class ListDonors extends Endpoint
      */
     public function getTotalDonorsCount(): int
     {
-        $query = give()->donors->prepareQuery();
+        $builder = new ModelQueryBuilder(Donor::class);
+
+        $query = $builder->from('give_donors');
         $query = $this->getWhereConditions($query);
 
         return $query->count();

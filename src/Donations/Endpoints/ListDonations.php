@@ -3,6 +3,8 @@
 namespace Give\Donations\Endpoints;
 
 use Give\Donations\ListTable\DonationsListTable;
+use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
 use Give\Framework\Models\ModelQueryBuilder;
@@ -189,7 +191,26 @@ class ListDonations extends Endpoint
      */
     public function getTotalDonationsCount(): int
     {
-        $query = give()->donations->prepareQuery();
+        $builder = new ModelQueryBuilder(Donation::class);
+
+        $columnsForAttachMetaQuery = [
+            DonationMetaKeys::EMAIL(),
+            DonationMetaKeys::FIRST_NAME(),
+            DonationMetaKeys::LAST_NAME(),
+            DonationMetaKeys::DONOR_ID(),
+            DonationMetaKeys::FORM_ID(),
+            DonationMetaKeys::MODE(),
+        ];
+
+        $query = $builder->from('posts')
+            ->attachMeta(
+                'give_donationmeta',
+                'ID',
+                'donation_id',
+                ...DonationMetaKeys::getColumnsForAttachMetaQueryFromArray($columnsForAttachMetaQuery)
+            )
+            ->where('post_type', 'give_payment');
+
         $query = $this->getWhereConditions($query);
 
         return $query->count();

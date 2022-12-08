@@ -3,6 +3,7 @@
 namespace Give\DonationForms\Endpoints;
 
 use Give\DonationForms\ListTable\DonationFormsListTable;
+use Give\DonationForms\Models\DonationForm;
 use Give\Framework\Models\ModelQueryBuilder;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -176,7 +177,11 @@ class ListDonationForms extends Endpoint
      */
     public function getTotalFormsCount(): int
     {
-        $query = give()->donationForms->prepareQuery();
+        $builder = new ModelQueryBuilder(DonationForm::class);
+
+        $query = $builder->from('posts')
+            ->where('post_type', 'give_forms');
+
         $query = $this->getWhereConditions($query);
 
         return $query->count();

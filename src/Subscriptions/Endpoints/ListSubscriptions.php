@@ -2,6 +2,8 @@
 
 namespace Give\Subscriptions\Endpoints;
 
+use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Subscriptions\ListTable\SubscriptionsListTable;
@@ -184,7 +186,9 @@ class ListSubscriptions extends Endpoint
      */
     public function getTotalSubscriptionsCount(): int
     {
-        $query = give()->subscriptions->prepareQuery();
+        $builder = new ModelQueryBuilder(Donation::class);
+
+        $query = $builder->from('give_subscriptions');
         $query = $this->getWhereConditions($query);
 
         return $query->count();
