@@ -12,6 +12,7 @@ use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\Actions\GenerateNextRenewalForSubscription;
 use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
@@ -39,6 +40,7 @@ class SubscriptionFactory extends ModelFactory
             'status' => SubscriptionStatus::PENDING(),
             'renewsAt' => give(GenerateNextRenewalForSubscription::class)(SubscriptionPeriod::MONTH(), $frequency),
             'donationFormId' => 1,
+            'mode' => SubscriptionMode::TEST(),
         ];
     }
 
