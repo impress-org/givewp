@@ -1,6 +1,6 @@
 <?php
 
-namespace GiveTests\Unit\Donations\Models;
+namespace Give\Tests\Unit\Donations\Models;
 
 use Exception;
 use Give\Donations\Models\Donation;
@@ -11,8 +11,8 @@ use Give\Donors\Models\Donor;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\Models\Subscription;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 class TestDonation extends TestCase
 {

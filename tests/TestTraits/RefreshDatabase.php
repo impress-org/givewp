@@ -1,6 +1,6 @@
 <?php
 
-namespace GiveTests\TestTraits;
+namespace Give\Tests\TestTraits;
 
 use Give\Framework\Database\DB;
 

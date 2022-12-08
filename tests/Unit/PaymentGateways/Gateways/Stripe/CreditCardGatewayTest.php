@@ -11,7 +11,7 @@ use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
 /**
  * @since 2.19.0
  */
-class CreditCardGatewayTest extends \GiveTests\TestCase
+class CreditCardGatewayTest extends \Give\Tests\TestCase
 {
     public function setUp()
     {

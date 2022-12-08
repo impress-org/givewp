@@ -1,6 +1,6 @@
 <?php
 
-namespace GiveTests\Unit\PaymentGateways\PayPalStandard;
+namespace Give\Tests\Unit\PaymentGateways\PayPalStandard;
 
 use PHPUnit\Framework\TestCase;
 

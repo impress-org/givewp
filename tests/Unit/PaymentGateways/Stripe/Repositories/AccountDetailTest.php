@@ -1,12 +1,12 @@
 <?php
 
-namespace GiveTests\Unit\PaymentGateways\Stripe\Repositories;
+namespace Give\Tests\Unit\PaymentGateways\Stripe\Repositories;
 
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Stripe\Repositories\AccountDetail as AccountDetailRepository;
 use Give_Donate_Form;
 use Give_Helper_Form;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 class AccountDetailTest extends TestCase
 {

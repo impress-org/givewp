@@ -1,9 +1,9 @@
 <?php
 
-namespace GiveTests\Unit\Helpers;
+namespace Give\Tests\Unit\Helpers;
 
 use Give\Helpers\EnqueueScript;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 class EnqueueScriptTest extends TestCase
 {

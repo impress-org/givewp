@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace GiveTests\Unit\Donations\LegacyListeners;
+namespace Give\Tests\Unit\Donations\LegacyListeners;
 
 use Give\Donations\LegacyListeners\DispatchGivePreInsertPayment;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 /**
  * @coversDefaultClass DispatchGivePreInsertPayment

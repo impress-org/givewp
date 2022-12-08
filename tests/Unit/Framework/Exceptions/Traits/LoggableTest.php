@@ -1,8 +1,8 @@
 <?php
 
-namespace GiveTests\Unit\Framework\Exceptions\Traits;
+namespace Give\Tests\Unit\Framework\Exceptions\Traits;
 
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 /**
  * @since 2.21.0

@@ -1,6 +1,6 @@
 <?php
 
-namespace GiveTests\Unit\Subscriptions\Models;
+namespace Give\Tests\Unit\Subscriptions\Models;
 
 use DateTime;
 use Exception;
@@ -8,8 +8,8 @@ use Give\Donors\Models\Donor;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
  * @since 2.19.6
