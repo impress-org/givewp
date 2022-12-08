@@ -27,4 +27,29 @@ trait EnumInteractsWithQueryBuilder
 
         return $columns;
     }
+
+    /**
+     * @unreleased
+     *
+     * Returns array of meta aliases to be used with attachMeta based on the given array of ENUMs
+     *
+     * [ ['_give_payment_total', 'amount'], etc. ]
+     *
+     * @param array<Enum> $enums An array of Enums. Eg.: [ DonationMetaKeys::AMOUNT(), etc. ]
+     *
+     * @return array
+     */
+    public static function getColumnsForAttachMetaQueryFromArray(array $enums): array
+    {
+        $columns = [];
+
+        foreach ($enums as $enum) {
+            $value = $enum->getValue();
+            $keyFormatted = $enum->getKeyAsCamelCase();
+
+            $columns[] = [$value, $keyFormatted];
+        }
+
+        return $columns;
+    }
 }
