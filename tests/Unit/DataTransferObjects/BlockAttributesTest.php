@@ -1,9 +1,9 @@
 <?php
 
-namespace TestsNextGen\Unit\DataTransferObjects;
+namespace Give\Tests\Unit\DataTransferObjects;
 
 use Give\NextGen\DonationForm\Blocks\DonationFormBlock\DataTransferObjects\BlockAttributes;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 /**
  * @unreleased

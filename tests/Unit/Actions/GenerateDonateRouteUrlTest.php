@@ -1,10 +1,10 @@
 <?php
 
-namespace TestsNextGen\Unit\Actions;
+namespace Give\Tests\Unit\Actions;
 
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
 use Give\NextGen\DonationForm\Routes\DonateRouteSignature;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 class GenerateDonateRouteUrlTest extends TestCase {
     /**

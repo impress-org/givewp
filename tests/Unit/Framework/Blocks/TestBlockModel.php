@@ -1,10 +1,10 @@
 <?php
 
-namespace TestsNextGen\Unit\Framework\Blocks;
+namespace Give\Tests\Unit\Framework\Blocks;
 
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 /**
  * @unreleased

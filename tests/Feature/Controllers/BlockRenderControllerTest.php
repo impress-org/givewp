@@ -1,12 +1,12 @@
 <?php
 
-namespace TestsNextGen\Feature\Controllers;
+namespace Give\Tests\Feature\Controllers;
 
 use Give\NextGen\DonationForm\Actions\GenerateDonationFormViewRouteUrl;
 use Give\NextGen\DonationForm\Blocks\DonationFormBlock\Controllers\BlockRenderController;
 use Give\NextGen\DonationForm\Models\DonationForm;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 class BlockRenderControllerTest extends TestCase
 {

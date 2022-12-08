@@ -1,6 +1,6 @@
 <?php
 
-namespace TestsNextGen\Unit\DataTransferObjects;
+namespace Give\Tests\Unit\DataTransferObjects;
 
 use Exception;
 use Give\Donations\Models\Donation;
@@ -11,8 +11,8 @@ use Give\Framework\Support\ValueObjects\Money;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateFormRouteData;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
  * @unreleased

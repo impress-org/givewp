@@ -1,9 +1,9 @@
 <?php
 
-namespace TestsNextGen\Unit\Actions;
+namespace Give\Tests\Unit\Actions;
 
 use Give\NextGen\DonationForm\Actions\GenerateDonationFormViewRouteUrl;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 /**
  * @unreleased

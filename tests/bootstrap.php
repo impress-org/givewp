@@ -1,6 +1,6 @@
 <?php
 
-use GiveTests\Framework\Addons\Bootstrap;
+use Give\Tests\Framework\Addons\Bootstrap;
 
 require __DIR__ . '/../../give/vendor/autoload.php';
 

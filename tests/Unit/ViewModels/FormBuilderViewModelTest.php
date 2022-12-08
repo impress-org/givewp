@@ -1,14 +1,14 @@
 <?php
 
-namespace TestsNextGen\Unit\VieModels;
+namespace Give\Tests\Unit\VieModels;
 
 use Exception;
 use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
 use Give\NextGen\DonationForm\Actions\GenerateDonationFormPreviewRouteUrl;
 use Give\NextGen\DonationForm\Models\DonationForm;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 class FormBuilderViewModelTest extends TestCase
 {

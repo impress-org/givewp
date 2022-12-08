@@ -1,6 +1,6 @@
 <?php
 
-namespace TestsNextGen\Unit\DonationForm\Repositories;
+namespace Give\Tests\Unit\DonationForm\Repositories;
 
 use Exception;
 use Give\Donations\Models\Donation;
@@ -11,8 +11,8 @@ use Give\Framework\Support\ValueObjects\Money;
 use Give\NextGen\DonationForm\Factories\DonationFormFactory;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 final class TestDonationFormRepository extends TestCase
 {

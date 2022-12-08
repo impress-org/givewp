@@ -1,6 +1,6 @@
 <?php
 
-namespace TestsNextGen\Feature\Controllers;
+namespace Give\Tests\Feature\Controllers;
 
 use Exception;
 use Give\NextGen\DonationForm\Controllers\DonateController;
@@ -10,8 +10,8 @@ use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 class DonateControllerTest extends TestCase
 {

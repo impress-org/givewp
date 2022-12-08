@@ -1,10 +1,10 @@
 <?php
 
-namespace TestsNextGen\Unit\Framework\FormDesigns;
+namespace Give\Tests\Unit\Framework\FormDesigns;
 
 use Give\NextGen\Framework\FormDesigns\Contracts\FormDesignInterface;
 use Give\NextGen\Framework\FormDesigns\FormDesign;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 /**
  * @unreleased

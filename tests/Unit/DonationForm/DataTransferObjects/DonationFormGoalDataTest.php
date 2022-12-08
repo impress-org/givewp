@@ -1,12 +1,12 @@
 <?php
 
-namespace TestsNextGen\Unit\DonationForm\VieModels;
+namespace Give\Tests\Unit\DonationForm\VieModels;
 
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormGoalData;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\ValueObjects\GoalType;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 class DonationFormGoalDataTest extends TestCase
 {

@@ -30,7 +30,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "TestsNextGen\\": "tests/"
+            "Give\\Tests\\": "tests/"
         }
     },
     "config": {

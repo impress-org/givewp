@@ -1,9 +1,9 @@
 <?php
 
-namespace TestsNextGen\Unit\DataTransferObjects;
+namespace Give\Tests\Unit\DataTransferObjects;
 
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormViewRouteData;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 /**
  * @unreleased

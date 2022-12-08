@@ -1,11 +1,11 @@
 <?php
 
-namespace TestsNextGen\Unit\DonationForm\Models;
+namespace Give\Tests\Unit\DonationForm\Models;
 
 use Exception;
 use Give\NextGen\DonationForm\Models\DonationForm;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
  * @unreleased

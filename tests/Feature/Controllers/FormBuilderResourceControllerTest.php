@@ -1,6 +1,6 @@
 <?php
 
-namespace TestsNextGen\Feature\Controllers;
+namespace Give\Tests\Feature\Controllers;
 
 use Exception;
 use Give\FormBuilder\Controllers\FormBuilderResourceController;
@@ -9,8 +9,8 @@ use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\ValueObjects\GoalType;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;

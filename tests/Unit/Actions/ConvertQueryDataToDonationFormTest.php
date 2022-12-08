@@ -1,6 +1,6 @@
 <?php
 
-namespace TestsNextGen\Unit\Actions;
+namespace Give\Tests\Unit\Actions;
 
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\NextGen\DonationForm\Actions\ConvertQueryDataToDonationForm;
@@ -10,8 +10,8 @@ use Give\NextGen\DonationForm\ValueObjects\DonationFormStatus;
 use Give\NextGen\DonationForm\ValueObjects\GoalType;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 class ConvertQueryDataToDonationFormTest extends TestCase {
     use RefreshDatabase;

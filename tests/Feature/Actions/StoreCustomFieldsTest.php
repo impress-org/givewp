@@ -1,6 +1,6 @@
 <?php
 
-namespace TestsNextGen\Feature\Actions;
+namespace Give\Tests\Feature\Actions;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\Database\DB;
@@ -9,8 +9,8 @@ use Give\NextGen\DonationForm\Actions\StoreCustomFields;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 class StoreCustomFieldsTest extends TestCase
 {

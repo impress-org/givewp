@@ -1,12 +1,12 @@
 <?php
 
-namespace TestsNextGen\Feature\Gateways;
+namespace Give\Tests\Feature\Gateways;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 class NextGenTestGatewayTest extends TestCase
 {
