@@ -161,6 +161,7 @@ class SubscriptionRepository
                 'bill_times' => $subscription->installments,
                 'transaction_id' => $subscription->transactionId ?? '',
                 'product_id' => $subscription->donationFormId,
+                'payment_mode' => $subscription->mode->getValue(),
             ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -215,6 +216,7 @@ class SubscriptionRepository
                     'bill_times' => $subscription->installments,
                     'transaction_id' => $subscription->transactionId ?? '',
                     'product_id' => $subscription->donationFormId,
+                    'payment_mode' => $subscription->mode->getValue(),
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
