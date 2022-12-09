@@ -1,10 +1,10 @@
 <?php
 
-namespace GiveTests\Unit\Email;
+namespace Give\Tests\Unit\Email;
 
 use Give\Email\GlobalSettingValidator;
 
-final class GlobalSettingValidatorTest extends \GiveTests\TestCase
+final class GlobalSettingValidatorTest extends \Give\Tests\TestCase
 {
     /** @test */
     public function it_does_not_validate_empty_values()

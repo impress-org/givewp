@@ -1,6 +1,6 @@
 <?php
 
-namespace GiveTests\Unit\ValueObjects;
+namespace Give\Tests\Unit\ValueObjects;
 
 use Give\ValueObjects\Money;
 use PHPUnit\Framework\TestCase;

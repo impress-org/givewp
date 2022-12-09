@@ -1,9 +1,9 @@
 <?php
 
-namespace GiveTests\Unit\Onboarding;
+namespace Give\Tests\Unit\Onboarding;
 
 use Give\Onboarding\SettingsRepository;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 final class SettingsRepositoryTest extends TestCase
 {

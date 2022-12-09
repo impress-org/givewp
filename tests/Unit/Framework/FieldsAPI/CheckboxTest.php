@@ -1,9 +1,9 @@
 <?php
 
-namespace GiveTests\Unit\Framework\FieldsAPI;
+namespace Give\Tests\Unit\Framework\FieldsAPI;
 
 use Give\Framework\FieldsAPI\Checkbox;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 class CheckboxTest extends TestCase
 {
