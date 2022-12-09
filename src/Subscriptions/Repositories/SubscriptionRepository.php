@@ -125,6 +125,7 @@ class SubscriptionRepository
     }
 
     /**
+     * @unreleased add payment_mode column to insert
      * @since 2.21.0 replace actions with givewp_subscription_creating and givewp_subscription_created
      * @since 2.19.6
      *
@@ -161,6 +162,7 @@ class SubscriptionRepository
                 'bill_times' => $subscription->installments,
                 'transaction_id' => $subscription->transactionId ?? '',
                 'product_id' => $subscription->donationFormId,
+                'payment_mode' => $subscription->mode->getValue(),
             ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -181,6 +183,7 @@ class SubscriptionRepository
     }
 
     /**
+     * @unreleased add payment_mode column to update
      * @since 2.21.0 replace actions with givewp_subscription_updating and givewp_subscription_updated
      * @since 2.19.6
      *
@@ -215,6 +218,7 @@ class SubscriptionRepository
                     'bill_times' => $subscription->installments,
                     'transaction_id' => $subscription->transactionId ?? '',
                     'product_id' => $subscription->donationFormId,
+                    'payment_mode' => $subscription->mode->getValue(),
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');

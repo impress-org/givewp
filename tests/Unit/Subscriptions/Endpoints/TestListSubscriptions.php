@@ -6,6 +6,7 @@ use Exception;
 use Give\Subscriptions\Endpoints\ListSubscriptions;
 use Give\Subscriptions\ListTable\SubscriptionsListTable;
 use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use GiveTests\TestCase;
 use GiveTests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
@@ -30,6 +31,7 @@ class TestListSubscriptions extends TestCase
         $mockRequest->set_param('page', 1);
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'us-US');
+        $mockRequest->set_param('testMode', true);
 
         $listSubscriptions = new ListSubscriptions();
 
@@ -53,6 +55,7 @@ class TestListSubscriptions extends TestCase
         $mockRequest->set_param('page', 1);
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'us-US');
+        $mockRequest->set_param('testMode', true);
         $mockRequest->set_param('sortColumn', 'id');
         $mockRequest->set_param('sortDirection', $sortDirection);
 
