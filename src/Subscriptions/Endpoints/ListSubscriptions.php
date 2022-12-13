@@ -141,7 +141,7 @@ class ListSubscriptions extends Endpoint
             [
                 'items' => $items,
                 'totalItems' => $subscriptionsCount,
-                'totalPages' => $pageCount
+                'totalPages' => $pageCount,
             ]
         );
     }
@@ -184,7 +184,7 @@ class ListSubscriptions extends Endpoint
      */
     public function getTotalSubscriptionsCount(): int
     {
-        $query = DB::table('give_subscriptions');
+        $query = DB::table('give_subscriptions')->groupBy('payment_mode');
         $query = $this->getWhereConditions($query);
 
         return $query->count();
@@ -205,6 +205,8 @@ class ListSubscriptions extends Endpoint
         $end = $this->request->get_param('end');
         $form = $this->request->get_param('form');
         $testMode = $this->request->get_param('testMode');
+
+        $hasWhereConditions = $search || $start || $end || $form;
 
         if ($search) {
             if (ctype_digit($search)) {
@@ -241,7 +243,11 @@ class ListSubscriptions extends Endpoint
                 });
         }
 
-        $query->where('payment_mode', $testMode ? SubscriptionMode::TEST : SubscriptionMode::LIVE);
+        if ($hasWhereConditions) {
+            $query->having('payment_mode', '=', $testMode ? SubscriptionMode::TEST : SubscriptionMode::LIVE);
+        } else {
+            $query->where('payment_mode', $testMode ? SubscriptionMode::TEST : SubscriptionMode::LIVE);
+        }
 
         return $query;
     }
