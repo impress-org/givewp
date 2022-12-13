@@ -78,14 +78,9 @@ class GatewayRoute
      *
      * @since 2.18.0
      *
-     * @param array $gatewayIds
-     *
-     * @return bool
-     *
      * @example ?give-listener=give-gateway&give-gateway-id=test-gateway&give-donation-id=1&give-gateway-method=returnFromOffsiteRedirect
-     *
      */
-    private function isValidRequest($gatewayIds)
+    private function isValidRequest(array $gatewayIds): bool
     {
         $isset = isset($_GET['give-gateway-id'], $_GET['give-gateway-method']);
         $idValid = in_array($_GET['give-gateway-id'], $gatewayIds, true);
@@ -97,10 +92,8 @@ class GatewayRoute
      * Check if the listener is valid
      *
      * @since 2.18.0
-     *
-     * @return bool
      */
-    private function isValidListener()
+    private function isValidListener(): bool
     {
         return isset($_GET['give-listener']) && $_GET['give-listener'] === 'give-gateway';
     }
@@ -112,12 +105,9 @@ class GatewayRoute
      * @since 2.19.4 replace RouteSignature args with unique donationId
      * @since 2.19.0
      *
-     * @param string $routeSignature
-     * @param GatewayRouteData $data
-     *
      * @return void
      */
-    private function validateSignature($routeSignature, GatewayRouteData $data)
+    private function validateSignature(string $routeSignature, GatewayRouteData $data)
     {
         $signature = new RouteSignature(
             $data->gatewayId,
@@ -150,12 +140,8 @@ class GatewayRoute
      *
      * @since 2.19.0 - replace $donationId with $queryParams array
      * @since 2.19.0 Record gateway id, callback method name and query params in log.
-     *
-     * @param PaymentGateway $gateway
-     * @param string $method
-     * @param array $queryParams
      */
-    private function handleGatewayRouteMethod(PaymentGateway $gateway, $method, $queryParams)
+    private function handleGatewayRouteMethod(PaymentGateway $gateway, string $method, array $queryParams)
     {
         try {
             $this->handleResponse($gateway->callRouteMethod($method, $queryParams));

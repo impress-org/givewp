@@ -31,7 +31,6 @@ use Give\Framework\PaymentGateways\Routes\RouteSignature;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Framework\PaymentGateways\Traits\HasRouteMethods;
 use Give\Framework\Support\ValueObjects\Money;
-use Give\Helpers\Call;
 use Give\PaymentGateways\Actions\GetGatewayDataFromRequest;
 use Give\Subscriptions\Models\Subscription;
 use ReflectionException;
@@ -190,6 +189,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * @since 2.21.2
      * @inheritDoc
+     * @throws ReflectionException
      */
     public function canSyncSubscriptionWithPaymentGateway(): bool
     {
@@ -203,6 +203,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * @since 2.21.2
      * @inheritDoc
+     * @throws ReflectionException
      */
     public function canUpdateSubscriptionAmount(): bool
     {
@@ -216,6 +217,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * @since 2.21.2
      * @inheritDoc
+     * @throws ReflectionException
      */
     public function canUpdateSubscriptionPaymentMethod(): bool
     {
@@ -333,13 +335,13 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
         }
 
         if ($command instanceof RedirectOffsite) {
-            $response = Call::invoke(RedirectOffsiteHandler::class, $command);
+            $response = (new RedirectOffsiteHandler())($command);
 
             $this->handleResponse($response);
         }
 
         if ($command instanceof RespondToBrowser) {
-            $response = Call::invoke(RespondToBrowserHandler::class, $command);
+            $response = (new RespondToBrowserHandler())($command);
 
             $this->handleResponse($response);
         }
@@ -359,6 +361,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      * @since 2.18.0
      *
      * @throws TypeNotSupported
+     * @throws \Exception
      */
     public function handleGatewaySubscriptionCommand(
         GatewayCommand $command,
@@ -366,8 +369,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
         Subscription $subscription
     ) {
         if ($command instanceof SubscriptionComplete) {
-            Call::invoke(
-                SubscriptionCompleteHandler::class,
+            (new SubscriptionCompleteHandler())(
                 $command,
                 $subscription,
                 $donation
@@ -388,7 +390,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
         }
 
         if ($command instanceof RedirectOffsite) {
-            $response = Call::invoke(RedirectOffsiteHandler::class, $command);
+            $response = (new RedirectOffsiteHandler())($command);
 
             $this->handleResponse($response);
         }
@@ -409,7 +411,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      */
     public function generateGatewayRouteUrl(string $gatewayMethod, array $args = []): string
     {
-        return Call::invoke(GenerateGatewayRouteUrl::class, static::id(), $gatewayMethod, $args);
+        return (new GenerateGatewayRouteUrl())(static::id(), $gatewayMethod, $args);
     }
 
     /**
@@ -421,18 +423,15 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      */
     public function generateSecureGatewayRouteUrl(string $gatewayMethod, int $donationId, array $args = []): string
     {
-        $signature = new RouteSignature(static::id(), $gatewayMethod, $donationId);
+        $gatewayId = static::id();
+        $signature = new RouteSignature($gatewayId, $gatewayMethod, $donationId);
+        $signatureArgs = array_merge($args, [
+            'give-route-signature' => $signature->toHash(),
+            'give-route-signature-id' => $donationId,
+            'give-route-signature-expiration' => $signature->expiration,
+        ]);
 
-        return Call::invoke(
-            GenerateGatewayRouteUrl::class,
-            static::id(),
-            $gatewayMethod,
-            array_merge($args, [
-                'give-route-signature' => $signature->toHash(),
-                'give-route-signature-id' => $donationId,
-                'give-route-signature-expiration' => $signature->expiration,
-            ])
-        );
+        return (new GenerateGatewayRouteUrl())($gatewayId, $gatewayMethod, $signatureArgs);
     }
 
     /**
@@ -490,6 +489,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      * to see if the gateway is implementing a recurring feature without using a subscription module.
      *
      * @since 2.21.2
+     * @throws ReflectionException
      */
     private function isFunctionImplementedInGatewayClass(string $methodName): bool
     {
