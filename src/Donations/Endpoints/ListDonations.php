@@ -212,11 +212,10 @@ class ListDonations extends Endpoint
      * @since      2.21.0
      *
      * @param QueryBuilder $query
-     * @param string       $filterUsing
      *
-     * @return array
+     * @return array{0: QueryBuilder, 1: array<DonationMetaKeys>}
      */
-    private function getWhereConditions(QueryBuilder $query, string $filterUsing = 'where'): array
+    private function getWhereConditions(QueryBuilder $query): array
     {
         $search = $this->request->get_param('search');
         $start = $this->request->get_param('start');
@@ -226,7 +225,7 @@ class ListDonations extends Endpoint
         $testMode = $this->request->get_param('testMode');
 
         $dependencies = [
-            DonationMetaKeys::MODE()
+            DonationMetaKeys::MODE(),
         ];
 
         $hasWhereConditions = $search || $start || $end || $form || $donor;
