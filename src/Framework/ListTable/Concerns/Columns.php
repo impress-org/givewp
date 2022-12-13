@@ -179,9 +179,13 @@ trait Columns
      *
      * @return self
      */
-    protected function setColumnVisibility($column)
+    public function setColumnVisibility($columnId, $isVisible = null): self
     {
-        $column->visible(in_array($column->getId(), $this->getDefaultVisibleColumns()));
+        if (is_null($isVisible)) {
+            $isVisible = in_array($columnId, $this->getDefaultVisibleColumns(), true);
+        }
+
+        $this->getColumnById($columnId)->visible($isVisible);
 
         return $this;
     }
