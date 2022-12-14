@@ -16,6 +16,7 @@ declare global {
             forms: Array<{value: string; text: string}>;
             table: {columns: Array<object>};
             paymentMode: boolean;
+            manualDonations: boolean;
         };
     }
 }
@@ -143,6 +144,14 @@ export default function DonationsListTable() {
             filterSettings={filters}
             paymentMode={!!window.GiveDonations.paymentMode}
         >
+            {!!window.GiveDonations.manualDonations && (
+                <a
+                    className={tableStyles.addFormButton}
+                    href={window.GiveDonations.adminUrl + 'edit.php?post_type=give_forms&page=give-manual-donation'}
+                >
+                    {__('New Donation', 'give')}
+                </a>
+            )}
             <a
                 className={tableStyles.addFormButton}
                 href={

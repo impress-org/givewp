@@ -5,7 +5,7 @@ namespace Give\Donations;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Framework\Database\DB;
 use Give\Helpers\EnqueueScript;
-use WP_REST_Request;
+use Give\Helpers\Utils;
 
 class DonationsAdminPage
 {
@@ -71,6 +71,7 @@ class DonationsAdminPage
             'table' => give(DonationsListTable::class)->toArray(),
             'adminUrl' => $this->adminUrl,
             'paymentMode' => give_is_test_mode(),
+            'manualDonations' => $this->hasManualDonations(),
         ];
 
         EnqueueScript::make('give-admin-donations', 'assets/dist/js/give-admin-donations.js')
@@ -131,7 +132,16 @@ class DonationsAdminPage
             [
                 'value' => '0',
                 'text' => 'Any',
-            ]
+            ],
         ], $options);
+    }
+
+    public function hasManualDonations()
+    {
+        if (Utils::isPluginActive('give-manual-donations/give-manual-donations.php')) {
+            return true;
+        }
+
+        return false;
     }
 }
