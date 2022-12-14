@@ -9,7 +9,7 @@ use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Validation\Contracts\Sanitizer;
 use Give\Framework\Validation\Contracts\ValidationRule;
 use Give\Framework\Validation\ValidationRuleSet;
-use Give\Framework\Validation\ValidationRulesRegister;
+use Give\Framework\Validation\ValidationRulesRegistrar;
 use Give\Framework\Validation\Validator;
 use Give\Tests\TestCase;
 
@@ -231,8 +231,8 @@ class ValidatorTest extends TestCase
      */
     private function mockValidationRulesRegister()
     {
-        give()->singleton(ValidationRulesRegister::class, function () {
-            $register = new ValidationRulesRegister();
+        give()->singleton(ValidationRulesRegistrar::class, function () {
+            $register = new ValidationRulesRegistrar();
             $register->register(
                 MockRequiredRule::class,
                 MockIntegerRule::class

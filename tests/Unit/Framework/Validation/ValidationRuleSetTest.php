@@ -8,7 +8,7 @@ use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Validation\Rules\Required;
 use Give\Framework\Validation\Rules\Size;
 use Give\Framework\Validation\ValidationRuleSet;
-use Give\Framework\Validation\ValidationRulesRegister;
+use Give\Framework\Validation\ValidationRulesRegistrar;
 use Give\Tests\TestCase;
 
 /**
@@ -197,9 +197,9 @@ class ValidationRuleSetTest extends TestCase
     /**
      * @unreleased
      */
-    private function getMockRulesRegister(): ValidationRulesRegister
+    private function getMockRulesRegister(): ValidationRulesRegistrar
     {
-        $register = new ValidationRulesRegister();
+        $register = new ValidationRulesRegistrar();
         $register->register(Required::class);
         $register->register(Size::class);
 

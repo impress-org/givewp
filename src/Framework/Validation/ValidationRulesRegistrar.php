@@ -10,7 +10,7 @@ use Give\Framework\Validation\Contracts\ValidationRule;
 /**
  * @unreleased
  */
-class ValidationRulesRegister
+class ValidationRulesRegistrar
 {
     /** @var array */
     protected $rules = [];

@@ -19,7 +19,7 @@ use Traversable;
 class ValidationRuleSet implements IteratorAggregate, JsonSerializable
 {
     /**
-     * @var ValidationRulesRegister
+     * @var ValidationRulesRegistrar
      */
     private $register;
 
@@ -31,7 +31,7 @@ class ValidationRuleSet implements IteratorAggregate, JsonSerializable
     /**
      * @unreleased
      */
-    public function __construct(ValidationRulesRegister $register)
+    public function __construct(ValidationRulesRegistrar $register)
     {
         $this->register = $register;
     }

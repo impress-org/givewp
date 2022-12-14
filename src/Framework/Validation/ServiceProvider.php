@@ -32,8 +32,8 @@ class ServiceProvider implements ServiceProviderContract
      */
     public function register()
     {
-        give()->singleton(ValidationRulesRegister::class, function () {
-            $register = new ValidationRulesRegister();
+        give()->singleton(ValidationRulesRegistrar::class, function () {
+            $register = new ValidationRulesRegistrar();
 
             foreach ($this->validationRules as $rule) {
                 $register->register($rule);
