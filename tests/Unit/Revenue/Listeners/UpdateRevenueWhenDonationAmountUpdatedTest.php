@@ -1,6 +1,6 @@
 <?php
 
-namespace GiveTests\Unit\Revenue\Listeners;
+namespace Give\Tests\Unit\Revenue\Listeners;
 
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMode;
@@ -10,8 +10,8 @@ use Give\Framework\Database\DB;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Revenue\Listeners\UpdateRevenueWhenDonationAmountUpdated;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
  * @since 2.20.1

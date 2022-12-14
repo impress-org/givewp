@@ -1,11 +1,11 @@
 <?php
 
-namespace GiveTests\Unit\DonationForms\Repositories;
+namespace Give\Tests\Unit\DonationForms\Repositories;
 
 use Give\DonationForms\Controllers\DonationFormsRequestController;
 use Give\Framework\Database\DB;
 use Give_Helper_Form;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 use WP_REST_Request;
 
 final class DonationFormsRepositoryTest extends TestCase

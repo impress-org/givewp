@@ -1,9 +1,9 @@
 <?php
-namespace GiveTests\Unit\Form\LegacyConsumer\Commands;
+namespace Give\Tests\Unit\Form\LegacyConsumer\Commands;
 
 use Give\Form\LegacyConsumer\Commands\DeprecateOldTemplateHook;
 use Give\Form\LegacyConsumer\TemplateHooks;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 final class DeprecateOldTemplateHookTest extends TestCase
 {

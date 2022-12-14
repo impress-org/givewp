@@ -1,6 +1,6 @@
 <?php
 
-namespace GiveTests\Unit\Donors\Repositories;
+namespace Give\Tests\Unit\Donors\Repositories;
 
 use Exception;
 use Give\Donors\Models\Donor;
@@ -8,8 +8,8 @@ use Give\Donors\Repositories\DonorRepository;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
  * @since 2.19.6

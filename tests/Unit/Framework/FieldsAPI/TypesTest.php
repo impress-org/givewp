@@ -1,5 +1,5 @@
 <?php
-namespace GiveTests\Unit\Framework\FieldsAPI;
+namespace Give\Tests\Unit\Framework\FieldsAPI;
 
 use Give\Framework\FieldsAPI\Types;
 use PHPUnit\Framework\TestCase;

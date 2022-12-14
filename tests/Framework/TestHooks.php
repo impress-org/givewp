@@ -1,6 +1,6 @@
 <?php
 
-namespace GiveTests\Framework;
+namespace Give\Tests\Framework;
 
 use Closure;
 
