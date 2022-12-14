@@ -136,6 +136,11 @@ class DonationsAdminPage
         ], $options);
     }
 
+    /**
+     * Checks if manual donations add-on is active
+     *
+     * @return bool
+     */
     public function hasManualDonations()
     {
         if (Utils::isPluginActive('give-manual-donations/give-manual-donations.php')) {
