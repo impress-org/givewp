@@ -1,11 +1,11 @@
 <?php
 
-namespace GiveTests\Unit\Framework\FieldsAPI;
+namespace Give\Tests\Unit\Framework\FieldsAPI;
 
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\Facades\Factory;
 use Give\Framework\FieldsAPI\Text;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 class FactoryTest extends TestCase
 {

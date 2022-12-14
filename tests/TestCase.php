@@ -1,14 +1,14 @@
 <?php
 
-namespace GiveTests;
+namespace Give\Tests;
 
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Framework\Validation\Contracts\ValidationRule;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give_Cache_Setting;
-use GiveTests\TestTraits\AssertIsType;
-use GiveTests\TestTraits\RefreshDatabase;
+use Give\Tests\TestTraits\RefreshDatabase;
+use Give\Tests\TestTraits\AssertIsType;
 use WP_UnitTestCase;
 
 /**
@@ -17,7 +17,7 @@ use WP_UnitTestCase;
  * Provides Give-specific setup/tear down/assert methods
  * and helper functions.
  *
- * @since 2.22.1 migrated Give_Unit_Test_Case to GiveTests namespace
+ * @since 2.22.1 migrated Give_Unit_Test_Case to Give\Tests namespace
  * @since 1.0
  */
 class TestCase extends WP_UnitTestCase

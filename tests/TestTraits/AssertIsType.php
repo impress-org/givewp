@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GiveTests\TestTraits;
+namespace Give\Tests\TestTraits;
 
 use Traversable;
 

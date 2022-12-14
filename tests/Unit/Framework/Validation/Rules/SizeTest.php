@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace GiveTests\Unit\Framework\Validation\Rules;
+namespace Give\Tests\Unit\Framework\Validation\Rules;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Validation\Exceptions\ValidationException;
 use Give\Framework\Validation\Rules\Size;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 class SizeTest extends TestCase
 {

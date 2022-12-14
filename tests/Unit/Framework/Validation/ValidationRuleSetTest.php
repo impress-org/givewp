@@ -9,7 +9,7 @@ use Give\Framework\Validation\Rules\Required;
 use Give\Framework\Validation\Rules\Size;
 use Give\Framework\Validation\ValidationRuleSet;
 use Give\Framework\Validation\ValidationRulesRegister;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 /**
  * @covers ValidationRuleSet

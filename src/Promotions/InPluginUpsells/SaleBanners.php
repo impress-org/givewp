@@ -33,7 +33,7 @@ class SaleBanners
     /**
      * Get banners definitions
      *
-     * @unreleased add Giving Tuesday 2022 banner
+     * @since 2.23.2 add Giving Tuesday 2022 banner
      * @since 2.17.0
      *
      * @note id must be unique for each definition

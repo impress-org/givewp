@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GiveTests\Unit\Framework\Validation;
+namespace Give\Tests\Unit\Framework\Validation;
 
 use Closure;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -11,7 +11,7 @@ use Give\Framework\Validation\Contracts\ValidationRule;
 use Give\Framework\Validation\ValidationRuleSet;
 use Give\Framework\Validation\ValidationRulesRegister;
 use Give\Framework\Validation\Validator;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 /**
  * @covers \Give\Framework\Validation\Validator

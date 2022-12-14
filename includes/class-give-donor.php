@@ -1086,7 +1086,7 @@ class Give_Donor {
 	 *
 	 * @return bool               False for failure. True for success.
 	 */
-	public function add_meta( $meta_key = '', $meta_value, $unique = false ) {
+	public function add_meta( $meta_key, $meta_value, $unique = false ) {
 		return Give()->donor_meta->add_meta( $this->id, $meta_key, $meta_value, $unique );
 	}
 
@@ -1102,7 +1102,7 @@ class Give_Donor {
 	 *
 	 * @return bool               False on failure, true if success.
 	 */
-	public function update_meta( $meta_key = '', $meta_value, $prev_value = '' ) {
+	public function update_meta( $meta_key, $meta_value, $prev_value = '' ) {
 		return Give()->donor_meta->update_meta( $this->id, $meta_key, $meta_value, $prev_value );
 	}
 

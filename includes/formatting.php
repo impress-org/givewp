@@ -791,7 +791,7 @@ function give_validate_nonce( $nonce, $action = - 1, $wp_die_args = array() ) {
  *
  * @return bool
  */
-function give_verify_donation_form_nonce( $nonce = '', $form_id ) {
+function give_verify_donation_form_nonce( $nonce, $form_id ) {
 
 	// Form nonce action.
 	$nonce_action = "give_donation_form_nonce_{$form_id}";

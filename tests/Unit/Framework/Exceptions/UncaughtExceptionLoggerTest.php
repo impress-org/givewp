@@ -1,11 +1,11 @@
 <?php
 
-namespace GiveTests\Unit\Framework\Exceptions;
+namespace Give\Tests\Unit\Framework\Exceptions;
 
 use Give\Framework\Exceptions\Contracts\LoggableException;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Log\Log;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 use PHPUnit_Framework_MockObject_MockBuilder;
 
 class UncaughtExceptionLoggerTest extends TestCase

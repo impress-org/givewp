@@ -1,7 +1,7 @@
 <?php
-namespace GiveTests\Unit\Framework\QueryBuilder;
+namespace Give\Tests\Unit\Framework\QueryBuilder;
 
-namespace GiveTests\Unit\Framework\QueryBuilder;
+namespace Give\Tests\Unit\Framework\QueryBuilder;
 
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\Concerns\CRUD;

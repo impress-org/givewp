@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace GiveTests\Unit\Framework\Validation\Rules;
+namespace Give\Tests\Unit\Framework\Validation\Rules;
 
 use Give\Framework\Validation\Rules\Email;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 class EmailTest extends TestCase
 {

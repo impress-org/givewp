@@ -9,7 +9,7 @@ use Give_Helper_Payment;
 /**
  * @since 2.19.0
  */
-class DonationSummaryTest extends \GiveTests\TestCase
+class DonationSummaryTest extends \Give\Tests\TestCase
 {
     /** @test */
     public function it_summarizes_a_simple_donation()
