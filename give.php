@@ -234,6 +234,8 @@ final class Give
 
         add_action('plugins_loaded', [$this, 'init'], 0);
 
+        add_action('admin_enqueue_scripts', [$this, 'enqueueAdminScripts'], -1);
+
         register_activation_hook(GIVE_PLUGIN_FILE, [$this, 'install']);
 
         do_action('give_loaded');
@@ -277,6 +279,16 @@ final class Give
          *
          */
         do_action('give_init', $this);
+    }
+
+    public function enqueueAdminScripts()
+    {
+        wp_enqueue_style(
+            'givewp-admin-fonts',
+            'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap',
+            [],
+            null
+        );
     }
 
     /**
