@@ -144,7 +144,7 @@ export default function DonationsListTable() {
             filterSettings={filters}
             paymentMode={!!window.GiveDonations.paymentMode}
         >
-            {!!window.GiveDonations.manualDonations && (
+            {window.GiveDonations.manualDonations && (
                 <a
                     className={tableStyles.addFormButton}
                     href={`${window.GiveDonations.adminUrl}edit.php?post_type=give_forms&page=give-manual-donation`}
