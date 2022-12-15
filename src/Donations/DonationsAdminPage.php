@@ -71,7 +71,7 @@ class DonationsAdminPage
             'table' => give(DonationsListTable::class)->toArray(),
             'adminUrl' => $this->adminUrl,
             'paymentMode' => give_is_test_mode(),
-            'manualDonations' => $this->hasManualDonations(),
+            'manualDonations' => Utils::isPluginActive('give-manual-donations/give-manual-donations.php'),
         ];
 
         EnqueueScript::make('give-admin-donations', 'assets/dist/js/give-admin-donations.js')
@@ -134,19 +134,5 @@ class DonationsAdminPage
                 'text' => 'Any',
             ],
         ], $options);
-    }
-
-    /**
-     * Checks if manual donations add-on is active
-     *
-     * @return bool
-     */
-    public function hasManualDonations()
-    {
-        if (Utils::isPluginActive('give-manual-donations/give-manual-donations.php')) {
-            return true;
-        }
-
-        return false;
     }
 }
