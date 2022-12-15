@@ -147,17 +147,14 @@ export default function DonationsListTable() {
             {!!window.GiveDonations.manualDonations && (
                 <a
                     className={tableStyles.addFormButton}
-                    href={window.GiveDonations.adminUrl + 'edit.php?post_type=give_forms&page=give-manual-donation'}
+                    href={`${window.GiveDonations.adminUrl}edit.php?post_type=give_forms&page=give-manual-donation`}
                 >
                     {__('New Donation', 'give')}
                 </a>
             )}
             <a
                 className={tableStyles.addFormButton}
-                href={
-                    window.GiveDonations.adminUrl +
-                    'edit.php?post_type=give_forms&page=give-tools&tab=import&importer-type=import_donations'
-                }
+                href={` ${window.GiveDonations.adminUrl}edit.php?post_type=give_forms&page=give-tools&tab=import&importer-type=import_donations`}
             >
                 {__('Import Donations', 'give')}
             </a>
