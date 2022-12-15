@@ -11,3 +11,4 @@ jobs:
         uses: impress-org/givewp-github-actions/.github/workflows/addon-tests.yml@master
         with:
             addon_slug: givewp-next-gen
+            givewp_branch: develop
