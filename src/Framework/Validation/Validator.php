@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Give\Framework\Validation;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\FieldsAPI\Form;
 use Give\Framework\Validation\Contracts\Sanitizer;
 
 /**
@@ -44,27 +43,6 @@ class Validator
      * @var bool
      */
     private $ranValidationRules = false;
-
-    /**
-     * Takes a Form from the Field API, a corresponding set of values, and converts it to a Validator
-     *
-     * @unreleased
-     */
-    public static function fromForm(Form $form, array $values): self
-    {
-        $labels = [];
-        $rules = [];
-
-        foreach ($form->getFields() as $field) {
-            $rules[$field->getName()] = $field->getValidationRules();
-
-            if (method_exists($field, 'getLabel')) {
-                $labels[$field->getName()] = $field->getLabel();
-            }
-        }
-
-        return new self($rules, $values, $labels);
-    }
 
     /**
      * @unreleased
