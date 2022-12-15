@@ -4,8 +4,15 @@ declare(strict_types=1);
 
 namespace Give\Framework\Validation\Concerns;
 
+use Give\Framework\Validation\Contracts\ValidationRule;
 use Give\Framework\Validation\ValidationRuleSet;
 
+/**
+ * Apply this trait to a class to enable it to have validation rules. These rules may be passed to the front-end
+ * or used with the Validator to validate data.
+ *
+ * @unreleased
+ */
 trait HasValidationRules
 {
     /**
@@ -13,11 +20,17 @@ trait HasValidationRules
      */
     protected $validationRules;
 
+    /**
+     * @unreleased
+     */
     public function __construct()
     {
         $this->validationRules = give(ValidationRuleSet::class);
     }
 
+    /**
+     * @unreleased
+     */
     public function rules(...$rules): self
     {
         $this->validationRules->rules(...$rules);
@@ -25,6 +38,9 @@ trait HasValidationRules
         return $this;
     }
 
+    /**
+     * @unreleased
+     */
     public function forgetRuleWithId(string $ruleId): self
     {
         $this->validationRules->removeRuleWithId($ruleId);
@@ -32,6 +48,9 @@ trait HasValidationRules
         return $this;
     }
 
+    /**
+     * @unreleased
+     */
     public function getValidationRules(): ValidationRuleSet
     {
         return $this->validationRules;
