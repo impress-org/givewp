@@ -18,11 +18,13 @@ trait HasMinLength
      */
     public function minLength(int $minLength): self
     {
-        if ( $this->validationRules->hasRule('min') ) {
-            $this->validationRules->removeRuleWithId('min');
+        if ( $this->hasRule('min') ) {
+            /** @var Min $rule */
+            $rule = $this->getRule('min');
+            $rule->size($minLength);
         }
 
-        $this->validationRules->rules("min:$minLength");
+        $this->rules("min:$minLength");
 
         return $this;
     }
@@ -37,7 +39,7 @@ trait HasMinLength
      */
     public function getMinLength()
     {
-        $rule = $this->validationRules->getRule('min');
+        $rule = $this->getRule('min');
 
         return $rule instanceof Min ? $rule->getSize() : null;
     }

@@ -95,4 +95,18 @@ class Max implements ValidationRule, ValidatesOnFrontEnd
     {
         return $this->size;
     }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
+    public function size(int $size)
+    {
+        if ($size <= 0) {
+            throw new InvalidArgumentException('Max validation rule requires a non-negative value');
+        }
+
+        $this->size = $size;
+    }
 }

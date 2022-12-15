@@ -18,11 +18,13 @@ trait HasMaxLength
      */
     public function maxLength(int $maxLength): self
     {
-        if ( $this->validationRules->hasRule('max') ) {
-            $this->validationRules->removeRuleWithId('max');
+        if ( $this->hasRule('max') ) {
+            /** @var Max $rule */
+            $rule = $this->getRule('max');
+            $rule->size($maxLength);
         }
 
-        $this->validationRules->rules("max:$maxLength");
+        $this->rules("max:$maxLength");
 
         return $this;
     }
@@ -37,7 +39,7 @@ trait HasMaxLength
      */
     public function getMaxLength()
     {
-        $rule = $this->validationRules->getRule('max');
+        $rule = $this->getRule('max');
 
         return $rule instanceof Max ? $rule->getSize() : null;
     }

@@ -41,7 +41,23 @@ trait HasValidationRules
     /**
      * @unreleased
      */
-    public function forgetRuleWithId(string $ruleId): self
+    public function hasRule(string $ruleId): bool
+    {
+        return $this->validationRules->hasRule($ruleId);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getRule(string $ruleId): ValidationRule
+    {
+        return $this->validationRules->getRule($ruleId);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function forgetRule(string $ruleId): self
     {
         $this->validationRules->removeRuleWithId($ruleId);
 
