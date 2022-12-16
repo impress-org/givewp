@@ -200,7 +200,7 @@ class TestCase extends WP_UnitTestCase
     {
         $previousHandler = set_error_handler(
             static function ($code, $description, $file = null, $line = null, $context = null) use (&$previousHandler) {
-                if (($code & E_DEPRECATED) && ($description === 'Function ReflectionType::__toString() is deprecated')) {
+                if (($code & E_DEPRECATED)) {
                     return true;
                 }
 
