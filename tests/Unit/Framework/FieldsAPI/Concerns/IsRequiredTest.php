@@ -2,7 +2,7 @@
 namespace Give\Tests\Unit\Framework\FieldsAPI\Concerns;
 
 use Give\Framework\FieldsAPI\Concerns\IsRequired;
-use Give\Framework\FieldsAPI\Concerns\ValidationRules;
+use Give\Framework\Validation\Concerns\HasValidationRules;
 use PHPUnit\Framework\TestCase;
 
 final class FieldRequiredTest extends TestCase
@@ -30,10 +30,5 @@ final class FieldRequiredTest extends TestCase
 
 final class IsRequiredMock {
 	use IsRequired;
-
-	protected $validationRules;
-
-	public function __construct() {
-		$this->validationRules = new ValidationRules();
-	}
+    use HasValidationRules;
 }
