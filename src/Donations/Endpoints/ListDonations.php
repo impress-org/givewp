@@ -146,7 +146,7 @@ class ListDonations extends Endpoint
             [
                 'items' => $items,
                 'totalItems' => $donationsCount,
-                'totalPages' => $totalPages
+                'totalPages' => $totalPages,
             ]
         );
     }
@@ -165,7 +165,7 @@ class ListDonations extends Endpoint
         $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
 
         $query = give()->donations->prepareQuery();
-        $query = $this->getWhereConditions($query);
+        list($query) = $this->getWhereConditions($query);
 
         foreach ($sortColumns as $sortColumn) {
             $query->orderBy($sortColumn, $sortDirection);
@@ -191,38 +191,31 @@ class ListDonations extends Endpoint
      */
     public function getTotalDonationsCount(): int
     {
-        $columnsForAttachMetaQuery = [
-            DonationMetaKeys::EMAIL(),
-            DonationMetaKeys::FIRST_NAME(),
-            DonationMetaKeys::LAST_NAME(),
-            DonationMetaKeys::DONOR_ID(),
-            DonationMetaKeys::FORM_ID(),
-            DonationMetaKeys::MODE(),
-        ];
-
         $query = DB::table('posts')
-            ->attachMeta(
-                'give_donationmeta',
-                'ID',
-                'donation_id',
-                ...DonationMetaKeys::getColumnsForAttachMetaQueryFromArray($columnsForAttachMetaQuery)
-            )
-            ->where('post_type', 'give_payment');
+            ->where('post_type', 'give_payment')
+            ->groupBy('mode');
 
-        $query = $this->getWhereConditions($query);
+        list($query, $dependencies) = $this->getWhereConditions($query);
+
+        $query->attachMeta(
+            'give_donationmeta',
+            'ID',
+            'donation_id',
+            ...DonationMetaKeys::getColumnsForAttachMetaQueryFromArray($dependencies)
+        );
 
         return $query->count();
     }
 
     /**
      * @unreleased Remove joins as it uses ModelQueryBuilder and change clauses to use attach_meta
-     * @since 2.21.0
+     * @since      2.21.0
      *
      * @param QueryBuilder $query
      *
-     * @return QueryBuilder
+     * @return array{0: QueryBuilder, 1: array<DonationMetaKeys>}
      */
-    private function getWhereConditions(QueryBuilder $query): QueryBuilder
+    private function getWhereConditions(QueryBuilder $query): array
     {
         $search = $this->request->get_param('search');
         $start = $this->request->get_param('start');
@@ -231,16 +224,25 @@ class ListDonations extends Endpoint
         $donor = $this->request->get_param('donor');
         $testMode = $this->request->get_param('testMode');
 
+        $dependencies = [
+            DonationMetaKeys::MODE(),
+        ];
+
+        $hasWhereConditions = $search || $start || $end || $form || $donor;
+
         if ($search) {
             if (ctype_digit($search)) {
                 $query->where('id', $search);
             } elseif (strpos($search, '@') !== false) {
                 $query
                     ->whereLike('give_donationmeta_attach_meta_email.meta_value', $search);
+                $dependencies[] = DonationMetaKeys::EMAIL();
             } else {
                 $query
                     ->whereLike('give_donationmeta_attach_meta_firstName.meta_value', $search)
                     ->orWhereLike('give_donationmeta_attach_meta_lastName.meta_value', $search);
+                $dependencies[] = DonationMetaKeys::FIRST_NAME();
+                $dependencies[] = DonationMetaKeys::LAST_NAME();
             }
         }
 
@@ -248,16 +250,20 @@ class ListDonations extends Endpoint
             if (ctype_digit($donor)) {
                 $query
                     ->where('give_donationmeta_attach_meta_donorId.meta_value', $donor);
+                $dependencies[] = DonationMetaKeys::DONOR_ID();
             } else {
                 $query
                     ->whereLike('give_donationmeta_attach_meta_firstName.meta_value', $donor)
                     ->orWhereLike('give_donationmeta_attach_meta_lastName.meta_value', $donor);
+                $dependencies[] = DonationMetaKeys::FIRST_NAME();
+                $dependencies[] = DonationMetaKeys::LAST_NAME();
             }
         }
 
         if ($form) {
             $query
                 ->where('give_donationmeta_attach_meta_formId.meta_value', $form);
+            $dependencies[] = DonationMetaKeys::FORM_ID();
         }
 
         if ($start && $end) {
@@ -268,9 +274,15 @@ class ListDonations extends Endpoint
             $query->where('post_date', $end, '<=');
         }
 
-        $query->where('give_donationmeta_attach_meta_mode.meta_value',
-            $testMode ? DonationMode::TEST : DonationMode::LIVE);
+        if ($hasWhereConditions) {
+            $query->having('give_donationmeta_attach_meta_mode.meta_value', '=', $testMode ? DonationMode::TEST : DonationMode::LIVE);
+        } else {
+            $query->where('give_donationmeta_attach_meta_mode.meta_value', $testMode ? DonationMode::TEST : DonationMode::LIVE);
+        }
 
-        return $query;
+        return [
+            $query,
+            $dependencies,
+        ];
     }
 }
