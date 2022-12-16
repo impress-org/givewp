@@ -2,7 +2,7 @@
 
 namespace Give\NextGen\DonationForm\DataTransferObjects;
 
-use Give\Framework\FieldsAPI\Field;
+use Give\Framework\FieldsAPI\Actions\CreateValidatorFromForm;
 use Give\NextGen\DonationForm\Exceptions\DonationFormFieldErrorsException;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use WP_Error;
@@ -54,32 +54,20 @@ class DonateFormRouteData
         $request = $this->getRequestData();
         $validData = new DonateControllerData();
 
-        $errors = [];
-
         /** @var DonationForm $form */
         $form = DonationForm::find($this->formId);
 
-        $form->schema()->walkFields(function (Field $field) use (
-            $request,
-            $validData,
-            &$errors
-        ) {
-            $fieldValue = $request[$field->getName()];
+        $validator = (new CreateValidatorFromForm())($form->schema(), $request);
 
-            // validate required fields
-            if (empty($fieldValue) && $field->isRequired()) {
-                $errors[] = $request[$field->getName()] = $field->getRequiredError();
-            }
-
-            if (empty($errors[$field->getName()])) {
-                $validData->{$field->getName()} = $this->castFieldValue($field, $fieldValue ?? '');
-            }
-        });
-
-        if ($errors) {
-            $this->throwDonationFormFieldErrorsException($errors);
+        if ($validator->fails()) {
+            $this->throwDonationFormFieldErrorsException($validator->errors());
         }
 
+        foreach ($validator->validated() as $fieldId => $value) {
+            $validData->{$fieldId} = $value;
+        }
+
+        $validData->formTitle = $form->title;
         $validData->wpUserId = get_current_user_id();
 
         return $validData;
@@ -100,7 +88,7 @@ class DonateFormRouteData
      *
      * @unreleased
      *
-     * @param  array{error_id: string, error_message: string}  $errors
+     * @param array<string, string> $errors
      *
      * @throws DonationFormFieldErrorsException
      */
@@ -108,29 +96,10 @@ class DonateFormRouteData
     {
         $wpError = new WP_Error();
 
-        foreach ($errors as $error) {
-            $wpError->add($error['error_id'], $error['error_message']);
+        foreach ($errors as $id => $error) {
+            $wpError->add($id, $error);
         }
 
-        $exception = new DonationFormFieldErrorsException();
-        $exception->setError($wpError);
-
-        throw $exception;
-    }
-
-    /**
-     * Some properties need to be cast to specific types.
-     *
-     * TODO: figure out a less static way of doing this
-     *
-     * @unreleased
-     */
-    private function castFieldValue(Field $field, string $fieldValue)
-    {
-        if ($field->getName() === 'formId') {
-            return (int)$fieldValue;
-        }
-
-        return $fieldValue;
+        throw new DonationFormFieldErrorsException($wpError);
     }
 }

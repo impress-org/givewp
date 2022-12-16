@@ -119,8 +119,6 @@ class DonateController
     /**
      * @unreleased
      *
-     * TODO: add more validation based on the field settings.
-     *
      * @return void
      */
     private function saveCustomFields(DonationForm $form, Donation $donation, array $customFields)

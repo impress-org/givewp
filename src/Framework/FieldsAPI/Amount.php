@@ -23,21 +23,6 @@ class Amount extends Field
     protected $allowCustomAmount = false;
 
     /**
-     * This is a temporary overload in order to add the validation rule to the field. Once validation rules have been
-     * improved in the Field API this will be removed.
-     *
-     * @unreleased
-     *
-     * @param $name
-     */
-    public static function make($name): self
-    {
-        $amount =  parent::make($name);
-        $amount->validationRules->rule('numeric', true);
-        return $amount;
-    }
-
-    /**
      * Set the preset donation levels. Provide levels in minor units.
      *
      * @unreleased

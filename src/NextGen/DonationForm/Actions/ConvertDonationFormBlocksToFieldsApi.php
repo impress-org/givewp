@@ -7,6 +7,7 @@ use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\DonationSummary;
 use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
+use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 use Give\Framework\FieldsAPI\Form;
 use Give\Framework\FieldsAPI\Name;
@@ -25,10 +26,7 @@ class ConvertDonationFormBlocksToFieldsApi
     /**
      * @unreleased
      *
-     * @param  BlockCollection  $blocks
-     *
-     * @return Form
-     * @throws TypeNotSupported
+     * @throws TypeNotSupported|NameCollisionException
      */
     public function __invoke(BlockCollection $blocks): Form
     {
@@ -45,6 +43,7 @@ class ConvertDonationFormBlocksToFieldsApi
 
     /**
      * @unreleased
+     * @throws NameCollisionException
      */
     protected function convertTopLevelBlockToSection(BlockModel $block, int $blockIndex): Section
     {
@@ -54,39 +53,33 @@ class ConvertDonationFormBlocksToFieldsApi
             ->append(...array_map([$this, 'convertInnerBlockToNode'], $block->innerBlocks->getBlocks()));
     }
 
-
     /**
      * @unreleased
      *
-     * @param  BlockModel  $block
-     *
-     * @return Node
      * @throws EmptyNameException
      */
     protected function convertInnerBlockToNode(BlockModel $block): Node
     {
         $node = $this->createNodeFromBlockWithUniqueAttributes($block);
+
         return $this->mapGenericBlockAttributesToNode($node, $block);
     }
 
     /**
      * @unreleased
      *
-     * @param $block
-     *
-     * @return Node
      * @throws EmptyNameException
      */
-    protected function createNodeFromBlockWithUniqueAttributes($block): Node
+    protected function createNodeFromBlockWithUniqueAttributes(BlockModel $block): Node
     {
         switch ($block->name) {
             case "custom-block-editor/donation-amount-levels":
                 return Amount::make('amount')
                     ->label(__('Donation Amount', 'give'))
                     ->levels(...array_map('absint', $block->attributes['levels']))
+                    ->rules('required', 'numeric', 'min:1')
                     ->allowCustomAmount()
-                    ->defaultValue(50)
-                    ->required();
+                    ->defaultValue(50);
 
             case "custom-block-editor/donor-name":
                 return $this->createNodeFromDonorNameBlock($block);
@@ -96,10 +89,13 @@ class ConvertDonationFormBlocksToFieldsApi
                     ->content($block->attributes['content']);
 
             case "custom-block-editor/email-field":
-                return Email::make('email')->emailTag('email')->required();
+                return Email::make('email')
+                    ->emailTag('email')
+                    ->rules('required', 'email');
 
             case "custom-block-editor/payment-gateways":
-                return PaymentGateways::make('gatewayId')->required();
+                return PaymentGateways::make('gatewayId')
+                    ->required();
 
             case "custom-block-editor/donation-summary":
                 return DonationSummary::make('donation-summary');
@@ -118,10 +114,6 @@ class ConvertDonationFormBlocksToFieldsApi
 
     /**
      * @unreleased
-     *
-     * @param  BlockModel  $block
-     *
-     * @return Node
      */
     protected function createNodeFromDonorNameBlock(BlockModel $block): Node
     {
@@ -129,12 +121,13 @@ class ConvertDonationFormBlocksToFieldsApi
             $group->getNodeByName('firstName')
                 ->label($block->attributes['firstNameLabel'])
                 ->placeholder($block->attributes['firstNamePlaceholder'])
-                ->required();
+                ->rules('required', 'max:255');
 
             $group->getNodeByName('lastName')
                 ->label($block->attributes['lastNameLabel'])
                 ->placeholder($block->attributes['lastNamePlaceholder'])
-                ->required($block->attributes['requireLastName']);
+                ->required($block->attributes['requireLastName'])
+                ->rules('max:255');
 
             if ($block->hasAttribute('showHonorific') && $block->getAttribute('showHonorific') === true) {
                 $group->getNodeByName('honorific')
@@ -148,11 +141,6 @@ class ConvertDonationFormBlocksToFieldsApi
 
     /**
      * @unreleased
-     *
-     * @param  Node  $node
-     * @param  BlockModel  $block
-     *
-     * @return Node
      */
     protected function mapGenericBlockAttributesToNode(Node $node, BlockModel $block): Node
     {

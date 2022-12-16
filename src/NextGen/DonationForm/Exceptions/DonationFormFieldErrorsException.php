@@ -4,6 +4,7 @@ namespace Give\NextGen\DonationForm\Exceptions;
 
 use Give\Framework\Exceptions\Contracts\LoggableException;
 use Give\Framework\Exceptions\Traits\Loggable;
+use Throwable;
 use WP_Error;
 
 class DonationFormFieldErrorsException extends \Exception implements LoggableException
@@ -17,11 +18,11 @@ class DonationFormFieldErrorsException extends \Exception implements LoggableExc
     /**
      * @unreleased
      */
-    public function setError(WP_Error $error)
+    public function __construct(WP_Error $error, Throwable $previous = null)
     {
+        parent::__construct('Form field validation error', 0, $previous);
         $this->error = $error;
     }
-
 
     /**
      * @unreleased

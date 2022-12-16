@@ -58,7 +58,7 @@ class DonateControllerData
     /**
      * @unreleased
      */
-    public function toDonation($donorId): Donation
+    public function toDonation(int $donorId): Donation
     {
         $form = $this->getDonationForm();
 
@@ -100,19 +100,15 @@ class DonateControllerData
         return array_filter($properties, static function ($param) {
             return !in_array(
                 $param,
-                [
-                    'amount',
-                    'gatewayId',
-                    'currency',
-                    'firstName',
-                    'lastName',
-                    'email',
-                    'wpUserId',
-                    'formId',
-                    'formTitle',
-                    'company',
-                    'honorific',
-                ]
+                array_merge(
+                    Donation::propertyKeys(),
+                    [
+                        'currency',
+                        'wpUserId',
+                        'honorific',
+                    ]
+                ),
+                true
             );
         }, ARRAY_FILTER_USE_KEY);
     }

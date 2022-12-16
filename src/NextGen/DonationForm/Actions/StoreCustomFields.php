@@ -11,7 +11,7 @@ class StoreCustomFields
     /**
      * In order to store custom fields, we need to validate them by comparing the form's
      * schema settings to the request.  Once a field has passed validation, we can determine
-     * its storage location from the fields api.
+     * its storage location from the fields api.  This Action is designed to be triggered post-validation.
      *
      * @unreleased
      *
