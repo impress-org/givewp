@@ -9,6 +9,9 @@ use Give\Framework\Validation\Validator;
 
 class CreateValidatorFromForm
 {
+    /**
+     * @unreleased
+     */
     public function __invoke(Form $form, array $values): Validator
     {
         $labels = [];
