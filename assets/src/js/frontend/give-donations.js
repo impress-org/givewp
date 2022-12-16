@@ -242,6 +242,7 @@ jQuery( function( $ ) {
 			// Select payment gateway.
 			$( this ).prop( 'checked', true );
 			$( this ).parent().addClass( 'give-gateway-option-selected' );
+			$( this ).focus();
 
 			// Get new payment gateway.
 			new_payment_gateways = Give.form.fn.getGateway( $form );
