@@ -6,9 +6,9 @@ use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Framework\Validation\Contracts\ValidationRule;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
-use Give_Cache_Setting;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\AssertIsType;
+use Give_Cache_Setting;
 use WP_UnitTestCase;
 
 /**
@@ -207,15 +207,18 @@ class TestCase extends WP_UnitTestCase
      *
      * @see https://phpunit.de/manual/5.5/en/test-doubles.html
      *
+     * @unreleased add suppression for phpunit internal deprecated notice
      * @since 2.11.0
      *
-     * @param string $abstract The class to create a mock for
-     * @param null|callable $builderCallable A callable for applying additional changes to the builder
+     * @param  string  $abstract  The class to create a mock for
+     * @param  null|callable  $builderCallable  A callable for applying additional changes to the builder
      *
      * @return object
      */
     public function createMock($abstract, $builderCallable = null)
     {
+        static::setSuppressedErrorHandler();
+
         $mockBuilder = $this->getMockBuilder($abstract)
             ->disableOriginalConstructor()
             ->disableOriginalClone()
@@ -230,7 +233,31 @@ class TestCase extends WP_UnitTestCase
             }
         }
 
-        return $mockBuilder->getMock();
+        try {
+            return $mockBuilder->getMock();
+        } finally {
+            restore_error_handler();
+        }
+    }
+
+    /**
+     * Set error handler to suppress `ReflectionType::__toString()` deprecation warning
+     *
+     * @unreleased
+     *
+     * @return void
+     */
+    public static function setSuppressedErrorHandler()
+    {
+        $previousHandler = set_error_handler(
+            static function ($code, $description, $file = null, $line = null, $context = null) use (&$previousHandler) {
+                if (($code & E_DEPRECATED)) {
+                    return true;
+                }
+
+                return $previousHandler($code, $description, $file, $line, $context);
+            }
+        );
     }
 
     /**
@@ -240,8 +267,8 @@ class TestCase extends WP_UnitTestCase
      *
      * @since 2.11.0
      *
-     * @param string $abstract
-     * @param null|callable $builderCallable
+     * @param  string  $abstract
+     * @param  null|callable  $builderCallable
      *
      * @return object
      */
