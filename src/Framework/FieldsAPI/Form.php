@@ -53,7 +53,7 @@ class Form implements Node, Collection
                 throw new TypeNotSupported($node->getType());
             }
 
-            $this->insertAtIndex($this->count(), $node);
+            $this->insert($node);
         }
 
         return $this;

@@ -4,31 +4,36 @@ namespace Give\Framework\FieldsAPI\Concerns;
 
 trait IsRequired
 {
-
     /**
-     * {@inheritdoc}
+     * Marks the field as required or not.
+     *
+     * @unreleased switch to new validation system
      */
-    public function required($value = true)
+    public function required($value = true): self
     {
-        $this->validationRules->rule('required', $value);
+        if ( $value ) {
+            $this->validationRules->rules('required');
+        } else {
+            $this->validationRules->removeRuleWithId('required');
+        }
 
         return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * Returns whether the field is required or not.
+     *
+     * @unreleased switch to new validation system
      */
-    public function isRequired()
+    public function isRequired(): bool
     {
-        $required = $this->validationRules->getRule('required');
-
-        return is_null($required) ? false : $required;
+        return $this->validationRules->hasRule('required');
     }
 
     /**
-     * {@inheritdoc}
+     * @deprecated Use the Validator to generate errors
      */
-    public function getRequiredError()
+    public function getRequiredError(): array
     {
         return [
             'error_id' => $this->name,

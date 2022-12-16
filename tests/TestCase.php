@@ -4,8 +4,10 @@ namespace Give\Tests;
 
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\Framework\Validation\Contracts\ValidationRule;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Tests\TestTraits\RefreshDatabase;
+use Give\Tests\TestTraits\AssertIsType;
 use Give_Cache_Setting;
 use WP_UnitTestCase;
 
@@ -20,6 +22,8 @@ use WP_UnitTestCase;
  */
 class TestCase extends WP_UnitTestCase
 {
+    use AssertIsType;
+
     /**
      * Cache Give setting
      * Note: we will use this variable to reset setting after each test to prevent test failure
@@ -146,7 +150,54 @@ class TestCase extends WP_UnitTestCase
      */
     public static function assertMoneyEquals(Money $expected, Money $actual)
     {
-        self::assertTrue($expected->equals($actual), "Failed asserting money is equal. Expected: {$expected->getAmount()} {$expected->getCurrency()->getCode()}, Actual: {$actual->getAmount()} {$actual->getCurrency()->getCode()}");
+        self::assertTrue(
+            $expected->equals($actual),
+            "Failed asserting money is equal. Expected: {$expected->getAmount()} {$expected->getCurrency()->getCode()}, Actual: {$actual->getAmount()} {$actual->getCurrency()->getCode()}"
+        );
+    }
+
+    /**
+     * Asserts that a given validation rule passes.
+     *
+     * @param mixed $value
+     *
+     * @return void
+     */
+    public static function assertValidationRulePassed(
+        ValidationRule $rule,
+        $value,
+        string $key = '',
+        array $values = [],
+        bool $shouldPass = true
+    ) {
+        $error = null;
+        $fail = function ($message) use (&$error) {
+            $error = $message;
+        };
+
+        $rule($value, $fail, $key, $values);
+
+        if ($shouldPass) {
+            self::assertNull($error, 'Validation rule failed. Value: ' . print_r($value, true));
+        } else {
+            self::assertNotNull($error, 'Validation rule passed. Value: ' . print_r($value, true));
+        }
+    }
+
+    /**
+     * Asserts that a given validation rule fails.
+     *
+     * @param mixed $value
+     *
+     * @return void
+     */
+    public static function assertValidationRuleFailed(
+        ValidationRule $rule,
+        $value,
+        string $key = '',
+        array $values = []
+    ) {
+        self::assertValidationRulePassed($rule, $value, $key, $values, false);
     }
 
     /**
@@ -260,7 +311,6 @@ class TestCase extends WP_UnitTestCase
             $this->refreshDatabase();
         }
     }
-
 
     /**
      * Registers Test Gateway to be used in tests to avoid any side effects caused by gateway not being registered.
