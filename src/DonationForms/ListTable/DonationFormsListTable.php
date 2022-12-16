@@ -33,7 +33,7 @@ class DonationFormsListTable extends ListTable
      *
      * @inheritDoc
      */
-    public function getColumns(): array
+    public function getDefaultColumns(): array
     {
         return [
             new IdColumn(),

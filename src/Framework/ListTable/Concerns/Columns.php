@@ -23,10 +23,10 @@ trait Columns
      *
      * @param ModelColumn $column
      *
-     * @return void
+     * @return self
      * @throws ColumnIdCollisionException
      */
-    public function addColumn(ModelColumn $column)
+    public function addColumn(ModelColumn $column): self
     {
         $columnId = $column::getId();
 
@@ -34,8 +34,10 @@ trait Columns
             throw new ColumnIdCollisionException($columnId);
         }
 
-        $this->setColumnVisibility($column);
         $this->columns[$columnId] = $column;
+        $this->setColumnVisibility($columnId);
+
+        return $this;
     }
 
     /**
@@ -60,16 +62,18 @@ trait Columns
      *
      * @unreleased
      *
-     * @return void
+     * @return self
      * @throws ReferenceColumnNotFoundException
      */
-    public function removeColumn(string $columnId)
+    public function removeColumn(string $columnId): self
     {
-        if (!isset($this->columns[$columnId])) {
+        if ( ! isset($this->columns[$columnId])) {
             throw new ReferenceColumnNotFoundException($columnId);
         }
 
         unset($this->columns[$columnId]);
+
+        return $this;
     }
 
     /**
@@ -99,14 +103,13 @@ trait Columns
      *
      * @unreleased
      *
-     * @return void
+     * @return self
      * @throws ReferenceColumnNotFoundException
      */
-    public function addColumnBefore(string $columnId, ModelColumn $column)
+    public function addColumnBefore(string $columnId, ModelColumn $column): self
     {
         if (is_int($index = $this->getColumnIndexById($columnId))) {
-            $this->insertAtIndex($index, $column);
-            return;
+            return $this->insertAtIndex($index, $column);
         }
 
         throw new ReferenceColumnNotFoundException($columnId);
@@ -117,14 +120,13 @@ trait Columns
      *
      * @unreleased
      *
-     * @return void
+     * @return self
      * @throws ReferenceColumnNotFoundException
      */
-    public function addColumnAfter(string $columnId, ModelColumn $column)
+    public function addColumnAfter(string $columnId, ModelColumn $column): self
     {
         if (is_int($index = $this->getColumnIndexById($columnId))) {
-            $this->insertAtIndex($index + 1, $column);
-            return;
+            return $this->insertAtIndex($index + 1, $column);
         }
 
         throw new ReferenceColumnNotFoundException($columnId);
@@ -159,25 +161,33 @@ trait Columns
     /**
      * @unreleased
      *
-     * @return void
+     * @return self
      */
-    protected function insertAtIndex(int $index, ModelColumn $column)
+    protected function insertAtIndex(int $index, ModelColumn $column): self
     {
         $this->columns = array_merge(
             array_splice($this->columns, 0, $index),
             [$column::getId() => $column],
             $this->columns
         );
+
+        return $this;
     }
 
     /**
      * @unreleased
      *
-     * @return void
+     * @return self
      */
-    protected function setColumnVisibility($column)
+    public function setColumnVisibility($columnId, $isVisible = null): self
     {
-        $column->visible(in_array($column->getId(), $this->getDefaultVisibleColumns()));
+        if (is_null($isVisible)) {
+            $isVisible = in_array($columnId, $this->getDefaultVisibleColumns(), true);
+        }
+
+        $this->getColumnById($columnId)->visible($isVisible);
+
+        return $this;
     }
 
     /**
