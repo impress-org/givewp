@@ -8,7 +8,7 @@ use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 /**
  * @unreleased

@@ -10,7 +10,7 @@ use Give\Framework\Support\ValueObjects\Money;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateControllerData;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 /**
  * @unreleased
