@@ -1,0 +1,63 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: .9rem;
+    block-size: 2.25rem;
+
+    h6 {
+        font-weight: inherit;
+        font-size: inherit;
+
+    }
+
+    button {
+        font-weight: inherit;
+        font-size: inherit;
+        background: transparent;
+        border: 0;
+        padding: 0;
+        text-decoration: underline;
+        color: #0073aa;
+        cursor: pointer;
+    }
+}
+
+.draggableList {
+    min-width: 25vw;
+
+    input[type='checkbox'] {
+        margin: 0;
+    }
+}
+
+.draggableItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+
+    &:hover {
+        cursor: move; /* fallback if grab cursor is unsupported */
+        cursor: -moz-grab;
+        cursor: -webkit-grab;
+        cursor: grab;
+    }
+
+    &:active {
+        cursor: -webkit-grabbing;
+        cursor: -moz-grabbing;
+        cursor: grabbing;
+    }
+
+    &:active rect {
+        fill: #0878b0;
+    }
+
+    label {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        font-weight: 600;
+    }
+}
