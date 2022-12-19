@@ -42,7 +42,7 @@ class AddMissingDonorIdToDonationComment extends Migration
      */
     public static function id()
     {
-        return 'ada-missing-donor-id-in-donation-comments';
+        return 'add-missing-donor-id-in-donation-comments';
     }
 
     /**
