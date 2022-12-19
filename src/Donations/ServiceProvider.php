@@ -10,7 +10,7 @@ use Give\Donations\LegacyListeners\InsertSequentialId;
 use Give\Donations\LegacyListeners\RemoveSequentialId;
 use Give\Donations\LegacyListeners\UpdateDonorPaymentIds;
 use Give\Donations\LegacyListeners\UpdateSequentialId;
-use Give\Donations\Migrations\AddMissingDonorIdToDonationComment;
+use Give\Donations\Migrations\AddMissingDonorIdToDonationComments;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationNotesRepository;
 use Give\Donations\Repositories\DonationRepository;
@@ -38,7 +38,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->bootLegacyListeners();
         $this->registerDonationsAdminPage();
 
-        give(MigrationsRegister::class)->addMigration(AddMissingDonorIdToDonationComment::class);
+        give(MigrationsRegister::class)->addMigration(AddMissingDonorIdToDonationComments::class);
     }
 
     /**

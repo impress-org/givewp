@@ -10,7 +10,7 @@ use Give\Framework\Migrations\Contracts\Migration;
  *
  * @unreleased
  */
-class AddMissingDonorIdToDonationComment extends Migration
+class AddMissingDonorIdToDonationComments extends Migration
 {
     /**
      * @inheritdoc
