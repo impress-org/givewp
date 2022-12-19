@@ -101,6 +101,7 @@ final class GiveInsertPaymentData
             'user_info' => [
                 'id' => $this->userInfo['id'],
                 'title' => $this->userInfo['title'],
+                'email' => $this->userInfo['email'],
                 'first_name' => $this->userInfo['firstName'],
                 'last_name' => $this->userInfo['lastName'],
                 'donor_id' => $this->donorId,
