@@ -6,7 +6,7 @@ use Give\Framework\Database\DB;
 use Give\Framework\Migrations\Contracts\Migration;
 
 /**
- * Class GiveWPAddMissingDonorIDInDonationComment
+ * Class AddMissingDonorIdToDonationComment
  *
  * @unreleased
  */
