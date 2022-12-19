@@ -9,11 +9,12 @@ import ListTableRows from '@givewp/components/ListTable/ListTableRows';
 
 export interface ListTableProps {
     //required
-    apiSettings: {table: {columns: Array<ListTableColumn>; id: string}};
+    apiSettings: {table: {id: string}};
     title: string;
     data: {items: Array<{}>};
     setSortDirectionForColumn: (event: React.MouseEvent<HTMLElement>, column: string) => void;
     sortField: {sortColumn: string; sortDirection: string};
+    columns: Array<ListTableColumn>;
 
     //optional
     pluralName?: string;
@@ -48,6 +49,7 @@ export const ListTable = ({
     setSortDirectionForColumn,
     sortField,
     testMode,
+    columns,
 }: ListTableProps) => {
     const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>; successes: Array<number>}>({
         errors: [],
@@ -99,9 +101,7 @@ export const ListTable = ({
         setUpdateErrors({errors: [], successes: []});
     };
 
-    const visibleColumns = apiSettings.table.columns?.filter(
-        (column) => column.visible || column.visible === undefined
-    );
+    const visibleColumns = columns?.filter((column) => column.visible || column.visible === undefined);
 
     return (
         <>

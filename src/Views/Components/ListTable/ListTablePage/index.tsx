@@ -1,8 +1,7 @@
-import {createContext, useEffect, useRef, useState} from 'react';
+import {createContext, useRef, useState} from 'react';
 import {__} from '@wordpress/i18n';
 import {A11yDialog} from 'react-a11y-dialog';
-import A11yDialogInstance from 'a11y-dialog';
-import {GiveIcon} from '@givewp/components';
+import {GiveIcon, ListTableColumn} from '@givewp/components';
 import {ListTable} from '../ListTable';
 import Pagination from '../Pagination';
 import {Filter, getInitialFilterState} from '../Filters';
@@ -13,6 +12,7 @@ import styles from './ListTablePage.module.scss';
 import cx from 'classnames';
 import {BulkActionSelect} from '@givewp/components/ListTable/BulkActions/BulkActionSelect';
 import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
+import A11yDialogInstance from 'a11y-dialog';
 
 export interface ListTablePageProps {
     //required
@@ -57,6 +57,20 @@ export interface BulkActionsConfig {
 export const ShowConfirmModalContext = createContext((label, confirm, action, type = null) => {});
 export const CheckboxContext = createContext(null);
 
+interface SortFieldProps {
+    sortColumn: string;
+    sortDirection: string;
+    sortOrder: Array<ListTableColumn>;
+    visible: Array<string>;
+}
+
+interface ModalProps {
+    confirm;
+    action;
+    label: string;
+    type?: 'normal' | 'warning' | 'danger';
+}
+
 export default function ListTablePage({
     title,
     apiSettings,
@@ -69,23 +83,26 @@ export default function ListTablePage({
     align = 'start',
     paymentMode,
 }: ListTablePageProps) {
+    const dialog = useRef() as {current: A11yDialogInstance};
+    const checkboxRefs = useRef([]);
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(30);
     const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
-    const [modalContent, setModalContent] = useState<{confirm; action; label; type?: 'normal' | 'warning' | 'danger'}>({
-        confirm: (selected) => {},
-        action: (selected) => {},
-        label: '',
-    });
     const [selectedIds, setSelectedIds] = useState([]);
     const [selectedNames, setSelectedNames] = useState([]);
-    const dialog = useRef() as {current: A11yDialogInstance};
-    const checkboxRefs = useRef([]);
-    const [sortField, setSortField] = useState<{sortColumn: string; sortDirection: string}>({
+    const [testMode, setTestMode] = useState(paymentMode);
+    const [columns, setColumns] = useState(apiSettings.table.columns);
+    const [modalContent, setModalContent] = useState<ModalProps>({
+        confirm: () => {},
+        action: () => {},
+        label: '',
+    });
+    const [sortField, setSortField] = useState<SortFieldProps>({
         sortColumn: 'id',
         sortDirection: 'desc',
+        sortOrder: [],
+        visible: [],
     });
-    const [testMode, setTestMode] = useState(paymentMode);
 
     const {sortColumn, sortDirection} = sortField;
     const locale = navigator.language || navigator.languages[0];
@@ -210,6 +227,7 @@ export default function ListTablePage({
                         <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
                             <ListTable
                                 apiSettings={apiSettings}
+                                columns={columns}
                                 sortField={sortField}
                                 setSortDirectionForColumn={setSortDirectionForColumn}
                                 singleName={singleName}
