@@ -81,6 +81,7 @@ export default function ListTableRows({columns, data, isLoading, rowActions, set
                     );
                 })}
             </>
+            <TableCell />
         </tr>
     ));
 }

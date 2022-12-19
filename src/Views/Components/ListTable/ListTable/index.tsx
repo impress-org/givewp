@@ -6,6 +6,7 @@ import {Spinner} from '../../index';
 import {BulkActionCheckboxAll} from '@givewp/components/ListTable/BulkActions/BulkActionCheckbox';
 import ListTableHeaders from '@givewp/components/ListTable/ListTableHeaders';
 import ListTableRows from '@givewp/components/ListTable/ListTableRows';
+import SettingsIcon from '@givewp/components/ListTable/Icons/SettingsIcon';
 
 export interface ListTableProps {
     //required
@@ -145,7 +146,7 @@ export const ListTable = ({
                                     <BulkActionCheckboxAll pluralName={pluralName} data={data} />
                                 </th>
                                 <>
-                                    {visibleColumns?.map((column) => (
+                                    {visibleColumns?.map((column, index) => (
                                         <th
                                             scope="col"
                                             aria-sort={
@@ -170,6 +171,15 @@ export const ListTable = ({
                                         </th>
                                     ))}
                                 </>
+                                <th
+                                    className={cx(styles.tableColumnHeader, styles.selectAll, {
+                                        [styles['testMode']]: testMode,
+                                    })}
+                                >
+                                    <span className={styles.columnSettings}>
+                                        <SettingsIcon />
+                                    </span>
+                                </th>
                             </tr>
                         </thead>
                         <tbody className={styles.tableContent}>

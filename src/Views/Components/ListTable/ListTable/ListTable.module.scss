@@ -71,6 +71,17 @@
     border-bottom: 2px solid #f49420;
 }
 
+.columnSettings {
+    position: relative;
+    inline-size: .75rem;
+    min-inline-size: .75rem;
+    cursor: pointer;
+    margin: 0;
+    padding-top: .4rem;
+    background: transparent;
+    border: 0;
+}
+
 .tableContent {
     overflow: auto;
 }
@@ -176,6 +187,10 @@
     inline-size: 5.5rem;
 }
 
+.donations .status {
+    inline-size: 6rem;
+}
+
 .donors .donorInformation {
     inline-size: 10rem;
 }
@@ -189,7 +204,7 @@
 }
 
 .donors .dateCreated {
-    inline-size: 6.5rem;
+    inline-size: 6rem;
 }
 
 .donors .donorType {
@@ -213,7 +228,7 @@
 }
 
 .subscriptions .status {
-    inline-size: 6.5rem;
+    inline-size: 6rem;
 }
 
 @keyframes appear {
