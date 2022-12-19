@@ -67,19 +67,24 @@
     }
 }
 
+.settingColumnHeader {
+    position: relative;
+    block-size: 1rem;
+    padding-right: 2rem;
+}
+
 .testMode {
     border-bottom: 2px solid #f49420;
 }
 
 .columnSettings {
-    position: relative;
-    inline-size: .75rem;
-    min-inline-size: .75rem;
+    display: flex;
+    justify-content: flex-end;
     cursor: pointer;
     margin: 0;
-    padding-top: .4rem;
     background: transparent;
     border: 0;
+
 }
 
 .tableContent {

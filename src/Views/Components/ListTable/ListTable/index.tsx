@@ -174,12 +174,17 @@ export const ListTable = ({
                                     ))}
                                 </>
                                 <th
-                                    className={cx(styles.tableColumnHeader, styles.selectAll, {
-                                        [styles['testMode']]: testMode,
-                                    })}
+                                    className={cx(
+                                        styles.tableColumnHeader,
+                                        styles.settingColumnHeader,
+                                        styles.selectAll,
+                                        {
+                                            [styles['testMode']]: testMode,
+                                        }
+                                    )}
                                     onClick={openDragAndDropModal}
                                 >
-                                    <span className={styles.columnSettings}>
+                                    <span role={'button'} className={styles.columnSettings}>
                                         <SettingsIcon />
                                     </span>
                                 </th>
