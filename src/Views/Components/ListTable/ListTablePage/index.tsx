@@ -1,5 +1,5 @@
 import {createContext, useRef, useState} from 'react';
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import {A11yDialog} from 'react-a11y-dialog';
 import {GiveIcon, ListTableColumn} from '@givewp/components';
 import {ListTable} from '../ListTable';
@@ -12,6 +12,7 @@ import styles from './ListTablePage.module.scss';
 import cx from 'classnames';
 import {BulkActionSelect} from '@givewp/components/ListTable/BulkActions/BulkActionSelect';
 import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
+import ReorderableList from '@givewp/components/ListTable/ReorderableList';
 import A11yDialogInstance from 'a11y-dialog';
 
 export interface ListTablePageProps {
@@ -68,6 +69,7 @@ interface ModalProps {
     confirm;
     action;
     label: string;
+    modal?: 'dragAndDrop' | 'confirmAction';
     type?: 'normal' | 'warning' | 'danger';
 }
 
@@ -85,6 +87,7 @@ export default function ListTablePage({
 }: ListTablePageProps) {
     const dialog = useRef() as {current: A11yDialogInstance};
     const checkboxRefs = useRef([]);
+    const reorderableCheckboxRefs = useRef([]);
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(30);
     const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
@@ -92,6 +95,7 @@ export default function ListTablePage({
     const [selectedNames, setSelectedNames] = useState([]);
     const [testMode, setTestMode] = useState(paymentMode);
     const [columns, setColumns] = useState(apiSettings.table.columns);
+    const [dragAndDropData, setDragAndDropData] = useState(apiSettings.table.columns);
     const [modalContent, setModalContent] = useState<ModalProps>({
         confirm: () => {},
         action: () => {},
@@ -155,6 +159,62 @@ export default function ListTablePage({
             setModalContent({...bulkActions[actionIndex]});
             dialog.current.show();
         }
+    };
+
+    const openDragAndDropModal = () => {
+        const label = sprintf(__('Customize %s Table', 'give'), title);
+
+        const setSortOrderForColumn = (dragAndDropData) => {
+            const visibleColumnIds = [];
+            const columnOrder = [];
+
+            reorderableCheckboxRefs.current.forEach((checkbox) => {
+                if (checkbox.checked) {
+                    visibleColumnIds.push(checkbox.dataset.id);
+                }
+            });
+
+            dragAndDropData.map((id) => columnOrder.push(id));
+
+            const updatedColumnData = dragAndDropData.map((data) => {
+                if (data.id === visibleColumnIds.find((id) => id === data.id)) {
+                    return {...data, visible: true};
+                }
+                return {...data, visible: false};
+            });
+
+            setColumns(updatedColumnData);
+
+            setSortField((prevState) => {
+                return {
+                    ...prevState,
+                    sortOrder: columnOrder,
+                    visible: visibleColumnIds,
+                };
+            });
+        };
+
+        const showListView = (dragAndDropData) => (
+            <ReorderableList
+                columns={apiSettings.table.columns}
+                dragAndDropData={dragAndDropData}
+                setDragAndDropData={setDragAndDropData}
+                reorderableCheckboxRefs={reorderableCheckboxRefs}
+            />
+        );
+
+        setModalContent((prevState) => {
+            return {
+                ...prevState,
+                confirm: showListView,
+                action: setSortOrderForColumn,
+                label: label,
+                modal: 'dragAndDrop',
+                type: 'normal',
+            };
+        });
+
+        dialog.current.show();
     };
 
     const setSortDirectionForColumn = (column, direction) => {
@@ -228,6 +288,7 @@ export default function ListTablePage({
                             <ListTable
                                 apiSettings={apiSettings}
                                 columns={columns}
+                                openDragAndDropModal={openDragAndDropModal}
                                 sortField={sortField}
                                 setSortDirectionForColumn={setSortDirectionForColumn}
                                 singleName={singleName}
@@ -249,7 +310,7 @@ export default function ListTablePage({
             <A11yDialog
                 id="giveListTableModal"
                 dialogRef={(instance) => (dialog.current = instance)}
-                title={modalContent.label}
+                title={modalContent?.label}
                 titleId={styles.modalTitle}
                 classNames={{
                     container: styles.container,
@@ -261,20 +322,38 @@ export default function ListTablePage({
                     closeButton: 'hidden',
                 }}
             >
-                <div className={styles.modalContent}>{modalContent?.confirm(selectedIds, selectedNames) || null}</div>
+                <div className={styles.modalContent}>
+                    {modalContent.modal === 'dragAndDrop'
+                        ? modalContent?.confirm(dragAndDropData)
+                        : modalContent?.confirm(selectedIds, selectedNames) || null}
+                </div>
                 <div className={styles.gutter}>
-                    <button id={styles.cancel} onClick={(event) => dialog.current?.hide()}>
+                    <button
+                        id={styles.cancel}
+                        onClick={(event) => {
+                            dialog.current?.hide();
+                        }}
+                    >
                         {__('Cancel', 'give')}
                     </button>
                     <button
                         id={styles.confirm}
-                        onClick={async (event) => {
-                            dialog.current?.hide();
-                            await modalContent.action(selectedIds);
-                            await mutate();
-                        }}
+                        onClick={
+                            modalContent?.modal === 'dragAndDrop'
+                                ? (event) => {
+                                      modalContent.action(dragAndDropData);
+                                      dialog.current?.hide();
+                                  }
+                                : async (event) => {
+                                      dialog.current?.hide();
+                                      await modalContent.action(selectedIds);
+                                      await mutate();
+                                  }
+                        }
                     >
-                        {__('Confirm', 'give')}
+                        {modalContent?.modal === 'dragAndDrop'
+                            ? __('Save and continue', 'give')
+                            : __('Confirm', 'give')}
                     </button>
                 </div>
             </A11yDialog>

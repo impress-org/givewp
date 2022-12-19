@@ -244,9 +244,10 @@
         gap: 0.5rem;
     }
 
-    & li + li {
-        border-top: 1px solid rgba(196, 196, 196);
-        padding-top: 0.75rem;
+    & li {
+        border-bottom: 1px solid rgba(196, 196, 196);
+        padding-inline: 0.7rem;
+        padding-block: 0.975rem;
     }
 }
 

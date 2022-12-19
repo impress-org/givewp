@@ -16,6 +16,7 @@ export interface ListTableProps {
     setSortDirectionForColumn: (event: React.MouseEvent<HTMLElement>, column: string) => void;
     sortField: {sortColumn: string; sortDirection: string};
     columns: Array<ListTableColumn>;
+    openDragAndDropModal: () => void;
 
     //optional
     pluralName?: string;
@@ -51,6 +52,7 @@ export const ListTable = ({
     sortField,
     testMode,
     columns,
+    openDragAndDropModal,
 }: ListTableProps) => {
     const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>; successes: Array<number>}>({
         errors: [],
@@ -175,6 +177,7 @@ export const ListTable = ({
                                     className={cx(styles.tableColumnHeader, styles.selectAll, {
                                         [styles['testMode']]: testMode,
                                     })}
+                                    onClick={openDragAndDropModal}
                                 >
                                     <span className={styles.columnSettings}>
                                         <SettingsIcon />
