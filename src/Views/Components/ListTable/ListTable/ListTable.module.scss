@@ -129,6 +129,7 @@
 
 .overlay {
     display: flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     position: absolute;
@@ -138,6 +139,20 @@
     z-index: 10;
     border-radius: inherit;
     overflow: hidden;
+}
+
+.relativeContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    block-size: 100%;
+    inline-size: 100%;
+
+    .fixedContent {
+        position: fixed;
+        top: 50%;
+    }
 }
 
 .appear {
