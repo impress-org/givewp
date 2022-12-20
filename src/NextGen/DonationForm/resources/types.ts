@@ -167,6 +167,7 @@ export interface Form extends Group {
         currentAmount: number;
         targetAmount: number;
         progressPercentage: number;
+        isAchieved: boolean;
     };
     nodes: Section[];
 }

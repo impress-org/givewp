@@ -64,6 +64,10 @@ class FormSettings implements Arrayable, Jsonable {
      * @var string
      */
     public $customCss;
+    /**
+     * @var string
+     */
+    public $goalAchievedMessage;
 
     /**
      * @unreleased
@@ -89,6 +93,7 @@ class FormSettings implements Arrayable, Jsonable {
         $self->goalAmount = $array['goalAmount'] ?? 0;
         $self->registration = $array['registration'] ?? 'none';
         $self->customCss = $array['customCss'] ?? '';
+        $self->goalAchievedMessage = $array['goalAchievedMessage'] ?? '';
 
         return $self;
     }

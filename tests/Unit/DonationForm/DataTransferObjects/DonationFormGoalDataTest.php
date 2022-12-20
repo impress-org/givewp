@@ -24,6 +24,7 @@ class DonationFormGoalDataTest extends TestCase
         $isEnabled = $donationForm->settings->enableDonationGoal ?? false;
         $goalType = $donationForm->settings->goalType ?? GoalType::AMOUNT();
         $targetAmount = $donationForm->settings->goalAmount ?? 0;
+        $progressPercentage = !$currentAmount ? 0 : ($currentAmount / $targetAmount) * 100;
 
         $this->assertEquals($donationFormGoalData->toArray(), [
             'type' => $goalType->getValue(),
@@ -34,7 +35,8 @@ class DonationFormGoalDataTest extends TestCase
             'currentAmount' => $currentAmount,
             'targetAmount' => $targetAmount,
             'label' => $goalType->isDonors() ? __('donors', 'give') : __('donations', 'give'),
-            'progressPercentage' => !$currentAmount ? 0 : ($currentAmount / $targetAmount) * 100
+            'progressPercentage' => $progressPercentage,
+            'isAchieved' => $isEnabled && $donationForm->settings->enableAutoClose && $progressPercentage >= 100
         ]);
     }
 }

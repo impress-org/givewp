@@ -7,6 +7,10 @@ import prepareFormData from './utilities/PrepareFormData';
 import getJoiRulesForForm from './utilities/ConvertFieldAPIRulesToJoi';
 import Header from './form/Header';
 import mountWindowData from '@givewp/forms/app/utilities/mountWindowData';
+import {withTemplateWrapper} from '@givewp/forms/app/templates';
+
+const formTemplates = window.givewp.form.templates;
+const GoalAchievedTemplate = withTemplateWrapper(formTemplates.layouts.goalAchieved);
 
 /**
  * Get data from the server
@@ -30,6 +34,10 @@ const initialState = {
 
 
 function App() {
+    if (form.goal.isAchieved) {
+        return <GoalAchievedTemplate goalAchievedMessage={form.settings.goalAchievedMessage} />;
+    }
+
     return (
         <GiveDonationFormStoreProvider initialState={initialState}>
             <>

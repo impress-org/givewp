@@ -70,6 +70,7 @@ class DonationFormGoalData implements Arrayable
     public function toArray(): array
     {
         $currentAmount = $this->getCurrentAmount();
+        $progressPercentage = !$currentAmount || !$this->targetAmount ? 0 : ($currentAmount / $this->targetAmount) * 100;
 
         return [
             'type' => $this->goalType->getValue(),
@@ -80,7 +81,8 @@ class DonationFormGoalData implements Arrayable
             'currentAmount' => $currentAmount,
             'targetAmount' => $this->targetAmount,
             'label' => $this->goalType->isDonors() ? __('donors', 'give') : __('donations', 'give'),
-            'progressPercentage' => !$currentAmount || !$this->targetAmount ? 0 : ($currentAmount / $this->targetAmount) * 100
+            'progressPercentage' => $progressPercentage,
+            'isAchieved' => $this->isEnabled && $this->formSettings->enableAutoClose && $progressPercentage >= 100
         ];
     }
 }

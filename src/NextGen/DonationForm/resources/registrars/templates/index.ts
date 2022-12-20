@@ -17,6 +17,7 @@ import Header from './layouts/Header';
 import HeaderTitle from './layouts/HeaderTitle';
 import HeaderDescription from './layouts/HeaderDescription';
 import Goal from './layouts/Goal';
+import GoalAchieved from './layouts/GoalAchieved';
 import NodeWrapper from './layouts/NodeWrapper';
 
 const defaultFormTemplates = {
@@ -47,6 +48,7 @@ const defaultFormTemplates = {
         headerTitle: HeaderTitle,
         headerDescription: HeaderDescription,
         goal: Goal,
+        goalAchieved: GoalAchieved,
     },
 };
 

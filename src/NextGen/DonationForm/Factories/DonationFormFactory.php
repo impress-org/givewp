@@ -33,7 +33,8 @@ class DonationFormFactory extends ModelFactory
                 'description' => __(
                     'Help our organization by donating today! All donations go directly to making a difference for our cause.',
                     'give'
-                )
+                ),
+                'goalAchievedMessage' => __('Thank you to all our donors, we have met our fundraising goal.', 'give'),
             ]),
             'blocks' => BlockCollection::fromJson($blocksJson),
         ];
