@@ -7,6 +7,7 @@ export type FormSettings = {
     formTitle: string;
     enableDonationGoal: boolean;
     enableAutoClose: boolean;
+    goalAchievedMessage: string;
     registration: string;
     goalType: string;
     designId: string;

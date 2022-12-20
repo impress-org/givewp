@@ -4,14 +4,14 @@ import {
     __experimentalNumberControl as NumberControl,
     PanelBody,
     PanelRow,
-    SelectControl,
+    SelectControl, TextareaControl,
     ToggleControl,
 } from '@wordpress/components';
 import debounce from 'lodash.debounce';
 
 const DonationGoalSettings = () => {
     const {
-        settings: {enableDonationGoal, enableAutoClose, goalType, goalAmount},
+        settings: {enableDonationGoal, enableAutoClose, goalAchievedMessage, goalType, goalAmount},
     } = useFormState();
     const dispatch = useFormStateDispatch();
 
@@ -56,6 +56,15 @@ const DonationGoalSettings = () => {
                             onChange={() => dispatch(setFormSettings({enableAutoClose: !enableAutoClose}))}
                         />
                     </PanelRow>
+                    { enableAutoClose && (
+                        <PanelRow>
+                            <TextareaControl
+                                label={__('Goal Achieved Message', 'give')}
+                                value={goalAchievedMessage}
+                                onChange={(goalAchievedMessage) => dispatch(setFormSettings({goalAchievedMessage: goalAchievedMessage}))}
+                            />
+                        </PanelRow>
+                    )}
                     <PanelRow>
                         <SelectControl
                             label={__('Goal Type', 'give')}

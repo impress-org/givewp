@@ -22,6 +22,7 @@ const initialState = {
         enableAutoClose: false,
         registration: 'none',
         goalType: 'amount',
+        goalAchievedMessage: __('Thank you to all our donors, we have met our fundraising goal.', 'give'),
         designId: 'classic',
         showHeading: true,
         showDescription: true,
