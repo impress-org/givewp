@@ -55,7 +55,7 @@ export const ListTable = ({
     });
     const [errorOverlay, setErrorOverlay] = useState<string | boolean>(false);
     const [initialLoad, setInitialLoad] = useState<boolean>(true);
-    const [loadingOverlay, setLoadingOverlay] = useState<string | boolean>(true);
+    const [loadingOverlay, setLoadingOverlay] = useState<string | boolean>(false);
     const [overlayWidth, setOverlayWidth] = useState(0);
     const tableRef = useRef<null | HTMLTableElement>();
     const isEmpty = !error && data?.items.length === 0;
