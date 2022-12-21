@@ -140,6 +140,20 @@
     overflow: hidden;
 }
 
+.relativeContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    block-size: 100%;
+    inline-size: 100%;
+
+    .fixedContent {
+        position: fixed;
+        top: 50%;
+    }
+}
+
 .appear {
     animation: appear 0.1s ease-in;
 }

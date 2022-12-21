@@ -103,6 +103,10 @@ export const ListTable = ({
         (column) => column.visible || column.visible === undefined
     );
 
+    const isScrollable = () => {
+        return document.body.scrollHeight > document.body.clientHeight;
+    };
+
     return (
         <>
             {initialLoad && !error ? (
@@ -121,11 +125,12 @@ export const ListTable = ({
                     tabIndex={0}
                 >
                     {loadingOverlay && (
-                        <div
-                            className={cx(styles.overlay, loadingOverlay)}
-                            style={{width: overlayWidth && overlayWidth + 'px'}}
-                        >
-                            <Spinner size={'medium'} />
+                        <div className={cx(styles.overlay, loadingOverlay)}>
+                            <div className={isScrollable() && styles.relativeContainer}>
+                                <div className={styles.fixedContent}>
+                                    <Spinner size={'medium'} />
+                                </div>
+                            </div>
                         </div>
                     )}
                     <table ref={tableRef} className={styles.table}>
