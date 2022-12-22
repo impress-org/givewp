@@ -224,8 +224,6 @@ function splitDonationLevelAmountsIntoParts({
 function addTooltipToLevel(node) {
     const parent = node.parentNode;
     if (!node.getAttribute('has-tooltip')) {
-        const currencySymbol = node.childNodes[0].innerHTML;
-
         const tooltip = nodeFromString(
             h('span', {
                 className: 'give-tooltip hint--top hint--bounce',
