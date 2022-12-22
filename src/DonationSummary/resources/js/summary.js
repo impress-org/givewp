@@ -29,10 +29,17 @@ window.GiveDonationSummary = {
 
     /**
      * @since 2.17.0
+     *
+     * @unreleased add eventlistner for custom input amount changes.
      */
     initAmount: function () {
         GiveDonationSummary.observe('[name="give-amount"]', function (targetNode, $form) {
             $form.find('[data-tag="amount"]').html(GiveDonationSummary.getFormattedDonationAmount($form));
+
+            const input = document.querySelector('[name="give-amount"]');
+            input.addEventListener('change', function () {
+                $form.find('[data-tag="amount"]').html(GiveDonationSummary.getFormattedDonationAmount($form));
+            });
         });
     },
 
