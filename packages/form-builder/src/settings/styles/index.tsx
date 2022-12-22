@@ -39,7 +39,7 @@ const CustomStyleSettings = () => {
                 </div>
 
                 { !! isOpen && (
-                    <Modal overlayClassName="components-modal__screen-overlay--givewp-custom-css" title={ __( 'Custom Styles', 'givewp' ) } onRequestClose={ closeModal } style={{
+                    <Modal overlayClassName="components-modal__screen-overlay--givewpwp-custom-css" title={ __( 'Custom Styles', 'givewp' ) } onRequestClose={ closeModal } style={{
                         height: '100%',
                         maxHeight: '100%', // Override the max height of the modal component.
                         width: '500px',

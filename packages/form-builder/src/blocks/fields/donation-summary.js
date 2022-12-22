@@ -22,9 +22,9 @@ const DonationSummary = {
                         display: 'flex',
                         gap: '16px',
                         flexDirection: 'column',
-                        border: '1px dashed var(--give-gray-100)',
+                        border: '1px dashed var(--givewp-gray-100)',
                         borderRadius: '5px',
-                        backgroundColor: 'var(--give-gray-10)',
+                        backgroundColor: 'var(--givewp-gray-10)',
                     }}>
                         <LineItem label={__('Payment Amount', 'give')}/>
                         <LineItem label={__('Giving Frequency', 'give')}/>
@@ -47,7 +47,7 @@ const LineItem = ({label, style}) => {
     return (
         <div style={{display: 'flex', justifyContent: 'space-between'}}>
             <div {...style}>{label}</div>
-            <div style={{height: '20px', width: '120px', backgroundColor: 'var(--give-gray-30)'}}></div>
+            <div style={{height: '20px', width: '120px', backgroundColor: 'var(--givewp-gray-30)'}}></div>
         </div>
     );
 };

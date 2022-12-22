@@ -41,7 +41,7 @@
         inset-block-start: calc((var(--tab-radio-diameter) - var(--block-size)) / 2 + var(--tab-block-padding));
         font-weight: bold;
         font-size: var(--font-size)/var(--line-height);
-        font-family: var(--give-primary-color);
+        font-family: var(--givewp-primary-color);
         line-height: var(--line-height);
     }
 
@@ -75,7 +75,7 @@
 
         &:hover,
         &:focus {
-            border-color: var(--give-primary-color);
+            border-color: var(--givewp-primary-color);
         }
 
         &:not(:checked) {
@@ -120,14 +120,14 @@
             --diameter: calc(var(--tab-radio-diameter) * 0.4);
             -webkit-margin-start: calc((var(--tab-radio-diameter) - var(--diameter)) / 2 + var(--tab-block-padding));
             margin-inline-start: calc((var(--tab-radio-diameter) - var(--diameter)) / 2 + var(--tab-block-padding));
-            background-color: var(--give-primary-color);
+            background-color: var(--givewp-primary-color);
             opacity: 0;
             transition: opacity var(--tab-transition);
         }
     }
 
     .givewp-fields-payment-gateway {
-        font-family: var(--give-primary-font, inherit), sans-serif;
+        font-family: var(--givewp-primary-font, inherit), sans-serif;
         color: rgb(68, 68, 68);
         list-style: none;
         --tab-radio-diameter: 1.25rem;

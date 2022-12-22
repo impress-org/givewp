@@ -2,7 +2,7 @@ const Container = ({children}) => {
     return (
         <div style={{
             position: 'relative',
-            border: '1px solid var(--give-gray-30)',
+            border: '1px solid var(--givewp-gray-30)',
             boxShadow: '0px 2px 4px rgba(221, 221, 221, 0.25)',
             borderRadius: '5px',
             backgroundColor: 'white',

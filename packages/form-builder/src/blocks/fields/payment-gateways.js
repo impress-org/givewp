@@ -17,9 +17,9 @@ const paymentGateways = {
         edit: () => <div style={{
             padding: '24px',
             textAlign: 'center',
-            border: '1px dashed var(--give-gray-100)',
+            border: '1px dashed var(--givewp-gray-100)',
             borderRadius: '5px',
-            backgroundColor: 'var(--give-gray-10)',
+            backgroundColor: 'var(--givewp-gray-10)',
         }}>
             <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
                 <GatewayItem label={__('Test Donation', 'give')} icon={
@@ -58,7 +58,7 @@ const paymentGateways = {
 const GatewayItem = ({label, icon}) => {
     return (
         <div style={{
-            backgroundColor: 'var(--give-gray-20)', padding: '16px', display: 'flex', justifyContent: 'space-between',
+            backgroundColor: 'var(--givewp-gray-20)', padding: '16px', display: 'flex', justifyContent: 'space-between',
         }}>
             {label} {icon}
         </div>

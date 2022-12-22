@@ -45,11 +45,11 @@ Globally applicable values should be applied using [CSS custom properties](https
 ```css
 # Definition
 :root {
-  --give-green-brand: #68BF6B;
+  --givewp-green-brand: #68BF6B;
 }
 
 # Usage
 element {
-  background-color: var(--give-green-brand);
+  background-color: var(--givewp-green-brand);
 }
 ```

@@ -62,7 +62,7 @@ const FieldTypesList = () => {
                         <>
                             <h3
                                 style={{
-                                    color: 'var( --give-gray-50 )',
+                                    color: 'var( --givewp-gray-50 )',
                                     margin: '20px',
                                     textTransform: 'uppercase',
                                     fontSize: '.8em',

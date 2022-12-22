@@ -5,7 +5,7 @@
         border-top-left-radius: 0.5rem;
         border-top-right-radius: 0.5rem;
         box-shadow: rgb(0 0 0 / 30%) 0 0.125rem 0.3125rem;
-        background-color: var(--give-primary-color);
+        background-color: var(--givewp-primary-color);
         max-width: min(100%, 51.5rem);
         margin: 0 auto;
         display: grid;
@@ -73,7 +73,7 @@
 .givewp-form-secure-icon {
     position: relative;
     inset-block-start: -0.04em;
-    color: var(--give-secondary-color);
+    color: var(--givewp-secondary-color);
     block-size: 1em;
     aspect-ratio: 1;
     @supports not (aspect-ratio: 1) {

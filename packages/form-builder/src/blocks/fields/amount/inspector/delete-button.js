@@ -6,8 +6,8 @@ const DeleteButton = (props) => {
             {...props}
             style={{
                 padding: '8px',
-                color: 'var(--give-alert-10)',
-                background: 'var(--give-alert-20)',
+                color: 'var(--givewp-alert-10)',
+                background: 'var(--givewp-alert-20)',
                 border: 'none',
                 cursor: 'pointer',
                 borderRadius: '2px',

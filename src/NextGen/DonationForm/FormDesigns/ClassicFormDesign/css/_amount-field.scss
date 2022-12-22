@@ -54,9 +54,9 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        border: 0.125rem solid var(--give-primary-color);
+        border: 0.125rem solid var(--givewp-primary-color);
         border-radius: 0.5rem;
-        background-color: var(--give-primary-color);
+        background-color: var(--givewp-primary-color);
         color: rgb(255, 255, 255);
         text-align: center;
         font-family: inherit;
@@ -84,7 +84,7 @@
 
         &--selected {
             background-color: rgb(255, 255, 255);
-            color: var(--give-primary-color);
+            color: var(--givewp-primary-color);
         }
     }
 }

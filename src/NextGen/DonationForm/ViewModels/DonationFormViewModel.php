@@ -168,8 +168,8 @@ class DonationFormViewModel
             id="root-givewp-donation-form"
             class="givewp-donation-form"
             style="
-                --give-primary-color:<?= $this->primaryColor() ?>;
-                --give-secondary-color:<?= $this->secondaryColor() ?>;
+                --givewp-primary-color:<?= $this->primaryColor() ?>;
+                --givewp-secondary-color:<?= $this->secondaryColor() ?>;
                 "
         ></div>
 

@@ -33,7 +33,7 @@ const Feedback = () => {
                     <PopupContent>
                         {__('Let us know what you think about the form builder to help improve the product experience.', 'give')}
                         {' '}
-                        <a href={feedbackUrl} target="_blank" rel="noopener noreferrer" onClick={closeCallback} style={{color: 'var(--give-primary-600)'}}>
+                        <a href={feedbackUrl} target="_blank" rel="noopener noreferrer" onClick={closeCallback} style={{color: 'var(--givewp-primary-600)'}}>
                             {__('Click here', 'give')}
                         </a>
                     </PopupContent>
