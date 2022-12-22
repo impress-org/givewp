@@ -227,7 +227,7 @@ function addTooltipToLevel(node) {
         const tooltip = nodeFromString(
             h('span', {
                 className: 'give-tooltip hint--top hint--bounce',
-                'aria-label': parent.ariaLabel,
+                'aria-label': parent.getAttribute('aria-label'),
             })
         );
         if (node.innerHTML.length < 50) {
