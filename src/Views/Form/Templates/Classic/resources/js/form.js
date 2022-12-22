@@ -12,7 +12,6 @@ import {
 import {
     IS_CURRENCY_SWITCHING_ACTIVE,
     IS_DONATION_SUMMARY_ACTIVE,
-    IS_FEE_RECOVERY_ACTIVE,
     IS_RECURRING_ACTIVE,
     IS_STRIPE_ACTIVE,
 } from './is-feature-active.js';
@@ -225,8 +224,13 @@ function splitDonationLevelAmountsIntoParts({
 function addTooltipToLevel(node) {
     const parent = node.parentNode;
     if (!node.getAttribute('has-tooltip')) {
+        const currencySymbol = node.childNodes[0].innerHTML;
+
         const tooltip = nodeFromString(
-            h('span', {className: 'give-tooltip hint--top hint--bounce', 'aria-label': node.innerHTML})
+            h('span', {
+                className: 'give-tooltip hint--top hint--bounce',
+                'aria-label': `${currencySymbol} ${node.value}`,
+            })
         );
         if (node.innerHTML.length < 50) {
             tooltip.classList.add('narrow');
