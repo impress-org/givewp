@@ -229,7 +229,7 @@ function addTooltipToLevel(node) {
         const tooltip = nodeFromString(
             h('span', {
                 className: 'give-tooltip hint--top hint--bounce',
-                'aria-label': `${currencySymbol} ${node.value}`,
+                'aria-label': parent.ariaLabel,
             })
         );
         if (node.innerHTML.length < 50) {
@@ -238,6 +238,7 @@ function addTooltipToLevel(node) {
         parent.replaceChild(tooltip, node);
         tooltip.appendChild(node);
         node.setAttribute('has-tooltip', 'true');
+        console.log(parent.ariaLabel);
     }
 }
 
