@@ -276,6 +276,8 @@ class DonationRepository
 
         DB::query('COMMIT');
 
+        clean_post_cache($donation->id);
+
         Hooks::doAction('givewp_donation_updated', $donation);
     }
 
