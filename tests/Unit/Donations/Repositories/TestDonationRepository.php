@@ -241,6 +241,8 @@ final class TestDonationRepository extends TestCase
     /**
      * @unreleased
      *
+     * @see https://github.com/impress-org/givewp/issues/6654
+     *
      * @return void
      *
      * @throws Exception
