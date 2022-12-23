@@ -347,3 +347,17 @@ svg {
 }
 
 /** ------------------------------- */
+
+/*
+Add border bottom to tabs, while removing body top border.
+This creates a consistent separator between the tabs and the rest of the sidebar.
+*/
+.components-tab-panel__tabs {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.components-panel__body {
+    border-top: none;
+}
+
+/** ------------------------------- */
