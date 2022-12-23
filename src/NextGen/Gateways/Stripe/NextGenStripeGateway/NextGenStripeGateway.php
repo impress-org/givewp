@@ -58,7 +58,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
     public function enqueueScript(): EnqueueScript
     {
         return new EnqueueScript(
-            $this->getId(),
+            self::id(),
             'build/nextGenStripeGateway.js',
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
@@ -72,10 +72,10 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
      */
     public function formSettings(int $formId): array
     {
-        give_stripe_set_app_info($formId);
+        $this->setUpStripeAppInfo($formId);
 
-        $stripePublishableKey = give_stripe_get_publishable_key($formId);
-        $stripeConnectedAccountKey = give_stripe_get_connected_account_id($formId);
+        $stripePublishableKey = $this->getStripePublishableKey($formId);
+        $stripeConnectedAccountKey = $this->getStripeConnectedAccountKey($formId);
         $currency = give_get_currency($formId);
         $formDefaultAmount = give_get_default_form_amount($formId);
         $defaultAmount = Money::fromDecimal(!empty($formDefaultAmount) ? $formDefaultAmount : '50', $currency);
