@@ -236,7 +236,6 @@ function addTooltipToLevel(node) {
         parent.replaceChild(tooltip, node);
         tooltip.appendChild(node);
         node.setAttribute('has-tooltip', 'true');
-        console.log(parent.ariaLabel);
     }
 }
 
