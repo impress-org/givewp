@@ -238,6 +238,13 @@ final class TestDonationRepository extends TestCase
         $this->assertGreaterThan($firstDonationId, $lastDonationId);
     }
 
+    /**
+     * @unreleased
+     *
+     * @return void
+     *
+     * @throws Exception
+     */
     public function testUpdateDonationShouldClearPostCache()
     {
         /** @var Donation $donation */
