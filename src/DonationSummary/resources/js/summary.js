@@ -35,12 +35,16 @@ window.GiveDonationSummary = {
     initAmount: function () {
         GiveDonationSummary.observe('[name="give-amount"]', function (targetNode, $form) {
             $form.find('[data-tag="amount"]').html(GiveDonationSummary.getFormattedDonationAmount($form));
+        });
 
-            const input = document.querySelector('[name="give-amount"]');
-            input.addEventListener('change', function () {
+        const targetNode = document.querySelector('[name="give-amount"]');
+        if (targetNode) {
+            const $form = jQuery(targetNode.closest('.give-form'));
+
+            targetNode.addEventListener('change', function () {
                 $form.find('[data-tag="amount"]').html(GiveDonationSummary.getFormattedDonationAmount($form));
             });
-        });
+        }
     },
 
     /**
