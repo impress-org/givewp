@@ -230,12 +230,11 @@ class DonationRepository
     }
 
     /**
-     * @unreleased Cleans the post cache after updating it
-     * @since      2.23.1 Use give_update_meta() method to update entries on give_donationmeta table
-     * @since      2.23.0 retrieve the post_parent instead of relying on parentId property
-     * @since      2.21.0 replace actions with givewp_donation_updating and givewp_donation_updated
-     * @since      2.20.0 return void
-     * @since      2.19.6
+     * @since 2.23.1 Use give_update_meta() method to update entries on give_donationmeta table
+     * @since 2.23.0 retrieve the post_parent instead of relying on parentId property
+     * @since 2.21.0 replace actions with givewp_donation_updating and givewp_donation_updated
+     * @since 2.20.0 return void
+     * @since 2.19.6
      *
      * @return void
      * @throws Exception|InvalidArgumentException
@@ -276,8 +275,6 @@ class DonationRepository
         $donation->updatedAt = $now;
 
         DB::query('COMMIT');
-
-        clean_post_cache($donation->id);
 
         Hooks::doAction('givewp_donation_updated', $donation);
     }
