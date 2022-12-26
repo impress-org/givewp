@@ -44,7 +44,7 @@ class ServiceProvider implements ServiceProviderInterface
 
     /**
      * Legacy Listeners
-     * @unreleased Call ClearDonationPostCache on the "updated" hook
+     * @unreleased Call ClearDonationPostCache on the "givewp_donation_updated" hook
      * @since      2.19.6
      */
     private function bootLegacyListeners()
@@ -71,9 +71,9 @@ class ServiceProvider implements ServiceProviderInterface
         });
 
         add_action('givewp_donation_updated', function (Donation $donation) {
+            (new ClearDonationPostCache())($donation);
             Call::invoke(DispatchGiveUpdatePaymentStatus::class, $donation);
             Call::invoke(UpdateSequentialId::class, $donation);
-            (new ClearDonationPostCache())($donation);
         });
 
         Hooks::addAction('givewp_donation_deleted', RemoveSequentialId::class);
