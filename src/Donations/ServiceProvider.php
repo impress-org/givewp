@@ -2,6 +2,7 @@
 
 namespace Give\Donations;
 
+use Give\Donations\LegacyListeners\ClearDonationPostCache;
 use Give\Donations\LegacyListeners\DispatchGiveInsertPayment;
 use Give\Donations\LegacyListeners\DispatchGivePreInsertPayment;
 use Give\Donations\LegacyListeners\DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment;
@@ -43,8 +44,8 @@ class ServiceProvider implements ServiceProviderInterface
 
     /**
      * Legacy Listeners
-     *
-     * @since 2.19.6
+     * @unreleased Call ClearDonationPostCache on the "updated" hook
+     * @since      2.19.6
      */
     private function bootLegacyListeners()
     {
@@ -72,6 +73,7 @@ class ServiceProvider implements ServiceProviderInterface
         add_action('givewp_donation_updated', function (Donation $donation) {
             Call::invoke(DispatchGiveUpdatePaymentStatus::class, $donation);
             Call::invoke(UpdateSequentialId::class, $donation);
+            (new ClearDonationPostCache())($donation);
         });
 
         Hooks::addAction('givewp_donation_deleted', RemoveSequentialId::class);
@@ -87,8 +89,7 @@ class ServiceProvider implements ServiceProviderInterface
         $userId = get_current_user_id();
         $showLegacy = get_user_meta($userId, '_give_donations_archive_show_legacy', true);
         // only register new admin page if user hasn't chosen to use the old one
-        if(empty($showLegacy))
-        {
+        if (empty($showLegacy)) {
             Hooks::addAction('admin_menu', DonationsAdminPage::class, 'registerMenuItem');
 
             if (DonationsAdminPage::isShowing()) {
