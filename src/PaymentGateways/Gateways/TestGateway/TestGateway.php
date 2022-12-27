@@ -110,4 +110,12 @@ class TestGateway extends PaymentGateway
     {
         throw new Exception('Method has not been implemented yet. Please use the legacy method in the meantime.');
     }
+
+    /**
+     * @unreleased
+     */
+    public function supportsRefund(): bool
+    {
+        return true;
+    }
 }

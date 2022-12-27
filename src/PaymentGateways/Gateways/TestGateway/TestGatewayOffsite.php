@@ -13,9 +13,7 @@ use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\Gateways\PayPalStandard\Actions\GenerateDonationReceiptPageUrl;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
-
 use Give\Subscriptions\Models\Subscription;
-
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 use function Give\Framework\Http\Response\response;
@@ -145,6 +143,14 @@ class TestGatewayOffsite extends PaymentGateway
     {
         $donation->status = DonationStatus::REFUNDED();
         $donation->save();
+    }
+
+    /**
+     * @unreleased
+     */
+    public function supportsRefund(): bool
+    {
+        return true;
     }
 
     /**
