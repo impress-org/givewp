@@ -78,12 +78,10 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * @inheritDoc
      *
-     * By default, return false to prevent:
-     * 1) Duplication of refund checkboxes on gateways that already implement it;
-     * 2) Adding the refund checkbox on the admin screen in gateways with an empty refundDonation() method;
-     * 3) Overwriting legacy refund methods with empty refundDonation() methods.
-     *
-     * @unreleased
+     * @unreleased By default, return false to prevent:
+     *             1) Duplication of refund checkboxes on gateways that already implement it;
+     *             2) Adding the refund checkbox on the admin screen in gateways with an empty refundDonation() method;
+     *             3) Overwriting legacy refund methods with empty refundDonation() methods.
      */
     public function supportsRefund(): bool
     {
