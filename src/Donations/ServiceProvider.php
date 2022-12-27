@@ -9,7 +9,6 @@ use Give\Donations\LegacyListeners\DispatchGiveUpdatePaymentStatus;
 use Give\Donations\LegacyListeners\InsertSequentialId;
 use Give\Donations\LegacyListeners\RemoveSequentialId;
 use Give\Donations\LegacyListeners\UpdateDonorPaymentIds;
-use Give\Donations\LegacyListeners\UpdateSequentialId;
 use Give\Donations\Migrations\AddMissingDonorIdToDonationComments;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationNotesRepository;
