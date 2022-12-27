@@ -40,29 +40,27 @@ class LegacyPaymentGatewayRegisterAdapter
             }
         );
 
-        /**
-         * Remove all refund checkboxes added by the gateways with priority 11 and add a new refund checkbox with priority 12
-         */
-        remove_all_actions("give_view_donation_details_totals_after", 11);
-        add_action(
-            "give_view_donation_details_totals_after",
-            static function (int $donationId) use ($registeredGateway, $legacyPaymentGatewayAdapter) {
-                $legacyPaymentGatewayAdapter->addOptRefundCheckbox($donationId, $registeredGateway);
-            },
-            12
-        );
-        add_action(
-            "give_update_payment_status",
-            static function (int $donationId, string $newStatus, string $oldStatus) use (
-                $registeredGateway,
-                $legacyPaymentGatewayAdapter
-            ) {
-                $legacyPaymentGatewayAdapter->maybeRefundOnGateway($donationId, $newStatus, $oldStatus,
-                    $registeredGateway);
-            },
-            12,
-            3
-        );
+        if ($registeredGateway->supportsRefund()) {
+            add_action(
+                "give_view_donation_details_totals_after",
+                static function (int $donationId) use ($registeredGateway, $legacyPaymentGatewayAdapter) {
+                    $legacyPaymentGatewayAdapter->addOptRefundCheckbox($donationId, $registeredGateway);
+                },
+                11
+            );
+            add_action(
+                "give_update_payment_status",
+                static function (int $donationId, string $newStatus, string $oldStatus) use (
+                    $registeredGateway,
+                    $legacyPaymentGatewayAdapter
+                ) {
+                    $legacyPaymentGatewayAdapter->maybeRefundOnGateway($donationId, $newStatus, $oldStatus,
+                        $registeredGateway);
+                },
+                11,
+                3
+            );
+        }
     }
 
     /**

@@ -34,7 +34,6 @@ use Give\Framework\Support\ValueObjects\Money;
 use Give\Helpers\Call;
 use Give\PaymentGateways\Actions\GetGatewayDataFromRequest;
 use Give\Subscriptions\Models\Subscription;
-use ReflectionException;
 use ReflectionMethod;
 
 use function Give\Framework\Http\Response\response;
@@ -74,6 +73,16 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
         }
 
         $this->subscriptionModule = $subscriptionModule;
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @unreleased By default, return false to prevent child classes with empty refundDonation() method to add the refund checkbox on the admin screen and mostly to prevent the override of legacy refund methods with these empty methods.
+     */
+    public function supportsRefund(): bool
+    {
+        return false;
     }
 
     /**
