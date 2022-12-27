@@ -170,4 +170,73 @@ class LegacyPaymentGatewayAdapter
 
         return $donor;
     }
+
+    /**
+     * @unreleased
+     */
+    public function addOptRefundCheckbox(int $donationId, PaymentGatewayInterface $registeredGateway)
+    {
+        $donation = Donation::find($donationId);
+        if ($donation->gatewayId === $registeredGateway::id()) {
+            ?>
+            <div id="give-gateway-opt-refund-wrap"
+                 class="give-gateway-opt-refund give-admin-box-inside give-hidden">
+                <p>
+                    <input type="checkbox" id="give-gateway-opt-refund" name="give_gateway_opt_refund" value="1" />
+                    <label for="give-gateway-opt-refund">
+                        <?php
+                        esc_html_e(sprintf('Refund the donation at %s?', $registeredGateway::id()), 'give');
+                        ?>
+                    </label>
+                </p>
+            </div>
+            <script>
+                const donationStatus = document.getElementById('give-payment-status');
+
+                if (!!donationStatus) {
+                    donationStatus.addEventListener('change', function (event) {
+                        const refundCheckbox = document.getElementById('give-gateway-opt-refund');
+
+                        if (null === refundCheckbox) {
+                            return;
+                        }
+
+                        refundCheckbox.checked = false;
+
+                        if ('refunded' === event.target.value) {
+                            document.getElementById('give-gateway-opt-refund-wrap').style.display = 'block';
+                        } else {
+                            document.getElementById('give-gateway-opt-refund-wrap').style.display = 'none';
+                        }
+                    });
+                }
+            </script>
+            <?php
+        }
+    }
+
+    /**
+     * @unreleased
+     */
+    public function maybeRefundOnGateway(
+        int $donationId,
+        string $newStatus,
+        string $oldStatus,
+        PaymentGatewayInterface $registeredGateway
+    ) {
+        $gatewayOptRefund = ! empty($_POST['give_gateway_opt_refund']) ? give_clean($_POST['give_gateway_opt_refund']) : '';
+        $canProcessRefund = ! empty($gatewayOptRefund) ? $gatewayOptRefund : false;
+
+        // Only move forward if refund requested.
+        if ( ! $canProcessRefund) {
+            return;
+        }
+
+        $donation = Donation::find($donationId);
+        if ($donation->gatewayId === $registeredGateway::id() &&
+            'refunded' === $newStatus &&
+            'refunded' !== $oldStatus) {
+            $registeredGateway->refundDonation($donation);
+        }
+    }
 }
