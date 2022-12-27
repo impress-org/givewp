@@ -71,7 +71,6 @@ class ServiceProvider implements ServiceProviderInterface
 
         add_action('givewp_donation_updated', function (Donation $donation) {
             Call::invoke(DispatchGiveUpdatePaymentStatus::class, $donation);
-            Call::invoke(UpdateSequentialId::class, $donation);
         });
 
         Hooks::addAction('givewp_donation_deleted', RemoveSequentialId::class);
