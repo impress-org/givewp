@@ -43,6 +43,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Legacy Listeners
      *
+     * @unreleased Remove UpdateSequentialId from "givewp_donation_updated" aciton hook.
      * @since 2.19.6
      */
     private function bootLegacyListeners()
