@@ -1,13 +1,13 @@
 <?php
 
-namespace GiveTests\Unit\Framework\PaymentGateways\Commands;
+namespace Give\Tests\Unit\Framework\PaymentGateways\Commands;
 
 use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionCompleteHandler;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
 use Give\Helpers\Call;
 use Give\Subscriptions\Models\Subscription;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
  * @since 2.23.2

@@ -1,6 +1,6 @@
 <?php
 
-namespace GiveTests\Unit\Subscriptions\Repositories;
+namespace Give\Tests\Unit\Subscriptions\Repositories;
 
 use Exception;
 use Give\Donors\Models\Donor;
@@ -12,8 +12,8 @@ use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
  * @since 2.19.6

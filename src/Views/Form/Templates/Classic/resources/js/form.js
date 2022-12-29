@@ -12,7 +12,6 @@ import {
 import {
     IS_CURRENCY_SWITCHING_ACTIVE,
     IS_DONATION_SUMMARY_ACTIVE,
-    IS_FEE_RECOVERY_ACTIVE,
     IS_RECURRING_ACTIVE,
     IS_STRIPE_ACTIVE,
 } from './is-feature-active.js';
@@ -226,7 +225,10 @@ function addTooltipToLevel(node) {
     const parent = node.parentNode;
     if (!node.getAttribute('has-tooltip')) {
         const tooltip = nodeFromString(
-            h('span', {className: 'give-tooltip hint--top hint--bounce', 'aria-label': node.innerHTML})
+            h('span', {
+                className: 'give-tooltip hint--top hint--bounce',
+                'aria-label': parent.getAttribute('aria-label'),
+            })
         );
         if (node.innerHTML.length < 50) {
             tooltip.classList.add('narrow');

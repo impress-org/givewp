@@ -1,6 +1,6 @@
 <?php
 
-namespace GiveTests\Unit\Framework\PaymentGateways\Traits;
+namespace Give\Tests\Unit\Framework\PaymentGateways\Traits;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
@@ -8,7 +8,7 @@ use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\PaymentGateways\SubscriptionModule;
 use Give\Subscriptions\Models\Subscription;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 /**
  * @since 2.20.0

@@ -4,6 +4,7 @@ namespace Give\Framework\FieldsAPI\Concerns;
 
 use Give\Framework\FieldsAPI\Contracts\Collection;
 use Give\Framework\FieldsAPI\Contracts\Node;
+use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
 use Give\Framework\FieldsAPI\Exceptions\ReferenceNodeNotFoundException;
 
 /**
@@ -11,17 +12,14 @@ use Give\Framework\FieldsAPI\Exceptions\ReferenceNodeNotFoundException;
  */
 trait InsertNode
 {
-
     /**
+     * @inheritDoc
+     *
      * @since 2.10.2
      *
-     * @param string $siblingName
-     * @param Node   $node
-     *
-     * @return $this
-     * @throws ReferenceNodeNotFoundException
+     * @throws ReferenceNodeNotFoundException|NameCollisionException
      */
-    public function insertAfter($siblingName, Node $node)
+    public function insertAfter(string $siblingName, Node $node): self
     {
         $this->checkNameCollisionDeep($node);
         $this->insertAfterRecursive($siblingName, $node);
@@ -32,20 +30,16 @@ trait InsertNode
     /**
      * @since 2.10.2
      *
-     * @param string $siblingName
-     * @param Node   $node
-     *
      * @return void
-     * @throws ReferenceNodeNotFoundException
-     *
+     * @throws ReferenceNodeNotFoundException|NameCollisionException
      */
-    protected function insertAfterRecursive($siblingName, Node $node)
+    protected function insertAfterRecursive(string $siblingName, Node $node)
     {
         $siblingIndex = $this->getNodeIndexByName($siblingName);
-        if (false !== $siblingIndex) {
-            $this->insertAtIndex(
-                $siblingIndex + 1,
-                $node
+        if (null !== $siblingIndex) {
+            $this->insert(
+                $node,
+                $siblingIndex + 1
             );
 
             return;
@@ -65,16 +59,13 @@ trait InsertNode
     }
 
     /**
+     * @inheritDoc
+     *
      * @since 2.10.2
      *
-     * @param string $siblingName
-     * @param Node   $node
-     *
-     * @return $this
-     * @throws ReferenceNodeNotFoundException
-     *
+     * @throws ReferenceNodeNotFoundException|NameCollisionException
      */
-    public function insertBefore($siblingName, Node $node)
+    public function insertBefore(string $siblingName, Node $node): self
     {
         $this->checkNameCollisionDeep($node);
         $this->insertBeforeRecursive($siblingName, $node);
@@ -85,20 +76,16 @@ trait InsertNode
     /**
      * @since 2.10.2
      *
-     * @param string $siblingName
-     * @param Node   $node
-     *
      * @return void
-     * @throws ReferenceNodeNotFoundException
-     *
+     * @throws ReferenceNodeNotFoundException|NameCollisionException
      */
-    protected function insertBeforeRecursive($siblingName, Node $node)
+    protected function insertBeforeRecursive(string $siblingName, Node $node)
     {
         $siblingIndex = $this->getNodeIndexByName($siblingName);
-        if (false !== $siblingIndex) {
-            $this->insertAtIndex(
-                $siblingIndex - 1,
-                $node
+        if (null !== $siblingIndex) {
+            $this->insert(
+                $node,
+                $siblingIndex - 1
             );
 
             return;
@@ -118,21 +105,35 @@ trait InsertNode
     }
 
     /**
+     * @unreleased Make index optional to avoid rebuilding array when appending
      * @since 2.10.2
+     *
+     * @param int|null $index appends to end if null
+     *
+     * @throws NameCollisionException
      */
-    protected function insertAtIndex($index, $node)
+    protected function insert(Node $node, int $index = null)
     {
         $this->checkNameCollisionDeep($node);
-        array_splice($this->nodes, $index, 0, [$node]);
+
+        if ($index === null) {
+            $this->nodes[] = $node;
+        } else {
+            array_splice($this->nodes, $index, 0, [$node]);
+        }
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
+     *
+     * @since 2.10.2
+     *
+     * @throws NameCollisionException
      */
-    public function append(Node ...$nodes)
+    public function append(Node ...$nodes): self
     {
         foreach ($nodes as $node) {
-            $this->insertAtIndex($this->count(), $node);
+            $this->insert($node);
         }
 
         return $this;

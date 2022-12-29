@@ -1,6 +1,6 @@
 <?php
 
-namespace GiveTests\Unit\Framework\FieldsAPI;
+namespace Give\Tests\Unit\Framework\FieldsAPI;
 
 use Give\Framework\FieldsAPI\Group;
 use Give\Framework\FieldsAPI\Text;
@@ -34,5 +34,35 @@ final class GroupTest extends TestCase
         );
 
         $this->assertEquals('secondTextField', $group->getNodeByName('secondTextField')->getName());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetFieldsInNestedGroups()
+    {
+        $group = Group::make('group')->append(
+            Text::make('firstTextField'),
+            Text::make('secondTextField'),
+            Group::make('nestedGroup')->append(
+                Text::make('thirdTextField'),
+                Group::make('nestedNestedGroup')->append(
+                    Text::make('fourthTextField')
+                )
+            )
+        );
+
+        $fields = $group->getFields();
+        $this->assertCount(4, $fields);
+
+        $this->assertEquals([
+            'firstTextField',
+            'secondTextField',
+            'thirdTextField',
+            'fourthTextField',
+        ],
+            array_map(static function ($field) {
+                return $field->getName();
+            }, $fields));
     }
 }

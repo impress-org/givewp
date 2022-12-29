@@ -1,10 +1,10 @@
 <?php
 
-namespace GiveTests\Unit\Helpers;
+namespace Give\Tests\Unit\Helpers;
 
 use Give_Helper_Payment;
 use Give_Payment;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 /**
  * Class DonationFormVariablePricesDropdownTest

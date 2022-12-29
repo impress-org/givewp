@@ -1,6 +1,6 @@
 <?php
 
-namespace GiveTests\Unit\Donations\Repositories;
+namespace Give\Tests\Unit\Donations\Repositories;
 
 use DateTime;
 use Exception;
@@ -13,8 +13,8 @@ use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
  * @coversDefaultClass DonationRepository

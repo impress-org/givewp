@@ -1,5 +1,5 @@
 <?php
-namespace GiveTests\Unit\MultiFormGoals\MultiFormGoal;
+namespace Give\Tests\Unit\MultiFormGoals\MultiFormGoal;
 
 use Give\MultiFormGoals\MultiFormGoal\Shortcode;
 use PHPUnit\Framework\TestCase;

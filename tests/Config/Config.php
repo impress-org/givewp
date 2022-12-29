@@ -1,6 +1,6 @@
 <?php
 
-namespace GiveTests\Config;
+namespace Give\Tests\Config;
 
 interface Config {
     /**

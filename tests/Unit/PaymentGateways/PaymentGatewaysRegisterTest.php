@@ -1,6 +1,6 @@
 <?php
 
-namespace GiveTests\Unit\PaymentGateways;
+namespace Give\Tests\Unit\PaymentGateways;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
