@@ -167,7 +167,6 @@ svg {
         display: flex;
         gap: 24px;
         flex-direction: column;
-        margin-bottom: 40px;
     }
 }
 
@@ -177,7 +176,8 @@ svg {
 }
 
 .block-editor-block-list__block .block-list-appender {
-    bottom: -40px;
+    // position the button 1 below itself and then half inside the padding. (24px is the size of the button and 36px is the padding bottom)
+    bottom: calc(-24px + calc((36px - 24px) / -2));
     width: 100%;
     display: flex;
     justify-content: center;
