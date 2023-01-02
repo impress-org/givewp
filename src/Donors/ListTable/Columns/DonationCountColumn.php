@@ -15,7 +15,7 @@ use Give\Framework\ListTable\ModelColumn;
 class DonationCountColumn extends ModelColumn
 {
 
-    protected $sortColumn = 'totalDonations';
+    protected $sortColumn = 'totalNumberOfDonations';
 
     /**
      * @unreleased
