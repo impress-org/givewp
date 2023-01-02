@@ -8,8 +8,8 @@ use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
 /**
  * @unreleased
  *
- * @method static DonationNoteMetaKeys NOTE_TYPE()
- * @method bool isNoteType()
+ * @method static DonationNoteMetaKeys TYPE()
+ * @method bool isType()
  */
 class DonationNoteMetaKeys extends Enum
 {
