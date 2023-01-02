@@ -376,6 +376,6 @@ class DonationFormRepository
     {
         $form = DB::table('posts')->select(['post_content', 'data'])->where('ID', $formId)->get();
 
-        return !$form->data;
+        return empty($form->data);
     }
 }
