@@ -35,8 +35,7 @@ class DonorDetailsView
      */
     public function render(): string
     {
-        return "
-        <h3>{$this->getTitle()}</h3>
+        return "<h3>{$this->getTitle()}</h3>
         <table class='wp-list-table widefat striped donations'>
 			<thead>
                 <tr>
@@ -47,8 +46,7 @@ class DonorDetailsView
 			<tbody>
 			    {$this->getTableRows()}
             </tbody>
-		</table>
-        ";
+		</table>";
     }
 
     /**
@@ -58,7 +56,7 @@ class DonorDetailsView
      */
     protected function getTitle(): string
     {
-        return __('Custom Fields', 'givewp');
+        return __('Custom Fields', 'give');
     }
 
     /**
@@ -81,12 +79,10 @@ class DonorDetailsView
     /**
      * @unreleased
      *
-     * @param Field $field
-     *
      * @return mixed
      */
     protected function getFieldValue(Field $field)
     {
-        return give()->donor_meta->get_meta($this->donor->userId, $field->getName(), true);
+        return give()->donor_meta->get_meta($this->donor->id, $field->getName(), true);
     }
 }

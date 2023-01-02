@@ -19,8 +19,8 @@ class DonationDetailsView
     /**
      * @unreleased
      *
-     * @param Donation      $donation
-     * @param array|Field[] $fields
+     * @param  Donation  $donation
+     * @param  array|Field[]  $fields
      */
     public function __construct(Donation $donation, array $fields)
     {
@@ -35,12 +35,10 @@ class DonationDetailsView
      */
     public function render(): string
     {
-        return "
-        <div class='postbox' style='padding-bottom: 15px;'>
+        return "<div class='postbox' style='padding-bottom: 15px;'>
             <h3 class='handle'>{$this->getTitle()}</h3>
             <div class='inside'>{$this->getContents()}</div>
-        </div>
-        ";
+        </div>";
     }
 
     /**
@@ -50,7 +48,7 @@ class DonationDetailsView
      */
     protected function getTitle(): string
     {
-        return __('Custom Fields', 'givewp');
+        return __('Custom Fields', 'give');
     }
 
     /**
@@ -60,7 +58,7 @@ class DonationDetailsView
      */
     protected function getContents(): string
     {
-        return array_reduce($this->fields, function($output, Field $field) {
+        return array_reduce($this->fields, function ($output, Field $field) {
             return $output . "
                 <div>
                     <strong>{$field->getLabel()}:</strong>&nbsp;
@@ -73,12 +71,12 @@ class DonationDetailsView
     /**
      * @unreleased
      *
-     * @param Field $field
+     * @param  Field  $field
      *
      * @return mixed
      */
     protected function getFieldValue(Field $field)
     {
-        return give()->payment_meta->get_meta($this->donation->id, $field->getName(), true );
+        return give()->payment_meta->get_meta($this->donation->id, $field->getName(), true);
     }
 }

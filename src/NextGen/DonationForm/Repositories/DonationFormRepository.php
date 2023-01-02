@@ -368,4 +368,14 @@ class DonationFormRepository
 
         return $form;
     }
+
+    /**
+     * @unreleased
+     */
+    public function isLegacyForm(int $formId): bool
+    {
+        $form = DB::table('posts')->select(['post_content', 'data'])->where('ID', $formId)->get();
+
+        return !$form->data;
+    }
 }

@@ -213,4 +213,31 @@ final class TestDonationFormRepository extends TestCase
     {
         return $this->markTestIncomplete();
     }
+
+    /**
+     * @unreleased
+     */
+    public function testIsLegacyFormShouldReturnTrueWhenFormIsLegacy()
+    {
+        $legacyForm = DB::table('posts')->insert([
+            'post_title' => 'Legacy Form',
+            'post_type' => 'give_forms',
+            'post_status' => 'publish',
+        ]);
+
+        $legacyFormId = DB::last_insert_id();
+
+        $this->assertTrue($this->repository->isLegacyForm($legacyFormId));
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testIsLegacyFormShouldReturnFalseIfNotLegacy()
+    {
+        // create a new form
+        $form = DonationForm::factory()->create();
+
+        $this->assertFalse($this->repository->isLegacyForm($form->id));
+    }
 }
