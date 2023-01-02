@@ -3,10 +3,9 @@
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
 use Give\Donations\Models\Donation;
-use Give\Donations\Models\DonationNote;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
-use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
+use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
@@ -72,13 +71,7 @@ class TestGateway extends PaymentGateway
      */
     public function createPayment(Donation $donation, $gatewayData = null): GatewayCommand
     {
-        DonationNote::create(
-            [
-                'donationId' => $donation->id,
-                'content' => 'Payment is processing.  This could take up to 24 hours to clear.'
-            ]
-        );
-        return new PaymentProcessing("test-gateway-transaction-id-$donation->id");
+        return new PaymentComplete("test-gateway-transaction-id-$donation->id");
     }
 
     /**

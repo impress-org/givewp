@@ -81,7 +81,7 @@ class DonationNotesRepository
             if ($donationNote->type->isDonor()) {
                 DB::table('give_commentmeta')
                     ->insert([
-                        'comment_id' => $commentId,
+                        'give_comment_id' => $commentId,
                         'meta_key' => DonationNoteMetaKeys::TYPE,
                         'meta_value' => DonationNoteType::DONOR,
                     ]);

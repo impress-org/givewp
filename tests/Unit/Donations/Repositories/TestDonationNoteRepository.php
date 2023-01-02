@@ -50,7 +50,9 @@ final class TestDonationNoteRepository extends TestCase
     {
         $donor = Donor::factory()->create();
         $donation = Donation::factory()->create(['donorId' => $donor->id]);
-        $donationNote = new DonationNote(['donationId' => $donation->id, 'content' => 'im a note']);
+        $donationNote = new DonationNote(
+            ['donationId' => $donation->id, 'content' => 'im a note', 'type' => DonationNoteType::DONOR()]
+        );
 
         $repository = new DonationNotesRepository();
 
