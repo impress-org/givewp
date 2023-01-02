@@ -9,8 +9,8 @@ use Give\Framework\Support\ValueObjects\Enum;
 /**
  * @unreleased
  *
- * @method static DonationType ADMIN()
- * @method static DonationType DONOR()
+ * @method static DonationNoteType ADMIN()
+ * @method static DonationNoteType DONOR()
  * @method bool isAdmin()
  * @method bool isDonor()
  */
