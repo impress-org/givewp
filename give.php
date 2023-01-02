@@ -70,6 +70,7 @@ use Give\PaymentGateways\ServiceProvider as PaymentGatewaysServiceProvider;
 use Give\Promotions\ServiceProvider as PromotionsServiceProvider;
 use Give\Revenue\RevenueServiceProvider;
 use Give\Route\Form as FormRoute;
+use Give\ServiceProviders\GlobalStyles as GlobalStylesServiceProvider;
 use Give\ServiceProviders\LegacyServiceProvider;
 use Give\ServiceProviders\Onboarding;
 use Give\ServiceProviders\PaymentGateways;
@@ -201,6 +202,7 @@ final class Give
         WordPressShimsServiceProvider::class,
         DatabaseServiceProvider::class,
         ValidationsServiceProvider::class,
+        GlobalStylesServiceProvider::class,
     ];
 
     /**
@@ -235,8 +237,6 @@ final class Give
         add_action('admin_notices', [$this, 'display_old_recurring_compatibility_notice']);
 
         add_action('plugins_loaded', [$this, 'init'], 0);
-
-        add_action('admin_enqueue_scripts', [$this, 'enqueueAdminScripts'], -1);
 
         register_activation_hook(GIVE_PLUGIN_FILE, [$this, 'install']);
 
@@ -281,16 +281,6 @@ final class Give
          *
          */
         do_action('give_init', $this);
-    }
-
-    public function enqueueAdminScripts()
-    {
-        wp_enqueue_style(
-            'givewp-admin-fonts',
-            'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap',
-            [],
-            null
-        );
     }
 
     /**
