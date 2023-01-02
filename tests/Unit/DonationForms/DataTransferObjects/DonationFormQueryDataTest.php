@@ -1,13 +1,13 @@
 <?php
 
-namespace GiveTests\Unit\DonationForms\DataTransferObjects;
+namespace Give\Tests\Unit\DonationForms\DataTransferObjects;
 
 use Give\DonationForms\DataTransferObjects\DonationFormQueryData;
 use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
 use Give\Framework\Database\DB;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
-use GiveTests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
+use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 
 final class DonationFormQueryDataTest extends TestCase
 {

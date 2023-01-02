@@ -1,14 +1,14 @@
 <?php
 
-namespace GiveTests\Unit\Subscriptions\Endpoints;
+namespace Give\Tests\Unit\Subscriptions\Endpoints;
 
 use Exception;
 use Give\Subscriptions\Endpoints\ListSubscriptions;
 use Give\Subscriptions\ListTable\SubscriptionsListTable;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionMode;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
 use WP_REST_Server;
 

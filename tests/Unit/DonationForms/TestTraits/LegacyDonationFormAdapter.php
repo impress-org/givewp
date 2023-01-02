@@ -1,6 +1,6 @@
 <?php
 
-namespace GiveTests\Unit\DonationForms\TestTraits;
+namespace Give\Tests\Unit\DonationForms\TestTraits;
 
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\DonationFormLevel;

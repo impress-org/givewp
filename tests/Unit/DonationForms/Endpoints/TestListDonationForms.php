@@ -1,13 +1,13 @@
 <?php
 
-namespace GiveTests\Unit\DonationForms\Endpoints;
+namespace Give\Tests\Unit\DonationForms\Endpoints;
 
 use Exception;
 use Give\DonationForms\Endpoints\ListDonationForms;
 use Give\DonationForms\ListTable\DonationFormsListTable;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
-use GiveTests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
+use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 use WP_REST_Request;
 use WP_REST_Server;
 
