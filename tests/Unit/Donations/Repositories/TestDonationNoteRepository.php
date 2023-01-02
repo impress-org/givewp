@@ -6,6 +6,7 @@ use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\Repositories\DonationNotesRepository;
+use Give\Donations\ValueObjects\DonationNoteType;
 use Give\Donors\Models\Donor;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Tests\TestCase;
@@ -66,6 +67,7 @@ final class TestDonationNoteRepository extends TestCase
         $this->assertEquals($query->id, $donationNote->id);
         $this->assertEquals($query->donationId, $donationNote->donationId);
         $this->assertEquals($query->content, $donationNote->content);
+        $this->assertEquals($query->type, $donationNote->type);
     }
 
     /**
@@ -145,11 +147,14 @@ final class TestDonationNoteRepository extends TestCase
         $donation = Donation::factory()->create(['donorId' => $donor->id]);
 
         /** @var DonationNote $donationNote */
-        $donationNote = DonationNote::factory()->create(['donationId' => $donation->id]);
+        $donationNote = DonationNote::factory()->create(
+            ['donationId' => $donation->id, 'type' => DonationNoteType::ADMIN()]
+        );
 
         $repository = new DonationNotesRepository();
 
         $donationNote->content = 'im an updated note';
+        $donationNote->type = DonationNoteType::DONOR();
 
         // call update method
         $repository->update($donationNote);
@@ -160,6 +165,7 @@ final class TestDonationNoteRepository extends TestCase
             ->get();
 
         $this->assertEquals('im an updated note', $query->content);
+        $this->assertTrue($query->type->isDonor());
     }
 
     /**
