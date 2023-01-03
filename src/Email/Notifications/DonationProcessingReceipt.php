@@ -49,7 +49,7 @@ class DonationProcessingReceipt extends Give_Email_Notification
         $defaultEmailMessage = give_get_default_donation_receipt_email();
 
         $defaultEmailMessage .= "\n\n" . '<strong>' . esc_html__('IMPORTANT:', 'give') . '</strong>' . ' ' .
-                                esc_html__('this is a temporary receipt as your payment is still being processed, you will receive a final receipt once it has been completed.',
+                                esc_html__('this is a temporary receipt as your donation is still being processed, you will receive a final receipt once it has been completed.',
                                     'give') . "\n\n";
 
         /**
@@ -70,6 +70,8 @@ class DonationProcessingReceipt extends Give_Email_Notification
             if ( ! $this->payment->ID) {
                 return;
             }
+
+            $this->recipient_email = $this->payment->email;
 
             $this->send_email_notification(
                 [
