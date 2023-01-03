@@ -14,6 +14,9 @@ class DonationProcessingReceipt extends Give_Email_Notification
     /* @var Give_Payment $payment */
     public $payment;
 
+    /**
+     * @unreleased
+     */
     public function init()
     {
         // Initialize empty payment.
