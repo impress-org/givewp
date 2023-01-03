@@ -35,9 +35,7 @@ class DonationProcessingReceipt extends Give_Email_Notification
         );
 
         if ('disabled' != $this->get_notification_status()) {
-            //add_action("give_{$this->config['id']}_email_notification", [$this, 'sendEmailNotificationToDonor']);
             add_action('give_update_payment_status', [$this, 'sendEmailNotificationToDonor'], 10, 3);
-            add_action('give_email_links', [$this, 'resendEmailNotificationToDonor']);
         }
     }
 
@@ -79,29 +77,5 @@ class DonationProcessingReceipt extends Give_Email_Notification
                 ]
             );
         }
-    }
-
-    /**
-     * @unreleased
-     */
-    public function resendEmailNotificationToDonor(array $data)
-    {
-        $donationId = absint($data['purchase_id']);
-
-        if (empty($donationId)) {
-            return;
-        }
-
-        $this->payment = new Give_Payment($donationId);
-
-        if ( ! current_user_can('edit_give_payments', $this->payment->ID)) {
-            return;
-        }
-
-        $this->send_email_notification(
-            [
-                'payment_id' => $this->payment->ID,
-            ]
-        );
     }
 }
