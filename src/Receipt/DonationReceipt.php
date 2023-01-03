@@ -93,7 +93,8 @@ class DonationReceipt extends Receipt
     /**
      * Add donation section.
      *
-     * @since 2.7.0
+     * @unreleased Add notice for donations with the "processing" status
+     * @since      2.7.0
      */
     private function addDonationSection()
     {
@@ -102,16 +103,13 @@ class DonationReceipt extends Receipt
             'label' => esc_html__('Donation Details', 'give'),
         ]);
 
-
-        $donationStatus = (DonationStatus::PROCESSING()->getValue() === $this->donation->post_status) ?
-            give_get_payment_statuses()[$this->donation->post_status] . "\n\n" . '<em><strong>***</strong> ' .
-            esc_html__('You will receive a final receipt in your email once it has been completed.',
-                'give') . '</em>' : give_get_payment_statuses()[$this->donation->post_status];
-
         $donationSection->addLineItem([
             'id' => 'paymentStatus',
             'label' => esc_html__('Payment Status', 'give'),
-            'value' => $donationStatus,
+            'value' => (DonationStatus::PROCESSING()->getValue() === $this->donation->post_status) ?
+                give_get_payment_statuses()[$this->donation->post_status] . "\n\n" . '<em><strong>***</strong> ' .
+                esc_html__('You will receive a final receipt in your email once it has been completed.',
+                    'give') . '</em>' : give_get_payment_statuses()[$this->donation->post_status],
         ]);
 
         $donationSection->addLineItem([
