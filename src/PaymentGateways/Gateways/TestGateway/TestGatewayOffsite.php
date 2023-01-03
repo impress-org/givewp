@@ -137,12 +137,10 @@ class TestGatewayOffsite extends PaymentGateway
     /**
      * @since 2.20.0
      * @inerhitDoc
-     * @throws Exception
      */
-    public function refundDonation(Donation $donation)
+    public function refundDonation(Donation $donation): bool
     {
-        $donation->status = DonationStatus::REFUNDED();
-        $donation->save();
+        return true;
     }
 
     /**
@@ -175,6 +173,7 @@ class TestGatewayOffsite extends PaymentGateway
      * @since 2.23.0
      *
      * @return void
+     * @throws \Exception
      */
     private function updateSubscription(Subscription $subscription)
     {
