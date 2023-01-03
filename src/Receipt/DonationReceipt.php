@@ -2,6 +2,7 @@
 
 namespace Give\Receipt;
 
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give_Payment;
 
@@ -97,30 +98,36 @@ class DonationReceipt extends Receipt
     private function addDonationSection()
     {
         $donationSection = $this->addSection([
-            'id'    => self::DONATIONSECTIONID,
+            'id' => self::DONATIONSECTIONID,
             'label' => esc_html__('Donation Details', 'give'),
         ]);
 
+
+        $donationStatus = (DonationStatus::PROCESSING()->getValue() === $this->donation->post_status) ?
+            give_get_payment_statuses()[$this->donation->post_status] . "\n\n" . '<em><strong>***</strong> ' .
+            esc_html__('You will receive a final receipt in your email once it has been completed.',
+                'give') . '</em>' : give_get_payment_statuses()[$this->donation->post_status];
+
         $donationSection->addLineItem([
-            'id'    => 'paymentStatus',
+            'id' => 'paymentStatus',
             'label' => esc_html__('Payment Status', 'give'),
-            'value' => give_get_payment_statuses()[ $this->donation->post_status ],
+            'value' => $donationStatus,
         ]);
 
         $donationSection->addLineItem([
-            'id'    => 'paymentMethod',
+            'id' => 'paymentMethod',
             'label' => esc_html__('Payment Method', 'give'),
             'value' => give_get_gateway_checkout_label($this->donation->gateway),
         ]);
 
         $donationSection->addLineItem([
-            'id'    => 'amount',
+            'id' => 'amount',
             'label' => esc_html__('Donation Amount', 'give'),
             'value' => give_currency_filter(
-                give_format_amount($this->donation->total, [ 'donation_id' => $this->donation->ID ]),
+                give_format_amount($this->donation->total, ['donation_id' => $this->donation->ID]),
                 [
-                    'currency_code'   => $this->donation->currency,
-                    'form_id'         => $this->donation->form_id,
+                    'currency_code' => $this->donation->currency,
+                    'form_id' => $this->donation->form_id,
                     'decode_currency' => true,
                 ]
             ),
@@ -130,10 +137,10 @@ class DonationReceipt extends Receipt
             'id'    => 'totalAmount',
             'label' => esc_html__('Donation Total', 'give'),
             'value' => give_currency_filter(
-                give_format_amount($this->donation->total, [ 'donation_id' => $this->donation->ID ]),
+                give_format_amount($this->donation->total, ['donation_id' => $this->donation->ID]),
                 [
-                    'currency_code'   => $this->donation->currency,
-                    'form_id'         => $this->donation->form_id,
+                    'currency_code' => $this->donation->currency,
+                    'form_id' => $this->donation->form_id,
                     'decode_currency' => true,
                 ]
             ),
@@ -161,12 +168,12 @@ class DonationReceipt extends Receipt
         $address   = give_get_donation_address($this->donationId);
         $formatted = sprintf(
             '%1$s%7$s%2$s%3$s, %4$s%5$s%7$s%6$s',
-            $address[ 'line1' ],
-            ! empty($address[ 'line2' ]) ? $address[ 'line2' ] . "\r\n" : '',
-            $address[ 'city' ],
-            $address[ 'state' ],
-            $address[ 'zip' ],
-            $address[ 'country' ],
+            $address['line1'],
+            ! empty($address['line2']) ? $address['line2'] . "\r\n" : '',
+            $address['city'],
+            $address['state'],
+            $address['zip'],
+            $address['country'],
             "\r\n"
         );
 
