@@ -49,11 +49,22 @@ class DonationProcessingReceipt extends Give_Email_Notification
      */
     public function getDefaultEmailMessage(): string
     {
-        $defaultEmailMessage = give_get_default_donation_receipt_email();
-
-        $defaultEmailMessage .= "\n\n" . '<strong>' . esc_html__('IMPORTANT:', 'give') . '</strong>' . ' ' .
-                                esc_html__('this is a temporary receipt as your donation is still being processed, you will receive a final receipt once it has been completed.',
-                                    'give') . "\n\n";
+        $defaultEmailMessage = sprintf(
+            esc_html__('Dear %s!', 'give') . "\n\n" .
+            esc_html__('Thank you for your donation. Your payment is currently being processed and you will receive a final email receipt once it has completed. Your generosity is appreciated!',
+                'give') . "\n\n" .
+            esc_html__('Here are the details of your donation:', 'give') . "\n\n" .
+            '<strong>' . esc_html__('Donor:', 'give') . '</strong>' . ' %s' . "\n" .
+            '<strong>' . esc_html__('Donation:', 'give') . '</strong>' . ' %s' . "\n" .
+            '<strong>' . esc_html__('Donation Date:', 'give') . '</strong>' . ' %s' . "\n" .
+            '<strong>' . esc_html__('Amount:', 'give') . '</strong>' . ' %s' . "\n" .
+            '<strong>' . esc_html__('Payment Method:', 'give') . '</strong>' . ' %s' . "\n" .
+            '<strong>' . esc_html__('Payment ID:', 'give') . '</strong>' . ' %s' . "\n\n" .
+            '%s' . "\n\n" .
+            esc_html__('Sincerely ', 'give') . "\n" .
+            '%s' . "\n"
+            , '{name}', '{fullname}', '{donation}', '{date}', '{amount}', '{payment_method}',
+            '{payment_id}', '{receipt_link}', '{sitename}');
 
         /**
          * @unreleased
