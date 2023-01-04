@@ -35,12 +35,14 @@ class DispatchGiveInsertPayment
             'purchaseKey' => $donation->purchaseKey,
             'currency' => $donation->amount->getCurrency()->getCode(),
             'paymentGateway' => $donation->gatewayId,
+            'donorId' => $donation->donorId,
             'userInfo' => [
                 'id' => $donor->userId,
                 'firstName' => $donor->firstName,
                 'lastName' => $donor->lastName,
                 'title' => $donor->prefix,
                 'email' => $donor->email,
+                'address' => $donation->billingAddress,
             ],
         ]);
 
