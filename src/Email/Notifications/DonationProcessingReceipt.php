@@ -44,8 +44,6 @@ class DonationProcessingReceipt extends Give_Email_Notification
 
     /**
      * @unreleased
-     *
-     * @return string
      */
     public function getDefaultEmailMessage(): string
     {
