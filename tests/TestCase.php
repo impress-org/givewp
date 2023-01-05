@@ -4,7 +4,6 @@ namespace Give\Tests;
 
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Support\ValueObjects\Money;
-use Give\Framework\Validation\Contracts\ValidationRule;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\AssertIsType;
@@ -154,50 +153,6 @@ class TestCase extends WP_UnitTestCase
             $expected->equals($actual),
             "Failed asserting money is equal. Expected: {$expected->getAmount()} {$expected->getCurrency()->getCode()}, Actual: {$actual->getAmount()} {$actual->getCurrency()->getCode()}"
         );
-    }
-
-    /**
-     * Asserts that a given validation rule passes.
-     *
-     * @param mixed $value
-     *
-     * @return void
-     */
-    public static function assertValidationRulePassed(
-        ValidationRule $rule,
-        $value,
-        string $key = '',
-        array $values = [],
-        bool $shouldPass = true
-    ) {
-        $error = null;
-        $fail = function ($message) use (&$error) {
-            $error = $message;
-        };
-
-        $rule($value, $fail, $key, $values);
-
-        if ($shouldPass) {
-            self::assertNull($error, 'Validation rule failed. Value: ' . print_r($value, true));
-        } else {
-            self::assertNotNull($error, 'Validation rule passed. Value: ' . print_r($value, true));
-        }
-    }
-
-    /**
-     * Asserts that a given validation rule fails.
-     *
-     * @param mixed $value
-     *
-     * @return void
-     */
-    public static function assertValidationRuleFailed(
-        ValidationRule $rule,
-        $value,
-        string $key = '',
-        array $values = []
-    ) {
-        self::assertValidationRulePassed($rule, $value, $key, $values, false);
     }
 
     /**
