@@ -95,9 +95,8 @@ class Model
      * Get Progress Bar output
      *
      * @since 2.9.0
-     **@return string
      */
-    protected function getProgressBarOutput()
+    public function getProgressBarOutput(): string
     {
         $progressBar = new ProgressBar(
             [
@@ -123,7 +122,7 @@ class Model
     }
 
     /**
-     * @unreleased 
+     * @unreleased
      *
      * @return false|mixed
      */

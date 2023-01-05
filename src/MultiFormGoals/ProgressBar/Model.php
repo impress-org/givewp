@@ -145,9 +145,8 @@ class Model
      * Get number of donations for Progress Bar
      *
      * @since 2.9.0
-     **@return int
      */
-    protected function getDonationCount()
+    public function getDonationCount(): int
     {
         $results = $this->getDonationRevenueResults();
 
@@ -270,10 +269,13 @@ class Model
      * Get time remaining before Progress Bar end date
      *
      * @since 2.9.0
+     *
+     * @return float|int
      */
-    public function getTimeToGo(): string
+    public function getTimeToGo()
     {
         $minutes = $this->getMinutesRemaining();
+
         switch ($minutes) {
             case $minutes > 1440:
             {
@@ -287,6 +289,10 @@ class Model
             {
                 return round($minutes);
             }
+            default:
+            {
+                return 0;
+            }
         }
     }
 
@@ -298,6 +304,7 @@ class Model
     public function getTimeToGoLabel(): string
     {
         $minutes = $this->getMinutesRemaining();
+
         switch ($minutes) {
             case $minutes > 1440:
             {
