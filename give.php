@@ -70,6 +70,7 @@ use Give\PaymentGateways\ServiceProvider as PaymentGatewaysServiceProvider;
 use Give\Promotions\ServiceProvider as PromotionsServiceProvider;
 use Give\Revenue\RevenueServiceProvider;
 use Give\Route\Form as FormRoute;
+use Give\ServiceProviders\GlobalStyles as GlobalStylesServiceProvider;
 use Give\ServiceProviders\LegacyServiceProvider;
 use Give\ServiceProviders\Onboarding;
 use Give\ServiceProviders\PaymentGateways;
@@ -201,6 +202,7 @@ final class Give
         WordPressShimsServiceProvider::class,
         DatabaseServiceProvider::class,
         ValidationsServiceProvider::class,
+        GlobalStylesServiceProvider::class,
     ];
 
     /**
