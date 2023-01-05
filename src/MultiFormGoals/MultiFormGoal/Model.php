@@ -122,4 +122,14 @@ class Model
         return GIVE_PLUGIN_DIR . '/src/MultiFormGoals/resources/views/multiformgoal.php';
     }
 
+    /**
+     * @unreleased 
+     *
+     * @return false|mixed
+     */
+    public function getInnerBlocks()
+    {
+        return $this->innerBlocks;
+    }
+
 }

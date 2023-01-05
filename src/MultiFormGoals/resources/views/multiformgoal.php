@@ -8,8 +8,8 @@
 
 
 <?php
-if ( ! empty($this->innerBlocks)) {
-    echo $this->innerBlocks;
+if ( ! empty($this->getInnerBlocks())) {
+    echo $this->getInnerBlocks();
 } else {
     ?>
     <div class="give-multi-form-goal-block">
