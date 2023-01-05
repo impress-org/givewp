@@ -71,12 +71,10 @@ class AddPaymentModeToSubscriptionTable extends Migration
         $subscriptionTableName = "{$wpdb->prefix}give_subscriptions";
 
         try {
-            DB::query(
-                "
-                ALTER TABLE `$subscriptionTableName`
-                    ADD COLUMN `payment_mode` varchar(20) NOT NULL
-                    AFTER `parent_payment_id`;
-            "
+            maybe_add_column(
+                $subscriptionTableName,
+                'payment_mode',
+                "ALTER TABLE `$subscriptionTableName` ADD COLUMN `payment_mode` varchar(20) NOT NULL DEFAULT '' AFTER `parent_payment_id`"
             );
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException('An error occurred adding the payment mode column to the subscription table',
