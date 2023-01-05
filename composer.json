@@ -12,8 +12,9 @@
         "kjohnson/format-object-list": "^0.1.0",
         "fakerphp/faker": "^1.9",
         "myclabs/php-enum": "^1.6",
-        "symfony/http-foundation": "^3.4",
-        "moneyphp/money": "v3.3.1"
+        "symfony/http-foundation": "^v4.4.49",
+        "moneyphp/money": "v3.3.1",
+        "stellarwp/validation": "^1.0"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
@@ -23,7 +24,8 @@
         "kjohnson/since-unreleased": "^1.0.0",
         "wp-cli/wp-cli-bundle": "^2.5",
         "yoast/phpunit-polyfills": "^1.0",
-        "wordpress/wordpress": "dev-trunk"
+        "wordpress/wordpress": "dev-trunk",
+        "brianhenryie/strauss": "^0.12.0"
     },
     "keywords": [
         "wordpress",
@@ -36,8 +38,16 @@
     "scripts": {
         "test": "./vendor/bin/phpunit --colors --stop-on-failure",
         "unreleased": "./vendor/bin/since-unreleased.sh",
+        "strauss": [
+            "vendor/stellarwp/validation/bin/set-domain domain=give",
+            "vendor/bin/strauss"
+        ],
         "post-install-cmd": [
+            "@strauss",
             "@php -r \"file_exists('tests/wp-tests-config.php') || copy('tests/wp-tests-config.dist.php', 'tests/wp-tests-config.php');\""
+        ],
+        "post-update-cmd": [
+            "@strauss"
         ],
         "bundle": [
             "@copy-fonts",
@@ -61,11 +71,23 @@
     },
     "config": {
         "platform": {
-            "php": "7.0"
+            "php": "7.4"
         },
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "composer/installers": true
+        }
+    },
+    "extra": {
+        "strauss": {
+            "target_directory": "vendor/vendor-prefixed",
+            "namespace_prefix": "Give\\Vendors",
+            "classmap_prefix": "Give_Vendors_",
+            "constant_prefix": "GIVE_VENDORS_",
+            "packages": [
+                "stellarwp/validation"
+            ],
+            "delete_vendor_files": true
         }
     },
     "repositories": [

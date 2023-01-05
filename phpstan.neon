@@ -10,6 +10,7 @@ parameters:
         - give.php
     scanDirectories:
         - includes/
+        - vendor/vendor-prefixed/
     excludePaths:
         analyse:
             - src/LegacySubscriptions/includes/ # Scan but do not analyse

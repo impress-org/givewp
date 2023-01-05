@@ -56,10 +56,10 @@ use Give\Donors\ServiceProvider as DonorsServiceProvider;
 use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
 use Give\Form\Templates;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\Framework\Database\ServiceProvider as DatabaseServiceProvider;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\Framework\Validation\ServiceProvider as ValidationsServiceProvider;
 use Give\Framework\WordPressShims\ServiceProvider as WordPressShimsServiceProvider;
 use Give\LegacySubscriptions\ServiceProvider as LegacySubscriptionsServiceProvider;
 use Give\License\LicenseServiceProvider;
@@ -81,6 +81,8 @@ use Give\Subscriptions\Repositories\SubscriptionRepository;
 use Give\Subscriptions\ServiceProvider as SubscriptionServiceProvider;
 use Give\TestData\ServiceProvider as TestDataServiceProvider;
 use Give\Tracking\TrackingServiceProvider;
+use Give\VendorOverrides\Validation\Exceptions\ValidationException;
+use Give\Vendors\StellarWP\Validation\Config as ValidationConfig;
 
 // Exit if accessed directly.
 if (!defined('ABSPATH')) {
@@ -201,7 +203,6 @@ final class Give
         LegacySubscriptionsServiceProvider::class,
         WordPressShimsServiceProvider::class,
         DatabaseServiceProvider::class,
-        ValidationsServiceProvider::class,
         GlobalStylesServiceProvider::class,
     ];
 
@@ -524,5 +525,13 @@ function give($abstract = null)
 }
 
 require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/vendor/vendor-prefixed/autoload.php';
+
+// Setup and initialize the Validation library
+ValidationConfig::setServiceContainer(give());
+ValidationConfig::setHookPrefix('givewp_');
+ValidationConfig::setInvalidArgumentExceptionClass(InvalidArgumentException::class);
+ValidationConfig::setValidationExceptionClass(ValidationException::class);
+ValidationConfig::initialize();
 
 give()->boot();

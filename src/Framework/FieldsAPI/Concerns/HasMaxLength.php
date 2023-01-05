@@ -2,7 +2,8 @@
 
 namespace Give\Framework\FieldsAPI\Concerns;
 
-use Give\Framework\Validation\Rules\Max;
+
+use Give\Vendors\StellarWP\Validation\Rules\Max;
 
 /**
  * @unreleased update to new validation system
