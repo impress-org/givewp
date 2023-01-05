@@ -102,7 +102,7 @@ final class AttachMetaTest extends TestCase
             ->where('donationMeta.custom_meta_value', 1);
 
         $this->assertContains(
-            "SELECT posts.ID AS id, posts.post_date AS createdAt, wp_give_donationmeta_attach_meta_amount.custom_meta_value AS amount FROM wp_posts AS posts LEFT JOIN wp_give_donationmeta wp_give_donationmeta_attach_meta_amount ON posts.ID = wp_give_donationmeta_attach_meta_0.donation_id AND wp_give_donationmeta_attach_meta_amount.custom_meta_key = '_give_payment_total' LEFT JOIN wp_give_donationmeta donationMeta ON posts.ID = donationMeta.donation_id WHERE posts.post_type = 'give_payment' AND posts.post_status = 'give_subscription' AND donationMeta.custom_meta_key = 'subscription_id' AND donationMeta.custom_meta_value = '1'",
+            "SELECT posts.ID AS id, posts.post_date AS createdAt, wp_give_donationmeta_attach_meta_amount.custom_meta_value AS amount FROM wp_posts AS posts LEFT JOIN wp_give_donationmeta wp_give_donationmeta_attach_meta_amount ON posts.ID = wp_give_donationmeta_attach_meta_amount.donation_id AND wp_give_donationmeta_attach_meta_amount.custom_meta_key = '_give_payment_total' LEFT JOIN wp_give_donationmeta donationMeta ON posts.ID = donationMeta.donation_id WHERE posts.post_type = 'give_payment' AND posts.post_status = 'give_subscription' AND donationMeta.custom_meta_key = 'subscription_id' AND donationMeta.custom_meta_value = '1'",
             $builder->getSQL()
         );
     }
