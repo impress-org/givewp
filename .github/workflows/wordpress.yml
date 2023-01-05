@@ -63,15 +63,22 @@ jobs:
                     key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
             # @link https://github.com/spatie/laravel-activitylog/blob/master/.github/workflows/run-tests.yml
-            -   name: Set Up PHP
+            -   name: Set Up PHP for running dev tools
                 uses: shivammathur/setup-php@v2
                 with:
-                    php-version: ${{ matrix.php }}
+                    php-version: 7.4
                     extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
                     coverage: none
 
             -   name: Install composer dependencies
                 run: composer install --no-progress --no-interaction
+
+            -   name: Set Up PHP for tests
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php }}
+                    extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+                    coverage: none
 
             -   name: Store MySQL details in environment
                 run: |
