@@ -2,6 +2,7 @@
 
 namespace Give\FormBuilder\Routes;
 use Give\Addon\View;
+use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
 use Give\Framework\EnqueueScript;
 
@@ -19,12 +20,16 @@ class RegisterFormBuilderPageRoute
      */
     public function __invoke()
     {
+        $pageTitle = __('Visual Donation Form Builder', 'givewp');
+        $menuTitle = __('Add Next Gen Form', 'givewp');
+        $version = __('Beta', 'givewp');
+
         add_submenu_page(
             'edit.php?post_type=give_forms',
-            __('Visual Builder <span class="awaiting-mod">Alpha</span>', 'givewp'),
-            __('Visual Builder <span class="awaiting-mod">Alpha</span>', 'givewp'),
+            "$pageTitle&nbsp;<span class='awaiting-mod'>$version</span>",
+            "$menuTitle&nbsp;<span class='awaiting-mod'>$version</span>",
             'manage_options',
-            'campaign-builder',
+            FormBuilderRouteBuilder::SLUG,
             [$this, 'renderPage'],
             1
         );
