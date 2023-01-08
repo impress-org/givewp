@@ -283,9 +283,9 @@ class Donations
                 }
 
                 $label = html_entity_decode(wp_strip_all_tags($lineItem->label));
-                $value = $lineItem->id === 'paymentStatus' ? $this->getFormattedStatus(
-                    $payment->status
-                ) : html_entity_decode(wp_strip_all_tags($lineItem->value));
+                $value = $lineItem->id === 'paymentStatus'
+                    ? $this->getFormattedStatus($payment->status)
+                    : html_entity_decode(wp_kses_post($lineItem->value));
 
                 $receiptArr[$sectionIndex]['lineItems'][] = [
                     'class' => $detailRowClass,
