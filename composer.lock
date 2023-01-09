@@ -6548,7 +6548,7 @@
     "platform": [],
     "platform-dev": [],
     "platform-overrides": {
-        "php": "7.0.33"
+        "php": "7.0.8"
     },
     "plugin-api-version": "2.0.0"
 }
