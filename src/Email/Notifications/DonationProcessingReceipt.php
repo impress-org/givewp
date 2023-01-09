@@ -5,16 +5,12 @@ namespace Give\Email\Notifications;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give_Email_Notification;
-use Give_Payment;
 
 /**
  * @unreleased
  */
 class DonationProcessingReceipt extends Give_Email_Notification
 {
-    /* @var Give_Payment $payment */
-    public $payment;
-
     /**
      * @unreleased
      */
