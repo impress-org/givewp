@@ -1,9 +1,9 @@
-import {useEffect} from "react";
+import {useEffect} from 'react';
 
 export const useResetPage = (data, page, setPage, filters) => {
     //if we're displaying a non-existent page (like after deleting an item), go to the last available page
     useEffect(() => {
-        if(data?.totalPages && page > data.totalPages){
+        if (data?.totalPages && page > data.totalPages) {
             setPage(data.totalPages);
         }
     }, [data]);
@@ -12,4 +12,4 @@ export const useResetPage = (data, page, setPage, filters) => {
     useEffect(() => {
         setPage(1);
     }, [filters]);
-}
+};

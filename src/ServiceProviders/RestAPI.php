@@ -2,15 +2,18 @@
 
 namespace Give\ServiceProviders;
 
-use Give\DonationForms\Endpoints\ListForms;
+use Give\DonationForms\Endpoints\FormActions;
+use Give\DonationForms\Endpoints\ListDonationForms;
+use Give\DonationForms\Endpoints\SwitchDonationFormView;
 use Give\Donations\Endpoints\DonationActions;
 use Give\Donations\Endpoints\ListDonations;
-use Give\Donors\Endpoints\SwitchDonorView;
 use Give\Donations\Endpoints\SwitchDonationView;
-use Give\DonationForms\Endpoints\SwitchDonationFormView;
 use Give\Donors\Endpoints\DeleteDonor;
 use Give\Donors\Endpoints\ListDonors;
-use Give\DonationForms\Endpoints\FormActions;
+use Give\Donors\Endpoints\SwitchDonorView;
+use Give\Subscriptions\Endpoints\ListSubscriptions;
+use Give\Subscriptions\Endpoints\SubscriptionActions;
+use Give\Subscriptions\Endpoints\SwitchSubscriptionView;
 use Give\API\Endpoints\Logs\FlushLogs;
 use Give\API\Endpoints\Logs\GetLogs;
 use Give\API\Endpoints\Migrations\GetMigrations;
@@ -47,13 +50,16 @@ class RestAPI implements ServiceProvider
         TotalRefunds::class,
         GetLogs::class,
         FlushLogs::class,
-        ListForms::class,
+        ListDonationForms::class,
         ListDonors::class,
         ListDonations::class,
+        ListSubscriptions::class,
         SwitchDonorView::class,
         SwitchDonationView::class,
         SwitchDonationFormView::class,
+        SwitchSubscriptionView::class,
         DonationActions::class,
+        SubscriptionActions::class,
         DeleteDonor::class,
         FormActions::class,
         GetMigrations::class,

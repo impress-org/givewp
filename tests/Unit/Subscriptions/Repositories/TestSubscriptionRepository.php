@@ -84,6 +84,7 @@ class TestSubscriptionRepository extends TestCase
         $this->assertEquals($subscriptionQuery->bill_times, $subscriptionInstance->installments);
         $this->assertEquals($subscriptionQuery->transaction_id, $subscriptionInstance->transactionId);
         $this->assertEquals($subscriptionQuery->status, $subscriptionInstance->status->getValue());
+        $this->assertEquals($subscriptionQuery->payment_mode, $subscriptionInstance->mode->getValue());
     }
 
     /**
