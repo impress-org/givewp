@@ -1,0 +1,353 @@
+@use 'assets/src/css/Safe-Rem/functions' as *;
+
+.interweave {
+    .statusBadge {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: safe-rem(7.5);
+        height: safe-rem(1.875);
+        background-color: var(--give-primary-color);
+        border-radius: safe-rem(0.1875);
+        color: #fff;
+        font-size: safe-rem(0.8125);
+        column-gap: safe-rem(1);
+        text-transform: uppercase;
+
+        &--completed,
+        &--published {
+            background: #69b868;
+        }
+
+        &--failed,
+        &--revoked {
+            background: #d75a4b;
+        }
+
+        &--failing {
+            background: #e5301b;
+        }
+
+        &--abandoned,
+        &--cancelled,
+        &--expired {
+            background: #f4c520;
+        }
+
+        &--draft {
+            background: #f49420;
+        }
+
+        &--pending,
+        &--processing {
+            background: #0878b0;
+        }
+
+        &--refunded {
+            background: #333333;
+        }
+
+        &--complete {
+            background: #666666;
+        }
+    }
+    .subscriptionStatus {
+        display: flex;
+        gap: 10px;
+
+        &__container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        &__message {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            top: -55px;
+            right: 0;
+            max-width: 27.75rem;
+            width: max-content;
+            height: max-content;
+            padding-inline: 1.25rem;
+            font-size: 0.75rem;
+            font-weight: 400;
+            line-height: 2.5rem;
+            border-radius: 2px;
+            background: #ffffff;
+            visibility: hidden;
+            z-index: 999;
+
+            & img {
+                margin-right: 10px;
+            }
+
+            &--exceeded {
+                top: -75px;
+            }
+
+            &--failed, &--exceeded {
+                border: 1px solid #e5301b;
+            }
+
+            &--indefinite {
+                border: 1px solid #69b868;
+            }
+
+            &--limited {
+                border: 1px solid #f49420;
+            }
+
+            &:before {
+                content: '';
+                position: absolute;
+                bottom: -4.775px;
+                right: 6px;
+                display: inline-block;
+                height: 9px;
+                width: 9px;
+                background: #ffffff;
+                transform: rotate(45deg);
+                border-bottom: inherit;
+                border-right: inherit;
+            }
+        }
+    }
+
+    .subscriptionStatus:hover .subscriptionStatus__message {
+        visibility: visible;
+    }
+
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        inline-size: -moz-fit-content;
+        max-inline-size: fit-content;
+        block-size: 2rem;
+        margin: 0;
+        padding: 0;
+        background-color: white;
+        font-family: Open Sans;
+        border: 0;
+        border-radius: safe-rem(0.1875);
+        box-shadow: inset 0 0 0 1px rgba(203, 203, 203, 1);
+        overflow: hidden;
+
+        & > * {
+            flex: 0 0 auto;
+        }
+
+        .icon {
+            display: inline;
+            min-width: 1.75rem;
+            max-width: 1.75rem;
+            border-top-left-radius: 0.1875rem;
+            border-bottom-left-radius: 0.1875rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            letter-spacing: 0;
+            color: #555555;
+            box-sizing: content-box !important;
+            overflow: hidden;
+
+            &--onetime,
+            &--single {
+                background: #556e79;
+                block-size: 1.125rem;
+                inline-size: 1.375rem;
+                padding-block: 0.575rem;
+                padding-inline: 0.3rem;
+                transform: translateY(2px);
+            }
+
+            &--recurring,
+            &--subscription,
+            &--subscriber {
+                background: linear-gradient(225.34deg, #59ad70 0%, #2ebbbb 101.17%);
+                block-size: 1.125rem;
+                inline-size: 1.375rem;
+                padding-block: 0.4375rem;
+                padding-inline: 0.3125rem;
+            }
+
+            &--repeat {
+                background: #f49420;
+                block-size: 1.125rem;
+                inline-size: 1.375rem;
+                padding-block: 0.4375rem;
+                padding-inline: 0.2025rem;
+                border-left: 4px solid #f49420;
+            }
+
+            &--new {
+                background: #000000;
+                block-size: 1.125rem;
+                inline-size: 1.375rem;
+                padding-block: 0.4375rem;
+                padding-inline: 0.2125rem;
+                padding: 16px 0 0 8px;
+            }
+        }
+
+        &__label {
+            flex-basis: fit-content;
+            margin: 0;
+            padding: safe-rem(0.6125) safe-rem(0.65);
+            color: #555555;
+            font-size: safe-rem(0.75);
+            font-weight: 400;
+            text-align: center;
+            text-transform: uppercase;
+            cursor: default;
+        }
+
+        .star {
+            display: inline;
+            color: rgba(255, 215, 0, 1);
+            position: absolute;
+            z-index: 2;
+            top: safe-rem(-0.5);
+            right: safe-rem(-0.5);
+        }
+    }
+
+    .donorInformation {
+        position: relative;
+        display: flex;
+        flex-flow: column wrap;
+        align-content: flex-start;
+        justify-content: center;
+        column-gap: safe-rem(0.6125);
+        row-gap: safe-rem(0.25);
+        height: safe-rem(4);
+        width: 100%;
+
+        & > a {
+            color: #0878b0;
+            font-size: 1.125rem;
+            font-weight: 700;
+        }
+
+        &__email {
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        &__gravatar {
+            border-radius: 9999px;
+            width: safe-rem(4);
+            height: safe-rem(4);
+        }
+
+        &__name {
+            display: inline;
+            inline-size: -webkit-fit-content;
+            inline-size: -moz-fit-content;
+            inline-size: fit-content;
+            font-size: safe-rem(1.125);
+            text-decoration: none;
+        }
+
+        &__email {
+            font-style: normal;
+            font-weight: 400;
+            line-height: 150%;
+            max-width: calc(100% - 4rem);
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    }
+
+    .giveDonationFormsLink {
+        font-size: 1.125rem;
+        font-weight: 700;
+        text-decoration: none;
+        color: #2271b1;
+    }
+
+    .shortcode {
+        flex-shrink: 1;
+        min-inline-size: 0;
+        inline-size: 100%;
+        color: #2c3338;
+        background-color: #f6f7f7;
+        padding-block: 0.445rem;
+        padding-inline: 1.5rem;
+        text-indent: -1rem;
+        border: 1px solid grey;
+        border-radius: 4px;
+        cursor: text;
+        white-space: nowrap;
+        overflow: hidden;
+
+        &:hover {
+            border-color: #2271b1;
+            border-width: 2px;
+        }
+    }
+
+    .goalProgress {
+        width: 95%;
+        height: 0.5rem;
+        position: relative;
+        background: rgba(238, 238, 238);
+        border-radius: 1.5625rem;
+        overflow: hidden;
+        margin: 0.3125rem 0 0.125rem;
+
+        &--achieved {
+            position: absolute;
+            display: flex;
+            font-size: 0.8rem;
+            padding-block: 6px;
+        }
+
+        & > span {
+            display: block;
+            height: 100%;
+            border-radius: 1.25rem 0.5rem 0.5rem 1.25rem;
+            background-color: rgba(43, 194, 83);
+            position: relative;
+            overflow: hidden;
+        }
+    }
+
+    .subscriptions .date {
+        font-size: safe-rem(0.8);
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .amount {
+        font-size: safe-rem(1.125);
+        font-weight: 700;
+        color: #69b868;
+    }
+}
+
+.idBadge {
+    display: inline-flex;
+    flex-shrink: 0;
+    flex-grow: 0;
+    align-items: center;
+    background-color: #f3f2ec;
+    border: safe-rem(0.0625) solid #e0dfd9;
+    border-radius: 9999px;
+    color: #5f5f5f;
+    padding-block: 0.1em;
+    padding-inline: 0.5em;
+    text-align: center;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+}
+
+.idBadge::before {
+    content: '#';
+    font-size: 0.615em;
+    padding-inline-end: 0.25em;
+}

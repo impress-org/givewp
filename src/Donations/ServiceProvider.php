@@ -9,6 +9,7 @@ use Give\Donations\LegacyListeners\DispatchGiveUpdatePaymentStatus;
 use Give\Donations\LegacyListeners\InsertSequentialId;
 use Give\Donations\LegacyListeners\RemoveSequentialId;
 use Give\Donations\LegacyListeners\UpdateDonorPaymentIds;
+use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Migrations\AddMissingDonorIdToDonationComments;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationNotesRepository;
@@ -26,6 +27,12 @@ class ServiceProvider implements ServiceProviderInterface
     {
         give()->singleton('donations', DonationRepository::class);
         give()->singleton('donationNotes', DonationNotesRepository::class);
+        give()->singleton(DonationsListTable::class, function() {
+            $listTable = new DonationsListTable();
+            Hooks::doAction('givewp_donations_list_table', $listTable);
+
+            return $listTable;
+        });
     }
 
     /**

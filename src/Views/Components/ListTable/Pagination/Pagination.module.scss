@@ -1,0 +1,88 @@
+.container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-block-start: 0.125rem;
+    margin-block-end: 0.125rem;
+    min-height: 1.875rem;
+
+    & > * {
+        margin-inline-start: 0.125rem;
+        margin-inline-end: 0.125rem;
+    }
+}
+
+#currentPage {
+    font-size: 0.8125rem;
+    border-radius: 0;
+    border-color: rgba(221, 221, 221);
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    &[type=number] {
+        -moz-appearance: textfield;
+        min-width: 0;
+        // Firefox wants an explicit width.
+        width: 1.75rem;
+        padding: 0.0125rem;
+    }
+
+}
+
+.navDirection {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    text-decoration: none;
+    color: #2271b1;
+    border-color: #2271b1;
+    background: rgba(229, 229, 229);
+    font-size: 1.5rem;
+    font-weight: 400;
+    transition-property: border, background, color;
+    transition-duration: .05s;
+    transition-timing-function: ease-in-out;
+}
+
+button[aria-disabled="false"].navDirection {
+    cursor: pointer;
+
+    &:hover {
+        background: rgba(240, 240, 241);
+        border-color: rgba(10, 75, 120);
+        color: rgba(10, 75, 120);
+    }
+}
+
+button[aria-disabled="true"].navDirection {
+    color: rgba(167, 170, 173);
+    border-color: rgba(220, 220, 222);
+    background: rgba(246, 247, 247);
+}
+
+.navElement {
+    border-width: 1px;
+    border-style: solid;
+    vertical-align: baseline;
+    inline-size: 1.875rem;
+    block-size: 1.875rem;
+    padding: 0 0.25rem;
+    text-align: center;
+}
+
+
+.visuallyHidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}

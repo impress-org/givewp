@@ -120,7 +120,7 @@ if (!defined('ABSPATH')) {
  * @property-read DonationRepository $donations
  * @property-read DonorRepositoryProxy $donors
  * @property-read SubscriptionRepository $subscriptions
- * @property-read DonationFormsRepository $donationFormsRepository
+ * @property-read DonationFormsRepository $donationForms
  * @property-read Profile $donorDashboard
  * @property-read TabsRegister $donorDashboardTabs
  * @property-read Give_Recurring_DB_Subscription_Meta $subscription_meta

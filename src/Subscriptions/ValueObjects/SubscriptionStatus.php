@@ -36,4 +36,34 @@ class SubscriptionStatus extends Enum {
     const CANCELLED = 'cancelled';
     const ABANDONED = 'abandoned';
     const SUSPENDED = 'suspended';
+
+    /**
+     * @unreleased
+     *
+     * @return array
+     */
+    public static function labels(): array
+    {
+        return [
+            self::PENDING => __( 'Pending', 'give' ),
+            self::ACTIVE => __( 'Active', 'give' ),
+            self::EXPIRED => __( 'Expired', 'give' ),
+            self::COMPLETED => __( 'Completed', 'give' ),
+            self::REFUNDED => __( 'Refunded', 'give' ),
+            self::FAILING => __( 'Failed', 'give' ),
+            self::CANCELLED => __( 'Cancelled', 'give' ),
+            self::ABANDONED => __( 'Abandoned', 'give' ),
+            self::SUSPENDED => __( 'Suspended', 'give' ),
+        ];
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return string
+     */
+    public function label(): string
+    {
+        return self::labels()[ $this->getValue() ];
+    }
 }
