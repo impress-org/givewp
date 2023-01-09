@@ -164,8 +164,9 @@ class ConvertDonationFormBlocksToFieldsApi
                 $node->displayInAdmin = $block->attributes['displayInAdmin'];
             }
 
+            /** TODO: ask kyle about $node->showInReceipt() */
             if($block->hasAttribute('displayInReceipt') && $block->attributes['displayInReceipt']) {
-                $node->displayInAdmin = $block->attributes['displayInReceipt'];
+                $node->displayInReceipt = $block->attributes['displayInReceipt'];
             }
         }
 

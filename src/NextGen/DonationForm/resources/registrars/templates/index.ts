@@ -19,6 +19,7 @@ import HeaderDescription from './layouts/HeaderDescription';
 import Goal from './layouts/Goal';
 import GoalAchieved from './layouts/GoalAchieved';
 import NodeWrapper from './layouts/NodeWrapper';
+import DonationReceipt from './layouts/DonationReceipt';
 
 const defaultFormTemplates = {
     fields: {
@@ -49,6 +50,7 @@ const defaultFormTemplates = {
         headerDescription: HeaderDescription,
         goal: Goal,
         goalAchieved: GoalAchieved,
+        receipt: DonationReceipt,
     },
 };
 
