@@ -2,6 +2,7 @@
 
 namespace Give\Email\Notifications;
 
+use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give_Email_Notification;
 use Give_Payment;
@@ -19,9 +20,6 @@ class DonationProcessingReceipt extends Give_Email_Notification
      */
     public function init()
     {
-        // Initialize empty payment.
-        $this->payment = new Give_Payment(0);
-
         $this->load(
             [
                 'id' => 'donation-processing-receipt',
@@ -77,17 +75,17 @@ class DonationProcessingReceipt extends Give_Email_Notification
     {
         if ($newStatus == DonationStatus::PROCESSING()->getValue() &&
             $oldStatus !== DonationStatus::PROCESSING()->getValue()) {
-            $this->payment = new Give_Payment($donationId);
+            $donation = Donation::find($donationId);
 
-            if ( ! $this->payment->ID) {
+            if ( ! $donation) {
                 return;
             }
 
-            $this->recipient_email = $this->payment->email;
+            $this->recipient_email = $donation->email;
 
             $this->send_email_notification(
                 [
-                    'payment_id' => $this->payment->ID,
+                    'payment_id' => $donation->id,
                 ]
             );
         }
