@@ -100,6 +100,9 @@ jobs:
                     extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
                     coverage: none
 
+            -   name: Reload Composer autoload
+                run: composer dump-autoload
+
             -   name: Set Up Tests
                 run: bash tests/includes/bin/install.sh wordpress_test root ${{ env.mysql_pass }} 127.0.0.1:${{ env.mysql_port }} ${{ matrix.wordpress }}
 
