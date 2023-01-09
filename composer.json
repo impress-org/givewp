@@ -39,7 +39,7 @@
         "unreleased": "./vendor/bin/since-unreleased.sh",
         "strauss": [
             "vendor/stellarwp/validation/bin/set-domain domain=give",
-            "@php strauss.phar"
+            "@php bin/strauss.phar"
         ],
         "post-install-cmd": [
             "@strauss",
