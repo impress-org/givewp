@@ -81,8 +81,7 @@ use Give\Subscriptions\Repositories\SubscriptionRepository;
 use Give\Subscriptions\ServiceProvider as SubscriptionServiceProvider;
 use Give\TestData\ServiceProvider as TestDataServiceProvider;
 use Give\Tracking\TrackingServiceProvider;
-use Give\VendorOverrides\Validation\Exceptions\ValidationException;
-use Give\Vendors\StellarWP\Validation\Config as ValidationConfig;
+use Give\VendorOverrides\Validation\ValidationServiceProvider;
 
 // Exit if accessed directly.
 if (!defined('ABSPATH')) {
@@ -204,6 +203,7 @@ final class Give
         WordPressShimsServiceProvider::class,
         DatabaseServiceProvider::class,
         GlobalStylesServiceProvider::class,
+        ValidationServiceProvider::class
     ];
 
     /**
@@ -526,12 +526,5 @@ function give($abstract = null)
 
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/vendor/vendor-prefixed/autoload.php';
-
-// Setup and initialize the Validation library
-ValidationConfig::setServiceContainer(give());
-ValidationConfig::setHookPrefix('givewp_');
-ValidationConfig::setInvalidArgumentExceptionClass(InvalidArgumentException::class);
-ValidationConfig::setValidationExceptionClass(ValidationException::class);
-ValidationConfig::initialize();
 
 give()->boot();
