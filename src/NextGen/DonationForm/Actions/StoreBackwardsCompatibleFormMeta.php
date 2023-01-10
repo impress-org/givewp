@@ -81,10 +81,6 @@ class StoreBackwardsCompatibleFormMeta
      */
     protected function saveSingleFormMeta($formId, $metaKey, $metaValue)
     {
-        if (give()->form_meta->get_meta($formId, $metaKey, true)) {
-            give()->form_meta->update_meta($formId, $metaKey, $metaValue);
-        } else {
-            give()->form_meta->add_meta($formId, $metaKey, $metaValue);
-        }
+        give()->form_meta->update_meta($formId, $metaKey, $metaValue);
     }
 }
