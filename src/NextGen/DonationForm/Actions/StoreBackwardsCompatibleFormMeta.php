@@ -28,7 +28,7 @@ class StoreBackwardsCompatibleFormMeta
         }
 
         $donationLevels = $amountField->getLevels();
-        $donationLevels = array_map(function ($donationLevel, $index) {
+        $donationLevels = array_map(static function ($donationLevel, $index) {
             return [
                 '_give_id' => [
                     'level_id' => $index,
@@ -37,9 +37,10 @@ class StoreBackwardsCompatibleFormMeta
             ];
         }, $donationLevels, array_keys($donationLevels));
 
-        // @todo: Replace with DonationFormMetaKeys::PRICE_OPTION when available.
-        $this->saveSingleFormMeta($donationForm->id, '_give_price_option', 'multi');
-        $this->saveSingleFormMeta($donationForm->id, DonationFormMetaKeys::DONATION_LEVELS, $donationLevels);
+        if ($donationLevels) {
+            $this->saveSingleFormMeta($donationForm->id, DonationFormMetaKeys::PRICE_OPTION, 'multi');
+            $this->saveSingleFormMeta($donationForm->id, DonationFormMetaKeys::DONATION_LEVELS, $donationLevels);
+        }
     }
 
     /**
