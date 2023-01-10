@@ -16,7 +16,7 @@ class ValidationServiceProvider implements ServiceProviderContract
      */
     public function register()
     {
-        Config::setServiceContainer(give());
+        Config::setServiceContainer(give()->getContainer());
         Config::setHookPrefix('givewp_');
         Config::setInvalidArgumentExceptionClass(InvalidArgumentException::class);
         Config::setValidationExceptionClass(ValidationException::class);

@@ -55,10 +55,10 @@ use Give\Donors\Repositories\DonorRepositoryProxy;
 use Give\Donors\ServiceProvider as DonorsServiceProvider;
 use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
 use Give\Form\Templates;
-use Give\Framework\Exceptions\UncaughtExceptionLogger;
-use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\Framework\Database\ServiceProvider as DatabaseServiceProvider;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\Exceptions\UncaughtExceptionLogger;
+use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\WordPressShims\ServiceProvider as WordPressShimsServiceProvider;
 use Give\LegacySubscriptions\ServiceProvider as LegacySubscriptionsServiceProvider;
@@ -203,7 +203,7 @@ final class Give
         WordPressShimsServiceProvider::class,
         DatabaseServiceProvider::class,
         GlobalStylesServiceProvider::class,
-        ValidationServiceProvider::class
+        ValidationServiceProvider::class,
     ];
 
     /**
@@ -478,6 +478,17 @@ final class Give
     public function __call($name, $arguments)
     {
         return call_user_func_array([$this->container, $name], $arguments);
+    }
+
+    /**
+     * Retrieves the underlying container instance. This isn't usually necessary, but sometimes we want to pass along
+     * the container itself.
+     *
+     * @unreleased
+     */
+    public function getContainer(): Container
+    {
+        return $this->container;
     }
 
     /**

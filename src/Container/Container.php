@@ -8,11 +8,12 @@ use Exception;
 use Give\Container\Exceptions\BindingResolutionException;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Exceptions\Primitives\LogicException;
+use Give\Vendors\StellarWP\ContainerContract\ContainerInterface;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionParameter;
 
-class Container implements ArrayAccess
+class Container implements ArrayAccess, ContainerInterface
 {
     /**
      * An array of the types that have been resolved.
