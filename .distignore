@@ -6,6 +6,7 @@
 /.github
 /.storybook
 
+/bin
 /tests
 /node_modules
 /assets/src
@@ -32,7 +33,6 @@
 jsconfig.json
 globals.d.ts
 tsconfig.json
-strauss.phar
 
 sample-data/wordpress.sql
 sample-data/sample-data.numbers
