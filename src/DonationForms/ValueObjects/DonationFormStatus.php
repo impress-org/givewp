@@ -19,6 +19,7 @@ class DonationFormStatus extends Enum
     const PENDING = 'pending';
     const PUBLISHED = 'publish';
     const DRAFT = 'draft';
+    const TRASH = 'trash';
 
     /**
      * @unreleased
@@ -31,6 +32,7 @@ class DonationFormStatus extends Enum
             self::PENDING => __( 'Pending', 'give' ),
             self::PUBLISHED => __( 'Published', 'give' ),
             self::DRAFT => __( 'Draft', 'give' ),
+            self::TRASH => __( 'Trash', 'give' ),
         ];
     }
 
