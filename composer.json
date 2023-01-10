@@ -85,7 +85,8 @@
             "constant_prefix": "GIVE_VENDORS_",
             "packages": [
                 "stellarwp/validation"
-            ]
+            ],
+            "delete_vendor_files": true
         }
     },
     "repositories": [
