@@ -11,7 +11,7 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
     const {mutate} = useSWRConfig();
     const showConfirmModal = useContext(ShowConfirmModalContext);
     const trashEnabled = Boolean(data?.trash);
-    const itemName = item.title.replace( /(<([^>]+)>)/ig, '');
+    const itemName = item.title.replace(/(<([^>]+)>)/ig, '');
     const deleteEndpoint = trashEnabled && ! item.status.includes('trash') ? '/trash' : '/delete';
 
     const fetchAndUpdateErrors = async (parameters, endpoint, id, method) => {
@@ -31,7 +31,6 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
 
     return (
         <>
-            {console.log(data)}
             {parameters.status === 'trash' ? (
                 <>
                     <RowAction
