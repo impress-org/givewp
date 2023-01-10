@@ -24,16 +24,14 @@ class DonateRouteData
      * Convert data from request into DTO
      *
      * @unreleased
-     *
-     * @return self
      */
-    public static function fromRequest(array $request)
+    public static function fromRequest(array $request): DonateRouteData
     {
         $self = new static();
 
-        $self->routeSignature = $request['give-route-signature'];
-        $self->routeSignatureId = $request['give-route-signature-id'];
-        $self->routeSignatureExpiration = $request['give-route-signature-expiration'];
+        $self->routeSignature = $request['givewp-route-signature'];
+        $self->routeSignatureId = $request['givewp-route-signature-id'];
+        $self->routeSignatureExpiration = $request['givewp-route-signature-expiration'];
 
         return $self;
     }

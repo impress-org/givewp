@@ -4,6 +4,7 @@ namespace Give\NextGen\DonationForm\Actions;
 
 
 use Give\NextGen\DonationForm\Routes\DonateRouteSignature;
+use Give\NextGen\Framework\Routes\Route;
 
 /**
  * @unreleased
@@ -18,19 +19,18 @@ class GenerateDonateRouteUrl
      */
     public function __invoke(): string
     {
-        $signature = new DonateRouteSignature('give-donate');
+        $signature = new DonateRouteSignature('givewp-donate');
 
         $queryArgs = [
-            'give-listener' => 'give-donate',
-            'give-route-signature' => $signature->toHash(),
-            'give-route-signature-id' => 'give-donate',
-            'give-route-signature-expiration' => $signature->expiration,
+            'givewp-route-signature' => $signature->toHash(),
+            'givewp-route-signature-id' => 'givewp-donate',
+            'givewp-route-signature-expiration' => $signature->expiration,
         ];
 
         return esc_url_raw(
             add_query_arg(
                 $queryArgs,
-                home_url()
+                Route::url('donate')
             )
         );
     }

@@ -22,7 +22,7 @@ class GenerateDonationFormPreviewRouteUrlTest extends TestCase
         $this->assertSame(esc_url(
             add_query_arg(
                 [
-                    'givewp-view' => 'donation-form-preview',
+                    'givewp-route' => 'donation-form-view-preview',
                     'form-id' => 1
                 ],
                 site_url()

@@ -3,6 +3,8 @@
 namespace Give\NextGen\DonationForm\Actions;
 
 
+use Give\NextGen\Framework\Routes\Route;
+
 /**
  * @unreleased
  */
@@ -14,14 +16,13 @@ class GenerateDonationFormPreviewRouteUrl
     public function __invoke(int $formId): string
     {
         $args = [
-            'givewp-view' => 'donation-form-preview',
             'form-id' => $formId
         ];
 
         return esc_url(
             add_query_arg(
                 $args,
-                site_url()
+                Route::url('donation-form-view-preview')
             )
         );
     }

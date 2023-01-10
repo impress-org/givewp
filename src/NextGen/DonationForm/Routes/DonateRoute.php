@@ -49,74 +49,58 @@ class DonateRoute
      *
      * @throws PaymentGatewayException
      */
-    public function __invoke()
+    public function __invoke(array $request)
     {
-        if ($this->isValidListener()) {
-            // create DTO from GET request
-            $routeData = DonateRouteData::fromRequest(give_clean($_GET));
+        // create DTO from GET request
+        $routeData = DonateRouteData::fromRequest(give_clean($_GET));
 
-            // validate signature
-            $this->validateSignature($routeData->routeSignature, $routeData);
+        // validate signature
+        $this->validateSignature($routeData->routeSignature, $routeData);
 
-            // get data from post request
-            $request = file_get_contents('php://input');
-            $postData = json_decode($request, true);
+        // create DTO from POST request
+        $formData = DonateFormRouteData::fromRequest($request);
 
-            // create DTO from POST request
-            $formData = DonateFormRouteData::fromRequest(give_clean($postData));
+        // get all registered gateways
+        $paymentGateways = $this->paymentGatewayRegister->getPaymentGateways();
 
-            // get all registered gateways
-            $paymentGateways = $this->paymentGatewayRegister->getPaymentGateways();
+        // get all registered gateway ids
+        $gatewayIds = array_keys($paymentGateways);
 
-            // get all registered gateway ids
-            $gatewayIds = array_keys($paymentGateways);
+        // make sure gateway is valid
+        $this->validateGateway($formData->gatewayId, $gatewayIds);
 
-            // make sure gateway is valid
-            $this->validateGateway($formData->gatewayId, $gatewayIds);
+        /** @var PaymentGateway $gateway */
+        $gateway = give($paymentGateways[$formData->gatewayId]);
 
-            /** @var PaymentGateway $gateway */
-            $gateway = give($paymentGateways[$formData->gatewayId]);
+        try {
+            $data = $formData->validated();
 
-            try {
-                $data = $formData->validated();
+            $this->donateController->donate($data, $gateway);
+        } catch (DonationFormFieldErrorsException $exception) {
+            Log::error(
+                'Donation Form Field Errors',
+                [
+                    'exceptionMessage' => $exception->getMessage(),
+                    'formData' => $formData,
+                    'errors' => $exception->getError()
+                ]
+            );
 
-                $this->donateController->donate($data, $gateway);
-            } catch (DonationFormFieldErrorsException $exception) {
-                Log::error(
-                    'Donation Form Field Errors',
-                    [
-                        'exceptionMessage' => $exception->getMessage(),
-                        'formData' => $formData,
-                        'errors' => $exception->getError()
-                    ]
-                );
+            wp_send_json_error(['errors' => $exception->getError()]);
+        } catch (Exception $exception) {
+            Log::error(
+                'Donation Error',
+                [
+                    'exceptionMessage' => $exception->getMessage(),
+                    'formData' => $formData,
+                    'gateway' => $gateway,
+                ]
+            );
 
-                wp_send_json_error(['errors' => $exception->getError()]);
-            } catch (Exception $exception) {
-                Log::error(
-                    'Donation Error',
-                    [
-                        'exceptionMessage' => $exception->getMessage(),
-                        'formData' => $formData,
-                        'gateway' => $gateway,
-                    ]
-                );
-
-                wp_send_json_error();
-            }
-
-            exit;
+            wp_send_json_error();
         }
-    }
 
-    /**
-     * Check if the listener is valid
-     *
-     * @unreleased
-     */
-    private function isValidListener(): bool
-    {
-        return isset($_GET['give-listener']) && $_GET['give-listener'] === 'give-donate';
+        exit;
     }
 
     /**
