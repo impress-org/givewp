@@ -62,6 +62,7 @@ export default function ListTableRows({columns, data, isLoading, rowActions, set
                     id={item.id}
                     name={item?.donor ?? item?.title ?? item?.donorInformation}
                     singleName={singleName}
+                    data={data}
                 />
             </TableCell>
             <>
