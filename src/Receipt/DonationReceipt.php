@@ -106,11 +106,19 @@ class DonationReceipt extends Receipt
         $donationSection->addLineItem([
             'id' => 'paymentStatus',
             'label' => esc_html__('Payment Status', 'give'),
-            'value' => (DonationStatus::PROCESSING()->getValue() === $this->donation->post_status) ?
-                give_get_payment_statuses()[$this->donation->post_status] . "\n\n" . '<em><strong>***</strong> ' .
-                esc_html__('You will receive a final receipt in your email once it has been completed.',
-                    'give') . '</em>' : give_get_payment_statuses()[$this->donation->post_status],
+            'value' => give_get_payment_statuses()[$this->donation->post_status],
         ]);
+
+        if (DonationStatus::PROCESSING()->getValue() === $this->donation->post_status) {
+            $donationSection->addLineItem([
+                'id' => 'processingStatusNotice',
+                'label' => '<div style="text-transform:initial;font-size:0.73rem;color:#3398DB;display:flex;flex-flow:row nowrap;white-space:pre-wrap;margin-top:-0.5rem;">' .
+                           esc_html__('You will receive a final receipt in your email once it has been completed.',
+                               'give') .
+                           '</div>',
+                'value' => '⠀',
+            ]);
+        }
 
         $donationSection->addLineItem([
             'id' => 'paymentMethod',
