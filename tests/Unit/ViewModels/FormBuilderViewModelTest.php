@@ -32,7 +32,7 @@ class FormBuilderViewModelTest extends TestCase
                 'resourceURL' => rest_url(FormBuilderRestRouteConfig::NAMESPACE . '/form/' . $formId),
                 'previewURL' => (new GenerateDonationFormPreviewRouteUrl())($formId),
                 'nonce' => wp_create_nonce('wp_rest'),
-                'blockData' => get_post($formId)->post_content,
+                'blockData' => get_post_meta($formId, 'formBuilderFields', true),
                 'settings' => get_post_meta($formId, 'formBuilderSettings', true),
                 'currency' => give_get_currency(),
             ],

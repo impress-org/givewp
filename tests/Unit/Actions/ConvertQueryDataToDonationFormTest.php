@@ -41,7 +41,7 @@ class ConvertQueryDataToDonationFormTest extends TestCase {
                 'registration' => 'none',
                 'goalType' => GoalType::AMOUNT()->getValue(),
             ]),
-            'blocks' =>  $blockCollection->toJson()
+            'fields' =>  $blockCollection->toJson()
         ];
 
         $donationForm = (new ConvertQueryDataToDonationForm())($queryData);

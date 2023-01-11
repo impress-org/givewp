@@ -94,7 +94,7 @@ class DonationFormRepository
                     'post_type' => 'give_forms',
                     'post_parent' => 0,
                     'post_title' => $donationForm->title,
-                    'post_content' => $donationForm->blocks->toJson(),
+                    'post_content' => (new BlockCollection([]))->toJson(), // @todo Repurpose as form page.
                 ]);
 
             $donationFormId = DB::last_insert_id();
@@ -104,6 +104,13 @@ class DonationFormRepository
                     'form_id' => $donationFormId,
                     'meta_key' => DonationFormMetaKeys::SETTINGS()->getValue(),
                     'meta_value' => $donationForm->settings->toJson()
+                ]);
+
+            DB::table('give_formmeta')
+                ->insert([
+                    'form_id' => $donationFormId,
+                    'meta_key' => DonationFormMetaKeys::FIELDS()->getValue(),
+                    'meta_value' => $donationForm->blocks->toJson()
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -152,7 +159,7 @@ class DonationFormRepository
                     'post_modified_gmt' => get_gmt_from_date($date),
                     'post_status' => $donationForm->status->getValue(),
                     'post_title' => $donationForm->title,
-                    'post_content' => $donationForm->blocks->toJson(),
+                    'post_content' => (new BlockCollection([]))->toJson(), // @todo Repurpose as form page.
                 ]);
 
             DB::table('give_formmeta')
@@ -160,6 +167,14 @@ class DonationFormRepository
                 ->where('meta_key', DonationFormMetaKeys::SETTINGS()->getValue())
                 ->update([
                     'meta_value' => $donationForm->settings->toJson()
+                ]);
+
+
+            DB::table('give_formmeta')
+                ->where('form_id', $donationForm->id)
+                ->where('meta_key', DonationFormMetaKeys::FIELDS()->getValue())
+                ->update([
+                    'meta_value' => $donationForm->blocks->toJson()
                 ]);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -240,7 +255,7 @@ class DonationFormRepository
                 ['post_modified', 'updatedAt'],
                 ['post_status', 'status'],
                 ['post_title', 'title'],
-                ['post_content', 'blocks']
+                ['post_content', 'page_content'] // @todo Repurpose as form page.
             )
             ->attachMeta(
                 'give_formmeta',

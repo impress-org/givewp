@@ -25,7 +25,7 @@ class ConvertQueryDataToDonationForm
             'updatedAt' => Temporal::toDateTime($queryObject->updatedAt),
             'status' => new DonationFormStatus($queryObject->status),
             'settings' => FormSettings::fromjson($queryObject->{DonationFormMetaKeys::SETTINGS()->getKeyAsCamelCase()}),
-            'blocks' => BlockCollection::fromJson($queryObject->blocks)
+            'blocks' => BlockCollection::fromJson($queryObject->{DonationFormMetaKeys::FIELDS()->getKeyAsCamelCase()}),
         ]);
     }
 }
