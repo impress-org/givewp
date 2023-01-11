@@ -60,7 +60,7 @@ export default function ListTableRows({columns, data, isLoading, rowActions, set
             <TableCell>
                 <BulkActionCheckbox
                     id={item.id}
-                    name={(item?.donor ?? item?.title).replace(/(<([^>]+)>)/ig, '')}
+                    name={item?.donor ?? item?.title ?? item?.donorInformation}
                     singleName={singleName}
                 />
             </TableCell>
