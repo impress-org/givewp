@@ -1,0 +1,11 @@
+.interweave {
+    .donorInformation {
+        display:flex;
+        align-items: center;
+
+        &_gravatar {
+            border-radius: 50%;
+        }
+    }
+}
+
