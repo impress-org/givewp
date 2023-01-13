@@ -92,6 +92,7 @@
         "prop-types": "^15.7.2",
         "react": "^16.14.0",
         "react-a11y-dialog": "^6.1.5",
+        "react-acceptjs": "^0.3.0",
         "react-csv": "^2.0.1",
         "react-currency-input-field": "^3.2.4",
         "react-dates": "^21.7.0",
