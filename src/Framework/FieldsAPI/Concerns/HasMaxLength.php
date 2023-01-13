@@ -40,8 +40,10 @@ trait HasMaxLength
      */
     public function getMaxLength()
     {
-        $rule = $this->getRule('max');
+        if ( !$this->hasRule('max') ) {
+            return null;
+        }
 
-        return $rule instanceof Max ? $rule->getSize() : null;
+        return $this->getRule('max')->getSize();
     }
 }
