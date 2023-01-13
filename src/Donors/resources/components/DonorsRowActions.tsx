@@ -1,10 +1,10 @@
-import {__, sprintf} from "@wordpress/i18n";
-import {useSWRConfig} from "swr";
-import RowAction from "@givewp/components/ListTable/RowAction";
-import ListTableApi from "@givewp/components/ListTable/api";
-import {useContext} from "react";
-import {ShowConfirmModalContext} from "@givewp/components/ListTable";
-import styles from "./DonorsRowActions.module.scss";
+import {__, sprintf} from '@wordpress/i18n';
+import {useSWRConfig} from 'swr';
+import RowAction from '@givewp/components/ListTable/RowAction';
+import ListTableApi from '@givewp/components/ListTable/api';
+import {useContext} from 'react';
+import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
+import styles from './DonorsRowActions.module.scss';
 
 const donorsApi = new ListTableApi(window.GiveDonors);
 
@@ -14,21 +14,23 @@ export function DonorsRowActions({item, setUpdateErrors, parameters}) {
 
     const fetchAndUpdateErrors = async (parameters, endpoint, id, method) => {
         const deleteDonations = document.querySelector('#giveDonorsTableDeleteDonations') as HTMLInputElement;
-        const response = await donorsApi.fetchWithArgs(endpoint, {ids: [id], deleteDonationsAndRecords: deleteDonations.checked}, method);
+        const response = await donorsApi.fetchWithArgs(
+            endpoint,
+            {ids: [id], deleteDonationsAndRecords: deleteDonations.checked},
+            method
+        );
         setUpdateErrors(response);
         await mutate(parameters);
         return response;
-    }
+    };
 
     const deleteDonor = async (selected) => await fetchAndUpdateErrors(parameters, '/delete', item.id, 'DELETE');
 
     const confirmDeleteDonor = (selected) => (
         <div>
-            <p>
-                {sprintf(__('Really delete %s?', 'give'), item.name)}
-            </p>
-            <input id='giveDonorsTableDeleteDonations' type='checkbox' defaultChecked={true}/>
-            <label htmlFor='giveDonorsTableDeleteDonations'>
+            <p>{sprintf(__('Really delete %s?', 'give'), item.name)}</p>
+            <input id="giveDonorsTableDeleteDonations" type="checkbox" defaultChecked={true} />
+            <label htmlFor="giveDonorsTableDeleteDonations">
                 {__('Delete all associated donations and records', 'give')}
             </label>
         </div>
@@ -36,7 +38,7 @@ export function DonorsRowActions({item, setUpdateErrors, parameters}) {
 
     const confirmModal = (event) => {
         showConfirmModal(__('Delete', 'give'), confirmDeleteDonor, deleteDonor, 'danger');
-    }
+    };
 
     return (
         <div className={styles.container}>

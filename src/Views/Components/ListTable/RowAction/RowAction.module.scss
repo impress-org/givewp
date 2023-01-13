@@ -1,0 +1,19 @@
+.action {
+    font-weight: 600;
+
+    &:is(button) {
+        appearance: none;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+    }
+
+    &:focus, &:hover, &:active {
+        text-decoration: underline;
+    }
+
+    &.delete {
+        color: rgba(232, 75, 59);
+    }
+}

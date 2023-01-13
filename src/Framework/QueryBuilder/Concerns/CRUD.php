@@ -96,6 +96,21 @@ trait CRUD
     }
 
     /**
+     * Get a single column's value from the first result of a query.
+     *
+     * @unreleased
+     *
+     * @param string $column
+     *
+     * @return mixed
+     */
+    public function value(string $column)
+    {
+        $result = (array) $this->select($column)->get();
+        return count($result) > 0 ? $result[$column] : null;
+    }
+
+    /**
      * @since 2.19.0
      *
      * @return string

@@ -2,6 +2,7 @@
 
 namespace Give\DonationForms;
 
+use Give\DonationForms\ListTable\DonationFormsListTable;
 use Give\DonationForms\Repositories\DonationFormsRepository;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -16,7 +17,13 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register()
     {
-        give()->singleton('donationFormsRepository', DonationFormsRepository::class);
+        give()->singleton('donationForms', DonationFormsRepository::class);
+        give()->singleton(DonationFormsListTable::class, function() {
+            $listTable = new DonationFormsListTable();
+            Hooks::doAction('givewp_donation_forms_list_table', $listTable);
+
+            return $listTable;
+        });
     }
 
     /**
