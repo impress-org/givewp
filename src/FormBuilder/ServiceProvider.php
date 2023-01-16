@@ -39,5 +39,12 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('admin_print_scripts', DequeueAdminScriptsInFormBuilder::class);
 
         Hooks::addAction('admin_print_styles', DequeueAdminStylesInFormBuilder::class);
+
+        /** Integrates the "Add Next Gen Form" button with the Donation Forms table. */
+        add_action('admin_enqueue_scripts', function() {
+            wp_localize_script('give-admin-donation-forms', 'GiveNextGen', [
+                'newFormUrl' => FormBuilderRouteBuilder::makeCreateFormRoute()->getUrl(),
+            ]);
+        });
     }
 }
