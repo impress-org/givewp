@@ -44,6 +44,8 @@ class Give_Subscriptions_DB extends Give_DB
      * Get columns and formats
      *
      * @access  public
+     *
+     * @unreleased add payment_mode column
      * @since   1.0
      */
     public function get_columns()
@@ -62,6 +64,7 @@ class Give_Subscriptions_DB extends Give_DB
             'product_id' => '%d',
             'created' => '%s',
             'expiration' => '%s',
+            'payment_mode' => '%s',
             'status' => '%s',
             'notes' => '%s',
             'profile_id' => '%s',

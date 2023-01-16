@@ -5,13 +5,13 @@ namespace Give\Subscriptions\Repositories;
 use Exception;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
-use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
 use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionMode;
 
 /**
  * @since 2.19.6
@@ -136,7 +136,7 @@ class SubscriptionRepository
     {
         $this->validateSubscription($subscription);
 
-        if ( $subscription->renewsAt === null ) {
+        if ($subscription->renewsAt === null) {
             $subscription->bumpRenewalDate();
         }
 
@@ -194,7 +194,7 @@ class SubscriptionRepository
     {
         $this->validateSubscription($subscription);
 
-        if ( $subscription->renewsAt === null ) {
+        if ($subscription->renewsAt === null) {
             throw new InvalidArgumentException('renewsAt is required.');
         }
 
@@ -284,13 +284,13 @@ class SubscriptionRepository
      */
     public function updateLegacyParentPaymentId(int $subscriptionId, int $donationId)
     {
-        $mode = give_get_meta( $donationId, DonationMetaKeys::MODE, true ) ?? (give_is_test_mode() ? 'test' : 'live');
+        $mode = give_get_meta($donationId, DonationMetaKeys::MODE, true) ?? (give_is_test_mode() ? 'test' : 'live');
 
         DB::table('give_subscriptions')
             ->where('id', $subscriptionId)
             ->update([
                 'parent_payment_id' => $donationId,
-                'payment_mode' => $mode
+                'payment_mode' => $mode,
             ]);
     }
 
@@ -324,6 +324,22 @@ class SubscriptionRepository
         DB::query('COMMIT');
 
         return true;
+    }
+
+    /**
+     * Sets the payment mode for a given subscription
+     *
+     * @unreleased
+     *
+     * @return void
+     */
+    public function updatePaymentMode(int $subscriptionId, SubscriptionMode $mode)
+    {
+        DB::table('give_subscriptions')
+            ->where('id', $subscriptionId)
+            ->update([
+                'payment_mode' => $mode->getValue(),
+            ]);
     }
 
     /**

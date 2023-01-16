@@ -9,6 +9,7 @@ use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\PaymentGateways\DataTransferObjects\FormData;
 use Give\PaymentGateways\DataTransferObjects\SubscriptionData;
 use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
@@ -36,6 +37,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * First we create a payment, then move on to the gateway processing
      *
+     * @unreleased add support for payment mode
      * @since 2.21.0 Replace give_insert_payment with donation model. Store legacy subscription data in donation meta.
      *             Attach subscription id to donation.
      * @since 2.19.0 Replace is_recurring with is_donation_recurring to detect recurring donations.
@@ -60,6 +62,12 @@ class LegacyPaymentGatewayAdapter
         if (give_recurring_is_donation_recurring($legacyDonationData)) {
             $subscriptionData = SubscriptionData::fromRequest($legacyDonationData);
 
+            $paymentMode = !empty($legacyDonationData['payment_mode']) ? new SubscriptionMode($legacyDonationData['payment_mode']) : null;
+
+            if ( $paymentMode === null ) {
+                $paymentMode = give_is_test_mode() ? SubscriptionMode::TEST() : SubscriptionMode::LIVE();
+            }
+
             $subscription = Subscription::create([
                 'amount' => $donation->amount,
                 'period' => new SubscriptionPeriod($subscriptionData->period),
@@ -67,6 +75,7 @@ class LegacyPaymentGatewayAdapter
                 'donorId' => $donor->id,
                 'installments' => (int)$subscriptionData->times,
                 'status' => SubscriptionStatus::PENDING(),
+                'mode' => $paymentMode,
                 'donationFormId' => $formData->formId,
             ]);
 
