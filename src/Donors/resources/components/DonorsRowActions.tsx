@@ -1,10 +1,12 @@
-import {__, sprintf} from '@wordpress/i18n';
+import {__} from '@wordpress/i18n';
 import {useSWRConfig} from 'swr';
 import RowAction from '@givewp/components/ListTable/RowAction';
 import ListTableApi from '@givewp/components/ListTable/api';
 import {useContext} from 'react';
 import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
 import styles from './DonorsRowActions.module.scss';
+import {Interweave} from 'interweave';
+import './style.scss';
 
 const donorsApi = new ListTableApi(window.GiveDonors);
 
@@ -28,7 +30,9 @@ export function DonorsRowActions({item, setUpdateErrors, parameters}) {
 
     const confirmDeleteDonor = (selected) => (
         <div>
-            <p>{sprintf(__('Really delete %s?', 'give'), item.name)}</p>
+            <p>{__('Really delete the follow donor?', 'give')}</p>
+            <Interweave attributes={{className: 'donorBulkModalContent'}} content={item?.donorInformation} />
+            <br></br>
             <input id="giveDonorsTableDeleteDonations" type="checkbox" defaultChecked={true} />
             <label htmlFor="giveDonorsTableDeleteDonations">
                 {__('Delete all associated donations and records', 'give')}

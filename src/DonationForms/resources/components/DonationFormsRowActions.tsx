@@ -1,9 +1,10 @@
-import {__, sprintf} from '@wordpress/i18n';
+import {__} from '@wordpress/i18n';
 import {useSWRConfig} from 'swr';
 import RowAction from '@givewp/components/ListTable/RowAction';
 import ListTableApi from '@givewp/components/ListTable/api';
 import {useContext} from 'react';
 import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
+import {Interweave} from 'interweave';
 
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 
@@ -22,7 +23,11 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
 
     const deleteForm = async (selected) => await fetchAndUpdateErrors(parameters, deleteEndpoint, item.id, 'DELETE');
 
-    const confirmDeleteForm = (selected) => <p>{sprintf(__('Really delete %s?', 'give'), item?.name)}</p>;
+    const confirmDeleteForm = (selected) => (
+        <p>
+            {__('Really delete', 'give')} <Interweave content={item?.title} />
+        </p>
+    );
 
     const confirmModal = (event) => {
         showConfirmModal(__('Delete', 'give'), confirmDeleteForm, deleteForm, 'danger');
