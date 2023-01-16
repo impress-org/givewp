@@ -60,6 +60,7 @@ use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\Framework\ValidationRules\ValidationRulesServiceProvider;
 use Give\Framework\WordPressShims\ServiceProvider as WordPressShimsServiceProvider;
 use Give\LegacySubscriptions\ServiceProvider as LegacySubscriptionsServiceProvider;
 use Give\License\LicenseServiceProvider;
@@ -204,6 +205,7 @@ final class Give
         DatabaseServiceProvider::class,
         GlobalStylesServiceProvider::class,
         ValidationServiceProvider::class,
+        ValidationRulesServiceProvider::class,
     ];
 
     /**

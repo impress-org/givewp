@@ -2,6 +2,8 @@
 
 namespace Give\Framework\FieldsAPI;
 
+use Give\Framework\ValidationRules\Rules\AllowedTypes;
+
 use function get_allowed_mime_types;
 use function wp_max_upload_size;
 
@@ -33,19 +35,27 @@ class File extends Field
      */
     public function maxSize($maxSize)
     {
-        $this->validationRules->rule('maxSize', $maxSize);
+        if ($this->hasRule('max')) {
+            /** @var Max $rule */
+            $rule = $this->getRule('max');
+            $rule->size($maxSize);
+        }
+
+        $this->rules("max:$maxSize");
 
         return $this;
     }
 
     /**
      * Access the maximum file size.
-     *
-     * @return int
      */
-    public function getMaxSize()
+    public function getMaxSize(): int
     {
-        return $this->validationRules->getRule('maxSize') || wp_max_upload_size();
+        if (!$this->hasRule('max')) {
+            return wp_max_upload_size();
+        }
+
+        return $this->getRule('max')->getSize();
     }
 
     /**
@@ -55,9 +65,15 @@ class File extends Field
      *
      * @return $this
      */
-    public function allowedTypes($allowedTypes)
+    public function allowedTypes(array $allowedTypes)
     {
-        $this->validationRules->rule('allowedTypes', $allowedTypes);
+        if ($this->hasRule('allowedTypes')) {
+            /** @var AllowedTypes $rule */
+            $rule = $this->getRule('allowedTypes');
+            $rule->setAllowedtypes($allowedTypes);
+        }
+
+        $this->rules('allowedTypes:' . implode(',', $allowedTypes));
 
         return $this;
     }
@@ -69,6 +85,10 @@ class File extends Field
      */
     public function getAllowedTypes()
     {
-        return $this->validationRules->getRule('allowedTypes') || get_allowed_mime_types();
+        if (!$this->hasRule('allowedTypes')) {
+            return get_allowed_mime_types();
+        }
+
+        return $this->getRule('allowedTypes')->getAllowedTypes();
     }
 }

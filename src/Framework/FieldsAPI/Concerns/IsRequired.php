@@ -27,7 +27,7 @@ trait IsRequired
      */
     public function isRequired(): bool
     {
-        return $this->validationRules->hasRule('required');
+        return $this->hasRule('required');
     }
 
     /**
