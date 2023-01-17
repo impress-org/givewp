@@ -10,6 +10,7 @@ parameters:
         - give.php
     scanDirectories:
         - includes/
+        - vendor/vendor-prefixed/
     scanFiles:
         - vendor/wordpress/wordpress/src/wp-includes/compat.php
     excludePaths:

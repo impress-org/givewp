@@ -2,7 +2,8 @@
 
 namespace Give\Framework\FieldsAPI\Concerns;
 
-use Give\Framework\Validation\Rules\Max;
+
+use Give\Vendors\StellarWP\Validation\Rules\Max;
 
 /**
  * @unreleased update to new validation system
@@ -39,8 +40,10 @@ trait HasMaxLength
      */
     public function getMaxLength()
     {
-        $rule = $this->getRule('max');
+        if ( !$this->hasRule('max') ) {
+            return null;
+        }
 
-        return $rule instanceof Max ? $rule->getSize() : null;
+        return $this->getRule('max')->getSize();
     }
 }
