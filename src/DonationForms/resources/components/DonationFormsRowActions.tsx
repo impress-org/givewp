@@ -25,7 +25,9 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
 
     const confirmDeleteForm = (selected) => (
         <p>
-            {__('Really delete', 'give')} <Interweave content={item?.title} />
+            {__('Really delete the following form?', 'give')}
+            <br />
+            <Interweave content={item?.title} />
         </p>
     );
 
