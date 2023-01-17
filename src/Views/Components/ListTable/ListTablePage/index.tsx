@@ -1,4 +1,4 @@
-import {createContext, useEffect, useRef, useState} from 'react';
+import {createContext, useRef, useState} from 'react';
 import {__} from '@wordpress/i18n';
 import {A11yDialog} from 'react-a11y-dialog';
 import A11yDialogInstance from 'a11y-dialog';

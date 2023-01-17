@@ -2,14 +2,17 @@ import {__, sprintf} from '@wordpress/i18n';
 import {useCallback, useContext, useEffect, useState} from 'react';
 import {CheckboxContext} from '@givewp/components/ListTable/ListTablePage';
 
-export const BulkActionCheckbox = ({id, name, singleName}) => {
+export const BulkActionCheckbox = ({id, name, singleName, data}) => {
     const checkboxRefs = useContext(CheckboxContext);
     // add this element's ref to the list of checkboxes so we can access them imperatively
-    const updateCheckboxRefs = useCallback((node) => {
-        if (node !== null) {
-            checkboxRefs?.current.push(node);
-        }
-    }, []);
+    const updateCheckboxRefs = useCallback(
+        (node) => {
+            if (node !== null && ! checkboxRefs?.current.includes(node)) {
+                checkboxRefs?.current.push(node);
+            }
+        },
+        [data]
+    );
 
     useEffect(() => {
         // cleanup function to remove the ref checked value when the component unmounts
@@ -17,9 +20,9 @@ export const BulkActionCheckbox = ({id, name, singleName}) => {
             checkboxRefs.current.forEach((checkbox) => {
                 checkbox.checked = false;
             });
+            checkboxRefs.current = checkboxRefs.current.filter((checkbox) => checkbox.dataset.id === id);
         };
     }, []);
-
     return (
         <>
             <label

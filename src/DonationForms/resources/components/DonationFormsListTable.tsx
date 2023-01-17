@@ -4,6 +4,7 @@ import {DonationFormsRowActions} from './DonationFormsRowActions';
 import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import Select from '@givewp/components/ListTable/Select';
+import {Interweave} from 'interweave';
 
 declare global {
     interface Window {
@@ -85,7 +86,9 @@ const donationFormsBulkActions: Array<BulkActionsConfig> = [
                 <p>Donation forms to be edited:</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((id, index) => (
-                        <li key={id}>{names[index]}</li>
+                        <li key={id}>
+                            <Interweave content={names[index]} />
+                        </li>
                     ))}
                 </ul>
                 <div className={styles.flexRow}>
@@ -123,7 +126,9 @@ const donationFormsBulkActions: Array<BulkActionsConfig> = [
                 <p>{__('Really delete the following donation forms?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((id, index) => (
-                        <li key={id}>{names[index]}</li>
+                        <li key={id}>
+                            <Interweave content={names[index]} />
+                        </li>
                     ))}
                 </ul>
             </div>
@@ -140,7 +145,9 @@ const donationFormsBulkActions: Array<BulkActionsConfig> = [
                 <p>{__('Really trash the following donation forms?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((id, index) => (
-                        <li key={id}>{names[index]}</li>
+                        <li key={id}>
+                            <Interweave content={names[index]} />
+                        </li>
                     ))}
                 </ul>
             </div>
