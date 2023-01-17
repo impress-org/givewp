@@ -1,7 +1,8 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n'
+import {__} from '@wordpress/i18n';
+
 const {InnerBlocks} = wp.blockEditor;
 const {useEffect} = wp.element;
 const {select, dispatch} = wp.data;
@@ -17,7 +18,10 @@ const edit = ({isSelected, clientId}) => {
     const selectProgressBar = () => {
         const parentBlock = select('core/editor').getBlocksByClientId(clientId)[0];
         const progressBarBlock = parentBlock.innerBlocks[parentBlock.innerBlocks.length - 1];
-        dispatch('core/block-editor').selectBlock(progressBarBlock.clientId);
+        // prevent error if progressBarBlock is slow to load
+        if (progressBarBlock) {
+            dispatch('core/block-editor').selectBlock(progressBarBlock.clientId);
+        }
     };
 
     const blockTemplate = [
