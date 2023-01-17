@@ -252,7 +252,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 == Changelog ==
 = 2.24.0: January 17th, 2023 =
-* Security: Fixed critical and a low level security vulnerabilities. See our [post](https://go.givewp.com/2-24) for more details.
+* Security: Fixed critical and a low level security vulnerabilities. See our [critical release notice](https://go.givewp.com/2-24) for more details.
 * New: Sorting and custom columns are now supported for the Form, Donor, and Donation admin list tables
 * New: Subscription admin list table has a new, modern look like the other list tables — requires GiveWP Recurring add-on
 * Enhancement: New Validation framework in preparation for GiveWP 3.0
