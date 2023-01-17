@@ -8,8 +8,6 @@ parameters:
         - src/
     bootstrapFiles:
         - give.php
-    scanFiles:
-        - vendor/wordpress/wordpress/src/wp-includes/compat.php
     scanDirectories:
         - includes/
         - vendor/vendor-prefixed/
