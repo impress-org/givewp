@@ -203,10 +203,12 @@ jQuery( document ).ready( function( $ ) {
 	} );
 
 	/**
-	 * Donation Form AJAX Submission
-	 *
-	 * @description: Process the donation submit
-	 */
+     * Donation Form AJAX Submission
+     *
+     * @description: Process the donation submit
+     *
+     * @unreleased Fix: displays the errors thrown by the backend in multi-step forms.
+     */
 	$( 'body' ).on( 'click', 'form.give-form input[name="give-purchase"].give-submit', function( e ) {
 		//this form object
 		const $this = $( this );
