@@ -7,7 +7,7 @@ use Give\Framework\ListTable\Exceptions\ReferenceColumnNotFoundException;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
- * @unreleased
+ * @since 2.24.0
  */
 trait Columns
 {
@@ -19,7 +19,7 @@ trait Columns
     /**
      * Add List Table column
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @param ModelColumn $column
      *
@@ -43,7 +43,7 @@ trait Columns
     /**
      * Add List Table columns
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @param ModelColumn ...$columns
      *
@@ -60,7 +60,7 @@ trait Columns
     /**
      * Remove List Table column
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @return self
      * @throws ReferenceColumnNotFoundException
@@ -77,7 +77,7 @@ trait Columns
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @return ModelColumn[]
      */
@@ -87,7 +87,7 @@ trait Columns
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @return array
      */
@@ -101,7 +101,7 @@ trait Columns
     /**
      * Add column before specific column
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @return self
      * @throws ReferenceColumnNotFoundException
@@ -118,7 +118,7 @@ trait Columns
     /**
      * Add column after specific column
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @return self
      * @throws ReferenceColumnNotFoundException
@@ -135,7 +135,7 @@ trait Columns
     /**
      * Get registered column by column id
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @param string $columnId
      *
@@ -149,7 +149,7 @@ trait Columns
     /**
      * Get column position index
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @return int|false
      */
@@ -159,7 +159,7 @@ trait Columns
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @return self
      */
@@ -175,7 +175,7 @@ trait Columns
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @return self
      */
@@ -191,7 +191,7 @@ trait Columns
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @return string[]
      */

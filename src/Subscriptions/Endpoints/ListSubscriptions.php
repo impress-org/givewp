@@ -115,7 +115,7 @@ class ListSubscriptions extends Endpoint
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @param WP_REST_Request $request
      *
@@ -147,7 +147,7 @@ class ListSubscriptions extends Endpoint
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @return array
      */
@@ -178,7 +178,7 @@ class ListSubscriptions extends Endpoint
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @return int
      */
@@ -191,7 +191,7 @@ class ListSubscriptions extends Endpoint
     }
 
     /**
-     * @unreleased Replace Query Builder with Subscriptions model
+     * @since 2.24.0 Replace Query Builder with Subscriptions model
      * @since 2.21.0
      *
      * @param QueryBuilder $query

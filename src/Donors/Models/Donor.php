@@ -20,7 +20,7 @@ use Give\Subscriptions\Models\Subscription;
 /**
  * Class Donor
  *
- * @unreleased add new properties $totalAmountDonated and $totalNumberOfDonations
+ * @since 2.24.0 add new properties $totalAmountDonated and $totalNumberOfDonations
  * @since 2.19.6
  *
  * @property int $id

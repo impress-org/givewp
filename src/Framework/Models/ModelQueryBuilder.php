@@ -35,7 +35,7 @@ class ModelQueryBuilder extends QueryBuilder
     /**
      * Returns the number of rows returned by a query
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @param  null|string  $column
      */

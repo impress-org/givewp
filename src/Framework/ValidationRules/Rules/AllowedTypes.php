@@ -18,7 +18,7 @@ use Give\Vendors\StellarWP\Validation\Contracts\ValidationRule;
  * In short, do not use this validation rule yet. It was made purely to support Form Field Manager, which currently
  * handles the validation.
  *
- * @unreleased
+ * @since 2.24.0
  */
 class AllowedTypes implements ValidationRule
 {
@@ -30,7 +30,7 @@ class AllowedTypes implements ValidationRule
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 2.24.0
      */
     public static function id(): string
     {
@@ -40,7 +40,7 @@ class AllowedTypes implements ValidationRule
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 2.24.0
      */
     public static function fromString(string $options = null): ValidationRule
     {
@@ -56,7 +56,7 @@ class AllowedTypes implements ValidationRule
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @param string[] $mimeTypes
      */
@@ -72,7 +72,7 @@ class AllowedTypes implements ValidationRule
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 2.24.0
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
     {
@@ -82,7 +82,7 @@ class AllowedTypes implements ValidationRule
     /**
      * Overrides the allowed MIME types.
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @param string[] $allowedMimeTypes
      */
@@ -96,7 +96,7 @@ class AllowedTypes implements ValidationRule
     /**
      * Returns the allowed MIME types.
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @return string[]
      */
@@ -108,7 +108,7 @@ class AllowedTypes implements ValidationRule
     /**
      * A simple validator for MIME types. This is not a full MIME type validator, but it is sufficient for our purposes.
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @return void
      */

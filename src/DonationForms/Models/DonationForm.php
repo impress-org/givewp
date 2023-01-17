@@ -16,7 +16,7 @@ use Give\Framework\Support\ValueObjects\Money;
 /**
  * Class DonationForm
  *
- * @unreleased
+ * @since 2.24.0
  *
  * @property int $id
  * @property string $title
@@ -53,7 +53,7 @@ class DonationForm extends Model implements ModelReadOnly
     ];
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @param $id
      *
@@ -65,7 +65,7 @@ class DonationForm extends Model implements ModelReadOnly
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @return ModelQueryBuilder<DonationForm>
      */
@@ -75,7 +75,7 @@ class DonationForm extends Model implements ModelReadOnly
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @param object $object
      *

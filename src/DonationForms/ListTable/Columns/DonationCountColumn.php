@@ -8,7 +8,7 @@ use Give\DonationForms\Models\DonationForm;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
- * @unreleased
+ * @since 2.24.0
  *
  * @extends ModelColumn<DonationForm>
  */
@@ -18,7 +18,7 @@ class DonationCountColumn extends ModelColumn
     protected $sortColumn = 'CAST(formSales AS UNSIGNED)';
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @inheritDoc
      */
@@ -28,7 +28,7 @@ class DonationCountColumn extends ModelColumn
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @inheritDoc
      */
@@ -38,7 +38,7 @@ class DonationCountColumn extends ModelColumn
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @inheritDoc
      *

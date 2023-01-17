@@ -10,7 +10,7 @@ use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Date;
 
 /**
- * @unreleased
+ * @since 2.24.0
  *
  * @extends ModelColumn<Donor>
  */
@@ -18,7 +18,7 @@ class LatestDonationColumn extends ModelColumn
 {
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @inheritDoc
      */
@@ -28,7 +28,7 @@ class LatestDonationColumn extends ModelColumn
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @inheritDoc
      */
@@ -38,7 +38,7 @@ class LatestDonationColumn extends ModelColumn
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @inheritDoc
      *

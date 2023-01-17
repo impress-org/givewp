@@ -3,7 +3,7 @@
 namespace Give\Framework\ListTable\Concerns;
 
 /**
- * @unreleased
+ * @since 2.24.0
  */
 trait IsFilterable
 {
@@ -20,7 +20,7 @@ trait IsFilterable
     /**
      * Set is column filterable from frontend
      *
-     * @unreleased
+     * @since 2.24.0
      */
     public function filterable(bool $filterable): self
     {
@@ -31,7 +31,7 @@ trait IsFilterable
     /**
      * Add column filter
      *
-     * @unreleased
+     * @since 2.24.0
      */
     public function filter(callable $filter): self
     {
@@ -40,7 +40,7 @@ trait IsFilterable
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      */
     public function hasFilter(): bool
     {
@@ -48,7 +48,7 @@ trait IsFilterable
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      * @return mixed
      */
     public function applyFilter($value, array $row)
@@ -61,7 +61,7 @@ trait IsFilterable
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      */
     public function isFilterable(): bool
     {

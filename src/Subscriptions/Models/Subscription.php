@@ -215,7 +215,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      */
     public function isIndefinite(): bool
     {
@@ -223,7 +223,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @return int|float
      */
@@ -233,7 +233,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @return boolean
      */

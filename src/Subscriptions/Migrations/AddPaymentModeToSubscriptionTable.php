@@ -9,14 +9,14 @@ use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 use Give_Updates;
 
 /**
- * @unreleased
+ * @since 2.24.0
  */
 class AddPaymentModeToSubscriptionTable extends Migration
 {
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 2.24.0
      */
     public static function title(): string
     {
@@ -26,7 +26,7 @@ class AddPaymentModeToSubscriptionTable extends Migration
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 2.24.0
      */
     public static function timestamp()
     {
@@ -36,7 +36,7 @@ class AddPaymentModeToSubscriptionTable extends Migration
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 2.24.0
      */
     public static function id(): string
     {
@@ -46,7 +46,7 @@ class AddPaymentModeToSubscriptionTable extends Migration
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @throws DatabaseMigrationException
      */
@@ -59,7 +59,7 @@ class AddPaymentModeToSubscriptionTable extends Migration
     /**
      * Add payment mode column to subscription table.
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @return void
      * @throws DatabaseMigrationException
@@ -85,7 +85,7 @@ class AddPaymentModeToSubscriptionTable extends Migration
     /**
      * Process payment mode for existing subscriptions.
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @return void
      * @throws DatabaseMigrationException

@@ -29,7 +29,7 @@ class ServiceProvider implements \Give\ServiceProviders\ServiceProvider
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @param Give_Email_Notification[] $emails
      *

@@ -29,7 +29,7 @@ trait EnumInteractsWithQueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * Returns array of meta aliases to be used with attachMeta based on the given array of ENUMs
      *

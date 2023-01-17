@@ -37,7 +37,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * First we create a payment, then move on to the gateway processing
      *
-     * @unreleased add support for payment mode
+     * @since 2.24.0 add support for payment mode
      * @since 2.21.0 Replace give_insert_payment with donation model. Store legacy subscription data in donation meta.
      *             Attach subscription id to donation.
      * @since 2.19.0 Replace is_recurring with is_donation_recurring to detect recurring donations.

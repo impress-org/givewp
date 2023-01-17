@@ -6,12 +6,12 @@ use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
 
 /**
- * @unreleased
+ * @since 2.24.0
  */
 interface ModelReadOnly
 {
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @param  int  $id
      * @return Model
@@ -19,14 +19,14 @@ interface ModelReadOnly
     public static function find($id);
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @return ModelQueryBuilder
      */
     public static function query();
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @param $object
      * @return Model

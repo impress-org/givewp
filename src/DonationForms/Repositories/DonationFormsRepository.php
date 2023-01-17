@@ -8,7 +8,7 @@ use Give\Donations\Models\Donation;
 use Give\Framework\Models\ModelQueryBuilder;
 
 /**
- * @unreleased add support methods for donation form model
+ * @since 2.24.0 add support methods for donation form model
  * @since 2.19.0
  */
 class DonationFormsRepository
@@ -16,7 +16,7 @@ class DonationFormsRepository
     /**
      * Get DonationForm By ID
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @return DonationForm|null
      */
@@ -28,7 +28,7 @@ class DonationFormsRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @return ModelQueryBuilder<Donation>
      */

@@ -12,12 +12,12 @@ use Give\Donors\ListTable\Columns\LatestDonationColumn;
 use Give\Framework\ListTable\ListTable;
 
 /**
- * @unreleased
+ * @since 2.24.0
  */
 class DonorsListTable extends ListTable
 {
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @inheritDoc
      */
@@ -27,7 +27,7 @@ class DonorsListTable extends ListTable
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @inheritDoc
      */
@@ -45,7 +45,7 @@ class DonorsListTable extends ListTable
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @inheritDoc
      */

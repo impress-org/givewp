@@ -5,7 +5,7 @@ namespace Give\DonationForms\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
- * @unreleased
+ * @since 2.24.0
  *
  * @method static DonationFormStatus PENDING()
  * @method static DonationFormStatus PUBLISHED()
@@ -27,7 +27,7 @@ class DonationFormStatus extends Enum
     const TRASH = 'trash';
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @return array
      */
@@ -43,7 +43,7 @@ class DonationFormStatus extends Enum
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @return string
      */

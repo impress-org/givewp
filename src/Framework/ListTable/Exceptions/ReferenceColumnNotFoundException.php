@@ -5,7 +5,7 @@ namespace Give\Framework\ListTable\Exceptions;
 use Give\Framework\Exceptions\Primitives\Exception;
 
 /**
- * @unreleased
+ * @since 2.24.0
  */
 class ReferenceColumnNotFoundException extends Exception
 {

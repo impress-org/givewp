@@ -8,7 +8,7 @@ use Give\Subscriptions\Models\Subscription;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
- * @unreleased
+ * @since 2.24.0
  *
  * @extends ModelColumn<Subscription>
  */
@@ -18,7 +18,7 @@ class RenewalDateColumn extends ModelColumn
     protected $sortColumn = 'renewsAt';
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @inheritDoc
      */
@@ -28,7 +28,7 @@ class RenewalDateColumn extends ModelColumn
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @inheritDoc
      */
@@ -38,7 +38,7 @@ class RenewalDateColumn extends ModelColumn
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @inheritDoc
      *

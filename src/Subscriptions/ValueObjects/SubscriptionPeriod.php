@@ -27,7 +27,7 @@ class SubscriptionPeriod extends Enum {
     const YEAR = 'year';
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @return array
      */
@@ -43,7 +43,7 @@ class SubscriptionPeriod extends Enum {
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @param int $frequency
      *

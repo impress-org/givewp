@@ -60,7 +60,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Registers database migrations with the MigrationsRunner
      *
-     * @unreleased
+     * @since 2.24.0
      */
     private function registerMigrations()
     {

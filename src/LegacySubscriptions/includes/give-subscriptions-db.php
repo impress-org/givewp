@@ -45,7 +45,7 @@ class Give_Subscriptions_DB extends Give_DB
      *
      * @access  public
      *
-     * @unreleased add payment_mode column
+     * @since 2.24.0 add payment_mode column
      * @since   1.0
      */
     public function get_columns()

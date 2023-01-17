@@ -93,7 +93,7 @@ class DonationReceipt extends Receipt
     /**
      * Add donation section.
      *
-     * @unreleased Add notice for donations with the "processing" status
+     * @since 2.24.0 Add notice for donations with the "processing" status
      * @since      2.7.0
      */
     private function addDonationSection()

@@ -24,7 +24,7 @@ final class DonationFormLevel
     public $isDefault;
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @param array $array
      *
@@ -43,7 +43,7 @@ final class DonationFormLevel
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @param string $price
      *

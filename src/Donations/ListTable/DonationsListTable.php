@@ -13,12 +13,12 @@ use Give\Donations\ListTable\Columns\StatusColumn;
 use Give\Framework\ListTable\ListTable;
 
 /**
- * @unreleased
+ * @since 2.24.0
  */
 class DonationsListTable extends ListTable
 {
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @inheritDoc
      */
@@ -28,7 +28,7 @@ class DonationsListTable extends ListTable
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @inheritDoc
      */
@@ -47,7 +47,7 @@ class DonationsListTable extends ListTable
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @inheritDoc
      */

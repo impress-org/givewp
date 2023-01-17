@@ -11,7 +11,7 @@ class DonorModelQueryBuilder extends ModelQueryBuilder
     /**
      * Get row
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @return M|null
      */
@@ -31,7 +31,7 @@ class DonorModelQueryBuilder extends ModelQueryBuilder
     /**
      * Get results
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @return M[]|null
      */
@@ -55,7 +55,7 @@ class DonorModelQueryBuilder extends ModelQueryBuilder
     /**
      * Attach additional emails to query results later so that we can avoid additional Group By on the main query
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @param array|object $queryResults
      *
@@ -79,7 +79,7 @@ class DonorModelQueryBuilder extends ModelQueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @param array $donorIds Array of donor ids
      * @param bool  $single Return additional emails for the first donor id

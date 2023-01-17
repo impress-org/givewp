@@ -58,7 +58,7 @@ class DonationsAdminPage
     }
 
     /**
-     * @unreleased Add ListTable columns
+     * @since 2.24.0 Add ListTable columns
      * @since 2.20.0
      * @since 2.21.2 Localized the admin URL as a base for URL concatenation.
      */

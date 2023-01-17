@@ -14,12 +14,12 @@ use Give\DonationForms\ListTable\Columns\TitleColumn;
 use Give\Framework\ListTable\ListTable;
 
 /**
- * @unreleased
+ * @since 2.24.0
  */
 class DonationFormsListTable extends ListTable
 {
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @inheritDoc
      */
@@ -29,7 +29,7 @@ class DonationFormsListTable extends ListTable
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @inheritDoc
      */
@@ -49,7 +49,7 @@ class DonationFormsListTable extends ListTable
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @inheritDoc
      */

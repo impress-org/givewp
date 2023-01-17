@@ -38,7 +38,7 @@ class SubscriptionStatus extends Enum {
     const SUSPENDED = 'suspended';
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @return array
      */
@@ -58,7 +58,7 @@ class SubscriptionStatus extends Enum {
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @return string
      */

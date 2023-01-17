@@ -1,7 +1,7 @@
 import {Interweave} from 'interweave';
 import './styles.scss';
 
-//@unreleased renders all SSR data from backend
+//@since 2.24.0 renders all SSR data from backend
 const InterweaveSSR = ({column, item}) => {
     let value = item?.[column.id];
     if (value === undefined) {

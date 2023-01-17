@@ -105,7 +105,7 @@ trait InsertNode
     }
 
     /**
-     * @unreleased Make index optional to avoid rebuilding array when appending
+     * @since 2.24.0 Make index optional to avoid rebuilding array when appending
      * @since 2.10.2
      *
      * @param int|null $index appends to end if null

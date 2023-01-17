@@ -32,7 +32,7 @@ class SubscriptionsAdminPage
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      */
     public function loadScripts()
     {
@@ -61,7 +61,7 @@ class SubscriptionsAdminPage
     /**
      * Retrieve a list of donation forms to populate the form filter dropdown
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @return array
      */
@@ -87,7 +87,7 @@ class SubscriptionsAdminPage
     /**
      * Display a button on the old subscriptions table that switches to the React view
      *
-     * @unreleased
+     * @since 2.24.0
      */
     public function renderReactSwitch()
     {
@@ -116,7 +116,7 @@ class SubscriptionsAdminPage
     /**
      * Helper function to determine if current page is Give Subscriptions admin page
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @return bool
      */

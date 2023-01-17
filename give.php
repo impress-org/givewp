@@ -6,7 +6,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.23.2
+ * Version: 2.24.0
  * Requires at least: 5.0
  * Requires PHP: 7.0
  * Text Domain: give
@@ -309,7 +309,7 @@ final class Give
     {
         // Plugin version.
         if (!defined('GIVE_VERSION')) {
-            define('GIVE_VERSION', '2.23.2');
+            define('GIVE_VERSION', '2.24.0');
         }
 
         // Plugin Root File.
@@ -486,7 +486,7 @@ final class Give
      * Retrieves the underlying container instance. This isn't usually necessary, but sometimes we want to pass along
      * the container itself.
      *
-     * @unreleased
+     * @since 2.24.0
      */
     public function getContainer(): Container
     {

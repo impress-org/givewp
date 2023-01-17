@@ -10,7 +10,7 @@ use Give\Vendors\StellarWP\Validation\Validator;
 class CreateValidatorFromForm
 {
     /**
-     * @unreleased
+     * @since 2.24.0
      */
     public function __invoke(Form $form, array $values): Validator
     {

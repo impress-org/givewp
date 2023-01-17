@@ -11,14 +11,14 @@ use Give\Subscriptions\ValueObjects\SubscriptionMode;
  * subscriptions could be made which did not have a payment mode. This action ensures that all subscriptions have a
  * payment mode.
  *
- * @unreleased
+ * @since 2.24.0
  */
 class EnsureSubscriptionHasPaymentMode
 {
     /**
      * Makes sure the payment mode is set when the legacy recurring system is used.
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @param int $id
      * @param array $arguments

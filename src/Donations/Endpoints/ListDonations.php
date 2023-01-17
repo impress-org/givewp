@@ -118,7 +118,7 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @unreleased Change this to use the new ListTable class
+     * @since 2.24.0 Change this to use the new ListTable class
      * @since      2.20.0
      *
      * @param WP_REST_Request $request
@@ -152,7 +152,7 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @unreleased Replace Query Builder with Donations model
+     * @since 2.24.0 Replace Query Builder with Donations model
      * @since 2.21.0
      *
      * @return array
@@ -184,7 +184,7 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @unreleased Replace Query Builder with Donations model
+     * @since 2.24.0 Replace Query Builder with Donations model
      * @since 2.21.0
      *
      * @return int
@@ -208,7 +208,7 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @unreleased Remove joins as it uses ModelQueryBuilder and change clauses to use attach_meta
+     * @since 2.24.0 Remove joins as it uses ModelQueryBuilder and change clauses to use attach_meta
      * @since      2.21.0
      *
      * @param QueryBuilder $query

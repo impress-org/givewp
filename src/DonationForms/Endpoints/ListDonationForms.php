@@ -107,7 +107,7 @@ class ListDonationForms extends Endpoint
     }
 
     /**
-     * @unreleased Change this to use the new ListTable class
+     * @since 2.24.0 Change this to use the new ListTable class
      *
      * @param WP_REST_Request $request
      *
@@ -146,7 +146,7 @@ class ListDonationForms extends Endpoint
     }
 
     /**
-     * @unreleased Refactor to query through the ModelQueryBuilder
+     * @since 2.24.0 Refactor to query through the ModelQueryBuilder
      *
      * @return array
      */
@@ -177,7 +177,7 @@ class ListDonationForms extends Endpoint
     }
 
     /**
-     * @unreleased Refactor to query through the ModelQueryBuilder
+     * @since 2.24.0 Refactor to query through the ModelQueryBuilder
      *
      * @return int
      */
@@ -192,7 +192,7 @@ class ListDonationForms extends Endpoint
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @param QueryBuilder $query
      *

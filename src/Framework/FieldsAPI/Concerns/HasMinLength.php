@@ -5,7 +5,7 @@ namespace Give\Framework\FieldsAPI\Concerns;
 use Give\Vendors\StellarWP\Validation\Rules\Min;
 
 /**
- * @unreleased update to new validation system
+ * @since 2.24.0 update to new validation system
  * @since 2.14.0
  */
 trait HasMinLength
@@ -13,7 +13,7 @@ trait HasMinLength
     /**
      * Set the value’s minimum length.
      *
-     * @unreleased update to new validation system
+     * @since 2.24.0 update to new validation system
      * @since 2.14.0
      */
     public function minLength(int $minLength): self
@@ -32,7 +32,7 @@ trait HasMinLength
     /**
      * Get the value’s minimum length.
      *
-     * @unreleased update to use the new validation system
+     * @since 2.24.0 update to use the new validation system
      * @since 2.14.0
      *
      * @return int|null

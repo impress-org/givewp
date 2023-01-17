@@ -8,7 +8,7 @@ use Give\Donors\Models\Donor;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
- * @unreleased
+ * @since 2.24.0
  *
  * @extends ModelColumn<Donor>
  */
@@ -16,7 +16,7 @@ class DonationRevenueColumn extends ModelColumn
 {
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @inheritDoc
      */
@@ -26,7 +26,7 @@ class DonationRevenueColumn extends ModelColumn
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @inheritDoc
      */
@@ -36,7 +36,7 @@ class DonationRevenueColumn extends ModelColumn
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @inheritDoc
      *

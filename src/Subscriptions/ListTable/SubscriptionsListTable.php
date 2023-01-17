@@ -12,12 +12,12 @@ use Give\Subscriptions\ListTable\Columns\RenewalDateColumn;
 use Give\Subscriptions\ListTable\Columns\StatusColumn;
 
 /**
- * @unreleased
+ * @since 2.24.0
  */
 class SubscriptionsListTable extends ListTable
 {
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @inheritDoc
      */
@@ -27,7 +27,7 @@ class SubscriptionsListTable extends ListTable
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @inheritDoc
      */
@@ -45,7 +45,7 @@ class SubscriptionsListTable extends ListTable
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @inheritDoc
      */

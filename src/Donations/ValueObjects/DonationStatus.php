@@ -46,7 +46,7 @@ class DonationStatus extends Enum
     const RENEWAL = 'give_subscription';
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @return array
      */
@@ -67,7 +67,7 @@ class DonationStatus extends Enum
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @return string
      */

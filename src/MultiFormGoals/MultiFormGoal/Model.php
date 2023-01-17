@@ -122,7 +122,7 @@ class Model
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @return false|mixed
      */

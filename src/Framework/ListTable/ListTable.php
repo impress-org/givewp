@@ -7,7 +7,7 @@ use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
 use Give\Framework\Support\Contracts\Arrayable;
 
 /**
- * @unreleased
+ * @since 2.24.0
  */
 abstract class ListTable implements Arrayable
 {
@@ -19,7 +19,7 @@ abstract class ListTable implements Arrayable
     private $items = [];
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @throws ColumnIdCollisionException
      */
@@ -31,14 +31,14 @@ abstract class ListTable implements Arrayable
     /**
      * Get table ID
      *
-     * @unreleased
+     * @since 2.24.0
      */
     abstract public function id(): string;
 
     /**
      * Define table columns
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @return ModelColumn[]
      */
@@ -47,7 +47,7 @@ abstract class ListTable implements Arrayable
     /**
      * Define default visible table columns
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @return string[]
      */
@@ -56,7 +56,7 @@ abstract class ListTable implements Arrayable
     /**
      * Get table definitions
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @return array
      */
@@ -71,7 +71,7 @@ abstract class ListTable implements Arrayable
     /**
      * Set table items
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @param array  $items
      * @param string $locale
@@ -98,7 +98,7 @@ abstract class ListTable implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @return array
      */

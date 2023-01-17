@@ -29,7 +29,7 @@ class DonationType extends Enum
 
     /**
      * Whether this donation is recurring or not
-     * @unreleased
+     * @since 2.24.0
      */
     public function isRecurring(): bool
     {

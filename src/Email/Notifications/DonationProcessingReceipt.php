@@ -7,12 +7,12 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give_Email_Notification;
 
 /**
- * @unreleased
+ * @since 2.24.0
  */
 class DonationProcessingReceipt extends Give_Email_Notification
 {
     /**
-     * @unreleased
+     * @since 2.24.0
      */
     public function init()
     {
@@ -37,7 +37,7 @@ class DonationProcessingReceipt extends Give_Email_Notification
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      */
     public function getDefaultEmailMessage(): string
     {
@@ -59,13 +59,13 @@ class DonationProcessingReceipt extends Give_Email_Notification
             '{payment_id}', '{receipt_link}', '{sitename}');
 
         /**
-         * @unreleased
+         * @since 2.24.0
          */
         return apply_filters("give_{$this->config['id']}_get_default_email_message", $defaultEmailMessage);
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      */
     public function sendEmailNotificationToDonor(int $donationId, string $newStatus, string $oldStatus)
     {

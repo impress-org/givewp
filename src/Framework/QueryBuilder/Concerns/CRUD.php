@@ -98,7 +98,7 @@ trait CRUD
     /**
      * Get a single column's value from the first result of a query.
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @param string $column
      *

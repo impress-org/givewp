@@ -34,7 +34,7 @@ class DonorRepository
     /**
      * Query Donor By ID
      *
-     * @unreleased replace ModelQueryBuilder with DonorModelQueryBuilder
+     * @since 2.24.0 replace ModelQueryBuilder with DonorModelQueryBuilder
      * @since 2.19.6
      *
      * @return DonorModelQueryBuilder<Donor>
@@ -97,7 +97,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased add support for $donor->totalAmountDonated and $donor->totalNumberOfDonation
+     * @since 2.24.0 add support for $donor->totalAmountDonated and $donor->totalNumberOfDonation
      * @since 2.21.0 add actions givewp_donor_creating and givewp_donor_created
      * @since 2.20.0 mutate model and return void
      * @since 2.19.6
@@ -172,7 +172,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased add support for $donor->totalAmountDonated and $donor->totalNumberOfDonation
+     * @since 2.24.0 add support for $donor->totalAmountDonated and $donor->totalNumberOfDonation
      * @since 2.23.1 use give()->donor_meta to update meta so data is upserted
      * @since 2.21.0 add actions givewp_donor_updating and givewp_donor_updated
      * @since 2.20.0 return void
@@ -367,7 +367,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased replace ModelQueryBuilder with DonorModelQueryBuilder
+     * @since 2.24.0 replace ModelQueryBuilder with DonorModelQueryBuilder
      * @since 2.19.6
      *
      * @return DonorModelQueryBuilder<Donor>
@@ -452,7 +452,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased change return to DonorType
+     * @since 2.24.0 change return to DonorType
      * @since 2.20.0
      *
      * @return DonorType|null

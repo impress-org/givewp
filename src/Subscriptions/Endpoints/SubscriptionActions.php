@@ -9,7 +9,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 /**
- * @unreleased
+ * @since 2.24.0
  *
  */
 class SubscriptionActions extends Endpoint
@@ -66,7 +66,7 @@ class SubscriptionActions extends Endpoint
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @param WP_REST_Request $request
      *
@@ -128,7 +128,7 @@ class SubscriptionActions extends Endpoint
     /**
      * Split string
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @param string $ids
      *

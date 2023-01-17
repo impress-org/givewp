@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './style.module.scss';
 
-//@unreleased used to handle sort direction and column id.
+//@since 2.24.0 used to handle sort direction and column id.
 const ListTableHeaders = ({column, sortField, setSortDirectionForColumn}) => {
     const handleItemSort = (event, column) => {
         event.preventDefault();

@@ -13,7 +13,7 @@ use Give\Framework\Support\ValueObjects\Money;
 /**
  * Class DonationFormQueryData
  *
- * @unreleased
+ * @since 2.24.0
  */
 final class DonationFormQueryData
 {
@@ -58,7 +58,7 @@ final class DonationFormQueryData
     /**
      * Convert data from donation form object to DonationForm Model
      *
-     * @unreleased
+     * @since 2.24.0
      *
      * @param $object
      *
@@ -94,7 +94,7 @@ final class DonationFormQueryData
     }
 
     /**
-     * @unreleased
+     * @since 2.24.0
      *
      * @param $object
      *
