@@ -13,6 +13,10 @@ declare global {
             authors: Array<{id: string | number; name: string}>;
             table: {columns: Array<object>};
         };
+
+        GiveNextGen?: {
+            newFormUrl: string;
+        }
     }
 }
 
@@ -155,6 +159,11 @@ export default function DonationFormsListTable() {
             apiSettings={window.GiveDonationForms}
             filterSettings={donationFormsFilters}
         >
+            { !! window.GiveNextGen?.newFormUrl && (
+                <a href={window.GiveNextGen.newFormUrl} className={styles.addFormButton}>
+                    {__('Add Next Gen Form', 'give')}
+                </a>
+            )}
             <a href={'post-new.php?post_type=give_forms'} className={styles.addFormButton}>
                 {__('Add Form', 'give')}
             </a>

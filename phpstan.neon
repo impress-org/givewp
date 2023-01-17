@@ -13,6 +13,8 @@ parameters:
     scanDirectories:
         - includes/
         - vendor/vendor-prefixed/
+    scanFiles:
+        - vendor/wordpress/wordpress/src/wp-includes/compat.php
     excludePaths:
         analyse:
             - src/LegacySubscriptions/includes/ # Scan but do not analyse

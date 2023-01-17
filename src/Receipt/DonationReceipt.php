@@ -2,6 +2,7 @@
 
 namespace Give\Receipt;
 
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give_Payment;
 
@@ -92,35 +93,47 @@ class DonationReceipt extends Receipt
     /**
      * Add donation section.
      *
-     * @since 2.7.0
+     * @unreleased Add notice for donations with the "processing" status
+     * @since      2.7.0
      */
     private function addDonationSection()
     {
         $donationSection = $this->addSection([
-            'id'    => self::DONATIONSECTIONID,
+            'id' => self::DONATIONSECTIONID,
             'label' => esc_html__('Donation Details', 'give'),
         ]);
 
         $donationSection->addLineItem([
-            'id'    => 'paymentStatus',
+            'id' => 'paymentStatus',
             'label' => esc_html__('Payment Status', 'give'),
-            'value' => give_get_payment_statuses()[ $this->donation->post_status ],
+            'value' => give_get_payment_statuses()[$this->donation->post_status],
         ]);
 
+        if (DonationStatus::PROCESSING()->getValue() === $this->donation->post_status) {
+            $donationSection->addLineItem([
+                'id' => 'processingStatusNotice',
+                'label' => '<div style="text-transform:initial;font-size:0.73rem;color:#3398DB;display:flex;flex-flow:row nowrap;white-space:pre-wrap;margin-top:-0.5rem;">' .
+                           esc_html__('You will receive a final receipt in your email once it has been completed.',
+                               'give') .
+                           '</div>',
+                'value' => '⠀',
+            ]);
+        }
+
         $donationSection->addLineItem([
-            'id'    => 'paymentMethod',
+            'id' => 'paymentMethod',
             'label' => esc_html__('Payment Method', 'give'),
             'value' => give_get_gateway_checkout_label($this->donation->gateway),
         ]);
 
         $donationSection->addLineItem([
-            'id'    => 'amount',
+            'id' => 'amount',
             'label' => esc_html__('Donation Amount', 'give'),
             'value' => give_currency_filter(
-                give_format_amount($this->donation->total, [ 'donation_id' => $this->donation->ID ]),
+                give_format_amount($this->donation->total, ['donation_id' => $this->donation->ID]),
                 [
-                    'currency_code'   => $this->donation->currency,
-                    'form_id'         => $this->donation->form_id,
+                    'currency_code' => $this->donation->currency,
+                    'form_id' => $this->donation->form_id,
                     'decode_currency' => true,
                 ]
             ),
@@ -130,10 +143,10 @@ class DonationReceipt extends Receipt
             'id'    => 'totalAmount',
             'label' => esc_html__('Donation Total', 'give'),
             'value' => give_currency_filter(
-                give_format_amount($this->donation->total, [ 'donation_id' => $this->donation->ID ]),
+                give_format_amount($this->donation->total, ['donation_id' => $this->donation->ID]),
                 [
-                    'currency_code'   => $this->donation->currency,
-                    'form_id'         => $this->donation->form_id,
+                    'currency_code' => $this->donation->currency,
+                    'form_id' => $this->donation->form_id,
                     'decode_currency' => true,
                 ]
             ),
@@ -161,12 +174,12 @@ class DonationReceipt extends Receipt
         $address   = give_get_donation_address($this->donationId);
         $formatted = sprintf(
             '%1$s%7$s%2$s%3$s, %4$s%5$s%7$s%6$s',
-            $address[ 'line1' ],
-            ! empty($address[ 'line2' ]) ? $address[ 'line2' ] . "\r\n" : '',
-            $address[ 'city' ],
-            $address[ 'state' ],
-            $address[ 'zip' ],
-            $address[ 'country' ],
+            $address['line1'],
+            ! empty($address['line2']) ? $address['line2'] . "\r\n" : '',
+            $address['city'],
+            $address['state'],
+            $address['zip'],
+            $address['country'],
             "\r\n"
         );
 
