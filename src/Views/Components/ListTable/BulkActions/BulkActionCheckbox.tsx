@@ -7,7 +7,7 @@ export const BulkActionCheckbox = ({id, name, singleName, data}) => {
     // add this element's ref to the list of checkboxes so we can access them imperatively
     const updateCheckboxRefs = useCallback(
         (node) => {
-            if (node !== null) {
+            if (node !== null && ! checkboxRefs?.current.includes(node)) {
                 checkboxRefs?.current.push(node);
             }
         },
