@@ -10,6 +10,8 @@ parameters:
         - give.php
     scanDirectories:
         - includes/
+    scanFiles:
+        - vendor/wordpress/wordpress/src/wp-includes/compat.php
     excludePaths:
         analyse:
             - src/LegacySubscriptions/includes/ # Scan but do not analyse
