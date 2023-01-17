@@ -108,6 +108,9 @@ class TestListDonationForms extends TestCase
             foreach ( $columns as $column ) {
                 $expectedItem[$column::getId()] = $column->getCellValue($donationForm);
             }
+            $expectedItem['name'] = $donationForm->title;
+            $expectedItem['edit'] = get_edit_post_link($donationForm->id, 'edit');
+            $expectedItem['permalink'] = get_permalink($donationForm->id);
             $expectedItems[] = $expectedItem;
         }
 

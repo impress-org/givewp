@@ -58,7 +58,12 @@ export default function ListTableRows({columns, data, isLoading, rowActions, set
             })}
         >
             <TableCell>
-                <BulkActionCheckbox id={item.id} name={item?.donor} singleName={singleName} />
+                <BulkActionCheckbox
+                    id={item.id}
+                    name={item?.donor ?? item?.title ?? item?.donorInformation}
+                    singleName={singleName}
+                    data={data}
+                />
             </TableCell>
             <>
                 {columns?.map((column) => {

@@ -9,6 +9,7 @@ use Give\Subscriptions\Models\Subscription;
 class DispatchGiveSubscriptionPostCreate
 {
     /**
+     * @unreleased add support for payment_mode
      * @since 2.19.6
      *
      * @param  Subscription  $subscription
@@ -25,6 +26,7 @@ class DispatchGiveSubscriptionPostCreate
             'recurring_fee_amount' => $subscription->feeAmountRecovered,
             'bill_times' => $subscription->installments,
             'parent_payment_id' => give()->subscriptions->getInitialDonationId($subscription->id),
+            'payment_mode' => $subscription->mode->getValue(),
             'form_id' => $subscription->donationFormId,
             'created' => Temporal::getFormattedDateTime($subscription->createdAt),
             'expiration' => $subscription->renewsAt->format('Y-m-d H:i:s'),

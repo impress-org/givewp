@@ -4,6 +4,7 @@ import {DonorsRowActions} from './DonorsRowActions';
 import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import {Interweave} from 'interweave';
+import './style.scss';
 
 declare global {
     interface Window {
@@ -52,7 +53,7 @@ const donorsBulkActions: Array<BulkActionsConfig> = [
                 <ul role="document" tabIndex={0}>
                     {selected.map((id, index) => (
                         <li key={id}>
-                            <Interweave content={names[index]} />
+                            <Interweave attributes={{className: 'donorBulkModalContent'}} content={names[index]} />
                         </li>
                     ))}
                 </ul>

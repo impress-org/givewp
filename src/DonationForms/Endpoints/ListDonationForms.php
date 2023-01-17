@@ -127,6 +127,12 @@ class ListDonationForms extends Endpoint
         } else {
             $this->listTable->items($forms, $this->request->get_param('locale') ?? '');
             $items = $this->listTable->getItems();
+
+            foreach($items as &$item ) {
+                $item['name'] = get_the_title($item['id']);
+                $item['edit'] = get_edit_post_link($item['id'], 'edit');
+                $item['permalink'] = get_permalink($item['id']);
+            }
         }
 
         return new WP_REST_Response(
