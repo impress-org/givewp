@@ -6,6 +6,7 @@
 /.github
 /.storybook
 
+/bin
 /tests
 /node_modules
 /assets/src

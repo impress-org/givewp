@@ -2,7 +2,7 @@
 
 namespace Give\Framework\FieldsAPI\Concerns;
 
-use Give\Framework\Validation\Rules\Min;
+use Give\Vendors\StellarWP\Validation\Rules\Min;
 
 /**
  * @unreleased update to new validation system
