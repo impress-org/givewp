@@ -1,4 +1,4 @@
-import {Element, Field, Gateway, Group, Section as SectionType, SelectOption} from '@givewp/forms/types';
+import {Element, Field, Gateway, Group, ReceiptDetail, Section as SectionType, SelectOption} from '@givewp/forms/types';
 import {FieldErrors, UseFormRegisterReturn} from 'react-hook-form';
 import {FC, FormHTMLAttributes, ReactNode} from 'react';
 
@@ -118,4 +118,14 @@ export interface NodeWrapperProps {
     name?: string;
     htmlTag?: keyof JSX.IntrinsicElements;
     children: ReactNode;
+}
+
+export interface DonationReceiptProps {
+    heading: string;
+    description: string;
+    donorDashboardUrl: string;
+    donorDetails: ReceiptDetail[];
+    donationDetails: ReceiptDetail[];
+    subscriptionDetails: ReceiptDetail[];
+    additionalDetails: ReceiptDetail[];
 }

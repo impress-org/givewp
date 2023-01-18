@@ -6,6 +6,7 @@ use Give\Donations\Models\Donation;
 use Give\Framework\FieldsAPI\Concerns\HasLabel;
 use Give\Framework\FieldsAPI\Concerns\HasName;
 use Give\Framework\FieldsAPI\Field;
+use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\Framework\Receipts\DonationReceipt;
@@ -60,18 +61,23 @@ class GenerateConfirmationPageReceipt
      */
     private function fillDonationDetails(DonationReceipt $receipt)
     {
+        /** @var PaymentGatewayRegister $paymentGatewayRegistrar */
+        $paymentGatewayRegistrar = give(PaymentGatewayRegister::class);
+
         $receipt->donationDetails->addDetails([
                 new ReceiptDetail(
                     __('Payment Status', 'give'),
-                    give_get_payment_statuses()[$receipt->donation->status->getValue()]
+                    $receipt->donation->status->label()
                 ),
                 new ReceiptDetail(
                     __('Payment Method', 'give'),
-                    $receipt->donation->gateway()->getPaymentMethodLabel()
+                    $paymentGatewayRegistrar->hasPaymentGateway(
+                        $receipt->donation->gatewayId
+                    ) ? $receipt->donation->gateway()->getPaymentMethodLabel() : $receipt->donation->gatewayId
                 ),
                 new ReceiptDetail(
                     __('Donation Amount', 'give'),
-                    $receipt->donation->intendedAmount()->formatToDecimal()
+                    ['amount' => $receipt->donation->intendedAmount()->formatToDecimal()]
                 ),
             ]
         );
@@ -80,7 +86,7 @@ class GenerateConfirmationPageReceipt
             $receipt->donationDetails->addDetail(
                 new ReceiptDetail(
                     __('Processing Fee', 'give'),
-                    $receipt->donation->feeAmountRecovered->formatToDecimal()
+                    ['amount' => $receipt->donation->feeAmountRecovered->formatToDecimal()]
                 )
             );
         }
@@ -88,7 +94,7 @@ class GenerateConfirmationPageReceipt
         $receipt->donationDetails->addDetail(
             new ReceiptDetail(
                 __('Donation Total', 'give'),
-                $receipt->donation->amount->formatToDecimal()
+                ['amount' => $receipt->donation->amount->formatToDecimal()]
             )
         );
     }
@@ -121,6 +127,15 @@ class GenerateConfirmationPageReceipt
      */
     private function fillAdditionalDetails(DonationReceipt $receipt)
     {
+        if ($receipt->donation->company) {
+            $receipt->additionalDetails->addDetail(
+                new ReceiptDetail(
+                    __('Company Name', 'give'),
+                    $receipt->donation->company
+                )
+            );
+        }
+
         if ($customFields = $this->getCustomFields($receipt->donation)) {
             $receipt->additionalDetails->addDetails($customFields);
         }
@@ -139,11 +154,14 @@ class GenerateConfirmationPageReceipt
             $receipt->subscriptionDetails->addDetails([
                 new ReceiptDetail(
                     __('Subscription', 'give'),
-                    sprintf(
-                        '%s / %s',
-                        $subscription->amount->formatToDecimal(),
-                        $subscription->period->getValue()
-                    )
+                    [
+                        'amount' =>
+                            sprintf(
+                                '%s / %s',
+                                $subscription->amount->formatToDecimal(),
+                                $subscription->period->getValue()
+                            )
+                    ]
                 ),
                 new ReceiptDetail(
                     __('Subscription Status', 'give'),

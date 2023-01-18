@@ -1,7 +1,7 @@
 import {__} from '@wordpress/i18n';
 import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
 import {ExternalLink, PanelBody, PanelRow, SelectControl} from '@wordpress/components';
-import {Fragment} from '@wordpress/element';
+import {Fragment, useEffect} from '@wordpress/element';
 import useFormOptions from './hooks/useFormOptions';
 import ConfirmButton from './components/ConfirmButton';
 import Logo from './components/Logo';
@@ -13,9 +13,15 @@ import {useCallback} from 'react';
 /**
  * @since 1.0.0
  */
-export default function Edit({attributes, setAttributes}: BlockEditProps<any>) {
-    const {formId} = attributes;
+export default function Edit({clientId, attributes, setAttributes}: BlockEditProps<any>) {
+    const {formId, blockId} = attributes;
     const {formOptions, isResolving} = useFormOptions();
+
+    useEffect(() => {
+        if (!blockId) {
+            setAttributes({blockId: clientId});
+        }
+    }, []);
 
     const getDefaultFormId = useCallback(() => {
         if (!isResolving && formOptions.length > 0) {

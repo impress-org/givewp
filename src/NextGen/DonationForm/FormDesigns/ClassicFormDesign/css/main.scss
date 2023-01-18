@@ -1,3 +1,5 @@
+@import "@fortawesome/fontawesome-free/scss/fontawesome";
+@import "@fortawesome/fontawesome-free/css/solid.min.css";
 @import 'variables';
 @import 'reset';
 @import 'header';
@@ -9,6 +11,7 @@
 @import 'amount-field';
 @import 'donation-summary';
 @import 'gateways';
+@import 'receipt';
 
 body,
 .givewp-donation-form {

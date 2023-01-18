@@ -10,6 +10,10 @@ class BlockAttributes implements Arrayable
      * @var int|null
      */
     public $formId;
+    /**
+     * @var string
+     */
+    public $blockId;
 
     /**
      * @unreleased
@@ -19,6 +23,7 @@ class BlockAttributes implements Arrayable
         $self = new self();
 
         $self->formId = !empty($array['formId']) ? (int)$array['formId'] : null;
+        $self->blockId = !empty($array['blockId']) ? (string)$array['blockId'] : null;
 
         return $self;
     }

@@ -9,6 +9,7 @@ use Give\NextGen\DonationForm\FormDesigns\DeveloperFormDesign\DeveloperFormDesig
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
+use Give\NextGen\Gateways\NextGenTestGatewayOffsite\NextGenTestGatewayOffsite;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -31,12 +32,13 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot()
     {
-        add_action('givewp_register_payment_gateway', function (PaymentGatewayRegister $registrar) {
+        add_action('givewp_register_payment_gateway', static function (PaymentGatewayRegister $registrar) {
             $registrar->registerGateway(NextGenTestGateway::class);
             $registrar->registerGateway(NextGenStripeGateway::class);
+            $registrar->registerGateway(NextGenTestGatewayOffsite::class);
         });
 
-        add_action('givewp_register_form_design', function (FormDesignRegistrar $formDesignRegistrar) {
+        add_action('givewp_register_form_design', static function (FormDesignRegistrar $formDesignRegistrar) {
             $formDesignRegistrar->registerDesign(ClassicFormDesign::class);
             $formDesignRegistrar->registerDesign(DeveloperFormDesign::class);
         });

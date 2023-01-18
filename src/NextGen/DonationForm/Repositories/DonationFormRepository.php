@@ -297,7 +297,7 @@ class DonationFormRepository
         $formDataGateways = [];
 
         foreach ($this->getEnabledPaymentGateways($formId) as $gateway) {
-            $gatewayId = $gateway->getId();
+            $gatewayId = $gateway::id();
 
             $formDataGateways[$gatewayId] = array_merge(
                 [

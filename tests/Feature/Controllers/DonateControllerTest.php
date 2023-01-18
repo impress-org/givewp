@@ -63,6 +63,9 @@ class DonateControllerTest extends TestCase
             'formId' => $form->id,
             'company' => null,
             'honorific' => null,
+            'originUrl' => 'https://givewp.com',
+            'embedId' => '123',
+            'isEmbed' => true,
             'text_block_meta' => ''
         ]);
 

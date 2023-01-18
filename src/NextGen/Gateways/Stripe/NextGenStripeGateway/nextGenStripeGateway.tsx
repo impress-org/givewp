@@ -57,13 +57,18 @@ const stripeGateway: StripeGateway = {
         }
 
         return {
-            ...this.settings
-        }
+            ...this.settings,
+        };
     },
-    afterCreatePayment: async function (response: { status: string, intentStatus: string }): Promise<void> {
-        if (response.intentStatus === 'requires_payment_method') {
+    afterCreatePayment: async function (response: {
+        data: {
+            intentStatus: string;
+            returnUrl: string;
+        }
+    }): Promise<void> {
+        if (response.data.intentStatus === 'requires_payment_method') {
             const {error: fetchUpdatesError} = await this.elements.fetchUpdates();
-            
+
             if (fetchUpdatesError) {
                 throw new Error(fetchUpdatesError.message);
             }
@@ -72,7 +77,7 @@ const stripeGateway: StripeGateway = {
         const {error} = await this.stripe.confirmPayment({
             elements: this.elements,
             confirmParams: {
-                return_url: this.settings.successUrl,
+                return_url: response.data.returnUrl,
             },
         });
 
@@ -90,7 +95,7 @@ const stripeGateway: StripeGateway = {
     Fields() {
         return (
             <Elements stripe={stripePromise} options={stripeElementOptions}>
-                <StripeFields gateway={stripeGateway}/>
+                <StripeFields gateway={stripeGateway} />
             </Elements>
         );
     },

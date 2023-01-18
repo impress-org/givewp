@@ -117,7 +117,9 @@ class DonationFormViewModel
 
         return [
             'donateUrl' => $donateUrl,
-            'successUrl' => give_get_success_page_uri(),
+            'inlineRedirectRoutes' => [
+                'donation-confirmation-receipt-view'
+            ],
             'gatewaySettings' => $formDataGateways,
             'form' => array_merge($formApi, [
                 'settings' => $this->formSettings,

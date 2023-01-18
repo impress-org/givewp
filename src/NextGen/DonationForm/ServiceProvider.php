@@ -5,7 +5,9 @@ namespace Give\NextGen\DonationForm;
 use Give\Helpers\Hooks;
 use Give\NextGen\DonationForm\Actions\StoreBackwardsCompatibleFormMeta;
 use Give\NextGen\DonationForm\Blocks\DonationFormBlock\Block as DonationFormBlock;
+use Give\NextGen\DonationForm\Controllers\DonationConfirmationReceiptViewController;
 use Give\NextGen\DonationForm\Controllers\DonationFormViewController;
+use Give\NextGen\DonationForm\DataTransferObjects\DonationConfirmationReceiptViewRouteData;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormPreviewRouteData;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormViewRouteData;
 use Give\NextGen\DonationForm\Routes\DonateRoute;
@@ -55,6 +57,15 @@ class ServiceProvider implements ServiceProviderInterface
             $routeData = DonationFormViewRouteData::fromRequest($request);
 
             return give(DonationFormViewController::class)->show($routeData);
+        });
+
+        /**
+         * @unreleased
+         */
+        Route::get('donation-confirmation-receipt-view', static function (array $request) {
+            $routeData = DonationConfirmationReceiptViewRouteData::fromRequest($request);
+
+            return give(DonationConfirmationReceiptViewController::class)->show($routeData);
         });
 
 

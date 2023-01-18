@@ -19,11 +19,6 @@ class GenerateDonationFormPreviewRouteUrl
             'form-id' => $formId
         ];
 
-        return esc_url(
-            add_query_arg(
-                $args,
-                Route::url('donation-form-view-preview')
-            )
-        );
+        return esc_url(Route::url('donation-form-view-preview', $args));
     }
 }

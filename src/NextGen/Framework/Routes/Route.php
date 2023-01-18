@@ -7,9 +7,9 @@ use Give\Framework\Support\Facades\Facade;
 /**
  * @unreleased
  *
- * @method static Router get(string $uri, string|callable $action, string $method = '_invoke')
- * @method static Router post(string $uri, string|callable $action, string $method = '_invoke')
- * @method static Router url(string $uri): string
+ * @method static string get(string $uri, string|callable $action, string $method = '_invoke')
+ * @method static void post(string $uri, string|callable $action, string $method = '_invoke')
+ * @method static string url(string $uri, array $args = [])
  */
 class Route extends Facade {
     protected function getFacadeAccessor(): string

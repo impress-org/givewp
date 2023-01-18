@@ -32,7 +32,28 @@ export interface FormServerExports {
     form: Form;
     attributes: object;
     donateUrl: string;
-    successUrl: string;
+    inlineRedirectRoutes: string[];
+}
+
+
+export interface ReceiptDetail {
+    label: string;
+    value: any;
+}
+
+export interface DonationConfirmationReceiptServerExports {
+    receipt: {
+        settings: {
+            heading: string;
+            description: string;
+            currency: string;
+            donorDashboardUrl: string;
+        };
+        donorDetails: ReceiptDetail[];
+        donationDetails: ReceiptDetail[];
+        subscriptionDetails: ReceiptDetail[];
+        additionalDetails: ReceiptDetail[];
+    };
 }
 
 export interface GatewaySettings {

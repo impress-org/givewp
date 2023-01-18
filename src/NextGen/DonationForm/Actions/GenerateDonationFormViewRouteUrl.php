@@ -19,11 +19,6 @@ class GenerateDonationFormViewRouteUrl
             'form-id' => $formId
         ];
 
-        return esc_url_raw(
-            add_query_arg(
-                $args,
-                Route::url('donation-form-view')
-            )
-        );
+        return esc_url_raw(Route::url('donation-form-view', $args));
     }
 }

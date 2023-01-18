@@ -42,6 +42,9 @@ class DonateControllerDataTest extends TestCase
         $data->company = null;
         $data->wpUserId = null;
         $data->honorific = "Mr";
+        $data->originUrl = "https://givewp.com";
+        $data->embedId = '123';
+        $data->isEmbed = true;
 
         $donation = new Donation([
             'status' => DonationStatus::PENDING(),
@@ -84,6 +87,9 @@ class DonateControllerDataTest extends TestCase
         $data->company = null;
         $data->wpUserId = null;
         $data->honorific = "Mr";
+        $data->originUrl = "https://givewp.com";
+        $data->embedId = "123";
+        $data->isEmbed = true;
         $data->customFieldString = 'customFieldString';
         $data->customFieldInteger = 2;
         $data->customFieldBoolean = false;

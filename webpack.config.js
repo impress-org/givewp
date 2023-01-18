@@ -36,6 +36,9 @@ module.exports = {
         developerFormDesignCss: srcPath('NextGen/DonationForm/FormDesigns/DeveloperFormDesign/css/main.scss'),
         classicFormDesignCss: srcPath('NextGen/DonationForm/FormDesigns/ClassicFormDesign/css/main.scss'),
         classicFormDesignJs: srcPath('NextGen/DonationForm/FormDesigns/ClassicFormDesign/js/main.ts'),
+        donationConfirmationReceiptApp: srcPath(
+            'NextGen/DonationForm/resources/receipt/DonationConfirmationReceiptApp.tsx'
+        ),
     },
 };
 

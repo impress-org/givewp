@@ -7,6 +7,7 @@ use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptUrl;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
 use Give\PaymentGateways\Gateways\Stripe\Actions\SaveDonationSummary;
@@ -57,7 +58,6 @@ class NextGenStripeGatewayTest extends TestCase
         $settings = $mockGateway->formSettings($form->id);
 
         $this->assertSame($settings, [
-            'successUrl' => give_get_success_page_uri(),
             'stripeKey' => $stripePublishableKey,
             'stripeClientSecret' => $stripePaymentIntent->client_secret,
             'stripeConnectedAccountKey' => $stripeConnectedAccountKey,
@@ -126,9 +126,16 @@ class NextGenStripeGatewayTest extends TestCase
             ->method('updateDonationMetaFromPaymentIntent')
             ->with($donation, $stripePaymentIntent);
 
+        $redirectReturnUrl = (new GenerateDonationConfirmationReceiptUrl())(
+            $donation,
+            'https://givewp.com',
+            '123'
+        );
+
         $gatewayData = [
             'stripePaymentIntentId' => $stripePaymentIntent->id,
-            'stripeConnectedAccountKey' => $stripeConnectedAccountKey
+            'stripeConnectedAccountKey' => $stripeConnectedAccountKey,
+            'redirectReturnUrl' => $redirectReturnUrl,
         ];
 
         $response = $mockGateway->createPayment($donation, $gatewayData);
@@ -136,8 +143,8 @@ class NextGenStripeGatewayTest extends TestCase
         $this->assertEquals(
             $response,
             new RespondToBrowser([
-                'status' => 200,
-                'intentStatus' => $stripePaymentIntent->status
+                'intentStatus' => $stripePaymentIntent->status,
+                'returnUrl' => $gatewayData['redirectReturnUrl'],
             ])
         );
     }

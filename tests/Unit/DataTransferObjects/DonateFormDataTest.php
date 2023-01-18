@@ -43,6 +43,9 @@ class DonateFormDataTest extends TestCase
             'formId' => $form->id,
             'company' => null,
             'honorific' => null,
+            'originUrl' => 'https://givewp.com',
+            'embedId' => '123',
+            'isEmbed' => true,
         ];
 
         $donor = Donor::factory()->create();

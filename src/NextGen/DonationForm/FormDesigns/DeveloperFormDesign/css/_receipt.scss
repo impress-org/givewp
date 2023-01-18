@@ -1,0 +1,176 @@
+.givewp-donation-confirmation-receipt {
+    width: 100%;
+    max-width: 100%;
+}
+
+.givewp-layouts-receipt {
+    border-radius: 0.5rem;
+    max-width: min(100%,51.5rem);
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.3);
+
+    @media screen and (min-width: 767px) {
+        border-radius: 0.5rem;
+    }
+
+    .receipt-heading {
+        position: relative;
+        margin-block: 2rem;
+        font-size: 1.625rem;
+        font-weight: 600;
+        line-height: 1.2;
+        text-shadow: 0 0.07em 0.14em rgba(0, 0, 0, 0.15);
+    }
+
+    .receipt-body {
+        .details {
+            .headline {
+                color: #333333;
+                font-weight: 600;
+                font-size: 1.25rem;
+            }
+            .details-table {
+                display: flex;
+                flex-direction: column;
+
+                .details-row {
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-items: flex-start;
+                    column-gap: 0.625rem;
+                    row-gap: 0.5rem;
+                    font-size: 1.125rem;
+                    font-weight: 500;
+
+                    > i {
+                        align-self: center;
+                        color: #989898;
+                    }
+
+                    .detail {
+                        align-self: center;
+                        white-space: nowrap;
+                        color: #6b6b6b;
+                        margin-inline-end: auto;
+                    }
+
+                    .value {
+                        margin-inline-start: 0;
+                        white-space: pre-wrap;
+                    }
+                }
+            }
+
+            .details-table:empty {
+                display: none !important;
+            }
+        }
+    }
+
+    .receipt-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-block-start: 2rem;
+        padding-block-end: 1.5rem;
+        padding-inline: 1.25rem;
+
+        .donor-dashboard-link {
+            color: var(--givewp-primary-color);
+
+            > i {
+                margin-inline-start: 0.25rem;
+                transform: translateY(0.18em);
+                font-size: 1.5rem;
+                text-decoration: none;
+                line-height: 0.5;
+            }
+        }
+
+        .download-btn {
+            font-size: inherit;
+            padding-block: 0.75rem;
+            padding-inline: 1.6875rem;
+        }
+    }
+}
+
+.givewp-layouts-receipt {
+    .receipt-body {
+        padding-block-start: 2.375rem;
+        padding-inline: 1.25rem;
+    }
+
+    .details + .details {
+        margin-block-start: 2.375rem;
+    }
+
+    .headline {
+        display: flex;
+        align-items: center;
+        column-gap: 0.5rem;
+        padding-block-end: 1.25rem;
+    }
+
+    // Margins between rows
+    .headline,
+    .details-row {
+        border-block-end: 0.0625rem solid #f2f2f2;
+    }
+
+    .details-row {
+        padding-block: 0.9375rem;
+    }
+}
+
+.receipt-header {
+    &-top-wrap {
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+        background-color: var(--givewp-primary-color);
+        max-width: min(100%, 51.5rem);
+        margin: 0 auto;
+        display: grid;
+        justify-items: center;
+        row-gap: 1.5rem;
+        padding: 3rem;
+        color: #fff;
+        text-align: center;
+
+        @media screen and (min-width: 767px) {
+            padding: 3rem;
+        }
+    }
+
+    &-heading {
+        position: relative;
+        margin-block-end: 1rem;
+        font-size: 1.75rem;
+        font-weight: 600;
+        line-height: 1.2;
+        text-shadow: 0 0.07em 0.14em rgba(0, 0, 0, 0.15);
+
+        &::after {
+            position: absolute;
+            content: '';
+            display: block;
+            border-radius: 9999px;
+            inline-size: 4.375rem;
+            block-size: 0.3125rem;
+            background-color: #fff;
+            inset-inline-start: 50%;
+            inset-block-start: calc(100% + 1.25rem);
+            transform: translate(-50%);
+        }
+    }
+
+    &-description {
+        font-size: 1.125rem;
+        line-height: 1.45;
+        margin: 0 auto;
+        max-inline-size: 42ch;
+    }
+}
+
+

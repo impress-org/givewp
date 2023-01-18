@@ -27,11 +27,6 @@ class GenerateDonateRouteUrl
             'givewp-route-signature-expiration' => $signature->expiration,
         ];
 
-        return esc_url_raw(
-            add_query_arg(
-                $queryArgs,
-                Route::url('donate')
-            )
-        );
+        return esc_url_raw(Route::url('donate', $queryArgs));
     }
 }

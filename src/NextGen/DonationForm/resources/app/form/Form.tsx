@@ -10,14 +10,28 @@ import {useCallback} from 'react';
 import SectionNode from '../fields/SectionNode';
 import generateRequestErrors from '../utilities/generateRequestErrors';
 import FormRequestError from '../errors/FormRequestError';
-import DonationReceipt from './DonationReceipt';
 import {ObjectSchema} from 'joi';
+import isRouteInlineRedirect from '@givewp/forms/app/utilities/isRouteInlineRedirect';
 
-const {donateUrl} = getWindowData();
+const {donateUrl, inlineRedirectRoutes} = getWindowData();
 const formTemplates = window.givewp.form.templates;
 
 const FormTemplate = withTemplateWrapper(formTemplates.layouts.form);
 const FormSectionTemplate = withTemplateWrapper(formTemplates.layouts.section, 'section');
+
+async function handleRedirect(response: any | Response) {
+    const redirectUrl = new URL(response.url);
+    const redirectUrlParams = new URLSearchParams(redirectUrl.search);
+    const shouldRedirectInline = isRouteInlineRedirect(redirectUrlParams, inlineRedirectRoutes);
+
+    if (shouldRedirectInline) {
+        // redirect inside iframe
+        window.location.assign(redirectUrl);
+    } else {
+        // redirect outside iframe
+        window.top.location.assign(redirectUrl);
+    }
+}
 
 const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
     let beforeCreatePaymentGatewayResponse = {};
@@ -27,10 +41,33 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
             beforeCreatePaymentGatewayResponse = await gateway.beforeCreatePayment(values);
         }
 
-        const {response} = await postData(donateUrl, {
+        const originUrl = window.top.location.href;
+
+        const isEmbed = window.frameElement !== null;
+
+        const getEmbedId = () => {
+            if (!isEmbed) {
+                return null;
+            }
+
+            if (window.frameElement.hasAttribute('data-givewp-embed-id')) {
+                return window.frameElement.getAttribute('data-givewp-embed-id');
+            }
+
+            return window.frameElement.id;
+        };
+
+        const {response, isRedirect} = await postData(donateUrl, {
             ...values,
+            originUrl,
+            isEmbed,
+            embedId: getEmbedId(),
             gatewayData: beforeCreatePaymentGatewayResponse,
         });
+
+        if (isRedirect) {
+            await handleRedirect(response);
+        }
 
         if (response.data?.errors) {
             throw new FormRequestError(response.data.errors.errors);
@@ -60,28 +97,11 @@ export default function Form({defaultValues, sections, validationSchema}: PropTy
         resolver: joiResolver(validationSchema),
     });
 
-    const {handleSubmit, setError, getValues, control} = methods;
+    const {handleSubmit, setError, control} = methods;
 
-    const {errors, isSubmitting, isSubmitSuccessful} = useFormState({control});
+    const {errors, isSubmitting} = useFormState({control});
 
     const formError = errors.hasOwnProperty('FORM_ERROR') ? errors.FORM_ERROR.message : null;
-
-    if (isSubmitSuccessful) {
-        const {amount, firstName, lastName, email, gatewayId} = getValues();
-        const gateway = gateways.find(({id}) => id === gatewayId);
-
-        return (
-            <DonationReceipt
-                amount={amount}
-                email={email}
-                firstName={firstName}
-                lastName={lastName}
-                gateway={gateway}
-                status={'Complete'}
-                total={amount}
-            />
-        );
-    }
 
     return (
         <FormProvider {...methods}>

@@ -1,11 +1,12 @@
 import GatewayRegistrar from './gateways';
-import type {FormServerExports} from '@givewp/forms/types';
+import type {DonationConfirmationReceiptServerExports, FormServerExports} from '@givewp/forms/types';
 import type {useFormContext, useFormState, useWatch} from 'react-hook-form';
 import defaultFormTemplates from './templates';
 
 declare global {
     interface Window {
         giveNextGenExports: FormServerExports;
+        givewpDonationConfirmationReceiptExports: DonationConfirmationReceiptServerExports;
         givewp: {
             gateways: GatewayRegistrar;
             form: {

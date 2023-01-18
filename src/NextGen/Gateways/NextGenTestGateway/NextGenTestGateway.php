@@ -2,9 +2,8 @@
 namespace Give\NextGen\Gateways\NextGenTestGateway;
 
 use Give\Donations\Models\Donation;
-use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\EnqueueScript;
-use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
+use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\Traits\HasRequest;
 use Give\Helpers\Form\Utils as FormUtils;
@@ -57,7 +56,7 @@ class NextGenTestGateway extends PaymentGateway
     public function enqueueScript(): EnqueueScript
     {
         return new EnqueueScript(
-            $this->getId(),
+            self::id(),
             'build/nextGenTestGateway.js',
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
@@ -86,17 +85,9 @@ class NextGenTestGateway extends PaymentGateway
     public function createPayment(Donation $donation, $gatewayData)
     {
         $intent = $gatewayData['testGatewayIntent'];
-        $transactionId = "test-gateway-transaction-id-{$donation->id}";
+        $transactionId = "test-gateway-transaction-id-{$intent}-{$donation->id}-";
 
-        $donation->status = DonationStatus::COMPLETE();
-        $donation->gatewayTransactionId = $transactionId;
-        $donation->save();
-
-        return new RespondToBrowser([
-            'donation' => $donation->toArray(),
-            'redirectUrl' => give_get_success_page_uri(),
-            'intent' => $intent
-        ]);
+        return new PaymentComplete($transactionId);
     }
 
     /**

@@ -39,7 +39,9 @@ class DonationFormViewModelTest extends TestCase
 
         $this->assertEquals($viewModel->exports(), [
             'donateUrl' => $donateUrl,
-            'successUrl' => give_get_success_page_uri(),
+            'inlineRedirectRoutes' => [
+                'donation-confirmation-receipt-view'
+            ],
             'gatewaySettings' => $formDataGateways,
             'form' => array_merge($formApi, [
                 'settings' => $donationForm->settings,

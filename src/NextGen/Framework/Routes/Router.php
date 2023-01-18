@@ -14,6 +14,8 @@ class Router
      * @param  string  $uri
      * @param  string|callable  $action
      * @param  string  $method
+     *
+     * @return void
      */
     public function get(string $uri, $action, $method = '__invoke')
     {
@@ -25,6 +27,8 @@ class Router
      * @param  string  $uri
      * @param  string|callable  $action
      * @param  string  $method
+     *
+     * @return void
      */
     public function post(string $uri, $action, $method = '__invoke')
     {
@@ -94,6 +98,7 @@ class Router
      * @param  string  $method
      * @param  string  $uri
      * @param $action
+     *
      * @return void
      */
     protected function addRoute(string $type, string $method, string $uri, $action)
@@ -121,10 +126,13 @@ class Router
     /**
      * @unreleased
      */
-    public function url(string $uri): string
+    public function url(string $uri, array $args = []): string
     {
         return add_query_arg(
-            ['givewp-route' => $uri],
+            array_merge(
+                ['givewp-route' => $uri],
+                $args
+            ),
             home_url()
         );
     }

@@ -13,6 +13,9 @@
     "attributes": {
         "formId": {
             "type": "string"
+        },
+        "blockId": {
+            "type": "string"
         }
     },
     "textdomain": "give",

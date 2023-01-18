@@ -48,13 +48,24 @@ class TestGenerateConfirmationPageReceipt extends TestCase
             ),
             new ReceiptDetail(
                 __('Donation Amount', 'give'),
-                $donation->amount->formatToDecimal()
+                ['amount' => $donation->amount->formatToDecimal()]
             ),
             new ReceiptDetail(
                 __('Donation Total', 'give'),
-                $donation->amount->formatToDecimal()
+                ['amount' => $donation->amount->formatToDecimal()]
             ),
         ]);
+
+        $additionalDetails = new ReceiptDetailCollection();
+
+        if ($donation->company) {
+            $additionalDetails->addDetail(
+                new ReceiptDetail(
+                    __('Company Name', 'give'),
+                    $receipt->donation->company
+                )
+            );
+        }
 
         $this->assertSame(
             $receipt->toArray(),
@@ -66,7 +77,7 @@ class TestGenerateConfirmationPageReceipt extends TestCase
                 'donorDetails' => $donorDetails->toArray(),
                 'donationDetails' => $donationDetails->toArray(),
                 'subscriptionDetails' => [],
-                'additionalDetails' => [],
+                'additionalDetails' => $additionalDetails->toArray(),
             ]
         );
     }
@@ -97,7 +108,7 @@ class TestGenerateConfirmationPageReceipt extends TestCase
         $donationDetails = new ReceiptDetailCollection([
             new ReceiptDetail(
                 __('Payment Status', 'give'),
-                give_get_payment_statuses()[$donation->status->getValue()]
+                $donation->status->label()
             ),
             new ReceiptDetail(
                 __('Payment Method', 'give'),
@@ -105,22 +116,25 @@ class TestGenerateConfirmationPageReceipt extends TestCase
             ),
             new ReceiptDetail(
                 __('Donation Amount', 'give'),
-                $donation->amount->formatToDecimal()
+                ['amount' => $donation->amount->formatToDecimal()]
             ),
             new ReceiptDetail(
                 __('Donation Total', 'give'),
-                $donation->amount->formatToDecimal()
+                ['amount' => $donation->amount->formatToDecimal()]
             ),
         ]);
 
         $subscriptionDetails = new ReceiptDetailCollection([
             new ReceiptDetail(
                 __('Subscription', 'give'),
-                sprintf(
-                    '%s / %s',
-                    $subscription->amount->formatToDecimal(),
-                    $subscription->period->getValue()
-                )
+                [
+                    'amount' =>
+                        sprintf(
+                            '%s / %s',
+                            $subscription->amount->formatToDecimal(),
+                            $subscription->period->getValue()
+                        )
+                ]
             ),
             new ReceiptDetail(
                 __('Subscription Status', 'give'),
@@ -140,6 +154,17 @@ class TestGenerateConfirmationPageReceipt extends TestCase
             ),
         ]);
 
+        $additionalDetails = new ReceiptDetailCollection();
+
+        if ($donation->company) {
+            $additionalDetails->addDetail(
+                new ReceiptDetail(
+                    __('Company Name', 'give'),
+                    $receipt->donation->company
+                )
+            );
+        }
+
         $this->assertSame(
             $receipt->toArray(),
             [
@@ -150,7 +175,7 @@ class TestGenerateConfirmationPageReceipt extends TestCase
                 'donorDetails' => $donorDetails->toArray(),
                 'donationDetails' => $donationDetails->toArray(),
                 'subscriptionDetails' => $subscriptionDetails->toArray(),
-                'additionalDetails' => [],
+                'additionalDetails' => $additionalDetails->toArray(),
             ]
         );
     }

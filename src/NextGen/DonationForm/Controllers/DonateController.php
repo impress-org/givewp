@@ -8,7 +8,6 @@ use Give\Donors\Models\Donor;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\NextGen\DonationForm\Actions\StoreCustomFields;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateControllerData;
-use Give\NextGen\DonationForm\DataTransferObjects\LegacyPurchaseFormData;
 use Give\NextGen\DonationForm\Models\DonationForm;
 
 /**
@@ -40,8 +39,9 @@ class DonateController
 
         $this->saveCustomFields($form, $donation, $formData->getCustomFields());
 
-        // setting sessions is required for legacy receipts
-        $this->setSession($donation, $donor);
+        $this->temporarilyReplaceLegacySuccessPageUri($formData, $donation);
+
+        $this->addToGatewayData($formData, $donation);
 
         $registeredGateway->handleCreatePayment($donation);
     }
@@ -92,31 +92,6 @@ class DonateController
     }
 
     /**
-     * This logic is intended to work with the legacy receipt functionality
-     * by setting and updating the give_purchase session.
-     *
-     * @unreleased
-     *
-     * @return void
-     */
-    private function setSession(Donation $donation, Donor $donor)
-    {
-        give()->session->maybe_start_session();
-
-        $purchaseSession = (array)give()->session->get('give_purchase');
-
-        if ($purchaseSession && array_key_exists('donation_id', $purchaseSession)) {
-            $purchaseSession['donation_id'] = $donation->id;
-
-            give()->session->set('give_purchase', $purchaseSession);
-        } else {
-            $legacyPurchaseFormData = LegacyPurchaseFormData::fromArray(['donation' => $donation, 'donor' => $donor]);
-
-            give_set_purchase_session($legacyPurchaseFormData->toPurchaseData());
-        }
-    }
-
-    /**
      * @unreleased
      *
      * @return void
@@ -124,5 +99,57 @@ class DonateController
     private function saveCustomFields(DonationForm $form, Donation $donation, array $customFields)
     {
         (new StoreCustomFields())($form, $donation, $customFields);
+    }
+
+    /**
+     * Use our new receipt url for the success page uri.
+     *
+     * The give_get_success_page_uri() function is used by the legacy gateway processing and is specific to how that form works.
+     *
+     * In Next Gen, our confirmation receipt page is stateless, and need to use the form request data to generate the url.
+     *
+     * This is a temporary solution until we can update the gateway api to support the new receipt urls.
+     *
+     * @unreleased
+     *
+     * @return void
+     */
+    protected function temporarilyReplaceLegacySuccessPageUri(DonateControllerData $formData, Donation $donation)
+    {
+        $filteredUrl = $formData->getDonationConfirmationReceiptViewRouteUrl($donation);
+
+        add_filter('give_get_success_page_uri', static function ($url) use ($filteredUrl) {
+            return $filteredUrl;
+        });
+    }
+
+    /**
+     * This adds the `redirectReturnUrl` key to the gateway data.
+     *
+     * This is necessary so gateways can use this value in both legacy and next gen donation forms.
+     *
+     * @unreleased
+     *
+     * @return void
+     */
+    protected function addToGatewayData(DonateControllerData $formData, $donation)
+    {
+        add_filter(
+            "givewp_create_payment_gateway_data_{$donation->gatewayId}",
+            static function ($data) use ($formData, $donation) {
+                return array_merge($data, [
+                    'redirectReturnUrl' => $formData->getRedirectReturnUrl($donation),
+                ]);
+            }
+        );
+
+        add_filter(
+            "givewp_create_subscription_gateway_data_{$donation->gatewayId}",
+            static function ($data) use ($formData, $donation) {
+                return array_merge($data, [
+                    'redirectReturnUrl' => $formData->getRedirectReturnUrl($donation),
+                ]);
+            }
+        );
     }
 }

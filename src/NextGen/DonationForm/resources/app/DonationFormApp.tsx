@@ -32,7 +32,6 @@ const initialState = {
     gateways: window.givewp.gateways.getAll(),
 };
 
-
 function App() {
     if (form.goal.isAchieved) {
         return <GoalAchievedTemplate goalAchievedMessage={form.settings.goalAchievedMessage} />;

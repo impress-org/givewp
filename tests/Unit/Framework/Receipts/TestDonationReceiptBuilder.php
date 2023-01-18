@@ -47,13 +47,24 @@ class TestDonationReceiptBuilder extends TestCase
             ),
             new ReceiptDetail(
                 __('Donation Amount', 'give'),
-                $donation->amount->formatToDecimal()
+                ['amount' => $donation->amount->formatToDecimal()]
             ),
             new ReceiptDetail(
                 __('Donation Total', 'give'),
-                $donation->amount->formatToDecimal()
+                ['amount' => $donation->amount->formatToDecimal()]
             ),
         ]);
+
+        $additionalDetails = new ReceiptDetailCollection();
+
+        if ($donation->company) {
+            $additionalDetails->addDetail(
+                new ReceiptDetail(
+                    __('Company Name', 'give'),
+                    $receipt->donation->company
+                )
+            );
+        }
 
         $this->assertSame(
             $receiptBuilder->toConfirmationPage()->toArray(),
@@ -65,7 +76,7 @@ class TestDonationReceiptBuilder extends TestCase
                 'donorDetails' => $donorDetails->toArray(),
                 'donationDetails' => $donationDetails->toArray(),
                 'subscriptionDetails' => [],
-                'additionalDetails' => [],
+                'additionalDetails' => $additionalDetails->toArray(),
             ]
         );
     }

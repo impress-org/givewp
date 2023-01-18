@@ -85,7 +85,6 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
         );
 
         return [
-            'successUrl' => give_get_success_page_uri(),
             'stripeKey' => $stripePublishableKey,
             'stripeClientSecret' => $stripePaymentIntent->client_secret,
             'stripeConnectedAccountKey' => $stripeConnectedAccountKey,
@@ -104,6 +103,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
          */
         $stripeConnectedAccountKey = $gatewayData['stripeConnectedAccountKey'];
         $stripePaymentIntentId = $gatewayData['stripePaymentIntentId'];
+        $redirectReturnUrl = $gatewayData['redirectReturnUrl'];
 
         /**
          * Get or create a Stripe customer
@@ -135,8 +135,8 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
          * Return response to client
          */
         return new RespondToBrowser([
-            'status' => 200,
-            'intentStatus' => $intent->status
+            'intentStatus' => $intent->status,
+            'returnUrl' => $redirectReturnUrl,
         ]);
     }
 

@@ -26,9 +26,13 @@ class BlockRenderControllerTest extends TestCase
         $blockRenderController = new BlockRenderController();
 
         $this->assertSame(
-            "<iframe data-givewp-embed src='$viewUrl'
+            str_replace(
+                "<iframe data-givewp-embed src='$viewUrl' data-givewp-embed-id='123' 
                 style='width: 1px;min-width: 100%;border: 0;'></iframe>",
-            $blockRenderController->render(['formId' => $donationForm->id])
+                " ",
+                ''
+            ),
+            str_replace($blockRenderController->render(['formId' => $donationForm->id, 'blockId' => '123']), " ", '')
         );
     }
 }

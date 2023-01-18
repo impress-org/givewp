@@ -6,6 +6,8 @@ use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptUrl;
+use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptViewRouteUrl;
 use Give\NextGen\DonationForm\Models\DonationForm;
 
 class DonateControllerData
@@ -54,6 +56,19 @@ class DonateControllerData
      * @var string|null
      */
     public $honorific;
+    /**
+     * @var string
+     */
+    public $originUrl;
+    /**
+     * @var string|null
+     */
+    public $embedId;
+
+    /**
+     * @var bool
+     */
+    public $isEmbed;
 
     /**
      * @unreleased
@@ -75,6 +90,32 @@ class DonateControllerData
             'company' => $this->company,
             'type' => DonationType::SINGLE()
         ]);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getRedirectReturnUrl(Donation $donation)
+    {
+        return $this->isEmbed ?
+            $this->getDonationConfirmationReceiptUrl($donation) :
+            $this->getDonationConfirmationReceiptViewRouteUrl($donation);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getDonationConfirmationReceiptViewRouteUrl(Donation $donation): string
+    {
+        return (new GenerateDonationConfirmationReceiptViewRouteUrl())($donation->purchaseKey);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getDonationConfirmationReceiptUrl(Donation $donation): string
+    {
+        return (new GenerateDonationConfirmationReceiptUrl())($donation, $this->originUrl, $this->embedId);
     }
 
     /**
@@ -106,6 +147,9 @@ class DonateControllerData
                         'currency',
                         'wpUserId',
                         'honorific',
+                        'originUrl',
+                        'isEmbed',
+                        'embedId',
                     ]
                 ),
                 true
