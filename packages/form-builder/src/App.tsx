@@ -9,30 +9,13 @@ import type {Block} from '@givewp/form-builder/types';
 import './App.scss';
 
 import defaultBlocks from './blocks.json';
-import {__} from '@wordpress/i18n';
-import Feedback from "@givewp/form-builder/feedback";
+import Feedback from '@givewp/form-builder/feedback';
 
 const {blocks: initialBlocks, formSettings: initialFormSettings} = Storage.load();
 
 const initialState = {
     blocks: initialBlocks || (defaultBlocks as Block[]),
     settings: {
-        formTitle: __('My Default Donation Form Title', 'give'),
-        enableDonationGoal: false,
-        enableAutoClose: false,
-        registration: 'none',
-        goalType: 'amount',
-        goalAchievedMessage: __('Thank you to all our donors, we have met our fundraising goal.', 'give'),
-        designId: 'classic',
-        showHeading: true,
-        showDescription: true,
-        heading: __('Support Our Cause', 'give'),
-        description: __(
-            'Help our organization by donating today! Donations go to making a difference for our cause.',
-            'give'
-        ),
-        primaryColor: '#69b86b',
-        secondaryColor: '#f49420',
         ...initialFormSettings,
     },
 };

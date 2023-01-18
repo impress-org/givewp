@@ -1,4 +1,4 @@
-import {createSlotFill} from '@wordpress/components';
+import {createSlotFill, PanelBody} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 
 import './styles.scss';
@@ -11,6 +11,7 @@ import {
     FormTitleSettings,
     OfflineDonationsSettings,
     CustomStyleSettings,
+    ReceiptSettings,
 } from '../../settings/index.ts';
 import FormFields from '../../settings/form-fields';
 import {PopoutSlot} from './popout';
@@ -51,6 +52,7 @@ const tabs = [
             <>
                 <FormDesignSettings />
                 <DonationGoalSettings />
+                <ReceiptSettings />
                 <CustomStyleSettings />
             </>
         )
