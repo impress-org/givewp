@@ -1,0 +1,49 @@
+@use '../../../../../assets/src/css/Safe-Rem/functions' as *;
+
+.container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: safe-rem(2.15);
+    margin-right: auto;
+    font-size: safe-rem(0.9);
+
+    input[type='checkbox'] {
+        visibility: hidden;
+    }
+
+    & .switch {
+        position: absolute;
+        height: safe-rem(1.715);
+        width: safe-rem(3.5);
+        border-radius: 100px;
+        background: #808080;
+        transition: 0.35s;
+    }
+
+    & .switch:before {
+        position: absolute;
+        content: '';
+        top: 3px;
+        left: 3px;
+        height: safe-rem(1.328);
+        width: safe-rem(1.328);
+        border-radius: 100px;
+        background: #ffffff;
+        box-shadow: 0 0.031rem 0 rgba(0, 0, 0, 0.25);
+        transition: 0.35s;
+    }
+
+    & > span:last-child {
+        transform: translateX(47px);
+    }
+
+    input[type='checkbox']:checked + .switch {
+        background: #f49420;
+    }
+
+    input[type='checkbox']:checked + .switch:before {
+        left: calc(100% - 3px);
+        transform: translateX(-100%);
+    }
+}

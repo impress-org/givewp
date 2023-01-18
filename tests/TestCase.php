@@ -1,12 +1,13 @@
 <?php
 
-namespace GiveTests;
+namespace Give\Tests;
 
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
+use Give\Tests\TestTraits\RefreshDatabase;
+use Give\Tests\TestTraits\AssertIsType;
 use Give_Cache_Setting;
-use GiveTests\TestTraits\RefreshDatabase;
 use WP_UnitTestCase;
 
 /**
@@ -15,11 +16,13 @@ use WP_UnitTestCase;
  * Provides Give-specific setup/tear down/assert methods
  * and helper functions.
  *
- * @since 2.22.1 migrated Give_Unit_Test_Case to GiveTests namespace
+ * @since 2.22.1 migrated Give_Unit_Test_Case to Give\Tests namespace
  * @since 1.0
  */
 class TestCase extends WP_UnitTestCase
 {
+    use AssertIsType;
+
     /**
      * Cache Give setting
      * Note: we will use this variable to reset setting after each test to prevent test failure
@@ -146,7 +149,10 @@ class TestCase extends WP_UnitTestCase
      */
     public static function assertMoneyEquals(Money $expected, Money $actual)
     {
-        self::assertTrue($expected->equals($actual), "Failed asserting money is equal. Expected: {$expected->getAmount()} {$expected->getCurrency()->getCode()}, Actual: {$actual->getAmount()} {$actual->getCurrency()->getCode()}");
+        self::assertTrue(
+            $expected->equals($actual),
+            "Failed asserting money is equal. Expected: {$expected->getAmount()} {$expected->getCurrency()->getCode()}, Actual: {$actual->getAmount()} {$actual->getCurrency()->getCode()}"
+        );
     }
 
     /**
@@ -156,15 +162,18 @@ class TestCase extends WP_UnitTestCase
      *
      * @see https://phpunit.de/manual/5.5/en/test-doubles.html
      *
+     * @unreleased add suppression for phpunit internal deprecated notice
      * @since 2.11.0
      *
-     * @param string $abstract The class to create a mock for
-     * @param null|callable $builderCallable A callable for applying additional changes to the builder
+     * @param  string  $abstract  The class to create a mock for
+     * @param  null|callable  $builderCallable  A callable for applying additional changes to the builder
      *
      * @return object
      */
     public function createMock($abstract, $builderCallable = null)
     {
+        static::setSuppressedErrorHandler();
+
         $mockBuilder = $this->getMockBuilder($abstract)
             ->disableOriginalConstructor()
             ->disableOriginalClone()
@@ -179,7 +188,31 @@ class TestCase extends WP_UnitTestCase
             }
         }
 
-        return $mockBuilder->getMock();
+        try {
+            return $mockBuilder->getMock();
+        } finally {
+            restore_error_handler();
+        }
+    }
+
+    /**
+     * Set error handler to suppress `ReflectionType::__toString()` deprecation warning
+     *
+     * @unreleased
+     *
+     * @return void
+     */
+    public static function setSuppressedErrorHandler()
+    {
+        $previousHandler = set_error_handler(
+            static function ($code, $description, $file = null, $line = null, $context = null) use (&$previousHandler) {
+                if (($code & E_DEPRECATED)) {
+                    return true;
+                }
+
+                return $previousHandler($code, $description, $file, $line, $context);
+            }
+        );
     }
 
     /**
@@ -189,8 +222,8 @@ class TestCase extends WP_UnitTestCase
      *
      * @since 2.11.0
      *
-     * @param string $abstract
-     * @param null|callable $builderCallable
+     * @param  string  $abstract
+     * @param  null|callable  $builderCallable
      *
      * @return object
      */
@@ -233,7 +266,6 @@ class TestCase extends WP_UnitTestCase
             $this->refreshDatabase();
         }
     }
-
 
     /**
      * Registers Test Gateway to be used in tests to avoid any side effects caused by gateway not being registered.

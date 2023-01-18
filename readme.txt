@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 7.0
-Stable tag: 2.23.2
+Stable tag: 2.24.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -251,6 +251,18 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.24.0: January 18th, 2023 =
+* Security: Fixed critical and a low level security vulnerabilities. See our [critical release notice](https://go.givewp.com/2-24) for more details.
+* New: Sorting and custom columns are now supported for the Form, Donor, and Donation admin list tables
+* New: Subscription admin list table has a new, modern look like the other list tables — requires GiveWP Recurring add-on
+* Enhancement: New Validation framework in preparation for GiveWP 3.0
+* Enhancement: Donor Dashboard is ready for the upcoming Authorize.Net recurring support
+* Enhancement: Further small improvements to get ready for the upcoming GiveWP Next Gen Feature Plugin
+* Fix: Donor errors correctly display when using the Multi-Step form template
+* Fix: Donor comments now show up when the Stripe or PayPal Donations gateways are used
+* Fix: Accessibility improvement for generating a new user API key
+* Fix: The payment amount in the donation summary correctly updates when the donor enters a custom amount
+
 = 2.23.2: November 17th, 2022 =
 * Enhancement: Added support for gateways that need to mark a new subscription as processing
 * Fix: Fixed a Stripe issue in conjunction with Stripe that would throw an error when processing a renewal

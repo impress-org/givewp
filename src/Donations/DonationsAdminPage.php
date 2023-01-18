@@ -2,8 +2,10 @@
 
 namespace Give\Donations;
 
+use Give\Donations\ListTable\DonationsListTable;
+use Give\Framework\Database\DB;
 use Give\Helpers\EnqueueScript;
-use WP_REST_Request;
+use Give\Helpers\Utils;
 
 class DonationsAdminPage
 {
@@ -56,6 +58,7 @@ class DonationsAdminPage
     }
 
     /**
+     * @since 2.24.0 Add ListTable columns
      * @since 2.20.0
      * @since 2.21.2 Localized the admin URL as a base for URL concatenation.
      */
@@ -64,9 +67,11 @@ class DonationsAdminPage
         $data = [
             'apiRoot' => $this->apiRoot,
             'apiNonce' => $this->apiNonce,
-            'preload' => $this->preloadDonations(),
             'forms' => $this->getForms(),
+            'table' => give(DonationsListTable::class)->toArray(),
             'adminUrl' => $this->adminUrl,
+            'paymentMode' => give_is_test_mode(),
+            'manualDonations' => Utils::isPluginActive('give-manual-donations/give-manual-donations.php'),
         ];
 
         EnqueueScript::make('give-admin-donations', 'assets/dist/js/give-admin-donations.js')
@@ -106,33 +111,6 @@ class DonationsAdminPage
         return isset($_GET['page']) && $_GET['page'] === 'give-payment-history' && !isset($_GET['view']);
     }
 
-
-    /**
-     * Get first page of results from REST API to display as initial table data
-     *
-     * @since 2.20.0
-     * @return array
-     */
-    private function preloadDonations()
-    {
-        $queryParameters = [
-            'page' => 1,
-            'perPage' => 30,
-        ];
-
-        if(isset($_GET['search']))
-        {
-            $queryParameters['search'] = urldecode($_GET['search']);
-        }
-
-        $request = WP_REST_Request::from_url(esc_url(add_query_arg(
-            $queryParameters,
-            $this->apiRoot
-        )));
-
-        return rest_do_request($request)->get_data();
-    }
-
     /**
      * Retrieve a list of donation forms to populate the form filter dropdown
      *
@@ -141,31 +119,20 @@ class DonationsAdminPage
      */
     private function getForms()
     {
-        $queryParameters = [
-            'page' => 1,
-            'perPage' => 50,
-            'status' => 'any'
-        ];
-
-        $request = WP_REST_Request::from_url(esc_url_raw(add_query_arg(
-            $queryParameters,
-            rest_url('give-api/v2/admin/forms')
-        )));
-
-        $data = rest_do_request($request)->get_data();
-
-        $options = array_map(static function ($form) {
-            return [
-                'value' => $form['id'],
-                'text' => $form['name'],
-            ];
-        }, $data['items']);
+        $options = DB::table('posts')
+            ->select(
+                ['ID', 'value'],
+                ['post_title', 'text']
+            )
+            ->where('post_type', 'give_forms')
+            ->whereIn('post_status', ['publish', 'draft', 'pending', 'private'])
+            ->getAll(ARRAY_A);
 
         return array_merge([
             [
                 'value' => '0',
                 'text' => 'Any',
-            ]
+            ],
         ], $options);
     }
 }

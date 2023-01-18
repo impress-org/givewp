@@ -1,11 +1,11 @@
 <?php
 
-namespace GiveTests\Unit\Donations\LegacyListeners;
+namespace Give\Tests\Unit\Donations\LegacyListeners;
 
 use Give\Subscriptions\Models\Subscription;
 use Give_Payment;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 use InvalidArgumentException;
 
 /**

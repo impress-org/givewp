@@ -356,8 +356,8 @@ class Give_Donor_Wall {
 		$query_atts['orderby']       = in_array( $atts['orderby'], $valid_orderby ) ? $atts['orderby'] : 'post_date';
 		$query_atts['limit']         = $atts['donors_per_page'];
 		$query_atts['offset']        = $atts['donors_per_page'] * ( $atts['paged'] - 1 );
-		$query_atts['form_id']       = implode( '\',\'', explode( ',', $atts['form_id'] ) );
-		$query_atts['ids']           = implode( '\',\'', explode( ',', $atts['ids'] ) );
+        $query_atts['form_id']       = implode( '\',\'', array_map( 'absint', explode( ',', $atts['form_id'] ) ) );
+        $query_atts['ids']           = implode( '\',\'', array_map( 'absint', explode( ',', $atts['ids'] ) ) );
 		$query_atts['cats']          = $atts['cats'];
 		$query_atts['tags']          = $atts['tags'];
 		$query_atts['only_comments'] = ( true === $atts['only_comments'] );

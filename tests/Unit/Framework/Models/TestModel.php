@@ -1,13 +1,13 @@
 <?php
 
-namespace GiveTests\Unit\Framework\Models;
+namespace Give\Tests\Unit\Framework\Models;
 
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Model;
 use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Framework\QueryBuilder\QueryBuilder;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 /**
  * @since 2.20.1

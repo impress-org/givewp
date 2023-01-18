@@ -1,9 +1,9 @@
 <?php
 
-namespace GiveTests\Unit\Framework\FieldsAPI;
+namespace Give\Tests\Unit\Framework\FieldsAPI;
 
 use Give\Form\LegacyConsumer\UniqueIdAttributeGenerator;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 final class UniqueIdAttributeGeneratorTest extends TestCase
 {

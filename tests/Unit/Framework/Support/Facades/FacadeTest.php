@@ -1,9 +1,9 @@
 <?php
 
-namespace GiveTests\Unit\Framework\Support\Facades;
+namespace Give\Tests\Unit\Framework\Support\Facades;
 
 use Give\Framework\Support\Facades\Facade;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 final class FacadeTest extends TestCase
 {

@@ -1,5 +1,5 @@
 <?php
-namespace GiveTests\Unit\Framework\QueryBuilder;
+namespace Give\Tests\Unit\Framework\QueryBuilder;
 
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
@@ -39,7 +39,7 @@ final class AttachMetaTest extends TestCase
             ->orderBy('posts.post_date', 'DESC');
 
         $this->assertContains(
-            "SELECT posts.ID AS id, posts.post_date AS createdAt, wp_give_donationmeta_attach_meta_0.meta_value AS amount FROM wp_posts AS posts LEFT JOIN wp_give_donationmeta wp_give_donationmeta_attach_meta_0 ON posts.ID = wp_give_donationmeta_attach_meta_0.donation_id AND wp_give_donationmeta_attach_meta_0.meta_key = '_give_payment_total' LEFT JOIN wp_give_donationmeta donationMeta ON posts.ID = donationMeta.donation_id WHERE posts.post_type = 'give_payment' AND posts.post_status = 'give_subscription' AND donationMeta.meta_key = 'subscription_id' AND donationMeta.meta_value = '1' ORDER BY posts.post_date DESC",
+            "SELECT posts.ID AS id, posts.post_date AS createdAt, wp_give_donationmeta_attach_meta_amount.meta_value AS amount FROM wp_posts AS posts LEFT JOIN wp_give_donationmeta wp_give_donationmeta_attach_meta_amount ON posts.ID = wp_give_donationmeta_attach_meta_amount.donation_id AND wp_give_donationmeta_attach_meta_amount.meta_key = '_give_payment_total' LEFT JOIN wp_give_donationmeta donationMeta ON posts.ID = donationMeta.donation_id WHERE posts.post_type = 'give_payment' AND posts.post_status = 'give_subscription' AND donationMeta.meta_key = 'subscription_id' AND donationMeta.meta_value = '1' ORDER BY posts.post_date DESC",
             $builder->getSQL()
         );
     }
@@ -66,7 +66,7 @@ final class AttachMetaTest extends TestCase
             );
 
         $this->assertContains(
-            "SELECT id, email, name, CONCAT('[',GROUP_CONCAT(DISTINCT CONCAT('\"',wp_give_donormeta_attach_meta_0.meta_value,'\"')),']') AS additionalEmails FROM wp_give_donors LEFT JOIN wp_give_donormeta wp_give_donormeta_attach_meta_0 ON id = wp_give_donormeta_attach_meta_0.donor_id AND wp_give_donormeta_attach_meta_0.meta_key = 'additional_email' GROUP BY id",
+            "SELECT id, email, name, CONCAT('[',GROUP_CONCAT(DISTINCT CONCAT('\"',wp_give_donormeta_attach_meta_additionalEmails.meta_value,'\"')),']') AS additionalEmails FROM wp_give_donors LEFT JOIN wp_give_donormeta wp_give_donormeta_attach_meta_additionalEmails ON id = wp_give_donormeta_attach_meta_additionalEmails.donor_id AND wp_give_donormeta_attach_meta_additionalEmails.meta_key = 'additional_email' GROUP BY id",
             $builder->getSQL()
         );
     }
@@ -102,7 +102,7 @@ final class AttachMetaTest extends TestCase
             ->where('donationMeta.custom_meta_value', 1);
 
         $this->assertContains(
-            "SELECT posts.ID AS id, posts.post_date AS createdAt, wp_give_donationmeta_attach_meta_0.custom_meta_value AS amount FROM wp_posts AS posts LEFT JOIN wp_give_donationmeta wp_give_donationmeta_attach_meta_0 ON posts.ID = wp_give_donationmeta_attach_meta_0.donation_id AND wp_give_donationmeta_attach_meta_0.custom_meta_key = '_give_payment_total' LEFT JOIN wp_give_donationmeta donationMeta ON posts.ID = donationMeta.donation_id WHERE posts.post_type = 'give_payment' AND posts.post_status = 'give_subscription' AND donationMeta.custom_meta_key = 'subscription_id' AND donationMeta.custom_meta_value = '1'",
+            "SELECT posts.ID AS id, posts.post_date AS createdAt, wp_give_donationmeta_attach_meta_amount.custom_meta_value AS amount FROM wp_posts AS posts LEFT JOIN wp_give_donationmeta wp_give_donationmeta_attach_meta_amount ON posts.ID = wp_give_donationmeta_attach_meta_amount.donation_id AND wp_give_donationmeta_attach_meta_amount.custom_meta_key = '_give_payment_total' LEFT JOIN wp_give_donationmeta donationMeta ON posts.ID = donationMeta.donation_id WHERE posts.post_type = 'give_payment' AND posts.post_status = 'give_subscription' AND donationMeta.custom_meta_key = 'subscription_id' AND donationMeta.custom_meta_value = '1'",
             $builder->getSQL()
         );
     }

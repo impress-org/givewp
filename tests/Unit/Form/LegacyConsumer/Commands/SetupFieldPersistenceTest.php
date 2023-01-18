@@ -2,7 +2,7 @@
 
 use Give\Framework\FieldsAPI\Text;
 
-final class SetupFieldPersistenceTest extends \GiveTests\TestCase
+final class SetupFieldPersistenceTest extends \Give\Tests\TestCase
 {
 
     public function testFieldPersistence()

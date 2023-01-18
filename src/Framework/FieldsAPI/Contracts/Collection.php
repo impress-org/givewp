@@ -6,84 +6,89 @@ use Give\Framework\FieldsAPI\Field;
 
 interface Collection
 {
-
     /**
+     * @since 2.10.2
+     *
      * Fluently append nodes to the collection.
      *
-     * @param Node ...$nodes
-     *
-     * @return $this
+     * @return $this do not add return type until PHP 7.4 is minimum
      */
     public function append(Node ...$nodes);
 
     /**
      * Fluently remove a named node.
      *
-     * @param string $name
+     * @since 2.10.2
      *
      * @return mixed
      */
-    public function remove($name);
+    public function remove(string $name);
 
     /**
      * Get all the nodes.
      *
+     * @since 2.10.2
+     *
      * @return Node[]
      */
-    public function all();
+    public function all(): array;
 
     /**
      * Count all the nodes.
      *
+     * @since 2.10.2
+     *
      * @return int
      */
-    public function count();
+    public function count(): int;
 
     /**
      * Get a node’s index by its name.
      *
-     * @param string $name
+     * @since 2.10.2
      *
-     * @return int
+     * @return int|null
      */
-    public function getNodeIndexByName($name);
+    public function getNodeIndexByName(string $name);
 
     /**
      * Get a node by its name.
      *
-     * @param string $name
+     * @since 2.10.2
      *
      * @return Node|Collection
      */
-    public function getNodeByName($name);
+    public function getNodeByName(string $name);
 
     /**
      * Get only the field nodes.
      *
      * @return Field[]
      */
-    public function getFields();
+    public function getFields(): array;
 
     /**
-     * @param string $siblingName
-     * @param Node   $node
+     * Inserts the given noe after the node with the given name.
+     *
+     * @since 2.10.2
      *
      * @return $this
      */
-    public function insertAfter($siblingName, Node $node);
+    public function insertAfter(string $siblingName, Node $node);
 
     /**
-     * @param string $siblingName
-     * @param Node   $node
+     * Inserts the given noe before the node with the given name.
+     *
+     * @since 2.10.2
      *
      * @return $this
      */
-    public function insertBefore($siblingName, Node $node);
+    public function insertBefore(string $siblingName, Node $node);
 
     /**
      * Walk through each node in the collection
      *
-     * @param callable $callback
+     * @since 2.10.2
      *
      * @return void
      */

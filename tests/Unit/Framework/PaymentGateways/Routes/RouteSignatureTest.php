@@ -1,5 +1,5 @@
 <?php
-namespace GiveTests\Unit\Framework\PaymentGateways\Routes;
+namespace Give\Tests\Unit\Framework\PaymentGateways\Routes;
 
 use Give\Framework\PaymentGateways\Routes\RouteSignature;
 use PHPUnit\Framework\TestCase;

@@ -12,8 +12,9 @@
         "kjohnson/format-object-list": "^0.1.0",
         "fakerphp/faker": "^1.9",
         "myclabs/php-enum": "^1.6",
-        "symfony/http-foundation": "^3.4",
-        "moneyphp/money": "v3.3.1"
+        "symfony/http-foundation": "^v3.4.47",
+        "moneyphp/money": "v3.3.1",
+        "stellarwp/validation": "^1.0"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
@@ -36,8 +37,17 @@
     "scripts": {
         "test": "./vendor/bin/phpunit --colors --stop-on-failure",
         "unreleased": "./vendor/bin/since-unreleased.sh",
+        "strauss": [
+            "[[ -f ./bin/strauss.phar ]] || curl -o bin/strauss.phar -L -C - https://github.com/BrianHenryIE/strauss/releases/download/0.13.0/strauss.phar",
+            "vendor/stellarwp/validation/bin/set-domain domain=give",
+            "@php bin/strauss.phar"
+        ],
         "post-install-cmd": [
+            "@strauss",
             "@php -r \"file_exists('tests/wp-tests-config.php') || copy('tests/wp-tests-config.dist.php', 'tests/wp-tests-config.php');\""
+        ],
+        "post-update-cmd": [
+            "@strauss"
         ],
         "bundle": [
             "@copy-fonts",
@@ -56,16 +66,28 @@
     "autoload-dev": {
         "psr-4": {
             "Give\\PHPStan\\": ".phpstan/",
-            "GiveTests\\": "tests/"
+            "Give\\Tests\\": "tests/"
         }
     },
     "config": {
         "platform": {
-            "php": "7.0"
+            "php": "7.0.8"
         },
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "composer/installers": true
+        }
+    },
+    "extra": {
+        "strauss": {
+            "target_directory": "vendor/vendor-prefixed",
+            "namespace_prefix": "Give\\Vendors",
+            "classmap_prefix": "Give_Vendors_",
+            "constant_prefix": "GIVE_VENDORS_",
+            "packages": [
+                "stellarwp/validation"
+            ],
+            "delete_vendor_files": true
         }
     },
     "repositories": [

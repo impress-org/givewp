@@ -1,11 +1,11 @@
 <?php
 
-namespace GiveTests\Unit\DonationForms\Repositories;
+namespace Give\Tests\Unit\DonationForms\Repositories;
 
-use Give\DonationForms\Controllers\DonationFormsRequestController;
+use Give\DonationForms\Endpoints\ListDonationForms;
 use Give\Framework\Database\DB;
 use Give_Helper_Form;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 use WP_REST_Request;
 
 final class DonationFormsRepositoryTest extends TestCase
@@ -40,9 +40,11 @@ final class DonationFormsRepositoryTest extends TestCase
         $request->set_param('search', '');
         $request->set_param('perPage', 30);
         $request->set_param('status', 'any');
+        $request->set_param('return', 'model');
 
-        $controller = new DonationFormsRequestController($request);
-        $forms = $controller->getForms();
+        $listDonationForms = new ListDonationForms();
+        $response = $listDonationForms->handleRequest($request);
+        $forms = $response->data['items'];
 
         $this->assertEquals(2, count($forms), 'Repository retrieves correct number of total forms');
     }
@@ -63,9 +65,11 @@ final class DonationFormsRepositoryTest extends TestCase
         $request->set_param('search', 'simple my');
         $request->set_param('perPage', 30);
         $request->set_param('status', 'any');
+        $request->set_param('return', 'model');
 
-        $controller = new DonationFormsRequestController($request);
-        $forms = $controller->getForms();
+        $listDonationForms = new ListDonationForms();
+        $response = $listDonationForms->handleRequest($request);
+        $forms = $response->data['items'];
 
         $this->assertEquals(1, count($forms), 'Search retrieves a single form');
         $this->assertEquals('My Simple Form', $forms[0]->title, 'Search retrieves correct form');
