@@ -26,4 +26,13 @@ class DonationType extends Enum
 
     // A subsequent donation for an existing subscription
     const RENEWAL = 'renewal';
+
+    /**
+     * Whether this donation is recurring or not
+     * @since 2.24.0
+     */
+    public function isRecurring(): bool
+    {
+        return ! $this->isSingle();
+    }
 }

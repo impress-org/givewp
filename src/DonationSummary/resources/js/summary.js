@@ -30,7 +30,7 @@ window.GiveDonationSummary = {
     /**
      * @since 2.17.0
      *
-     * @unreleased add eventlistner for custom input amount changes.
+     * @since 2.24.0 add eventlistner for custom input amount changes.
      */
     initAmount: function () {
         GiveDonationSummary.observe('[name="give-amount"]', function (targetNode, $form) {

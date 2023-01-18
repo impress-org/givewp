@@ -8,7 +8,7 @@ use Give\Framework\Migrations\Contracts\Migration;
 /**
  * Class AddMissingDonorIdToDonationComment
  *
- * @unreleased
+ * @since 2.24.0
  */
 class AddMissingDonorIdToDonationComments extends Migration
 {

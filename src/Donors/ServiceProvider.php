@@ -2,6 +2,7 @@
 
 namespace Give\Donors;
 
+use Give\Donors\ListTable\DonorsListTable;
 use Give\Donors\Repositories\DonorRepositoryProxy;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -18,6 +19,12 @@ class ServiceProvider implements ServiceProviderInterface
     public function register()
     {
         give()->singleton('donors', DonorRepositoryProxy::class);
+        give()->singleton(DonorsListTable::class, function() {
+            $listTable = new DonorsListTable();
+            Hooks::doAction('givewp_donors_list_table', $listTable);
+
+            return $listTable;
+        });
     }
 
     /**
