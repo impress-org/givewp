@@ -21,7 +21,8 @@ final class DonationFormQueryDataTest extends TestCase
      */
     public function testToDonationFormShouldReturnDonationForm(string $mockFormType)
     {
-        $mockForm = $mockFormType === 'multi' ? \Give_Helper_Form::create_multilevel_form() : \Give_Helper_Form::create_simple_form();
+        $mockForm = $mockFormType === 'multi' ? $this->createMultiLevelDonationForm() : $this->createSimpleDonationForm(
+        );
 
         // simulate raw query to pass to DTO
         $query = DB::table('posts')
@@ -39,47 +40,59 @@ final class DonationFormQueryDataTest extends TestCase
                 ...DonationFormMetaKeys::getColumnsForAttachMetaQuery()
             )
             ->where('post_type', 'give_forms')
-            ->where('id', $mockForm->get_ID())
+            ->where('id', $mockForm->id)
             ->get();
 
         // create DTO from query object
         $donationFormQueryData = DonationFormQueryData::fromObject($query);
 
-        // create expected donation form model using mock form
-        $expectedDonationFormModel = $this->getDonationFormModelFromLegacyGiveDonateForm($mockForm);
-
         // assert query data returns the donation form we expect.
         $this->assertEquals(
             $donationFormQueryData->toDonationForm(),
-            $expectedDonationFormModel
+            $mockForm
         );
     }
 
+    /**
+     * @unreleased
+     */
     public function testGetDonationFormLevelsMulti()
     {
         $dto = new DonationFormQueryData();
 
-        $this->assertIsArray($dto->getDonationFormLevels(
-            json_decode('{"priceOption":"multi","donationLevels":[]}')
-        ));
+        $this->assertIsArray(
+            $dto->getDonationFormLevels(
+                json_decode('{"priceOption":"multi","donationLevels":[]}')
+            )
+        );
     }
 
+    /**
+     * @unreleased
+     */
     public function testGetDonationFormLevelsSimple()
     {
         $dto = new DonationFormQueryData();
 
-        $this->assertIsArray($dto->getDonationFormLevels(
-            json_decode('{"priceOption":"simple", "setPrice":"100"}')
-        ));
+        $this->assertIsArray(
+            $dto->getDonationFormLevels(
+                json_decode('{"priceOption":"set", "setPrice":"100"}')
+            )
+        );
     }
 
+    /**
+     * @unreleased
+     */
     public function testGetDonationFormLevelsNull()
     {
         $dto = new DonationFormQueryData();
 
-        $this->assertIsArray($dto->getDonationFormLevels(
-            json_decode('{"priceOption":null}')
-        ));
+        $this->assertIsArray(
+            $dto->getDonationFormLevels(
+                json_decode('{"priceOption":null}')
+            )
+        );
     }
 
     /**
@@ -89,7 +102,7 @@ final class DonationFormQueryDataTest extends TestCase
     {
         return [
             ['multi'],
-            ['simple'],
+            ['set'],
         ];
     }
 }
