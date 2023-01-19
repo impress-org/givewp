@@ -3,9 +3,11 @@
 namespace Give\NextGen\Framework\Receipts;
 
 use Give\Donations\Models\Donation;
+use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\Framework\Receipts\Actions\GenerateConfirmationPageReceipt;
 use Give\NextGen\Framework\Receipts\Properties\ReceiptDetail;
 use Give\NextGen\Framework\Receipts\Properties\ReceiptDetailCollection;
+use Give\NextGen\Framework\TemplateTags\DonationTemplateTags;
 use Give\Subscriptions\Models\Subscription;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -19,8 +21,13 @@ class TestGenerateConfirmationPageReceipt extends TestCase
      */
     public function testShouldGenerateReceiptForOneTimeDonation()
     {
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->create();
+
         /** @var Donation $donation */
-        $donation = Donation::factory()->create();
+        $donation = Donation::factory()->create([
+            'formId' => $donationForm->id
+        ]);
 
         $initialReceipt = new DonationReceipt($donation);
 
@@ -67,13 +74,20 @@ class TestGenerateConfirmationPageReceipt extends TestCase
             );
         }
 
+        $heading = (new DonationTemplateTags($donation, $donationForm->settings->receiptHeading))->getContent();
+        $description = (new DonationTemplateTags($donation, $donationForm->settings->receiptDescription))->getContent();
+
+        $settings = [
+            'heading' => $heading,
+            'description' => $description,
+            'currency' => $receipt->donation->amount->getCurrency()->getCode(),
+            'donorDashboardUrl' => get_permalink(give_get_option('donor_dashboard_page')),
+        ];
+
         $this->assertSame(
             $receipt->toArray(),
             [
-                'settings' => [
-                    'currency' => $receipt->donation->amount->getCurrency()->getCode(),
-                    'donorDashboardUrl' => get_permalink(give_get_option('donor_dashboard_page')),
-                ],
+                'settings' => $settings,
                 'donorDetails' => $donorDetails->toArray(),
                 'donationDetails' => $donationDetails->toArray(),
                 'subscriptionDetails' => [],
@@ -87,7 +101,10 @@ class TestGenerateConfirmationPageReceipt extends TestCase
      */
     public function testShouldGenerateReceiptForRecurringDonation()
     {
-        $subscription = Subscription::factory()->createWithDonation();
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->create();
+
+        $subscription = Subscription::factory()->createWithDonation(['donationFormId' => $donationForm->id]);
         $donation = $subscription->initialDonation();
 
         $initialReceipt = new DonationReceipt($donation);
@@ -165,13 +182,20 @@ class TestGenerateConfirmationPageReceipt extends TestCase
             );
         }
 
+        $heading = (new DonationTemplateTags($donation, $donationForm->settings->receiptHeading))->getContent();
+        $description = (new DonationTemplateTags($donation, $donationForm->settings->receiptDescription))->getContent();
+
+        $settings = [
+            'heading' => $heading,
+            'description' => $description,
+            'currency' => $receipt->donation->amount->getCurrency()->getCode(),
+            'donorDashboardUrl' => get_permalink(give_get_option('donor_dashboard_page')),
+        ];
+
         $this->assertSame(
             $receipt->toArray(),
             [
-                'settings' => [
-                    'currency' => $receipt->donation->amount->getCurrency()->getCode(),
-                    'donorDashboardUrl' => get_permalink(give_get_option('donor_dashboard_page')),
-                ],
+                'settings' => $settings,
                 'donorDetails' => $donorDetails->toArray(),
                 'donationDetails' => $donationDetails->toArray(),
                 'subscriptionDetails' => $subscriptionDetails->toArray(),

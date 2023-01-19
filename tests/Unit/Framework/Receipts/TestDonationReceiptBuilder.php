@@ -3,10 +3,12 @@
 namespace Give\Tests\Unit\Framework\Receipts;
 
 use Give\Donations\Models\Donation;
+use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\Framework\Receipts\DonationReceipt;
 use Give\NextGen\Framework\Receipts\DonationReceiptBuilder;
 use Give\NextGen\Framework\Receipts\Properties\ReceiptDetail;
 use Give\NextGen\Framework\Receipts\Properties\ReceiptDetailCollection;
+use Give\NextGen\Framework\TemplateTags\DonationTemplateTags;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
@@ -19,8 +21,13 @@ class TestDonationReceiptBuilder extends TestCase
      */
     public function testToConfirmationPageShouldReturnDonationReceipt()
     {
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->create();
+
         /** @var Donation $donation */
-        $donation = Donation::factory()->create();
+        $donation = Donation::factory()->create([
+            'formId' => $donationForm->id
+        ]);
 
         $receipt = new DonationReceipt($donation);
         $receiptBuilder = new DonationReceiptBuilder($receipt);
@@ -66,13 +73,21 @@ class TestDonationReceiptBuilder extends TestCase
             );
         }
 
+        $heading = (new DonationTemplateTags($donation, $donationForm->settings->receiptHeading))->getContent();
+        $description = (new DonationTemplateTags($donation, $donationForm->settings->receiptDescription))->getContent();
+
+        $settings = [
+            'heading' => $heading,
+            'description' => $description,
+            'currency' => $receipt->donation->amount->getCurrency()->getCode(),
+            'donorDashboardUrl' => get_permalink(give_get_option('donor_dashboard_page')),
+        ];
+
+
         $this->assertSame(
             $receiptBuilder->toConfirmationPage()->toArray(),
             [
-                'settings' => [
-                    'currency' => $receipt->donation->amount->getCurrency()->getCode(),
-                    'donorDashboardUrl' => get_permalink(give_get_option('donor_dashboard_page')),
-                ],
+                'settings' => $settings,
                 'donorDetails' => $donorDetails->toArray(),
                 'donationDetails' => $donationDetails->toArray(),
                 'subscriptionDetails' => [],

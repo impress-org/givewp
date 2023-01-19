@@ -11,6 +11,7 @@ use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\Framework\Receipts\DonationReceipt;
 use Give\NextGen\Framework\Receipts\Properties\ReceiptDetail;
+use Give\NextGen\Framework\TemplateTags\DonationTemplateTags;
 
 class GenerateConfirmationPageReceipt
 {
@@ -188,7 +189,65 @@ class GenerateConfirmationPageReceipt
      */
     private function fillSettings(DonationReceipt $receipt)
     {
+        $donationForm = $this->getDonationForm($receipt->donation->formId);
+
+        $receipt->settings->addSetting(
+            'heading',
+            $this->getHeading($receipt, $donationForm)
+        );
+
+        $receipt->settings->addSetting(
+            'description',
+            $this->getDescription($receipt, $donationForm)
+        );
+
         $receipt->settings->addSetting('currency', $receipt->donation->amount->getCurrency()->getCode());
         $receipt->settings->addSetting('donorDashboardUrl', get_permalink(give_get_option('donor_dashboard_page')));
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  int  $formId
+     * @return DonationForm|null
+     */
+    protected function getDonationForm(int $formId)
+    {
+        if (give(DonationFormRepository::class)->isLegacyForm($formId)) {
+            return null;
+        }
+
+        return DonationForm::find($formId);
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function getHeading(DonationReceipt $receipt, DonationForm $donationForm = null): string
+    {
+        if (!$donationForm) {
+            $content = __("Hey {donation.firstName}, thanks for your donation!", 'give');
+        } else {
+            $content = $donationForm->settings->receiptHeading;
+        }
+
+        return (new DonationTemplateTags($receipt->donation, $content))->getContent();
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function getDescription(DonationReceipt $receipt, DonationForm $donationForm = null): string
+    {
+        if (!$donationForm) {
+            $content = __(
+                "{donation.firstName}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {donation.email}.",
+                'give'
+            );
+        } else {
+            $content = $donationForm->settings->receiptDescription;
+        }
+
+        return (new DonationTemplateTags($receipt->donation, $content))->getContent();
     }
 }
