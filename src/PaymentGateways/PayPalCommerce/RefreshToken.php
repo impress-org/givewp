@@ -2,6 +2,8 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Log\Log;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
@@ -103,10 +105,23 @@ class RefreshToken
             return;
         }
 
-        $tokenDetails = $this->payPalAuth->getTokenFromClientCredentials(
-            $this->merchantDetail->clientId,
-            $this->merchantDetail->clientSecret
-        );
+        try {
+            $tokenDetails = $this->payPalAuth->getTokenFromClientCredentials(
+                $this->merchantDetail->clientId,
+                $this->merchantDetail->clientSecret
+            );
+        } catch (Exception $exception) {
+            give(Log::class)->warning(
+                'PayPal Commerce: Error refresh access token',
+                [
+                    'category' => 'Payment Gateway',
+                    'source' => 'Paypal Commerce',
+                    'exception' => $exception,
+                ]
+            );
+
+            return;
+        }
 
         $this->merchantDetail->setTokenDetails($tokenDetails);
         $this->detailsRepository->save($this->merchantDetail);
