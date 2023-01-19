@@ -3,6 +3,8 @@
 namespace Give\PaymentGateways\PayPalCommerce;
 
 use Exception;
+use Give\Framework\Exceptions\Primitives\Exception as GiveException;
+use Give\Log\Log;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
@@ -130,10 +132,30 @@ class onBoardingRedirectHandler
         );
         $this->didWeGetValidSellerRestApiCredentials($restApiCredentials);
 
-        $tokenInfo = $this->payPalAuth->getTokenFromClientCredentials(
-            $restApiCredentials['client_id'],
-            $restApiCredentials['client_secret']
-        );
+        try {
+            $tokenInfo = $this->payPalAuth->getTokenFromClientCredentials(
+                $restApiCredentials['client_id'],
+                $restApiCredentials['client_secret']
+            );
+        } catch (GiveException $e) {
+            give(Log::class)->warning(
+                'PayPal Commerce: Error retrieving access token on on boarding redirect.',
+                [
+                    'category' => 'Payment Gateway',
+                    'source' => 'Paypal Commerce',
+                    'exception' => $e,
+                ]
+            );
+
+            $errors[] = esc_html__(
+                'There was a problem with retrieving PayPal access token. Please try again or contact support.',
+                'give'
+            );
+
+            $this->merchantRepository->saveAccountErrors($errors);
+            $this->redirectWhenOnBoardingFail();
+        }
+
         $this->settings->updateAccessToken($tokenInfo);
 
         $payPalAccount['clientId'] = $restApiCredentials['client_id'];
