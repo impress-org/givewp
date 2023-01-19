@@ -98,6 +98,40 @@ final class DonationFormQueryDataTest extends TestCase
     /**
      * @unreleased
      */
+    public function testGetDonationFormLevelsShouldReturnEmptyArrayWhenUsingMultiAndNoLevels()
+    {
+        $dto = new DonationFormQueryData();
+
+        $object = json_encode([
+            DonationFormMetaKeys::PRICE_OPTION()->getKeyAsCamelCase() => 'multi',
+            DonationFormMetaKeys::DONATION_LEVELS()->getKeyAsCamelCase() => null
+        ]);
+
+        $levels = $dto->getDonationFormLevels(json_decode($object));
+
+        $this->assertSame([], $levels);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetDonationFormLevelsShouldReturnEmptyArrayWhenUsingSetAndNoAmount()
+    {
+        $dto = new DonationFormQueryData();
+
+        $object = json_encode([
+            DonationFormMetaKeys::PRICE_OPTION()->getKeyAsCamelCase() => 'set',
+            DonationFormMetaKeys::SET_PRICE()->getKeyAsCamelCase() => null
+        ]);
+
+        $levels = $dto->getDonationFormLevels(json_decode($object));
+
+        $this->assertSame([], $levels);
+    }
+
+    /**
+     * @unreleased
+     */
     public function mockFormTypeProvider(): array
     {
         return [

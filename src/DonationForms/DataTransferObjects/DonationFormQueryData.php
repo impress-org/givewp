@@ -104,12 +104,24 @@ final class DonationFormQueryData
     {
         switch( $object->{DonationFormMetaKeys::PRICE_OPTION()->getKeyAsCamelCase()} ) {
             case 'multi':
+                $levels = maybe_unserialize($object->{DonationFormMetaKeys::DONATION_LEVELS()->getKeyAsCamelCase()});
+
+                if (empty($levels)) {
+                    return [];
+                }
+
                 return array_map(static function ($level) {
                     return DonationFormLevel::fromArray($level);
-                }, maybe_unserialize($object->{DonationFormMetaKeys::DONATION_LEVELS()->getKeyAsCamelCase()}));
+                }, $levels);
             case 'set':
+                $amount = $object->{DonationFormMetaKeys::SET_PRICE()->getKeyAsCamelCase()};
+
+                if (empty($amount)) {
+                    return [];
+                }
+
                 return [
-                    DonationFormLevel::fromPrice($object->{DonationFormMetaKeys::SET_PRICE()->getKeyAsCamelCase()}),
+                    DonationFormLevel::fromPrice($amount),
                 ];
             default:
                 return [];
