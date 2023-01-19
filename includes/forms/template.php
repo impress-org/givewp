@@ -2421,7 +2421,7 @@ function give_redirect_and_popup_form( $redirect, $args ) {
 	}
 
 	// Return the modified URL.
-	return esc_url( $redirect );
+	return esc_url_raw( $redirect );
 }
 
 add_filter( 'give_send_back_to_checkout', 'give_redirect_and_popup_form', 10, 2 );
