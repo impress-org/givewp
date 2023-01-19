@@ -3,7 +3,9 @@
 namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
 use Give\ConnectClient\ConnectClient;
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Helpers\ArrayDataSet;
+use Give\Log\Log;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 
 class PayPalAuth
@@ -44,9 +46,9 @@ class PayPalAuth
      * @param string $client_id
      * @param string $client_secret
      *
-     * @return array
+     * @throws Exception
      */
-    public function getTokenFromClientCredentials($client_id, $client_secret)
+    public function getTokenFromClientCredentials($client_id, $client_secret): array
     {
         $auth = base64_encode("$client_id:$client_secret");
 
@@ -62,6 +64,19 @@ class PayPalAuth
                 ],
             ]
         );
+
+        if (200 !== wp_remote_retrieve_response_code($request)) {
+            give(Log::class)->http(
+                'PayPal Commerce: Error retrieving access token',
+                [
+                    'category' => 'Payment Gateway',
+                    'source' => 'Paypal Commerce',
+                    'response' => $request,
+                ]
+            );
+
+            throw new Exception('PayPal Commerce: Error retrieving access token');
+        }
 
         return ArrayDataSet::camelCaseKeys(json_decode(wp_remote_retrieve_body($request), true));
     }
