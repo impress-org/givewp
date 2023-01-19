@@ -111,13 +111,13 @@ class onBoardingRedirectHandler
 
         $payPalAccount = array_intersect_key($paypalGetData, array_flip($allowedPayPalData));
 
-        if ( ! array_key_exists('merchantIdInPayPal', $payPalAccount) || empty($payPalAccount['merchantIdInPayPal'])) {
+        if (! array_key_exists('merchantIdInPayPal', $payPalAccount) || empty($payPalAccount['merchantIdInPayPal'])) {
             $errors[] = [
                 'type' => 'url',
                 'message' => esc_html__(
-                                 'There was a problem with PayPal return url and we could not find valid merchant ID. Paypal return URL is:',
-                                 'give'
-                             ) . "\n",
+                    'There was a problem with PayPal return url and we could not find valid merchant ID. Paypal return URL is:',
+                    'give'
+                ) . "\n",
                 'value' => urlencode($_SERVER['QUERY_STRING']),
             ];
 
@@ -178,7 +178,7 @@ class onBoardingRedirectHandler
      */
     private function setUpWebhook(MerchantDetail $merchant_details)
     {
-        if ( ! is_ssl()) {
+        if (! is_ssl()) {
             return;
         }
 
@@ -255,9 +255,9 @@ class onBoardingRedirectHandler
     private function isPayPalAccountDetailsSaved()
     {
         return isset($_GET['paypal-commerce-account-connected']) && Give_Admin_Settings::is_setting_page(
-                'gateways',
-                'paypal'
-            );
+            'gateways',
+            'paypal'
+        );
     }
 
     /**
@@ -328,7 +328,7 @@ class onBoardingRedirectHandler
      *
      * @param string $merchantId
      * @param string $accessToken
-     * @param bool   $usesCustomPayments
+     * @param bool $usesCustomPayments
      *
      * @return true|string[]
      */
@@ -342,7 +342,7 @@ class onBoardingRedirectHandler
             'value' => wp_json_encode($onBoardedData),
         ];
 
-        if ( ! is_ssl()) {
+        if (! is_ssl()) {
             $errorMessages[] = esc_html__(
                 'A valid SSL certificate is required to accept donations and set up your PayPal account. Once a
 					certificate is installed and the site is using https, please disconnect and reconnect your account.',
@@ -360,15 +360,15 @@ class onBoardingRedirectHandler
             return $errorMessages;
         }
 
-        if ( ! $onBoardedData['payments_receivable']) {
+        if (! $onBoardedData['payments_receivable']) {
             $errorMessages[] = esc_html__('Set up an account to receive payment from PayPal', 'give');
         }
 
-        if ( ! $onBoardedData['primary_email_confirmed']) {
+        if (! $onBoardedData['primary_email_confirmed']) {
             $errorMessage[] = esc_html__('Confirm your primary email address', 'give');
         }
 
-        if ( ! $usesCustomPayments) {
+        if (! $usesCustomPayments) {
             return count($errorMessages) > 1 ? $errorMessages : true;
         }
 
@@ -405,11 +405,11 @@ class onBoardingRedirectHandler
             }
         }
 
-        if ( ! empty($invalidCapabilities)) {
+        if (! empty($invalidCapabilities)) {
             $errorMessages[] = esc_html__(
-                                   'Reach out to PayPal to resolve the following capabilities:',
-                                   'give'
-                               ) . ' ' . implode(', ', $invalidCapabilities);
+                'Reach out to PayPal to resolve the following capabilities:',
+                'give'
+            ) . ' ' . implode(', ', $invalidCapabilities);
         }
 
         // If there were errors then redirect the user with notices
