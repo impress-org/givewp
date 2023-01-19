@@ -37,8 +37,8 @@ class RefreshToken
      * @since 2.9.6 Add MerchantDetail constructor param.
      *
      * @param MerchantDetails $detailsRepository
-     * @param PayPalAuth      $payPalAuth
-     * @param MerchantDetail  $merchantDetail
+     * @param PayPalAuth $payPalAuth
+     * @param MerchantDetail $merchantDetail
      */
     public function __construct(
         MerchantDetails $detailsRepository,
@@ -54,10 +54,8 @@ class RefreshToken
      * Return cron json name which uses to refresh token.
      *
      * @since 2.9.0
-     *
-     * @return string
      */
-    private function getCronJobHookName()
+    private function getCronJobHookName(): string
     {
         return 'give_paypal_commerce_refresh_token';
     }
@@ -101,7 +99,7 @@ class RefreshToken
     public function refreshToken()
     {
         // Exit if account is not connected.
-        if ( ! $this->detailsRepository->accountIsConnected()) {
+        if (! $this->detailsRepository->accountIsConnected()) {
             return;
         }
 
