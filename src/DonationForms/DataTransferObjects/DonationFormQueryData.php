@@ -102,19 +102,17 @@ final class DonationFormQueryData
      */
     public function getDonationFormLevels($object): array
     {
-        if ('multi' === $object->{DonationFormMetaKeys::PRICE_OPTION()->getKeyAsCamelCase()}) {
-            $levels = [];
-            $array = maybe_unserialize($object->{DonationFormMetaKeys::DONATION_LEVELS()->getKeyAsCamelCase()});
-
-            foreach ($array as $level) {
-                $levels[] = DonationFormLevel::fromArray($level);
-            }
-
-            return $levels;
+        switch( $object->{DonationFormMetaKeys::PRICE_OPTION()->getKeyAsCamelCase()} ) {
+            case 'multi':
+                return array_map(function($level) {
+                    return DonationFormLevel::fromArray($level);
+                }, maybe_unserialize($object->{DonationFormMetaKeys::DONATION_LEVELS()->getKeyAsCamelCase()}));
+            case 'simple':
+                return [
+                    DonationFormLevel::fromPrice($object->{DonationFormMetaKeys::SET_PRICE()->getKeyAsCamelCase()}),
+                ];
+            default:
+                return [];
         }
-
-        return [
-            DonationFormLevel::fromPrice($object->{DonationFormMetaKeys::SET_PRICE()->getKeyAsCamelCase()}),
-        ];
     }
 }

@@ -55,6 +55,33 @@ final class DonationFormQueryDataTest extends TestCase
         );
     }
 
+    public function testGetDonationFormLevelsMulti()
+    {
+        $dto = new DonationFormQueryData();
+
+        $this->assertIsArray($dto->getDonationFormLevels(
+            json_decode('{"priceOption":"multi","donationLevels":[]}')
+        ));
+    }
+
+    public function testGetDonationFormLevelsSimple()
+    {
+        $dto = new DonationFormQueryData();
+
+        $this->assertIsArray($dto->getDonationFormLevels(
+            json_decode('{"priceOption":"simple", "setPrice":"100"}')
+        ));
+    }
+
+    public function testGetDonationFormLevelsNull()
+    {
+        $dto = new DonationFormQueryData();
+
+        $this->assertIsArray($dto->getDonationFormLevels(
+            json_decode('{"priceOption":null}')
+        ));
+    }
+
     /**
      * @unreleased
      */
@@ -65,5 +92,4 @@ final class DonationFormQueryDataTest extends TestCase
             ['simple'],
         ];
     }
-
 }
