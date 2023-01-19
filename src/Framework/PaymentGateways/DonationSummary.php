@@ -40,7 +40,7 @@ class DonationSummary
      */
     public function getSummaryWithDonor(): string
     {
-        return $this->trimAndFilter(
+        return $this->trim(
             implode(' - ', [
                 $this->getSummary(),
                 $this->getDonorLabel(),
@@ -117,5 +117,17 @@ class DonationSummary
          * @since 1.8.12
          */
         return apply_filters('give_payment_gateway_donation_summary', substr($text, 0, $this->length));
+    }
+    
+    /**
+     * @since ...
+     *
+     * @param string $text
+     *
+     * @return string
+     */
+    protected function trim(string $text): string
+    {
+        return substr($text, 0, $this->length);
     }
 }
