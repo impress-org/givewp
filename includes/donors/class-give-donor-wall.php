@@ -340,6 +340,7 @@ class Give_Donor_Wall {
 	/**
 	 * Get query params
 	 *
+     * @unreleased
 	 * @since 2.3.0
 	 *
 	 * @param  array $atts
