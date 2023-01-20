@@ -141,7 +141,7 @@ class GatewayServerClient
             throw new Exception(
                 esc_html__(
                     sprintf(
-                        'Request to gateways server failed. Error:  %1$s',
+                        'The request to the gateway server failed. Error:  %1$s',
                         $response->get_error_message()
                     )
                 )
