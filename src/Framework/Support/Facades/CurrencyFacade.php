@@ -78,12 +78,18 @@ class CurrencyFacade
      */
     public function formatToLocale(Money $amount, $locale = null): string
     {
-        if ( !class_exists(NumberFormatter::class) ) {
-            if (give_get_option('auto_format_currency')) {
-                Log::warning('Auto-formatting enabled by the INTL extension is not available. Please install the INTL extension to enable auto-formatting.');
+        $useAutoFormatting = give_get_option('auto_format_currency');
+        if (!class_exists(NumberFormatter::class) || !$useAutoFormatting) {
+            if ($useAutoFormatting) {
+                Log::warning(
+                    'Auto-formatting enabled but the INTL extension is not available. Please install the INTL extension to enable auto-formatting.'
+                );
             }
 
-            return give_currency_filter($this->formatToDecimal($amount), ['currency' => $amount->getCurrency()->getCode()]);
+            return give_currency_filter(
+                $this->formatToDecimal($amount),
+                ['currency' => $amount->getCurrency()->getCode()]
+            );
         }
 
         if ($locale === null) {
