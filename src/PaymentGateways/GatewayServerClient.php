@@ -12,6 +12,8 @@ class GatewayServerClient
 {
     /**
      * @unreleased
+     *
+     * @param string $path The path for the route on the gateway server. E.g: 'gateway-name/endpoint'
      */
     public static function url(string $path = ''): string
     {
