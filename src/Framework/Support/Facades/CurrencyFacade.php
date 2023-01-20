@@ -68,6 +68,7 @@ class CurrencyFacade
     /**
      * Formats the amount to a currency format, including currency symbols, in the given locale.
      *
+     * @unreleased fallback on give formatting system if intl extension is not available
      * @since 2.20.0
      *
      * @param Money $amount

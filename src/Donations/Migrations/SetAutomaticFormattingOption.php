@@ -7,6 +7,11 @@ namespace Give\Donations\Migrations;
 use Give\Framework\Migrations\Contracts\Migration;
 use NumberFormatter;
 
+/**
+ * Sets the initial automatic formatting option based on whether the intl extension is installed.
+ *
+ * @unreleased
+ */
 class SetAutomaticFormattingOption extends Migration
 {
     public static function id(): string
