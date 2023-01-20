@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Give\Framework\ListTable;
 
 use Exception;
@@ -115,8 +117,10 @@ abstract class ListTable implements Arrayable
      * will be a human-readable error message. This is to prevent fatal errors from breaking the entire table.
      *
      * @since 2.24.1
+     *
+     * @return mixed
      */
-    private function safelyGetCellValue(ModelColumn $column, Model $model, string $locale): string
+    private function safelyGetCellValue(ModelColumn $column, Model $model, string $locale)
     {
         try {
             $cellValue = $column->getCellValue($model, $locale);
