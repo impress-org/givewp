@@ -10,7 +10,6 @@ use WP_Error;
  */
 class GatewayServerClient
 {
-
     /**
      * @unreleased
      */
@@ -20,37 +19,40 @@ class GatewayServerClient
     }
 
     /**
-     * @see https://developer.wordpress.org/reference/functions/wp_remote_get/
-     *
      * @unreleased
+     *
+     * @param string $path The path for the route on the gateway server. E.g: 'gateway-name/endpoint'
+     * @param array  $args Optional. Can contains 'headers' and 'body'
      *
      * @throws Exception
      */
-    public function get(string $path, $args = []): array
+    public function get(string $path, array $args = []): array
     {
         return self::getRequest($path, $args);
     }
 
     /**
-     * @see https://developer.wordpress.org/reference/functions/wp_remote_post/
-     *
      * @unreleased
+     *
+     * @param string $path The path for the route on the gateway server. E.g: 'gateway-name/endpoint'
+     * @param array  $args Optional. Can contains 'headers' and 'body'
      *
      * @throws Exception
      */
-    public function post(string $path, $args = []): array
+    public function post(string $path, array $args = []): array
     {
         return self::postRequest($path, $args);
     }
 
     /**
-     * @see https://developer.wordpress.org/reference/functions/wp_remote_request/
-     *
      * @unreleased
+     *
+     * @param string $path The path for the route on the gateway server. E.g: 'gateway-name/endpoint'
+     * @param array  $args Optional. Can contains 'method', 'headers' and 'body'
      *
      * @throws Exception
      */
-    public function request(string $path, $args = []): array
+    public function request(string $path, array $args = []): array
     {
         return self::customRequest($path, $args);
     }
@@ -70,13 +72,14 @@ class GatewayServerClient
     }
 
     /**
-     * @see https://developer.wordpress.org/reference/functions/wp_remote_get/
-     *
      * @unreleased
+     *
+     * @param string $path The path for the route on the gateway server. E.g: 'gateway-name/endpoint'
+     * @param array  $args Optional. Can contains 'headers' and 'body'
      *
      * @throws Exception
      */
-    public static function getRequest(string $path, $args = []): array
+    public static function getRequest(string $path, array $args = []): array
     {
         $url = self::serverUrl($path);
 
@@ -88,13 +91,14 @@ class GatewayServerClient
     }
 
     /**
-     * @see https://developer.wordpress.org/reference/functions/wp_remote_post/
-     *
      * @unreleased
+     *
+     * @param string $path The path for the route on the gateway server. E.g: 'gateway-name/endpoint'
+     * @param array  $args Optional. Can contains 'headers' and 'body'
      *
      * @throws Exception
      */
-    public static function postRequest(string $path, $args = []): array
+    public static function postRequest(string $path, array $args = []): array
     {
         $url = self::serverUrl($path);
 
@@ -106,13 +110,14 @@ class GatewayServerClient
     }
 
     /**
-     * @see https://developer.wordpress.org/reference/functions/wp_remote_request/
-     *
      * @unreleased
+     *
+     * @param string $path The path for the route on the gateway server. E.g: 'gateway-name/endpoint'
+     * @param array  $args Optional. Can contains 'method', 'headers' and 'body'
      *
      * @throws Exception
      */
-    public static function customRequest(string $path, $args = []): array
+    public static function customRequest(string $path, array $args = []): array
     {
         $url = self::serverUrl($path);
 
