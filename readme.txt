@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 7.0
-Stable tag: 2.24.0
+Stable tag: 2.24.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -251,6 +251,10 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.24.1: January 19th, 2023 =
+* Security: Further protection against SQL Injection attacks.
+* Fix: Forms with missing level data no longer breaks the whole form list table.
+
 = 2.24.0: January 18th, 2023 =
 * Security: Fixed critical and a low level security vulnerabilities. See our [critical release notice](https://go.givewp.com/2-24) for more details.
 * New: Sorting and custom columns are now supported for the Form, Donor, and Donation admin list tables

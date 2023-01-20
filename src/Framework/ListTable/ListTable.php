@@ -2,9 +2,12 @@
 
 namespace Give\Framework\ListTable;
 
+use Exception;
 use Give\Framework\ListTable\Concerns\Columns;
 use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
+use Give\Framework\Models\Model;
 use Give\Framework\Support\Contracts\Arrayable;
+use Give\Log\Log;
 
 /**
  * @since 2.24.0
@@ -64,7 +67,7 @@ abstract class ListTable implements Arrayable
     {
         return [
             'id' => $this->id(),
-            'columns' => $this->getColumnsArray()
+            'columns' => $this->getColumnsArray(),
         ];
     }
 
@@ -73,7 +76,7 @@ abstract class ListTable implements Arrayable
      *
      * @since 2.24.0
      *
-     * @param array  $items
+     * @param array $items
      * @param string $locale
      *
      * @return void
@@ -88,7 +91,7 @@ abstract class ListTable implements Arrayable
             $row = [];
 
             foreach ($columns as $column) {
-                $row[$column::getId()] = $column->getCellValue($model, $locale);
+                $row[$column::getId()] = $this->safelyGetCellValue($column, $model, $locale);;
             }
 
             $data[] = $row;
@@ -105,6 +108,43 @@ abstract class ListTable implements Arrayable
     public function getItems(): array
     {
         return $this->items;
+    }
+
+    /**
+     * Safely retrieves the cell value for a column. If an exception is thrown, it will be logged and the cell value
+     * will be a human-readable error message. This is to prevent fatal errors from breaking the entire table.
+     *
+     * @since 2.24.1
+     */
+    private function safelyGetCellValue(ModelColumn $column, Model $model, string $locale): string
+    {
+        try {
+            $cellValue = $column->getCellValue($model, $locale);
+        } catch (Exception $exception) {
+            Log::error(
+                sprintf(
+                    'Error while rendering column "%s" for table "%s".',
+                    $column::getId(),
+                    $this->id()
+                ),
+                [
+                    'column' => $column::getId(),
+                    'table' => $this->id(),
+                    'model' => $model->toArray(),
+                    'exception' => $exception->getMessage(),
+                ]
+            );
+
+            $cellValue = __(
+                sprintf(
+                    'Something went wrong, more in detail in <a href="%s">logs</a>',
+                    admin_url('edit.php?post_type=give_forms&page=give-tools&tab=logs')
+                ),
+                'give'
+            );
+        }
+
+        return $cellValue;
     }
 }
 
