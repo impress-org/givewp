@@ -31,7 +31,7 @@ class ConnectClient
      */
     public function getApiUrl(string $endpoint = ''): string
     {
-        $url = defined('GIVE_GATEWAY_SERVER_URL') ? GIVE_GATEWAY_SERVER_URL : $this->apiUrl;
+        $url = defined('GIVE_CONNECT_URL') ? GIVE_CONNECT_URL : $this->apiUrl;
 
         if ( ! empty($endpoint)) {
             $url .= '/' . ltrim($endpoint, '/');
