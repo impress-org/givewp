@@ -2,6 +2,7 @@
 
 namespace Give\Framework\Support\Facades;
 
+use Give\Log\Log;
 use Money\Converter;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
@@ -76,6 +77,14 @@ class CurrencyFacade
      */
     public function formatToLocale(Money $amount, $locale = null): string
     {
+        if ( !class_exists(NumberFormatter::class) ) {
+            if (give_get_option('auto_format_currency')) {
+                Log::warning('Auto-formatting enabled by the INTL extension is not available. Please install the INTL extension to enable auto-formatting.');
+            }
+
+            return give_currency_filter($this->formatToDecimal($amount), ['currency' => $amount->getCurrency()->getCode()]);
+        }
+
         if ($locale === null) {
             $locale = get_locale();
         }
