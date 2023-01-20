@@ -1,9 +1,10 @@
-import {FormDesign} from '@givewp/form-builder/types';
+import {FormDesign, FormPageSettings} from '@givewp/form-builder/types';
 
 declare global {
     interface Window {
         storageData?: {
             formDesigns: FormDesign[];
+            formPage: FormPageSettings;
         };
     }
 }

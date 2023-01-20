@@ -9,6 +9,7 @@ use Give\NextGen\CustomFields\ServiceProvider as CustomFieldsServiceProvider;
 use Give\NextGen\DonationForm\ServiceProvider as DonationFormServiceProvider;
 use Give\NextGen\Framework\FormDesigns\ServiceProvider as FormDesignServiceProvider;
 use Give\NextGen\ServiceProvider as NextGenServiceProvider;
+use Give\NextGen\FormPage\ServiceProvider as FormPageServiceProvider;
 
 /**
  * Plugin Name:         GiveWP - Visual Donation Form Builder
@@ -60,6 +61,7 @@ add_action(
             give()->registerServiceProvider(FormBuilder\ServiceProvider::class);
             give()->registerServiceProvider(FormDesignServiceProvider::class);
             give()->registerServiceProvider(CustomFieldsServiceProvider::class);
+            give()->registerServiceProvider(FormPageServiceProvider::class);
         }
     }
 );

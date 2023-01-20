@@ -7,7 +7,8 @@ use Give\Framework\Support\Contracts\Jsonable;
 use Give\NextGen\DonationForm\FormDesigns\ClassicFormDesign\ClassicFormDesign;
 use Give\NextGen\DonationForm\ValueObjects\GoalType;
 
-class FormSettings implements Arrayable, Jsonable {
+class FormSettings implements Arrayable, Jsonable
+{
     /**
      * @var boolean
      */
@@ -72,6 +73,11 @@ class FormSettings implements Arrayable, Jsonable {
     /**
      * @var string
      */
+    public $pageSlug;
+
+    /**
+     * @var string
+     */
     public $receiptHeading;
 
     /**
@@ -103,6 +109,8 @@ class FormSettings implements Arrayable, Jsonable {
         $self->goalAmount = $array['goalAmount'] ?? 0;
         $self->registration = $array['registration'] ?? 'none';
         $self->customCss = $array['customCss'] ?? '';
+        $self->goalAchievedMessage = $array['goalAchievedMessage'] ?? '';
+        $self->pageSlug = $array['pageSlug'] ?? '';
         $self->goalAchievedMessage = $array['goalAchievedMessage'] ?? __(
             'Thank you to all our donors, we have met our fundraising goal.',
             'give'

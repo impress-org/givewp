@@ -16,8 +16,7 @@ export type FormSettings = {
     primaryColor: string;
     secondaryColor: string;
     customCss: string;
-
+    pageSlug: string;
     receiptHeading: string;
-
     receiptDescription: string;
 };

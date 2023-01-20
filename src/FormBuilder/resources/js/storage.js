@@ -12,8 +12,8 @@ window.storage = {
                         settings: JSON.stringify(formSettings),
                     },
                 })
-                .done(() => {
-                    resolve();
+                .done(( response ) => {
+                    resolve(JSON.parse(response.settings));
                 })
                 .fail((error) => {
                     console.error(error);

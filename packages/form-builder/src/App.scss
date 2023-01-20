@@ -361,3 +361,43 @@ This creates a consistent separator between the tabs and the rest of the sidebar
 }
 
 /** ------------------------------- */
+
+.givewp-sidebar-dropdown-content .components-popover__content {
+    border: 1px solid var(--givewp-gray-40);
+}
+
+.components-popover.components-dropdown__content{
+    z-index: 99999999;
+}
+
+.givewp-panel-body--summary .components-base-control__field .components-select-control,
+.givewp-panel-body--summary .components-base-control__field {
+    display: grid;
+    grid-template-columns: 85px 1fr;
+
+    input {
+        background-color: var(--givewp-gray-10);
+
+        &[aria-expanded="true"] {
+            background-color: var(--givewp-primary-200);
+        }
+    }
+
+    label {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0;
+        margin-right: 0;
+    }
+
+    .components-input-control__container {
+        width: 158px;
+    }
+
+    .components-flex.components-select-control > .components-flex-item {
+        &,
+        label {
+            height: 100%;
+        }
+    }
+}

@@ -34,6 +34,11 @@ class FormBuilderViewModel
                     'name' => $design::name(),
                 ];
             }, give(FormDesignRegistrar::class)->getDesigns()),
+            'formPage' => [
+                'isEnabled' => give_is_setting_enabled(give_get_option('forms_singular')), // Note: Boolean values must be nested in an array to maintain boolean type, see \WP_Scripts::localize().
+                'permalink' => add_query_arg(['p' => $donationFormId], site_url()),
+                'rewriteSlug' => get_post_type_object('give_forms')->rewrite['slug'],
+            ],
         ];
     }
 

@@ -1,6 +1,7 @@
 import type {Block} from '../../../types/block'
 import type {FormData} from '../../../types/formData'
 import type {StorageDriver} from "../interface";
+import {FormSettings} from "@givewp/form-builder/types";
 
 const localStorageDriver: StorageDriver = {
 
@@ -11,11 +12,11 @@ const localStorageDriver: StorageDriver = {
      * @param formSettings
      */
     save: ({blocks, formSettings}: FormData) => {
-        return new Promise<void>((resolve) => {
+        return new Promise<FormSettings>((resolve) => {
             setTimeout(function () {
                 localStorage.setItem('@givewp/form-builder.blocks', JSON.stringify(blocks));
                 localStorage.setItem('@givewp/form-builder.settings', JSON.stringify(formSettings));
-                resolve();
+                resolve(formSettings);
             }, 1000);
         });
     },

@@ -24,7 +24,8 @@ const HeaderContainer = ({
         setSaving(true);
         Storage.save({blocks, formSettings})
             .catch((error) => alert(error.message))
-            .finally(() => {
+            .then((updatedSettings) => {
+                dispatch(setFormSettings({pageSlug: updatedSettings.pageSlug}));
                 setSaving(false);
             });
     };

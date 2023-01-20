@@ -81,6 +81,14 @@ class DonationFormRepository
         $dateCreated = Temporal::withoutMicroseconds($donationForm->createdAt ?: Temporal::getCurrentDateTime());
         $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
 
+        $donationForm->settings->pageSlug = wp_unique_post_slug(
+            $donationForm->settings->pageSlug ?: sanitize_title($donationForm->title),
+            $donationForm->id,
+            $donationForm->status->getValue(),
+            'give_forms',
+            0
+        );
+
         DB::query('START TRANSACTION');
 
         try {
@@ -95,6 +103,7 @@ class DonationFormRepository
                     'post_parent' => 0,
                     'post_title' => $donationForm->title,
                     'post_content' => (new BlockCollection([]))->toJson(), // @todo Repurpose as form page.
+                    'post_name' => $donationForm->settings->pageSlug,
                 ]);
 
             $donationFormId = DB::last_insert_id();
@@ -149,6 +158,14 @@ class DonationFormRepository
 
         $date = Temporal::getCurrentFormattedDateForDatabase();
 
+        $donationForm->settings->pageSlug = wp_unique_post_slug(
+            $donationForm->settings->pageSlug ?: sanitize_title($donationForm->title),
+            $donationForm->id,
+            $donationForm->status->getValue(),
+            'give_forms',
+            0
+        );
+
         DB::query('START TRANSACTION');
 
         try {
@@ -160,6 +177,7 @@ class DonationFormRepository
                     'post_status' => $donationForm->status->getValue(),
                     'post_title' => $donationForm->title,
                     'post_content' => (new BlockCollection([]))->toJson(), // @todo Repurpose as form page.
+                    'post_name' => $donationForm->settings->pageSlug,
                 ]);
 
             DB::table('give_formmeta')
