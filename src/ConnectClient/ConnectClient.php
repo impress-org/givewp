@@ -22,6 +22,16 @@ class ConnectClient
     public $apiUrl = 'https://connect.givewp.com';
 
     /**
+     * @unreleased
+     */
+    public function __construct()
+    {
+        if (defined('GIVE_CONNECT_URL') && GIVE_CONNECT_URL) {
+            $this->apiUrl = GIVE_CONNECT_URL;
+        }
+    }
+
+    /**
      * Get rest api endpoint url for requests.
      *
      * @unreleased If set, use the 'GIVE_GATEWAY_SERVER_URL' const value
@@ -31,13 +41,11 @@ class ConnectClient
      */
     public function getApiUrl(string $endpoint = ''): string
     {
-        $url = defined('GIVE_CONNECT_URL') ? GIVE_CONNECT_URL : $this->apiUrl;
-
         if ( ! empty($endpoint)) {
-            $url .= '/' . ltrim($endpoint, '/');
+            $this->apiUrl .= '/' . ltrim($endpoint, '/');
         }
 
-        return $url;
+        return $this->apiUrl;
     }
 
     /**
@@ -110,7 +118,8 @@ class ConnectClient
             throw new Exception(
                 esc_html__(
                     sprintf(
-                        'The request to the gateway server failed. Error:  %1$s',
+                        'The request to the %1$s failed. Error:  %2$s',
+                        $this->apiUrl,
                         $response->get_error_message()
                     )
                 )
