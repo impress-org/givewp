@@ -340,6 +340,7 @@ class Give_Donor_Wall {
 	/**
 	 * Get query params
 	 *
+     * @unreleased
 	 * @since 2.3.0
 	 *
 	 * @param  array $atts
@@ -354,8 +355,8 @@ class Give_Donor_Wall {
 
 		$query_atts['order']         = in_array( $atts['order'], $valid_order ) ? $atts['order'] : 'DESC';
 		$query_atts['orderby']       = in_array( $atts['orderby'], $valid_orderby ) ? $atts['orderby'] : 'post_date';
-		$query_atts['limit']         = $atts['donors_per_page'];
-		$query_atts['offset']        = $atts['donors_per_page'] * ( $atts['paged'] - 1 );
+		$query_atts['limit']         = absint( $atts['donors_per_page'] );
+		$query_atts['offset']        = absint( $atts['donors_per_page'] * ( $atts['paged'] - 1 ) );
         $query_atts['form_id']       = implode( '\',\'', array_map( 'absint', explode( ',', $atts['form_id'] ) ) );
         $query_atts['ids']           = implode( '\',\'', array_map( 'absint', explode( ',', $atts['ids'] ) ) );
 		$query_atts['cats']          = $atts['cats'];
