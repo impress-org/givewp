@@ -29,7 +29,7 @@ class ConnectClient
      *
      * @param string $endpoint The route on the server. E.g: 'gateway-name/connect'
      */
-    public function getApiUrl(string $endpoint): string
+    public function getApiUrl(string $endpoint = ''): string
     {
         $url = defined('GIVE_GATEWAY_SERVER_URL') ? GIVE_GATEWAY_SERVER_URL : $this->apiUrl;
 
