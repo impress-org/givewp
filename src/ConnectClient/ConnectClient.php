@@ -34,7 +34,6 @@ class ConnectClient
     /**
      * Get rest api endpoint url for requests.
      *
-     * @unreleased If set, use the 'GIVE_GATEWAY_SERVER_URL' const value
      * @since      2.8.0
      *
      * @param string $endpoint The route on the server. E.g: 'gateway-name/connect'
