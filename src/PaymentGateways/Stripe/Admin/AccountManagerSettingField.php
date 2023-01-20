@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\Stripe\Admin;
 
+use Give\ConnectClient\ConnectClient;
 use Give\PaymentGateways\Stripe\Repositories\AccountDetail;
 use Give\PaymentGateways\Stripe\Repositories\Settings;
 use Give_Admin_Settings;
@@ -583,7 +584,8 @@ class AccountManagerSettingField
     }
 
     /**
-     * @since 2.13.0
+     * @unreleased Use ConnectClient class instead of the connect URL
+     * @since      2.13.0
      * @return string
      */
     public function getStripeConnectButtonMarkup()
@@ -608,7 +610,7 @@ class AccountManagerSettingField
                 'website_url' => get_bloginfo('url'),
                 'give_stripe_connected' => '0',
             ],
-            esc_url_raw('https://connect.givewp.com/stripe/connect.php')
+            esc_url_raw(give(ConnectClient::class)->getApiUrl('stripe/connect.php'))
         );
 
         $stripeSvgIcon = '<svg width="15" height="21" viewBox="0 0 15 21" fill="none" xmlns="http://www.w3.org/2000/svg">
