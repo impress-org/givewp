@@ -114,7 +114,7 @@ abstract class ListTable implements Arrayable
      * Safely retrieves the cell value for a column. If an exception is thrown, it will be logged and the cell value
      * will be a human-readable error message. This is to prevent fatal errors from breaking the entire table.
      *
-     * @unreleased
+     * @since 2.24.1
      */
     private function safelyGetCellValue(ModelColumn $column, Model $model, string $locale): string
     {
