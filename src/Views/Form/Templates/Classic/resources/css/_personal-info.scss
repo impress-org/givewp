@@ -120,6 +120,35 @@
     content: '\f007';
 }
 
+#give-company-radio-list-wrap {
+    > label {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    ul.give-company-radio-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+            display: inline-flex;
+            margin-right: 15px;
+            margin-left: 0;
+
+            input {
+                margin-right: 7px;
+            }
+
+            label {
+                cursor: pointer;
+                display: inline;
+                margin: 0;
+            }
+        }
+    }
+}
+
 #give-email-wrap::before {
     content: '\f0e0';
 }
