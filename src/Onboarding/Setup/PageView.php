@@ -25,14 +25,23 @@ class PageView
     protected $formRepository;
 
     /**
-     * @since 2.8.0
+     * @unreleased
+     *
+     * @var ConnectClient
+     */
+    private $connectClient;
+
+    /**
+     * @unreleased Use 'ConnectClient' class
+     * @since      2.8.0
      *
      * @param FormRepository $formRepository
      *
      */
-    public function __construct(FormRepository $formRepository)
+    public function __construct(FormRepository $formRepository, ConnectClient $connectClient)
     {
         $this->formRepository = $formRepository;
+        $this->connectClient = $connectClient;
     }
 
     public function render()
@@ -126,7 +135,7 @@ class PageView
      * Copied from includes/gateways/stripe/includes/admin/admin-helpers.php
      *      See `give_stripe_connect_button()`
      *
-     * @unreleased Use ConnectClient class instead of the connect URL
+     * @unreleased Use 'ConnectClient' class
      * @since      2.8.0
      */
     public function stripeConnectURL()
@@ -141,7 +150,7 @@ class PageView
                 'website_url' => get_bloginfo('url'),
                 'give_stripe_connected' => '0',
             ],
-            esc_url_raw(give(ConnectClient::class)->getApiUrl('stripe/connect.php'))
+            esc_url_raw($this->connectClient->getApiUrl('stripe/connect.php'))
         );
     }
 }
