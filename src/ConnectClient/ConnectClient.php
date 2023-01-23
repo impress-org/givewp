@@ -24,7 +24,7 @@ class ConnectClient
     /**
      * @unreleased
      */
-    public function __construct(string $giveConnectUrl = '')
+    public function __construct($giveConnectUrl = '')
     {
         if ( ! empty($giveConnectUrl)) {
             $this->apiUrl = $giveConnectUrl;
