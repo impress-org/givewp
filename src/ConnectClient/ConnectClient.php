@@ -3,7 +3,6 @@
 namespace Give\ConnectClient;
 
 use Give\ConnectClient\Exceptions\RequestException;
-use Give\Framework\Exceptions\Primitives\Exception;
 use WP_Error;
 
 /**
@@ -56,7 +55,7 @@ class ConnectClient
      * @param string $endpoint The route on the server. E.g: 'gateway-name/connect'
      * @param array  $args     Optional. Can contains 'headers' and 'body'
      *
-     * @throws Exception
+     * @throws RequestException
      */
     public function get(string $endpoint, array $args = []): array
     {
@@ -75,7 +74,7 @@ class ConnectClient
      * @param string $endpoint The route on the server. E.g: 'gateway-name/connect'
      * @param array  $args     Optional. Can contains 'headers' and 'body'
      *
-     * @throws Exception
+     * @throws RequestException
      */
     public function post(string $endpoint, array $args = []): array
     {
@@ -94,7 +93,7 @@ class ConnectClient
      * @param string $endpoint The route on the server. E.g: 'gateway-name/connect'
      * @param array  $args     Optional. Can contains 'method', 'headers' and 'body'
      *
-     * @throws Exception
+     * @throws RequestException
      */
     public function request(string $endpoint, array $args = []): array
     {
@@ -112,7 +111,7 @@ class ConnectClient
      *
      * @param array|WP_Error $response
      *
-     * @throws Exception
+     * @throws RequestException
      */
     private function validateWpErrorInResponse($response)
     {
