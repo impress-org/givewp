@@ -24,9 +24,11 @@ class ConnectClient
     /**
      * @unreleased
      */
-    public function __construct()
+    public function __construct(string $giveConnectUrl = '')
     {
-        if (defined('GIVE_CONNECT_URL') && GIVE_CONNECT_URL) {
+        if ($giveConnectUrl) {
+            $this->apiUrl = $giveConnectUrl;
+        } elseif (defined('GIVE_CONNECT_URL') && GIVE_CONNECT_URL) {
             $this->apiUrl = GIVE_CONNECT_URL;
         }
     }
@@ -41,7 +43,7 @@ class ConnectClient
     public function getApiUrl(string $endpoint = ''): string
     {
         if ( ! empty($endpoint)) {
-            $this->apiUrl .= '/' . ltrim($endpoint, '/');
+            return $this->apiUrl . '/' . ltrim($endpoint, '/');
         }
 
         return $this->apiUrl;
