@@ -26,7 +26,7 @@ class ConnectClient
      */
     public function __construct(string $giveConnectUrl = '')
     {
-        if ($giveConnectUrl) {
+        if ( ! empty($giveConnectUrl)) {
             $this->apiUrl = $giveConnectUrl;
         } elseif (defined('GIVE_CONNECT_URL') && GIVE_CONNECT_URL) {
             $this->apiUrl = GIVE_CONNECT_URL;
