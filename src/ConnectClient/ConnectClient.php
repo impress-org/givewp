@@ -2,6 +2,7 @@
 
 namespace Give\ConnectClient;
 
+use Give\ConnectClient\Exceptions\RequestException;
 use Give\Framework\Exceptions\Primitives\Exception;
 use WP_Error;
 
@@ -116,7 +117,7 @@ class ConnectClient
     private function validateWpErrorInResponse($response)
     {
         if (is_wp_error($response)) {
-            throw new Exception(
+            throw new RequestException(
                 esc_html__(
                     sprintf(
                         'The request to the %1$s failed. Error:  %2$s',
