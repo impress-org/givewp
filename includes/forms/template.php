@@ -874,7 +874,7 @@ function give_user_info_fields( $form_id ) {
                 ?>
                 <div id="give-company-radio-list-wrap" class="form-row form-row-wide">
                     <label><?php
-                        esc_html_e('Are you donating as a company?', 'give'); ?></label>
+                        esc_html_e('Is this donation on behalf of a company?', 'give'); ?></label>
                     <ul id="<?php
                     echo esc_attr('give-company-name-radio-list'); ?>" class="give-company-radio-list">
                         <li>
