@@ -1,0 +1,7 @@
+/**
+* Next Gen Global Form Styles
+* @handle 'givewp-global-form-styles'
+* The main use for this file is to add dynamic css variables using wp_add_inline_style
+* @see https://developer.wordpress.org/reference/functions/wp_add_inline_style/
+* @unreleased
+*/

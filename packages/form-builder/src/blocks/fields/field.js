@@ -115,6 +115,11 @@ const field = {
                 source: 'attribute',
                 default: true,
             },
+            displayInReceipt: {
+                type: 'boolean',
+                source: 'attribute',
+                default: true,
+            }
         },
         title: __('Text', 'custom-block-editor'),
         icon: () => (

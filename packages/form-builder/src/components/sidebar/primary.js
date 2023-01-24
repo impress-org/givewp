@@ -1,4 +1,4 @@
-import {createSlotFill, PanelBody} from '@wordpress/components';
+import {createSlotFill} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 
 import './styles.scss';
@@ -6,19 +6,17 @@ import './styles.scss';
 import TabPanel from './tab-panel';
 
 import {
+    CustomStyleSettings,
     DonationGoalSettings,
     FormDesignSettings,
     FormSummarySettings,
-    OfflineDonationsSettings,
-    CustomStyleSettings,
     ReceiptSettings,
 } from '../../settings/index.ts';
-import FormFields from '../../settings/form-fields';
 import {PopoutSlot} from './popout';
 import {useEffect} from 'react';
 import useSelectedBlocks from '../../hooks/useSelectedBlocks';
 import BlockCard from "@wordpress/block-editor/build/components/block-card";
-import { settings } from '@wordpress/icons';
+import {settings} from '@wordpress/icons';
 
 const {Slot: InspectorSlot, Fill: InspectorFill} = createSlotFill('StandAloneBlockEditorSidebarInspector');
 
@@ -30,14 +28,16 @@ const tabs = [
         content: () => (
             <>
                 <BlockCard
-                    icon={ settings }
+                    icon={settings}
                     title="Form Settings"
                     description="These settings affect how your form functions and is presented, as well as the form page."
                 />
-                <FormSummarySettings />
-                <DonationGoalSettings />
-                <OfflineDonationsSettings />
-                <FormFields />
+                <FormSummarySettings/>
+                <DonationGoalSettings/>
+                <ReceiptSettings/>
+                {/*The settings below have not been implemented yet.*/}
+                {/*<OfflineDonationsSettings/>*/}
+                {/*<FormFields />*/}
             </>
         ),
     },
@@ -59,7 +59,6 @@ const tabs = [
             <>
                 <FormDesignSettings />
                 <DonationGoalSettings />
-                <ReceiptSettings />
                 <CustomStyleSettings />
             </>
         )
