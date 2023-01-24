@@ -4,6 +4,7 @@ import {__} from '@wordpress/i18n';
 import {setFormSettings, useFormState, useFormStateDispatch} from '../../stores/form-state';
 import {getWindowData} from '@givewp/form-builder/common';
 import debounce from 'lodash.debounce';
+import { SETTINGS_DEFAULTS } from '@wordpress/block-editor';
 
 const {formDesigns} = getWindowData();
 
@@ -64,12 +65,14 @@ const FormDesignSettings = () => {
                         onChange: debounce((primaryColor) => dispatch(setFormSettings({primaryColor})), 100),
                         label: __('Primary Color', 'give'),
                         disableCustomColors: false,
+                        colors: SETTINGS_DEFAULTS.colors,
                     },
                     {
                         value: secondaryColor,
                         onChange: debounce((secondaryColor) => dispatch(setFormSettings({secondaryColor})), 100),
                         label: __('Secondary Color', 'give'),
                         disableCustomColors: false,
+                        colors: SETTINGS_DEFAULTS.colors,
                     },
                 ]}
             />
