@@ -28,7 +28,7 @@ export default function Edit(props) {
                     marginBottom: '36px',
                     outline: '1px solid ' + borderColor,
                     borderRadius: '5px',
-                    padding: '36px 40px',
+                    padding: '36px 40px 46px 40px',
                     backgroundColor: 'white',
                 }}
             >
@@ -52,11 +52,7 @@ export default function Edit(props) {
                         [] /* This prevents nested sections. Empty array is overwritten by child blocks specifying a parent. */
                     }
                     template={props.attributes.innerBlocksTemplate}
-                    renderAppender={
-                        !!isSelectedOrIsInnerBlockSelected
-                            ? () => <InnerBlocks.ButtonBlockAppender isToggle={true} />
-                            : null
-                    }
+                    renderAppender={InnerBlocks.ButtonBlockAppender}
                 />
             </div>
 

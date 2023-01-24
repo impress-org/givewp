@@ -2,10 +2,7 @@
     "compilerOptions": {
         "target": "esnext",
         "module": "esnext",
-        "lib": [
-            "esnext",
-            "dom"
-        ],
+        "lib": ["esnext", "dom"],
         "jsx": "react-jsx",
         "moduleResolution": "node",
         "allowJs": true,
@@ -20,13 +17,8 @@
         ],
         "baseUrl": ".",
         "paths": {
-            "@givewp/form-builder/*": [
-                "./src/*"
-            ]
+            "@givewp/form-builder/*": ["./src/*"]
         }
     },
-    "include": [
-        "./src",
-        "./globals.d.ts"
-    ]
+    "include": ["./src", "./globals.d.ts"]
 }

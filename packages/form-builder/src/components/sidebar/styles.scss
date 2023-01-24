@@ -1,17 +1,6 @@
 .givewp-next-gen-sidebar {
-
     max-width: 100%;
-
-    &.givewp-next-gen-sidebar-primary {
-        right: 0;
-        width: var(--givewp-sidebar-width);
-    }
-
-    &.givewp-next-gen-sidebar-secondary {
-        left: 0;
-        width: 320px;
-    }
-
+    width: var(--givewp-sidebar-width);
     background: white;
     border: 1px solid lightgray;
     bottom: 0;
@@ -20,9 +9,28 @@
     //overflow: hidden; // The Inspector Popout needs to be visible.
     position: fixed !important; // !important override added when migrated to WordPress - not sure why this is necessary...
     top: 60px; // Account for header @todo move this to layout, not in the component.
-    z-index: 99999999;
-
     overflow-y: scroll;
+
+    &.givewp-next-gen-sidebar-primary {
+        right: 0;
+    }
+
+    &.givewp-next-gen-sidebar-secondary {
+        left: 0;
+    }
+
+    &__inner {
+        padding: 1rem;
+    }
+
+    &__heading {
+        color: var(--givewp-gray-50);
+        padding: 1rem 0;
+        margin: 0;
+        text-transform: uppercase;
+        font-size: .8em;
+        font-weight: 500;
+    }
 
     .components-panel__row {
         margin-right: 10px; // Account for scrollbar

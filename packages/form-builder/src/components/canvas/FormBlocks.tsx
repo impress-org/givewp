@@ -1,11 +1,4 @@
-import * as React from 'react';
-import {
-    BlockList,
-    BlockTools,
-    ObserveTyping,
-    WritingFlow,
-    ButtonBlockAppender,
-} from "@wordpress/block-editor";
+import {BlockList, BlockTools, ButtonBlockAppender, ObserveTyping, WritingFlow,} from "@wordpress/block-editor";
 
 const FormBlocks = () => {
     return (

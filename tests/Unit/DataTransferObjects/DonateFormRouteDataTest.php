@@ -58,7 +58,7 @@ class DonateFormRouteDataTest extends TestCase
         $data->formTitle = $form->title;
         $data->company = null;
         $data->wpUserId = 0;
-        $data->honorific = "Mr";
+        $data->honorific = null;
         $data->text_block_meta = 'text block meta value';
 
         $request = array_merge(get_object_vars($data), [

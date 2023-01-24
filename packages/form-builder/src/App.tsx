@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import {ShortcutProvider} from '@wordpress/keyboard-shortcuts';
 import BlockEditorContainer from './containers/BlockEditorContainer';
 import {FormStateProvider} from './stores/form-state';

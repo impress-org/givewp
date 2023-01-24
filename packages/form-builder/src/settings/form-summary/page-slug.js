@@ -28,7 +28,7 @@ const PageSlugControl = () => {
             />
         ) }
         renderContent={ ({onClose}) => (
-            <div style={{minWidth: '252px'}}>
+            <div style={{minWidth: 'calc(var(--givewp-sidebar-width) - 48px)'}}>
                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                     <strong style={{fontSize: '14px'}}>{'URL'}</strong>
                     <Button onClick={onClose}>
@@ -41,8 +41,10 @@ const PageSlugControl = () => {
                     onChange={(pageSlug) => dispatch(setFormSettings({pageSlug}))}
                     help={'The last part of the URL.'}
                 />
-                <div>View Page</div>
-                <ExternalLink href={permalink}>
+                <div>
+                    <strong style={{fontSize: '14px'}}>View Page</strong>
+                </div>
+                <ExternalLink href={permalink} style={{fontSize: '14px'}}>
                     {sprintf('%s/%s', rewriteSlug, pageSlug)}
                 </ExternalLink>
             </div>

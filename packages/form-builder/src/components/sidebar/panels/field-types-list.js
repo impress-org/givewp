@@ -51,31 +51,23 @@ const FieldTypesList = () => {
     );
 
     return (
-        <>
-            <div style={{margin: '20px'}}>
-                <SearchControl value={searchValue} onChange={setSearchValue} />
+        <div className="givewp-next-gen-sidebar__inner">
+            <SearchControl value={searchValue} onChange={setSearchValue}/>
+            <div className="givewp-next-gen-sidebar__inner--blocks">
+                {Object.values(blocksBySection)
+                    .filter((section) => section.blocks.length)
+                    .map(({name, label, blocks}) => {
+                        return (
+                            <>
+                                <h3 className="givewp-next-gen-sidebar__heading">
+                                    {label}
+                                </h3>
+                                <BlockTypesList key={name} items={blocks}/>
+                            </>
+                        );
+                    })}
             </div>
-            {Object.values(blocksBySection)
-                .filter((section) => section.blocks.length)
-                .map(({name, label, blocks}) => {
-                    return (
-                        <>
-                            <h3
-                                style={{
-                                    color: 'var( --givewp-gray-50 )',
-                                    margin: '20px',
-                                    textTransform: 'uppercase',
-                                    fontSize: '.8em',
-                                    fontWeight: 500,
-                                }}
-                            >
-                                {label}
-                            </h3>
-                            <BlockTypesList key={name} items={blocks} />
-                        </>
-                    );
-                })}
-        </>
+        </div>
     );
 };
 

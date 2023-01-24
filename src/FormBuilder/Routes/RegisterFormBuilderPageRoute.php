@@ -6,6 +6,8 @@ use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
 use Give\Framework\EnqueueScript;
 
+use function wp_enqueue_style;
+
 /**
  * Add form builder page route and scripts
  */
@@ -33,6 +35,15 @@ class RegisterFormBuilderPageRoute
             [$this, 'renderPage'],
             1
         );
+
+        add_action("admin_print_styles", static function () {
+            if (FormBuilderRouteBuilder::isRoute()) {
+                wp_enqueue_style(
+                    'givewp-form-builder-admin-styles',
+                    GIVE_NEXT_GEN_URL . 'src/FormBuilder/resources/css/admin-form-builder.css'
+                );
+            }
+        });
     }
 
     /**

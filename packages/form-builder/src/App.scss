@@ -69,9 +69,13 @@ svg {
     max-height: 100%; // Had a wierd issue with excessively large icon SVGs.
 }
 
+// remove default browser outline when selecting elements
+:focus-visible {
+    outline: 0;
+}
+
 
 .interface-interface-skeleton__editor {
-    //height: 60px;
     background-color: white;
 }
 
@@ -86,9 +90,8 @@ svg {
 }
 
 .interface-interface-skeleton__body {
+    min-height: 100vh;
     width: 100%;
-    height: 100vh;
-    //margin: 0 250px;
     background-color: var(--givewp-gray-10);
 }
 
@@ -143,20 +146,16 @@ svg {
 
     .components-base-control__label,
     .components-input-control__label {
-        font-size: 16px;
-        font-weight: 500;
+        font-size: 1rem !important;
+        font-weight: 500 !important;
         color: var(--givewp-gray-100);
+        text-transform: none !important;
     }
 
     .give-is-required .components-base-control__label::after {
         content: ' *';
         color: var(--givewp-alert-100);
     }
-}
-
-.is-root-container > .block-list-appender,
-.components-popover.block-editor-block-list__insertion-point-popover {
-    //display: none; /* CSS Hack to hide root level inserter @todo Move to a JS or config solution. */
 }
 
 [data-type="custom-block-editor/section"],
@@ -173,14 +172,6 @@ svg {
 [data-type="custom-block-editor/paragraph"] .rich-text {
     font-size: 1.1rem;
     line-height: 1.5;
-}
-
-.block-editor-block-list__block .block-list-appender {
-    // position the button 1 below itself and then half inside the padding. (24px is the size of the button and 36px is the padding bottom)
-    bottom: calc(-24px + calc((36px - 24px) / -2));
-    width: 100%;
-    display: flex;
-    justify-content: center;
 }
 
 .block-editor-list-view-leaf.is-selected,
@@ -200,7 +191,6 @@ svg {
  * Fixes an issue with inspector select controls covering selected option.
  */
 .components-select-control__input {
-    //padding: 8px;
     font-weight: normal;
 }
 
@@ -233,18 +223,6 @@ svg {
 .components-popover__content {
     outline: 0 !important;
 }
-
-/** ------------------------------- */
-
-/**
- * Adjust inserter alignment
- */
-
-.components-popover__content {
-    margin-top: -25px;
-}
-
-/** ------------------------------- */
 
 /**
  * Set spacing between field sub-components, ie label and input
@@ -399,5 +377,37 @@ This creates a consistent separator between the tabs and the rest of the sidebar
         label {
             height: 100%;
         }
+    }
+}
+
+.components-editor-notices__snackbar {
+    position: fixed;
+    right: 0;
+    bottom: 20px;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.block-editor-block-list__block {
+    position: relative;
+
+    &:not(.is-selected) {
+        .block-list-appender {
+            display: none;
+        }
+    }
+
+    .block-list-appender {
+        position: absolute;
+        bottom: 5px;
+        width: 100%;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .components-base-control__field {
+        margin-bottom: 0;
     }
 }

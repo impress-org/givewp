@@ -2,6 +2,8 @@
 
 namespace Give\FormBuilder\Actions;
 
+use Give\FormBuilder\FormBuilderRouteBuilder;
+
 /**
  * Since our form builder exists inside a WP admin page, it comes with a lot of baggage that we don't need.
  * This removes the unnecessary styles before the page is loaded.
@@ -39,6 +41,6 @@ class DequeueAdminStylesInFormBuilder
      */
     protected function isFormBuilderRoute(): bool
     {
-        return isset($_GET['post_type'], $_GET['page']) && $_GET['post_type'] === 'give_forms' && $_GET['page'] === 'campaign-builder';
+        return FormBuilderRouteBuilder::isRoute();
     }
 }

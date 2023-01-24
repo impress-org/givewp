@@ -1,32 +1,34 @@
 import React, {useState} from 'react';
 import {AddIcon, GiveIcon, ListIcon, SettingsIcon} from '../components/icons';
-import {setFormSettings, useFormState, useFormStateDispatch} from '../stores/form-state/index.tsx';
+import {setFormSettings, useFormState, useFormStateDispatch} from '../stores/form-state';
 import {RichText} from '@wordpress/block-editor';
 import {Button} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {Header} from '../components';
-import {Storage} from '../common/index.ts';
+import {Storage} from '../common';
+import {FormSettings} from "@givewp/form-builder/types";
 
 const HeaderContainer = ({
-    selectedSecondarySidebar,
-    toggleSelectedSecondarySidebar,
-    showSidebar,
-    toggleShowSidebar,
-}) => {
+                             selectedSecondarySidebar,
+                             toggleSelectedSecondarySidebar,
+                             showSidebar,
+                             toggleShowSidebar,
+                             onSaveNotice
+                         }) => {
     const {blocks, settings: formSettings} = useFormState();
 
     const {formTitle} = formSettings;
     const dispatch = useFormStateDispatch();
-
     const [isSaving, setSaving] = useState(false);
 
     const onSave = () => {
         setSaving(true);
         Storage.save({blocks, formSettings})
             .catch((error) => alert(error.message))
-            .then((updatedSettings) => {
-                dispatch(setFormSettings({pageSlug: updatedSettings.pageSlug}));
+            .then(({pageSlug}: FormSettings) => {
+                dispatch(setFormSettings({pageSlug}));
                 setSaving(false);
+                onSaveNotice()
             });
     };
 
@@ -45,20 +47,20 @@ const HeaderContainer = ({
                     >
                         <div>
                             <a href={'edit.php?post_type=give_forms&page=give-forms'} title={'Return to GiveWP'}>
-                                <GiveIcon />
+                                <GiveIcon/>
                             </a>
                         </div>
                     </div>
                     <Button
                         onClick={() => toggleSelectedSecondarySidebar('add')}
                         isPressed={'add' === selectedSecondarySidebar}
-                        icon={<AddIcon />}
+                        icon={<AddIcon/>}
                         variant={'primary'}
                     />
                     <Button
                         onClick={() => toggleSelectedSecondarySidebar('list')}
                         isPressed={'list' === selectedSecondarySidebar}
-                        icon={<ListIcon />}
+                        icon={<ListIcon/>}
                     />
                 </>
             }
@@ -75,7 +77,7 @@ const HeaderContainer = ({
                     <Button onClick={onSave} disabled={isSaving} variant="primary">
                         {isSaving ? __('Publishing...', 'give') : __('Publish', 'give')}
                     </Button>
-                    <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={<SettingsIcon />} />
+                    <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={<SettingsIcon/>}/>
                 </>
             }
         />
