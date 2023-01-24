@@ -41,7 +41,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
      */
     public function getName(): string
     {
-        return __('Next Gen Stripe', 'give');
+        return __('Stripe (Next Gen)', 'give');
     }
 
     /**
@@ -49,7 +49,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
      */
     public function getPaymentMethodLabel(): string
     {
-        return __('Next Gen Stripe', 'give');
+        return __('Stripe (Next Gen)', 'give');
     }
 
     /**
@@ -145,7 +145,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
      */
     public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
-        return 'Legacy Stripe Fields Not Supported.';
+        return false;
     }
 
     /**
@@ -154,5 +154,13 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
     public function refundDonation(Donation $donation)
     {
         // TODO: Implement refundDonation() method.
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function supportsLegacyForm(): bool
+    {
+        return false;
     }
 }

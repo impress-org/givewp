@@ -6,15 +6,21 @@ use Give\Framework\EnqueueScript;
 /**
  * @unreleased
  */
-interface NextGenPaymentGatewayInterface {
-
-	/**
-	 * @unreleased
-	 */
-	public function enqueueScript(): EnqueueScript;
+interface NextGenPaymentGatewayInterface
+{
 
     /**
-     * @unreleased 
+     * @unreleased
+     */
+    public function supportsLegacyForm(): bool;
+
+    /**
+     * @unreleased
+     */
+    public function enqueueScript(): EnqueueScript;
+
+    /**
+     * @unreleased
      */
     public function formSettings(int $formId): array;
 }

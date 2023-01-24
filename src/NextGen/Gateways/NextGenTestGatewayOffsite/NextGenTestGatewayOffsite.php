@@ -135,4 +135,12 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
             ),
         ];
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function supportsLegacyForm(): bool
+    {
+        return false;
+    }
 }

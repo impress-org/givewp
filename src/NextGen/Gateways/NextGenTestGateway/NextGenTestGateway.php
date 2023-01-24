@@ -1,18 +1,18 @@
 <?php
+
 namespace Give\NextGen\Gateways\NextGenTestGateway;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\EnqueueScript;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
+use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\Traits\HasRequest;
-use Give\Helpers\Form\Utils as FormUtils;
-use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
 
 /**
  * @unreleased
  */
-class NextGenTestGateway extends PaymentGateway
+class NextGenTestGateway extends PaymentGateway implements NextGenPaymentGatewayInterface
 {
     use HasRequest;
 
@@ -37,7 +37,7 @@ class NextGenTestGateway extends PaymentGateway
      */
     public function getName(): string
     {
-        return __('Test Gateway Next Gen', 'give');
+        return __('Test Gateway (Next Gen)', 'give');
     }
 
     /**
@@ -45,7 +45,7 @@ class NextGenTestGateway extends PaymentGateway
      */
     public function getPaymentMethodLabel(): string
     {
-        return __('Test Gateway Next Gen', 'give');
+        return __('Test Gateway (Next Gen)', 'give');
     }
 
     /**
@@ -69,14 +69,7 @@ class NextGenTestGateway extends PaymentGateway
      */
     public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
-        if (FormUtils::isLegacyForm($formId)) {
-            return false;
-        }
-
-        /** @var LegacyFormFieldMarkup $legacyFormFieldMarkup */
-        $legacyFormFieldMarkup = give(LegacyFormFieldMarkup::class);
-
-        return $legacyFormFieldMarkup();
+        return false;
     }
 
     /**
@@ -98,4 +91,16 @@ class NextGenTestGateway extends PaymentGateway
         // TODO: Implement refundDonation() method.
     }
 
+    public function formSettings(int $formId): array
+    {
+        return [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function supportsLegacyForm(): bool
+    {
+        return false;
+    }
 }
