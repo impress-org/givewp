@@ -48,9 +48,15 @@ class GenerateConfirmationPageReceipt
 
         return array_map(static function (Field $field) use ($donation) {
             /** @var Field|HasLabel|HasName $field */
+            if ($field->shouldStoreAsDonorMeta()) {
+                $value = give()->donor_meta->get_meta($donation->donor->id, $field->getName(), true);
+            } else {
+                $value = give()->payment_meta->get_meta($donation->id, $field->getName(), true);
+            }
+
             return new ReceiptDetail(
                 $field->getLabel(),
-                give()->payment_meta->get_meta($donation->id, $field->getName(), true)
+                $value
             );
         }, $customFields);
     }
