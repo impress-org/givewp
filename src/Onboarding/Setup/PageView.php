@@ -10,7 +10,7 @@ namespace Give\Onboarding\Setup;
 
 defined('ABSPATH') || exit;
 
-use Give\ConnectClient\ConnectClient;
+use Give\Framework\Http\ConnectServer\Client\ConnectClient;
 use Give\Helpers\Gateways\Stripe;
 use Give\Onboarding\FormRepository;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;

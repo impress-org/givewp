@@ -2,7 +2,7 @@
 
 namespace Give\PaymentGateways\Stripe\Admin;
 
-use Give\ConnectClient\ConnectClient;
+use Give\Framework\Http\ConnectServer\Client\ConnectClient;
 use Give\PaymentGateways\Stripe\Repositories\AccountDetail;
 use Give\PaymentGateways\Stripe\Repositories\Settings;
 use Give_Admin_Settings;

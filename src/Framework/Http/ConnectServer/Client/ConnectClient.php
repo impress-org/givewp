@@ -1,8 +1,8 @@
 <?php
 
-namespace Give\ConnectClient;
+namespace Give\Framework\Http\ConnectServer\Client;
 
-use Give\ConnectClient\Exceptions\RequestException;
+use Give\Framework\Http\ConnectServer\Client\Exceptions\RequestException;
 use WP_Error;
 
 /**

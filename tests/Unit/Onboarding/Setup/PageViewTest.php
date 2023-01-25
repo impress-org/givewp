@@ -2,7 +2,7 @@
 
 namespace Give\Tests\Unit\Onboarding\Setup;
 
-use Give\ConnectClient\ConnectClient;
+use Give\Framework\Http\ConnectServer\Client\ConnectClient;
 use Give\Onboarding\FormRepository;
 use Give\Onboarding\Setup\PageView;
 use Give\Tests\TestCase;
