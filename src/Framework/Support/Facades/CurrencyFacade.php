@@ -82,7 +82,7 @@ class CurrencyFacade
         if (!class_exists(NumberFormatter::class) || !$useAutoFormatting) {
             if ($useAutoFormatting) {
                 Log::warning(
-                    'Auto-formatting enabled but the INTL extension is not available. Please install the INTL extension to enable auto-formatting.'
+                    'Auto-formatting is enabled  at Donations > Settings > General > Currency but the INTL extension for PHP is not available. Please install the INTL extension to enable auto-formatting, or disable the Auto-formatting setting to prevent this error message. Most web hosts can help with installing and activating INTL. GiveWP is falling back to formatting based on the legacy settings.'
                 );
             }
 
