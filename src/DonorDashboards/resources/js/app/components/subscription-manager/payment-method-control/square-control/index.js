@@ -5,6 +5,7 @@ import {CreditCard, PaymentForm} from 'react-square-web-payments-sdk';
 import './style.scss';
 
 const cardTokenizeResponse = {};
+let cardBrand = 'unknown';
 
 const SquareControl = ({label, value, forwardedRef, gateway}) => {
 
@@ -16,7 +17,7 @@ const SquareControl = ({label, value, forwardedRef, gateway}) => {
         () => ({
             async getPaymentMethod() {
 
-                if (!document.querySelector('.sq-focus')) {
+                if (cardBrand === 'unknown') {
                     return {};
                 }
 
@@ -56,6 +57,14 @@ const SquareControl = ({label, value, forwardedRef, gateway}) => {
                     buttonProps={{
                         css: {
                             display: "none",
+                        },
+                    }}
+                    callbacks={{
+                        focusClassAdded(event) {
+                            cardBrand = event.detail.cardBrand;
+                        },
+                        focusClassRemoved(event) {
+                            cardBrand = event.detail.cardBrand;
                         },
                     }}
                 />
