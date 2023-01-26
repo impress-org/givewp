@@ -7,7 +7,6 @@ import './style.scss';
 const cardTokenizeResponse = {};
 
 const SquareControl = ({label, value, forwardedRef, gateway}) => {
-    console.log('gateway: ', gateway);
 
     const applicationID = gateway.applicationID;
     const locationID = gateway.locationID;
@@ -16,6 +15,10 @@ const SquareControl = ({label, value, forwardedRef, gateway}) => {
         forwardedRef,
         () => ({
             async getPaymentMethod() {
+
+                if (!document.querySelector('.sq-focus')) {
+                    return {};
+                }
 
                 const squarePayButton = document.querySelector('#rswp-card-button');
                 squarePayButton.click();
@@ -26,10 +29,8 @@ const SquareControl = ({label, value, forwardedRef, gateway}) => {
                             error: true,
                         };
                     }
-                    console.log("waiting for token... ", cardTokenizeResponse);
                     await new Promise(resolve => setTimeout(resolve, 1000));
                 }
-                console.log('cardTokenizeResponse:', cardTokenizeResponse);
 
                 return {
                     'square-card-nonce': (cardTokenizeResponse.token.token) ? cardTokenizeResponse.token.token : '',
@@ -41,12 +42,11 @@ const SquareControl = ({label, value, forwardedRef, gateway}) => {
     );
 
     return (
-        <div className="give-donor-dashboard-card-control">
+        <div className="give-donor-dashboard-square-card-control">
             <label className="give-donor-dashboard-card-control__label">{label}</label>
             <PaymentForm
                 applicationId={applicationID}
                 cardTokenizeResponseReceived={(token, verifiedBuyer) => {
-                    console.log('E Aí?');
                     cardTokenizeResponse.token = token;
                     cardTokenizeResponse.verifiedBuyer = verifiedBuyer;
                 }}
@@ -54,7 +54,9 @@ const SquareControl = ({label, value, forwardedRef, gateway}) => {
             >
                 <CreditCard
                     buttonProps={{
-                        isLoading: false,
+                        css: {
+                            display: "none",
+                        },
                     }}
                 />
             </PaymentForm>
