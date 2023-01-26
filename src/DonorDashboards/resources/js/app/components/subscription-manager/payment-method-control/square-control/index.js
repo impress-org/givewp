@@ -118,6 +118,9 @@ const SquareControl = ({label, value, forwardedRef, gateway}) => {
         [cardNumber, cardExpiryDate, cardCVC, cardZIP],
     );
 
+    const applicationID = gateway.applicationID;
+    const locationID = gateway.locationID;
+
     const inputProps = {
         ...wrapperProps,
         styles: {
@@ -171,14 +174,14 @@ const SquareControl = ({label, value, forwardedRef, gateway}) => {
     return (
         <div className="give-donor-dashboard-card-control">
             <PaymentForm
-                applicationId="sandbox-sq0idb-S8HWWWlLstelTvBNOSjm9g"
+                applicationId={applicationID}
                 cardTokenizeResponseReceived={(token, verifiedBuyer) => {
                     console.log('E Aí?');
                     cardTokenizeResponse.token = token;
                     cardTokenizeResponse.verifiedBuyer = verifiedBuyer;
                     //console.log("cardTokenizeResponse: ", cardTokenizeResponse);
                 }}
-                locationId="LGAP8Q2PSA4CR"
+                locationId={locationID}
             >
                 <CreditCard
                     buttonProps={{
