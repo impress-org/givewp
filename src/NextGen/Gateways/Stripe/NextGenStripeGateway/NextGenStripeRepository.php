@@ -10,7 +10,9 @@ use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Gateways\Stripe\Actions\SaveDonationSummary;
 use Give\PaymentGateways\Stripe\ApplicationFee;
 use Stripe\Customer;
+use Stripe\ErrorObject;
 use Stripe\Exception\ApiErrorException;
+use Stripe\Exception\InvalidRequestException;
 use Stripe\PaymentIntent;
 
 trait NextGenStripeRepository {
@@ -34,40 +36,54 @@ trait NextGenStripeRepository {
      * Get or create Stripe Customer from Donation
      *
      * @unreleased
-     * @throws ApiErrorException
      * @throws Exception
+     * @throws ApiErrorException
      */
     public function getOrCreateStripeCustomerFromDonation(
         string $connectAccountId,
         Donation $donation
-    ): Customer {
-        $donorCustomerId = give_stripe_get_customer_id($donation->email) ?? '';
+    ): Customer
+    {
+        $donorCustomerId = give_stripe_get_customer_id($donation->email);
 
-        // make sure customerId still exists in  connect account
-        if ($donorCustomerId) {
-            $customer = Customer::retrieve($donorCustomerId, ['stripe_account' => $connectAccountId]);
+        // create a new customer if the donor does not have a stripe id
+        if (!$donorCustomerId) {
+            $customer = $this->createCustomer($donation, $connectAccountId);
+        } else {
+            try {
+                // if the donor has a stripe ID, try retrieving the customer from Stripe.
+                $customer = $this->retrieveCustomer($donorCustomerId, $connectAccountId);
+
+                // if the customer is deleted, create a new customer
+                if ($customer->isDeleted()) {
+                    $customer = $this->createCustomer($donation, $connectAccountId);
+                }
+            } catch (InvalidRequestException $exception) {
+                // If the donor has a stripe id but is not valid with this account,
+                // a resource_missing error will be thrown. In this case, we need to
+                // create a new customer.  The newer Stripe api has a search functionality
+                // that would make more sense here.
+                if ($exception->getStripeCode() === ErrorObject::CODE_RESOURCE_MISSING) {
+                    $customer = $this->createCustomer($donation, $connectAccountId);
+                } else {
+                    throw $exception;
+                }
+            }
         }
 
-        // create a new customer if necessary
-        if (!$donorCustomerId || !$customer) {
-            $customer = Customer::create(
-                [
-                    'name' => "$donation->firstName $donation->lastName",
-                    'email' => $donation->email,
-                ],
-                ['stripe_account' => $connectAccountId]
-            );
-        }
-
-         DonationNote::create([
+        DonationNote::create([
             'donationId' => $donation->id,
             'content' => sprintf(__('Stripe Customer ID: %s', 'give'), $customer->id)
         ]);
 
+
+        // save the stripe ID to donor meta
+        // it appears this does not account for multiple stripe accounts
         if ($customer->id !== $donorCustomerId) {
             give()->donor_meta->update_meta($donation->donorId, give_stripe_get_customer_key(), $customer->id);
         }
 
+        // also save to donation meta
         give_update_meta($donation->id, give_stripe_get_customer_key(), $customer->id);
 
         return $customer;
@@ -168,5 +184,31 @@ trait NextGenStripeRepository {
     protected function setUpStripeAppInfo(int $formId)
     {
         give_stripe_set_app_info($formId);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws ApiErrorException
+     */
+    protected function createCustomer(Donation $donation, string $connectAccountId): Customer
+    {
+        return Customer::create(
+            [
+                'name' => "$donation->firstName $donation->lastName",
+                'email' => $donation->email,
+            ],
+            ['stripe_account' => $connectAccountId]
+        );
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws ApiErrorException|InvalidRequestException
+     */
+    protected function retrieveCustomer(string $customerId, string $connectAccountId): Customer
+    {
+        return Customer::retrieve($customerId, ['stripe_account' => $connectAccountId]);
     }
 }
