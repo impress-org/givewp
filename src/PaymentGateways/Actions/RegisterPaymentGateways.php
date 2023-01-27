@@ -5,6 +5,7 @@ namespace Give\PaymentGateways\Actions;
 use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\LegacyPaymentGateways\Adapters\LegacyPaymentGatewayRegisterAdapter;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\Gateways\Stripe\Actions\GetPaymentMethodFromRequest;
@@ -38,8 +39,8 @@ class RegisterPaymentGateways
      */
     public $gateways = [
         // When complete, the Test Gateway will eventually replace The legacy Manual Gateway.
-//        TestGateway::class,
-//        TestGatewayOffsite::class,
+        TestGateway::class,
+        TestGatewayOffsite::class,
         PayPalStandard::class,
         PayPalCommerce::class,
     ];
@@ -73,8 +74,10 @@ class RegisterPaymentGateways
         $this->addGatewayDataToStripPaymentMethods();
         $this->addGatewayDataToPayPalCommerce();
 
-        $this->register3rdPartyPaymentGateways($paymentGatewayRegister);
         $this->unregister3rdPartyPaymentGateways($paymentGatewayRegister);
+        $this->register3rdPartyPaymentGateways($paymentGatewayRegister);
+
+        $this->afterGatewayRegister();
 
         return $gateways;
     }
@@ -142,5 +145,21 @@ class RegisterPaymentGateways
                 return $gatewayData;
             }
         );
+    }
+
+    /**
+     * After gateway is registered, connect to legacy payment gateway adapter
+     */
+    private function afterGatewayRegister()
+    {
+        /** @var PaymentGatewayRegister $paymentGatewayRegister */
+        $paymentGatewayRegister = give(PaymentGatewayRegister::class);
+
+        /** @var LegacyPaymentGatewayRegisterAdapter $legacyPaymentGatewayRegisterAdapter */
+        $legacyPaymentGatewayRegisterAdapter = give(LegacyPaymentGatewayRegisterAdapter::class);
+
+        foreach ($paymentGatewayRegister->getPaymentGateways() as $gatewayClass) {
+            $legacyPaymentGatewayRegisterAdapter->connectGatewayToLegacyPaymentGatewayAdapter($gatewayClass);
+        }
     }
 }

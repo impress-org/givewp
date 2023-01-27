@@ -17,14 +17,6 @@ trait HandleHttpResponses
     public function handleResponse($type)
     {
         if ($type instanceof RedirectResponse) {
-            if (isset($_SERVER['CONTENT_TYPE']) && str_contains($_SERVER['CONTENT_TYPE'], "application/json")) {
-                wp_send_json([
-                    'data' => [
-                        'redirectUrl' => $type->getTargetUrl()
-                    ]
-                ]);
-            }
-
             wp_redirect($type->getTargetUrl());
             exit;
         }
