@@ -74,8 +74,8 @@ class RegisterPaymentGateways
         $this->addGatewayDataToStripPaymentMethods();
         $this->addGatewayDataToPayPalCommerce();
 
-        $this->unregister3rdPartyPaymentGateways($paymentGatewayRegister);
         $this->register3rdPartyPaymentGateways($paymentGatewayRegister);
+        $this->unregister3rdPartyPaymentGateways($paymentGatewayRegister);
 
         $this->afterGatewayRegister();
 
