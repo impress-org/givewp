@@ -46,9 +46,10 @@ class RegisterPaymentGateways
     /**
      * Registers all the payment gateways with GiveWP
      *
+     * @unreleased add afterRegisteredGateways
      * @since 2.18.0
      *
-     * @param array $gateways
+     * @param  array  $gateways
      *
      * @return array
      *
@@ -75,7 +76,7 @@ class RegisterPaymentGateways
         $this->register3rdPartyPaymentGateways($paymentGatewayRegister);
         $this->unregister3rdPartyPaymentGateways($paymentGatewayRegister);
 
-        $this->afterGatewayRegister();
+        $this->afterRegisteredGateways();
 
         return $gateways;
     }
@@ -146,9 +147,9 @@ class RegisterPaymentGateways
     }
 
     /**
-     * After gateway is registered, connect to legacy payment gateway adapter
+     * After gateways have been registered, connect to legacy payment gateway adapter
      */
-    private function afterGatewayRegister()
+    private function afterRegisteredGateways()
     {
         /** @var PaymentGatewayRegister $paymentGatewayRegister */
         $paymentGatewayRegister = give(PaymentGatewayRegister::class);
