@@ -139,7 +139,7 @@ class onBoardingRedirectHandler
             );
         } catch (GiveException $e) {
             give(Log::class)->warning(
-                'PayPal Commerce: Error retrieving access token on on boarding redirect.',
+                'PayPal Commerce: Error retrieving access token on boarding redirect.',
                 [
                     'category' => 'Payment Gateway',
                     'source' => 'Paypal Commerce',
