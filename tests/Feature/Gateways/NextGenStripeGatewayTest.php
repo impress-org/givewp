@@ -135,7 +135,7 @@ class NextGenStripeGatewayTest extends TestCase
         $gatewayData = [
             'stripePaymentIntentId' => $stripePaymentIntent->id,
             'stripeConnectedAccountKey' => $stripeConnectedAccountKey,
-            'redirectReturnUrl' => $redirectReturnUrl,
+            'successUrl' => $redirectReturnUrl,
         ];
 
         $response = $mockGateway->createPayment($donation, $gatewayData);
@@ -144,7 +144,7 @@ class NextGenStripeGatewayTest extends TestCase
             $response,
             new RespondToBrowser([
                 'intentStatus' => $stripePaymentIntent->status,
-                'returnUrl' => $gatewayData['redirectReturnUrl'],
+                'returnUrl' => $gatewayData['successUrl'],
             ])
         );
     }

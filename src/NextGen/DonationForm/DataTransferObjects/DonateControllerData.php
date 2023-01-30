@@ -95,11 +95,21 @@ class DonateControllerData
     /**
      * @unreleased
      */
-    public function getRedirectReturnUrl(Donation $donation)
+    public function getSuccessUrl(Donation $donation): string
     {
         return $this->isEmbed ?
             $this->getDonationConfirmationReceiptUrl($donation) :
             $this->getDonationConfirmationReceiptViewRouteUrl($donation);
+    }
+
+    /**
+     * @unreleased
+     *
+     * TODO: add params to route for flash message
+     */
+    public function getCancelUrl(): string
+    {
+        return $this->originUrl;
     }
 
     /**

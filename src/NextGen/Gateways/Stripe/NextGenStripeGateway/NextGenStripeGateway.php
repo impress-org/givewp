@@ -8,17 +8,19 @@ use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
-use Give\Framework\PaymentGateways\Traits\HasRequest;
+use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Framework\Support\ValueObjects\Money;
 use Stripe\Exception\ApiErrorException;
+
+use function rawurldecode;
 
 /**
  * @unreleased
  */
 class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatewayInterface
 {
-    use HasRequest;
     use NextGenStripeRepository;
+    use HandleHttpResponses;
 
     /**
      * @inheritDoc
@@ -103,7 +105,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
          */
         $stripeConnectedAccountKey = $gatewayData['stripeConnectedAccountKey'];
         $stripePaymentIntentId = $gatewayData['stripePaymentIntentId'];
-        $redirectReturnUrl = $gatewayData['redirectReturnUrl'];
+        $redirectReturnUrl = rawurldecode($gatewayData['successUrl']);
 
         /**
          * Get or create a Stripe customer

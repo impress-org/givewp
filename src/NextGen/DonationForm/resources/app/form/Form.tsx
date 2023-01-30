@@ -3,7 +3,13 @@ import {joiResolver} from '@hookform/resolvers/joi';
 
 import getWindowData from '../utilities/getWindowData';
 import {useGiveDonationFormStore} from '../store';
-import type {Gateway, Section} from '@givewp/forms/types';
+import {
+    Gateway,
+    isFormResponseRedirect,
+    isFormResponseValidationError,
+    isResponseRedirected,
+    Section
+} from '@givewp/forms/types';
 import postData from '../utilities/postData';
 import {withTemplateWrapper} from '../templates';
 import {useCallback} from 'react';
@@ -19,8 +25,8 @@ const formTemplates = window.givewp.form.templates;
 const FormTemplate = withTemplateWrapper(formTemplates.layouts.form);
 const FormSectionTemplate = withTemplateWrapper(formTemplates.layouts.section, 'section');
 
-async function handleRedirect(response: any | Response) {
-    const redirectUrl = new URL(response.url);
+async function handleRedirect(url: string) {
+    const redirectUrl = new URL(url);
     const redirectUrlParams = new URLSearchParams(redirectUrl.search);
     const shouldRedirectInline = isRouteInlineRedirect(redirectUrlParams, inlineRedirectRoutes);
 
@@ -57,7 +63,7 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
             return window.frameElement.id;
         };
 
-        const {response, isRedirect} = await postData(donateUrl, {
+        const {response} = await postData(donateUrl, {
             ...values,
             originUrl,
             isEmbed,
@@ -65,16 +71,22 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
             gatewayData: beforeCreatePaymentGatewayResponse,
         });
 
-        if (isRedirect) {
-            await handleRedirect(response);
+        if (isResponseRedirected(response)) {
+            await handleRedirect(response.url);
         }
 
-        if (response.data?.errors) {
-            throw new FormRequestError(response.data.errors.errors);
+        const formResponse = await response.json();
+
+        if (isFormResponseRedirect(formResponse)) {
+            await handleRedirect(formResponse.data.redirectUrl);
+        }
+
+        if (isFormResponseValidationError(formResponse)) {
+            throw new FormRequestError(formResponse.data.errors.errors);
         }
 
         if (gateway.afterCreatePayment) {
-            await gateway.afterCreatePayment(response);
+            await gateway.afterCreatePayment(formResponse);
         }
     } catch (error) {
         if (error instanceof FormRequestError) {

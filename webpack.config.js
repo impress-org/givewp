@@ -33,6 +33,7 @@ module.exports = {
         donationFormEmbedInside: srcPath('NextGen/DonationForm/resources/embedInside.ts'),
         nextGenStripeGateway: srcPath('NextGen/Gateways/Stripe/NextGenStripeGateway/nextGenStripeGateway.tsx'),
         nextGenTestGateway: srcPath('NextGen/Gateways/NextGenTestGateway/nextGenTestGateway.tsx'),
+        payPalStandardGateway: srcPath('NextGen/Gateways/PayPal/PayPalStandardGateway/payPalStandardGateway.tsx'),
         developerFormDesignCss: srcPath('NextGen/DonationForm/FormDesigns/DeveloperFormDesign/css/main.scss'),
         classicFormDesignCss: srcPath('NextGen/DonationForm/FormDesigns/ClassicFormDesign/css/main.scss'),
         classicFormDesignJs: srcPath('NextGen/DonationForm/FormDesigns/ClassicFormDesign/js/main.ts'),

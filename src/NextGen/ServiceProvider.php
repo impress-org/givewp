@@ -10,7 +10,9 @@ use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
 use Give\NextGen\Gateways\NextGenTestGatewayOffsite\NextGenTestGatewayOffsite;
+use Give\NextGen\Gateways\PayPal\PayPalStandardGateway\PayPalStandardGateway;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
+use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
@@ -36,6 +38,8 @@ class ServiceProvider implements ServiceProviderInterface
             $registrar->registerGateway(NextGenTestGateway::class);
             $registrar->registerGateway(NextGenStripeGateway::class);
             $registrar->registerGateway(NextGenTestGatewayOffsite::class);
+            $registrar->unregisterGateway(PayPalStandard::id());
+            $registrar->registerGateway(PayPalStandardGateway::class);
         });
 
         add_action('givewp_register_form_design', static function (FormDesignRegistrar $formDesignRegistrar) {

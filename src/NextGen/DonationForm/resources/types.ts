@@ -100,7 +100,7 @@ export interface Gateway {
     /**
      * A hook after the form is submitted.
      */
-    afterCreatePayment?(response: object): Promise<void> | Error;
+    afterCreatePayment?(response: FormResponse): Promise<void> | Error;
 }
 
 export interface VisibilityCondition {
@@ -209,4 +209,41 @@ export interface SelectOption {
     label: string;
     value: string;
     disabled?: boolean;
+}
+
+interface FormResponse {
+    type: string;
+    data: any
+}
+
+type FormResponseValidationError = {
+    [key: string]: string
+}
+
+interface FormResponseValidationErrors extends FormResponse {
+    type: 'validation_error';
+    data: {
+        errors: {
+            errors: FormResponseValidationError[]
+        }
+    }
+}
+
+interface FormResponseRedirect extends FormResponse {
+    type: 'redirect';
+    data: {
+        redirectUrl: string;
+    }
+}
+
+export function isFormResponseRedirect(response: FormResponse): response is FormResponseRedirect {
+    return (response as FormResponseRedirect).type === 'redirect';
+}
+
+export function isFormResponseValidationError(response: FormResponse): response is FormResponseValidationErrors {
+    return (response as FormResponseValidationErrors).type === 'validation_error' || (response as FormResponseValidationErrors).data?.errors != undefined;
+}
+
+export function isResponseRedirected(response: Response): response is Response {
+    return (response as Response).redirected === true;
 }

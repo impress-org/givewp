@@ -1,13 +1,11 @@
-const state = {};
+(() => {
+    "use strict";
+    const nextGenTestGatewayOffsite = {
+        id: 'test-gateway-next-gen-offsite',
+        Fields() {
+            return nextGenTestGatewayOffsite.settings.message;
+        },
+    }
 
-const gateway = {
-    id: 'test-gateway-next-gen-offsite',
-    initialize() {
-        state.message = this.settings.message;
-    },
-    Fields() {
-        return state.message;
-    },
-};
-
-window.givewp.gateways.register(gateway);
+    window.givewp.gateways.register(nextGenTestGatewayOffsite);
+})();

@@ -86,7 +86,12 @@ class DonateRoute
                 ]
             );
 
-            wp_send_json_error(['errors' => $exception->getError()]);
+            wp_send_json_error(
+                [
+                    'type' => 'validation_error',
+                    'errors' => $exception->getError()
+                ]
+            );
         } catch (Exception $exception) {
             Log::error(
                 'Donation Error',
