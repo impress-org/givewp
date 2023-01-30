@@ -215,7 +215,7 @@ if (!class_exists('Give_Settings_General')) :
                                     'If enabled, amounts are automatically formatted based on the selected currency. This option requires the intl extension for PHP. Read more about <a href="%s" target="_blank">this option and how GiveWP values internationalization in web applications.</a>',
                                     'give'
                                 ),
-                                'https://givewp.com'
+                                'https://docs.givewp.com/currency-format'
                             ),
                             'id' => 'auto_format_currency',
                             'type' => 'checkbox',
