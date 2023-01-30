@@ -5,6 +5,7 @@
 /.idea
 /.github
 /.storybook
+/.phpstan
 
 /bin
 /tests
@@ -15,6 +16,7 @@
 /vendor/composer/installers
 /vendor/**/*.phar
 
+.phpstorm.meta.php
 .travis.yml
 .editorconfig
 .babelrc
@@ -33,6 +35,7 @@
 jsconfig.json
 globals.d.ts
 tsconfig.json
+phpstan.neon
 
 sample-data/wordpress.sql
 sample-data/sample-data.numbers
