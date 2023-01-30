@@ -8,7 +8,7 @@ class Block
 {
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */

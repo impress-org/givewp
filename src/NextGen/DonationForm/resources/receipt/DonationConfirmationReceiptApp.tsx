@@ -14,7 +14,7 @@ const {receipt} = window.givewpDonationConfirmationReceiptExports;
 /**
  * Return readable value
  *
- * @unreleased
+ * @since 0.1.0
  */
 const getDetailValue = (value) => {
     if (typeof value === 'string') {
@@ -27,7 +27,7 @@ const getDetailValue = (value) => {
 /**
  * Prepare detail values before render
  *
- * @unreleased
+ * @since 0.1.0
  */
 const prepareDetails = (details: ReceiptDetail[]) => {
     return details?.map(({label, value}) => ({
@@ -38,7 +38,7 @@ const prepareDetails = (details: ReceiptDetail[]) => {
 
 /**
  *
- * @unreleased
+ * @since 0.1.0
  */
 function DonationConfirmationReceiptApp() {
     return (

@@ -1,10 +1,10 @@
-import {Form, Node, Group, isGroup} from '@givewp/forms/types';
+import {Form, Group, isGroup, Node} from '@givewp/forms/types';
 import {mapGroup, reduceGroup, walkGroup} from './groups';
 
 /**
  * Receives the form data as provided directly from the server and mutates it to be ready for use by the React application
  *
- * @unreleased
+ * @since 0.1.0
  */
 export default function prepareFormData(form: Form) {
     form.walkNodes = walkGroupNodes.bind(form);

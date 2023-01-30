@@ -19,12 +19,12 @@ use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class ConvertDonationFormBlocksToFieldsApi
 {
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @throws TypeNotSupported|NameCollisionException
      */
@@ -42,7 +42,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      * @throws NameCollisionException
      */
     protected function convertTopLevelBlockToSection(BlockModel $block, int $blockIndex): Section
@@ -54,7 +54,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @throws EmptyNameException
      */
@@ -66,7 +66,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @throws EmptyNameException
      */
@@ -113,7 +113,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     protected function createNodeFromDonorNameBlock(BlockModel $block): Node
     {
@@ -140,7 +140,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     protected function mapGenericBlockAttributesToNode(Node $node, BlockModel $block): Node
     {

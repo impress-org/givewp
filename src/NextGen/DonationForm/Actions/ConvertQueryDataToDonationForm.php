@@ -12,9 +12,9 @@ use Give\NextGen\Framework\Blocks\BlockCollection;
 class ConvertQueryDataToDonationForm
 {
     /**
-     * @unreleased
+     * @since 0.1.0
      *
-     * @param object $queryObject
+     * @param  object  $queryObject
      */
     public function __invoke($queryObject): DonationForm
     {

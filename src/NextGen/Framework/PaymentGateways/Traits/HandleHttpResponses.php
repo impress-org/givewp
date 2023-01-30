@@ -15,7 +15,7 @@ trait HandleHttpResponses
     /**
      * Handle Response
      *
-     * @unreleased add support for json content-type
+     * @since 0.1.0 add support for json content-type
      *
      * @since 2.18.0
      *

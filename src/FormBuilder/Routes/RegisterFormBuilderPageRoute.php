@@ -16,7 +16,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Use add_submenu_page to register page within WP admin
      *
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */
@@ -49,7 +49,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Render page with scripts
      *
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */

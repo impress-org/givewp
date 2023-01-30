@@ -6,7 +6,7 @@ use Give\Donations\Models\Donation;
 use Give\Framework\FieldsAPI\Field;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class DonationDetailsView
 {
@@ -17,7 +17,7 @@ class DonationDetailsView
     protected $fields;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @param  Donation  $donation
      * @param  array|Field[]  $fields
@@ -29,7 +29,7 @@ class DonationDetailsView
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return string
      */
@@ -42,7 +42,7 @@ class DonationDetailsView
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return string
      */
@@ -52,7 +52,7 @@ class DonationDetailsView
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return string
      */
@@ -69,7 +69,7 @@ class DonationDetailsView
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @param  Field  $field
      *

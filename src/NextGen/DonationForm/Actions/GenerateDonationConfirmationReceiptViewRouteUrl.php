@@ -6,12 +6,12 @@ namespace Give\NextGen\DonationForm\Actions;
 use Give\NextGen\Framework\Routes\Route;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class GenerateDonationConfirmationReceiptViewRouteUrl
 {
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function __invoke(string $receiptId): string
     {

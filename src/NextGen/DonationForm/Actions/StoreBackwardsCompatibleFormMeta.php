@@ -8,7 +8,7 @@ use Give\NextGen\DonationForm\Models\DonationForm;
 class StoreBackwardsCompatibleFormMeta
 {
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function __invoke(DonationForm $donationForm)
     {
@@ -17,7 +17,7 @@ class StoreBackwardsCompatibleFormMeta
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function storeDonationLevels(DonationForm $donationForm)
     {
@@ -50,7 +50,7 @@ class StoreBackwardsCompatibleFormMeta
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function storeDonationGoal(DonationForm $donationForm)
     {
@@ -77,7 +77,7 @@ class StoreBackwardsCompatibleFormMeta
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     protected function saveSingleFormMeta($formId, $metaKey, $metaValue)
     {

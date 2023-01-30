@@ -6,7 +6,7 @@ use Give\Donors\Models\Donor;
 use Give\Framework\FieldsAPI\Field;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class DonorDetailsView
 {
@@ -17,10 +17,10 @@ class DonorDetailsView
     protected $fields;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
-     * @param Donor $donor
-     * @param Field[] $fields
+     * @param  Donor  $donor
+     * @param  Field[]  $fields
      */
     public function __construct(Donor $donor, array $fields)
     {
@@ -29,7 +29,7 @@ class DonorDetailsView
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return string
      */
@@ -50,7 +50,7 @@ class DonorDetailsView
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return string
      */
@@ -60,7 +60,7 @@ class DonorDetailsView
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return string
      */
@@ -77,7 +77,7 @@ class DonorDetailsView
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return mixed
      */

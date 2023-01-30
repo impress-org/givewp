@@ -21,7 +21,7 @@ class FormBuilderResourceControllerTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      * @throws Exception
@@ -49,7 +49,7 @@ class FormBuilderResourceControllerTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      * @throws Exception
@@ -83,7 +83,7 @@ class FormBuilderResourceControllerTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function testUpdateShouldFailIfFormDoesNotExist()
     {
@@ -100,7 +100,7 @@ class FormBuilderResourceControllerTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function testShowShouldFailIfFormDoesNotExist()
     {
@@ -219,7 +219,7 @@ class FormBuilderResourceControllerTest extends TestCase
 
     /**
      *
-     * @unreleased
+     * @since 0.1.0
      */
     public function getMockRequest(string $method): WP_REST_Request
     {

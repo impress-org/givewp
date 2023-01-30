@@ -8,7 +8,7 @@ use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class ServiceProvider implements ServiceProviderInterface
 {

@@ -7,12 +7,12 @@ use Give\NextGen\Framework\Blocks\BlockModel;
 use Give\Tests\TestCase;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class TestBlockCollection extends TestCase
 {
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */
@@ -27,7 +27,7 @@ class TestBlockCollection extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */
@@ -39,7 +39,7 @@ class TestBlockCollection extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */

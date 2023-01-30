@@ -15,7 +15,7 @@ use Stripe\Exception\ApiErrorException;
 use function rawurldecode;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatewayInterface
 {
@@ -55,7 +55,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function enqueueScript(): EnqueueScript
     {
@@ -69,7 +69,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      * @throws ApiErrorException
      */
     public function formSettings(int $formId): array

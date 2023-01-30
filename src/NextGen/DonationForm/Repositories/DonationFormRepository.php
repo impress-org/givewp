@@ -21,7 +21,7 @@ use Give\NextGen\DonationForm\ValueObjects\DonationFormMetaKeys;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class DonationFormRepository
 {
@@ -31,7 +31,7 @@ class DonationFormRepository
     private $paymentGatewayRegister;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @var string[]
      */
@@ -42,9 +42,9 @@ class DonationFormRepository
     ];
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
-     * @param PaymentGatewayRegister $paymentGatewayRegister
+     * @param  PaymentGatewayRegister  $paymentGatewayRegister
      */
     public function __construct(PaymentGatewayRegister $paymentGatewayRegister)
     {
@@ -54,7 +54,7 @@ class DonationFormRepository
     /**
      * Get Donation Form By ID
      *
-     * @unreleased
+     * @since 0.1.0
      *
      * @return DonationForm|null
      */
@@ -67,7 +67,7 @@ class DonationFormRepository
 
     /**
      *
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      * @throws Exception|InvalidArgumentException
@@ -143,9 +143,9 @@ class DonationFormRepository
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
-     * @param DonationForm $donationForm
+     * @param  DonationForm  $donationForm
      *
      * @return void
      * @throws Exception|InvalidArgumentException
@@ -208,7 +208,7 @@ class DonationFormRepository
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @throws Exception
      */
@@ -242,9 +242,9 @@ class DonationFormRepository
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
-     * @param DonationForm $donationForm
+     * @param  DonationForm  $donationForm
      *
      * @return void
      */
@@ -258,7 +258,7 @@ class DonationFormRepository
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return ModelQueryBuilder<DonationForm>
      */
@@ -308,7 +308,7 @@ class DonationFormRepository
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function getFormDataGateways(int $formId): array
     {
@@ -330,7 +330,7 @@ class DonationFormRepository
 
     /**
      *
-     * @unreleased
+     * @since 0.1.0
      */
     public function getTotalNumberOfDonors(int $formId): int
     {
@@ -346,7 +346,7 @@ class DonationFormRepository
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function getTotalNumberOfDonations(int $formId): int
     {
@@ -358,7 +358,7 @@ class DonationFormRepository
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function getTotalRevenue(int $formId): int
     {
@@ -376,7 +376,7 @@ class DonationFormRepository
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function getFormSchemaFromBlocks(int $formId, BlockCollection $blocks): Form
     {
@@ -403,7 +403,7 @@ class DonationFormRepository
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function isLegacyForm(int $formId): bool
     {

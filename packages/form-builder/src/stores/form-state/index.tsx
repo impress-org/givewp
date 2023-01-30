@@ -16,7 +16,7 @@ StoreContextDispatch.displayName = 'FormStateDispatch';
  *
  * @see https://reactjs.org/docs/hooks-reference.html#usereducer
  *
- * @unreleased
+ * @since 0.1.0
  */
 const FormStateProvider = ({initialState, children}: { initialState: FormState; children: ReactNode }) => {
     const [state, dispatch] = useReducer(formSettingsReducer, initialState);
@@ -31,7 +31,7 @@ const FormStateProvider = ({initialState, children}: { initialState: FormState; 
 /**
  * This is a convenient way of retrieving all the settings from the store as readOnly
  *
- * @unreleased
+ * @since 0.1.0
  *
  * @example
  *  const {settings: {formTitle}} = useFormState();
@@ -41,7 +41,7 @@ const useFormState = () => useContext<FormState>(StoreContext);
 /**
  * This is a convenient way of retrieving the "dispatch" function from our provider
  *
- * @unreleased
+ * @since 0.1.0
  *
  * @example
  * // retrieve the "dispatch" function

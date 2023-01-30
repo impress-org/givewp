@@ -4,7 +4,7 @@ namespace Give\NextGen\Framework\TemplateTags\Actions;
 
 class TransformTemplateTags {
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function __invoke(string $content, array $tags): string
     {

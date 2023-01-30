@@ -12,7 +12,7 @@ use Give\NextGen\Framework\Receipts\DonationReceipt;
 use Give\NextGen\Framework\Receipts\DonationReceiptBuilder;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class DonationConfirmationReceiptViewModel
 {
@@ -22,7 +22,7 @@ class DonationConfirmationReceiptViewModel
     public $donation;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function __construct(Donation $donation)
     {
@@ -30,7 +30,7 @@ class DonationConfirmationReceiptViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function getDonationForm(): DonationForm
     {
@@ -38,7 +38,7 @@ class DonationConfirmationReceiptViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function getReceipt(): DonationReceipt
     {
@@ -48,7 +48,7 @@ class DonationConfirmationReceiptViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function exports(): array
     {
@@ -58,7 +58,7 @@ class DonationConfirmationReceiptViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function formExports(): array
     {
@@ -80,7 +80,7 @@ class DonationConfirmationReceiptViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function render(): string
     {
@@ -137,7 +137,7 @@ class DonationConfirmationReceiptViewModel
     /**
      * Loads scripts in order: [Registrars, Designs, App]
      *
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */

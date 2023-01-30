@@ -4,7 +4,7 @@ const UPDATE_BLOCKS = 'update_blocks';
 /**
  * This reducer is used within the FormStateProvider for state management
  *
- * @unreleased
+ * @since 0.1.0
  */
 export default function reducer(state, action) {
     switch (action.type) {
@@ -28,7 +28,7 @@ export default function reducer(state, action) {
 }
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 export function setFormSettings(settings) {
     return {
@@ -38,7 +38,7 @@ export function setFormSettings(settings) {
 }
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 export function setFormBlocks(blocks) {
     return {

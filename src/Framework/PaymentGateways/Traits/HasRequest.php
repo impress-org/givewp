@@ -9,16 +9,17 @@ trait HasRequest {
     private $request;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      * @return mixed
      */
     public function get(string $key)
     {
         return $this->request[$key];
     }
+
     /**
      *
-     * @unreleased
+     * @since 0.1.0
      * @return $this
      */
     public function request(): self

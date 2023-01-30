@@ -15,7 +15,7 @@ use function wp_enqueue_style;
 use function wp_print_styles;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class DonationFormViewModel
 {
@@ -38,7 +38,7 @@ class DonationFormViewModel
     private $donationFormRepository;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function __construct(
         int $donationFormId,
@@ -52,7 +52,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function designId(): string
     {
@@ -60,7 +60,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function primaryColor(): string
     {
@@ -68,7 +68,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function secondaryColor(): string
     {
@@ -76,7 +76,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function enqueueGlobalStyles()
     {
@@ -99,7 +99,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     private function goalType(): GoalType
     {
@@ -107,7 +107,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     private function formStatsData(): array
     {
@@ -127,7 +127,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function exports(): array
     {
@@ -167,7 +167,7 @@ class DonationFormViewModel
      * 5. Finally, call the specific WP function wp_print_footer_scripts()
      *  - This will only print the footer scripts that are enqueued within our route.
      *
-     * @unreleased
+     * @since 0.1.0
      */
     public function render(): string
     {
@@ -207,7 +207,7 @@ class DonationFormViewModel
     /**
      * Loads scripts in order: [Registrars, Designs, Gateways, Block]
      *
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */

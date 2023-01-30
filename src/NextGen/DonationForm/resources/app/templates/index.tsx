@@ -5,21 +5,21 @@ import {Element, Field, Group} from '@givewp/forms/types';
 /**
  * Get the active template from the window
  *
- * @unreleased
+ * @since 0.1.0
  */
 const template = window.givewp.form.templates
 
 /**
  * Get the NodeWrapper from active template
  *
- * @unreleased
+ * @since 0.1.0
  */
 const NodeWrapper = template.layouts.wrapper;
 
 /**
  * Find the names of nodeType and type based on the value of the template.
  *
- * @unreleased
+ * @since 0.1.0
  */
 export function findTemplateKeys<S extends keyof typeof template, T extends keyof typeof template[S]>(
     templateValue: ReactNode
@@ -46,7 +46,7 @@ export function findTemplateKeys<S extends keyof typeof template, T extends keyo
 /**
  * This HOC will wrap a template component in our NodeWrapper and automatically figure out what nodeType and type to use as props.
  *
- * @unreleased
+ * @since 0.1.0
  */
 export function withTemplateWrapper<TemplateProps>(
     Template: FC<TemplateProps>,
@@ -65,7 +65,7 @@ export function withTemplateWrapper<TemplateProps>(
 /**
  * A component version of withTemplateWrapper that uses the child component to determine the NodeWrapper props.
  *
- * @unreleased
+ * @since 0.1.0
  */
 export function TemplateWrapper({children, htmlTag}: {children: JSX.Element; htmlTag?: keyof JSX.IntrinsicElements}) {
     const {nodeType, type} = useMemo(() => findTemplateKeys(children.type), []);
@@ -80,7 +80,7 @@ export function TemplateWrapper({children, htmlTag}: {children: JSX.Element; htm
 /**
  * A hook version of withTemplateWrapper
  *
- * @unreleased
+ * @since 0.1.0
  */
 export function useTemplateWrapper<TemplateProps>(
     Template: FC<TemplateProps>,
@@ -91,21 +91,21 @@ export function useTemplateWrapper<TemplateProps>(
 }
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 export function fieldTemplateExists(field: Field): boolean {
     return template.fields.hasOwnProperty(field.type);
 }
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 export function elementTemplateExists(element: Element): boolean {
     return template.elements.hasOwnProperty(element.type);
 }
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 export function groupTemplateExists(group: Group): boolean {
     return template.groups.hasOwnProperty(group.type);

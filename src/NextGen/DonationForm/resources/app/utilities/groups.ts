@@ -3,7 +3,7 @@ import {Field, Group, isField, isGroup, Node} from '@givewp/forms/types';
 /**
  * Finds the first node with a given name within a collection of nodes
  *
- * @unreleased
+ * @since 0.1.0
  */
 export function findNode(name: string, nodes: Node[]): Node {
     let node;
@@ -27,7 +27,7 @@ export function findNode(name: string, nodes: Node[]): Node {
  * Walks through a group's nodes and calls a callback for each node. If a filter is provided the callback only fires for
  * nodes which pass the filter.
  *
- * @unreleased
+ * @since 0.1.0
  */
 export function walkGroup(group: Group, callback: (node: Node) => void, filter?: (node: Node) => boolean) {
     walkNodes(group.nodes, callback, filter);
@@ -37,7 +37,7 @@ export function walkGroup(group: Group, callback: (node: Node) => void, filter?:
  * Maps through a Group's nodes and calls a callback for each node. If a filter is provided the callback only fires for
  * passing nodes.
  *
- * @unreleased
+ * @since 0.1.0
  */
 export function mapGroup(group: Group, callback: (node: Node) => unknown, filter?: (node: Node) => boolean) {
     return mapNodes(group.nodes, callback, filter);
@@ -45,7 +45,7 @@ export function mapGroup(group: Group, callback: (node: Node) => unknown, filter
 
 /**
  * Reduces a Group's nodes into a single value. If a filter is provided the callback only fires for passing nodes.
- * @unreleased
+ * @since 0.1.0
  */
 export function reduceGroup(
     group: Group,
@@ -59,7 +59,7 @@ export function reduceGroup(
 /**
  * Walks through a collection of nodes and calls a callback for each node. If a filter is provided the callback only fires for passing nodes.
  *
- * @unreleased
+ * @since 0.1.0
  */
 export function walkNodes(nodes: Node[], callback: (node: Node) => void, filter?: (node: Node) => boolean) {
     nodes.forEach((node) => {
@@ -77,7 +77,7 @@ export function walkNodes(nodes: Node[], callback: (node: Node) => void, filter?
  * Maps a collection of nodes to a new array of values. If a filter is provided the callback only fires for nodes which
  * pass.
  *
- * @unreleased
+ * @since 0.1.0
  */
 export function mapNodes<Type>(
     nodes: Node[],
@@ -100,7 +100,7 @@ export function mapNodes<Type>(
 /**
  * Reduces an array of nodes to a single value. If the filter is provided, only nodes which pass the filter will be used.
  *
- * @unreleased
+ * @since 0.1.0
  */
 export function reduceNodes<Type>(
     nodes: Node[],
@@ -124,7 +124,7 @@ export function reduceNodes<Type>(
 /**
  * Walks through an array of nodes, limited by fields, and calls a callback for each field.
  *
- * @unreleased
+ * @since 0.1.0
  */
 export function walkFields(nodes: Node[], callback: (field: Field) => void) {
     walkNodes(nodes, callback, isField);
@@ -133,7 +133,7 @@ export function walkFields(nodes: Node[], callback: (field: Field) => void) {
 /**
  * Reduces an array of nodes, limited by its fields, into a single value.
  *
- * @unreleased
+ * @since 0.1.0
  */
 export function reduceFields<Type>(
     nodes: Parameters<typeof reduceNodes>[0],

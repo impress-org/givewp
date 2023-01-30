@@ -10,7 +10,7 @@ use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\NextGen\Framework\PaymentGateways\Traits\HandleHttpResponses;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class NextGenTestGateway extends PaymentGateway implements NextGenPaymentGatewayInterface
 {
@@ -49,7 +49,7 @@ class NextGenTestGateway extends PaymentGateway implements NextGenPaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return EnqueueScript
      */

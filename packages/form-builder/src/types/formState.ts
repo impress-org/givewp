@@ -2,7 +2,7 @@ import type {Block} from './block';
 import type {FormSettings} from './formSettings';
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 export type FormState = {
     blocks: Block[];

@@ -19,7 +19,7 @@ class ReceiptSettings implements Arrayable {
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @param  string  $key
      * @param $value
@@ -33,7 +33,7 @@ class ReceiptSettings implements Arrayable {
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function getSettings(): array
     {
@@ -41,7 +41,7 @@ class ReceiptSettings implements Arrayable {
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function toArray(): array
     {

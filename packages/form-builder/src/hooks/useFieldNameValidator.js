@@ -1,7 +1,7 @@
 import {useSelect} from '@wordpress/data';
 
 /**
- * @unreleased
+ * @since 0.1.0
  *
  * @returns {*}
  */
@@ -10,7 +10,7 @@ export const getFieldNameFrequency = (fieldName, fieldNames) => {
 };
 
 /**
- * @unreleased
+ * @since 0.1.0
  *
  * @returns {`${*}-${number|number}`}
  */
@@ -23,7 +23,7 @@ export const getFieldNameSuggestion = (name, names) => {
 }
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 export const flattenBlocks = (block) => [block, ...block.innerBlocks.flatMap(flattenBlocks)]
 
@@ -31,7 +31,7 @@ export const flattenBlocks = (block) => [block, ...block.innerBlocks.flatMap(fla
  * A hook for validating uniqueness of the 'fieldName' attribute.
  * When a conflict has been found, a new name suggestion will be generated and returned within the array
  *
- * @unreleased
+ * @since 0.1.0
  *
  * TODO: use typescript types
  *

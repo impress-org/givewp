@@ -11,7 +11,7 @@ use Give\NextGen\Framework\Blocks\BlockCollection;
 class DonationFormFactory extends ModelFactory
 {
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function definition(): array
     {

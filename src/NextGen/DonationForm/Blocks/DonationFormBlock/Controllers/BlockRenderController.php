@@ -13,7 +13,7 @@ use Give\NextGen\Framework\Routes\RouteListener;
 class BlockRenderController
 {
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return string|null
      */
@@ -49,7 +49,7 @@ class BlockRenderController
     /**
      * If the page loads with our receipt route listener args then we need to render the receipt.
      *
-     * @unreleased
+     * @since 0.1.0
      */
     protected function shouldDisplayDonationConfirmationReceipt(string $embedId): bool
     {
@@ -71,7 +71,7 @@ class BlockRenderController
      * Get the iframe URL.
      * This could either be the donation form view or the donation confirmation receipt view.
      *
-     * @unreleased
+     * @since 0.1.0
      */
     private function getViewUrl(DonationForm $donationForm, string $embedId): string
     {
@@ -89,7 +89,7 @@ class BlockRenderController
      * Load embed givewp script to resize iframe
      * @see https://github.com/davidjbradshaw/iframe-resizer
      *
-     * @unreleased
+     * @since 0.1.0
      */
     private function loadEmbedScript()
     {

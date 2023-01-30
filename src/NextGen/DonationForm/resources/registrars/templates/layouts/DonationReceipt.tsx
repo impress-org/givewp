@@ -3,7 +3,7 @@ import {ReceiptDetail} from '@givewp/forms/types';
 import {DonationReceiptProps} from '@givewp/forms/propTypes';
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 const SecureBadge = () => {
     return (
@@ -21,7 +21,7 @@ const SecureBadge = () => {
 
 /**
  *
- * @unreleased
+ * @since 0.1.0
  */
 const Details = ({id, heading, details}: { id: string; heading: string; details: ReceiptDetail[] }) =>
     details?.length > 0 && (
@@ -40,7 +40,7 @@ const Details = ({id, heading, details}: { id: string; heading: string; details:
         </div>
     );
 /**
- * @unreleased
+ * @since 0.1.0
  */
 export default function DonationReceipt({
     heading,

@@ -10,7 +10,7 @@ const formTemplates = window.givewp.form.templates;
 /**
  * Determine which node template to render
  *
- * @unreleased
+ * @since 0.1.0
  */
 export default function SectionNode({node}: {node: Node}) {
     if (isField(node) && fieldTemplateExists(node)) {

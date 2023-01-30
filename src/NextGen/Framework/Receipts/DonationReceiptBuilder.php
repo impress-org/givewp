@@ -12,7 +12,7 @@ class DonationReceiptBuilder
     public $donationReceipt;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function __construct(DonationReceipt $donationReceipt)
     {
@@ -20,7 +20,7 @@ class DonationReceiptBuilder
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function toConfirmationPage(): DonationReceipt
     {

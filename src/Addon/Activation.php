@@ -13,7 +13,7 @@ class Activation
     /**
      * Activate add-on action hook.
      *
-     * @since 1.0.0
+     * @since 0.1.0
      * @return void
      */
     public static function activateAddon()
@@ -23,7 +23,7 @@ class Activation
     /**
      * Deactivate add-on action hook.
      *
-     * @since 1.0.0
+     * @since 0.1.0
      * @return void
      */
     public static function deactivateAddon()
@@ -33,7 +33,7 @@ class Activation
     /**
      * Uninstall add-on action hook.
      *
-     * @since 1.0.0
+     * @since 0.1.0
      * @return void
      */
     public static function uninstallAddon()

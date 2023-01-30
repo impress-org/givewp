@@ -1,7 +1,7 @@
 /**
  * Returns default values from an array of field collection objects
  *
- * @unreleased
+ * @since 0.1.0
  *
  * @param sections
  * @return {*}

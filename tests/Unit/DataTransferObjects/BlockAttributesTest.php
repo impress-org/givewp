@@ -6,13 +6,13 @@ use Give\NextGen\DonationForm\Blocks\DonationFormBlock\DataTransferObjects\Block
 use Give\Tests\TestCase;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class BlockAttributesTest extends TestCase
 {
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */
@@ -27,7 +27,7 @@ class BlockAttributesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */

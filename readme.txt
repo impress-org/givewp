@@ -5,9 +5,26 @@ Tags: givewp, donation, donations, donation plugin, wordpress donation plugin, w
 Requires at least: 5.5
 Tested up to: 6.0
 Requires PHP: 7.2
-Stable tag: 1.0.0
-Requires Give: 2.21.0
+Stable tag: 0.1.0
+Requires Give: 2.24.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Create the donation form of your dreams using an easy-to-use visual donation form builder.
+
+= 0.1.0: Jan 30th, 2023 =
+* New: Initial internal release!
+* New: Added visual donation form builder.
+* New: Added custom text fields to the form builder.
+* New: Added donation form that renders from the new form builder.
+* New: Added form design / template API to the new donation form.
+* New: Added form design tab and settings to form builder for design customization and live previews of the form.
+* New: Added Donation Goal settings to the form builder.
+* New: Added Receipt Heading and Description settings to the form builder.
+* New: Added backwards-compatability for single donation form pages.
+* New: Added URL settings for single donation form pages.
+* New: Added auto-validation for the new donation form processing.
+* New: Added new donation form gutenberg block for displaying the form on any page.
+* New: Added stateless confirmation receipts to the new donation form processing with support for custom fields, fee recovery, and subscriptions.
+* New: Added new Stripe gateway using the new Stripe Payment Element API.
+* New: Added compatability for PayPal Standard gateway.

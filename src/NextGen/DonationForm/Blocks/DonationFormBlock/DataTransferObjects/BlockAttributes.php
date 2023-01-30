@@ -16,7 +16,7 @@ class BlockAttributes implements Arrayable
     public $blockId;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public static function fromArray(array $array): BlockAttributes
     {
@@ -29,7 +29,7 @@ class BlockAttributes implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function toArray(): array
     {

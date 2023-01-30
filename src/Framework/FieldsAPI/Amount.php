@@ -25,7 +25,7 @@ class Amount extends Field
     /**
      * Set the preset donation levels. Provide levels in minor units.
      *
-     * @unreleased
+     * @since 0.1.0
      */
     public function levels(int ...$levels): self
     {
@@ -35,7 +35,7 @@ class Amount extends Field
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function getLevels(): array
     {
@@ -43,7 +43,7 @@ class Amount extends Field
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function allowCustomAmount($allow = true): self
     {
@@ -53,7 +53,7 @@ class Amount extends Field
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function customAmountAllowed(): bool
     {

@@ -10,7 +10,7 @@ use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use Give_Donor as LegacyDonor;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class ServiceProvider implements ServiceProviderInterface
 {

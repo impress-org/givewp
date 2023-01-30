@@ -3,7 +3,7 @@ import {__} from '@wordpress/i18n';
 import type {GoalProps} from '@givewp/forms/propTypes';
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 export default function Goal({
     currentAmount,

@@ -13,7 +13,7 @@ use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\NextGen\Framework\PaymentGateways\Traits\HandleHttpResponses;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPaymentGatewayInterface
 {
@@ -59,7 +59,7 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return EnqueueScript
      */
@@ -92,8 +92,8 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
     }
 
     /**
-     * @unreleased
-     * 
+     * @since 0.1.0
+     *
      * @throws Exception
      */
     protected function securelyReturnFromOffsiteRedirect(array $queryParams): RedirectResponse
@@ -123,7 +123,7 @@ class NextGenTestGatewayOffsite extends PaymentGateway implements NextGenPayment
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @inerhitDoc
      */

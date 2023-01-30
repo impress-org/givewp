@@ -7,12 +7,12 @@ use Give\NextGen\Framework\Blocks\BlockModel;
 use Give\Tests\TestCase;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class TestBlockModel extends TestCase
 {
     /**
-     * @unreleased
+     * @since 0.1.0
      * @return void
      */
     public function testHasName()
@@ -26,7 +26,7 @@ class TestBlockModel extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      * @return void
      */
     public function testHasAttributes()
@@ -43,7 +43,7 @@ class TestBlockModel extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      * @return void
      */
     public function testHasInnerBlocksCollection()
@@ -61,7 +61,7 @@ class TestBlockModel extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */

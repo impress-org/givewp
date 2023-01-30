@@ -17,7 +17,7 @@ use Stripe\PaymentIntent;
 
 trait NextGenStripeRepository {
     /**
-     * @unreleased
+     * @since 0.1.0
      * @throws ApiErrorException
      */
     protected function generateStripePaymentIntent($accountId, Money $amount): PaymentIntent
@@ -35,7 +35,7 @@ trait NextGenStripeRepository {
     /**
      * Get or create Stripe Customer from Donation
      *
-     * @unreleased
+     * @since 0.1.0
      * @throws Exception
      * @throws ApiErrorException
      */
@@ -89,8 +89,8 @@ trait NextGenStripeRepository {
         return $customer;
     }
 
-     /**
-     * @unreleased
+    /**
+     * @since 0.1.0
      * @throws ApiErrorException
      */
     protected function updateStripePaymentIntent(string $id, array $data): PaymentIntent
@@ -102,7 +102,7 @@ trait NextGenStripeRepository {
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @throws InvalidPropertyName
      */
@@ -161,7 +161,7 @@ trait NextGenStripeRepository {
    }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     protected function getStripePublishableKey(int $formId): string
     {
@@ -169,7 +169,7 @@ trait NextGenStripeRepository {
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     protected function getStripeConnectedAccountKey(int $formId): string
     {
@@ -177,7 +177,7 @@ trait NextGenStripeRepository {
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void;
      */
@@ -187,7 +187,7 @@ trait NextGenStripeRepository {
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @throws ApiErrorException
      */
@@ -203,7 +203,7 @@ trait NextGenStripeRepository {
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @throws ApiErrorException|InvalidRequestException
      */

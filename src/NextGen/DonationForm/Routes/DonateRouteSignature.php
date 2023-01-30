@@ -3,8 +3,7 @@
 namespace Give\NextGen\DonationForm\Routes;
 
 /**
-
- * @unreleased
+ * @since 0.1.0
  */
 class DonateRouteSignature
 {
@@ -18,7 +17,7 @@ class DonateRouteSignature
     public $expiration;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function __construct(string $name, string $expiration = null)
     {
@@ -28,7 +27,7 @@ class DonateRouteSignature
 
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     private function generateSignatureString(string $name, string $expiration): string
     {
@@ -36,7 +35,7 @@ class DonateRouteSignature
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return string
      */
@@ -46,7 +45,7 @@ class DonateRouteSignature
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return string
      */
@@ -58,7 +57,7 @@ class DonateRouteSignature
     /**
      * Create expiration timestamp
      *
-     * @unreleased
+     * @since 0.1.0
      *
      * @return string
      */
@@ -69,7 +68,7 @@ class DonateRouteSignature
 
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function isValid(string $suppliedSignature): bool
     {

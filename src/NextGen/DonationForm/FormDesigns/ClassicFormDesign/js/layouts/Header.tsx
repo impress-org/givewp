@@ -1,7 +1,7 @@
 import {__} from '@wordpress/i18n';
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 const SecureBadge = () => {
     return (
@@ -18,7 +18,7 @@ const SecureBadge = () => {
 };
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 export default function Header({Title, Description, Goal}) {
     return (

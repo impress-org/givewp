@@ -1,7 +1,7 @@
 import type {HeaderDescriptionProps} from '@givewp/forms/propTypes';
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 export default function HeaderDescription({text}: HeaderDescriptionProps) {
     return <p>{text}</p>;

@@ -5,7 +5,7 @@ namespace Give\NextGen\DonationForm\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
- * @unreleased
+ * @since 0.1.0
  *
  * @method static RegistrationOptions NONE()
  * @method static RegistrationOptions REGISTRATION()

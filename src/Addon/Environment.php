@@ -14,7 +14,7 @@ class Environment
     /**
      * Check environment.
      *
-     * @since 1.0.0
+     * @since 0.1.0
      * @return void
      */
     public static function checkEnvironment()
@@ -34,7 +34,7 @@ class Environment
     /**
      * Check min required version of GiveWP.
      *
-     * @since 1.0.0
+     * @since 0.1.0
      * @return bool
      */
     public static function giveMinRequiredVersionCheck()
@@ -45,7 +45,7 @@ class Environment
     /**
      * Check if GiveWP is active.
      *
-     * @since 1.0.0
+     * @since 0.1.0
      * @return bool
      */
     public static function isGiveActive()

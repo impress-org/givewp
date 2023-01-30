@@ -16,7 +16,7 @@ class DonationTemplateTags {
     protected $content;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function __construct(Donation $donation, string $content) {
         $this->donation = $donation;
@@ -24,7 +24,7 @@ class DonationTemplateTags {
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function getContent(): string
     {
@@ -32,7 +32,7 @@ class DonationTemplateTags {
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     protected function getTags(): array
     {

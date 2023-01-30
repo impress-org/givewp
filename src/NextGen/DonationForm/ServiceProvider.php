@@ -41,17 +41,17 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     private function registerRoutes()
     {
         /**
-         * @unreleased
+         * @since 0.1.0
          */
         Route::post('donate', DonateRoute::class);
 
         /**
-         * @unreleased
+         * @since 0.1.0
          */
         Route::get('donation-form-view', static function (array $request) {
             $routeData = DonationFormViewRouteData::fromRequest($request);
@@ -60,7 +60,7 @@ class ServiceProvider implements ServiceProviderInterface
         });
 
         /**
-         * @unreleased
+         * @since 0.1.0
          */
         Route::get('donation-confirmation-receipt-view', static function (array $request) {
             $routeData = DonationConfirmationReceiptViewRouteData::fromRequest($request);
@@ -70,7 +70,7 @@ class ServiceProvider implements ServiceProviderInterface
 
 
         /**
-         * @unreleased
+         * @since 0.1.0
          */
         Route::post('donation-form-view-preview', static function (array $request) {
             $routeData = DonationFormPreviewRouteData::fromRequest($request);

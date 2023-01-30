@@ -3,7 +3,7 @@
 namespace Give\NextGen\DonationForm\DataTransferObjects;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class DonateRouteData
 {
@@ -23,7 +23,7 @@ class DonateRouteData
     /**
      * Convert data from request into DTO
      *
-     * @unreleased
+     * @since 0.1.0
      */
     public static function fromRequest(array $request): DonateRouteData
     {

@@ -6,12 +6,12 @@ use Give\NextGen\DonationForm\DataTransferObjects\DonationFormViewRouteData;
 use Give\Tests\TestCase;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class DonationFormViewRouteDataTest extends TestCase
 {
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */

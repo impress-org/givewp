@@ -10,7 +10,7 @@ use Give\FormBuilder\FormBuilderRouteBuilder;
 class EditFormRoute
 {
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */

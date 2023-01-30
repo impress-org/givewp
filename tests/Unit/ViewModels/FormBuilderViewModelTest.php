@@ -17,7 +17,7 @@ class FormBuilderViewModelTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      * @throws Exception

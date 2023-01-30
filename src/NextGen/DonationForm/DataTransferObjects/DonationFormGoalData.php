@@ -8,7 +8,7 @@ use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\DonationForm\ValueObjects\GoalType;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class DonationFormGoalData implements Arrayable
 {
@@ -34,7 +34,7 @@ class DonationFormGoalData implements Arrayable
     public $targetAmount;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function __construct(int $formId, FormSettings $formSettings)
     {
@@ -46,7 +46,7 @@ class DonationFormGoalData implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function getCurrentAmount(): int
     {
@@ -65,7 +65,7 @@ class DonationFormGoalData implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function toArray(): array
     {

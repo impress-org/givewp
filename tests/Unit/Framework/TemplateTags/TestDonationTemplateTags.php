@@ -11,7 +11,7 @@ class TestDonationTemplateTags extends TestCase {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function testShouldTransformDonationTemplateTags() {
 

@@ -6,12 +6,12 @@ use Give\NextGen\DonationForm\DataTransferObjects\DonationConfirmationReceiptVie
 use Give\Tests\TestCase;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class DonationConfirmationReceiptViewRouteDataTest extends TestCase
 {
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */
@@ -27,7 +27,7 @@ class DonationConfirmationReceiptViewRouteDataTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */

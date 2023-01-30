@@ -15,7 +15,7 @@ class ReceiptDetail implements Arrayable {
     public $value;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @param  string  $label
      * @param  mixed  $value
@@ -26,7 +26,7 @@ class ReceiptDetail implements Arrayable {
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function toArray(): array
     {

@@ -3,7 +3,7 @@
  *
  * @see @wordpress/block-editor/src/components/block-types-list
  *
- * @unreleased
+ * @since 0.1.0
  *
  * Substantive changes:
  *  - Updates the isDraggable prop in InserterListItem to account for isDisabled.

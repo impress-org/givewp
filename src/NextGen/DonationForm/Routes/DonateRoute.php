@@ -15,7 +15,7 @@ use Give\NextGen\DonationForm\DataTransferObjects\DonateRouteData;
 use Give\NextGen\DonationForm\Exceptions\DonationFormFieldErrorsException;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class DonateRoute
 {
@@ -31,7 +31,7 @@ class DonateRoute
     private $donateController;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @param  PaymentGatewayRegister  $paymentGatewayRegister
      * @param  DonateController  $donateController
@@ -43,7 +43,7 @@ class DonateRoute
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      *
@@ -109,7 +109,7 @@ class DonateRoute
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */
@@ -138,7 +138,7 @@ class DonateRoute
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      * @throws PaymentGatewayException

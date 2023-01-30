@@ -7,12 +7,12 @@ use Give\NextGen\Framework\FormDesigns\FormDesign;
 use Give\Tests\TestCase;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class TestFormDesign extends TestCase
 {
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function testFormDesignImplementsInterface()
     {

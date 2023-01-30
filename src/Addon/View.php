@@ -18,12 +18,12 @@ class View
     const DEFAULT_DOMAIN = 'NextGen';
 
     /**
-     * @since 1.0.0
+     * @since 0.1.0
      *
-     * @param array  $templateParams Arguments for template.
-     * @param bool   $echo
+     * @param  array  $templateParams  Arguments for template.
+     * @param  bool  $echo
      *
-     * @param string $view Template name
+     * @param  string  $view  Template name
      * When using multiple domains within this add-on, the domain directory can be set by using "." in the template name.
      * String before the "." character is domain directory, and everything after is the template file path
      * Example usage: View::render( 'DomainName.templateName' );
@@ -56,11 +56,11 @@ class View
     }
 
     /**
-     * @since 1.0.0
+     * @since 0.1.0
      *
-     * @param array  $vars
+     * @param  array  $vars
      *
-     * @param string $view
+     * @param  string  $view
      */
     public static function render($view, $vars = [])
     {
@@ -70,9 +70,9 @@ class View
     /**
      * Get domain and template file path
      *
-     * @since 1.0.0
+     * @since 0.1.0
      *
-     * @param string $path
+     * @param  string  $path
      *
      * @return array
      */

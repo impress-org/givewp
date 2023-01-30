@@ -13,13 +13,13 @@ use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Tests\TestCase;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class DonateControllerDataTest extends TestCase
 {
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function testToDonationShouldReturnDonationModel()
     {
@@ -67,7 +67,7 @@ class DonateControllerDataTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function testGetCustomFieldsShouldReturnCustomFieldsArray()
     {

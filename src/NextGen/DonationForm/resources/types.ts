@@ -137,21 +137,21 @@ export interface Group extends Node {
     /**
      * Recursively walk the group and its children for all nodes.
      *
-     * @unreleased
+     * @since 0.1.0
      */
     walkNodes(callback: (node: Node) => void, filter?: (node: Node) => boolean): void;
 
     /**
      * Recursively map the group and its children for all nodes.
      *
-     * @unreleased
+     * @since 0.1.0
      */
     mapNodes(callback: (node: Node) => void, filter?: (node: Node) => boolean): Node[];
 
     /**
      * Recursively walk the group and its children for all nodes and reduce to a single value.
      *
-     * @unreleased
+     * @since 0.1.0
      */
     reduceNodes(
         callback: (accumulator: any, node: Node) => any,

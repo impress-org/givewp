@@ -4,23 +4,23 @@ namespace Give\Framework\PaymentGateways\Contracts;
 use Give\Framework\EnqueueScript;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 interface NextGenPaymentGatewayInterface
 {
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function supportsLegacyForm(): bool;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function enqueueScript(): EnqueueScript;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function formSettings(int $formId): array;
 }

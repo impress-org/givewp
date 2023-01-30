@@ -10,7 +10,7 @@ use function str_contains;
 class Router
 {
     /**
-     * @unreleased
+     * @since 0.1.0
      * @param  string  $uri
      * @param  string|callable  $action
      * @param  string  $method
@@ -23,7 +23,7 @@ class Router
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      * @param  string  $uri
      * @param  string|callable  $action
      * @param  string  $method
@@ -36,7 +36,7 @@ class Router
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     protected function isRouteValid(string $route): bool
     {
@@ -44,7 +44,7 @@ class Router
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     protected function getRequestDataByType(string $type): array
     {
@@ -56,7 +56,7 @@ class Router
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     protected function getDataFromPostRequest(): array
     {
@@ -84,7 +84,7 @@ class Router
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     protected function getDataFromGetRequest(): array
     {
@@ -92,7 +92,7 @@ class Router
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @param  string  $type
      * @param  string  $method
@@ -124,7 +124,7 @@ class Router
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function url(string $uri, array $args = []): string
     {

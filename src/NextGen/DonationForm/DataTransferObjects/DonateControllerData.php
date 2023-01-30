@@ -71,7 +71,7 @@ class DonateControllerData
     public $isEmbed;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function toDonation(int $donorId): Donation
     {
@@ -93,7 +93,7 @@ class DonateControllerData
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function getSuccessUrl(Donation $donation): string
     {
@@ -103,7 +103,7 @@ class DonateControllerData
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * TODO: add params to route for flash message
      */
@@ -113,7 +113,7 @@ class DonateControllerData
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function getDonationConfirmationReceiptViewRouteUrl(Donation $donation): string
     {
@@ -121,7 +121,7 @@ class DonateControllerData
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function getDonationConfirmationReceiptUrl(Donation $donation): string
     {
@@ -129,7 +129,7 @@ class DonateControllerData
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function getDonationForm(): DonationForm
     {
@@ -142,7 +142,7 @@ class DonateControllerData
      *
      * TODO: figure out a less static way of doing this
      *
-     * @unreleased
+     * @since 0.1.0
      */
     public function getCustomFields(): array
     {

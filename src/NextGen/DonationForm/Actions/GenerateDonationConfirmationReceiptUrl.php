@@ -8,7 +8,7 @@ use Give\NextGen\Framework\Routes\RouteListener;
 class GenerateDonationConfirmationReceiptUrl
 {
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function __invoke(Donation $donation, string $originUrl, string $embedId = ''): string
     {

@@ -8,7 +8,7 @@ use Give\Tests\TestCase;
 
 class GenerateDonateRouteUrlTest extends TestCase {
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */

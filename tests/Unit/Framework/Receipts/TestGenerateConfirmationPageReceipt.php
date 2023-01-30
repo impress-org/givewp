@@ -17,7 +17,7 @@ class TestGenerateConfirmationPageReceipt extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function testShouldGenerateReceiptForOneTimeDonation()
     {
@@ -97,7 +97,7 @@ class TestGenerateConfirmationPageReceipt extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function testShouldGenerateReceiptForRecurringDonation()
     {

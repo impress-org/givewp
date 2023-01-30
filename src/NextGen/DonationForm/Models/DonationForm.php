@@ -18,7 +18,7 @@ use Give\NextGen\DonationForm\ValueObjects\DonationFormStatus;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 
 /**
- * @unreleased
+ * @since 0.1.0
  *
  * @property int $id
  * @property string $title
@@ -44,7 +44,7 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
     ];
 
     /**
-     * @unreleased
+     * @since 0.1.0
      * @return DonationFormFactory
      */
     public static function factory(): DonationFormFactory
@@ -55,9 +55,9 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
     /**
      * Find donation form by ID
      *
-     * @unreleased
+     * @since 0.1.0
      *
-     * @param int $id
+     * @param  int  $id
      *
      * @return DonationForm|null
      */
@@ -67,9 +67,9 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
-     * @param array $attributes
+     * @param  array  $attributes
      *
      * @return DonationForm
      * @throws Exception
@@ -84,7 +84,7 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      *
@@ -100,7 +100,7 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @throws Exception
      */
@@ -110,7 +110,7 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return ModelQueryBuilder<DonationForm>
      */
@@ -120,9 +120,9 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
-     * @param object $object
+     * @param  object  $object
      */
     public static function fromQueryBuilderObject($object): DonationForm
     {
@@ -131,7 +131,7 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
 
     /**
      *
-     * @unreleased
+     * @since 0.1.0
      */
     public function schema(): Form
     {

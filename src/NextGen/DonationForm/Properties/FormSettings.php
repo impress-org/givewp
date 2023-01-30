@@ -86,7 +86,7 @@ class FormSettings implements Arrayable, Jsonable
     public $receiptDescription;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public static function fromArray(array $array): self
     {
@@ -128,7 +128,7 @@ class FormSettings implements Arrayable, Jsonable
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public static function fromJson(string $json): self
     {
@@ -139,7 +139,7 @@ class FormSettings implements Arrayable, Jsonable
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function toArray(): array
     {
@@ -147,7 +147,7 @@ class FormSettings implements Arrayable, Jsonable
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function toJson($options = 0): string
     {

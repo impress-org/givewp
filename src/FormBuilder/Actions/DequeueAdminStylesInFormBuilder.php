@@ -8,12 +8,12 @@ use Give\FormBuilder\FormBuilderRouteBuilder;
  * Since our form builder exists inside a WP admin page, it comes with a lot of baggage that we don't need.
  * This removes the unnecessary styles before the page is loaded.
  *
- * @unreleased
+ * @since 0.1.0
  */
 class DequeueAdminStylesInFormBuilder
 {
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */
@@ -35,7 +35,7 @@ class DequeueAdminStylesInFormBuilder
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return bool
      */

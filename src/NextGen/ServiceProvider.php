@@ -16,7 +16,7 @@ use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class ServiceProvider implements ServiceProviderInterface
 {

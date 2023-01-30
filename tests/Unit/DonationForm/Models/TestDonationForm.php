@@ -8,14 +8,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class TestDonationForm extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      *
@@ -31,7 +31,7 @@ class TestDonationForm extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */

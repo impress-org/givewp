@@ -11,12 +11,12 @@ use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use function array_reduce;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class DonorDetailsController
 {
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function show(Donor $donor): string
     {
@@ -34,7 +34,7 @@ class DonorDetailsController
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @param  Donor  $donor
      *
@@ -56,9 +56,9 @@ class DonorDetailsController
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
-     * @param DonationForm $form
+     * @param  DonationForm  $form
      *
      * @return array
      */

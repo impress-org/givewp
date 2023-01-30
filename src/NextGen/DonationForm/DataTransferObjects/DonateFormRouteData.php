@@ -8,7 +8,7 @@ use Give\NextGen\DonationForm\Models\DonationForm;
 use WP_Error;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class DonateFormRouteData
 {
@@ -40,7 +40,7 @@ class DonateFormRouteData
     /**
      * Convert data from request into DTO
      *
-     * @unreleased
+     * @since 0.1.0
      */
     public static function fromRequest(array $requestData): DonateFormRouteData
     {
@@ -60,7 +60,7 @@ class DonateFormRouteData
      * compares the request against the individual fields,
      * their types and validation rules.
      *
-     * @unreleased
+     * @since 0.1.0
      *
      * @throws DonationFormFieldErrorsException
      */
@@ -92,7 +92,7 @@ class DonateFormRouteData
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function getRequestData(): array
     {
@@ -104,9 +104,9 @@ class DonateFormRouteData
      * and converts them into a WP_Error object that is attached to the
      * exception and delivered back to the client via JSON.
      *
-     * @unreleased
+     * @since 0.1.0
      *
-     * @param array<string, string> $errors
+     * @param  array<string, string>  $errors
      *
      * @throws DonationFormFieldErrorsException
      */

@@ -8,12 +8,12 @@ use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class DonationDetailsController
 {
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @param  int  $donationID
      *

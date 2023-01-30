@@ -5,7 +5,7 @@ namespace Give\NextGen\Framework\FormDesigns\Exceptions;
 use Give\Framework\Exceptions\Primitives\Exception;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class OverflowException extends Exception
 {

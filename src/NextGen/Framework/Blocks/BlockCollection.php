@@ -12,7 +12,7 @@ class BlockCollection implements Arrayable
     protected $blocks;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @param  BlockModel[]  $blocks
      */
@@ -22,7 +22,7 @@ class BlockCollection implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @param  BlockModel[]  $blocks
      */
@@ -32,7 +32,7 @@ class BlockCollection implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public static function fromJson($blocksJson): self
     {
@@ -47,7 +47,7 @@ class BlockCollection implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return false|string
      */
@@ -57,7 +57,7 @@ class BlockCollection implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function toArray(): array
     {
@@ -67,7 +67,7 @@ class BlockCollection implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return BlockModel[]
      */

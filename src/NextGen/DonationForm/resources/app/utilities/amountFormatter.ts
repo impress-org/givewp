@@ -3,7 +3,7 @@ export interface AmountFormatter  {
     options?: Intl.NumberFormatOptions
 }
 /**
- * @unreleased
+ * @since 0.1.0
  */
 export default function amountFormatter<AmountFormatter>(currency, options): Intl.NumberFormat
 {

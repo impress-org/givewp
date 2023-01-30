@@ -5,7 +5,7 @@ namespace Give\NextGen\Framework\Routes;
 use Give\Framework\Support\Facades\Facade;
 
 /**
- * @unreleased
+ * @since 0.1.0
  *
  * @method static string get(string $uri, string|callable $action, string $method = '_invoke')
  * @method static void post(string $uri, string|callable $action, string $method = '_invoke')

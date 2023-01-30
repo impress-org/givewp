@@ -14,7 +14,7 @@ class TestDonationDetailsController extends TestCase {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function testShowShouldReturnDonationDetailsViewRendered() {
         $donationForm = DonationForm::factory()->create();
@@ -35,7 +35,7 @@ class TestDonationDetailsController extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function testShowShouldReturnEmptyStringIfDonationFormIsLegacy() {
 

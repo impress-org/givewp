@@ -13,7 +13,7 @@ class DonationConfirmationReceiptViewController
     /**
      * This renders the donation confirmation receipt view.
      *
-     * @unreleased
+     * @since 0.1.0
      */
     public function show(DonationConfirmationReceiptViewRouteData $data): string
     {
@@ -31,7 +31,7 @@ class DonationConfirmationReceiptViewController
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return Donation|null
      */

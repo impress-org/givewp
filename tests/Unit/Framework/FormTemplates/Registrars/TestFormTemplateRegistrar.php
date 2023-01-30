@@ -9,7 +9,7 @@ use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Tests\TestCase;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class TestFormDesignRegistrar extends TestCase
 {
@@ -17,7 +17,7 @@ class TestFormDesignRegistrar extends TestCase
     public $registrar;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function setUp()
     {
@@ -26,7 +26,7 @@ class TestFormDesignRegistrar extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function testRegisterFormDesignShouldAddTemplate()
     {
@@ -36,7 +36,7 @@ class TestFormDesignRegistrar extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function testUnRegisterFormDesignShouldRemoveTemplate()
     {
@@ -47,7 +47,7 @@ class TestFormDesignRegistrar extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function testShouldThrowInvalidArgumentExceptionIfNotExtendingFormDesignClass()
     {
@@ -56,7 +56,7 @@ class TestFormDesignRegistrar extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function testShouldThrowOverFlowExceptionIfFormDesignIdIsTaken()
     {
@@ -66,7 +66,7 @@ class TestFormDesignRegistrar extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function testGetFormDesignsShouldReturnArrayOfRegisteredTemplates()
     {

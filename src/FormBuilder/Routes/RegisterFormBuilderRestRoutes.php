@@ -15,7 +15,7 @@ class RegisterFormBuilderRestRoutes
     protected $formBuilderResourceController;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function __construct(
         FormBuilderResourceController $formBuilderResourceController
@@ -24,7 +24,7 @@ class RegisterFormBuilderRestRoutes
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */
@@ -37,7 +37,7 @@ class RegisterFormBuilderRestRoutes
     /**
      * Get Request
      *
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */
@@ -63,7 +63,7 @@ class RegisterFormBuilderRestRoutes
     /**
      * Post Request
      *
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      */

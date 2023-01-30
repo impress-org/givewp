@@ -25,10 +25,11 @@ Want to help contribute? Awesome! We're always looking for new contributors to h
 
 ### Asset Compilation
 To compile your CSS & JS assets, run one of the following:
-- `npm run dev` — Compiles all assets for development one time
-- `npm run watch` — Compiles all assets for development one time and then watches for changes, supporting [BrowserSync](https://laravel-mix.com/docs/5.0/browsersync)
-- `npm run hot` — Compiles all assets for development one time and then watches for [hot replacement](https://laravel-mix.com/docs/5.0/hot-module-replacement)
-- `npm run dev` — Compiles all assets for production one time
+- `npm run build` — Compiles all assets for the add-on and form builder
+- `npm run dev` — Compiles all assets for the addon
+- `npm run dev:form-builder` — Compiles all assets for the form-builder
+- `npm run watch` — Compiles all assets for the addon and then watches for changes
+- `npm run watch:form-builder` — Compiles all assets for the form builder and then watches for changes
 
 ## Packages
 
@@ -38,10 +39,5 @@ Packages are managed using NPM "workspaces" and NPM commands can be passed to in
 
 ### Donation Form Builder - `@givewp/form-builder`
 
-The Visual Donation Form Builder package, also known internally as "Givenberg", uses WordPress Gutenberg components to create a custom block editor (not to be confused with THE WordPress Block Editor, which is the main solution built with the Gutenberg components).
-
-Local development uses Create React App and can be run outside the context of WordPress.
-
-To develop the Visual Donation Form Builder locally run `npm run start -w @givewp/form-builder` to start the local environment. If this does not work, you can always change into the `/packages/form-builder` directory and run `npm run start` from there.
-
-To build the Form Builder for use in the context of WordPress run `npm run build -w @givewp/form-builder`. This will create a build inside the plugin which is used by the corresponding domain in the `src/FormBuilder` directory.
+The Visual Donation Form Builder package - uses WordPress Gutenberg components to create a custom block editor (not to
+be confused with THE WordPress Block Editor, which is the main solution built with the Gutenberg components).

@@ -17,7 +17,7 @@ class StoreCustomFieldsTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      * @throws Exception
@@ -66,7 +66,7 @@ class StoreCustomFieldsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      * @throws Exception

@@ -20,7 +20,7 @@ class TestDonationReceipt extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function testToArrayReturnsExpectedArrayShape()
     {
@@ -79,7 +79,7 @@ class TestDonationReceipt extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function testToArrayShouldBeEmptyWithoutGenerate()
     {
@@ -101,7 +101,7 @@ class TestDonationReceipt extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function testToArrayReturnsExpectedArrayShapeWithSubscriptionDetails()
     {
@@ -185,7 +185,7 @@ class TestDonationReceipt extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function testAddAdditionalDetailWithToArrayReturnsExpectedArrayShape()
     {
@@ -210,7 +210,7 @@ class TestDonationReceipt extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function testToArrayReturnsExpectedArrayShapeWithCustomFields()
     {

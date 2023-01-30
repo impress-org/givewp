@@ -17,7 +17,7 @@ class FormBuilderResourceController
     /**
      * Get the form builder instance
      *
-     * @unreleased
+     * @since 0.1.0
      *
      * @param  WP_REST_Request  $request
      * @return WP_Error|WP_HTTP_Response|WP_REST_Response
@@ -46,7 +46,7 @@ class FormBuilderResourceController
     /**
      * Update the form builder
      *
-     * @unreleased
+     * @since 0.1.0
      *
      * @return WP_Error|WP_HTTP_Response|WP_REST_Response
      * @throws Exception
@@ -85,7 +85,7 @@ class FormBuilderResourceController
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return string[]
      */
@@ -100,7 +100,7 @@ class FormBuilderResourceController
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return WP_Error|void
      */

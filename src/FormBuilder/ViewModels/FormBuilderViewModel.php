@@ -11,7 +11,7 @@ use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 class FormBuilderViewModel
 {
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function storageData(int $donationFormId): array
     {
@@ -43,7 +43,7 @@ class FormBuilderViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function jsPathFromRoot(): string
     {

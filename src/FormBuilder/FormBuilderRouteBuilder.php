@@ -12,7 +12,7 @@ class FormBuilderRouteBuilder
     protected $donationFormID;
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @param  int|string  $donationFormID
      */
@@ -22,7 +22,7 @@ class FormBuilderRouteBuilder
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public static function makeCreateFormRoute(): self
     {
@@ -31,7 +31,7 @@ class FormBuilderRouteBuilder
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public static function makeEditFormRoute(int $donationFormID): self
     {
@@ -39,7 +39,7 @@ class FormBuilderRouteBuilder
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function __toString()
     {
@@ -47,7 +47,7 @@ class FormBuilderRouteBuilder
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function getUrl(): string
     {
@@ -62,7 +62,7 @@ class FormBuilderRouteBuilder
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public static function isRoute(): bool
     {

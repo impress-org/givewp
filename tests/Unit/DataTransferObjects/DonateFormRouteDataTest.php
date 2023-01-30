@@ -11,13 +11,13 @@ use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Tests\TestCase;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class DonateFormRouteDataTest extends TestCase
 {
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function testValidatedShouldReturnValidatedData()
     {

@@ -5,7 +5,7 @@ import type {Option} from "../types";
 
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 export default function useFormOptions(): { formOptions: Option[] | [], isResolving: boolean } {
     const {forms, isResolving} = useSelect((select) => {

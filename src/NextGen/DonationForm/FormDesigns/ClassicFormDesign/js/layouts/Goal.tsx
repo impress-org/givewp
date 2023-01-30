@@ -4,7 +4,7 @@ import {GoalProps} from '@givewp/forms/propTypes';
 const GoalTemplate = window.givewp.form.templates.layouts.goal;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 const FormStats = ({totalRevenue, goalTargetAmount, totalCountValue, totalCountLabel}) => {
     return (
@@ -26,7 +26,7 @@ const FormStats = ({totalRevenue, goalTargetAmount, totalCountValue, totalCountL
 };
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 export default function Goal(props: GoalProps) {
     const {targetAmountFormatted, totalRevenueFormatted, totalCountValue, totalCountLabel} = props;

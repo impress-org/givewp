@@ -7,28 +7,28 @@ use Give\NextGen\Framework\FormDesigns\Contracts\FormDesignInterface;
 /**
  * The FormDesign is meant to be extended to create custom GiveWP form designs.
  *
- * @unreleased
+ * @since 0.1.0
  */
 abstract class FormDesign implements FormDesignInterface
 {
     /**
      * The unique identifier of the design
      *
-     * @unreleased
+     * @since 0.1.0
      */
     abstract public static function id(): string;
 
     /**
      * THe human-readable name of the design
      *
-     * @unreleased
+     * @since 0.1.0
      */
     abstract public static function name(): string;
 
     /**
      * Full URL of the stylesheet, or path of the stylesheet relative to the WordPress root directory.
      *
-     * @unreleased
+     * @since 0.1.0
      *
      * @return string|false
      */
@@ -40,7 +40,7 @@ abstract class FormDesign implements FormDesignInterface
     /**
      * Full URL of the script, or path of the script relative to the WordPress root directory.
      *
-     * @unreleased
+     * @since 0.1.0
      *
      * @return string|false
      */

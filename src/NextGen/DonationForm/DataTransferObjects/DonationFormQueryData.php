@@ -49,7 +49,7 @@ class DonationFormQueryData
     /**
      * Convert data from object to Donation Form
      *
-     * @unreleased
+     * @since 0.1.0
      *
      * @param  object  $queryObject
      *

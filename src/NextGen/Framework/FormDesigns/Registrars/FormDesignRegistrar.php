@@ -8,7 +8,7 @@ use Give\NextGen\Framework\FormDesigns\Exceptions\OverflowException;
 use Give\NextGen\Framework\FormDesigns\FormDesign;
 
 /**
- * @unreleased
+ * @since 0.1.0
  */
 class FormDesignRegistrar
 {
@@ -18,7 +18,7 @@ class FormDesignRegistrar
     protected $designs = [];
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function getDesigns(): array
     {
@@ -26,7 +26,7 @@ class FormDesignRegistrar
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @throws InvalidArgumentException
      */
@@ -43,7 +43,7 @@ class FormDesignRegistrar
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function hasDesign(string $id): bool
     {
@@ -51,7 +51,7 @@ class FormDesignRegistrar
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function registerDesign(string $designClass)
     {
@@ -67,7 +67,7 @@ class FormDesignRegistrar
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      */
     public function unregisterDesign(string $designId)
     {
@@ -77,7 +77,7 @@ class FormDesignRegistrar
     }
 
     /**
-     * @unreleased
+     * @since 0.1.0
      *
      * @return void
      *
