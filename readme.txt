@@ -60,7 +60,7 @@ With more than 100,000+ active installs of GiveWP, we hear more and more success
 
 * [The City Mission used GiveWP](https://go.givewp.com/cmstory) for Giving Tuesday and a competition fundraiser with a neighboring organization, where they raised $45K in 16 hours.
 * [A local neighborhood watch program](https://go.givewp.com/memstory) switched from using GoFundMe to GiveWP and raised $40,000 in five days for a memorial fundraiser. 
-* [Students have funded their tuition](https://go.givewp.com/tuitionstory) to schools like Oxford through individual fundraising pages. 
+* [Fans of Ivan the Gorilla have kept his memory alive](https://go.givewp.com/readivan) by fundraising for a conservancy program in his name. 
 * [A hospital raised money](https://go.givewp.com/twiststory) through a community-wide virtual dance party during the pandemic. 
 
 In addition to nonprofit organizations, GiveWP is widely used for individual or creative purposes. We’ve seen tip jars for blogs or musicians, live streams, and more. Our [Donation Upsells for WooCommerce Add-on](https://go.givewp.com/wooread) is even used in some eCommerce stores to collect donations for a cause, or ask for tips in the cart or checkout.
