@@ -10,7 +10,7 @@ use NumberFormatter;
 /**
  * Sets the initial automatic formatting option based on whether the intl extension is installed.
  *
- * @unreleased
+ * @since 2.24.2
  */
 class SetAutomaticFormattingOption extends Migration
 {

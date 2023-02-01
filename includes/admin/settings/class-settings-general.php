@@ -56,7 +56,7 @@ if (!class_exists('Give_Settings_General')) :
         /**
          * Get settings array.
          *
-         * @unreleased add auto_format_currency setting
+         * @since 2.24.2 add auto_format_currency setting
          * @since  1.8
          *
          * @return array
