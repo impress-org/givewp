@@ -252,6 +252,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 
 == Changelog ==
 = 2.24.2: February 1st, 2023 =
+* Enhancement: Reorganized the GiveWP admin menu items to a cleaner, more intuitive order.
 * Fix: Servers without the PHP Intl extension broke the admin list tables. This is a fixed and a new Currency setting was introduced to [control automatic formatting](https://docs.givewp.com/currency-format).
 
 = 2.24.1: January 19th, 2023 =

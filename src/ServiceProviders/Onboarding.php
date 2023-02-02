@@ -103,7 +103,7 @@ class Onboarding implements ServiceProvider
         if (give_is_setting_enabled(SetupPage::getSetupPageEnabledOrDisabled())) {
             Hooks::addAction('admin_init', AdminNoticeHandler::class, 'maybeHandle');
             Hooks::addAction('admin_init', TopLevelMenuRedirect::class, 'maybeHandle');
-            Hooks::addAction('admin_menu', SetupPage::class, 'add_page');
+            Hooks::addAction('admin_menu', SetupPage::class, 'add_page', 80);
             Hooks::addAction('admin_enqueue_scripts', SetupPage::class, 'enqueue_scripts');
             Hooks::addAction('admin_post_dismiss_setup_page', SetupPage::class, 'dismissSetupPage');
         }
