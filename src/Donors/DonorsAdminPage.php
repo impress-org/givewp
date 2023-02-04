@@ -51,8 +51,7 @@ class DonorsAdminPage
             esc_html__('Donors', 'give'),
             'edit_give_forms',
             'give-donors',
-            [$this, 'render'],
-            5
+            [$this, 'render']
         );
     }
 

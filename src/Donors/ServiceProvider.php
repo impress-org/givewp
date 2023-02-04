@@ -36,7 +36,7 @@ class ServiceProvider implements ServiceProviderInterface
         $showLegacy = get_user_meta($userId, '_give_donors_archive_show_legacy', true);
         // only register new admin page if user hasn't chosen to use the old one
         if(empty($showLegacy)) {
-            Hooks::addAction('admin_menu', DonorsAdminPage::class, 'registerMenuItem');
+            Hooks::addAction('admin_menu', DonorsAdminPage::class, 'registerMenuItem', 30);
 
             if (DonorsAdminPage::isShowing()) {
                 Hooks::addAction('admin_enqueue_scripts', DonorsAdminPage::class, 'loadScripts');

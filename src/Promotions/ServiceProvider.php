@@ -42,7 +42,7 @@ class ServiceProvider implements ServiceProviderContract
      */
     private function bootPluginUpsells()
     {
-        Hooks::addAction('admin_menu', AddonsAdminPage::class, 'register');
+        Hooks::addAction('admin_menu', AddonsAdminPage::class, 'register', 70);
         Hooks::addAction('rest_api_init', HideSaleBannerRoute::class, 'registerRoute');
 
         if (AddonsAdminPage::isShowing()) {

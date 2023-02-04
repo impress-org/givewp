@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 7.0
-Stable tag: 2.24.1
+Stable tag: 2.24.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -60,7 +60,7 @@ With more than 100,000+ active installs of GiveWP, we hear more and more success
 
 * [The City Mission used GiveWP](https://go.givewp.com/cmstory) for Giving Tuesday and a competition fundraiser with a neighboring organization, where they raised $45K in 16 hours.
 * [A local neighborhood watch program](https://go.givewp.com/memstory) switched from using GoFundMe to GiveWP and raised $40,000 in five days for a memorial fundraiser. 
-* [Students have funded their tuition](https://go.givewp.com/tuitionstory) to schools like Oxford through individual fundraising pages. 
+* [Fans of Ivan the Gorilla have kept his memory alive](https://go.givewp.com/readivan) by fundraising for a conservancy program in his name. 
 * [A hospital raised money](https://go.givewp.com/twiststory) through a community-wide virtual dance party during the pandemic. 
 
 In addition to nonprofit organizations, GiveWP is widely used for individual or creative purposes. We’ve seen tip jars for blogs or musicians, live streams, and more. Our [Donation Upsells for WooCommerce Add-on](https://go.givewp.com/wooread) is even used in some eCommerce stores to collect donations for a cause, or ask for tips in the cart or checkout.
@@ -251,6 +251,10 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.24.2: February 1st, 2023 =
+* Enhancement: Reorganized the GiveWP admin menu items to a cleaner, more intuitive order.
+* Fix: Servers without the PHP Intl extension broke the admin list tables. This is a fixed and a new Currency setting was introduced to [control automatic formatting](https://docs.givewp.com/currency-format).
+
 = 2.24.1: January 19th, 2023 =
 * Security: Further protection against SQL Injection attacks.
 * Fix: Forms with missing level data no longer breaks the whole form list table.
