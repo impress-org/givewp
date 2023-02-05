@@ -14,7 +14,7 @@ class Settings
     const COUNTRY_KEY = 'paypal_commerce_account_country';
 
     /**
-     * wp_options key for the access token
+     * wp_options key for the seller access token
      *
      * @since 2.9.0
      */
@@ -54,7 +54,7 @@ class Settings
     }
 
     /**
-     * Returns the account access token
+     * Returns the PayPal merchant seller access token.
      *
      * @since 2.9.0
      *
@@ -90,7 +90,7 @@ class Settings
     }
 
     /**
-     * Updates the account access token
+     * Updates the PayPal merchant seller access token.
      *
      * @param $token
      *
@@ -102,7 +102,9 @@ class Settings
     }
 
     /**
-     * Deletes the account access token
+     * Deletes the PayPal seller access token.
+     *
+     * @since 2.9.0
      *
      * @return bool
      */
