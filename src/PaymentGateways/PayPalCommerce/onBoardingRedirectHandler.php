@@ -96,7 +96,7 @@ class onBoardingRedirectHandler
     /**
      * Save PayPal merchant details
      *
-     * @unreleased x.x.x Handle exception and delete only partner link details.
+     * @unreleased x.x.x Handle exception.
      * @since 2.9.0
      *
      * @return MerchantDetail
