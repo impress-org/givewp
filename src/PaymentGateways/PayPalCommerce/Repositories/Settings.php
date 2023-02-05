@@ -154,12 +154,17 @@ class Settings
      */
     public function updateSellerAccessToken(array $sellerAccessToken): bool
     {
-        $optionName = sprintf(
-            'give_paypal_commerce_%s_seller_access_token',
-            give_is_test_mode() ? 'sandbox' : 'live'
-        );
+        return update_option($this->getSellerAccessTokenOptionName(), $sellerAccessToken);
+    }
 
-        return update_option($optionName, $sellerAccessToken);
+    /**
+     * Updates the partner link details
+     *
+     * @unreleased x.x.x
+     */
+    public function deleteSellerAccessToken(): bool
+    {
+        return delete_option($this->getSellerAccessTokenOptionName());
     }
 
     /**
@@ -179,5 +184,18 @@ class Settings
     public function isTransactionTypeDonation()
     {
         return 'donation' === $this->getTransactionType();
+    }
+
+    /**
+     * This function returns the seller access token option name
+     *
+     * @unreleased x.x.x
+     */
+    private function getSellerAccessTokenOptionName(): string
+    {
+        return sprintf(
+            'give_paypal_commerce_%s_seller_access_token',
+            give_is_test_mode() ? 'sandbox' : 'live'
+        );
     }
 }
