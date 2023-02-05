@@ -201,5 +201,6 @@ final class MerchantDetail
     public function setTokenDetails($tokenDetails)
     {
         $this->tokenDetails = array_merge($this->tokenDetails, $tokenDetails);
+        $this->accessToken = $tokenDetails['accessToken'];
     }
 }
