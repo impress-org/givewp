@@ -168,7 +168,7 @@ class onBoardingRedirectHandler
         $merchantDetails = MerchantDetail::fromArray($payPalAccount);
         $this->merchantRepository->save($merchantDetails);
 
-        $this->deleteTempOptions();
+        $this->settings->deletePartnerLinkDetails();
 
         return $merchantDetails;
     }
@@ -216,18 +216,6 @@ class onBoardingRedirectHandler
             $this->merchantRepository->saveAccountErrors($errors);
             $this->redirectWhenOnBoardingFail();
         }
-    }
-
-    /**
-     * Delete temp data
-     *
-     * @since 2.9.0
-     * @return void
-     */
-    private function deleteTempOptions()
-    {
-        $this->settings->deletePartnerLinkDetails();
-        $this->settings->deleteAccessToken();
     }
 
     /**

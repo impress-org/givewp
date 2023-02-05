@@ -16,7 +16,7 @@ class Settings
      *
      * @since 2.9.0
      */
-    const ACCESS_TOKEN_KEY = 'temp_give_paypal_commerce_seller_access_token';
+    const ACCESS_TOKEN_KEY = 'give_paypal_commerce_seller_access_token';
 
     /**
      * wp_options key for the partner link details
@@ -97,16 +97,6 @@ class Settings
     public function updateAccessToken($token)
     {
         return update_option(self::ACCESS_TOKEN_KEY, $token);
-    }
-
-    /**
-     * Deletes the account access token
-     *
-     * @return bool
-     */
-    public function deleteAccessToken()
-    {
-        return delete_option(self::ACCESS_TOKEN_KEY);
     }
 
     /**
