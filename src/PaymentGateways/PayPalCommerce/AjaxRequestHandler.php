@@ -164,6 +164,7 @@ class AjaxRequestHandler
         $this->merchantRepository->delete();
         $this->merchantRepository->deleteAccountErrors();
         $this->merchantRepository->deleteClientToken();
+        $this->settings->deleteSellerAccessToken();
         $this->refreshToken->deleteRefreshTokenCronJob();
 
         wp_send_json_success();
