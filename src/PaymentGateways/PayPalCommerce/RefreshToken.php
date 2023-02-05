@@ -105,7 +105,7 @@ class RefreshToken
      * Refresh token.
      * Note: only for internal use
      *
-     * @unreleased x.x.x Handle exception.
+     * @unreleased x.x.x Handle exception. Refresh access token every 5 minute on faliure.
      * @since 2.9.6 Refresh token only if paypal merchant id exist.
      * @since 2.9.0
      */
