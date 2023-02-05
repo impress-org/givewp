@@ -2,6 +2,8 @@
 
 namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
+use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
+
 class Settings
 {
     /**
@@ -141,6 +143,21 @@ class Settings
     public function deletePartnerLinkDetails()
     {
         return delete_option(self::PARTNER_LINK_DETAIL_KEY);
+    }
+
+    /**
+     * Updates the partner link details
+     *
+     * @unreleased x.x.x
+     */
+    public function updateSellerAccessToken(array $sellerAccessToken): bool
+    {
+        $optionName = sprintf(
+            'give_paypal_commerce_%s_seller_access_token',
+            give_is_test_mode() ? 'sandbox' : 'live'
+        );
+
+        return update_option($optionName, $sellerAccessToken);
     }
 
     /**
