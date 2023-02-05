@@ -157,8 +157,6 @@ class onBoardingRedirectHandler
             $this->redirectWhenOnBoardingFail();
         }
 
-        $this->settings->updateAccessToken($tokenInfo);
-
         $payPalAccount['clientId'] = $restApiCredentials['client_id'];
         $payPalAccount['clientSecret'] = $restApiCredentials['client_secret'];
         $payPalAccount['token'] = $tokenInfo;
