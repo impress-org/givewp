@@ -33,6 +33,15 @@ class RefreshToken
     private $payPalAuth;
 
     /**
+     * This time reduced from token expiration time to refresh token before it expires.
+     *
+     * @unreleased x.x.x
+     *
+     * @var int $expirationTimeOffset Expiration time offset in seconds.
+     */
+    private $expirationTimeOffset = 1800; // 30 minutes
+
+    /**
      * RefreshToken constructor.
      *
      * @since 2.9.0
@@ -73,8 +82,9 @@ class RefreshToken
      */
     public function registerCronJobToRefreshToken($tokenExpires)
     {
+        // Refresh token before half hours of expires date.
         wp_schedule_single_event(
-            time() + ($tokenExpires - 1800), // Refresh token before half hours of expires date.
+            time() + ($tokenExpires - $this->expirationTimeOffset),
             $this->getCronJobHookName()
         );
     }
@@ -95,8 +105,9 @@ class RefreshToken
      * Refresh token.
      * Note: only for internal use
      *
-     * @since 2.9.0
+     * @unreleased x.x.x Handle exception.
      * @since 2.9.6 Refresh token only if paypal merchant id exist.
+     * @since 2.9.0
      */
     public function refreshToken()
     {
@@ -107,7 +118,7 @@ class RefreshToken
 
         // Default expiration date of access token.
         // This is used when we are unable to get access token from PayPal.
-        $expiresIn = 0;
+        $expiresIn = $this->expirationTimeOffset - 1500; // 5 minutes
 
         try {
             $tokenDetails = $this->payPalAuth->getTokenFromClientCredentials(
