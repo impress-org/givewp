@@ -105,11 +105,20 @@ class RefreshToken
             return;
         }
 
+        // Default expiration date of access token.
+        // This is used when we are unable to get access token from PayPal.
+        $expiresIn = 0;
+
         try {
             $tokenDetails = $this->payPalAuth->getTokenFromClientCredentials(
                 $this->merchantDetail->clientId,
                 $this->merchantDetail->clientSecret
             );
+
+            $this->merchantDetail->setTokenDetails($tokenDetails);
+            $this->detailsRepository->save($this->merchantDetail);
+
+            $expiresIn = $tokenDetails['expiresIn'];
         } catch (Exception $exception) {
             give(Log::class)->warning(
                 'PayPal Commerce: Error refresh access token',
@@ -119,13 +128,8 @@ class RefreshToken
                     'exception' => $exception,
                 ]
             );
-
-            return;
         }
 
-        $this->merchantDetail->setTokenDetails($tokenDetails);
-        $this->detailsRepository->save($this->merchantDetail);
-
-        $this->registerCronJobToRefreshToken($tokenDetails['expiresIn']);
+        $this->registerCronJobToRefreshToken($expiresIn);
     }
 }
