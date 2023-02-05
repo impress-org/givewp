@@ -14,7 +14,6 @@ class Settings
     /**
      * wp_options key for the access token
      *
-     * @unreleased x.x.x Remove `temp_` prefix from option name. This is a persistent option.
      * @since 2.9.0
      */
     const ACCESS_TOKEN_KEY = 'temp_give_paypal_commerce_seller_access_token';
