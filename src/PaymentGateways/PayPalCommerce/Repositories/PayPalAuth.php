@@ -2,7 +2,7 @@
 
 namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
-use Give\ConnectClient\ConnectClient;
+use Give\Framework\Http\ConnectServer\Client\ConnectClient;
 use Give\Helpers\ArrayDataSet;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 
