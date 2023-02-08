@@ -81,7 +81,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * @inheritDoc
      *
-     * @unreleased If the return type from the refundDonation() method in the child gateway isn't explicitly declared,
+     * @unreleased If the return type from the refundDonation() method in the child gateway cass isn't explicitly declared,
      *             by default, it returns 'false' to prevent:
      *             1) Duplication of refund checkboxes on gateways that already implement it;
      *             2) Adding the refund checkbox on the admin screen in gateways with an empty refundDonation() method;
