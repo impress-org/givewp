@@ -3,7 +3,6 @@
 namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
-use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\AccessToken;
 use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\AuthorizationInjector;
 use PayPalCheckoutSdk\Core\PayPalHttpClient;
 use PayPalCheckoutSdk\Core\ProductionEnvironment;
@@ -11,10 +10,6 @@ use PayPalCheckoutSdk\Core\SandboxEnvironment;
 
 /**
  * Class PayPalClient
- *
- * This class set Authorization in http request header if missing.
- * Authorization header build with merchant access token.
- * Fresh Merchant access token will be fetched from PayPal if expired, for http request.
  *
  * @package Give\PaymentGateways\PaypalCommerce
  *

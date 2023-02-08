@@ -41,6 +41,7 @@ class PayPalAuth
     /**
      * Retrieves a token for the Client ID and Secret
      *
+     * @unreleased x.x.x Validate paypal response.
      * @since 2.9.0
      *
      * @param string $client_id

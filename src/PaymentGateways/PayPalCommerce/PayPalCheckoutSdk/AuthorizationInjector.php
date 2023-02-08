@@ -12,6 +12,10 @@ use PayPalHttp\Injector;
 /**
  * Class AuthorizationInjector
  *
+ * This class set Authorization in http request header if missing.
+ * Authorization header build with merchant access token.
+ * Fresh Merchant access token will be fetched from PayPal if expired, for http request.
+ *
  * @unreleased x.x.x
  *
  * @see \PayPalCheckoutSdk\Core\AuthorizationInjector
