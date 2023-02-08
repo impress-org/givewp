@@ -3,6 +3,7 @@
 namespace Give\LegacyPaymentGateways\Adapters;
 
 use Exception;
+use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Donors\Models\Donor;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
