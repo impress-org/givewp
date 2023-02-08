@@ -34,7 +34,6 @@ use Give\Framework\Support\ValueObjects\Money;
 use Give\Helpers\Call;
 use Give\PaymentGateways\Actions\GetGatewayDataFromRequest;
 use Give\Subscriptions\Models\Subscription;
-use ReflectionException;
 use ReflectionMethod;
 
 use function Give\Framework\Http\Response\response;
@@ -174,7 +173,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     public function createSubscription(
         Donation $donation,
         Subscription $subscription,
-        $gatewayData = null
+        $gatewayData
     ): GatewayCommand {
         return $this->subscriptionModule->createSubscription($donation, $subscription, $gatewayData);
     }
