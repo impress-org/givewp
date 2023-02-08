@@ -136,6 +136,32 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
+     * @unreleased
+     */
+    public function handleRefundDonation(Donation $donation)
+    {
+        try {
+            $command = $this->refundDonation($donation);
+            $this->handleGatewayPaymentCommand($command, $donation);
+        } catch (\Exception $exception) {
+            PaymentGatewayLog::error(
+                $exception->getMessage(),
+                [
+                    'Payment Gateway' => static::id(),
+                    'Donation' => $donation,
+                ]
+            );
+
+            $message = __(
+                'An unexpected error occurred while refunding the donation.  Please try again or contact a site administrator.',
+                'give'
+            );
+
+            $this->handleExceptionResponse($exception, $message);
+        }
+    }
+
+    /**
      * @since 2.21.2 Add filter hook to provide gateway data before subscription is processed by the gateway.
      * @since 2.21.0 Handle PHP exception.
      * @since 2.19.0
