@@ -55,7 +55,7 @@ class AuthorizationInjector implements Injector
      *
      * @unreleased x.x.x
      */
-    private function fetchAccessToken(): AccessToken
+    protected function fetchAccessToken(): AccessToken
     {
         $accessTokenResponse = $this->client->execute(new AccessTokenRequest($this->environment, $this->refreshToken));
         $accessToken = $accessTokenResponse->result;
