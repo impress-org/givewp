@@ -3,7 +3,6 @@
 namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
-use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\AuthorizationInjector;
 use PayPalCheckoutSdk\Core\PayPalHttpClient;
 use PayPalCheckoutSdk\Core\ProductionEnvironment;
 use PayPalCheckoutSdk\Core\SandboxEnvironment;
@@ -59,24 +58,7 @@ class PayPalClient
      */
     public function getHttpClient(): PayPalHttpClient
     {
-        $merchant = give(MerchantDetail::class);
-        $paypalEnvironment = $this->getEnvironment();
-
-        // PayPal http client internally adds authorization header if missing.
-        // Authorization set to bearer access token.
-        // If access token is expired or missing/not set, then it will be refreshed/fetch from PayPal.
-        $paypalHttpClient = new PayPalHttpClient($paypalEnvironment);
-
-        $authorizationInjector = new AuthorizationInjector($paypalHttpClient, $paypalEnvironment, null);
-
-        // Set access token if exists.
-        if ($merchant->accessToken) {
-            $authorizationInjector->accessToken = $merchant->toArray()['token'];
-        }
-
-        $paypalHttpClient->addInjector($authorizationInjector);
-
-        return $paypalHttpClient;
+        return new PayPalCheckoutSdk\PayPalHttpClient($this->getEnvironment());
     }
 
     /**
