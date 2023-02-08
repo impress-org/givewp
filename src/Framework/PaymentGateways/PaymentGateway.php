@@ -378,8 +378,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
 
         if ($command instanceof PaymentRefunded) {
             $handler = new PaymentRefundedHandler($command);
-
             $handler->handle($donation);
+            return;
         }
 
         if ($command instanceof RedirectOffsite) {
