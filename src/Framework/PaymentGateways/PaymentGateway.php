@@ -556,6 +556,6 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     {
         $reflector = new ReflectionMethod($this, $methodName);
 
-        return ($reflector->getReturnType()->getName() === get_class($command));
+        return $reflector->getReturnType() ? $reflector->getReturnType()->getName() : '' === get_class($command);
     }
 }
