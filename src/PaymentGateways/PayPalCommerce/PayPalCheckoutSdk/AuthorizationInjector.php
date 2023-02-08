@@ -94,12 +94,14 @@ class AuthorizationInjector implements Injector
     }
 
     /**
+     * Should save new access token and add a cron job to refresh token.
+     *
      * @unreleased x.x.x
+     *
      * @return void
      */
     private function registerRefreshTokenCronJob($accessToken)
     {
-
         $refreshToken = give(RefreshToken::class);
         $merchantDetail = give(MerchantDetail::class);
         $merchantDetailRepository = give(MerchantDetails::class);
