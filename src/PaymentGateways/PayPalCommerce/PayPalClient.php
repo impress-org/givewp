@@ -59,14 +59,19 @@ class PayPalClient
     /**
      * Get http client.
      *
+     * @unreleased x.x.x Add custom AuthorizationInjector.
      * @since 2.9.0
      */
     public function getHttpClient(): PayPalHttpClient
     {
         $merchant = give(MerchantDetail::class);
-
         $paypalEnvironment = $this->getEnvironment();
+
+        // PayPal http client internally adds authorization header if missing.
+        // Authorization set to bearer access token.
+        // If access token is expired or missing/not set, then it will be refreshed/fetch from PayPal.
         $paypalHttpClient = new PayPalHttpClient($paypalEnvironment);
+
         $authorizationInjector = new AuthorizationInjector($paypalHttpClient, $paypalEnvironment, null);
 
         // Set access token if exists.
