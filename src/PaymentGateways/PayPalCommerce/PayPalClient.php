@@ -63,10 +63,16 @@ class PayPalClient
      */
     public function getHttpClient(): PayPalHttpClient
     {
+        $merchant = give(MerchantDetail::class);
+
         $paypalEnvironment = $this->getEnvironment();
         $paypalHttpClient = new PayPalHttpClient($paypalEnvironment);
         $authorizationInjector = new AuthorizationInjector($paypalHttpClient, $paypalEnvironment, null);
-        $authorizationInjector->accessToken = AccessToken::fromArray(give(MerchantDetail::class)->toArray()['token']);
+
+        // Set access token if exists.
+        if ($merchant->accessToken) {
+            $authorizationInjector->accessToken = $merchant->toArray()['token'];
+        }
 
         $paypalHttpClient->addInjector($authorizationInjector);
 
