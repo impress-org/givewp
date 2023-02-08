@@ -15,6 +15,7 @@ use Give\Framework\PaymentGateways\CommandHandlers\RespondToBrowserHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionCompleteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionProcessingHandler;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
+use Give\Framework\PaymentGateways\Commands\PaymentCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
@@ -88,7 +89,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      */
     public function supportsRefund(): bool
     {
-        return false;
+        return $this->isFunctionReturningCommand('refundDonation', (new PaymentRefunded()));
     }
 
     /**
@@ -544,5 +545,17 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
         $reflector = new ReflectionMethod($this, $methodName);
 
         return ($reflector->getDeclaringClass()->getName() === get_class($this));
+    }
+
+    /**
+     * Checks to see if the provided method is returning a specific command type as result.
+     *
+     * @unreleased
+     */
+    private function isFunctionReturningCommand(string $methodName, PaymentCommand $command): bool
+    {
+        $reflector = new ReflectionMethod($this, $methodName);
+
+        return ($reflector->getReturnType()->getName() === get_class($command));
     }
 }
