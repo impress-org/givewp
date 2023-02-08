@@ -5,6 +5,7 @@ namespace Give\PaymentGateways\Gateways\TestGateway;
 use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
+use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
@@ -102,19 +103,12 @@ class TestGateway extends PaymentGateway
     }
 
     /**
-     * @since 2.20.0
+     * @unreleased Return PaymentRefunded instead of a bool value
+     * @since      2.20.0
      * @inerhitDoc
      */
-    public function refundDonation(Donation $donation): bool
+    public function refundDonation(Donation $donation): PaymentRefunded
     {
-        return true;
-    }
-
-    /**
-     * @unreleased
-     */
-    public function supportsRefund(): bool
-    {
-        return true;
+        return new PaymentRefunded();
     }
 }
