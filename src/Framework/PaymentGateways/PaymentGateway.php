@@ -9,6 +9,7 @@ use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface
 use Give\Framework\PaymentGateways\Actions\GenerateGatewayRouteUrl;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentCompleteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentProcessingHandler;
+use Give\Framework\PaymentGateways\CommandHandlers\PaymentRefundedHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\RedirectOffsiteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\RespondToBrowserHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionCompleteHandler;
@@ -16,6 +17,7 @@ use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionProcessingHandler
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
+use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
@@ -82,6 +84,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      *             1) Duplication of refund checkboxes on gateways that already implement it;
      *             2) Adding the refund checkbox on the admin screen in gateways with an empty refundDonation() method;
      *             3) Overwriting legacy refund methods with empty refundDonation() methods.
+     *             4) Break gateways that implement the refundDonation() method but don't return the PaymentRefunded command as result
      */
     public function supportsRefund(): bool
     {
@@ -343,7 +346,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * Handle gateway command
      *
-     * @since 2.18.0
+     * @unreleased Handle PaymentRefunded command
+     * @since      2.18.0
      *
      * @throws TypeNotSupported
      * @throws Exception
@@ -368,6 +372,12 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             $response = response()->redirectTo(give_get_success_page_uri());
 
             $this->handleResponse($response);
+        }
+
+        if ($command instanceof PaymentRefunded) {
+            $handler = new PaymentRefundedHandler($command);
+
+            $handler->handle($donation);
         }
 
         if ($command instanceof RedirectOffsite) {
