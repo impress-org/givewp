@@ -1,0 +1,85 @@
+<?php
+
+namespace Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk;
+
+use PayPalCheckoutSdk\Core\AccessTokenRequest;
+use PayPalCheckoutSdk\Core\PayPalEnvironment;
+use PayPalCheckoutSdk\Core\RefreshTokenRequest;
+use PayPalHttp\HttpClient;
+use PayPalHttp\HttpRequest;
+use PayPalHttp\Injector;
+
+/**
+ * Class AuthorizationInjector
+ *
+ * @unreleased x.x.x
+ *
+ * @see \PayPalCheckoutSdk\Core\AuthorizationInjector
+ */
+class AuthorizationInjector implements Injector
+{
+    private $client;
+    private $environment;
+    private $refreshToken;
+    public $accessToken;
+
+    /**
+     * Class constructor.
+     *
+     * @unreleased x.x.x
+     */
+    public function __construct(HttpClient $client, PayPalEnvironment $environment, $refreshToken)
+    {
+        $this->client = $client;
+        $this->environment = $environment;
+        $this->refreshToken = $refreshToken;
+    }
+
+    /**
+     * Adds an Authorization header to the request.
+     *
+     * @unreleased x.x.x
+     */
+    public function inject($request)
+    {
+        if (! $this->hasAuthHeader($request) && ! $this->isAuthRequest($request)) {
+            if (is_null($this->accessToken) || $this->accessToken->isExpired()) {
+                $this->accessToken = $this->fetchAccessToken();
+            }
+            $request->headers['Authorization'] = 'Bearer ' . $this->accessToken->token;
+        }
+    }
+
+    /**
+     * Returns an AccessToken.
+     *
+     * @unreleased x.x.x
+     */
+    private function fetchAccessToken(): AccessToken
+    {
+        $accessTokenResponse = $this->client->execute(new AccessTokenRequest($this->environment, $this->refreshToken));
+        $accessToken = $accessTokenResponse->result;
+
+        return AccessToken::fromObject($accessToken);
+    }
+
+    /**
+     * Return true if the request is an AccessTokenRequest or RefreshTokenRequest.
+     *
+     * @unreleased x.x.x
+     */
+    private function isAuthRequest($request): bool
+    {
+        return $request instanceof AccessTokenRequest || $request instanceof RefreshTokenRequest;
+    }
+
+    /**
+     * Return true if the request has an Authorization header.
+     *
+     * @unreleased x.x.x
+     */
+    private function hasAuthHeader(HttpRequest $request): bool
+    {
+        return array_key_exists("Authorization", $request->headers);
+    }
+}
