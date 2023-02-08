@@ -236,7 +236,7 @@ class LegacyPaymentGatewayAdapter
         if ($donation->gatewayId === $registeredGateway::id() &&
             'refunded' === $newStatus &&
             'refunded' !== $oldStatus) {
-            $registeredGateway->refundDonation($donation);
+            $registeredGateway->handleRefundDonation($donation);
         }
     }
 }
