@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
+use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\AccessToken;
 use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\AuthorizationInjector;
 use PayPalCheckoutSdk\Core\PayPalHttpClient;
 use PayPalCheckoutSdk\Core\ProductionEnvironment;
@@ -59,16 +60,17 @@ class PayPalClient
      * Get http client.
      *
      * @since 2.9.0
-     *
-     * @return PayPalHttpClient
      */
-    public function getHttpClient()
+    public function getHttpClient(): PayPalHttpClient
     {
         $paypalEnvironment = $this->getEnvironment();
         $paypalHttpClient = new PayPalHttpClient($paypalEnvironment);
         $authorizationInjector = new AuthorizationInjector($paypalHttpClient, $paypalEnvironment, null);
+        $authorizationInjector->accessToken = AccessToken::fromArray(give(MerchantDetail::class)->toArray()['token']);
 
         $paypalHttpClient->addInjector($authorizationInjector);
+
+        return $paypalHttpClient;
     }
 
     /**
