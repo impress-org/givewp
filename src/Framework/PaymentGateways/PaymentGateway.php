@@ -81,7 +81,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * @inheritDoc
      *
-     * @unreleased By default, return false to prevent:
+     * @unreleased If the return type from the refundDonation() method in the child gateway isn't explicitly declared,
+     *             by default, it returns 'false' to prevent:
      *             1) Duplication of refund checkboxes on gateways that already implement it;
      *             2) Adding the refund checkbox on the admin screen in gateways with an empty refundDonation() method;
      *             3) Overwriting legacy refund methods with empty refundDonation() methods.
@@ -549,6 +550,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
 
     /**
      * Checks to see if the provided method is returning a specific command type as result.
+     * It always returns 'false' if the provided method doesn't explicitly declare the return type.
      *
      * @unreleased
      */
