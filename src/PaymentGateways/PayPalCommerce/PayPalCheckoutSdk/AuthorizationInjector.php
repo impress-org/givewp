@@ -2,6 +2,9 @@
 
 namespace Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk;
 
+use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
+use Give\PaymentGateways\PayPalCommerce\RefreshToken;
+use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use PayPalCheckoutSdk\Core\AccessTokenRequest;
 use PayPalCheckoutSdk\Core\PayPalEnvironment;
 use PayPalCheckoutSdk\Core\RefreshTokenRequest;
@@ -64,6 +67,8 @@ class AuthorizationInjector implements Injector
         $accessTokenResponse = $this->client->execute(new AccessTokenRequest($this->environment, $this->refreshToken));
         $accessToken = $accessTokenResponse->result;
 
+        $this->registerRefreshTokenCronJob($accessToken);
+
         return AccessToken::fromObject($accessToken);
     }
 
@@ -85,5 +90,19 @@ class AuthorizationInjector implements Injector
     private function hasAuthHeader(HttpRequest $request): bool
     {
         return array_key_exists("Authorization", $request->headers);
+    }
+
+    /**
+     * @unreleased x.x.x
+     * @return void
+     */
+    private function registerRefreshTokenCronJob($accessToken)
+    {
+        $accessToken = ArrayDataSet::camelCaseKeys($accessToken);
+
+        $merchantDetail = give(MerchantDetail::class)->setTokenDetails($accessToken);
+        give(MerchantDetails::class)->save($merchantDetail);
+
+        give(RefreshToken::class)->registerCronJobToRefreshToken($accessToken['expires_in']);
     }
 }
