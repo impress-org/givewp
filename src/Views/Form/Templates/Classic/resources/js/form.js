@@ -371,7 +371,7 @@ function splitGatewayResponse() {
 const createGatewayDetails = () => nodeFromString(`<div class="give-gateway-details"></div>`);
 
 const addSelectedGatewayDetails = (gatewayDetailsNode) =>
-    document.querySelector('.give-gateway-option-selected > .give-gateway-option').after(gatewayDetailsNode);
+    jQuery('.give-gateway-option-selected > .give-gateway-option').after(gatewayDetailsNode);
 
 window.GiveClassicTemplate = {
     share: (element) => {

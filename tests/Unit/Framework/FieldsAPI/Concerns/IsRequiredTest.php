@@ -2,7 +2,7 @@
 namespace Give\Tests\Unit\Framework\FieldsAPI\Concerns;
 
 use Give\Framework\FieldsAPI\Concerns\IsRequired;
-use Give\Framework\Validation\Concerns\HasValidationRules;
+use Give\Vendors\StellarWP\Validation\Concerns\HasValidationRules;
 use PHPUnit\Framework\TestCase;
 
 final class FieldRequiredTest extends TestCase

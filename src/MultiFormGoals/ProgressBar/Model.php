@@ -39,9 +39,8 @@ class Model
      * Get forms associated with Progress Bar
      *
      * @since 2.9.0
-     **@return array
      */
-    protected function getForms()
+    public function getForms(): array
     {
         if ( ! empty($this->forms)) {
             return $this->forms;
@@ -83,7 +82,10 @@ class Model
         }
     }
 
-    protected function getDonations()
+    /**
+     * @since 2.9.0
+     */
+    public function getDonations(): array
     {
         $query_args = [
             'post_status' => [
@@ -102,17 +104,13 @@ class Model
      * Get output markup for Progress Bar
      *
      * @since 2.9.0
-     **@return string
      */
-    public function getOutput()
+    public function getOutput(): string
     {
         ob_start();
         $output = '';
         require $this->getTemplatePath();
-        $output = ob_get_contents();
-        ob_end_clean();
-
-        return $output;
+        return ob_get_clean();
     }
 
     /**
@@ -120,7 +118,7 @@ class Model
      * @since 2.9.0
      * @return stdClass seem MultiFormGoals/ProgressBar/Query.php
      */
-    protected function getDonationRevenueResults()
+    public function getDonationRevenueResults()
     {
         if ( ! $this->donationRevenueResults) {
             $query = new Query($this->getForms());
@@ -134,9 +132,8 @@ class Model
      * Get raw earnings value for Progress Bar
      *
      * @since 2.9.0
-     **@return string
      */
-    protected function getTotal()
+    public function getTotal(): string
     {
         $query = new Query($this->getForms());
         $results = $query->getResults();
@@ -148,9 +145,8 @@ class Model
      * Get number of donations for Progress Bar
      *
      * @since 2.9.0
-     **@return int
      */
-    protected function getDonationCount()
+    public function getDonationCount(): int
     {
         $results = $this->getDonationRevenueResults();
 
@@ -181,9 +177,8 @@ class Model
      * Get goal for Progress Bar
      *
      * @since 2.9.0
-     **@return string
      */
-    protected function getGoal()
+    public function getGoal(): string
     {
         return $this->goal;
     }
@@ -192,9 +187,8 @@ class Model
      * Get goal color for Progress Bar
      *
      * @since 2.9.0
-     **@return string
      */
-    protected function getColor()
+    public function getColor(): string
     {
         return $this->color;
     }
@@ -208,7 +202,12 @@ class Model
         return GIVE_PLUGIN_DIR . '/src/MultiFormGoals/resources/views/progressbar.php';
     }
 
-    protected function getFormattedTotal()
+    /**
+     * @since 2.24.0
+     *
+     * @return mixed|string
+     */
+    public function getFormattedTotal()
     {
         return give_currency_filter(
             give_format_amount(
@@ -221,7 +220,12 @@ class Model
         );
     }
 
-    protected function getFormattedGoal()
+    /**
+     * @since 2.24.0
+     *
+     * @return mixed|string
+     */
+    public function getFormattedGoal()
     {
         return give_currency_filter(
             give_format_amount(
@@ -238,9 +242,8 @@ class Model
      * Get end date for Progress Bar
      *
      * @since 2.9.0
-     **@return string
      */
-    protected function getEndDate()
+    public function getEndDate(): string
     {
         return $this->enddate;
     }
@@ -249,9 +252,8 @@ class Model
      * Get minutes remaining before Progress Bar end date
      *
      * @since 2.9.0
-     **@return string
      */
-    protected function getMinutesRemaining()
+    public function getMinutesRemaining(): string
     {
         $enddate = strtotime($this->getEndDate());
         if ($enddate) {
@@ -267,11 +269,13 @@ class Model
      * Get time remaining before Progress Bar end date
      *
      * @since 2.9.0
-     **@return string
+     *
+     * @return float|int
      */
-    protected function getTimeToGo()
+    public function getTimeToGo()
     {
         $minutes = $this->getMinutesRemaining();
+
         switch ($minutes) {
             case $minutes > 1440:
             {
@@ -285,6 +289,10 @@ class Model
             {
                 return round($minutes);
             }
+            default:
+            {
+                return 0;
+            }
         }
     }
 
@@ -292,11 +300,11 @@ class Model
      * Get time remaining before Progress Bar end date
      *
      * @since 2.9.0
-     **@return string
      */
-    protected function getTimeToGoLabel()
+    public function getTimeToGoLabel(): string
     {
         $minutes = $this->getMinutesRemaining();
+
         switch ($minutes) {
             case $minutes > 1440:
             {
@@ -310,6 +318,8 @@ class Model
             {
                 return _n('minute to go', 'minutes to go', $this->getTimeToGo(), 'give');
             }
+            default:
+                return '';
         }
     }
 }

@@ -25,4 +25,32 @@ class SubscriptionPeriod extends Enum {
     const QUARTER = 'quarter';
     const MONTH = 'month';
     const YEAR = 'year';
+
+    /**
+     * @since 2.24.0
+     *
+     * @return array
+     */
+    public static function labels(): array
+    {
+        return [
+            self::DAY => [__( 'Daily', 'give' ), __( 'Every %d days', 'give' )],
+            self::WEEK => [__( 'Weekly', 'give' ), __( 'Every %d weeks', 'give' )],
+            self::QUARTER => [__( 'Quarterly', 'give' ), __( 'Every %d quarters', 'give' )],
+            self::MONTH => [__( 'Monthly', 'give' ), __( 'Every %d months', 'give' )],
+            self::YEAR => [__( 'Yearly', 'give' ), __( 'Every %d years', 'give' )],
+        ];
+    }
+
+    /**
+     * @since 2.24.0
+     *
+     * @param int $frequency
+     *
+     * @return string
+     */
+    public function label(int $frequency): string
+    {
+        return self::labels()[ $this->getValue() ][$frequency > 1];
+    }
 }

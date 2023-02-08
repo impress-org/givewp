@@ -149,12 +149,7 @@ class SaleBanners
             ]
         );
 
-        wp_enqueue_style(
-            'give-in-plugin-upsells-sale-banners-font',
-            'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap',
-            [],
-            null
-        );
+        wp_enqueue_style('givewp-admin-fonts');
     }
 
     /**

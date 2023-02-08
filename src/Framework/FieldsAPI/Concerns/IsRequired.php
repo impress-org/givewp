@@ -7,7 +7,7 @@ trait IsRequired
     /**
      * Marks the field as required or not.
      *
-     * @unreleased switch to new validation system
+     * @since 2.24.0 switch to new validation system
      */
     public function required($value = true): self
     {
@@ -23,11 +23,11 @@ trait IsRequired
     /**
      * Returns whether the field is required or not.
      *
-     * @unreleased switch to new validation system
+     * @since 2.24.0 switch to new validation system
      */
     public function isRequired(): bool
     {
-        return $this->validationRules->hasRule('required');
+        return $this->hasRule('required');
     }
 
     /**

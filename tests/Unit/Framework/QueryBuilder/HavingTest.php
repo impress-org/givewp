@@ -21,7 +21,7 @@ final class HavingTest extends TestCase
             ->having('id', '>', 10);
 
         $this->assertContains(
-            "SELECT * FROM posts WHERE post_parent = '5' GROUP BY id HAVING 'id' > '10'",
+            "SELECT * FROM posts WHERE post_parent = '5' GROUP BY id HAVING id > '10'",
             $builder->getSQL()
         );
     }

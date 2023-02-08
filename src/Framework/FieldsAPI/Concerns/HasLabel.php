@@ -8,7 +8,7 @@ trait HasLabel
     protected $label;
 
     /**
-     * @unreleased add types
+     * @since 2.24.0 add types
      */
     public function label(string $label): self
     {
@@ -18,7 +18,7 @@ trait HasLabel
     }
 
     /**
-     * @unreleased add types
+     * @since 2.24.0 add types
      *
      * @return string|null
      */
