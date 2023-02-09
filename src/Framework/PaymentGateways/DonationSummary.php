@@ -116,7 +116,7 @@ class DonationSummary
         /**
          * @since 1.8.12
          */
-        return apply_filters('give_payment_gateway_donation_summary', substr($text, 0, $this->length));
+        return apply_filters('give_payment_gateway_donation_summary', $this->trim($text));
     }
     
     /**
