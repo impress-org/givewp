@@ -13,6 +13,7 @@ use Give\Framework\PaymentGateways\CommandHandlers\RedirectOffsiteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\RespondToBrowserHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionCompleteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionProcessingHandler;
+use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionSyncedHandler;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
@@ -20,6 +21,7 @@ use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
 use Give\Framework\PaymentGateways\Commands\SubscriptionProcessing;
+use Give\Framework\PaymentGateways\Commands\SubscriptionSynced;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionAmountEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionDashboardLinkable;
@@ -34,7 +36,6 @@ use Give\Framework\Support\ValueObjects\Money;
 use Give\Helpers\Call;
 use Give\PaymentGateways\Actions\GetGatewayDataFromRequest;
 use Give\Subscriptions\Models\Subscription;
-use ReflectionException;
 use ReflectionMethod;
 
 use function Give\Framework\Http\Response\response;
@@ -166,6 +167,32 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
+     * @unreleased
+     */
+    public function handleSynchronizeSubscription(Subscription $subscription)
+    {
+        try {
+            $command = $this->synchronizeSubscription($subscription);
+            $this->handleGatewaySubscriptionCommand($command, $subscription->initialDonation(), $subscription);
+        } catch (\Exception $exception) {
+            PaymentGatewayLog::error(
+                $exception->getMessage(),
+                [
+                    'Payment Gateway' => static::id(),
+                    'Subscription' => $subscription,
+                ]
+            );
+
+            $message = __(
+                'An unexpected error occurred while synchronizing the subscription.  Please try again or contact the site administrator.',
+                'give'
+            );
+
+            $this->handleExceptionResponse($exception, $message);
+        }
+    }
+
+    /**
      * If a subscription module isn't wanted this method can be overridden by a child class instead.
      * Just make sure to override the supportsSubscriptions method as well.
      *
@@ -241,48 +268,45 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * @since 2.21.2
+     * @unreleased Return synchronizeSubscription() instead of nothing
+     * @since      2.21.2
      * @inheritDoc
      * @throws Exception
      */
     public function synchronizeSubscription(Subscription $subscription)
     {
         if ($this->subscriptionModule instanceof SubscriptionTransactionsSynchronizable) {
-            $this->subscriptionModule->synchronizeSubscription($subscription);
-
-            return;
+            return $this->subscriptionModule->synchronizeSubscription($subscription);
         }
 
         throw new Exception('Gateway does not support syncing subscriptions.');
     }
 
     /**
-     * @since 2.21.2
+     * @unreleased Return updateSubscriptionAmount() instead of nothing
+     * @since      2.21.2
      * @inheritDoc
      * @throws Exception
      */
     public function updateSubscriptionAmount(Subscription $subscription, Money $newRenewalAmount)
     {
         if ($this->subscriptionModule instanceof SubscriptionAmountEditable) {
-            $this->subscriptionModule->updateSubscriptionAmount($subscription, $newRenewalAmount);
-
-            return;
+            return $this->subscriptionModule->updateSubscriptionAmount($subscription, $newRenewalAmount);
         }
 
         throw new Exception('Gateway does not support updating the subscription amount.');
     }
 
     /**
-     * @since 2.21.2
+     * @unreleased Return updateSubscriptionPaymentMethod() instead of nothing
+     * @since      2.21.2
      * @inheritDoc
      * @throws Exception
      */
     public function updateSubscriptionPaymentMethod(Subscription $subscription, $gatewayData)
     {
         if ($this->subscriptionModule instanceof SubscriptionPaymentMethodEditable) {
-            $this->subscriptionModule->updateSubscriptionPaymentMethod($subscription, $gatewayData);
-
-            return;
+            return $this->subscriptionModule->updateSubscriptionPaymentMethod($subscription, $gatewayData);
         }
 
         throw new Exception('Gateway does not support updating the subscription payment method.');
@@ -390,6 +414,11 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
         if ($command instanceof RedirectOffsite) {
             $response = Call::invoke(RedirectOffsiteHandler::class, $command);
 
+            $this->handleResponse($response);
+        }
+
+        if ($command instanceof SubscriptionSynced) {
+            $response = (new SubscriptionSyncedHandler())($command);
             $this->handleResponse($response);
         }
 
