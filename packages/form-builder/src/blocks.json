@@ -76,7 +76,8 @@
                 "name": "custom-block-editor/email-field",
                 "isValid": true,
                 "attributes": {
-                    "label": "Email Address"
+                    "label": "Email Address",
+                    "isRequired": true
                 },
                 "innerBlocks": []
             }
