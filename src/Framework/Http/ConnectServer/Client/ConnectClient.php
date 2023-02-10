@@ -44,7 +44,7 @@ class ConnectClient
     public function getApiUrl(string $endpoint = ''): string
     {
         if ( ! empty($endpoint)) {
-            return $this->apiUrl . '/' . ltrim($endpoint, '/');
+            return trailingslashit($this->apiUrl) . ltrim($endpoint, '/');
         }
 
         return $this->apiUrl;
