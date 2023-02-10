@@ -9,8 +9,7 @@ let cardBrand = 'unknown';
 
 const SquareControl = ({label, value, forwardedRef, gateway}) => {
 
-    const applicationID = gateway.applicationID;
-    const locationID = gateway.locationID;
+    const {applicationID, locationID} = gateway;
 
     useImperativeHandle(
         forwardedRef,
