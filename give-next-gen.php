@@ -12,8 +12,8 @@ use Give\NextGen\Framework\FormDesigns\ServiceProvider as FormDesignServiceProvi
 use Give\NextGen\ServiceProvider as NextGenServiceProvider;
 
 /**
- * Plugin Name:         GiveWP - Visual Donation Form Builder
- * Plugin URI:          https://givewp.com/addons/BOILERPLATE/
+ * Plugin Name:         Give - Visual Donation Form Builder
+ * Plugin URI:          https://github.com/impress-org/givewp-next-gen
  * Description:         Create the donation form of your dreams using an easy-to-use visual donation form builder.
  * Version:             0.1.0
  * Requires at least:   5.5
