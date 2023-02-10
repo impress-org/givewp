@@ -2,6 +2,7 @@
 
 namespace Give\NextGen\DonationForm\Repositories;
 
+use Closure;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
@@ -380,26 +381,34 @@ class DonationFormRepository
      */
     public function getFormSchemaFromBlocks(int $formId, BlockCollection $blocks): Form
     {
-        $form = (new ConvertDonationFormBlocksToFieldsApi())($blocks);
+        try {
+            $form = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
+            $formNodes = $form->all();
 
-        $formNodes = $form->all();
+            /** @var Section $lastSection */
+            $lastSection = $form->count() ? end($formNodes) : null;
 
-        /** @var Section $lastSection */
-        $lastSection = $form->count() ? end($formNodes) : null;
+            if ($lastSection) {
+                $lastSection->append(
+                    Hidden::make('formId')
+                        ->defaultValue($formId)
+                        ->rules(
+                            'required', 'integer',
+                            function ($value, Closure $fail, string $key, array $values) use ($formId) {
+                                if ($value !== $formId) {
+                                    $fail('Invalid donation form ID');
+                                }
+                            }
+                        )
+                );
+            }
 
-        if ($lastSection) {
-            $lastSection->append(
-                Hidden::make('formId')
-                    ->defaultValue($formId)
-                    ->rules('required', 'integer'),
-
-                Hidden::make('currency')
-                    ->defaultValue(give_get_currency($formId))
-                    ->rules('required', 'currency')
-            );
+            return $form;
+        } catch (Exception $exception) {
+            Log::error('Failed converting donation form blocks to fields', compact('formId', 'blocks'));
         }
 
-        return $form;
+        return new Form('donation-form');
     }
 
     /**

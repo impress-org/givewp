@@ -22,6 +22,25 @@ const amount = {
                 type: 'array',
                 default: ['10', '25', '50', '100', '250'],
             },
+            priceOption: {
+                type: 'string',
+                default: 'multi',
+            },
+            setPrice: {
+                type: 'number',
+                default: '100',
+            },
+            customAmount: {
+                type: 'boolean',
+                default: true,
+            },
+            customAmountMin: {
+                type: 'string',
+                default: '1',
+            },
+            customAmountMax: {
+                type: 'number',
+            }
         },
         icon: () => <Icon icon={
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

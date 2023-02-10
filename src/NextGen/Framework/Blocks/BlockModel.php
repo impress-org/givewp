@@ -23,7 +23,7 @@ class BlockModel implements Arrayable
     public $isValid;
 
     /** @var array */
-    public $attributes;
+    protected $attributes;
 
     /** @var BlockCollection */
     public $innerBlocks;
@@ -62,7 +62,15 @@ class BlockModel implements Arrayable
      */
     public function getAttribute($name)
     {
-        return $this->attributes[$name];
+        return $this->hasAttribute($name) ? $this->attributes[$name] : null;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getAttributes(): array
+    {
+        return $this->attributes;
     }
 
     /**

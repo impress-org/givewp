@@ -2,12 +2,18 @@ import Joi, {AnySchema, ObjectSchema} from 'joi';
 import {Field, Form, isField} from '@givewp/forms/types';
 import {__, sprintf} from '@wordpress/i18n';
 
+/**
+ * @since 0.1.0
+ */
 const requiredMessage = sprintf(
     /* translators: base error message */
     __('%s is required.', 'give`'),
     `{#label}`
 );
 
+/**
+ * @since 0.1.0
+ */
 export default function getJoiRulesForForm(form: Form): ObjectSchema {
     const joiRules = form.reduceNodes(
         (rules, field: Field) => {
@@ -25,6 +31,9 @@ export default function getJoiRulesForForm(form: Form): ObjectSchema {
     });
 }
 
+/**
+ * @since 0.1.0
+ */
 function getJoiRulesForField(field: Field): AnySchema {
     let rules: AnySchema = convertFieldAPIRulesToJoi(field.validationRules);
 
@@ -35,6 +44,9 @@ function getJoiRulesForField(field: Field): AnySchema {
     return rules;
 }
 
+/**
+ * @since 0.1.0
+ */
 function convertFieldAPIRulesToJoi(rules): AnySchema {
     let joiRules;
 
@@ -76,6 +88,44 @@ function convertFieldAPIRulesToJoi(rules): AnySchema {
         joiRules = joiRules.required();
     } else {
         joiRules = joiRules.optional().allow('', null);
+    }
+
+    joiRules = getJoiRulesForAmountField(rules, joiRules);
+
+    return joiRules;
+}
+
+
+/**
+ * @unreleased
+ */
+function getJoiRulesForAmountField(rules, joiRules): AnySchema {
+    if (rules.hasOwnProperty('donationType')) {
+        joiRules = Joi.allow('single', 'subscription').only().required();
+    }
+
+    if (rules.hasOwnProperty('subscriptionPeriod')) {
+        joiRules = Joi.when('donationType', {
+            is: 'subscription',
+            then: Joi.allow('day', 'week', 'quarter', 'month', 'year').only().required(),
+            otherwise: Joi.optional()
+        })
+    }
+
+    if (rules.hasOwnProperty('subscriptionFrequency')) {
+        joiRules = Joi.when('donationType', {
+            is: 'subscription',
+            then: Joi.number().integer().required(),
+            otherwise: Joi.optional()
+        })
+    }
+
+    if (rules.hasOwnProperty('subscriptionInstallments')) {
+        joiRules = Joi.when('donationType', {
+            is: 'subscription',
+            then: Joi.number().integer().required(),
+            otherwise: Joi.optional()
+        })
     }
 
     return joiRules;

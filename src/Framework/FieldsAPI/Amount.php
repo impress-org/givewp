@@ -16,11 +16,24 @@ class Amount extends Field
      * @var int[]
      */
     protected $levels = [];
+    /**
+     * @var string
+     */
+    protected $customAmountText;
 
     /**
      * @var bool
      */
     protected $allowCustomAmount = false;
+    /**
+     * @var bool
+     */
+    protected $allowLevels = false;
+
+    /**
+     * @var float|int
+     */
+    protected $fixedAmountValue;
 
     /**
      * Set the preset donation levels. Provide levels in minor units.
@@ -53,10 +66,42 @@ class Amount extends Field
     }
 
     /**
+     * @unreleased
+     */
+    public function allowLevels($allow = true): self
+    {
+        $this->allowLevels = $allow;
+
+        return $this;
+    }
+
+    /**
      * @since 0.1.0
      */
     public function customAmountAllowed(): bool
     {
         return $this->allowCustomAmount;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function customAmountText(string $customAmountText): Amount
+    {
+        $this->customAmountText = $customAmountText;
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param  float|int  $amount
+     */
+    public function fixedAmountValue($amount): Amount
+    {
+        $this->fixedAmountValue = $amount;
+
+        return $this;
     }
 }

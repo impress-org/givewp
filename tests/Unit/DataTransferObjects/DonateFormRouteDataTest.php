@@ -2,6 +2,7 @@
 
 namespace TestsNextGen\Unit\DataTransferObjects;
 
+use Give\Donations\ValueObjects\DonationType;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateControllerData;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateFormRouteData;
 use Give\NextGen\DonationForm\Models\DonationForm;
@@ -60,6 +61,10 @@ class DonateFormRouteDataTest extends TestCase
         $data->wpUserId = 0;
         $data->honorific = null;
         $data->text_block_meta = 'text block meta value';
+        $data->donationType = DonationType::SINGLE()->getValue();
+        $data->frequency = null;
+        $data->period = null;
+        $data->installments = null;
 
         $request = array_merge(get_object_vars($data), [
             'text_block_meta' => 'text block meta value'

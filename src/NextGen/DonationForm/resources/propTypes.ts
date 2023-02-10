@@ -42,9 +42,23 @@ export interface NameProps extends GroupProps {
     };
 }
 
+export interface DonationAmountProps extends GroupProps {
+    fields: {
+        amount: FC<AmountProps | {}>;
+        donationType: FC<FieldProps | {}>;
+        currency: FC<FieldProps | {}>;
+        frequency: FC<FieldProps | {}>;
+        period: FC<FieldProps | {}>;
+        installments: FC<FieldProps | {}>;
+    };
+}
+
 export interface AmountProps extends FieldProps {
     levels: Number[];
+    allowLevels: boolean;
     allowCustomAmount: boolean;
+
+    fixedAmountValue: number;
 }
 
 export interface ParagraphProps extends ElementProps {

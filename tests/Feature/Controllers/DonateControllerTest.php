@@ -3,6 +3,7 @@
 namespace Give\Tests\Feature\Controllers;
 
 use Exception;
+use Give\Donations\ValueObjects\DonationType;
 use Give\NextGen\DonationForm\Controllers\DonateController;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateFormRouteData;
 use Give\NextGen\DonationForm\Exceptions\DonationFormFieldErrorsException;
@@ -66,6 +67,10 @@ class DonateControllerTest extends TestCase
             'originUrl' => 'https://givewp.com',
             'embedId' => '123',
             'isEmbed' => true,
+            'donationType' => DonationType::SINGLE()->getValue(),
+            'frequency' => null,
+            'period' => null,
+            'installments' => null,
             'text_block_meta' => ''
         ]);
 

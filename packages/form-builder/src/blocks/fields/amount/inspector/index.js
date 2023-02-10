@@ -1,4 +1,4 @@
-import {PanelBody} from "@wordpress/components";
+import {PanelBody, SelectControl, ToggleControl, __experimentalNumberControl as NumberControl,} from "@wordpress/components";
 import {__} from "@wordpress/i18n";
 import {InspectorControls} from "@wordpress/block-editor";
 import DeleteButton from "./delete-button";
@@ -7,11 +7,51 @@ import {CurrencyControl} from "../../../../common/currency";
 
 const Inspector = ({attributes, setAttributes}) => {
 
-    const {levels} = attributes;
+    const {
+        levels,
+        priceOption,
+        setPrice,
+        customAmount,
+        customAmountMin,
+        customAmountMax,
+    } = attributes;
 
     return (
         <InspectorControls>
-            <PanelBody title={__('Donation Levels', 'give')} initialOpen={true}>
+            <PanelBody title={__('Donation Options', 'give')} initialOpen={true}>
+                <SelectControl
+                    label={__('Donation Option', 'give')}
+                    onChange={(priceOption) => setAttributes({priceOption})}
+                    value={priceOption}
+                    options={[
+                        {label: __('Multi-level Donation', 'give'), value: 'multi'},
+                        {label: __('Fixed Donation', 'give'), value: 'set'},
+                    ]}
+                    help={ 'multi' === priceOption ? __('Set multiple price donations for this form.', 'give') : __('The donation amount is fixed to the following amount:', 'give')}
+                />
+                {priceOption === 'set' && (
+                    <CurrencyControl
+                        label={__('Set Donation', 'give')}
+                        value={setPrice}
+                        onValueChange={(setPrice) => setAttributes({setPrice})}
+                    />
+                )}
+            </PanelBody>
+            <PanelBody title={__('Custom Amount', 'give')} initialOpen={false}>
+                <ToggleControl
+                    label={__('Custom Amount', 'give')}
+                    checked={customAmount}
+                    onChange={() => setAttributes({customAmount: !customAmount})}
+                />
+                { !!customAmount && (
+                    <>
+                        <CurrencyControl label={__('Minimum', 'give')} value={customAmountMin} onValueChange={(value) => setAttributes({customAmountMin: value})} />
+                        <CurrencyControl label={__('Maximum', 'give')} value={customAmountMax} onValueChange={(value) => setAttributes({customAmountMax: value})} />
+                    </>
+                )}
+            </PanelBody>
+            {priceOption === 'multi' && (
+                <PanelBody title={__('Donation Levels', 'give')} initialOpen={false}>
                 {levels.length > 0 && (
                     <ul style={{
                         listStyleType: 'none',
@@ -28,7 +68,7 @@ const Inspector = ({attributes, setAttributes}) => {
                                         gap: '16px',
                                         justifyContent: 'space-between',
                                         alignItems: 'center',
-                                    }}>
+                                    }} className={'givewp-donation-level-control'}>
                                         <CurrencyControl
                                             value={amount}
                                             onValueChange={(value) => {
@@ -54,6 +94,7 @@ const Inspector = ({attributes, setAttributes}) => {
                     setAttributes({levels: newLevels});
                 }} />
             </PanelBody>
+            )}
         </InspectorControls>
     );
 };

@@ -9,6 +9,7 @@ use Give\Framework\Support\ValueObjects\Money;
 use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptUrl;
 use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptViewRouteUrl;
 use Give\NextGen\DonationForm\Models\DonationForm;
+use Give\Subscriptions\Models\Subscription;
 
 class DonateControllerData
 {
@@ -69,6 +70,22 @@ class DonateControllerData
      * @var bool
      */
     public $isEmbed;
+    /**
+     * @var string
+     */
+    public $donationType;
+    /**
+     * @var int|null
+     */
+    public $frequency;
+    /**
+     * @var string|null
+     */
+    public $period;
+    /**
+     * @var int|null
+     */
+    public $installments;
 
     /**
      * @since 0.1.0
@@ -153,6 +170,7 @@ class DonateControllerData
                 $param,
                 array_merge(
                     Donation::propertyKeys(),
+                    Subscription::propertyKeys(),
                     [
                         'currency',
                         'wpUserId',
@@ -160,6 +178,7 @@ class DonateControllerData
                         'originUrl',
                         'isEmbed',
                         'embedId',
+                        'donationType',
                     ]
                 ),
                 true

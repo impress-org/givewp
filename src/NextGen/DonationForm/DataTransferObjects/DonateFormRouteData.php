@@ -72,6 +72,10 @@ class DonateFormRouteData
         /** @var DonationForm $form */
         $form = DonationForm::find($this->formId);
 
+        if (!$form) {
+            $this->throwDonationFormFieldErrorsException(['formId' => 'Invalid Form ID, Form not found']);
+        }
+
         $validator = (new CreateValidatorFromForm())($form->schema(), $request);
 
         if ($validator->fails()) {

@@ -5,6 +5,7 @@ import HiddenField from './fields/Hidden';
 import HtmlElement from './elements/Html';
 import DonationSummaryElement from './elements/DonationSummary';
 import NameGroup from './groups/Name';
+import DonationAmountGroup from './groups/DonationAmount';
 import SectionLayout from './layouts/Section';
 import Form from './layouts/Form';
 import AmountField from './fields/Amount';
@@ -38,6 +39,7 @@ const defaultFormTemplates = {
     },
     groups: {
         name: NameGroup,
+        donationAmount: DonationAmountGroup,
     },
     layouts: {
         wrapper: NodeWrapper,

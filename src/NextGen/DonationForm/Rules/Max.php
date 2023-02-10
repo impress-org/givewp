@@ -1,0 +1,48 @@
+<?php
+namespace Give\NextGen\DonationForm\Rules;
+
+
+use Closure;
+use Give\Vendors\StellarWP\Validation\Config;
+
+use function is_numeric;
+
+class Max extends \Give\Vendors\StellarWP\Validation\Rules\Max {
+    /**
+     * @unreleased
+     */
+    public function sanitize($value)
+    {
+        if (is_numeric($value)) {
+            if (strpos($value, '.') !== false) {
+                return (float)$value;
+            }
+
+            return (int)$value;
+        }
+
+        return $value;
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @unreleased
+     **/
+    public function __invoke($value, Closure $fail, string $key, array $values)
+    {
+        $value = $this->sanitize($value);
+
+        if (is_numeric($value)) {
+            if ($value > $this->getSize()) {
+                $fail(sprintf(__('%s must be greater than or equal to %s', 'give'), '{field}', $this->getSize()));
+            }
+        } elseif (is_string($value)) {
+            if (mb_strlen($value) > $this->getSize()) {
+                $fail(sprintf(__('%s must be more than or equal to %d characters', 'give'), '{field}', $this->getSize()));
+            }
+        } else {
+            Config::throwValidationException("Field value must be a number or string");
+        }
+    }
+}

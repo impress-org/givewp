@@ -34,7 +34,7 @@ const initialState = {
 
 function App() {
     if (form.goal.isAchieved) {
-        return <GoalAchievedTemplate goalAchievedMessage={form.settings.goalAchievedMessage} />;
+        return <GoalAchievedTemplate goalAchievedMessage={form.settings.goalAchievedMessage}/>;
     }
 
     return (

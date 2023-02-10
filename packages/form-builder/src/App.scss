@@ -52,6 +52,7 @@
 }
 
 body {
+    font-size: 16px;
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -366,6 +367,7 @@ This creates a consistent separator between the tabs and the rest of the sidebar
         align-items: center;
         margin-bottom: 0;
         margin-right: 0;
+        font-weight: 400;
     }
 
     .components-input-control__container {
@@ -414,4 +416,9 @@ This creates a consistent separator between the tabs and the rest of the sidebar
 
 .popover-slot {
     position: fixed;
+}
+
+.givewp-donation-level-control .components-base-control,
+.givewp-donation-level-control .components-base-control__field {
+    margin-bottom: 0;
 }

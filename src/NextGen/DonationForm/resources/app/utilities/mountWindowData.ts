@@ -1,4 +1,5 @@
 import {useFormContext, useFormState, useWatch} from 'react-hook-form';
+import useCurrencyFormatter from '@givewp/forms/app/hooks/useCurrencyFormatter';
 
 /**
  *
@@ -11,5 +12,6 @@ export default function mountWindowData(): void {
         useFormContext,
         useWatch,
         useFormState,
+        useCurrencyFormatter
     };
 }

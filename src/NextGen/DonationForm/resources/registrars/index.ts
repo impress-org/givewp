@@ -2,6 +2,7 @@ import GatewayRegistrar from './gateways';
 import type {DonationConfirmationReceiptServerExports, FormServerExports} from '@givewp/forms/types';
 import type {useFormContext, useFormState, useWatch} from 'react-hook-form';
 import defaultFormTemplates from './templates';
+import useCurrencyFormatter from "@givewp/forms/app/hooks/useCurrencyFormatter";
 
 declare global {
     interface Window {
@@ -15,6 +16,7 @@ declare global {
                     useFormContext: typeof useFormContext;
                     useWatch: typeof useWatch;
                     useFormState: typeof useFormState;
+                    useCurrencyFormatter: typeof useCurrencyFormatter;
                 };
             };
         };

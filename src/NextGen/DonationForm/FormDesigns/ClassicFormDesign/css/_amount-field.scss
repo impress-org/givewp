@@ -1,20 +1,55 @@
+$borderColor: #9A9A9A;
+
 .givewp-fields-amount {
     display: grid;
-    row-gap: clamp(1.5rem, 0.679487rem + 2.5641vw, 2rem);
+    row-gap: 1.5rem;
+
+    &__directions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__fixed-message {
+        background-color: #DAF0E3;
+        padding: 0.5rem 1rem;
+        text-align: center;
+        border-radius: 5px;
+    }
+
+    &__currency {
+        &--container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            background-color: #E9E9E9;
+            padding: 0.25rem 0.75rem;
+            border-radius: 5px;
+        }
+    }
 
     &__input {
-        inline-size: 100%;
-        padding-inline: 0.45em;
+        position: relative;
         background-color: rgb(255, 255, 255);
-        text-align: right;
         font-family: inherit;
-        font-size: clamp(2.625rem, 1.80449rem + 2.5641vw, 3.125rem);
+        font-size: 1.8rem;
         font-weight: 600;
-        line-height: 1.2;
+        line-height: normal;
         color: rgb(51, 51, 51);
         outline: 0;
         border: 0;
         width: 100%;
+        text-align: center;
+        padding-left: 1rem;
+        padding-right: 1rem;
+
+        &::placeholder {
+            opacity: 0.6;
+            font-weight: 300;
+            color: #828282;
+        }
 
         &--container {
             display: flex;
@@ -22,28 +57,35 @@
             justify-content: space-between;
             border-width: 0.125rem;
             border-style: solid;
-            border-color: rgb(66, 66, 66);
+            border-color: $borderColor;
             border-radius: 0.5rem;
+            padding: 1rem 0;
 
             &.invalid {
                 border-color: red;
+            }
+
+            &:focus-within {
+                border-color: var(--givewp-primary-color);
             }
         }
 
         &--currency-symbol {
             display: block;
-            padding: clamp(1.375rem, 0.933564rem + 1.37949vw, 1.644rem);
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
             color: rgb(85, 85, 85);
             font-size: 1.375rem;
             font-weight: 500;
+            border-right: 1px solid #D9D9D9;
         }
     }
 
     &__levels--container {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(clamp(6.625rem, 0.471154rem + 19.2308vw, 10.375rem), 1fr));
+        grid-template-columns: repeat(3, 1fr);
         grid-auto-rows: 1fr;
-        gap: clamp(0.3125rem, -2.2516rem + 8.01282vw, 1.875rem);
+        gap: 1rem;
         inline-size: 100%;
         list-style: none;
     }
@@ -54,16 +96,16 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        border: 0.125rem solid var(--givewp-primary-color);
+        border: 0.125rem solid $borderColor;
         border-radius: 0.5rem;
-        background-color: var(--givewp-primary-color);
-        color: rgb(255, 255, 255);
+        background-color: #fff;
+        color: #000;
         text-align: center;
         font-family: inherit;
-        font-weight: 600;
+        font-weight: 500;
         line-height: 1.2;
         block-size: 100%;
-        font-size: clamp(1.5rem, 0.474359rem + 3.20513vw, 2.125rem);
+        font-size: 1.5rem;
         padding: 1.5rem 0.5rem;
         transition-property: background-color, color, filter, box-shadow, transform;
         transition-duration: 200ms;
@@ -71,20 +113,10 @@
         width: 100%;
         margin-bottom: 0.5rem;
 
-        &:hover {
-            filter: brightness(1.2);
-        }
-
-        &--custom {
-            word-spacing: 9999px;
-            font-size: 1.5rem;
-            line-height: 1.25;
-
-        }
-
         &--selected {
-            background-color: rgb(255, 255, 255);
-            color: var(--givewp-primary-color);
+            background-color: var(--givewp-primary-color);
+            border-color: var(--givewp-primary-color);
+            color: #fff;
         }
     }
 }

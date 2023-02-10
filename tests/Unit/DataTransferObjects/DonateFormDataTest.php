@@ -46,6 +46,10 @@ class DonateFormDataTest extends TestCase
             'originUrl' => 'https://givewp.com',
             'embedId' => '123',
             'isEmbed' => true,
+            'donationType' => DonationType::SINGLE()->getValue(),
+            'frequency' => null,
+            'period' => null,
+            'installments' => null,
         ];
 
         $donor = Donor::factory()->create();
