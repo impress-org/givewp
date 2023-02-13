@@ -18,7 +18,9 @@ class ServiceProvider implements ServiceProviderInterface
     public function register()
     {
         give()->singleton(ConnectClient::class, static function () {
-            $giveConnectUrl = (defined('GIVE_CONNECT_URL') && GIVE_CONNECT_URL) ? GIVE_CONNECT_URL : '';
+            $giveConnectUrl = (defined('GIVE_CONNECT_URL') && GIVE_CONNECT_URL)
+                ? GIVE_CONNECT_URL
+                : 'https://connect.givewp.com';
 
             return new ConnectClient($giveConnectUrl);
         });
