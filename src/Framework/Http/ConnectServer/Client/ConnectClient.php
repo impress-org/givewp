@@ -28,8 +28,6 @@ class ConnectClient
     {
         if ( ! empty($giveConnectUrl)) {
             $this->apiUrl = $giveConnectUrl;
-        } elseif (defined('GIVE_CONNECT_URL') && GIVE_CONNECT_URL) {
-            $this->apiUrl = GIVE_CONNECT_URL;
         }
     }
 
