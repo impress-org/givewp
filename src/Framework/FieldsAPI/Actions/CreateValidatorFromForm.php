@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Give\Framework\FieldsAPI\Actions;
 
 use Give\Framework\FieldsAPI\Form;
-use Give\Framework\Validation\Validator;
+use Give\Vendors\StellarWP\Validation\Validator;
 
 class CreateValidatorFromForm
 {
     /**
-     * @unreleased
+     * @since 2.24.0
      */
     public function __invoke(Form $form, array $values): Validator
     {

@@ -203,10 +203,12 @@ jQuery( document ).ready( function( $ ) {
 	} );
 
 	/**
-	 * Donation Form AJAX Submission
-	 *
-	 * @description: Process the donation submit
-	 */
+     * Donation Form AJAX Submission
+     *
+     * @description: Process the donation submit
+     *
+     * @unreleased Fix: displays the errors thrown by the backend in multi-step forms.
+     */
 	$( 'body' ).on( 'click', 'form.give-form input[name="give-purchase"].give-submit', function( e ) {
 		//this form object
 		const $this = $( this );
@@ -248,24 +250,27 @@ jQuery( document ).ready( function( $ ) {
 
 				this_form.trigger( 'give_form_validation_passed' );
 			} else {
-                const $giveFormHeader = this_form.parent().find( '.give-form-header' );
+                const $giveSectionPayment = this_form.parent().find('.payment');
+                const $giveFormHeader = this_form.parent().find('.give-form-header');
 
-				//There was an error / remove old errors and prepend new ones
-				$this.val( complete_purchase_val );
-				loading_animation.fadeOut();
-				this_form.parent().find( '.give_errors' ).remove();
+                //There was an error / remove old errors and prepend new ones
+                $this.val(complete_purchase_val);
+                loading_animation.fadeOut();
+                this_form.parent().find('.give_errors').remove();
 
-                if ( $giveFormHeader.length > 0 ) {
-                    $giveFormHeader.after( data );
-                } else {
-                    this_form.parent().find( '.give-form-title' ).after( data );
+                if ($giveSectionPayment.length > 0) { // Multi-Step Form
+                    $giveSectionPayment.prepend(data);
+                } else if ($giveFormHeader.length > 0) { // Classic Form
+                    $giveFormHeader.after(data);
+                } else { // Legacy Form
+                    this_form.parent().find('.give-form-title').after(data);
                 }
 
-                this_form.parent()[0].scrollIntoView({ behavior: 'smooth' });
+                this_form.parent()[0].scrollIntoView({behavior: 'smooth'});
 
-				// Enable the form donation button.
-				Give.form.fn.disable( this_form, false );
-			}
+                // Enable the form donation button.
+                Give.form.fn.disable(this_form, false);
+            }
 		} );
 	} );
 
