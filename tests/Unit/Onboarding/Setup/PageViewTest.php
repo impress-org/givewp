@@ -16,7 +16,7 @@ final class PageViewTest extends TestCase
      */
     public function testContentSurroundedByUnmergedTagIsNotScrubbed()
     {
-        $connectClient = new ConnectClient();
+        $connectClient = give(ConnectClient::class);
         $pageView = new PageView(
             $this->createMock(FormRepository::class), $connectClient
         );
