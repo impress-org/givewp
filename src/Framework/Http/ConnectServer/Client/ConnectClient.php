@@ -19,18 +19,14 @@ class ConnectClient
      *
      * @var string
      */
-    public $apiUrl = 'https://connect.givewp.com';
+    public $apiUrl;
 
     /**
      * @unreleased
      */
-    public function __construct($giveConnectUrl = '')
+    public function __construct($giveConnectUrl)
     {
-        if ( ! empty($giveConnectUrl)) {
-            $this->apiUrl = $giveConnectUrl;
-        } elseif (defined('GIVE_CONNECT_URL') && GIVE_CONNECT_URL) {
-            $this->apiUrl = GIVE_CONNECT_URL;
-        }
+        $this->apiUrl = $giveConnectUrl;
     }
 
     /**
