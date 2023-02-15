@@ -6,16 +6,17 @@ import {Button} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {Header} from '../components';
 import {Storage} from '../common';
-import {FormSettings} from "@givewp/form-builder/types";
+import {FormSettings} from '@givewp/form-builder/types';
+import {setIsDirty} from '@givewp/form-builder/stores/form-state/reducer';
 
 const HeaderContainer = ({
-                             selectedSecondarySidebar,
-                             toggleSelectedSecondarySidebar,
-                             showSidebar,
-                             toggleShowSidebar,
-                             onSaveNotice
-                         }) => {
-    const {blocks, settings: formSettings} = useFormState();
+    selectedSecondarySidebar,
+    toggleSelectedSecondarySidebar,
+    showSidebar,
+    toggleShowSidebar,
+    onSaveNotice,
+}) => {
+    const {blocks, settings: formSettings, isDirty} = useFormState();
 
     const {formTitle} = formSettings;
     const dispatch = useFormStateDispatch();
@@ -27,8 +28,9 @@ const HeaderContainer = ({
             .catch((error) => alert(error.message))
             .then(({pageSlug}: FormSettings) => {
                 dispatch(setFormSettings({pageSlug}));
+                dispatch(setIsDirty(false));
                 setSaving(false);
-                onSaveNotice()
+                onSaveNotice();
             });
     };
 
@@ -47,20 +49,20 @@ const HeaderContainer = ({
                     >
                         <div>
                             <a href={'edit.php?post_type=give_forms&page=give-forms'} title={'Return to GiveWP'}>
-                                <GiveIcon/>
+                                <GiveIcon />
                             </a>
                         </div>
                     </div>
                     <Button
                         onClick={() => toggleSelectedSecondarySidebar('add')}
                         isPressed={'add' === selectedSecondarySidebar}
-                        icon={<AddIcon/>}
+                        icon={<AddIcon />}
                         variant={'primary'}
                     />
                     <Button
                         onClick={() => toggleSelectedSecondarySidebar('list')}
                         isPressed={'list' === selectedSecondarySidebar}
-                        icon={<ListIcon/>}
+                        icon={<ListIcon />}
                     />
                 </>
             }
@@ -74,10 +76,15 @@ const HeaderContainer = ({
             }
             contentRight={
                 <>
-                    <Button onClick={onSave} disabled={isSaving} variant="primary">
-                        {isSaving ? __('Publishing...', 'give') : __('Publish', 'give')}
+                    <Button
+                        onClick={onSave}
+                        aria-disabled={isSaving || !isDirty}
+                        disabled={isSaving || !isDirty}
+                        variant="primary"
+                    >
+                        {isSaving ? __('Updating...', 'give') : __('Update', 'give')}
                     </Button>
-                    <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={<SettingsIcon/>}/>
+                    <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={<SettingsIcon />} />
                 </>
             }
         />

@@ -5,6 +5,7 @@ declare global {
         storageData?: {
             formDesigns: FormDesign[];
             formPage: FormPageSettings;
+            currency: string;
         };
     }
 }

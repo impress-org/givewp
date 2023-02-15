@@ -27,7 +27,7 @@
                     "priceOption": "multi",
                     "setPrice": "100",
                     "customAmount": "true",
-                    "customAmountMin": "1",
+                    "customAmountMin": 1,
                     "lock": {
                         "remove": true
                     }

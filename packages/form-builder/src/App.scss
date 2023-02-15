@@ -202,7 +202,7 @@ svg {
         svg {
             transition: transform .2s cubic-bezier(.165, .84, .44, 1);
         }
-
+        
         &.is-pressed {
             background-color: var(--givewp-neutral-100);
 

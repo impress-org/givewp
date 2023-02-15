@@ -35,8 +35,8 @@ const amount = {
                 default: true,
             },
             customAmountMin: {
-                type: 'string',
-                default: '1',
+                type: 'number',
+                default: 1,
             },
             customAmountMax: {
                 type: 'number',

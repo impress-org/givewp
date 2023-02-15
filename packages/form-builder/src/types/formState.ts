@@ -7,4 +7,5 @@ import type {FormSettings} from './formSettings';
 export type FormState = {
     blocks: Block[];
     settings: FormSettings;
+    isDirty?: boolean;
 };

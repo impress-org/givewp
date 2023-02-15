@@ -1,5 +1,6 @@
 const UPDATE_SETTINGS = 'update_settings';
 const UPDATE_BLOCKS = 'update_blocks';
+const UPDATE_DIRTY = 'update_dirty';
 
 /**
  * This reducer is used within the FormStateProvider for state management
@@ -11,6 +12,7 @@ export default function reducer(state, action) {
         case UPDATE_SETTINGS:
             return {
                 ...state,
+                isDirty: true,
                 settings: {
                     ...state.settings,
                     ...action.settings,
@@ -19,7 +21,14 @@ export default function reducer(state, action) {
         case UPDATE_BLOCKS:
             return {
                 ...state,
-                blocks: action.blocks
+                isDirty: true,
+                blocks: action.blocks,
+            };
+
+        case UPDATE_DIRTY:
+            return {
+                ...state,
+                isDirty: action.isDirty,
             };
 
         default:
@@ -44,5 +53,15 @@ export function setFormBlocks(blocks) {
     return {
         type: UPDATE_BLOCKS,
         blocks,
+    };
+}
+
+/**
+ * @unreleased
+ */
+export function setIsDirty(isDirty: boolean) {
+    return {
+        type: UPDATE_DIRTY,
+        isDirty,
     };
 }
