@@ -57,7 +57,7 @@
 
 .givewp-form-secure-badge {
     display: inline-flex;
-    column-gap: 0.75em;
+    column-gap: 0.5rem;
     align-items: center;
     padding-block: 0.5rem;
     padding-inline: 0.9rem;
@@ -68,15 +68,4 @@
     font-size: 0.9rem;
     font-weight: 500;
     line-height: 1;
-}
-
-.givewp-form-secure-icon {
-    position: relative;
-    inset-block-start: -0.04em;
-    color: var(--givewp-secondary-color);
-    block-size: 1em;
-    aspect-ratio: 1;
-    @supports not (aspect-ratio: 1) {
-        inline-size: 1em;
-    }
 }

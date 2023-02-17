@@ -1,13 +1,11 @@
-import {BlockList, BlockTools, ButtonBlockAppender, ObserveTyping, WritingFlow,} from "@wordpress/block-editor";
+import {BlockList, BlockTools, DefaultBlockAppender, ObserveTyping, WritingFlow} from '@wordpress/block-editor';
 
 const FormBlocks = () => {
     return (
         <BlockTools>
             <WritingFlow>
                 <ObserveTyping>
-                    <BlockList
-                        renderAppender={ButtonBlockAppender}
-                    />
+                    <BlockList renderAppender={DefaultBlockAppender} />
                 </ObserveTyping>
             </WritingFlow>
         </BlockTools>

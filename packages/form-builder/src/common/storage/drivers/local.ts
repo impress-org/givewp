@@ -1,10 +1,7 @@
-import type {Block} from '../../../types/block'
-import type {FormData} from '../../../types/formData'
-import type {StorageDriver} from "../interface";
-import {FormSettings} from "@givewp/form-builder/types";
+import type {StorageDriver} from '../interface';
+import {FormData, FormSettings} from '@givewp/form-builder/types';
 
 const localStorageDriver: StorageDriver = {
-
     /**
      * Save form builder data (blocks and settings)
      *
@@ -45,7 +42,7 @@ const localStorageDriver: StorageDriver = {
                 resolve(JSON.stringify(formSettings) + JSON.stringify(blocks));
             }, 1000);
         });
-    }
+    },
 };
 
 export default localStorageDriver;

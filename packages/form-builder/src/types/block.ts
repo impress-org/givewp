@@ -1,10 +1,10 @@
-export type Block = {
-    clientId: string;
+import {BlockConfiguration} from '@wordpress/blocks';
+
+export interface FieldBlock {
     name: string;
-    isValid: boolean;
-    attributes?: {
-        title?: string;
-        description?: string;
-    }
-    innerBlocks?: Block[]
+    settings: BlockConfiguration;
 }
+
+export interface ElementBlock extends FieldBlock {}
+
+export interface SectionBlock extends FieldBlock {}

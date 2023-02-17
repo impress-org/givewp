@@ -1,13 +1,8 @@
-import {
-    PanelBody,
-    PanelRow,
-    SelectControl,
-    TextControl,
-} from '@wordpress/components';
+import {PanelBody, PanelRow, TextControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 
-import {PageSlugControl, isFormPageEnabled} from "./page-slug";
+import {isFormPageEnabled, PageSlugControl} from './page-slug';
 
 const FormSummarySettings = () => {
     const {
@@ -19,12 +14,12 @@ const FormSummarySettings = () => {
         <PanelBody className={'givewp-panel-body--summary'} title={__('Summary', 'give')} initialOpen={true}>
             <PanelRow>
                 <TextControl
-                    label={__('Form Title')}
+                    label={__('Title')}
                     value={formTitle}
                     onChange={(formTitle) => dispatch(setFormSettings({formTitle}))}
                 />
             </PanelRow>
-            { !! isFormPageEnabled && (
+            {!!isFormPageEnabled && (
                 <PanelRow>
                     <PageSlugControl />
                 </PanelRow>

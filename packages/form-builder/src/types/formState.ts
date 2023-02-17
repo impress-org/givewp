@@ -1,11 +1,11 @@
-import type {Block} from './block';
 import type {FormSettings} from './formSettings';
+import {BlockInstance} from '@wordpress/blocks';
 
 /**
  * @since 0.1.0
  */
 export type FormState = {
-    blocks: Block[];
+    blocks: BlockInstance[];
     settings: FormSettings;
     isDirty?: boolean;
 };

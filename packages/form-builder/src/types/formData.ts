@@ -1,7 +1,7 @@
-import type {Block} from './block';
 import type {FormSettings} from './formSettings';
+import {BlockInstance} from '@wordpress/blocks';
 
 export interface FormData {
-    blocks: Block[];
+    blocks: BlockInstance[];
     formSettings: FormSettings;
 }

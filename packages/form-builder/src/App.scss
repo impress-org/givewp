@@ -1,11 +1,8 @@
+@import '~@wordpress/components/build-style/style.css';
+@import '~@wordpress/block-editor/build-style/style.css';
+
 #root {
     // Gutenberg color mappings
-    --wp-admin-theme-color: var(--givewp-primary-500);
-    --wp-admin-theme-color--rgb: var(--givewp-primary-500--rgb);
-    --wp-admin-theme-color-darker-10: var(--givewp-primary-700);
-    --wp-admin-theme-color-darker-10--rgb: var(--givewp-primary-700--rgb);
-    --wp-admin-theme-color-darker-20: var(--givewp-primary-800);
-    --wp-admin-theme-color-darker-20--rgb: var(--givewp-primary-800--rgb);
     --wp-admin-border-width-focus: 2px;
 
     // Layout
@@ -66,15 +63,10 @@ code {
     monospace;
 }
 
-svg {
-    max-height: 100%; // Had a wierd issue with excessively large icon SVGs.
-}
-
 // remove default browser outline when selecting elements
 :focus-visible {
     outline: 0;
 }
-
 
 .interface-interface-skeleton__editor {
     background-color: white;
@@ -177,7 +169,7 @@ svg {
 
 .block-editor-list-view-leaf.is-selected,
 .block-editor-list-view-leaf.is-selected td {
-    background: #66bb6a;
+    background: var(--wp-admin-theme-color);
 }
 
 .components-toolbar__control.components-button {
@@ -185,7 +177,7 @@ svg {
 }
 
 .components-form-toggle.is-checked .components-form-toggle__track {
-    background-color: #68BF6B;
+    background-color: var(--wp-admin-theme-color);
 }
 
 /**
@@ -204,14 +196,11 @@ svg {
         }
         
         &.is-pressed {
-            background-color: var(--givewp-neutral-100);
 
-            &:hover {
-                background-color: var(--givewp-neutral-110);
-            }
-
-            .components-icon--add {
-                transform: rotate(45deg);
+            &.rotate-icon {
+                svg {
+                    transform: rotate(45deg);
+                }
             }
         }
     }
@@ -325,8 +314,6 @@ svg {
     }
 }
 
-/** ------------------------------- */
-
 /*
 Add border bottom to tabs, while removing body top border.
 This creates a consistent separator between the tabs and the rest of the sidebar.
@@ -335,17 +322,13 @@ This creates a consistent separator between the tabs and the rest of the sidebar
     border-bottom: 1px solid #e0e0e0;
 }
 
-.components-panel__body {
-    border-top: none;
-}
-
 /** ------------------------------- */
 
 .givewp-sidebar-dropdown-content .components-popover__content {
     border: 1px solid var(--givewp-gray-40);
 }
 
-.components-popover.components-dropdown__content{
+.components-popover.components-dropdown__content {
     z-index: 99999999;
 }
 
@@ -421,4 +404,80 @@ This creates a consistent separator between the tabs and the rest of the sidebar
 .givewp-donation-level-control .components-base-control,
 .givewp-donation-level-control .components-base-control__field {
     margin-bottom: 0;
+}
+
+.givewp-next-gen-sidebar {
+    max-width: 100%;
+    width: var(--givewp-sidebar-width);
+    background: white;
+    border: 1px solid lightgray;
+    bottom: 0;
+    //color: slategray;
+    height: calc(100vh - 60px); // Account for header height above sidebar
+    //overflow: hidden; // The Inspector Popout needs to be visible.
+    position: fixed !important; // !important override added when migrated to WordPress - not sure why this is necessary...
+    top: 60px; // Account for header @todo move this to layout, not in the component.
+    overflow-y: scroll;
+
+    &.givewp-next-gen-sidebar-primary {
+        right: 0;
+    }
+
+    &.givewp-next-gen-sidebar-secondary {
+        left: 0;
+    }
+
+    &__inner {
+        padding: 1rem;
+    }
+
+    &__heading {
+        color: var(--givewp-gray-50);
+        padding: 1rem 0;
+        margin: 0;
+        text-transform: uppercase;
+        font-size: .8em;
+        font-weight: 500;
+    }
+
+    .components-panel__row {
+        margin-right: 10px; // Account for scrollbar
+    }
+
+    > .components-panel {
+        border-left: 0;
+        border-right: 0;
+        margin-bottom: -1px;
+        margin-top: -1px;
+
+        > .components-panel__header {
+            background: white;
+        }
+    }
+
+    .block-editor-block-inspector__card {
+        margin: 0;
+    }
+}
+
+.givewp-next-gen-inspector-popout {
+    box-sizing: border-box;
+    padding: 20px;
+
+    position: absolute;
+    right: calc(100% + 25px); // Position beside the sidebar.
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+
+
+}
+
+.givewp-next-gen-inspector-popout--container {
+    color: black;
+    outline: 1px solid lightgray;
+    background-color: white;
 }

@@ -5,10 +5,7 @@
         "isValid": true,
         "attributes": {
             "title": "How much would you like to donate today?",
-            "description": "All donations directly impact our organization and help us further our mission.",
-            "lock": {
-                "remove": true
-            }
+            "description": "All donations directly impact our organization and help us further our mission."
         },
         "innerBlocks": [
             {
@@ -42,11 +39,7 @@
         "isValid": true,
         "attributes": {
             "title": "Who's Giving Today?",
-            "description": "We'll never share this information with anyone.",
-            "showHonorific": true,
-            "lock": {
-                "remove": true
-            }
+            "description": "We'll never share this information with anyone."
         },
         "innerBlocks": [
             {
@@ -89,10 +82,7 @@
         "isValid": true,
         "attributes": {
             "title": "Payment Details",
-            "description": "How would you like to pay for your donation?",
-            "lock": {
-                "remove": true
-            }
+            "description": "How would you like to pay for your donation?"
         },
         "innerBlocks": [
             {
@@ -114,10 +104,7 @@
         "isValid": true,
         "attributes": {
             "title": "Donation Summary",
-            "description": "Please review your donation details below.",
-            "lock": {
-                "remove": true
-            }
+            "description": "Please review your donation details below."
         },
         "innerBlocks": [
             {

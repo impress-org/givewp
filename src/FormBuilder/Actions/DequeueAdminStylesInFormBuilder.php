@@ -30,7 +30,9 @@ class DequeueAdminStylesInFormBuilder
                 'give-stripe-admin-css'
             ];
 
-            $wpStyles->dequeue(array_merge($wpStylesRegistered, $legacyGiveStyles));
+            $allStyles = array_merge($wpStylesRegistered, $legacyGiveStyles);
+
+            $wpStyles->dequeue($legacyGiveStyles);
         }
     }
 

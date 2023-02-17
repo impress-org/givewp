@@ -4,15 +4,13 @@ import useToggleState from '../hooks/useToggleState';
 
 import HeaderContainer from './HeaderContainer';
 
-import {SecondarySidebar, Sidebar} from '../components';
+import {SecondarySidebar} from '../components';
 
-import '@wordpress/components/build-style/style.css';
-import '@wordpress/block-editor/build-style/style.css';
-
-import '../App.scss';
 import {DesignPreview, FormBlocks} from '../components/canvas';
-import {useDispatch} from "@wordpress/data";
-import {__} from "@wordpress/i18n";
+import {useDispatch} from '@wordpress/data';
+import {__} from '@wordpress/i18n';
+import NoticesContainer from '@givewp/form-builder/containers/NoticesContainer';
+import {Sidebar} from '@givewp/form-builder/components';
 
 export default function BlockEditorInterfaceSkeletonContainer() {
     const {createSuccessNotice} = useDispatch('core/notices');
@@ -32,21 +30,16 @@ export default function BlockEditorInterfaceSkeletonContainer() {
                     showSidebar={showSidebar}
                     toggleShowSidebar={toggleShowSidebar}
                     onSaveNotice={() => {
-                        createSuccessNotice(
-                            __('Form updated.', 'give'),
-                            {
-                                type: 'snackbar',
-                            }
-                        );
-                    }
-                    }
+                        createSuccessNotice(__('Form updated.', 'give'), {
+                            type: 'snackbar',
+                        });
+                    }}
                 />
             }
-            content={'design' === selectedTab ? <DesignPreview/> : <FormBlocks/>}
-            sidebar={!!showSidebar && <Sidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab}/>}
-            secondarySidebar={
-                !!selectedSecondarySidebar && <SecondarySidebar selected={selectedSecondarySidebar}/>
-            }
+            content={'design' === selectedTab ? <DesignPreview /> : <FormBlocks />}
+            sidebar={!!showSidebar && <Sidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab} />}
+            secondarySidebar={!!selectedSecondarySidebar && <SecondarySidebar selected={selectedSecondarySidebar} />}
+            notices={<NoticesContainer />}
         />
     );
 }
