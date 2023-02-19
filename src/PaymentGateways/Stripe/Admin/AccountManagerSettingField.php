@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\Stripe\Admin;
 
+use Give\Framework\Http\ConnectServer\Client\ConnectClient;
 use Give\PaymentGateways\Stripe\Repositories\AccountDetail;
 use Give\PaymentGateways\Stripe\Repositories\Settings;
 use Give_Admin_Settings;
@@ -48,17 +49,29 @@ class AccountManagerSettingField
     private $settings;
 
     /**
+     * @unreleased
+     *
+     * @var ConnectClient
+     */
+    private $connectClient;
+
+    /**
      * AccountManagerSettingField constructor.
      *
-     * @since 2.13.0
+     * @unreleased Use 'ConnectClient' class
+     * @since      2.13.0
      *
      * @param AccountDetail $accountDetailRepository
      * @param Settings      $settings
      */
-    public function __construct(AccountDetail $accountDetailRepository, Settings $settings)
-    {
+    public function __construct(
+        AccountDetail $accountDetailRepository,
+        Settings $settings,
+        ConnectClient $connectClient
+    ) {
         $this->accountDetailRepository = $accountDetailRepository;
         $this->settings = $settings;
+        $this->connectClient = $connectClient;
     }
 
     /**
@@ -583,7 +596,8 @@ class AccountManagerSettingField
     }
 
     /**
-     * @since 2.13.0
+     * @unreleased Use 'ConnectClient' class
+     * @since      2.13.0
      * @return string
      */
     public function getStripeConnectButtonMarkup()
@@ -608,7 +622,7 @@ class AccountManagerSettingField
                 'website_url' => get_bloginfo('url'),
                 'give_stripe_connected' => '0',
             ],
-            esc_url_raw('https://connect.givewp.com/stripe/connect.php')
+            esc_url_raw($this->connectClient->getApiUrl('stripe/connect.php'))
         );
 
         $stripeSvgIcon = '<svg width="15" height="21" viewBox="0 0 15 21" fill="none" xmlns="http://www.w3.org/2000/svg">

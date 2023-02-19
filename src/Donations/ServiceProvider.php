@@ -2,6 +2,7 @@
 
 namespace Give\Donations;
 
+use Give\Donations\LegacyListeners\ClearDonationPostCache;
 use Give\Donations\LegacyListeners\DispatchGiveInsertPayment;
 use Give\Donations\LegacyListeners\DispatchGivePreInsertPayment;
 use Give\Donations\LegacyListeners\DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment;
@@ -52,7 +53,7 @@ class ServiceProvider implements ServiceProviderInterface
 
     /**
      * Legacy Listeners
-     *
+     * @unreleased Call ClearDonationPostCache on the "givewp_donation_updated" hook     
      * @since 2.24.0 Remove UpdateSequentialId from "givewp_donation_updated" action hook.
      * @since 2.19.6
      */
@@ -80,6 +81,7 @@ class ServiceProvider implements ServiceProviderInterface
         });
 
         add_action('givewp_donation_updated', function (Donation $donation) {
+            (new ClearDonationPostCache())($donation);
             (new DispatchGiveUpdatePaymentStatus())($donation);
         });
 

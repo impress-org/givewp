@@ -2,8 +2,8 @@
 
 namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
-use Give\ConnectClient\ConnectClient;
 use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Framework\Http\ConnectServer\Client\ConnectClient;
 use Give\Helpers\ArrayDataSet;
 use Give\Log\Log;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
@@ -232,7 +232,7 @@ class PayPalAuth
             'nonce'
         ];
 
-        if (array_diff($requiredKeys, array_keys($accessToken) )) {
+        if (array_diff($requiredKeys, array_keys($accessToken))) {
             give(Log::class)->error(
                 'PayPal Commerce: Invalid access token',
                 [
