@@ -3,6 +3,7 @@
 namespace Give\Donations;
 
 use Give\Donations\LegacyListeners\ClearDonationPostCache;
+use Give\Donations\LegacyListeners\DispatchDonationNoteEmailNotification;
 use Give\Donations\LegacyListeners\DispatchGiveInsertPayment;
 use Give\Donations\LegacyListeners\DispatchGivePreInsertPayment;
 use Give\Donations\LegacyListeners\DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment;
@@ -86,6 +87,12 @@ class ServiceProvider implements ServiceProviderInterface
         });
 
         Hooks::addAction('givewp_donation_deleted', RemoveSequentialId::class);
+
+        add_action('givewp_donation_note_created', static function ($donationNote) {
+            if ($donationNote->type->isDonor()) {
+                (new DispatchDonationNoteEmailNotification())($donationNote);
+            }
+        });
     }
 
     /**
