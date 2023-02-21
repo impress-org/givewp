@@ -237,7 +237,7 @@ class DonationNotesRepository
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      */
     private function upsertDonationNoteType(DonationNote $donationNote)
     {

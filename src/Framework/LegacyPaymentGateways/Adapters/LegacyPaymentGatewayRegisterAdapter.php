@@ -44,7 +44,7 @@ class LegacyPaymentGatewayRegisterAdapter
     /**
      * Adds new payment gateways to legacy list for settings
      *
-     * @unreleased add is_visible key to $gatewayData
+     * @since 2.25.0 add is_visible key to $gatewayData
      * @since 2.19.0
      */
     public function addNewPaymentGatewaysToLegacyListSettings(array $gatewaysData, array $newPaymentGateways): array
@@ -64,7 +64,7 @@ class LegacyPaymentGatewayRegisterAdapter
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      */
     public function supportsLegacyForm(PaymentGatewayInterface $gateway): bool
     {

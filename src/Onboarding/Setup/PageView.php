@@ -25,14 +25,14 @@ class PageView
     protected $formRepository;
 
     /**
-     * @unreleased
+     * @since 2.25.0
      *
      * @var ConnectClient
      */
     private $connectClient;
 
     /**
-     * @unreleased Use 'ConnectClient' class
+     * @since 2.25.0 Use 'ConnectClient' class
      * @since      2.8.0
      *
      * @param FormRepository $formRepository
@@ -135,7 +135,7 @@ class PageView
      * Copied from includes/gateways/stripe/includes/admin/admin-helpers.php
      *      See `give_stripe_connect_button()`
      *
-     * @unreleased Use 'ConnectClient' class
+     * @since 2.25.0 Use 'ConnectClient' class
      * @since      2.8.0
      */
     public function stripeConnectURL()

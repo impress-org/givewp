@@ -114,14 +114,14 @@ class DonationSummary
     protected function trimAndFilter(string $text): string
     {
         /**
-         * @unreleased Re-use trim method for text.
+         * @since 2.25.0 Re-use trim method for text.
          * @since 1.8.12
          */
         return apply_filters('give_payment_gateway_donation_summary', $this->trim($text));
     }
-    
+
     /**
-     * @unreleased
+     * @since 2.25.0
      *
      * @param string $text
      *

@@ -17,7 +17,7 @@ class TestListSubscriptions extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 2.25.0
      *
      * @return void
      * @throws Exception
@@ -41,7 +41,7 @@ class TestListSubscriptions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      *
      * @return void
      * @throws Exception
@@ -79,7 +79,7 @@ class TestListSubscriptions extends TestCase
 
     /**
      *
-     * @unreleased
+     * @since 2.25.0
      */
     public function getMockRequest(): WP_REST_Request
     {

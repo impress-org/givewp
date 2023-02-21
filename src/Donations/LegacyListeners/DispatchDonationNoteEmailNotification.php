@@ -10,7 +10,7 @@ class DispatchDonationNoteEmailNotification
 {
 
     /**
-     * @unreleased
+     * @since 2.25.0
      */
     public function __invoke(DonationNote $donationNote)
     {

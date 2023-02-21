@@ -251,6 +251,16 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.25.0: February 21st, 2023 =
+* Feature: Donors now explicitly state whether they are donating as a company, useful for things like Gift Aid
+* Enhancement: Improvements to the Gateway API in preparation for GiveWP 3.0
+* Enhancement: Optimizations to how we interact with the GiveWP Gateway server
+* Enhancement: New method for storing donation notes using the Donation model
+* Fix: Resolved escaping issue preventing modal from displaying on some sites
+* Fix: The "Download Receipt" link in the PDF is more reliable after making donation updates
+* Fix: Prevented a filter from running twice on the donation summary
+* Fix: Styling looks better for modals in the Classic template
+
 = 2.24.2: February 1st, 2023 =
 * Enhancement: Reorganized the GiveWP admin menu items to a cleaner, more intuitive order.
 * Fix: Servers without the PHP Intl extension broke the admin list tables. This is a fixed and a new Currency setting was introduced to [control automatic formatting](https://docs.givewp.com/currency-format).

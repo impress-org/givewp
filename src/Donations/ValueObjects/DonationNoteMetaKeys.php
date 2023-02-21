@@ -6,7 +6,7 @@ use Give\Framework\Support\ValueObjects\Enum;
 use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
 
 /**
- * @unreleased
+ * @since 2.25.0
  *
  * @method static DonationNoteMetaKeys TYPE()
  * @method bool isType()

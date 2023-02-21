@@ -56,7 +56,7 @@ class TestDonationNote extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      *
      * @return void
      * @throws Exception

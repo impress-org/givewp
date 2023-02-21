@@ -7,7 +7,7 @@ namespace Give\Donations\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
- * @unreleased
+ * @since 2.25.0
  *
  * @method static DonationNoteType ADMIN()
  * @method static DonationNoteType DONOR()
