@@ -7,6 +7,7 @@ use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donations\ValueObjects\DonationType;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -235,5 +236,32 @@ final class TestDonationRepository extends TestCase
         $lastDonationId = $repository->getLatestDonation()->id;
 
         $this->assertGreaterThan($firstDonationId, $lastDonationId);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @see https://github.com/impress-org/givewp/issues/6654
+     *
+     * @return void
+     *
+     * @throws Exception
+     */
+    public function testUpdateDonationShouldClearPostCache()
+    {
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'gatewayTransactionId' => 'gateway-transaction-id',
+            'status' => DonationStatus::PENDING(),
+            'type' => DonationType::SINGLE(),
+        ]);
+
+        $donation->status = DonationStatus::COMPLETE();
+        $donation->save();
+
+        $donationStatus = $donation->status->getValue();
+        $postStatus = get_post_status($donation->id);
+
+        $this->assertEquals($donationStatus, $postStatus);
     }
 }

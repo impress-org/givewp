@@ -5,6 +5,8 @@ namespace Give\Framework\LegacyPaymentGateways\Adapters;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\LegacyPaymentGateways\Adapters\LegacyPaymentGatewayAdapter;
 
+use function method_exists;
+
 class LegacyPaymentGatewayRegisterAdapter
 {
     /**
@@ -12,10 +14,8 @@ class LegacyPaymentGatewayRegisterAdapter
      * that prepares data to be sent to each gateway
      *
      * @since 2.19.0
-     *
-     * @param string $gatewayClass
      */
-    public function connectGatewayToLegacyPaymentGatewayAdapter($gatewayClass)
+    public function connectGatewayToLegacyPaymentGatewayAdapter(string $gatewayClass)
     {
         /** @var LegacyPaymentGatewayAdapter $legacyPaymentGatewayAdapter */
         $legacyPaymentGatewayAdapter = give(LegacyPaymentGatewayAdapter::class);
@@ -44,14 +44,10 @@ class LegacyPaymentGatewayRegisterAdapter
     /**
      * Adds new payment gateways to legacy list for settings
      *
+     * @unreleased add is_visible key to $gatewayData
      * @since 2.19.0
-     *
-     * @param array $gatewaysData
-     * @param array $newPaymentGateways
-     *
-     * @return array
      */
-    public function addNewPaymentGatewaysToLegacyListSettings($gatewaysData, $newPaymentGateways)
+    public function addNewPaymentGatewaysToLegacyListSettings(array $gatewaysData, array $newPaymentGateways): array
     {
         foreach ($newPaymentGateways as $gatewayClassName) {
             /* @var PaymentGatewayInterface $paymentGateway */
@@ -60,9 +56,18 @@ class LegacyPaymentGatewayRegisterAdapter
             $gatewaysData[$paymentGateway::id()] = [
                 'admin_label' => $paymentGateway->getName(),
                 'checkout_label' => $paymentGateway->getPaymentMethodLabel(),
+                'is_visible' => $this->supportsLegacyForm($paymentGateway),
             ];
         }
 
         return $gatewaysData;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function supportsLegacyForm(PaymentGatewayInterface $gateway): bool
+    {
+        return method_exists($gateway, 'supportsLegacyForm') ? $gateway->supportsLegacyForm() : true;
     }
 }

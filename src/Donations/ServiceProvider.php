@@ -2,6 +2,7 @@
 
 namespace Give\Donations;
 
+use Give\Donations\LegacyListeners\ClearDonationPostCache;
 use Give\Donations\LegacyListeners\DispatchDonationNoteEmailNotification;
 use Give\Donations\LegacyListeners\DispatchGiveInsertPayment;
 use Give\Donations\LegacyListeners\DispatchGivePreInsertPayment;
@@ -10,7 +11,9 @@ use Give\Donations\LegacyListeners\DispatchGiveUpdatePaymentStatus;
 use Give\Donations\LegacyListeners\InsertSequentialId;
 use Give\Donations\LegacyListeners\RemoveSequentialId;
 use Give\Donations\LegacyListeners\UpdateDonorPaymentIds;
+use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Migrations\AddMissingDonorIdToDonationComments;
+use Give\Donations\Migrations\SetAutomaticFormattingOption;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationNotesRepository;
 use Give\Donations\Repositories\DonationRepository;
@@ -27,6 +30,12 @@ class ServiceProvider implements ServiceProviderInterface
     {
         give()->singleton('donations', DonationRepository::class);
         give()->singleton('donationNotes', DonationNotesRepository::class);
+        give()->singleton(DonationsListTable::class, function () {
+            $listTable = new DonationsListTable();
+            Hooks::doAction('givewp_donations_list_table', $listTable);
+
+            return $listTable;
+        });
     }
 
     /**
@@ -37,13 +46,16 @@ class ServiceProvider implements ServiceProviderInterface
         $this->bootLegacyListeners();
         $this->registerDonationsAdminPage();
 
-        give(MigrationsRegister::class)->addMigration(AddMissingDonorIdToDonationComments::class);
+        give(MigrationsRegister::class)->addMigrations([
+            AddMissingDonorIdToDonationComments::class,
+            SetAutomaticFormattingOption::class,
+        ]);
     }
 
     /**
      * Legacy Listeners
-     *
-     * @unreleased Remove UpdateSequentialId from "givewp_donation_updated" action hook.
+     * @unreleased Call ClearDonationPostCache on the "givewp_donation_updated" hook     
+     * @since 2.24.0 Remove UpdateSequentialId from "givewp_donation_updated" action hook.
      * @since 2.19.6
      */
     private function bootLegacyListeners()
@@ -70,6 +82,7 @@ class ServiceProvider implements ServiceProviderInterface
         });
 
         add_action('givewp_donation_updated', function (Donation $donation) {
+            (new ClearDonationPostCache())($donation);
             (new DispatchGiveUpdatePaymentStatus())($donation);
         });
 
@@ -93,7 +106,7 @@ class ServiceProvider implements ServiceProviderInterface
         $showLegacy = get_user_meta($userId, '_give_donations_archive_show_legacy', true);
         // only register new admin page if user hasn't chosen to use the old one
         if (empty($showLegacy)) {
-            Hooks::addAction('admin_menu', DonationsAdminPage::class, 'registerMenuItem');
+            Hooks::addAction('admin_menu', DonationsAdminPage::class, 'registerMenuItem', 20);
 
             if (DonationsAdminPage::isShowing()) {
                 Hooks::addAction('admin_enqueue_scripts', DonationsAdminPage::class, 'loadScripts');

@@ -4,8 +4,7 @@ namespace Give\Framework\FieldsAPI;
 
 use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
-use Give\Framework\FieldsAPI\ValidationRules\ValidationRules;
-use Give\Framework\Validation\Concerns\HasValidationRules;
+use Give\Vendors\StellarWP\Validation\Concerns\HasValidationRules;
 
 /**
  * @since      2.17.0 allow fields to be macroable

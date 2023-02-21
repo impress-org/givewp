@@ -2,31 +2,27 @@
 /**
  * Multi-Form Goals block/shortcode template
  * Styles for this template are defined in 'blocks/multi-form-goals/common.scss'
- *
+ * @var Give\MultiFormGoals\MultiFormGoal\Model $this
  */
-
 ?>
 
 
 <?php
-if ( ! empty($this->innerBlocks)) {
-    echo $this->innerBlocks;
+if ( ! empty($this->getInnerBlocks())) {
+    echo $this->getInnerBlocks();
 } else {
     ?>
     <div class="give-multi-form-goal-block">
         <div class="give-multi-form-goal-block__content">
             <div class="give-multi-form-goal-block__image">
-                <img src="<?php
-                echo $this->getImageSrc(); ?>" />
+                <img src="<?= esc_url($this->getImageSrc()) ?>"  alt="goal image"/>
             </div>
             <div class="give-multi-form-goal-block__text">
                 <h2>
-                    <?php
-                    echo $this->getHeading(); ?>
+                    <?= esc_html($this->getHeading()) ?>
                 </h2>
                 <p>
-                    <?php
-                    echo $this->getSummary(); ?>
+                    <?= esc_html($this->getSummary()) ?>
                 </p>
             </div>
         </div>
