@@ -956,6 +956,46 @@ p {
         }
     }
 
+    #give-company-radio-list-wrap {
+        font-size: 14px;
+
+        .give-company-option {
+            padding-left: 23px;
+            position: relative;
+
+            &::before {
+                content: ' ';
+                position: absolute;
+                top: calc(50% - 10px);
+                left: 0;
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                border: 1px solid #b4b9be;
+                background-color: #fff;
+                box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
+            }
+        }
+
+        input[type='radio']:checked + .give-company-option::after {
+            transform: scale3d(1, 1, 1);
+        }
+
+        input[type='radio'] + .give-company-option::after {
+            transform: scale3d(0, 0, 0);
+            transition: transform 0.2s ease;
+            border-radius: 11px;
+            width: 8px;
+            height: 8px;
+            position: absolute;
+            top: calc(50% - 5px);
+            left: 5px;
+            content: ' ';
+            display: block;
+            background: #333;
+        }
+    }
+
     #give-payment-mode-select {
         .gateway-stripe-google_pay,
         .gateway-stripe-apple_pay {
@@ -966,7 +1006,7 @@ p {
             display: none;
         }
 
-        ul {
+        #give-gateway-radio-list {
             @include before-after-content-none;
             display: grid;
             grid-gap: 10px;
@@ -1027,6 +1067,56 @@ p {
                 content: ' ';
                 display: block;
                 background: #333;
+            }
+
+            ul {
+                input[type='radio'] {
+                    opacity: 0 !important;
+                    position: absolute !important;
+                }
+
+                input[type='radio'] + label:not(.give-tribute-type-button) {
+                    padding: 0 10px 0 28px;
+                    width: 100%;
+                    color: #696969;
+                    font-size: 14px !important;
+                    font-weight: 400 !important;
+                    display: inline-block;
+                    position: relative;
+                    margin: 0 0 5px;
+                    line-height: 1.7;
+
+                    &::before {
+                        content: ' ';
+                        position: absolute;
+                        top: calc(50% - 9px);
+                        left: 0;
+                        width: 16px;
+                        height: 16px;
+                        border-radius: 50%;
+                        border: 1px solid #b4b9be;
+                        background-color: #fff;
+                        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
+                    }
+
+                    &::after {
+                        transform: scale3d(0, 0, 0);
+                        transition: transform 0.2s ease;
+                        border-radius: 8px;
+                        width: 8px;
+                        height: 8px;
+                        position: absolute;
+                        top: calc(50% - 4px);
+                        left: 5px;
+                        content: ' ';
+                        display: block;
+                        background: #333;
+                    }
+                }
+
+                input[type='radio']:checked + label:not(.give-tribute-type-button)::after {
+                    transform: scale3d(1, 1, 1);
+                }
             }
         }
     }

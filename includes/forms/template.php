@@ -741,12 +741,13 @@ function give_add_button_open_form( $form_id, $args ) {
 /**
  * Shows the User Info fields in the Personal Info box, more fields can be added via the hooks provided.
  *
+ * @unreleased add radio group to conditionally enable/disable company name field
+ * @since      1.0
+ *
  * @param int $form_id The form ID.
  *
  * @return void
- * @see    For Pattern Attribute: https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Form_validation
- *
- * @since  1.0
+ * @see        For Pattern Attribute: https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Form_validation
  */
 function give_user_info_fields( $form_id ) {
 
@@ -790,130 +791,225 @@ function give_user_info_fields( $form_id ) {
 					type="text"
 					name="give_title"
 					id="give-title"
-					<?php echo( give_field_is_required( 'give_title', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
-				>
-					<?php foreach ( $title_prefixes as $key => $value ) { ?>
-						<option
-							value="<?php echo esc_html( $value ); ?>" <?php selected( $value, $title, true ); ?>><?php echo esc_html( $value ); ?></option>
-					<?php } ?>
-				</select>
-			</p>
-		<?php } ?>
+                    <?php
+                    echo(give_field_is_required('give_title', $form_id) ? ' required aria-required="true" ' : ''); ?>
+                >
+                    <?php
+                    foreach ($title_prefixes as $key => $value) { ?>
+                        <option
+                            value="<?php
+                            echo esc_html($value); ?>" <?php
+                        selected($value, $title, true); ?>><?php
+                            echo esc_html($value); ?></option>
+                    <?php
+                    } ?>
+                </select>
+            </p>
+        <?php
+        } ?>
 
-		<p id="give-first-name-wrap" class="form-row form-row-first form-row-responsive">
-			<label class="give-label" for="give-first">
-				<?php esc_attr_e( 'First Name', 'give' ); ?>
-				<?php if ( give_field_is_required( 'give_first', $form_id ) ) : ?>
-					<span class="give-required-indicator">*</span>
-				<?php endif ?>
-				<?php echo Give()->tooltips->render_help( __( 'First Name is used to personalize your donation record.', 'give' ) ); ?>
-			</label>
-			<input
-				class="give-input required"
-				type="text"
-				name="give_first"
-				autocomplete="given-name"
-				placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>"
-				id="give-first"
-				value="<?php echo esc_html( $first_name ); ?>"
-				<?php echo( give_field_is_required( 'give_first', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
-			/>
-		</p>
+        <p id="give-first-name-wrap" class="form-row form-row-first form-row-responsive">
+            <label class="give-label" for="give-first">
+                <?php
+                esc_attr_e('First Name', 'give'); ?>
+                <?php
+                if (give_field_is_required('give_first', $form_id)) : ?>
+                    <span class="give-required-indicator">*</span>
+                <?php
+                endif ?>
+                <?php
+                echo Give()->tooltips->render_help(__('First Name is used to personalize your donation record.',
+                    'give')); ?>
+            </label>
+            <input
+                class="give-input required"
+                type="text"
+                name="give_first"
+                autocomplete="given-name"
+                placeholder="<?php
+                esc_attr_e('First Name', 'give'); ?>"
+                id="give-first"
+                value="<?php
+                echo esc_html($first_name); ?>"
+                <?php
+                echo(give_field_is_required('give_first', $form_id) ? ' required aria-required="true" ' : ''); ?>
+            />
+        </p>
 
-		<p id="give-last-name-wrap" class="form-row form-row-last form-row-responsive">
-			<label class="give-label" for="give-last">
-				<?php esc_attr_e( 'Last Name', 'give' ); ?>
-				<?php if ( give_field_is_required( 'give_last', $form_id ) ) : ?>
-					<span class="give-required-indicator">*</span>
-				<?php endif ?>
-				<?php echo Give()->tooltips->render_help( __( 'Last Name is used to personalize your donation record.', 'give' ) ); ?>
-			</label>
+        <p id="give-last-name-wrap" class="form-row form-row-last form-row-responsive">
+            <label class="give-label" for="give-last">
+                <?php
+                esc_attr_e('Last Name', 'give'); ?>
+                <?php
+                if (give_field_is_required('give_last', $form_id)) : ?>
+                    <span class="give-required-indicator">*</span>
+                <?php
+                endif ?>
+                <?php
+                echo Give()->tooltips->render_help(__('Last Name is used to personalize your donation record.',
+                    'give')); ?>
+            </label>
 
-			<input
-				class="give-input<?php echo( give_field_is_required( 'give_last', $form_id ) ? ' required' : '' ); ?>"
-				type="text"
-				name="give_last"
-				autocomplete="family-name"
-				id="give-last"
-				placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>"
-				value="<?php echo esc_html( $last_name ); ?>"
-				<?php echo( give_field_is_required( 'give_last', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
-			/>
-		</p>
+            <input
+                class="give-input<?php
+                echo(give_field_is_required('give_last', $form_id) ? ' required' : ''); ?>"
+                type="text"
+                name="give_last"
+                autocomplete="family-name"
+                id="give-last"
+                placeholder="<?php
+                esc_attr_e('Last Name', 'give'); ?>"
+                value="<?php
+                echo esc_html($last_name); ?>"
+                <?php
+                echo(give_field_is_required('give_last', $form_id) ? ' required aria-required="true" ' : ''); ?>
+            />
+        </p>
 
-		<?php if ( give_is_company_field_enabled( $form_id ) ) : ?>
-			<?php $give_company = give_field_is_required( 'give_company_name', $form_id ); ?>
-			<p id="give-company-wrap" class="form-row form-row-wide">
-				<label class="give-label" for="give-company">
-					<?php esc_attr_e( 'Company Name', 'give' ); ?>
-					<?php if ( $give_company ) : ?>
-						<span class="give-required-indicator">*</span>
-					<?php endif; ?>
-					<?php echo Give()->tooltips->render_help( __( 'Donate on behalf of Company', 'give' ) ); ?>
-				</label>
-				<input
-					class="give-input<?php echo( $give_company ? ' required' : '' ); ?>"
-					type="text"
-					name="give_company_name"
-					placeholder="<?php esc_attr_e( 'Company Name', 'give' ); ?>"
-					id="give-company"
-					value="<?php echo esc_html( $company_name ); ?>"
-					<?php echo( $give_company ? ' required aria-required="true" ' : '' ); ?>
-				/>
-			</p>
-		<?php endif ?>
+        <?php
+        if (give_is_company_field_enabled($form_id)) :
+            $give_company = give_field_is_required('give_company_name', $form_id);
 
-		<?php
-		/**
-		 * Fire before user email field
-		 *
-		 * @since 1.7
-		 */
-		do_action( 'give_donation_form_before_email', $form_id );
-		?>
-		<p id="give-email-wrap" class="form-row form-row-wide">
-			<label class="give-label" for="give-email">
-				<?php esc_attr_e( 'Email Address', 'give' ); ?>
-				<?php if ( give_field_is_required( 'give_email', $form_id ) ) { ?>
-					<span class="give-required-indicator">*</span>
-				<?php } ?>
-				<?php echo Give()->tooltips->render_help( __( 'We will send the donation receipt to this address.', 'give' ) ); ?>
-			</label>
-			<input
-				class="give-input required"
-				type="email"
-				name="give_email"
-				autocomplete="email"
-				placeholder="<?php esc_attr_e( 'Email Address', 'give' ); ?>"
-				id="give-email"
-				value="<?php echo esc_html( $email ); ?>"
-				<?php echo( give_field_is_required( 'give_email', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
-			/>
+            if ( ! $give_company) :
+                ?>
+                <div id="give-company-radio-list-wrap" class="form-row form-row-wide">
+                    <label><?php
+                        esc_html_e('Is this donation on behalf of a company?', 'give'); ?></label>
+                    <ul id="<?php
+                    echo esc_attr('give-company-name-radio-list'); ?>" class="give-company-radio-list">
+                        <li>
+                            <input
+                                checked
+                                type="radio"
+                                id="<?php
+                                echo esc_attr('give-no-company'); ?>"
+                                class="give_company_option"
+                                name="give_company_option"
+                                value="no"
+                            />
+                            <label for="<?php
+                            echo esc_attr('give-no-company'); ?>" class="give-company-option"
+                                   id="<?php
+                                   echo esc_attr('give-no-company'); ?>">
+                                <?php
+                                esc_html_e('No', 'give'); ?>
+                            </label>
+                        </li>
+                        <li>
+                            <input
+                                type="radio"
+                                id="<?php
+                                echo esc_attr('give-has-company'); ?>"
+                                class="give_company_option"
+                                name="give_company_option"
+                                value="yes"
+                            />
+                            <label for="<?php
+                            echo esc_attr('give-has-company'); ?>" class="give-company-option"
+                                   id="<?php
+                                   echo esc_attr('give-has-company'); ?>">
+                                <?php
+                                esc_html_e('Yes', 'give'); ?>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            <?php
+            endif; ?>
+            <p id="give-company-wrap" class="form-row form-row-wide">
+                <label class="give-label" for="give-company">
+                    <?php
+                    esc_attr_e('Company Name', 'give'); ?>
+                    <?php
+                    if ($give_company) : ?>
+                        <span class="give-required-indicator">*</span>
+                    <?php
+                    endif; ?>
+                    <?php
+                    echo Give()->tooltips->render_help(__('Donate on behalf of Company', 'give')); ?>
+                </label>
+                <input
+                    class="give-input<?php
+                    echo($give_company ? ' required' : ''); ?>"
+                    type="text"
+                    name="give_company_name"
+                    placeholder="<?php
+                    esc_attr_e('Company Name', 'give'); ?>"
+                    id="give-company"
+                    value="<?php
+                    echo esc_html($company_name); ?>"
+                    <?php
+                    echo($give_company ? ' required aria-required="true" ' : ''); ?>
+                />
+            </p>
+        <?php
+        endif ?>
 
-		</p>
+        <?php
+        /**
+         * Fire before user email field
+         *
+         * @since 1.7
+         */
+        do_action('give_donation_form_before_email', $form_id);
+        ?>
+        <p id="give-email-wrap" class="form-row form-row-wide">
+            <label class="give-label" for="give-email">
+                <?php
+                esc_attr_e('Email Address', 'give'); ?>
+                <?php
+                if (give_field_is_required('give_email', $form_id)) { ?>
+                    <span class="give-required-indicator">*</span>
+                    <?php
+                } ?>
+                <?php
+                echo Give()->tooltips->render_help(__('We will send the donation receipt to this address.', 'give')); ?>
+            </label>
+            <input
+                class="give-input required"
+                type="email"
+                name="give_email"
+                autocomplete="email"
+                placeholder="<?php
+                esc_attr_e('Email Address', 'give'); ?>"
+                id="give-email"
+                value="<?php
+                echo esc_html($email); ?>"
+                <?php
+                echo(give_field_is_required('give_email', $form_id) ? ' required aria-required="true" ' : ''); ?>
+            />
 
-		<?php if ( give_is_anonymous_donation_field_enabled( $form_id ) ) : ?>
-			<?php $is_anonymous_donation = isset( $_POST['give_anonymous_donation'] ) ? absint( $_POST['give_anonymous_donation'] ) : 0; ?>
-			<p id="give-anonymous-donation-wrap" class="form-row form-row-wide">
-				<label class="give-label" for="give-anonymous-donation">
-					<input
-						type="checkbox"
-						class="give-input<?php echo( give_field_is_required( 'give_anonymous_donation', $form_id ) ? ' required' : '' ); ?>"
-						name="give_anonymous_donation"
-						id="give-anonymous-donation"
-						value="1"
-						<?php echo( give_field_is_required( 'give_anonymous_donation', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
-						<?php checked( 1, $is_anonymous_donation ); ?>
-					>
-					<?php
-					/**
-					 * Filters the checkbox label.
-					 *
-					 * @since 2.4.1
-					 */
-					echo apply_filters( 'give_anonymous_donation_checkbox_label', __( 'Make this an anonymous donation.', 'give' ), $form_id );
+        </p>
 
-					if ( give_field_is_required( 'give_comment', $form_id ) ) {
+        <?php
+        if (give_is_anonymous_donation_field_enabled($form_id)) : ?>
+            <?php
+            $is_anonymous_donation = isset($_POST['give_anonymous_donation']) ? absint($_POST['give_anonymous_donation']) : 0; ?>
+            <p id="give-anonymous-donation-wrap" class="form-row form-row-wide">
+                <label class="give-label" for="give-anonymous-donation">
+                    <input
+                        type="checkbox"
+                        class="give-input<?php
+                        echo(give_field_is_required('give_anonymous_donation', $form_id) ? ' required' : ''); ?>"
+                        name="give_anonymous_donation"
+                        id="give-anonymous-donation"
+                        value="1"
+                        <?php
+                        echo(give_field_is_required('give_anonymous_donation',
+                            $form_id) ? ' required aria-required="true" ' : ''); ?>
+                        <?php
+                        checked(1, $is_anonymous_donation); ?>
+                    >
+                    <?php
+                    /**
+                     * Filters the checkbox label.
+                     *
+                     * @since 2.4.1
+                     */
+                    echo apply_filters('give_anonymous_donation_checkbox_label',
+                        __('Make this an anonymous donation.', 'give'), $form_id);
+
+                    if ( give_field_is_required( 'give_comment', $form_id ) ) {
 						?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>

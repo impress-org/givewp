@@ -226,9 +226,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
+     * @unreleased update return logic
      * @since 2.21.2
-     * @since 2.21.2
-     * @throws Exception
      */
     public function hasGatewayDashboardSubscriptionUrl(): bool
     {
@@ -236,7 +235,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             return $this->subscriptionModule->hasGatewayDashboardSubscriptionUrl();
         }
 
-        throw new Exception('Method has not been implemented yet.');
+        return $this->isFunctionImplementedInGatewayClass('gatewayDashboardSubscriptionUrl');
     }
 
     /**
@@ -290,7 +289,6 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * @since 2.21.2
      * @inheritDoc
-     * @throws Exception
      */
     public function gatewayDashboardSubscriptionUrl(Subscription $subscription): string
     {
@@ -298,7 +296,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             return $this->subscriptionModule->gatewayDashboardSubscriptionUrl($subscription);
         }
 
-        throw new Exception('Gateway does not support providing a dashboard link.');
+        return false;
     }
 
     /**
