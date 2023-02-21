@@ -115,144 +115,182 @@ jQuery( function( $ ) {
 
 					// Check whether the fields should show or not.
 					if (
-						'undefined' !== typeof ( response.show_field ) &&
-						true === response.show_field
-					) {
-						$form.find( 'p#give-card-state-wrap' ).removeClass( 'give-hidden' );
+                        'undefined' !== typeof (response.show_field) &&
+                        true === response.show_field
+                    ) {
+                        $form.find('p#give-card-state-wrap').removeClass('give-hidden');
 
-						// Add support to zip fields.
-						$form.find( 'p#give-card-zip-wrap' ).addClass( 'form-row-last' );
-						$form.find( 'p#give-card-zip-wrap' ).removeClass( 'form-row-wide' );
-					} else {
-						$form.find( 'p#give-card-state-wrap' ).addClass( 'give-hidden' );
+                        // Add support to zip fields.
+                        $form.find('p#give-card-zip-wrap').addClass('form-row-last');
+                        $form.find('p#give-card-zip-wrap').removeClass('form-row-wide');
+                    } else {
+                        $form.find('p#give-card-state-wrap').addClass('give-hidden');
 
-						// Add support to zip fields.
-						$form.find( 'p#give-card-zip-wrap' ).addClass( 'form-row-wide' );
-						$form.find( 'p#give-card-zip-wrap' ).removeClass( 'form-row-last' );
-					}
+                        // Add support to zip fields.
+                        $form.find('p#give-card-zip-wrap').addClass('form-row-wide');
+                        $form.find('p#give-card-zip-wrap').removeClass('form-row-last');
+                    }
 
-					// Check whether the post code fields should be required
-					const zipRequired = !! response.zip_require;
-					$form.find( 'input#card_zip' ).toggleClass( 'required', zipRequired )
-						.attr( 'required', zipRequired )
-						.attr( 'aria-required', zipRequired );
-					$form.find( 'label[for="card_zip"] span.give-required-indicator' ).toggleClass( 'give-hidden', ! zipRequired );
+                    // Check whether the post code fields should be required
+                    const zipRequired = !!response.zip_require;
+                    $form.find('input#card_zip').toggleClass('required', zipRequired)
+                         .attr('required', zipRequired)
+                         .attr('aria-required', zipRequired);
+                    $form.find('label[for="card_zip"] span.give-required-indicator').toggleClass('give-hidden', !zipRequired);
 
-					doc.trigger( 'give_checkout_billing_address_updated', [ response, $form.attr( 'id' ) ] );
-				},
-			} ).fail( function( data ) {
-				if ( window.console && window.console.log ) {
-					console.log( data );
-				}
-			} );
-		}
+                    doc.trigger('give_checkout_billing_address_updated', [response, $form.attr('id')]);
+                },
+            }).fail(function (data) {
+                if (window.console && window.console.log) {
+                    console.log(data);
+                }
+            });
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * Update fields state
-	 *
-	 * @param {Object} e Element
-	 */
-	function setFieldState( e ) {
-		const element = e.target;
-		const form = element.parentElement.closest( 'form.give-form' );
+    function update_company_option_field() {
+        var $form = jQuery(this).closest('form.give-form'),
+            value, $field;
 
-		if ( form ) {
-			const formId = form.getAttribute( 'id' );
-			fieldsState.forms = {
-				...fieldsState.forms,
-				[ formId ]: {
-					...fieldsState.forms[ formId ],
-					[ element.name ]: element.value,
-				},
-			};
-		}
-	}
+        if (!$form) {
+            $form = jQuery(this).parents('form');
+        }
 
-	/**
-	 * Attach events to First Name, Last Name and the Email fields
-	 */
-	doc.on(
-		'keyup',
-		'#give-first, #give-last, #give-email',
-		setFieldState
-	);
+        $field = $form.find('#give-company-wrap');
+        value = $form.find('input[name="give_company_option"]:radio:checked').val();
 
-	/**
-	 * Restore saved state values when gateway changes.
-	 */
-	doc.on(
-		'give_gateway_loaded',
-		function() {
-			for ( const [ formId, formData ] of Object.entries( fieldsState.forms ) ) {
-				for ( const [ name, value ] of Object.entries( formData ) ) {
-					const element = document.querySelector( `form#${ formId } [name="${ name }"]` );
-					if ( element ) {
-						element.value = value;
-					}
-				}
-			}
-		}
-	);
+        if ('yes' === value) {
+            $field.show();
+        } else {
+            $field
+                .hide()
+                .find('input').val('').trigger('keyup');
+        }
 
-	// Sync state field with country.
-	doc.on(
-		'change',
-		'#give_cc_address input.card_state, #give_cc_address select',
-		update_billing_state_field
-	);
+        jQuery(this).trigger('give_option_change');
+    }
 
-	// Trigger formatting function when gateway changes.
-	doc.on(
-		'give_gateway_loaded',
-		function() {
-			Give.form.fn.field.formatCreditCard( $forms );
-		}
-	);
+    /**
+     * Update fields state
+     *
+     * @param {Object} e Element
+     */
+    function setFieldState(e) {
+        const element = e.target;
+        const form = element.parentElement.closest('form.give-form');
 
-	// Make sure a gateway is selected.
-	doc.on(
-		'submit',
-		'#give_payment_mode',
-		function() {
-			const gateway = Give.form.fn.getGateway( $( this ).closest( 'form' ) );
-			if ( ! gateway.length ) {
-				alert( Give.fn.getGlobalVar( 'no_gateway' ) );
-				return false;
-			}
-		}
-	);
+        if (form) {
+            const formId = form.getAttribute('id');
+            fieldsState.forms = {
+                ...fieldsState.forms,
+                [formId]: {
+                    ...fieldsState.forms[formId],
+                    [element.name]: element.value,
+                },
+            };
+        }
+    }
 
-	// Add a class to the currently selected gateway on click
-	doc.on(
-		'click',
-		'#give-payment-mode-select input[name="payment-mode"]',
-		function() {
-			let $form = $( this ).parents( 'form' ),
-				$gateways_li = $form.find( '#give-payment-mode-select li' ),
-				old_payment_gateway = $form.find( 'li.give-gateway-option-selected input[name="payment-mode"]' ).val().trim(),
-				new_payment_gateways;
+    /**
+     * Attach events to First Name, Last Name and the Email fields
+     */
+    doc.on(
+        'keyup give_option_change',
+        '#give-first, #give-last, #give-email, #give-company-name-radio-list .give_company_option, #give-company',
+        setFieldState,
+    );
 
-			// Unselect all payment gateways.
-			$gateways_li.removeClass( 'give-gateway-option-selected' );
-			$gateways_li.prop( 'checked', false );
+    /**
+     * Restore saved state values when gateway changes.
+     */
+    doc.on(
+        'give_gateway_loaded',
+        function () {
+            for (const [formId, formData] of Object.entries(fieldsState.forms)) {
+                for (const [name, value] of Object.entries(formData)) {
+                    const element = document.querySelectorAll(`form#${formId} [name="${name}"]`);
+                    if (element) {
+                        element.forEach(function (el) {
+                            if (el.type === 'radio') {
+                                el.checked = el.value === value;
+                            } else {
+                                el.value = value;
+                            }
+                        });
+                    }
+                }
+            }
+        },
+    );
 
-			// Select payment gateway.
-			$( this ).prop( 'checked', true );
-			$( this ).parent().addClass( 'give-gateway-option-selected' );
+    // Sync state field with country.
+    doc.on(
+        'change',
+        '#give_cc_address input.card_state, #give_cc_address select',
+        update_billing_state_field,
+    );
 
-			// Get new payment gateway.
-			new_payment_gateways = Give.form.fn.getGateway( $form );
+    // Trigger formatting function when gateway changes.
+    doc.on(
+        'give_gateway_loaded',
+        function () {
+            Give.form.fn.field.formatCreditCard($forms);
+            doc.find('#give-company-radio-list-wrap .give_company_option:checked').trigger('change');
+        },
+    );
 
-			// Change form action.
-			$form.attr( 'action', $form.attr( 'action' ).replace(
-				'payment-mode=' + old_payment_gateway,
-				'payment-mode=' + new_payment_gateways )
-			);
-		}
-	);
+    /**
+     * Show/Hide Company field based on Company option selected.
+     */
+    doc.on(
+        'change',
+        '#give-company-radio-list-wrap .give_company_option',
+        update_company_option_field,
+    ).find('#give-company-radio-list-wrap .give_company_option:checked').trigger('change');
+
+    // Make sure a gateway is selected.
+    doc.on(
+        'submit',
+        '#give_payment_mode',
+        function () {
+            const gateway = Give.form.fn.getGateway($(this).closest('form'));
+            if (!gateway.length) {
+                alert(Give.fn.getGlobalVar('no_gateway'));
+                return false;
+            }
+        },
+    );
+
+    // Add a class to the currently selected gateway on click
+    doc.on(
+        'click',
+        '#give-payment-mode-select input[name="payment-mode"]',
+        function () {
+            let $form = $(this).parents('form'),
+                $gateways_li = $form.find('#give-payment-mode-select li'),
+                old_payment_gateway = $form.find('li.give-gateway-option-selected input[name="payment-mode"]').val().trim(),
+                new_payment_gateways;
+
+            // Unselect all payment gateways.
+            $gateways_li.removeClass('give-gateway-option-selected');
+            $gateways_li.prop('checked', false);
+
+            // Select payment gateway.
+            $(this).prop('checked', true);
+            $(this).parent().addClass('give-gateway-option-selected');
+
+            // Get new payment gateway.
+            new_payment_gateways = Give.form.fn.getGateway($form);
+
+            // Change form action.
+            $form.attr('action', $form.attr('action').replace(
+                'payment-mode=' + old_payment_gateway,
+                'payment-mode=' + new_payment_gateways),
+            );
+        },
+    );
 
 	/**
 	 * Custom Donation Amount Focus In
@@ -438,62 +476,63 @@ jQuery( function( $ ) {
 } );
 
 jQuery( window ).on( 'load', function() {
-	/**
-	 * Validate cc fields on change
-	 */
-	jQuery( 'body' ).on( 'keyup change focusout', '.give-form .card-number, .give-form .card-cvc, .give-form .card-expiry', function( e ) {
-		let el = jQuery( this ),
-			give_form = el.parents( 'form.give-form' ),
-			id = el.attr( 'id' ),
-			card_number = give_form.find( '.card-number' ),
-			card_cvc = give_form.find( '.card-cvc' ),
-			card_expiry = give_form.find( '.card-expiry' ),
-			type = jQuery.payment.cardType( card_number.val() ),
-			error = false;
 
-		switch ( e.type ) {
-			case 'focusout':
-				if ( id.indexOf( 'card_number' ) > -1 ) {
-					// Set card number error.
-					error = ! jQuery.payment.validateCardNumber( card_number.val() );
-					card_number.toggleError( error );
-				} else if ( id.indexOf( 'card_cvc' ) > -1 ) {
-					// Set card cvc error.
-					error = ! jQuery.payment.validateCardCVC( card_cvc.val(), type );
-					card_cvc.toggleError( error );
-				} else if ( id.indexOf( 'card_expiry' ) > -1 ) {
-					// Set card expiry error.
-					error = ! jQuery.payment.validateCardExpiry( card_expiry.payment( 'cardExpiryVal' ) );
-					card_expiry.toggleError( error );
-				}
+    /**
+     * Validate cc fields on change
+     */
+    jQuery('body').on('keyup change focusout', '.give-form .card-number, .give-form .card-cvc, .give-form .card-expiry', function (e) {
+        let el = jQuery(this),
+            give_form = el.parents('form.give-form'),
+            id = el.attr('id'),
+            card_number = give_form.find('.card-number'),
+            card_cvc = give_form.find('.card-cvc'),
+            card_expiry = give_form.find('.card-expiry'),
+            type = jQuery.payment.cardType(card_number.val()),
+            error = false;
 
-				// Disable submit button
-				Give.form.fn.disable( el.parents( 'form' ), error );
-				break;
+        switch (e.type) {
+            case 'focusout':
+                if (id.indexOf('card_number') > -1) {
+                    // Set card number error.
+                    error = !jQuery.payment.validateCardNumber(card_number.val());
+                    card_number.toggleError(error);
+                } else if (id.indexOf('card_cvc') > -1) {
+                    // Set card cvc error.
+                    error = !jQuery.payment.validateCardCVC(card_cvc.val(), type);
+                    card_cvc.toggleError(error);
+                } else if (id.indexOf('card_expiry') > -1) {
+                    // Set card expiry error.
+                    error = !jQuery.payment.validateCardExpiry(card_expiry.payment('cardExpiryVal'));
+                    card_expiry.toggleError(error);
+                }
 
-			default:
-				// Remove error class.
-				if ( el.hasClass( 'error' ) ) {
-					el.removeClass( 'error' );
-				}
+                // Disable submit button
+                Give.form.fn.disable(el.parents('form'), error);
+                break;
 
-				if ( id.indexOf( 'card_number' ) > -1 ) {
-					// Add card related classes.
-					const card_type = give_form.find( '.card-type' );
+            default:
+                // Remove error class.
+                if (el.hasClass('error')) {
+                    el.removeClass('error');
+                }
 
-					if ( type === null ) {
-						card_type.removeClass().addClass( 'off card-type' );
-						el.removeClass( 'valid' ).addClass( 'error' );
-					} else {
-						card_type.removeClass().addClass( 'card-type ' + type );
-					}
-				} else if ( id.indexOf( 'card_expiry' ) > -1 ) {
-					// set expiry date params.
-					const expiry = card_expiry.payment( 'cardExpiryVal' );
+                if (id.indexOf('card_number') > -1) {
+                    // Add card related classes.
+                    const card_type = give_form.find('.card-type');
 
-					give_form.find( '.card-expiry-month' ).val( expiry.month );
-					give_form.find( '.card-expiry-year' ).val( expiry.year );
-				}
+                    if (type === null) {
+                        card_type.removeClass().addClass('off card-type');
+                        el.removeClass('valid').addClass('error');
+                    } else {
+                        card_type.removeClass().addClass('card-type ' + type);
+                    }
+                } else if (id.indexOf('card_expiry') > -1) {
+                    // set expiry date params.
+                    const expiry = card_expiry.payment('cardExpiryVal');
+
+                    give_form.find('.card-expiry-month').val(expiry.month);
+                    give_form.find('.card-expiry-year').val(expiry.year);
+                }
 		}
 	} );
 } );

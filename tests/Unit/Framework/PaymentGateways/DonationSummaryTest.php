@@ -80,6 +80,23 @@ class DonationSummaryTest extends \Give\Tests\TestCase
     }
 
     /** @test */
+    public function it_summarizes_a_donation_with_donor_filtered_once()
+    {
+        $donationId = Give_Helper_Payment::create_simple_payment();
+        $donation = Donation::find($donationId);
+
+        $count = 0;
+        add_filter('give_payment_gateway_donation_summary', function ($summary) use(&$count) {
+            $count += 1;
+            return $summary;
+        });
+
+        $summary = (new DonationSummary($donation))->getSummaryWithDonor();
+
+        $this->assertEquals(1,$count);
+    }
+
+    /** @test */
     public function it_summarizes_a_simple_donation_truncated()
     {
         $length = 10;
