@@ -24,6 +24,7 @@ export interface ListTableProps {
     isLoading?: Boolean;
     align?: 'start' | 'center' | 'end';
     testMode?: boolean;
+    blankSlate?: () => JSX.Element | Function | null;
 }
 
 export interface ListTableColumn {
@@ -48,6 +49,7 @@ export const ListTable = ({
     setSortDirectionForColumn,
     sortField,
     testMode,
+    blankSlate,
 }: ListTableProps) => {
     const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>; successes: Array<number>}>({
         errors: [],
@@ -230,7 +232,7 @@ export const ListTable = ({
                     <div id="giveListTableMessage">
                         {isEmpty && (
                             <div role="status" className={styles.statusMessage}>
-                                {sprintf(__('No %s found.', 'give'), pluralName)}
+                                {blankSlate()}
                             </div>
                         )}
                         {error && (
