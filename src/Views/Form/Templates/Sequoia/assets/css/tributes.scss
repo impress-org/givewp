@@ -15,16 +15,23 @@
         }
     }
 
-    legend,
     .give-tributes-legend,
     .give-tributes-label {
-        display: block;
+        display: block !important;
         font-size: 14px !important;
         font-weight: 400 !important;
         border-bottom: none !important;
         padding: 0 !important;
         margin: 0 0 5px !important;
         line-height: 1.7;
+    }
+
+    legend {
+        color: var(--global-palette3);
+        display: block !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        margin-bottom: 5px !important;
     }
 
     .give_tributes_send_ecard_fields > .give-tributes-legend {

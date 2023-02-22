@@ -305,25 +305,50 @@ form.give-form {
 	}
 
 	.card-expiration {
-		> select {
-			width: 44%;
-			margin: 0;
-		}
+        > select {
+            width: 44%;
+            margin: 0;
+        }
 
-		> span.exp-divider {
-			display: inline;
-			text-align: center;
-		}
+        > span.exp-divider {
+            display: inline;
+            text-align: center;
+        }
 
-		select.card-expiry-year {
-			float: right;
-		}
-	}
+        select.card-expiry-year {
+            float: right;
+        }
+    }
 
-	.give-disabled,
-	[disabled] {
-		cursor: not-allowed;
-	}
+    .give-disabled,
+    [disabled] {
+        cursor: not-allowed;
+    }
+}
+
+/*---------------------------------
+Form Price & Amount
+-----------------------------------*/
+form[id*='give-form'] {
+    #give-company-radio-list-wrap {
+        ul.give-company-radio-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+
+            li {
+                display: inline-block;
+                margin-right: 15px;
+                margin-left: 0;
+
+                label {
+                    cursor: pointer;
+                    display: inline;
+                    margin: 0;
+                }
+            }
+        }
+    }
 }
 
 /*---------------------------------
@@ -331,23 +356,23 @@ Form Price & Amount
 -----------------------------------*/
 
 form[id*='give-form'] {
-	.give-donation-amount {
-		margin: 0 0 15px;
+    .give-donation-amount {
+        margin: 0 0 15px;
 
-		.give-currency-symbol {
-			@include give-currency();
-			float: left;
+        .give-currency-symbol {
+            @include give-currency();
+            float: left;
 
-			&.give-currency-position-before {
-				border-left: 1px solid $borders;
-				border-right: none;
-			}
+            &.give-currency-position-before {
+                border-left: 1px solid $borders;
+                border-right: none;
+            }
 
-			&.give-currency-position-after {
-				border-left: none;
-				border-right: 1px solid $borders;
-			}
-		}
+            &.give-currency-position-after {
+                border-left: none;
+                border-right: 1px solid $borders;
+            }
+        }
 
 		#give-amount,
 		#give-amount-text {
