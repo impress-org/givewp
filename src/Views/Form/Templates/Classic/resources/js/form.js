@@ -248,7 +248,7 @@ function moveDefaultGatewayDataIntoActiveGatewaySection() {
 
     document
         .querySelector('.give-gateway-details')
-        .append(...document.querySelectorAll('#give_purchase_form_wrap fieldset:not(.give-donation-submit)'));
+        .append(...jQuery("#give_purchase_form_wrap").children().not('.give-donation-submit').clone(true, true));
 
     removeNode(document.querySelector('#give_purchase_form_wrap'));
 }
