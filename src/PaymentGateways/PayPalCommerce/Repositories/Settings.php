@@ -2,6 +2,8 @@
 
 namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
+use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
+
 class Settings
 {
     /**
@@ -12,7 +14,7 @@ class Settings
     const COUNTRY_KEY = 'paypal_commerce_account_country';
 
     /**
-     * wp_options key for the access token
+     * wp_options key for the seller access token
      *
      * @since 2.9.0
      */
@@ -52,7 +54,7 @@ class Settings
     }
 
     /**
-     * Returns the account access token
+     * Returns the PayPal merchant seller access token.
      *
      * @since 2.9.0
      *
@@ -88,7 +90,7 @@ class Settings
     }
 
     /**
-     * Updates the account access token
+     * Updates the PayPal merchant seller access token.
      *
      * @param $token
      *
@@ -100,7 +102,9 @@ class Settings
     }
 
     /**
-     * Deletes the account access token
+     * Deletes the PayPal seller access token.
+     *
+     * @since 2.9.0
      *
      * @return bool
      */
@@ -144,6 +148,26 @@ class Settings
     }
 
     /**
+     * Updates the partner link details
+     *
+     * @unreleased x.x.x
+     */
+    public function updateSellerAccessToken(array $sellerAccessToken): bool
+    {
+        return update_option($this->getSellerAccessTokenOptionName(), $sellerAccessToken);
+    }
+
+    /**
+     * Updates the partner link details
+     *
+     * @unreleased x.x.x
+     */
+    public function deleteSellerAccessToken(): bool
+    {
+        return delete_option($this->getSellerAccessTokenOptionName());
+    }
+
+    /**
      * Deletes the partner link details
      *
      * @since 2.11.1
@@ -160,5 +184,18 @@ class Settings
     public function isTransactionTypeDonation()
     {
         return 'donation' === $this->getTransactionType();
+    }
+
+    /**
+     * This function returns the seller access token option name
+     *
+     * @unreleased x.x.x
+     */
+    private function getSellerAccessTokenOptionName(): string
+    {
+        return sprintf(
+            'give_paypal_commerce_%s_seller_access_token',
+            give_is_test_mode() ? 'sandbox' : 'live'
+        );
     }
 }
