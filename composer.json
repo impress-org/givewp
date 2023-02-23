@@ -89,7 +89,10 @@
                 "stellarwp/validation",
                 "symfony/polyfill-ctype"
             ],
-            "delete_vendor_files": true
+            "delete_vendor_files": true,
+            "override_autoload": {
+                "symfony/polyfill-ctype": {}
+            }
         }
     },
     "repositories": [
