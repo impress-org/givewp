@@ -260,7 +260,7 @@ jQuery( function( $ ) {
                 alert(Give.fn.getGlobalVar('no_gateway'));
                 return false;
             }
-        },
+        }
     );
 
     // Add a class to the currently selected gateway on click
@@ -280,6 +280,7 @@ jQuery( function( $ ) {
             // Select payment gateway.
             $(this).prop('checked', true);
             $(this).parent().addClass('give-gateway-option-selected');
+            $(this).focus();
 
             // Get new payment gateway.
             new_payment_gateways = Give.form.fn.getGateway($form);
@@ -289,7 +290,7 @@ jQuery( function( $ ) {
                 'payment-mode=' + old_payment_gateway,
                 'payment-mode=' + new_payment_gateways),
             );
-        },
+        }
     );
 
 	/**
