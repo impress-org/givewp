@@ -86,7 +86,8 @@
             "classmap_prefix": "Give_Vendors_",
             "constant_prefix": "GIVE_VENDORS_",
             "packages": [
-                "stellarwp/validation"
+                "stellarwp/validation",
+                "symfony/polyfill-ctype"
             ],
             "delete_vendor_files": true
         }
