@@ -117,8 +117,7 @@ const ListTableBlankSlate = () => {
     return (
         <BlankSlate
             imagePath={'/wp-content/plugins/givewp/assets/dist/images/list-table/blank-slate-recurring-icon.svg '}
-            imageAlt={__('no subscriptions', 'give')}
-            table={__('subscription', 'give')}
+            description={__('No subscriptions found', 'give')}
             href={'/'}
             linkText={__('Recurring Donations.', 'give')}
         />
