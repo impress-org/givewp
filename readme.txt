@@ -256,10 +256,12 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Enhancement: Improvements to the Gateway API in preparation for GiveWP 3.0
 * Enhancement: Optimizations to how we interact with the GiveWP Gateway server
 * Enhancement: New method for storing donation notes using the Donation model
+* Fix: Improved how PayPal Donation tokens are handled to prevent the need to reconnect one's PayPal account
 * Fix: Resolved escaping issue preventing modal from displaying on some sites
 * Fix: The "Download Receipt" link in the PDF is more reliable after making donation updates
 * Fix: Prevented a filter from running twice on the donation summary
 * Fix: Styling looks better for modals in the Classic template
+* Fix: Corrected some styling in the Multi-Step and Classic template receipts that affected the Tributes add-on
 
 = 2.24.2: February 1st, 2023 =
 * Enhancement: Reorganized the GiveWP admin menu items to a cleaner, more intuitive order.
