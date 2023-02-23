@@ -238,7 +238,7 @@ class Give_Donation_Form_Grid_Block {
 	}
 
     /**
-     * @unreleased
+     * @since 2.25.0
      *
      * @param string|array $value
      * @return array

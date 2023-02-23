@@ -17,7 +17,7 @@ final class DonationFormQueryDataTest extends TestCase
     /**
      * @dataProvider mockFormTypeProvider
      *
-     * @unreleased
+     * @since 2.25.0
      */
     public function testToDonationFormShouldReturnDonationForm(string $mockFormType)
     {
@@ -54,7 +54,7 @@ final class DonationFormQueryDataTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      */
     public function testGetDonationFormLevelsMulti()
     {
@@ -68,7 +68,7 @@ final class DonationFormQueryDataTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      */
     public function testGetDonationFormLevelsSimple()
     {
@@ -82,7 +82,7 @@ final class DonationFormQueryDataTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      */
     public function testGetDonationFormLevelsNull()
     {
@@ -96,7 +96,7 @@ final class DonationFormQueryDataTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      */
     public function testGetDonationFormLevelsShouldReturnEmptyArrayWhenUsingMultiAndNoLevels()
     {
@@ -113,7 +113,7 @@ final class DonationFormQueryDataTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      */
     public function testGetDonationFormLevelsShouldReturnEmptyArrayWhenUsingSetAndNoAmount()
     {
@@ -130,7 +130,7 @@ final class DonationFormQueryDataTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      */
     public function mockFormTypeProvider(): array
     {

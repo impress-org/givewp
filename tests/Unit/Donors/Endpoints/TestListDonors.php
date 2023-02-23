@@ -16,7 +16,7 @@ class TestListDonors extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 2.25.0
      *
      * @return void
      * @throws Exception
@@ -39,7 +39,7 @@ class TestListDonors extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      *
      * @return void
      * @throws Exception
@@ -76,7 +76,7 @@ class TestListDonors extends TestCase
 
     /**
      *
-     * @unreleased
+     * @since 2.25.0
      */
     public function getMockRequest(): WP_REST_Request
     {

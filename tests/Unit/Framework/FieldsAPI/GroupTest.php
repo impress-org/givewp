@@ -37,7 +37,7 @@ final class GroupTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      */
     public function testGetFieldsInNestedGroups()
     {

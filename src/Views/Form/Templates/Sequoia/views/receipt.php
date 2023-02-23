@@ -72,7 +72,7 @@ ob_start();
                     continue;
                 }
 
-                echo '<div class="details">';
+                echo '<div class="details ' . sanitize_title($section->id) . '-section">';
                 if ($section->label) {
                     printf('<h3 class="headline">%1$s</h3>', $section->label);
                 }
@@ -85,14 +85,14 @@ ob_start();
                         continue;
                     }
 
+                    $detailRowClass = sanitize_title($lineItem->id) . '-row';
                     // This class is required to highlight total donation amount in receipt.
-                    $detailRowClass = '';
                     if (DonationReceipt::DONATIONSECTIONID === $section->id) {
-                        $detailRowClass = 'totalAmount' === $lineItem->id ? ' total' : '';
+                        $detailRowClass += ('totalAmount' === $lineItem->id ? ' total' : '');
                     }
 
                     printf(
-                        '<div class="details-row%1$s">%2$s<div class="detail">%3$s</div><div class="value">%4$s</div></div>',
+                        '<div class="details-row %1$s">%2$s<div class="detail">%3$s</div><div class="value">%4$s</div></div>',
                         $detailRowClass,
                         $lineItem->icon,
                         $lineItem->label,

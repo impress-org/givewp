@@ -246,11 +246,11 @@ function moveDefaultGatewayDataIntoActiveGatewaySection() {
 
     addSelectedGatewayDetails(createGatewayDetails());
 
-    document
-        .querySelector('.give-gateway-details')
-        .append(...document.querySelectorAll('#give_purchase_form_wrap fieldset:not(.give-donation-submit)'));
+    const purchaseFormWrap = document.querySelector('#give_purchase_form_wrap');
+    purchaseFormWrap.removeChild(purchaseFormWrap.querySelector('.give-donation-submit'));
+    document.querySelector('.give-gateway-details').append(...purchaseFormWrap.children);
 
-    removeNode(document.querySelector('#give_purchase_form_wrap'));
+    removeNode(purchaseFormWrap);
 }
 
 function attachRecurringDonationEvents() {

@@ -5,6 +5,7 @@ namespace Give\PaymentGateways\Actions;
 use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\LegacyPaymentGateways\Adapters\LegacyPaymentGatewayRegisterAdapter;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\Gateways\Stripe\Actions\GetPaymentMethodFromRequest;
@@ -12,8 +13,6 @@ use Give\PaymentGateways\Gateways\Stripe\BECSGateway as StripeBECSGateway;
 use Give\PaymentGateways\Gateways\Stripe\CheckoutGateway as StripeCheckoutGateway;
 use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway as StripeCreditCardGateway;
 use Give\PaymentGateways\Gateways\Stripe\SEPAGateway as StripeSEPAGateway;
-use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
-use Give\PaymentGateways\Gateways\TestGateway\TestGatewayOffsite;
 use Give\PaymentGateways\PayPalCommerce\Actions\GetPayPalOrderFromRequest;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 
@@ -38,8 +37,8 @@ class RegisterPaymentGateways
      */
     public $gateways = [
         // When complete, the Test Gateway will eventually replace The legacy Manual Gateway.
-//        TestGateway::class,
-//        TestGatewayOffsite::class,
+        //TestGateway::class,
+        //TestGatewayOffsite::class,
         PayPalStandard::class,
         PayPalCommerce::class,
     ];
@@ -47,9 +46,10 @@ class RegisterPaymentGateways
     /**
      * Registers all the payment gateways with GiveWP
      *
+     * @since 2.25.0 add afterRegisteredGateways
      * @since 2.18.0
      *
-     * @param array $gateways
+     * @param  array  $gateways
      *
      * @return array
      *
@@ -75,6 +75,8 @@ class RegisterPaymentGateways
 
         $this->register3rdPartyPaymentGateways($paymentGatewayRegister);
         $this->unregister3rdPartyPaymentGateways($paymentGatewayRegister);
+
+        $this->afterRegisteredGateways();
 
         return $gateways;
     }
@@ -142,5 +144,21 @@ class RegisterPaymentGateways
                 return $gatewayData;
             }
         );
+    }
+
+    /**
+     * After gateways have been registered, connect to legacy payment gateway adapter
+     */
+    private function afterRegisteredGateways()
+    {
+        /** @var PaymentGatewayRegister $paymentGatewayRegister */
+        $paymentGatewayRegister = give(PaymentGatewayRegister::class);
+
+        /** @var LegacyPaymentGatewayRegisterAdapter $legacyPaymentGatewayRegisterAdapter */
+        $legacyPaymentGatewayRegisterAdapter = give(LegacyPaymentGatewayRegisterAdapter::class);
+
+        foreach ($paymentGatewayRegister->getPaymentGateways() as $gatewayClass) {
+            $legacyPaymentGatewayRegisterAdapter->connectGatewayToLegacyPaymentGatewayAdapter($gatewayClass);
+        }
     }
 }

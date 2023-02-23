@@ -19,7 +19,7 @@ jobs:
     # This workflow contains a single job called "test"
     test:
         # The type of runner that the job will run on
-        runs-on: ubuntu-18.04
+        runs-on: ubuntu-20.04
         strategy:
             matrix:
                 php: [ 7.0, 7.4, 8.0 ]
