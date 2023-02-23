@@ -6,6 +6,7 @@ import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePag
 import {IdBadge} from '@givewp/components/ListTable/TableCell';
 import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import {Interweave} from 'interweave';
+import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 
 declare global {
     interface Window {
@@ -132,6 +133,18 @@ const bulkActions: Array<BulkActionsConfig> = [
     },
 ];
 
+const ListTableBlankSlate = () => {
+    return (
+        <BlankSlate
+            imagePath={'/wp-content/plugins/givewp/assets/dist/images/list-table/blank-slate-donations-icon.svg '}
+            imageAlt={__('no donations', 'give')}
+            table={__('donation', 'give')}
+            href={'/'}
+            linkText={__('GiveWP Donations.', 'give')}
+        />
+    );
+};
+
 export default function DonationsListTable() {
     return (
         <ListTablePage
@@ -143,6 +156,7 @@ export default function DonationsListTable() {
             apiSettings={window.GiveDonations}
             filterSettings={filters}
             paymentMode={!!window.GiveDonations.paymentMode}
+            blankSlate={ListTableBlankSlate}
         >
             {window.GiveDonations.manualDonations && (
                 <a

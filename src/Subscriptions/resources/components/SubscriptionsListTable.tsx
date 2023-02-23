@@ -1,4 +1,4 @@
-import {__, sprintf} from '@wordpress/i18n';
+import {__} from '@wordpress/i18n';
 import {ListTablePage} from '@givewp/components';
 import ListTableApi from '@givewp/components/ListTable/api';
 import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
@@ -6,6 +6,7 @@ import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/List
 import {SubscriptionsRowActions} from './SubscriptionsRowActions';
 import {IdBadge} from '@givewp/components/ListTable/TableCell';
 import {Interweave} from 'interweave';
+import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 
 declare global {
     interface Window {
@@ -112,6 +113,18 @@ const bulkActions: Array<BulkActionsConfig> = [
     })(),
 ];
 
+const ListTableBlankSlate = () => {
+    return (
+        <BlankSlate
+            imagePath={'/wp-content/plugins/givewp/assets/dist/images/list-table/blank-slate-recurring-icon.svg '}
+            imageAlt={__('no subscriptions', 'give')}
+            table={__('subscription', 'give')}
+            href={'/'}
+            linkText={__('Recurring Donations.', 'give')}
+        />
+    );
+};
+
 export default function SubscriptionsListTable() {
     return (
         <ListTablePage
@@ -123,6 +136,7 @@ export default function SubscriptionsListTable() {
             apiSettings={window.GiveSubscriptions}
             filterSettings={filters}
             paymentMode={!!window.GiveSubscriptions.paymentMode}
+            blankSlate={ListTableBlankSlate}
         >
             <button className={tableStyles.addFormButton} onClick={showLegacyDonations}>
                 {__('Switch to Legacy View')}
