@@ -10,12 +10,12 @@ use PayPalCheckoutSdk\Core\PayPalHttpClient;
 use PayPalHttp\HttpRequest;
 
 /**
- * @unreleased x.x.x
+ * @since 2.25.0
  */
 class AuthorizationInjectorTest extends TestCase
 {
     /**
-     * @unreleased
+     * @since 2.25.0
      * @throws \PHPUnit\Framework\Exception
      */
     public function testShouldNotFetchNewAccessToken()
@@ -49,7 +49,7 @@ class AuthorizationInjectorTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      * @throws \PHPUnit\Framework\Exception
      */
     public function testShouldFetchNewAccessTokenIfExpired()
@@ -83,7 +83,7 @@ class AuthorizationInjectorTest extends TestCase
 /**
  * Mock class for AuthorizationInjector class
  *
- * @unreleased
+ * @since 2.25.0
  */
 class AuthorizationInjectorMock extends AuthorizationInjector
 {

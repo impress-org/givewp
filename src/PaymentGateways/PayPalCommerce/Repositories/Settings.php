@@ -150,7 +150,7 @@ class Settings
     /**
      * Updates the partner link details
      *
-     * @unreleased x.x.x
+     * @since 2.25.0
      */
     public function updateSellerAccessToken(array $sellerAccessToken): bool
     {
@@ -160,7 +160,7 @@ class Settings
     /**
      * Updates the partner link details
      *
-     * @unreleased x.x.x
+     * @since 2.25.0
      */
     public function deleteSellerAccessToken(): bool
     {
@@ -189,7 +189,7 @@ class Settings
     /**
      * This function returns the seller access token option name
      *
-     * @unreleased x.x.x
+     * @since 2.25.0
      */
     private function getSellerAccessTokenOptionName(): string
     {

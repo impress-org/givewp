@@ -35,7 +35,7 @@ class RefreshToken
     /**
      * This time reduced from token expiration time to refresh token before it expires.
      *
-     * @unreleased x.x.x
+     * @since 2.25.0
      *
      * @var int $expirationTimeOffset Expiration time offset in seconds.
      */
@@ -105,7 +105,7 @@ class RefreshToken
      * Refresh token.
      * Note: only for internal use
      *
-     * @unreleased x.x.x Handle exception. Refresh access token every 5 minute on faliure.
+     * @since 2.25.0 Handle exception. Refresh access token every 5 minute on faliure.
      * @since 2.9.6 Refresh token only if paypal merchant id exist.
      * @since 2.9.0
      */

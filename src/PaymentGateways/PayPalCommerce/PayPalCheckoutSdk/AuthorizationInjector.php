@@ -20,7 +20,7 @@ use PayPalHttp\Injector;
  * Authorization header build with merchant access token.
  * Fresh Merchant access token will be fetched from PayPal if expired, for http request.
  *
- * @unreleased x.x.x
+ * @since 2.25.0
  *
  * @see \PayPalCheckoutSdk\Core\AuthorizationInjector
  */
@@ -34,7 +34,7 @@ class AuthorizationInjector implements Injector
     /**
      * Class constructor.
      *
-     * @unreleased x.x.x
+     * @since 2.25.0
      */
     public function __construct(HttpClient $client, PayPalEnvironment $environment, $refreshToken)
     {
@@ -46,7 +46,7 @@ class AuthorizationInjector implements Injector
     /**
      * Adds an Authorization header to the request.
      *
-     * @unreleased x.x.x
+     * @since 2.25.0
      */
     public function inject($request)
     {
@@ -61,7 +61,7 @@ class AuthorizationInjector implements Injector
     /**
      * Returns an AccessToken.
      *
-     * @unreleased x.x.x
+     * @since 2.25.0
      */
     protected function fetchAccessToken(): AccessToken
     {
@@ -76,7 +76,7 @@ class AuthorizationInjector implements Injector
     /**
      * Return true if the request is an AccessTokenRequest or RefreshTokenRequest.
      *
-     * @unreleased x.x.x
+     * @since 2.25.0
      */
     private function isAuthRequest($request): bool
     {
@@ -86,7 +86,7 @@ class AuthorizationInjector implements Injector
     /**
      * Return true if the request has an Authorization header.
      *
-     * @unreleased x.x.x
+     * @since 2.25.0
      */
     private function hasAuthHeader(HttpRequest $request): bool
     {
@@ -96,7 +96,7 @@ class AuthorizationInjector implements Injector
     /**
      * Should save new access token and add a cron job to refresh token.
      *
-     * @unreleased x.x.x
+     * @since 2.25.0
      *
      * @return void
      */

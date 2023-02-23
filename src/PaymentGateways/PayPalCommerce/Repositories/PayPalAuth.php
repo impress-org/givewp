@@ -41,7 +41,7 @@ class PayPalAuth
     /**
      * Retrieves a token for the Client ID and Secret
      *
-     * @unreleased x.x.x Validate paypal response.
+     * @since 2.25.0 Validate paypal response.
      * @since 2.9.0
      *
      * @param string $client_id
@@ -214,7 +214,7 @@ class PayPalAuth
      *
      * Sample paypal access token: https://developer.paypal.com/api/rest/authentication/#link-sampleresponse
      *
-     * @unreleased x.x.x
+     * @since 2.25.0
      *
      * @param array $accessToken Access token response from PayPal.
      *

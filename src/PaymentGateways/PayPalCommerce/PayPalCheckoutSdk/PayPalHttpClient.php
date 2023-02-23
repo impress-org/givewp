@@ -15,14 +15,14 @@ use PayPalCheckoutSdk\Core\PayPalEnvironment;
  * We register AuthorizationInjector class to inject access token in http request header.
  * AuthorizationInjector clas refresh access token only if expired.
  *
- * @unreleased x.x.x
+ * @since 2.25.0
  */
 class PayPalHttpClient extends \PayPalCheckoutSdk\Core\PayPalHttpClient
 {
     /**
      * Class constructor.
      *
-     * @unreleased x.x.x
+     * @since 2.25.0
      */
     public function __construct(PayPalEnvironment $environment, $refreshToken = null)
     {
@@ -36,7 +36,7 @@ class PayPalHttpClient extends \PayPalCheckoutSdk\Core\PayPalHttpClient
     /**
      * Returns AuthorizationInjector.
      *
-     * @unreleased x.x.x
+     * @since 2.25.0
      */
     private function getAuthorizationInjector($environment, $refreshToken): AuthorizationInjector
     {

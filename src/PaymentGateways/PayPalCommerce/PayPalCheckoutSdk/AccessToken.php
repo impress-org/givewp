@@ -5,14 +5,14 @@ namespace Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk;
 /**
  * Class AccessToken.
  *
- * @unreleased x.x.x
+ * @since 2.25.0
  */
 class AccessToken extends \PayPalCheckoutSdk\Core\AccessToken
 {
     /**
      * Token creation date.
      *
-     * @unreleased x.x.x
+     * @since 2.25.0
      * @var int
      */
     protected $nonce;
@@ -20,7 +20,7 @@ class AccessToken extends \PayPalCheckoutSdk\Core\AccessToken
     /**
      * Returns true if the token is expired.
      *
-     * @unreleased x.x.x
+     * @since 2.25.0
      */
     public function isExpired(): bool
     {
@@ -33,7 +33,7 @@ class AccessToken extends \PayPalCheckoutSdk\Core\AccessToken
      * The creation date is the first 19 characters of the nonce.
      * Example nonce: 2023-02-07T05:03:17ZPeYxT6_thWGlTaamtMGYt5RQzVHx5B4dlNjLNhoF0tM
      *
-     * @unreleased x.x.x
+     * @since 2.25.0
      */
     protected function getCreationDate(): int
     {
@@ -43,7 +43,7 @@ class AccessToken extends \PayPalCheckoutSdk\Core\AccessToken
     /**
      * Returns the token expiration date.
      *
-     * @unreleased x.x.x
+     * @since 2.25.0
      */
     protected function getExpirationDate(): int
     {
@@ -53,7 +53,7 @@ class AccessToken extends \PayPalCheckoutSdk\Core\AccessToken
     /**
      * Returns the class object.
      *
-     * @unreleased x.x.x
+     * @since 2.25.0
      */
     public static function fromArray(array $data): self
     {
@@ -70,7 +70,7 @@ class AccessToken extends \PayPalCheckoutSdk\Core\AccessToken
     /**
      * Returns the class object.
      *
-     * @unreleased x.x.x
+     * @since 2.25.0
      */
     public static function fromObject(\stdClass $data): self
     {

@@ -192,7 +192,7 @@ final class MerchantDetail
     /**
      * Get refresh token code.
      *
-     * @unreleased x.x.x Set accessToken property.
+     * @since 2.25.0 Set accessToken property.
      * @since 2.9.0
      *
      * @param array $tokenDetails

@@ -53,7 +53,7 @@ class PayPalClient
     /**
      * Get http client.
      *
-     * @unreleased x.x.x Add custom AuthorizationInjector.
+     * @since 2.25.0 Add custom AuthorizationInjector.
      * @since 2.9.0
      */
     public function getHttpClient(): PayPalHttpClient
