@@ -257,6 +257,8 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 * Enhancement: Optimizations to how we interact with the GiveWP Gateway server
 * Enhancement: New method for storing donation notes using the Donation model
 * Fix: Improved how PayPal Donation tokens are handled to prevent the need to reconnect one's PayPal account
+* Fix: Classic forms using Authorize.Net as the default gateway now work as expected
+* Fix: Square credit card fields now work properly on safari
 * Fix: Resolved escaping issue preventing modal from displaying on some sites
 * Fix: The "Download Receipt" link in the PDF is more reliable after making donation updates
 * Fix: Prevented a filter from running twice on the donation summary
