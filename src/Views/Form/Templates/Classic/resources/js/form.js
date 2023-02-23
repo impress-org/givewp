@@ -246,10 +246,11 @@ function moveDefaultGatewayDataIntoActiveGatewaySection() {
 
     addSelectedGatewayDetails(createGatewayDetails());
 
-    document.querySelector('#give_purchase_form_wrap').removeChild(document.querySelector('.give-donation-submit'));
-    document.querySelector('.give-gateway-details').append(...document.querySelector('#give_purchase_form_wrap').children);
+    const purchaseFormWrap = document.querySelector('#give_purchase_form_wrap');
+    purchaseFormWrap.removeChild(purchaseFormWrap.querySelector('.give-donation-submit'));
+    document.querySelector('.give-gateway-details').append(...purchaseFormWrap.children);
 
-    removeNode(document.querySelector('#give_purchase_form_wrap'));
+    removeNode(purchaseFormWrap);
 }
 
 function attachRecurringDonationEvents() {
