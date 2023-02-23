@@ -9,6 +9,7 @@ use PayPalCheckoutSdk\Core\SandboxEnvironment;
 
 /**
  * Class PayPalClient
+ *
  * @package Give\PaymentGateways\PaypalCommerce
  *
  * @since 2.9.0
@@ -52,13 +53,12 @@ class PayPalClient
     /**
      * Get http client.
      *
+     * @unreleased x.x.x Add custom AuthorizationInjector.
      * @since 2.9.0
-     *
-     * @return PayPalHttpClient
      */
-    public function getHttpClient()
+    public function getHttpClient(): PayPalHttpClient
     {
-        return new PayPalHttpClient($this->getEnvironment());
+        return new PayPalCheckoutSdk\PayPalHttpClient($this->getEnvironment());
     }
 
     /**

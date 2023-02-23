@@ -2,8 +2,10 @@
 
 namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Http\ConnectServer\Client\ConnectClient;
 use Give\Helpers\ArrayDataSet;
+use Give\Log\Log;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 
 class PayPalAuth
@@ -39,14 +41,15 @@ class PayPalAuth
     /**
      * Retrieves a token for the Client ID and Secret
      *
+     * @unreleased x.x.x Validate paypal response.
      * @since 2.9.0
      *
      * @param string $client_id
      * @param string $client_secret
      *
-     * @return array
+     * @throws Exception
      */
-    public function getTokenFromClientCredentials($client_id, $client_secret)
+    public function getTokenFromClientCredentials($client_id, $client_secret): array
     {
         $auth = base64_encode("$client_id:$client_secret");
 
@@ -63,7 +66,24 @@ class PayPalAuth
             ]
         );
 
-        return ArrayDataSet::camelCaseKeys(json_decode(wp_remote_retrieve_body($request), true));
+        if (200 !== wp_remote_retrieve_response_code($request)) {
+            give(Log::class)->http(
+                'PayPal Commerce: Error retrieving access token',
+                [
+                    'category' => 'Payment Gateway',
+                    'source' => 'Paypal Commerce',
+                    'response' => $request,
+                ]
+            );
+
+            throw new Exception('PayPal Commerce: Error retrieving access token');
+        }
+
+        $decodedResponse = json_decode(wp_remote_retrieve_body($request), true);
+
+        $this->validateAccessToken($decodedResponse);
+
+        return ArrayDataSet::camelCaseKeys($decodedResponse);
     }
 
     /**
@@ -187,5 +207,42 @@ class PayPalAuth
         );
 
         return json_decode(wp_remote_retrieve_body($request), true);
+    }
+
+    /**
+     * Validate PayPal access token.
+     *
+     * Sample paypal access token: https://developer.paypal.com/api/rest/authentication/#link-sampleresponse
+     *
+     * @unreleased x.x.x
+     *
+     * @param array $accessToken Access token response from PayPal.
+     *
+     * @return void
+     * @throws Exception
+     */
+    private function validateAccessToken(array $accessToken)
+    {
+        $requiredKeys = [
+            'scope',
+            'access_token',
+            'token_type',
+            'app_id',
+            'expires_in',
+            'nonce'
+        ];
+
+        if (array_diff($requiredKeys, array_keys($accessToken))) {
+            give(Log::class)->error(
+                'PayPal Commerce: Invalid access token',
+                [
+                    'category' => 'Payment Gateway',
+                    'source' => 'Paypal Commerce',
+                    'response' => $accessToken,
+                ]
+            );
+
+            throw new Exception('PayPal Commerce: Error retrieving access token');
+        }
     }
 }
