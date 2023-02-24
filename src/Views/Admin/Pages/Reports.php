@@ -22,7 +22,7 @@ class Reports
      */
     public function init()
     {
-        add_action('admin_menu', [$this, 'add_page']);
+        add_action('admin_menu', [$this, 'add_page'], 40);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
     }
 

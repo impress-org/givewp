@@ -6,14 +6,14 @@ use Give\Framework\Http\ConnectServer\Client\ConnectClient;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
- * @unreleased
+ * @since 2.25.0
  */
 class ServiceProvider implements ServiceProviderInterface
 {
 
     /**
      * @inheritDoc
-     * @unreleased
+     * @since 2.25.0
      */
     public function register()
     {
@@ -28,7 +28,7 @@ class ServiceProvider implements ServiceProviderInterface
 
     /**
      * @inheritDoc
-     * @unreleased
+     * @since 2.25.0
      */
     public function boot()
     {

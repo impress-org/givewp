@@ -22,7 +22,7 @@ class ConnectClient
     public $apiUrl;
 
     /**
-     * @unreleased
+     * @since 2.25.0
      */
     public function __construct($giveConnectUrl)
     {
@@ -32,7 +32,7 @@ class ConnectClient
     /**
      * Get rest api endpoint url for requests.
      *
-     * @unreleased Set default endpoint value as empty
+     * @since 2.25.0 Set default endpoint value as empty
      * @since      2.8.0
      *
      * @param string $endpoint The route on the server. E.g: 'gateway-name/connect'
@@ -47,7 +47,7 @@ class ConnectClient
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      *
      * @param string $endpoint The route on the server. E.g: 'gateway-name/connect'
      * @param array  $args     Optional. Can contains 'headers' and 'body'
@@ -66,7 +66,7 @@ class ConnectClient
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      *
      * @param string $endpoint The route on the server. E.g: 'gateway-name/connect'
      * @param array  $args     Optional. Can contains 'headers' and 'body'
@@ -85,7 +85,7 @@ class ConnectClient
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      *
      * @param string $endpoint The route on the server. E.g: 'gateway-name/connect'
      * @param array  $args     Optional. Can contains 'method', 'headers' and 'body'
@@ -104,7 +104,7 @@ class ConnectClient
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      *
      * @param array|WP_Error $response
      *

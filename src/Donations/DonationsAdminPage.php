@@ -52,8 +52,7 @@ class DonationsAdminPage
             esc_html__('Donations', 'give'),
             'edit_give_forms',
             'give-payment-history',
-            [$this, 'render'],
-            5
+            [$this, 'render']
         );
     }
 

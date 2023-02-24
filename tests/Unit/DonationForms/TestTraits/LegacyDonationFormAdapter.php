@@ -13,7 +13,7 @@ use Give_Helper_Form;
 trait LegacyDonationFormAdapter
 {
     /**
-     * @unreleased
+     * @since 2.25.0
      */
     public function createSimpleDonationForm(): DonationForm
     {
@@ -21,7 +21,7 @@ trait LegacyDonationFormAdapter
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      */
     public function createMultiLevelDonationForm(): DonationForm
     {
@@ -29,7 +29,7 @@ trait LegacyDonationFormAdapter
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      */
     public function getDonationFormModelFromLegacyGiveDonateForm(Give_Donate_Form $giveDonateForm): DonationForm
     {

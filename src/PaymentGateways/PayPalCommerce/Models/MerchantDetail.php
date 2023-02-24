@@ -192,6 +192,7 @@ final class MerchantDetail
     /**
      * Get refresh token code.
      *
+     * @since 2.25.0 Set accessToken property.
      * @since 2.9.0
      *
      * @param array $tokenDetails
@@ -201,5 +202,6 @@ final class MerchantDetail
     public function setTokenDetails($tokenDetails)
     {
         $this->tokenDetails = array_merge($this->tokenDetails, $tokenDetails);
+        $this->accessToken = $tokenDetails['accessToken'];
     }
 }

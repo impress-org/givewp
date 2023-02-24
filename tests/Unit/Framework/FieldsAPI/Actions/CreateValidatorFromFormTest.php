@@ -15,7 +15,7 @@ use Give\Framework\FieldsAPI\Form;
 class CreateValidatorFromFormTest extends TestCase
 {
     /**
-     * @unreleased
+     * @since 2.25.0
      */
     public function testShouldCreateValidatorFromForm()
     {
