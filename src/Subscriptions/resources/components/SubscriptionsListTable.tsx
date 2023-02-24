@@ -16,6 +16,7 @@ declare global {
             table: {columns: Array<object>};
             forms: Array<{value: string; text: string}>;
             paymentMode: boolean;
+            pluginURL: string;
         };
     }
 }
@@ -120,7 +121,7 @@ const bulkActions: Array<BulkActionsConfig> = [
 const ListTableBlankSlate = () => {
     return (
         <BlankSlate
-            imagePath={'/wp-content/plugins/givewp/assets/dist/images/list-table/blank-slate-recurring-icon.svg '}
+            imagePath={`${window.GiveSubscriptions.pluginURL}/assets/dist/images/list-table/blank-slate-recurring-icon.svg`}
             description={__('No subscriptions found', 'give')}
             href={'https://givewp.com/documentation/add-ons/recurring-donations'}
             linkText={__('Recurring Donations.', 'give')}

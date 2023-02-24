@@ -18,6 +18,7 @@ declare global {
             table: {columns: Array<object>};
             paymentMode: boolean;
             manualDonations: boolean;
+            pluginURL: string;
         };
     }
 }
@@ -140,7 +141,7 @@ const bulkActions: Array<BulkActionsConfig> = [
 const ListTableBlankSlate = () => {
     return (
         <BlankSlate
-            imagePath={'/wp-content/plugins/givewp/assets/dist/images/list-table/blank-slate-donations-icon.svg '}
+            imagePath={`${window.GiveDonations.pluginURL}/assets/dist/images/list-table/blank-slate-donations-icon.svg`}
             description={__('No donations found', 'give')}
             href={'https://givewp.com/documentation/core/donations'}
             linkText={__('GiveWP Donations.', 'give')}
