@@ -242,7 +242,7 @@ class Give_Donor_Wall_Block {
 
 
     /**
-     * @unreleased
+     * @since 2.25.0
      *
      * @param string|array $value
      * @return array

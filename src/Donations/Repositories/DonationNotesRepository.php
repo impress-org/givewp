@@ -3,6 +3,8 @@
 namespace Give\Donations\Repositories;
 
 use Give\Donations\Models\DonationNote;
+use Give\Donations\ValueObjects\DonationNoteMetaKeys;
+use Give\Donations\ValueObjects\DonationNoteType;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -50,6 +52,10 @@ class DonationNotesRepository
      */
     public function insert(DonationNote $donationNote)
     {
+        if (!$donationNote->type) {
+            $donationNote->type = DonationNoteType::ADMIN();
+        }
+
         $this->validateDonationNote($donationNote);
 
         Hooks::doAction('givewp_donation_note_creating', $donationNote);
@@ -69,6 +75,17 @@ class DonationNotesRepository
                     'comment_parent' => $donationNote->donationId,
                     'comment_type' => 'donation',
                 ]);
+
+            $commentId = DB::last_insert_id();
+
+            if ($donationNote->type->isDonor()) {
+                DB::table('give_commentmeta')
+                    ->insert([
+                        'give_comment_id' => $commentId,
+                        'meta_key' => DonationNoteMetaKeys::TYPE,
+                        'meta_value' => DonationNoteType::DONOR,
+                    ]);
+            }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -79,7 +96,7 @@ class DonationNotesRepository
 
         DB::query('COMMIT');
 
-        $donationNote->id = DB::last_insert_id();
+        $donationNote->id = $commentId;
         $donationNote->createdAt = $dateCreated;
 
         Hooks::doAction('givewp_donation_note_created', $donationNote);
@@ -108,6 +125,10 @@ class DonationNotesRepository
                     'comment_parent' => $donationNote->donationId,
                     'comment_type' => 'donation',
                 ]);
+
+            if ($donationNote->isDirty('type') && $donationNote->type->isDonor()) {
+                $this->upsertDonationNoteType($donationNote);
+            }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -138,6 +159,10 @@ class DonationNotesRepository
         try {
             DB::table('give_comments')
                 ->where('comment_ID', $donationNote->id)
+                ->delete();
+
+            DB::table('give_commentmeta')
+                ->where('give_comment_id', $donationNote->id)
                 ->delete();
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -202,6 +227,40 @@ class DonationNotesRepository
                 ['comment_content', 'content'],
                 ['comment_date', 'createdAt']
             )
+            ->attachMeta(
+                'give_commentmeta',
+                'comment_ID',
+                'give_comment_id',
+                ...DonationNoteMetaKeys::getColumnsForAttachMetaQuery()
+            )
             ->where('comment_type', 'donation');
+    }
+
+    /**
+     * @since 2.25.0
+     */
+    private function upsertDonationNoteType(DonationNote $donationNote)
+    {
+        $table = DB::table('give_commentmeta');
+
+        $query = $table
+            ->where('give_comment_id', $donationNote->id)
+            ->where('meta_key', DonationNoteMetaKeys::TYPE)
+            ->get();
+
+        if (!$query) {
+            $table->insert([
+                'give_comment_id' => $donationNote->id,
+                'meta_key' => DonationNoteMetaKeys::TYPE,
+                'meta_value' => $donationNote->type->getValue(),
+            ]);
+        } else {
+            $table
+                ->where('give_comment_id', $donationNote->id)
+                ->where('meta_key', DonationNoteMetaKeys::TYPE)
+                ->update([
+                    'meta_value' => $donationNote->type->getValue(),
+                ]);
+        }
     }
 }

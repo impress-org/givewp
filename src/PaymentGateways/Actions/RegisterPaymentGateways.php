@@ -46,7 +46,7 @@ class RegisterPaymentGateways
     /**
      * Registers all the payment gateways with GiveWP
      *
-     * @unreleased add afterRegisteredGateways
+     * @since 2.25.0 add afterRegisteredGateways
      * @since 2.18.0
      *
      * @param  array  $gateways
