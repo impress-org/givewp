@@ -66,7 +66,7 @@ class DonorsAdminPage
             'forms' => $this->getForms(),
             'table' => give(DonorsListTable::class)->toArray(),
             'adminUrl' => $this->adminUrl,
-            'pluginURL' => GIVE_PLUGIN_URL
+            'pluginUrl' => GIVE_PLUGIN_URL
         ];
 
         EnqueueScript::make('give-admin-donors', 'assets/dist/js/give-admin-donors.js')

@@ -14,7 +14,7 @@ declare global {
             apiRoot: string;
             forms: Array<{value: string; text: string}>;
             table: {columns: Array<object>};
-            pluginURL: string;
+            pluginUrl: string;
         };
     }
 }
@@ -77,7 +77,7 @@ const donorsBulkActions: Array<BulkActionsConfig> = [
 const ListTableBlankSlate = () => {
     return (
         <BlankSlate
-            imagePath={`${window.GiveDonors.pluginURL}assets/dist/images/list-table/blank-slate-donor-icon.svg`}
+            imagePath={`${window.GiveDonors.pluginUrl}assets/dist/images/list-table/blank-slate-donor-icon.svg`}
             description={__('No donors found', 'give')}
             href={'https://givewp.com/documentation/core/donors/'}
             linkText={__('GiveWP Donors.', 'give')}

@@ -42,7 +42,7 @@ class SubscriptionsAdminPage
             'table' => give(SubscriptionsListTable::class)->toArray(),
             'adminUrl' => $this->adminUrl,
             'paymentMode' => give_is_test_mode(),
-            'pluginURL' => GIVE_PLUGIN_URL
+            'pluginUrl' => GIVE_PLUGIN_URL
         ];
 
         EnqueueScript::make('give-admin-subscriptions', 'assets/dist/js/give-admin-subscriptions.js')
