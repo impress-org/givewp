@@ -2,7 +2,7 @@ name: Plugin asset/readme updates to WordPress.org
 on:
   push:
     branches:
-    - trunk
+      - master
 jobs:
   trunk:
     name: Push to trunk
@@ -14,3 +14,5 @@ jobs:
       env:
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
         SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+        SLUG: give
+        IGNORE_OTHER_FILES: true
