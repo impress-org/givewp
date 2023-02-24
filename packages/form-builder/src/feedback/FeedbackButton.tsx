@@ -9,10 +9,8 @@ const FeedbackButton = (props) => {
                 padding: '0 15px',
                 borderRadius: '10px',
             }}
-            variant={'primary'}
+            variant="primary"
             icon={<FeedbackIcon />}
-            target="_blank"
-            rel="noopener noreferrer"
             {...props}
         >
             {props.children}
