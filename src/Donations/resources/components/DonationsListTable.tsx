@@ -133,6 +133,10 @@ const bulkActions: Array<BulkActionsConfig> = [
     },
 ];
 
+/**
+ * Displays a blank slate for the Donations table.
+ * @unreleased
+ */
 const ListTableBlankSlate = () => {
     return (
         <BlankSlate

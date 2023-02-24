@@ -69,6 +69,10 @@ const donorsBulkActions: Array<BulkActionsConfig> = [
     },
 ];
 
+/**
+ * Displays a blank slate for the Donors table.
+ * @unreleased
+ */
 const ListTableBlankSlate = () => {
     return (
         <BlankSlate

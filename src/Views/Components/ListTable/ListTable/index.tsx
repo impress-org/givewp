@@ -35,6 +35,10 @@ export interface ListTableColumn {
     label: string;
 }
 
+/**
+ * Updated to replace the static message when no results are found with the blank slate design.
+ * @unreleased
+ */
 export const ListTable = ({
     singleName = __('item', 'give'),
     pluralName = __('items', 'give'),

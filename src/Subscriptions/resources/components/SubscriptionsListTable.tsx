@@ -113,6 +113,10 @@ const bulkActions: Array<BulkActionsConfig> = [
     })(),
 ];
 
+/**
+ * Displays a blank slate for the Subscriptions table.
+ * @unreleased
+ */
 const ListTableBlankSlate = () => {
     return (
         <BlankSlate
