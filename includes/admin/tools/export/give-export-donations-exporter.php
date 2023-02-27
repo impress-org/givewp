@@ -284,6 +284,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 			'number' => 30,
 			'page'   => $this->step,
 			'status' => $this->status,
+			'order'  => 'ASC',
 		);
 		// Date query.
 		if ( ! empty( $this->start ) || ! empty( $this->end ) ) {
