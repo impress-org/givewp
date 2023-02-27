@@ -12,7 +12,7 @@ export default function Form({children, formProps, formError, isSubmitting}: For
                 </div>
             )}
             <section className="givewp-layouts givewp-layouts-section">
-                <button type="submit" disabled={isSubmitting}>
+                <button type="submit" disabled={isSubmitting} aria-busy={isSubmitting}>
                     {isSubmitting ? __('Submitting…', 'give') : __('Donate', 'give')}
                 </button>
             </section>

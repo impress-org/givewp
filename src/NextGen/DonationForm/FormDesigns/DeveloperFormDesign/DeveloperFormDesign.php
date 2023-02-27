@@ -24,12 +24,4 @@ class DeveloperFormDesign extends FormDesign
     {
         return __('Developer', 'give');
     }
-
-    /**
-     * @since 0.1.0
-     */
-    public function css(): string
-    {
-        return GIVE_NEXT_GEN_URL . 'build/developerFormDesignCss.css';
-    }
 }

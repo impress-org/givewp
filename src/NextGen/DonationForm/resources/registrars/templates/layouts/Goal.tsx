@@ -1,4 +1,3 @@
-import {CSSProperties} from 'react';
 import {__} from '@wordpress/i18n';
 import type {GoalProps} from '@givewp/forms/propTypes';
 
@@ -15,18 +14,16 @@ export default function Goal({
 }: GoalProps) {
     return (
         <div className="givewp-form-goal-progress">
-            <div className="givewp-form-goal-progress-description">
-                <span>{__(`${currentAmountFormatted} of ${targetAmountFormatted} ${goalLabel} goal`, 'give')}</span>
-            </div>
-            <div
-                role="meter"
+            <label htmlFor="goal-progress" className="givewp-form-goal-progress-description">
+                {__(`${currentAmountFormatted} of ${targetAmountFormatted} ${goalLabel} goal`, 'give')}
+            </label>
+            <progress
+                id="goal-progress"
                 className="givewp-form-goal-progress-meter"
-                style={{'--progress': `${progressPercentage}%`} as CSSProperties}
+                value={progressPercentage}
+                max={100}
                 aria-label={__(`${currentAmount} of ${targetAmount} ${goalLabel} goal`, 'give')}
-                aria-valuemin={0}
-                aria-valuemax={targetAmount}
-                aria-valuenow={currentAmount}
-            ></div>
+            ></progress>
         </div>
     );
 }

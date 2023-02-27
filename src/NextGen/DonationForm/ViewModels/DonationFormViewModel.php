@@ -80,8 +80,6 @@ class DonationFormViewModel
      */
     public function enqueueGlobalStyles()
     {
-        wp_enqueue_global_styles();
-        
         wp_register_style(
             'givewp-global-form-styles',
             GIVE_NEXT_GEN_URL . 'src/NextGen/DonationForm/resources/styles/global.css'
@@ -96,6 +94,11 @@ class DonationFormViewModel
         );
 
         wp_enqueue_style('givewp-global-form-styles');
+
+        wp_enqueue_style(
+            'givewp-base-form-styles',
+            GIVE_NEXT_GEN_URL . 'build/baseFormDesignCss.css'
+        );
     }
 
     /**
@@ -194,7 +197,7 @@ class DonationFormViewModel
         <?php
         endif; ?>
 
-        <div id="root-givewp-donation-form" class="givewp-donation-form"></div>
+        <div data-theme="light" id="root-givewp-donation-form" class="givewp-donation-form"></div>
 
         <?php
         wp_print_footer_scripts();

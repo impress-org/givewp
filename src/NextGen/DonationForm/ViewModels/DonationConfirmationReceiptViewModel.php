@@ -96,7 +96,7 @@ class DonationConfirmationReceiptViewModel
         $primaryColor = $donationForm ? $donationForm->settings->primaryColor : '#69B868';
         $secondaryColor = $donationForm ? $donationForm->settings->secondaryColor : '#000000';
 
-        wp_enqueue_global_styles();
+        $this->enqueueGlobalStyles($primaryColor, $secondaryColor);
 
         $this->enqueueFormScripts(
             $this->donation->formId,
@@ -119,7 +119,8 @@ class DonationConfirmationReceiptViewModel
         <?php
         endif; ?>
 
-        <div id="root-givewp-donation-confirmation-receipt" class="givewp-donation-confirmation-receipt"
+        <div data-theme="light" id="root-givewp-donation-confirmation-receipt"
+             class="givewp-donation-confirmation-receipt"
              style="
                      --givewp-primary-color:<?= $primaryColor ?>;
                      --givewp-secondary-color:<?= $secondaryColor ?>;
@@ -132,6 +133,32 @@ class DonationConfirmationReceiptViewModel
         echo ob_get_clean();
 
         exit();
+    }
+
+    /**
+     * @since 0.1.0
+     */
+    public function enqueueGlobalStyles(string $primaryColor, string $secondaryColor)
+    {
+        wp_register_style(
+            'givewp-global-form-styles',
+            GIVE_NEXT_GEN_URL . 'src/NextGen/DonationForm/resources/styles/global.css'
+        );
+
+        wp_add_inline_style(
+            'givewp-global-form-styles',
+            ":root {
+            --givewp-primary-color:{$primaryColor};
+            --givewp-secondary-color:{$secondaryColor}; 
+            }"
+        );
+
+        wp_enqueue_style('givewp-global-form-styles');
+
+        wp_enqueue_style(
+            'givewp-base-form-styles',
+            GIVE_NEXT_GEN_URL . 'build/baseFormDesignCss.css'
+        );
     }
 
     /**

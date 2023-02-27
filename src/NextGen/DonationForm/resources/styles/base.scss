@@ -1,0 +1,22 @@
+@import "@fortawesome/fontawesome-free/css/all.css";
+
+@layer base {
+  @import "pico";
+}
+
+@layer base-components {
+  @import "components/gateways";
+  @import "components/amount";
+  @import "components/donation-summary";
+  @import "components/receipt";
+}
+
+@layer base-elements {
+  @import "elements/header";
+  @import "elements/form";
+  @import "elements/sections";
+}
+
+@layer base-overrides {
+  @import "base-overrides";
+}

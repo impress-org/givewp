@@ -19,6 +19,8 @@
         background-color: #fafafa;
         transition: background-color var(--tab-transition);
         border-radius: 0.25rem;
+        list-style: none;
+        margin: 0;
     }
 
     label {
@@ -72,10 +74,15 @@
         transition: border-color var(--tab-transition);
         border-color: #000;
         z-index: 10;
+        background-color: transparent;
+        box-shadow: none;
 
         &:hover,
-        &:focus {
+        &:focus,
+        &:active {
+            --background-color: transparent;
             border-color: var(--givewp-primary-color);
+            outline: 0;
         }
 
         &:not(:checked) {

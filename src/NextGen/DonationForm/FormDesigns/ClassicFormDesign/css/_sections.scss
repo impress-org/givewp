@@ -1,6 +1,7 @@
 .givewp-layouts-section {
     padding-block: clamp(1.75rem, -0.916667rem + 8.33333vw, 3.375rem);
     padding-inline: clamp(1rem, -4.53846rem + 17.3077vw, 4.375rem);
+    margin-bottom: 0;
 
     &:nth-of-type(2n+1) {
         background-color: rgb(255, 255, 255);

@@ -1,4 +1,4 @@
-@use 'fn';
+@use "@picocss/pico/scss/variables";
 
 .givewp-donation-confirmation-receipt {
     width: 100%;
@@ -12,9 +12,9 @@
     background: #fff;
     box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.3);
 
-    @media screen and (min-width: $desktopMinWidth) {
-        border-radius: 0.5rem;
-    }
+   @media screen and  (min-width: map-get(variables.$breakpoints, "md")) {
+       border-radius: 0.5rem;
+   }
 
     .receipt-heading {
         position: relative;
@@ -33,7 +33,7 @@
         row-gap: 1.25rem;
         background: #fbfbfb;
         border-block: 0.0625rem solid #f2f2f2;
-        padding-block: fn.scaleBetween(1.5rem, 2.5rem);
+        padding-block: 1.5rem;
         padding-inline: 1.25rem;
 
         .instruction {
@@ -95,6 +95,7 @@
             .details-table {
                 display: flex;
                 flex-direction: column;
+                padding: 0;
 
                 .details-row {
                     display: flex;
@@ -175,8 +176,8 @@
         justify-content: space-between;
         align-items: center;
         margin-block-start: 2rem;
-        padding-block-end: fn.scaleBetween(1.5rem, 3.625rem);
-        padding-inline: fn.scaleBetween(1.25rem, 4.25rem);
+        padding-block-end: 1.5rem;
+        padding-inline: 1.25rem;
 
         .donor-dashboard-link {
             color: var(--givewp-primary-color);
@@ -218,8 +219,8 @@
 
 .givewp-layouts-receipt {
     .receipt-body {
-        padding-block-start: fn.scaleBetween(2.375rem, 3rem);
-        padding-inline: fn.scaleBetween(1.25rem, 4.25rem);
+        padding-block-start: 2.375rem;
+        padding-inline: 1.25rem;
     }
 
     .details + .details {
@@ -275,18 +276,19 @@
         color: #fff;
         text-align: center;
 
-        @media screen and (min-width: $desktopMinWidth) {
-            padding: 3rem;
-        }
+      @media screen and  (min-width: map-get(variables.$breakpoints, "md")) {
+         padding: 3rem;
+      }
     }
 
     &-heading {
         position: relative;
         margin-block-end: 1rem;
-        font-size: fn.scaleBetween(1.75rem, 2.1875rem);
+        font-size: 1.75rem;
         font-weight: 600;
         line-height: 1.2;
         text-shadow: 0 0.07em 0.14em rgba(0, 0, 0, 0.15);
+        color: currentColor;
 
         &::after {
             position: absolute;
@@ -303,7 +305,7 @@
     }
 
     &-description {
-        font-size: fn.scaleBetween(1.125rem, 1.25rem);
+        font-size:1.125rem;
         line-height: 1.45;
         margin: 0 auto;
         max-inline-size: 42ch;
@@ -311,4 +313,21 @@
     }
 }
 
+.givewp-form-secure-badge {
+    display: inline-flex;
+    column-gap: 0.5rem;
+    align-items: center;
+    padding-block: 0.5rem;
+    padding-inline: 0.9rem;
+    border-radius: 9999px;
+    background-color: #fff;
+    box-shadow: 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.25);
+    color: #333;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1;
+}
 
+.givewp-form-secure-badge-icon {
+    color: var(--givewp-secondary-color);
+}
