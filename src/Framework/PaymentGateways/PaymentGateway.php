@@ -12,12 +12,14 @@ use Give\Framework\PaymentGateways\CommandHandlers\PaymentProcessingHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\RedirectOffsiteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\RespondToBrowserHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionCompleteHandler;
+use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionProcessingHandler;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
+use Give\Framework\PaymentGateways\Commands\SubscriptionProcessing;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionAmountEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionDashboardLinkable;
@@ -32,7 +34,6 @@ use Give\Framework\Support\ValueObjects\Money;
 use Give\Helpers\Call;
 use Give\PaymentGateways\Actions\GetGatewayDataFromRequest;
 use Give\Subscriptions\Models\Subscription;
-use ReflectionException;
 use ReflectionMethod;
 
 use function Give\Framework\Http\Response\response;
@@ -225,9 +226,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
+     * @since 2.25.0 update return logic
      * @since 2.21.2
-     * @since 2.21.2
-     * @throws Exception
      */
     public function hasGatewayDashboardSubscriptionUrl(): bool
     {
@@ -235,7 +235,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             return $this->subscriptionModule->hasGatewayDashboardSubscriptionUrl();
         }
 
-        throw new Exception('Method has not been implemented yet.');
+        return $this->isFunctionImplementedInGatewayClass('gatewayDashboardSubscriptionUrl');
     }
 
     /**
@@ -289,7 +289,6 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * @since 2.21.2
      * @inheritDoc
-     * @throws Exception
      */
     public function gatewayDashboardSubscriptionUrl(Subscription $subscription): string
     {
@@ -297,7 +296,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             return $this->subscriptionModule->gatewayDashboardSubscriptionUrl($subscription);
         }
 
-        throw new Exception('Gateway does not support providing a dashboard link.');
+        return false;
     }
 
     /**
@@ -370,6 +369,15 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
                 $subscription,
                 $donation
             );
+
+            $response = response()->redirectTo(give_get_success_page_uri());
+
+            $this->handleResponse($response);
+        }
+
+        if ($command instanceof SubscriptionProcessing) {
+            $handler = new SubscriptionProcessingHandler($command, $subscription, $donation);
+            $handler();
 
             $response = response()->redirectTo(give_get_success_page_uri());
 

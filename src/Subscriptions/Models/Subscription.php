@@ -16,6 +16,7 @@ use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Actions\GenerateNextRenewalForSubscription;
 use Give\Subscriptions\DataTransferObjects\SubscriptionQueryData;
 use Give\Subscriptions\Factories\SubscriptionFactory;
+use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
@@ -34,6 +35,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
  * @property int $frequency
  * @property int $installments The total number of installments for the subscription; discontinues after this number of installments
  * @property string $transactionId
+ * @property SubscriptionMode $mode
  * @property Money $amount
  * @property Money $feeAmountRecovered
  * @property SubscriptionStatus $status
@@ -57,6 +59,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
         'frequency' => 'int',
         'installments' => ['int', 0],
         'transactionId' => 'string',
+        'mode' => SubscriptionMode::class,
         'amount' => Money::class,
         'feeAmountRecovered' => Money::class,
         'status' => SubscriptionStatus::class,
@@ -209,6 +212,34 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
         }
 
         $this->gateway()->cancelSubscription($this);
+    }
+
+    /**
+     * @since 2.24.0
+     */
+    public function isIndefinite(): bool
+    {
+        return $this->installments === 0;
+    }
+
+    /**
+     * @since 2.24.0
+     *
+     * @return int|float
+     */
+    public function remainingInstallments()
+    {
+        return $this->isIndefinite() ? INF : ($this->installments - $this->donations()->count());
+    }
+
+    /**
+     * @since 2.24.0
+     *
+     * @return boolean
+     */
+    public function hasExceededTheMaxInstallments(): bool
+    {
+        return 0 > $this->remainingInstallments();
     }
 
     /**

@@ -33,7 +33,7 @@ class SaleBanners
     /**
      * Get banners definitions
      *
-     * @unreleased add Giving Tuesday 2022 banner
+     * @since 2.23.2 add Giving Tuesday 2022 banner
      * @since 2.17.0
      *
      * @note id must be unique for each definition
@@ -149,12 +149,7 @@ class SaleBanners
             ]
         );
 
-        wp_enqueue_style(
-            'give-in-plugin-upsells-sale-banners-font',
-            'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap',
-            [],
-            null
-        );
+        wp_enqueue_style('givewp-admin-fonts');
     }
 
     /**

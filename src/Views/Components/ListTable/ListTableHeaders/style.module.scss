@@ -1,0 +1,27 @@
+.sortButton {
+    display: flex;
+    align-items: center;
+    background: none;
+    color: #2271b1;
+    border: none;
+    cursor: pointer;
+    transform: translateX(-10px);
+
+    .text {
+        white-space: nowrap;
+    }
+
+    svg {
+        display: block;
+        transform: scale(112%);
+        margin: 3px 0 3px 8px;
+
+        > path {
+            &:hover {
+                fill: #0878b0 !important;
+                }
+            }
+        }
+    }
+
+

@@ -1,20 +1,21 @@
 <?php
 
-namespace GiveTests\Unit\Donations\Repositories;
+namespace Give\Tests\Unit\Donations\Repositories;
 
 use DateTime;
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donations\ValueObjects\DonationType;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
  * @coversDefaultClass DonationRepository
@@ -235,5 +236,32 @@ final class TestDonationRepository extends TestCase
         $lastDonationId = $repository->getLatestDonation()->id;
 
         $this->assertGreaterThan($firstDonationId, $lastDonationId);
+    }
+
+    /**
+     * @since 2.25.0
+     *
+     * @see https://github.com/impress-org/givewp/issues/6654
+     *
+     * @return void
+     *
+     * @throws Exception
+     */
+    public function testUpdateDonationShouldClearPostCache()
+    {
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'gatewayTransactionId' => 'gateway-transaction-id',
+            'status' => DonationStatus::PENDING(),
+            'type' => DonationType::SINGLE(),
+        ]);
+
+        $donation->status = DonationStatus::COMPLETE();
+        $donation->save();
+
+        $donationStatus = $donation->status->getValue();
+        $postStatus = get_post_status($donation->id);
+
+        $this->assertEquals($donationStatus, $postStatus);
     }
 }

@@ -1,13 +1,13 @@
 <?php
 
-namespace GiveTests\Unit\Donors\Models;
+namespace Give\Tests\Unit\Donors\Models;
 
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
 use Give\Subscriptions\Models\Subscription;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
  * @since 2.19.6

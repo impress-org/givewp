@@ -1,11 +1,11 @@
 <?php
 
-namespace GiveTests\Unit\Form\LegacyConsumer\Commands;
+namespace Give\Tests\Unit\Form\LegacyConsumer\Commands;
 
 use Give\Framework\FieldsAPI\Text;
 use Give\Receipt\DonationReceipt;
 use Give_Helper_Payment;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 final class SetupFieldReceiptTest extends TestCase
 {

@@ -8,7 +8,7 @@ use Give\Framework\Support\ValueObjects\Money;
  * Provides Give-specific setup/tear down/assert methods
  * and helper functions.
  *
- * @deprecated 2.22.1 use GiveTests\TestCase instead
+ * @deprecated 2.22.1 use Give\Tests\TestCase instead
  *
  * @since 1.0
  */

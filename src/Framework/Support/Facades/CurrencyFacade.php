@@ -2,6 +2,7 @@
 
 namespace Give\Framework\Support\Facades;
 
+use Give\Log\Log;
 use Money\Converter;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
@@ -67,6 +68,7 @@ class CurrencyFacade
     /**
      * Formats the amount to a currency format, including currency symbols, in the given locale.
      *
+     * @since 2.24.2 fallback on give formatting system if intl extension is not available
      * @since 2.20.0
      *
      * @param Money $amount
@@ -76,6 +78,20 @@ class CurrencyFacade
      */
     public function formatToLocale(Money $amount, $locale = null): string
     {
+        $useAutoFormatting = give_get_option('auto_format_currency');
+        if (!class_exists(NumberFormatter::class) || !$useAutoFormatting) {
+            if ($useAutoFormatting) {
+                Log::warning(
+                    'Auto-formatting is enabled  at Donations > Settings > General > Currency but the INTL extension for PHP is not available. Please install the INTL extension to enable auto-formatting, or disable the Auto-formatting setting to prevent this error message. Most web hosts can help with installing and activating INTL. GiveWP is falling back to formatting based on the legacy settings.'
+                );
+            }
+
+            return give_currency_filter(
+                $this->formatToDecimal($amount),
+                ['currency' => $amount->getCurrency()->getCode()]
+            );
+        }
+
         if ($locale === null) {
             $locale = get_locale();
         }

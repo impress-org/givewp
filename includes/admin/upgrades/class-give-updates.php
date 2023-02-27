@@ -156,7 +156,7 @@ class Give_Updates {
 
 		if ( is_admin() ) {
 			add_action( 'admin_init', [ $this, '__change_donations_label' ], 9999 );
-			add_action( 'admin_menu', [ $this, '__register_menu' ], 9999 );
+			add_action( 'admin_menu', [ $this, '__register_menu' ], 55 );
 		}
 	}
 

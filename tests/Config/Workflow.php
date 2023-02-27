@@ -1,6 +1,6 @@
 <?php
 
-namespace GiveTests\Config;
+namespace Give\Tests\Config;
 
  /**
  * Runs the test suite for GitHub actions, which tests multiple

@@ -6,7 +6,6 @@ use Exception;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\QueryBuilder\Clauses\RawSQL;
 use Give\Framework\QueryBuilder\QueryBuilder;
-use Give\Helpers\Hooks;
 use WP_Error;
 
 /**
@@ -89,7 +88,7 @@ class DB
                 global $wpdb;
 
                 if (in_array($name, ['get_row', 'get_col', 'get_results', 'query'], true)) {
-                    Hooks::doAction('givewp_db_pre_query', current($arguments));
+                    do_action('givewp_db_pre_query', current($arguments));
                 }
 
                 return call_user_func_array([$wpdb, $name], $arguments);

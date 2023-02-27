@@ -2,9 +2,9 @@
 
 namespace Give\Framework\FieldsAPI;
 
-use Give\Framework\FieldsAPI\Concerns\ValidationRules;
 use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
+use Give\Vendors\StellarWP\Validation\Concerns\HasValidationRules;
 
 /**
  * @since      2.17.0 allow fields to be macroable
@@ -14,7 +14,6 @@ use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
  */
 abstract class Field implements Node
 {
-
     use Concerns\HasDefaultValue;
     use Concerns\HasName;
     use Concerns\HasType;
@@ -24,26 +23,24 @@ abstract class Field implements Node
     use Concerns\Macroable;
     use Concerns\SerializeAsJson;
     use Concerns\TapNode;
-
-    /** @var ValidationRules */
-    protected $validationRules;
+    use HasValidationRules {
+        HasValidationRules::__construct as private __validationRulesConstruct;
+    }
 
     /**
      * @since      2.12.0
      * @since 2.23.1 Make constructor final to avoid unsafe usage of `new static()`.
      *
-     * @param string $name
-     *
      * @throws EmptyNameException
      */
-    final public function __construct($name)
+    final public function __construct(string $name)
     {
         if (!$name) {
             throw new EmptyNameException();
         }
 
         $this->name = $name;
-        $this->validationRules = new ValidationRules();
+        $this->__validationRulesConstruct();
     }
 
     /**
@@ -59,12 +56,10 @@ abstract class Field implements Node
      *
      * @since 2.12.0
      *
-     * @param string $name
-     *
      * @return static
      * @throws EmptyNameException
      */
-    public static function make($name)
+    public static function make(string $name): self
     {
         if (!$name) {
             throw new EmptyNameException();

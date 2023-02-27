@@ -1,13 +1,13 @@
 <?php
 
-namespace GiveTests\Unit\Donations\Models;
+namespace Give\Tests\Unit\Donations\Models;
 
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donors\Models\Donor;
-use GiveTests\TestCase;
-use GiveTests\TestTraits\RefreshDatabase;
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 class TestDonationNote extends TestCase
 {
@@ -53,5 +53,24 @@ class TestDonationNote extends TestCase
 
         $this->assertInstanceOf(Donation::class, $donationNote->donation);
         $this->assertEquals($donation->id, $donationNote->donation->id);
+    }
+
+    /**
+     * @since 2.25.0
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testDonationNoteTypeShouldAssignAdminAsDefault()
+    {
+        $donor = Donor::factory()->create();
+
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create(['donorId' => $donor->id]);
+
+        /** @var DonationNote $donationNote */
+        $donationNote = DonationNote::factory()->create(['donationId' => $donation->id]);
+
+        $this->assertTrue($donationNote->type->isAdmin());
     }
 }

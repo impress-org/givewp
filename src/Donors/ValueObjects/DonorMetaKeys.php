@@ -23,11 +23,14 @@ class DonorMetaKeys extends Enum
     const PREFIX = '_give_donor_title_prefix';
 
     /**
+     * @since 2.24.0 change function to remove ADDITIONAL_EMAILS from columns
+     *
      * @return array
      */
-    public static function getColumnsForAttachMetaQueryWithAdditionalEmails()
+    public static function getColumnsForAttachMetaQueryWithoutAdditionalEmails()
     {
         $columns = self::getColumnsForAttachMetaQuery();
+
 
         $id = array_search(
             [self::ADDITIONAL_EMAILS, self::ADDITIONAL_EMAILS()->getKeyAsCamelCase()],
@@ -35,11 +38,7 @@ class DonorMetaKeys extends Enum
             true
         );
 
-        $columns[$id] = [
-            self::ADDITIONAL_EMAILS,
-            self::ADDITIONAL_EMAILS()->getKeyAsCamelCase(),
-            true
-        ];
+        unset($columns[$id]);
 
         return $columns;
     }

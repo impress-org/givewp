@@ -1,10 +1,11 @@
 <?php
 
-namespace GiveTests\Unit\Onboarding\Setup;
+namespace Give\Tests\Unit\Onboarding\Setup;
 
+use Give\Framework\Http\ConnectServer\Client\ConnectClient;
 use Give\Onboarding\FormRepository;
 use Give\Onboarding\Setup\PageView;
-use GiveTests\TestCase;
+use Give\Tests\TestCase;
 
 final class PageViewTest extends TestCase
 {
@@ -15,8 +16,9 @@ final class PageViewTest extends TestCase
      */
     public function testContentSurroundedByUnmergedTagIsNotScrubbed()
     {
+        $connectClient = give(ConnectClient::class);
         $pageView = new PageView(
-            $this->createMock(FormRepository::class)
+            $this->createMock(FormRepository::class), $connectClient
         );
 
         $this->assertContains(

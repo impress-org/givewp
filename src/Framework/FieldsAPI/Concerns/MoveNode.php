@@ -4,8 +4,7 @@ namespace Give\Framework\FieldsAPI\Concerns;
 
 trait MoveNode
 {
-
-    public function move($name)
+    public function move($name): MoveNodeProxy
     {
         $collection = $this;
         $proxy = new MoveNodeProxy($collection);

@@ -95,9 +95,8 @@ class Model
      * Get Progress Bar output
      *
      * @since 2.9.0
-     **@return string
      */
-    protected function getProgressBarOutput()
+    public function getProgressBarOutput(): string
     {
         $progressBar = new ProgressBar(
             [
@@ -120,6 +119,16 @@ class Model
     public function getTemplatePath()
     {
         return GIVE_PLUGIN_DIR . '/src/MultiFormGoals/resources/views/multiformgoal.php';
+    }
+
+    /**
+     * @since 2.24.0
+     *
+     * @return false|mixed
+     */
+    public function getInnerBlocks()
+    {
+        return $this->innerBlocks;
     }
 
 }
