@@ -73,10 +73,19 @@ class DonationsAdminPage
             'manualDonations' => Utils::isPluginActive('give-manual-donations/give-manual-donations.php'),
         ];
 
-        EnqueueScript::make('give-admin-donations', 'assets/dist/js/give-admin-donations.js')
-            ->loadInFooter()
-            ->registerTranslations()
-            ->registerLocalizeData('GiveDonations', $data)->enqueue();
+
+        if (isset($_GET['view']) && 'view-payment-details' === $_GET['view']) {
+            EnqueueScript::make('give-admin-donation-details', 'assets/dist/js/give-admin-donation-details.js')
+                ->loadInFooter()
+                ->registerTranslations()
+                ->registerLocalizeData('GiveDonations', $data)->enqueue();        }
+        else {
+            EnqueueScript::make('give-admin-donations', 'assets/dist/js/give-admin-donations.js')
+                ->loadInFooter()
+                ->registerTranslations()
+                ->registerLocalizeData('GiveDonations', $data)->enqueue();
+        }
+
 
         wp_enqueue_style(
             'give-admin-ui-font',
@@ -89,11 +98,12 @@ class DonationsAdminPage
     /**
      * Render admin page container
      * @since 2.20.0
+     * @unreleased render new root div to load detail screen.
      */
     public function render()
     {
         if (isset($_GET['view']) && 'view-payment-details' === $_GET['view']) {
-            include GIVE_PLUGIN_DIR . 'includes/admin/payments/view-payment-details.php';
+            echo '<div id="give-admin-donation-details-root"></div>';
         } else {
             echo '<div id="give-admin-donations-root"></div>';
         }
@@ -104,10 +114,23 @@ class DonationsAdminPage
      * @since 2.20.0
      *
      * @return bool
+     * @unreleased check for both admin pages to determine if page is showing.
      */
     public static function isShowing()
     {
-        return isset($_GET['page']) && $_GET['page'] === 'give-payment-history' && !isset($_GET['view']);
+        return (isset($_GET['page']) && $_GET['page'] === 'give-payment-history') || (isset($_GET['view']) && 'view-payment-details' === $_GET['view']);
+    }
+
+
+    /**
+     * Helper function to determine if current page is Give Donors admin page
+     * @since 2.20.0
+     *
+     * @return bool
+     */
+    public static function isShowingDetailScreen()
+    {
+        return isset($_GET['view']) && 'view-payment-details' === $_GET['view'];
     }
 
     /**
