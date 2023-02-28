@@ -5,7 +5,7 @@ import {forwardRef} from "@wordpress/element";
 import {ForwardedRef, RefObject} from "react";
 
 /**
- * @unreleased
+ * @since 0.2.0
  */
 type CustomAmountProps = {
     fieldError?: string;
@@ -16,7 +16,7 @@ type CustomAmountProps = {
 }
 
 /**
- * @unreleased
+ * @since 0.2.0
  */
 const CustomAmount = forwardRef(({
                                      defaultValue,

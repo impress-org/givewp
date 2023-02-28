@@ -57,7 +57,7 @@ export function setFormBlocks(blocks) {
 }
 
 /**
- * @unreleased
+ * @since 0.2.0
  */
 export function setIsDirty(isDirty: boolean) {
     return {

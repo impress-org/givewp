@@ -66,7 +66,7 @@ class Amount extends Field
     }
 
     /**
-     * @unreleased
+     * @since 0.2.0
      */
     public function allowLevels($allow = true): self
     {
@@ -84,7 +84,7 @@ class Amount extends Field
     }
 
     /**
-     * @unreleased
+     * @since 0.2.0
      */
     public function customAmountText(string $customAmountText): Amount
     {
@@ -94,7 +94,7 @@ class Amount extends Field
     }
 
     /**
-     * @unreleased
+     * @since 0.2.0
      *
      * @param  float|int  $amount
      */

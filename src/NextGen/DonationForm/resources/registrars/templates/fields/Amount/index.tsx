@@ -5,7 +5,7 @@ import CustomAmount from './CustomAmount';
 import AmountLevels from './AmountLevels';
 
 /**
- * @unreleased add display options for multi levels, fixed amount, and custom amount
+ * @since 0.2.0 add display options for multi levels, fixed amount, and custom amount
  * @since 0.1.0
  */
 export default function Amount({

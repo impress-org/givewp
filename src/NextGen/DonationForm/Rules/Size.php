@@ -25,7 +25,7 @@ class Size implements ValidationRule, ValidatesOnFrontEnd
     }
 
     /**
-     * @unreleased
+     * @since 0.2.0
      */
     public function __construct($size)
     {
@@ -50,7 +50,7 @@ class Size implements ValidationRule, ValidatesOnFrontEnd
     }
 
     /**
-     * @unreleased
+     * @since 0.2.0
      */
     public static function fromString(string $options = null): ValidationRule
     {
@@ -62,7 +62,7 @@ class Size implements ValidationRule, ValidatesOnFrontEnd
     }
 
     /**
-     * @unreleased
+     * @since 0.2.0
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
     {
@@ -82,7 +82,7 @@ class Size implements ValidationRule, ValidatesOnFrontEnd
     }
 
     /**
-     * @unreleased
+     * @since 0.2.0
      *
      * @return numeric
      */
@@ -92,7 +92,7 @@ class Size implements ValidationRule, ValidatesOnFrontEnd
     }
 
     /**
-     * @unreleased
+     * @since 0.2.0
      *
      * @return numeric
      */
@@ -102,7 +102,7 @@ class Size implements ValidationRule, ValidatesOnFrontEnd
     }
 
     /**
-     * @unreleased
+     * @since 0.2.0
      *
      * @param  numeric  $size
      *

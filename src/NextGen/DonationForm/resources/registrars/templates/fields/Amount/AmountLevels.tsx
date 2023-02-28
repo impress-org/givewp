@@ -2,7 +2,7 @@ import {useMemo} from 'react';
 import classNames from 'classnames';
 
 /**
- * @unreleased
+ * @since 0.2.0
  */
 export default function AmountLevels({
                                          name,

@@ -97,7 +97,7 @@ function convertFieldAPIRulesToJoi(rules): AnySchema {
 
 
 /**
- * @unreleased
+ * @since 0.2.0
  */
 function getJoiRulesForAmountField(rules, joiRules): AnySchema {
     if (rules.hasOwnProperty('donationType')) {

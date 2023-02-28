@@ -66,7 +66,7 @@ class BlockModel implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 0.2.0
      */
     public function getAttributes(): array
     {

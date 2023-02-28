@@ -9,7 +9,7 @@ use Give\Vendors\StellarWP\Validation\Contracts\ValidationRule;
 class SubscriptionInstallmentsRule implements ValidationRule, ValidatesOnFrontEnd {
 
     /**
-     * @unreleased
+     * @since 0.2.0
      */
     public static function id(): string
     {
@@ -17,7 +17,7 @@ class SubscriptionInstallmentsRule implements ValidationRule, ValidatesOnFrontEn
     }
 
     /**
-     * @unreleased
+     * @since 0.2.0
      */
     public static function fromString(string $options = null): ValidationRule
     {
@@ -25,7 +25,7 @@ class SubscriptionInstallmentsRule implements ValidationRule, ValidatesOnFrontEn
     }
 
     /**
-     * @unreleased
+     * @since 0.2.0
      */
     public function __invoke($value, Closure $fail, string $key, array $values): bool
     {
