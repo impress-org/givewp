@@ -77,7 +77,7 @@ class DonationsAdminPage
         /**
          * Render admin page container
          *
-         * @unreleased conditionally enqueue scripts.
+         * @unreleased conditionally enqueue scripts based.
          */
         if (isset($_GET['view']) && 'view-payment-details' === $_GET['view']) {
             EnqueueScript::make('give-admin-donation-details', 'assets/dist/js/give-admin-donation-details.js')
@@ -104,7 +104,7 @@ class DonationsAdminPage
      * Render admin page container
      * @since 2.20.0
      *
-     * @unreleased render new root div to load detail screen.
+     * @unreleased render new root div to load admin detail screen.
      */
     public function render()
     {
