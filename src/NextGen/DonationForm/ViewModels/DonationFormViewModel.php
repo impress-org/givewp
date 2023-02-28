@@ -11,6 +11,7 @@ use Give\NextGen\DonationForm\ValueObjects\GoalType;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 
+use function implode;
 use function wp_enqueue_style;
 use function wp_print_styles;
 
@@ -172,7 +173,7 @@ class DonationFormViewModel
      *
      * @since 0.1.0
      */
-    public function render(): string
+    public function render(bool $preview = false): string
     {
         $this->enqueueGlobalStyles();
 
@@ -197,7 +198,16 @@ class DonationFormViewModel
         <?php
         endif; ?>
 
-        <div data-theme="light" id="root-givewp-donation-form" class="givewp-donation-form"></div>
+        <?php
+        $classNames = ['givewp-donation-form'];
+        
+        if ($preview) {
+            $classNames[] = 'givewp-donation-form--preview';
+        }
+        ?>
+
+        <div data-theme="light" id="root-givewp-donation-form"
+             class="<?= implode(' ', $classNames) ?>"></div>
 
         <?php
         wp_print_footer_scripts();

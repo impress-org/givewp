@@ -44,6 +44,6 @@ class DonationFormViewController
             $data->formSettings ?: $donationForm->settings
         );
 
-        return $viewModel->render();
+        return $viewModel->render(true);
     }
 }
