@@ -1,16 +1,44 @@
 import {ErrorMessage} from '@hookform/error-message';
 import type {GatewayFieldProps, GatewayOptionProps} from '@givewp/forms/propTypes';
+import {ErrorBoundary} from 'react-error-boundary';
+import {__} from '@wordpress/i18n';
+
+function GatewayFieldsErrorFallback({error, resetErrorBoundary}) {
+    return (
+        <div role="alert">
+            <p>
+                {__(
+                    'An error occurred while loading the gateway fields.  Please notify the site administrator.  The error message is:',
+                    'give'
+                )}
+            </p>
+            <pre style={{padding: '0.5rem'}}>{error.message}</pre>
+            <button type="button" onClick={resetErrorBoundary}>
+                {__('Reload form', 'give')}
+            </button>
+        </div>
+    );
+}
 
 export default function Gateways({inputProps, gateways}: GatewayFieldProps) {
     const {errors} = window.givewp.form.hooks.useFormState();
 
     return (
         <>
-            <ul style={{listStyleType: 'none', padding: 0}}>
-                {gateways.map((gateway, index) => (
-                    <GatewayOption gateway={gateway} index={index} key={gateway.id} inputProps={inputProps} />
-                ))}
-            </ul>
+            {gateways.length > 0 ? (
+                <ul style={{listStyleType: 'none', padding: 0}}>
+                    {gateways.map((gateway, index) => (
+                        <GatewayOption gateway={gateway} index={index} key={gateway.id} inputProps={inputProps} />
+                    ))}
+                </ul>
+            ) : (
+                <em>
+                    {__(
+                        'No gateways have been enabled yet.  To get started accepting donations, enable a compatible payment gateway in your settings.',
+                        'give'
+                    )}
+                </em>
+            )}
 
             <ErrorMessage
                 errors={errors}
@@ -22,14 +50,19 @@ export default function Gateways({inputProps, gateways}: GatewayFieldProps) {
 }
 
 function GatewayOption({gateway, index, inputProps}: GatewayOptionProps) {
-    const Fields = gateway.Fields;
-
     return (
         <li>
             <input type="radio" value={gateway.id} id={gateway.id} defaultChecked={index === 0} {...inputProps} />
             <label htmlFor={gateway.id}> Donate with {gateway.settings.label}</label>
             <div className="givewp-fields-payment-gateway">
-                <Fields />
+                <ErrorBoundary
+                    FallbackComponent={GatewayFieldsErrorFallback}
+                    onReset={() => {
+                        window.location.reload();
+                    }}
+                >
+                    <gateway.Fields />
+                </ErrorBoundary>
             </div>
         </li>
     );

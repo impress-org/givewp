@@ -38,6 +38,10 @@ const stripeGateway: StripeGateway = {
     initialize() {
         const {stripeKey, stripeConnectAccountId, stripeClientSecret} = this.settings;
 
+        if (!stripeKey || !stripeConnectAccountId || !stripeClientSecret) {
+            throw new Error('Stripe gateway settings are missing.  Check your Stripe settings.');
+        }
+
         /**
          * Create the Stripe object and pass our api keys
          */
@@ -64,7 +68,7 @@ const stripeGateway: StripeGateway = {
         data: {
             intentStatus: string;
             returnUrl: string;
-        }
+        };
     }): Promise<void> {
         if (response.data.intentStatus === 'requires_payment_method') {
             const {error: fetchUpdatesError} = await this.elements.fetchUpdates();
@@ -93,6 +97,10 @@ const stripeGateway: StripeGateway = {
         }
     },
     Fields() {
+        if (!stripePromise) {
+            throw new Error('Stripe library was not able to load.  Check your Stripe settings.');
+        }
+
         return (
             <Elements stripe={stripePromise} options={stripeElementOptions}>
                 <StripeFields gateway={stripeGateway} />
