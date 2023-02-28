@@ -74,6 +74,11 @@ class DonationsAdminPage
         ];
 
 
+        /**
+         * Render admin page container
+         *
+         * @unreleased conditionally enqueue scripts.
+         */
         if (isset($_GET['view']) && 'view-payment-details' === $_GET['view']) {
             EnqueueScript::make('give-admin-donation-details', 'assets/dist/js/give-admin-donation-details.js')
                 ->loadInFooter()
@@ -98,6 +103,7 @@ class DonationsAdminPage
     /**
      * Render admin page container
      * @since 2.20.0
+     *
      * @unreleased render new root div to load detail screen.
      */
     public function render()
@@ -121,17 +127,6 @@ class DonationsAdminPage
         return (isset($_GET['page']) && $_GET['page'] === 'give-payment-history') || (isset($_GET['view']) && 'view-payment-details' === $_GET['view']);
     }
 
-
-    /**
-     * Helper function to determine if current page is Give Donors admin page
-     * @since 2.20.0
-     *
-     * @return bool
-     */
-    public static function isShowingDetailScreen()
-    {
-        return isset($_GET['view']) && 'view-payment-details' === $_GET['view'];
-    }
 
     /**
      * Retrieve a list of donation forms to populate the form filter dropdown
