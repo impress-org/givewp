@@ -5,12 +5,19 @@ Tags: givewp, donation, donations, donation plugin, wordpress donation plugin, w
 Requires at least: 5.5
 Tested up to: 6.0
 Requires PHP: 7.2
-Stable tag: 0.1.0
-Requires Give: 2.24.0
+Stable tag: 0.2.0
+Requires Give: 2.25.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Create the donation form of your dreams using an easy-to-use visual donation form builder.
+
+= 0.2.0: Feb 28th, 2023 =
+* New: Added amount field settings for fixed, multi-level, and custom amounts.
+* Update: Updated classic form design to use the new amount field settings.
+* New: Added base styles for custom form designs.
+* New: Updated form builder UI to use default WP colors instead of GiveWP branding colors.
+* Fix: Fixed issue with receipt not displaying donor meta.
 
 = 0.1.0: Jan 30th, 2023 =
 * New: Initial internal release!
