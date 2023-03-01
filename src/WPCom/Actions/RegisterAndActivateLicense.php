@@ -1,7 +1,11 @@
 <?php
 
-use DataTransferObjects\LicenseActivationResponse;
+namespace Give\WPCom\Actions;
+
 use Give\Log\Log;
+use Give\WPCom\DataTransferObjects\LicenseActivationResponse;
+use Give_License;
+use WP_Error;
 
 /**
  * @unreleased
@@ -61,8 +65,12 @@ class RegisterAndActivateLicense
             );
         }
 
-        $licenses = get_option('give_licenses', []);
-        $licenses[$response->licenseKey] = $activationResponse;
+        $licenses = get_option('give_licenses');
+        $licenses[$license] = array_merge($activationResponse, [
+//            'license' => $license,
+            'is_all_access_pass' => false,
+        ]);
+        update_option('give_licenses', $licenses);
 
         give_refresh_licenses();
     }

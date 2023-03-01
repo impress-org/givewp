@@ -83,6 +83,7 @@ use Give\Subscriptions\ServiceProvider as SubscriptionServiceProvider;
 use Give\TestData\ServiceProvider as TestDataServiceProvider;
 use Give\Tracking\TrackingServiceProvider;
 use Give\VendorOverrides\Validation\ValidationServiceProvider;
+use Give\WPCom\WPComServiceProvider;
 
 // Exit if accessed directly.
 if (!defined('ABSPATH')) {
@@ -206,6 +207,7 @@ final class Give
         GlobalStylesServiceProvider::class,
         ValidationServiceProvider::class,
         ValidationRulesServiceProvider::class,
+        WPComServiceProvider::class,
     ];
 
     /**

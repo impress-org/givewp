@@ -1,14 +1,9 @@
 <?php
 
-namespace DataTransferObjects;
+namespace Give\WPCom\DataTransferObjects;
 
 class LicenseActivationResponse
 {
-    /**
-     * @var string
-     */
-    public $licenseKey;
-
     /**
      * @var int
      */
@@ -22,11 +17,6 @@ class LicenseActivationResponse
     /**
      * @var bool
      */
-    public $isAllAccessPass;
-
-    /**
-     * @var bool
-     */
     public $success;
 
     /**
@@ -35,10 +25,8 @@ class LicenseActivationResponse
     public static function fromArray(array $data): self
     {
         $response = new self();
-        $response->licenseKey = $data['license_key'];
         $response->siteCount = (int)$data['site_count'];
         $response->activationsLeft = (int)$data['activations_left'];
-        $response->isAllAccessPass = (bool)$data['is_all_access_pass'];
         $response->success = (bool)$data['success'];
 
         return $response;

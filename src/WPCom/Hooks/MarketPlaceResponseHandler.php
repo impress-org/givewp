@@ -1,8 +1,8 @@
 <?php
 
-namespace Hooks;
+namespace Give\WPCom\Hooks;
 
-use RegisterAndActivateLicense;
+use Give\WPCom\Actions\RegisterAndActivateLicense;
 use WP_Error;
 
 class MarketPlaceResponseHandler
@@ -21,5 +21,7 @@ class MarketPlaceResponseHandler
         if (is_wp_error($success)) {
             return $success;
         }
+
+        return $success;
     }
 }
