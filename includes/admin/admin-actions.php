@@ -1318,6 +1318,9 @@ function give_cache_flush() {
         wp_die();
     }
 
+    /**
+     * @unreleased add nonce check
+     */
     check_ajax_referer('give_cache_flush');
 
     $result = Give_Cache::flush_cache();

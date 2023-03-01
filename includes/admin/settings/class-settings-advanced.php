@@ -327,6 +327,9 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
                     echo Give_Admin_Settings::get_field_description($field); ?>
                 </td>
                 <?php
+                /**
+                 * @unreleased add nonce field
+                 */
                 wp_nonce_field('give_cache_flush', 'give_cache_flush_nonce'); ?>
             </tr>
             <?php

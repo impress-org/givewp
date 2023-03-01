@@ -151,6 +151,9 @@ jQuery( document ).ready( function( $ ) {
 	 * Ajax call to clear Give's cache.
 	 */
 	$( '#give-clear-cache' ).on( 'click', function() {
+		/**
+		 * @unreleased add nonce to ajax request.
+		 */
         const nonce = document.getElementById('give_cache_flush_nonce').value;
 
 		$.ajax( {
