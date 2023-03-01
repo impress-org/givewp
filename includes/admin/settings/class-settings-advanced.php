@@ -310,19 +310,27 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 		 */
 		public function render_remove_cache_button( $field ) {
 			?>
-			<tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . $field['wrapper_class'] . '"' : ''; ?>>
-				<th scope="row" class="titledesc">
-					<label
-						for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ); ?></label>
-				</th>
-				<td class="give-forminp">
-					<button type="button" id="<?php echo esc_attr( $field['id'] ); ?>"
-							class="button button-secondary"><?php echo esc_html( $field['buttonTitle'] ); ?></button>
-					<?php echo Give_Admin_Settings::get_field_description( $field ); ?>
-				</td>
-			</tr>
-			<?php
-		}
+            <tr valign="top" <?php
+            echo !empty($field['wrapper_class']) ? 'class="' . $field['wrapper_class'] . '"' : ''; ?>>
+                <th scope="row" class="titledesc">
+                    <label
+                            for="<?php
+                            echo esc_attr($field['id']); ?>"><?php
+                        echo esc_html($field['name']); ?></label>
+                </th>
+                <td class="give-forminp">
+                    <button type="button" id="<?php
+                    echo esc_attr($field['id']); ?>"
+                            class="button button-secondary"><?php
+                        echo esc_html($field['buttonTitle']); ?></button>
+                    <?php
+                    echo Give_Admin_Settings::get_field_description($field); ?>
+                </td>
+                <?php
+                wp_nonce_field('give_cache_flush', 'give_cache_flush_nonce'); ?>
+            </tr>
+            <?php
+        }
 
 
 		/**
