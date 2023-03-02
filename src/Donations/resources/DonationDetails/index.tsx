@@ -1,6 +1,6 @@
 import {StrictMode} from 'react';
 import ReactDOM from 'react-dom';
-import DonationDetails from './components/DonationDetails';
+import DonationDetails from './app/DonationDetails';
 
 /**
  *
