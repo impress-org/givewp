@@ -812,16 +812,9 @@ class Give_Payment_History_Table extends WP_List_Table {
             return;
         }
 
-        if ( ! wp_verify_nonce($_GET['_wpnonce'], 'bulk-' . sanitize_key(give_get_forms_label_plural()))) {
-            wp_die(
-                esc_html__('Cheatin&#8217; uh?', 'give'),
-                esc_html__('Error', 'give'),
-                [
-                    'response' => 400,
-                ]
-            );
-        }
+        give_validate_nonce($_GET['_wpnonce'], 'bulk-forms');
 
+        foreach ($ids as $id) {
 			// Detect when a bulk action is being triggered.
 			switch ( $this->current_action() ) {
 

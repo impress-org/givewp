@@ -143,7 +143,7 @@ function _give_register_admin_notices() {
 		// Add payment bulk notice.
 		if (
             current_user_can('edit_give_payments') &&
-            wp_verify_nonce($_GET['_wpnonce'], 'bulk-' . sanitize_key(give_get_forms_label_plural())) &&
+            wp_verify_nonce($_GET['_wpnonce'], 'bulk-forms') &&
             isset($_GET['payment']) &&
             ! empty( $_GET['payment'] )
 		) {
