@@ -17,12 +17,12 @@ class RegisterAndActivateLicense
      *
      * @return WP_Error|void
      */
-    public function __invoke(string $license, string $productSlug)
+    public function __invoke(string $license, int $productId, string $productSlug)
     {
         $activationResponse = Give_License::request_license_api(
             [
                 'edd_action' => 'activate_license',
-                'item_name' => $productSlug,
+                'item_id' => $productId,
                 'license' => $license,
             ],
             true
@@ -33,6 +33,7 @@ class RegisterAndActivateLicense
         if (is_wp_error($activationResponse)) {
             Log::error('Error occurred activating license from wp.com marketplace', [
                 'license' => $license,
+                'productId' => $productId,
                 'productSlug' => $productSlug,
                 'response' => $activationResponse,
             ]);
@@ -46,6 +47,7 @@ class RegisterAndActivateLicense
             Log::error('Failed to activate license from wp.com marketplace', [
                 'license' => $license,
                 'productSlug' => $productSlug,
+                'productId' => $productId,
                 'response' => $activationResponse,
             ]);
 
@@ -67,7 +69,6 @@ class RegisterAndActivateLicense
 
         $licenses = get_option('give_licenses');
         $licenses[$license] = array_merge($activationResponse, [
-//            'license' => $license,
             'is_all_access_pass' => false,
         ]);
         update_option('give_licenses', $licenses);
