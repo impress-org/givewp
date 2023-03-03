@@ -794,19 +794,31 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 *
 	 * @return void
 	 */
-	public function process_bulk_action() {
-		$ids    = isset( $_GET['payment'] ) ? $_GET['payment'] : false;
-		$action = $this->current_action();
+	public function process_bulk_action()
+    {
+        $ids = isset($_GET['payment']) ? $_GET['payment'] : false;
+        $action = $this->current_action();
 
-		if ( ! is_array( $ids ) ) {
-			$ids = [ $ids ];
-		}
+        if ( ! is_array($ids)) {
+            $ids = [$ids];
+        }
 
-		if ( empty( $action ) ) {
-			return;
-		}
+        if (
+            empty($action) ||
+            ! current_user_can('edit_give_payments')
+        ) {
+            return;
+        }
 
-		foreach ( $ids as $id ) {
+        if ( ! wp_verify_nonce($_GET['_wpnonce'], 'bulk-' . sanitize_key(give_get_forms_label_plural()))) {
+            wp_die(
+                esc_html__('Cheatin&#8217; uh?', 'give'),
+                esc_html__('Error', 'give'),
+                [
+                    'response' => 400,
+                ]
+            );
+        }
 
 			// Detect when a bulk action is being triggered.
 			switch ( $this->current_action() ) {

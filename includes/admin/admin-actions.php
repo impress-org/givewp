@@ -78,8 +78,8 @@ function give_redirect_to_clean_url_admin_pages() {
 		wp_redirect(
             esc_url_raw(
                 remove_query_arg(
-                    [ '_wp_http_referer', '_wpnonce' ],
-                    wp_unslash( $_SERVER['REQUEST_URI'] )
+                    ['_wp_http_referer'],
+                    wp_unslash($_SERVER['REQUEST_URI'])
                 )
             )
 		);
@@ -139,9 +139,10 @@ function _give_register_admin_notices() {
 
 		// Add payment bulk notice.
 		if (
-			current_user_can( 'edit_give_payments' ) &&
-			isset( $_GET['payment'] ) &&
-			! empty( $_GET['payment'] )
+            current_user_can('edit_give_payments') &&
+            wp_verify_nonce($_GET['_wpnonce'], 'bulk-' . sanitize_key(give_get_forms_label_plural())) &&
+            isset($_GET['payment']) &&
+            ! empty( $_GET['payment'] )
 		) {
 			$payment_count = isset( $_GET['payment'] ) ? count( $_GET['payment'] ) : 0;
 
