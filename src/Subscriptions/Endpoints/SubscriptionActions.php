@@ -5,6 +5,7 @@ namespace Give\Subscriptions\Endpoints;
 use Exception;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
+use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -66,14 +67,19 @@ class SubscriptionActions extends Endpoint
     }
 
     /**
-     * @since 2.24.0
+     * @unreleased Add Nonce Verification
+     * @since      2.24.0
      *
      * @param WP_REST_Request $request
      *
-     * @return WP_REST_Response
+     * @return WP_REST_Response|WP_Error
      */
     public function handleRequest(WP_REST_Request $request)
     {
+        if ( ! wp_verify_nonce($request->get_header('X-WP-Nonce'), 'wp_rest')) {
+            return new WP_Error('invalid_nonce', __('Invalid nonce.', 'give'), ['status' => 403]);
+        }
+
         $ids = $this->splitString($request->get_param('ids'));
         $errors = $successes = [];
 

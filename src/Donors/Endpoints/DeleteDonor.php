@@ -4,6 +4,7 @@ namespace Give\Donors\Endpoints;
 
 use Exception;
 use Give\Donors\Models\Donor;
+use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -53,15 +54,20 @@ class DeleteDonor extends Endpoint
     }
 
     /**
+     * @unreleased Add Nonce Verification
      * @since      2.20.0
-     * @since 2.23.1 Cast `$ids` as integers.
+     * @since      2.23.1 Cast `$ids` as integers.
      *
      * @param WP_REST_Request $request
      *
-     * @return WP_REST_Response
+     * @return WP_REST_Response|WP_Error
      */
     public function handleRequest(WP_REST_Request $request)
     {
+        if ( ! wp_verify_nonce($request->get_header('X-WP-Nonce'), 'wp_rest')) {
+            return new WP_Error('invalid_nonce', __('Invalid nonce.', 'give'), ['status' => 403]);
+        }
+
         $ids = array_map('intval', $this->splitString($request->get_param('ids')));
         $delete_donation = $request->get_param('deleteDonationsAndRecords');
         $errors = $successes = [];

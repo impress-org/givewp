@@ -3,7 +3,7 @@
 namespace Give\Donations\Endpoints;
 
 use Exception;
-use Give\Framework\Database\DB;
+use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -72,14 +72,19 @@ class DonationActions extends Endpoint
     }
 
     /**
+     * @unreleased Add Nonce Verification
+     * @since      2.20.0
+     *
      * @param WP_REST_Request $request
      *
-     * @since 2.20.0
-     *
-     * @return WP_REST_Response
+     * @return WP_REST_Response|WP_Error
      */
     public function handleRequest(WP_REST_Request $request)
     {
+        if ( ! wp_verify_nonce($request->get_header('X-WP-Nonce'), 'wp_rest')) {
+            return new WP_Error('invalid_nonce', __('Invalid nonce.', 'give'), ['status' => 403]);
+        }
+
         $ids = $this->splitString($request->get_param('ids'));
         $errors = $successes = [];
 
