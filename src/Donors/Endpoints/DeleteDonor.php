@@ -64,10 +64,6 @@ class DeleteDonor extends Endpoint
      */
     public function handleRequest(WP_REST_Request $request)
     {
-        if ( ! wp_verify_nonce($request->get_header('X-WP-Nonce'), 'wp_rest')) {
-            return new WP_Error('invalid_nonce', __('Invalid nonce.', 'give'), ['status' => 403]);
-        }
-
         $ids = array_map('intval', $this->splitString($request->get_param('ids')));
         $delete_donation = $request->get_param('deleteDonationsAndRecords');
         $errors = $successes = [];
