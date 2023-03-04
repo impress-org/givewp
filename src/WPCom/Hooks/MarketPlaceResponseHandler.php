@@ -8,7 +8,7 @@ use WP_Error;
 class MarketPlaceResponseHandler
 {
     /**
-     * @param array{license: string, productId: int, productSlug: string} $licensePayload
+     * @param array{license: string, productId: int} $licensePayload
      *
      * @return bool|WP_Error|void
      */
@@ -20,8 +20,7 @@ class MarketPlaceResponseHandler
 
         return give(RegisterAndActivateLicense::class)(
             $licensePayload['license'],
-            $licensePayload['productId'],
-            $licensePayload['productSlug']
+            $licensePayload['productId']
         );
     }
 }
