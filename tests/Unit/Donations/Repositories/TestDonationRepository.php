@@ -239,7 +239,7 @@ final class TestDonationRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      *
      * @see https://github.com/impress-org/givewp/issues/6654
      *

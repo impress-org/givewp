@@ -10,6 +10,7 @@ namespace Give\Onboarding\Setup;
 
 defined('ABSPATH') || exit;
 
+use Give\Framework\Http\ConnectServer\Client\ConnectClient;
 use Give\Helpers\Gateways\Stripe;
 use Give\Onboarding\FormRepository;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
@@ -24,14 +25,23 @@ class PageView
     protected $formRepository;
 
     /**
-     * @since 2.8.0
+     * @since 2.25.0
+     *
+     * @var ConnectClient
+     */
+    private $connectClient;
+
+    /**
+     * @since 2.25.0 Use 'ConnectClient' class
+     * @since      2.8.0
      *
      * @param FormRepository $formRepository
      *
      */
-    public function __construct(FormRepository $formRepository)
+    public function __construct(FormRepository $formRepository, ConnectClient $connectClient)
     {
         $this->formRepository = $formRepository;
+        $this->connectClient = $connectClient;
     }
 
     public function render()
@@ -125,7 +135,8 @@ class PageView
      * Copied from includes/gateways/stripe/includes/admin/admin-helpers.php
      *      See `give_stripe_connect_button()`
      *
-     * @since 2.8.0
+     * @since 2.25.0 Use 'ConnectClient' class
+     * @since      2.8.0
      */
     public function stripeConnectURL()
     {
@@ -139,7 +150,7 @@ class PageView
                 'website_url' => get_bloginfo('url'),
                 'give_stripe_connected' => '0',
             ],
-            esc_url_raw('https://connect.givewp.com/stripe/connect.php')
+            esc_url_raw($this->connectClient->getApiUrl('stripe/connect.php'))
         );
     }
 }

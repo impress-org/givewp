@@ -226,7 +226,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * @unreleased update return logic
+     * @since 2.25.0 update return logic
      * @since 2.21.2
      */
     public function hasGatewayDashboardSubscriptionUrl(): bool

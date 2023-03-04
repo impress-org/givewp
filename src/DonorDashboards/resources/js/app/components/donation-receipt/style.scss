@@ -47,6 +47,14 @@
         display: flex;
         align-items: center;
         white-space: pre-line;
+
+        p {
+            margin: 0;
+
+            + p {
+                margin-top: 1em;
+            }
+        }
     }
 
     .give-donor-dashboard-donation-receipt__row--footer {

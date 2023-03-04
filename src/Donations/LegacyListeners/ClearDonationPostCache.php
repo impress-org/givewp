@@ -5,12 +5,12 @@ namespace Give\Donations\LegacyListeners;
 use Give\Donations\Models\Donation;
 
 /**
- * @unreleased
+ * @since 2.25.0
  */
 class ClearDonationPostCache
 {
     /**
-     * @unreleased
+     * @since 2.25.0
      */
     public function __invoke(Donation $donation)
     {
