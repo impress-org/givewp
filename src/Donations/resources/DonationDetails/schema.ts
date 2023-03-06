@@ -1,3 +1,4 @@
 import Joi from 'joi';
 
-export const joiSchema = Joi.object({});
+export const validationSchema = Joi.object().keys({
+});
