@@ -1,8 +1,13 @@
+import React from "react";
+
 import {FormProvider, useForm} from 'react-hook-form';
 import {joiResolver} from '@hookform/resolvers/joi';
+
+import FormNavigation from "@givewp/components/AdminUI/FormNavigation";
+
 import {FormPage} from "@givewp/components/AdminUI/types";
 
-export default function FormPage({id, handleSubmitRequest, defaultValues, validationSchema, children}: FormPage) {
+export default function FormPage({formId, handleSubmitRequest, defaultValues, validationSchema, pageDetails, navigationalOptions, children}: FormPage) {
     const methods = useForm({
         defaultValues: defaultValues,
         resolver: joiResolver(validationSchema),
@@ -12,12 +17,14 @@ export default function FormPage({id, handleSubmitRequest, defaultValues, valida
 
     return (
         <FormProvider {...methods}>
-            <header>
-                <button form={id} type='submit' onSubmit={handleSubmit(handleSubmitRequest)}>
-                    Submit
-                </button>
-            </header>
-            <form id={id} onSubmit={handleSubmit(handleSubmitRequest)}>
+          <FormNavigation
+              pageId={pageDetails.id}
+              pageTitle={pageDetails.title}
+              pageDescription={pageDetails.description}
+              navigationalOptions={navigationalOptions}
+              onSubmit={handleSubmit(handleSubmitRequest)}
+          />
+            <form id={formId} onSubmit={handleSubmit(handleSubmitRequest)}>
                 {children}
             </form>
         </FormProvider>
