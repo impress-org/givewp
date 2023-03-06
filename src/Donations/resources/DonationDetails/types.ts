@@ -2,4 +2,9 @@
  *
  * @unreleased
  */
-export interface FormValues {}
+export interface FormValues {
+}
+
+export interface FormTemplate {
+    defaultValues;
+}
