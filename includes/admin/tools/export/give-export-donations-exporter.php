@@ -681,7 +681,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
      */
     protected function escape_csv_cell_data($cellData) {
         $firstCharacter = substr($cellData, 0, 1);
-        if( in_array($firstCharacter, array('=', '+', '-', '@')) ) {ccq
+        if( in_array($firstCharacter, array('=', '+', '-', '@')) ) {
             $cellData = "'" . $cellData;
         }
         return $cellData;
