@@ -7,6 +7,7 @@ jobs:
   trunk:
     name: Push to trunk
     runs-on: ubuntu-latest
+    environment: live
     steps:
     - uses: actions/checkout@master
     - name: WordPress.org plugin asset/readme update

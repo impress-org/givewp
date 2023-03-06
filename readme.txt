@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 7.0
-Stable tag: 2.25.0
+Stable tag: 2.25.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -251,6 +251,13 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.25.1: March 1st, 2023 =
+* Enhancement: Compatibility in the Donor Dashboard with the new Square recurring support
+* Enhancement: Exported donations are ordered by ID by default
+* Fix: Sites without the ctype PHP extension no longer run into problems
+* Fix: Prevent a handful of PHP 8.1 deprecation notices
+* Fix: Fixed a PHP 8.0 error in receipt templates
+
 = 2.25.0: February 21st, 2023 =
 * Feature: Donors now explicitly state whether they are donating as a company, useful for things like Gift Aid
 * Enhancement: Improvements to the Gateway API in preparation for GiveWP 3.0

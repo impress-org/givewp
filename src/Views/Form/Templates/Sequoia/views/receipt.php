@@ -88,7 +88,7 @@ ob_start();
                     $detailRowClass = sanitize_title($lineItem->id) . '-row';
                     // This class is required to highlight total donation amount in receipt.
                     if (DonationReceipt::DONATIONSECTIONID === $section->id) {
-                        $detailRowClass += ('totalAmount' === $lineItem->id ? ' total' : '');
+                        $detailRowClass .= ('totalAmount' === $lineItem->id ? ' total' : '');
                     }
 
                     printf(
