@@ -1,6 +1,6 @@
 import {StrictMode} from 'react';
 import ReactDOM from 'react-dom';
-import DonationDetails from './app/DonationDetails';
+import App from './app/app';
 
 /**
  *
@@ -9,5 +9,5 @@ import DonationDetails from './app/DonationDetails';
 const rootElement = document.getElementById('give-admin-donation-details-root');
 
 if (rootElement) {
-    ReactDOM.render(<StrictMode>{<DonationDetails />}</StrictMode>, rootElement);
+    ReactDOM.render(<StrictMode>{<App />}</StrictMode>, rootElement);
 }
