@@ -14,7 +14,8 @@
         "myclabs/php-enum": "^1.6",
         "symfony/http-foundation": "^v3.4.47",
         "moneyphp/money": "v3.3.1",
-        "stellarwp/validation": "^1.0"
+        "stellarwp/validation": "^1.0",
+        "symfony/polyfill-ctype": "^1.19"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
@@ -85,9 +86,13 @@
             "classmap_prefix": "Give_Vendors_",
             "constant_prefix": "GIVE_VENDORS_",
             "packages": [
-                "stellarwp/validation"
+                "stellarwp/validation",
+                "symfony/polyfill-ctype"
             ],
-            "delete_vendor_files": true
+            "delete_vendor_files": true,
+            "override_autoload": {
+                "symfony/polyfill-ctype": {}
+            }
         }
     },
     "repositories": [
