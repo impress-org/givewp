@@ -24,7 +24,7 @@ export default function App() {
             validationSchema={validationSchema}
             handleSubmitRequest={handleSubmitRequest}
         >
-            <FormTemplate defaultValues={defaultValues} />
+            <FormTemplate />
         </FormPage>
     );
 }
