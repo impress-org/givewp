@@ -1,0 +1,72 @@
+.button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    border-radius: var(--givewp-rounded-4);
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.primary {
+    color: var(--givewp-shades-white);
+    background: var(--givewp-blue-500);
+
+    &:hover {
+        background-color: var(--givewp-blue-400);
+    }
+
+    &:active {
+        background-color: var(--givewp-blue-600);
+    }
+}
+
+.secondary {
+    background: var(--givewp-shades-white);
+    color: var(--givewp-blue-500);
+    border-color: var(--givewp-blue-500);
+
+    &:hover {
+        color: var(--givewp-blue-400);
+        border-color: var(--givewp-blue-400);
+    }
+
+    &:active {
+        color: var(--givewp-blue-600);
+        border-color: var(--givewp-blue-600);
+    }
+}
+
+.danger {
+    background-color: var(--givewp-red-500);
+    color: var(--givewp-shades-white);
+    border-color: var(--givewp-red-500);
+
+    &:hover {
+        background-color: var(--givewp-red-400);
+    }
+
+    &:active {
+        background-color: var(--givewp-red-600);
+    }
+}
+
+.small {
+    padding: var(--givewp-spacing-2) var(--givewp-spacing-5);
+}
+
+.large {
+    padding: var(--givewp-spacing-4) var(--givewp-spacing-20);
+}
+
+.button:disabled {
+    background-color: var(--givewp-grey-300);
+    color: var(--givewp-shades-white);
+    border-color: var(--givewp-grey-300);
+}
+
