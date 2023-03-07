@@ -1,16 +1,16 @@
 import {useFormContext} from 'react-hook-form';
-import {FormTemplate} from "../../types";
+import {FormTemplate} from '../../types';
 
-export default function FormTemplate({defaultValues}: FormTemplate) {
+/**
+ *
+ * @unreleased
+ */
+
+export default function FormTemplate({}: FormTemplate) {
     const methods = useFormContext();
     const {register} = methods;
 
     const {errors} = methods.formState;
-    const {status} = defaultValues;
 
-    return (
-        <>
-
-        </>
-    );
+    return <></>;
 }

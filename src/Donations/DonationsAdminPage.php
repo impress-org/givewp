@@ -102,9 +102,9 @@ class DonationsAdminPage
 
     /**
      * Render admin page container
+     * @unreleased render new root div to load admin detail screen.
      * @since 2.20.0
      *
-     * @unreleased render new root div to load admin detail screen.
      */
     public function render()
     {
@@ -117,10 +117,11 @@ class DonationsAdminPage
 
     /**
      * Helper function to determine if current page is Give Donors admin page
+     * @unreleased check for both admin pages to determine if page is showing.
      * @since 2.20.0
      *
      * @return bool
-     * @unreleased check for both admin pages to determine if page is showing.
+     *
      */
     public static function isShowing()
     {
