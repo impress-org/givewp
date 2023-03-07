@@ -210,7 +210,7 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
                                     <span style="color: <?php
                                     echo esc_attr($button_text_color); ?>">
                                         <?php
-                                        echo $button_text ?: __('Donate', 'give'); ?>
+                                        echo esc_html($button_text) ?: __('Donate', 'give'); ?>
                                     </span>
                     </button>
                 <?php endif; ?>
