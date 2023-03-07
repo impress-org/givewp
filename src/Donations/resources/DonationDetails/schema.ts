@@ -1,4 +1,7 @@
 import Joi from 'joi';
 
-export const validationSchema = Joi.object().keys({
-});
+/**
+ *
+ * @unreleased
+ */
+export const validationSchema = Joi.object().keys({});
