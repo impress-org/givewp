@@ -56,25 +56,42 @@ class FormActions extends Endpoint
                         },
                     ],
                     'author' => [
-                        'type'              => 'string',
-                        'required'          => 'false',
+                        'type' => 'string',
+                        'required' => 'false',
                     ],
                     'status' => [
-                        'type'              => 'string',
-                        'required'          => 'false',
-                    ]
+                        'type' => 'string',
+                        'required' => 'false',
+                    ],
                 ],
             ]
         );
     }
 
     /**
-     * @unreleased Add Nonce Verification
+     * @unreleased
+     *
+     * @inheritDoc
+     */
+    public function permissionsCheck()
+    {
+        if ( ! current_user_can('edit_give_forms')) {
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You don\'t have permission to edit Donation Forms', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );
+        }
+
+        return true;
+    }
+
+    /**
      * @since      2.19.0
      *
      * @param WP_REST_Request $request
      *
-     * @return WP_REST_Response|WP_Error
+     * @return WP_REST_Response
      */
     public function handleRequest(WP_REST_Request $request)
     {

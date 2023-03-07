@@ -52,15 +52,32 @@ class DeleteDonor extends Endpoint
             ]
         );
     }
+    
+    /**
+     * @unreleased
+     *
+     * @inheritDoc
+     */
+    public function permissionsCheck()
+    {
+        if ( ! current_user_can('edit_give_donors')) {
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You don\'t have permission to edit Donors', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );
+        }
+
+        return true;
+    }
 
     /**
-     * @unreleased Add Nonce Verification
-     * @since      2.20.0
-     * @since      2.23.1 Cast `$ids` as integers.
+     * @since 2.20.0
+     * @since 2.23.1 Cast `$ids` as integers.
      *
      * @param WP_REST_Request $request
      *
-     * @return WP_REST_Response|WP_Error
+     * @return WP_REST_Response
      */
     public function handleRequest(WP_REST_Request $request)
     {

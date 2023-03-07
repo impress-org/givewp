@@ -67,12 +67,29 @@ class SubscriptionActions extends Endpoint
     }
 
     /**
-     * @unreleased Add Nonce Verification
-     * @since      2.24.0
+     * @unreleased
+     *
+     * @inheritDoc
+     */
+    public function permissionsCheck()
+    {
+        if ( ! current_user_can('edit_give_payments')) {
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You don\'t have permission to edit Subscriptions', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );
+        }
+
+        return true;
+    }
+
+    /**
+     * @since 2.24.0
      *
      * @param WP_REST_Request $request
      *
-     * @return WP_REST_Response|WP_Error
+     * @return WP_REST_Response
      */
     public function handleRequest(WP_REST_Request $request)
     {
