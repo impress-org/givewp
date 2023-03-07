@@ -19,10 +19,8 @@ class GetPayPalOrderFromRequest
      * @return \Give\PaymentGateways\PayPalCommerce\Models\PayPalOrder
      * @throws HttpException|IOException|PayPalOrderIdException
      */
-    public function __invoke()
+    public function __invoke($paypalOrderId)
     {
-        $paypalOrderId = give_clean($_POST['payPalOrderId']);
-
         if (!$paypalOrderId) {
             throw new PayPalOrderIdException(
                 esc_html__('PayPal order id is missing.', 'give')

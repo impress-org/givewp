@@ -140,7 +140,10 @@ class RegisterPaymentGateways
                 PayPalCommerce::id()
             ),
             function ($gatewayData) {
-                $gatewayData['paypalOrder'] = (new GetPayPalOrderFromRequest())();
+                if(!isset($gatewayData['payPalOrderId'])) {
+                    $gatewayData['payPalOrderId'] = give_clean($_POST['payPalOrderId']);
+                }
+                $gatewayData['paypalOrder'] = (new GetPayPalOrderFromRequest())($gatewayData['payPalOrderId']);
                 return $gatewayData;
             }
         );
