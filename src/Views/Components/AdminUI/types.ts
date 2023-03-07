@@ -4,15 +4,15 @@ export interface FormPage {
     defaultValues;
     validationSchema;
     children;
-    pageDetails:{
-        id: number,
+    pageDetails: {
+        id: number;
         description: string;
         title: string;
-    }
+    };
     navigationalOptions: Array<{
-        id: number
-        title: string
-    }>
+        id: number;
+        title: string;
+    }>;
 }
 
 export interface FormNavigation {
@@ -20,5 +20,22 @@ export interface FormNavigation {
     onSubmit: () => void;
     pageDescription: string;
     pageId: number;
-    pageTitle:string;
+    pageTitle: string;
+}
+
+export interface Button {
+    variant: 'primary' | 'secondary' | 'danger';
+    size: 'small' | 'large';
+    type: 'button' | 'reset' | 'submit';
+    children: React.ReactNode;
+
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
+    disabled?: boolean;
+    classname?: 'string';
+}
+
+export interface Form {
+    children: React.ReactNode;
+    onSubmit: React.FormEventHandler<HTMLFormElement>;
+    id: string;
 }
