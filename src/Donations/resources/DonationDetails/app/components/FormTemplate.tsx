@@ -1,5 +1,6 @@
 import {useFormContext} from 'react-hook-form';
-import {FormTemplate} from '../../types';
+import {FormTemplate} from './types';
+import PaymentInformation from './PaymentInformation';
 
 /**
  *
@@ -14,7 +15,7 @@ export default function FormTemplate({}: FormTemplate) {
 
     return (
         <>
-            <input {...register('test')} />
+            <PaymentInformation />
         </>
     );
 }
