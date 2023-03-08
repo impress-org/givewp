@@ -1085,6 +1085,7 @@ class Container implements ArrayAccess, ContainerInterface
      *
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($key)
     {
         return $this->bound($key);
@@ -1097,6 +1098,7 @@ class Container implements ArrayAccess, ContainerInterface
      *
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($key)
     {
         return $this->make($key);
@@ -1110,6 +1112,7 @@ class Container implements ArrayAccess, ContainerInterface
      *
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($key, $value)
     {
         $this->bind(
@@ -1127,6 +1130,7 @@ class Container implements ArrayAccess, ContainerInterface
      *
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($key)
     {
         unset($this->bindings[$key], $this->instances[$key], $this->resolved[$key]);
