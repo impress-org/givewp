@@ -1,6 +1,6 @@
 import {StrictMode} from 'react';
 import ReactDOM from 'react-dom';
-import DonationsListTable from './components/DonationsListTable';
+import DonationsListTable from './app/DonationsListTable';
 
 ReactDOM.render(
     <StrictMode>{<DonationsListTable />}</StrictMode>,
