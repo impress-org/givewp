@@ -789,25 +789,32 @@ class Give_Payment_History_Table extends WP_List_Table {
 	/**
 	 * Process the bulk actions
 	 *
-	 * @access public
+     * @unreleased Add nonce check for bulk action.
 	 * @since  1.0
+     *
+	 * @access public
 	 *
 	 * @return void
 	 */
-	public function process_bulk_action() {
-		$ids    = isset( $_GET['payment'] ) ? $_GET['payment'] : false;
-		$action = $this->current_action();
+	public function process_bulk_action()
+    {
+        $ids = isset($_GET['payment']) ? $_GET['payment'] : false;
+        $action = $this->current_action();
 
-		if ( ! is_array( $ids ) ) {
-			$ids = [ $ids ];
-		}
+        if ( ! is_array($ids)) {
+            $ids = [$ids];
+        }
 
-		if ( empty( $action ) ) {
-			return;
-		}
+        if (
+            empty($action) ||
+            ! current_user_can('edit_give_payments')
+        ) {
+            return;
+        }
 
-		foreach ( $ids as $id ) {
+        give_validate_nonce($_GET['_wpnonce'] ?? '', 'bulk-forms');
 
+        foreach ($ids as $id) {
 			// Detect when a bulk action is being triggered.
 			switch ( $this->current_action() ) {
 

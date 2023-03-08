@@ -4,6 +4,7 @@ namespace Give\Donors\Endpoints;
 
 use Exception;
 use Give\Donors\Models\Donor;
+use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -51,9 +52,27 @@ class DeleteDonor extends Endpoint
             ]
         );
     }
+    
+    /**
+     * @unreleased
+     *
+     * @inheritDoc
+     */
+    public function permissionsCheck()
+    {
+        if ( ! current_user_can('edit_give_donors')) {
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You don\'t have permission to edit Donors', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );
+        }
+
+        return true;
+    }
 
     /**
-     * @since      2.20.0
+     * @since 2.20.0
      * @since 2.23.1 Cast `$ids` as integers.
      *
      * @param WP_REST_Request $request

@@ -5,6 +5,7 @@ namespace Give\Subscriptions\Endpoints;
 use Exception;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
+use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -63,6 +64,24 @@ class SubscriptionActions extends Endpoint
                 ],
             ]
         );
+    }
+
+    /**
+     * @unreleased
+     *
+     * @inheritDoc
+     */
+    public function permissionsCheck()
+    {
+        if ( ! current_user_can('edit_give_payments')) {
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You don\'t have permission to edit Subscriptions', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );
+        }
+
+        return true;
     }
 
     /**
