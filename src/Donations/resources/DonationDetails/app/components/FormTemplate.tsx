@@ -12,5 +12,9 @@ export default function FormTemplate({}: FormTemplate) {
 
     const {errors} = methods.formState;
 
-    return <></>;
+    return (
+        <>
+            <input {...register('test')} />
+        </>
+    );
 }
