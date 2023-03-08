@@ -18,9 +18,6 @@ export default function FormPage({
     children,
     actionConfig,
 }: FormPage) {
-
-
-export default function FormPage({formId, handleSubmitRequest, defaultValues, validationSchema, children}: FormPage) {
     const methods = useForm({
         defaultValues: defaultValues,
         resolver: joiResolver(validationSchema),
