@@ -816,7 +816,7 @@ function give_get_content_by_ajax_handler() {
      * Restrict requests to GiveWP.com plugin readme.txt file only.
      * @link https://owasp.org/www-community/attacks/Server_Side_Request_Forgery
      *
-     * @unreleased
+     * @since 2.25.2
      */
     if(! preg_match('^https://givewp.com/downloads/plugins/(.*)/readme.txt$^', $_GET['url'])) {
         die();

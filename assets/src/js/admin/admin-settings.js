@@ -152,7 +152,7 @@ jQuery( document ).ready( function( $ ) {
 	 */
 	$( '#give-clear-cache' ).on( 'click', function() {
 		/**
-		 * @unreleased add nonce to ajax request.
+		 * @since 2.25.2 add nonce to ajax request.
 		 */
         const nonce = document.getElementById('give_cache_flush_nonce').value;
 

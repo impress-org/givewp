@@ -789,7 +789,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	/**
 	 * Process the bulk actions
 	 *
-     * @unreleased Add nonce check for bulk action.
+     * @since 2.25.2 Add nonce check for bulk action.
 	 * @since  1.0
      *
 	 * @access public

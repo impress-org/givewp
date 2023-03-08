@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 7.0
-Stable tag: 2.25.1
+Stable tag: 2.25.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -251,6 +251,14 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.25.2: March 8th, 2023 =
+* Security: Protect against CSRF during give cache clear settings
+* Security: Protect against CSV injection in donation export settings
+* Security: Protect against XSS and CSRF in donation import settings
+* Security: Protect against XSS in give_form_grid shortcode
+* Security: Protect against CSRF and Arbitrary Content Deletion in admin list tables
+* Security: Protect against SSRF in add-on changelog requests
+
 = 2.25.1: March 1st, 2023 =
 * Enhancement: Compatibility in the Donor Dashboard with the new Square recurring support
 * Enhancement: Exported donations are ordered by ID by default

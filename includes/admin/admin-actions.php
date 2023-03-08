@@ -42,7 +42,7 @@ add_action( 'wp_ajax_give_load_wp_editor', 'give_load_wp_editor' );
 /**
  * Redirect admin to clean url give admin pages.
  *
- * @unreleased Removed _wpnonce from list of removed args.
+ * @since 2.25.2 Removed _wpnonce from list of removed args.
  * @since      1.8
  *
  * @return bool
@@ -125,7 +125,7 @@ add_action( 'wp_ajax_give_hide_outdated_php_notice', 'give_hide_outdated_php_not
 /**
  * Register admin notices.
  *
- * @unreleased Add nonce check for bulk action.
+ * @since 2.25.2 Add nonce check for bulk action.
  * @since      1.8.9
  */
 function _give_register_admin_notices() {
@@ -1324,7 +1324,7 @@ function give_cache_flush() {
     }
 
     /**
-     * @unreleased add nonce check
+     * @since 2.25.2 add nonce check
      */
     check_ajax_referer('give_cache_flush');
 

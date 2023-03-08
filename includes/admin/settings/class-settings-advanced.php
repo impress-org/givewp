@@ -305,7 +305,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 		 *
 		 * @param array $field
 		 *
-		 * @unreleased  add nonce field
+		 * @since 2.25.2  add nonce field
 		 * @since  2.1
 		 * @access public
 		 */

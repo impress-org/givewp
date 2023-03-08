@@ -674,7 +674,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
      * Escapes CSV cell data to protect against CSV injection.
      * @link https://owasp.org/www-community/attacks/CSV_Injection
      *
-     * @unreleased
+     * @since 2.25.2
      *
      * @param mixed|string $cellData
      *

@@ -1103,7 +1103,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		}
 
          /**
-         * @unreleased
+         * @since 2.25.2
          */
         private function is_nonce_valid()
         {
