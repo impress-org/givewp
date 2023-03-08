@@ -1314,25 +1314,30 @@ add_action( 'profile_update', 'give_update_donor_email_on_user_update', 10, 2 );
  * Flushes Give's cache.
  */
 function give_cache_flush() {
-	if ( ! current_user_can( 'manage_give_settings' ) ) {
-		wp_die();
-	}
+    if (!is_user_logged_in() || !current_user_can('manage_give_settings')) {
+        wp_die();
+    }
 
-	$result = Give_Cache::flush_cache();
+    /**
+     * @unreleased add nonce check
+     */
+    check_ajax_referer('give_cache_flush');
 
-	if ( $result ) {
-		wp_send_json_success(
-			[
-				'message' => __( 'Cache flushed successfully.', 'give' ),
-			]
-		);
-	} else {
-		wp_send_json_error(
-			[
-				'message' => __( 'An error occurred while flushing the cache.', 'give' ),
-			]
-		);
-	}
+    $result = Give_Cache::flush_cache();
+
+    if ($result) {
+        wp_send_json_success(
+            [
+                'message' => __('Cache flushed successfully.', 'give'),
+            ]
+        );
+    } else {
+        wp_send_json_error(
+            [
+                'message' => __('An error occurred while flushing the cache.', 'give'),
+            ]
+        );
+    }
 }
 
 add_action( 'wp_ajax_give_cache_flush', 'give_cache_flush', 10, 0 );

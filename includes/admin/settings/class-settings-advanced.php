@@ -305,6 +305,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 		 *
 		 * @param array $field
 		 *
+		 * @unreleased  add nonce field
 		 * @since  2.1
 		 * @access public
 		 */
@@ -319,6 +320,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 					<button type="button" id="<?php echo esc_attr( $field['id'] ); ?>"
 							class="button button-secondary"><?php echo esc_html( $field['buttonTitle'] ); ?></button>
 					<?php echo Give_Admin_Settings::get_field_description( $field ); ?>
+                    <?php wp_nonce_field('give_cache_flush', 'give_cache_flush_nonce'); ?>
 				</td>
 			</tr>
 			<?php
