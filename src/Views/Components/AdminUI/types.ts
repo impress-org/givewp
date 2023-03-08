@@ -13,6 +13,13 @@ export interface FormPage {
         id: number;
         title: string;
     }>;
+    actionConfig: Array<{title: string; action: any}>;
+}
+
+export interface Form {
+    children: React.ReactNode;
+    onSubmit: React.FormEventHandler<HTMLFormElement>;
+    id: string;
 }
 
 export interface FormNavigation {
@@ -21,6 +28,8 @@ export interface FormNavigation {
     pageDescription: string;
     pageId: number;
     pageTitle: string;
+    actionConfig: Array<{title: string; action: any}>;
+    isDirty: boolean;
 }
 
 export interface Button {
@@ -32,10 +41,4 @@ export interface Button {
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
     disabled?: boolean;
     classname?: 'string';
-}
-
-export interface Form {
-    children: React.ReactNode;
-    onSubmit: React.FormEventHandler<HTMLFormElement>;
-    id: string;
 }

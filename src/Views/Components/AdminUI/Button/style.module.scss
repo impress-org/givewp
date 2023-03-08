@@ -11,6 +11,10 @@
     border-radius: var(--givewp-rounded-4);
     cursor: pointer;
     border: 1px solid transparent;
+
+    > svg {
+        transform: translate(8px, 1px);
+    }
 }
 
 .primary {
