@@ -812,7 +812,7 @@ class Give_Payment_History_Table extends WP_List_Table {
             return;
         }
 
-        give_validate_nonce($_GET['_wpnonce'], 'bulk-forms');
+        give_validate_nonce($_GET['_wpnonce'] ?? '', 'bulk-forms');
 
         foreach ($ids as $id) {
 			// Detect when a bulk action is being triggered.
