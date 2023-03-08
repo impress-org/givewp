@@ -171,8 +171,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			?>
 			<section>
 				<table
-						class="widefat export-options-table give-table <?php echo "step-{$step}"; ?> <?php echo( 1 === $step && ! empty( $this->is_csv_valid ) ? 'give-hidden' : '' ); ?>  "
-						id="<?php echo "step-{$step}"; ?>">
+						class="widefat export-options-table give-table <?php echo esc_attr("step-{$step}"); ?> <?php echo esc_attr(( 1 === $step && ! empty( $this->is_csv_valid ) ? 'give-hidden' : '' )); ?>  "
+						id="<?php echo esc_attr("step-{$step}"); ?>">
 					<tbody>
 					<?php
 					switch ( $step ) {
@@ -196,7 +196,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						<tr valign="top">
 							<th>
 								<input type="submit"
-									   class="button button-primary button-large button-secondary <?php echo "step-{$step}"; ?>"
+									   class="button button-primary button-large button-secondary <?php echo esc_attr("step-{$step}"); ?>"
 									   id="recount-stats-submit"
 									   value="
 										   <?php
@@ -401,7 +401,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						 data-total="<?php echo esc_attr(absint( $total )); ?>"
 						 data-per_page="<?php echo esc_attr(absint( self::$per_page )); ?>">
 
-						<div style="width: <?php echo (float) $current_percentage; ?>%"></div>
+						<div style="width: <?php echo esc_attr((float) $current_percentage); ?>%"></div>
 					</div>
 					<input type="hidden" value="3" name="step">
 					<input type="hidden" value='<?php echo esc_attr( maybe_serialize( $_REQUEST['mapto'] ) ); ?>' name="mapto" class="mapto">
@@ -538,7 +538,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				foreach ( $raw_key as $index => $value ) {
 					?>
 					<tr valign="middle" class="give-import-option">
-						<th><?php echo $value; ?></th>
+						<th><?php echo esc_html($value); ?></th>
 						<th>
 							<?php
 							$this->get_columns( $index, $value, $mapto );
@@ -653,13 +653,9 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						}
 					}
 				}
-
-				echo sprintf(
-					'<option value="%1$s" %2$s >%3$s</option>',
-					esc_attr($option),
-					esc_attr($checked),
-					$option_text
-				);
+                ?>
+                    <option value="<?php echo esc_attr($option); ?>" <?php echo esc_attr($checked); ?> ><?php echo esc_html($option_text); ?></option>
+                <?php
 			}
 		}
 
@@ -994,7 +990,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			} else {
 				?>
 				<input type="hidden" name="is_csv_valid" class="is_csv_valid"
-					   value="<?php echo $this->is_csv_valid; ?>">
+					   value="<?php echo esc_attr($this->is_csv_valid); ?>">
 				<?php
 			}
 		}
