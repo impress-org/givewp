@@ -58,6 +58,10 @@
         align-items: center;
         gap: var(--givewp-spacing-3);
 
+        .relativeContainer {
+            position: relative;
+        }
+
         .pageDetails {
             font-size: 0.875rem;
             font-weight: 600;

@@ -1,7 +1,9 @@
 import React from 'react';
+
 import {__} from '@wordpress/i18n';
 import FormPage from '@givewp/components/AdminUI/FormPage';
 import FormTemplate from './components/FormTemplate';
+
 import {validationSchema} from '../schema';
 
 import './css/style.scss';
@@ -12,12 +14,19 @@ import './css/style.scss';
  */
 
 export default function App() {
-    const defaultValues = {};
+    const defaultValues = {test: 'test'};
 
     const handleSubmitRequest = (formValues) => {
         console.log(JSON.stringify(formValues));
         alert(`post request submitted. Form data = ${JSON.stringify(formValues)}`);
     };
+
+    const actionConfig = [
+        {title: __('Refund donation', 'give'), action: () => alert('refund donation')},
+        {title: __('Download receipt', 'give'), action: () => alert('Download receipt')},
+        {title: __('Refund donation', 'give'), action: () => alert('Refund donation')},
+        {title: __('Delete donation', 'give'), action: () => alert('Delete donation')},
+    ];
 
     return (
         <FormPage
@@ -35,6 +44,7 @@ export default function App() {
                 {id: 2, title: 'donation 2'},
                 {id: 3, title: 'donation 3'},
             ]}
+            actionConfig={actionConfig}
         >
             <FormTemplate />
         </FormPage>

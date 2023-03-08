@@ -6,6 +6,11 @@ import {Button} from '../types';
 
 import styles from './style.module.scss';
 
+/**
+ *
+ * @unreleased
+ */
+
 const Button = React.forwardRef<HTMLButtonElement, Button>(
     ({children, type = 'button', classname, variant = 'primary', size = 'normal', disabled, ...props}, ref) => (
         <button
