@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {__} from '@wordpress/i18n';
 import FormPage from '@givewp/components/AdminUI/FormPage';
 import FormTemplate from './components/FormTemplate';
