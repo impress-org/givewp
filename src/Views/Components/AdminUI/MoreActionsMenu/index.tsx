@@ -1,5 +1,10 @@
 import styles from './style.module.scss';
 
+/**
+ *
+ * @unreleased
+ */
+
 export default function MoreActionsMenu({actionConfig, toggle}) {
     const handleClick = (action) => {
         action();
