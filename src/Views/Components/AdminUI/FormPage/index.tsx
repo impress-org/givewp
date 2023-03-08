@@ -16,6 +16,7 @@ export default function FormPage({
     pageDetails,
     navigationalOptions,
     children,
+    actionConfig,
 }: FormPage) {
     const methods = useForm({
         defaultValues: defaultValues,
@@ -23,6 +24,8 @@ export default function FormPage({
     });
 
     const {handleSubmit} = methods;
+
+    const {isDirty} = methods.formState;
 
     return (
         <FormProvider {...methods}>
@@ -32,6 +35,8 @@ export default function FormPage({
                 pageDescription={pageDetails.description}
                 navigationalOptions={navigationalOptions}
                 onSubmit={handleSubmit(handleSubmitRequest)}
+                actionConfig={actionConfig}
+                isDirty={isDirty}
             />
             <Form id={formId} onSubmit={handleSubmit(handleSubmitRequest)}>
                 {children}
