@@ -812,6 +812,16 @@ function give_get_content_by_ajax_handler() {
 		die();
 	}
 
+    /**
+     * Restrict requests to GiveWP.com plugin readme.txt file only.
+     * @link https://owasp.org/www-community/attacks/Server_Side_Request_Forgery
+     *
+     * @unreleased
+     */
+    if(! preg_match('^https://givewp.com/downloads/plugins/(.*)/readme.txt$^', $_GET['url'])) {
+        die();
+    }
+
 	// Handle changelog render request.
 	if (
 		! empty( $_GET['show_changelog'] )
