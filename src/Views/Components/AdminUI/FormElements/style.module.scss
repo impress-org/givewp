@@ -1,5 +1,43 @@
 .form {
-    display:grid;
+    display: grid;
     gap: var(--givewp-spacing-6);
     padding: var(--givewp-spacing-4);
+}
+
+.fieldLabel {
+    font-size: .75rem;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+    text-align: left;
+    color: var(--givewp-grey-600);
+}
+
+.textFieldContainer {
+    display: flex;
+    margin-top: .45rem;
+    border: solid 1px var(--givewp-grey-400);
+    border-radius: var(--givewp-rounded-4);
+    background-color: var(--givewp-shades-white);
+    padding: 2px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.2;
+    letter-spacing: normal;
+    text-align: left;
+    color: var(--givewp-grey-900);
+
+    > input {
+        flex: 1;
+        padding: var(--givewp-spacing-2);
+        border: none;
+    }
+}
+
+
+.currencyField {
+    font-size: 1.25rem;
 }

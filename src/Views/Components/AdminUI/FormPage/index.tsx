@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {createContext, useRef, useState} from 'react';
 
 import {FormProvider, useForm} from 'react-hook-form';
 import {joiResolver} from '@hookform/resolvers/joi';
@@ -7,11 +7,21 @@ import FormNavigation from '@givewp/components/AdminUI/FormNavigation';
 import {Form} from '@givewp/components/AdminUI/FormElements';
 
 import {FormPage} from '@givewp/components/AdminUI/types';
+import cx from 'classnames';
+import {A11yDialog} from 'react-a11y-dialog';
+import Button from '@givewp/components/AdminUI/Button';
+import A11yDialogInstance from 'a11y-dialog';
+
+import styles from './style.module.scss';
+import ExitIcon from '@givewp/components/AdminUI/Icons/ExitIcon';
+import NoticeInformationIcon from '@givewp/components/AdminUI/Icons/NoticeInformationIcon';
 
 /**
  *
  * @unreleased
  */
+
+export const ModalContext = createContext((label, content, action, button, notice) => {});
 
 export default function FormPage({
     formId,
@@ -23,6 +33,15 @@ export default function FormPage({
     children,
     actionConfig,
 }: FormPage) {
+    const dialog = useRef() as {current: A11yDialogInstance};
+    const [modalContent, setModalContent] = useState<{label; content; action; button; notice}>({
+        label: '',
+        content: null,
+        action: (selected) => {},
+        button: '',
+        notice: '',
+    });
+
     const methods = useForm({
         defaultValues: defaultValues,
         resolver: joiResolver(validationSchema),
@@ -32,20 +51,63 @@ export default function FormPage({
 
     const {isDirty} = methods.formState;
 
+    const showConfirmActionModal = (label, content, action, button, notice) => {
+        setModalContent({label, content, action, button, notice});
+        dialog.current.show();
+    };
+
     return (
         <FormProvider {...methods}>
-            <FormNavigation
-                pageId={pageDetails.id}
-                pageTitle={pageDetails.title}
-                pageDescription={pageDetails.description}
-                navigationalOptions={navigationalOptions}
-                onSubmit={handleSubmit(handleSubmitRequest)}
-                actionConfig={actionConfig}
-                isDirty={isDirty}
-            />
-            <Form id={formId} onSubmit={handleSubmit(handleSubmitRequest)}>
-                {children}
-            </Form>
+            <ModalContext.Provider value={showConfirmActionModal}>
+                <FormNavigation
+                    pageId={pageDetails.id}
+                    pageTitle={pageDetails.title}
+                    pageDescription={pageDetails.description}
+                    navigationalOptions={navigationalOptions}
+                    onSubmit={handleSubmit(handleSubmitRequest)}
+                    actionConfig={actionConfig}
+                    isDirty={isDirty}
+                />
+                <Form id={formId} onSubmit={handleSubmit(handleSubmitRequest)}>
+                    {children}
+                </Form>
+                <A11yDialog
+                    id="givewp-admin-details-action-modal"
+                    dialogRef={(instance) => (dialog.current = instance)}
+                    title={modalContent.label}
+                    classNames={{
+                        container: styles.container,
+                        overlay: styles.overlay,
+                        dialog: cx(styles.dialog, {}),
+                        closeButton: 'hidden',
+                        title: 'hidden',
+                    }}
+                >
+                    <div className={styles.dialogTitle}>
+                        <p aria-labelledby={modalContent.label}>{modalContent.label}</p>
+                        <button onClick={(event) => dialog.current.hide()}>
+                            <ExitIcon />
+                        </button>
+                    </div>
+
+                    <div className={styles.modalContentContainer}>{modalContent.content}</div>
+
+                    <div className={styles.actionContainer}>
+                        <Button
+                            onClick={modalContent.action ? modalContent.action : () => dialog.current.hide()}
+                            variant={'primary'}
+                            size={'small'}
+                            type={'button'}
+                        >
+                            {modalContent.button}
+                        </Button>
+                        <div className={styles.noticeInformation}>
+                            <NoticeInformationIcon />
+                            {modalContent.notice}
+                        </div>
+                    </div>
+                </A11yDialog>
+            </ModalContext.Provider>
         </FormProvider>
     );
 }

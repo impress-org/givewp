@@ -8,13 +8,16 @@ import {validationSchema} from '../schema';
 
 import './css/style.scss';
 
+import testData from './data';
+
 /**
  *
  * @unreleased
  */
 
 export default function App() {
-    const defaultValues = {test: 'test'};
+    const data = testData();
+    const defaultValues = {totalDonation: data.amount, feeAmount: data.feeAmountRecovered, time: data.createdAt};
 
     const handleSubmitRequest = (formValues) => {
         console.log(JSON.stringify(formValues));
@@ -46,7 +49,7 @@ export default function App() {
             ]}
             actionConfig={actionConfig}
         >
-            <FormTemplate />
+            <FormTemplate data={data} />
         </FormPage>
     );
 }

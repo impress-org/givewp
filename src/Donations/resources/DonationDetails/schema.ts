@@ -6,5 +6,6 @@ import Joi from 'joi';
  */
 
 export const validationSchema = Joi.object().keys({
-    test: Joi.string().min(1).max(5).required(),
+    totalDonation: Joi.string(),
+    feeAmount: Joi.string(),
 });

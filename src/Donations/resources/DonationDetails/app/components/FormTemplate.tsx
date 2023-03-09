@@ -1,5 +1,4 @@
 import {useFormContext} from 'react-hook-form';
-import {FormTemplate} from './types';
 import PaymentInformation from './PaymentInformation';
 
 /**
@@ -7,7 +6,7 @@ import PaymentInformation from './PaymentInformation';
  * @unreleased
  */
 
-export default function FormTemplate({}: FormTemplate) {
+export default function FormTemplate({data}: any) {
     const methods = useFormContext();
     const {register} = methods;
 
@@ -15,7 +14,17 @@ export default function FormTemplate({}: FormTemplate) {
 
     return (
         <>
-            <PaymentInformation />
+            <PaymentInformation
+                register={register}
+                amount={data?.amount}
+                feeAmountRecovered={data?.feeAmountRecovered}
+                createdAt={data?.createdAt}
+                time={data?.createdAt}
+                form={{id: data?.formId, title: 'testTitle'}}
+                status={data?.status}
+                type={data?.type}
+                gateway={data?.gateway}
+            />
         </>
     );
 }

@@ -16,12 +16,6 @@ export interface FormPage {
     actionConfig: Array<{title: string; action: any}>;
 }
 
-export interface Form {
-    children: React.ReactNode;
-    onSubmit: React.FormEventHandler<HTMLFormElement>;
-    id: string;
-}
-
 export interface FormNavigation {
     navigationalOptions: Array<{id: number; title: string}>;
     onSubmit: () => void;
@@ -30,6 +24,20 @@ export interface FormNavigation {
     pageTitle: string;
     actionConfig: Array<{title: string; action: any}>;
     isDirty: boolean;
+}
+
+export interface Form {
+    children: React.ReactNode;
+    onSubmit: React.FormEventHandler<HTMLFormElement>;
+    id: string;
+}
+
+export interface TextInputField {
+    name: string;
+    type: string;
+    placeholder: string;
+    label: string;
+    asCurrencyField?: boolean;
 }
 
 export interface Button {
