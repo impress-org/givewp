@@ -143,7 +143,7 @@ const ListTableBlankSlate = () => {
         <BlankSlate
             imagePath={`${window.GiveDonations.pluginUrl}/assets/dist/images/list-table/blank-slate-donations-icon.svg`}
             description={__('No donations found', 'give')}
-            href={'https://givewp.com/documentation/core/donations'}
+            href={'https://docs.givewp.com/donations'}
             linkText={__('GiveWP Donations.', 'give')}
         />
     );
