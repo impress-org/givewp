@@ -123,7 +123,7 @@ const ListTableBlankSlate = () => {
         <BlankSlate
             imagePath={`${window.GiveSubscriptions.pluginUrl}/assets/dist/images/list-table/blank-slate-recurring-icon.svg`}
             description={__('No subscriptions found', 'give')}
-            href={'https://givewp.com/documentation/add-ons/recurring-donations'}
+            href={'https://docs.givewp.com/subscriptions'}
             linkText={__('Recurring Donations.', 'give')}
         />
     );
