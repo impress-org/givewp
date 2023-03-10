@@ -10,7 +10,7 @@ export default function ActionContainer({label, value, type, formField, showEdit
                     {label}
                     {showEditDialog && <EditablePenIcon />}
                 </span>
-                <span className={styles[type]}>{value}</span>
+                <span className={styles[type]}>{!formField && value}</span>
             </button>
             {formField && formField}
         </div>

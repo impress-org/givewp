@@ -1,7 +1,7 @@
 .paymentInformation {
     display: grid;
     gap: var(--givewp-spacing-10);
-    padding: var(--givewp-spacing-6);
+    padding: var(--givewp-spacing-6) var(--givewp-spacing-6) var(--givewp-spacing-8);
     border: solid 1px var(--givewp-grey-50);
     background-color: var(--givewp-shades-white);
     border-radius: 4px;
@@ -40,23 +40,44 @@
         grid-template-columns: repeat(4, 1fr);
         justify-items: center;
         align-items: start;
-        gap: var(--givewp-spacing-6) 0;
+        gap: var(--givewp-spacing-8) 0;
 
         .actionContainer {
             position: relative;
-            margin-bottom: var(--givewp-spacing-4);
             cursor: pointer;
 
-            .absolutePosition {
+            .calendarPosition {
                 position: absolute;
-                top: 140%;
+                top: 130%;
                 left: 0;
+            }
+
+            .timePickerPosition {
+                position: absolute;
+                display: flex;
+                align-items: center;
+                gap: var(--givewp-spacing-1);
+                max-width: 200px;
+
+                > input {
+                    max-width: 3.25rem;
+                }
+
+                > div {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0;
+                    margin: 0 0 0 .5rem;
+                    cursor: pointer;
+                }
             }
 
             > button {
                 display: flex;
                 flex-direction: column;
                 align-items: flex-start;
+                padding: 0;
                 background: none;
                 border: none;
                 cursor: pointer;
@@ -64,15 +85,13 @@
 
                 > span:first-child {
                     display: flex;
-                    align-items: center;
-                    justify-content: left;
                     font-weight: bold;
                     font-stretch: normal;
                     font-style: normal;
                     letter-spacing: normal;
                     text-align: left;
                     color: var(--givewp-grey-900);
-                    margin-bottom: var(--givewp-spacing-4);
+                    margin-bottom: var(--givewp-spacing-3);
 
                     > svg {
                         margin-left: var(--givewp-spacing-3);
@@ -86,7 +105,7 @@
                     font-weight: 600;
                     font-stretch: normal;
                     font-style: normal;
-                    line-height: 1;
+                    line-height: 1.25;
                     letter-spacing: normal;
                     text-align: left;
                     color: var(--givewp-green-400);

@@ -3,7 +3,7 @@ import {useContext, useState} from 'react';
 import {useWatch} from 'react-hook-form';
 import {__} from '@wordpress/i18n';
 import moment from 'moment';
-import {SingleDatePicker, DayPickerSingleDateController} from 'react-dates';
+import {DayPickerSingleDateController} from 'react-dates';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
@@ -17,6 +17,7 @@ import {ModalContext} from '@givewp/components/AdminUI/FormPage';
 import {PaymentInformation} from '../types';
 
 import styles from './style.module.scss';
+import BlueExitIcon from '@givewp/components/AdminUI/Icons/BlueExitIcon';
 
 function Legend({title}) {
     return (
@@ -54,6 +55,7 @@ export default function PaymentInformation({register, createdAt}: PaymentInforma
     const [readableDate, setReadableDate] = useState(moment(createdAt).format('LL'));
     const [focused, setFocused] = useState(false);
     const [showDatePicker, setShowDatePicker] = useState(false);
+    const [showTimePicker, setShowTimePicker] = useState(false);
 
     const totalDonation = useWatch({
         name: 'totalDonation',
@@ -68,6 +70,10 @@ export default function PaymentInformation({register, createdAt}: PaymentInforma
         setFocused(focused);
     };
 
+    const toggleTimePicker = () => {
+        setShowTimePicker(!showTimePicker);
+    };
+
     const handleDateChange = (selectedDate) => {
         const formattedDate = moment(selectedDate).format('LL');
         setReadableDate(formattedDate);
@@ -76,7 +82,7 @@ export default function PaymentInformation({register, createdAt}: PaymentInforma
 
     const DatePickerFormField = () => {
         return (
-            <div className={styles.absolutePosition}>
+            <div className={styles.calendarPosition}>
                 <DayPickerSingleDateController
                     date={dateObject}
                     onDateChange={(selectedDate) => handleDateChange(selectedDate)}
@@ -89,6 +95,27 @@ export default function PaymentInformation({register, createdAt}: PaymentInforma
         );
     };
 
+    const TimePickerFormField = () => {
+        return (
+            <div className={styles.timePickerPosition}>
+                <label>
+                    <input type={'number'} max={12} min={0} />
+                </label>
+                <>&#x3A;</>
+                <label>
+                    <input type={'number'} max={12} min={0} />
+                </label>
+                <>&#x3A;</>
+                <select id="ampm" name="ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <div onClick={toggleTimePicker}>
+                    <BlueExitIcon />
+                </div>
+            </div>
+        );
+    };
     return (
         <fieldset className={styles.paymentInformation}>
             <Legend title={__('Payment Information', 'give')} />
@@ -143,7 +170,8 @@ export default function PaymentInformation({register, createdAt}: PaymentInforma
                     label={__('Donation time', 'give')}
                     value={'10:00 am'}
                     type={'text'}
-                    showEditDialog={null}
+                    showEditDialog={toggleTimePicker}
+                    formField={showTimePicker && <TimePickerFormField />}
                 />
                 <ActionContainer
                     label={__('Payment method', 'give')}
