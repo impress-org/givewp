@@ -39,5 +39,7 @@
 
 
 .currencyField {
-    font-size: 1.25rem;
+    > input {
+        font-size: 1.25rem;
+    }
 }

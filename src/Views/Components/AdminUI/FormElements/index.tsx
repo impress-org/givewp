@@ -5,6 +5,7 @@ import cx from 'classnames';
 import {Form, TextInputField} from '../types';
 
 import styles from './style.module.scss';
+import CurrencyInput from 'react-currency-input-field';
 
 /**
  *
@@ -27,17 +28,27 @@ const TextInputField = React.forwardRef<HTMLInputElement, TextInputField>(
         return (
             <label>
                 {label && <span className={styles.fieldLabel}>{label}</span>}
-                <div className={styles.textFieldContainer}>
-                    <input
-                        ref={ref}
-                        name={name}
-                        className={cx({
-                            [styles.currencyField]: asCurrencyField,
-                        })}
-                        type={type}
-                        placeholder={placeholder}
-                        {...props}
-                    />
+                <div
+                    className={cx(styles.textFieldContainer, {
+                        [styles.currencyField]: asCurrencyField,
+                    })}
+                >
+                    {asCurrencyField ? (
+                        <CurrencyInput
+                            ref={ref}
+                            name={name}
+                            type={type}
+                            placeholder={placeholder}
+                            decimalsLimit={2}
+                            intlConfig={{
+                                locale: navigator.language || (navigator.languages || ['en'])[0],
+                                currency: 'USD',
+                            }}
+                            {...props}
+                        />
+                    ) : (
+                        <input ref={ref} name={name} type={type} placeholder={placeholder} {...props} />
+                    )}
                 </div>
             </label>
         );

@@ -6,11 +6,11 @@ import {ModalContext} from '@givewp/components/AdminUI/FormPage';
 import ActionContainer from './ActionContainer';
 
 import styles from './style.module.scss';
-import {TextInputField} from '@givewp/components/AdminUI/FormElements';
 import {useWatch} from 'react-hook-form';
 import ExternalIcon from '@givewp/components/AdminUI/Icons/ExternalIcon';
 import {PaymentInformation} from '../types';
 import PaypalIcon from '@givewp/components/AdminUI/Icons/PaypalIcon';
+import {TextInputField} from '@givewp/components/AdminUI/FormElements';
 
 function Legend({title}) {
     return (
