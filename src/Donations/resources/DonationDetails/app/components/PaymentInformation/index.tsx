@@ -1,16 +1,22 @@
-import {__} from '@wordpress/i18n';
+import {useContext, useState} from 'react';
 
-import {useContext} from 'react';
-import {ModalContext} from '@givewp/components/AdminUI/FormPage';
+import {useWatch} from 'react-hook-form';
+import {__} from '@wordpress/i18n';
+import moment from 'moment';
+import {SingleDatePicker, DayPickerSingleDateController} from 'react-dates';
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
 
 import ActionContainer from './ActionContainer';
-
-import styles from './style.module.scss';
-import {useWatch} from 'react-hook-form';
 import ExternalIcon from '@givewp/components/AdminUI/Icons/ExternalIcon';
-import {PaymentInformation} from '../types';
 import PaypalIcon from '@givewp/components/AdminUI/Icons/PaypalIcon';
 import {TextInputField} from '@givewp/components/AdminUI/FormElements';
+
+import {ModalContext} from '@givewp/components/AdminUI/FormPage';
+
+import {PaymentInformation} from '../types';
+
+import styles from './style.module.scss';
 
 function Legend({title}) {
     return (
@@ -26,7 +32,6 @@ function Legend({title}) {
     );
 }
 
-// Todo: Replace with StatusSelectComponent - ReactSelect - will move to AdminUI components
 function StatusSelect() {
     return (
         <select>
@@ -35,7 +40,6 @@ function StatusSelect() {
     );
 }
 
-// Todo: Replace with SearchableSelectComponent - ReactSelect - will move to AdminUI components
 function FormSelect() {
     return (
         <select>
@@ -44,8 +48,12 @@ function FormSelect() {
     );
 }
 
-export default function PaymentInformation({register}: PaymentInformation) {
+export default function PaymentInformation({register, createdAt}: PaymentInformation) {
     const confirmActionDialog = useContext(ModalContext);
+    const [dateObject, setDateObject] = useState();
+    const [readableDate, setReadableDate] = useState(moment(createdAt).format('LL'));
+    const [focused, setFocused] = useState(false);
+    const [showDatePicker, setShowDatePicker] = useState(false);
 
     const totalDonation = useWatch({
         name: 'totalDonation',
@@ -55,6 +63,32 @@ export default function PaymentInformation({register}: PaymentInformation) {
         name: 'feeAmount',
     });
 
+    const toggleDatePicker = () => {
+        setShowDatePicker(!showDatePicker);
+        setFocused(focused);
+    };
+
+    const handleDateChange = (selectedDate) => {
+        const formattedDate = moment(selectedDate).format('LL');
+        setReadableDate(formattedDate);
+        setShowDatePicker(!showDatePicker);
+    };
+
+    const DatePickerFormField = () => {
+        return (
+            <div className={styles.absolutePosition}>
+                <DayPickerSingleDateController
+                    date={dateObject}
+                    onDateChange={(selectedDate) => handleDateChange(selectedDate)}
+                    focused={true}
+                    onFocusChange={({focused}) => {
+                        setFocused(focused);
+                    }}
+                />
+            </div>
+        );
+    };
+
     return (
         <fieldset className={styles.paymentInformation}>
             <Legend title={__('Payment Information', 'give')} />
@@ -63,11 +97,12 @@ export default function PaymentInformation({register}: PaymentInformation) {
                     label={__('Total Donation', 'give')}
                     value={totalDonation}
                     type={'amount'}
-                    showEditDialog={(event) =>
+                    showEditDialog={() =>
                         confirmActionDialog(
                             __(' Edit total donation', 'give'),
                             <TextInputField
                                 {...register('totalDonation')}
+                                name={'totalDonation'}
                                 label={__('Total Donations', 'give')}
                                 asCurrencyField
                             />,
@@ -81,11 +116,12 @@ export default function PaymentInformation({register}: PaymentInformation) {
                     label={__('Fee amount', 'give')}
                     value={feeAmount}
                     type={'amount'}
-                    showEditDialog={(event) =>
+                    showEditDialog={() =>
                         confirmActionDialog(
                             __(' Edit fee amount', 'give'),
                             <TextInputField
                                 {...register('feeAmount')}
+                                name={'feeAmount'}
                                 label={__('Fee Amount', 'give')}
                                 asCurrencyField
                             />,
@@ -98,9 +134,10 @@ export default function PaymentInformation({register}: PaymentInformation) {
                 <ActionContainer label={__('Donation form', 'give')} value={<FormSelect />} type={'text'} />
                 <ActionContainer
                     label={__('Donation date', 'give')}
-                    value={'September 6, 2022'}
+                    value={readableDate}
                     type={'text'}
-                    showEditDialog={null}
+                    showEditDialog={toggleDatePicker}
+                    formField={showDatePicker && <DatePickerFormField />}
                 />
                 <ActionContainer
                     label={__('Donation time', 'give')}
@@ -118,7 +155,6 @@ export default function PaymentInformation({register}: PaymentInformation) {
                     }
                     type={'text'}
                 />
-
                 <a href={'/'}>
                     <ExternalIcon />
 

@@ -43,7 +43,8 @@ export interface ActionContainer {
     label: string;
     type: string;
     value: string | ReactNode;
-    showEditDialog?: any;
+    showEditDialog?: () => void;
+    formField?: JSX.Element;
 }
 
 export interface PaymentInformation {

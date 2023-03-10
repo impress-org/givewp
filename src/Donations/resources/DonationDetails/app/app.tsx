@@ -17,10 +17,9 @@ import testData from './data';
 
 export default function App() {
     const data = testData();
-    const defaultValues = {totalDonation: data.amount, feeAmount: data.feeAmountRecovered, time: data.createdAt};
+    const defaultValues = {totalDonation: data.amount, feeAmount: data.feeAmountRecovered, createdAt: data.createdAt};
 
     const handleSubmitRequest = (formValues) => {
-        event.preventDefault();
         console.log(JSON.stringify(formValues));
         alert(`post request submitted. Form data = ${JSON.stringify(formValues)}`);
     };

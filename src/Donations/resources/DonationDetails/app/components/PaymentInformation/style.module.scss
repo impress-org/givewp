@@ -43,41 +43,67 @@
         gap: var(--givewp-spacing-6) 0;
 
         .actionContainer {
+            position: relative;
             margin-bottom: var(--givewp-spacing-4);
-            background: none;
-            border: none;
-            text-align: left;
             cursor: pointer;
 
-            > span:first-child {
-                display: flex;
-                align-items: center;
-                justify-content: left;
-                font-weight: bold;
-                font-stretch: normal;
-                font-style: normal;
-                letter-spacing: normal;
-                text-align: left;
-                color: var(--givewp-grey-900);
-                margin-bottom: var(--givewp-spacing-4);
+            .absolutePosition {
+                position: absolute;
+                top: 140%;
+                left: 0;
+            }
 
-                > svg {
-                    margin-left: var(--givewp-spacing-3);
-                    cursor: pointer;
+            > button {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                background: none;
+                border: none;
+                cursor: pointer;
+
+
+                > span:first-child {
+                    display: flex;
+                    align-items: center;
+                    justify-content: left;
+                    font-weight: bold;
+                    font-stretch: normal;
+                    font-style: normal;
+                    letter-spacing: normal;
+                    text-align: left;
+                    color: var(--givewp-grey-900);
+                    margin-bottom: var(--givewp-spacing-4);
+
+                    > svg {
+                        margin-left: var(--givewp-spacing-3);
+                        cursor: pointer;
+                    }
+                }
+
+                .amount {
+                    display: block;
+                    font-size: 2rem;
+                    font-weight: 600;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: 1;
+                    letter-spacing: normal;
+                    text-align: left;
+                    color: var(--givewp-green-400);
+                }
+
+                .text {
+                    font-size: 1rem;
+                    font-weight: normal;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: 1.5;
+                    letter-spacing: normal;
+                    text-align: left;
+                    color: var(--givewp-grey-900);
                 }
             }
 
-            .amount {
-                display: block;
-                font-size: 2rem;
-                font-weight: 600;
-                font-stretch: normal;
-                font-style: normal;
-                line-height: 1;
-                letter-spacing: normal;
-                text-align: left;
-                color: var(--givewp-green-400);
-            }
         }
 
         .actionContainer:nth-child(1), .actionContainer:nth-child(2), .actionContainer:nth-child(3) {
@@ -112,4 +138,8 @@
         letter-spacing: normal;
         text-decoration: none;
     }
+}
+
+.DateInput_input {
+    display: none !important;
 }
