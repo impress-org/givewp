@@ -66,25 +66,37 @@ class DonationsAdminPage
         $data = [
             'apiRoot' => $this->apiRoot,
             'apiNonce' => $this->apiNonce,
-            'forms' => $this->getForms(),
-            'table' => give(DonationsListTable::class)->toArray(),
             'adminUrl' => $this->adminUrl,
             'paymentMode' => give_is_test_mode(),
             'manualDonations' => Utils::isPluginActive('give-manual-donations/give-manual-donations.php'),
         ];
-
 
         /**
          * Render admin page container
          *
          * @unreleased conditionally enqueue scripts.
          */
-        if (isset($_GET['view']) && 'view-payment-details' === $_GET['view']) {
+        if (self::isDonationDetailsPage()) {
+            $data = array_merge(
+                $data,
+                [
+                    'donationDetails' => $this->getDonationDetails(intval($_GET['id'])),
+                ]
+            );
+
             EnqueueScript::make('give-admin-donation-details', 'assets/dist/js/give-admin-donation-details.js')
                 ->loadInFooter()
                 ->registerTranslations()
-                ->registerLocalizeData('GiveDonations', $data)->enqueue();        }
-        else {
+                ->registerLocalizeData('GiveDonations', $data)->enqueue();
+        } else {
+            $data = array_merge(
+                $data,
+                [
+                    'forms' => $this->getForms(),
+                    'table' => give(DonationsListTable::class)->toArray(),
+                ]
+            );
+
             EnqueueScript::make('give-admin-donations', 'assets/dist/js/give-admin-donations.js')
                 ->loadInFooter()
                 ->registerTranslations()
@@ -108,7 +120,7 @@ class DonationsAdminPage
      */
     public function render()
     {
-        if (isset($_GET['view']) && 'view-payment-details' === $_GET['view']) {
+        if (self::isDonationDetailsPage()) {
             echo '<div id="give-admin-donation-details-root"></div>';
         } else {
             echo '<div id="give-admin-donations-root"></div>';
@@ -118,16 +130,25 @@ class DonationsAdminPage
     /**
      * Helper function to determine if current page is Give Donors admin page
      * @unreleased check for both admin pages to determine if page is showing.
-     * @since 2.20.0
+     * @since      2.20.0
      *
      * @return bool
      *
      */
     public static function isShowing()
     {
-        return (isset($_GET['page']) && $_GET['page'] === 'give-payment-history') || (isset($_GET['view']) && 'view-payment-details' === $_GET['view']);
+        return (isset($_GET['page']) && $_GET['page'] === 'give-payment-history') || self::isDonationDetailsPage();
     }
 
+    /**
+     * Check if current page is donation details page
+     *
+     * @unreleased
+     */
+    private static function isDonationDetailsPage(): bool
+    {
+        return isset($_GET['view']) && 'view-payment-details' === $_GET['view'];
+    }
 
     /**
      * Retrieve a list of donation forms to populate the form filter dropdown
@@ -152,5 +173,23 @@ class DonationsAdminPage
                 'text' => 'Any',
             ],
         ], $options);
+    }
+
+    /**
+     * Get donation model and transform to array
+     *
+     * @unreleased
+     *
+     * @param int $id
+     *
+     * @return array
+     */
+    private function getDonationDetails(int $id): array
+    {
+        $donation = give()->donations->getById($id)->toArray();
+
+        $donation['amount'] = $donation['amount']->formatToLocale('');
+
+        return $donation;
     }
 }
