@@ -8,7 +8,7 @@ import PaymentInformation from './PaymentInformation';
 
 export default function FormTemplate({data}: any) {
     const methods = useFormContext();
-    const {register} = methods;
+    const {register, setValue} = methods;
 
     const {errors} = methods.formState;
 
@@ -16,6 +16,7 @@ export default function FormTemplate({data}: any) {
         <>
             <PaymentInformation
                 register={register}
+                setValue={setValue}
                 amount={data?.amount}
                 feeAmountRecovered={data?.feeAmountRecovered}
                 createdAt={data?.createdAt}

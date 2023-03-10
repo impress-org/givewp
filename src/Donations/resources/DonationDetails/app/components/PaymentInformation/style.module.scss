@@ -59,17 +59,25 @@
                 gap: var(--givewp-spacing-1);
                 max-width: 200px;
 
-                > input {
-                    max-width: 3.25rem;
+
+                input {
+                    flex: 1;
+                    padding-right: 0;
                 }
+
 
                 > div {
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     padding: 0;
-                    margin: 0 0 0 .5rem;
+                    margin: 0 0 0 .65rem;
                     cursor: pointer;
+
+                    > svg:hover {
+                        -webkit-filter: invert(100%); /* safari 6.0 - 9.0 */
+                        filter: invert(100%);
+                    }
                 }
             }
 

@@ -49,7 +49,7 @@ function FormSelect() {
     );
 }
 
-export default function PaymentInformation({register, createdAt}: PaymentInformation) {
+export default function PaymentInformation({register, createdAt, setValue}: PaymentInformation) {
     const confirmActionDialog = useContext(ModalContext);
     const [dateObject, setDateObject] = useState();
     const [readableDate, setReadableDate] = useState(moment(createdAt).format('LL'));
@@ -74,9 +74,10 @@ export default function PaymentInformation({register, createdAt}: PaymentInforma
         setShowTimePicker(!showTimePicker);
     };
 
-    const handleDateChange = (selectedDate) => {
+    const handleDateChange = (selectedDate, event) => {
         const formattedDate = moment(selectedDate).format('LL');
         setReadableDate(formattedDate);
+        setValue('createdAt', new Date(selectedDate).toString());
         setShowDatePicker(!showDatePicker);
     };
 
@@ -85,7 +86,7 @@ export default function PaymentInformation({register, createdAt}: PaymentInforma
             <div className={styles.calendarPosition}>
                 <DayPickerSingleDateController
                     date={dateObject}
-                    onDateChange={(selectedDate) => handleDateChange(selectedDate)}
+                    onDateChange={(selectedDate, event) => handleDateChange(selectedDate, event)}
                     focused={true}
                     onFocusChange={({focused}) => {
                         setFocused(focused);
@@ -98,18 +99,36 @@ export default function PaymentInformation({register, createdAt}: PaymentInforma
     const TimePickerFormField = () => {
         return (
             <div className={styles.timePickerPosition}>
-                <label>
-                    <input type={'number'} max={12} min={0} />
+                <label hidden htmlFor={'give-payment-time-hour'}>
+                    {__('Payment time by the hour')}
                 </label>
+                <input
+                    id={'give-payment-time-hour'}
+                    name="give-payment-time-hour"
+                    type={'number'}
+                    step="1"
+                    min={0}
+                    max={12}
+                />
+
                 <>&#x3A;</>
-                <label>
-                    <input type={'number'} max={12} min={0} />
+
+                <label hidden htmlFor={'give-payment-time-minute'}>
+                    {__('Payment time by the minute')}
                 </label>
-                <>&#x3A;</>
-                <select id="ampm" name="ampm">
+                <input
+                    id={'give-payment-time-minute'}
+                    name="give-payment-time-minute"
+                    type={'number'}
+                    min={0}
+                    max={59}
+                />
+
+                <select id="give-payment-time-am-pm" name="ampm">
                     <option value="am">AM</option>
                     <option value="pm">PM</option>
                 </select>
+
                 <div onClick={toggleTimePicker}>
                     <BlueExitIcon />
                 </div>
