@@ -42,9 +42,11 @@
         align-items: start;
         gap: var(--givewp-spacing-8) 0;
 
+
         .actionContainer {
             position: relative;
             cursor: pointer;
+
 
             .calendarPosition {
                 position: absolute;
@@ -61,8 +63,14 @@
 
 
                 input {
-                    flex: 1;
+                    height: 2.25rem;
+                    line-height: 2.25rem;
                     padding-right: 0;
+                }
+
+                select {
+                    height: 2.25rem;
+                    margin-left: .2rem;
                 }
 
 
@@ -89,7 +97,6 @@
                 background: none;
                 border: none;
                 cursor: pointer;
-
 
                 > span:first-child {
                     display: flex;
@@ -137,9 +144,17 @@
             margin-bottom: var(--givewp-spacing-10);
         }
 
+        .actionContainer:nth-child(2), .actionContainer:nth-child(5) {
+            button {
+                width: 150px;
+                margin: 0 auto;
+            }
+        }
+
         .actionContainer:nth-child(1), .actionContainer:nth-child(4) {
             justify-self: start;
         }
+
 
         .actionContainer:nth-child(6) {
             justify-self: end;
@@ -147,8 +162,8 @@
 
         .actionContainer:nth-child(3), {
             grid-column: span 2;
-            margin-right: 9rem;
             padding: 0;
+            margin-right: 8rem;
         }
     }
 
