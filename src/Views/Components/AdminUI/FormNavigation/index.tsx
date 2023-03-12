@@ -23,7 +23,7 @@ export default function FormNavigation({
     actionConfig,
     isDirty,
 }: FormNavigation) {
-    const [toggleActions, setToggleActions] = useState(false);
+    const [toggleActions, setToggleActions] = useState<boolean>(false);
 
     const toggleMoreActions = () => {
         setToggleActions(!toggleActions);

@@ -18,28 +18,7 @@ import {PaymentInformation} from '../types';
 
 import styles from './style.module.scss';
 import BlueExitIcon from '@givewp/components/AdminUI/Icons/BlueExitIcon';
-
-function Legend({title}) {
-    return (
-        <div className={styles.legend}>
-            <legend>
-                <h2>{title}</h2>
-            </legend>
-            <div className={styles.paymentType}>
-                <div>Subscriber</div>
-                <StatusSelect />
-            </div>
-        </div>
-    );
-}
-
-function StatusSelect() {
-    return (
-        <select>
-            <option>Completed</option>
-        </select>
-    );
-}
+import StatusSelector from '@givewp/components/AdminUI/StatusSelector';
 
 function FormSelect() {
     return (
@@ -49,13 +28,66 @@ function FormSelect() {
     );
 }
 
-export default function PaymentInformation({register, createdAt, setValue}: PaymentInformation) {
+export const donationStatusOptions = [
+    {
+        value: 'publish',
+        label: __('Completed', 'give'),
+    },
+    {
+        value: 'pending',
+        label: __('Pending', 'give'),
+    },
+    {
+        value: 'processing',
+        label: __('Processing', 'give'),
+    },
+    {
+        value: 'refunded',
+        label: __('Refunded', 'give'),
+    },
+    {
+        value: 'revoked',
+        label: __('Revoked', 'give'),
+    },
+    {
+        value: 'failed',
+        label: __('Failed', 'give'),
+    },
+    {
+        value: 'cancelled',
+        label: __('Cancelled', 'give'),
+    },
+    {
+        value: 'abandoned',
+        label: __('Abandoned', 'give'),
+    },
+    {
+        value: 'preApproval',
+        label: __('Pre-approved', 'give'),
+    },
+];
+
+function Legend({title}) {
+    return (
+        <div className={styles.legend}>
+            <legend>
+                <h2>{title}</h2>
+            </legend>
+            <div className={styles.paymentType}>
+                <p>subscriber</p>
+                <StatusSelector options={donationStatusOptions} />
+            </div>
+        </div>
+    );
+}
+
+export default function PaymentInformation({register, setValue}: PaymentInformation) {
     const confirmActionDialog = useContext(ModalContext);
-    const [dateObject, setDateObject] = useState();
-    const [readableDate, setReadableDate] = useState(moment(createdAt).format('LL'));
-    const [focused, setFocused] = useState(false);
-    const [showDatePicker, setShowDatePicker] = useState(false);
-    const [showTimePicker, setShowTimePicker] = useState(false);
+    const [dateObject, setDateObject] = useState<object>();
+    const [readableDate, setReadableDate] = useState<string>(moment(dateObject).format('LL'));
+    const [focused, setFocused] = useState<boolean>(false);
+    const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
+    const [showTimePicker, setShowTimePicker] = useState<boolean>(false);
 
     const totalDonation = useWatch({
         name: 'totalDonation',
@@ -74,9 +106,10 @@ export default function PaymentInformation({register, createdAt, setValue}: Paym
         setShowTimePicker(!showTimePicker);
     };
 
-    const handleDateChange = (selectedDate, event) => {
+    const handleDateChange = (selectedDate) => {
         const formattedDate = moment(selectedDate).format('LL');
         setReadableDate(formattedDate);
+        setDateObject(selectedDate);
         setValue('createdAt', new Date(selectedDate).toString());
         setShowDatePicker(!showDatePicker);
     };
@@ -86,7 +119,7 @@ export default function PaymentInformation({register, createdAt, setValue}: Paym
             <div className={styles.calendarPosition}>
                 <DayPickerSingleDateController
                     date={dateObject}
-                    onDateChange={(selectedDate, event) => handleDateChange(selectedDate, event)}
+                    onDateChange={(selectedDate, event) => handleDateChange(selectedDate)}
                     focused={true}
                     onFocusChange={({focused}) => {
                         setFocused(focused);
@@ -135,6 +168,7 @@ export default function PaymentInformation({register, createdAt, setValue}: Paym
             </div>
         );
     };
+
     return (
         <fieldset className={styles.paymentInformation}>
             <Legend title={__('Payment Information', 'give')} />

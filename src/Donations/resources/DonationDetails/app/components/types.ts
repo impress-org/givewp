@@ -48,14 +48,6 @@ export interface ActionContainer {
 }
 
 export interface PaymentInformation {
-    register: any;
-    setValue: any;
-    amount: string;
-    feeAmountRecovered: number;
-    createdAt: string;
-    time: string;
-    form: {id: number; title: string};
-    status: string;
-    type: string;
-    gateway: string;
+    register;
+    setValue;
 }

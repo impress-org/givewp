@@ -1,0 +1,79 @@
+.statusSelectorContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    > button {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--givewp-spacing-3);
+        background-color: var(--givewp-shades-white);
+        border: none;
+        padding: 0;
+        cursor: pointer
+    }
+
+    .status {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: var(--givewp-spacing-2);
+        background-color: inherit;
+        font-size: 0.75rem;
+        font-weight: 600;
+        font-stretch: normal;
+        font-style: normal;
+        letter-spacing: normal;
+        text-align: center;
+        padding-left : var(--givewp-spacing-3);
+        width: 100%;
+    }
+
+
+    .ellipse {
+        width: .55rem;
+        height: .55rem;
+        margin-top: 1px;
+        border-radius: var(--givewp-rounded-full);
+    }
+
+
+    .completed, .publish{
+        background-color: var(--givewp-emerald-500);
+    }
+
+    .pending{
+        background-color: var(--givewp-yellow-500);
+    }
+
+    .failed {
+        background-color: var(--givewp-red-500);
+    }
+
+    .cancelled {
+        background-color: var(--givewp-red-700);
+    }
+
+    .revoked, .refunded{
+        background-color: var(--givewp-red-300);
+    }
+
+    .abandoned {
+        background-color: var(--givewp-grey-600);
+    }
+
+    .processing {
+        background-color: var(--givewp-purple-600);
+    }
+
+    .preApproved, .preApproval, .preApprove{
+        background-color: var(--givewp-emerald-700);
+    }
+}
+
+

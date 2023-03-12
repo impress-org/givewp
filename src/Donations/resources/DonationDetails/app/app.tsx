@@ -17,7 +17,12 @@ import testData from './data';
 
 export default function App() {
     const data = testData();
-    const defaultValues = {totalDonation: data.amount, feeAmount: data.feeAmountRecovered, createdAt: data.createdAt};
+    const defaultValues = {
+        totalDonation: data.amount,
+        feeAmount: data.feeAmountRecovered,
+        createdAt: data.createdAt,
+        status: data.status,
+    };
 
     const handleSubmitRequest = (formValues) => {
         console.log(JSON.stringify(formValues));
