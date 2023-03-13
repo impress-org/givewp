@@ -5,6 +5,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 use WP_Roles;
+use WP_UnitTest_Factory;
 use WP_User;
 
 /**
@@ -25,11 +26,18 @@ class ApiTestCase extends TestCase
     protected $server;
 
     /**
-     * Test user account for API authentication
+     * Test admin user account for API authentication
      *
      * @var WP_User
      */
-    protected $user_id;
+    protected static $admin_user_id;
+
+    public static function wpSetUpBeforeClass(WP_UnitTest_Factory $factory)
+    {
+        self::$admin_user_id = $factory->user->create([
+            'role' => 'administrator',
+        ]);
+    }
 
     /**
      * Initialize the REST server
@@ -44,9 +52,6 @@ class ApiTestCase extends TestCase
         $this->server = $wp_rest_server = new WP_REST_Server;
         do_action('rest_api_init');
 
-        $this->user_id = $this->factory->user->create([
-            'role' => 'administrator',
-        ]);
         $this->flush_roles();
     }
 
@@ -67,7 +72,7 @@ class ApiTestCase extends TestCase
         bool $authenticated = true
     ): WP_REST_Request {
         if ($authenticated) {
-            wp_set_current_user($this->user_id);
+            wp_set_current_user(self::$admin_user_id);
         } else {
             wp_set_current_user(0);
         }
