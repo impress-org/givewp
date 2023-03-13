@@ -4,6 +4,7 @@ namespace Give\Tests;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
+use WP_Roles;
 use WP_User;
 
 /**
@@ -40,15 +41,13 @@ class ApiTestCase extends TestCase
         parent::setUp();
 
         global $wp_rest_server;
-
-        $wp_rest_server = new WP_REST_Server();
-        $this->server = $wp_rest_server;
-
+        $this->server = $wp_rest_server = new WP_REST_Server;
         do_action('rest_api_init');
 
         $this->user_id = $this->factory->user->create([
             'role' => 'administrator',
         ]);
+        $this->flush_roles();
     }
 
     /**
@@ -69,6 +68,8 @@ class ApiTestCase extends TestCase
     ): WP_REST_Request {
         if ($authenticated) {
             wp_set_current_user($this->user_id);
+        } else {
+            wp_set_current_user(0);
         }
 
         return new WP_REST_Request($method, $route, $attributes);
@@ -86,6 +87,13 @@ class ApiTestCase extends TestCase
         return $this->server->dispatch($request);
     }
 
+    private function flush_roles()
+    {
+        unset($GLOBALS['wp_user_roles']);
+        global $wp_roles;
+        $wp_roles = new WP_Roles();
+    }
+
     /**
      * Destroy the REST server
      *
@@ -94,9 +102,6 @@ class ApiTestCase extends TestCase
     public function tearDown()
     {
         parent::tearDown();
-
-        wp_delete_user($this->user_id, true);
-        $this->user_id = null;
 
         global $wp_rest_server;
         $wp_rest_server = null;
