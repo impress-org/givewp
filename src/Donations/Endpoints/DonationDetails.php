@@ -49,17 +49,7 @@ class DonationDetails extends Endpoint
                     'status' => [
                         'type' => 'string',
                         'required' => false,
-                        'enum' => [
-                            'publish', // Completed
-                            'pending',
-                            'processing',
-                            'refunded',
-                            'revoked',
-                            'failed',
-                            'cancelled',
-                            'abandoned',
-                            'preapproval'
-                        ],
+                        'enum' => array_values(DonationStatus::toArray()),
                     ],
                 ],
             ]
