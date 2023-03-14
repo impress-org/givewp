@@ -1,7 +1,7 @@
 .paymentInformation {
     display: grid;
     gap: var(--givewp-spacing-6);
-    padding: var(--givewp-spacing-6) var(--givewp-spacing-6) var(--givewp-spacing-8);
+    padding: var(--givewp-spacing-5) var(--givewp-spacing-6) var(--givewp-spacing-8);
     border: solid 1px var(--givewp-grey-50);
     background-color: var(--givewp-shades-white);
     border-radius: 4px;
@@ -168,13 +168,18 @@
             padding: 0;
             margin-right: 8rem;
         }
+
+        .actionContainer:nth-child(6), {
+            justify-self: end;
+        }
     }
 
     a {
         display: flex;
         align-items: center;
-        justify-content: center;
-        gap: var(--givewp-spacing-4);
+        justify-content: flex-end;
+        width: 90%;
+        gap: var(--givewp-spacing-2);
         color: var(--givewp-blue-500);
         font-weight: 600;
         font-stretch: normal;
@@ -182,6 +187,7 @@
         line-height: 1.43;
         letter-spacing: normal;
         text-decoration: none;
+
     }
 }
 

@@ -71,7 +71,7 @@ export default function StatusSelector({options}) {
                         name={name}
                         defaultValue={defaultStatusByValue}
                         options={options}
-                        onChange={onChange}
+                        onChange={() => onChange(status.value)}
                         isClearable={false}
                         isSearchable={false}
                         placeholder={''}
