@@ -189,7 +189,7 @@ export default function PaymentInformation({register, setValue}: PaymentInformat
                                 asCurrencyField
                             />,
                             null,
-                            __('Save Changes', 'give'),
+                            __('Set Donation Amount', 'give'),
                             __('Changes made will not be billed to the donor', 'give')
                         )
                     }
@@ -208,7 +208,7 @@ export default function PaymentInformation({register, setValue}: PaymentInformat
                                 asCurrencyField
                             />,
                             null,
-                            __('Save Changes', 'give'),
+                            __('Set Fee Amount', 'give'),
                             __('Changes made will not be billed to the donor', 'give')
                         )
                     }
