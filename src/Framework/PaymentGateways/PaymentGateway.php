@@ -109,7 +109,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
                 $exception->getMessage(),
                 [
                     'Payment Gateway' => static::id(),
-                    'Donation' => $donation,
+                    'Donation' => $donation->toArray(),
                 ]
             );
 
@@ -150,8 +150,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
                 $exception->getMessage(),
                 [
                     'Payment Gateway' => static::id(),
-                    'Donation' => $donation,
-                    'Subscription' => $subscription,
+                    'Donation' => $donation->toArray(),
+                    'Subscription' => $subscription->toArray(),
                 ]
             );
 
