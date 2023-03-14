@@ -35,7 +35,6 @@ export default function StatusSelector({options}) {
             alignItems: 'center',
             gap: 12,
             border: 'none',
-            width: 165,
             height: 32,
             background: '#fff',
             borderRadius: 2,
@@ -48,8 +47,12 @@ export default function StatusSelector({options}) {
         }),
         valueContainer: (provided, state) => ({
             ...provided,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             background: '#F2F2F2',
             height: '100%',
+            width: 140,
             borderRadius: 2,
         }),
     };
