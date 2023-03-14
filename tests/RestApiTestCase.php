@@ -6,7 +6,6 @@ use WP_REST_Response;
 use WP_REST_Server;
 use WP_Roles;
 use WP_UnitTest_Factory;
-use WP_User;
 
 /**
  * Give Unit API Test Case
@@ -21,6 +20,8 @@ class RestApiTestCase extends TestCase
     /**
      * Test REST Server
      *
+     * @unreleased
+     *
      * @var WP_REST_Server
      */
     protected $server;
@@ -28,7 +29,9 @@ class RestApiTestCase extends TestCase
     /**
      * Test user accounts for API authentication
      *
-     * @var WP_User[] $users
+     * @unreleased
+     *
+     * @var int[] $users
      */
     protected static $users = [
         'anonymous' => null,
@@ -41,6 +44,8 @@ class RestApiTestCase extends TestCase
 
     /**
      * Create users for API authentication
+     *
+     * @unreleased
      *
      * @return void
      */
@@ -59,6 +64,8 @@ class RestApiTestCase extends TestCase
     /**
      * Initialize the REST server
      *
+     * @unreleased
+     *
      * @return void
      */
     public function setUp()
@@ -74,6 +81,8 @@ class RestApiTestCase extends TestCase
 
     /**
      * Wrapper for creating a request
+     *
+     * @unreleased
      *
      * @param string $method
      * @param string $route
@@ -99,6 +108,8 @@ class RestApiTestCase extends TestCase
     /**
      * Wrapper for dispatching a request
      *
+     * @unreleased
+     *
      * @param WP_REST_Request $request
      *
      * @return WP_REST_Response
@@ -108,6 +119,15 @@ class RestApiTestCase extends TestCase
         return $this->server->dispatch($request);
     }
 
+    /**
+     * Flushes the WordPress user roles and reloads them from the database.
+     *
+     * This function ensures that we are testing against the database data, not just in-memory data.
+     *
+     * @unreleased
+     *
+     * @return void
+     */
     private function flushRoles()
     {
         unset($GLOBALS['wp_user_roles']);
@@ -117,6 +137,8 @@ class RestApiTestCase extends TestCase
 
     /**
      * Destroy the REST server
+     *
+     * @unreleased
      *
      * @return void
      */
@@ -128,6 +150,17 @@ class RestApiTestCase extends TestCase
         $wp_rest_server = null;
     }
 
+    /**
+     * Asserts that the response is a WP error response with the specified code and status (if provided).
+     *
+     * @unreleased
+     *
+     * @param $code
+     * @param $response
+     * @param $status
+     *
+     * @return void
+     */
     protected function assertErrorResponse($code, $response, $status = null)
     {
         if (is_a($response, 'WP_REST_Response')) {
@@ -136,7 +169,7 @@ class RestApiTestCase extends TestCase
 
         $this->assertInstanceOf('WP_Error', $response);
         $this->assertEquals($code, $response->get_error_code());
-        
+
         if (null !== $status) {
             $data = $response->get_error_data();
             $this->assertArrayHasKey('status', $data);
