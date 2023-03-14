@@ -35,7 +35,7 @@ export default function StatusSelector({options}) {
             alignItems: 'center',
             gap: 12,
             border: 'none',
-            width: 182,
+            width: 165,
             height: 32,
             background: '#fff',
             borderRadius: 2,

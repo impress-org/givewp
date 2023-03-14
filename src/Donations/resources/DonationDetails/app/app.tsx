@@ -32,7 +32,7 @@ export default function App() {
     const actionConfig = [
         {title: __('Refund donation', 'give'), action: () => alert('refund donation')},
         {title: __('Download receipt', 'give'), action: () => alert('Download receipt')},
-        {title: __('Refund donation', 'give'), action: () => alert('Refund donation')},
+        {title: __('Resend receipt', 'give'), action: () => alert('Resend receipt')},
         {title: __('Delete donation', 'give'), action: () => alert('Delete donation')},
     ];
 

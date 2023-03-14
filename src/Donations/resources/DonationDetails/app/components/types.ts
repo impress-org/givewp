@@ -17,7 +17,7 @@ export interface FormTemplate {
         type: string;
         mode: string;
         amount: string;
-        feeAmountRecovered: null;
+        feeAmountRecovered: string | null;
         gatewayId: string;
         gateway: string;
         donorId: number;
@@ -33,9 +33,9 @@ export interface FormTemplate {
             state: string;
             zip: string;
         };
-        anonymous: false;
+        anonymous: boolean;
         gatewayTransactionId: string;
-        company: null;
+        company: string | null;
     };
 }
 
@@ -50,4 +50,5 @@ export interface ActionContainer {
 export interface PaymentInformation {
     register;
     setValue;
+    data;
 }

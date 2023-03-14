@@ -74,7 +74,9 @@ function Legend({title}) {
                 <h2>{title}</h2>
             </legend>
             <div className={styles.paymentType}>
-                <p>subscriber</p>
+                <p className="badge__label" id="badgeId-48">
+                    Subscriber
+                </p>
                 <StatusSelector options={donationStatusOptions} />
             </div>
         </div>
@@ -193,7 +195,7 @@ export default function PaymentInformation({register, setValue}: PaymentInformat
                     }
                 />
                 <ActionContainer
-                    label={__('Fee amount', 'give')}
+                    label={__('Fee recovered', 'give')}
                     value={feeAmount}
                     type={'amount'}
                     showEditDialog={() =>
@@ -229,17 +231,17 @@ export default function PaymentInformation({register, setValue}: PaymentInformat
                 <ActionContainer
                     label={__('Payment method', 'give')}
                     value={
-                        <>
+                        <div className={styles.paymentMethod}>
                             <PaypalIcon />
                             {__('Paypal', 'give')}
-                        </>
+                        </div>
                     }
                     type={'text'}
                 />
                 <a href={'/'}>
                     <ExternalIcon />
 
-                    {__('View Payment gateway', 'give')}
+                    {__('View donation on gateway', 'give')}
                 </a>
             </div>
         </fieldset>
