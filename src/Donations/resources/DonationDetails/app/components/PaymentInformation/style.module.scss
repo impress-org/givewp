@@ -166,11 +166,13 @@
         .actionContainer:nth-child(3), {
             grid-column: span 2;
             padding: 0;
+            margin-right: 17rem;
+
         }
 
         .actionContainer:nth-child(6), {
             justify-self: end;
-            margin-right: 1.5rem;
+            width: 17rem;
         }
     }
 

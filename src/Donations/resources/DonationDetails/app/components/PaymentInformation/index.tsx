@@ -9,7 +9,6 @@ import 'react-dates/lib/css/_datepicker.css';
 
 import ActionContainer from './ActionContainer';
 import ExternalIcon from '@givewp/components/AdminUI/Icons/ExternalIcon';
-import PaypalIcon from '@givewp/components/AdminUI/Icons/PaypalIcon';
 import {TextInputField} from '@givewp/components/AdminUI/FormElements';
 
 import {ModalContext} from '@givewp/components/AdminUI/FormPage';
@@ -20,6 +19,7 @@ import styles from './style.module.scss';
 import BlueExitIcon from '@givewp/components/AdminUI/Icons/BlueExitIcon';
 import StatusSelector from '@givewp/components/AdminUI/StatusSelector';
 import SearchSelector from '@givewp/components/AdminUI/SearchSelector';
+import PaymentMethod from './PaymentMethods';
 
 const tempDonationFormOptions = [
     {value: 1, label: 'donation form 1'},
@@ -84,7 +84,7 @@ function Legend({title}) {
     );
 }
 
-export default function PaymentInformation({register, setValue}: PaymentInformation) {
+export default function PaymentInformation({register, setValue, data}: PaymentInformation) {
     const confirmActionDialog = useContext(ModalContext);
     const [dateObject, setDateObject] = useState<object>();
     const [readableDate, setReadableDate] = useState<string>(moment(dateObject).format('LL'));
@@ -242,12 +242,7 @@ export default function PaymentInformation({register, setValue}: PaymentInformat
                 />
                 <ActionContainer
                     label={__('Payment method', 'give')}
-                    value={
-                        <div className={styles.paymentMethod}>
-                            <PaypalIcon />
-                            {__('Paypal', 'give')}
-                        </div>
-                    }
+                    value={<PaymentMethod gateway={data?.gateway} gatewayId={data?.gatewayId} />}
                     type={'text'}
                 />
                 <a href={'/'}>
