@@ -416,8 +416,18 @@ jQuery( function( $ ) {
 			// Auto set give price id.
 			$( 'input[name="give-price-id"]', parent_form ).val( price_id );
 
-			// Update hidden amount field
-			parent_form.find( '.give-amount-hidden' ).val( Give.form.fn.formatAmount( value_now, parent_form, {} ) );
+            // Update hidden amount field
+            const hiddenAmountField = parent_form.find('.give-amount-hidden');
+            if (hiddenAmountField) {
+                hiddenAmountField.val(Give.form.fn.formatAmount(value_now, parent_form, {}));
+                // Trigger change event.
+                // We use amount field classes to trigger change event on input field,
+                // But when custom amount disabled then we use hidden field to store amount and span HTML tag to show amount.
+                // This means, if logic depends on amount change event (field with "give-amount" name) then it will not work.
+                // So, it is required to trigger change event on 'give-amount' hidden field.
+                // For example: Form field manager (feature: conditional field visibility)
+                hiddenAmountField.trigger('change');
+            }
 
 			// Remove old selected class & add class for CSS purposes
 			parent_form.find( '.give-default-level' ).removeClass( 'give-default-level' );
