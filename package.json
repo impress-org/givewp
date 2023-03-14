@@ -48,7 +48,7 @@
         "ts-loader": "^9.2.6",
         "typescript": "^4.5.4",
         "typescript-plugin-css-modules": "^3.4.0",
-        "webpack": "^5.60.0",
+        "webpack": "^5.76.0",
         "webpack-rtl-plugin": "^2.0.0",
         "wp-pot": "^1.7.0",
         "wp-textdomain": "^1.0.1"
