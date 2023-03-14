@@ -9,7 +9,10 @@ export interface FormValues {}
 export interface FormTemplate {
     data: {
         id: number;
-        formId: number;
+        form: {
+            id: number;
+            name: string;
+        };
         purchaseKey: string;
         createdAt: string;
         updatedAt: string;

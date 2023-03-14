@@ -1,0 +1,29 @@
+.formSelectorContainer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-2);
+    border: none;
+    cursor: pointer;
+
+    .searchSelect{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--givewp-spacing-4);
+        height: 32px;
+        width: fit-content;
+        background:var(--givewp-grey-25);
+        border: none;
+        padding: 0 var(--givewp-spacing-4);
+    }
+
+    > div {
+        height:32px;
+        width: 15rem;
+    }
+
+    input[type="text"]:focus {
+        border: none;
+        box-shadow: none;
+    }
+}

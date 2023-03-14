@@ -3,15 +3,16 @@ import ReactSelect, {components} from 'react-select';
 import cx from 'classnames';
 import styles from './style.module.scss';
 import DownArrowIcon from '@givewp/components/AdminUI/Icons/DownArrowIcon';
+import {StyleConfig} from './StyleConfig';
 
 export default function StatusSelector({options}) {
     const {control} = useFormContext();
 
-    const status = useWatch({
+    const formFieldStatusValue = useWatch({
         name: 'status',
     });
 
-    const defaultStatusByValue = options.find((option) => option['value'] === status);
+    const defaultStatusByValue = options.find((option) => option['value'] === formFieldStatusValue);
 
     const customOptionLabel = ({label, value}) => (
         <div className={styles.status}>
@@ -28,35 +29,6 @@ export default function StatusSelector({options}) {
         );
     };
 
-    const styleConfig = {
-        control: (provided, state) => ({
-            ...provided,
-            display: 'flex',
-            alignItems: 'center',
-            gap: 12,
-            border: 'none',
-            height: 32,
-            background: '#fff',
-            borderRadius: 2,
-        }),
-        indicatorsContainer: (provided, state) => ({
-            ...provided,
-            background: '#F2F2F2',
-            height: '100%',
-            borderRadius: 2,
-            padding: '0  .45rem',
-        }),
-        valueContainer: (provided, state) => ({
-            ...provided,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: '#F2F2F2',
-            height: '100%',
-            padding: '0  5rem',
-            borderRadius: 2,
-        }),
-    };
     return (
         <div className={styles.statusSelectorContainer}>
             <Controller
@@ -71,7 +43,9 @@ export default function StatusSelector({options}) {
                         name={name}
                         defaultValue={defaultStatusByValue}
                         options={options}
-                        onChange={() => onChange(status.value)}
+                        onChange={(option) => {
+                            onChange(option.value);
+                        }}
                         isClearable={false}
                         isSearchable={false}
                         placeholder={''}
@@ -81,7 +55,7 @@ export default function StatusSelector({options}) {
                             IndicatorSeparator: () => null,
                             DropdownIndicator,
                         }}
-                        styles={styleConfig}
+                        styles={StyleConfig}
                     />
                 )}
             />

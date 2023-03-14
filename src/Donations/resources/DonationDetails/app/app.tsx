@@ -22,6 +22,7 @@ export default function App() {
         feeAmount: data.feeAmountRecovered,
         createdAt: data.createdAt,
         status: data.status,
+        form: {id: data.form.id, name: data.form.name},
     };
 
     const handleSubmitRequest = (formValues) => {

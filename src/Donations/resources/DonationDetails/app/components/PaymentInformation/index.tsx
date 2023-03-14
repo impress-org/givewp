@@ -19,14 +19,15 @@ import {PaymentInformation} from '../types';
 import styles from './style.module.scss';
 import BlueExitIcon from '@givewp/components/AdminUI/Icons/BlueExitIcon';
 import StatusSelector from '@givewp/components/AdminUI/StatusSelector';
+import SearchSelector from '@givewp/components/AdminUI/SearchSelector';
 
-function FormSelect() {
-    return (
-        <select>
-            <option>Form</option>
-        </select>
-    );
-}
+const tempDonationFormOptions = [
+    {value: 1, label: 'donation form 1'},
+    {value: 1, label: 'donation form 1'},
+    {value: 2, label: 'donation form 2'},
+    {value: 3, label: 'donation form 3'},
+    {value: 4, label: 'donation form 4'},
+];
 
 export const donationStatusOptions = [
     {
@@ -90,6 +91,7 @@ export default function PaymentInformation({register, setValue}: PaymentInformat
     const [focused, setFocused] = useState<boolean>(false);
     const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
     const [showTimePicker, setShowTimePicker] = useState<boolean>(false);
+    const [showSearchSelector, setShowSearchSelector] = useState<boolean>(false);
 
     const totalDonation = useWatch({
         name: 'totalDonation',
@@ -164,7 +166,7 @@ export default function PaymentInformation({register, setValue}: PaymentInformat
                     <option value="pm">PM</option>
                 </select>
 
-                <div onClick={toggleTimePicker}>
+                <div role={'button'} aria-pressed={showTimePicker} onClick={toggleTimePicker}>
                     <BlueExitIcon />
                 </div>
             </div>
@@ -213,7 +215,17 @@ export default function PaymentInformation({register, setValue}: PaymentInformat
                         )
                     }
                 />
-                <ActionContainer label={__('Donation form', 'give')} value={<FormSelect />} type={'text'} />
+                <ActionContainer
+                    label={__('Donation form', 'give')}
+                    value={
+                        <SearchSelector
+                            options={tempDonationFormOptions}
+                            openSelector={showSearchSelector}
+                            setOpenSelector={setShowSearchSelector}
+                        />
+                    }
+                    type={'text'}
+                />
                 <ActionContainer
                     label={__('Donation date', 'give')}
                     value={readableDate}
