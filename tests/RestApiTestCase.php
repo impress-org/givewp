@@ -16,7 +16,7 @@ use WP_User;
  *
  * @unreleased
  */
-class ApiTestCase extends TestCase
+class RestApiTestCase extends TestCase
 {
     /**
      * Test REST Server
