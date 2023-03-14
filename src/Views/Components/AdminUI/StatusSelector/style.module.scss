@@ -24,11 +24,14 @@
         align-items: center;
         gap: var(--givewp-spacing-2);
         background-color: inherit;
-        font-size: 0.75rem;
-        font-weight: 600;
+        font-size: 0.875rem;
+        font-weight: 500;
         font-stretch: normal;
         font-style: normal;
+        line-height: 1.43;
         letter-spacing: normal;
+        text-align: left;
+        color: var(--givewp-grey-900);
     }
 
 

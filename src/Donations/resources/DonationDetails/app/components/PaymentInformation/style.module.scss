@@ -170,6 +170,7 @@
 
         .actionContainer:nth-child(6), {
             justify-self: end;
+            margin-right: 1.5rem;
         }
     }
 
@@ -177,7 +178,7 @@
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        width: 90%;
+        width: 95%;
         gap: var(--givewp-spacing-2);
         color: var(--givewp-blue-500);
         font-weight: 600;

@@ -1,13 +1,17 @@
 import ReactSelect, {components} from 'react-select';
 import styles from './style.module.scss';
+import {__} from '@wordpress/i18n';
 import {Controller, useFormContext, useWatch} from 'react-hook-form';
 import DownArrowIcon from '@givewp/components/AdminUI/Icons/DownArrowIcon';
 import SearchMagnifyingGlassIcon from '@givewp/components/AdminUI/Icons/SearchMaginfyingGlassIcon';
 import {useState} from 'react';
-import {StyleConfig} from '@givewp/components/AdminUI/SearchSelector/styleConfig';
+import {StyleConfig} from './styleConfig';
 
 interface SearchSelector {
-    options;
+    options: {
+        id: number;
+        name: string;
+    };
     openSelector: boolean;
     setOpenSelector: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -41,33 +45,6 @@ export default function SearchSelector({options, openSelector, setOpenSelector}:
         );
     };
 
-    const styleConfig = {
-        control: (provided, state) => ({
-            ...provided,
-            border: 'none',
-            outline: 'none',
-            height: 32,
-            background: '#fff',
-            borderRadius: 2,
-            boxShadow: '0 2px 4px 0 #ebebeb',
-        }),
-        indicatorsContainer: (provided, state) => ({
-            ...provided,
-            background: '#fff',
-            height: '100%',
-            borderRadius: 2,
-            padding: '0  .45rem',
-        }),
-        valueContainer: (provided, state) => ({
-            ...provided,
-            background: '#fff',
-            height: '100%',
-            width: '15rem',
-            padding: '0  4rem',
-            borderRadius: 2,
-        }),
-    };
-
     return (
         <div className={styles.formSelectorContainer}>
             <ToggleOptionLabel label={label ?? formFieldFormValue?.name} />
@@ -87,7 +64,7 @@ export default function SearchSelector({options, openSelector, setOpenSelector}:
                                 onChange={(option) => handleSelectChange(option, onChange)}
                                 isClearable={false}
                                 isSearchable={true}
-                                placeholder={''}
+                                placeholder={__('Search for a donation form', 'give')}
                                 onBlur={onBlur}
                                 components={{
                                     IndicatorSeparator: () => null,

@@ -11,15 +11,32 @@
         justify-content: space-between;
         gap: var(--givewp-spacing-4);
         height: 32px;
-        width: fit-content;
-        background:var(--givewp-grey-25);
+        width: 12rem;
+        background: var(--givewp-grey-25);
         border: none;
         padding: 0 var(--givewp-spacing-4);
+
+        > span {
+            white-space: nowrap;
+            overflow: hidden;
+            width: 8rem;
+            text-overflow: ellipsis;
+            font-size: 0.875rem;
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.43;
+            letter-spacing: normal;
+            text-align: left;
+            color: var(--givewp-grey-900);
+        }
     }
 
     > div {
-        height:32px;
-        width: 15rem;
+        height: 2rem;
+        width: 17rem;
+        font-size: 0.875rem;
+        font-weight: 500;
     }
 
     input[type="text"]:focus {
