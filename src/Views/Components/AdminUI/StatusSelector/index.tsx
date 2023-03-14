@@ -44,6 +44,7 @@ export default function StatusSelector({options}) {
             background: '#F2F2F2',
             height: '100%',
             borderRadius: 2,
+            padding: '0  .45rem',
         }),
         valueContainer: (provided, state) => ({
             ...provided,
@@ -52,7 +53,7 @@ export default function StatusSelector({options}) {
             justifyContent: 'center',
             background: '#F2F2F2',
             height: '100%',
-            width: 140,
+            padding: '0  5rem',
             borderRadius: 2,
         }),
     };

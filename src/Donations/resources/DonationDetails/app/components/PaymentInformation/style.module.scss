@@ -1,6 +1,6 @@
 .paymentInformation {
     display: grid;
-    gap: var(--givewp-spacing-10);
+    gap: var(--givewp-spacing-6);
     padding: var(--givewp-spacing-6) var(--givewp-spacing-6) var(--givewp-spacing-8);
     border: solid 1px var(--givewp-grey-50);
     background-color: var(--givewp-shades-white);
@@ -40,7 +40,7 @@
         grid-template-columns: repeat(4, 1fr);
         justify-items: center;
         align-items: start;
-        gap: var(--givewp-spacing-8) 0;
+        gap: var(--givewp-spacing-12) 0;
 
         .actionContainer {
             position: relative;
@@ -145,10 +145,6 @@
                 }
             }
 
-        }
-
-        .actionContainer:nth-child(1), .actionContainer:nth-child(2), .actionContainer:nth-child(3) {
-            margin-bottom: var(--givewp-spacing-10);
         }
 
         .actionContainer:nth-child(2), .actionContainer:nth-child(5) {
