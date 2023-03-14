@@ -4,6 +4,7 @@ namespace Give\Tests;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
+use WP_User;
 
 /**
  * Give Unit API Test Case
@@ -23,6 +24,13 @@ class ApiTestCase extends TestCase
     protected $server;
 
     /**
+     * Test user account for API authentication
+     *
+     * @var WP_User
+     */
+    protected $user_id;
+
+    /**
      * Initialize the REST server
      *
      * @return void
@@ -34,9 +42,13 @@ class ApiTestCase extends TestCase
         global $wp_rest_server;
 
         $wp_rest_server = new WP_REST_Server();
-        $this->server   = $wp_rest_server;
+        $this->server = $wp_rest_server;
 
-        do_action( 'rest_api_init' );
+        do_action('rest_api_init');
+
+        $this->user_id = $this->factory->user->create([
+            'role' => 'administrator',
+        ]);
     }
 
     /**
@@ -45,11 +57,20 @@ class ApiTestCase extends TestCase
      * @param string $method
      * @param string $route
      * @param array  $attributes
+     * @param bool   $authenticated
      *
      * @return WP_REST_Request
      */
-    public function createRequest(string $method, string $route, array $attributes = []): WP_REST_Request
-    {
+    public function createRequest(
+        string $method,
+        string $route,
+        array $attributes = [],
+        bool $authenticated = true
+    ): WP_REST_Request {
+        if ($authenticated) {
+            wp_set_current_user($this->user_id);
+        }
+
         return new WP_REST_Request($method, $route, $attributes);
     }
 
@@ -73,6 +94,9 @@ class ApiTestCase extends TestCase
     public function tearDown()
     {
         parent::tearDown();
+
+        wp_delete_user($this->user_id, true);
+        $this->user_id = null;
 
         global $wp_rest_server;
         $wp_rest_server = null;
