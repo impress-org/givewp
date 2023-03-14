@@ -69,7 +69,7 @@ class RestApiTestCase extends TestCase
         $this->server = $wp_rest_server = new WP_REST_Server;
         do_action('rest_api_init');
 
-        $this->flush_roles();
+        $this->flushRoles();
     }
 
     /**
@@ -108,7 +108,7 @@ class RestApiTestCase extends TestCase
         return $this->server->dispatch($request);
     }
 
-    private function flush_roles()
+    private function flushRoles()
     {
         unset($GLOBALS['wp_user_roles']);
         global $wp_roles;
@@ -126,5 +126,21 @@ class RestApiTestCase extends TestCase
 
         global $wp_rest_server;
         $wp_rest_server = null;
+    }
+
+    protected function assertErrorResponse($code, $response, $status = null)
+    {
+        if (is_a($response, 'WP_REST_Response')) {
+            $response = $response->as_error();
+        }
+
+        $this->assertInstanceOf('WP_Error', $response);
+        $this->assertEquals($code, $response->get_error_code());
+        
+        if (null !== $status) {
+            $data = $response->get_error_data();
+            $this->assertArrayHasKey('status', $data);
+            $this->assertEquals($status, $data['status']);
+        }
     }
 }
