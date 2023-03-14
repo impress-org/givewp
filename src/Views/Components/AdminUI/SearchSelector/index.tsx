@@ -5,13 +5,10 @@ import {Controller, useFormContext, useWatch} from 'react-hook-form';
 import DownArrowIcon from '@givewp/components/AdminUI/Icons/DownArrowIcon';
 import SearchMagnifyingGlassIcon from '@givewp/components/AdminUI/Icons/SearchMaginfyingGlassIcon';
 import {useState} from 'react';
-import {StyleConfig} from './styleConfig';
+import {StyleConfig} from './StyleConfig';
 
 interface SearchSelector {
-    options: {
-        id: number;
-        name: string;
-    };
+    options;
     openSelector: boolean;
     setOpenSelector: React.Dispatch<React.SetStateAction<boolean>>;
 }

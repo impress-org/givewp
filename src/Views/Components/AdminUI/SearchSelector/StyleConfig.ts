@@ -19,4 +19,20 @@ export const StyleConfig = {
         height: '100%',
         borderRadius: 2,
     }),
+    option: (provided, state) => ({
+        ...provided,
+        backgroundColor: state.isSelected ? '#F2F9FF' : '#FFF',
+        fontWeight: state.isSelected ? '600' : '400',
+        fontSize: '14px',
+    }),
+    singleValue: (provided, state) => ({
+        ...provided,
+        fontSize: '0.875rem',
+        fontWeight: 500,
+    }),
+    placeholder: (provided, state) => ({
+        ...provided,
+        fontSize: '14px',
+        fontWeight: '400',
+    }),
 };
