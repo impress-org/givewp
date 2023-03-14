@@ -26,17 +26,34 @@ class ApiTestCase extends TestCase
     protected $server;
 
     /**
-     * Test admin user account for API authentication
+     * Test user accounts for API authentication
      *
-     * @var WP_User
+     * @var WP_User[] $users
      */
-    protected static $admin_user_id;
+    protected static $users = [
+        'anonymous' => null,
+        'administrator' => null,
+        'editor' => null,
+        'author' => null,
+        'contributor' => null,
+        'subscriber' => null,
+    ];
 
+    /**
+     * Create users for API authentication
+     *
+     * @return void
+     */
     public static function wpSetUpBeforeClass(WP_UnitTest_Factory $factory)
     {
-        self::$admin_user_id = $factory->user->create([
-            'role' => 'administrator',
-        ]);
+        self::$users = [
+            'anonymous' => 0,
+            'administrator' => $factory->user->create(['role' => 'administrator']),
+            'editor' => $factory->user->create(['role' => 'editor']),
+            'author' => $factory->user->create(['role' => 'author']),
+            'contributor' => $factory->user->create(['role' => 'contributor']),
+            'subscriber' => $factory->user->create(['role' => 'subscriber']),
+        ];
     }
 
     /**
@@ -61,7 +78,7 @@ class ApiTestCase extends TestCase
      * @param string $method
      * @param string $route
      * @param array  $attributes
-     * @param bool   $authenticated
+     * @param string $authentication
      *
      * @return WP_REST_Request
      */
@@ -69,13 +86,12 @@ class ApiTestCase extends TestCase
         string $method,
         string $route,
         array $attributes = [],
-        bool $authenticated = true
+        string $authentication = 'anonymous'
     ): WP_REST_Request {
-        if ($authenticated) {
-            wp_set_current_user(self::$admin_user_id);
-        } else {
-            wp_set_current_user(0);
+        if ( ! in_array($authentication, array_keys(self::$users), true)) {
+            $authentication = 'anonymous';
         }
+        wp_set_current_user(self::$users[$authentication]);
 
         return new WP_REST_Request($method, $route, $attributes);
     }
