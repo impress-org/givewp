@@ -1,11 +1,15 @@
+import {useState} from 'react';
+
 import ReactSelect, {components} from 'react-select';
-import styles from './style.module.scss';
 import {__} from '@wordpress/i18n';
 import {Controller, useFormContext, useWatch} from 'react-hook-form';
+
 import DownArrowIcon from '@givewp/components/AdminUI/Icons/DownArrowIcon';
 import SearchMagnifyingGlassIcon from '@givewp/components/AdminUI/Icons/SearchMaginfyingGlassIcon';
-import {useState} from 'react';
+
+import styles from './style.module.scss';
 import {StyleConfig} from './StyleConfig';
+
 import {SearchSelector} from '@givewp/components/AdminUI/SearchSelector/types';
 
 /**
@@ -20,10 +24,9 @@ export default function SearchSelector({options, openSelector, setOpenSelector}:
         name: 'form',
     });
 
-    const handleSelectChange = (option, onChange) => {
-        onChange(option.value);
+    const handleSelectChange = (selectedOption) => {
         setOpenSelector(!openSelector);
-        setLabel(option.label);
+        setLabel(selectedOption.label);
     };
 
     const ToggleOptionLabel = ({label}) => (
@@ -44,33 +47,36 @@ export default function SearchSelector({options, openSelector, setOpenSelector}:
     return (
         <div className={styles.formSelectorContainer}>
             <ToggleOptionLabel label={label ?? formFieldFormValue?.name} />
-            <div>
-                {openSelector && (
-                    <Controller
-                        control={control}
-                        name="form"
-                        render={({
-                            field: {onChange, onBlur, value, name, ref},
-                            fieldState: {invalid, isTouched, isDirty, error},
-                            formState,
-                        }) => (
-                            <ReactSelect
-                                name={name}
-                                options={options}
-                                onChange={(option) => handleSelectChange(option, onChange)}
-                                isClearable={false}
-                                isSearchable={true}
-                                placeholder={__('Search for a donation form', 'give')}
-                                onBlur={onBlur}
-                                components={{
-                                    IndicatorSeparator: () => null,
-                                    DropdownIndicator,
-                                }}
-                                styles={StyleConfig}
-                            />
-                        )}
-                    />
-                )}
+            <div className={openSelector ? styles.reveal : styles.hidden}>
+                <Controller
+                    control={control}
+                    name="form"
+                    render={({
+                        field: {onChange, onBlur, value, name, ref},
+                        fieldState: {invalid, isTouched, isDirty, error},
+                        formState,
+                    }) => (
+                        <ReactSelect
+                            ref={ref}
+                            name={name}
+                            options={options}
+                            onChange={(selectedOption) => {
+                                handleSelectChange(selectedOption);
+                                onChange(selectedOption.value);
+                            }}
+                            isMenuOpen={false}
+                            isClearable={false}
+                            isSearchable={true}
+                            placeholder={__('Search for a donation form', 'give')}
+                            onBlur={onBlur}
+                            components={{
+                                IndicatorSeparator: () => null,
+                                DropdownIndicator,
+                            }}
+                            styles={StyleConfig}
+                        />
+                    )}
+                />
             </div>
         </div>
     );

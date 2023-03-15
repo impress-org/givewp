@@ -1,7 +1,6 @@
 export type StatusSelector = {
-    options: {
-        value: number;
+    options: Array<{
+        value: string;
         label: string;
-        find(param: (option) => boolean);
-    }
-}
+    }>;
+};

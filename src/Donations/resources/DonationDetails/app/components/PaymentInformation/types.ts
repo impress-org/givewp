@@ -22,7 +22,7 @@ export type DatePickerProps = {
 
 export type TimePickerProps = {
     showFormField: boolean;
-    toggleFormField;
-    parsedTime;
-    handleFormField;
+    toggleFormField: () => void;
+    parsedTime: Date;
+    handleFormField: (hour, minute, ampm) => void;
 };

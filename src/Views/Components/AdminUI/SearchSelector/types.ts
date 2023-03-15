@@ -1,8 +1,8 @@
 export type SearchSelector = {
-    options: {
+    options: Array<{
         value: number;
-        label: string
-    }
+        label: string;
+    }>;
     openSelector: boolean;
     setOpenSelector: React.Dispatch<React.SetStateAction<boolean>>;
-}
+};

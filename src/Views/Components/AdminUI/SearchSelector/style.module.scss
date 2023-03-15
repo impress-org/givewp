@@ -10,7 +10,7 @@
         align-items: center;
         justify-content: space-between;
         gap: var(--givewp-spacing-4);
-        height: 32px;
+        height: 38px;
         max-width: 13rem;
         padding: var(--givewp-spacing-3);
         background: var(--givewp-grey-25);
@@ -41,5 +41,15 @@
     input[type="text"]:focus {
         border: none;
         box-shadow: none;
+    }
+
+
+    .hidden {
+        visibility: hidden;
+        border: 1px solid red;
+    }
+
+    .reveal {
+        visibility: visible;
     }
 }

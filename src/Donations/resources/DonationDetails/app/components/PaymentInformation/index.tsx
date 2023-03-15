@@ -99,7 +99,7 @@ export default function PaymentInformation({data}: FormTemplateProps) {
     const [focused, setFocused] = useState<boolean>(false);
     const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
     const [showTimePicker, setShowTimePicker] = useState<boolean>(false);
-    const [showSearchSelector, setShowSearchSelector] = useState<boolean>(false);
+    const [showSearchSelector, setShowSearchSelector] = useState<boolean | null>(null);
 
     const totalDonation = useWatch({
         name: 'totalDonation',
