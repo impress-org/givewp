@@ -372,6 +372,7 @@ const gravatar = require('gravatar');
                         payment_id: $(this).data('payment-id'),
                         note: noteContainer.val(),
                         type: noteTypeContainer.val(),
+                        _wpnonce: Give.fn.getGlobalVar('give_insert_payment_note_nonce'),
                     };
 
                 if (postData.note) {
@@ -415,6 +416,7 @@ const gravatar = require('gravatar');
                             action: 'give_delete_payment_note',
                             payment_id: $(that).data('payment-id'),
                             note_id: $(that).data('note-id'),
+                            _wpnonce: Give.fn.getGlobalVar('give_delete_payment_note_nonce'),
                         };
 
                         $.ajax({

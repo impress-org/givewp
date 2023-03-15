@@ -387,6 +387,8 @@ class Give_Scripts {
 			'error_message'                     => __( 'Something went wrong kindly try again!', 'give' ),
 			'give_donation_import'              => 'give_donation_import',
 			'core_settings_import'              => 'give_core_settings_import',
+            'give_insert_payment_note_nonce'    => wp_create_nonce('give_insert_payment_note'),
+            'give_delete_payment_note_nonce'    => wp_create_nonce('give_delete_payment_note'),
 			'setting_not_save_message'          => __( 'Changes you made may not be saved.', 'give' ),
 			'give_donation_amounts'             => [
 				'minimum' => apply_filters( 'give_donation_minimum_limit', 1 ),
