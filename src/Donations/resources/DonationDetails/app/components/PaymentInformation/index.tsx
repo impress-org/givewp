@@ -2,24 +2,23 @@ import {useContext, useState} from 'react';
 
 import {useFormContext, useWatch} from 'react-hook-form';
 import {__} from '@wordpress/i18n';
-import moment from 'moment';
-import {DayPickerSingleDateController} from 'react-dates';
-import 'react-dates/initialize';
-import 'react-dates/lib/css/_datepicker.css';
+import {format, parse} from 'date-fns';
 
 import {ModalContext} from '@givewp/components/AdminUI/FormPage';
 
 import ExternalIcon from '@givewp/components/AdminUI/Icons/ExternalIcon';
 import {TextInputField} from '@givewp/components/AdminUI/FormElements';
-import BlueExitIcon from '@givewp/components/AdminUI/Icons/BlueExitIcon';
 import StatusSelector from '@givewp/components/AdminUI/StatusSelector';
 import SearchSelector from '@givewp/components/AdminUI/SearchSelector';
 import DonationType from './DonationType';
 import DonationMethod from './DonationMethod';
 import ActionContainer from './ActionContainer';
 
-import styles from './style.module.scss';
 import {FormTemplateProps} from '../FormTemplate/types';
+import TimePickerFormField from './TimePickerFormField';
+import DatePickerFormField from './DatePickerFormField';
+
+import styles from './style.module.scss';
 
 const tempDonationFormOptions = [
     {value: 1, label: 'donation form 1'},
@@ -85,8 +84,10 @@ function Legend({title, donationType}) {
 export default function PaymentInformation({data}: FormTemplateProps) {
     const methods = useFormContext();
     const confirmActionDialog = useContext(ModalContext);
-    const [dateObject, setDateObject] = useState<object>();
-    const [readableDate, setReadableDate] = useState<string>(moment(dateObject).format('LL'));
+    const [readableDateValue, setReadableDateValue] = useState<string>(
+        format(new Date(data?.createdAt), 'MMMM d, yyyy')
+    );
+    const [readableTimeValue, setReadableTimeValue] = useState<string>(format(new Date(data?.createdAt), 'h:mm a'));
     const [focused, setFocused] = useState<boolean>(false);
     const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
     const [showTimePicker, setShowTimePicker] = useState<boolean>(false);
@@ -114,66 +115,37 @@ export default function PaymentInformation({data}: FormTemplateProps) {
     };
 
     const handleDateChange = (selectedDate) => {
-        const formattedDate = moment(selectedDate).format('LL');
-        setReadableDate(formattedDate);
-        setDateObject(selectedDate);
-        setValue('createdAt', new Date(selectedDate).toString());
+        const dateObjectWithDate = new Date(selectedDate);
+        const dateObjectWithTime = new Date(readableTimeValue);
+
+        setReadableDateValue(format(dateObjectWithDate, 'MMMM d, yyyy'));
+
+        const combinedDateObject = new Date(dateObjectWithTime.getTime());
+
+        combinedDateObject.setDate(dateObjectWithDate.getDate());
+
+        setValue('createdAt', combinedDateObject, {shouldDirty: true});
+
         setShowDatePicker(!showDatePicker);
     };
 
-    const DatePickerFormField = () => {
-        return (
-            <div className={styles.calendarPosition}>
-                <DayPickerSingleDateController
-                    date={dateObject}
-                    onDateChange={(selectedDate) => handleDateChange(selectedDate)}
-                    focused={true}
-                    onFocusChange={({focused}) => {
-                        setFocused(focused);
-                    }}
-                />
-            </div>
-        );
-    };
+    const handleTimeChange = (hour, minute, ampm) => {
+        if (ampm === 'pm' && hour !== 12) {
+            hour += 12;
+        } else if (ampm === 'am' && hour === 12) {
+            hour = 0;
+        }
 
-    const TimePickerFormField = () => {
-        return (
-            <div className={styles.timePickerPosition}>
-                <label hidden htmlFor={'give-payment-time-hour'}>
-                    {__('Payment time by the hour')}
-                </label>
-                <input
-                    id={'give-payment-time-hour'}
-                    name="give-payment-time-hour"
-                    type={'number'}
-                    step="1"
-                    min={0}
-                    max={12}
-                />
+        const dateObjectWithDate = new Date(readableDateValue);
+        const dateObjectWithTime = parse(`${hour}:${minute} ${ampm}`, 'h:mm aa', new Date());
 
-                <>&#x3A;</>
+        setReadableTimeValue(format(dateObjectWithTime, 'h:mm a'));
 
-                <label hidden htmlFor={'give-payment-time-minute'}>
-                    {__('Payment time by the minute')}
-                </label>
-                <input
-                    id={'give-payment-time-minute'}
-                    name="give-payment-time-minute"
-                    type={'number'}
-                    min={0}
-                    max={59}
-                />
+        const combinedDateObject = new Date(dateObjectWithTime.getTime());
 
-                <select id="give-payment-time-am-pm" name="ampm">
-                    <option value="am">AM</option>
-                    <option value="pm">PM</option>
-                </select>
+        combinedDateObject.setDate(dateObjectWithDate.getDate());
 
-                <div role={'button'} aria-pressed={showTimePicker} onClick={toggleTimePicker}>
-                    <BlueExitIcon />
-                </div>
-            </div>
-        );
+        setValue('createdAt', combinedDateObject.toString(), {shouldDirty: true});
     };
 
     return (
@@ -236,17 +208,31 @@ export default function PaymentInformation({data}: FormTemplateProps) {
                     />
                     <ActionContainer
                         label={__('Donation date', 'give')}
-                        value={readableDate}
+                        value={readableDateValue}
                         type={'text'}
                         showEditDialog={toggleDatePicker}
-                        formField={showDatePicker && <DatePickerFormField />}
+                        formField={
+                            showDatePicker && (
+                                <DatePickerFormField setFocused={setFocused} handleDateChange={handleDateChange} />
+                            )
+                        }
                     />
+
                     <ActionContainer
                         label={__('Donation time', 'give')}
-                        value={'10:00 am'}
+                        value={readableTimeValue}
                         type={'text'}
                         showEditDialog={toggleTimePicker}
-                        formField={showTimePicker && <TimePickerFormField />}
+                        formField={
+                            showTimePicker && (
+                                <TimePickerFormField
+                                    showFormField={showTimePicker}
+                                    toggleFormField={toggleTimePicker}
+                                    handleFormField={handleTimeChange}
+                                    parsedTime={parse(readableTimeValue, 'h:mm a', new Date())}
+                                />
+                            )
+                        }
                     />
                     <ActionContainer
                         label={__('Payment method', 'give')}

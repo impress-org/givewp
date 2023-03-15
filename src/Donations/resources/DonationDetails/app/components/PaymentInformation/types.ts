@@ -9,9 +9,15 @@ export type ActionContainerProps = {
 export type DonationMethodProps = {
     gateway: string;
     gatewayId: string;
-}
+};
 
 export type DonationTypeProps = {
     donationType: 'single' | 'renewal' | 'subscription';
-}
+};
 
+export type DatePickerProps = {
+    setFocused;
+    handleDateChange;
+};
+
+export type TimePickerProps = {};
