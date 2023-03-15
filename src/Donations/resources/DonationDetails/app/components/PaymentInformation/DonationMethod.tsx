@@ -4,6 +4,10 @@ import {DonationMethodProps} from './types';
 
 import styles from './style.module.scss';
 
+/**
+ *
+ * @unreleased
+ */
 function renderGatewayIcon(gatewayId) {
     switch (gatewayId) {
         case 'paypal':
@@ -19,6 +23,10 @@ function renderGatewayIcon(gatewayId) {
     }
 }
 
+/**
+ *
+ * @unreleased
+ */
 export default function DonationMethod({gateway, gatewayId}: DonationMethodProps) {
     return (
         <div className={styles.paymentMethod}>

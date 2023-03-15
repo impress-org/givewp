@@ -67,6 +67,10 @@ export const donationStatusOptions = [
     },
 ];
 
+/**
+ *
+ * @unreleased
+ */
 function Legend({title, donationType}) {
     return (
         <div className={styles.legend}>
@@ -81,6 +85,10 @@ function Legend({title, donationType}) {
     );
 }
 
+/**
+ *
+ * @unreleased
+ */
 export default function PaymentInformation({data}: FormTemplateProps) {
     const methods = useFormContext();
     const confirmActionDialog = useContext(ModalContext);
@@ -116,7 +124,7 @@ export default function PaymentInformation({data}: FormTemplateProps) {
 
     const handleDateChange = (selectedDate) => {
         const dateObjectWithDate = new Date(selectedDate);
-        const dateObjectWithTime = new Date(readableTimeValue);
+        const dateObjectWithTime = parse(readableTimeValue, 'h:mm aa', new Date());
 
         setReadableDateValue(format(dateObjectWithDate, 'MMMM d, yyyy'));
 
@@ -124,27 +132,31 @@ export default function PaymentInformation({data}: FormTemplateProps) {
 
         combinedDateObject.setDate(dateObjectWithDate.getDate());
 
-        setValue('createdAt', combinedDateObject, {shouldDirty: true});
+        setValue('createdAt', combinedDateObject.toString(), {shouldDirty: true});
 
         setShowDatePicker(!showDatePicker);
     };
 
-    const handleTimeChange = (hour, minute, ampm) => {
-        if (ampm === 'pm' && hour !== 12) {
-            hour += 12;
-        } else if (ampm === 'am' && hour === 12) {
-            hour = 0;
+    const handleTimeChange = (hours, minutes, ampm) => {
+        // Convert to 24 hour value
+        if (ampm === 'am' && hours !== 12) {
+            hours += 12;
+        } else if (ampm === 'pm' && hours === 12) {
+            hours = 0;
         }
 
+        // Create new Date objects
         const dateObjectWithDate = new Date(readableDateValue);
-        const dateObjectWithTime = parse(`${hour}:${minute} ${ampm}`, 'h:mm aa', new Date());
+        const dateObjectWithTime = parse(`${hours}:${minutes} ${ampm}`, 'h:mm aa', new Date());
 
-        setReadableTimeValue(format(dateObjectWithTime, 'h:mm a'));
+        setReadableTimeValue(format(dateObjectWithTime, 'h:mm aa'));
 
+        // Combine Date objects
         const combinedDateObject = new Date(dateObjectWithTime.getTime());
 
         combinedDateObject.setDate(dateObjectWithDate.getDate());
 
+        // Update createdAt value as one Date object
         setValue('createdAt', combinedDateObject.toString(), {shouldDirty: true});
     };
 
@@ -213,7 +225,7 @@ export default function PaymentInformation({data}: FormTemplateProps) {
                         showEditDialog={toggleDatePicker}
                         formField={
                             showDatePicker && (
-                                <DatePickerFormField setFocused={setFocused} handleDateChange={handleDateChange} />
+                                <DatePickerFormField setFocused={setFocused} handleFormField={handleDateChange} />
                             )
                         }
                     />

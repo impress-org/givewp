@@ -7,8 +7,18 @@ import BlueExitIcon from '@givewp/components/AdminUI/Icons/BlueExitIcon';
 
 import styles from './style.module.scss';
 import {parseInt} from 'lodash';
+import {TimePickerProps} from './types';
 
-export default function TimePickerFormField({showFormField, toggleFormField, parsedTime, handleFormField}) {
+/**
+ *
+ * @unreleased
+ */
+export default function TimePickerFormField({
+    showFormField,
+    toggleFormField,
+    parsedTime,
+    handleFormField,
+}: TimePickerProps) {
     const [hours, setHours] = useState(format(parsedTime, parsedTime.getHours() >= 12 ? 'h' : 'h'));
     const [minutes, setMinutes] = useState(parsedTime.getMinutes());
     const [amPm, setAmPm] = useState(format(parsedTime, 'a'));
@@ -54,7 +64,9 @@ export default function TimePickerFormField({showFormField, toggleFormField, par
                 {__('Time of day am or pm')}
             </label>
             <select
-                onChange={(event) => setAmPm(event.target.value)}
+                onChange={(event) => {
+                    setAmPm(event.target.value);
+                }}
                 id="give-payment-time-am-pm"
                 name="ampm"
                 defaultValue={amPm}

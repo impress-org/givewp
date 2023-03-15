@@ -6,11 +6,15 @@ import {DatePickerProps} from './types';
 
 import styles from './style.module.scss';
 
-export default function DatePickerFormField({setFocused, handleDateChange}: DatePickerProps) {
+/**
+ *
+ * @unreleased
+ */
+export default function DatePickerFormField({setFocused, handleFormField}: DatePickerProps) {
     return (
         <div className={styles.calendarPosition}>
             <DayPickerSingleDateController
-                onDateChange={(selectedDate) => handleDateChange(selectedDate)}
+                onDateChange={(selectedDate) => handleFormField(selectedDate)}
                 focused={true}
                 onFocusChange={({focused}) => {
                     setFocused(focused);

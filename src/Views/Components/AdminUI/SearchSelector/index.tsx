@@ -6,13 +6,12 @@ import DownArrowIcon from '@givewp/components/AdminUI/Icons/DownArrowIcon';
 import SearchMagnifyingGlassIcon from '@givewp/components/AdminUI/Icons/SearchMaginfyingGlassIcon';
 import {useState} from 'react';
 import {StyleConfig} from './StyleConfig';
+import {SearchSelector} from '@givewp/components/AdminUI/SearchSelector/types';
 
-interface SearchSelector {
-    options;
-    openSelector: boolean;
-    setOpenSelector: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
+/**
+ *
+ * @unreleased
+ */
 export default function SearchSelector({options, openSelector, setOpenSelector}: SearchSelector) {
     const {control} = useFormContext();
     const [label, setLabel] = useState<null | string>(null);

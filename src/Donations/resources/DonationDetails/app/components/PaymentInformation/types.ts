@@ -16,8 +16,13 @@ export type DonationTypeProps = {
 };
 
 export type DatePickerProps = {
-    setFocused;
-    handleDateChange;
+    setFocused: React.Dispatch<React.SetStateAction<boolean>>;
+    handleFormField: (selectedDate) => void;
 };
 
-export type TimePickerProps = {};
+export type TimePickerProps = {
+    showFormField: boolean;
+    toggleFormField;
+    parsedTime;
+    handleFormField;
+};

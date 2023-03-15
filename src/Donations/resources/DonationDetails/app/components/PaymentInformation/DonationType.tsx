@@ -4,6 +4,10 @@ import {DonationTypeProps} from './types';
 
 import styles from './style.module.scss';
 
+/**
+ *
+ * @unreleased
+ */
 function renderPaymentTypeIcon(type: any) {
     switch (type) {
         case 'single':
@@ -17,6 +21,10 @@ function renderPaymentTypeIcon(type: any) {
     }
 }
 
+/**
+ *
+ * @unreleased
+ */
 export default function DonationType({donationType}: DonationTypeProps) {
     return <div className={styles.paymentType}>{donationType}</div>;
 }

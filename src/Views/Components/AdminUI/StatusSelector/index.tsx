@@ -4,8 +4,9 @@ import cx from 'classnames';
 import styles from './style.module.scss';
 import DownArrowIcon from '@givewp/components/AdminUI/Icons/DownArrowIcon';
 import {StyleConfig} from './StyleConfig';
+import {StatusSelector} from '@givewp/components/AdminUI/StatusSelector/types';
 
-export default function StatusSelector({options}) {
+export default function StatusSelector({options}: StatusSelector) {
     const {control} = useFormContext();
 
     const formFieldStatusValue = useWatch({
