@@ -80,46 +80,6 @@ class RestApiTestCase extends TestCase
     }
 
     /**
-     * Wrapper for creating a request
-     *
-     * @unreleased
-     *
-     * @param string $method
-     * @param string $route
-     * @param array  $attributes
-     * @param string $authentication
-     *
-     * @return WP_REST_Request
-     */
-    public function createRequest(
-        string $method,
-        string $route,
-        array $attributes = [],
-        string $authentication = 'anonymous'
-    ): WP_REST_Request {
-        if ( ! in_array($authentication, array_keys(self::$users), true)) {
-            $authentication = 'anonymous';
-        }
-        wp_set_current_user(self::$users[$authentication]);
-
-        return new WP_REST_Request($method, $route, $attributes);
-    }
-
-    /**
-     * Wrapper for dispatching a request
-     *
-     * @unreleased
-     *
-     * @param WP_REST_Request $request
-     *
-     * @return WP_REST_Response
-     */
-    public function dispatchRequest(WP_REST_Request $request): WP_REST_Response
-    {
-        return $this->server->dispatch($request);
-    }
-
-    /**
      * Flushes the WordPress user roles and reloads them from the database.
      *
      * This function ensures that we are testing against the database data, not just in-memory data.
@@ -151,13 +111,53 @@ class RestApiTestCase extends TestCase
     }
 
     /**
+     * Wrapper for creating a request
+     *
+     * @unreleased
+     *
+     * @param string $method     The HTTP method of the request (e.g. GET, POST, etc.).
+     * @param string $route      The REST API route to access (e.g. /wp/v2/posts).
+     * @param array  $attributes Optional. An array of attributes to set on the request object.
+     * @param string $userRole   Optional. The role of the user to authenticate the request (e.g. anonymous, administrator, etc.).
+     *
+     * @return WP_REST_Request A new WP_REST_Request object with the specified parameters.
+     */
+    public function createRequest(
+        string $method,
+        string $route,
+        array $attributes = [],
+        string $userRole = 'anonymous'
+    ): WP_REST_Request {
+        if ( ! in_array($userRole, array_keys(self::$users), true)) {
+            $userRole = 'anonymous';
+        }
+        wp_set_current_user(self::$users[$userRole]);
+
+        return new WP_REST_Request($method, $route, $attributes);
+    }
+
+    /**
+     * Wrapper for dispatching a request
+     *
+     * @unreleased
+     *
+     * @param WP_REST_Request $request The request object to dispatch to the server.
+     *
+     * @return WP_REST_Response The response object returned by the server.
+     */
+    public function dispatchRequest(WP_REST_Request $request): WP_REST_Response
+    {
+        return $this->server->dispatch($request);
+    }
+
+    /**
      * Asserts that the response is a WP error response with the specified code and status (if provided).
      *
      * @unreleased
      *
-     * @param $code
-     * @param $response
-     * @param $status
+     * @param int|string $code     The expected error code of the WP_Error object.
+     * @param mixed      $response The response object to check (can be a WP_REST_Response or WP_Error object).
+     * @param int|null   $status   Optional. The expected error status of the WP_Error object (if any).
      *
      * @return void
      */
