@@ -2,11 +2,9 @@
  *
  * @unreleased
  */
-import {ReactNode} from 'react';
 
-export interface FormValues {}
 
-export interface FormTemplate {
+export type FormTemplateProps = {
     data: {
         id: number;
         form: {
@@ -42,16 +40,4 @@ export interface FormTemplate {
     };
 }
 
-export interface ActionContainer {
-    label: string;
-    type: string;
-    value: string | ReactNode;
-    showEditDialog?: () => void;
-    formField?: JSX.Element;
-}
 
-export interface PaymentInformation {
-    register;
-    setValue;
-    data;
-}

@@ -1,25 +1,25 @@
 import {useContext, useState} from 'react';
 
-import {useWatch} from 'react-hook-form';
+import {useFormContext, useWatch} from 'react-hook-form';
 import {__} from '@wordpress/i18n';
 import moment from 'moment';
 import {DayPickerSingleDateController} from 'react-dates';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
-import ActionContainer from './ActionContainer';
-import ExternalIcon from '@givewp/components/AdminUI/Icons/ExternalIcon';
-import {TextInputField} from '@givewp/components/AdminUI/FormElements';
-
 import {ModalContext} from '@givewp/components/AdminUI/FormPage';
 
-import {PaymentInformation} from '../types';
-
-import styles from './style.module.scss';
+import ExternalIcon from '@givewp/components/AdminUI/Icons/ExternalIcon';
+import {TextInputField} from '@givewp/components/AdminUI/FormElements';
 import BlueExitIcon from '@givewp/components/AdminUI/Icons/BlueExitIcon';
 import StatusSelector from '@givewp/components/AdminUI/StatusSelector';
 import SearchSelector from '@givewp/components/AdminUI/SearchSelector';
-import PaymentMethod from './PaymentMethods';
+import DonationType from './DonationType';
+import DonationMethod from './DonationMethod';
+import ActionContainer from './ActionContainer';
+
+import styles from './style.module.scss';
+import {FormTemplateProps} from '../FormTemplate/types';
 
 const tempDonationFormOptions = [
     {value: 1, label: 'donation form 1'},
@@ -68,7 +68,7 @@ export const donationStatusOptions = [
     },
 ];
 
-function Legend({title}) {
+function Legend({title, donationType}) {
     return (
         <div className={styles.legend}>
             <legend>
@@ -76,7 +76,7 @@ function Legend({title}) {
             </legend>
             <div className={styles.paymentType}>
                 <p className="badge__label" id="badgeId-48">
-                    Subscriber
+                    <DonationType donationType={donationType} />
                 </p>
                 <StatusSelector options={donationStatusOptions} />
             </div>
@@ -84,7 +84,8 @@ function Legend({title}) {
     );
 }
 
-export default function PaymentInformation({register, setValue, data}: PaymentInformation) {
+export default function PaymentInformation({data}: FormTemplateProps) {
+    const methods = useFormContext();
     const confirmActionDialog = useContext(ModalContext);
     const [dateObject, setDateObject] = useState<object>();
     const [readableDate, setReadableDate] = useState<string>(moment(dateObject).format('LL'));
@@ -100,6 +101,10 @@ export default function PaymentInformation({register, setValue, data}: PaymentIn
     const feeAmount = useWatch({
         name: 'feeAmount',
     });
+
+    const {register, setValue, getValues} = methods;
+
+    const {errors} = methods.formState;
 
     const toggleDatePicker = () => {
         setShowDatePicker(!showDatePicker);
@@ -123,7 +128,7 @@ export default function PaymentInformation({register, setValue, data}: PaymentIn
             <div className={styles.calendarPosition}>
                 <DayPickerSingleDateController
                     date={dateObject}
-                    onDateChange={(selectedDate, event) => handleDateChange(selectedDate)}
+                    onDateChange={(selectedDate) => handleDateChange(selectedDate)}
                     focused={true}
                     onFocusChange={({focused}) => {
                         setFocused(focused);
@@ -175,7 +180,7 @@ export default function PaymentInformation({register, setValue, data}: PaymentIn
 
     return (
         <fieldset className={styles.paymentInformation}>
-            <Legend title={__('Payment Information', 'give')} />
+            <Legend title={__('Payment Information', 'give')} donationType={data.type} />
             <div className={styles.actions}>
                 <ActionContainer
                     label={__('Total Donation', 'give')}
@@ -188,6 +193,8 @@ export default function PaymentInformation({register, setValue, data}: PaymentIn
                                 {...register('totalDonation')}
                                 name={'totalDonation'}
                                 label={__('Total Donations', 'give')}
+                                placeholder={__('Enter total amount', 'give')}
+                                type={'text'}
                                 asCurrencyField
                             />,
                             null,
@@ -207,6 +214,8 @@ export default function PaymentInformation({register, setValue, data}: PaymentIn
                                 {...register('feeAmount')}
                                 name={'feeAmount'}
                                 label={__('Fee Amount', 'give')}
+                                placeholder={__('Enter fee amount', 'give')}
+                                type={'text'}
                                 asCurrencyField
                             />,
                             null,
@@ -242,7 +251,7 @@ export default function PaymentInformation({register, setValue, data}: PaymentIn
                 />
                 <ActionContainer
                     label={__('Payment method', 'give')}
-                    value={<PaymentMethod gateway={data?.gateway} gatewayId={data?.gatewayId} />}
+                    value={<DonationMethod gateway={data?.gateway} gatewayId={data?.gatewayId} />}
                     type={'text'}
                 />
                 <a href={'/'}>

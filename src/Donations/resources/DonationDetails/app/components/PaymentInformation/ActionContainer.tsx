@@ -1,8 +1,10 @@
-import styles from './style.module.scss';
-import {ActionContainer} from '../types';
 import EditablePenIcon from '@givewp/components/AdminUI/Icons/EditablePenIcon';
 
-export default function ActionContainer({label, value, type, formField, showEditDialog}: ActionContainer) {
+import {ActionContainerProps} from './types';
+
+import styles from './style.module.scss';
+
+export default function ActionContainer({label, value, type, formField, showEditDialog}: ActionContainerProps) {
     return (
         <div className={styles.actionContainer}>
             {showEditDialog ? (

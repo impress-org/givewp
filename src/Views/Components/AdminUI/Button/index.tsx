@@ -2,7 +2,7 @@ import React from 'react';
 
 import cx from 'classnames';
 
-import {Button} from '../types';
+import {ButtonProps} from './types';
 
 import styles from './style.module.scss';
 
@@ -11,7 +11,7 @@ import styles from './style.module.scss';
  * @unreleased
  */
 
-const Button = React.forwardRef<HTMLButtonElement, Button>(
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ({children, type = 'button', classname, variant = 'primary', size = 'normal', disabled, ...props}, ref) => (
         <button
             ref={ref}

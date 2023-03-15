@@ -1,10 +1,8 @@
-import styles from './style.module.scss';
 import PaypalIcon from '@givewp/components/AdminUI/Icons/PaypalIcon';
 
-interface PaymentMethod {
-    gateway: string;
-    gatewayId: string;
-}
+import {DonationMethodProps} from './types';
+
+import styles from './style.module.scss';
 
 function renderGatewayIcon(gatewayId) {
     switch (gatewayId) {
@@ -13,7 +11,7 @@ function renderGatewayIcon(gatewayId) {
         case 'stripe':
             return <span>stripe test</span>;
         case 'test-gateway-next-gen':
-            return <span>next gen test</span>;
+            return <span>next-gen test</span>;
         case 'offline-donation':
             return <span>offline-donation test</span>;
         default:
@@ -21,7 +19,7 @@ function renderGatewayIcon(gatewayId) {
     }
 }
 
-export default function PaymentMethod({gateway, gatewayId}: PaymentMethod) {
+export default function DonationMethod({gateway, gatewayId}: DonationMethodProps) {
     return (
         <div className={styles.paymentMethod}>
             {renderGatewayIcon(gatewayId)}

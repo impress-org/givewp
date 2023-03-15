@@ -2,7 +2,7 @@ import React from 'react';
 
 import cx from 'classnames';
 
-import {Form, TextInputField} from '../types';
+import {FormElementProps, TextInputFieldProps} from './types';
 
 import styles from './style.module.scss';
 import CurrencyInput from 'react-currency-input-field';
@@ -12,7 +12,7 @@ import CurrencyInput from 'react-currency-input-field';
  * @unreleased
  */
 
-const Form: React.FC<HTMLFormElement | Form> = ({children, id, onSubmit}) => (
+const Form: React.FC<HTMLFormElement | FormElementProps> = ({children, id, onSubmit}) => (
     <form className={styles.form} id={id} onSubmit={onSubmit}>
         {children}
     </form>
@@ -23,7 +23,7 @@ const Form: React.FC<HTMLFormElement | Form> = ({children, id, onSubmit}) => (
  * @unreleased
  */
 
-const TextInputField = React.forwardRef<HTMLInputElement, TextInputField>(
+const TextInputField = React.forwardRef<HTMLInputElement, TextInputFieldProps>(
     ({name, type, placeholder, label, asCurrencyField, ...props}, ref) => {
         return (
             <label>

@@ -37,7 +37,7 @@ export default function FormPage({
     const [modalContent, setModalContent] = useState<{label; content; action; button; notice}>({
         label: '',
         content: null,
-        action: (selected) => {},
+        action: () => {},
         button: '',
         notice: '',
     });

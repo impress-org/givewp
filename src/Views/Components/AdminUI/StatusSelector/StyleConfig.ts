@@ -3,11 +3,13 @@ export const StyleConfig = {
         ...provided,
         display: 'flex',
         alignItems: 'center',
+        justifyContent: 'flex-start',
         gap: 12,
         border: 'none',
         height: 32,
+        width: '100%',
         background: '#fff',
-        borderRadius: 2,
+        padding: 0,
     }),
     indicatorsContainer: (provided, state) => ({
         ...provided,
@@ -23,13 +25,15 @@ export const StyleConfig = {
         justifyContent: 'center',
         background: '#F2F2F2',
         height: '100%',
-        padding: '0  5rem',
+        width: 150,
+        padding: 0,
         borderRadius: 2,
+        paddingRight: 5,
     }),
     option: (provided, state) => ({
         ...provided,
         backgroundColor: state.isSelected ? '#F2F9FF' : '#FFF',
-        fontWeight: state.isSelected ? '600' : '400',
+        fontWeight: state.isSelected ? '500' : '400',
         fontSize: '14px', // set the font size of the placeholder
     }),
     singleValue: (provided, state) => ({

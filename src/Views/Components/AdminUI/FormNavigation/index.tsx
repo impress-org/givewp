@@ -1,13 +1,14 @@
 import {useState} from 'react';
 import {__} from '@wordpress/i18n';
 
-import {FormNavigation} from '@givewp/components/AdminUI/types';
-
-import styles from './style.module.scss';
 import Button from '@givewp/components/AdminUI/Button';
 import ActionMenu from '@givewp/components/AdminUI/ActionMenu';
 import LeftArrowIcon from '@givewp/components/AdminUI/FormNavigation/LeftArrowIcon';
 import DownArrowIcon from '@givewp/components/AdminUI/FormNavigation/DownArrowIcon';
+
+import {FormNavigationProps} from './types';
+
+import styles from './style.module.scss';
 
 /**
  *
@@ -22,7 +23,7 @@ export default function FormNavigation({
     pageTitle,
     actionConfig,
     isDirty,
-}: FormNavigation) {
+}: FormNavigationProps) {
     const [toggleActions, setToggleActions] = useState<boolean>(false);
 
     const toggleMoreActions = () => {
