@@ -1,8 +1,7 @@
 import {useState} from 'react';
-
+import {Controller, useFormContext, useWatch} from 'react-hook-form';
 import ReactSelect, {components} from 'react-select';
 import {__} from '@wordpress/i18n';
-import {Controller, useFormContext, useWatch} from 'react-hook-form';
 
 import DownArrowIcon from '@givewp/components/AdminUI/Icons/DownArrowIcon';
 import SearchMagnifyingGlassIcon from '@givewp/components/AdminUI/Icons/SearchMaginfyingGlassIcon';
@@ -16,9 +15,9 @@ import {SearchSelector} from '@givewp/components/AdminUI/SearchSelector/types';
  *
  * @unreleased
  */
-export default function SearchSelector({options, openSelector, setOpenSelector}: SearchSelector) {
+export default function SearchSelector({options, openSelector, setOpenSelector, defaultLabel}: SearchSelector) {
     const {control} = useFormContext();
-    const [label, setLabel] = useState<null | string>(null);
+    const [label, setLabel] = useState<null | string>(defaultLabel);
 
     const formFieldFormValue = useWatch({
         name: 'form',
@@ -59,12 +58,12 @@ export default function SearchSelector({options, openSelector, setOpenSelector}:
                         <ReactSelect
                             ref={ref}
                             name={name}
+                            value={options.find((option) => option.value === value)}
                             options={options}
                             onChange={(selectedOption) => {
                                 handleSelectChange(selectedOption);
                                 onChange(selectedOption.value);
                             }}
-                            isMenuOpen={false}
                             isClearable={false}
                             isSearchable={true}
                             placeholder={__('Search for a donation form', 'give')}

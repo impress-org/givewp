@@ -3,6 +3,7 @@ export type SearchSelector = {
         value: number;
         label: string;
     }>;
+    defaultLabel: string;
     openSelector: boolean;
     setOpenSelector: React.Dispatch<React.SetStateAction<boolean>>;
 };

@@ -214,6 +214,7 @@ export default function PaymentInformation({data}: FormTemplateProps) {
                                 options={tempDonationFormOptions}
                                 openSelector={showSearchSelector}
                                 setOpenSelector={setShowSearchSelector}
+                                defaultLabel={data.form.name}
                             />
                         }
                         type={'text'}
