@@ -111,6 +111,22 @@ class RestApiTestCase extends TestCase
     }
 
     /**
+     * Delete users after the test class is done
+     *
+     * @unreleased
+     *
+     * @return void
+     */
+    public static function wpTearDownAfterClass()
+    {
+        foreach (self::$users as $user_id) {
+            wp_delete_user($user_id);
+        }
+
+        self::$users = [];
+    }
+
+    /**
      * Wrapper for creating a request
      *
      * @unreleased
