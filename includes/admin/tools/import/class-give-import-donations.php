@@ -232,6 +232,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		/**
 		 * Show success notice
 		 *
+         * @unreleased Add nonce check.
 		 * @since 1.8.14
 		 */
 		public function import_success() {

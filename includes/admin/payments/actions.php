@@ -392,6 +392,8 @@ add_action( 'give_delete_payment', 'give_trigger_donation_delete' );
 
 /**
  * AJAX Store Donation Note
+ *
+ * @unreleased Add nonce check.
  */
 function give_ajax_store_payment_note() {
     check_ajax_referer('give_insert_payment_note');
@@ -474,6 +476,7 @@ add_action( 'give_delete_payment_note', 'give_trigger_payment_note_deletion' );
 /**
  * Delete a payment note deletion with ajax
  *
+ * @unreleased Add nonce check.
  * @since 1.0
  *
  * @return void
