@@ -75,9 +75,7 @@ function Legend({title, donationType}) {
                 <h2>{title}</h2>
             </legend>
             <div className={styles.paymentType}>
-                <p className="badge__label" id="badgeId-48">
-                    <DonationType donationType={donationType} />
-                </p>
+                <DonationType donationType={donationType} />
                 <StatusSelector options={donationStatusOptions} />
             </div>
         </div>
@@ -181,84 +179,89 @@ export default function PaymentInformation({data}: FormTemplateProps) {
     return (
         <fieldset className={styles.paymentInformation}>
             <Legend title={__('Payment Information', 'give')} donationType={data.type} />
-            <div className={styles.actions}>
-                <ActionContainer
-                    label={__('Total Donation', 'give')}
-                    value={totalDonation}
-                    type={'amount'}
-                    showEditDialog={() =>
-                        confirmActionDialog(
-                            __(' Edit total donation', 'give'),
-                            <TextInputField
-                                {...register('totalDonation')}
-                                name={'totalDonation'}
-                                label={__('Total Donations', 'give')}
-                                placeholder={__('Enter total amount', 'give')}
-                                type={'text'}
-                                asCurrencyField
-                            />,
-                            null,
-                            __('Set Donation Amount', 'give'),
-                            __('Changes made will not be billed to the donor', 'give')
-                        )
-                    }
-                />
-                <ActionContainer
-                    label={__('Fee recovered', 'give')}
-                    value={feeAmount}
-                    type={'amount'}
-                    showEditDialog={() =>
-                        confirmActionDialog(
-                            __(' Edit fee amount', 'give'),
-                            <TextInputField
-                                {...register('feeAmount')}
-                                name={'feeAmount'}
-                                label={__('Fee Amount', 'give')}
-                                placeholder={__('Enter fee amount', 'give')}
-                                type={'text'}
-                                asCurrencyField
-                            />,
-                            null,
-                            __('Set Fee Amount', 'give'),
-                            __('Changes made will not be billed to the donor', 'give')
-                        )
-                    }
-                />
-                <ActionContainer
-                    label={__('Donation form', 'give')}
-                    value={
-                        <SearchSelector
-                            options={tempDonationFormOptions}
-                            openSelector={showSearchSelector}
-                            setOpenSelector={setShowSearchSelector}
-                        />
-                    }
-                    type={'text'}
-                />
-                <ActionContainer
-                    label={__('Donation date', 'give')}
-                    value={readableDate}
-                    type={'text'}
-                    showEditDialog={toggleDatePicker}
-                    formField={showDatePicker && <DatePickerFormField />}
-                />
-                <ActionContainer
-                    label={__('Donation time', 'give')}
-                    value={'10:00 am'}
-                    type={'text'}
-                    showEditDialog={toggleTimePicker}
-                    formField={showTimePicker && <TimePickerFormField />}
-                />
-                <ActionContainer
-                    label={__('Payment method', 'give')}
-                    value={<DonationMethod gateway={data?.gateway} gatewayId={data?.gatewayId} />}
-                    type={'text'}
-                />
-                <a href={'/'}>
-                    <ExternalIcon />
+            <div className={styles.wrapper}>
+                <div className={styles.actions}>
+                    <ActionContainer
+                        label={__('Total Donation', 'give')}
+                        value={totalDonation}
+                        type={'amount'}
+                        showEditDialog={() =>
+                            confirmActionDialog(
+                                __(' Edit total donation', 'give'),
+                                <TextInputField
+                                    {...register('totalDonation')}
+                                    name={'totalDonation'}
+                                    label={__('Total Donations', 'give')}
+                                    placeholder={__('Enter total amount', 'give')}
+                                    type={'text'}
+                                    asCurrencyField
+                                />,
+                                null,
+                                __('Set Donation Amount', 'give'),
+                                __('Changes made will not be billed to the donor', 'give')
+                            )
+                        }
+                    />
+                    <ActionContainer
+                        label={__('Fee recovered', 'give')}
+                        value={feeAmount}
+                        type={'amount'}
+                        showEditDialog={() =>
+                            confirmActionDialog(
+                                __(' Edit fee amount', 'give'),
+                                <TextInputField
+                                    {...register('feeAmount')}
+                                    name={'feeAmount'}
+                                    label={__('Fee Amount', 'give')}
+                                    placeholder={__('Enter fee amount', 'give')}
+                                    type={'text'}
+                                    asCurrencyField
+                                />,
+                                null,
+                                __('Set Fee Amount', 'give'),
+                                __('Changes made will not be billed to the donor', 'give')
+                            )
+                        }
+                    />
+                    <ActionContainer
+                        label={__('Donation form', 'give')}
+                        value={
+                            <SearchSelector
+                                options={tempDonationFormOptions}
+                                openSelector={showSearchSelector}
+                                setOpenSelector={setShowSearchSelector}
+                            />
+                        }
+                        type={'text'}
+                    />
+                    <ActionContainer
+                        label={__('Donation date', 'give')}
+                        value={readableDate}
+                        type={'text'}
+                        showEditDialog={toggleDatePicker}
+                        formField={showDatePicker && <DatePickerFormField />}
+                    />
+                    <ActionContainer
+                        label={__('Donation time', 'give')}
+                        value={'10:00 am'}
+                        type={'text'}
+                        showEditDialog={toggleTimePicker}
+                        formField={showTimePicker && <TimePickerFormField />}
+                    />
+                    <ActionContainer
+                        label={__('Payment method', 'give')}
+                        value={<DonationMethod gateway={data?.gateway} gatewayId={data?.gatewayId} />}
+                        type={'text'}
+                    />
+                </div>
+                <div className={styles.paymentGatewayLink}>
+                    <span />
+                    <a href={'/'}>
+                        <ExternalIcon />
 
-                    {__('View donation on gateway', 'give')}
-                </a>
+                        {__('View donation on gateway', 'give')}
+                    </a>
+                </div>
             </div>
         </fieldset>
     );

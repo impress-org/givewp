@@ -11,16 +11,17 @@
         justify-content: space-between;
         gap: var(--givewp-spacing-4);
         height: 32px;
-        width: 12rem;
+        max-width: 13rem;
+        padding: var(--givewp-spacing-3);
         background: var(--givewp-grey-25);
+        border-radius: 2px;
         border: none;
-        padding: 0 var(--givewp-spacing-4);
 
         > span {
             white-space: nowrap;
             overflow: hidden;
-            width: 8rem;
             text-overflow: ellipsis;
+            width: 10.25rem;
             font-size: 0.875rem;
             font-weight: 500;
             font-stretch: normal;
