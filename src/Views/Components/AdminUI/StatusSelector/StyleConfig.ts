@@ -34,11 +34,11 @@ export const StyleConfig = {
         ...provided,
         backgroundColor: state.isFocused ? '#F2F9FF' : '#fff',
         fontWeight: state.isSelected ? '500' : '400',
-        fontSize: '14px',
+        fontSize: '0.85rem',
     }),
     singleValue: (provided, state) => ({
         ...provided,
-        fontSize: '0.875rem',
+        fontSize: '0.75rem',
         fontWeight: 500,
     }),
 };
