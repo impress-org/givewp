@@ -6,8 +6,8 @@ import {FormNavigation} from '@givewp/components/AdminUI/types';
 import styles from './style.module.scss';
 import Button from '@givewp/components/AdminUI/Button';
 import ActionMenu from '@givewp/components/AdminUI/ActionMenu';
-import LeftArrowIcon from '@givewp/components/AdminUI/FormNavigation/LeftArrowIcon';
-import DownArrowIcon from '@givewp/components/AdminUI/FormNavigation/DownArrowIcon';
+import LeftArrowIcon from '@givewp/components/AdminUI/Icons/LeftArrowIcon';
+import DownArrowIcon from '@givewp/components/AdminUI/Icons/DownArrowIcon';
 
 /**
  *
