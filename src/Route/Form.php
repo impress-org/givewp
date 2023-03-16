@@ -71,9 +71,12 @@ class Form
         $this->setBasePrefix();
         $this->controller->init();
 
-        add_action('init', [$this, 'addRule']);
         add_action('query_vars', [$this, 'addQueryVar']);
-        add_action('give-settings_save_advanced', [$this, 'updateRule'], 11);
+
+		if ( got_mod_rewrite() ) {
+			add_action('init', [$this, 'addRule']);
+			add_action('give-settings_save_advanced', [$this, 'updateRule'], 11);
+		}
     }
 
     /**
