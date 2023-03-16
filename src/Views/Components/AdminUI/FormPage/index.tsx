@@ -1,4 +1,5 @@
 import React, {createContext, useRef, useState} from 'react';
+import {createPortal} from 'react-dom';
 
 import {FormProvider, useForm} from 'react-hook-form';
 import {joiResolver} from '@hookform/resolvers/joi';
@@ -71,43 +72,47 @@ export default function FormPage({
                 <Form id={formId} onSubmit={handleSubmit(handleSubmitRequest)}>
                     {children}
                 </Form>
-                <A11yDialog
-                    id="givewp-admin-details-action-modal"
-                    dialogRef={(instance) => (dialog.current = instance)}
-                    title={modalContent.label}
-                    classNames={{
-                        container: styles.container,
-                        overlay: styles.overlay,
-                        dialog: cx(styles.dialog, {}),
-                        closeButton: 'hidden',
-                        title: 'hidden',
-                    }}
-                >
-                    <div className={styles.dialogTitle}>
-                        <p aria-labelledby={modalContent.label}>{modalContent.label}</p>
-                        <button onClick={(event) => dialog.current.hide()}>
-                            <ExitIcon />
-                        </button>
-                    </div>
-
-                    <div className={styles.modalContentContainer}>{modalContent.content}</div>
-
-                    <div className={styles.actionContainer}>
-                        <Button
-                            onClick={modalContent.action ? modalContent.action : () => dialog.current.hide()}
-                            disabled={!isDirty}
-                            variant={'primary'}
-                            size={'small'}
-                            type={'button'}
+                {modalContent &&
+                    createPortal(
+                        <A11yDialog
+                            id="givewp-admin-details-action-modal"
+                            dialogRef={(instance) => (dialog.current = instance)}
+                            title={modalContent.label}
+                            classNames={{
+                                container: styles.container,
+                                overlay: styles.overlay,
+                                dialog: cx(styles.dialog, {}),
+                                closeButton: 'hidden',
+                                title: 'hidden',
+                            }}
                         >
-                            {modalContent.button}
-                        </Button>
-                        <div className={styles.noticeInformation}>
-                            <NoticeInformationIcon />
-                            {modalContent.notice}
-                        </div>
-                    </div>
-                </A11yDialog>
+                            <div className={styles.dialogTitle}>
+                                <p aria-labelledby={modalContent.label}>{modalContent.label}</p>
+                                <button onClick={(event) => dialog.current.hide()}>
+                                    <ExitIcon />
+                                </button>
+                            </div>
+
+                            <div className={styles.modalContentContainer}>{modalContent.content}</div>
+
+                            <div className={styles.actionContainer}>
+                                <Button
+                                    onClick={modalContent.action ? modalContent.action : () => dialog.current.hide()}
+                                    disabled={!isDirty}
+                                    variant={'primary'}
+                                    size={'small'}
+                                    type={'button'}
+                                >
+                                    {modalContent.button}
+                                </Button>
+                                <div className={styles.noticeInformation}>
+                                    <NoticeInformationIcon />
+                                    {modalContent.notice}
+                                </div>
+                            </div>
+                        </A11yDialog>,
+                        document.body
+                    )}
             </ModalContext.Provider>
         </FormProvider>
     );

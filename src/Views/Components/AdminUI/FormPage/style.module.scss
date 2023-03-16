@@ -12,7 +12,7 @@
     opacity: 1;
     animation: appear 112ms ease-in 0s;
     font-family: 'Open Sans', sans-serif;
-    z-index: 11;
+    z-index: 9999 !important;
 
     &[aria-hidden='true'] {
         display: none;
