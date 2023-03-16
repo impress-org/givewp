@@ -97,7 +97,10 @@ export default function FormPage({
 
                             <div className={styles.actionContainer}>
                                 <Button
-                                    onClick={modalContent.action ? modalContent.action : () => dialog.current.hide()}
+                                    onClick={() => {
+                                        modalContent.action();
+                                        dialog.current.hide();
+                                    }}
                                     disabled={!isDirty}
                                     variant={'primary'}
                                     size={'small'}
