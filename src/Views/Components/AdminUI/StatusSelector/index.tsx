@@ -50,7 +50,6 @@ export default function StatusSelector({options}: StatusSelector) {
                         isClearable={false}
                         isSearchable={false}
                         placeholder={''}
-                        onBlur={onBlur}
                         formatOptionLabel={customOptionLabel}
                         components={{
                             IndicatorSeparator: () => null,

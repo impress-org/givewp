@@ -32,9 +32,9 @@ export const StyleConfig = {
     }),
     option: (provided, state) => ({
         ...provided,
-        backgroundColor: state.isSelected ? '#F2F9FF' : '#FFF',
+        backgroundColor: state.isFocused ? '#F2F9FF' : '#fff',
         fontWeight: state.isSelected ? '500' : '400',
-        fontSize: '14px', // set the font size of the placeholder
+        fontSize: '14px',
     }),
     singleValue: (provided, state) => ({
         ...provided,

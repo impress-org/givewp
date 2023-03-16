@@ -20,7 +20,7 @@ export const StyleConfig = {
     }),
     option: (provided, state) => ({
         ...provided,
-        backgroundColor: state.isSelected ? '#F2F9FF' : '#FFF',
+        backgroundColor: state.isFocused ? '#F2F9FF' : '#fff',
         color: '#000',
         fontWeight: state.isSelected ? '600' : '400',
         fontSize: '14px',
