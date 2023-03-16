@@ -1,6 +1,7 @@
 import React, {createContext, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
 
+import {__} from '@wordpress/i18n';
 import {FormProvider, useForm} from 'react-hook-form';
 import {joiResolver} from '@hookform/resolvers/joi';
 
@@ -22,7 +23,7 @@ import NoticeInformationIcon from '@givewp/components/AdminUI/Icons/NoticeInform
  * @unreleased
  */
 
-export const ModalContext = createContext((label, content, action, button, notice) => {});
+export const ModalContext = createContext((label, content, confirmationAction, exitCallback, button, notice) => {});
 
 export default function FormPage({
     formId,
@@ -35,11 +36,19 @@ export default function FormPage({
     actionConfig,
 }: FormPage) {
     const dialog = useRef() as {current: A11yDialogInstance};
-    const [modalContent, setModalContent] = useState<{label; content; action; button; notice}>({
+    const [modalContent, setModalContent] = useState<{
+        label: string;
+        content: () => JSX.Element;
+        confirmationAction: () => void;
+        exitCallback: () => void | null;
+        button: string;
+        notice: string | null;
+    }>({
         label: '',
         content: null,
-        action: () => {},
-        button: '',
+        confirmationAction: () => {},
+        exitCallback: () => {},
+        button: __('Save Changes', 'give'),
         notice: '',
     });
 
@@ -52,8 +61,8 @@ export default function FormPage({
 
     const {isDirty} = methods.formState;
 
-    const showConfirmActionModal = (label, content, action, button, notice) => {
-        setModalContent({label, content, action, button, notice});
+    const showConfirmActionModal = (label, content, confirmationAction, exitCallback, button, notice) => {
+        setModalContent({label, content, confirmationAction, exitCallback, button, notice});
         dialog.current.show();
     };
 
@@ -88,7 +97,12 @@ export default function FormPage({
                         >
                             <div className={styles.dialogTitle}>
                                 <p aria-labelledby={modalContent.label}>{modalContent.label}</p>
-                                <button onClick={(event) => dialog.current.hide()}>
+                                <button
+                                    onClick={(event) => {
+                                        dialog.current.hide();
+                                        modalContent.exitCallback();
+                                    }}
+                                >
                                     <ExitIcon />
                                 </button>
                             </div>
@@ -98,7 +112,7 @@ export default function FormPage({
                             <div className={styles.actionContainer}>
                                 <Button
                                     onClick={() => {
-                                        modalContent.action();
+                                        modalContent.confirmationAction();
                                         dialog.current.hide();
                                     }}
                                     disabled={!isDirty}

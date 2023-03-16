@@ -90,7 +90,7 @@ function Legend({title, donationType}) {
  */
 export default function PaymentInformation({data}: FormTemplateProps) {
     const methods = useFormContext();
-    const {register, setValue, getValues} = methods;
+    const {register, setValue, getValues, reset} = methods;
 
     const confirmActionDialog = useContext(ModalContext);
     const [readableDateValue, setReadableDateValue] = useState<string>(
@@ -110,6 +110,10 @@ export default function PaymentInformation({data}: FormTemplateProps) {
     };
     const retrieveUpdatedFeeRecovered = () => {
         setFeeRecovered(getValues('feeRecovered'));
+    };
+
+    const resetDefaultValue = (inputName: string, defaultValue: unknown | any) => {
+        reset({inputName: defaultValue});
     };
 
     const toggleDatePicker = () => {
@@ -180,6 +184,7 @@ export default function PaymentInformation({data}: FormTemplateProps) {
                                     asCurrencyField
                                 />,
                                 () => retrieveUpdatedTotalDonation(),
+                                () => resetDefaultValue('totalDonation', totalDonation),
                                 __('Set Donation Amount', 'give'),
                                 __('Changes made will not be billed to the donor', 'give')
                             )
@@ -201,6 +206,7 @@ export default function PaymentInformation({data}: FormTemplateProps) {
                                     asCurrencyField
                                 />,
                                 () => retrieveUpdatedFeeRecovered(),
+                                () => resetDefaultValue('feeRecovered', feeRecovered),
                                 __('Set Fee Recovered', 'give'),
                                 __('Changes made will not be billed to the donor', 'give')
                             )
