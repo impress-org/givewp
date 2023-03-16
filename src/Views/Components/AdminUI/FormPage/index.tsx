@@ -5,8 +5,7 @@ import {joiResolver} from '@hookform/resolvers/joi';
 
 import FormNavigation from '@givewp/components/AdminUI/FormNavigation';
 import {Form} from '@givewp/components/AdminUI/FormElements';
-
-import {FormPage} from '@givewp/components/AdminUI/types';
+import {FormPageProps} from '@givewp/components/AdminUI/FormPage/types';
 
 /**
  *
@@ -22,7 +21,7 @@ export default function FormPage({
     navigationalOptions,
     children,
     actionConfig,
-}: FormPage) {
+}: FormPageProps) {
     const methods = useForm({
         defaultValues: defaultValues,
         resolver: joiResolver(validationSchema),
