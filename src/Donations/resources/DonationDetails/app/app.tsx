@@ -4,7 +4,7 @@ import {__} from '@wordpress/i18n';
 import FormPage from '@givewp/components/AdminUI/FormPage';
 import FormTemplate from './components/FormTemplate';
 
-import {validationSchema} from '../schema';
+import {validationSchema} from './schema';
 
 import './css/style.scss';
 
