@@ -15,7 +15,7 @@ export const StyleConfig = {
         ...provided,
         background: state.selectProps.menuIsOpen ? '#bfbfbf' : '#F2F2F2',
         height: '100%',
-        borderRadius: 2,
+        borderRadius: 4,
         padding: '0  .45rem',
     }),
     valueContainer: (provided, state) => ({
@@ -27,7 +27,7 @@ export const StyleConfig = {
         height: '100%',
         width: 150,
         padding: 0,
-        borderRadius: 2,
+        borderRadius: 4,
         paddingRight: 5,
     }),
     option: (provided, state) => ({
@@ -38,7 +38,7 @@ export const StyleConfig = {
     }),
     singleValue: (provided, state) => ({
         ...provided,
-        fontSize: '0.75rem',
+        fontSize: '0.8rem',
         fontWeight: 500,
     }),
 };

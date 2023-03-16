@@ -9,7 +9,7 @@ export default function data() {
         createdAt: '2023-03-09 13:36:20',
         updatedAt: '2023-03-09 13:36:20',
         status: 'revoked',
-        type: 'subscription',
+        type: 'renewal',
         mode: 'test',
         amount: '$25.00',
         feeAmountRecovered: '$1.46',

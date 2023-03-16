@@ -1,8 +1,11 @@
-import PaypalIcon from '@givewp/components/AdminUI/Icons/PaypalIcon';
-
-import {DonationTypeProps} from './types';
+import {__} from '@wordpress/i18n';
+import cx from 'classNames';
 
 import styles from './style.module.scss';
+import {DonationTypeProps} from './types';
+import SubscriptionBadgeIcon from '@givewp/components/AdminUI/Icons/SubscriptionBadgeIcon';
+import SingleBadgeIcon from '@givewp/components/AdminUI/Icons/SingleBadgeIcon';
+import RenewalBadgeIcon from '@givewp/components/AdminUI/Icons/RenewalBadgeIcon';
 
 /**
  *
@@ -11,11 +14,32 @@ import styles from './style.module.scss';
 function renderPaymentTypeIcon(type: any) {
     switch (type) {
         case 'single':
-            return <PaypalIcon />;
+            return (
+                <>
+                    <div className={cx(styles.typeContainer, styles.singleContainer)}>
+                        <SingleBadgeIcon />
+                    </div>
+                    <span>{__('One-Time', 'give')}</span>
+                </>
+            );
         case 'renewal':
-            return <span>stripe test</span>;
+            return (
+                <>
+                    <div className={cx(styles.typeContainer, styles.renewalContainer)}>
+                        <RenewalBadgeIcon />
+                    </div>
+                    <span>{__('Renewal', 'give')}</span>
+                </>
+            );
         case 'subscription':
-            return <span>{}</span>;
+            return (
+                <>
+                    <div className={cx(styles.typeContainer, styles.subscriptionContainer)}>
+                        <SubscriptionBadgeIcon />
+                    </div>
+                    <span>{__('Subscriber', 'give')}</span>
+                </>
+            );
         default:
             return '';
     }
@@ -26,5 +50,5 @@ function renderPaymentTypeIcon(type: any) {
  * @unreleased
  */
 export default function DonationType({donationType}: DonationTypeProps) {
-    return <div className={styles.paymentType}>{donationType}</div>;
+    return <div className={styles.donationBadge}>{renderPaymentTypeIcon(donationType)}</div>;
 }

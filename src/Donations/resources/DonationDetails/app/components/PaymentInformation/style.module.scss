@@ -1,3 +1,5 @@
+@use 'assets/src/css/Safe-Rem/functions' as *;
+
 .paymentInformation {
     display: flex;
     flex-direction: column;
@@ -184,6 +186,64 @@
 
 .DateInput_input {
     display: none !important;
+}
+
+
+.donationBadge {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border-radius: 4px;
+    font-size: .8rem;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    border: solid 1px var(--givewp-grey-100);
+    background-color: var(--givewp-shades-white);
+
+    > span {
+        flex: 1;
+        text-align: center;
+        padding: 0 var(--givewp-spacing-5);
+    }
+
+    .typeContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 2.25rem;
+        border-radius: 2px 0 0 2px;
+
+    }
+
+    .subscriptionContainer {
+        background: linear-gradient(225.34deg, #59AD70 0%, #2EBBBB 101.17%);
+
+        > svg {
+            transform: scale(1.35);
+        }
+    }
+
+    .singleContainer {
+        background: #556E79;
+
+        > svg {
+            padding-top: 2px;
+            transform: scale(1.05);
+        }
+    }
+
+    .renewalContainer {
+        background: #F49420;
+
+        > svg {
+            padding-left: 3px;
+            transform: scale(1);
+        }
+    }
 }
 
 @media (max-width: 700px) {
