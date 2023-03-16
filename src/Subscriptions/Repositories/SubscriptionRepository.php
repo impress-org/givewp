@@ -42,8 +42,10 @@ class SubscriptionRepository
 
     /**
      * @since 2.21.0
+     *
+     * @return Subscription|null
      */
-    public function getByGatewaySubscriptionId(string $gatewaySubscriptionId): Subscription
+    public function getByGatewaySubscriptionId(string $gatewaySubscriptionId)
     {
         return $this->queryByGatewaySubscriptionId($gatewaySubscriptionId)->get();
     }
