@@ -236,9 +236,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * @since 1.8.14
 		 */
 		public function import_success() {
-            if( ! isset($_GET['_wpnonce']) || ! wp_verify_nonce( $_GET['_wpnonce'], 'give_donation_import_success' ) ) {
-                give_die( __( 'Invalid nonce', 'give' ) );
-            }
+            check_admin_referer('give_donation_import_success');
 
 			$delete_csv = ( ! empty( $_GET['delete_csv'] ) ? absint( $_GET['delete_csv'] ) : false );
 			$csv        = ( ! empty( $_GET['csv'] ) ? absint( $_GET['csv'] ) : false );
