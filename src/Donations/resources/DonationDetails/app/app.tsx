@@ -19,7 +19,7 @@ export default function App() {
     const data = testData();
     const defaultValues = {
         totalDonation: data.amount,
-        feeAmount: data.feeAmountRecovered,
+        feeRecovered: data.feeAmountRecovered,
         createdAt: data.createdAt,
         status: data.status,
         form: data.form.id,

@@ -1,6 +1,6 @@
 import {useContext, useState} from 'react';
 
-import {useFormContext, useWatch} from 'react-hook-form';
+import {useFormContext} from 'react-hook-form';
 import {__} from '@wordpress/i18n';
 import {format, parse} from 'date-fns';
 
@@ -21,7 +21,6 @@ import DatePickerFormField from './DatePickerFormField';
 import styles from './style.module.scss';
 
 const tempDonationFormOptions = [
-    {value: 1, label: 'donation form 1'},
     {value: 1, label: 'donation form 1'},
     {value: 2, label: 'donation form 2'},
     {value: 3, label: 'donation form 3'},
@@ -91,6 +90,8 @@ function Legend({title, donationType}) {
  */
 export default function PaymentInformation({data}: FormTemplateProps) {
     const methods = useFormContext();
+    const {register, setValue, getValues} = methods;
+
     const confirmActionDialog = useContext(ModalContext);
     const [readableDateValue, setReadableDateValue] = useState<string>(
         format(new Date(data?.createdAt), 'MMMM d, yyyy')
@@ -101,17 +102,15 @@ export default function PaymentInformation({data}: FormTemplateProps) {
     const [showTimePicker, setShowTimePicker] = useState<boolean>(false);
     const [showSearchSelector, setShowSearchSelector] = useState<boolean | null>(null);
 
-    const totalDonation = useWatch({
-        name: 'totalDonation',
-    });
+    const [totalDonation, setTotalDonation] = useState<string>(getValues('totalDonation'));
+    const [feeRecovered, setFeeRecovered] = useState<string>(getValues('feeRecovered'));
 
-    const feeAmount = useWatch({
-        name: 'feeAmount',
-    });
-
-    const {register, setValue, getValues} = methods;
-
-    const {errors} = methods.formState;
+    const retrieveUpdatedTotalDonation = () => {
+        setTotalDonation(getValues('totalDonation'));
+    };
+    const retrieveUpdatedFeeRecovered = () => {
+        setFeeRecovered(getValues('feeRecovered'));
+    };
 
     const toggleDatePicker = () => {
         setShowDatePicker(!showDatePicker);
@@ -180,7 +179,7 @@ export default function PaymentInformation({data}: FormTemplateProps) {
                                     type={'text'}
                                     asCurrencyField
                                 />,
-                                null,
+                                () => retrieveUpdatedTotalDonation(),
                                 __('Set Donation Amount', 'give'),
                                 __('Changes made will not be billed to the donor', 'give')
                             )
@@ -188,21 +187,21 @@ export default function PaymentInformation({data}: FormTemplateProps) {
                     />
                     <ActionContainer
                         label={__('Fee recovered', 'give')}
-                        value={feeAmount}
+                        value={feeRecovered}
                         type={'amount'}
                         showEditDialog={() =>
                             confirmActionDialog(
-                                __(' Edit fee amount', 'give'),
+                                __(' Edit fee recovered', 'give'),
                                 <TextInputField
-                                    {...register('feeAmount')}
-                                    name={'feeAmount'}
-                                    label={__('Fee Amount', 'give')}
+                                    {...register('feeRecovered')}
+                                    name={'feeRecovered'}
+                                    label={__('Fee Recovered', 'give')}
                                     placeholder={__('Enter fee amount', 'give')}
                                     type={'text'}
                                     asCurrencyField
                                 />,
-                                null,
-                                __('Set Fee Amount', 'give'),
+                                () => retrieveUpdatedFeeRecovered(),
+                                __('Set Fee Recovered', 'give'),
                                 __('Changes made will not be billed to the donor', 'give')
                             )
                         }
