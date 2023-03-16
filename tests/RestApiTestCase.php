@@ -1,6 +1,8 @@
 <?php
 namespace Give\Tests;
 
+use Give\Tests\TestTraits\HasDefaultGiveWPUsers;
+use Give\Tests\TestTraits\HasDefaultWordPressUsers;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
@@ -34,12 +36,7 @@ class RestApiTestCase extends TestCase
      * @var int[] $users
      */
     protected static $users = [
-        'anonymous' => null,
-        'administrator' => null,
-        'editor' => null,
-        'author' => null,
-        'contributor' => null,
-        'subscriber' => null,
+        'anonymous' => 0,
     ];
 
     /**
@@ -51,14 +48,21 @@ class RestApiTestCase extends TestCase
      */
     public static function wpSetUpBeforeClass(WP_UnitTest_Factory $factory)
     {
-        self::$users = [
-            'anonymous' => 0,
-            'administrator' => $factory->user->create(['role' => 'administrator']),
-            'editor' => $factory->user->create(['role' => 'editor']),
-            'author' => $factory->user->create(['role' => 'author']),
-            'contributor' => $factory->user->create(['role' => 'contributor']),
-            'subscriber' => $factory->user->create(['role' => 'subscriber']),
-        ];
+        $uses = array_flip(class_uses(static::class));
+
+        if (isset($uses[HasDefaultWordPressUsers::class])) {
+            self::$users = array_merge(
+                self::$users,
+                static::createDefaultWordPressUsers($factory)
+            );
+        }
+
+        if (isset($uses[HasDefaultGiveWPUsers::class])) {
+            self::$users = array_merge(
+                self::$users,
+                static::createDefaultGiveWPUsers($factory)
+            );
+        }
     }
 
     /**
