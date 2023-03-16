@@ -685,9 +685,7 @@ add_action( 'give_payments_page_top', 'give_import_page_link_callback', 11 );
  */
 function give_donation_import_callback() {
 
-    if( ! wp_verify_nonce( $_POST['_wpnonce'], 'give_donation_import' ) ) {
-        give_die( __( 'Invalid nonce', 'give' ) );
-    }
+    check_ajax_referer('give_donation_import');
 
 	// Bailout.
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
