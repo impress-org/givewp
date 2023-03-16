@@ -58,6 +58,7 @@ export default function SearchSelector({options, openSelector, setOpenSelector, 
                         <ReactSelect
                             ref={ref}
                             name={name}
+                            menuIsOpen={openSelector}
                             value={options.find((option) => option.value === value)}
                             options={options}
                             onChange={(selectedOption) => {
