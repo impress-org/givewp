@@ -36,11 +36,7 @@ export default function FormNavigation({
                     <h1>{pageTitle}</h1>
                 </button>
 
-                <select>
-                    {navigationalOptions?.map((option) => (
-                        <option key={option.id}>{option.title}</option>
-                    ))}
-                </select>
+                {/*Todo: Add support for Navigational options*/}
             </div>
 
             <div className={styles.actions}>
