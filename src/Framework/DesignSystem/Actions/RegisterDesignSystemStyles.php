@@ -4,6 +4,9 @@ namespace Give\Framework\DesignSystem\Actions;
 
 class RegisterDesignSystemStyles
 {
+    /**
+     * @unreleased
+     */
     public function __invoke()
     {
         $version = file_get_contents(GIVE_PLUGIN_DIR . 'assets/dist/css/design-system/version');
