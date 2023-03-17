@@ -56,6 +56,7 @@ use Give\Donors\ServiceProvider as DonorsServiceProvider;
 use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
 use Give\Form\Templates;
 use Give\Framework\Database\ServiceProvider as DatabaseServiceProvider;
+use Give\Framework\DesignSystem\DesignSystemServiceProvider;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
 use Give\Framework\Http\ServiceProvider as HttpServiceProvider;
@@ -209,6 +210,7 @@ final class Give
         ValidationServiceProvider::class,
         ValidationRulesServiceProvider::class,
         HttpServiceProvider::class,
+        DesignSystemServiceProvider::class,
     ];
 
     /**
