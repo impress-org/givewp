@@ -60,4 +60,31 @@ const TextInputField = React.forwardRef<HTMLInputElement, TextInputFieldProps>(
  * @unreleased
  */
 
-export {Form, TextInputField};
+const CurrencyInputField = React.forwardRef<HTMLInputElement, TextInputFieldProps>(
+    ({name, type, placeholder, label, ...props}, ref) => {
+        return (
+            <label>
+                {label && <span className={styles.fieldLabel}>{label}</span>}
+                <div className={cx(styles.textFieldContainer, styles.currencyField, {})}>
+                    <CurrencyInput
+                        ref={ref}
+                        name={name}
+                        type={type}
+                        placeholder={placeholder}
+                        decimalsLimit={2}
+                        prefix="$"
+                        decimalSeparator="."
+                        groupSeparator=","
+                        intlConfig={{
+                            locale: navigator.language || (navigator.languages || ['en'])[0],
+                            currency: 'USD',
+                        }}
+                        {...props}
+                    />
+                </div>
+            </label>
+        );
+    }
+);
+
+export {Form, TextInputField, CurrencyInputField};
