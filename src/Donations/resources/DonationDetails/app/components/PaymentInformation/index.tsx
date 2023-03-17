@@ -7,7 +7,7 @@ import {format, parse} from 'date-fns';
 import {ModalContext} from '@givewp/components/AdminUI/FormPage';
 
 import ExternalIcon from '@givewp/components/AdminUI/Icons/ExternalIcon';
-import {TextInputField} from '@givewp/components/AdminUI/FormElements';
+import {CurrencyInputField} from '@givewp/components/AdminUI/FormElements';
 import StatusSelector from '@givewp/components/AdminUI/StatusSelector';
 import SearchSelector from '@givewp/components/AdminUI/SearchSelector';
 import DonationType from './DonationType';
@@ -135,7 +135,9 @@ export default function PaymentInformation({data}: FormTemplateProps) {
 
         combinedDateObject.setDate(dateObjectWithDate.getDate());
 
-        setValue('createdAt', combinedDateObject.toString(), {shouldDirty: true});
+        const formDataValue = format(combinedDateObject, 'yyyy-MM-dd HH:mm:ss');
+
+        setValue('createdAt', formDataValue, {shouldDirty: true});
 
         setShowDatePicker(!showDatePicker);
     };
@@ -159,8 +161,10 @@ export default function PaymentInformation({data}: FormTemplateProps) {
 
         combinedDateObject.setDate(dateObjectWithDate.getDate());
 
+        const formDataValue = format(combinedDateObject, 'yyyy-MM-dd HH:mm:ss');
+
         // Update createdAt value as one Date object
-        setValue('createdAt', combinedDateObject.toString(), {shouldDirty: true});
+        setValue('createdAt', formDataValue, {shouldDirty: true});
     };
 
     return (
@@ -175,7 +179,7 @@ export default function PaymentInformation({data}: FormTemplateProps) {
                         showEditDialog={() =>
                             confirmActionDialog(
                                 __(' Edit total donation', 'give'),
-                                <TextInputField
+                                <CurrencyInputField
                                     {...register('totalDonation')}
                                     name={'totalDonation'}
                                     label={__('Total Donations', 'give')}
@@ -197,7 +201,7 @@ export default function PaymentInformation({data}: FormTemplateProps) {
                         showEditDialog={() =>
                             confirmActionDialog(
                                 __(' Edit fee recovered', 'give'),
-                                <TextInputField
+                                <CurrencyInputField
                                     {...register('feeRecovered')}
                                     name={'feeRecovered'}
                                     label={__('Fee Recovered', 'give')}
