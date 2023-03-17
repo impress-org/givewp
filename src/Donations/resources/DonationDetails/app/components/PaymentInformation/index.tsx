@@ -185,7 +185,6 @@ export default function PaymentInformation({data}: FormTemplateProps) {
                                     label={__('Total Donations', 'give')}
                                     placeholder={__('Enter total amount', 'give')}
                                     type={'text'}
-                                    asCurrencyField
                                 />,
                                 () => retrieveUpdatedTotalDonation(),
                                 () => resetDefaultValue('totalDonation', totalDonation),
@@ -207,7 +206,6 @@ export default function PaymentInformation({data}: FormTemplateProps) {
                                     label={__('Fee Recovered', 'give')}
                                     placeholder={__('Enter fee amount', 'give')}
                                     type={'text'}
-                                    asCurrencyField
                                 />,
                                 () => retrieveUpdatedFeeRecovered(),
                                 () => resetDefaultValue('feeRecovered', feeRecovered),

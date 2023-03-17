@@ -99,8 +99,8 @@ export default function FormPage({
                                 <p aria-labelledby={modalContent.label}>{modalContent.label}</p>
                                 <button
                                     onClick={(event) => {
-                                        dialog.current.hide();
                                         modalContent.exitCallback();
+                                        dialog.current.hide();
                                     }}
                                 >
                                     <ExitIcon />
