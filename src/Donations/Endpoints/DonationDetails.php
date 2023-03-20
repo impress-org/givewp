@@ -16,7 +16,7 @@ class DonationDetails extends Endpoint
     /**
      * @var string
      */
-    protected $endpoint = 'admin/donation-details/(?P<id>[\d]+)';
+    protected $endpoint = 'admin/donation/(?P<id>[\d]+)';
 
     /**
      * @unreleased
