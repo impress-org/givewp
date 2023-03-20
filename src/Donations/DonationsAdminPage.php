@@ -188,7 +188,10 @@ class DonationsAdminPage
     {
         $donation = give()->donations->getById($id)->toArray();
 
-        $donation['amount'] = $donation['amount']->formatToLocale('');
+        $donation['amount'] = [
+            'currency' => $donation['amount']->getCurrency(),
+            'value' => $donation['amount']->getAmount(),
+        ];
 
         return $donation;
     }
