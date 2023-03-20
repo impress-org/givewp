@@ -8,6 +8,9 @@ use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
+/*
+ * @unreleased
+ */
 class DonationDetails extends Endpoint
 {
     /**
@@ -16,6 +19,8 @@ class DonationDetails extends Endpoint
     protected $endpoint = 'admin/donation-details/(?P<id>[\d]+)';
 
     /**
+     * @unreleased
+     *
      * @inheritDoc
      */
     public function registerRoute()
@@ -85,7 +90,6 @@ class DonationDetails extends Endpoint
      * @param WP_REST_Request $request
      *
      * @return WP_REST_Response|WP_Error
-     * @throws Exception
      */
     public function handleRequest(WP_REST_Request $request)
     {
