@@ -2,8 +2,11 @@
 
 namespace Give\Donations\Endpoints;
 
+use DateTime;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Framework\Support\Facades\DateTime\Temporal;
+use Give\Framework\Support\ValueObjects\Money;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -36,11 +39,61 @@ class DonationDetails extends Endpoint
                 ],
                 'args' => [
                     'id' => [
-                        'type' => 'string',
+                        'type' => 'integer',
                         'required' => true,
-                        'validate_callback' => function ($id) {
-                            if (!$this->validateInt($id)) {
-                                return false;
+                        'validate_callback' => function ($param) {
+                            if (give()->donations->getById($param) === null) {
+                                return new WP_Error(
+                                    'donation_not_found',
+                                    __('Donation not found.', 'give'),
+                                    ['status' => 404]
+                                );
+                            }
+
+                            return true;
+                        },
+                    ],
+                    'totalDonation' => [
+                        'type' => 'number',
+                        'required' => false,
+                        'validate_callback' => function ($param) {
+                            if ($param < 0) {
+                                return new WP_Error(
+                                    'invalid_total_donation',
+                                    __('Invalid total donation.', 'give'),
+                                    ['status' => 400]
+                                );
+                            }
+
+                            return true;
+                        },
+                    ],
+                    'feeRecovered' => [
+                        'type' => 'number',
+                        'required' => false,
+                        'validate_callback' => function ($param) {
+                            if ($param < 0) {
+                                return new WP_Error(
+                                    'invalid_fee_recovered',
+                                    __('Invalid fee recovered.', 'give'),
+                                    ['status' => 400]
+                                );
+                            }
+
+                            return true;
+                        },
+                    ],
+                    'createdAt' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'validate_callback' => function ($param) {
+                            if ( ! DateTime::createFromFormat(Temporal::ISO8601_JS,
+                                    $param) && ! Temporal::toDateTime($param)) {
+                                return new WP_Error(
+                                    'invalid_date',
+                                    __('Invalid date.', 'give'),
+                                    ['status' => 400]
+                                );
                             }
 
                             return true;
@@ -50,6 +103,21 @@ class DonationDetails extends Endpoint
                         'type' => 'string',
                         'required' => false,
                         'enum' => array_values(DonationStatus::toArray()),
+                    ],
+                    'form' => [
+                        'type' => 'integer',
+                        'required' => false,
+                        'validate_callback' => function ($param) {
+                            if (give()->donationForms->getById($param) === null) {
+                                return new WP_Error(
+                                    'form_not_found',
+                                    __('Form not found.', 'give'),
+                                    ['status' => 404]
+                                );
+                            }
+
+                            return true;
+                        },
                     ],
                 ],
             ]
@@ -84,21 +152,56 @@ class DonationDetails extends Endpoint
     public function handleRequest(WP_REST_Request $request)
     {
         $id = $request->get_param('id');
-
         $donation = give()->donations->getById($id);
 
-        if (!$donation) {
-            return new WP_Error(
-                'donation_not_found',
-                __('Donation not found.', 'give'),
-                ['status' => 404]
-            );
-        }
+        $updatedFields = [];
 
         try {
+            $totalDonation = $request->get_param('totalDonation');
+            if ($totalDonation) {
+                $donation->amount = Money::fromDecimal(
+                    $totalDonation,
+                    $donation->amount->getCurrency()
+                );
+
+                $updatedFields[] = 'totalDonation';
+            }
+
+            $feeRecovered = $request->get_param('feeRecovered');
+            if ($feeRecovered) {
+                $donation->feeAmountRecovered = Money::fromDecimal(
+                    $feeRecovered,
+                    $donation->amount->getCurrency()
+                );
+
+                $updatedFields[] = 'feeRecovered';
+            }
+
+            $createdAt = $request->get_param('createdAt');
+            if ($createdAt) {
+                $formattedDate = DateTime::createFromFormat(Temporal::ISO8601_JS, $createdAt);
+                if ( ! $formattedDate) {
+                    $formattedDate = Temporal::toDateTime($createdAt);
+                }
+                $donation->createdAt = $formattedDate;
+
+                $updatedFields[] = 'createdAt';
+            }
+
             $status = $request->get_param('status');
             if ($status) {
                 $donation->status = new DonationStatus($status);
+
+                $updatedFields[] = 'status';
+            }
+
+            $formId = $request->get_param('form');
+            if ($formId) {
+                $form = give()->donationForms->getById($formId);
+                $donation->formId = $formId;
+                $donation->formTitle = $form->title;
+
+                $updatedFields[] = 'form';
             }
 
             $donation->save();
@@ -112,7 +215,8 @@ class DonationDetails extends Endpoint
 
         return new WP_REST_Response(
             [
-                'success' => true
+                'success' => true,
+                'updatedFields' => $updatedFields,
             ]
         );
     }
