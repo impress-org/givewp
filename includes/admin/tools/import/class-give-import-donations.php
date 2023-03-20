@@ -153,8 +153,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			wp_nonce_field( 'give-save-settings', '_give-save-settings' );
 			?>
 			<input type="hidden" class="import-step" id="import-step" name="step"
-				   value="<?php echo $this->get_step(); ?>"/>
-			<input type="hidden" class="importer-type" value="<?php echo $this->importer_type; ?>"/>
+				   value="<?php echo esc_attr($this->get_step()); ?>"/>
+			<input type="hidden" class="importer-type" value="<?php echo esc_attr($this->importer_type); ?>"/>
 			<?php
 		}
 
@@ -171,8 +171,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			?>
 			<section>
 				<table
-						class="widefat export-options-table give-table <?php echo "step-{$step}"; ?> <?php echo( 1 === $step && ! empty( $this->is_csv_valid ) ? 'give-hidden' : '' ); ?>  "
-						id="<?php echo "step-{$step}"; ?>">
+						class="widefat export-options-table give-table <?php echo esc_attr("step-{$step}"); ?> <?php echo esc_attr(( 1 === $step && ! empty( $this->is_csv_valid ) ? 'give-hidden' : '' )); ?>  "
+						id="<?php echo esc_attr("step-{$step}"); ?>">
 					<tbody>
 					<?php
 					switch ( $step ) {
@@ -196,7 +196,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						<tr valign="top">
 							<th>
 								<input type="submit"
-									   class="button button-primary button-large button-secondary <?php echo "step-{$step}"; ?>"
+									   class="button button-primary button-large button-secondary <?php echo esc_attr("step-{$step}"); ?>"
 									   id="recount-stats-submit"
 									   value="
 										   <?php
@@ -205,7 +205,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 											 *
 											 * @since 2.1
 											 */
-											echo apply_filters( 'give_import_donation_submit_button_text', __( 'Submit', 'give' ) );
+											echo esc_attr(apply_filters( 'give_import_donation_submit_button_text', __( 'Submit', 'give' ) ));
 											?>
 											"/>
 							</th>
@@ -394,23 +394,23 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 					<span class="spinner is-active"></span>
 					<div class="give-progress"
 						 data-current="1"
-						 data-total_ajax="<?php echo absint( $total_ajax ); ?>"
-						 data-start="<?php echo absint( $index_start ); ?>"
-						 data-end="<?php echo absint( $index_end ); ?>"
-						 data-next="<?php echo absint( $next ); ?>"
-						 data-total="<?php echo absint( $total ); ?>"
-						 data-per_page="<?php echo absint( self::$per_page ); ?>">
+						 data-total_ajax="<?php echo esc_attr(absint( $total_ajax )); ?>"
+						 data-start="<?php echo esc_attr(absint( $index_start )); ?>"
+						 data-end="<?php echo esc_attr(absint( $index_end )); ?>"
+						 data-next="<?php echo esc_attr(absint( $next )); ?>"
+						 data-total="<?php echo esc_attr(absint( $total )); ?>"
+						 data-per_page="<?php echo esc_attr(absint( self::$per_page )); ?>">
 
-						<div style="width: <?php echo (float) $current_percentage; ?>%"></div>
+						<div style="width: <?php echo esc_attr((float) $current_percentage); ?>%"></div>
 					</div>
 					<input type="hidden" value="3" name="step">
 					<input type="hidden" value='<?php echo esc_attr( maybe_serialize( $_REQUEST['mapto'] ) ); ?>' name="mapto" class="mapto">
-					<input type="hidden" value="<?php echo $csv; ?>" name="csv" class="csv">
+					<input type="hidden" value="<?php echo esc_attr($csv); ?>" name="csv" class="csv">
 					<input type="hidden" value="<?php echo esc_attr( $_REQUEST['mode'] ); ?>" name="mode" class="mode">
 					<input type="hidden" value="<?php echo esc_attr( $_REQUEST['create_user'] ); ?>" name="create_user" class="create_user">
 					<input type="hidden" value="<?php echo esc_attr( $_REQUEST['delete_csv'] ); ?>" name="delete_csv" class="delete_csv">
 					<input type="hidden" value="<?php echo esc_attr( $delimiter ); ?>" name="delimiter">
-					<input type="hidden" value="<?php echo absint( $_REQUEST['dry_run'] ); ?>" name="dry_run">
+					<input type="hidden" value="<?php echo esc_attr(absint( $_REQUEST['dry_run']) ); ?>" name="dry_run">
 					<input type="hidden" value='<?php echo esc_attr( maybe_serialize( self::get_importer( $csv, 0, $delimiter ) ) ); ?>' name="main_key" class="main_key">
 				</th>
 			</tr>
@@ -453,6 +453,14 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * @since 1.8.14
 		 */
 		public function render_dropdown() {
+            if (!$this->is_nonce_valid()) {
+                Give_Admin_Settings::add_error( 'give-import-csv', __( 'Something went wrong.', 'give' ) );
+                ?>
+				<input type="hidden" name="csv_not_valid" class="csv_not_valid" value="<?php echo esc_attr(give_import_page_url()); ?>"/>
+				<?php
+                wp_die();
+            }
+
 			$csv       = (int) $_GET['csv'];
 			$delimiter = ( ! empty( $_GET['delimiter'] ) ? give_clean( $_GET['delimiter'] ) : 'csv' );
 
@@ -460,7 +468,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			if ( ! $this->is_valid_csv( $csv ) ) {
 				$url = give_import_page_url();
 				?>
-				<input type="hidden" name="csv_not_valid" class="csv_not_valid" value="<?php echo $url; ?>"/>
+				<input type="hidden" name="csv_not_valid" class="csv_not_valid" value="<?php echo esc_attr($url); ?>"/>
 				<?php
 			} else {
 				?>
@@ -530,7 +538,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				foreach ( $raw_key as $index => $value ) {
 					?>
 					<tr valign="middle" class="give-import-option">
-						<th><?php echo $value; ?></th>
+						<th><?php echo esc_html($value); ?></th>
 						<th>
 							<?php
 							$this->get_columns( $index, $value, $mapto );
@@ -578,7 +586,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			$default       = give_import_default_options();
 			$current_mapto = (string) ( ! empty( $mapto[ $index ] ) ? $mapto[ $index ] : '' );
 			?>
-			<select name="mapto[<?php echo $index; ?>]">
+			<select name="mapto[<?php echo esc_attr($index); ?>]">
 				<?php $this->get_dropdown_option_html( $default, $current_mapto, $value ); ?>
 
 				<optgroup label="<?php _e( 'Donations', 'give' ); ?>">
@@ -645,13 +653,9 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						}
 					}
 				}
-
-				echo sprintf(
-					'<option value="%1$s" %2$s >%3$s</option>',
-					$option,
-					$checked,
-					$option_text
-				);
+                ?>
+                    <option value="<?php echo esc_attr($option); ?>" <?php echo esc_attr($checked); ?> ><?php echo esc_html($option_text); ?></option>
+                <?php
 			}
 		}
 
@@ -758,16 +762,16 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			$step = $this->get_step();
 			?>
 			<ol class="give-progress-steps">
-				<li class="<?php echo( 1 === $step ? 'active' : '' ); ?>">
+				<li class="<?php echo esc_attr( 1 === $step ? 'active' : '' ); ?>">
 					<?php _e( 'Upload CSV file', 'give' ); ?>
 				</li>
-				<li class="<?php echo( 2 === $step ? 'active' : '' ); ?>">
+				<li class="<?php echo esc_attr( 2 === $step ? 'active' : '' ); ?>">
 					<?php _e( 'Column mapping', 'give' ); ?>
 				</li>
-				<li class="<?php echo( 3 === $step ? 'active' : '' ); ?>">
+				<li class="<?php echo esc_attr( 3 === $step ? 'active' : '' ); ?>">
 					<?php _e( 'Import', 'give' ); ?>
 				</li>
-				<li class="<?php echo( 4 === $step ? 'active' : '' ); ?>">
+				<li class="<?php echo esc_attr( 4 === $step ? 'active' : '' ); ?>">
 					<?php _e( 'Done!', 'give' ); ?>
 				</li>
 			</ol>
@@ -986,7 +990,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			} else {
 				?>
 				<input type="hidden" name="is_csv_valid" class="is_csv_valid"
-					   value="<?php echo $this->is_csv_valid; ?>">
+					   value="<?php echo esc_attr($this->is_csv_valid); ?>">
 				<?php
 			}
 		}
@@ -997,6 +1001,9 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * @since 1.8.14
 		 */
 		public function save() {
+            if (!$this->is_nonce_valid()){
+                wp_die();
+            }
 			// Get the current step.
 			$step = $this->get_step();
 
@@ -1029,7 +1036,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						)
 					);
 
-					$this->is_csv_valid = $url;
+					$this->is_csv_valid = wp_nonce_url($url, 'give-save-settings', '_give-save-settings');
 				}
 			}
 		}
@@ -1094,6 +1101,14 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				   isset( $_GET['importer-type'] ) &&
 				   $this->importer_type === give_clean( $_GET['importer-type'] );
 		}
+
+         /**
+         * @since 2.25.2
+         */
+        private function is_nonce_valid()
+        {
+            return !empty($_REQUEST['_give-save-settings']) && wp_verify_nonce($_REQUEST['_give-save-settings'], 'give-save-settings');
+        }
 	}
 
 	Give_Import_Donations::get_instance()->setup();

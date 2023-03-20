@@ -42,7 +42,9 @@ add_action( 'wp_ajax_give_load_wp_editor', 'give_load_wp_editor' );
 /**
  * Redirect admin to clean url give admin pages.
  *
- * @since 1.8
+ * @since 2.25.2 Removed _wpnonce from list of removed args.
+ * @since      1.8
+ *
  * @return bool
  */
 function give_redirect_to_clean_url_admin_pages() {
@@ -78,8 +80,8 @@ function give_redirect_to_clean_url_admin_pages() {
 		wp_redirect(
             esc_url_raw(
                 remove_query_arg(
-                    [ '_wp_http_referer', '_wpnonce' ],
-                    wp_unslash( $_SERVER['REQUEST_URI'] )
+                    ['_wp_http_referer'],
+                    wp_unslash($_SERVER['REQUEST_URI'])
                 )
             )
 		);
@@ -123,7 +125,8 @@ add_action( 'wp_ajax_give_hide_outdated_php_notice', 'give_hide_outdated_php_not
 /**
  * Register admin notices.
  *
- * @since 1.8.9
+ * @since 2.25.2 Add nonce check for bulk action.
+ * @since      1.8.9
  */
 function _give_register_admin_notices() {
 	// Bailout.
@@ -139,9 +142,11 @@ function _give_register_admin_notices() {
 
 		// Add payment bulk notice.
 		if (
-			current_user_can( 'edit_give_payments' ) &&
-			isset( $_GET['payment'] ) &&
-			! empty( $_GET['payment'] )
+            current_user_can('edit_give_payments') &&
+            isset($_GET['_wpnonce']) &&
+            wp_verify_nonce($_GET['_wpnonce'], 'bulk-forms') &&
+            isset($_GET['payment']) &&
+            ! empty( $_GET['payment'] )
 		) {
 			$payment_count = isset( $_GET['payment'] ) ? count( $_GET['payment'] ) : 0;
 
@@ -1314,25 +1319,30 @@ add_action( 'profile_update', 'give_update_donor_email_on_user_update', 10, 2 );
  * Flushes Give's cache.
  */
 function give_cache_flush() {
-	if ( ! current_user_can( 'manage_give_settings' ) ) {
-		wp_die();
-	}
+    if (!is_user_logged_in() || !current_user_can('manage_give_settings')) {
+        wp_die();
+    }
 
-	$result = Give_Cache::flush_cache();
+    /**
+     * @since 2.25.2 add nonce check
+     */
+    check_ajax_referer('give_cache_flush');
 
-	if ( $result ) {
-		wp_send_json_success(
-			[
-				'message' => __( 'Cache flushed successfully.', 'give' ),
-			]
-		);
-	} else {
-		wp_send_json_error(
-			[
-				'message' => __( 'An error occurred while flushing the cache.', 'give' ),
-			]
-		);
-	}
+    $result = Give_Cache::flush_cache();
+
+    if ($result) {
+        wp_send_json_success(
+            [
+                'message' => __('Cache flushed successfully.', 'give'),
+            ]
+        );
+    } else {
+        wp_send_json_error(
+            [
+                'message' => __('An error occurred while flushing the cache.', 'give'),
+            ]
+        );
+    }
 }
 
 add_action( 'wp_ajax_give_cache_flush', 'give_cache_flush', 10, 0 );
