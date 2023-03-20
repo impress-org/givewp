@@ -3,6 +3,7 @@
 namespace Give\Donations;
 
 use Give\Donations\ListTable\DonationsListTable;
+use Give\Donations\ViewModels\DonationDetailsViewModel;
 use Give\Framework\Database\DB;
 use Give\Helpers\EnqueueScript;
 use Give\Helpers\Utils;
@@ -77,10 +78,12 @@ class DonationsAdminPage
          * @unreleased conditionally enqueue scripts.
          */
         if (self::isDonationDetailsPage()) {
+            $donationDetailsViewModel = new DonationDetailsViewModel(intval($_GET['id']));
+
             $data = array_merge(
                 $data,
                 [
-                    'donationDetails' => $this->getDonationDetails(intval($_GET['id'])),
+                    'donationDetails' => $donationDetailsViewModel->exports(),
                 ]
             );
 
@@ -173,26 +176,5 @@ class DonationsAdminPage
                 'text' => 'Any',
             ],
         ], $options);
-    }
-
-    /**
-     * Get donation model and transform to array
-     *
-     * @unreleased
-     *
-     * @param int $id
-     *
-     * @return array
-     */
-    private function getDonationDetails(int $id): array
-    {
-        $donation = give()->donations->getById($id)->toArray();
-
-        $donation['amount'] = [
-            'currency' => $donation['amount']->getCurrency(),
-            'value' => $donation['amount']->getAmount(),
-        ];
-
-        return $donation;
     }
 }
