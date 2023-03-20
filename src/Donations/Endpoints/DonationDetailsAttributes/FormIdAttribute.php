@@ -10,14 +10,14 @@ use WP_Error;
  *
  * @unreleased
  */
-class FormAttribute extends DonationDetailsAttribute
+class FormIdAttribute extends DonationDetailsAttribute
 {
     /**
      * @inheritDoc
      */
     public static function getId(): string
     {
-        return 'form';
+        return 'formId';
     }
 
     /**

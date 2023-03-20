@@ -11,14 +11,14 @@ use WP_Error;
  *
  * @unreleased
  */
-class TotalDonationAttribute extends DonationDetailsAttribute
+class AmountAttribute extends DonationDetailsAttribute
 {
     /**
      * @inheritDoc
      */
     public static function getId(): string
     {
-        return 'totalDonation';
+        return 'amount';
     }
 
     /**
@@ -32,8 +32,8 @@ class TotalDonationAttribute extends DonationDetailsAttribute
             'validate_callback' => function ($param) {
                 if ($param < 0) {
                     return new WP_Error(
-                        'invalid_total_donation',
-                        __('Invalid total donation.', 'give'),
+                        'invalid_donation_amount',
+                        __('Invalid Donation amount.', 'give'),
                         ['status' => 400]
                     );
                 }

@@ -11,14 +11,14 @@ use WP_Error;
  *
  * @unreleased
  */
-class FeeRecoveredAttribute extends DonationDetailsAttribute
+class FeeAmountRecoveredAttribute extends DonationDetailsAttribute
 {
     /**
      * @inheritDoc
      */
     public static function getId(): string
     {
-        return 'feeRecovered';
+        return 'feeAmountRecovered';
     }
 
     /**
@@ -32,8 +32,8 @@ class FeeRecoveredAttribute extends DonationDetailsAttribute
             'validate_callback' => function ($param) {
                 if ($param < 0) {
                     return new WP_Error(
-                        'invalid_fee_recovered',
-                        __('Invalid fee recovered.', 'give'),
+                        'invalid_fee_amount_recovered',
+                        __('Invalid fee amount recovered.', 'give'),
                         ['status' => 400]
                     );
                 }
