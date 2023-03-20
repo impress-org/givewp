@@ -230,11 +230,12 @@ class DonationRepository
     }
 
     /**
-     * @since 2.23.1 Use give_update_meta() method to update entries on give_donationmeta table
-     * @since 2.23.0 retrieve the post_parent instead of relying on parentId property
-     * @since 2.21.0 replace actions with givewp_donation_updating and givewp_donation_updated
-     * @since 2.20.0 return void
-     * @since 2.19.6
+     * @unreleased Add ability to update donation created date
+     * @since      2.23.1 Use give_update_meta() method to update entries on give_donationmeta table
+     * @since      2.23.0 retrieve the post_parent instead of relying on parentId property
+     * @since      2.21.0 replace actions with givewp_donation_updating and givewp_donation_updated
+     * @since      2.20.0 return void
+     * @since      2.19.6
      *
      * @return void
      * @throws Exception|InvalidArgumentException
@@ -248,12 +249,16 @@ class DonationRepository
         $now = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
         $nowFormatted = Temporal::getFormattedDateTime($now);
 
+        $createdAt = Temporal::getFormattedDateTime($donation->createdAt);
+
         DB::query('START TRANSACTION');
 
         try {
             DB::table('posts')
                 ->where('ID', $donation->id)
                 ->update([
+                    'post_date' => $createdAt,
+                    'post_date_gmt' => get_gmt_from_date($createdAt),
                     'post_modified' => $nowFormatted,
                     'post_modified_gmt' => get_gmt_from_date($nowFormatted),
                     'post_status' => $this->getPersistedDonationStatus($donation)->getValue(),
