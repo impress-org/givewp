@@ -2,12 +2,12 @@
 
 namespace Give\Donations\Endpoints;
 
+use Give\Donations\Endpoints\DonationDetailsAttributes\AmountAttribute;
 use Give\Donations\Endpoints\DonationDetailsAttributes\CreatedAtAttribute;
-use Give\Donations\Endpoints\DonationDetailsAttributes\FeeRecoveredAttribute;
-use Give\Donations\Endpoints\DonationDetailsAttributes\FormAttribute;
+use Give\Donations\Endpoints\DonationDetailsAttributes\FeeAmountRecoveredAttribute;
+use Give\Donations\Endpoints\DonationDetailsAttributes\FormIdAttribute;
 use Give\Donations\Endpoints\DonationDetailsAttributes\IdAttribute;
 use Give\Donations\Endpoints\DonationDetailsAttributes\StatusAttribute;
-use Give\Donations\Endpoints\DonationDetailsAttributes\TotalDonationAttribute;
 use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
 use WP_Error;
@@ -40,11 +40,11 @@ class DonationDetails extends Endpoint
     {
         $this->registerRouteAttributes([
             IdAttribute::class,
-            TotalDonationAttribute::class,
-            FeeRecoveredAttribute::class,
+            AmountAttribute::class,
+            FeeAmountRecoveredAttribute::class,
             CreatedAtAttribute::class,
             StatusAttribute::class,
-            FormAttribute::class,
+            FormIdAttribute::class,
         ]);
 
         register_rest_route(
@@ -103,7 +103,7 @@ class DonationDetails extends Endpoint
 
                 $value = $request->get_param($attrId);
                 $updatedDonation = $attr::update($value, $donation);
-                
+
                 if (is_a($updatedDonation, Donation::class)) {
                     $donation = $updatedDonation;
                     $updatedFields[] = $attrId;
