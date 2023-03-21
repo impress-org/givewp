@@ -246,10 +246,10 @@ class DonationRepository
 
         Hooks::doAction('givewp_donation_updating', $donation);
 
-        $now = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
-        $nowFormatted = Temporal::getFormattedDateTime($now);
-
-        $createdAt = Temporal::getFormattedDateTime($donation->createdAt);
+        $dateCreated = Temporal::withoutMicroseconds($donation->createdAt ?: Temporal::getCurrentDateTime());
+        $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
+        $dateUpdated = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
+        $dateUpdatedFormatted = Temporal::getFormattedDateTime($dateUpdated);
 
         DB::query('START TRANSACTION');
 
@@ -257,10 +257,10 @@ class DonationRepository
             DB::table('posts')
                 ->where('ID', $donation->id)
                 ->update([
-                    'post_date' => $createdAt,
-                    'post_date_gmt' => get_gmt_from_date($createdAt),
-                    'post_modified' => $nowFormatted,
-                    'post_modified_gmt' => get_gmt_from_date($nowFormatted),
+                    'post_date' => $dateCreatedFormatted,
+                    'post_date_gmt' => get_gmt_from_date($dateCreatedFormatted),
+                    'post_modified' => $dateUpdatedFormatted,
+                    'post_modified_gmt' => get_gmt_from_date($dateUpdatedFormatted),
                     'post_status' => $this->getPersistedDonationStatus($donation)->getValue(),
                     'post_type' => 'give_payment',
                     'post_parent' => $this->deriveLegacyDonationParentId($donation),
@@ -277,7 +277,8 @@ class DonationRepository
             throw new $exception('Failed updating a donation');
         }
 
-        $donation->updatedAt = $now;
+        $donation->createdAt = $dateCreated;
+        $donation->updatedAt = $dateUpdated;
 
         DB::query('COMMIT');
 
