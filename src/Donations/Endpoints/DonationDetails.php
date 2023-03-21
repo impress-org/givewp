@@ -2,11 +2,11 @@
 
 namespace Give\Donations\Endpoints;
 
-use Give\Donations\Endpoints\DonationDetailsAttributes\AmountAttribute;
-use Give\Donations\Endpoints\DonationDetailsAttributes\CreatedAtAttribute;
-use Give\Donations\Endpoints\DonationDetailsAttributes\FeeAmountRecoveredAttribute;
-use Give\Donations\Endpoints\DonationDetailsAttributes\FormIdAttribute;
 use Give\Donations\Endpoints\DonationDetailsAttributes\IdAttribute;
+use Give\Donations\Endpoints\DonationDetailsAttributes\PaymentInformation\AmountAttribute;
+use Give\Donations\Endpoints\DonationDetailsAttributes\PaymentInformation\CreatedAtAttribute;
+use Give\Donations\Endpoints\DonationDetailsAttributes\PaymentInformation\FeeAmountRecoveredAttribute;
+use Give\Donations\Endpoints\DonationDetailsAttributes\PaymentInformation\FormIdAttribute;
 use Give\Donations\Endpoints\DonationDetailsAttributes\StatusAttribute;
 use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;

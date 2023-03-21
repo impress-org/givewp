@@ -1,12 +1,13 @@
 <?php
 
-namespace Give\Donations\Endpoints\DonationDetailsAttributes;
+namespace Give\Donations\Endpoints\DonationDetailsAttributes\PaymentInformation;
 
+use Give\Donations\Endpoints\DonationDetailsAttributes\DonationDetailsAttribute;
 use Give\Donations\Models\Donation;
 use WP_Error;
 
 /**
- * Class IdAttribute
+ * Class FormIdAttribute
  *
  * @unreleased
  */

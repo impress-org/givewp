@@ -1,14 +1,15 @@
 <?php
 
-namespace Give\Donations\Endpoints\DonationDetailsAttributes;
+namespace Give\Donations\Endpoints\DonationDetailsAttributes\PaymentInformation;
 
 use DateTime;
+use Give\Donations\Endpoints\DonationDetailsAttributes\DonationDetailsAttribute;
 use Give\Donations\Models\Donation;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use WP_Error;
 
 /**
- * Class IdAttribute
+ * Class CreatedAtAttribute
  *
  * @unreleased
  */
