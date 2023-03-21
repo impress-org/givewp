@@ -30,6 +30,7 @@ class CreatedAtAttribute extends DonationDetailsAttribute
         return [
             'type' => 'string',
             'required' => false,
+            'sanitize_callback' => 'sanitize_text_field',
             'validate_callback' => function ($param) {
                 if ( ! DateTime::createFromFormat(Temporal::ISO8601_JS,
                         $param) && ! Temporal::toDateTime($param)) {

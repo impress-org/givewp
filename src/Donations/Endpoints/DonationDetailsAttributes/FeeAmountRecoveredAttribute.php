@@ -4,7 +4,6 @@ namespace Give\Donations\Endpoints\DonationDetailsAttributes;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\Support\ValueObjects\Money;
-use WP_Error;
 
 /**
  * Class IdAttribute
@@ -29,17 +28,11 @@ class FeeAmountRecoveredAttribute extends DonationDetailsAttribute
         return [
             'type' => 'number',
             'required' => false,
-            'validate_callback' => function ($param) {
-                if ($param < 0) {
-                    return new WP_Error(
-                        'invalid_fee_amount_recovered',
-                        __('Invalid fee amount recovered.', 'give'),
-                        ['status' => 400]
-                    );
-                }
-
-                return true;
+            'minimum' => 0,
+            'sanitize_callback' => function ($param) {
+                return floatval($param);
             },
+            'validate_callback' => 'rest_validate_request_arg',
         ];
     }
 
