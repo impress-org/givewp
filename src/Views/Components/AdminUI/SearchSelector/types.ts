@@ -4,6 +4,6 @@ export type SearchSelector = {
         label: string;
     }>;
     defaultLabel: string;
-    openSelector: boolean;
-    setOpenSelector: React.Dispatch<React.SetStateAction<boolean>>;
+    name: string;
+    placeholder: string;
 };

@@ -1,13 +1,13 @@
 import {useState} from 'react';
-
 import {__} from '@wordpress/i18n';
+import {parseInt} from 'lodash';
 import {format} from 'date-fns';
 
 import BlueExitIcon from '@givewp/components/AdminUI/Icons/BlueExitIcon';
 
+import {TimePickerProps} from '../types';
+
 import styles from './style.module.scss';
-import {parseInt} from 'lodash';
-import {TimePickerProps} from './types';
 
 /**
  *
@@ -22,7 +22,6 @@ export default function TimePickerFormField({
     const [hours, setHours] = useState(format(parsedTime, parsedTime.getHours() >= 12 ? 'h' : 'h'));
     const [minutes, setMinutes] = useState(parsedTime.getMinutes());
     const [amPm, setAmPm] = useState(format(parsedTime, 'a'));
-
     return (
         <div className={styles.timePickerPosition}>
             <label hidden htmlFor={'give-payment-time-hour'}>

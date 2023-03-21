@@ -1,0 +1,29 @@
+.legend {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+
+
+    & > legend {
+        padding: 0;
+        margin: 0;
+
+        & > h2 {
+            padding: 0;
+            margin: 0;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: normal;
+            text-align: left;
+            color: var(--givewp-grey-900);
+        }
+    }
+
+    .paymentType {
+        display: flex;
+        gap: var(--givewp-spacing-6);
+    }
+}

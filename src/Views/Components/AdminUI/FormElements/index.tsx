@@ -42,7 +42,7 @@ const TextInputField = React.forwardRef<HTMLInputElement, TextInputFieldProps>(
  */
 
 const CurrencyInputField = React.forwardRef<HTMLInputElement, CurrencyInputFieldProps>(
-    ({name, type, placeholder, label, ...props}, ref) => {
+    ({name, type, placeholder, currency, label, ...props}, ref) => {
         return (
             <label>
                 {label && <span className={styles.fieldLabel}>{label}</span>}
@@ -53,12 +53,9 @@ const CurrencyInputField = React.forwardRef<HTMLInputElement, CurrencyInputField
                         type={type}
                         placeholder={placeholder}
                         decimalsLimit={2}
-                        prefix="$"
-                        decimalSeparator="."
-                        groupSeparator=","
                         intlConfig={{
                             locale: navigator.language || (navigator.languages || ['en'])[0],
-                            currency: 'USD',
+                            currency: currency,
                         }}
                         {...props}
                     />

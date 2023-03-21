@@ -1,6 +1,6 @@
 import EditablePenIcon from '@givewp/components/AdminUI/Icons/EditablePenIcon';
 
-import {ActionContainerProps} from './types';
+import {ActionContainerProps} from '../types';
 
 import styles from './style.module.scss';
 

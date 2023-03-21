@@ -1,6 +1,6 @@
-import {DonationMethodProps} from './types';
+import {DonationMethodProps} from '../types';
 
-import styles from './style.module.scss';
+import styles from '../style.module.scss';
 
 /**
  *

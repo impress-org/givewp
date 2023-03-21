@@ -1,16 +1,16 @@
-import PaymentInformation from '../PaymentInformation';
+import React from 'react';
 
-import {FormTemplateProps} from './types';
+import PaymentInformation from '../PaymentInformation';
 
 /**
  *
  * @unreleased
  */
 
-export default function FormTemplate({data}: FormTemplateProps) {
+export default function FormTemplate() {
     return (
         <>
-            <PaymentInformation data={data} />
+            <PaymentInformation />
         </>
     );
 }

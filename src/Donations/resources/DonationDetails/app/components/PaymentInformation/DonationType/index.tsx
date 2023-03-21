@@ -1,11 +1,12 @@
 import {__} from '@wordpress/i18n';
 import cx from 'classNames';
 
-import styles from './style.module.scss';
-import {DonationTypeProps} from './types';
 import SubscriptionBadgeIcon from '@givewp/components/AdminUI/Icons/SubscriptionBadgeIcon';
 import SingleBadgeIcon from '@givewp/components/AdminUI/Icons/SingleBadgeIcon';
-import RenewalBadgeIcon from '@givewp/components/AdminUI/Icons/RenewalBadgeIcon';
+
+import {DonationTypeProps} from '../types';
+
+import styles from './style.module.scss';
 
 /**
  *
@@ -22,22 +23,13 @@ function renderPaymentTypeIcon(type: any) {
                     <span>{__('One-Time', 'give')}</span>
                 </>
             );
-        case 'renewal':
-            return (
-                <>
-                    <div className={cx(styles.typeContainer, styles.renewalContainer)}>
-                        <RenewalBadgeIcon />
-                    </div>
-                    <span>{__('Renewal', 'give')}</span>
-                </>
-            );
         case 'subscription':
             return (
                 <>
                     <div className={cx(styles.typeContainer, styles.subscriptionContainer)}>
                         <SubscriptionBadgeIcon />
                     </div>
-                    <span>{__('Subscriber', 'give')}</span>
+                    <span>{__('Recurring', 'give')}</span>
                 </>
             );
         default:

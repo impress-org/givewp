@@ -35,4 +35,8 @@ export const StyleConfig = {
         fontSize: '14px',
         fontWeight: '400',
     }),
+    menu: (provided, state) => ({
+        ...provided,
+        marginTop: '1.5rem',
+    }),
 };

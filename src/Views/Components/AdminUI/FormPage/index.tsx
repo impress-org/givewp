@@ -8,7 +8,7 @@ import {joiResolver} from '@hookform/resolvers/joi';
 import FormNavigation from '@givewp/components/AdminUI/FormNavigation';
 import {Form} from '@givewp/components/AdminUI/FormElements';
 
-import {FormPage} from '@givewp/components/AdminUI/types';
+import {FormPageProps} from './types';
 import cx from 'classnames';
 import {A11yDialog} from 'react-a11y-dialog';
 import Button from '@givewp/components/AdminUI/Button';
@@ -17,6 +17,7 @@ import A11yDialogInstance from 'a11y-dialog';
 import styles from './style.module.scss';
 import ExitIcon from '@givewp/components/AdminUI/Icons/ExitIcon';
 import NoticeInformationIcon from '@givewp/components/AdminUI/Icons/NoticeInformationIcon';
+import {useApi} from '@givewp/components/AdminUI/api';
 
 /**
  *
@@ -27,14 +28,16 @@ export const ModalContext = createContext((label, content, confirmationAction, e
 
 export default function FormPage({
     formId,
-    handleSubmitRequest,
+    endpoint,
     defaultValues,
     validationSchema,
-    pageDetails,
+    pageInformation,
     navigationalOptions,
     children,
     actionConfig,
-}: FormPage) {
+}: FormPageProps) {
+    const {postData} = useApi(endpoint);
+
     const dialog = useRef() as {current: A11yDialogInstance};
     const [modalContent, setModalContent] = useState<{
         label: string;
@@ -66,13 +69,20 @@ export default function FormPage({
         dialog.current.show();
     };
 
+    const handleSubmitRequest = async (formFieldValues) => {
+        try {
+            await postData(formFieldValues);
+            console.log(JSON.stringify(formFieldValues));
+        } catch (error) {
+            alert(error);
+        }
+    };
+
     return (
         <FormProvider {...methods}>
             <ModalContext.Provider value={showConfirmActionModal}>
                 <FormNavigation
-                    pageId={pageDetails.id}
-                    pageTitle={pageDetails.title}
-                    pageDescription={pageDetails.description}
+                    pageInformation={pageInformation}
                     navigationalOptions={navigationalOptions}
                     onSubmit={handleSubmit(handleSubmitRequest)}
                     actionConfig={actionConfig}

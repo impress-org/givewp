@@ -4,35 +4,7 @@
     gap: var(--givewp-spacing-2);
     border: none;
     cursor: pointer;
-
-    .searchSelect{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: var(--givewp-spacing-4);
-        height: 38px;
-        max-width: 13rem;
-        padding: var(--givewp-spacing-3);
-        background: var(--givewp-grey-25);
-        border-radius: 2px;
-        border: none;
-
-        > span {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            width: 10.25rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-            font-stretch: normal;
-            font-style: normal;
-            line-height: 1.43;
-            letter-spacing: normal;
-            text-align: left;
-            color: var(--givewp-grey-900);
-        }
-    }
-
+    
     > div {
         height: 2rem;
         width: 17rem;
@@ -41,15 +13,5 @@
     input[type="text"]:focus {
         border: none;
         box-shadow: none;
-    }
-
-
-    .hidden {
-        visibility: hidden;
-        border: 1px solid red;
-    }
-
-    .reveal {
-        visibility: visible;
     }
 }

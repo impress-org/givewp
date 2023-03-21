@@ -1,0 +1,33 @@
+.timePickerPosition {
+    position: absolute;
+    top: 100%;
+    display: flex;
+    align-items: center;
+    gap: var(--givewp-spacing-1);
+
+    input {
+        height: 2.25rem;
+        line-height: 2.25rem;
+        padding-right: 0;
+    }
+
+    select {
+        height: 2.25rem;
+        margin-left: .2rem;
+    }
+
+
+    > div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        margin: 0 0 0 .65rem;
+        cursor: pointer;
+
+        > svg:hover {
+            -webkit-filter: invert(100%); /* safari 6.0 - 9.0 */
+            filter: invert(100%);
+        }
+    }
+}

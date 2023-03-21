@@ -18,13 +18,13 @@ import styles from './style.module.scss';
 export default function FormNavigation({
     navigationalOptions,
     onSubmit,
-    pageDescription,
-    pageId,
-    pageTitle,
+    pageInformation,
     actionConfig,
     isDirty,
 }: FormNavigationProps) {
     const [toggleActions, setToggleActions] = useState<boolean>(false);
+
+    const {description, id, title} = pageInformation;
 
     const toggleMoreActions = () => {
         setToggleActions(!toggleActions);
@@ -35,7 +35,7 @@ export default function FormNavigation({
             <div className={styles.wrapper}>
                 <button className={styles.container} onClick={() => window.history.back()}>
                     <LeftArrowIcon />
-                    <h1>{pageTitle}</h1>
+                    <h1>{title}</h1>
                 </button>
 
                 <select>
@@ -47,8 +47,8 @@ export default function FormNavigation({
 
             <div className={styles.actions}>
                 <div className={styles.pageDetails}>
-                    <span>{pageDescription}:</span>
-                    <span>#{pageId}</span>
+                    <span>{description}:</span>
+                    <span>#{id}</span>
                 </div>
 
                 <div className={styles.relativeContainer}>

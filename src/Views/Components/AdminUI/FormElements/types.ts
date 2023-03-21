@@ -16,5 +16,6 @@ export type CurrencyInputFieldProps = {
     type: string;
     placeholder: string;
     label: string;
+    currency: string;
     value?: any;
 };

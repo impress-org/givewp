@@ -1,10 +1,10 @@
-export interface FormPage {
+export interface FormPageProps {
     formId;
-    handleSubmitRequest: (formValues) => void;
+    endpoint: string;
     defaultValues;
     validationSchema;
     children;
-    pageDetails: {
+    pageInformation: {
         id: number;
         description: string;
         title: string;

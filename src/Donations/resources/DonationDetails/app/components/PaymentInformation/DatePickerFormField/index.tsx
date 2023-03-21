@@ -2,7 +2,7 @@ import {DayPickerSingleDateController} from 'react-dates';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
-import {DatePickerProps} from './types';
+import {DatePickerProps} from '../types';
 
 import styles from './style.module.scss';
 
