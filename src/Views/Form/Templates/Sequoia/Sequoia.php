@@ -22,6 +22,18 @@ use function give_is_setting_enabled;
 class Sequoia extends Template implements Hookable, Scriptable
 {
     /**
+     * @unreleased
+     * @var array
+     */
+
+    private $options;
+
+    public function __construct()
+    {
+        $this->options = FormTemplateUtils::getOptions();
+    }
+
+    /**
      * @inheritDoc
      */
     public function getFormStartingHeight($formId)
@@ -458,16 +470,6 @@ class Sequoia extends Template implements Hookable, Scriptable
      */
     public function getFormExcerpt($formId)
     {
-        $excerpt = get_the_excerpt($formId);
-        $templateOptions = FormTemplateUtils::getOptions($formId);
-
-        if ( ! empty($excerpt)) {
-            return $excerpt;
-        }
-
-        // Backward compatibility
-        if ( ! empty($templateOptions['introduction']['description']) ) {
-            return $templateOptions['introduction']['description'];
-        }
+        return $this->options['introduction']['description'];
     }
 }

@@ -168,7 +168,7 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
 
                 // Maybe display the form excerpt.
                 if ( true === $atts['show_excerpt'] ) {
-                    if ( $raw_content = $formTemplate->getFormExcerpt( $form_id ) ) {
+                    if ( $raw_content = get_the_excerpt( $form_id ) ) {
                         $stripped_content = wp_strip_all_tags(
                             strip_shortcodes( $raw_content )
                         );
