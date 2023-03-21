@@ -7,7 +7,7 @@ use Give\Donations\Endpoints\DonationDetailsAttributes\PaymentInformation\Amount
 use Give\Donations\Endpoints\DonationDetailsAttributes\PaymentInformation\CreatedAtAttribute;
 use Give\Donations\Endpoints\DonationDetailsAttributes\PaymentInformation\FeeAmountRecoveredAttribute;
 use Give\Donations\Endpoints\DonationDetailsAttributes\PaymentInformation\FormIdAttribute;
-use Give\Donations\Endpoints\DonationDetailsAttributes\StatusAttribute;
+use Give\Donations\Endpoints\DonationDetailsAttributes\PaymentInformation\StatusAttribute;
 use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
 use WP_Error;
@@ -40,11 +40,11 @@ class DonationDetails extends Endpoint
     {
         $this->registerRouteAttributes([
             IdAttribute::class,
+            StatusAttribute::class,
             AmountAttribute::class,
             FeeAmountRecoveredAttribute::class,
-            CreatedAtAttribute::class,
-            StatusAttribute::class,
             FormIdAttribute::class,
+            CreatedAtAttribute::class,
         ]);
 
         register_rest_route(
