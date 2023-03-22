@@ -1,22 +1,23 @@
+const fs = require('fs');
 const mix = require('laravel-mix');
 const path = require('path');
 const WebpackRTLPlugin = require('webpack-rtl-plugin');
 const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extraction-webpack-plugin');
 
 mix.setPublicPath('assets/dist')
-    .sass('assets/src/css/frontend/give-frontend.scss', 'css/give.css')
-    .sass('assets/src/css/admin/block-editor.scss', 'css/admin-block-editor.css')
-    .sass('assets/src/css/admin/give-admin.scss', 'css/admin.css')
-    .sass('assets/src/css/admin/give-admin-global.scss', 'css/admin-global.css')
-    .sass('assets/src/css/admin/setup.scss', 'css/admin-setup.css')
-    .sass('assets/src/css/admin/shortcodes.scss', 'css/admin-shortcode-button.css')
-    .sass('assets/src/css/admin/plugin-deactivation-survey.scss', 'css/')
-    .sass('assets/src/css/admin/widgets.scss', 'css/admin-widgets.css')
-    .sass('assets/src/css/admin/paypal-commerce.scss', 'css/admin-paypal-commerce.css')
-    .sass('src/Views/Form/Templates/Sequoia/assets/css/form.scss', 'css/give-sequoia-template.css')
-    .sass('src/Views/Form/Templates/Classic/resources/css/form.scss', 'css/give-classic-template.css')
-    .sass('src/MultiFormGoals/resources/css/common.scss', 'css/multi-form-goal-block.css')
-    .sass('src/DonationSummary/resources/css/summary.scss', 'css/give-donation-summary.css')
+   .sass('assets/src/css/frontend/give-frontend.scss', 'css/give.css')
+   .sass('assets/src/css/admin/block-editor.scss', 'css/admin-block-editor.css')
+   .sass('assets/src/css/admin/give-admin.scss', 'css/admin.css')
+   .sass('assets/src/css/admin/give-admin-global.scss', 'css/admin-global.css')
+   .sass('assets/src/css/admin/setup.scss', 'css/admin-setup.css')
+   .sass('assets/src/css/admin/shortcodes.scss', 'css/admin-shortcode-button.css')
+   .sass('assets/src/css/admin/plugin-deactivation-survey.scss', 'css/')
+   .sass('assets/src/css/admin/widgets.scss', 'css/admin-widgets.css')
+   .sass('assets/src/css/admin/paypal-commerce.scss', 'css/admin-paypal-commerce.css')
+   .sass('src/Views/Form/Templates/Sequoia/assets/css/form.scss', 'css/give-sequoia-template.css')
+   .sass('src/Views/Form/Templates/Classic/resources/css/form.scss', 'css/give-classic-template.css')
+   .sass('src/MultiFormGoals/resources/css/common.scss', 'css/multi-form-goal-block.css')
+   .sass('src/DonationSummary/resources/css/summary.scss', 'css/give-donation-summary.css')
 
     .js('assets/src/js/frontend/give.js', 'js/')
     .js('assets/src/js/frontend/give-stripe.js', 'js/')
@@ -54,8 +55,17 @@ mix.setPublicPath('assets/dist')
     .react()
     .sourceMaps(false, 'source-map')
 
-    .copyDirectory('assets/src/images', 'assets/dist/images')
-    .copyDirectory('assets/src/fonts', 'assets/dist/fonts');
+   .css('node_modules/@givewp/design-system-foundation/css/foundation.css', 'css/design-system/foundation.css')
+   .after(() => {
+       // Store the design system version in a file
+       const packageJson = require('./node_modules/@givewp/design-system-foundation/package.json');
+       const version = packageJson.version;
+
+       fs.writeFileSync('./assets/dist/css/design-system/version', version);
+   })
+
+   .copyDirectory('assets/src/images', 'assets/dist/images')
+   .copyDirectory('assets/src/fonts', 'assets/dist/fonts');
 
 mix.webpackConfig({
     resolve: {

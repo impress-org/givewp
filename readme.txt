@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 7.0
-Stable tag: 2.25.0
+Stable tag: 2.25.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -127,6 +127,13 @@ Are you a developer? GiveWP is built with best practices and easy to extend and 
 * [How to Style Your GiveWP Forms](https://go.givewp.com/styledoc)
 * [Site Redesigns Without Donation Data Loss](https://go.givewp.com/datalossdoc)
 * [Handling Custom CSS in WordPress](https://go.givewp.com/cssdoc)
+
+=== 🚀 Join the Journey to Create the Next Generation of WordPress Donation Forms === 
+Team Give has been working hard for the past several years on updating how donation forms are created. The user experience is going to change for the better, but we want your help shaping what that means! 
+
+Help us test our new visual form builder with the GiveWP 3.0 Feature plugin. The Feaure Plugin (or GiveWP 3.0 Beta) is meant to be used alongside GiveWP core on a staging or local environment. We are looking specifically at the form builder with this beta test and would love for all GiveWP users to give it a try. All feedback is welcome! [Download the beta plugin directly on WordPress](https://go.givewp.com/corewppg) or through your admin dashboard plugins area. 
+
+Learn more about how we're creating the next generation of WordPress donation forms, [directly on our website](https://go.givewp.com/corenextgen).
 
 === 💚 About the GiveWP Team ===
 
@@ -251,6 +258,21 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.25.2: March 8th, 2023 =
+* Security: Protect against CSRF during give cache clear settings
+* Security: Protect against CSV injection in donation export settings
+* Security: Protect against XSS and CSRF in donation import settings
+* Security: Protect against XSS in give_form_grid shortcode
+* Security: Protect against CSRF and Arbitrary Content Deletion in admin list tables
+* Security: Protect against SSRF in add-on changelog requests
+
+= 2.25.1: March 1st, 2023 =
+* Enhancement: Compatibility in the Donor Dashboard with the new Square recurring support
+* Enhancement: Exported donations are ordered by ID by default
+* Fix: Sites without the ctype PHP extension no longer run into problems
+* Fix: Prevent a handful of PHP 8.1 deprecation notices
+* Fix: Fixed a PHP 8.0 error in receipt templates
+
 = 2.25.0: February 21st, 2023 =
 * Feature: Donors now explicitly state whether they are donating as a company, useful for things like Gift Aid
 * Enhancement: Improvements to the Gateway API in preparation for GiveWP 3.0

@@ -1,4 +1,5 @@
 import AuthorizeControl from './authorize-control';
+import SquareControl from './square-control';
 import StripeControl from './stripe-control';
 import CardControl from './card-control';
 
@@ -15,6 +16,9 @@ const PaymentMethodControl = (props) => {
         }
         case 'authorize': {
             return <AuthorizeControl {...props} />;
+        }
+        case 'square': {
+            return <SquareControl {...props} />;
         }
         case 'paypalpro': {
             return <CardControl {...props} />;
