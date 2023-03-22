@@ -1,16 +1,18 @@
 import {useFormContext} from 'react-hook-form';
-import {defaultFormValues} from '../config';
+import {defaultFormValues} from '../utilities/defaultFormValues';
 
+/**
+ *
+ * @unreleased
+ */
 export default function useResetFieldValue(fieldName: string) {
     const methods = useFormContext();
     const {reset} = methods;
 
-    const resetFieldValue = (fieldName) => {
+    return (fieldName) => {
         reset({
             ...defaultFormValues,
             [fieldName]: defaultFormValues[fieldName],
         });
     };
-
-    return resetFieldValue;
 }

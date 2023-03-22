@@ -16,9 +16,12 @@ import TimePickerFormField from './TimePickerFormField';
 import DatePickerFormField from './DatePickerFormField';
 import Legend from './Legend';
 
-import {data, defaultFormValues, donationFormOptions} from '../../config';
-import {formatCurrency} from '../../utillities';
+import {defaultFormValues} from '../../utilities/defaultFormValues';
+import {formatCurrency} from '../../utilities/formatter';
+import {data} from '../../config/data';
+
 import useResetFieldValue from '../../hooks/useResetFieldValue';
+import useFormOptions from '../../hooks/useFormOptions';
 
 import styles from './style.module.scss';
 
@@ -40,10 +43,10 @@ export default function PaymentInformation() {
     const [showTimePicker, setShowTimePicker] = useState<boolean>(false);
 
     const [formattedDonationAmount, setFormattedDonationAmount] = useState<string>(
-        formatCurrency(parseInt(defaultFormValues.amount), data.amount.currency)
+        formatCurrency(defaultFormValues.amount, data.amount.currency)
     );
     const [formattedFeeAmountRecovered, setFormattedFeeAmountRecovered] = useState<string>(
-        formatCurrency(parseInt(defaultFormValues.feeAmountRecovered), data.amount.currency)
+        formatCurrency(defaultFormValues.feeAmountRecovered, data.amount.currency)
     );
 
     const updateDonationAmount = () => {
@@ -159,7 +162,7 @@ export default function PaymentInformation() {
                             <SearchSelector
                                 name={'form'}
                                 placeholder={__('Search for a donation form', 'give')}
-                                options={donationFormOptions}
+                                options={useFormOptions}
                                 defaultLabel={data.formTitle}
                             />
                         }

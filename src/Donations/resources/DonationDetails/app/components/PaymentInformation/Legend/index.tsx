@@ -1,7 +1,7 @@
 import DonationType from '../DonationType';
 import StatusSelector from '@givewp/components/AdminUI/StatusSelector';
 
-import {donationStatusOptions} from '../../../config';
+import {donationStatusOptions} from '../../../options';
 
 import styles from './style.module.scss';
 

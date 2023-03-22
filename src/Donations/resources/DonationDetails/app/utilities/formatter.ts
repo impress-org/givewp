@@ -27,3 +27,6 @@ export function formatCurrency(amount: number, currency: string) {
 };
 
 
+export function parseAmountValue(num: string | null): number {
+    return num ? parseInt(num) : 0;
+}

@@ -3,9 +3,14 @@ import React from 'react';
 import FormPage from '@givewp/components/AdminUI/FormPage';
 import FormTemplate from './components/FormTemplate';
 
-import {actionConfig, defaultFormValues, endpoint, navigationalOptions, pageInformation} from './config';
+import {validationSchema} from './config/schema';
+import {endpoint} from './config/data';
+import {pageInformation} from './config/pageInformation';
 
-import {validationSchema} from './schema';
+import {defaultFormValues} from './utilities/defaultFormValues';
+import {actions} from './utilities/actions';
+
+import {useNavigationalOptions} from './hooks/useNavigationalOptions';
 
 import './css/style.scss';
 
@@ -22,8 +27,8 @@ export default function App() {
             defaultValues={defaultFormValues}
             validationSchema={validationSchema}
             pageInformation={pageInformation}
-            navigationalOptions={navigationalOptions}
-            actionConfig={actionConfig}
+            navigationalOptions={useNavigationalOptions}
+            actionConfig={actions}
         >
             <FormTemplate />
         </FormPage>
