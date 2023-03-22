@@ -685,6 +685,9 @@ add_action( 'give_payments_page_top', 'give_import_page_link_callback', 11 );
  * @since  1.8.13
  */
 function give_donation_import_callback() {
+
+    check_ajax_referer('give_donation_import');
+
 	// Bailout.
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		give_die();

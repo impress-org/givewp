@@ -388,6 +388,7 @@ class Give_Scripts {
 			'db_update_confirmation_msg'        => __( 'The following process will make updates to your site\'s database. Please create a database backup before proceeding with updates.', 'give' ),
 			'error_message'                     => __( 'Something went wrong kindly try again!', 'give' ),
 			'give_donation_import'              => 'give_donation_import',
+			'give_donation_import_nonce'        => wp_create_nonce('give_donation_import'),
 			'core_settings_import'              => 'give_core_settings_import',
             'give_insert_payment_note_nonce'    => wp_create_nonce('give_insert_payment_note'),
             'give_delete_payment_note_nonce'    => wp_create_nonce('give_delete_payment_note'),
