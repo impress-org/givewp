@@ -261,7 +261,7 @@ class Give_Scripts {
 	/**
 	 * Localize admin scripts.
      *
-     * @unreleased Add nonce for payment note AJAX requests.
+     * @since 2.25.3 Add nonce for payment note AJAX requests.
 	 */
 	public function admin_localize_scripts() {
 

@@ -681,7 +681,7 @@ add_action( 'give_payments_page_top', 'give_import_page_link_callback', 11 );
  * Load donation import ajax callback
  * Fire when importing from CSV start
  *
- * @unreleased Append nonce to response url.
+ * @since 2.25.3 Append nonce to response url.
  * @since  1.8.13
  */
 function give_donation_import_callback() {
