@@ -232,9 +232,11 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		/**
 		 * Show success notice
 		 *
+         * @since 2.25.3 Add nonce check.
 		 * @since 1.8.14
 		 */
 		public function import_success() {
+            check_admin_referer('give_donation_import_success');
 
 			$delete_csv = ( ! empty( $_GET['delete_csv'] ) ? absint( $_GET['delete_csv'] ) : false );
 			$csv        = ( ! empty( $_GET['csv'] ) ? absint( $_GET['csv'] ) : false );
