@@ -399,7 +399,7 @@ class Classic extends Template implements Hookable, Scriptable
     }
 
     /**
-     * @since 2.18.0
+     * @unreleased Return description from form settings.
      * @param int $formId
      *
      * @return string
