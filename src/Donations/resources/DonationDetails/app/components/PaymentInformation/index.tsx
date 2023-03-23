@@ -19,6 +19,8 @@ import useFormOptions from '../../hooks/useFormOptions';
 import styles from './style.module.scss';
 import {formatCurrency} from '../../utilities/formatter';
 import {defaultFormValues} from '../../utilities/defaultFormValues';
+import Field, {CurrencyField} from './Fields/Field';
+import Amount from './Fields/Amount';
 
 /**
  *
@@ -38,9 +40,6 @@ export default function PaymentInformation() {
     const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
     const [showTimePicker, setShowTimePicker] = useState<boolean>(false);
 
-    const [amountUpdating, setAmountUpdating] = useState<number>(defaultFormValues.amount);
-
-    const amount = useWatch({name: 'amount'});
     const feeAmountRecovered = useWatch({name: 'feeAmountRecovered'});
 
     const toggleDatePicker = () => {
@@ -100,29 +99,7 @@ export default function PaymentInformation() {
             <div className={styles.wrapper}>
                 <div className={styles.actions}>
                     <input hidden {...register('amount')} />
-                    <ActionContainer
-                        label={__('Total Donation', 'give')}
-                        display={formatCurrency(Number(amount), data.amount.currency)}
-                        type={'amount'}
-                        showEditDialog={() =>
-                            confirmActionDialog(
-                                __(' Edit total donation', 'give'),
-                                <CurrencyInputField
-                                    defaultValue={amountUpdating}
-                                    currency={data.amount.currency}
-                                    handleCurrencyChange={(value) => setAmountUpdating(value)}
-                                    label={__('Total donation', 'give')}
-                                    placeholder={__('Enter an amount', 'give')}
-                                />,
-                                () => {
-                                    setValue('amount', amountUpdating);
-                                },
-                                () => {},
-                                __('Set Donation Amount', 'give'),
-                                __('Changes made will not be billed to the donor', 'give')
-                            )
-                        }
-                    />
+                    <Amount />
                     {/*<ActionContainer*/}
                     {/*    label={__('Fee recovered', 'give')}*/}
                     {/*    display={formatCurrency(Number(feeAmountRecovered), data.amount.currency)}*/}
@@ -189,11 +166,14 @@ export default function PaymentInformation() {
                             )
                         }
                     />
-                    <ActionContainer
-                        label={__('Payment method', 'give')}
-                        display={<DonationMethod gateway={data?.gatewayLabel} gatewayId={data?.gatewayId} />}
-                        type={'text'}
-                    />
+                    <Field label={__('Payment method', 'give')}>
+                        <DonationMethod gateway={data?.gatewayLabel} gatewayId={data?.gatewayId} />
+                    </Field>
+                    {/*<ActionContainer*/}
+                    {/*    label={__('Payment method', 'give')}*/}
+                    {/*    display={<DonationMethod gateway={data?.gatewayLabel} gatewayId={data?.gatewayId} />}*/}
+                    {/*    type={'text'}*/}
+                    {/*/>*/}
                 </div>
                 <div className={styles.paymentGatewayLink}>
                     <span />

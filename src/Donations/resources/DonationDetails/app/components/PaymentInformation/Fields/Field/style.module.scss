@@ -1,0 +1,48 @@
+.field {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    cursor: pointer;
+
+    > .labelContainer {
+        display: flex;
+        gap: var(--givewp-spacing-3);
+        align-items: flex-start;
+        padding: 0;
+        background: none;
+        border: none;
+        cursor: pointer;
+
+        // default text styles
+        font-size: 1rem;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.5;
+        letter-spacing: normal;
+        text-align: left;
+        color: var(--givewp-grey-900);
+
+        .amount {
+            display: block;
+            font-size: 2rem;
+            font-weight: 600;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.25;
+            letter-spacing: normal;
+            text-align: left;
+            color: var(--givewp-green-400);
+        }
+
+        .button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+    }
+}
+
+

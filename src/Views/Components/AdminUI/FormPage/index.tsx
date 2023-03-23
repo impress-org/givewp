@@ -78,7 +78,6 @@ export default function FormPage({
         }
     };
 
-    console.log(`this are values ${JSON.stringify(getValues())}`);
     return (
         <FormProvider {...methods}>
             <ModalContext.Provider value={showConfirmActionModal}>
