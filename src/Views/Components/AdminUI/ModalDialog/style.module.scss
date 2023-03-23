@@ -1,0 +1,113 @@
+.container,
+.overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.container {
+    display: flex;
+    opacity: 1;
+    animation: appear 112ms ease-in 0s;
+    font-family: 'Open Sans', sans-serif;
+    z-index: 9999 !important;
+
+    &[aria-hidden='true'] {
+        display: none;
+        opacity: 0;
+    }
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+.dialog {
+    position: relative;
+    margin: auto;
+    max-width: 50vw;
+    min-width: 30vw;
+    background-color: var(--givewp-shades-white);
+    box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
+    border: solid 1px var(--givewp-grey-200);
+    border-radius: 8px;
+    z-index: 2;
+
+    .dialogTitle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: var(--givewp-spacing-6);
+        padding: 0 var(--givewp-spacing-6);
+        border-radius: 8px 8px 0 0;
+        background-color: var(--givewp-grey-25);
+
+        > p {
+            font-size: 1rem;
+            font-weight: 600;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: normal;
+            text-align: left;
+            color: var(--givewp-grey-900);
+        }
+
+        > button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: none;
+            padding: 0;
+            margin: 0;
+            cursor: pointer;
+        }
+    }
+
+
+    .modalContentContainer {
+        display: grid;
+        margin-bottom: var(--givewp-spacing-11);
+        padding: 0 var(--givewp-spacing-6);
+    }
+
+    .actionContainer {
+        display: grid;
+        gap: var(--givewp-spacing-2);
+        padding: 0 var(--givewp-spacing-6) var(--givewp-spacing-6);
+
+        > button {
+            height: 3.5rem;
+        }
+
+        .noticeInformation {
+            display: flex;
+            align-items: center;
+            gap: var(--givewp-spacing-4);
+            padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+            border-radius: var(--givewp-rounded-4);
+            background-color: var(--givewp-blue-25);
+            color: var(--givewp-blue-500);
+            font-size: 0.875rem;
+        }
+    }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+    .container {
+        animation: none;
+    }
+}
