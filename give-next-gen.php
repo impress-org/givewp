@@ -10,6 +10,7 @@ use Give\NextGen\DonationForm\ServiceProvider as DonationFormServiceProvider;
 use Give\NextGen\FormPage\ServiceProvider as FormPageServiceProvider;
 use Give\NextGen\Framework\FormDesigns\ServiceProvider as FormDesignServiceProvider;
 use Give\NextGen\ServiceProvider as NextGenServiceProvider;
+use Give\NextGen\WelcomeBanner\ServiceProvider as WelcomeBannerServiceProvider;
 
 /**
  * Plugin Name:         Give - Visual Donation Form Builder
@@ -62,6 +63,7 @@ add_action(
             give()->registerServiceProvider(FormDesignServiceProvider::class);
             give()->registerServiceProvider(CustomFieldsServiceProvider::class);
             give()->registerServiceProvider(FormPageServiceProvider::class);
+            give()->registerServiceProvider(WelcomeBannerServiceProvider::class);
         }
     }
 );
