@@ -90,7 +90,7 @@ class DonationsAdminPage
             EnqueueScript::make('give-admin-donation-details', 'assets/dist/js/give-admin-donation-details.js')
                 ->loadInFooter()
                 ->registerTranslations()
-                ->registerLocalizeData('GiveDonations', $data)->enqueue();
+                ->registerLocalizeData('GiveDonationsDetails', $data)->enqueue();
         } else {
             $data = array_merge(
                 $data,

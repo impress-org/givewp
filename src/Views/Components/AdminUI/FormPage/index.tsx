@@ -3,7 +3,6 @@ import {createPortal} from 'react-dom';
 
 import {__} from '@wordpress/i18n';
 import {FormProvider, useForm} from 'react-hook-form';
-import {joiResolver} from '@hookform/resolvers/joi';
 
 import FormNavigation from '@givewp/components/AdminUI/FormNavigation';
 import {Form} from '@givewp/components/AdminUI/FormElements';
@@ -17,7 +16,8 @@ import A11yDialogInstance from 'a11y-dialog';
 import styles from './style.module.scss';
 import ExitIcon from '@givewp/components/AdminUI/Icons/ExitIcon';
 import NoticeInformationIcon from '@givewp/components/AdminUI/Icons/NoticeInformationIcon';
-import {useApi} from '@givewp/components/AdminUI/api';
+import {usePostRequest} from '@givewp/components/AdminUI/api';
+import {joiResolver} from '@hookform/resolvers/joi';
 
 /**
  *
@@ -30,20 +30,19 @@ export default function FormPage({
     formId,
     endpoint,
     defaultValues,
-    validationSchema,
     pageInformation,
-    navigationalOptions,
+    validationSchema,
     children,
     actionConfig,
 }: FormPageProps) {
-    const {postData} = useApi(endpoint);
+    const {postData} = usePostRequest(endpoint);
 
     const dialog = useRef() as {current: A11yDialogInstance};
     const [modalContent, setModalContent] = useState<{
         label: string;
         content: () => JSX.Element;
         confirmationAction: () => void;
-        exitCallback: () => void | null;
+        exitCallback?: () => void;
         button: string;
         notice: string | null;
     }>({
@@ -60,7 +59,7 @@ export default function FormPage({
         resolver: joiResolver(validationSchema),
     });
 
-    const {handleSubmit} = methods;
+    const {handleSubmit, getValues} = methods;
 
     const {isDirty} = methods.formState;
 
@@ -71,19 +70,20 @@ export default function FormPage({
 
     const handleSubmitRequest = async (formFieldValues) => {
         try {
-            await postData(formFieldValues);
+            alert(JSON.stringify(formFieldValues));
             console.log(JSON.stringify(formFieldValues));
+            await postData(formFieldValues);
         } catch (error) {
             alert(error);
         }
     };
 
+    console.log(`this are values ${JSON.stringify(getValues())}`);
     return (
         <FormProvider {...methods}>
             <ModalContext.Provider value={showConfirmActionModal}>
                 <FormNavigation
                     pageInformation={pageInformation}
-                    navigationalOptions={navigationalOptions}
                     onSubmit={handleSubmit(handleSubmitRequest)}
                     actionConfig={actionConfig}
                     isDirty={isDirty}
@@ -109,7 +109,8 @@ export default function FormPage({
                                 <p aria-labelledby={modalContent.label}>{modalContent.label}</p>
                                 <button
                                     onClick={(event) => {
-                                        modalContent.exitCallback();
+                                        event.preventDefault();
+                                        modalContent.exitCallback && modalContent.exitCallback();
                                         dialog.current.hide();
                                     }}
                                 >
@@ -121,7 +122,8 @@ export default function FormPage({
 
                             <div className={styles.actionContainer}>
                                 <Button
-                                    onClick={() => {
+                                    onClick={(event) => {
+                                        event.preventDefault();
                                         modalContent.confirmationAction();
                                         dialog.current.hide();
                                     }}

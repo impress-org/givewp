@@ -10,8 +10,6 @@ import {pageInformation} from './config/pageInformation';
 import {defaultFormValues} from './utilities/defaultFormValues';
 import {actions} from './utilities/actions';
 
-import {useNavigationalOptions} from './hooks/useNavigationalOptions';
-
 import './css/style.scss';
 
 /**
@@ -27,7 +25,6 @@ export default function App() {
             defaultValues={defaultFormValues}
             validationSchema={validationSchema}
             pageInformation={pageInformation}
-            navigationalOptions={useNavigationalOptions}
             actionConfig={actions}
         >
             <FormTemplate />

@@ -1,7 +1,7 @@
 export type ActionContainerProps = {
     label: string;
     type: string;
-    value: string | React.ReactNode;
+    display: string | React.ReactNode;
     showEditDialog?: () => void;
     formField?: JSX.Element;
 };

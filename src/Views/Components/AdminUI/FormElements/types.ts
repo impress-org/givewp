@@ -17,5 +17,10 @@ export type CurrencyInputFieldProps = {
     placeholder: string;
     label: string;
     currency: string;
+    defaultValue;
+
+    handleCurrencyChange;
+    control;
+
     value?: any;
 };

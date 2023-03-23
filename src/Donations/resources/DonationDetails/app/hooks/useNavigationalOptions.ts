@@ -4,12 +4,15 @@
  *
  * @unreleased
  */
-export default function useNavigationalOptions(){
-    const tempData =  [
+
+/**
+ *
+ * @unreleased
+ */
+export default function useNavigationalOptions() {
+    return [
         {id: 1, title: 'donation 1'},
         {id: 2, title: 'donation 2'},
         {id: 3, title: 'donation 3'},
     ];
-
-    return tempData
 }

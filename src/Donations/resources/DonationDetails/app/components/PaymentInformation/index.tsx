@@ -1,6 +1,5 @@
-import {useContext, useState} from 'react';
-
-import {useFormContext} from 'react-hook-form';
+import React, {useContext, useState} from 'react';
+import {useFormContext, useWatch} from 'react-hook-form';
 import {__} from '@wordpress/i18n';
 import {format, parse} from 'date-fns';
 
@@ -15,15 +14,11 @@ import ActionContainer from './ActionContainer';
 import TimePickerFormField from './TimePickerFormField';
 import DatePickerFormField from './DatePickerFormField';
 import Legend from './Legend';
-
-import {defaultFormValues} from '../../utilities/defaultFormValues';
-import {formatCurrency} from '../../utilities/formatter';
 import {data} from '../../config/data';
-
-import useResetFieldValue from '../../hooks/useResetFieldValue';
 import useFormOptions from '../../hooks/useFormOptions';
-
 import styles from './style.module.scss';
+import {formatCurrency} from '../../utilities/formatter';
+import {defaultFormValues} from '../../utilities/defaultFormValues';
 
 /**
  *
@@ -31,8 +26,9 @@ import styles from './style.module.scss';
  */
 export default function PaymentInformation() {
     const methods = useFormContext();
-    const {register, setValue, getValues, reset} = methods;
+    const options = useFormOptions();
 
+    const {register, setValue, reset, control} = methods;
     const confirmActionDialog = useContext(ModalContext);
     const [readableDateValue, setReadableDateValue] = useState<string>(
         format(new Date(data.createdAt.date), 'MMMM d, yyyy')
@@ -42,19 +38,10 @@ export default function PaymentInformation() {
     const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
     const [showTimePicker, setShowTimePicker] = useState<boolean>(false);
 
-    const [formattedDonationAmount, setFormattedDonationAmount] = useState<string>(
-        formatCurrency(defaultFormValues.amount, data.amount.currency)
-    );
-    const [formattedFeeAmountRecovered, setFormattedFeeAmountRecovered] = useState<string>(
-        formatCurrency(defaultFormValues.feeAmountRecovered, data.amount.currency)
-    );
+    const [amountUpdating, setAmountUpdating] = useState<number>(defaultFormValues.amount);
 
-    const updateDonationAmount = () => {
-        setFormattedDonationAmount(formatCurrency(parseInt(getValues('amount')), data.amount.currency));
-    };
-    const updateFeeRecovered = () => {
-        setFormattedFeeAmountRecovered(formatCurrency(parseInt(getValues('feeAmountRecovered')), data.amount.currency));
-    };
+    const amount = useWatch({name: 'amount'});
+    const feeAmountRecovered = useWatch({name: 'feeAmountRecovered'});
 
     const toggleDatePicker = () => {
         setShowDatePicker(!showDatePicker);
@@ -112,57 +99,64 @@ export default function PaymentInformation() {
             <Legend title={__('Payment Information', 'give')} donationType={data.type} />
             <div className={styles.wrapper}>
                 <div className={styles.actions}>
+                    <input hidden {...register('amount')} />
                     <ActionContainer
                         label={__('Total Donation', 'give')}
-                        value={formattedDonationAmount}
+                        display={formatCurrency(Number(amount), data.amount.currency)}
                         type={'amount'}
                         showEditDialog={() =>
                             confirmActionDialog(
                                 __(' Edit total donation', 'give'),
                                 <CurrencyInputField
-                                    {...register('amount')}
+                                    defaultValue={amountUpdating}
                                     currency={data.amount.currency}
-                                    name={'amount'}
-                                    label={__('Total Donations', 'give')}
-                                    placeholder={__('Enter total amount', 'give')}
-                                    type={'text'}
+                                    handleCurrencyChange={(value) => setAmountUpdating(value)}
+                                    label={__('Total donation', 'give')}
+                                    placeholder={__('Enter an amount', 'give')}
                                 />,
-                                () => updateDonationAmount(),
-                                () => useResetFieldValue('amount'),
+                                () => {
+                                    setValue('amount', amountUpdating);
+                                },
+                                () => {},
                                 __('Set Donation Amount', 'give'),
                                 __('Changes made will not be billed to the donor', 'give')
                             )
                         }
                     />
-                    <ActionContainer
-                        label={__('Fee recovered', 'give')}
-                        value={formattedFeeAmountRecovered}
-                        type={'amount'}
-                        showEditDialog={() =>
-                            confirmActionDialog(
-                                __(' Edit fee recovered', 'give'),
-                                <CurrencyInputField
-                                    {...register('feeAmountRecovered')}
-                                    currency={data.amount.currency}
-                                    name={'feeAmountRecovered'}
-                                    label={__('Fee Recovered', 'give')}
-                                    placeholder={__('Enter fee amount', 'give')}
-                                    type={'text'}
-                                />,
-                                () => updateFeeRecovered(),
-                                () => useResetFieldValue('feeAmountRecovered'),
-                                __('Set Fee Recovered', 'give'),
-                                __('Changes made will not be billed to the donor', 'give')
-                            )
-                        }
-                    />
+                    {/*<ActionContainer*/}
+                    {/*    label={__('Fee recovered', 'give')}*/}
+                    {/*    display={formatCurrency(Number(feeAmountRecovered), data.amount.currency)}*/}
+                    {/*    type={'amount'}*/}
+                    {/*    showEditDialog={() =>*/}
+                    {/*        confirmActionDialog(*/}
+                    {/*            __(' Edit fee recovered', 'give'),*/}
+                    {/*            <CurrencyInputField*/}
+                    {/*                {...register('feeAmountRecovered')}*/}
+                    {/*                control={control}*/}
+                    {/*                name={'feeAmountRecovered'}*/}
+                    {/*                defaultValue={data.feeAmountRecovered}*/}
+                    {/*                currency={data.amount.currency}*/}
+                    {/*                handleCurrencyChange={handleCurrencyChange}*/}
+                    {/*                label={__('Fee Recovered', 'give')}*/}
+                    {/*                placeholder={__('Enter fee amount', 'give')}*/}
+                    {/*                type={'text'}*/}
+                    {/*            />,*/}
+                    {/*            () => console.log('feeAmountRecovered', feeAmountRecovered),*/}
+
+                    {/*            () => reset({feeAmountRecovered: defaultFormValues.feeAmountRecovered}),*/}
+
+                    {/*            __('Set Fee Recovered', 'give'),*/}
+                    {/*            __('Changes made will not be billed to the donor', 'give')*/}
+                    {/*        )*/}
+                    {/*    }*/}
+                    {/*/>*/}
                     <ActionContainer
                         label={__('Donation form', 'give')}
-                        value={
+                        display={
                             <SearchSelector
                                 name={'form'}
                                 placeholder={__('Search for a donation form', 'give')}
-                                options={useFormOptions}
+                                options={options}
                                 defaultLabel={data.formTitle}
                             />
                         }
@@ -170,7 +164,7 @@ export default function PaymentInformation() {
                     />
                     <ActionContainer
                         label={__('Donation date', 'give')}
-                        value={readableDateValue}
+                        display={readableDateValue}
                         type={'text'}
                         showEditDialog={toggleDatePicker}
                         formField={
@@ -181,7 +175,7 @@ export default function PaymentInformation() {
                     />
                     <ActionContainer
                         label={__('Donation time', 'give')}
-                        value={readableTimeValue}
+                        display={readableTimeValue}
                         type={'text'}
                         showEditDialog={toggleTimePicker}
                         formField={
@@ -197,7 +191,7 @@ export default function PaymentInformation() {
                     />
                     <ActionContainer
                         label={__('Payment method', 'give')}
-                        value={<DonationMethod gateway={data?.gatewayLabel} gatewayId={data?.gatewayId} />}
+                        display={<DonationMethod gateway={data?.gatewayLabel} gatewayId={data?.gatewayId} />}
                         type={'text'}
                     />
                 </div>

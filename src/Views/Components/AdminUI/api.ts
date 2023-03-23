@@ -1,13 +1,9 @@
-import useSWR from 'swr';
-
-interface ApiHookResult<T> {
+interface PostApiHookResult<T> {
     error?: Error;
     postData: (data: T) => Promise<void>;
 }
 
-const useApi = <T>(endpoint: string): ApiHookResult<T> => {
-    const { error, mutate } = useSWR(endpoint);
-
+const usePostRequest = <T>(endpoint: string): PostApiHookResult<T> => {
     const postData = async (postData: T) => {
         try {
             const res = await fetch(endpoint, {
@@ -21,14 +17,12 @@ const useApi = <T>(endpoint: string): ApiHookResult<T> => {
             if (!res.ok) {
                 throw new Error('Network response was not ok');
             }
-
-            await mutate();
         } catch (error) {
             throw new Error(`Unable to post data: ${error.message}`);
         }
     };
 
-    return { error, postData };
+    return {postData};
 };
 
-export { useApi };
+export {usePostRequest};

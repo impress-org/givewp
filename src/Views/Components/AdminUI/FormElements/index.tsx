@@ -2,10 +2,10 @@ import React from 'react';
 
 import cx from 'classnames';
 
-import {CurrencyInputFieldProps, FormElementProps, TextInputFieldProps} from './types';
+import {FormElementProps, TextInputFieldProps} from './types';
+import CurrencyInput from 'react-currency-input-field';
 
 import styles from './style.module.scss';
-import CurrencyInput from 'react-currency-input-field';
 
 /**
  *
@@ -41,28 +41,27 @@ const TextInputField = React.forwardRef<HTMLInputElement, TextInputFieldProps>(
  * @unreleased
  */
 
-const CurrencyInputField = React.forwardRef<HTMLInputElement, CurrencyInputFieldProps>(
-    ({name, type, placeholder, currency, label, ...props}, ref) => {
-        return (
-            <label>
-                {label && <span className={styles.fieldLabel}>{label}</span>}
-                <div className={cx(styles.textFieldContainer, styles.currencyField, {})}>
-                    <CurrencyInput
-                        ref={ref}
-                        name={name}
-                        type={type}
-                        placeholder={placeholder}
-                        decimalsLimit={2}
-                        intlConfig={{
-                            locale: navigator.language || (navigator.languages || ['en'])[0],
-                            currency: currency,
-                        }}
-                        {...props}
-                    />
-                </div>
-            </label>
-        );
-    }
-);
+const CurrencyInputField = ({defaultValue, placeholder, handleCurrencyChange, currency, label}) => {
+    return (
+        <label>
+            {label && <span className={styles.fieldLabel}>{label}</span>}
+            <div className={cx(styles.textFieldContainer, styles.currencyField, {})}>
+                <CurrencyInput
+                    name={'currency-input-field'}
+                    allowNegativeValue={false}
+                    onValueChange={(value, name) => {
+                        handleCurrencyChange(value);
+                    }}
+                    intlConfig={{
+                        locale: navigator.language,
+                        currency: currency,
+                    }}
+                    placeholder={placeholder}
+                    defaultValue={defaultValue}
+                />
+            </div>
+        </label>
+    );
+};
 
 export {Form, TextInputField, CurrencyInputField};

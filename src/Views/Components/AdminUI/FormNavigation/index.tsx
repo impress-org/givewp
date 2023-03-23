@@ -3,26 +3,22 @@ import {__} from '@wordpress/i18n';
 
 import Button from '@givewp/components/AdminUI/Button';
 import ActionMenu from '@givewp/components/AdminUI/ActionMenu';
-import LeftArrowIcon from '@givewp/components/AdminUI/FormNavigation/LeftArrowIcon';
-import DownArrowIcon from '@givewp/components/AdminUI/FormNavigation/DownArrowIcon';
 
 import {FormNavigationProps} from './types';
 
 import styles from './style.module.scss';
+import useNavigationalOptions from '../../../../Donations/resources/DonationDetails/app/hooks/useNavigationalOptions';
+import LeftArrowIcon from '@givewp/components/AdminUI/Icons/LeftArrowIcon';
+import DownArrowIcon from '@givewp/components/AdminUI/Icons/DownArrowIcon';
 
 /**
  *
  * @unreleased
  */
 
-export default function FormNavigation({
-    navigationalOptions,
-    onSubmit,
-    pageInformation,
-    actionConfig,
-    isDirty,
-}: FormNavigationProps) {
+export default function FormNavigation({onSubmit, actionConfig, isDirty, pageInformation}: FormNavigationProps) {
     const [toggleActions, setToggleActions] = useState<boolean>(false);
+    const options = useNavigationalOptions();
 
     const {description, id, title} = pageInformation;
 
@@ -39,7 +35,7 @@ export default function FormNavigation({
                 </button>
 
                 <select>
-                    {navigationalOptions?.map((option) => (
+                    {options?.map((option) => (
                         <option key={option.id}>{option.title}</option>
                     ))}
                 </select>

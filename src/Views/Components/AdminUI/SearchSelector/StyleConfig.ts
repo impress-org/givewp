@@ -1,6 +1,8 @@
 export const StyleConfig = {
     control: (provided, state) => ({
         ...provided,
+        display: 'flex',
+        alignItems: 'center',
         outline: 'none',
         background: '#fff',
         borderRadius: 4,
@@ -8,6 +10,7 @@ export const StyleConfig = {
     }),
     indicatorsContainer: (provided, state) => ({
         ...provided,
+        margin: 'auto 0',
         background: '#fff',
         height: '100%',
         borderRadius: 4,
