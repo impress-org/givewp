@@ -78,29 +78,38 @@
 
 
     .modalContentContainer {
-        display: grid;
+        display: flex;
+        justify-content: center;
         margin-bottom: var(--givewp-spacing-11);
         padding: 0 var(--givewp-spacing-6);
-    }
 
-    .actionContainer {
-        display: grid;
-        gap: var(--givewp-spacing-2);
-        padding: 0 var(--givewp-spacing-6) var(--givewp-spacing-6);
+        * {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
 
-        > button {
+        button {
+            margin-top: var(--givewp-spacing-11);
             height: 3.5rem;
         }
 
-        .noticeInformation {
+        span:last-child {
             display: flex;
             align-items: center;
-            gap: var(--givewp-spacing-4);
+            justify-content: center;
+            flex-direction: row;
+            gap: 0;
             padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+            margin-top: var(--givewp-spacing-2);
             border-radius: var(--givewp-rounded-4);
             background-color: var(--givewp-blue-25);
             color: var(--givewp-blue-500);
             font-size: 0.875rem;
+
+            * {
+                display: inline-flex;
+            }
         }
     }
 }
