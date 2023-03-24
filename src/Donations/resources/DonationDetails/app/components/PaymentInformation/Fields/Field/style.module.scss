@@ -15,9 +15,10 @@
         border: none;
         cursor: pointer;
 
+
         // default text styles
         font-size: 1rem;
-        font-weight: normal;
+        font-weight: 500;
         font-stretch: normal;
         font-style: normal;
         line-height: 1.5;
@@ -25,23 +26,23 @@
         text-align: left;
         color: var(--givewp-grey-900);
 
-        .amount {
-            display: block;
-            font-size: 2rem;
-            font-weight: 600;
-            font-stretch: normal;
-            font-style: normal;
-            line-height: 1.25;
-            letter-spacing: normal;
-            text-align: left;
-            color: var(--givewp-green-400);
-        }
-
         .button {
             background-color: transparent;
             border: none;
             cursor: pointer;
         }
+    }
+
+    .amount {
+        display: block;
+        font-size: 2rem;
+        font-weight: 600;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.25;
+        letter-spacing: normal;
+        text-align: left;
+        color: var(--givewp-green-400);
     }
 }
 
