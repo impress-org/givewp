@@ -83,7 +83,7 @@
         margin-bottom: var(--givewp-spacing-11);
         padding: 0 var(--givewp-spacing-6);
 
-        * {
+        div:first-child {
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -99,17 +99,14 @@
             align-items: center;
             justify-content: center;
             flex-direction: row;
-            gap: 0;
+            gap: var(--givewp-spacing-3);
             padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
             margin-top: var(--givewp-spacing-2);
             border-radius: var(--givewp-rounded-4);
             background-color: var(--givewp-blue-25);
             color: var(--givewp-blue-500);
             font-size: 0.875rem;
-
-            * {
-                display: inline-flex;
-            }
+            
         }
     }
 }

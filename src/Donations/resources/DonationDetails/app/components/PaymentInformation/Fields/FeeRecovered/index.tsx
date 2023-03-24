@@ -18,7 +18,7 @@ export default function FeeRecoveredField() {
     const feeAmountRecovered = useWatch({name: 'feeAmountRecovered'});
 
     const handleAmountChange = (value) => {
-        setValue('feeAmountRecovered', value);
+        setValue('feeAmountRecovered', value, {shouldDirty: true});
         setIsModalOpen(false);
     };
 

@@ -18,7 +18,7 @@ export default function AmountField() {
     const amount = useWatch({name: 'amount'});
 
     const handleAmountChange = (value) => {
-        setValue('amount', value);
+        setValue('amount', value, {shouldDirty: true});
         setIsModalOpen(false);
     };
 
