@@ -6,7 +6,7 @@ import {DataValues} from '../components/FormTemplate/types';
  */
 declare global {
     interface Window {
-        GiveDonationsDetails: {
+        GiveDonations: {
             apiNonce: string;
             apiRoot: string;
             adminUrl: string;
@@ -15,4 +15,4 @@ declare global {
     }
 }
 
-export const {donationDetails: data, apiRoot: endpoint} = window.GiveDonationsDetails;
+export const {donationDetails: data, apiRoot: endpoint} = window.GiveDonations;

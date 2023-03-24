@@ -1,28 +1,37 @@
-export type ActionContainerProps = {
+export type FieldProps = {
     label: string;
-    type: string;
-    display: string | React.ReactNode;
-    showEditDialog?: () => void;
-    formField?: JSX.Element;
+    children: React.ReactNode;
+    editable?: boolean;
+    onEdit?: () => void;
 };
 
-export type DonationMethodProps = {
-    gateway: string;
-    gatewayId: string;
+export type CurrencyAmountDialogProps = {
+    defaultAmount: number;
+    amountChanged: (amount: number) => void;
 };
 
-export type DonationTypeProps = {
-    donationType: 'single' | 'renewal' | 'subscription';
+export type CalendarProps = {
+    closeCalendar: () => void;
 };
 
-export type DatePickerProps = {
-    setFocused: React.Dispatch<React.SetStateAction<boolean>>;
-    handleFormField: (selectedDate) => void;
+export type TimeActionProps = {
+    isOpen: boolean;
+    closeFields: () => void;
+    hours: number;
+    minutes: number;
+    ampm: string;
 };
 
-export type TimePickerProps = {
-    showFormField: boolean;
-    toggleFormField: () => void;
-    parsedTime: Date;
-    handleFormField: (hour, minute, ampm) => void;
+export type NumberFieldProps = {
+    state: number;
+    setState;
+    label: string;
+    id: string;
+    min: number;
+    max: number;
+};
+
+export type AmpmProps = {
+    setState;
+    state: string;
 };

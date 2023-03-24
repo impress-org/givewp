@@ -8,13 +8,13 @@ import {parseAmountValue} from './formatter';
 export const defaultFormValues: {
     amount: number;
     feeAmountRecovered: number;
-    createdAt: string;
+    createdAt: string | Date;
     status: string;
     form: number;
 } = {
     amount: parseAmountValue(data.amount.value),
     feeAmountRecovered: parseAmountValue(data.feeAmountRecovered),
-    createdAt: data.createdAt.date,
+    createdAt: new Date(data.createdAt.date).toISOString(),
     status: data.status,
     form: data.formId,
 };
