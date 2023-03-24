@@ -1,13 +1,8 @@
 import EditablePenIcon from '@givewp/components/AdminUI/Icons/EditablePenIcon';
 
-import styles from './style.module.scss';
+import {FieldProps} from '../types';
 
-type FieldProps = {
-    label: string;
-    children: React.ReactNode;
-    editable?: boolean;
-    onEdit?: () => void;
-};
+import styles from './style.module.scss';
 
 export default function Field({label, children, editable, onEdit}: FieldProps) {
     return (

@@ -4,8 +4,7 @@ import cx from 'classNames';
 import SubscriptionBadgeIcon from '@givewp/components/AdminUI/Icons/SubscriptionBadgeIcon';
 import SingleBadgeIcon from '@givewp/components/AdminUI/Icons/SingleBadgeIcon';
 
-import {DonationTypeProps} from '../types';
-
+import {DonationTypeProps} from './types';
 import styles from './style.module.scss';
 
 /**

@@ -11,35 +11,35 @@ import {CurrencyAmountDialogProps} from '../types';
 
 const {currency} = window.GiveDonations.donationDetails.amount;
 
-export default function AmountField() {
+export default function FeeRecoveredField() {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const {setValue} = useFormContext();
-    const amount = useWatch({name: 'amount'});
+    const feeAmountRecovered = useWatch({name: 'feeAmountRecovered'});
 
     const handleAmountChange = (value) => {
-        setValue('amount', value);
+        setValue('feeAmountRecovered', value);
         setIsModalOpen(false);
     };
 
     return (
         <>
-            <CurrencyField label="Amount" editable onEdit={() => setIsModalOpen(true)}>
-                {formatCurrency(Number(amount), currency)}
+            <CurrencyField label="feeRecovered" editable onEdit={() => setIsModalOpen(true)}>
+                {formatCurrency(Number(feeAmountRecovered), currency)}
             </CurrencyField>
             <ModalDialog
                 open={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 handleClose={() => setIsModalOpen(false)}
-                title={__('Total Donation', 'give')}
+                title={__('Fee Recovered', 'give')}
             >
-                <AmountDialog defaultAmount={amount} amountChanged={handleAmountChange} />
+                <FeeRecoveredDialog defaultAmount={feeAmountRecovered} amountChanged={handleAmountChange} />
             </ModalDialog>
         </>
     );
 }
 
-function AmountDialog({defaultAmount, amountChanged}: CurrencyAmountDialogProps) {
+function FeeRecoveredDialog({defaultAmount, amountChanged}: CurrencyAmountDialogProps) {
     const [amount, setAmount] = useState<number>(defaultAmount);
 
     return (
@@ -48,7 +48,7 @@ function AmountDialog({defaultAmount, amountChanged}: CurrencyAmountDialogProps)
                 defaultValue={amount}
                 currency={currency}
                 handleCurrencyChange={(value) => setAmount(value)}
-                label={__('Total Donation', 'give')}
+                label={__('Fee Recovered', 'give')}
                 placeholder={__('Enter amount', 'give')}
             />
             <Button
@@ -57,7 +57,7 @@ function AmountDialog({defaultAmount, amountChanged}: CurrencyAmountDialogProps)
                 disabled={!amount || Number(amount) === defaultAmount}
                 onClick={() => amountChanged(Number(amount))}
             >
-                {__('Set Donation Amount', 'give')}
+                {__('Set Fee Recovered', 'give')}
             </Button>
             <span>
                 <NoticeInformationIcon />
