@@ -7,7 +7,6 @@ import ActionMenu from '@givewp/components/AdminUI/ActionMenu';
 import {FormNavigationProps} from './types';
 
 import styles from './style.module.scss';
-import useNavigationalOptions from '../../../../Donations/resources/DonationDetails/app/hooks/useNavigationalOptions';
 import LeftArrowIcon from '@givewp/components/AdminUI/Icons/LeftArrowIcon';
 import DownArrowIcon from '@givewp/components/AdminUI/Icons/DownArrowIcon';
 
@@ -18,7 +17,6 @@ import DownArrowIcon from '@givewp/components/AdminUI/Icons/DownArrowIcon';
 
 export default function FormNavigation({onSubmit, actionConfig, isDirty, pageInformation}: FormNavigationProps) {
     const [toggleActions, setToggleActions] = useState<boolean>(false);
-    const options = useNavigationalOptions();
 
     const {description, id, title} = pageInformation;
 
@@ -33,12 +31,6 @@ export default function FormNavigation({onSubmit, actionConfig, isDirty, pageInf
                     <LeftArrowIcon />
                     <h1>{title}</h1>
                 </button>
-
-                <select>
-                    {options?.map((option) => (
-                        <option key={option.id}>{option.title}</option>
-                    ))}
-                </select>
             </div>
 
             <div className={styles.actions}>
@@ -48,7 +40,13 @@ export default function FormNavigation({onSubmit, actionConfig, isDirty, pageInf
                 </div>
 
                 <div className={styles.relativeContainer}>
-                    <Button onClick={toggleMoreActions} variant={'secondary'} size={'small'} type={'button'}>
+                    <Button
+                        onClick={toggleMoreActions}
+                        variant={'secondary'}
+                        size={'small'}
+                        type={'button'}
+                        disabled={false}
+                    >
                         {__('More Actions', 'give')}
                         <DownArrowIcon />
                     </Button>
