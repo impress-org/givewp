@@ -1,11 +1,10 @@
-import React, {createContext, useRef} from 'react';
+import React, {createContext} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 
 import FormNavigation from '@givewp/components/AdminUI/FormNavigation';
 import {Form} from '@givewp/components/AdminUI/FormElements';
 
 import {FormPageProps} from './types';
-import A11yDialogInstance from 'a11y-dialog';
 import {usePostRequest} from '@givewp/components/AdminUI/api';
 import {joiResolver} from '@hookform/resolvers/joi';
 
@@ -25,9 +24,7 @@ export default function FormPage({
     children,
     actionConfig,
 }: FormPageProps) {
-    const {postData} = usePostRequest(endpoint);
-
-    const dialog = useRef() as {current: A11yDialogInstance};
+    const {postData} = usePostRequest('http://localhost:10004/wp-json/give-api/v2/admin/donation/2015');
 
     const methods = useForm({
         defaultValues: defaultValues,
@@ -40,8 +37,8 @@ export default function FormPage({
 
     const handleSubmitRequest = async (formFieldValues) => {
         try {
-            alert(JSON.stringify(formFieldValues));
             console.log(JSON.stringify(formFieldValues));
+            console.log(endpoint);
             await postData(formFieldValues);
         } catch (error) {
             alert(error);

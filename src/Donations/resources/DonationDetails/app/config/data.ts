@@ -15,4 +15,5 @@ declare global {
     }
 }
 
-export const {donationDetails: data, apiRoot: endpoint} = window.GiveDonations;
+export const {donationDetails: data, apiRoot} = window.GiveDonations;
+export const endpoint = `${apiRoot}/${data.id}`;

@@ -1,12 +1,8 @@
-interface PostApiHookResult<T> {
-    error?: Error;
-    postData: (data: T) => Promise<void>;
-}
-
-const usePostRequest = <T>(endpoint: string): PostApiHookResult<T> => {
-    const postData = async (postData: T) => {
+const usePostRequest = (endpoint: string) => {
+    const postData = async (postData, params = {}) => {
         try {
-            const res = await fetch(endpoint, {
+            const urlParams = new URLSearchParams(params);
+            const res = await fetch(`${endpoint}?${urlParams.toString()}`, {
                 method: 'POST',
                 body: JSON.stringify(postData),
                 headers: {
