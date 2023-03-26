@@ -13,6 +13,7 @@ use Give\Framework\Exceptions\Primitives\Exception;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
+use WP_REST_Server;
 
 /*
  * Class DonationDetails
@@ -52,7 +53,7 @@ class DonationDetails extends Endpoint
             $this->endpoint,
             [
                 [
-                    'methods' => 'POST',
+                    'methods' => WP_REST_Server::EDITABLE,
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => [$this, 'permissionsCheck'],
                 ],
