@@ -1,8 +1,8 @@
 <?php
 
-namespace Give\Donations\Endpoints\DonationDetailsAttributes\PaymentInformation;
+namespace Give\Donations\Endpoints\UpdateDonationAttributes\PaymentInformation;
 
-use Give\Donations\Endpoints\DonationDetailsAttributes\UpdateDonationAttribute;
+use Give\Donations\Endpoints\UpdateDonationAttributes\UpdateDonationAttribute;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 

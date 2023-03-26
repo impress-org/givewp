@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Donations\Endpoints\DonationDetailsAttributes;
+namespace Give\Donations\Endpoints\UpdateDonationAttributes;
 
 use Give\Donations\Models\Donation;
 
