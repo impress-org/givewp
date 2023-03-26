@@ -44,7 +44,9 @@ class FeeAmountRecoveredAttribute extends DonationDetailsAttribute
     {
         $donation->feeAmountRecovered = Money::fromDecimal(
             $value,
-            $donation->feeAmountRecovered->getCurrency()
+            $donation->feeAmountRecovered
+                ? $donation->feeAmountRecovered->getCurrency()
+                : $donation->amount->getCurrency()
         );
 
         return $donation;
