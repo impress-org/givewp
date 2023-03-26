@@ -5,8 +5,8 @@ namespace Give\Tests;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
-use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\AssertIsType;
+use Give\Tests\TestTraits\RefreshDatabase;
 use Give_Cache_Setting;
 use WP_UnitTestCase;
 
