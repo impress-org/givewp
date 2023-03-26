@@ -2,12 +2,17 @@
 
 namespace Unit\Donations\Endpoints;
 
+use DateTime;
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Framework\Support\Facades\DateTime\Temporal;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Tests\RestApiTestCase;
+use Give\Tests\TestTraits\Faker;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
 use Give\Tests\TestTraits\RefreshDatabase;
+use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 use WP_REST_Response;
 use Yoast\PHPUnitPolyfills\Polyfills\AssertStringContains;
 
@@ -16,9 +21,11 @@ class TestDonationDetails extends RestApiTestCase
     use AssertStringContains;
     use RefreshDatabase;
     use HasDefaultWordPressUsers;
+    use LegacyDonationFormAdapter;
+    use Faker;
 
     /**
-     * Test that a valid request returns a successful response.
+     * Test that a valid status update request returns a successful response.
      *
      * @unreleased
      *
@@ -28,11 +35,12 @@ class TestDonationDetails extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testValidRequest(string $mockDonationStatus) {
+    public function testValidRequestWithStatus(string $mockDonationStatus)
+    {
         $donation = Donation::factory()->create();
-        $donation_id = $donation->id;
+        $donationId = $donation->id;
 
-        $response = $this->handleRequest($donation_id, $mockDonationStatus);
+        $response = $this->handleRequest($donationId, ['status' => $mockDonationStatus]);
 
         $this->assertInstanceOf(WP_REST_Response::class, $response);
         $this->assertEquals(200, $response->get_status());
@@ -40,31 +48,80 @@ class TestDonationDetails extends RestApiTestCase
         $data = $response->get_data();
         $this->assertArrayHasKey('success', $data);
         $this->assertTrue($data['success']);
+        $this->assertCount(1, $data['updatedFields']);
 
-        $donation = give()->donations->getById($donation_id);
+        $donation = give()->donations->getById($donationId);
         $this->assertEquals($mockDonationStatus, $donation->status->getValue());
     }
 
     /**
-     * Test that an invalid donation ID returns a 400 error.
+     * Test that a valid payment information update request returns a successful response.
      *
      * @unreleased
+     *
+     * @throws Exception
      */
-    public function testInvalidDonationId() {
-        $response = $this->handleRequest(0, 'processing');
+    public function testValidRequestWithPaymentInformation()
+    {
+        $donation = Donation::factory()->create();
+        $donationId = $donation->id;
+        $donationForm = $this->createSimpleDonationForm();
+        $donationFormId = $this->createSimpleDonationForm()->id;
 
-        $this->assertErrorResponse('rest_invalid_param', $response, 400);
+        $paymentInformation = [
+            'amount' => $this->faker()->randomFloat(2, 1, 100),
+            'feeAmountRecovered' => $this->faker()->randomFloat(2, 1, 10),
+            'formId' => $donationFormId,
+            'createdAt' => $this->faker()->dateTimeBetween('-1 week', 'now')->format(Temporal::ISO8601_JS),
+        ];
+
+        $response = $this->handleRequest($donationId, $paymentInformation);
+
+        $this->assertInstanceOf(WP_REST_Response::class, $response);
+        $this->assertEquals(200, $response->get_status());
+
+        $data = $response->get_data();
+        $this->assertArrayHasKey('success', $data);
+        $this->assertTrue($data['success']);
+        $this->assertCount(4, $data['updatedFields']);
+
+        $donation = give()->donations->getById($donationId);
+
+        foreach ($paymentInformation as $key => $value) {
+            if (is_a($donation->{$key}, Money::class)) {
+                $this->assertEquals($value, $donation->{$key}->formatToDecimal());
+                continue;
+            }
+
+            if (is_a($donation->{$key}, DateTime::class)) {
+                $this->assertEquals($value, $donation->{$key}->format(Temporal::ISO8601_JS));
+                continue;
+            }
+
+            if ($key === 'formId') {
+                $this->assertEquals($donationForm->title, $donation->formTitle);
+            }
+            $this->assertEquals($value, $donation->{$key});
+        }
     }
 
     /**
-     * Test that a non-existent donation ID returns a 404 error.
+     * Test that an invalid donation ID returns an error.
      *
      * @unreleased
      */
-    public function testNonExistentDonationId() {
-        $response = $this->handleRequest(PHP_INT_MAX, 'processing');
+    public function testInvalidDonationId()
+    {
+        $donation = Donation::factory()->create();
+        $donationId = $donation->id;
+        $donation->delete();
 
-        $this->assertErrorResponse('donation_not_found', $response, 404);
+        $response = $this->handleRequest($donationId);
+
+        $this->assertErrorResponse('rest_invalid_param', $response, 400);
+
+        $errorData = $response->as_error()->get_error_data('rest_invalid_param');
+        $this->assertEquals('donation_not_found', $errorData['details']['id']['code']);
     }
 
     /**
@@ -78,17 +135,63 @@ class TestDonationDetails extends RestApiTestCase
         $donation_id = $donation->id;
         $invalid_status = 'invalid';
 
-        $response = $this->handleRequest($donation_id, $invalid_status);
-
-        if (is_a($response, WP_REST_Response::class)) {
-            $response = $response->as_error();
-        }
+        $response = $this->handleRequest($donation_id, ['status' => $invalid_status]);
 
         $this->assertErrorResponse('rest_invalid_param', $response, 400);
 
-        $data = $response->get_error_data();
-        $this->assertArrayHasKey('status', $data['params']);
-        $this->assertStringContainsString('status is not one of', $data['params']['status']);
+        $errorData = $response->as_error()->get_error_data('rest_invalid_param');
+        $this->assertEquals('rest_not_in_enum', $errorData['details']['status']['code']);
+    }
+
+    /**
+     * Test that an invalid amount format returns an error.
+     *
+     * @unreleased
+     */
+    public function testInvalidAmount()
+    {
+        $donationId = Donation::factory()->create()->id;
+
+        $response = $this->handleRequest($donationId, ['amount' => '1,23']);
+
+        $this->assertErrorResponse('rest_invalid_param', $response, 400);
+
+        $errorData = $response->as_error()->get_error_data('rest_invalid_param');
+        $this->assertEquals('rest_invalid_type', $errorData['details']['amount']['code']);
+    }
+
+    /**
+     * Test that an invalid fee amount recovered format returns an error.
+     *
+     * @unreleased
+     */
+    public function testInvalidFeeAmountRecovered()
+    {
+        $donationId = Donation::factory()->create()->id;
+
+        $response = $this->handleRequest($donationId, ['feeAmountRecovered' => '1,23']);
+
+        $this->assertErrorResponse('rest_invalid_param', $response, 400);
+
+        $errorData = $response->as_error()->get_error_data('rest_invalid_param');
+        $this->assertEquals('rest_invalid_type', $errorData['details']['feeAmountRecovered']['code']);
+    }
+
+    /**
+     * Test that an invalid donation form ID returns an error.
+     *
+     * @unreleased
+     */
+    public function testInvalidDonationFormId()
+    {
+        $donationId = Donation::factory()->create()->id;
+
+        $response = $this->handleRequest($donationId, ['formId' => PHP_INT_MAX]);
+
+        $this->assertErrorResponse('rest_invalid_param', $response, 400);
+
+        $errorData = $response->as_error()->get_error_data('rest_invalid_param');
+        $this->assertEquals('form_not_found', $errorData['details']['formId']['code']);
     }
 
     /**
@@ -96,8 +199,11 @@ class TestDonationDetails extends RestApiTestCase
      *
      * @unreleased
      */
-    public function testUnauthorizedRequest() {
-        $response = $this->handleRequest(1, 'processing', false);
+    public function testUnauthorizedRequest()
+    {
+        $donationId = Donation::factory()->create()->id;
+
+        $response = $this->handleRequest($donationId, [], false);
 
         $this->assertErrorResponse('rest_forbidden', $response, 401);
     }
@@ -107,26 +213,24 @@ class TestDonationDetails extends RestApiTestCase
      *
      * @unreleased
      *
-     * @param int $donation_id
-     * @param string $status
-     * @param bool $authenticatedAsAdmin
+     * @param int   $donation_id
+     * @param array $attributes
+     * @param bool  $authenticatedAsAdmin
      *
      * @return WP_REST_Response
      */
     private function handleRequest(
         int $donation_id,
-        string $status,
+        array $attributes = [],
         bool $authenticatedAsAdmin = true
     ): WP_REST_Response {
         $request = $this->createRequest(
-            'POST',
+            'PATCH',
             "/give-api/v2/admin/donation/{$donation_id}",
             [],
             $authenticatedAsAdmin ? 'administrator' : 'anonymous'
         );
-        $request->set_body_params([
-            'status' => $status,
-        ]);
+        $request->set_body_params($attributes);
 
         return $this->dispatchRequest($request);
     }
