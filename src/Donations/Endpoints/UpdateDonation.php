@@ -20,7 +20,8 @@ use WP_REST_Server;
  *
  * @unreleased
  */
-class PatchDonation extends Endpoint
+
+class UpdateDonation extends Endpoint
 {
     /**
      * @var string

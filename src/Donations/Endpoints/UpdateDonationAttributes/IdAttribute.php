@@ -9,7 +9,7 @@ use WP_Error;
  *
  * @unreleased
  */
-class IdAttribute extends DonationDetailsAttribute
+class IdAttribute extends UpdateDonationAttribute
 {
     /**
      * @inheritDoc

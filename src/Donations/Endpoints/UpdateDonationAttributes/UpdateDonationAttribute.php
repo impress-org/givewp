@@ -4,7 +4,7 @@ namespace Give\Donations\Endpoints\DonationDetailsAttributes;
 
 use Give\Donations\Models\Donation;
 
-abstract class DonationDetailsAttribute
+abstract class UpdateDonationAttribute
 {
     /**
      * @return string

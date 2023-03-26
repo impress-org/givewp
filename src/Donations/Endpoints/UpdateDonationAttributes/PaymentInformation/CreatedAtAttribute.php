@@ -3,7 +3,7 @@
 namespace Give\Donations\Endpoints\DonationDetailsAttributes\PaymentInformation;
 
 use DateTime;
-use Give\Donations\Endpoints\DonationDetailsAttributes\DonationDetailsAttribute;
+use Give\Donations\Endpoints\DonationDetailsAttributes\UpdateDonationAttribute;
 use Give\Donations\Models\Donation;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use WP_Error;
@@ -13,7 +13,7 @@ use WP_Error;
  *
  * @unreleased
  */
-class CreatedAtAttribute extends DonationDetailsAttribute
+class CreatedAtAttribute extends UpdateDonationAttribute
 {
     /**
      * @inheritDoc

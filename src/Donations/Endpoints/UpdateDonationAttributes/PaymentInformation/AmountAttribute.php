@@ -2,7 +2,7 @@
 
 namespace Give\Donations\Endpoints\DonationDetailsAttributes\PaymentInformation;
 
-use Give\Donations\Endpoints\DonationDetailsAttributes\DonationDetailsAttribute;
+use Give\Donations\Endpoints\DonationDetailsAttributes\UpdateDonationAttribute;
 use Give\Donations\Models\Donation;
 use Give\Framework\Support\ValueObjects\Money;
 
@@ -11,7 +11,7 @@ use Give\Framework\Support\ValueObjects\Money;
  *
  * @unreleased
  */
-class AmountAttribute extends DonationDetailsAttribute
+class AmountAttribute extends UpdateDonationAttribute
 {
     /**
      * @inheritDoc
