@@ -28,9 +28,7 @@ class IdAttribute extends DonationDetailsAttribute
             'type' => 'integer',
             'required' => true,
             'minimum' => 1,
-            'sanitize_callback' => function ($param) {
-                return absint(intval($param));
-            },
+            'sanitize_callback' => 'absint',
             'validate_callback' => function ($param) {
                 if (give()->donations->getById($param) === null) {
                     return new WP_Error(
