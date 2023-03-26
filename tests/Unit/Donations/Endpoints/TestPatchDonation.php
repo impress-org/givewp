@@ -68,11 +68,14 @@ class TestPatchDonation extends RestApiTestCase
         $donationForm = $this->createSimpleDonationForm();
         $donationFormId = $this->createSimpleDonationForm()->id;
 
+        $dateFormat = $this->faker()->randomElement([Temporal::TIMESTAMP, Temporal::ISO8601_JS]);
+
         $paymentInformation = [
             'amount' => $this->faker()->randomFloat(2, 1, 100),
             'feeAmountRecovered' => $this->faker()->randomFloat(2, 1, 10),
             'formId' => $donationFormId,
-            'createdAt' => $this->faker()->dateTimeBetween('-1 week', 'now')->format(Temporal::ISO8601_JS),
+            'createdAt' => $this->faker()->dateTimeBetween('-1 week', 'now')
+                ->format($dateFormat),
         ];
 
         $response = $this->handleRequest($donationId, $paymentInformation);
@@ -94,7 +97,7 @@ class TestPatchDonation extends RestApiTestCase
             }
 
             if (is_a($donation->{$key}, DateTime::class)) {
-                $this->assertEquals($value, $donation->{$key}->format(Temporal::ISO8601_JS));
+                $this->assertEquals($value, $donation->{$key}->format($dateFormat));
                 continue;
             }
 
@@ -192,6 +195,23 @@ class TestPatchDonation extends RestApiTestCase
 
         $errorData = $response->as_error()->get_error_data('rest_invalid_param');
         $this->assertEquals('form_not_found', $errorData['details']['formId']['code']);
+    }
+
+    /**
+     * Test that an invalid date format returns an error.
+     *
+     * @unreleased
+     */
+    public function testInvalidCreatedAt()
+    {
+        $donationId = Donation::factory()->create()->id;
+
+        $response = $this->handleRequest($donationId, ['createdAt' => $this->faker()->date('d/m/Y')]);
+
+        $this->assertErrorResponse('rest_invalid_param', $response, 400);
+
+        $errorData = $response->as_error()->get_error_data('rest_invalid_param');
+        $this->assertEquals('invalid_date', $errorData['details']['createdAt']['code']);
     }
 
     /**

@@ -31,10 +31,11 @@ class CreatedAtAttribute extends DonationDetailsAttribute
         return [
             'type' => 'string',
             'required' => false,
+            'format' => 'date-time',
             'sanitize_callback' => 'sanitize_text_field',
             'validate_callback' => function ($param) {
                 if ( ! DateTime::createFromFormat(Temporal::ISO8601_JS,
-                        $param) && ! Temporal::toDateTime($param)) {
+                        $param) && ! DateTime::createFromFormat(Temporal::TIMESTAMP, $param)) {
                     return new WP_Error(
                         'invalid_date',
                         __('Invalid date.', 'give'),
