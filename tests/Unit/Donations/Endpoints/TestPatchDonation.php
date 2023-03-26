@@ -16,7 +16,7 @@ use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 use WP_REST_Response;
 use Yoast\PHPUnitPolyfills\Polyfills\AssertStringContains;
 
-class TestDonationDetails extends RestApiTestCase
+class TestPatchDonation extends RestApiTestCase
 {
     use AssertStringContains;
     use RefreshDatabase;
