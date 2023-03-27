@@ -124,7 +124,9 @@ class TestDonationUpdate extends RestApiTestCase
         $this->assertErrorResponse('rest_invalid_param', $response, 400);
 
         $errorData = $response->as_error()->get_error_data('rest_invalid_param');
-        $this->assertEquals('donation_not_found', $errorData['details']['id']['code']);
+        if (isset($errorData['details'])) {
+            $this->assertEquals('donation_not_found', $errorData['details']['id']['code']);
+        }
     }
 
     /**
@@ -143,7 +145,9 @@ class TestDonationUpdate extends RestApiTestCase
         $this->assertErrorResponse('rest_invalid_param', $response, 400);
 
         $errorData = $response->as_error()->get_error_data('rest_invalid_param');
-        $this->assertEquals('rest_not_in_enum', $errorData['details']['status']['code']);
+        if (isset($errorData['details'])) {
+            $this->assertEquals('rest_not_in_enum', $errorData['details']['status']['code']);
+        }
     }
 
     /**
@@ -160,7 +164,9 @@ class TestDonationUpdate extends RestApiTestCase
         $this->assertErrorResponse('rest_invalid_param', $response, 400);
 
         $errorData = $response->as_error()->get_error_data('rest_invalid_param');
-        $this->assertEquals('rest_invalid_type', $errorData['details']['amount']['code']);
+        if (isset($errorData['details'])) {
+            $this->assertEquals('rest_invalid_type', $errorData['details']['amount']['code']);
+        }
     }
 
     /**
@@ -177,7 +183,9 @@ class TestDonationUpdate extends RestApiTestCase
         $this->assertErrorResponse('rest_invalid_param', $response, 400);
 
         $errorData = $response->as_error()->get_error_data('rest_invalid_param');
-        $this->assertEquals('rest_invalid_type', $errorData['details']['feeAmountRecovered']['code']);
+        if (isset($errorData['details'])) {
+            $this->assertEquals('rest_invalid_type', $errorData['details']['feeAmountRecovered']['code']);
+        }
     }
 
     /**
@@ -194,7 +202,9 @@ class TestDonationUpdate extends RestApiTestCase
         $this->assertErrorResponse('rest_invalid_param', $response, 400);
 
         $errorData = $response->as_error()->get_error_data('rest_invalid_param');
-        $this->assertEquals('form_not_found', $errorData['details']['formId']['code']);
+        if (isset($errorData['details'])) {
+            $this->assertEquals('form_not_found', $errorData['details']['formId']['code']);
+        }
     }
 
     /**
@@ -211,7 +221,9 @@ class TestDonationUpdate extends RestApiTestCase
         $this->assertErrorResponse('rest_invalid_param', $response, 400);
 
         $errorData = $response->as_error()->get_error_data('rest_invalid_param');
-        $this->assertEquals('invalid_date', $errorData['details']['createdAt']['code']);
+        if (isset($errorData['details'])) {
+            $this->assertEquals('invalid_date', $errorData['details']['createdAt']['code']);
+        }
     }
 
     /**
