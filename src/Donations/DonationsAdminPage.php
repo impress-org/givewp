@@ -62,6 +62,7 @@ class DonationsAdminPage
             'apiNonce' => $this->apiNonce,
             'adminUrl' => $this->adminUrl,
             'paymentMode' => give_is_test_mode(),
+            'forms' => $this->getForms(),
             'manualDonations' => Utils::isPluginActive('give-manual-donations/give-manual-donations.php'),
         ];
 
@@ -90,7 +91,6 @@ class DonationsAdminPage
                 $data,
                 [
                     'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/donations')),
-                    'forms' => $this->getForms(),
                     'table' => give(DonationsListTable::class)->toArray(),
                 ]
             );
@@ -164,6 +164,10 @@ class DonationsAdminPage
             ->where('post_type', 'give_forms')
             ->whereIn('post_status', ['publish', 'draft', 'pending', 'private'])
             ->getAll(ARRAY_A);
+
+        if (self::isDonationDetailsPage()) {
+            return $options;
+        }
 
         return array_merge([
             [
