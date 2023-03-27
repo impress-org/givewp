@@ -9,7 +9,6 @@ declare global {
         GiveDonations: {
             apiNonce: string;
             apiRoot: string;
-            donationApiRoot?: string;
             adminUrl: string;
             forms?: Array<{value: string; text: string}>;
             table?: {columns: Array<object>};
@@ -20,5 +19,5 @@ declare global {
     }
 }
 
-export const {donationDetails: data, donationApiRoot, apiNonce} = window.GiveDonations;
-export const endpoint = `${donationApiRoot}/${data.id}`;
+export const {donationDetails: data, apiRoot, apiNonce} = window.GiveDonations;
+export const endpoint = `${apiRoot}/${data.id}`;
