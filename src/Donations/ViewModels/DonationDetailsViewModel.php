@@ -44,14 +44,14 @@ class DonationDetailsViewModel
         if ( ! is_null($this->donation->amount)) {
             $donationArray['amount'] = [
                 'currency' => $this->donation->amount->getCurrency(),
-                'value' => floatval($this->donation->amount->formatToDecimal()),
+                'value' => intval($this->donation->amount->getAmount()),
             ];
         }
 
         if ( ! is_null($this->donation->feeAmountRecovered)) {
             $donationArray['feeAmountRecovered'] = [
                 'currency' => $this->donation->feeAmountRecovered->getCurrency(),
-                'value' => floatval($this->donation->feeAmountRecovered->formatToDecimal()),
+                'value' => intval($this->donation->feeAmountRecovered->getAmount()),
             ];
         }
 
