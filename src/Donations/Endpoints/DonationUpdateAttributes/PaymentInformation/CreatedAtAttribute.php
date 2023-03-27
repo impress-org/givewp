@@ -1,9 +1,9 @@
 <?php
 
-namespace Give\Donations\Endpoints\UpdateDonationAttributes\PaymentInformation;
+namespace Give\Donations\Endpoints\DonationUpdateAttributes\PaymentInformation;
 
 use DateTime;
-use Give\Donations\Endpoints\UpdateDonationAttributes\UpdateDonationAttribute;
+use Give\Donations\Endpoints\DonationUpdateAttributes\DonationUpdateAttribute;
 use Give\Donations\Models\Donation;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use WP_Error;
@@ -13,7 +13,7 @@ use WP_Error;
  *
  * @unreleased
  */
-class CreatedAtAttribute extends UpdateDonationAttribute
+class CreatedAtAttribute extends DonationUpdateAttribute
 {
     /**
      * @inheritDoc

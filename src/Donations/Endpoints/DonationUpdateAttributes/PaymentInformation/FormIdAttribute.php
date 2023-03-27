@@ -1,8 +1,8 @@
 <?php
 
-namespace Give\Donations\Endpoints\UpdateDonationAttributes\PaymentInformation;
+namespace Give\Donations\Endpoints\DonationUpdateAttributes\PaymentInformation;
 
-use Give\Donations\Endpoints\UpdateDonationAttributes\UpdateDonationAttribute;
+use Give\Donations\Endpoints\DonationUpdateAttributes\DonationUpdateAttribute;
 use Give\Donations\Models\Donation;
 use WP_Error;
 
@@ -11,7 +11,7 @@ use WP_Error;
  *
  * @unreleased
  */
-class FormIdAttribute extends UpdateDonationAttribute
+class FormIdAttribute extends DonationUpdateAttribute
 {
     /**
      * @inheritDoc

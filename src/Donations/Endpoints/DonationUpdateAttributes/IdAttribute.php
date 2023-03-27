@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Donations\Endpoints\UpdateDonationAttributes;
+namespace Give\Donations\Endpoints\DonationUpdateAttributes;
 
 use WP_Error;
 
@@ -9,7 +9,7 @@ use WP_Error;
  *
  * @unreleased
  */
-class IdAttribute extends UpdateDonationAttribute
+class IdAttribute extends DonationUpdateAttribute
 {
     /**
      * @inheritDoc

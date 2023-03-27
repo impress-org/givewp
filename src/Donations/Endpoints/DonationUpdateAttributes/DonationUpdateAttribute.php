@@ -1,10 +1,10 @@
 <?php
 
-namespace Give\Donations\Endpoints\UpdateDonationAttributes;
+namespace Give\Donations\Endpoints\DonationUpdateAttributes;
 
 use Give\Donations\Models\Donation;
 
-abstract class UpdateDonationAttribute
+abstract class DonationUpdateAttribute
 {
     /**
      * @return string

@@ -22,9 +22,9 @@ use Give\DonationForms\Endpoints\FormActions;
 use Give\DonationForms\Endpoints\ListDonationForms;
 use Give\DonationForms\Endpoints\SwitchDonationFormView;
 use Give\Donations\Endpoints\DonationActions;
+use Give\Donations\Endpoints\DonationUpdate;
 use Give\Donations\Endpoints\ListDonations;
 use Give\Donations\Endpoints\SwitchDonationView;
-use Give\Donations\Endpoints\UpdateDonation;
 use Give\Donors\Endpoints\DeleteDonor;
 use Give\Donors\Endpoints\ListDonors;
 use Give\Donors\Endpoints\SwitchDonorView;
@@ -60,7 +60,7 @@ class RestAPI implements ServiceProvider
         SwitchDonationFormView::class,
         SwitchSubscriptionView::class,
         DonationActions::class,
-        UpdateDonation::class,
+        DonationUpdate::class,
         SubscriptionActions::class,
         DeleteDonor::class,
         FormActions::class,

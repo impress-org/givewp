@@ -1,8 +1,8 @@
 <?php
 
-namespace Give\Donations\Endpoints\UpdateDonationAttributes\PaymentInformation;
+namespace Give\Donations\Endpoints\DonationUpdateAttributes\PaymentInformation;
 
-use Give\Donations\Endpoints\UpdateDonationAttributes\UpdateDonationAttribute;
+use Give\Donations\Endpoints\DonationUpdateAttributes\DonationUpdateAttribute;
 use Give\Donations\Models\Donation;
 use Give\Framework\Support\ValueObjects\Money;
 
@@ -11,7 +11,7 @@ use Give\Framework\Support\ValueObjects\Money;
  *
  * @unreleased
  */
-class AmountAttribute extends UpdateDonationAttribute
+class AmountAttribute extends DonationUpdateAttribute
 {
     /**
      * @inheritDoc

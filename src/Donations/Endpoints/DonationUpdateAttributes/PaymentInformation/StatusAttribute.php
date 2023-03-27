@@ -1,8 +1,8 @@
 <?php
 
-namespace Give\Donations\Endpoints\UpdateDonationAttributes\PaymentInformation;
+namespace Give\Donations\Endpoints\DonationUpdateAttributes\PaymentInformation;
 
-use Give\Donations\Endpoints\UpdateDonationAttributes\UpdateDonationAttribute;
+use Give\Donations\Endpoints\DonationUpdateAttributes\DonationUpdateAttribute;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 
@@ -11,7 +11,7 @@ use Give\Donations\ValueObjects\DonationStatus;
  *
  * @unreleased
  */
-class StatusAttribute extends UpdateDonationAttribute
+class StatusAttribute extends DonationUpdateAttribute
 {
     /**
      * @inheritDoc

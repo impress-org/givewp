@@ -2,12 +2,12 @@
 
 namespace Give\Donations\Endpoints;
 
-use Give\Donations\Endpoints\UpdateDonationAttributes\IdAttribute;
-use Give\Donations\Endpoints\UpdateDonationAttributes\PaymentInformation\AmountAttribute;
-use Give\Donations\Endpoints\UpdateDonationAttributes\PaymentInformation\CreatedAtAttribute;
-use Give\Donations\Endpoints\UpdateDonationAttributes\PaymentInformation\FeeAmountRecoveredAttribute;
-use Give\Donations\Endpoints\UpdateDonationAttributes\PaymentInformation\FormIdAttribute;
-use Give\Donations\Endpoints\UpdateDonationAttributes\PaymentInformation\StatusAttribute;
+use Give\Donations\Endpoints\DonationUpdateAttributes\IdAttribute;
+use Give\Donations\Endpoints\DonationUpdateAttributes\PaymentInformation\AmountAttribute;
+use Give\Donations\Endpoints\DonationUpdateAttributes\PaymentInformation\CreatedAtAttribute;
+use Give\Donations\Endpoints\DonationUpdateAttributes\PaymentInformation\FeeAmountRecoveredAttribute;
+use Give\Donations\Endpoints\DonationUpdateAttributes\PaymentInformation\FormIdAttribute;
+use Give\Donations\Endpoints\DonationUpdateAttributes\PaymentInformation\StatusAttribute;
 use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
 use WP_Error;
@@ -21,7 +21,7 @@ use WP_REST_Server;
  * @unreleased
  */
 
-class UpdateDonation extends Endpoint
+class DonationUpdate extends Endpoint
 {
     /**
      * @var string
