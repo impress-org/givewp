@@ -22,10 +22,10 @@ use function give_is_setting_enabled;
 class Sequoia extends Template implements Hookable, Scriptable
 {
     /**
+     * Contains the options for the Sequoia form template.
      * @unreleased
      * @var array
      */
-
     private $options;
 
     public function __construct()
@@ -460,9 +460,9 @@ class Sequoia extends Template implements Hookable, Scriptable
     /**
      * Get form excerpt
      *
-     * @since 2.7.0
-     *
+     * @unreleased Display only form description in Multi-Step donation form template.
      * @since 2.19.6 Form excerpt has precedence over form description
+     * @since 2.7.0
      *
      * @param int|null $formId
      *
