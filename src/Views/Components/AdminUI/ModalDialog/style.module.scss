@@ -5,6 +5,7 @@
     right: 0;
     bottom: 0;
     left: 0;
+    backdrop-filter: blur(4px);
 }
 
 .container {
@@ -106,7 +107,7 @@
             background-color: var(--givewp-blue-25);
             color: var(--givewp-blue-500);
             font-size: 0.875rem;
-            
+
         }
     }
 }

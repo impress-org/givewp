@@ -10,13 +10,6 @@ export const StyleConfig = {
     }),
     indicatorsContainer: (provided, state) => ({
         ...provided,
-        margin: 'auto 0',
-        background: '#fff',
-        height: '100%',
-        borderRadius: 4,
-        '& svg > path': {
-            stroke: ' grey',
-        },
     }),
     valueContainer: (provided, state) => ({
         ...provided,
