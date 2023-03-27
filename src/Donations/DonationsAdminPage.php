@@ -13,11 +13,6 @@ class DonationsAdminPage
     /**
      * @var string
      */
-    private $apiRoot;
-
-    /**
-     * @var string
-     */
     private $apiNonce;
 
     /**
@@ -27,7 +22,6 @@ class DonationsAdminPage
 
     public function __construct()
     {
-        $this->apiRoot = esc_url_raw(rest_url('give-api/v2/admin/donations'));
         $this->apiNonce = wp_create_nonce('wp_rest');
         $this->adminUrl = admin_url();
     }
@@ -65,7 +59,6 @@ class DonationsAdminPage
     public function loadScripts()
     {
         $data = [
-            'apiRoot' => $this->apiRoot,
             'apiNonce' => $this->apiNonce,
             'adminUrl' => $this->adminUrl,
             'paymentMode' => give_is_test_mode(),
@@ -83,6 +76,7 @@ class DonationsAdminPage
             $data = array_merge(
                 $data,
                 [
+                    'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/donation')),
                     'donationDetails' => $donationDetailsViewModel->exports(),
                 ]
             );
@@ -95,6 +89,7 @@ class DonationsAdminPage
             $data = array_merge(
                 $data,
                 [
+                    'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/donations')),
                     'forms' => $this->getForms(),
                     'table' => give(DonationsListTable::class)->toArray(),
                 ]
