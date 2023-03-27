@@ -1,3 +1,3 @@
 export type DonationTypeProps = {
-    donationType: 'single' | 'renewal' | 'subscription';
+    donationType: 'single' | 'subscription' | string | null;
 };

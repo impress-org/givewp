@@ -5,8 +5,8 @@ import FormNavigation from '@givewp/components/AdminUI/FormNavigation';
 import {Form} from '@givewp/components/AdminUI/FormElements';
 
 import {FormPageProps} from './types';
-import {usePostRequest} from '@givewp/components/AdminUI/api';
 import {joiResolver} from '@hookform/resolvers/joi';
+import {PostRequest} from '@givewp/components/AdminUI/api';
 
 /**
  *
@@ -23,8 +23,9 @@ export default function FormPage({
     validationSchema,
     children,
     actionConfig,
+    apiNonce,
 }: FormPageProps) {
-    const {postData} = usePostRequest('http://localhost:10004/wp-json/give-api/v2/admin/donation/2015');
+    const {postData} = PostRequest(endpoint, apiNonce);
 
     const methods = useForm({
         defaultValues: defaultValues,

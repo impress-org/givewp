@@ -1,4 +1,3 @@
-import styles from './style.module.scss';
 import {DonationMethodProps} from './types';
 import {paymentMethodList} from './paymentMethodList';
 
@@ -7,19 +6,22 @@ import {paymentMethodList} from './paymentMethodList';
  * @unreleased
  */
 
-function GatewayLogo(gatewwayId: string) {
+function GatewayLogo({gatewayId}: {gatewayId: string}) {
     for (const prop in paymentMethodList) {
-        if (prop === gatewwayId) {
-            const matchingValue = paymentMethodList[prop];
-            return matchingValue;
+        if (prop === gatewayId) {
+            return paymentMethodList[prop];
         }
     }
+    return null; // Return null if the gatewayId is not found in the paymentMethodList
 }
-
+/**
+ *
+ * @unreleased
+ */
 export default function DonationMethod({gatewayLabel, gatewayId}: DonationMethodProps) {
     return (
-        <div className={styles.paymentMethod}>
-            <span>{GatewayLogo(gatewayId)}</span>
+        <div>
+            <GatewayLogo gatewayId={gatewayId} />
             <span>{gatewayLabel}</span>
         </div>
     );

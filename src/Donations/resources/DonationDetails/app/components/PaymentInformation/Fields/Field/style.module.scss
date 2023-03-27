@@ -8,7 +8,7 @@
 
     > .labelContainer {
         display: flex;
-        gap: var(--givewp-spacing-3);
+        gap: var(--givewp-spacing-1);
         align-items: flex-start;
         padding: 0;
         background: none;
@@ -18,7 +18,7 @@
 
         // default text styles
         font-size: 1rem;
-        font-weight: 500;
+        font-weight: 600;
         font-stretch: normal;
         font-style: normal;
         line-height: 1.5;
@@ -31,6 +31,17 @@
             border: none;
             cursor: pointer;
         }
+    }
+
+    span {
+        font-size: 1rem;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.5;
+        letter-spacing: normal;
+        text-align: left;
+        color: var(--grey-900)
     }
 
     .amount {

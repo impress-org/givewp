@@ -11,7 +11,7 @@ import styles from './style.module.scss';
  *
  * @unreleased
  */
-function renderPaymentTypeIcon(type: any) {
+function renderPaymentTypeIcon(type: 'single' | 'subscription' | string | null) {
     switch (type) {
         case 'single':
             return (

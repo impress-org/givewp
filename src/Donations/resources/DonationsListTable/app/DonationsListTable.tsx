@@ -7,20 +7,6 @@ import {IdBadge} from '@givewp/components/ListTable/TableCell';
 import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import {Interweave} from 'interweave';
 
-declare global {
-    interface Window {
-        GiveDonations: {
-            apiNonce: string;
-            apiRoot: string;
-            adminUrl: string;
-            forms?: Array<{value: string; text: string}>;
-            table: {columns: Array<object>};
-            paymentMode?: boolean;
-            manualDonations?: boolean;
-        };
-    }
-}
-
 const API = new ListTableApi(window.GiveDonations);
 
 const filters: Array<FilterConfig> = [

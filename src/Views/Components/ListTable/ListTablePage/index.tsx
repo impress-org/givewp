@@ -17,7 +17,7 @@ import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
 export interface ListTablePageProps {
     //required
     title: string;
-    apiSettings: {apiRoot; apiNonce; table};
+    apiSettings: {apiRoot; apiNonce};
 
     //optional
     bulkActions?: Array<BulkActionsConfig> | null;

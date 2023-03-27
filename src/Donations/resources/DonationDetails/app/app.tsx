@@ -4,7 +4,7 @@ import FormPage from '@givewp/components/AdminUI/FormPage';
 import FormTemplate from './components/FormTemplate';
 
 import {validationSchema} from './config/schema';
-import {endpoint} from './config/data';
+import {apiNonce, endpoint} from '../../window';
 import {pageInformation} from './config/pageInformation';
 
 import {defaultFormValues} from './utilities/defaultFormValues';
@@ -26,6 +26,7 @@ export default function App() {
             validationSchema={validationSchema}
             pageInformation={pageInformation}
             actionConfig={actions}
+            apiNonce={apiNonce}
         >
             <FormTemplate />
         </FormPage>

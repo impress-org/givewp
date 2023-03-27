@@ -48,6 +48,10 @@
 
         .relativeContainer {
             position: relative;
+
+            > button > svg > path {
+                stroke: var(--givewp-blue-500);
+            }
         }
 
 

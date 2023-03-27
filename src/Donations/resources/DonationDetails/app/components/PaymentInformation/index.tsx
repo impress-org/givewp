@@ -13,17 +13,19 @@ import FormsField from './Fields/DonationForms';
 import DatePickerField from './Fields/DatePicker';
 import TimePickerField from './Fields/TimePicker';
 
-import {data} from '../../config/data';
 import styles from './style.module.scss';
 
 /**
  *
  * @unreleased
  */
+
+const {gatewayId, type, gatewayLabel} = window.GiveDonations.donationDetails;
+
 export default function PaymentInformation() {
     return (
         <fieldset className={styles.paymentInformation}>
-            <Legend title={__('Payment Information', 'give')} type={data.type} />
+            <Legend title={__('Payment Information', 'give')} donationType={type} />
             <div className={styles.wrapper}>
                 <div className={styles.actions}>
                     <AmountField />
@@ -33,7 +35,7 @@ export default function PaymentInformation() {
                     <TimePickerField />
 
                     <Field label={__('Payment method', 'give')}>
-                        <DonationMethod gatewayLabel={data?.gatewayLabel} gatewayId={data?.gatewayId} />
+                        <DonationMethod gatewayLabel={gatewayLabel} gatewayId={gatewayId} />
                     </Field>
                 </div>
                 <div className={styles.paymentGatewayLink}>

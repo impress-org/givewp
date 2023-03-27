@@ -1,3 +1,4 @@
+
 export interface PageInformation {
     id: number;
     description: string;
@@ -5,11 +6,12 @@ export interface PageInformation {
 }
 
 export interface FormPageProps {
-    formId;
+    formId: string;
     endpoint: string;
+    apiNonce: string;
     defaultValues;
     validationSchema;
-    children;
+    children: React.ReactNode;
     pageInformation: PageInformation;
     actionConfig: Array<{title: string; action: any}>;
 }

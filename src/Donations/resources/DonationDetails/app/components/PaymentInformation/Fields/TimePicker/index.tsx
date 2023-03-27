@@ -4,7 +4,7 @@ import {useState} from 'react';
 import styles from './style.module.scss';
 import {useWatch} from 'react-hook-form';
 import {format} from 'date-fns';
-import {AmpmField, NumberField} from './inputs';
+import {AmpmField, NumberField} from './inputFields';
 import {Actions} from './Actions';
 
 export default function TimePickerField() {

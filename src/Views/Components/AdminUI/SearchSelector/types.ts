@@ -1,7 +1,7 @@
 export type SearchSelector = {
     options: Array<{
-        value: number;
-        label: string;
+        value: string;
+        text: string;
     }>;
     defaultLabel: string;
     name: string;

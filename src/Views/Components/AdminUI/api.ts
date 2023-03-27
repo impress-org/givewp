@@ -1,12 +1,12 @@
-const usePostRequest = (endpoint: string) => {
-    const postData = async (postData, params = {}) => {
+const PostRequest = (endpoint: string, apiNonce: string) => {
+    const postData = async (postData) => {
         try {
-            const urlParams = new URLSearchParams(params);
-            const res = await fetch(`${endpoint}?${urlParams.toString()}`, {
+            const res = await fetch(`${endpoint}`, {
                 method: 'POST',
                 body: JSON.stringify(postData),
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-WP-Nonce': apiNonce,
                 },
             });
 
@@ -21,4 +21,4 @@ const usePostRequest = (endpoint: string) => {
     return {postData};
 };
 
-export {usePostRequest};
+export {PostRequest};

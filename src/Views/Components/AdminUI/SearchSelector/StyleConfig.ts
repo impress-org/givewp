@@ -14,6 +14,9 @@ export const StyleConfig = {
         background: '#fff',
         height: '100%',
         borderRadius: 4,
+        '& svg > path': {
+            stroke: ' grey',
+        },
     }),
     valueContainer: (provided, state) => ({
         ...provided,

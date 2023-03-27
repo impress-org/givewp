@@ -9,7 +9,7 @@ import ListTableRows from '@givewp/components/ListTable/ListTableRows';
 
 export interface ListTableProps {
     //required
-    apiSettings: {table: {columns: Array<ListTableColumn>; id: string}};
+    apiSettings: {table?: {columns: Array<ListTableColumn>; id: string}; apiRoot; apiNonce};
     title: string;
     data: {items: Array<{}>};
     setSortDirectionForColumn: (event: React.MouseEvent<HTMLElement>, column: string) => void;
