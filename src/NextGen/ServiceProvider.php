@@ -11,8 +11,11 @@ use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
 use Give\NextGen\Gateways\NextGenTestGatewayOffsite\NextGenTestGatewayOffsite;
 use Give\NextGen\Gateways\PayPal\PayPalStandardGateway\PayPalStandardGateway;
+use Give\NextGen\Gateways\PayPalCommerce\PayPalCommerceGateway;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
+use Give\PaymentGateways\PayPalCommerce\Actions\GetPayPalOrderFromRequest;
+use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
@@ -40,6 +43,16 @@ class ServiceProvider implements ServiceProviderInterface
             $registrar->registerGateway(NextGenTestGatewayOffsite::class);
             $registrar->unregisterGateway(PayPalStandard::id());
             $registrar->registerGateway(PayPalStandardGateway::class);
+
+            $registrar->unregisterGateway(PayPalCommerce::id());
+            $registrar->registerGateway(PayPalCommerceGateway::class);
+        });
+
+
+        add_filter("givewp_create_payment_gateway_data_" . PayPalCommerce::id(), function ($gatewayData) {
+            //
+            $gatewayData['payPalOrderId'] = $gatewayData['payPalOrderId'] ?? give_clean($_POST['payPalOrderId']);
+            return $gatewayData;
         });
 
         add_action('givewp_register_form_design', static function (FormDesignRegistrar $formDesignRegistrar) {

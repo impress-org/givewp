@@ -90,7 +90,7 @@ class DonationFormViewModel
             'givewp-global-form-styles',
             ":root {
             --givewp-primary-color:{$this->primaryColor()};
-            --givewp-secondary-color:{$this->secondaryColor()}; 
+            --givewp-secondary-color:{$this->secondaryColor()};
             }"
         );
 
@@ -200,7 +200,7 @@ class DonationFormViewModel
 
         <?php
         $classNames = ['givewp-donation-form'];
-        
+
         if ($preview) {
             $classNames[] = 'givewp-donation-form--preview';
         }

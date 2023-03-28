@@ -18,6 +18,8 @@
         "@fortawesome/fontawesome-free": "^6.2.1",
         "@hookform/error-message": "^2.0.1",
         "@hookform/resolvers": "^2.9.10",
+        "@paypal/paypal-js": "^5.1.4",
+        "@paypal/react-paypal-js": "^7.8.2",
         "@picocss/pico": "^1.5.7",
         "@stripe/react-stripe-js": "^1.16.4",
         "@stripe/stripe-js": "^1.46.0",
