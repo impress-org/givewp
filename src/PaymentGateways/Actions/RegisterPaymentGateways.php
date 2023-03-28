@@ -135,7 +135,9 @@ class RegisterPaymentGateways
     }
 
     /**
+     * @unreleased Add support for the updated PayPal Commerce gateway data.
      * @since 2.21.2
+     *
      * @throws PayPalOrderIdException
      * @throws PayPalOrderException
      */
