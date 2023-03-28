@@ -14,7 +14,12 @@ use Give\PaymentGateways\Gateways\Stripe\CheckoutGateway as StripeCheckoutGatewa
 use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway as StripeCreditCardGateway;
 use Give\PaymentGateways\Gateways\Stripe\SEPAGateway as StripeSEPAGateway;
 use Give\PaymentGateways\PayPalCommerce\Actions\GetPayPalOrderFromRequest;
+use Give\PaymentGateways\PayPalCommerce\Exceptions\PayPalOrderException;
+use Give\PaymentGateways\PayPalCommerce\Exceptions\PayPalOrderIdException;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
+use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalOrder;
+use PayPalHttp\HttpException;
+use PayPalHttp\IOException;
 
 class RegisterPaymentGateways
 {
@@ -131,6 +136,8 @@ class RegisterPaymentGateways
 
     /**
      * @since 2.21.2
+     * @throws PayPalOrderIdException
+     * @throws PayPalOrderException
      */
     private function addGatewayDataToPayPalCommerce()
     {
@@ -140,10 +147,18 @@ class RegisterPaymentGateways
                 PayPalCommerce::id()
             ),
             function ($gatewayData) {
-                if(!isset($gatewayData['payPalOrderId'])) {
-                    $gatewayData['payPalOrderId'] = give_clean($_POST['payPalOrderId']);
+                $paypalOrderId = $gatewayData['payPalOrderId'] ?? give_clean($_POST['payPalOrderId']);
+
+                if( ! $paypalOrderId ) {
+                    throw new PayPalOrderIdException(__('PayPal order id is missing.', 'give'));
                 }
-                $gatewayData['paypalOrder'] = (new GetPayPalOrderFromRequest())($gatewayData['payPalOrderId']);
+
+                try {
+                    $gatewayData['paypalOrder'] = give(PayPalOrder::class)->getOrder($paypalOrderId);
+                } catch (\Exception $e) {
+                    throw new PayPalOrderException(__('Unable to get order using order id.', 'give'));
+                }
+
                 return $gatewayData;
             }
         );
