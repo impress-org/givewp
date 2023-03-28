@@ -1,6 +1,6 @@
-import {Controller, useFormContext} from 'react-hook-form';
+import React, {useState} from 'react';
+import {Controller, useFormContext, useWatch} from 'react-hook-form';
 import ReactSelect, {components} from 'react-select';
-import {useState} from 'react';
 import SearchMagnifyingGlassIcon from '@givewp/components/AdminUI/Icons/SearchMaginfyingGlassIcon';
 
 import styles from './style.module.scss';
@@ -16,6 +16,12 @@ import DownArrowIcon from '@givewp/components/AdminUI/Icons/DownArrowIcon';
 export default function SearchSelector({options, name, placeholder}: SearchSelector) {
     const {control} = useFormContext();
     const [focus, setFocus] = useState(false);
+
+    const form = useWatch({
+        name: 'form',
+    });
+
+    const defaultValue = options?.find((option) => option['value'] === form);
 
     const DropdownIndicator = (props) => {
         return (
@@ -43,7 +49,7 @@ export default function SearchSelector({options, name, placeholder}: SearchSelec
                         ref={ref}
                         name={name}
                         value={options.find((option) => option.value === value)}
-                        options={options.map(({value, text}) => ({value, label: text}))}
+                        options={options}
                         onChange={(selectedOption) => {
                             onChange(selectedOption.value);
                         }}
