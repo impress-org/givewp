@@ -16,28 +16,31 @@
         margin-left: .2rem;
     }
 
-
-    > div {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0;
-        margin: 0 0 0 .65rem;
-        cursor: pointer;
-
-        > svg:hover {
-            -webkit-filter: invert(100%); /* safari 6.0 - 9.0 */
-            filter: invert(100%);
-        }
-    }
 }
 
 .timeFieldActions {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+}
+
+.confirmSelection, .cancelSelection {
+    font-size: 1rem;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    width: 3rem;
+}
+
+
+.cancelSelection {
+    color: var(--givewp-red-500);
 
 }
 
 .confirmSelection {
-    transform: scale(140%)
+    text-align: center;
+    color: var(--wp-blue-blue-50);
 }

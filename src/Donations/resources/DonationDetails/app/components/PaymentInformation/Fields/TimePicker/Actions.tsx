@@ -1,5 +1,5 @@
 import {useFormContext} from 'react-hook-form';
-import CircularExitIcon from '@givewp/components/AdminUI/Icons/CircularExitIcon';
+import {__} from '@wordpress/i18n';
 import styles from './style.module.scss';
 import {TimeActionProps} from '../types';
 import {format, parse, parseISO} from 'date-fns';
@@ -41,13 +41,23 @@ export function Actions({isOpen, closeFields, hours, minutes, ampm}: TimeActionP
     };
 
     return (
-        <>
-            <div role={'button'} aria-pressed={isOpen} onClick={cancelFieldSelection}>
-                <CircularExitIcon color={'#0B72D9'} />
-            </div>
-            <div className={styles.confirmSelection} role={'button'} aria-pressed={isOpen} onClick={confirmFieldValues}>
-                &#10003;
-            </div>
-        </>
+        <div className={styles.timeFieldActions}>
+            <span
+                className={styles.confirmSelection}
+                role={'button'}
+                aria-pressed={isOpen}
+                onClick={confirmFieldValues}
+            >
+                {__('Set', 'give')}
+            </span>
+            <span
+                className={styles.cancelSelection}
+                role={'button'}
+                aria-pressed={isOpen}
+                onClick={cancelFieldSelection}
+            >
+                {__('Cancel', 'give')}
+            </span>
+        </div>
     );
 }

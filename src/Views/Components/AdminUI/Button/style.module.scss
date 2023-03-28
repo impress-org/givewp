@@ -19,30 +19,30 @@
 
 .primary {
     color: var(--givewp-shades-white);
-    background: var(--givewp-blue-500);
+    background: var(--wp-blue-blue-50);
 
     &:hover {
-        background-color: var(--givewp-blue-400);
+        background-color: var(--wp-blue-blue-40);
     }
 
     &:active {
-        background-color: var(--givewp-blue-600);
+        background-color: var(--wp-blue-blue-60);
     }
 }
 
 .secondary {
     background: var(--givewp-shades-white);
-    color: var(--givewp-blue-500);
-    border-color: var(--givewp-blue-500);
+    color: var(--wp-blue-blue-50);
+    border-color: var(--wp-blue-blue-50);
 
     &:hover {
-        color: var(--givewp-blue-400);
-        border-color: var(--givewp-blue-400);
+        color: var(--wp-blue-blue-40);
+        border-color: var(--wp-blue-blue-40);
     }
 
     &:active {
-        color: var(--givewp-blue-600);
-        border-color: var(--givewp-blue-600);
+        color: var(--wp-blue-blue-60);
+        border-color: var(--wp-blue-blue-60);
     }
 }
 
