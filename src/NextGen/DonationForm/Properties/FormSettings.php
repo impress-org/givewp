@@ -115,11 +115,11 @@ class FormSettings implements Arrayable, Jsonable
             'give'
         );
         $self->receiptHeading = $array['receiptHeading'] ?? __(
-            'Hey {donor.firstName}, thanks for your donation!',
+            'Hey {first_name}, thanks for your donation!',
             'give'
         );
         $self->receiptDescription = $array['receiptDescription'] ?? __(
-            '{donor.firstName}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {donor.email}.',
+            '{first_name}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {email}.',
             'give'
         );
 

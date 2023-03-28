@@ -3,6 +3,20 @@ import {createInterpolateElement} from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 
+const TemplateTags = () => (
+    <dl>
+        <dt>
+            <code>{'{first_name}'}</code>
+        </dt>
+        <dt>
+            <code>{'{last_name}'}</code>
+        </dt>
+        <dt>
+            <code>{'{email}'}</code>
+        </dt>
+    </dl>
+);
+
 const ReceiptSettings = () => {
     const {
         settings: {receiptHeading, receiptDescription},
@@ -10,22 +24,16 @@ const ReceiptSettings = () => {
     const dispatch = useFormStateDispatch();
 
     const headingHelpText = createInterpolateElement(
-        __(
-            'This is the first message that displays in the receipt. Learn more about using template tags <a>here</a>',
-            'give'
-        ),
+        __('This is the first message that displays in the receipt. Available template tags are: <tags />', 'give'),
         {
-            a: <a href="https://givewp.com/documentation/" target="_blank" />,
+            tags: <TemplateTags />,
         }
     );
 
     const descriptionHelpText = createInterpolateElement(
-        __(
-            'This is the second message that displays in the receipt. Learn more about using template tags <a>here</a>',
-            'give'
-        ),
+        __('This is the second message that displays in the receipt.Available template tags are: <tags />', 'give'),
         {
-            a: <a href="https://givewp.com/documentation/" target="_blank" />,
+            tags: <TemplateTags />,
         }
     );
 

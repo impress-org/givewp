@@ -20,7 +20,7 @@ class TestDonationTemplateTags extends TestCase {
             'email' => 'bill@murray.com'
         ]);
 
-        $content = "{donation.firstName}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {donation.email}.";
+        $content = "{first_name}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {email}.";
 
         $tags = new DonationTemplateTags($donation, $content);
 

@@ -37,10 +37,9 @@ class DonationTemplateTags {
     protected function getTags(): array
     {
         return [
-            '{donation.firstName}' => $this->donation->firstName,
-            '{donation.email}' => $this->donation->email,
-            '{donor.firstName}' => $this->donation->donor->firstName,
-            '{donor.email}' => $this->donation->donor->email,
+            '{first_name}' => $this->donation->firstName,
+            '{last_name}' => $this->donation->lastName,
+            '{email}' => $this->donation->email,
         ];
     }
 }
