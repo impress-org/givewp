@@ -17,7 +17,6 @@ use Give\Framework\Support\Facades\Facade;
 class Temporal extends Facade
 {
     const TIMESTAMP = 'Y-m-d H:i:s';
-    const ISO8601_JS = 'Y-m-d\TH:i:s.u\Z';
 
     protected function getFacadeAccessor(): string
     {

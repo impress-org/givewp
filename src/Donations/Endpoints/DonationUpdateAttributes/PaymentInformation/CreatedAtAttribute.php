@@ -34,8 +34,7 @@ class CreatedAtAttribute extends DonationUpdateAttribute
             'format' => 'date-time',
             'sanitize_callback' => 'sanitize_text_field',
             'validate_callback' => function ($param) {
-                if ( ! DateTime::createFromFormat(Temporal::ISO8601_JS,
-                        $param) && ! DateTime::createFromFormat(Temporal::TIMESTAMP, $param)) {
+                if ( ! DateTime::createFromFormat(Temporal::TIMESTAMP, $param)) {
                     return new WP_Error(
                         'invalid_date',
                         __('Invalid date.', 'give'),
@@ -53,11 +52,7 @@ class CreatedAtAttribute extends DonationUpdateAttribute
      */
     public static function update($value, Donation $donation): Donation
     {
-        $date = DateTime::createFromFormat(Temporal::ISO8601_JS, $value);
-        if ( ! $date) {
-            $date = Temporal::toDateTime($value);
-        }
-        $donation->createdAt = $date;
+        $donation->createdAt = DateTime::createFromFormat(Temporal::TIMESTAMP, $value);
 
         return $donation;
     }

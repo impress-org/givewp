@@ -68,14 +68,12 @@ class TestDonationUpdate extends RestApiTestCase
         $donationForm = $this->createSimpleDonationForm();
         $donationFormId = $this->createSimpleDonationForm()->id;
 
-        $dateFormat = $this->faker()->randomElement([Temporal::TIMESTAMP, Temporal::ISO8601_JS]);
-
         $paymentInformation = [
             'amount' => $this->faker()->randomFloat(2, 1, 100),
             'feeAmountRecovered' => $this->faker()->randomFloat(2, 1, 10),
             'formId' => $donationFormId,
             'createdAt' => $this->faker()->dateTimeBetween('-1 week', 'now')
-                ->format($dateFormat),
+                ->format(Temporal::TIMESTAMP),
         ];
 
         $response = $this->handleRequest($donationId, $paymentInformation);
@@ -97,7 +95,7 @@ class TestDonationUpdate extends RestApiTestCase
             }
 
             if (is_a($donation->{$key}, DateTime::class)) {
-                $this->assertEquals($value, $donation->{$key}->format($dateFormat));
+                $this->assertEquals($value, $donation->{$key}->format(Temporal::TIMESTAMP));
                 continue;
             }
 
