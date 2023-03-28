@@ -68,9 +68,11 @@
     padding: var(--givewp-spacing-4) var(--givewp-spacing-20);
 }
 
-.button:disabled {
-    background-color: var(--givewp-grey-300);
-    color: var(--givewp-shades-white);
-    border-color: var(--givewp-grey-300);
+.button {
+    &:disabled {
+        background-color: var(--givewp-grey-300);
+        color: var(--givewp-shades-white);
+        border-color: var(--givewp-grey-300);
+    }
 }
 
