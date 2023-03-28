@@ -15,16 +15,17 @@
         border: none;
         cursor: pointer;
 
+        span:first-child {
+            font-size: 1rem;
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: normal;
+            text-align: left;
+            color: var(--givewp-grey-900);
+        }
 
-        // default text styles
-        font-size: 1rem;
-        font-weight: 600;
-        font-stretch: normal;
-        font-style: normal;
-        line-height: 1.5;
-        letter-spacing: normal;
-        text-align: left;
-        color: var(--givewp-grey-900);
 
         .button {
             background-color: transparent;
@@ -33,16 +34,6 @@
         }
     }
 
-    span {
-        font-size: 1rem;
-        font-weight: normal;
-        font-stretch: normal;
-        font-style: normal;
-        line-height: 1.5;
-        letter-spacing: normal;
-        text-align: left;
-        color: var(--grey-900)
-    }
 
     .amount {
         display: block;

@@ -9,12 +9,7 @@ const {formTitle} = window.GiveDonations.donationDetails;
 export default function FormsField() {
     return (
         <Field label={__('Donation form', 'give')}>
-            <SearchSelector
-                name={'form'}
-                placeholder={__('Search for a donation form', 'give')}
-                options={forms}
-                defaultLabel={formTitle}
-            />
+            <SearchSelector name={'form'} placeholder={__('Search for a donation form', 'give')} options={forms} />
         </Field>
     );
 }
