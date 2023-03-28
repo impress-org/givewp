@@ -4,12 +4,21 @@ import SearchSelector from '@givewp/components/AdminUI/SearchSelector';
 import Field from '../Field';
 
 const {forms} = window.GiveDonations;
-const {formTitle} = window.GiveDonations.donationDetails;
 
-export default function FormsField() {
+export default function DonationFormsField() {
+    const formattedOptions = formatOptions(forms);
+
     return (
         <Field label={__('Donation form', 'give')}>
-            <SearchSelector name={'form'} placeholder={__('Search for a donation form', 'give')} options={forms} />
+            <SearchSelector
+                name={'form'}
+                placeholder={__('Search for a donation form', 'give')}
+                options={formattedOptions}
+            />
         </Field>
     );
+}
+
+function formatOptions(options) {
+    return options.map((object) => ({label: object.text, value: parseInt(object.value)}));
 }
