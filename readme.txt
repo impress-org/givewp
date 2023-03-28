@@ -128,6 +128,13 @@ Are you a developer? GiveWP is built with best practices and easy to extend and 
 * [Site Redesigns Without Donation Data Loss](https://go.givewp.com/datalossdoc)
 * [Handling Custom CSS in WordPress](https://go.givewp.com/cssdoc)
 
+=== 🚀 Join the Journey to Create the Next Generation of WordPress Donation Forms === 
+Team Give has been working hard for the past several years on updating how donation forms are created. The user experience is going to change for the better, but we want your help shaping what that means! 
+
+Help us test our new visual form builder with the GiveWP 3.0 Feature plugin. The Feaure Plugin (or GiveWP 3.0 Beta) is meant to be used alongside GiveWP core on a staging or local environment. We are looking specifically at the form builder with this beta test and would love for all GiveWP users to give it a try. All feedback is welcome! [Download the beta plugin directly on WordPress](https://go.givewp.com/corewppg) or through your admin dashboard plugins area. 
+
+Learn more about how we're creating the next generation of WordPress donation forms, [directly on our website](https://go.givewp.com/corenextgen).
+
 === 💚 About the GiveWP Team ===
 
 GiveWP is part of StellarWP, a Liquid Web Family Brand. Our donation plugin is backed by a growing team of WordPress developers, support engineers, customer success managers, and marketing professionals who’ve worked with WordPress and nonprofits since 2009. This means GiveWP is made with best practices in mind; extremely extensible and customizable, stable, and reliable. We’ll be here in years to come for you and your nonprofit organization.
