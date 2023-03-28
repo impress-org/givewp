@@ -13,12 +13,12 @@ export const defaultFormValues: {
     feeAmountRecovered: number;
     createdAt: string | Date;
     status: string;
-    form: number;
+    formId: number;
 } = {
     id: id,
     amount: parseAmountValue(amount.value),
     feeAmountRecovered: parseAmountValue(feeAmountRecovered?.value),
     createdAt: new Date(createdAt.date).toISOString(),
     status: status,
-    form: formId,
+    formId: formId,
 };

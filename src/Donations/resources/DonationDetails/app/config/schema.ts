@@ -11,5 +11,5 @@ export const validationSchema = Joi.object().keys({
     feeAmountRecovered: Joi.number(),
     createdAt: Joi.string(),
     status: Joi.string(),
-    form: Joi.number(),
+    formId: Joi.number(),
 });

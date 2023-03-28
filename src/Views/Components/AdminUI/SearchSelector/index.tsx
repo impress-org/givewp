@@ -18,7 +18,7 @@ export default function SearchSelector({options, name, placeholder}: SearchSelec
     const [focus, setFocus] = useState(false);
 
     const form = useWatch({
-        name: 'form',
+        name: 'formId',
     });
 
     const defaultValue = options?.find((option) => option['value'] === form);

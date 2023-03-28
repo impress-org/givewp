@@ -35,7 +35,7 @@ export default function PaymentInformation() {
                     <TimePickerField />
 
                     <Field label={__('Payment method', 'give')}>
-                        <DonationMethod gatewayLabel={gatewayLabel} gatewayId={gatewayId} />
+                        <DonationMethod gatewayLabel={gatewayLabel} />
                     </Field>
                 </div>
                 <div className={styles.paymentGatewayLink}>

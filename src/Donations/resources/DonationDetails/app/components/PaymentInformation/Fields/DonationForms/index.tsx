@@ -11,7 +11,7 @@ export default function DonationFormsField() {
     return (
         <Field label={__('Donation form', 'give')}>
             <SearchSelector
-                name={'form'}
+                name={'formId'}
                 placeholder={__('Search for a donation form', 'give')}
                 options={formattedOptions}
             />
