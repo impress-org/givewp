@@ -17,9 +17,9 @@ interface BillingAddress {
  * @unreleased
  */
 
-export interface Amount {
+export interface Currency {
     currency: string;
-    value: string;
+    value: number;
 }
 
 /**
@@ -49,8 +49,8 @@ export interface DataValues {
     status: string;
     type: string;
     mode: string;
-    amount: Amount;
-    feeAmountRecovered: null | string;
+    amount: Currency;
+    feeAmountRecovered: Currency;
     exchangeRate: null | number;
     gatewayId: string;
     donorId: number;

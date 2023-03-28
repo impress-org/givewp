@@ -22,11 +22,11 @@ export function amountFormatter(currency: Intl.NumberFormatOptions['currency'], 
  */
 export function formatCurrency(amount: number, currency: string) {
     return amountFormatter(currency, {
-        maximumFractionDigits: 0,
+        maximumFractionDigits: 2,
     }).format(amount);
 };
 
 
-export function parseAmountValue(num: string | null): number {
-    return num ? parseInt(num) : 0;
+export function parseAmountValue(num: number): number {
+    return num ? num / 100 : 0;
 }

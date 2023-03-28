@@ -54,8 +54,11 @@ const CurrencyInputField = ({defaultValue, placeholder, handleCurrencyChange, cu
                     }}
                     intlConfig={{
                         locale: navigator.language,
-                        currency: currency,
+                        currency: 'USD',
                     }}
+                    decimalSeparator={'.'}
+                    groupSeparator={','}
+                    decimalScale={2}
                     placeholder={placeholder}
                     defaultValue={defaultValue}
                 />

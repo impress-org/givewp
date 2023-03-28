@@ -2,7 +2,7 @@ import {useFormContext} from 'react-hook-form';
 import CircularExitIcon from '@givewp/components/AdminUI/Icons/CircularExitIcon';
 import styles from './style.module.scss';
 import {TimeActionProps} from '../types';
-import {format, formatISO, parse, parseISO} from 'date-fns';
+import {format, parse, parseISO} from 'date-fns';
 
 export function Actions({isOpen, closeFields, hours, minutes, ampm}: TimeActionProps) {
     const {setValue, getValues} = useFormContext();
@@ -33,7 +33,7 @@ export function Actions({isOpen, closeFields, hours, minutes, ampm}: TimeActionP
         const dateString = String(`${formattedDateValue} ${formattedHours}:${minutes}:${preservedSecondsValue}`);
         const newDateObject = parse(dateString, 'yyyy-MM-dd HH:mm:ss', new Date());
 
-        const validFormFieldValue = formatISO(newDateObject);
+        const validFormFieldValue = newDateObject.toISOString();
 
         setValue('createdAt', validFormFieldValue, {shouldDirty: true});
 
