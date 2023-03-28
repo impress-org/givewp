@@ -14,7 +14,6 @@ use Give\NextGen\Gateways\PayPal\PayPalStandardGateway\PayPalStandardGateway;
 use Give\NextGen\Gateways\PayPalCommerce\PayPalCommerceGateway;
 use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
-use Give\PaymentGateways\PayPalCommerce\Actions\GetPayPalOrderFromRequest;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
