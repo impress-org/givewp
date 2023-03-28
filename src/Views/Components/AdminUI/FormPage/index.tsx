@@ -1,7 +1,8 @@
-import React, {createContext} from 'react';
+import React, {createContext, useState} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 
 import FormNavigation from '@givewp/components/AdminUI/FormNavigation';
+import Toast from '@givewp/components/AdminUI/Toast';
 import {Form} from '@givewp/components/AdminUI/FormElements';
 
 import {FormPageProps} from './types';
@@ -24,8 +25,11 @@ export default function FormPage({
     children,
     actionConfig,
     apiNonce,
+    successMessage,
+    errorMessage,
 }: FormPageProps) {
-    const {postData} = PostRequest(endpoint, apiNonce);
+    const {postData, result} = PostRequest(endpoint, apiNonce, successMessage, errorMessage);
+    const [showApiMessage, setApiShowMessage] = useState(false);
 
     const methods = useForm({
         defaultValues: defaultValues,
@@ -41,8 +45,10 @@ export default function FormPage({
             console.log(JSON.stringify(formFieldValues));
             console.log(endpoint);
             await postData(formFieldValues);
+            setApiShowMessage(true);
         } catch (error) {
             alert(error);
+            setApiShowMessage(true);
         }
     };
 
@@ -53,6 +59,12 @@ export default function FormPage({
                 onSubmit={handleSubmit(handleSubmitRequest)}
                 actionConfig={actionConfig}
                 isDirty={isDirty}
+            />
+            <Toast
+                showMessage={showApiMessage}
+                closeMessage={() => setApiShowMessage(false)}
+                resultMessage={result.message}
+                resultType={result.type}
             />
             <Form id={formId} onSubmit={handleSubmit(handleSubmitRequest)}>
                 {children}

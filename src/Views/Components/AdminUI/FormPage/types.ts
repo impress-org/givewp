@@ -9,6 +9,8 @@ export interface FormPageProps {
     formId: string;
     endpoint: string;
     apiNonce: string;
+    errorMessage: string;
+    successMessage: string;
     defaultValues;
     validationSchema;
     children: React.ReactNode;

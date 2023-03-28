@@ -1,5 +1,7 @@
 import React from 'react';
 
+import {__} from '@wordpress/i18n';
+
 import FormPage from '@givewp/components/AdminUI/FormPage';
 import FormTemplate from './components/FormTemplate';
 
@@ -27,6 +29,11 @@ export default function App() {
             pageInformation={pageInformation}
             actionConfig={actions}
             apiNonce={apiNonce}
+            successMessage={__('Donation details have been updated successfully', 'give')}
+            errorMessage={__(
+                'Error: The Donation details were unable to update successfully. Please try again.',
+                'give'
+            )}
         >
             <FormTemplate />
         </FormPage>

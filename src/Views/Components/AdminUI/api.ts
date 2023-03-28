@@ -1,4 +1,8 @@
-const PostRequest = (endpoint: string, apiNonce: string) => {
+import {useState} from 'react';
+
+const PostRequest = (endpoint: string, apiNonce: string, successMessage: string, errorMessage: string) => {
+    const [result, setResult] = useState({type: null, message: ''});
+
     const postData = async (postData) => {
         try {
             const res = await fetch(`${endpoint}`, {
@@ -10,15 +14,22 @@ const PostRequest = (endpoint: string, apiNonce: string) => {
                 },
             });
 
-            if (!res.ok) {
-                throw new Error('Network response was not ok');
+            if (res.ok) {
+                setResult({
+                    type: 'success',
+                    message: successMessage,
+                });
+            } else {
+                throw new Error(`Failed to post data: ${res.statusText}`);
             }
         } catch (error) {
-            throw new Error(`Unable to post data: ${error.message}`);
+            setResult({
+                type: 'error',
+                message: errorMessage,
+            });
         }
     };
 
-    return {postData};
+    return {postData, result};
 };
-
 export {PostRequest};
