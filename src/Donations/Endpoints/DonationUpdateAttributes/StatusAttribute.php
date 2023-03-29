@@ -35,10 +35,8 @@ class StatusAttribute extends DonationUpdateAttribute
     /**
      * @inheritDoc
      */
-    public static function update($value, Donation $donation): Donation
+    public static function update($value, Donation $donation)
     {
         $donation->status = new DonationStatus($value);
-
-        return $donation;
     }
 }

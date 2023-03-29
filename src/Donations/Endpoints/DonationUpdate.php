@@ -8,7 +8,6 @@ use Give\Donations\Endpoints\DonationUpdateAttributes\FeeAmountRecoveredAttribut
 use Give\Donations\Endpoints\DonationUpdateAttributes\FormIdAttribute;
 use Give\Donations\Endpoints\DonationUpdateAttributes\IdAttribute;
 use Give\Donations\Endpoints\DonationUpdateAttributes\StatusAttribute;
-use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
 use WP_Error;
 use WP_REST_Request;
@@ -102,10 +101,11 @@ class DonationUpdate extends Endpoint
                     continue;
                 }
 
-                $updatedDonation = $attr::update($value, $donation);
+                $actualValue = $donation->{$attrId};
+                $attr::update($value, $donation);
+                $updatedValue = $donation->{$attrId};
 
-                if (is_a($updatedDonation, Donation::class)) {
-                    $donation = $updatedDonation;
+                if ($actualValue !== $updatedValue) {
                     $updatedFields[] = $attrId;
                 }
             }

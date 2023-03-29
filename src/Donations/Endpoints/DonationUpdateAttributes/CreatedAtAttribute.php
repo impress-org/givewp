@@ -49,10 +49,8 @@ class CreatedAtAttribute extends DonationUpdateAttribute
     /**
      * @inheritDoc
      */
-    public static function update($value, Donation $donation): Donation
+    public static function update($value, Donation $donation)
     {
         $donation->createdAt = DateTime::createFromFormat(Temporal::TIMESTAMP, $value);
-
-        return $donation;
     }
 }

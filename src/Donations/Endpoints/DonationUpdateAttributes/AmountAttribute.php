@@ -39,13 +39,11 @@ class AmountAttribute extends DonationUpdateAttribute
     /**
      * @inheritDoc
      */
-    public static function update($value, Donation $donation): Donation
+    public static function update($value, Donation $donation)
     {
         $donation->amount = Money::fromDecimal(
             $value,
             $donation->amount->getCurrency()
         );
-
-        return $donation;
     }
 }

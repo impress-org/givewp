@@ -20,10 +20,9 @@ abstract class DonationUpdateAttribute
      * @param          $value
      * @param Donation $donation
      *
-     * @return Donation|bool
+     * @return void
      */
     public static function update($value, Donation $donation)
     {
-        return false;
     }
 }

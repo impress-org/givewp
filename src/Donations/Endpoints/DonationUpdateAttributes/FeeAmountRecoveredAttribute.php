@@ -39,7 +39,7 @@ class FeeAmountRecoveredAttribute extends DonationUpdateAttribute
     /**
      * @inheritDoc
      */
-    public static function update($value, Donation $donation): Donation
+    public static function update($value, Donation $donation)
     {
         $donation->feeAmountRecovered = Money::fromDecimal(
             $value,
@@ -47,7 +47,5 @@ class FeeAmountRecoveredAttribute extends DonationUpdateAttribute
                 ? $donation->feeAmountRecovered->getCurrency()
                 : $donation->amount->getCurrency()
         );
-
-        return $donation;
     }
 }

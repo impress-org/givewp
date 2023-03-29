@@ -47,12 +47,10 @@ class FormIdAttribute extends DonationUpdateAttribute
     /**
      * @inheritDoc
      */
-    public static function update($value, Donation $donation): Donation
+    public static function update($value, Donation $donation)
     {
         $form = give()->donationForms->getById($value);
         $donation->formId = $value;
         $donation->formTitle = $form->title;
-
-        return $donation;
     }
 }
