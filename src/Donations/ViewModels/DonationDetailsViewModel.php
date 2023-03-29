@@ -41,10 +41,19 @@ class DonationDetailsViewModel
 
         $donationArray = $this->donation->toArray();
 
-        $donationArray['amount'] = [
-            'currency' => $this->donation->amount->getCurrency(),
-            'value' => $this->donation->amount->getAmount(),
-        ];
+        if ( ! is_null($this->donation->amount)) {
+            $donationArray['amount'] = [
+                'currency' => $this->donation->amount->getCurrency(),
+                'value' => intval($this->donation->amount->getAmount()),
+            ];
+        }
+
+        if ( ! is_null($this->donation->feeAmountRecovered)) {
+            $donationArray['feeAmountRecovered'] = [
+                'currency' => $this->donation->feeAmountRecovered->getCurrency(),
+                'value' => intval($this->donation->feeAmountRecovered->getAmount()),
+            ];
+        }
 
         $donationArray['gatewayLabel'] = give_get_gateway_checkout_label($this->donation->gatewayId);
 

@@ -13,17 +13,6 @@ class DonationsAdminPage
     /**
      * @var string
      */
-    private $apiRoot;
-
-    /**
-     * @var string
-     */
-    private $donationApiRoot;
-
-
-    /**
-     * @var string
-     */
     private $apiNonce;
 
     /**
@@ -33,8 +22,6 @@ class DonationsAdminPage
 
     public function __construct()
     {
-        $this->apiRoot = esc_url_raw(rest_url('give-api/v2/admin/donations'));
-        $this->donationApiRoot = esc_url_raw(rest_url('give-api/v2/admin/donation'));
         $this->apiNonce = wp_create_nonce('wp_rest');
         $this->adminUrl = admin_url();
     }
@@ -72,11 +59,10 @@ class DonationsAdminPage
     public function loadScripts()
     {
         $data = [
-            'apiRoot' => $this->apiRoot,
-            'donationApiRoot' => $this->donationApiRoot,
             'apiNonce' => $this->apiNonce,
             'adminUrl' => $this->adminUrl,
             'paymentMode' => give_is_test_mode(),
+            'forms' => $this->getForms(),
             'manualDonations' => Utils::isPluginActive('give-manual-donations/give-manual-donations.php'),
         ];
 
@@ -91,7 +77,7 @@ class DonationsAdminPage
             $data = array_merge(
                 $data,
                 [
-                    'forms' => $this->getForms(),
+                    'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/donation')),
                     'donationDetails' => $donationDetailsViewModel->exports(),
                 ]
             );
@@ -104,7 +90,7 @@ class DonationsAdminPage
             $data = array_merge(
                 $data,
                 [
-                    'forms' => $this->getForms(),
+                    'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/donations')),
                     'table' => give(DonationsListTable::class)->toArray(),
                 ]
             );
@@ -159,7 +145,7 @@ class DonationsAdminPage
      */
     private static function isDonationDetailsPage(): bool
     {
-        return isset($_GET['view']) && 'view-payment-details' === $_GET['view'];
+        return is_admin() && isset($_GET['view']) && 'view-payment-details' === $_GET['view'];
     }
 
     /**
@@ -178,6 +164,10 @@ class DonationsAdminPage
             ->where('post_type', 'give_forms')
             ->whereIn('post_status', ['publish', 'draft', 'pending', 'private'])
             ->getAll(ARRAY_A);
+
+        if (self::isDonationDetailsPage()) {
+            return $options;
+        }
 
         return array_merge([
             [

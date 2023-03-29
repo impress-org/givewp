@@ -2,21 +2,13 @@
 
 namespace Give\Donations\Endpoints;
 
-use Give\Donations\Endpoints\DonationDetailsAttributes\AmountAttribute;
-use Give\Donations\Endpoints\DonationDetailsAttributes\CreatedAtAttribute;
-use Give\Donations\Endpoints\DonationDetailsAttributes\FeeAmountRecoveredAttribute;
-use Give\Donations\Endpoints\DonationDetailsAttributes\FormIdAttribute;
-use Give\Donations\Endpoints\DonationDetailsAttributes\IdAttribute;
-use Give\Donations\Endpoints\DonationDetailsAttributes\StatusAttribute;
-use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Exceptions\Primitives\Exception;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
 /*
- * Class DonationDetails
- *
  * @unreleased
  */
 class DonationDetails extends Endpoint
@@ -27,26 +19,12 @@ class DonationDetails extends Endpoint
     protected $endpoint = 'admin/donation/(?P<id>[\d]+)';
 
     /**
-     * @var array
-     */
-    private $attributes = [];
-
-    /**
      * @unreleased
      *
      * @inheritDoc
      */
     public function registerRoute()
     {
-        $this->registerRouteAttributes([
-            IdAttribute::class,
-            AmountAttribute::class,
-            FeeAmountRecoveredAttribute::class,
-            CreatedAtAttribute::class,
-            StatusAttribute::class,
-            FormIdAttribute::class,
-        ]);
-
         register_rest_route(
             'give-api/v2',
             $this->endpoint,
@@ -56,7 +34,24 @@ class DonationDetails extends Endpoint
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => [$this, 'permissionsCheck'],
                 ],
-                'args' => $this->getRouteAttributes(),
+                'args' => [
+                    'id' => [
+                        'type' => 'string',
+                        'required' => true,
+                        'validate_callback' => function ($id) {
+                            if (!$this->validateInt($id)) {
+                                return false;
+                            }
+
+                            return true;
+                        },
+                    ],
+                    'status' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'enum' => array_values(DonationStatus::toArray()),
+                    ],
+                ],
             ]
         );
     }
@@ -89,25 +84,21 @@ class DonationDetails extends Endpoint
     public function handleRequest(WP_REST_Request $request)
     {
         $id = $request->get_param('id');
+
         $donation = give()->donations->getById($id);
 
-        $updatedFields = [];
+        if (!$donation) {
+            return new WP_Error(
+                'donation_not_found',
+                __('Donation not found.', 'give'),
+                ['status' => 404]
+            );
+        }
 
         try {
-            foreach ($this->attributes as $attr) {
-                $attrId = $attr::getId();
-
-                if ( ! $request->has_param($attrId)) {
-                    continue;
-                }
-
-                $value = $request->get_param($attrId);
-                $updatedDonation = $attr::update($value, $donation);
-
-                if (is_a($updatedDonation, Donation::class)) {
-                    $donation = $updatedDonation;
-                    $updatedFields[] = $attrId;
-                }
+            $status = $request->get_param('status');
+            if ($status) {
+                $donation->status = new DonationStatus($status);
             }
 
             $donation->save();
@@ -121,34 +112,8 @@ class DonationDetails extends Endpoint
 
         return new WP_REST_Response(
             [
-                'success' => true,
-                'updatedFields' => $updatedFields,
+                'success' => true
             ]
         );
-    }
-
-    /**
-     * @return array
-     */
-    private function getRouteAttributes(): array
-    {
-        return array_map(
-            function ($attribute) {
-                return $attribute::getDefinition();
-            },
-            $this->attributes
-        );
-    }
-
-    /**
-     * @param string[] $array
-     *
-     * @return void
-     */
-    private function registerRouteAttributes(array $array)
-    {
-        foreach ($array as $class) {
-            $this->attributes[$class::getId()] = $class;
-        }
     }
 }
