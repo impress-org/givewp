@@ -2,8 +2,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-
 
     & > legend {
         padding: 0;
@@ -30,6 +28,7 @@
 
 @media (max-width: 750px) {
     .legend {
+        flex-direction: column;
         justify-content: center;
         gap: var(--givewp-spacing-5);
     }

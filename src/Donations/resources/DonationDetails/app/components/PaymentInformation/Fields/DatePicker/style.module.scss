@@ -2,8 +2,47 @@
     position: absolute;
     top: 130%;
     left: 0;
+    z-index: 999;
 
-    .DateInput_input {
+
+    :global .CalendarDay__selected {
+        background: var(--givewp-green-400);
+        border-color: var(--givewp-green-400);
+        color: #fff;
+    }
+
+    :global .CalendarDay__hovered_span:hover {
+        border: 1px solid #66bb6a;
+    }
+
+    :global .DayPicker_focusRegion {
+        padding-bottom: 1rem !important;
+    }
+
+    :global .DateInput {
+        background: none;
+    }
+
+    :global .DateInput_input {
         display: none !important;
+    }
+
+    :global .DayPickerKeyboardShortcuts_showSpan {
+        display: none !important;
+    }
+
+    :global .DayPickerKeyboardShortcuts {
+        display: none !important;
+    }
+
+    :global .DayPickerKeyboardShortcuts_show__bottomRight {
+        display: none !important;
+    }
+
+    .calendarIcon {
+        position: absolute;
+        bottom: .3rem;
+        right: .5rem;
+        z-index: 99;
     }
 }

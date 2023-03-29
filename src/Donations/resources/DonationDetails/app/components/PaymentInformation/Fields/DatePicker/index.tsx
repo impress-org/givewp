@@ -10,6 +10,7 @@ import {format} from 'date-fns';
 import Field from '../Field';
 
 import styles from './style.module.scss';
+import GiveIcon from '@givewp/components/GiveIcon';
 
 /**
  *
@@ -58,12 +59,16 @@ export function Calendar({closeCalendar, initialDate}: CalendarProps) {
 
     return (
         <div className={styles.calendarPosition}>
+            <div className={styles.calendarIcon}>
+                <GiveIcon />
+            </div>
             <DayPickerSingleDateController
                 date={moment(initialDate)}
                 onDateChange={handleDateChange}
                 numberOfMonths={1}
                 isOutsideRange={() => false}
                 onBlur={close}
+                showKeyboardShortcuts={false}
             />
         </div>
     );

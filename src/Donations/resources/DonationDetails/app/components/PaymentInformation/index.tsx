@@ -20,7 +20,7 @@ import styles from './style.module.scss';
  * @unreleased
  */
 
-const {gatewayId, type, gatewayLabel} = window.GiveDonations.donationDetails;
+const {type, gatewayLabel} = window.GiveDonations.donationDetails;
 
 export default function PaymentInformation() {
     return (
