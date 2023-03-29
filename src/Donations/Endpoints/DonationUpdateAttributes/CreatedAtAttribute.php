@@ -1,9 +1,8 @@
 <?php
 
-namespace Give\Donations\Endpoints\DonationUpdateAttributes\PaymentInformation;
+namespace Give\Donations\Endpoints\DonationUpdateAttributes;
 
 use DateTime;
-use Give\Donations\Endpoints\DonationUpdateAttributes\DonationUpdateAttribute;
 use Give\Donations\Models\Donation;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use WP_Error;

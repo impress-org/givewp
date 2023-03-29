@@ -1,8 +1,7 @@
 <?php
 
-namespace Give\Donations\Endpoints\DonationUpdateAttributes\PaymentInformation;
+namespace Give\Donations\Endpoints\DonationUpdateAttributes;
 
-use Give\Donations\Endpoints\DonationUpdateAttributes\DonationUpdateAttribute;
 use Give\Donations\Models\Donation;
 use WP_Error;
 

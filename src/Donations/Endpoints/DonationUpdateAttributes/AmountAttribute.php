@@ -1,24 +1,23 @@
 <?php
 
-namespace Give\Donations\Endpoints\DonationUpdateAttributes\PaymentInformation;
+namespace Give\Donations\Endpoints\DonationUpdateAttributes;
 
-use Give\Donations\Endpoints\DonationUpdateAttributes\DonationUpdateAttribute;
 use Give\Donations\Models\Donation;
 use Give\Framework\Support\ValueObjects\Money;
 
 /**
- * Class FeeAmountRecoveredAttribute
+ * Class AmountAttribute
  *
  * @unreleased
  */
-class FeeAmountRecoveredAttribute extends DonationUpdateAttribute
+class AmountAttribute extends DonationUpdateAttribute
 {
     /**
      * @inheritDoc
      */
     public static function getId(): string
     {
-        return 'feeAmountRecovered';
+        return 'amount';
     }
 
     /**
@@ -42,11 +41,9 @@ class FeeAmountRecoveredAttribute extends DonationUpdateAttribute
      */
     public static function update($value, Donation $donation): Donation
     {
-        $donation->feeAmountRecovered = Money::fromDecimal(
+        $donation->amount = Money::fromDecimal(
             $value,
-            $donation->feeAmountRecovered
-                ? $donation->feeAmountRecovered->getCurrency()
-                : $donation->amount->getCurrency()
+            $donation->amount->getCurrency()
         );
 
         return $donation;
