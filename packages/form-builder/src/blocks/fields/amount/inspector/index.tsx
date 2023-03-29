@@ -1,15 +1,33 @@
-import {PanelBody, SelectControl, ToggleControl} from '@wordpress/components';
+import {PanelBody, PanelRow, SelectControl, ToggleControl, TextControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
 import DeleteButton from './delete-button';
 import AddButton from './add-button';
 import {CurrencyControl} from '@givewp/form-builder/common/currency';
+import Label from "@givewp/form-builder/blocks/fields/settings/Label";
 
 const Inspector = ({attributes, setAttributes}) => {
-    const {levels, priceOption, setPrice, customAmount, customAmountMin, customAmountMax} = attributes;
+    const {
+        label = __('Donation Amount', 'give'),
+        levels,
+        priceOption,
+        setPrice,
+        customAmount,
+        customAmountMin,
+        customAmountMax
+    } = attributes;
 
     return (
         <InspectorControls>
+            <PanelBody title={__('Field Settings', 'give')} initialOpen={true}>
+                <PanelRow>
+                    <TextControl
+                        label={__('Label', 'give')}
+                        value={label}
+                        onChange={(label) => setAttributes({label})}
+                    />
+                </PanelRow>
+            </PanelBody>
             <PanelBody title={__('Donation Options', 'give')} initialOpen={true}>
                 <SelectControl
                     label={__('Donation Option', 'give')}

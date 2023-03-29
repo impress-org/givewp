@@ -186,7 +186,7 @@ class ConvertDonationFormBlocksToFieldsApi
             /** @var Amount $amount */
             $amount = $group->getNodeByName('amount');
             $amount
-                ->label(__('Donation Amount', 'give'))
+                ->label($block->getAttribute('label'))
                 ->levels(...array_map('absint', $block->getAttribute('levels')))
                 ->allowLevels($block->getAttribute('priceOption') === 'multi')
                 ->allowCustomAmount($block->getAttribute('customAmount'))

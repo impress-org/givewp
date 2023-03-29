@@ -5,9 +5,16 @@ import LevelButton from './level-buttons';
 import Inspector from './inspector';
 import {CurrencyControl, formatCurrencyAmount} from '../../../common/currency';
 import {createInterpolateElement} from '@wordpress/element';
+import {BaseControl} from "@wordpress/components";
 
 const Edit = ({attributes, setAttributes}) => {
-    const {levels, priceOption, setPrice, customAmount} = attributes;
+    const {
+        label = __('Donation Amount', 'give'),
+        levels,
+        priceOption,
+        setPrice,
+        customAmount
+    } = attributes;
 
     const isMultiLevel = priceOption === 'multi';
     const isFixedAmount = priceOption === 'set';
@@ -22,27 +29,29 @@ const Edit = ({attributes, setAttributes}) => {
 
     return (
         <>
-            <div style={{display: 'flex', flexDirection: 'column', gap: '20px'}}>
-                {!!isFixedAmount && !customAmount && (
-                    <div style={{backgroundColor: 'var(--givewp-gray-20)', padding: '12px 16px', borderRadius: '5px'}}>
-                        <FixedPriceMessage />
-                    </div>
-                )}
-                {!!isMultiLevel && levels.length > 0 && (
-                    <LevelGrid>
-                        {levels.map((level, index) => {
-                            const levelAmount = formatCurrencyAmount(level);
+            <BaseControl id="amount-field" label={label}>
+                <div style={{display: 'flex', flexDirection: 'column', gap: '20px'}}>
+                    {!!isFixedAmount && !customAmount && (
+                        <div style={{backgroundColor: 'var(--givewp-gray-20)', padding: '12px 16px', borderRadius: '5px'}}>
+                            <FixedPriceMessage />
+                        </div>
+                    )}
+                    {!!isMultiLevel && levels.length > 0 && (
+                        <LevelGrid>
+                            {levels.map((level, index) => {
+                                const levelAmount = formatCurrencyAmount(level);
 
-                            return <LevelButton key={index}>{levelAmount}</LevelButton>;
-                        })}
-                    </LevelGrid>
-                )}
-                {!!customAmount && (
-                    <div>
-                        <CurrencyControl value={setPrice} label={__('Custom amount', 'give')} hideLabelFromVision />
-                    </div>
-                )}
-            </div>
+                                return <LevelButton key={index}>{levelAmount}</LevelButton>;
+                            })}
+                        </LevelGrid>
+                    )}
+                    {!!customAmount && (
+                        <div>
+                            <CurrencyControl value={setPrice} label={__('Custom amount', 'give')} hideLabelFromVision />
+                        </div>
+                    )}
+                </div>
+            </BaseControl>
 
             <Inspector attributes={attributes} setAttributes={setAttributes} />
         </>
