@@ -11,6 +11,10 @@ import Field from '../Field';
 
 import styles from './style.module.scss';
 
+/**
+ *
+ * @unreleased
+ */
 type CalendarProps = {
     closeCalendar: (newDate: Date) => void;
     initialDate: string;
@@ -36,6 +40,10 @@ export default function DatePickerField() {
     );
 }
 
+/**
+ *
+ * @unreleased
+ */
 export function Calendar({closeCalendar, initialDate}: CalendarProps) {
     const handleDateChange = (newDate) => {
         const formattedDate = newDate.toDate();

@@ -11,6 +11,11 @@ import NoticeInformationIcon from '@givewp/components/AdminUI/Icons/NoticeInform
 
 const {currency} = window.GiveDonations.donationDetails.amount;
 
+/**
+ *
+ * @unreleased
+ */
+
 export type CurrencyAmountDialogProps = {
     defaultAmount: number;
     amountChanged: (amount: number) => void;
@@ -44,6 +49,10 @@ export default function AmountField() {
     );
 }
 
+/**
+ *
+ * @unreleased
+ */
 function AmountDialog({defaultAmount, amountChanged}: CurrencyAmountDialogProps) {
     const [amount, setAmount] = useState<number>(defaultAmount);
 

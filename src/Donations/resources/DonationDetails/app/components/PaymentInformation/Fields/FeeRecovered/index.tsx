@@ -14,6 +14,10 @@ import {CurrencyAmountDialogProps} from '../Amount';
 
 const {currency} = window.GiveDonations.donationDetails.amount;
 
+/**
+ *
+ * @unreleased
+ */
 export default function FeeRecoveredField() {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -42,6 +46,10 @@ export default function FeeRecoveredField() {
     );
 }
 
+/**
+ *
+ * @unreleased
+ */
 function FeeRecoveredDialog({defaultAmount, amountChanged}: CurrencyAmountDialogProps) {
     const [amount, setAmount] = useState<number>(defaultAmount);
 

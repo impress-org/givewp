@@ -2,6 +2,10 @@ import EditablePenIcon from '@givewp/components/AdminUI/Icons/EditablePenIcon';
 
 import styles from './style.module.scss';
 
+/**
+ *
+ * @unreleased
+ */
 type FieldProps = {
     label: string;
     children: React.ReactNode;
@@ -27,6 +31,10 @@ export default function Field({label, children, editable, onEdit}: FieldProps) {
     );
 }
 
+/**
+ *
+ * @unreleased
+ */
 export function CurrencyField({label, children, editable, onEdit}: FieldProps) {
     return (
         <Field label={label} editable={editable} onEdit={onEdit}>

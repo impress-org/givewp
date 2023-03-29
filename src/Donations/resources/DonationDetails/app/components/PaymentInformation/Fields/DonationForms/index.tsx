@@ -6,6 +6,10 @@ import Field from '../Field';
 
 const {forms} = window.GiveDonations;
 
+/**
+ *
+ * @unreleased
+ */
 export default function DonationFormsField() {
     const formattedOptions = formatOptions(forms);
 
@@ -20,6 +24,10 @@ export default function DonationFormsField() {
     );
 }
 
+/**
+ *
+ * @unreleased
+ */
 function formatOptions(options) {
     return options.map((object) => ({label: object.text, value: parseInt(object.value)}));
 }
