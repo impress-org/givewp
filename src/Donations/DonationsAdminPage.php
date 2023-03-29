@@ -145,7 +145,7 @@ class DonationsAdminPage
      */
     private static function isDonationDetailsPage(): bool
     {
-        return isset($_GET['view']) && 'view-payment-details' === $_GET['view'];
+        return is_admin() && isset($_GET['view']) && 'view-payment-details' === $_GET['view'];
     }
 
     /**
