@@ -2,8 +2,6 @@
 
 namespace Give\Donations\Endpoints\DonationUpdateAttributes;
 
-use Give\Donations\Models\Donation;
-
 abstract class DonationUpdateAttribute
 {
     /**
@@ -15,14 +13,4 @@ abstract class DonationUpdateAttribute
      * @return array
      */
     abstract public static function getDefinition(): array;
-
-    /**
-     * @param          $value
-     * @param Donation $donation
-     *
-     * @return void
-     */
-    public static function update($value, Donation $donation)
-    {
-    }
 }

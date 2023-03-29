@@ -10,7 +10,7 @@ use WP_Error;
  *
  * @unreleased
  */
-class FormIdAttribute extends DonationUpdateAttribute
+class FormIdAttribute extends DonationUpdateAttribute implements AttributeUpdatesModel
 {
     /**
      * @inheritDoc

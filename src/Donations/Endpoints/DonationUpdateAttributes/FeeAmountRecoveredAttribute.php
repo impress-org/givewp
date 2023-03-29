@@ -10,7 +10,7 @@ use Give\Framework\Support\ValueObjects\Money;
  *
  * @unreleased
  */
-class FeeAmountRecoveredAttribute extends DonationUpdateAttribute
+class FeeAmountRecoveredAttribute extends DonationUpdateAttribute implements AttributeUpdatesModel
 {
     /**
      * @inheritDoc

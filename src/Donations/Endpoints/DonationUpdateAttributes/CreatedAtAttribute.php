@@ -12,7 +12,7 @@ use WP_Error;
  *
  * @unreleased
  */
-class CreatedAtAttribute extends DonationUpdateAttribute
+class CreatedAtAttribute extends DonationUpdateAttribute implements AttributeUpdatesModel
 {
     /**
      * @inheritDoc

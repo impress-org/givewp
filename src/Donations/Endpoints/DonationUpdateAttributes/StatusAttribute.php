@@ -10,7 +10,7 @@ use Give\Donations\ValueObjects\DonationStatus;
  *
  * @unreleased
  */
-class StatusAttribute extends DonationUpdateAttribute
+class StatusAttribute extends DonationUpdateAttribute implements AttributeUpdatesModel
 {
     /**
      * @inheritDoc
