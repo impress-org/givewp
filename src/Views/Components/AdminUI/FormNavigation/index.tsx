@@ -6,13 +6,21 @@ import Button from '@givewp/components/AdminUI/Button';
 import ActionMenu from '@givewp/components/AdminUI/ActionMenu';
 import LeftArrowIcon from '@givewp/components/AdminUI/Icons/LeftArrowIcon';
 import DownArrowIcon from '@givewp/components/AdminUI/Icons/DownArrowIcon';
-import {FormNavigationProps} from '@givewp/components/AdminUI/FormNavigation/types';
 
 /**
  *
  * @unreleased
  */
 
+export type FormNavigationProps = {
+    navigationalOptions: Array<{id: number; title: string}>;
+    onSubmit: () => void;
+    pageDescription: string;
+    pageId: number;
+    pageTitle: string;
+    actionConfig: Array<{title: string; action: any}>;
+    isDirty: boolean;
+};
 export default function FormNavigation({
     navigationalOptions,
     onSubmit,

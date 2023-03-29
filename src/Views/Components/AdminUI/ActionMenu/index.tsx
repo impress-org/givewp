@@ -1,10 +1,14 @@
 import styles from './style.module.scss';
-import {ActionMenuProps} from '@givewp/components/AdminUI/ActionMenu/types';
 
 /**
  *
  * @unreleased
  */
+
+export type ActionMenuProps = {
+    menuConfig: Array<{title: string; action: () => void}>;
+    toggle: () => void;
+};
 
 export default function ActionMenu({menuConfig, toggle}: ActionMenuProps) {
     const handleClick = (action) => {
