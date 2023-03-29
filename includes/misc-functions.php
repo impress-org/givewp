@@ -2579,6 +2579,17 @@ function give_check_addon_updates( $_transient_data ) {
 	return $_transient_data;
 }
 
+/**
+ * Get page by title
+ *
+ * @unreleased
+ *
+ * @param string $page_title
+ * @param string $output
+ * @param string $post_type
+ *
+ * @return null|WP_Post
+ */
 function give_get_page_by_title($page_title, $output = OBJECT, $post_type)
 {
     $args = [

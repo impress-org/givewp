@@ -600,6 +600,8 @@ class Give_Subscriptions_DB extends Give_DB
     }
 
     /**
+     * @unreleased Replace deprecated get_page_by_title() with give_get_page_by_title().
+     *
      * @param $args
      *
      * @return string
