@@ -14,7 +14,6 @@
         flex-wrap: wrap;
     }
 
-
     .paymentGatewayLink {
         display: grid;
         grid-template-columns: 1fr;
@@ -25,7 +24,6 @@
             grid-row: 2;
             display: flex;
             align-items: center;
-            justify-content: flex-end;
             gap: var(--givewp-spacing-2);
             color: var(--wp-blue-blue-50);
             font-weight: 600;
@@ -47,17 +45,42 @@
     gap: var(--givewp-spacing-16) 0;
 }
 
-
-@media all and (max-width: 585px) {
-    .legend {
+@media (max-width: 1100px) {
+    .wrapper {
         flex-direction: column;
+        justify-content: center;
+    }
 
-        .paymentType {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+    .paymentGatewayLink > a {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 750px) {
+    .actions {
+        grid-template-columns: repeat(2, 1fr);
+
+        > div:nth-child(2), div:nth-child(4), div:nth-child(6), {
             width: 100%;
+            justify-items: end;
+            align-items: end;
+        }
+    }
+}
+
+@media (max-width: 500px) {
+    .actions {
+        grid-template-columns: repeat(1, 1fr);
+
+        > div {
+            width: 100%;
+            justify-items: center;
+            align-items: center;
+        }
+
+        > div:nth-child(2), div:nth-child(4), div:nth-child(6), {
+            justify-items: center;
+            align-items: center;
         }
     }
 }

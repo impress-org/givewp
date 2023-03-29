@@ -9,23 +9,19 @@
     box-shadow: 0 2px 4px 0 rgba(14, 14, 14, 0.15);
 
     .wrapper {
-        flex: .715;
         display: flex;
         align-items: center;
         justify-content: space-between;
         flex-wrap: wrap;
-
 
         .container {
             display: flex;
             align-items: center;
             justify-content: center;
             flex-wrap: wrap;
-
             gap: var(--givewp-spacing-2);
             background: none;
             border: none;
-
             cursor: pointer;
 
             & > h1 {
@@ -42,18 +38,21 @@
     }
 
     .actions {
+        flex: 1;
         display: flex;
         align-items: center;
+        justify-content: flex-end;
         gap: var(--givewp-spacing-3);
 
         .relativeContainer {
             position: relative;
+            display: flex;
+            gap: var(--givewp-spacing-3);
 
             > button > svg > path {
                 stroke: var(--wp-blue-blue-50);
             }
         }
-
 
         .pageDetails {
             flex-wrap: wrap;
@@ -70,5 +69,11 @@
                 margin-right: var(--givewp-spacing-2);
             }
         }
+    }
+}
+
+@media (max-width: 645px) {
+    .formPageNavigation, .actions {
+        flex-direction: column;
     }
 }

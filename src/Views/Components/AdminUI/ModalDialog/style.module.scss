@@ -118,3 +118,9 @@
         animation: none;
     }
 }
+
+@media (max-width: 750px) {
+    .dialog, {
+        max-width: 100vw;
+    }
+}

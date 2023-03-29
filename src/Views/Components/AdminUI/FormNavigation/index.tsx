@@ -47,22 +47,24 @@ export default function FormNavigation({onSubmit, actionConfig, isDirty, pageInf
                 </div>
 
                 <div className={styles.relativeContainer}>
-                    <Button
-                        onClick={toggleMoreActions}
-                        variant={'secondary'}
-                        size={'small'}
-                        type={'button'}
-                        disabled={false}
-                    >
-                        {__('More Actions', 'give')}
-                        <DownArrowIcon />
-                    </Button>
-                    {toggleActions && <ActionMenu menuConfig={actionConfig} toggle={toggleMoreActions} />}
-                </div>
+                    <div>
+                        <Button
+                            onClick={toggleMoreActions}
+                            variant={'secondary'}
+                            size={'small'}
+                            type={'button'}
+                            disabled={false}
+                        >
+                            {__('More Actions', 'give')}
+                            <DownArrowIcon />
+                        </Button>
+                        {toggleActions && <ActionMenu menuConfig={actionConfig} toggle={toggleMoreActions} />}
+                    </div>
 
-                <Button onClick={onSubmit} variant={'primary'} size={'small'} type={'submit'} disabled={!isDirty}>
-                    {__('Save Changes', 'give')}
-                </Button>
+                    <Button onClick={onSubmit} variant={'primary'} size={'small'} type={'submit'} disabled={!isDirty}>
+                        {__('Save Changes', 'give')}
+                    </Button>
+                </div>
             </div>
         </header>
     );

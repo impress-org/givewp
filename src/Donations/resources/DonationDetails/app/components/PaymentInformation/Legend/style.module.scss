@@ -27,3 +27,10 @@
         gap: var(--givewp-spacing-6);
     }
 }
+
+@media (max-width: 750px) {
+    .legend {
+        justify-content: center;
+        gap: var(--givewp-spacing-5);
+    }
+}
