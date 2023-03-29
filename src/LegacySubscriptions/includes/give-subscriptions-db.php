@@ -633,7 +633,7 @@ class Give_Subscriptions_DB extends Give_DB
             $where .= " AND `id` = " . absint($args['search']) . "";
         } else {
             // See if search matches a product name
-            $form = get_page_by_title(trim($args['search']), OBJECT, 'give_forms');
+            $form = give_get_page_by_title(trim($args['search']), OBJECT, 'give_forms');
             if ($form) {
                 $args['search'] = $form->ID;
                 $where .= " AND `product_id` = " . absint($args['search']) . "";
