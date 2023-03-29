@@ -28,7 +28,7 @@ const settings: FieldBlock['settings'] = {
         },
         setPrice: {
             type: 'number',
-            default: '100',
+            default: '25',
         },
         customAmount: {
             type: 'boolean',
