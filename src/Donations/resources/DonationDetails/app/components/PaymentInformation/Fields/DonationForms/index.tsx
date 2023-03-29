@@ -1,5 +1,6 @@
-import {__} from '@wordpress/i18n';
 import React from 'react';
+import {__} from '@wordpress/i18n';
+
 import SearchSelector from '@givewp/components/AdminUI/SearchSelector';
 import Field from '../Field';
 

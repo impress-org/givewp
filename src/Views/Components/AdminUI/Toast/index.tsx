@@ -4,7 +4,13 @@ import cx from 'classnames';
 import CircularExitIcon from '@givewp/components/AdminUI/Icons/CircularExitIcon';
 
 import styles from './style.module.scss';
-import {ToastProps} from '@givewp/components/AdminUI/Toast/types';
+
+export type ToastProps = {
+    resultType: 'success' | 'error' | null;
+    resultMessage: string;
+    closeMessage: () => void;
+    showMessage: boolean;
+};
 
 export default function Toast({resultType, resultMessage, showMessage, closeMessage}: ToastProps) {
     const [isActive, setIsActive] = useState(false);

@@ -1,5 +1,5 @@
 import {__} from '@wordpress/i18n';
-import {PageInformation} from '@givewp/components/AdminUI/FormPage/types';
+import {PageInformation} from '@givewp/components/AdminUI/FormPage';
 
 /**
  *

@@ -1,11 +1,10 @@
-import React, {createContext, useState} from 'react';
+import React, {useState} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 
 import FormNavigation from '@givewp/components/AdminUI/FormNavigation';
 import Toast from '@givewp/components/AdminUI/Toast';
 import {Form} from '@givewp/components/AdminUI/FormElements';
 
-import {FormPageProps} from './types';
 import {joiResolver} from '@hookform/resolvers/joi';
 import {PostRequest} from '@givewp/components/AdminUI/api';
 
@@ -14,7 +13,24 @@ import {PostRequest} from '@givewp/components/AdminUI/api';
  * @unreleased
  */
 
-export const ModalContext = createContext((label, content, confirmationAction, exitCallback, button, notice) => {});
+export interface PageInformation {
+    id: number;
+    description: string;
+    title: string;
+}
+
+export interface FormPageProps {
+    formId: string;
+    endpoint: string;
+    apiNonce: string;
+    errorMessage: string;
+    successMessage: string;
+    defaultValues;
+    validationSchema;
+    children: React.ReactNode;
+    pageInformation: PageInformation;
+    actionConfig: Array<{title: string; action: any}>;
+}
 
 export default function FormPage({
     formId,

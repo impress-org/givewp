@@ -4,13 +4,17 @@ import cx from 'classNames';
 import SubscriptionBadgeIcon from '@givewp/components/AdminUI/Icons/SubscriptionBadgeIcon';
 import SingleBadgeIcon from '@givewp/components/AdminUI/Icons/SingleBadgeIcon';
 
-import {DonationTypeProps} from './types';
 import styles from './style.module.scss';
 
 /**
  *
  * @unreleased
  */
+
+export type DonationTypeProps = {
+    donationType: 'single' | 'subscription' | string | null;
+};
+
 function renderPaymentTypeIcon(type: 'single' | 'subscription' | string | null) {
     switch (type) {
         case 'single':

@@ -2,7 +2,6 @@ import React from 'react';
 
 import cx from 'classnames';
 
-import {FormElementProps, TextInputFieldProps} from './types';
 import CurrencyInput from 'react-currency-input-field';
 
 import styles from './style.module.scss';
@@ -11,6 +10,12 @@ import styles from './style.module.scss';
  *
  * @unreleased
  */
+
+export type FormElementProps = {
+    children: React.ReactNode;
+    onSubmit: React.FormEventHandler<HTMLFormElement>;
+    id: string;
+};
 
 const Form: React.FC<HTMLFormElement | FormElementProps> = ({children, id, onSubmit}) => (
     <form className={styles.form} id={id} onSubmit={onSubmit}>
@@ -22,6 +27,13 @@ const Form: React.FC<HTMLFormElement | FormElementProps> = ({children, id, onSub
  *
  * @unreleased
  */
+
+export type TextInputFieldProps = {
+    name: string;
+    type: string;
+    placeholder: string;
+    label: string;
+};
 
 const TextInputField = React.forwardRef<HTMLInputElement, TextInputFieldProps>(
     ({name, type, placeholder, label, ...props}, ref) => {
@@ -41,6 +53,16 @@ const TextInputField = React.forwardRef<HTMLInputElement, TextInputFieldProps>(
  * @unreleased
  */
 
+export type CurrencyInputFieldProps = {
+    name: string;
+    type: string;
+    placeholder: string;
+    label: string;
+    currency: string;
+    defaultValue: number;
+    handleCurrencyChange: () => void;
+};
+
 const CurrencyInputField = ({defaultValue, placeholder, handleCurrencyChange, currency, label}) => {
     return (
         <label>
@@ -54,7 +76,7 @@ const CurrencyInputField = ({defaultValue, placeholder, handleCurrencyChange, cu
                     }}
                     intlConfig={{
                         locale: navigator.language,
-                        currency: 'USD',
+                        currency: currency,
                     }}
                     decimalSeparator={'.'}
                     groupSeparator={','}

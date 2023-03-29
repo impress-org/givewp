@@ -4,16 +4,23 @@ import {__} from '@wordpress/i18n';
 import Button from '@givewp/components/AdminUI/Button';
 import ActionMenu from '@givewp/components/AdminUI/ActionMenu';
 
-import {FormNavigationProps} from './types';
-
-import styles from './style.module.scss';
 import LeftArrowIcon from '@givewp/components/AdminUI/Icons/LeftArrowIcon';
 import DownArrowIcon from '@givewp/components/AdminUI/Icons/DownArrowIcon';
+
+import {PageInformation} from '@givewp/components/AdminUI/FormPage';
+import styles from './style.module.scss';
 
 /**
  *
  * @unreleased
  */
+
+export type FormNavigationProps = {
+    onSubmit: () => void;
+    pageInformation: PageInformation;
+    actionConfig: Array<{title: string; action: any}>;
+    isDirty: boolean;
+};
 
 export default function FormNavigation({onSubmit, actionConfig, isDirty, pageInformation}: FormNavigationProps) {
     const [toggleActions, setToggleActions] = useState<boolean>(false);

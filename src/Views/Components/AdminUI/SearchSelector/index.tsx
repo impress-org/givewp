@@ -1,18 +1,28 @@
 import React, {useState} from 'react';
 import {Controller, useFormContext, useWatch} from 'react-hook-form';
 import ReactSelect, {components} from 'react-select';
+
 import SearchMagnifyingGlassIcon from '@givewp/components/AdminUI/Icons/SearchMaginfyingGlassIcon';
+import DownArrowIcon from '@givewp/components/AdminUI/Icons/DownArrowIcon';
 
 import styles from './style.module.scss';
 import {StyleConfig} from './StyleConfig';
-
-import {SearchSelector} from '@givewp/components/AdminUI/SearchSelector/types';
-import DownArrowIcon from '@givewp/components/AdminUI/Icons/DownArrowIcon';
 
 /**
  *
  * @unreleased
  */
+
+export type SearchSelector = {
+    options: Array<{
+        value: number;
+        label: string;
+    }>;
+    defaultLabel?: string;
+    name: string;
+    placeholder: string;
+};
+
 export default function SearchSelector({options, name, placeholder}: SearchSelector) {
     const {control} = useFormContext();
     const [focus, setFocus] = useState(false);

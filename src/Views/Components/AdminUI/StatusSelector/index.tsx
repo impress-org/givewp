@@ -4,7 +4,18 @@ import cx from 'classnames';
 import styles from './style.module.scss';
 import DownArrowIcon from '@givewp/components/AdminUI/Icons/DownArrowIcon';
 import {StyleConfig} from './StyleConfig';
-import {StatusSelector} from '@givewp/components/AdminUI/StatusSelector/types';
+
+/**
+ *
+ * @unreleased
+ */
+
+export type StatusSelector = {
+    options: Array<{
+        value: string;
+        label: string;
+    }>;
+};
 
 export default function StatusSelector({options}: StatusSelector) {
     const {control} = useFormContext();

@@ -1,10 +1,13 @@
-import Field from '../Field';
-import {__} from '@wordpress/i18n';
 import {useState} from 'react';
-import styles from './style.module.scss';
+import {__} from '@wordpress/i18n';
+
 import {useFormContext, useWatch} from 'react-hook-form';
 import {format, parse} from 'date-fns';
+
+import Field from '../Field';
 import {AmpmField, NumberField} from './inputFields';
+
+import styles from './style.module.scss';
 
 export default function TimePickerField() {
     const timeObject = useWatch({name: 'createdAt'});

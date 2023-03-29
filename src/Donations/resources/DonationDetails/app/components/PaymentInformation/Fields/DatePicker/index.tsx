@@ -1,13 +1,15 @@
-import Field from '../Field';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import {useState} from 'react';
 import {__} from '@wordpress/i18n';
 import {DayPickerSingleDateController} from 'react-dates';
-import styles from './style.module.scss';
 import {useFormContext, useWatch} from 'react-hook-form';
 import moment from 'moment';
 import {format} from 'date-fns';
+
+import Field from '../Field';
+
+import styles from './style.module.scss';
 
 type CalendarProps = {
     closeCalendar: (newDate: Date) => void;

@@ -3,14 +3,18 @@ import StatusSelector from '@givewp/components/AdminUI/StatusSelector';
 
 import {donationStatusOptions} from '../../../config/donationStatus';
 
-import {LegendProps} from './types';
-
 import styles from './style.module.scss';
 
 /**
  *
  * @unreleased
  */
+
+export type LegendProps = {
+    title: string;
+    donationType: string;
+};
+
 export default function Legend({title, donationType}: LegendProps) {
     return (
         <div className={styles.legend}>

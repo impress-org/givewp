@@ -1,11 +1,14 @@
-import {ActionMenuProps} from './types';
-
 import styles from './style.module.scss';
 
 /**
  *
  * @unreleased
  */
+
+export type ActionMenuProps = {
+    menuConfig: any;
+    toggle: any;
+};
 
 export default function ActionMenu({menuConfig, toggle}: ActionMenuProps) {
     const handleClick = (action) => {

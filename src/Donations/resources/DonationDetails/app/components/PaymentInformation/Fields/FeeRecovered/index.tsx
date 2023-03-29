@@ -1,12 +1,15 @@
 import {useState} from 'react';
-import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import {CurrencyField} from '../Field';
 import {useFormContext, useWatch} from 'react-hook-form';
-import {formatCurrency} from '../../../../utilities/formatter';
 import {__} from '@wordpress/i18n';
+
+import {formatCurrency} from '../../../../utilities/formatter';
+
 import {CurrencyInputField} from '@givewp/components/AdminUI/FormElements';
 import Button from '@givewp/components/AdminUI/Button';
+import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import NoticeInformationIcon from '@givewp/components/AdminUI/Icons/NoticeInformationIcon';
+
 import {CurrencyAmountDialogProps} from '../Amount';
 
 const {currency} = window.GiveDonations.donationDetails.amount;
