@@ -29,9 +29,7 @@ class AmountAttribute extends DonationUpdateAttribute
             'type' => 'number',
             'required' => false,
             'minimum' => 0,
-            'sanitize_callback' => function ($param) {
-                return floatval($param);
-            },
+            'sanitize_callback' => 'sanitize_text_field',
             'validate_callback' => 'rest_validate_request_arg',
         ];
     }
