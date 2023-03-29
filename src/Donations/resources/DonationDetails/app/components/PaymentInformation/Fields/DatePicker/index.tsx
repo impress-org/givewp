@@ -8,53 +8,52 @@ import styles from './style.module.scss';
 import {useFormContext, useWatch} from 'react-hook-form';
 import moment from 'moment';
 import {format} from 'date-fns';
-import {CalendarProps} from '../types';
+
+type CalendarProps = {
+    closeCalendar: (newDate: Date) => void;
+    initialDate: string;
+};
 
 export default function DatePickerField() {
     const watchedDate = useWatch({name: 'createdAt'});
+    const {setValue} = useFormContext();
 
     const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
 
+    const setNewFormFieldValue = (newDateObject) => {
+        setIsCalendarOpen(!isCalendarOpen);
+
+        setValue('createdAt', newDateObject, {shouldDirty: true});
+    };
+
     return (
         <Field label={__('Donation date', 'give')} editable onEdit={() => setIsCalendarOpen(!isCalendarOpen)}>
-            {isCalendarOpen && <Calendar closeCalendar={() => setIsCalendarOpen(!isCalendarOpen)} />}
-            <span>{format(new Date(watchedDate), 'MMMM, dd, yyyy')}</span>
+            {isCalendarOpen && <Calendar initialDate={watchedDate} closeCalendar={setNewFormFieldValue} />}
+            <span>{format(watchedDate, 'MMMM, dd, yyyy')}</span>
         </Field>
     );
 }
 
-export function Calendar({closeCalendar}: CalendarProps) {
-    const {setValue, getValues} = useFormContext();
-    const createdAt = getValues('createdAt');
-
-    const [focused, setFocused] = useState<boolean>(false);
-    const [date, setDate] = useState<object | null>(moment(createdAt, 'yyyy-MM-dd'));
-
+export function Calendar({closeCalendar, initialDate}: CalendarProps) {
     const handleDateChange = (newDate) => {
-        setDate(newDate);
+        const formattedDate = newDate.toDate();
 
-        const formattedDate = newDate.format('yyyy-MM-D');
-        const preservedTimeValue = new Date(createdAt).toLocaleTimeString();
+        const newDateObject = new Date(initialDate);
+        newDateObject.setDate(formattedDate.getDate());
+        newDateObject.setMonth(formattedDate.getMonth());
+        newDateObject.setFullYear(formattedDate.getFullYear());
 
-        const newDateObject = new Date(`${formattedDate} ${preservedTimeValue}`);
-
-        const validFormFieldValue = newDateObject.toISOString();
-
-        setValue('createdAt', validFormFieldValue, {shouldDirty: true});
-
-        closeCalendar();
+        closeCalendar(newDateObject);
     };
 
     return (
         <div className={styles.calendarPosition}>
             <DayPickerSingleDateController
-                date={date}
+                date={moment(initialDate)}
                 onDateChange={handleDateChange}
-                focused={focused}
                 numberOfMonths={1}
                 isOutsideRange={() => false}
                 onBlur={close}
-                displayFormat={() => 'DD/MM/YYYY'}
             />
         </div>
     );

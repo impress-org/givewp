@@ -1,9 +1,12 @@
 import {useState} from 'react';
+import {format} from 'date-fns';
 
 const PostRequest = (endpoint: string, apiNonce: string, successMessage: string, errorMessage: string) => {
     const [result, setResult] = useState({type: null, message: ''});
 
     const postData = async (postData) => {
+        postData.createdAt = format(postData.createdAt, 'yyyy-MM-dd HH:mm:ss');
+
         try {
             const res = await fetch(`${endpoint}`, {
                 method: 'POST',

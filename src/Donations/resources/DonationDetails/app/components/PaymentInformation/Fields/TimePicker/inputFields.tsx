@@ -1,6 +1,19 @@
 import {useRef} from 'react';
 import {__} from '@wordpress/i18n';
-import {AmpmProps, NumberFieldProps} from '../types';
+
+type NumberFieldProps = {
+    state: number;
+    setState;
+    label: string;
+    id: string;
+    min: number;
+    max: number;
+};
+
+type AmpmProps = {
+    setState;
+    state: string;
+};
 
 export function NumberField({state, setState, label, id, min, max}: NumberFieldProps) {
     const inputRef = useRef(null);

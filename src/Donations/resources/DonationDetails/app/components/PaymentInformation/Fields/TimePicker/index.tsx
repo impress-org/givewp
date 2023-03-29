@@ -2,22 +2,30 @@ import Field from '../Field';
 import {__} from '@wordpress/i18n';
 import {useState} from 'react';
 import styles from './style.module.scss';
-import {useWatch} from 'react-hook-form';
-import {format} from 'date-fns';
+import {useFormContext, useWatch} from 'react-hook-form';
+import {format, parse} from 'date-fns';
 import {AmpmField, NumberField} from './inputFields';
-import {Actions} from './Actions';
 
 export default function TimePickerField() {
-    const watchedTime = useWatch({name: 'createdAt'});
-    const timeObject = new Date(watchedTime);
+    const timeObject = useWatch({name: 'createdAt'});
+
+    const {setValue} = useFormContext();
 
     const [showFields, setShowFields] = useState<boolean>(false);
+
+    const setNewFormFieldValue = (newDateObject) => {
+        setShowFields(false);
+
+        if (newDateObject) {
+            setValue('createdAt', newDateObject, {shouldDirty: true});
+        }
+    };
 
     return (
         <Field label={__('Donation time', 'give')} editable onEdit={() => setShowFields(!showFields)}>
             {showFields ? (
                 <div className={styles.timePickerPosition}>
-                    <TimeFields isOpen={showFields} timeObject={timeObject} closeFields={() => setShowFields(false)} />
+                    <TimeFields initialTime={timeObject} isOpen={showFields} closeFields={setNewFormFieldValue} />
                 </div>
             ) : (
                 <span>{format(timeObject, 'h:mm a')}</span>
@@ -26,10 +34,23 @@ export default function TimePickerField() {
     );
 }
 
-export function TimeFields({isOpen, timeObject, closeFields}) {
-    const [hours, setHours] = useState<number>(Number(format(timeObject, timeObject.getHours() >= 12 ? 'h' : 'h')));
-    const [minutes, setMinutes] = useState<number>(Number(format(timeObject, timeObject.getMinutes())));
-    const [ampm, setAmpm] = useState<string>(format(timeObject, 'h:mm a').split(' ')[1]);
+type TimeFieldProps = {
+    isOpen: boolean;
+    closeFields: (newDate: Date | null) => void;
+    initialTime: Date;
+};
+
+export function TimeFields({isOpen, closeFields, initialTime}: TimeFieldProps) {
+    const [hours, setHours] = useState<number>(Number(format(initialTime, initialTime.getHours() >= 12 ? 'h' : 'h')));
+    const [minutes, setMinutes] = useState<number>(Number(format(initialTime, String(initialTime.getMinutes()))));
+    const [ampm, setAmpm] = useState<string>(format(initialTime, 'h:mm a').split(' ')[1]);
+
+    const confirmFieldValues = () => {
+        const dateString = String(`${hours}:${minutes} ${ampm}`);
+        const newDateObject = parse(dateString, 'h:m a', initialTime);
+
+        closeFields(newDateObject);
+    };
 
     return (
         <>
@@ -51,13 +72,25 @@ export function TimeFields({isOpen, timeObject, closeFields}) {
                 max={59}
             />
             <AmpmField state={ampm} setState={setAmpm} />
-            <Actions
-                isOpen={isOpen}
-                closeFields={() => closeFields(false)}
-                hours={hours}
-                minutes={minutes}
-                ampm={ampm}
-            />
+
+            <div className={styles.timeFieldActions}>
+                <span
+                    className={styles.confirmSelection}
+                    role={'button'}
+                    aria-pressed={isOpen}
+                    onClick={confirmFieldValues}
+                >
+                    {__('Set', 'give')}
+                </span>
+                <span
+                    className={styles.cancelSelection}
+                    role={'button'}
+                    aria-pressed={isOpen}
+                    onClick={confirmFieldValues}
+                >
+                    {__('Cancel', 'give')}
+                </span>
+            </div>
         </>
     );
 }

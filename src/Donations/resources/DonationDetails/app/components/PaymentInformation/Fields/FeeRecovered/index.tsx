@@ -7,7 +7,7 @@ import {__} from '@wordpress/i18n';
 import {CurrencyInputField} from '@givewp/components/AdminUI/FormElements';
 import Button from '@givewp/components/AdminUI/Button';
 import NoticeInformationIcon from '@givewp/components/AdminUI/Icons/NoticeInformationIcon';
-import {CurrencyAmountDialogProps} from '../types';
+import {CurrencyAmountDialogProps} from '../Amount';
 
 const {currency} = window.GiveDonations.donationDetails.amount;
 
