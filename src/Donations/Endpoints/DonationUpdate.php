@@ -31,7 +31,14 @@ class DonationUpdate extends Endpoint
     /**
      * @var array
      */
-    private $attributes = [];
+    private $attributes = [
+        IdAttribute::class,
+        StatusAttribute::class,
+        AmountAttribute::class,
+        FeeAmountRecoveredAttribute::class,
+        FormIdAttribute::class,
+        CreatedAtAttribute::class,
+    ];
 
     /**
      * @unreleased
@@ -40,15 +47,6 @@ class DonationUpdate extends Endpoint
      */
     public function registerRoute()
     {
-        $this->registerRouteAttributes([
-            IdAttribute::class,
-            StatusAttribute::class,
-            AmountAttribute::class,
-            FeeAmountRecoveredAttribute::class,
-            FormIdAttribute::class,
-            CreatedAtAttribute::class,
-        ]);
-
         register_rest_route(
             'give-api/v2',
             $this->endpoint,
@@ -103,7 +101,7 @@ class DonationUpdate extends Endpoint
                 if (is_null($value)) {
                     continue;
                 }
-                
+
                 $updatedDonation = $attr::update($value, $donation);
 
                 if (is_a($updatedDonation, Donation::class)) {
@@ -134,23 +132,12 @@ class DonationUpdate extends Endpoint
      */
     private function getRouteAttributes(): array
     {
-        return array_map(
-            function ($attribute) {
-                return $attribute::getDefinition();
-            },
-            $this->attributes
-        );
-    }
+        $routeAttributes = [];
 
-    /**
-     * @param string[] $array
-     *
-     * @return void
-     */
-    private function registerRouteAttributes(array $array)
-    {
-        foreach ($array as $class) {
-            $this->attributes[$class::getId()] = $class;
+        foreach ($this->attributes as $attribute) {
+            $routeAttributes[$attribute::getId()] = $attribute::getDefinition();
         }
+
+        return $routeAttributes;
     }
 }
