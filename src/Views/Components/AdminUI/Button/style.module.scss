@@ -12,6 +12,12 @@
     cursor: pointer;
     border: 1px solid transparent;
 
+    &:disabled {
+        background-color: var(--givewp-grey-300);
+        color: var(--givewp-shades-white);
+        border-color: var(--givewp-grey-300);
+    }
+
     > svg {
         transform: translate(8px, 1px);
     }
@@ -68,11 +74,5 @@
     padding: var(--givewp-spacing-4) var(--givewp-spacing-20);
 }
 
-.button {
-    &:disabled {
-        background-color: var(--givewp-grey-300);
-        color: var(--givewp-shades-white);
-        border-color: var(--givewp-grey-300);
-    }
-}
+
 
