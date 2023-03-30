@@ -3,10 +3,26 @@ import {cancelSubscriptionWithAPI} from './utils';
 
 import {__} from '@wordpress/i18n';
 import './style.scss';
+import {useState} from 'react';
+
+const responseIsError = (response) => {
+    return response?.data?.code === 'error';
+};
 
 const SubscriptionCancelModal = ({id, onRequestClose}) => {
+    const [cancelling, setCancelling] = useState(false);
     const handleCancel = async () => {
-        await cancelSubscriptionWithAPI(id);
+        setCancelling(true);
+        const response = await cancelSubscriptionWithAPI(id);
+
+        if (responseIsError(response)) {
+            window.alert(
+                response?.data?.message ?? __('An error occurred while cancelling your subscription.', 'give')
+            );
+        }
+
+        setCancelling(false);
+
         onRequestClose();
     };
 
@@ -16,7 +32,9 @@ const SubscriptionCancelModal = ({id, onRequestClose}) => {
                 <div className="give-donor-dashboard-cancel-modal__header">{__('Cancel Subscription?', 'give')}</div>
                 <div className="give-donor-dashboard-cancel-modal__body">
                     <div className="give-donor-dashboard-cancel-modal__buttons">
-                        <Button onClick={() => handleCancel()}>{__('Yes, cancel', 'give')}</Button>
+                        <Button disabled={cancelling} onClick={() => handleCancel()}>
+                            {!cancelling ? __('Yes, cancel', 'give') : __('Cancelling...', 'give')}
+                        </Button>
                         <a className="give-donor-dashboard-cancel-modal__cancel" onClick={() => onRequestClose()}>
                             {__('Nevermind', 'give')}
                         </a>
