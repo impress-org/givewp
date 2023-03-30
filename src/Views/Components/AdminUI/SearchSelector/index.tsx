@@ -62,6 +62,7 @@ export default function SearchSelector({options, name, placeholder}: SearchSelec
                         options={options}
                         onChange={(selectedOption) => {
                             onChange(selectedOption.value);
+                            handleFocus();
                         }}
                         onFocus={handleFocus}
                         onBlur={handleFocus}
