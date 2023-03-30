@@ -709,7 +709,10 @@ function give_donation_import_callback() {
 	$import_setting['dry_run']     = $output['dry_run'];
 
 	// Parent key id.
-	$main_key = maybe_unserialize( $output['main_key'] );
+	$main_key = is_serialized( $output['main_key'] )
+		/** @unreleased Avoid insecure usage of `unserialize` when the data could be submitted by the user. */
+		? @unserialize( trim( $output['main_key'] ), ['allowed_classes' => false] )
+		: $output['main_key'];
 
 	$current    = absint( $_REQUEST['current'] );
 	$total_ajax = absint( $_REQUEST['total_ajax'] );
