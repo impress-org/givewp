@@ -58,12 +58,10 @@ export default function FormPage({
 
     const handleSubmitRequest = async (formFieldValues) => {
         try {
-            console.log(JSON.stringify(formFieldValues));
-            console.log(endpoint);
             await postData(formFieldValues);
             setApiShowMessage(true);
         } catch (error) {
-            alert(error);
+            console.error(error);
             setApiShowMessage(true);
         }
     };

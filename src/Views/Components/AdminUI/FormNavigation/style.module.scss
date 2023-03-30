@@ -51,7 +51,7 @@
             gap: var(--givewp-spacing-3);
 
             > button > svg > path {
-                stroke: var(--wp-blue-blue-50);
+                stroke: var(--wp-blue-blue-50) !important;
             }
         }
 

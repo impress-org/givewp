@@ -6,6 +6,10 @@
     justify-content: flex-start;
     cursor: pointer;
 
+    span {
+        font-size: .925rem;
+    }
+
     > .labelContainer {
         display: flex;
         gap: var(--givewp-spacing-1);
@@ -16,7 +20,6 @@
         cursor: pointer;
 
         span:first-child {
-            font-size: 1rem;
             font-weight: 500;
             font-stretch: normal;
             font-style: normal;
@@ -27,14 +30,14 @@
             margin-bottom: var(--givewp-spacing-2);
         }
 
-
         .button {
             background-color: transparent;
             border: none;
             cursor: pointer;
         }
-    }
 
+
+    }
 
     .amount {
         display: block;
