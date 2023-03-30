@@ -1,0 +1,23 @@
+.navigationMenu {
+    position: absolute;
+    width: 10.375rem;
+    background: var(--givewp-shades-white);
+    border: solid 1px var(--givewp-grey-25);
+    box-shadow: 0 2px 4px 0 rgba(14, 14, 14, 0.15);
+    z-index: 999;
+    cursor: pointer;
+
+    li:last-child > button {
+        color: var(--givewp-red-500);
+    }
+
+    > li > button {
+        text-align: center;
+        width: 100%;
+        padding-block: var(--givewp-spacing-4);
+        background: none;
+        border: none;
+        cursor: pointer;
+
+    }
+}
