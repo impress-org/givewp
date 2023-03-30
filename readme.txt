@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 7.0
-Stable tag: 2.25.2
+Stable tag: 2.25.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -151,11 +151,11 @@ Stay in touch with us for important plugin news and updates:
 
 === 🐱‍💻 Contribute to GiveWP ===
 
-This plugin is proudly open source (GPL license) and we’re always looking for more contributors. Whether you know another language, can code like no one’s business, or just have an idea, we would love your help and input.
+This plugin is proudly open source (GPL license) and we’re always looking for more contributors. Whether you know another language, love to code, or just have an idea, we would love your help and input.
 
 Here’s a few ways you can contribute to GiveWP:
 
-* Star/fork/watch the [GiveWP GitHub repository](https://go.givewp.com/github "Visit the GiveWP GitHub Repo") to learn more about what issues we're tackling and the project is developing. If you've never worked with Github before, learn about [pull requests here](https://help.github.com/articles/about-pull-requests/) and submit one for GiveWP, we'd love to give you our feedback.
+* Star/fork/watch the [GiveWP GitHub repository](https://go.givewp.com/github) to learn more about what issues we're tackling and the project is developing. If you've never worked with Github before, learn about [pull requests here](https://help.github.com/articles/about-pull-requests/) and submit one for GiveWP, we'd love to give you our feedback.
 
 * Translate GiveWP into your native language. The best place to do that is here on wordpress.org. Go to [https://translate.wordpress.org/](https://translate.wordpress.org/projects/wp-plugins/give), then search for your language, click the "Plugins" tab, then search for "GiveWP". When you've submitted at least 95% of GiveWP's strings, the language moderators will review and approve your translations and then they will be available to all WordPress users for your native language. If you are interested in translating any of our Premium Add-ons, [contact us](https://go.givewp.com/contact), we'd love to chat with you about that.
 
@@ -258,6 +258,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.25.3: March 22nd, 2023 =
+* Security: Protect against CSRF during donation import
+
 = 2.25.2: March 8th, 2023 =
 * Security: Protect against CSRF during give cache clear settings
 * Security: Protect against CSV injection in donation export settings
