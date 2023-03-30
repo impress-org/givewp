@@ -20,6 +20,11 @@ class ChargeRefunded extends StripeEventListener
      */
     public function processEvent(Event $event)
     {
+        /**
+         * @unreleased
+         */
+        do_action('give_stripe_processing_charge_refunded', $event);
+
         /* @var Charge $stripeCharge */
         $stripeCharge = $event->data->object;
         $donation = $this->getDonation($event);

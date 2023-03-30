@@ -45,7 +45,8 @@ function give_import_donation_report_reset() {
 /**
  * Give get form data from csv if not then create and form and return the form value.
  *
- * @since 1.8.13.
+ * @since      1.8.13.
+ * @unreleased Replace deprecated get_page_by_title() with give_get_page_by_title().
  *
  * @param $data .
  *
@@ -73,7 +74,7 @@ function give_import_get_form_data_from_csv( $data, $import_setting = [] ) {
 	}
 
 	if ( false === $form && ! empty( $data['form_title'] ) ) {
-		$form = get_page_by_title( $data['form_title'], OBJECT, 'give_forms' );
+		$form = give_get_page_by_title($data['form_title'], OBJECT, 'give_forms');
 
 		if ( ! empty( $form->ID ) ) {
 
@@ -96,7 +97,7 @@ function give_import_get_form_data_from_csv( $data, $import_setting = [] ) {
 
 		}
 
-		$form = get_page_by_title( $data['form_title'], OBJECT, 'give_forms' );
+        $form = give_get_page_by_title($data['form_title'], OBJECT, 'give_forms');
 		if ( ! empty( $form->ID ) ) {
 			$form = new Give_Donate_Form( $form->ID );
 		}
