@@ -349,36 +349,37 @@ class Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * To test to check is donation form is created or not
-	 *
-	 * @since 2.1
-	 */
+     * To test to check is donation form is created or not
+     *
+     * @since      2.1
+     * @unreleased Replace deprecated get_page_by_title() with give_get_page_by_title().
+     */
 	public function test_to_check_donation_form_is_created() {
 
 		give_import_donation_report_reset();
 
 		$this->import_donation_in_live();
 
-		$form = get_page_by_title( 'Make a wish Foundation', OBJECT, 'give_forms' );
-		$this->assertTrue( ! empty( $form->ID ) );
+		$form = give_get_page_by_title('Make a wish Foundation', OBJECT, 'give_forms');
+        $this->assertTrue(! empty($form->ID));
 		$form = new Give_Donate_Form( $form->ID );
 		$id   = $form->get_ID();
 		$this->assertTrue( ! empty( $id ) );
 
-		$form = get_page_by_title( 'Save the Trees', OBJECT, 'give_forms' );
-		$this->assertTrue( ! empty( $form->ID ) );
+        $form = give_get_page_by_title('Save the Trees', OBJECT, 'give_forms');
+        $this->assertTrue(! empty($form->ID));
 		$form = new Give_Donate_Form( $form->ID );
 		$id   = $form->get_ID();
 		$this->assertTrue( ! empty( $id ) );
 
-		$form = get_page_by_title( 'Help a Child', OBJECT, 'give_forms' );
-		$this->assertTrue( ! empty( $form->ID ) );
+        $form = give_get_page_by_title('Help a Child', OBJECT, 'give_forms');
+        $this->assertTrue(! empty($form->ID));
 		$form = new Give_Donate_Form( $form->ID );
 		$id   = $form->get_ID();
 		$this->assertTrue( ! empty( $id ) );
 
-		$form = get_page_by_title( 'No Donation Form', OBJECT, 'give_forms' );
-		$this->assertTrue( empty( $form->ID ) );
+        $form = give_get_page_by_title('No Donation Form', OBJECT, 'give_forms');
+        $this->assertTrue(empty($form->ID));
 	}
 
 

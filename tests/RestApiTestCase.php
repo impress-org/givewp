@@ -123,11 +123,11 @@ class RestApiTestCase extends TestCase
      */
     public static function wpTearDownAfterClass()
     {
-        foreach (self::$users as $user_id) {
-            wp_delete_user($user_id);
+        foreach (self::$users as $userRole => $userId) {
+            if (wp_delete_user($userId)) {
+                unset(self::$users[$userRole]);
+            }
         }
-
-        self::$users = [];
     }
 
     /**
