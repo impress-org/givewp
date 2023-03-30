@@ -2,8 +2,6 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe\Webhooks\Listeners;
 
-use Give\Donations\Models\DonationNote;
-use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\PaymentGateways\Gateways\Stripe\Webhooks\StripeEventListener;
 use Stripe\Checkout\Session;
@@ -22,6 +20,11 @@ class CheckoutSessionCompleted extends StripeEventListener
      */
     public function processEvent(Event $event)
     {
+        /**
+         * @unreleased
+         */
+        do_action('give_stripe_processing_checkout_session_completed', $event);
+
         /* @var Session $checkoutSession */
         $checkoutSession = $event->data->object;
         $donation = $this->getDonation($event);

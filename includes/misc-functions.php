@@ -2578,3 +2578,37 @@ function give_check_addon_updates( $_transient_data ) {
 
 	return $_transient_data;
 }
+
+/**
+ * Get page by title
+ *
+ * @unreleased
+ *
+ * @param string $page_title
+ * @param string $output
+ * @param string $post_type
+ *
+ * @return null|WP_Post
+ */
+function give_get_page_by_title($page_title, $output = OBJECT, $post_type)
+{
+    $args = [
+        'title' => $page_title,
+        'post_type' => $post_type,
+        'post_status' => get_post_stati(),
+        'posts_per_page' => 1,
+        'update_post_term_cache' => false,
+        'update_post_meta_cache' => false,
+        'no_found_rows' => true,
+        'orderby' => 'post_date ID',
+        'order' => 'ASC',
+    ];
+    $query = new WP_Query($args);
+    $pages = $query->posts;
+
+    if (empty($pages)) {
+        return null;
+    }
+
+    return get_post($pages[0], $output);
+}

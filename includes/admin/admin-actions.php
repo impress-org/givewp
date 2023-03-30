@@ -681,9 +681,13 @@ add_action( 'give_payments_page_top', 'give_import_page_link_callback', 11 );
  * Load donation import ajax callback
  * Fire when importing from CSV start
  *
+ * @since 2.25.3 Append nonce to response url.
  * @since  1.8.13
  */
 function give_donation_import_callback() {
+
+    check_ajax_referer('give_donation_import');
+
 	// Bailout.
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		give_die();
@@ -792,6 +796,7 @@ function give_donation_import_callback() {
 			'delete_csv'    => $import_setting['delete_csv'],
 			'success'       => ( isset( $json_data['success'] ) ? $json_data['success'] : '' ),
 			'dry_run'       => $output['dry_run'],
+            '_wpnonce'      => wp_create_nonce( 'give_donation_import_success' ),
 		]
 	);
 	$json_data['url'] = $url;
