@@ -96,14 +96,13 @@ class DonationUpdate extends Endpoint
         try {
             foreach ($this->attributes as $attr) {
                 $attrId = $attr::getId();
-                $value = $request->get_param($attrId);
 
-                if (is_null($value) || ! is_a($attr, AttributeUpdatesModel::class, true)) {
+                if ( ! $request->has_param($attrId) || ! is_a($attr, AttributeUpdatesModel::class, true)) {
                     continue;
                 }
 
                 $actualValue = $donation->{$attrId};
-                $attr::update($value, $donation);
+                $attr::update($request->get_param($attrId), $donation);
                 $updatedValue = $donation->{$attrId};
 
                 if ($actualValue !== $updatedValue) {
