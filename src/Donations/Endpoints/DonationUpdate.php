@@ -98,7 +98,7 @@ class DonationUpdate extends Endpoint
                 $attrId = $attr::getId();
                 $value = $request->get_param($attrId);
 
-                if (is_null($value) || ! in_array(AttributeUpdatesModel::class, class_implements($attr))) {
+                if (is_null($value) || ! is_a($attr, AttributeUpdatesModel::class, true)) {
                     continue;
                 }
 
