@@ -36,7 +36,7 @@ export default function StatusSelector({options}: StatusSelector) {
     const DropdownIndicator = (props) => {
         return (
             <components.DropdownIndicator {...props}>
-                <DownArrowIcon />
+                <DownArrowIcon color={'#0e0e0e'} />
             </components.DropdownIndicator>
         );
     };

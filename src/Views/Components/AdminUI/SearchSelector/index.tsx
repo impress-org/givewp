@@ -36,7 +36,7 @@ export default function SearchSelector({options, name, placeholder}: SearchSelec
     const DropdownIndicator = (props) => {
         return (
             <components.DropdownIndicator {...props}>
-                {focus ? <SearchMagnifyingGlassIcon /> : <DownArrowIcon />}
+                {focus ? <SearchMagnifyingGlassIcon /> : <DownArrowIcon color={'#0e0e0e'} />}
             </components.DropdownIndicator>
         );
     };
