@@ -72,8 +72,6 @@ export function CurrencyInputField({defaultValue, placeholder, handleCurrencyCha
                         locale: navigator.language,
                         currency: currency,
                     }}
-                    decimalSeparator={'.'}
-                    groupSeparator={','}
                     decimalScale={2}
                     placeholder={placeholder}
                     defaultValue={defaultValue}

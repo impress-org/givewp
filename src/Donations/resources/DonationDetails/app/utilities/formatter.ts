@@ -1,7 +1,9 @@
+import {currencyFormat} from "../../../window";
+
 /**
  * @unreleased
  */
-export interface AmountFormatter  {
+export interface AmountFormatter {
     currency: string,
     options?: Intl.NumberFormatOptions
 }
@@ -24,9 +26,20 @@ export function formatCurrency(amount: number, currency: string) {
     return amountFormatter(currency, {
         maximumFractionDigits: 2,
     }).format(amount);
-};
+}
 
+/**
+ * @unreleased
+ */
 
 export function parseAmountValue(num: number): number {
-    return num ? num / 100 : 0;
+    return num ? formatDecimalPlacement(num) : 0;
+}
+
+/**
+ * @unreleased
+ */
+
+export function formatDecimalPlacement(num: number) {
+    return currencyFormat.number_decimals > 0 ? num / 100 : num;
 }
