@@ -54,10 +54,10 @@ type TimeFieldProps = {
 export function TimeFields({isOpen, closeFields, initialTime}: TimeFieldProps) {
     const [hours, setHours] = useState<number>(Number(format(initialTime, initialTime.getHours() >= 12 ? 'h' : 'h')));
     const [minutes, setMinutes] = useState<number>(Number(format(initialTime, String(initialTime.getMinutes()))));
-    const [ampm, setAmpm] = useState<string>(format(initialTime, 'h:mm a').split(' ')[1]);
+    const [meridiem, setMeridiem] = useState<string>(format(initialTime, 'h:mm a').split(' ')[1]);
 
     const confirmFieldValues = () => {
-        const dateString = String(`${hours}:${minutes} ${ampm}`);
+        const dateString = String(`${hours}:${minutes} ${meridiem}`);
         const newDateObject = parse(dateString, 'h:m a', initialTime);
 
         closeFields(newDateObject);
@@ -82,7 +82,7 @@ export function TimeFields({isOpen, closeFields, initialTime}: TimeFieldProps) {
                 min={0}
                 max={59}
             />
-            <AmpmField state={ampm} setState={setAmpm} />
+            <AmpmField state={meridiem} setState={setMeridiem} />
 
             <div className={styles.timeFieldActions}>
                 <span
