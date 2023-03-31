@@ -6,7 +6,15 @@ import './style.scss';
 import {useState} from 'react';
 
 const responseIsError = (response) => {
-    return response?.data?.code === 'error';
+    return response?.data?.code.includes('error');
+};
+
+const getErrorMessageFromResponse = (response) => {
+    if (response?.data?.code === 'internal_server_error' || !response?.data?.message) {
+        return __('An error occurred while cancelling your subscription.', 'give');
+    }
+
+    return response?.data?.message;
 };
 
 const SubscriptionCancelModal = ({id, onRequestClose}) => {
@@ -16,9 +24,9 @@ const SubscriptionCancelModal = ({id, onRequestClose}) => {
         const response = await cancelSubscriptionWithAPI(id);
 
         if (responseIsError(response)) {
-            window.alert(
-                response?.data?.message ?? __('An error occurred while cancelling your subscription.', 'give')
-            );
+            const errorMessage = getErrorMessageFromResponse(response);
+            
+            window.alert(errorMessage);
         }
 
         setCancelling(false);
