@@ -51,7 +51,7 @@ class DonationDetailsViewModel
         if ( ! is_null($this->donation->feeAmountRecovered)) {
             $donationArray['feeAmountRecovered'] = [
                 'currency' => $this->donation->feeAmountRecovered->getCurrency(),
-                'value' => $this->donation->amount->formatToDecimal(),
+                'value' => $this->donation->feeAmountRecovered->formatToDecimal(),
             ];
         }
 
