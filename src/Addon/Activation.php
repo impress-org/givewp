@@ -2,6 +2,8 @@
 
 namespace Give\Addon;
 
+use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
+
 /**
  * Example of a helper class responsible for registering and handling add-on activation hooks.
  *
@@ -13,11 +15,19 @@ class Activation
     /**
      * Activate add-on action hook.
      *
+     * @unreleased enable the NextGenTestGateway gateway by default
      * @since 0.1.0
      * @return void
      */
     public static function activateAddon()
     {
+        $gateways = give_get_option('gateways');
+
+        if (!array_key_exists(NextGenTestGateway::id(), $gateways)) {
+            $gateways[NextGenTestGateway::id()] = "1";
+
+            give_update_option('gateways', $gateways);
+        }
     }
 
     /**
