@@ -3,7 +3,7 @@
  * @unreleased
  */
 
-const {id, status, formId, feeAmountRecovered, createdAt, amount} = window.GiveDonations.donationDetails
+const {id, status, formId, donorId, feeAmountRecovered, createdAt, amount} = window.GiveDonations.donationDetails
 
 export const defaultFormValues: {
     id: number;
@@ -12,6 +12,7 @@ export const defaultFormValues: {
     createdAt: Date;
     status: string;
     formId: number;
+    donorId: number;
 } = {
     id: id,
     amount: amount.value,
@@ -19,4 +20,5 @@ export const defaultFormValues: {
     createdAt: new Date(createdAt.date),
     status: status,
     formId: formId,
+    donorId: donorId,
 };
