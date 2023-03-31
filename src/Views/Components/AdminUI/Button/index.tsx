@@ -16,12 +16,12 @@ export type ButtonProps = {
     children: React.ReactNode;
 
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
-    disabled?: boolean;
+    disabled: boolean;
     classname?: 'string';
 };
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-    ({children, type = 'button', classname, variant = 'primary', size = 'normal', disabled = false, ...props}, ref) => (
+    ({children, type = 'button', classname, variant = 'primary', size = 'small', disabled = false, ...props}, ref) => (
         <button
             ref={ref}
             disabled={disabled}
