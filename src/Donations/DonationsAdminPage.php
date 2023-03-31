@@ -78,7 +78,6 @@ class DonationsAdminPage
                 $data,
                 [
                     'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/donation')),
-                    'currencyFormat' => give_get_currency_formatting_settings(),
                     'donationDetails' => $donationDetailsViewModel->exports(),
                 ]
             );
