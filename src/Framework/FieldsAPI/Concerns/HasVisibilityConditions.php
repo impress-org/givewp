@@ -142,12 +142,16 @@ trait HasVisibilityConditions
      * Updates the validation rules to include the visibility conditions. This prevents the node from being validated
      * when the conditions are not met.
      *
+     * This also only adds the validation rule if the node has validation rules.
+     *
      * @unreleased
      */
     protected function updateValidationRules()
     {
-        $this->replaceOrPrependRule(ExcludeUnless::id(), new ExcludeUnless($this->visibilityConditions));
-   }
+        if (method_exists($this, 'replaceOrPrependRule')) {
+            $this->replaceOrPrependRule(ExcludeUnless::id(), new ExcludeUnless($this->visibilityConditions));
+        }
+    }
 
     /**
      * Normalize the condition if in array format.

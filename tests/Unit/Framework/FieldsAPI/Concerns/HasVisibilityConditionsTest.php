@@ -16,7 +16,10 @@ final class HasVisibilityConditionsTest extends TestCase
 		$this->assertEquals( [], $mock->getVisibilityConditions() );
 	}
 
-    public function testCanCheckIfHasVisbilityConditions()
+    /**
+     * @unreleased
+     */
+    public function testCanCheckIfHasVisibilityConditions()
     {
         /** @var HasVisibilityConditions $mock */
         $mock = $this->getMockForTrait(HasVisibilityConditions::class);
