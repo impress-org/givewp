@@ -21,7 +21,7 @@ const {currency} = window.GiveDonations.donationDetails.amount;
 export default function FeeRecoveredField() {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-    const {setValue} = useFormContext();
+    const {setValue, register} = useFormContext();
     const feeAmountRecovered = useWatch({name: 'feeAmountRecovered'});
 
     const handleAmountChange = (value) => {
@@ -31,6 +31,7 @@ export default function FeeRecoveredField() {
 
     return (
         <>
+            <input hidden {...register('feeAmountRecovered')} />
             <CurrencyField label="feeRecovered" editable onEdit={() => setIsModalOpen(true)}>
                 {formatCurrency(Number(feeAmountRecovered), currency)}
             </CurrencyField>

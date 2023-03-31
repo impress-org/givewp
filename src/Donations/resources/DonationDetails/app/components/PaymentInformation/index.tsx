@@ -6,7 +6,6 @@ import DonationMethod from './DonationMethod';
 import Legend from './Legend';
 
 import Field from './Fields/Field';
-import HiddenFields from './Fields/HiddenFields';
 import AmountField from './Fields/Amount';
 import FeeRecoveredField from './Fields/FeeRecovered';
 import FormsField from './Fields/DonationForms';
@@ -47,7 +46,6 @@ export default function PaymentInformation() {
                     </a>
                 </div>
             </div>
-            <HiddenFields />
         </fieldset>
     );
 }

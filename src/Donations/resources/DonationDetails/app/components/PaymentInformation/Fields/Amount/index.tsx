@@ -24,7 +24,7 @@ export type CurrencyAmountDialogProps = {
 export default function AmountField() {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-    const {setValue} = useFormContext();
+    const {setValue, register} = useFormContext();
     const amount = useWatch({name: 'amount'});
 
     const handleAmountChange = (value) => {
@@ -34,6 +34,7 @@ export default function AmountField() {
 
     return (
         <>
+            <input hidden {...register('amount')} />
             <CurrencyField label="Amount" editable onEdit={() => setIsModalOpen(true)}>
                 {formatCurrency(Number(amount), currency)}
             </CurrencyField>

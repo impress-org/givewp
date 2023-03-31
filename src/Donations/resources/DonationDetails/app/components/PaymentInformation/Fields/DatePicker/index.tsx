@@ -23,7 +23,7 @@ type CalendarProps = {
 
 export default function DatePickerField() {
     const watchedDate = useWatch({name: 'createdAt'});
-    const {setValue} = useFormContext();
+    const {setValue, register} = useFormContext();
 
     const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
 
@@ -35,6 +35,7 @@ export default function DatePickerField() {
 
     return (
         <Field label={__('Donation date', 'give')} editable onEdit={() => setIsCalendarOpen(!isCalendarOpen)}>
+            <input hidden {...register('createdAt')} />
             {isCalendarOpen && <Calendar initialDate={watchedDate} closeCalendar={setNewFormFieldValue} />}
             <span>{format(watchedDate, 'MMMM, dd, yyyy')}</span>
         </Field>
