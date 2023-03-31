@@ -17,12 +17,14 @@ abstract class Field implements Node
     use Concerns\HasDefaultValue;
     use Concerns\HasName;
     use Concerns\HasType;
-    use Concerns\HasVisibilityConditions;
     use Concerns\IsReadOnly;
     use Concerns\IsRequired;
     use Concerns\Macroable;
     use Concerns\SerializeAsJson;
     use Concerns\TapNode;
+    use Concerns\HasVisibilityConditions {
+        Concerns\HasVisibilityConditions::__construct as private __visibilityConditionsConstruct;
+    }
     use HasValidationRules {
         HasValidationRules::__construct as private __validationRulesConstruct;
     }
@@ -41,6 +43,7 @@ abstract class Field implements Node
 
         $this->name = $name;
         $this->__validationRulesConstruct();
+        $this->__visibilityConditionsConstruct();
     }
 
     /**

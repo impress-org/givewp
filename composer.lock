@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e74eed3d3a1547f86e7732716e34f7f7",
+    "content-hash": "146b935c62ddb4d5d3fd097f3ae3d4e4",
     "packages": [
         {
             "name": "composer/installers",
@@ -580,22 +580,73 @@
             "time": "2022-12-20T21:29:17+00:00"
         },
         {
-            "name": "stellarwp/validation",
-            "version": "1.0.0",
+            "name": "stellarwp/field-conditions",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/stellarwp/validation.git",
-                "reference": "5af8236a151004c1c538c377bbf6a37c64407402"
+                "url": "https://github.com/stellarwp/field-conditions.git",
+                "reference": "89c24f2f76cdad16651b8a99e8dc9a4ecb0061b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stellarwp/validation/zipball/5af8236a151004c1c538c377bbf6a37c64407402",
-                "reference": "5af8236a151004c1c538c377bbf6a37c64407402",
+                "url": "https://api.github.com/repos/stellarwp/field-conditions/zipball/89c24f2f76cdad16651b8a99e8dc9a4ecb0061b8",
+                "reference": "89c24f2f76cdad16651b8a99e8dc9a4ecb0061b8",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*"
+            },
+            "require-dev": {
+                "codeception/module-asserts": "^1.0.0",
+                "codeception/module-phpbrowser": "^1.0.0",
+                "lucatume/wp-browser": "^3.0.14",
+                "phpunit/phpunit": "~6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "StellarWP\\FieldConditions\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "StellarWP",
+                    "email": "dev@stellarwp.com"
+                },
+                {
+                    "name": "Jason Adams",
+                    "email": "jason.adams@givewp.com"
+                }
+            ],
+            "description": "A set of serializable classes for handling conditional logic for fields in PHP",
+            "support": {
+                "issues": "https://github.com/stellarwp/field-conditions/issues",
+                "source": "https://github.com/stellarwp/field-conditions/tree/1.1.0"
+            },
+            "time": "2023-03-27T21:04:28+00:00"
+        },
+        {
+            "name": "stellarwp/validation",
+            "version": "1.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stellarwp/validation.git",
+                "reference": "ded346c3041aa7ddccf01f09fc096058e8f5c2cc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stellarwp/validation/zipball/ded346c3041aa7ddccf01f09fc096058e8f5c2cc",
+                "reference": "ded346c3041aa7ddccf01f09fc096058e8f5c2cc",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "stellarwp/container-contract": "1.0.4"
+                "stellarwp/container-contract": "1.0.4",
+                "stellarwp/field-conditions": "^1.0"
             },
             "require-dev": {
                 "codeception/module-asserts": "^1.0.0",
@@ -627,9 +678,9 @@
             "description": "An end-to-end ready PHP validation library",
             "support": {
                 "issues": "https://github.com/stellarwp/validation/issues",
-                "source": "https://github.com/stellarwp/validation/tree/1.0.0"
+                "source": "https://github.com/stellarwp/validation/tree/1.3.1"
             },
-            "time": "2023-01-05T00:45:49+00:00"
+            "time": "2023-03-30T22:13:58+00:00"
         },
         {
             "name": "stripe/stripe-php",
@@ -6550,5 +6601,5 @@
     "platform-overrides": {
         "php": "7.0.8"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.0.0"
 }
