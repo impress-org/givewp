@@ -1,5 +1,3 @@
-import {parseAmountValue} from './formatter';
-
 /**
  *
  * @unreleased
@@ -16,8 +14,8 @@ export const defaultFormValues: {
     formId: number;
 } = {
     id: id,
-    amount: parseAmountValue(amount.value),
-    feeAmountRecovered: parseAmountValue(feeAmountRecovered?.value),
+    amount: amount.value,
+    feeAmountRecovered: feeAmountRecovered?.value,
     createdAt: new Date(createdAt.date),
     status: status,
     formId: formId,
