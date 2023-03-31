@@ -36,6 +36,8 @@ class RegisterFormBuilderPageRoute
             1
         );
 
+        wp_enqueue_style('givewp-design-system-foundation');
+
         add_action("admin_print_styles", static function () {
             if (FormBuilderRouteBuilder::isRoute()) {
                 wp_enqueue_style(
@@ -87,6 +89,11 @@ class RegisterFormBuilderPageRoute
             GIVE_NEXT_GEN_URL,
             'give'
         ))->loadInFooter()->enqueue();
+
+        wp_localize_script( '@givewp/form-builder/script', 'onboardingTourData', [
+            'actionUrl' => admin_url('admin-ajax.php?action=givewp_tour_completed'),
+            'autoStartTour' => !get_user_meta(get_current_user_id(), 'givewp-form-builder-tour-completed', true),
+        ]);
 
         View::render('FormBuilder.admin-form-builder');
     }

@@ -1,0 +1,52 @@
+.shepherd-element,
+.shepherd-modal-overlay-container {
+    z-index: 9999999999 !important;
+}
+.shepherd-element {
+    padding: var(--givewp-spacing-6);
+    padding-top: var(--givewp-spacing-4);
+}
+.shepherd-text {
+    padding-bottom: 0;
+}
+.shepherd-target {
+    border: solid 2px var(--wp-blue-blue-50);
+}
+#form-blocks-canvas.shepherd-target {
+    padding: 58px;
+    margin: -58px;
+}
+.shepherd-modal-overlay-container.shepherd-modal-is-visible {
+    opacity: .3 !important;
+}
+.shepherd-header {
+    display: none !important;
+}
+.shepherd-footer {
+    margin-top: var(--givewp-spacing-5);
+}
+.shepherd-button {
+    flex: 1;
+    font-size: 14px;
+    padding: var(--givewp-spacing-3);
+    border-radius: 2px;
+
+    &.shepherd-button-primary {
+        color: var(--givewp-shades-white);
+        background-color: var(--wp-admin-theme-color);
+        &:hover {
+            color: var(--givewp-shades-white) !important;
+            background-color: var(--wp-admin-theme-color-darker-10);
+        }
+    }
+    &.shepherd-button-secondary {
+        color: var(--wp-admin-theme-color) !important;
+        border: solid 1px var(--wp-admin-theme-color);
+        background-color: var(--givewp-shades-white);
+        &:hover {
+            color: var(--wp-admin-theme-color-darker-10) !important;
+            border: solid 1px var(--wp-admin-theme-color-darker-10);
+            background-color: var(--givewp-shades-white) !important;
+        }
+    }
+}

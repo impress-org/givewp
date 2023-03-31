@@ -1,7 +1,10 @@
 @import '~@wordpress/components/build-style/style.css';
 @import '~@wordpress/block-editor/build-style/style.css';
+@import './styles/onboarding.scss';
 
 #root {
+    --wp-blue-blue-50: #2271b1;
+
     // Gutenberg color mappings
     --wp-admin-border-width-focus: 2px;
 
@@ -194,7 +197,7 @@ code {
         svg {
             transition: transform .2s cubic-bezier(.165, .84, .44, 1);
         }
-        
+
         &.is-pressed {
 
             &.rotate-icon {
@@ -481,3 +484,4 @@ This creates a consistent separator between the tabs and the rest of the sidebar
     outline: 1px solid lightgray;
     background-color: white;
 }
+

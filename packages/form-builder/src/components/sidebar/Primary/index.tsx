@@ -83,6 +83,7 @@ function Sidebar({selectedTab, setSelectedTab}) {
 
     return (
         <div
+            id="sidebar-primary"
             className="givewp-next-gen-sidebar givewp-next-gen-sidebar-primary"
             role="region"
             aria-label={__('Standalone Block Editor advanced settings.')}

@@ -1,14 +1,15 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {GiveIcon} from '../components/icons';
-import {cog, drawerRight, listView, plus} from '@wordpress/icons';
+import {close, cog, Icon, listView, plus, moreVertical, drawerRight} from '@wordpress/icons';
 import {setFormSettings, useFormState, useFormStateDispatch} from '../stores/form-state';
 import {RichText} from '@wordpress/block-editor';
-import {Button} from '@wordpress/components';
+import {Button, ExternalLink, TextControl, Dropdown, DropdownMenu, MenuGroup, MenuItem} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {Header} from '../components';
 import {Storage} from '../common';
 import {FormSettings, FormStatus} from '@givewp/form-builder/types';
 import {setIsDirty} from '@givewp/form-builder/stores/form-state/reducer';
+import {ShepherdTourContext} from "react-shepherd";
 
 const Logo = () => (
     <div
@@ -59,19 +60,25 @@ const HeaderContainer = ({
             });
     };
 
+    // @ts-ignore
     return (
         <Header
             contentLeft={
                 <>
                     <Logo />
-                    <Button
-                        style={{width: '32px', height: '32px', minWidth: '32px'}}
-                        className="rotate-icon"
-                        onClick={() => toggleSelectedSecondarySidebar('add')}
-                        isPressed={'add' === selectedSecondarySidebar}
-                        icon={plus}
-                        variant="primary"
-                    />
+                    <div id="AddBlockButtonContainer" style={{
+                        padding: 'var(--givewp-spacing-2)',
+                        margin: 'calc(var(--givewp-spacing-2) * -1)',
+                    }}>
+                        <Button
+                            style={{width: '32px', height: '32px', minWidth: '32px'}}
+                            className="rotate-icon"
+                            onClick={() => toggleSelectedSecondarySidebar('add')}
+                            isPressed={'add' === selectedSecondarySidebar}
+                            icon={plus}
+                            variant="primary"
+                        />
+                    </div>
                     <Button
                         style={{width: '32px', height: '32px'}}
                         onClick={() => toggleSelectedSecondarySidebar('list')}
@@ -117,6 +124,35 @@ const HeaderContainer = ({
                         }
                     </Button>
                     <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={drawerRight} />
+                    <Dropdown
+                        // @ts-ignore
+                        popoverProps={ { placement: 'bottom-start' } }
+                        focusOnMount={"container"}
+                        renderToggle={ ( { isOpen, onToggle } ) => (
+                            <Button
+                                onClick={onToggle}
+                                icon={moreVertical}
+                            />
+                        ) }
+                        renderContent={ ({onClose}) => (
+                            <div style={{minWidth: '280px', maxWidth: '400px'}}>
+                                <MenuGroup label={__('Tools', 'give')}>
+                                    <MenuItem
+                                        onClick={() => {
+                                            // @ts-ignore
+                                            if(!window.tour.isActive()) {
+                                                // @ts-ignore
+                                                window.tour.start()
+                                                onClose()
+                                            }
+                                        }}
+                                    >
+                                        {__('Show Guided Tour', 'give')}
+                                    </MenuItem>
+                                </MenuGroup>
+                            </div>
+                        )}
+                    />
                 </>
             }
         />
