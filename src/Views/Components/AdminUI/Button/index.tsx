@@ -24,7 +24,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ({children, type = 'button', classname, variant = 'primary', size = 'normal', disabled, ...props}, ref) => (
         <button
             ref={ref}
-            disabled={typeof disabled === 'undefined' || disabled}
+            disabled={disabled}
             type={type}
             className={cx(styles.button, styles[variant], styles[size])}
             {...props}
