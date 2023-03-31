@@ -1,3 +1,5 @@
+import {FormStatus} from "@givewp/form-builder/types/formStatus";
+
 /**
  * @since 0.1.0
  */
@@ -19,4 +21,5 @@ export type FormSettings = {
     pageSlug: string;
     receiptHeading: string;
     receiptDescription: string;
+    formStatus: FormStatus;
 };

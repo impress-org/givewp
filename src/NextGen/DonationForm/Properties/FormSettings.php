@@ -5,6 +5,7 @@ namespace Give\NextGen\DonationForm\Properties;
 use Give\Framework\Support\Contracts\Arrayable;
 use Give\Framework\Support\Contracts\Jsonable;
 use Give\NextGen\DonationForm\FormDesigns\ClassicFormDesign\ClassicFormDesign;
+use Give\NextGen\DonationForm\ValueObjects\DonationFormStatus;
 use Give\NextGen\DonationForm\ValueObjects\GoalType;
 
 class FormSettings implements Arrayable, Jsonable
@@ -86,6 +87,11 @@ class FormSettings implements Arrayable, Jsonable
     public $receiptDescription;
 
     /**
+     * @var DonationFormStatus
+     */
+    public $formStatus;
+
+    /**
      * @since 0.1.0
      */
     public static function fromArray(array $array): self
@@ -122,6 +128,7 @@ class FormSettings implements Arrayable, Jsonable
             '{first_name}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {email}.',
             'give'
         );
+        $self->formStatus = !empty($array['formStatus']) ? new DonationFormStatus($array['formStatus']) : DonationFormStatus::DRAFT();
 
         return $self;
     }

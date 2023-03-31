@@ -7,7 +7,7 @@ use WP_Post as Post;
 class TemplateHandler
 {
     /**
-     * @var Post
+     * @var Post|null
      */
     private $post;
 
@@ -16,7 +16,7 @@ class TemplateHandler
      */
     private $formPageTemplatePath;
 
-    public function __construct( Post $post, string $formPageTemplatePath )
+    public function __construct( $post, string $formPageTemplatePath )
     {
         $this->post = $post;
         $this->formPageTemplatePath = $formPageTemplatePath;
@@ -31,7 +31,8 @@ class TemplateHandler
 
     protected function isNextGenForm(): bool
     {
-        return 'give_forms' === $this->post->post_type
-               && $this->post->post_content;
+        return $this->post
+               && $this->post->post_content
+               &&'give_forms' === $this->post->post_type;
     }
 }

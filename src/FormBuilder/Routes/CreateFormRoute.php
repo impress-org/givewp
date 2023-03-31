@@ -33,7 +33,7 @@ class CreateFormRoute
 
                 $form = DonationForm::create([
                     'title' => __('GiveWP Donation Form', 'give'),
-                    'status' => DonationFormStatus::PUBLISHED(),
+                    'status' => DonationFormStatus::DRAFT(),
                     'settings' => FormSettings::fromArray([
                         'goalAmount' => 1000,
                     ]),
