@@ -21,7 +21,7 @@ export type ButtonProps = {
 };
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-    ({children, type = 'button', classname, variant = 'primary', size = 'normal', disabled, ...props}, ref) => (
+    ({children, type = 'button', classname, variant = 'primary', size = 'normal', disabled = false, ...props}, ref) => (
         <button
             ref={ref}
             disabled={disabled}
