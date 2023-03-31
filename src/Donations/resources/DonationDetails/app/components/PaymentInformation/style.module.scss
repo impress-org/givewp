@@ -60,7 +60,7 @@
     .actions {
         grid-template-columns: repeat(2, 1fr);
 
-        > div:nth-child(2), div:nth-child(4), div:nth-child(6), {
+        > div:nth-child(4), div:nth-child(6), div:nth-child(8) {
             width: 100%;
             justify-items: end;
             align-items: end;
@@ -78,7 +78,7 @@
             align-items: center;
         }
 
-        > div:nth-child(2), div:nth-child(4), div:nth-child(6), {
+        > div:nth-child(2), div:nth-child(4), div:nth-child(6) {
             justify-items: center;
             align-items: center;
         }
