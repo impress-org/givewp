@@ -66,10 +66,10 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<any>) {
             <InspectorAdvancedControls>
                 <PanelRow>
                     <ToggleControl
-                        label={__('Store as Donor Meta', 'give')}
+                        label={__('Save to Donor Record', 'give')}
                         checked={storeAsDonorMeta}
                         onChange={() => setAttributes({storeAsDonorMeta: !storeAsDonorMeta})}
-                        help={__('By default, fields are stored as Donation Meta', 'give')}
+                        help={__('If enabled, the data collected by this field is saved to the Donor record instead of the Donation record. This is useful for data that doesn't normally change between donations, like a phone number or t-shirt size.', 'give')}
                     />
                 </PanelRow>
                 <PanelRow>
