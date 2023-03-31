@@ -3,6 +3,7 @@
 namespace Give\NextGen\DonationForm\DataTransferObjects;
 
 use Give\Framework\FieldsAPI\Actions\CreateValidatorFromForm;
+use Give\Framework\Support\Contracts\Arrayable;
 use Give\NextGen\DonationForm\Exceptions\DonationFormFieldErrorsException;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use WP_Error;
@@ -10,7 +11,7 @@ use WP_Error;
 /**
  * @since 0.1.0
  */
-class DonateFormRouteData
+class DonateFormRouteData implements Arrayable
 {
     /**
      * @var string
@@ -123,5 +124,13 @@ class DonateFormRouteData
         }
 
         throw new DonationFormFieldErrorsException($wpError);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function toArray(): array
+    {
+        return get_object_vars($this);
     }
 }

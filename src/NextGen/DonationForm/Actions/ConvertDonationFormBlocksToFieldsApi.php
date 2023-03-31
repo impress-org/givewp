@@ -2,30 +2,18 @@
 
 namespace Give\NextGen\DonationForm\Actions;
 
-use Give\Donations\ValueObjects\DonationType;
-use Give\Framework\FieldsAPI\Amount;
 use Give\Framework\FieldsAPI\Contracts\Node;
-use Give\Framework\FieldsAPI\DonationAmount;
 use Give\Framework\FieldsAPI\DonationSummary;
 use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 use Give\Framework\FieldsAPI\Form;
-use Give\Framework\FieldsAPI\Group;
-use Give\Framework\FieldsAPI\Hidden;
 use Give\Framework\FieldsAPI\Name;
 use Give\Framework\FieldsAPI\Paragraph;
 use Give\Framework\FieldsAPI\PaymentGateways;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
-use Give\NextGen\DonationForm\Rules\DonationTypeRule;
-use Give\NextGen\DonationForm\Rules\Max;
-use Give\NextGen\DonationForm\Rules\Min;
-use Give\NextGen\DonationForm\Rules\Size;
-use Give\NextGen\DonationForm\Rules\SubscriptionFrequencyRule;
-use Give\NextGen\DonationForm\Rules\SubscriptionInstallmentsRule;
-use Give\NextGen\DonationForm\Rules\SubscriptionPeriodRule;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
 
@@ -91,6 +79,7 @@ class ConvertDonationFormBlocksToFieldsApi
      * @since 0.1.0
      *
      * @throws EmptyNameException
+     * @throws NameCollisionException
      */
     protected function createNodeFromBlockWithUniqueAttributes(BlockModel $block): Node
     {
@@ -160,74 +149,13 @@ class ConvertDonationFormBlocksToFieldsApi
 
     /**
      * @since 0.2.0
+     *
+     * @throws NameCollisionException
+     * @throws EmptyNameException
      */
     protected function createNodeFromAmountBlock(BlockModel $block): Node
     {
-        return DonationAmount::make('donationAmount')->tap(function (Group $group) use ($block) {
-            $amountRules = ['required', 'numeric'];
-
-            if (!$block->getAttribute('customAmount') &&
-                $block->getAttribute('priceOption') === 'set') {
-                $size = $block->getAttribute('setPrice');
-
-                $amountRules[] = new Size($size);
-            }
-
-            if ($block->getAttribute('customAmount')) {
-                if ($block->hasAttribute('customAmountMin')) {
-                    $amountRules[] = new Min($block->getAttribute('customAmountMin'));
-                }
-
-                if ($block->hasAttribute('customAmountMax') && $block->getAttribute('customAmountMax') > 0) {
-                    $amountRules[] = new Max($block->getAttribute('customAmountMax'));
-                }
-            }
-
-            /** @var Amount $amount */
-            $amount = $group->getNodeByName('amount');
-            $amount
-                ->label($block->getAttribute('label'))
-                ->levels(...array_map('absint', $block->getAttribute('levels')))
-                ->allowLevels($block->getAttribute('priceOption') === 'multi')
-                ->allowCustomAmount($block->getAttribute('customAmount'))
-                ->fixedAmountValue($block->getAttribute('setPrice'))
-                ->defaultValue(
-                    $block->getAttribute('priceOption') === 'set' ?
-                        $block->getAttribute('setPrice') : 50
-                )
-                ->rules(...$amountRules);
-
-            /** @var Hidden $currency */
-            $currency = $group->getNodeByName('currency');
-            $currency
-                ->defaultValue($this->currency)
-                ->rules('required', 'currency');
-
-            /** @var Hidden $donationType */
-            $donationType = $group->getNodeByName('donationType');
-            $donationType
-                ->defaultValue(DonationType::SINGLE()->getValue())
-                ->rules(new DonationTypeRule());
-
-            /** @var Hidden $period */
-            $period = $group->getNodeByName('period');
-            $period
-                ->defaultValue(null)
-                ->rules(new SubscriptionPeriodRule());
-
-            /** @var Hidden $frequency */
-            $frequency = $group->getNodeByName('frequency');
-            $frequency
-                ->defaultValue(null)
-                ->rules(new SubscriptionFrequencyRule());
-
-
-            /** @var Hidden $installments */
-            $installments = $group->getNodeByName('installments');
-            $installments
-                ->defaultValue(0)
-                ->rules(new SubscriptionInstallmentsRule());
-        });
+        return (new ConvertDonationAmountBlockToFieldsApi())($block, $this->currency);
     }
 
     /**

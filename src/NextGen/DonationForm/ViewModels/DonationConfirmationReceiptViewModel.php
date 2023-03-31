@@ -74,7 +74,7 @@ class DonationConfirmationReceiptViewModel
         )->jsonSerialize() : null;
 
         return [
-            'gatewaySettings' => $formDataGateways,
+            'registeredGateways' => $formDataGateways,
             'form' => $formApi,
         ];
     }

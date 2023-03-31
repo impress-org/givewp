@@ -9,10 +9,8 @@ use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
-use Give\Framework\Support\ValueObjects\Money;
+use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\DataTransferObjects\StripeGatewayData;
 use Stripe\Exception\ApiErrorException;
-
-use function rawurldecode;
 
 /**
  * @since 0.1.0
@@ -70,7 +68,6 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
 
     /**
      * @since 0.1.0
-     * @throws ApiErrorException
      */
     public function formSettings(int $formId): array
     {
@@ -78,19 +75,10 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
 
         $stripePublishableKey = $this->getStripePublishableKey($formId);
         $stripeConnectedAccountKey = $this->getStripeConnectedAccountKey($formId);
-        $currency = give_get_currency($formId);
-        $formDefaultAmount = give_get_default_form_amount($formId);
-        $defaultAmount = Money::fromDecimal(!empty($formDefaultAmount) ? $formDefaultAmount : '50', $currency);
-        $stripePaymentIntent = $this->generateStripePaymentIntent(
-            $stripeConnectedAccountKey,
-            $defaultAmount
-        );
 
         return [
             'stripeKey' => $stripePublishableKey,
-            'stripeClientSecret' => $stripePaymentIntent->client_secret,
-            'stripeConnectedAccountKey' => $stripeConnectedAccountKey,
-            'stripePaymentIntentId' => $stripePaymentIntent->id,
+            'stripeConnectedAccountId' => $stripeConnectedAccountKey,
         ];
     }
 
@@ -101,29 +89,38 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
     public function createPayment(Donation $donation, $gatewayData): GatewayCommand
     {
         /**
+         * Initialize the Stripe SDK using Stripe::setAppInfo()
+         */
+        $this->setUpStripeAppInfo($donation->formId);
+
+        /**
          * Get data from client request
          */
-        $stripeConnectedAccountKey = $gatewayData['stripeConnectedAccountKey'];
-        $stripePaymentIntentId = $gatewayData['stripePaymentIntentId'];
-        $redirectReturnUrl = rawurldecode($gatewayData['successUrl']);
+        $stripeGatewayData = StripeGatewayData::fromRequest($gatewayData);
 
         /**
          * Get or create a Stripe customer
          */
-        $customer = $this->getOrCreateStripeCustomerFromDonation($stripeConnectedAccountKey, $donation);
+        $customer = $this->getOrCreateStripeCustomerFromDonation(
+            $stripeGatewayData->stripeConnectedAccountId,
+            $donation
+        );
 
 
         /**
          * Setup Stripe Payment Intent args
          */
-        $intentArgs = $this->getPaymentIntentArgsFromDonation($donation, $customer);
+        $intentData = $this->getPaymentIntentDataFromDonation(
+            $donation,
+            $customer
+        );
 
         /**
-         * Update Payment Intent
+         * Generate Payment Intent
          */
-        $intent = $this->updateStripePaymentIntent(
-            $stripePaymentIntentId,
-            $intentArgs
+        $intent = $this->generateStripePaymentIntent(
+            $stripeGatewayData->stripeConnectedAccountId,
+            $intentData
         );
 
         /**
@@ -132,11 +129,13 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
         $this->updateDonationMetaFromPaymentIntent($donation, $intent);
 
         /**
-         * Return response to client
+         * Return response to client.
+         * 'clientSecret' is required to confirm payment intent on client side.
+         * 'returnUrl' is required to redirect user to success page.
          */
         return new RespondToBrowser([
-            'intentStatus' => $intent->status,
-            'returnUrl' => $redirectReturnUrl,
+            'clientSecret' => $intent->client_secret,
+            'returnUrl' => $stripeGatewayData->successUrl,
         ]);
     }
 

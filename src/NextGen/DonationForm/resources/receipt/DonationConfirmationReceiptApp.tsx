@@ -12,6 +12,23 @@ const DonationReceiptTemplate = withTemplateWrapper(formTemplates.layouts.receip
 const {receipt} = window.givewpDonationConfirmationReceiptExports;
 
 /**
+ * This function is used to format the amount value.  It also handles cased when there are additional details within the string.  For example "$25.00 / month"
+ *
+ * @unreleased
+ */
+const getAmountFormatted = (value) => {
+    const amount = parseFloat(value);
+    const amountFormatted = amountFormatter(receipt.settings.currency, {}).format(amount);
+    const additionalDetails = value.replace(amount.toFixed(2), '').trim();
+
+    if (!additionalDetails) {
+        return amountFormatted;
+    } else {
+        return `${amountFormatted} ${additionalDetails}`;
+    }
+};
+
+/**
  * Return readable value
  *
  * @since 0.1.0
@@ -21,7 +38,11 @@ const getDetailValue = (value) => {
         return value;
     }
 
-    return value?.amount ? amountFormatter(receipt.settings.currency, {}).format(value.amount) : JSON.stringify(value);
+    if (value?.amount) {
+        return getAmountFormatted(value.amount);
+    }
+
+    return JSON.stringify(value);
 };
 
 /**

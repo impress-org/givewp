@@ -4,8 +4,9 @@ namespace Give\NextGen\Gateways\Stripe\NextGenStripeGateway;
 
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Exceptions\Primitives\Exception;
-use Give\Framework\Support\ValueObjects\Money;
+use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\DataTransferObjects\StripePaymentIntentData;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Gateways\Stripe\Actions\SaveDonationSummary;
 use Give\PaymentGateways\Stripe\ApplicationFee;
@@ -15,20 +16,20 @@ use Stripe\Exception\ApiErrorException;
 use Stripe\Exception\InvalidRequestException;
 use Stripe\PaymentIntent;
 
-trait NextGenStripeRepository {
+trait NextGenStripeRepository
+{
     /**
+     * @unreleased update params to use StripePaymentIntentData
      * @since 0.1.0
      * @throws ApiErrorException
      */
-    protected function generateStripePaymentIntent($accountId, Money $amount): PaymentIntent
-    {
+    protected function generateStripePaymentIntent(
+        string $stripeConnectAccountId,
+        StripePaymentIntentData $data
+    ): PaymentIntent {
         return PaymentIntent::create(
-            [
-                'amount' => $amount->formatToMinorAmount(),
-                'currency' => $amount->getCurrency()->getCode(),
-                'automatic_payment_methods' => ['enabled' => true],
-            ],
-            ['stripe_account' => $accountId]
+            $data->toParams(),
+            $data->toOptions($stripeConnectAccountId)
         );
     }
 
@@ -91,29 +92,21 @@ trait NextGenStripeRepository {
 
     /**
      * @since 0.1.0
-     * @throws ApiErrorException
-     */
-    protected function updateStripePaymentIntent(string $id, array $data): PaymentIntent
-    {
-        return PaymentIntent::update(
-            $id,
-            $data
-        );
-    }
-
-    /**
-     * @since 0.1.0
      *
      * @throws InvalidPropertyName
      */
-    protected function getPaymentIntentArgsFromDonation(Donation $donation, Customer $customer): array
-    {
+    protected function getPaymentIntentDataFromDonation(
+        Donation $donation,
+        Customer $customer
+    ): StripePaymentIntentData {
         // Collect intent args to be updated
         $intentArgs = [
             'amount' => $donation->amount->formatToMinorAmount(),
+            'currency' => $donation->amount->getCurrency()->getCode(),
             'customer' => $customer->id,
             'description' => (new SaveDonationSummary)($donation)->getSummaryWithDonor(),
             'metadata' => give_stripe_prepare_metadata($donation->id),
+            'automatic_payment_methods' => ['enabled' => true],
         ];
 
         // Add application fee, if the Stripe premium add-on is not active.
@@ -131,34 +124,39 @@ trait NextGenStripeRepository {
             $intentArgs['receipt_email'] = $donation->email;
         }
 
-        return $intentArgs;
-   }
+        return StripePaymentIntentData::fromArray($intentArgs);
+    }
 
     /**
+     * @unreleased
+     *
      * @return void
      * @throws Exception
      */
-   protected function updateDonationMetaFromPaymentIntent(Donation $donation, PaymentIntent $intent)
-   {
-       $donation->gatewayTransactionId = $intent->id;
-       $donation->save();
+    protected function updateDonationMetaFromPaymentIntent(
+        Donation $donation,
+        PaymentIntent $intent
+    ) {
+        $donation->status = DonationStatus::PROCESSING();
+        $donation->gatewayTransactionId = $intent->id;
+        $donation->save();
 
-       DonationNote::create([
-           'donationId' => $donation->id,
-           'content' => sprintf(__('Stripe Charge/Payment Intent ID: %s', 'give'), $intent->id)
-       ]);
+        DonationNote::create([
+            'donationId' => $donation->id,
+            'content' => sprintf(__('Stripe Charge/Payment Intent ID: %s', 'give'), $intent->id)
+        ]);
 
-       DonationNote::create([
-           'donationId' => $donation->id,
-           'content' => sprintf(__('Stripe Payment Intent Client Secret: %s', 'give'), $intent->client_secret)
-       ]);
+        DonationNote::create([
+            'donationId' => $donation->id,
+            'content' => sprintf(__('Stripe Payment Intent Client Secret: %s', 'give'), $intent->client_secret)
+        ]);
 
-       give_update_meta(
-           $donation->id,
-           '_give_stripe_payment_intent_client_secret',
-           $intent->client_secret
-       );
-   }
+        give_update_meta(
+            $donation->id,
+            '_give_stripe_payment_intent_client_secret',
+            $intent->client_secret
+        );
+    }
 
     /**
      * @since 0.1.0

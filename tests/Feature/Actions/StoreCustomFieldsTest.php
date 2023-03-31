@@ -5,7 +5,7 @@ namespace Give\Tests\Feature\Actions;
 use Give\Donations\Models\Donation;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
-use Give\NextGen\DonationForm\Actions\StoreCustomFields;
+use Give\NextGen\DonationForm\Listeners\StoreCustomFields;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;

@@ -37,7 +37,7 @@ class DonationConfirmationReceiptViewModelTest extends TestCase
         $viewModel = new DonationConfirmationReceiptViewModel($donation);
 
         $this->assertEquals($viewModel->formExports(), [
-            'gatewaySettings' => $formDataGateways,
+            'registeredGateways' => $formDataGateways,
             'form' => $formApi,
         ]);
     }

@@ -4,6 +4,22 @@ import {Icon} from '@wordpress/icons';
 import defaultSettings from '../settings';
 import Edit from './Edit';
 
+import getDefaultBlockAttributes from '@givewp/form-builder/common/getDefaultBlockAttributes';
+
+const {
+    recurringDonationChoice,
+    recurringBillingInterval,
+    recurringBillingPeriod,
+    recurringBillingPeriodOptions,
+    recurringLengthOfTime,
+    recurringEnabled,
+    customAmountMin,
+    customAmount,
+    setPrice,
+    priceOption,
+    levels,
+} = getDefaultBlockAttributes('custom-block-editor/donation-amount-levels');
+
 const settings: FieldBlock['settings'] = {
     ...defaultSettings,
     title: __('Donation Amount and Levels', 'custom-block-editor'),
@@ -20,26 +36,50 @@ const settings: FieldBlock['settings'] = {
         },
         levels: {
             type: 'array',
-            default: ['10', '25', '50', '100', '250'],
+            default: levels,
         },
         priceOption: {
             type: 'string',
-            default: 'multi',
+            default: priceOption,
         },
         setPrice: {
             type: 'number',
-            default: '25',
+            default: setPrice,
         },
         customAmount: {
             type: 'boolean',
-            default: true,
+            default: customAmount,
         },
         customAmountMin: {
             type: 'number',
-            default: 1,
+            default: customAmountMin,
         },
         customAmountMax: {
             type: 'number',
+        },
+        recurringEnabled: {
+            type: 'boolean',
+            default: recurringEnabled,
+        },
+        recurringDonationChoice: {
+            type: 'string',
+            default: recurringDonationChoice,
+        },
+        recurringBillingInterval: {
+            type: 'number',
+            default: recurringBillingInterval,
+        },
+        recurringBillingPeriod: {
+            type: 'string',
+            default: recurringBillingPeriod,
+        },
+        recurringBillingPeriodOptions: {
+            type: 'array',
+            default: recurringBillingPeriodOptions,
+        },
+        recurringLengthOfTime: {
+            type: 'string',
+            default: recurringLengthOfTime, // ongoing
         },
     },
     icon: () => (

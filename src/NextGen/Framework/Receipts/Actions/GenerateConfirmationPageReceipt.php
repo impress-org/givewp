@@ -172,7 +172,7 @@ class GenerateConfirmationPageReceipt
                 ),
                 new ReceiptDetail(
                     __('Subscription Status', 'give'),
-                    $subscription->status->getValue()
+                    $subscription->status->label()
                 ),
                 new ReceiptDetail(
                     __('Renewal Date', 'give'),

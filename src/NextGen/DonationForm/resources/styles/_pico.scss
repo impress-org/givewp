@@ -76,3 +76,7 @@ progress,
 [type="range"] {
   accent-color: var(--primary);
 }
+
+a:focus, [role=link]:focus {
+  --background-color: transparent;
+}

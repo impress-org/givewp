@@ -8,6 +8,8 @@ const generateRequestErrors = (values: Array<any>, errors: Array<Object>, setErr
     Object.entries(errors).forEach(([field, value]) => {
         if (Object.keys(values).includes(field)) {
             setError(field, {message: Array.isArray(value) ? value[0] : value});
+        } else if (field === 'gateway_error') {
+            setError('FORM_ERROR', {message: Array.isArray(value) ? value[0] : value});
         } else {
             setError('FORM_ERROR', {
                 message: __('Something went wrong, please try again or contact support.', 'give'),

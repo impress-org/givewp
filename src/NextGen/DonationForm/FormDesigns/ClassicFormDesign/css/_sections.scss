@@ -19,7 +19,7 @@
         padding-bottom: 0.25rem;
     }
 
-    fieldset {
+    &__fieldset {
         border: 0;
         padding: 0;
         margin: 0;
@@ -27,7 +27,7 @@
         grid-template-columns: repeat(1, 1fr);
         gap: clamp(1.5rem, 0.782051rem + 2.24359vw, 1.9375rem) clamp(1.5rem, 1.19231rem + 0.961538vw, 1.6875rem);
 
-        legend {
+        &--legend {
             width: 100%;
             padding-block-end: 0.75rem;
             margin-block-end: 1rem;

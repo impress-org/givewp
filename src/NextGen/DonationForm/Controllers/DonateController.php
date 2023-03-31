@@ -3,12 +3,10 @@
 namespace Give\NextGen\DonationForm\Controllers;
 
 use Exception;
-use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
+use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
-use Give\NextGen\DonationForm\Actions\StoreCustomFields;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateControllerData;
-use Give\NextGen\DonationForm\Models\DonationForm;
 
 /**
  * @since 0.1.0
@@ -16,12 +14,13 @@ use Give\NextGen\DonationForm\Models\DonationForm;
 class DonateController
 {
     /**
-     * First we create a donation, then move on to the gateway processing
+     * First we create a donation and/or subscription, then move on to the gateway processing
      *
+     * @unreleased add support for subscriptions
      * @since 0.1.0
      *
      * @return void
-     * @throws Exception
+     * @throws Exception|PaymentGatewayException
      */
     public function donate(DonateControllerData $formData, PaymentGateway $registeredGateway)
     {
@@ -32,18 +31,30 @@ class DonateController
             $formData->lastName
         );
 
-        $donation = $formData->toDonation($donor->id);
-        $donation->save();
+        if ($formData->donationType->isSingle()) {
+            $donation = $formData->toDonation($donor->id);
+            $donation->save();
 
-        $form = $formData->getDonationForm();
+            do_action('givewp_donate_controller_donation_created', $formData, $donation);
 
-        $this->saveCustomFields($form, $donation, $formData->getCustomFields());
+            $registeredGateway->handleCreatePayment($donation);
+        }
 
-        $this->temporarilyReplaceLegacySuccessPageUri($formData, $donation);
+        if ($formData->donationType->isSubscription()) {
+            $this->validateGatewaySupportsSubscriptions($registeredGateway);
 
-        $this->addToGatewayData($formData, $donation);
+            $subscription = $formData->toSubscription($donor->id);
+            $subscription->save();
 
-        $registeredGateway->handleCreatePayment($donation);
+            $donation = $formData->toInitialSubscriptionDonation($donor->id, $subscription->id);
+            $donation->save();
+
+            do_action('givewp_donate_controller_donation_created', $formData, $donation);
+
+            do_action('givewp_donate_controller_subscription_created', $formData, $subscription, $donation);
+
+            $registeredGateway->handleCreateSubscription($donation, $subscription);
+        }
     }
 
     /**
@@ -92,65 +103,22 @@ class DonateController
     }
 
     /**
-     * @since 0.1.0
-     *
-     * @return void
+     * @throws PaymentGatewayException
      */
-    private function saveCustomFields(DonationForm $form, Donation $donation, array $customFields)
+    private function validateGatewaySupportsSubscriptions(PaymentGateway $gateway)
     {
-        (new StoreCustomFields())($form, $donation, $customFields);
-    }
-
-    /**
-     * Use our new receipt url for the success page uri.
-     *
-     * The give_get_success_page_uri() function is used by the legacy gateway processing and is specific to how that form works.
-     *
-     * In Next Gen, our confirmation receipt page is stateless, and need to use the form request data to generate the url.
-     *
-     * This is a temporary solution until we can update the gateway api to support the new receipt urls.
-     *
-     * @since 0.1.0
-     *
-     * @return void
-     */
-    protected function temporarilyReplaceLegacySuccessPageUri(DonateControllerData $formData, Donation $donation)
-    {
-        $filteredUrl = $formData->getDonationConfirmationReceiptViewRouteUrl($donation);
-
-        add_filter('give_get_success_page_uri', static function ($url) use ($filteredUrl) {
-            return $filteredUrl;
-        });
-    }
-
-    /**
-     * This adds additional args to gatewayData..
-     *
-     * This is necessary so gateways can use this value in both legacy and next gen donation forms.
-     *
-     * @since 0.1.0
-     *
-     * @return void
-     */
-    protected function addToGatewayData(DonateControllerData $formData, $donation)
-    {
-        $args = [
-            'successUrl' => rawurlencode($formData->getSuccessUrl($donation)),
-            'cancelUrl' => rawurlencode($formData->getCancelUrl())
-        ];
-
-        add_filter(
-            "givewp_create_payment_gateway_data_{$donation->gatewayId}",
-            static function ($data) use ($args) {
-                return array_merge($data, $args);
-            }
-        );
-
-        add_filter(
-            "givewp_create_subscription_gateway_data_{$donation->gatewayId}",
-            static function ($data) use ($args) {
-                return array_merge($data, $args);
-            }
-        );
+        if (!$gateway->supportsSubscriptions()) {
+            $gatewayName = $gateway->getName();
+            
+            throw new PaymentGatewayException(
+                sprintf(
+                    __(
+                        "[%s] This payment gateway does not support recurring payments, please try selecting another payment gateway.",
+                        'give'
+                    ),
+                    $gatewayName
+                )
+            );
+        }
     }
 }

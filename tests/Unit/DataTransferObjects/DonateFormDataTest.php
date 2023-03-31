@@ -11,6 +11,10 @@ use Give\Framework\Support\ValueObjects\Money;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateFormRouteData;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
+use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionMode;
+use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
@@ -47,9 +51,9 @@ class DonateFormDataTest extends TestCase
             'embedId' => '123',
             'isEmbed' => true,
             'donationType' => DonationType::SINGLE()->getValue(),
-            'frequency' => null,
-            'period' => null,
-            'installments' => null,
+            'subscriptionFrequency' => null,
+            'subscriptionPeriod' => null,
+            'subscriptionInstallments' => null,
         ];
 
         $donor = Donor::factory()->create();
@@ -73,6 +77,72 @@ class DonateFormDataTest extends TestCase
         $data = $formData->validated();
 
         $this->assertEquals($donation->getAttributes(), $data->toDonation($donor->id)->getAttributes());
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testShouldTransformToSubscriptionModel()
+    {
+        /** @var DonationForm $form */
+        $form = DonationForm::factory()->create();
+
+        $data = (object)[
+            'gatewayId' => TestGateway::id(),
+            'amount' => 50,
+            'currency' => 'USD',
+            'firstName' => 'Bill',
+            'lastName' => 'Murray',
+            'email' => 'bill@murray.com',
+            'formTitle' => $form->title,
+            'formId' => $form->id,
+            'company' => null,
+            'honorific' => null,
+            'originUrl' => 'https://givewp.com',
+            'embedId' => '123',
+            'isEmbed' => true,
+            'donationType' => DonationType::SINGLE()->getValue(),
+            'subscriptionFrequency' => 1,
+            'subscriptionPeriod' => SubscriptionPeriod::MONTH(),
+            'subscriptionInstallments' => null,
+        ];
+
+        $donor = Donor::factory()->create();
+
+        $donation = new Donation([
+            'status' => DonationStatus::PENDING(),
+            'gatewayId' => $data->gatewayId,
+            'amount' => Money::fromDecimal($data->amount, $data->currency),
+            'donorId' => $donor->id,
+            'firstName' => $data->firstName,
+            'lastName' => $data->lastName,
+            'email' => $data->email,
+            'formId' => $data->formId,
+            'formTitle' => $data->formTitle,
+            'company' => $data->company,
+            'type' => DonationType::SINGLE()
+        ]);
+
+        $subscription = new Subscription([
+            'amount' => $donation->amount,
+            'period' => $data->subscriptionPeriod,
+            'frequency' => (int)$data->subscriptionFrequency,
+            'donorId' => $donor->id,
+            'installments' => (int)$data->subscriptionInstallments,
+            'status' => SubscriptionStatus::PENDING(),
+            'mode' => give_is_test_mode() ? SubscriptionMode::TEST() : SubscriptionMode::LIVE(),
+            'donationFormId' => $data->formId,
+        ]);
+
+        $formData = DonateFormRouteData::fromRequest((array)$data);
+
+        $data = $formData->validated();
+        $subscription = $data->toSubscription($donor->id);
+
+        $this->assertEquals($subscription->getAttributes(), $subscription->getAttributes());
     }
 
 }

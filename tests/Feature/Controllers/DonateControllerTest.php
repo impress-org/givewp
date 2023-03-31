@@ -68,9 +68,9 @@ class DonateControllerTest extends TestCase
             'embedId' => '123',
             'isEmbed' => true,
             'donationType' => DonationType::SINGLE()->getValue(),
-            'frequency' => null,
-            'period' => null,
-            'installments' => null,
+            'subscriptionFrequency' => null,
+            'subscriptionPeriod' => null,
+            'subscriptionInstallments' => null,
             'text_block_meta' => ''
         ]);
 

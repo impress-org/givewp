@@ -10,6 +10,14 @@ use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
 class DonationAmount extends Group
 {
     const TYPE = 'donationAmount';
+    /**
+     * @var boolean
+     */
+    public $subscriptionsEnabled = false;
+    /**
+     * @var boolean
+     */
+    public $subscriptionDetailsAreFixed = false;
 
     /**
      * @throws NameCollisionException
@@ -20,11 +28,77 @@ class DonationAmount extends Group
         return parent::make($name)
             ->append(
                 Amount::make('amount'),
-                Hidden::make('currency'),
-                Hidden::make('donationType'),
-                Hidden::make('frequency'),
-                Hidden::make('period'),
-                Hidden::make('installments')
+                Hidden::make('currency')
             );
+    }
+
+    /**
+     * @unreleased
+     */
+    public function enableSubscriptions($enable = true): self
+    {
+        $this->subscriptionsEnabled = $enable;
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function subscriptionDetailsAreFixed($fixed = true): self
+    {
+        $this->subscriptionDetailsAreFixed = $fixed;
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
+     * @throws NameCollisionException
+     */
+    public function donationType(Field $field): self
+    {
+        $this->append($field);
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
+     * @throws NameCollisionException
+     */
+    public function subscriptionPeriod(Field $field): self
+    {
+        if ($this->subscriptionsEnabled){
+            $this->append($field);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
+     * @throws NameCollisionException
+     */
+    public function subscriptionFrequency(Field $field): self
+    {
+        if ($this->subscriptionsEnabled){
+            $this->append($field);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
+     * @throws NameCollisionException
+     */
+    public function subscriptionInstallments(Field $field): self
+    {
+        if ($this->subscriptionsEnabled){
+            $this->append($field);
+        }
+
+        return $this;
     }
 }

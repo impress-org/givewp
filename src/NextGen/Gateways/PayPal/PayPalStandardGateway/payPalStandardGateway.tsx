@@ -1,22 +1,18 @@
 import type {Gateway} from '@givewp/forms/types';
-import PayPalLogo from "./PayPalLogo";
+import PayPalLogo from './PayPalLogo';
 
 type PayPalStandardGatewaySettings = {
     fields: {
         heading: string;
         subheading: string;
         body: string;
-    }
-}
+    };
+};
 
 let fields: PayPalStandardGatewaySettings['fields'];
 
 const paypalStandardGateway: Gateway = {
     id: 'paypal',
-    supportsRecurring: false,
-    supportsCurrency(currency: string): boolean {
-        return false;
-    },
     initialize() {
         fields = this.settings.fields;
     },

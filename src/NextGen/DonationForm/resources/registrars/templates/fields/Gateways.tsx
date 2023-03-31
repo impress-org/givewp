@@ -53,7 +53,7 @@ function GatewayOption({gateway, index, inputProps}: GatewayOptionProps) {
     return (
         <li>
             <input type="radio" value={gateway.id} id={gateway.id} defaultChecked={index === 0} {...inputProps} />
-            <label htmlFor={gateway.id}> Donate with {gateway.settings.label}</label>
+            <label htmlFor={gateway.id}> Donate with {gateway.label}</label>
             <div className="givewp-fields-payment-gateway">
                 <ErrorBoundary
                     FallbackComponent={GatewayFieldsErrorFallback}

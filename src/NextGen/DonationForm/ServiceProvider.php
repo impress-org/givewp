@@ -3,6 +3,8 @@
 namespace Give\NextGen\DonationForm;
 
 use Give\Helpers\Hooks;
+use Give\NextGen\DonationForm\Actions\DispatchDonateControllerDonationCreatedListeners;
+use Give\NextGen\DonationForm\Actions\DispatchDonateControllerSubscriptionCreatedListeners;
 use Give\NextGen\DonationForm\Actions\StoreBackwardsCompatibleFormMeta;
 use Give\NextGen\DonationForm\Blocks\DonationFormBlock\Block as DonationFormBlock;
 use Give\NextGen\DonationForm\Controllers\DonationConfirmationReceiptViewController;
@@ -38,6 +40,8 @@ class ServiceProvider implements ServiceProviderInterface
 
         Hooks::addAction('givewp_donation_form_created', StoreBackwardsCompatibleFormMeta::class);
         Hooks::addAction('givewp_donation_form_updated', StoreBackwardsCompatibleFormMeta::class);
+
+        $this->dispatchDonateControllerListeners();
     }
 
     /**
@@ -77,5 +81,27 @@ class ServiceProvider implements ServiceProviderInterface
 
             return give(DonationFormViewController::class)->preview($routeData);
         });
+    }
+
+    /**
+     * @unreleased
+     */
+    private function dispatchDonateControllerListeners()
+    {
+        Hooks::addAction(
+            'givewp_donate_controller_donation_created',
+            DispatchDonateControllerDonationCreatedListeners::class,
+            '__invoke',
+            10,
+            2
+        );
+
+        Hooks::addAction(
+            'givewp_donate_controller_subscription_created',
+            DispatchDonateControllerSubscriptionCreatedListeners::class,
+            '__invoke',
+            10,
+            3
+        );
     }
 }

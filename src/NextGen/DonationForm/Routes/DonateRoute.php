@@ -2,7 +2,7 @@
 
 namespace Give\NextGen\DonationForm\Routes;
 
-use Exception;
+
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\PaymentGateways\PaymentGateway;
@@ -13,6 +13,7 @@ use Give\NextGen\DonationForm\Controllers\DonateController;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateFormRouteData;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateRouteData;
 use Give\NextGen\DonationForm\Exceptions\DonationFormFieldErrorsException;
+use WP_Error;
 
 /**
  * @since 0.1.0
@@ -77,32 +78,17 @@ class DonateRoute
 
             $this->donateController->donate($data, $gateway);
         } catch (DonationFormFieldErrorsException $exception) {
-            Log::error(
-                'Donation Form Field Errors',
-                [
-                    'exceptionMessage' => $exception->getMessage(),
-                    'formData' => $formData,
-                    'errors' => $exception->getError()
-                ]
-            );
-
-            wp_send_json_error(
-                [
-                    'type' => 'validation_error',
-                    'errors' => $exception->getError()
-                ]
-            );
-        } catch (Exception $exception) {
-            Log::error(
-                'Donation Error',
-                [
-                    'exceptionMessage' => $exception->getMessage(),
-                    'formData' => $formData,
-                    'gateway' => $gateway,
-                ]
-            );
-
-            wp_send_json_error();
+            $type = 'validation_error';
+            $this->logError($type, $exception->getMessage(), $formData, $gateway);
+            $this->sendJsonError($type, $exception->getError());
+        } catch (PaymentGatewayException $exception) {
+            $type = 'gateway_error';
+            $this->logError($type, $exception->getMessage(), $formData, $gateway);
+            $this->sendJsonError($type, new WP_Error($type, $exception->getMessage()));
+        } catch (\Exception $exception) {
+            $type = 'unknown_error';
+            $this->logError($type, $exception->getMessage(), $formData, $gateway);
+            $this->sendJsonError($type, new WP_Error($type, $exception->getMessage()));
         }
 
         exit;
@@ -148,5 +134,38 @@ class DonateRoute
         if (!in_array($paymentGateway, $gatewayIds, true)) {
             throw new PaymentGatewayException('This gateway is not valid.');
         }
+    }
+
+    /**
+     * @unreleased
+     */
+    private function logError(
+        string $type,
+        string $exceptionMessage,
+        DonateFormRouteData $formData,
+        PaymentGateway $gateway
+    ) {
+        Log::error(
+            "Donation Route Error: $type",
+            [
+                'error_type' => $type,
+                'exceptionMessage' => $exceptionMessage,
+                'formData' => $formData->toArray(),
+                'gateway' => $gateway,
+            ]
+        );
+    }
+
+    /**
+     * @param  string  $type
+     * @param  array|string|WP_Error  $errors
+     * @return void
+     */
+    protected function sendJsonError(string $type, WP_Error $errors)
+    {
+        wp_send_json_error([
+            'type' => $type,
+            'errors' => $errors,
+        ]);
     }
 }

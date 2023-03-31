@@ -4,7 +4,7 @@ namespace Give\Tests\Unit\Framework\Receipts;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\Support\ValueObjects\Money;
-use Give\NextGen\DonationForm\Actions\StoreCustomFields;
+use Give\NextGen\DonationForm\Listeners\StoreCustomFields;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;

@@ -18,5 +18,15 @@ export default function GroupNode({node}: {node: Group}) {
         isField
     );
 
-    return <Group key={node.name} fields={fields} {...node} />;
+    const fieldProps = node.reduceNodes(
+        (fields, field: Field) => {
+            fields[field.name] = field;
+
+            return fields;
+        },
+        {},
+        isField
+    );
+
+    return <Group key={node.name} fields={fields} fieldProps={fieldProps} {...node} />;
 }

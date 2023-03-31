@@ -1,6 +1,6 @@
-import {Gateway} from '@givewp/forms/types';
+import {Gateway, RegisteredGateway} from '@givewp/forms/types';
 
-const {gatewaySettings} = window.giveNextGenExports;
+const {registeredGateways} = window.giveNextGenExports;
 
 /**
  * @since 0.1.0
@@ -40,7 +40,9 @@ export default class Registrar implements GatewayRegistrar {
      * @since 0.1.0
      */
     public register(gateway: Gateway): void {
-        gateway.settings = gatewaySettings[gateway.id];
+        const registeredGateway = registeredGateways?.find(({id}) => id === gateway.id);
+
+        this.mapRegisteredGatewayToClientGateway(registeredGateway, gateway);
 
         if (gateway.hasOwnProperty('initialize')) {
             try {
@@ -56,5 +58,14 @@ export default class Registrar implements GatewayRegistrar {
         }
 
         this.gateways.push(gateway);
+    }
+
+    /**
+     * @unreleased
+     */
+    private mapRegisteredGatewayToClientGateway(registeredGateway: RegisteredGateway, clientGateway: Gateway): void {
+        for (const [key, value] of Object.entries(registeredGateway)) {
+            clientGateway[key] = value;
+        }
     }
 }

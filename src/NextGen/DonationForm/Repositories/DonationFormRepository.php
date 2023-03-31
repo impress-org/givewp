@@ -320,12 +320,15 @@ class DonationFormRepository
             $settings = $this->getGatewayFormSettings($formId, $gateway);
             $label = give_get_gateway_checkout_label($gatewayId) ?? $gateway->getPaymentMethodLabel();
 
-            $formDataGateways[$gatewayId] = array_merge(
-                [
-                    'label' => $label,
-                ],
-                $settings
-            );
+            /*
+             * TODO: Make gateway arrayable
+             */
+            $formDataGateways[] = [
+                'id' => $gatewayId,
+                'label' => $label,
+                'supportsSubscriptions' => $gateway->supportsSubscriptions(),
+                'settings' => $settings
+            ];
         }
 
         return $formDataGateways;

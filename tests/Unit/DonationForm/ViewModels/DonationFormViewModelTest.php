@@ -42,7 +42,7 @@ class DonationFormViewModelTest extends TestCase
             'inlineRedirectRoutes' => [
                 'donation-confirmation-receipt-view'
             ],
-            'gatewaySettings' => $formDataGateways,
+            'registeredGateways' => $formDataGateways,
             'form' => array_merge($formApi, [
                 'settings' => $donationForm->settings,
                 'currency' => give_get_currency(),

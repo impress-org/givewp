@@ -6,6 +6,9 @@ use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
 use Give\Framework\EnqueueScript;
 
+use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
+use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
+
 use function wp_enqueue_style;
 
 /**
@@ -82,13 +85,32 @@ class RegisterFormBuilderPageRoute
 
         $formBuilderStorage->loadInFooter()->enqueue();
 
+        $enabledGateways = array_filter(
+            give(DonationFormRepository::class)->getEnabledPaymentGateways($donationFormId),
+            static function ($gateway) {
+                return $gateway instanceof NextGenPaymentGatewayInterface;
+            }
+        );
+
+        $builderPaymentGatewayData = array_map(function ($gateway) {
+            return [
+                'id' => $gateway::id(),
+                'label' => give_get_gateway_checkout_label($gateway::id()) ?? $gateway->getPaymentMethodLabel(),
+                'supportsSubscriptions' => $gateway->supportsSubscriptions(),
+            ];
+        }, $enabledGateways);
+
         (new EnqueueScript(
             '@givewp/form-builder/script',
             $formBuilderViewModel->jsPathFromRoot(),
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
             'give'
-        ))->loadInFooter()->enqueue();
+        ))->loadInFooter()
+            ->registerLocalizeData('formBuilderData', [
+                'gateways' => array_values($builderPaymentGatewayData),
+            ])
+            ->enqueue();
 
         wp_localize_script( '@givewp/form-builder/script', 'onboardingTourData', [
             'actionUrl' => admin_url('admin-ajax.php?action=givewp_tour_completed'),

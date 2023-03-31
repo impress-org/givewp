@@ -149,7 +149,7 @@ class DonationFormViewModel
             'inlineRedirectRoutes' => [
                 'donation-confirmation-receipt-view'
             ],
-            'gatewaySettings' => $formDataGateways,
+            'registeredGateways' => $formDataGateways,
             'form' => array_merge($formApi, [
                 'settings' => $this->formSettings,
                 'currency' => give_get_currency(),

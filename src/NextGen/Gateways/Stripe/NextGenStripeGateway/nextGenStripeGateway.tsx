@@ -1,6 +1,49 @@
-import {loadStripe, Stripe, StripeElements} from '@stripe/stripe-js';
+import {
+    loadStripe,
+    Stripe,
+    StripeElements,
+    StripeElementsOptionsMode,
+    StripePaymentElementChangeEvent,
+} from '@stripe/stripe-js';
 import {Elements, PaymentElement, useElements, useStripe} from '@stripe/react-stripe-js';
 import type {Gateway, GatewaySettings} from '@givewp/forms/types';
+
+let stripePromise = null;
+let stripePaymentMethod = null;
+let stripePaymentMethodIsCreditCard = false;
+
+// @see https://stripe.com/docs/currencies#zero-decimal
+const zeroDecimalCurrencies = [
+    'BIF',
+    'CLP',
+    'DJF',
+    'GNF',
+    'JPY',
+    'KMF',
+    'KRW',
+    'MGA',
+    'PYG',
+    'RWF',
+    'UGX',
+    'VND',
+    'VUV',
+    'XAF',
+    'XOF',
+    'XPF',
+];
+
+/**
+ * Takes in an amount value in dollar units and returns the calculated cents amount
+ *
+ * @unreleased
+ */
+const dollarsToCents = (amount: string, currency: string) => {
+    if (zeroDecimalCurrencies.includes(currency)) {
+        return parseInt(amount);
+    }
+
+    return parseFloat(amount) * 100;
+};
 
 const StripeFields = ({gateway}) => {
     const stripe = useStripe();
@@ -8,12 +51,13 @@ const StripeFields = ({gateway}) => {
 
     gateway.stripe = stripe;
     gateway.elements = elements;
+    const handleOnChange = (event: StripePaymentElementChangeEvent) => {
+        stripePaymentMethod = event.value.type;
+        stripePaymentMethodIsCreditCard = event.value.type === 'card';
+    };
 
-    return <PaymentElement />;
+    return <PaymentElement onChange={handleOnChange} />;
 };
-
-let stripePromise = null;
-let stripeElementOptions = null;
 
 interface StripeSettings extends GatewaySettings {
     stripeKey: string;
@@ -31,60 +75,56 @@ interface StripeGateway extends Gateway {
 
 const stripeGateway: StripeGateway = {
     id: 'next-gen-stripe',
-    supportsRecurring: true,
-    supportsCurrency(currency: string): boolean {
-        return true;
-    },
     initialize() {
-        const {stripeKey, stripeConnectAccountId, stripeClientSecret} = this.settings;
+        const {stripeKey, stripeConnectedAccountId} = this.settings;
 
-        if (!stripeKey || !stripeConnectAccountId || !stripeClientSecret) {
+        if (!stripeKey || !stripeConnectedAccountId) {
             throw new Error('Stripe gateway settings are missing.  Check your Stripe settings.');
         }
 
         /**
          * Create the Stripe object and pass our api keys
+         * @see https://stripe.com/docs/payments/accept-a-payment-deferred
          */
         stripePromise = loadStripe(stripeKey, {
-            stripeAccount: stripeConnectAccountId,
+            stripeAccount: stripeConnectedAccountId,
         });
-
-        stripeElementOptions = {
-            clientSecret: stripeClientSecret,
-        };
     },
     beforeCreatePayment: async function (values): Promise<object> {
         if (!this.stripe || !this.elements) {
             // Stripe.js has not yet loaded.
             // Make sure to disable form submission until Stripe.js has loaded.
-            return;
+            throw new Error('Stripe was not able to load.');
+        }
+
+        // Trigger form validation and wallet collection
+        const {error: submitError} = await this.elements.submit();
+
+        if (submitError) {
+            throw new Error(submitError);
         }
 
         return {
+            stripePaymentMethod,
+            stripePaymentMethodIsCreditCard,
             ...this.settings,
         };
     },
     afterCreatePayment: async function (response: {
         data: {
-            intentStatus: string;
+            clientSecret: string;
             returnUrl: string;
         };
     }): Promise<void> {
-        if (response.data.intentStatus === 'requires_payment_method') {
-            const {error: fetchUpdatesError} = await this.elements.fetchUpdates();
-
-            if (fetchUpdatesError) {
-                throw new Error(fetchUpdatesError.message);
-            }
-        }
-
         const {error} = await this.stripe.confirmPayment({
             elements: this.elements,
+            clientSecret: response.data.clientSecret,
             confirmParams: {
                 return_url: response.data.returnUrl,
             },
         });
 
+        console.error(error);
         // This point will only be reached if there is an immediate error when
         // confirming the payment. Otherwise, your customer will be redirected to
         // your `return_url`. For some payment methods like iDEAL, your customer will
@@ -100,6 +140,18 @@ const stripeGateway: StripeGateway = {
         if (!stripePromise) {
             throw new Error('Stripe library was not able to load.  Check your Stripe settings.');
         }
+
+        const {useWatch} = window.givewp.form.hooks;
+        const donationType = useWatch({name: 'donationType'});
+        const donationCurrency = useWatch({name: 'currency'});
+        const donationAmount = useWatch({name: 'amount'});
+        const stripeAmount = dollarsToCents(donationAmount, donationCurrency.toString().toUpperCase());
+
+        const stripeElementOptions: StripeElementsOptionsMode = {
+            mode: donationType === 'subscription' ? 'subscription' : 'payment',
+            amount: stripeAmount,
+            currency: donationCurrency.toLowerCase(),
+        };
 
         return (
             <Elements stripe={stripePromise} options={stripeElementOptions}>

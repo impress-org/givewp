@@ -26,15 +26,12 @@ export interface FormData {
 }
 
 export interface FormServerExports {
-    gatewaySettings: {
-        [key: string]: GatewaySettings; // key is the gateway ID
-    };
+    registeredGateways: RegisteredGateway[];
     form: Form;
     attributes: object;
     donateUrl: string;
     inlineRedirectRoutes: string[];
 }
-
 
 export interface ReceiptDetail {
     label: string;
@@ -60,17 +57,29 @@ export interface GatewaySettings {
     label: string;
 }
 
-export interface Gateway {
+export interface RegisteredGateway {
     /**
      * The gateway ID. Must be the same as the back-end
      */
     id: string;
 
     /**
+     * The gateway label
+     */
+    label?: string;
+
+    /**
      * Settings for the gateway as sent from the back-end
      */
     settings?: GatewaySettings;
 
+    /**
+     * Whether the gateway supports recurring donations
+     */
+    supportsSubscriptions?: boolean;
+}
+
+export interface Gateway extends RegisteredGateway {
     /**
      * Initialize function for the gateway. The settings are passed to the gateway
      * from the server. This is called once before the form is rendered.
@@ -81,16 +90,6 @@ export interface Gateway {
      * The component to render when the gateway is selected
      */
     Fields: FC;
-
-    /**
-     * Whether the gateway supports recurring donations
-     */
-    supportsRecurring: boolean;
-
-    /**
-     * Whether the gateway supports the given currency
-     */
-    supportsCurrency(currency: string): boolean;
 
     /**
      * A hook before the form is submitted.
@@ -211,29 +210,47 @@ export interface SelectOption {
     disabled?: boolean;
 }
 
+export interface RadioOption {
+    label: string;
+    value: string;
+}
+
 interface FormResponse {
     type: string;
-    data: any
+    data: any;
 }
 
 type FormResponseValidationError = {
-    [key: string]: string
-}
+    [key: string]: string;
+};
+
+type FormResponseGatewayError = {
+    gateway_error: string;
+};
 
 interface FormResponseValidationErrors extends FormResponse {
     type: 'validation_error';
     data: {
         errors: {
-            errors: FormResponseValidationError[]
-        }
-    }
+            errors: FormResponseValidationError[];
+        };
+    };
+}
+
+interface FormResponseGatewayErrors extends FormResponse {
+    type: 'gateway_error';
+    data: {
+        errors: {
+            errors: FormResponseGatewayError[];
+        };
+    };
 }
 
 interface FormResponseRedirect extends FormResponse {
     type: 'redirect';
     data: {
         redirectUrl: string;
-    }
+    };
 }
 
 export function isFormResponseRedirect(response: FormResponse): response is FormResponseRedirect {
@@ -241,7 +258,14 @@ export function isFormResponseRedirect(response: FormResponse): response is Form
 }
 
 export function isFormResponseValidationError(response: FormResponse): response is FormResponseValidationErrors {
-    return (response as FormResponseValidationErrors).type === 'validation_error' || (response as FormResponseValidationErrors).data?.errors != undefined;
+    return (
+        (response as FormResponseValidationErrors).type === 'validation_error' ||
+        (response as FormResponseValidationErrors).data?.errors != undefined
+    );
+}
+
+export function isFormResponseGatewayError(response: FormResponse): response is FormResponseGatewayErrors {
+    return (response as FormResponseGatewayErrors).type === 'gateway_error';
 }
 
 export function isResponseRedirected(response: Response): response is Response {

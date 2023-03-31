@@ -5,10 +5,11 @@ import getWindowData from '../utilities/getWindowData';
 import {useGiveDonationFormStore} from '../store';
 import {
     Gateway,
+    isFormResponseGatewayError,
     isFormResponseRedirect,
     isFormResponseValidationError,
     isResponseRedirected,
-    Section
+    Section,
 } from '@givewp/forms/types';
 import postData from '../utilities/postData';
 import {withTemplateWrapper} from '../templates';
@@ -18,6 +19,7 @@ import generateRequestErrors from '../utilities/generateRequestErrors';
 import FormRequestError from '../errors/FormRequestError';
 import {ObjectSchema} from 'joi';
 import isRouteInlineRedirect from '@givewp/forms/app/utilities/isRouteInlineRedirect';
+import {__} from '@wordpress/i18n';
 
 const {donateUrl, inlineRedirectRoutes} = getWindowData();
 const formTemplates = window.givewp.form.templates;
@@ -40,6 +42,15 @@ async function handleRedirect(url: string) {
 }
 
 const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
+    if (values?.donationType === 'subscription' && !gateway.supportsSubscriptions) {
+        return setError('FORM_ERROR', {
+            message: __(
+                'This payment gateway does not support recurring payments, please try selecting another payment gateway.',
+                'give'
+            ),
+        });
+    }
+
     let beforeCreatePaymentGatewayResponse = {};
 
     try {
@@ -81,7 +92,7 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
             await handleRedirect(formResponse.data.redirectUrl);
         }
 
-        if (isFormResponseValidationError(formResponse)) {
+        if (isFormResponseGatewayError(formResponse) || isFormResponseValidationError(formResponse)) {
             throw new FormRequestError(formResponse.data.errors.errors);
         }
 
@@ -94,7 +105,7 @@ const handleSubmitRequest = async (values, setError, gateway: Gateway) => {
         }
 
         return setError('FORM_ERROR', {
-            message: error?.message ?? 'Something went wrong, please try again or contact support.',
+            message: error?.message ?? __('Something went wrong, please try again or contact support.', 'give'),
         });
     }
 };
@@ -107,11 +118,12 @@ export default function Form({defaultValues, sections, validationSchema}: PropTy
     const methods = useForm<FormInputs>({
         defaultValues,
         resolver: joiResolver(validationSchema),
+        reValidateMode: 'onBlur',
     });
 
     const {handleSubmit, setError, control} = methods;
 
-    const {errors, isSubmitting} = useFormState({control});
+    const {errors, isSubmitting, isSubmitSuccessful} = useFormState({control});
 
     const formError = errors.hasOwnProperty('FORM_ERROR') ? errors.FORM_ERROR.message : null;
 
@@ -124,7 +136,7 @@ export default function Form({defaultValues, sections, validationSchema}: PropTy
                         handleSubmitRequest(values, setError, getGateway(values.gatewayId))
                     ),
                 }}
-                isSubmitting={isSubmitting}
+                isSubmitting={isSubmitting || isSubmitSuccessful}
                 formError={formError}
             >
                 <>

@@ -83,6 +83,7 @@ class NextGenTestGateway extends PaymentGateway implements NextGenPaymentGateway
         return new PaymentComplete($transactionId);
     }
 
+
     /**
      * @inerhitDoc
      */
@@ -91,6 +92,9 @@ class NextGenTestGateway extends PaymentGateway implements NextGenPaymentGateway
         // TODO: Implement refundDonation() method.
     }
 
+    /**
+     * @since 0.1.0
+     */
     public function formSettings(int $formId): array
     {
         return [];

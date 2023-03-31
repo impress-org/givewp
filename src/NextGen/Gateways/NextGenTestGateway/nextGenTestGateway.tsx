@@ -3,10 +3,6 @@ import type {FormData, Gateway} from '@givewp/forms/types';
 
 const gateway: Gateway = {
     id: 'test-gateway-next-gen',
-    supportsRecurring: true,
-    supportsCurrency(currency: string): boolean {
-        return true;
-    },
     async beforeCreatePayment(values: FormData) {
         if (values.firstName === 'error') {
             throw new Error('Failed in some way');

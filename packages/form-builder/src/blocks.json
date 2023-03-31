@@ -26,6 +26,15 @@
                     "setPrice": "25",
                     "customAmount": "true",
                     "customAmountMin": 1,
+                    "recurringBillingPeriodOptions": [
+                        "month"
+                    ],
+                    "recurringBillingPeriod": "month",
+                    "recurringBillingInterval": 1,
+                    "recurringDonationChoice": "admin",
+                    "recurringEnabled": false,
+                    "recurringLengthOfTime": "0",
+                    "recurringOptInDefaultBillingPeriod": "month",
                     "lock": {
                         "remove": true
                     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\NextGen\DonationForm\Actions;
+namespace Give\NextGen\DonationForm\Listeners;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\FieldsAPI\Field;
