@@ -5,41 +5,51 @@
 }
 
 .fieldLabel {
-    font-size: .75rem;
-    font-weight: normal;
+    font-size: 0.875rem;
     font-stretch: normal;
     font-style: normal;
-    line-height: 1.43;
     letter-spacing: normal;
     text-align: left;
+    font-weight: 500;
     color: var(--givewp-grey-600);
+
+    > * {
+        margin-top: .45rem;
+    }
 }
 
 .textFieldContainer {
     display: flex;
-    margin-top: .45rem;
-    border: solid 1px var(--givewp-grey-400);
     border-radius: var(--givewp-rounded-4);
     background-color: var(--givewp-shades-white);
-    padding: 2px;
-    font-weight: 600;
+    font-weight: 500;
     font-stretch: normal;
     font-style: normal;
-    line-height: 1.2;
     letter-spacing: normal;
     text-align: left;
-    color: var(--givewp-grey-900);
+    color: var(--givewp-grey-600);
 
     > input {
         flex: 1;
-        padding: var(--givewp-spacing-2);
-        border: none;
+        padding: var(--givewp-spacing-3);
+        border: solid 1px var(--givewp-grey-400);
+
+        &:focus {
+            border: 1px solid #2684FF;;
+            box-shadow: 0 0 0 1px #2684FF;
+        }
+    }
+    .disabled {
+        border-radius: 4px;
+        border: solid 1px var(--givewp-grey-100);
+        background-color: var(--givewp-grey-25);
     }
 }
 
-
 .currencyField {
-    > input {
+    input {
         font-size: 1.25rem;
     }
 }
+
+
