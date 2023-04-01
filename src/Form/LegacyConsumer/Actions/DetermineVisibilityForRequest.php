@@ -8,6 +8,7 @@ use Give\Vendors\StellarWP\FieldConditions\Contracts\Condition;
 use Give\Vendors\StellarWP\FieldConditions\FieldCondition;
 
 /**
+ * @unreleased change postData to an array
  * @since 2.21.0
  */
 class DetermineVisibilityForRequest
@@ -29,12 +30,6 @@ class DetermineVisibilityForRequest
     {
         $this->field = $field;
         $this->postData = $postData;
-
-        // Check to see if this is necessary
-        // We may also need to normalize the comparison value
-//        if ( isset($this->postData['give-amount']) ) {
-//            $this->postData['give-amount'] = $this->normalizeMinorAmount($this->postData['give-amount']);
-//        }
     }
 
     /**
@@ -84,23 +79,5 @@ class DetermineVisibilityForRequest
         }
 
         return self::IS_VISIBLE;
-    }
-
-    /**
-     * @unreleased add parameter and return types
-     * @since 2.21.0
-     */
-    protected function normalizeMinorAmount(string $amount): int
-    {
-        $currency = give_get_currency($this->postData['give-form-id']);
-        $settings = give_get_currencies('all')[$currency]['setting'];
-
-        $amount = str_replace(
-            [$settings['thousands_separator'], $settings['decimal_separator']],
-            ['', '.'],
-            $amount
-        );
-
-        return Money::of($amount, $currency)->getMinorAmount();
     }
 }
