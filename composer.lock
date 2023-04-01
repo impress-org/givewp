@@ -581,16 +581,16 @@
         },
         {
             "name": "stellarwp/field-conditions",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stellarwp/field-conditions.git",
-                "reference": "89c24f2f76cdad16651b8a99e8dc9a4ecb0061b8"
+                "reference": "03f5aff2f4977359e672efe5426bbb4ef62101cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stellarwp/field-conditions/zipball/89c24f2f76cdad16651b8a99e8dc9a4ecb0061b8",
-                "reference": "89c24f2f76cdad16651b8a99e8dc9a4ecb0061b8",
+                "url": "https://api.github.com/repos/stellarwp/field-conditions/zipball/03f5aff2f4977359e672efe5426bbb4ef62101cd",
+                "reference": "03f5aff2f4977359e672efe5426bbb4ef62101cd",
                 "shasum": ""
             },
             "require": {
@@ -625,9 +625,9 @@
             "description": "A set of serializable classes for handling conditional logic for fields in PHP",
             "support": {
                 "issues": "https://github.com/stellarwp/field-conditions/issues",
-                "source": "https://github.com/stellarwp/field-conditions/tree/1.1.0"
+                "source": "https://github.com/stellarwp/field-conditions/tree/1.1.1"
             },
-            "time": "2023-03-27T21:04:28+00:00"
+            "time": "2023-04-01T00:38:22+00:00"
         },
         {
             "name": "stellarwp/validation",
