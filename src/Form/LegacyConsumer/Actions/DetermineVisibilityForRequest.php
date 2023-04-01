@@ -3,7 +3,6 @@
 namespace Give\Form\LegacyConsumer\Actions;
 
 use Give\Framework\FieldsAPI\Field;
-use Give\ValueObjects\Money;
 use Give\Vendors\StellarWP\FieldConditions\Contracts\Condition;
 use Give\Vendors\StellarWP\FieldConditions\FieldCondition;
 

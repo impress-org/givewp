@@ -16,7 +16,6 @@ use Give\Vendors\StellarWP\Validation\Rules\ExcludeUnless;
  */
 trait HasVisibilityConditions
 {
-
     /**
      * The node is visible by default. These are the conditions for it to remain visible.
      *
@@ -49,6 +48,7 @@ trait HasVisibilityConditions
     }
 
     /**
+     * @unreleased replace with native condition set method
      * @since 2.16.0
      */
     public function hasVisibilityConditions(): bool

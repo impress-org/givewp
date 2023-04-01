@@ -1,4 +1,5 @@
 <?php
+
 namespace Give\Tests\Unit\Framework\FieldsAPI\Concerns;
 
 use Give\Framework\FieldsAPI\Concerns\HasVisibilityConditions;
@@ -13,8 +14,8 @@ final class HasVisibilityConditionsTest extends TestCase
         /** @var HasVisibilityConditions $mock */
         $mock = $this->getMockForTrait(HasVisibilityConditions::class);
 
-		$this->assertEquals( [], $mock->getVisibilityConditions() );
-	}
+        $this->assertEquals([], $mock->getVisibilityConditions());
+    }
 
     /**
      * @unreleased
@@ -23,32 +24,34 @@ final class HasVisibilityConditionsTest extends TestCase
     {
         /** @var HasVisibilityConditions $mock */
         $mock = $this->getMockForTrait(HasVisibilityConditions::class);
-        $this->assertFalse( $mock->hasVisibilityConditions() );
+        $this->assertFalse($mock->hasVisibilityConditions());
 
-        $mock->showIf( 'foo', '=', 'bar' );
-        $this->assertTrue( $mock->hasVisibilityConditions() );
+        $mock->showIf('foo', '=', 'bar');
+        $this->assertTrue($mock->hasVisibilityConditions());
     }
 
-	public function testCanSetVisibilityCondition() {
-		/** @var HasVisibilityConditions $mock */
-		$mock = $this->getMockForTrait( HasVisibilityConditions::class );
+    public function testCanSetVisibilityCondition()
+    {
+        /** @var HasVisibilityConditions $mock */
+        $mock = $this->getMockForTrait(HasVisibilityConditions::class);
 
-		$mock->showIf( 'foo', '=', 'bar' )
+        $mock->showIf('foo', '=', 'bar')
             ->andShowIf('biz', '!=', 'baz')
-            ->orShowIf( 'baz', '!=', 'foo' );
+            ->orShowIf('baz', '!=', 'foo');
 
-		$this->assertCount( 3, $mock->getVisibilityConditions() );
-	}
+        $this->assertCount(3, $mock->getVisibilityConditions());
+    }
 
-	public function testCanSetMultipleVisibilityConditions() {
-		/** @var HasVisibilityConditions $mock */
-		$mock = $this->getMockForTrait( HasVisibilityConditions::class );
+    public function testCanSetMultipleVisibilityConditions()
+    {
+        /** @var HasVisibilityConditions $mock */
+        $mock = $this->getMockForTrait(HasVisibilityConditions::class);
 
-		$mock->showWhen(
-			new FieldCondition( 'foo', '=', 'bar' ),
-			[ 'baz', '!=', 'foo' ]
-		);
+        $mock->showWhen(
+            new FieldCondition('foo', '=', 'bar'),
+            ['baz', '!=', 'foo']
+        );
 
-		$this->assertCount( 2, $mock->getVisibilityConditions() );
-	}
+        $this->assertCount(2, $mock->getVisibilityConditions());
+    }
 }
