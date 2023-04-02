@@ -8,7 +8,7 @@ use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_REST_Request;
 use WP_REST_Response;
 
-class ListDonors extends Endpoint
+class DonorsList extends Endpoint
 {
     /**
      * @var string
@@ -126,7 +126,12 @@ class ListDonors extends Endpoint
         $pageCount = (int)ceil($donorsCount / $request->get_param('perPage'));
 
         if ('model' === $this->request->get_param('return')) {
-            $items = $donors;
+            $items = array_map(
+                function ($donor) {
+                    return $donor->toArray();
+                },
+                $donors
+            );
         } else {
             $this->listTable->items($donors, $this->request->get_param('locale') ?? '');
             $items = $this->listTable->getItems();
