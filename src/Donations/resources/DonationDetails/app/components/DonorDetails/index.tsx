@@ -90,7 +90,7 @@ export function SectionContainer() {
                 isSearchable={true}
                 isClearable={false}
                 placeholder={__('Please select an option', 'give')}
-                defaultOptions={Object.values(cachedDonors)}
+                defaultOptions={Object.values(cachedDonors).sort((a, b) => a.label > b.label ? 1 : -1)}
                 loadOptions={getDonors}
                 styleConfig={StyleConfig}
             />
