@@ -52,4 +52,9 @@
     }
 }
 
+.reactSelectContainer {
+    input:focus {
+        box-shadow: none;
+    }
+}
 

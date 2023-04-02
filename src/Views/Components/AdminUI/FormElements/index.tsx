@@ -147,6 +147,7 @@ export function SelectDropdownField({
                                 IndicatorSeparator: () => null,
                             }}
                             styles={styleConfig}
+                            className={styles.reactSelectContainer}
                         />
                     )}
                 />
@@ -208,6 +209,7 @@ export function AsyncSelectDropdownField({
                                 IndicatorSeparator: () => null,
                             }}
                             styles={styleConfig}
+                            className={styles.reactSelectContainer}
                         />
                     )}
                 />
