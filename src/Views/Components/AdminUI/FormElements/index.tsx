@@ -1,6 +1,7 @@
 import React from 'react';
 
 import ReactSelect from 'react-select';
+import AsyncSelect from 'react-select/async';
 import {Controller} from 'react-hook-form';
 import {__} from '@wordpress/i18n';
 import cx from 'classnames';
@@ -138,6 +139,67 @@ export function SelectDropdownField({
                             name={name}
                             value={options?.find((option) => option.value === value)}
                             options={options}
+                            onChange={(selectedOption) => onChange(selectedOption.value)}
+                            isClearable={isClearable}
+                            isSearchable={isSearchable}
+                            placeholder={isLoading ? __('Options are loading...') : placeholder ?? ''}
+                            components={{
+                                IndicatorSeparator: () => null,
+                            }}
+                            styles={styleConfig}
+                        />
+                    )}
+                />
+            </label>
+        </>
+    );
+}
+
+/**
+ *
+ * @unreleased
+ */
+
+export type AsyncSelectDropdownFieldProps = {
+    defaultOptions: Array<{ value: any; label: string }>;
+    loadOptions: (inputValue: string) => void;
+    name: string;
+    isSearchable: boolean;
+    isClearable: boolean;
+    placeholder: string;
+    label: string;
+    styleConfig?: object;
+    isLoading?: boolean;
+};
+
+export function AsyncSelectDropdownField({
+    defaultOptions,
+    loadOptions,
+    styleConfig,
+    name,
+    isSearchable,
+    isClearable,
+    placeholder,
+    isLoading,
+    label,
+}: AsyncSelectDropdownFieldProps) {
+    return (
+        <>
+            <label htmlFor={name} className={styles.fieldLabel}>
+                <span>{label}</span>
+                <Controller
+                    name={name}
+                    render={({
+                        field: {onChange, onBlur, value, name, ref},
+                        fieldState: {invalid, isTouched, isDirty, error},
+                        formState,
+                    }) => (
+                        <AsyncSelect
+                            ref={ref}
+                            name={name}
+                            defaultValue={defaultOptions?.find((option) => option.value === value)}
+                            defaultOptions={defaultOptions}
+                            loadOptions={loadOptions}
                             onChange={(selectedOption) => onChange(selectedOption.value)}
                             isClearable={isClearable}
                             isSearchable={isSearchable}
