@@ -53,6 +53,8 @@ class DonorIdAttribute extends DonationUpdateAttribute implements AttributeUpdat
      */
     public static function update($value, Donation $donation)
     {
+        $donor = give()->donors->getById($value);
+
         $donation->donorId = $value;
         $donation->firstName = $donor->firstName;
         $donation->lastName = $donor->lastName;

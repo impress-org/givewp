@@ -118,7 +118,8 @@ class TestDonationUpdate extends RestApiTestCase
     {
         $donation = Donation::factory()->create();
         $donationId = $donation->id;
-        $donorId = Donor::factory()->create()->id;
+        $donor = Donor::factory()->create();
+        $donorId = $donor->id;
 
         $donorDetails = [
             'donorId' => $donorId,
@@ -135,6 +136,15 @@ class TestDonationUpdate extends RestApiTestCase
         $this->assertCount(1, $data['updatedFields']);
 
         $donation = give()->donations->getById($donationId);
+
+        $donorDetails = array_merge(
+            $donorDetails,
+            [
+                'firstName' => $donor->firstName,
+                'lastName' => $donor->lastName,
+                'email' => $donor->email,
+            ]
+        );
 
         foreach ($donorDetails as $key => $value) {
             $this->assertEquals($value, $donation->{$key});
