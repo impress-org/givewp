@@ -100,14 +100,9 @@ class DonationUpdate extends Endpoint
                 if ( ! $request->has_param($attrId) || ! is_a($attr, AttributeUpdatesModel::class, true)) {
                     continue;
                 }
-
-                $actualValue = $donation->{$attrId};
+                
                 $attr::update($request->get_param($attrId), $donation);
-                $updatedValue = $donation->{$attrId};
-
-                if ($actualValue !== $updatedValue) {
-                    $updatedFields[] = $attrId;
-                }
+                $updatedFields[] = $attrId;
             }
 
             $donation->save();
