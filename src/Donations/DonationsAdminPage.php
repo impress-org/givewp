@@ -79,6 +79,7 @@ class DonationsAdminPage
                 [
                     'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/donation')),
                     'donationDetails' => $donationDetailsViewModel->exports(),
+                    'countriesList' => give_get_country_list(),
                 ]
             );
 
