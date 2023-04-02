@@ -61,7 +61,7 @@ export function SectionContainer() {
 
     const getDonors = async (inputValue: string): Promise<DonorOption[]> => {
         try {
-            const response = await getData(`search=${inputValue}&return=model`);
+            const response = await getData(`search=${inputValue}&sortColumn=donorInformation&sortDirection=asc&return=model`);
 
             if (response.items) {
                 return response.items.map((item) => {
