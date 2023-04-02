@@ -7,6 +7,7 @@ import {Form} from '@givewp/components/AdminUI/FormElements';
 
 import {joiResolver} from '@hookform/resolvers/joi';
 import {PostRequest} from '@givewp/components/AdminUI/api';
+import {format} from "date-fns";
 
 /**
  *
@@ -58,6 +59,10 @@ export default function FormPage({
 
     const handleSubmitRequest = async (formFieldValues) => {
         try {
+            if (formFieldValues.hasOwnProperty('createdAt')) {
+                formFieldValues.createdAt = format(formFieldValues.createdAt, 'yyyy-MM-dd HH:mm:ss');
+            }
+
             await postData(formFieldValues);
             setApiShowMessage(true);
         } catch (error) {
