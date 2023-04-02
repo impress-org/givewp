@@ -15,7 +15,7 @@ export const defaultFormValues: {
 } = {
     id: id,
     amount: amount.value,
-    feeAmountRecovered: feeAmountRecovered?.value,
+    feeAmountRecovered: feeAmountRecovered?.value || 0,
     createdAt: new Date(createdAt.date),
     status: status,
     formId: formId,
