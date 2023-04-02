@@ -2,14 +2,20 @@
 
 namespace Give\Donations\Endpoints;
 
+use Give\Donations\Endpoints\DonationUpdateAttributes\Address1Attribute;
+use Give\Donations\Endpoints\DonationUpdateAttributes\Address2Attribute;
 use Give\Donations\Endpoints\DonationUpdateAttributes\AmountAttribute;
 use Give\Donations\Endpoints\DonationUpdateAttributes\AttributeUpdatesModel;
+use Give\Donations\Endpoints\DonationUpdateAttributes\CityAttribute;
+use Give\Donations\Endpoints\DonationUpdateAttributes\CountryAttribute;
 use Give\Donations\Endpoints\DonationUpdateAttributes\CreatedAtAttribute;
 use Give\Donations\Endpoints\DonationUpdateAttributes\DonorIdAttribute;
 use Give\Donations\Endpoints\DonationUpdateAttributes\FeeAmountRecoveredAttribute;
 use Give\Donations\Endpoints\DonationUpdateAttributes\FormIdAttribute;
 use Give\Donations\Endpoints\DonationUpdateAttributes\IdAttribute;
+use Give\Donations\Endpoints\DonationUpdateAttributes\StateAttribute;
 use Give\Donations\Endpoints\DonationUpdateAttributes\StatusAttribute;
+use Give\Donations\Endpoints\DonationUpdateAttributes\ZipAttribute;
 use Give\Framework\Exceptions\Primitives\Exception;
 use WP_Error;
 use WP_REST_Request;
@@ -40,6 +46,12 @@ class DonationUpdate extends Endpoint
         FormIdAttribute::class,
         CreatedAtAttribute::class,
         DonorIdAttribute::class,
+        CountryAttribute::class,
+        Address1Attribute::class,
+        Address2Attribute::class,
+        CityAttribute::class,
+        StateAttribute::class,
+        ZipAttribute::class,
     ];
 
     /**
