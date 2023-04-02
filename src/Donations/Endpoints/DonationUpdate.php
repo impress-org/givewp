@@ -5,6 +5,7 @@ namespace Give\Donations\Endpoints;
 use Give\Donations\Endpoints\DonationUpdateAttributes\AmountAttribute;
 use Give\Donations\Endpoints\DonationUpdateAttributes\AttributeUpdatesModel;
 use Give\Donations\Endpoints\DonationUpdateAttributes\CreatedAtAttribute;
+use Give\Donations\Endpoints\DonationUpdateAttributes\DonorIdAttribute;
 use Give\Donations\Endpoints\DonationUpdateAttributes\FeeAmountRecoveredAttribute;
 use Give\Donations\Endpoints\DonationUpdateAttributes\FormIdAttribute;
 use Give\Donations\Endpoints\DonationUpdateAttributes\IdAttribute;
@@ -38,6 +39,7 @@ class DonationUpdate extends Endpoint
         FeeAmountRecoveredAttribute::class,
         FormIdAttribute::class,
         CreatedAtAttribute::class,
+        DonorIdAttribute::class,
     ];
 
     /**
