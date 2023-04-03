@@ -1,16 +1,16 @@
 import {
     PayPalButtons,
-    PayPalScriptProvider,
-    PayPalHostedFieldsProvider,
     PayPalHostedField,
+    PayPalHostedFieldsProvider,
+    PayPalScriptProvider,
     usePayPalHostedFields,
     usePayPalScriptReducer,
-} from "@paypal/react-paypal-js";
+} from '@paypal/react-paypal-js';
 import type {Gateway} from '@givewp/forms/types';
-import {__} from "@wordpress/i18n";
-import {debounce} from "react-ace/lib/editorOptions";
-import {Flex, TextControl} from "@wordpress/components";
-import {CSSProperties, useEffect, useState} from "react";
+import {__} from '@wordpress/i18n';
+import {debounce} from 'react-ace/lib/editorOptions';
+import {Flex, TextControl} from '@wordpress/components';
+import {CSSProperties, useEffect, useState} from 'react';
 
 (() => {
     /**
@@ -33,30 +33,30 @@ import {CSSProperties, useEffect, useState} from "react";
     let payPalSubscriptionId;
 
     const buttonsStyle = {
-        color: "gold" as "gold" | "blue" | "silver" | "white" | "black",
-        label: "paypal" as "paypal" | "checkout" | "buynow" | "pay" | "installment" | "subscribe" | "donate",
-        layout: "vertical" as "vertical" | "horizontal",
-        shape: "rect" as "rect" | "pill",
+        color: 'gold' as 'gold' | 'blue' | 'silver' | 'white' | 'black',
+        label: 'paypal' as 'paypal' | 'checkout' | 'buynow' | 'pay' | 'installment' | 'subscribe' | 'donate',
+        layout: 'vertical' as 'vertical' | 'horizontal',
+        shape: 'rect' as 'rect' | 'pill',
         tagline: false,
-    }
+    };
 
     const CUSTOM_FIELD_STYLE = {
         height: '50px', // @todo Magic number, but it works
-        borderWidth: ".078rem",
-        borderStyle: "solid",
-        borderColor: "#666",
-        borderRadius: ".25rem",
-        padding: "0 1.1875rem",
-        width: "100%",
-        marginBottom: ".5rem",
-        boxSizing: "inherit",
-        inlineSize: "100%",
-        backgroundColor: "#fff",
-        color: "#4d4d4d",
-        fontSize: "1rem",
-        fontFamily: "inherit",
-        fontWeight: "500",
-        lineHeight: "1.2"
+        borderWidth: '.078rem',
+        borderStyle: 'solid',
+        borderColor: '#666',
+        borderRadius: '.25rem',
+        padding: '0 1.1875rem',
+        width: '100%',
+        marginBottom: '.5rem',
+        boxSizing: 'inherit',
+        inlineSize: '100%',
+        backgroundColor: '#fff',
+        color: '#4d4d4d',
+        fontSize: '1rem',
+        fontFamily: 'inherit',
+        fontWeight: '500',
+        lineHeight: '1.2',
     } as CSSProperties;
 
     const getFormData = () => {
@@ -68,49 +68,47 @@ import {CSSProperties, useEffect, useState} from "react";
         formData.append('give-form-id', payPalDonationsSettings.donationFormId);
         formData.append('give-form-hash', payPalDonationsSettings.donationFormNonce);
         return formData;
-    }
+    };
 
     const validateHostedFields = () => {
-        return Object.values(
-            hostedField.cardFields.getState().fields
-        ).some((field: { isValid: boolean }) => field.isValid)
-    }
+        return Object.values(hostedField.cardFields.getState().fields).some(
+            (field: {isValid: boolean}) => field.isValid
+        );
+    };
 
     const createOrderHandler = async (): Promise<string> => {
-
         const response = await fetch(`${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_create_order`, {
             method: 'POST',
             body: getFormData(),
-        } );
+        });
         const responseJson = await response.json();
 
-        if ( ! responseJson.success ) {
+        if (!responseJson.success) {
             throw responseJson.data.error;
         }
 
-        return payPalOrderId = responseJson.data.id
-    }
+        return (payPalOrderId = responseJson.data.id);
+    };
 
     const createSubscriptionHandler = async (data, actions) => {
         // eslint-disable-next-line
-        const response = await fetch( `${ payPalDonationsSettings.ajaxurl }?action=give_paypal_commerce_create_plan_id`, {
+        const response = await fetch(`${payPalDonationsSettings.ajaxurl}?action=give_paypal_commerce_create_plan_id`, {
             method: 'POST',
             body: getFormData(),
-        } );
+        });
 
         const responseJson = await response.json();
 
-        if ( ! responseJson.success ) {
+        if (!responseJson.success) {
             throw responseJson.data.error;
         }
 
         payPalSubscriptionId = responseJson.data.id;
 
-        return actions.subscription.create( { plan_id: payPalSubscriptionId  } );
-    }
+        return actions.subscription.create({plan_id: payPalSubscriptionId});
+    };
 
     const Divider = ({label, style = {}}) => {
-
         const styles = {
             container: {
                 fontSize: '16px',
@@ -129,7 +127,7 @@ import {CSSProperties, useEffect, useState} from "react";
                 fontSize: '14px',
                 color: '#8d8e8e',
             },
-        }
+        };
 
         return (
             <div className="separator-with-text" style={styles.container}>
@@ -139,13 +137,13 @@ import {CSSProperties, useEffect, useState} from "react";
                 </div>
                 <div className="dashed-line" style={styles.dashedLine} />
             </div>
-        )
-    }
+        );
+    };
 
     const HoistHostedFieldContext = () => {
         hostedField = usePayPalHostedFields();
-        return <></>
-    }
+        return <></>;
+    };
 
     const FormFieldsProvider = ({children}) => {
         const {useWatch} = window.givewp.form.hooks;
@@ -155,23 +153,20 @@ import {CSSProperties, useEffect, useState} from "react";
         email = useWatch({name: 'email'});
 
         return children;
-    }
+    };
 
     const SmartButtonsContainer = () => {
-
         const {useWatch, useFormState} = window.givewp.form.hooks;
         const currency = useWatch({name: 'currency'});
         const donationType = useWatch({name: 'donationType'});
 
-        const {
-            isSubmitting, isSubmitSuccessful
-        } = useFormState();
+        const {isSubmitting, isSubmitSuccessful} = useFormState();
 
-        const [{ options }, dispatch] = usePayPalScriptReducer();
+        const [{options}, dispatch] = usePayPalScriptReducer();
 
         useEffect(() => {
             dispatch({
-                type: "resetOptions",
+                type: 'resetOptions',
                 value: {
                     ...options,
                     currency: currency,
@@ -192,32 +187,30 @@ import {CSSProperties, useEffect, useState} from "react";
                 onApprove={async (data, actions) => {
                     return actions.order.capture().then((details) => {
                         // @ts-ignore
-                        document.forms[0].querySelector('[type="submit"]').click()
+                        document.forms[0].querySelector('[type="submit"]').click();
                     });
                 }}
             />
-        )
-    }
+        );
+    };
 
     const HostedFieldsContainer = () => {
-
         const {useWatch} = window.givewp.form.hooks;
         const firstName = useWatch({name: 'firstName'});
         const lastName = useWatch({name: 'lastName'});
-        const cardholderDefault = [firstName ?? '', lastName ?? ''].filter(x => x).join(' ')
+        const cardholderDefault = [firstName ?? '', lastName ?? ''].filter((x) => x).join(' ');
 
         const [_cardholderName, setCardholderName] = useState(null);
 
         useEffect(() => {
-            cardholderName = _cardholderName ?? cardholderDefault
-        })
+            cardholderName = _cardholderName ?? cardholderDefault;
+        });
 
         return (
             <PayPalHostedFieldsProvider
                 notEligibleError={<div>Your account is not eligible</div>}
                 createOrder={createOrderHandler}
             >
-
                 <Divider label={__('Or pay with card', 'give')} style={{padding: '30px 0'}} />
 
                 <TextControl
@@ -235,8 +228,8 @@ import {CSSProperties, useEffect, useState} from "react";
                     style={CUSTOM_FIELD_STYLE}
                     hostedFieldType="number"
                     options={{
-                        selector: "#card-number",
-                        placeholder: "4111 1111 1111 1111",
+                        selector: '#card-number',
+                        placeholder: '4111 1111 1111 1111',
                     }}
                 />
 
@@ -247,8 +240,8 @@ import {CSSProperties, useEffect, useState} from "react";
                         style={CUSTOM_FIELD_STYLE}
                         hostedFieldType="expirationDate"
                         options={{
-                            selector: "#expiration-date",
-                            placeholder: "MM/YYYY",
+                            selector: '#expiration-date',
+                            placeholder: 'MM/YYYY',
                         }}
                     />
                     <PayPalHostedField
@@ -257,57 +250,56 @@ import {CSSProperties, useEffect, useState} from "react";
                         style={CUSTOM_FIELD_STYLE}
                         hostedFieldType="cvv"
                         options={{
-                            selector: "#cvv",
-                            placeholder: "CVV",
+                            selector: '#cvv',
+                            placeholder: 'CVV',
                             maskInput: true,
                         }}
                     />
                 </Flex>
-                <div style={{display: "flex", gap: '10px'}}>
-
-                </div>
+                <div style={{display: 'flex', gap: '10px'}}></div>
 
                 <HoistHostedFieldContext />
             </PayPalHostedFieldsProvider>
-        )
-    }
+        );
+    };
 
     const payPalCommerceGateway: Gateway = {
         id: 'paypal-commerce',
-        supportsRecurring: false,
-        supportsCurrency(currency: string): boolean {
-            return true;
-        },
         initialize() {
             payPalDonationsSettings = this.settings;
         },
         beforeCreatePayment: async function (values): Promise<object> {
-
-            if(payPalOrderId) { // If order ID already set by payment buttons then return early.
+            if (payPalOrderId) {
+                // If order ID already set by payment buttons then return early.
                 return {
-                    payPalOrderId: payPalOrderId
+                    payPalOrderId: payPalOrderId,
                 };
             }
 
-            if(!validateHostedFields()) {
+            if (!validateHostedFields()) {
                 throw new Error('Invalid hosted fields');
             }
 
             return hostedField.cardFields
-                .submit({cardholderName: cardholderName,})
+                .submit({cardholderName: cardholderName})
                 .then(async (data) => {
-                    await fetch( `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_approve_order&order=` + data.orderId, {
-                        method: 'POST',
-                        body: getFormData(),
-                    } );
-                    return {...data, payPalOrderId: data.orderId}
+                    await fetch(
+                        `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_approve_order&order=` +
+                            data.orderId,
+                        {
+                            method: 'POST',
+                            body: getFormData(),
+                        }
+                    );
+                    return {...data, payPalOrderId: data.orderId};
                 })
                 .catch((err) => {
-                    console.log('paypal commerce error', err)
+                    console.log('paypal commerce error', err);
                     throw new Error('paypal commerce error');
                 });
         },
-        Fields() { // Can we get this.settings to be available here?
+        Fields() {
+            // Can we get this.settings to be available here?
             const {useWatch} = window.givewp.form.hooks;
             const donationType = useWatch({name: 'donationType'});
             const supportsHostedFields = donationType !== 'subscription';
@@ -324,4 +316,4 @@ import {CSSProperties, useEffect, useState} from "react";
     };
 
     window.givewp.gateways.register(payPalCommerceGateway);
-})()
+})();
