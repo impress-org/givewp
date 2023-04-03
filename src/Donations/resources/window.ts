@@ -15,15 +15,9 @@ declare global {
             paymentMode?: boolean;
             manualDonations?: boolean;
             donationDetails?: DataValues;
-            currencyFormat?: {
-                currency_position: string;
-                decimal_separator: string;
-                number_decimals: number;
-                thousands_separator: string;
-            };
         };
     }
 }
 
-export const {donationDetails: data, apiRoot, apiNonce, currencyFormat} = window.GiveDonations;
+export const {donationDetails: data, apiRoot, apiNonce} = window.GiveDonations;
 export const endpoint = `${apiRoot}/${data.id}`;
