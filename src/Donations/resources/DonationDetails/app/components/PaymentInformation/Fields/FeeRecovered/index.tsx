@@ -2,15 +2,18 @@ import {useState} from 'react';
 import {CurrencyField} from '../Field';
 import {useFormContext, useWatch} from 'react-hook-form';
 import {__} from '@wordpress/i18n';
+import {createInterpolateElement} from '@wordpress/element';
 
 import {formatCurrency} from '../../../../utilities/formatter';
 
 import {CurrencyInputField} from '@givewp/components/AdminUI/FormElements';
 import Button from '@givewp/components/AdminUI/Button';
 import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
-import NoticeInformationIcon from '@givewp/components/AdminUI/Icons/NoticeInformationIcon';
 
 import {CurrencyAmountDialogProps} from '../Amount';
+import WarningIcon from '@givewp/components/AdminUI/Icons/WarningIcon';
+
+import styles from '../../style.module.scss';
 
 const {currency} = window.GiveDonations.donationDetails.amount;
 
@@ -56,6 +59,7 @@ function FeeRecoveredDialog({defaultAmount, amountChanged}: CurrencyAmountDialog
 
     return (
         <div>
+            <WarningMessage />
             <CurrencyInputField
                 defaultValue={amount}
                 currency={currency}
@@ -71,10 +75,26 @@ function FeeRecoveredDialog({defaultAmount, amountChanged}: CurrencyAmountDialog
             >
                 {__('Set Fee Recovered', 'give')}
             </Button>
-            <span>
-                <NoticeInformationIcon />
-                {__('Changes made will not be billed to the donor', 'give')}
-            </span>
         </div>
+    );
+}
+
+function WarningMessage() {
+    const message = createInterpolateElement(
+        __(
+            'Changing the fee is <strong>not recommended</strong> unless correcting an error. It does not charge the donor or change the amount on the gateway.',
+            'give'
+        ),
+        {
+            strong: <strong className={styles.bold} />,
+        }
+    );
+    return (
+        <span className={styles.warning}>
+            <div>
+                <WarningIcon />
+            </div>
+            <div>{message}</div>
+        </span>
     );
 }

@@ -4,10 +4,12 @@ import {CurrencyField} from '../Field';
 import {useFormContext, useWatch} from 'react-hook-form';
 import {formatCurrency} from '../../../../utilities/formatter';
 import {__} from '@wordpress/i18n';
+import {createInterpolateElement} from '@wordpress/element';
 
 import {CurrencyInputField} from '@givewp/components/AdminUI/FormElements';
 import Button from '@givewp/components/AdminUI/Button';
-import NoticeInformationIcon from '@givewp/components/AdminUI/Icons/NoticeInformationIcon';
+import WarningIcon from '@givewp/components/AdminUI/Icons/WarningIcon';
+import styles from '../../style.module.scss';
 
 const {currency} = window.GiveDonations.donationDetails.amount;
 
@@ -59,6 +61,7 @@ function AmountDialog({defaultAmount, amountChanged}: CurrencyAmountDialogProps)
 
     return (
         <div>
+            <WarningMessage />
             <CurrencyInputField
                 defaultValue={amount}
                 currency={currency}
@@ -74,10 +77,30 @@ function AmountDialog({defaultAmount, amountChanged}: CurrencyAmountDialogProps)
             >
                 {__('Set Donation Amount', 'give')}
             </Button>
-            <span>
-                <NoticeInformationIcon />
-                {__('Changes made will not be billed to the donor', 'give')}
-            </span>
         </div>
+    );
+}
+
+/**
+ *
+ * @unreleased
+ */
+function WarningMessage() {
+    const message = createInterpolateElement(
+        __(
+            'Changing the amount is <strong>not recommended</strong> unless correcting an error. It does not charge the donor or change the amount on the gateway.',
+            'give'
+        ),
+        {
+            strong: <strong className={styles.bold} />,
+        }
+    );
+    return (
+        <span className={styles.warning}>
+            <div>
+                <WarningIcon />
+            </div>
+            <div>{message}</div>
+        </span>
     );
 }
