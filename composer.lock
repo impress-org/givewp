@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "146b935c62ddb4d5d3fd097f3ae3d4e4",
+    "content-hash": "831f87f59410347157c32dc792363c04",
     "packages": [
         {
             "name": "composer/installers",
@@ -631,16 +631,16 @@
         },
         {
             "name": "stellarwp/validation",
-            "version": "1.3.1",
+            "version": "1.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stellarwp/validation.git",
-                "reference": "ded346c3041aa7ddccf01f09fc096058e8f5c2cc"
+                "reference": "67b0a4dabee7cb66f73cffe3f5d8275204655454"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stellarwp/validation/zipball/ded346c3041aa7ddccf01f09fc096058e8f5c2cc",
-                "reference": "ded346c3041aa7ddccf01f09fc096058e8f5c2cc",
+                "url": "https://api.github.com/repos/stellarwp/validation/zipball/67b0a4dabee7cb66f73cffe3f5d8275204655454",
+                "reference": "67b0a4dabee7cb66f73cffe3f5d8275204655454",
                 "shasum": ""
             },
             "require": {
@@ -678,9 +678,9 @@
             "description": "An end-to-end ready PHP validation library",
             "support": {
                 "issues": "https://github.com/stellarwp/validation/issues",
-                "source": "https://github.com/stellarwp/validation/tree/1.3.1"
+                "source": "https://github.com/stellarwp/validation/tree/1.3.2"
             },
-            "time": "2023-03-30T22:13:58+00:00"
+            "time": "2023-04-03T23:48:36+00:00"
         },
         {
             "name": "stripe/stripe-php",
