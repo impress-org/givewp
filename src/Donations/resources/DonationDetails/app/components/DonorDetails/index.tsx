@@ -16,7 +16,7 @@ import {apiNonce, apiRoot} from '../../../../window';
  */
 const endpoint = `${apiRoot.split('/donation')[0]}/donors`;
 const {donorId, firstName, lastName, email} = window.GiveDonations.donationDetails;
-const cachedDonors = {
+const cachedDonors: CachedDonors = {
     [donorId]: {
         value: donorId,
         label: `${firstName} ${lastName} (${email})`,
@@ -44,12 +44,6 @@ export default function DonorDetails() {
     );
 }
 
-interface DonorOption {
-    readonly value: string;
-    readonly label: string;
-    readonly model: [];
-}
-
 /**
  *
  * @unreleased
@@ -61,11 +55,21 @@ export function SectionContainer() {
 
     const getDonors = async (inputValue: string): Promise<DonorOption[]> => {
         try {
-            const response = await getData(`search=${inputValue}&sortColumn=donorInformation&sortDirection=asc&return=model`);
+            const params = {
+                search: inputValue,
+                sortColumn: 'donorInformation',
+                sortDirection: 'asc',
+                perPage: 10,
+                return: 'model',
+            };
+            const queryString = Object.entries(params)
+                .map(([key, value]) => `${key}=${value}`)
+                .join('&');
+            const response = await getData(queryString);
 
             if (response.items) {
                 return response.items.map((item) => {
-                    const donor = {
+                    const donor: DonorOption = {
                         value: item.id,
                         label: `${item.firstName} ${item.lastName} (${item.email})`,
                         model: item,
@@ -110,4 +114,19 @@ export function SectionContainer() {
             />
         </FieldsetContainer>
     );
+}
+
+type DonorOption = {
+    value: number;
+    label: string;
+    model: {
+        firstName: string;
+        lastName: string;
+        email: string;
+        [key: string]: any;
+    }
+}
+
+type CachedDonors = {
+    [key: number]: DonorOption;
 }
