@@ -38,6 +38,8 @@ class PayPalCommerceGateway extends PayPalCommerce implements NextGenPaymentGate
             'donationFormId' => $formId,
             'donationFormNonce' => wp_create_nonce( "give_donation_form_nonce_{$formId}" ),
             'sdkOptions' => [
+                // data-namespace is required for multiple PayPal SDKs to load in harmony.
+                'data-namespace' => 'givewp/paypal-commerce',
                 'client-id' => $merchantDetailModel->clientId,
                 'merchant-id' => $merchantDetailModel->merchantIdInPayPal,
                 'components' => "buttons,hosted-fields",
