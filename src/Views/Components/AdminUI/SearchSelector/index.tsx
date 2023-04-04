@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Controller, useFormContext, useWatch} from 'react-hook-form';
+import {Controller, useFormContext} from 'react-hook-form';
 import ReactSelect, {components} from 'react-select';
 
 import SearchMagnifyingGlassIcon from '@givewp/components/AdminUI/Icons/SearchMaginfyingGlassIcon';
@@ -26,12 +26,6 @@ export type SearchSelectorProps = {
 export default function SearchSelector({options, name, placeholder}: SearchSelectorProps) {
     const {control} = useFormContext();
     const [focus, setFocus] = useState<boolean>(false);
-
-    const form = useWatch({
-        name: 'formId',
-    });
-
-    const defaultValue = options?.find((option) => option['value'] === form);
 
     const DropdownIndicator = (props) => {
         return (
