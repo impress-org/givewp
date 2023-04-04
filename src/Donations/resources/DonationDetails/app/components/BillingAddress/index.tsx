@@ -10,6 +10,12 @@ import {FieldsetContainer} from '@givewp/components/AdminUI/ContainerLayout';
 import {StyleConfig} from './StyleConfig';
 import styles from './style.module.scss';
 
+const countriesList = Object.entries(window.GiveDonations.countriesList)
+    .filter(([value]) => value)
+    .map(
+        ([value, label]) => ({value, label})
+    );
+
 /**
  *
  * @unreleased
@@ -48,21 +54,21 @@ export function SectionContainer() {
             <SelectDropdownField
                 name={'country'}
                 label={__('Country', 'give')}
-                isSearchable={false}
+                isSearchable={true}
                 isClearable={false}
                 placeholder={__('Please select an option', 'give')}
-                options={[{value: 'UnitedStates', label: 'US'}]}
+                options={countriesList}
                 styleConfig={StyleConfig}
             />
             <TextInputField
-                {...register('primaryAddress')}
+                {...register('address1')}
                 name={'address1'}
                 label={__('Address 1', 'give')}
                 type={'text'}
                 placeholder={__('Address 1', 'give')}
             />
             <TextInputField
-                {...register('secondaryAddress')}
+                {...register('address2')}
                 name={'address2'}
                 label={__('Address 2', 'give')}
                 type={'text'}
@@ -77,7 +83,7 @@ export function SectionContainer() {
                     placeholder={__('City', 'give')}
                 />
                 <TextInputField
-                    {...register('stateProvinceCounty')}
+                    {...register('state')}
                     name={'state'}
                     label={__('State/Province/County', 'give')}
                     type={'text'}
