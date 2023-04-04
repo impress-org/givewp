@@ -28,33 +28,34 @@ use Give\Subscriptions\Models\Subscription;
  * @since 2.20.0 update amount type, fee recovered, and exchange rate
  * @since 2.19.6
  *
- * @property int $id
- * @property int $formId
- * @property string $formTitle
- * @property DateTime $createdAt
- * @property DateTime $updatedAt
+ * @property int            $id
+ * @property int            $formId
+ * @property string         $formTitle
+ * @property DateTime       $createdAt
+ * @property DateTime       $updatedAt
  * @property DonationStatus $status
- * @property DonationMode $mode
- * @property DonationType $type
- * @property Money $amount amount charged to the gateway
- * @property Money $feeAmountRecovered
- * @property string $exchangeRate
- * @property string $gatewayId
- * @property int $donorId
- * @property string $firstName
- * @property string $lastName
- * @property string $email
- * @property int $subscriptionId
+ * @property DonationMode   $mode
+ * @property DonationType   $type
+ * @property Money          $amount amount charged to the gateway
+ * @property Money          $feeAmountRecovered
+ * @property string         $exchangeRate
+ * @property string         $gatewayId
+ * @property int            $donorId
+ * @property string         $firstName
+ * @property string         $lastName
+ * @property string         $email
+ * @property int            $subscriptionId
  * @property BillingAddress $billingAddress
- * @property string $purchaseKey
- * @property string $donorIp
- * @property bool $anonymous
- * @property string $levelId
- * @property string $gatewayTransactionId
- * @property Donor $donor
- * @property Subscription $subscription
+ * @property string         $purchaseKey
+ * @property string         $donorIp
+ * @property bool           $anonymous
+ * @property string         $levelId
+ * @property string         $gatewayTransactionId
+ * @property Donor          $donor
+ * @property Subscription   $subscription
  * @property DonationNote[] $notes
- * @property string $company
+ * @property string         $company
+ * @property string         $comment
  */
 class Donation extends Model implements ModelCrud, ModelHasFactory
 {
@@ -86,6 +87,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
         'levelId' => ['string', ''],
         'gatewayTransactionId' => 'string',
         'company' => 'string',
+        'comment' => 'string',
     ];
 
     /**

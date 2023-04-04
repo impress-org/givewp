@@ -318,29 +318,8 @@ function give_update_payment_details( $data ) {
 	// Update comment.
 	if ( give_is_donor_comment_field_enabled( $payment->form_id ) ) {
 		// We are access comment directly from $_POST because comment formatting remove because of give_clean in give_post_actions.
-		$data['give_comment'] = trim( $_POST['give_comment'] );
-
-		if ( empty( $data['give_comment'] ) ) {
-			// Delete comment if empty
-			Give_Comment::delete( $comment_id, $payment_id, 'payment' );
-			$comment_id = 0;
-
-		} else {
-			$comment_args = array(
-				'comment_author_email' => $payment->email,
-			);
-
-			if ( $comment_id ) {
-				$comment_args['comment_ID'] = $comment_id;
-			}
-
-			$comment_id = give_insert_donor_donation_comment(
-				$payment->ID,
-				$payment->donor_id,
-				$data['give_comment'],
-				$comment_args
-			);
-		}
+        $data['give_comment'] = trim($_POST['give_comment']);
+        $payment->update_meta('_give_donation_comment', sanitize_textarea_field($data['give_comment']));
 	}
 
 	// Check if payment status is not completed then update the goal progress for donation form.

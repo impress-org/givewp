@@ -61,6 +61,7 @@ class RestAPI implements ServiceProvider
         SwitchSubscriptionView::class,
         DonationActions::class,
         DonationUpdate::class,
+        DonationCommentCRUD::class,
         SubscriptionActions::class,
         DeleteDonor::class,
         FormActions::class,

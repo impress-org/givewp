@@ -116,6 +116,10 @@ final class DonationQueryData
      * @var string|null
      */
     public $company;
+    /**
+     * @var string|null
+     */
+    public $comment;
 
     /**
      * Convert data from object to Donation
@@ -171,8 +175,10 @@ final class DonationQueryData
             ->getKeyAsCamelCase()};
         $self->company = $donationQueryObject->{DonationMetaKeys::COMPANY()
             ->getKeyAsCamelCase()};
+        $self->comment = $donationQueryObject->{DonationMetaKeys::COMMENT()
+            ->getKeyAsCamelCase()};
 
-        if (!empty($donationQueryObject->{DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION()->getKeyAsCamelCase()})) {
+        if ( ! empty($donationQueryObject->{DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION()->getKeyAsCamelCase()})) {
             $self->type = DonationType::SUBSCRIPTION();
         } elseif ($self->subscriptionId) {
             $self->type = DonationType::RENEWAL();

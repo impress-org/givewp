@@ -924,21 +924,10 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 										<div id="give-payment-donor-comment-inner">
 											<p>
 												<?php
-												$donor_comment = give_get_donor_donation_comment( $payment_id, $payment->donor_id );
-
-												echo sprintf(
-													'<input type="hidden" name="give_comment_id" value="%s">',
-													$donor_comment instanceof WP_Comment // Backward compatibility.
-														|| $donor_comment instanceof stdClass
-															? $donor_comment->comment_ID : 0
-												);
-
 												echo sprintf(
 													'<textarea name="give_comment" id="give_comment" placeholder="%s" class="large-text">%s</textarea>',
 													__( 'Add a comment', 'give' ),
-													$donor_comment instanceof WP_Comment // Backward compatibility.
-													|| $donor_comment instanceof stdClass
-														? $donor_comment->comment_content : ''
+                                                    $payment->get_meta('_give_donation_comment') ?? ''
 												);
 												?>
 											</p>
