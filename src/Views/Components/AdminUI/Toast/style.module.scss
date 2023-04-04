@@ -24,18 +24,42 @@
     }
 }
 
-.animateIn{
+.removeElement {
+    display: none;
+}
+
+.showElement {
+    display: block;
+}
+
+.animateIn {
     animation: slide-in 0.5s forwards ease-in-out;
 }
 
-@keyframes slide-in{
+.animateOut {
+    animation: slide-out 0.5s forwards ease-in-out;
+}
+
+
+@keyframes slide-in {
     from {
         opacity: 0;
-        transform: translateY(-65%);
+        transform: translateY(-75%);
     }
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@keyframes slide-out {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-75%);
     }
 }
 

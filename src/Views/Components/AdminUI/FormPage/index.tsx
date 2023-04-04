@@ -7,7 +7,7 @@ import {Form} from '@givewp/components/AdminUI/FormElements';
 
 import {joiResolver} from '@hookform/resolvers/joi';
 import {PostRequest} from '@givewp/components/AdminUI/api';
-import {format} from "date-fns";
+import {format} from 'date-fns';
 
 /**
  *
@@ -82,6 +82,7 @@ export default function FormPage({
             <Toast
                 showMessage={showApiMessage}
                 closeMessage={() => setApiShowMessage(false)}
+                openMessage={() => setApiShowMessage(true)}
                 resultMessage={result.message}
                 resultType={result.type}
             />
