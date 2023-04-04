@@ -1,0 +1,9 @@
+.cityStateProvinceCounty {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--givewp-spacing-6);
+
+   & > label{
+        flex: 1;
+    }
+}
