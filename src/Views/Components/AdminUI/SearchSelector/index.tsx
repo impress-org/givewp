@@ -25,7 +25,7 @@ export type SearchSelectorProps = {
 
 export default function SearchSelector({options, name, placeholder}: SearchSelectorProps) {
     const {control} = useFormContext();
-    const [focus, setFocus] = useState(false);
+    const [focus, setFocus] = useState<boolean>(false);
 
     const form = useWatch({
         name: 'formId',
