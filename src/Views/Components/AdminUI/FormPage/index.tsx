@@ -46,7 +46,7 @@ export default function FormPage({
     errorMessage,
 }: FormPageProps) {
     const {postData, result} = usePostRequest(endpoint, apiNonce, successMessage, errorMessage);
-    const [showApiMessage, setApiShowMessage] = useState(false);
+    const [showApiMessage, setApiShowMessage] = useState<boolean>(false);
 
     const methods = useForm({
         defaultValues: defaultValues,
