@@ -13,7 +13,7 @@ import {StyleConfig} from './StyleConfig';
  * @unreleased
  */
 
-export type SearchSelector = {
+export type SearchSelectorProps = {
     options: Array<{
         value: number;
         label: string;
@@ -23,7 +23,7 @@ export type SearchSelector = {
     placeholder: string;
 };
 
-export default function SearchSelector({options, name, placeholder}: SearchSelector) {
+export default function SearchSelector({options, name, placeholder}: SearchSelectorProps) {
     const {control} = useFormContext();
     const [focus, setFocus] = useState(false);
 
