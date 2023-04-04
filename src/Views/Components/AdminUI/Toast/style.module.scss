@@ -1,0 +1,68 @@
+.apiResult {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: .875rem;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    border: 1px solid black;
+    margin: 0 var(--givewp-spacing-4);
+    padding: var(--givewp-spacing-4);
+    border-radius: 4px;
+
+    > button {
+        border: none;
+        background: none;
+
+        > svg {
+            cursor: pointer;
+        }
+    }
+}
+
+.animateIn {
+    animation: slide-in 0.325s forwards ease-in-out;
+}
+
+.animateOut {
+    animation: slide-out 0.325s forwards ease-in-out;
+}
+
+
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(-75%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-out {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-75%);
+    }
+}
+
+.success {
+    border: solid 1px var(--givewp-emerald-600);
+    border-left: solid 4px var(--givewp-emerald-600);
+    background-color: var(--givewp-emerald-25);
+}
+
+.error {
+    border: solid 1px var(--givewp-red-600);
+    border-left: solid 4px var(--givewp-red-600);
+    background-color: var(--givewp-red-25);
+}

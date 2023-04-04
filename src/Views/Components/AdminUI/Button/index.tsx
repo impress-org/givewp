@@ -10,18 +10,18 @@ import styles from './style.module.scss';
  */
 
 export type ButtonProps = {
-    variant: 'primary' | 'secondary' | 'danger';
-    size: 'small' | 'large';
-    type: 'button' | 'reset' | 'submit';
+    variant?: 'primary' | 'secondary' | 'danger';
+    size?: 'small' | 'large';
+    type?: 'button' | 'reset' | 'submit';
     children: React.ReactNode;
 
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
-    disabled?: boolean;
+    disabled: boolean;
     classname?: 'string';
 };
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-    ({children, type = 'button', classname, variant = 'primary', size = 'normal', disabled, ...props}, ref) => (
+    ({children, type = 'button', classname, variant = 'primary', size = 'small', disabled = false, ...props}, ref) => (
         <button
             ref={ref}
             disabled={disabled}

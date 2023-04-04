@@ -6,8 +6,8 @@ import styles from './style.module.scss';
  */
 
 export type ActionMenuProps = {
-    menuConfig: Array<{title: string; action: () => void}>;
-    toggle: () => void;
+    menuConfig: any;
+    toggle: any;
 };
 
 export default function ActionMenu({menuConfig, toggle}: ActionMenuProps) {
@@ -17,10 +17,10 @@ export default function ActionMenu({menuConfig, toggle}: ActionMenuProps) {
     };
     return (
         <ul className={styles.navigationMenu}>
-            {menuConfig.map((action) => {
+            {menuConfig.map(({action, title}) => {
                 return (
                     <li>
-                        <button onClick={() => handleClick(action.action)}>{action.title}</button>
+                        <button onClick={() => handleClick(action)}>{title}</button>
                     </li>
                 );
             })}

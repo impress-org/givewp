@@ -1,0 +1,62 @@
+.statusSelectorContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    .status {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: var(--givewp-spacing-2);
+        background-color: inherit;
+        font-stretch: normal;
+        font-style: normal;
+        letter-spacing: normal;
+        color: var(--givewp-grey-900);
+    }
+
+
+    .ellipse {
+        width: .5rem;
+        height: .5rem;
+        margin-top: 1px;
+        border-radius: var(--givewp-rounded-full);
+    }
+
+
+    .completed, .publish{
+        background-color: var(--givewp-emerald-500);
+    }
+
+    .pending{
+        background-color: var(--givewp-yellow-500);
+    }
+
+    .failed {
+        background-color: var(--givewp-red-500);
+    }
+
+    .cancelled {
+        background-color: var(--givewp-red-700);
+    }
+
+    .revoked, .refunded{
+        background-color: var(--givewp-red-300);
+    }
+
+    .abandoned {
+        background-color: var(--givewp-grey-600);
+    }
+
+    .processing {
+        background-color: var(--givewp-purple-600);
+    }
+
+    .preApproved, .preApproval, .preApprove{
+        background-color: var(--givewp-emerald-700);
+    }
+}
+
+

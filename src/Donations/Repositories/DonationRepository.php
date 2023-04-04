@@ -251,6 +251,8 @@ class DonationRepository
         $dateUpdated = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
         $dateUpdatedFormatted = Temporal::getFormattedDateTime($dateUpdated);
 
+        $createdAt = Temporal::getFormattedDateTime($donation->createdAt);
+
         DB::query('START TRANSACTION');
 
         try {

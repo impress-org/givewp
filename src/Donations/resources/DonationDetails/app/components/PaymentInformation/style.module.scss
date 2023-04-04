@@ -1,0 +1,108 @@
+@use 'assets/src/css/Safe-Rem/functions' as *;
+
+.paymentInformation {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-6);
+    padding: var(--givewp-spacing-5) var(--givewp-spacing-6) var(--givewp-spacing-8);
+    border: solid 1px var(--givewp-grey-50);
+    background-color: var(--givewp-shades-white);
+    border-radius: 4px;
+
+    .wrapper {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .paymentGatewayLink {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: var(--givewp-spacing-5);
+
+        a {
+            grid-row: 2;
+            display: flex;
+            align-items: center;
+            gap: var(--givewp-spacing-2);
+            color: var(--wp-blue-blue-50);
+            font-weight: 600;
+            font-stretch: normal;
+            font-style: normal;
+            letter-spacing: normal;
+            text-decoration: none;
+            margin-top: var(--givewp-spacing-2);;
+
+        }
+    }
+}
+
+
+.warning {
+    display: flex;
+    gap: var(--givewp-spacing-2);
+    padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+    margin-bottom: var(--givewp-spacing-3);
+    background: var(--givewp-yellow-100);
+    border-radius: 4px;
+
+    > div {
+        display: block;
+    }
+
+    span {
+        display: inline-flex;
+        font-weight: 600;
+    }
+
+}
+
+
+.actions {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: start;
+    align-items: start;
+    gap: var(--givewp-spacing-16) 0;
+}
+
+@media (max-width: 1100px) {
+    .wrapper {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .paymentGatewayLink > a {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 750px) {
+    .actions {
+        grid-template-columns: repeat(2, 1fr);
+
+        > div:nth-child(4), div:nth-child(6), div:nth-child(8) {
+            width: 100%;
+            justify-items: end;
+            align-items: end;
+        }
+    }
+}
+
+@media (max-width: 500px) {
+    .actions {
+        grid-template-columns: repeat(1, 1fr);
+
+        > div {
+            width: 100%;
+            justify-items: center;
+            align-items: center;
+        }
+
+        > div:nth-child(2), div:nth-child(4), div:nth-child(6) {
+            justify-items: center;
+            align-items: center;
+        }
+    }
+}
