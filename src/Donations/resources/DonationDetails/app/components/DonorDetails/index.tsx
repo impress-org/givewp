@@ -6,6 +6,7 @@ import SectionHeader, {DropdownTitle, HeaderLink} from '@givewp/components/Admin
 import {AsyncSelectDropdownField, DisabledTextField} from '@givewp/components/AdminUI/FormElements';
 import {FieldsetContainer} from '@givewp/components/AdminUI/ContainerLayout';
 import {useGetRequest} from '@givewp/components/AdminUI/api';
+import useDebounce from '@givewp/components/ListTable/hooks/useDebounce';
 
 import {StyleConfig} from './StyleConfig';
 import {apiNonce, apiRoot} from '../../../../window';
@@ -54,7 +55,7 @@ export function SectionContainer() {
     const watchedDonorId = useWatch({name: 'donorId'});
     const currentDonor = cachedDonors[watchedDonorId].model;
 
-    const getDonors = async (inputValue: string): Promise<DonorOption[]> => {
+    const loadOptions = (inputValue: string, callback: (options: DonorOption[]) => void) => {
         try {
             const params = {
                 search: inputValue,
@@ -66,28 +67,31 @@ export function SectionContainer() {
             const queryString = Object.entries(params)
                 .map(([key, value]) => `${key}=${value}`)
                 .join('&');
-            const response = await getData(queryString);
 
-            if (response.items) {
-                return response.items.map((item) => {
-                    const donor: DonorOption = {
-                        value: item.id,
-                        label: `${item.firstName} ${item.lastName} (${item.email})`,
-                        model: item,
-                    };
+            getData(queryString).then((response) => {
+                if (response.items) {
+                    const donors = response.items.map((item) => {
+                        const donor: DonorOption = {
+                            value: item.id,
+                            label: `${item.firstName} ${item.lastName} (${item.email})`,
+                            model: item,
+                        };
 
-                    setCachedDonors((cachedDonors) => ({
-                        ...cachedDonors,
-                        [item.id]: donor,
-                    }));
+                        setCachedDonors((cachedDonors) => ({
+                            ...cachedDonors,
+                            [item.id]: donor,
+                        }));
 
-                    return donor;
-                });
-            } else {
-                return [];
-            }
+                        return donor;
+                    });
+
+                    callback(donors);
+                } else {
+                    callback([]);
+                }
+            });
         } catch (error) {
-            return [];
+            callback([]);
         }
     };
 
@@ -100,7 +104,7 @@ export function SectionContainer() {
                 isClearable={false}
                 placeholder={__('Please select an option', 'give')}
                 defaultOptions={Object.values(cachedDonors).sort((a, b) => (a.label > b.label ? 1 : -1))}
-                loadOptions={getDonors}
+                loadOptions={useDebounce(loadOptions)}
                 styleConfig={StyleConfig}
             />
             <DisabledTextField

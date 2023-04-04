@@ -163,7 +163,7 @@ export function SelectDropdownField({
 
 export type AsyncSelectDropdownFieldProps = {
     defaultOptions: Array<{ value: any; label: string }>;
-    loadOptions: (inputValue: string) => void;
+    loadOptions: (inputValue: string, callback: (option) => void) => void;
     name: string;
     isSearchable: boolean;
     isClearable: boolean;
