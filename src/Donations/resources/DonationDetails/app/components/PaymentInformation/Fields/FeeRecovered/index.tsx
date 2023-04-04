@@ -35,7 +35,7 @@ export default function FeeRecoveredField() {
     return (
         <>
             <input hidden {...register('feeAmountRecovered')} />
-            <CurrencyField label="feeRecovered" editable onEdit={() => setIsModalOpen(true)}>
+            <CurrencyField label={__('Fee Recovered', 'give')} editable onEdit={() => setIsModalOpen(true)}>
                 {formatCurrency(Number(feeAmountRecovered), currency)}
             </CurrencyField>
             <ModalDialog
