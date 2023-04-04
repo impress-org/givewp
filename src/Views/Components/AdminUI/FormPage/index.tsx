@@ -53,9 +53,7 @@ export default function FormPage({
         resolver: joiResolver(validationSchema),
     });
 
-    const {handleSubmit, getValues} = methods;
-
-    const {isDirty} = methods.formState;
+    const {handleSubmit, getValues, formState: {errors, isDirty, dirtyFields}} = methods;
 
     const handleSubmitRequest = async (formFieldValues) => {
         try {
@@ -63,6 +61,11 @@ export default function FormPage({
                 formFieldValues.createdAt = format(formFieldValues.createdAt, 'yyyy-MM-dd HH:mm:ss');
             }
 
+            formFieldValues = Object.fromEntries(
+                Object.entries(formFieldValues).filter(([key]) => {
+                    return dirtyFields[key];
+                })
+            );
             await postData(formFieldValues);
             setApiShowMessage(true);
         } catch (error) {
