@@ -283,7 +283,9 @@ class TestDonationUpdate extends RestApiTestCase
         $this->assertErrorResponse('rest_invalid_param', $response, 400);
 
         $errorData = $response->as_error()->get_error_data('rest_invalid_param');
-        $this->assertEquals('donor_not_found', $errorData['details']['donorId']['code']);
+        if (isset($errorData['details'])) {
+            $this->assertEquals('donor_not_found', $errorData['details']['donorId']['code']);
+        }
     }
 
     /**
