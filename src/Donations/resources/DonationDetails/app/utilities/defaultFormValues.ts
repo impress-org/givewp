@@ -22,6 +22,7 @@ export const defaultFormValues: {
     status: string;
     formId: number;
     donorId: number;
+    country: string;
     address1: string;
     address2: string;
     city: string;
@@ -35,6 +36,7 @@ export const defaultFormValues: {
     status: status,
     formId: formId,
     donorId: donorId,
+    country: billingAddress.country,
     address1: billingAddress.address1,
     address2: billingAddress.address2,
     city: billingAddress.city,
