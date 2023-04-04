@@ -82,7 +82,6 @@ export default function FormPage({
             <Toast
                 showMessage={showApiMessage}
                 closeMessage={() => setApiShowMessage(false)}
-                openMessage={() => setApiShowMessage(true)}
                 resultMessage={result.message}
                 resultType={result.type}
             />
