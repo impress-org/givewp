@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {Fragment, useEffect, useState} from 'react';
 
 import cx from 'classnames';
 import CircularExitIcon from '@givewp/components/AdminUI/Icons/CircularExitIcon';
@@ -14,20 +14,22 @@ export type ToastProps = {
 };
 
 export default function Toast({resultType, resultMessage, openMessage, showMessage, closeMessage}: ToastProps) {
+    const [isActive, setIsActive] = useState(false);
+
     useEffect(() => {
         if (showMessage) {
             // Wait for the next frame to allow the .slide-in class to take effect
             requestAnimationFrame(() => {
-                openMessage();
+                setIsActive(true);
             });
         } else {
-            closeMessage();
+            setTimeout(() => setIsActive(false), 500);
         }
     }, [showMessage]);
 
     return (
-        <div>
-            {showMessage ? (
+        <Fragment>
+            {isActive && (
                 <div
                     className={cx(styles.apiResult, styles[resultType], {
                         [styles.animateIn]: showMessage,
@@ -39,7 +41,7 @@ export default function Toast({resultType, resultMessage, openMessage, showMessa
                         <CircularExitIcon color={resultType === 'success' ? '#08a657' : '#a62308'} />
                     </button>
                 </div>
-            ) : null}
-        </div>
+            )}
+        </Fragment>
     );
 }
