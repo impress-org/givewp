@@ -4,7 +4,7 @@ export const StyleConfig = {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        gap: 12,
+        gap: 4,
         border: 'none',
         height: 32,
         width: '100%',
