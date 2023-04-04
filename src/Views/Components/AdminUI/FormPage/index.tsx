@@ -6,7 +6,7 @@ import Toast from '@givewp/components/AdminUI/Toast';
 import {Form} from '@givewp/components/AdminUI/FormElements';
 
 import {joiResolver} from '@hookform/resolvers/joi';
-import {PostRequest} from '@givewp/components/AdminUI/api';
+import {usePostRequest} from '@givewp/components/AdminUI/api';
 import {format} from 'date-fns';
 
 /**
@@ -45,7 +45,7 @@ export default function FormPage({
     successMessage,
     errorMessage,
 }: FormPageProps) {
-    const {postData, result} = PostRequest(endpoint, apiNonce, successMessage, errorMessage);
+    const {postData, result} = usePostRequest(endpoint, apiNonce, successMessage, errorMessage);
     const [showApiMessage, setApiShowMessage] = useState(false);
 
     const methods = useForm({

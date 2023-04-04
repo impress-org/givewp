@@ -1,6 +1,6 @@
 import {useState} from 'react';
 
-const PostRequest = (endpoint: string, apiNonce: string, successMessage: string, errorMessage: string) => {
+const usePostRequest = (endpoint: string, apiNonce: string, successMessage: string, errorMessage: string) => {
     const [result, setResult] = useState({type: null, message: ''});
 
     const postData = async (postData) => {
@@ -32,4 +32,4 @@ const PostRequest = (endpoint: string, apiNonce: string, successMessage: string,
 
     return {postData, result};
 };
-export {PostRequest};
+export {usePostRequest};
