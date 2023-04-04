@@ -56,11 +56,11 @@ export function TimeFields({isOpen, closeFields, initialTime}: TimeFieldProps) {
     const [minutes, setMinutes] = useState<number>(Number(format(initialTime, String(initialTime.getMinutes()))));
     const [meridiem, setMeridiem] = useState<string>(format(initialTime, 'h:mm a').split(' ')[1]);
 
-    const confirmFieldValues = () => {
+    const confirmFieldValues = (setData: boolean) => {
         const dateString = String(`${hours}:${minutes} ${meridiem}`);
         const newDateObject = parse(dateString, 'h:m a', initialTime);
 
-        closeFields(newDateObject);
+        closeFields(setData && newDateObject);
     };
 
     return (
@@ -89,7 +89,7 @@ export function TimeFields({isOpen, closeFields, initialTime}: TimeFieldProps) {
                     className={styles.confirmSelection}
                     role={'button'}
                     aria-pressed={isOpen}
-                    onClick={confirmFieldValues}
+                    onClick={() => confirmFieldValues(true)}
                 >
                     {__('Set', 'give')}
                 </span>
@@ -97,7 +97,7 @@ export function TimeFields({isOpen, closeFields, initialTime}: TimeFieldProps) {
                     className={styles.cancelSelection}
                     role={'button'}
                     aria-pressed={isOpen}
-                    onClick={confirmFieldValues}
+                    onClick={() => confirmFieldValues(false)}
                 >
                     {__('Cancel', 'give')}
                 </span>
