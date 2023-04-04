@@ -16,20 +16,9 @@ import {apiNonce, apiRoot} from '../../../../window';
  */
 const endpoint = `${apiRoot.split('/donation')[0]}/donors`;
 const {donorId, firstName, lastName, email} = window.GiveDonations.donationDetails;
-const cachedDonors: CachedDonors = {
-    [donorId]: {
-        value: donorId,
-        label: `${firstName} ${lastName} (${email})`,
-        model: {
-            firstName,
-            lastName,
-            email,
-        },
-    },
-};
 
 export default function DonorDetails() {
-    const [dropdown, setDropdown] = useState(true);
+    const [dropdown, setDropdown] = useState<boolean>(true);
 
     const handleDropdown = () => setDropdown(!dropdown);
 
@@ -49,6 +38,18 @@ export default function DonorDetails() {
  * @unreleased
  */
 export function SectionContainer() {
+    const [cachedDonors, setCachedDonors] = useState<CachedDonors>({
+        [donorId]: {
+            value: donorId,
+            label: `${firstName} ${lastName} (${email})`,
+            model: {
+                firstName,
+                lastName,
+                email,
+            },
+        },
+    });
+
     const {getData} = useGetRequest(endpoint, apiNonce, '', '');
     const watchedDonorId = useWatch({name: 'donorId'});
     const currentDonor = cachedDonors[watchedDonorId].model;
@@ -74,7 +75,11 @@ export function SectionContainer() {
                         label: `${item.firstName} ${item.lastName} (${item.email})`,
                         model: item,
                     };
-                    cachedDonors[item.id] = donor;
+
+                    setCachedDonors((cachedDonors) => ({
+                        ...cachedDonors,
+                        [item.id]: donor,
+                    }));
 
                     return donor;
                 });
@@ -94,7 +99,7 @@ export function SectionContainer() {
                 isSearchable={true}
                 isClearable={false}
                 placeholder={__('Please select an option', 'give')}
-                defaultOptions={Object.values(cachedDonors).sort((a, b) => a.label > b.label ? 1 : -1)}
+                defaultOptions={Object.values(cachedDonors).sort((a, b) => (a.label > b.label ? 1 : -1))}
                 loadOptions={getDonors}
                 styleConfig={StyleConfig}
             />
@@ -124,9 +129,9 @@ type DonorOption = {
         lastName: string;
         email: string;
         [key: string]: any;
-    }
-}
+    };
+};
 
 type CachedDonors = {
     [key: number]: DonorOption;
-}
+};
