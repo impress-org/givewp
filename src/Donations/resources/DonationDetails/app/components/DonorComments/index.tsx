@@ -15,9 +15,13 @@ import {usePostRequest} from '@givewp/components/AdminUI/api';
 import PenToPaperIcon from '@givewp/components/AdminUI/Icons/PenToPaperIcon';
 import AddIcon from '@givewp/components/AdminUI/Icons/AddIcon';
 
+/**
+ *
+ * @unreleased
+ */
 const {comment, donorAvatar, id} = window.GiveDonations.donationDetails;
 
-export function DonorComments() {
+export default function DonorComments() {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const openModal = () => {
@@ -76,6 +80,10 @@ export function DonorComments() {
     );
 }
 
+/**
+ *
+ * @unreleased
+ */
 function SectionContainer({hasComment}: {hasComment: boolean}) {
     return (
         <FieldsetContainer>
@@ -90,6 +98,10 @@ function SectionContainer({hasComment}: {hasComment: boolean}) {
     );
 }
 
+/**
+ *
+ * @unreleased
+ */
 function CommentDialog({handlePostRequest}) {
     const commentRef = useRef(null);
 
