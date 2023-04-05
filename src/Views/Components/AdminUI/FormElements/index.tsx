@@ -1,5 +1,9 @@
 import React from 'react';
 
+import ReactSelect from 'react-select';
+import AsyncSelect from 'react-select/async';
+import {Controller} from 'react-hook-form';
+import {__} from '@wordpress/i18n';
 import cx from 'classnames';
 
 import CurrencyInput from 'react-currency-input-field';
@@ -17,11 +21,13 @@ export type FormElementProps = {
     id: string;
 };
 
-export const Form: React.FC<HTMLFormElement | FormElementProps> = ({children, id, onSubmit}) => (
+const Form: React.FC<HTMLFormElement | FormElementProps> = ({children, id, onSubmit}) => (
     <form className={styles.form} id={id} onSubmit={onSubmit}>
         {children}
     </form>
 );
+
+export {Form};
 
 /**
  *
@@ -35,62 +41,214 @@ export type InputFieldProps = {
     label: string;
 };
 
-export const TextInputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
+const TextInputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
     ({name, type, placeholder, label, ...props}, ref) => {
         return (
-            <FieldLabel label={label}>
+            <label>
+                {label && <span className={styles.fieldLabel}>{label}</span>}
                 <div className={cx(styles.textFieldContainer)}>
                     <input ref={ref} name={name} type={type} placeholder={placeholder} {...props} />
                 </div>
-            </FieldLabel>
+            </label>
         );
     }
 );
+
+export {TextInputField};
 
 /**
  *
  * @unreleased
  */
 
-export type CurrencyInputFieldProps = InputFieldProps & {
+export type CurrencyInputFieldProps = {
+    placeholder: string;
+    label: string;
     currency: string;
     defaultValue: number;
-    handleCurrencyChange: () => void;
+    handleCurrencyChange: (value: number) => void;
 };
 
-export function CurrencyInputField({defaultValue, placeholder, handleCurrencyChange, currency, label}) {
+export function CurrencyInputField({
+    defaultValue,
+    placeholder,
+    handleCurrencyChange,
+    currency,
+    label,
+}: CurrencyInputFieldProps) {
     return (
-        <FieldLabel label={label}>
+        <label>
+            {label && <span className={styles.fieldLabel}>{label}</span>}
             <div className={cx(styles.textFieldContainer, styles.currencyField, {})}>
                 <CurrencyInput
                     name={'currency-input-field'}
                     allowNegativeValue={false}
                     onValueChange={(value, name) => {
-                        handleCurrencyChange(value);
+                        handleCurrencyChange(Number(value));
                     }}
                     intlConfig={{
                         locale: navigator.language,
                         currency: currency,
                     }}
+                    decimalSeparator={'.'}
+                    groupSeparator={','}
                     decimalScale={2}
                     placeholder={placeholder}
                     defaultValue={defaultValue}
                 />
             </div>
-        </FieldLabel>
+        </label>
     );
 }
 
-export type LabelProps = {
+/**
+ *
+ * @unreleased
+ */
+
+export type SelectDropdownFieldProps = {
+    options: Array<{value: any; label: string}>;
+    name: string;
+    isSearchable: boolean;
+    isClearable: boolean;
+    placeholder: string;
     label: string;
-    children: React.ReactNode;
+    styleConfig?: object;
+    isLoading?: boolean;
 };
 
-export function FieldLabel({label, children}) {
+export function SelectDropdownField({
+    options,
+    styleConfig,
+    name,
+    isSearchable,
+    isClearable,
+    placeholder,
+    isLoading,
+    label,
+}: SelectDropdownFieldProps) {
+    return (
+        <>
+            <label htmlFor={name} className={styles.fieldLabel}>
+                <span>{label}</span>
+                <Controller
+                    name={name}
+                    render={({
+                        field: {onChange, onBlur, value, name, ref},
+                        fieldState: {invalid, isTouched, isDirty, error},
+                        formState,
+                    }) => (
+                        <ReactSelect
+                            ref={ref}
+                            name={name}
+                            value={options?.find((option) => option.value === value)}
+                            options={options}
+                            onChange={(selectedOption) => onChange(selectedOption.value)}
+                            isClearable={isClearable}
+                            isSearchable={isSearchable}
+                            placeholder={isLoading ? __('Options are loading...') : placeholder ?? ''}
+                            components={{
+                                IndicatorSeparator: () => null,
+                            }}
+                            styles={styleConfig}
+                            className={styles.reactSelectContainer}
+                        />
+                    )}
+                />
+            </label>
+        </>
+    );
+}
+
+/**
+ *
+ * @unreleased
+ */
+
+export type AsyncSelectDropdownFieldProps = {
+    defaultOptions: Array<{value: any; label: string}>;
+    loadOptions: (inputValue: string, callback: (option) => void) => void;
+    name: string;
+    isSearchable: boolean;
+    isClearable: boolean;
+    placeholder: string;
+    label: string;
+    styleConfig?: object;
+    isLoading?: boolean;
+};
+
+export function AsyncSelectDropdownField({
+    defaultOptions,
+    loadOptions,
+    styleConfig,
+    name,
+    isSearchable,
+    isClearable,
+    placeholder,
+    isLoading,
+    label,
+}: AsyncSelectDropdownFieldProps) {
+    return (
+        <>
+            <label htmlFor={name} className={styles.fieldLabel}>
+                <span>{label}</span>
+                <Controller
+                    name={name}
+                    render={({
+                        field: {onChange, onBlur, value, name, ref},
+                        fieldState: {invalid, isTouched, isDirty, error},
+                        formState,
+                    }) => (
+                        <AsyncSelect
+                            ref={ref}
+                            name={name}
+                            defaultValue={defaultOptions?.find((option) => option.value === value)}
+                            defaultOptions={defaultOptions}
+                            loadOptions={loadOptions}
+                            onChange={(selectedOption) => onChange(selectedOption.value)}
+                            isClearable={isClearable}
+                            isSearchable={isSearchable}
+                            placeholder={isLoading ? __('Options are loading...') : placeholder ?? ''}
+                            components={{
+                                IndicatorSeparator: () => null,
+                            }}
+                            styles={styleConfig}
+                            className={styles.reactSelectContainer}
+                        />
+                    )}
+                />
+            </label>
+        </>
+    );
+}
+
+/**
+ *
+ * @unreleased
+ */
+
+export type DisabledTextFieldProps = {
+    name: string;
+    type: string;
+    placeholder: string;
+    value: string;
+    label: string;
+};
+
+export function DisabledTextField({name, type, placeholder, label, value}: DisabledTextFieldProps) {
     return (
         <label>
             {label && <span className={styles.fieldLabel}>{label}</span>}
-            {children}
+            <div className={cx(styles.textFieldContainer)}>
+                <input
+                    className={styles.disabled}
+                    disabled
+                    name={name}
+                    value={value}
+                    type={type}
+                    placeholder={placeholder}
+                />
+            </div>
         </label>
     );
 }

@@ -12,4 +12,5 @@ export const validationSchema = Joi.object().keys({
     createdAt: Joi.date(),
     status: Joi.string(),
     formId: Joi.number(),
+    donorId: Joi.number(),
 });
