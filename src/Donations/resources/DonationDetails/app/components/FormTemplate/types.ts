@@ -64,4 +64,6 @@ export interface DataValues {
     gatewayTransactionId: null | string;
     company: null | string;
     gatewayLabel: string;
+    comment: string;
+    donorAvatar: string;
 }
