@@ -1,3 +1,3 @@
 import {iframeResize} from 'iframe-resizer';
 
-iframeResize({}, 'iframe[data-givewp-embed]');
+iframeResize({heightCalculationMethod: 'taggedElement'}, 'iframe[data-givewp-embed]');

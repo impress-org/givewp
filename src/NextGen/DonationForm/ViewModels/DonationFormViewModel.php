@@ -207,6 +207,7 @@ class DonationFormViewModel
         ?>
 
         <div data-theme="light" id="root-givewp-donation-form"
+             data-iframe-height
              class="<?= implode(' ', $classNames) ?>"></div>
 
         <?php

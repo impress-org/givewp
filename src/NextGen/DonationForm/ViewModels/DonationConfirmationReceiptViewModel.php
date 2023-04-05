@@ -120,6 +120,7 @@ class DonationConfirmationReceiptViewModel
         endif; ?>
 
         <div data-theme="light" id="root-givewp-donation-confirmation-receipt"
+             data-iframe-height
              class="givewp-donation-confirmation-receipt"
              style="
                      --givewp-primary-color:<?= $primaryColor ?>;
