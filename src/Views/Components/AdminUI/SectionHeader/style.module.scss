@@ -4,7 +4,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+    padding: var(--givewp-spacing-1) var(--givewp-spacing-4);
     border-radius: 4px;
     border: solid 1px var(--givewp-grey-50);
     background-color: var(--givewp-shades-white);
@@ -40,7 +40,7 @@
         line-height: normal;
         letter-spacing: normal;
         text-align: right;
-        color: var(--givewp-blue-500);
+        color: var(--wp-blue-blue-50);
         text-decoration: none;
     }
 
@@ -58,7 +58,7 @@
         line-height: normal;
         letter-spacing: normal;
         text-align: right;
-        color: var(--givewp-blue-500);
+        color: var(--wp-blue-blue-50);
     }
 }
 
