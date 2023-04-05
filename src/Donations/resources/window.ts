@@ -10,11 +10,12 @@ declare global {
             apiNonce: string;
             apiRoot: string;
             adminUrl: string;
-            forms?: Array<{value: string; text: string}>;
-            table?: {columns: Array<object>};
+            forms?: Array<{ value: string; text: string }>;
+            table?: { columns: Array<object> };
             paymentMode?: boolean;
             manualDonations?: boolean;
             donationDetails?: DataValues;
+            countriesList?: { [code: string]: string };
         };
     }
 }

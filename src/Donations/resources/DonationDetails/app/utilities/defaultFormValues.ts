@@ -3,7 +3,16 @@
  * @unreleased
  */
 
-const {id, status, formId, donorId, feeAmountRecovered, createdAt, amount} = window.GiveDonations.donationDetails
+const {
+    id,
+    status,
+    formId,
+    donorId,
+    feeAmountRecovered,
+    createdAt,
+    amount,
+    billingAddress
+} = window.GiveDonations.donationDetails
 
 export const defaultFormValues: {
     id: number;
@@ -13,6 +22,12 @@ export const defaultFormValues: {
     status: string;
     formId: number;
     donorId: number;
+    country: string;
+    address1: string;
+    address2: string;
+    city: string;
+    state: string;
+    zip: string;
 } = {
     id: id,
     amount: amount.value,
@@ -21,4 +36,10 @@ export const defaultFormValues: {
     status: status,
     formId: formId,
     donorId: donorId,
+    country: billingAddress.country,
+    address1: billingAddress.address1,
+    address2: billingAddress.address2,
+    city: billingAddress.city,
+    state: billingAddress.state,
+    zip: billingAddress.zip,
 };
