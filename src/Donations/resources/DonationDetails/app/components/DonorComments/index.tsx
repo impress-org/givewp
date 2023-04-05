@@ -89,7 +89,7 @@ function SectionContainer({hasComment}: {hasComment: boolean}) {
                     <span>{comment}</span>
                 </div>
             ) : (
-                <EmptyState message={__('No comments.', 'give')} />
+                <EmptyState message={__('No comment', 'give')} />
             )}
         </FieldsetContainer>
     );
