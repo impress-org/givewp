@@ -34,14 +34,14 @@ export {Form};
  * @unreleased
  */
 
-export type TextInputFieldProps = {
+export type InputFieldProps = {
     name: string;
     type: string;
     placeholder: string;
     label: string;
 };
 
-const TextInputField = React.forwardRef<HTMLInputElement, TextInputFieldProps>(
+const TextInputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
     ({name, type, placeholder, label, ...props}, ref) => {
         return (
             <label>
@@ -62,16 +62,20 @@ export {TextInputField};
  */
 
 export type CurrencyInputFieldProps = {
-    name: string;
-    type: string;
     placeholder: string;
     label: string;
     currency: string;
     defaultValue: number;
-    handleCurrencyChange: () => void;
+    handleCurrencyChange: (value: number) => void;
 };
 
-export function CurrencyInputField({defaultValue, placeholder, handleCurrencyChange, currency, label}) {
+export function CurrencyInputField({
+    defaultValue,
+    placeholder,
+    handleCurrencyChange,
+    currency,
+    label,
+}: CurrencyInputFieldProps) {
     return (
         <label>
             {label && <span className={styles.fieldLabel}>{label}</span>}
@@ -80,7 +84,7 @@ export function CurrencyInputField({defaultValue, placeholder, handleCurrencyCha
                     name={'currency-input-field'}
                     allowNegativeValue={false}
                     onValueChange={(value, name) => {
-                        handleCurrencyChange(value);
+                        handleCurrencyChange(Number(value));
                     }}
                     intlConfig={{
                         locale: navigator.language,
@@ -162,7 +166,7 @@ export function SelectDropdownField({
  */
 
 export type AsyncSelectDropdownFieldProps = {
-    defaultOptions: Array<{ value: any; label: string }>;
+    defaultOptions: Array<{value: any; label: string}>;
     loadOptions: (inputValue: string, callback: (option) => void) => void;
     name: string;
     isSearchable: boolean;
