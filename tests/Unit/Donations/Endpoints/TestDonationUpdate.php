@@ -6,6 +6,7 @@ use DateTime;
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donors\Models\Donor;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Tests\RestApiTestCase;
@@ -102,6 +103,50 @@ class TestDonationUpdate extends RestApiTestCase
             if ($key === 'formId') {
                 $this->assertEquals($donationForm->title, $donation->formTitle);
             }
+            $this->assertEquals($value, $donation->{$key});
+        }
+    }
+
+    /**
+     * Test that a valid donor details update request returns a successful response.
+     *
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testValidRequestWithDonorDetails()
+    {
+        $donation = Donation::factory()->create();
+        $donationId = $donation->id;
+        $donor = Donor::factory()->create();
+        $donorId = $donor->id;
+
+        $donorDetails = [
+            'donorId' => $donorId,
+        ];
+
+        $response = $this->handleRequest($donationId, $donorDetails);
+
+        $this->assertInstanceOf(WP_REST_Response::class, $response);
+        $this->assertEquals(200, $response->get_status());
+
+        $data = $response->get_data();
+        $this->assertArrayHasKey('success', $data);
+        $this->assertTrue($data['success']);
+        $this->assertCount(1, $data['updatedFields']);
+
+        $donation = give()->donations->getById($donationId);
+
+        $donorDetails = array_merge(
+            $donorDetails,
+            [
+                'firstName' => $donor->firstName,
+                'lastName' => $donor->lastName,
+                'email' => $donor->email,
+            ]
+        );
+
+        foreach ($donorDetails as $key => $value) {
             $this->assertEquals($value, $donation->{$key});
         }
     }
@@ -221,6 +266,25 @@ class TestDonationUpdate extends RestApiTestCase
         $errorData = $response->as_error()->get_error_data('rest_invalid_param');
         if (isset($errorData['details'])) {
             $this->assertEquals('invalid_date', $errorData['details']['createdAt']['code']);
+        }
+    }
+
+    /**
+     * Test that an invalid donor ID returns an error.
+     *
+     * @unreleased
+     */
+    public function testInvalidDonorId()
+    {
+        $donationId = Donation::factory()->create()->id;
+
+        $response = $this->handleRequest($donationId, ['donorId' => PHP_INT_MAX]);
+
+        $this->assertErrorResponse('rest_invalid_param', $response, 400);
+
+        $errorData = $response->as_error()->get_error_data('rest_invalid_param');
+        if (isset($errorData['details'])) {
+            $this->assertEquals('donor_not_found', $errorData['details']['donorId']['code']);
         }
     }
 

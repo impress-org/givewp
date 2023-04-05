@@ -5,6 +5,7 @@ namespace Give\Donations\Endpoints;
 use Give\Donations\Endpoints\DonationUpdateAttributes\AmountAttribute;
 use Give\Donations\Endpoints\DonationUpdateAttributes\AttributeUpdatesModel;
 use Give\Donations\Endpoints\DonationUpdateAttributes\CreatedAtAttribute;
+use Give\Donations\Endpoints\DonationUpdateAttributes\DonorIdAttribute;
 use Give\Donations\Endpoints\DonationUpdateAttributes\FeeAmountRecoveredAttribute;
 use Give\Donations\Endpoints\DonationUpdateAttributes\FormIdAttribute;
 use Give\Donations\Endpoints\DonationUpdateAttributes\IdAttribute;
@@ -38,6 +39,7 @@ class DonationUpdate extends Endpoint
         FeeAmountRecoveredAttribute::class,
         FormIdAttribute::class,
         CreatedAtAttribute::class,
+        DonorIdAttribute::class,
     ];
 
     /**
@@ -100,14 +102,9 @@ class DonationUpdate extends Endpoint
                 if ( ! $request->has_param($attrId) || ! is_a($attr, AttributeUpdatesModel::class, true)) {
                     continue;
                 }
-
-                $actualValue = $donation->{$attrId};
+                
                 $attr::update($request->get_param($attrId), $donation);
-                $updatedValue = $donation->{$attrId};
-
-                if ($actualValue !== $updatedValue) {
-                    $updatedFields[] = $attrId;
-                }
+                $updatedFields[] = $attrId;
             }
 
             $donation->save();

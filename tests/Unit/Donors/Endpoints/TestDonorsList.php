@@ -3,7 +3,7 @@
 namespace Give\Tests\Unit\Donors\Endpoints;
 
 use Exception;
-use Give\Donors\Endpoints\ListDonors;
+use Give\Donors\Endpoints\DonorsList;
 use Give\Donors\ListTable\DonorsListTable;
 use Give\Donors\Models\Donor;
 use Give\Tests\TestCase;
@@ -11,7 +11,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
 use WP_REST_Server;
 
-class TestListDonors extends TestCase
+class TestDonorsList extends TestCase
 {
     use RefreshDatabase;
 
@@ -31,7 +31,7 @@ class TestListDonors extends TestCase
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'us-US');
 
-        $listDonors = new ListDonors();
+        $listDonors = new DonorsList();
 
         $response = $listDonors->handleRequest($mockRequest);
 
@@ -58,7 +58,7 @@ class TestListDonors extends TestCase
 
         $expectedItems = $this->getMockColumns($donors,$sortDirection);
 
-        $listDonors = new ListDonors();
+        $listDonors = new DonorsList();
 
         $response = $listDonors->handleRequest($mockRequest);
 

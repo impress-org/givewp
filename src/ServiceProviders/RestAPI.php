@@ -26,7 +26,7 @@ use Give\Donations\Endpoints\DonationUpdate;
 use Give\Donations\Endpoints\ListDonations;
 use Give\Donations\Endpoints\SwitchDonationView;
 use Give\Donors\Endpoints\DeleteDonor;
-use Give\Donors\Endpoints\ListDonors;
+use Give\Donors\Endpoints\DonorsList;
 use Give\Donors\Endpoints\SwitchDonorView;
 use Give\Subscriptions\Endpoints\ListSubscriptions;
 use Give\Subscriptions\Endpoints\SubscriptionActions;
@@ -52,7 +52,7 @@ class RestAPI implements ServiceProvider
         GetLogs::class,
         FlushLogs::class,
         ListDonationForms::class,
-        ListDonors::class,
+        DonorsList::class,
         ListDonations::class,
         ListSubscriptions::class,
         SwitchDonorView::class,
