@@ -14,7 +14,7 @@ trait Faker
      *
      * @return Generator
      */
-    public function faker()
+    public function faker(): Generator
     {
         return give()->make(Generator::class);
     }
