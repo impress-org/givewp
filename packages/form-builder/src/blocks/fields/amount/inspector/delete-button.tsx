@@ -14,6 +14,7 @@ const DeleteButton = (props) => {
                 display: 'flex',
                 gap: '2px',
                 alignItems: 'center',
+                fontSize: '12px',
             }}
         >
             <TrashIcon style={{marginBottom: '2px'}} />

@@ -128,11 +128,13 @@ const Inspector = ({attributes, setAttributes}) => {
                                             display: 'flex',
                                             gap: '16px',
                                             justifyContent: 'space-between',
-                                            alignItems: 'center',
+                                            alignItems: 'flex-end',
                                         }}
                                         className={'givewp-donation-level-control'}
                                     >
                                         <CurrencyControl
+                                            label={__('Donation amount level', 'give')}
+                                            hideLabelFromVision
                                             value={amount}
                                             onValueChange={(value) => {
                                                 const newLevels = [...levels];
@@ -140,8 +142,6 @@ const Inspector = ({attributes, setAttributes}) => {
                                                 newLevels[index] = value;
                                                 setAttributes({levels: newLevels});
                                             }}
-                                            label="Donation amount Level"
-                                            hideLabelFromVision={true}
                                         />
                                         <DeleteButton
                                             onClick={() => {
