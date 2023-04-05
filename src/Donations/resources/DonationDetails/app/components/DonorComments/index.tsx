@@ -16,8 +16,7 @@ import PenToPaperIcon from '@givewp/components/AdminUI/Icons/PenToPaperIcon';
 import AddIcon from '@givewp/components/AdminUI/Icons/AddIcon';
 import PlaceholderAvatar from '@givewp/components/AdminUI/Icons/PlaceholderAvatar';
 
-const {comment, id} = window.GiveDonations.donationDetails;
-const donorAvatar = '';
+const {comment, donorAvatar, id} = window.GiveDonations.donationDetails;
 
 export function DonorComments() {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
