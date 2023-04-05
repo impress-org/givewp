@@ -13,4 +13,10 @@ export const validationSchema = Joi.object().keys({
     status: Joi.string(),
     formId: Joi.number(),
     donorId: Joi.number(),
+    country: Joi.string().length(2),
+    address1: Joi.string(),
+    address2: Joi.string().optional().allow(""),
+    city: Joi.string(),
+    state: Joi.string(),
+    zip: Joi.string(),
 });
