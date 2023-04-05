@@ -1,4 +1,4 @@
-import {render} from '@wordpress/element';
+import {createRoot, render} from '@wordpress/element';
 import getDefaultValuesFromSections from './utilities/getDefaultValuesFromSections';
 import Form from './form/Form';
 import {GiveDonationFormStoreProvider} from './store';
@@ -34,7 +34,7 @@ const initialState = {
 
 function App() {
     if (form.goal.isAchieved) {
-        return <GoalAchievedTemplate goalAchievedMessage={form.settings.goalAchievedMessage}/>;
+        return <GoalAchievedTemplate goalAchievedMessage={form.settings.goalAchievedMessage} />;
     }
 
     return (
@@ -47,4 +47,10 @@ function App() {
     );
 }
 
-render(<App />, document.getElementById('root-givewp-donation-form'));
+const root = document.getElementById('root-givewp-donation-form');
+
+if (createRoot) {
+    createRoot(root).render(<App />);
+} else {
+    render(<App />, root);
+}

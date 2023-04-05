@@ -1,4 +1,4 @@
-import {render} from '@wordpress/element';
+import {createRoot, render} from '@wordpress/element';
 import {withTemplateWrapper} from '@givewp/forms/app/templates';
 import amountFormatter from '@givewp/forms/app/utilities/amountFormatter';
 import {ReceiptDetail} from '@givewp/forms/types';
@@ -77,7 +77,11 @@ function DonationConfirmationReceiptApp() {
 
 const root = document.getElementById('root-givewp-donation-confirmation-receipt');
 
-render(<DonationConfirmationReceiptApp />, root);
+if (createRoot) {
+    createRoot(root).render(<DonationConfirmationReceiptApp />);
+} else {
+    render(<DonationConfirmationReceiptApp />, root);
+}
 
 root.scrollIntoView({
     behavior: 'smooth',
