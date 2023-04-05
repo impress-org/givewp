@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 
 import PaymentInformation from '../PaymentInformation';
-import {Container, LeftContainer} from '@givewp/components/AdminUI/ContainerLayout';
+import {Container, LeftContainer, RightContainer} from '@givewp/components/AdminUI/ContainerLayout';
 import BillingAddress from '../BillingAddress';
 import DonorDetails from '../DonorDetails';
-import {DonorComments} from '../DonorComments';
+import DonorComments from '../DonorComments';
 
 /**
  *
