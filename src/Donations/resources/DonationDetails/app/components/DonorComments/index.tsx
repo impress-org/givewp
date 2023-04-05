@@ -27,15 +27,14 @@ export function DonorComments() {
 
     const hasComment = !!comment;
 
-    const endpoint = `${apiRoot}/${id}/comment`;
-
-    const successMessage = __('Your update to the comment section was a success.', 'give');
+    const endpoint = `${apiRoot}/${id}`;
+    const successMessage = __('Donation details have been updated successfully', 'give');
     const errorMessage = __('There was an error while updating your comment. Please try again.', 'give');
 
     const {postData} = usePostRequest(endpoint, apiNonce, successMessage, errorMessage);
 
     const handlePostRequest = async (updatedComment) => {
-        const data = {content: updatedComment};
+        const data = {comment: updatedComment};
 
         try {
             await postData(data);
