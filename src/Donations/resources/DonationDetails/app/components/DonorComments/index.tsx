@@ -14,7 +14,6 @@ import {apiNonce, apiRoot} from '../../../../window';
 import {usePostRequest} from '@givewp/components/AdminUI/api';
 import PenToPaperIcon from '@givewp/components/AdminUI/Icons/PenToPaperIcon';
 import AddIcon from '@givewp/components/AdminUI/Icons/AddIcon';
-import PlaceholderAvatar from '@givewp/components/AdminUI/Icons/PlaceholderAvatar';
 
 const {comment, donorAvatar, id} = window.GiveDonations.donationDetails;
 
@@ -78,14 +77,11 @@ export function DonorComments() {
 }
 
 function SectionContainer({hasComment}: {hasComment: boolean}) {
-    const Avatar = () => (donorAvatar ? <img src={donorAvatar} alt={'profile image'} /> : <PlaceholderAvatar />);
-
     return (
         <FieldsetContainer>
             {hasComment ? (
                 <div className={styles.comments}>
-                    <Avatar />
-                    <span>{comment}</span>
+                    <img src={donorAvatar} alt={'profile image'} /> <span>{comment}</span>
                 </div>
             ) : (
                 <EmptyState message={__('No comment', 'give')} />
