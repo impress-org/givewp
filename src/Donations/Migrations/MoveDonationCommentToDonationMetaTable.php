@@ -24,6 +24,21 @@ class MoveDonationCommentToDonationMetaTable extends Migration
         $commentTable = DB::prefix('give_comments');
         $donationMetaTable = DB::prefix('give_donationmeta');
 
+        $commentsCount = DB::get_var(
+            "
+            SELECT
+                COUNT(1)
+            FROM
+                $commentTable
+            WHERE
+                comment_type = 'donor_donation'
+            "
+        );
+
+        if ( ! intval($commentsCount)) {
+            return;
+        }
+
         DB::query('START TRANSACTION');
 
         try {
