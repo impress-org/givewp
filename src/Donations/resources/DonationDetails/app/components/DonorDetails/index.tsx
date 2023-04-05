@@ -61,12 +61,10 @@ export function SectionContainer() {
                 search: inputValue,
                 sortColumn: 'donorInformation',
                 sortDirection: 'asc',
-                perPage: 10,
+                perPage: '10',
                 return: 'model',
             };
-            const queryString = Object.entries(params)
-                .map(([key, value]) => `${key}=${value}`)
-                .join('&');
+            const queryString = new URLSearchParams(params).toString();
 
             getData(queryString).then((response) => {
                 if (response.items) {
