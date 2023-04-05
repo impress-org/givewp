@@ -33,7 +33,7 @@ const usePostRequest = (endpoint: string, apiNonce: string, successMessage: stri
     return {postData, result};
 };
 
-const useGetRequest = (endpoint: string, apiNonce: string, successMessage: string, errorMessage: string) => {
+const useGetRequest = (endpoint: string, apiNonce: string, successMessage?: string, errorMessage?: string) => {
     const [result, setResult] = useState({type: null, message: ''});
 
     const getData = async (getData) => {

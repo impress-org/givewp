@@ -51,7 +51,7 @@ export function SectionContainer() {
         },
     });
 
-    const {getData} = useGetRequest(endpoint, apiNonce, '', '');
+    const {getData} = useGetRequest(endpoint, apiNonce);
     const watchedDonorId = useWatch({name: 'donorId'});
     const currentDonor = cachedDonors[watchedDonorId].model;
 
