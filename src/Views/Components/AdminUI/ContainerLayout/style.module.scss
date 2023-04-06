@@ -5,20 +5,18 @@
 
     .leftContainer, .rightContainer {
         flex: .5;
-        display: grid;
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-6);
     }
 
     .leftContainer {
-        gap: var(--givewp-spacing-9);
-
         > section > header {
             margin-bottom: var(--givewp-spacing-2);
         }
     }
 
     .rightContainer {
-        gap: var(--givewp-spacing-6);
-
         > section > header {
             margin: 0
         }

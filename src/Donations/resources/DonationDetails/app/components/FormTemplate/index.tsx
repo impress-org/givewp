@@ -4,6 +4,11 @@ import PaymentInformation from '../PaymentInformation';
 import {Container, LeftContainer} from '@givewp/components/AdminUI/ContainerLayout';
 import BillingAddress from '../BillingAddress';
 import DonorDetails from '../DonorDetails';
+<<<<<<< Updated upstream
+=======
+import DonorComments from '../DonorComments';
+import {DonorNotes} from '../DonorNotes';
+>>>>>>> Stashed changes
 
 /**
  *
@@ -19,6 +24,13 @@ export default function FormTemplate() {
                     <DonorDetails />
                     <BillingAddress />
                 </LeftContainer>
+<<<<<<< Updated upstream
+=======
+                <RightContainer>
+                    <DonorComments />
+                    <DonorNotes />
+                </RightContainer>
+>>>>>>> Stashed changes
             </Container>
         </>
     );

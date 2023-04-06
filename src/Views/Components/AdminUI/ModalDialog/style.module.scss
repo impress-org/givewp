@@ -93,21 +93,6 @@
             margin-top: var(--givewp-spacing-11);
             height: 3.5rem;
         }
-
-        span:last-child {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: row;
-            gap: var(--givewp-spacing-3);
-            padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
-            margin-top: var(--givewp-spacing-2);
-            border-radius: var(--givewp-rounded-4);
-            background-color: var(--givewp-blue-25);
-            color: var(--wp-blue-blue-50);
-            font-size: 0.875rem;
-
-        }
     }
 }
 

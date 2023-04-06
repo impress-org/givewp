@@ -1,0 +1,149 @@
+.notes {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .wrapper {
+        display: flex;
+        align-items: center;
+        gap: var(--givewp-spacing-4);
+        margin-bottom: var(--givewp-spacing-6);
+    }
+
+    img {
+        height: 2.5rem;
+        width: 2.5rem;
+        border-radius: var(--givewp-rounded-full);
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-1);
+
+        span:first-child {
+            display: flex;
+            align-items: center;
+
+            gap: var(--givewp-spacing-5);
+            color: var(--givewp-grey-400);
+
+            .noteType {
+                font-size: 0.75rem;
+                font-weight: 500;
+                font-stretch: normal;
+                font-style: normal;
+                letter-spacing: normal;
+                padding: 2px var(--givewp-spacing-2);
+            }
+
+            .public {
+                color: var(--givewp-purple-400);
+                border-radius: 4px;
+                background-color: var(--givewp-purple-25);
+            }
+
+            .private {
+                color: var(--givewp-orange-400);
+                border-radius: 4px;
+                background-color: var(--givewp-orange-25);
+            }
+        }
+
+        .content {
+            font-size: .875rem;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: left;
+            color: var(--givewp-grey-900);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 36rem;
+            margin-right: var(--givewp-spacing-4);
+        }
+    }
+
+    .icons {
+        display: flex;
+        gap: var(--givewp-spacing-3);
+        cursor: pointer;
+
+        svg {
+            path {
+                fill: #8C8C8C;
+                stroke: #8C8C8C;
+            }
+        }
+
+        .delete:hover {
+            path {
+                fill: var(--givewp-red-400);
+                stroke: var(--givewp-red-400);
+            }
+        }
+
+        .edit:hover {
+            path {
+                stroke: var(--wp-blue-blue-50);
+                fill: var(--wp-blue-blue-50);
+            }
+        }
+    }
+}
+
+.radioButtonContainer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-3);
+    margin-top: var(--givewp-spacing-8);
+
+    > span {
+        font-size: 0.875rem;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.43;
+        letter-spacing: normal;
+        text-align: left;
+        color: var(--givewp-grey-600);
+    }
+
+    label span {
+        font-size: 1rem;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.5;
+        letter-spacing: normal;
+        text-align: left;
+        margin-left: 10px;
+        color: var(--givewp-grey-600);
+    }
+
+    .radioButtonSelected {
+        font-weight: 600;
+        color: var(--givewp-grey-600);
+    }
+}
+
+
+.notes:last-child {
+    margin-bottom: 0;
+}
+
+
+@media (max-width: 850px) {
+    .content {
+        width: 30rem;
+    }
+}
+
+@media (max-width: 700px) {
+    .content {
+        width: 25rem;
+    }
+}
