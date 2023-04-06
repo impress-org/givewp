@@ -1,3 +1,4 @@
+
 .form {
     display: grid;
     gap: var(--givewp-spacing-6);
@@ -15,6 +16,10 @@
 
     > * {
         margin-top: .45rem;
+    }
+
+    .checked {
+        font-weight: 600;
     }
 }
 
@@ -39,10 +44,19 @@
             box-shadow: 0 0 0 1px #2684FF;
         }
     }
+
     .disabled {
         border-radius: 4px;
         border: solid 1px var(--givewp-grey-100);
         background-color: var(--givewp-grey-25);
+    }
+
+    .textAreaField {
+        flex: 1;
+        border-radius: 4px;
+        height: 10.75rem;
+        border: solid 1px var(--givewp-grey-400);
+        background-color: var(--givewp-shades-white);
     }
 }
 
@@ -57,4 +71,3 @@
         box-shadow: none;
     }
 }
-

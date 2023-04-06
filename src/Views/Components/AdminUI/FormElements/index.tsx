@@ -252,3 +252,73 @@ export function DisabledTextField({name, type, placeholder, label, value}: Disab
         </label>
     );
 }
+
+/**
+ *
+ * @unreleased
+ */
+export type TextAreaProps = InputFieldProps & {
+    defaultValue: string;
+};
+
+export const TextAreaField = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
+    ({name, placeholder, label, defaultValue, ...props}, ref) => {
+        return (
+            <label>
+                {label && <span className={styles.fieldLabel}>{label}</span>}{' '}
+                <div className={cx(styles.textFieldContainer)}>
+                    <textarea
+                        defaultValue={defaultValue}
+                        className={cx(styles.textAreaField)}
+                        ref={ref}
+                        name={name}
+                        placeholder={placeholder}
+                        {...props}
+                    />
+                </div>
+            </label>
+        );
+    }
+);
+
+/**
+ *
+ * @unreleased
+ */
+
+export type RadioButtonFieldProps = {
+    name: string;
+    type: string;
+    label: string;
+    defaultValue: string;
+    onChange: (event) => void;
+    checked: boolean;
+};
+const RadioButtonField = React.forwardRef<HTMLInputElement, RadioButtonFieldProps>(
+    ({name, label, defaultValue, checked, onChange, ...props}, ref) => {
+        return (
+            <label htmlFor={name} className={styles.fieldLabel}>
+                <input
+                    ref={ref}
+                    name={name}
+                    defaultValue={defaultValue}
+                    checked={checked}
+                    className={styles.radioButtonField}
+                    type={'radio'}
+                    onChange={onChange}
+                />
+                {label && (
+                    <span
+                        className={cx(styles.fieldLabel, {
+                            [styles['checked']]: checked,
+                        })}
+                    >
+                        {label}
+                    </span>
+                )}
+            </label>
+        );
+    }
+);
+
+export {RadioButtonField};
