@@ -2,12 +2,16 @@
 
 namespace Give\NextGen\Gateways\PayPalCommerce;
 
+use Give\Donations\Models\Donation;
 use Give\Framework\EnqueueScript;
+use Give\Framework\PaymentGateways\Commands\GatewayCommand;
+use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\NextGen\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
+use Give\Subscriptions\Models\Subscription;
 
 /**
  * An extension of the PayPalCommerce gateway in GiveWP that supports the NextGenPaymentGatewayInterface.
