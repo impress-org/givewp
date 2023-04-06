@@ -35,7 +35,7 @@ class MoveDonationCommentToDonationMetaTable extends Migration
             "
         );
 
-        if ( ! intval($commentsCount)) {
+        if (!intval($commentsCount)) {
             return;
         }
 
@@ -56,7 +56,7 @@ class MoveDonationCommentToDonationMetaTable extends Migration
                 "
             );
 
-            if ( ! $insertQuery) {
+            if (!$insertQuery) {
                 throw new Exception('Failed to insert donation comment into donation meta table.');
             }
 
