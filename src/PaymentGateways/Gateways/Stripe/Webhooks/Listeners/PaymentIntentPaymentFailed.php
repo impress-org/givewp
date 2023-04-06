@@ -16,6 +16,11 @@ class PaymentIntentPaymentFailed extends StripeEventListener
      */
     public function processEvent(Event $event)
     {
+        /**
+         * @unreleased
+         */
+        do_action('give_stripe_processing_payment_intent_failed', $event);
+
         $donation = $this->getDonation($event);
 
         if (!$donation->status->isFailed()) {
