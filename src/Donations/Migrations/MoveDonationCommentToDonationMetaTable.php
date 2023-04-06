@@ -63,29 +63,19 @@ class MoveDonationCommentToDonationMetaTable extends Migration
 
             DB::query(
                 "
-                DELETE FROM $commentTable
-                WHERE comment_type = 'donor_donation'
-                    AND comment_parent IN(
-                        SELECT
-                            donation_id FROM $donationMetaTable
-                        WHERE
-                            meta_key = '_give_donation_comment')
-                "
-            );
-
-            DB::query(
-                "
                 DELETE FROM $commentMetaTable
                 WHERE give_comment_id IN(
                         SELECT
                             comment_ID FROM $commentTable
                         WHERE
                             comment_type = 'donor_donation'
-                            AND comment_parent IN(
-                                SELECT
-                                    donation_id FROM $donationMetaTable
-                                WHERE
-                                    meta_key = '_give_donation_comment'))
+                "
+            );
+
+            DB::query(
+                "
+                DELETE FROM $commentTable
+                WHERE comment_type = 'donor_donation'
                 "
             );
         } catch (Exception $exception) {
