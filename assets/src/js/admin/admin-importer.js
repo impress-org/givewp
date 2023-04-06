@@ -154,6 +154,7 @@ function give_on_donation_import_ajax() {
 		url: ajaxurl,
 		data: {
 			action: Give.fn.getGlobalVar( 'give_donation_import' ),
+			_wpnonce: Give.fn.getGlobalVar( 'give_donation_import_nonce' ),
 			total_ajax: total_ajax,
 			current: current,
 			start: start,

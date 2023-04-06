@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6261984a69b06be0c44126fdf7ccf5fe",
+    "content-hash": "e74eed3d3a1547f86e7732716e34f7f7",
     "packages": [
         {
             "name": "composer/installers",
@@ -533,6 +533,105 @@
             "time": "2021-09-14T21:35:26+00:00"
         },
         {
+            "name": "stellarwp/container-contract",
+            "version": "1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stellarwp/container-contract.git",
+                "reference": "37becc9edbecb0ff95556048337600dd9cc888f0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stellarwp/container-contract/zipball/37becc9edbecb0ff95556048337600dd9cc888f0",
+                "reference": "37becc9edbecb0ff95556048337600dd9cc888f0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "StellarWP\\ContainerContract\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "StellarWP",
+                    "homepage": "https://stellarwp.com"
+                }
+            ],
+            "description": "StellarWP Container Interface",
+            "homepage": "https://github.com/stellarwp/container-contract",
+            "keywords": [
+                "PSR-11",
+                "container",
+                "container-interface",
+                "container-interop"
+            ],
+            "support": {
+                "issues": "https://github.com/stellarwp/container-contract/issues",
+                "source": "https://github.com/stellarwp/container-contract/tree/1.0.4"
+            },
+            "time": "2022-12-20T21:29:17+00:00"
+        },
+        {
+            "name": "stellarwp/validation",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stellarwp/validation.git",
+                "reference": "5af8236a151004c1c538c377bbf6a37c64407402"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stellarwp/validation/zipball/5af8236a151004c1c538c377bbf6a37c64407402",
+                "reference": "5af8236a151004c1c538c377bbf6a37c64407402",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "stellarwp/container-contract": "1.0.4"
+            },
+            "require-dev": {
+                "codeception/module-asserts": "^1.0.0",
+                "codeception/module-phpbrowser": "^1.0.0",
+                "lucatume/di52": "^3.0",
+                "lucatume/wp-browser": "^3.0.14",
+                "phpunit/phpunit": "~6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "StellarWP\\Validation\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "StellarWP",
+                    "email": "dev@stellarwp.com"
+                },
+                {
+                    "name": "Jason Adams",
+                    "email": "jason.adams@givewp.com"
+                }
+            ],
+            "description": "An end-to-end ready PHP validation library",
+            "support": {
+                "issues": "https://github.com/stellarwp/validation/issues",
+                "source": "https://github.com/stellarwp/validation/tree/1.0.0"
+            },
+            "time": "2023-01-05T00:45:49+00:00"
+        },
+        {
             "name": "stripe/stripe-php",
             "version": "v7.103.0",
             "source": {
@@ -658,6 +757,85 @@
                 }
             ],
             "time": "2020-10-24T10:57:07+00:00"
+        },
+        {
+            "name": "symfony/polyfill-ctype",
+            "version": "v1.19.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-ctype.git",
+                "reference": "aed596913b70fae57be53d86faa2e9ef85a2297b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/aed596913b70fae57be53d86faa2e9ef85a2297b",
+                "reference": "aed596913b70fae57be53d86faa2e9ef85a2297b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "suggest": {
+                "ext-ctype": "For best performance"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.19-dev"
+                },
+                "thanks": {
+                    "name": "symfony/polyfill",
+                    "url": "https://github.com/symfony/polyfill"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Ctype\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gert de Pagter",
+                    "email": "BackEndTea@gmail.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony polyfill for ctype functions",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "ctype",
+                "polyfill",
+                "portable"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.19.0"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-10-23T09:01:57+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -3917,85 +4095,6 @@
             "time": "2020-11-16T17:02:08+00:00"
         },
         {
-            "name": "symfony/polyfill-ctype",
-            "version": "v1.19.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-ctype.git",
-                "reference": "aed596913b70fae57be53d86faa2e9ef85a2297b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/aed596913b70fae57be53d86faa2e9ef85a2297b",
-                "reference": "aed596913b70fae57be53d86faa2e9ef85a2297b",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "suggest": {
-                "ext-ctype": "For best performance"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "1.19-dev"
-                },
-                "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Ctype\\": ""
-                },
-                "files": [
-                    "bootstrap.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony polyfill for ctype functions",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "compatibility",
-                "ctype",
-                "polyfill",
-                "portable"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.19.0"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2020-10-23T09:01:57+00:00"
-        },
-        {
             "name": "symfony/process",
             "version": "v3.4.47",
             "source": {
@@ -6449,7 +6548,7 @@
     "platform": [],
     "platform-dev": [],
     "platform-overrides": {
-        "php": "5.6.40"
+        "php": "7.0.8"
     },
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }

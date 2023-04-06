@@ -4,16 +4,13 @@ namespace Give\Framework\FieldsAPI\Concerns;
 
 trait HasLabel
 {
-
     /** @var string */
     protected $label;
 
     /**
-     * @param string $label
-     *
-     * @return $this
+     * @since 2.24.0 add types
      */
-    public function label($label)
+    public function label(string $label): self
     {
         $this->label = $label;
 
@@ -21,7 +18,9 @@ trait HasLabel
     }
 
     /**
-     * @return string
+     * @since 2.24.0 add types
+     *
+     * @return string|null
      */
     public function getLabel()
     {

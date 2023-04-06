@@ -44,6 +44,8 @@ class Give_Subscriptions_DB extends Give_DB
      * Get columns and formats
      *
      * @access  public
+     *
+     * @since 2.24.0 add payment_mode column
      * @since   1.0
      */
     public function get_columns()
@@ -62,6 +64,7 @@ class Give_Subscriptions_DB extends Give_DB
             'product_id' => '%d',
             'created' => '%s',
             'expiration' => '%s',
+            'payment_mode' => '%s',
             'status' => '%s',
             'notes' => '%s',
             'profile_id' => '%s',
@@ -597,6 +600,8 @@ class Give_Subscriptions_DB extends Give_DB
     }
 
     /**
+     * @since 2.26.0 Replace deprecated get_page_by_title() with give_get_page_by_title().
+     *
      * @param $args
      *
      * @return string
@@ -630,7 +635,7 @@ class Give_Subscriptions_DB extends Give_DB
             $where .= " AND `id` = " . absint($args['search']) . "";
         } else {
             // See if search matches a product name
-            $form = get_page_by_title(trim($args['search']), OBJECT, 'give_forms');
+            $form = give_get_page_by_title(trim($args['search']), OBJECT, 'give_forms');
             if ($form) {
                 $args['search'] = $form->ID;
                 $where .= " AND `product_id` = " . absint($args['search']) . "";

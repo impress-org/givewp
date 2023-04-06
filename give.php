@@ -6,7 +6,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.23.2
+ * Version: 2.26.0
  * Requires at least: 5.0
  * Requires PHP: 7.0
  * Text Domain: give
@@ -55,10 +55,14 @@ use Give\Donors\Repositories\DonorRepositoryProxy;
 use Give\Donors\ServiceProvider as DonorsServiceProvider;
 use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
 use Give\Form\Templates;
-use Give\Framework\Exceptions\UncaughtExceptionLogger;
-use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\Framework\Database\ServiceProvider as DatabaseServiceProvider;
+use Give\Framework\DesignSystem\DesignSystemServiceProvider;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\Exceptions\UncaughtExceptionLogger;
+use Give\Framework\Http\ServiceProvider as HttpServiceProvider;
+use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\Framework\ValidationRules\ValidationRulesServiceProvider;
 use Give\Framework\WordPressShims\ServiceProvider as WordPressShimsServiceProvider;
 use Give\LegacySubscriptions\ServiceProvider as LegacySubscriptionsServiceProvider;
 use Give\License\LicenseServiceProvider;
@@ -69,6 +73,7 @@ use Give\PaymentGateways\ServiceProvider as PaymentGatewaysServiceProvider;
 use Give\Promotions\ServiceProvider as PromotionsServiceProvider;
 use Give\Revenue\RevenueServiceProvider;
 use Give\Route\Form as FormRoute;
+use Give\ServiceProviders\GlobalStyles as GlobalStylesServiceProvider;
 use Give\ServiceProviders\LegacyServiceProvider;
 use Give\ServiceProviders\Onboarding;
 use Give\ServiceProviders\PaymentGateways;
@@ -79,6 +84,7 @@ use Give\Subscriptions\Repositories\SubscriptionRepository;
 use Give\Subscriptions\ServiceProvider as SubscriptionServiceProvider;
 use Give\TestData\ServiceProvider as TestDataServiceProvider;
 use Give\Tracking\TrackingServiceProvider;
+use Give\VendorOverrides\Validation\ValidationServiceProvider;
 
 // Exit if accessed directly.
 if (!defined('ABSPATH')) {
@@ -118,7 +124,7 @@ if (!defined('ABSPATH')) {
  * @property-read DonationRepository $donations
  * @property-read DonorRepositoryProxy $donors
  * @property-read SubscriptionRepository $subscriptions
- * @property-read DonationFormsRepository $donationFormsRepository
+ * @property-read DonationFormsRepository $donationForms
  * @property-read Profile $donorDashboard
  * @property-read TabsRegister $donorDashboardTabs
  * @property-read Give_Recurring_DB_Subscription_Meta $subscription_meta
@@ -165,8 +171,9 @@ final class Give
     private $container;
 
     /**
-     * @since 2.19.6 added Donors, Donations, and Subscriptions
-     * @since 2.8.0
+     * @since 2.25.0 added HttpServiceProvider
+     * @since      2.19.6 added Donors, Donations, and Subscriptions
+     * @since      2.8.0
      *
      * @var array Array of Service Providers to load
      */
@@ -199,6 +206,11 @@ final class Give
         LegacySubscriptionsServiceProvider::class,
         WordPressShimsServiceProvider::class,
         DatabaseServiceProvider::class,
+        GlobalStylesServiceProvider::class,
+        ValidationServiceProvider::class,
+        ValidationRulesServiceProvider::class,
+        HttpServiceProvider::class,
+        DesignSystemServiceProvider::class,
     ];
 
     /**
@@ -302,7 +314,7 @@ final class Give
     {
         // Plugin version.
         if (!defined('GIVE_VERSION')) {
-            define('GIVE_VERSION', '2.23.2');
+            define('GIVE_VERSION', '2.26.0');
         }
 
         // Plugin Root File.
@@ -476,6 +488,17 @@ final class Give
     }
 
     /**
+     * Retrieves the underlying container instance. This isn't usually necessary, but sometimes we want to pass along
+     * the container itself.
+     *
+     * @since 2.24.0
+     */
+    public function getContainer(): Container
+    {
+        return $this->container;
+    }
+
+    /**
      * Sets up the Exception Handler to catch and handle uncaught exceptions
      *
      * @since 2.11.1
@@ -520,5 +543,6 @@ function give($abstract = null)
 }
 
 require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/vendor/vendor-prefixed/autoload.php';
 
 give()->boot();

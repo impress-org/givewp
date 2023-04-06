@@ -54,4 +54,23 @@ class TestDonationNote extends TestCase
         $this->assertInstanceOf(Donation::class, $donationNote->donation);
         $this->assertEquals($donation->id, $donationNote->donation->id);
     }
+
+    /**
+     * @since 2.25.0
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testDonationNoteTypeShouldAssignAdminAsDefault()
+    {
+        $donor = Donor::factory()->create();
+
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create(['donorId' => $donor->id]);
+
+        /** @var DonationNote $donationNote */
+        $donationNote = DonationNote::factory()->create(['donationId' => $donation->id]);
+
+        $this->assertTrue($donationNote->type->isAdmin());
+    }
 }

@@ -2,6 +2,8 @@
 
 namespace Give\PaymentGateways\DataTransferObjects;
 
+use Give\Donations\Properties\BillingAddress;
+
 /**
  * Class GiveInsertPaymentData
  *
@@ -51,6 +53,10 @@ final class GiveInsertPaymentData
      * @var string
      */
     public $paymentGateway;
+    /**
+     * @var int
+     */
+    public $donorId;
 
     /**
      * Convert data from array into DTO
@@ -63,6 +69,7 @@ final class GiveInsertPaymentData
     {
         $self = new static();
 
+        $self->donorId = $array['donorId'];
         $self->price = $array['price'];
         $self->priceId = $array['priceId'];
         $self->formTitle = $array['formTitle'];
@@ -91,8 +98,45 @@ final class GiveInsertPaymentData
             'user_email' => $this->donorEmail,
             'purchase_key' => $this->purchaseKey,
             'currency' => $this->currency,
-            'user_info' => $this->userInfo,
+            'user_info' => [
+                'id' => $this->userInfo['id'],
+                'title' => $this->userInfo['title'],
+                'email' => $this->userInfo['email'],
+                'first_name' => $this->userInfo['firstName'],
+                'last_name' => $this->userInfo['lastName'],
+                'donor_id' => $this->donorId,
+                'address' => $this->getLegacyBillingAddress(),
+            ],
             'status' => 'pending',
         ];
+    }
+
+    /**
+     * Should return donor billing address for donation.
+     *
+     * Check legacy code give_get_donation_form_user:1212
+     *
+     * @unlreased
+     *
+     * @return array|bool
+     */
+    private function getLegacyBillingAddress()
+    {
+        /* @var BillingAddress $donorDonationBillingAddress */
+        $donorDonationBillingAddress = $this->userInfo['address'];
+        $address = [
+            'line1' => $donorDonationBillingAddress->address1,
+            'line2' => $donorDonationBillingAddress->address2,
+            'city' => $donorDonationBillingAddress->city,
+            'state' => $donorDonationBillingAddress->state,
+            'zip' => $donorDonationBillingAddress->zip,
+            'country' => $donorDonationBillingAddress->country,
+        ];
+
+        if (! $donorDonationBillingAddress->country) {
+            $address = false;
+        }
+
+        return $address;
     }
 }

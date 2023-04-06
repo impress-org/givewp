@@ -2,6 +2,7 @@
 
 namespace Give\DonationForms\Endpoints;
 
+use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -55,20 +56,40 @@ class FormActions extends Endpoint
                         },
                     ],
                     'author' => [
-                        'type'              => 'string',
-                        'required'          => 'false',
+                        'type' => 'string',
+                        'required' => 'false',
                     ],
                     'status' => [
-                        'type'              => 'string',
-                        'required'          => 'false',
-                    ]
+                        'type' => 'string',
+                        'required' => 'false',
+                    ],
                 ],
             ]
         );
     }
 
     /**
-     * @param  WP_REST_Request  $request
+     * @since 2.25.2
+     *
+     * @inheritDoc
+     */
+    public function permissionsCheck()
+    {
+        if ( ! current_user_can('edit_give_forms')) {
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You don\'t have permission to edit Donation Forms', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );
+        }
+
+        return true;
+    }
+
+    /**
+     * @since      2.19.0
+     *
+     * @param WP_REST_Request $request
      *
      * @return WP_REST_Response
      */

@@ -2,6 +2,10 @@
 /tmp
 /tests/bin/tmp
 
+# Bin files
+/bin/*
+!/bin/.gitkeep
+
 # Numerous always-ignore extensions
 .diff
 .err

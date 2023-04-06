@@ -2,7 +2,7 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
-use Give\ConnectClient\ConnectClient;
+use Give\Framework\Http\ConnectServer\Client\ConnectClient;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
@@ -149,6 +149,7 @@ class AjaxRequestHandler
     /**
      * give_paypal_commerce_disconnect_account ajax request handler.
      *
+     * @since 2.25.0 Remove merchant seller token.
      * @since 2.9.0
      */
     public function removePayPalAccount()
@@ -164,6 +165,7 @@ class AjaxRequestHandler
         $this->merchantRepository->delete();
         $this->merchantRepository->deleteAccountErrors();
         $this->merchantRepository->deleteClientToken();
+        $this->settings->deleteSellerAccessToken();
         $this->refreshToken->deleteRefreshTokenCronJob();
 
         wp_send_json_success();
