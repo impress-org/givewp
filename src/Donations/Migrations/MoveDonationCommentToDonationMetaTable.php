@@ -39,7 +39,7 @@ class MoveDonationCommentToDonationMetaTable extends Migration
             return;
         }
 
-        DB::query('START TRANSACTION');
+        DB::beginTransaction();
 
         try {
             $insertQuery = DB::query(
@@ -88,14 +88,14 @@ class MoveDonationCommentToDonationMetaTable extends Migration
                 "
             );
         } catch (Exception $exception) {
-            DB::query('ROLLBACK');
+            DB::rollback();
 
             Log::error('Failed running migration: ' . self::title());
 
             throw new $exception('Failed running migration: ' . self::title());
         }
 
-        DB::query('COMMIT');
+        DB::commit();
     }
 
     /**
