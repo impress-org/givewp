@@ -109,7 +109,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
                 $exception->getMessage(),
                 [
                     'Payment Gateway' => static::id(),
-                    'Donation' => $donation,
+                    'Donation' => $donation->toArray(),
                 ]
             );
 
@@ -150,8 +150,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
                 $exception->getMessage(),
                 [
                     'Payment Gateway' => static::id(),
-                    'Donation' => $donation,
-                    'Subscription' => $subscription,
+                    'Donation' => $donation->toArray(),
+                    'Subscription' => $subscription->toArray(),
                 ]
             );
 
@@ -352,6 +352,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * Handle gateway subscription command
      *
+     * @since 2.26.0 add RespondToBrowser command
      * @since 2.21.0 Handle RedirectOffsite response.
      * @since 2.18.0
      *
@@ -386,6 +387,12 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
 
         if ($command instanceof RedirectOffsite) {
             $response = Call::invoke(RedirectOffsiteHandler::class, $command);
+
+            $this->handleResponse($response);
+        }
+
+        if ($command instanceof RespondToBrowser) {
+            $response = (new RespondToBrowserHandler())($command);
 
             $this->handleResponse($response);
         }
