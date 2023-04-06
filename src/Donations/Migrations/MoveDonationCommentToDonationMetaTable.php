@@ -5,6 +5,7 @@ namespace Give\Donations\Migrations;
 use Exception;
 use Give\Framework\Database\DB;
 use Give\Framework\Migrations\Contracts\Migration;
+use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 use Give\Log\Log;
 
 /**
@@ -92,7 +93,7 @@ class MoveDonationCommentToDonationMetaTable extends Migration
 
             Log::error('Failed running migration: ' . self::title());
 
-            throw new $exception('Failed running migration: ' . self::title());
+            throw new DatabaseMigrationException('Failed running migration: ' . self::title(), 0, $exception);
         }
 
         DB::commit();
