@@ -9,7 +9,7 @@ trait HasDefaultGiveWPUsers
     /**
      * Creates a set of default GiveWP users with different roles.
      *
-     * @unreleased
+     * @since 2.26.0
      *
      * @param WP_UnitTest_Factory $factory
      *

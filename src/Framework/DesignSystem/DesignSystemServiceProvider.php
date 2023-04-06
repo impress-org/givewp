@@ -9,14 +9,14 @@ use Give\ServiceProviders\ServiceProvider;
 class DesignSystemServiceProvider implements ServiceProvider
 {
     /**
-     * @unreleased
+     * @since 2.26.0
      */
     public function register()
     {
     }
 
     /**
-     * @unreleased
+     * @since 2.26.0
      */
     public function boot()
     {
