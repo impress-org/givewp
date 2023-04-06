@@ -122,6 +122,9 @@ class NextGenStripeGatewaySubscriptionModule extends SubscriptionModule implemen
             $stripeSubscription = StripeSubscription::retrieve($subscription->gatewaySubscriptionId);
 
             $stripeSubscription->cancel();
+
+            $subscription->status = SubscriptionStatus::CANCELLED();
+            $subscription->save();
         } catch (\Exception $exception) {
             throw new PaymentGatewayException(
                 sprintf(
