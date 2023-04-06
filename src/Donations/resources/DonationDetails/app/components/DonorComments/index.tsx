@@ -23,12 +23,13 @@ const {comment, donorAvatar, id} = window.GiveDonations.donationDetails;
 
 export default function DonorComments() {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [commentContent, setCommentContent] = useState<any>(comment);
 
     const openModal = () => {
         setIsModalOpen(true);
     };
 
-    const hasComment = !!comment;
+    const hasComment = !!commentContent;
 
     const endpoint = `${apiRoot}/${id}`;
     const successMessage = __('Donation details have been updated successfully', 'give');
@@ -41,6 +42,7 @@ export default function DonorComments() {
 
         try {
             await postData(data);
+            setCommentContent(updatedComment);
         } catch (error) {
             console.error(error);
         }
@@ -66,7 +68,7 @@ export default function DonorComments() {
                 </HeaderAction>
             </SectionHeader>
 
-            <SectionContainer hasComment={hasComment} />
+            <SectionContainer hasComment={hasComment} comment={commentContent} />
 
             <ModalDialog
                 open={isModalOpen}
@@ -74,7 +76,7 @@ export default function DonorComments() {
                 handleClose={() => setIsModalOpen(false)}
                 title={__('Donor comment', 'give')}
             >
-                <CommentDialog handlePostRequest={handlePostRequest} />
+                <CommentDialog handlePostRequest={handlePostRequest} comment={commentContent} />
             </ModalDialog>
         </section>
     );
@@ -84,7 +86,13 @@ export default function DonorComments() {
  *
  * @unreleased
  */
-function SectionContainer({hasComment}: {hasComment: boolean}) {
+
+export type SectionContainerProps = {
+    hasComment: boolean;
+    comment: string;
+};
+
+function SectionContainer({hasComment, comment}: SectionContainerProps) {
     return (
         <FieldsetContainer>
             {hasComment ? (
@@ -102,8 +110,13 @@ function SectionContainer({hasComment}: {hasComment: boolean}) {
  *
  * @unreleased
  */
-function CommentDialog({handlePostRequest}) {
-    const commentRef = useRef(null);
+export type CommentDialogProps = {
+    handlePostRequest: (value) => void;
+    comment: string;
+};
+
+function CommentDialog({handlePostRequest, comment}: CommentDialogProps) {
+    const commentRef = useRef<HTMLTextAreaElement>(null);
 
     return (
         <div>
