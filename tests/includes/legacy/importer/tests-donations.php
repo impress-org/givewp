@@ -352,7 +352,7 @@ class Tests_Give_Import_Donations extends Give_Unit_Test_Case {
      * To test to check is donation form is created or not
      *
      * @since      2.1
-     * @unreleased Replace deprecated get_page_by_title() with give_get_page_by_title().
+     * @since 2.26.0 Replace deprecated get_page_by_title() with give_get_page_by_title().
      */
 	public function test_to_check_donation_form_is_created() {
 

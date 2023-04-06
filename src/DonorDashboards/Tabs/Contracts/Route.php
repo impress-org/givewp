@@ -72,7 +72,7 @@ abstract class Route implements RestRoute
     }
 
     /**
-     * @unreleased add try/catch to handleRequest
+     * @since 2.26.0 add try/catch to handleRequest
      */
     public function handleRequestWithDonorIdCheck(WP_REST_Request $request)
     {

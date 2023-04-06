@@ -15,14 +15,14 @@ use WP_UnitTest_Factory;
  * Provides Give-specific setup/tear down/assert methods
  * and helper functions to be used in API tests.
  *
- * @unreleased
+ * @since 2.26.0
  */
 class RestApiTestCase extends TestCase
 {
     /**
      * Test REST Server
      *
-     * @unreleased
+     * @since 2.26.0
      *
      * @var WP_REST_Server
      */
@@ -31,7 +31,7 @@ class RestApiTestCase extends TestCase
     /**
      * Test user accounts for API authentication
      *
-     * @unreleased
+     * @since 2.26.0
      *
      * @var int[] $users
      */
@@ -42,7 +42,7 @@ class RestApiTestCase extends TestCase
     /**
      * Create users for API authentication
      *
-     * @unreleased
+     * @since 2.26.0
      *
      * @return void
      */
@@ -68,7 +68,7 @@ class RestApiTestCase extends TestCase
     /**
      * Initialize the REST server
      *
-     * @unreleased
+     * @since 2.26.0
      *
      * @return void
      */
@@ -88,7 +88,7 @@ class RestApiTestCase extends TestCase
      *
      * This function ensures that we are testing against the database data, not just in-memory data.
      *
-     * @unreleased
+     * @since 2.26.0
      *
      * @return void
      */
@@ -102,7 +102,7 @@ class RestApiTestCase extends TestCase
     /**
      * Destroy the REST server
      *
-     * @unreleased
+     * @since 2.26.0
      *
      * @return void
      */
@@ -117,7 +117,7 @@ class RestApiTestCase extends TestCase
     /**
      * Delete users after the test class is done
      *
-     * @unreleased
+     * @since 2.26.0
      *
      * @return void
      */
@@ -133,7 +133,7 @@ class RestApiTestCase extends TestCase
     /**
      * Wrapper for creating a request
      *
-     * @unreleased
+     * @since 2.26.0
      *
      * @param string $method     The HTTP method of the request (e.g. GET, POST, etc.).
      * @param string $route      The REST API route to access (e.g. /wp/v2/posts).
@@ -159,7 +159,7 @@ class RestApiTestCase extends TestCase
     /**
      * Wrapper for dispatching a request
      *
-     * @unreleased
+     * @since 2.26.0
      *
      * @param WP_REST_Request $request The request object to dispatch to the server.
      *
@@ -173,7 +173,7 @@ class RestApiTestCase extends TestCase
     /**
      * Asserts that the response is a WP error response with the specified code and status (if provided).
      *
-     * @unreleased
+     * @since 2.26.0
      *
      * @param int|string $code     The expected error code of the WP_Error object.
      * @param mixed      $response The response object to check (can be a WP_REST_Response or WP_Error object).

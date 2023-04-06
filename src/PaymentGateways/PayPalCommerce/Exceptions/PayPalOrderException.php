@@ -4,6 +4,6 @@ namespace Give\PaymentGateways\PayPalCommerce\Exceptions;
 use Give\Framework\Exceptions\Primitives\Exception;
 
 /**
- * @unreleased
+ * @since 2.26.0
  */
 class PayPalOrderException extends Exception {}
