@@ -104,4 +104,12 @@ class Amount extends Field
 
         return $this;
     }
+
+    /**
+     * @unreleased
+     */
+    public function getFixedAmountValue()
+    {
+        return $this->fixedAmountValue;
+    }
 }

@@ -5,6 +5,8 @@ namespace Give\Tests\Unit\DonationForm\Actions;
 use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\ValueObjects\GoalType;
+use Give\NextGen\Framework\Blocks\BlockCollection;
+use Give\NextGen\Framework\Blocks\BlockModel;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
@@ -52,9 +54,110 @@ class StoreBackwardsCompatibleFormMetaTest extends TestCase
         $donationForm->settings->goalAmount = 500;
         $donationForm->save(); // Trigger created hook.
 
-        $this->assertEquals('enabled', $this->getSingleFormMeta($donationForm->id, DonationFormMetaKeys::GOAL_OPTION ));
-        $this->assertEquals('amount', $this->getSingleFormMeta($donationForm->id, '_give_goal_format' ));
-        $this->assertSame('500.000000', $this->getSingleFormMeta($donationForm->id, '_give_set_goal' ));
+        $this->assertEquals('enabled', $this->getSingleFormMeta($donationForm->id, DonationFormMetaKeys::GOAL_OPTION));
+        $this->assertEquals('amount', $this->getSingleFormMeta($donationForm->id, '_give_goal_format'));
+        $this->assertSame('500.000000', $this->getSingleFormMeta($donationForm->id, '_give_set_goal'));
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testRecurringMetaIsStoredOnUpdate()
+    {
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->create();
+
+        $amountFieldModified = BlockModel::make([
+            'clientId' => '8371d4c7-0e8d-4aff-a1a1-b4520f008132',
+            'name' => 'custom-block-editor/section',
+            'isValid' => true,
+            'attributes' => [
+                'title' => 'How much would you like to donate today?',
+                'description' => 'All donations directly impact our organization and help us further our mission.',
+            ],
+            'innerBlocks' => [
+                [
+                    'clientId' => 'bddaa0ea-29bf-4143-b62d-aae3396e9b0f',
+                    'name' => 'custom-block-editor/donation-amount-levels',
+                    'isValid' => true,
+                    'attributes' => [
+                        'label' => 'Donation Amount',
+                        'levels' => ['10', '25', '50', '100', '250', '500'],
+                        'priceOption' => 'multi',
+                        'setPrice' => '25',
+                        'customAmount' => 'true',
+                        'customAmountMin' => 1,
+                        'recurringBillingPeriodOptions' => ['month'],
+                        'recurringBillingPeriod' => 'month',
+                        'recurringBillingInterval' => 1,
+                        'recurringDonationChoice' => 'admin',
+                        'recurringEnabled' => true,
+                        'recurringLengthOfTime' => '0',
+                        'recurringOptInDefaultBillingPeriod' => 'month',
+                    ],
+                ],
+            ],
+        ]);
+
+        $blocks = $donationForm->blocks->getBlocks();
+        $blocks[0] = $amountFieldModified;
+
+        $donationForm->blocks = BlockCollection::make($blocks);
+
+        $donationForm->save();
+
+        $this->assertEquals('month', $this->getSingleFormMeta($donationForm->id, '_give_period'));
+        $this->assertEquals(1, $this->getSingleFormMeta($donationForm->id, '_give_period_interval'));
+        $this->assertEquals(0, $this->getSingleFormMeta($donationForm->id, '_give_times'));
+        $this->assertEquals('yes_admin', $this->getSingleFormMeta($donationForm->id, '_give_recurring'));
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testRecurringMetaIsStoredOnInsert()
+    {
+        $amountFieldModified = BlockModel::make([
+            'clientId' => '8371d4c7-0e8d-4aff-a1a1-b4520f008132',
+            'name' => 'custom-block-editor/section',
+            'isValid' => true,
+            'attributes' => [
+                'title' => 'How much would you like to donate today?',
+                'description' => 'All donations directly impact our organization and help us further our mission.',
+            ],
+            'innerBlocks' => [
+                [
+                    'clientId' => 'bddaa0ea-29bf-4143-b62d-aae3396e9b0f',
+                    'name' => 'custom-block-editor/donation-amount-levels',
+                    'isValid' => true,
+                    'attributes' => [
+                        'label' => 'Donation Amount',
+                        'levels' => ['10', '25', '50', '100', '250', '500'],
+                        'priceOption' => 'multi',
+                        'setPrice' => '25',
+                        'customAmount' => 'true',
+                        'customAmountMin' => 1,
+                        'recurringBillingPeriodOptions' => ['month'],
+                        'recurringBillingPeriod' => 'month',
+                        'recurringBillingInterval' => 1,
+                        'recurringDonationChoice' => 'admin',
+                        'recurringEnabled' => true,
+                        'recurringLengthOfTime' => '0',
+                        'recurringOptInDefaultBillingPeriod' => 'month',
+                    ],
+                ],
+            ],
+        ]);
+
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->create([
+            'blocks' => BlockCollection::make([$amountFieldModified])
+        ]);
+
+        $this->assertEquals('month', $this->getSingleFormMeta($donationForm->id, '_give_period'));
+        $this->assertEquals(1, $this->getSingleFormMeta($donationForm->id, '_give_period_interval'));
+        $this->assertEquals(0, $this->getSingleFormMeta($donationForm->id, '_give_times'));
+        $this->assertEquals('yes_admin', $this->getSingleFormMeta($donationForm->id, '_give_recurring'));
     }
 
     /**

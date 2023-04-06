@@ -3,6 +3,10 @@
 namespace Give\NextGen\DonationForm\Actions;
 
 use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
+use Give\Donations\ValueObjects\DonationType;
+use Give\Framework\FieldsAPI\Amount;
+use Give\Framework\FieldsAPI\DonationAmount;
+use Give\Framework\FieldsAPI\Field;
 use Give\NextGen\DonationForm\Models\DonationForm;
 
 class StoreBackwardsCompatibleFormMeta
@@ -14,13 +18,16 @@ class StoreBackwardsCompatibleFormMeta
     {
         $this->storeDonationLevels($donationForm);
         $this->storeDonationGoal($donationForm);
+        $this->storeRecurringMetaKeys($donationForm);
     }
 
     /**
+     * @unreleased update with dynamic values from amount field
      * @since 0.1.0
      */
     public function storeDonationLevels(DonationForm $donationForm)
     {
+        /** @var Amount $amountField */
         $amountField = $donationForm->schema()->getNodeByName('amount');
 
         if (!$amountField) {
@@ -43,8 +50,11 @@ class StoreBackwardsCompatibleFormMeta
             $this->saveSingleFormMeta($donationForm->id, DonationFormMetaKeys::DONATION_LEVELS, $donationLevels);
         } else {
             $this->saveSingleFormMeta($donationForm->id, DonationFormMetaKeys::PRICE_OPTION, 'set');
-            // TODO replace hardcoded value with dynamic when ready
-            $this->saveSingleFormMeta($donationForm->id, DonationFormMetaKeys::SET_PRICE, '25.00');
+            $this->saveSingleFormMeta(
+                $donationForm->id,
+                DonationFormMetaKeys::SET_PRICE,
+                $amountField->getFixedAmountValue()
+            );
             $this->saveSingleFormMeta($donationForm->id, DonationFormMetaKeys::DONATION_LEVELS, []);
         }
     }
@@ -82,5 +92,68 @@ class StoreBackwardsCompatibleFormMeta
     protected function saveSingleFormMeta($formId, $metaKey, $metaValue)
     {
         give()->form_meta->update_meta($formId, $metaKey, $metaValue);
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function storeRecurringMetaKeys(DonationForm $donationForm)
+    {
+        $donationFormSchema = $donationForm->schema();
+
+        /** @var Field|null $donationTypeField */
+        $donationTypeField = $donationFormSchema->getNodeByName('donationType');
+        $donationType = !$donationTypeField ? DonationType::SINGLE() : new DonationType(
+            $donationTypeField->getDefaultValue()
+        );
+
+        if (!$donationType->isSubscription()) {
+            $this->saveSingleFormMeta(
+                $donationForm->id,
+                '_give_recurring',
+                'no'
+            );
+
+            return;
+        }
+
+        /** @var DonationAmount $donationAmountField */
+        $donationAmountField = $donationFormSchema->getNodeByName('donationAmount');
+
+        /** @var  Field $subscriptionPeriodField */
+        $subscriptionPeriodField = $donationFormSchema->getNodeByName('subscriptionPeriod');
+
+        /** @var  Field $subscriptionFrequencyField */
+        $subscriptionFrequencyField = $donationFormSchema->getNodeByName('subscriptionFrequency');
+
+        /** @var  Field $subscriptionInstallmentsField */
+        $subscriptionInstallmentsField = $donationFormSchema->getNodeByName('subscriptionInstallments');
+
+        $this->saveSingleFormMeta(
+            $donationForm->id,
+            '_give_recurring',
+            $donationAmountField->subscriptionDetailsAreFixed ? 'yes_admin' : 'yes'
+        );
+
+        // period
+        $this->saveSingleFormMeta(
+            $donationForm->id,
+            '_give_period',
+            $subscriptionPeriodField->getDefaultValue()
+        );
+
+        // frequency
+        $this->saveSingleFormMeta(
+            $donationForm->id,
+            '_give_period_interval',
+            $subscriptionFrequencyField->getDefaultValue()
+        );
+
+        // times
+        $this->saveSingleFormMeta(
+            $donationForm->id,
+            '_give_times',
+            $subscriptionInstallmentsField->getDefaultValue()
+        );
     }
 }
