@@ -59,8 +59,8 @@
             font-size: 24px;
             font-weight: bold;
             line-height: 1.33;
-        "><?php _e('Welcome aboard! Help us test the new Visual Donation Form Builder', 'give'); ?></h2>
-            <div style="font-size: 16px;"><?php _e('Create the donation form of your dreams using an easy-to-use visual donation form builder', 'give'); ?></div>
+        "><?php _e('Welcome to the GiveWP Visual Donation Form Builder Beta!', 'give'); ?></h2>
+            <div style="font-size: 16px;"><?php _e('It\'s the future of GiveWP: building forms using a block-based visual editor. This is the BIG feature of GiveWP 3.0, and represents a monumental shift toward empowering you to create donation forms like never before.', 'give'); ?></div>
         </header>
 
 
@@ -81,23 +81,23 @@
 
                     <!-- Join the Journey -->
                     <div>
-                        <h3 style="font-size: 16px;margin: 12px 0;"><?php _e('Join the journey', 'give'); ?></h3>
-                        <p style="font-size: 12px;"><?php _e('Stay informed about Give 3.0 and Next Gen updates', 'give'); ?></p>
+                        <h3 style="font-size: 16px;margin: 12px 0;"><?php _e('Join the Journey', 'give'); ?></h3>
+                        <p style="font-size: 12px;"><?php _e('Stay informed about the Visual Donation Form Builder beta as well as GiveWP version 3.0', 'give'); ?></p>
                         <givewp-welcome-banner-newsletter></givewp-welcome-banner-newsletter>
                         <div id="givewpNextGenNewsletterSuccess" style="
                             visibility: hidden;
                             margin-top: var(--givewp-spacing-4);
                         ">
                             <div style="flex:1;">
-                                <?php _e('Awesome you’re in! You will be the first to receive updates on Give 3.0 and Next Gen.', 'give'); ?>
+                                <?php _e('Awesome, you’re in! You will be among the first to receive updates.', 'give'); ?>
                             </div>
                         </div>
                     </div>
 
                     <!-- Create your new donation form -->
                     <div>
-                        <h3 style="font-size: 16px;margin: 12px 0;"><?php _e('Create your new donation form', 'give'); ?></h3>
-                        <p><?php _e('The Visual donation form building experience is one click away', 'give'); ?></p>
+                        <h3 style="font-size: 16px;margin: 12px 0;"><?php _e('Create a New Donation Form', 'give'); ?></h3>
+                        <p><?php _e('Go directly to the new form builder and get started exploring!', 'give'); ?></p>
                         <a
                             href="<?php echo admin_url('edit.php?post_type=give_forms&page=form-builder-next-gen'); ?>"
                             style="
@@ -117,7 +117,7 @@
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M10 4.166v11.667M4.165 9.999h11.667" stroke="#2D802F" stroke-width="1.667" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            <?php _e('Create a next visual donation form', 'give'); ?>
+                            <?php _e('Create a donation form using the new visual builder.', 'give'); ?>
                         </a>
                         <div style="
                     display: flex;
@@ -135,7 +135,7 @@
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M8 .666a7.333 7.333 0 1 0 0 14.667A7.333 7.333 0 0 0 8 .666zm0 4a.667.667 0 1 0 0 1.333h.006a.667.667 0 0 0 0-1.333h-.007zm.666 3.333a.667.667 0 0 0-1.333 0v2.667a.667.667 0 1 0 1.333 0V7.999z" fill="#2D802F"/>
                             </svg>
                             <div style="flex:1;">
-                                <?php _e('The Next Gen plugin is intended only for testing and feedback purposes. Please do not use for live donations.', 'give'); ?>
+                                <?php _e('The Beta plugin is intended only for testing and feedback purposes. Please do not use for live donations.', 'give'); ?>
                             </div>
                         </div>
                     </div>
@@ -168,8 +168,8 @@
                         background-color: var(--givewp-blue-25);
                     ">
                         <img style="width: 100%;" src="<?php esc_attr_e(GIVE_NEXT_GEN_URL . '/src/NextGen/WelcomeBanner/resources/design-mode.min.png'); ?>" alt="">
-                        <h3><?php _e('Design mode', 'give'); ?></h3>
-                        <div><?php _e('Toggle the "Design" tab and customize the colors and features of your form based on the Form Design you choose.', 'give'); ?></div>
+                        <h3><?php _e('Design Mode', 'give'); ?></h3>
+                        <div><?php _e('See exactly what your form looks like for potential donors using the "Design" tab of the builder. Changes are visible immediately.', 'give'); ?></div>
                     </div>
 
                     <!-- Custom fields -->
@@ -182,8 +182,8 @@
                         background-color: var(--givewp-blue-25);
                     ">
                         <img style="width: 100%;" src="<?php esc_attr_e(GIVE_NEXT_GEN_URL . '/src/NextGen/WelcomeBanner/resources/custom-fields.min.png'); ?>" alt="">
-                        <h3><?php _e('Custom field support', 'give'); ?></h3>
-                        <div><?php _e('Add custom fields to your form. Drag and drop them where you need, to any section. Even add new drag-and-droppable sections!', 'give'); ?></div>
+                        <h3><?php _e('Custom Fields and Sections', 'give'); ?></h3>
+                        <div><?php _e('Add custom input fields, custom paragraphs/content, and even entire sections to forms. No code required!', 'give'); ?></div>
                     </div>
                 </div>
             </section>
