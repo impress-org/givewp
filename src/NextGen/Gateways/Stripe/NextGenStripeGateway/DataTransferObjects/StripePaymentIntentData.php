@@ -43,7 +43,7 @@ class StripePaymentIntentData
     public $receiptEmail;
 
     /**
-     * @unreleased
+     * @since 0.3.0
      *
      * @param  array{amount: string, currency: string, customer: string, description: string, metadata: array, automatic_payment_methods: array, application_fee_amount: string, statement_descriptor: string, receipt_email: string }  $array
      */
@@ -64,7 +64,7 @@ class StripePaymentIntentData
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     public function toParams()
     {
@@ -96,7 +96,7 @@ class StripePaymentIntentData
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     public function toOptions(string $stripeConnectAccountId): array
     {

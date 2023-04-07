@@ -22,7 +22,7 @@ class StoreBackwardsCompatibleFormMeta
     }
 
     /**
-     * @unreleased update with dynamic values from amount field
+     * @since 0.3.0 update with dynamic values from amount field
      * @since 0.1.0
      */
     public function storeDonationLevels(DonationForm $donationForm)
@@ -95,7 +95,7 @@ class StoreBackwardsCompatibleFormMeta
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     protected function storeRecurringMetaKeys(DonationForm $donationForm)
     {

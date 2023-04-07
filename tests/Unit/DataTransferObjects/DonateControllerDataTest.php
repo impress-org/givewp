@@ -72,7 +72,7 @@ class DonateControllerDataTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      * @throws Exception
      */
     public function testToSubscriptionShouldReturnSubscriptionModel()
@@ -135,7 +135,7 @@ class DonateControllerDataTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      * @throws Exception
      */
     public function testToInitialSubscriptionDonationShouldReturnDonationModel()

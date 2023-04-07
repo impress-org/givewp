@@ -2,7 +2,7 @@ import FixedAmountMessage from './FixedAmountMessage';
 import FixedAmountSubscriptionMessage from './FixedAmountRecurringMessage';
 
 /**
- * @unreleased
+ * @since 0.3.0
  */
 export default function DonationAmountMessage({
     isFixedAmount,

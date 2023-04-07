@@ -12,7 +12,7 @@ use Stripe\Event;
 trait StripeWebhookListenerRepository
 {
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     protected function shouldProcessSubscription(Subscription $subscription): bool
     {
@@ -20,7 +20,7 @@ trait StripeWebhookListenerRepository
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     protected function shouldProcessDonation(Donation $donation): bool
     {
@@ -28,7 +28,7 @@ trait StripeWebhookListenerRepository
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     protected function logWebhookError(Event $event, Exception $exception)
     {

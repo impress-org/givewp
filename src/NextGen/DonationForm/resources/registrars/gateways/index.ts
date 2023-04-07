@@ -61,7 +61,7 @@ export default class Registrar implements GatewayRegistrar {
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     private mapRegisteredGatewayToClientGateway(registeredGateway: RegisteredGateway, clientGateway: Gateway): void {
         for (const [key, value] of Object.entries(registeredGateway)) {

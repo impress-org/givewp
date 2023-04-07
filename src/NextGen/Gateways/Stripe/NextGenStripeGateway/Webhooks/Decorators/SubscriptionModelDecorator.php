@@ -18,22 +18,25 @@ class SubscriptionModelDecorator {
     public $subscription;
 
     /**
-     * @unreleased 
+     * @since 0.3.0
      */
-    public function __construct(Subscription $subscription) {
+    public function __construct(Subscription $subscription)
+    {
         $this->subscription = $subscription;
     }
 
-      /**
-     * @unreleased
+    /**
+     * @since 0.3.0
      */
     public function shouldEndSubscription(): bool
     {
-        return $this->subscription->installments !== 0 && (count($this->subscription->donations) >= $this->subscription->installments);
+        return $this->subscription->installments !== 0 && (count(
+                    $this->subscription->donations
+                ) >= $this->subscription->installments);
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     public function shouldCreateRenewal(): bool
     {
@@ -43,8 +46,8 @@ class SubscriptionModelDecorator {
         return $this->subscription->status->isActive() && (0 === $billTimes || $totalPayments < $billTimes);
     }
 
-      /**
-     * @unreleased
+    /**
+     * @since 0.3.0
      *
      * @throws Exception
      */
@@ -89,7 +92,7 @@ class SubscriptionModelDecorator {
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      * @throws Exception
      */
     public function cancelSubscription()
@@ -97,11 +100,12 @@ class SubscriptionModelDecorator {
         $this->subscription->cancel();
     }
 
-      /**
-     * @unreleased
+    /**
+     * @since 0.3.0
      * @throws Exception
      */
-    public function handleSubscriptionCompleted() {
+    public function handleSubscriptionCompleted()
+    {
         $this->subscription->status = SubscriptionStatus::COMPLETED();
         $this->subscription->save();
     }

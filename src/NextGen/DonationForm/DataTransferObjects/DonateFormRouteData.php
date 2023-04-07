@@ -127,7 +127,7 @@ class DonateFormRouteData implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     public function toArray(): array
     {

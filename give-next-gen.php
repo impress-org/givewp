@@ -17,7 +17,7 @@ use Give\NextGen\WelcomeBanner\ServiceProvider as WelcomeBannerServiceProvider;
  * Plugin Name:         Give - Visual Donation Form Builder
  * Plugin URI:          https://github.com/impress-org/givewp-next-gen
  * Description:         Create the donation form of your dreams using an easy-to-use visual donation form builder.
- * Version:             0.2.0
+ * Version:             0.3.0
  * Requires at least:   5.5
  * Requires PHP:        7.2
  * Author:              GiveWP
@@ -31,8 +31,8 @@ defined('ABSPATH') or exit;
 define('GIVE_NEXT_GEN_NAME', 'GiveWP - Visual Donation Form Builder');
 
 // Versions
-define('GIVE_NEXT_GEN_VERSION', '0.2.0');
-define('GIVE_NEXT_GEN_MIN_GIVE_VERSION', '2.25.0');
+define('GIVE_NEXT_GEN_VERSION', '0.3.0');
+define('GIVE_NEXT_GEN_MIN_GIVE_VERSION', '2.26.0');
 
 // Add-on paths
 define('GIVE_NEXT_GEN_FILE', __FILE__);

@@ -17,7 +17,7 @@ class PaymentIntentFailedTest extends TestCase
 {
     use RefreshDatabase;
     /**
-     * @unreleased
+     * @since 0.3.0
      *
      * @throws Exception
      */

@@ -21,7 +21,7 @@ class NextGenStripeGatewaySubscriptionModuleTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 0.3.0
      *
      * @throws Exception
      */
@@ -131,7 +131,7 @@ class NextGenStripeGatewaySubscriptionModuleTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     protected function getMockGateway(array $methods = [])
     {

@@ -9,7 +9,7 @@ use Stripe\Charge;
 use Stripe\Event;
 
 /**
- * @unreleased
+ * @since 0.3.0
  */
 class ChargeRefunded
 {
@@ -22,7 +22,7 @@ class ChargeRefunded
      *
      * @see https://stripe.com/docs/api/events/types#event_types-charge.refunded
      *
-     * @unreleased
+     * @since 0.3.0
      *
      * @return void
      * @throws Exception
@@ -39,7 +39,7 @@ class ChargeRefunded
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      *
      * @throws Exception
      */

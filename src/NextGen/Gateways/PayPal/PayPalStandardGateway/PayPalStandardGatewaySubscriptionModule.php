@@ -12,12 +12,12 @@ use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
- * @unreleased
+ * @since 0.3.0
  */
 class PayPalStandardGatewaySubscriptionModule extends SubscriptionModule implements SubscriptionDashboardLinkable
 {
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     public function createSubscription(
         Donation $donation,
@@ -199,7 +199,7 @@ class PayPalStandardGatewaySubscriptionModule extends SubscriptionModule impleme
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      * @throws PaymentGatewayException
      */
     public function cancelSubscription(Subscription $subscription)
@@ -215,7 +215,7 @@ class PayPalStandardGatewaySubscriptionModule extends SubscriptionModule impleme
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     public function gatewayDashboardSubscriptionUrl(Subscription $subscription): string
     {
@@ -236,7 +236,7 @@ class PayPalStandardGatewaySubscriptionModule extends SubscriptionModule impleme
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     protected function getInvoiceIdPrefix()
     {

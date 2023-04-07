@@ -22,7 +22,7 @@ class StripeGatewayData
     public $stripePaymentMethodIsCreditCard;
 
     /**
-     * @unreleased
+     * @since 0.3.0
      *
      * @param  array{stripeConnectedAccountKey: string, stripePaymentIntentId: string}  $request
      * @return StripeGatewayData

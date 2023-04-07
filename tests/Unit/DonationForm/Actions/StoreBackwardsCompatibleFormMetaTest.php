@@ -60,7 +60,7 @@ class StoreBackwardsCompatibleFormMetaTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     public function testRecurringMetaIsStoredOnUpdate()
     {
@@ -113,7 +113,7 @@ class StoreBackwardsCompatibleFormMetaTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     public function testRecurringMetaIsStoredOnInsert()
     {

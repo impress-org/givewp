@@ -15,7 +15,7 @@ class LegacyStripeAdapter
      * This makes it possible to load the files without having to enable a legacy stripe gateway.
      * This also makes it possible to load the files without the use of the give_stripe_supported_payment_methods filter.
      *
-     * @unreleased
+     * @since 0.3.0
      */
     public function loadLegacyStripeWebhooksAndFilters()
     {
@@ -41,7 +41,7 @@ class LegacyStripeAdapter
      *
      * If this is not included, then the webhooks will not be registered unless a legacy stripe gateway is enabled.
      *
-     * @unreleased
+     * @since 0.3.0
      */
     public function addToStripeSupportedPaymentMethodsList()
     {
@@ -59,7 +59,7 @@ class LegacyStripeAdapter
     /**
      * This adds the Stripe details to the donation details page.
      *
-     * @unreleased
+     * @since 0.3.0
      */
     public function addDonationDetails()
     {

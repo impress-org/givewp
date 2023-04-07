@@ -80,7 +80,7 @@ class DonateFormDataTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      *
      * @return void
      * @throws Exception

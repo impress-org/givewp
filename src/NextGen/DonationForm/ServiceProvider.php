@@ -84,7 +84,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     private function dispatchDonateControllerListeners()
     {

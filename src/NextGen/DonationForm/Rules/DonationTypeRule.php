@@ -48,7 +48,7 @@ class DonationTypeRule implements ValidationRule, ValidatesOnFrontEnd, Sanitizer
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     public function sanitize($value): DonationType
     {
@@ -56,7 +56,7 @@ class DonationTypeRule implements ValidationRule, ValidatesOnFrontEnd, Sanitizer
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     public function serializeOption()
     {

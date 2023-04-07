@@ -3,7 +3,7 @@ import DonationAmountMessage from './DonationAmountMessage';
 import useDonationType from './useDonationType';
 
 /**
- * @unreleased
+ * @since 0.3.0
  */
 export default function DonationAmount({
     fields: {

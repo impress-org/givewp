@@ -7,7 +7,7 @@ use Stripe\Event;
 use Stripe\Subscription as StripeSubscription;
 
 /**
- * @unreleased
+ * @since 0.3.0
  */
 class CustomerSubscriptionCreated
 {
@@ -20,7 +20,7 @@ class CustomerSubscriptionCreated
      *
      * @see https://stripe.com/docs/api/events/types#event_types-customer.subscription.created
      *
-     * @unreleased
+     * @since 0.3.0
      *
      * @return void
      * @throws Exception
@@ -37,7 +37,7 @@ class CustomerSubscriptionCreated
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     public function processEvent(Event $event)
     {

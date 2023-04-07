@@ -137,7 +137,7 @@ class DonateRoute
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     private function logError(
         string $type,

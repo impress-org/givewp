@@ -50,7 +50,7 @@ class SubscriptionPeriodRule implements ValidationRule, ValidatesOnFrontEnd, San
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      * @return SubscriptionPeriod|null
      */
     public function sanitize($value)
@@ -63,7 +63,7 @@ class SubscriptionPeriodRule implements ValidationRule, ValidatesOnFrontEnd, San
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     public function serializeOption()
     {

@@ -27,7 +27,7 @@ class ConvertDonationAmountBlockToFieldsApi
 {
 
     /**
-     * @unreleased
+     * @since 0.3.0
      *
      * @throws EmptyNameException
      * @throws NameCollisionException
@@ -115,7 +115,7 @@ class ConvertDonationAmountBlockToFieldsApi
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      *
      * @throws EmptyNameException
      */
@@ -160,7 +160,7 @@ class ConvertDonationAmountBlockToFieldsApi
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     protected function mergePeriodOptionsWithOneTime(array $options): array
     {

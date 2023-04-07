@@ -1,7 +1,7 @@
 import {__} from '@wordpress/i18n';
 
 /**
- * @unreleased
+ * @since 0.3.0
  */
 type periodLabel = {
     singular: string;
@@ -10,14 +10,14 @@ type periodLabel = {
 };
 
 /**
- * @unreleased
+ * @since 0.3.0
  */
 const capitalize = (text: string): string => {
     return text.toLowerCase().replace(/\w/, (firstLetter) => firstLetter.toUpperCase());
 };
 
 /**
- * @unreleased
+ * @since 0.3.0
  */
 const subscriptionPeriodLabelLookup = {
     day: {
@@ -48,12 +48,12 @@ const subscriptionPeriodLabelLookup = {
 };
 
 /**
- * @unreleased
+ * @since 0.3.0
  */
 type subscriptionPeriod = keyof typeof subscriptionPeriodLabelLookup;
 
 /**
- * @unreleased
+ * @since 0.3.0
  */
 class SubscriptionPeriod {
     protected period: subscriptionPeriod;
@@ -74,7 +74,7 @@ class SubscriptionPeriod {
 }
 
 /**
- * @unreleased
+ * @since 0.3.0
  */
 class SubscriptionPeriodLabel {
     protected periodLabel: periodLabel;
@@ -112,7 +112,7 @@ class SubscriptionPeriodLabel {
 }
 
 /**
- * @unreleased
+ * @since 0.3.0
  */
 const isSubscriptionPeriod = (period: subscriptionPeriod): period is subscriptionPeriod => {
     return period in subscriptionPeriodLabelLookup;

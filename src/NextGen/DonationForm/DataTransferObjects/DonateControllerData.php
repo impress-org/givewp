@@ -113,7 +113,7 @@ class DonateControllerData
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     public function toInitialSubscriptionDonation(int $donorId, int $subscriptionId): Donation
     {
@@ -216,7 +216,7 @@ class DonateControllerData
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      *
      * @throws Exception
      */

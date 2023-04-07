@@ -1,7 +1,7 @@
 import {useEffect} from "@wordpress/element";
 
 /**
- * @unreleased
+ * @since 0.3.0
  */
 export default function useDonationType(){
     const {useWatch, useFormContext} = window.givewp.form.hooks;

@@ -19,7 +19,7 @@ class CustomerSubscriptionDeletedTest extends TestCase
     use RefreshDatabase, HasMockStripeAccounts;
 
     /**
-     * @unreleased
+     * @since 0.3.0
      *
      * @throws Exception
      */

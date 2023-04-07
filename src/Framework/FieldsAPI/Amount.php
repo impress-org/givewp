@@ -106,7 +106,7 @@ class Amount extends Field
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     public function getFixedAmountValue()
     {

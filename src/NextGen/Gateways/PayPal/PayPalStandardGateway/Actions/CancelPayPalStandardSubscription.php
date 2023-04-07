@@ -17,7 +17,7 @@ class CancelPayPalStandardSubscription
      * Although the PayPal Standard API provides no facility for cancelling a subscription,
      * the PayPal; Express Checkout NVP API can be used.
      *
-     * @unreleased
+     * @since 0.3.0
      * @throws PaymentGatewayException
      */
     public function __invoke(Subscription $subscription)

@@ -9,7 +9,7 @@ use Give\NextGen\DonationForm\Listeners\TemporarilyReplaceLegacySuccessPageUri;
 
 class DispatchDonateControllerDonationCreatedListeners {
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     public function __invoke(DonateControllerData $formData, Donation $donation)
     {

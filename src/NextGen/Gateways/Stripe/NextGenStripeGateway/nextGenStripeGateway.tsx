@@ -35,7 +35,7 @@ const zeroDecimalCurrencies = [
 /**
  * Takes in an amount value in dollar units and returns the calculated cents amount
  *
- * @unreleased
+ * @since 0.3.0
  */
 const dollarsToCents = (amount: string, currency: string) => {
     if (zeroDecimalCurrencies.includes(currency)) {

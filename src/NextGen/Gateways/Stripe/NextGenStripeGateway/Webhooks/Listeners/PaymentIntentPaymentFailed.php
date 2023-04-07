@@ -9,7 +9,7 @@ use Stripe\Event;
 use Stripe\PaymentIntent;
 
 /**
- * @unreleased
+ * @since 0.3.0
  */
 class PaymentIntentPaymentFailed
 {
@@ -22,7 +22,7 @@ class PaymentIntentPaymentFailed
      *
      * @see https://stripe.com/docs/api/events/types#event_types-payment_intent.payment_failed
      *
-     * @unreleased
+     * @since 0.3.0
      *
      * @return void
      * @throws Exception
@@ -39,7 +39,7 @@ class PaymentIntentPaymentFailed
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      */
     public function processEvent(Event $event)
     {

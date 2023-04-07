@@ -4,7 +4,7 @@ import type {subscriptionPeriod} from './subscriptionPeriod';
 import {SubscriptionPeriod} from './subscriptionPeriod';
 
 /**
- * @unreleased
+ * @since 0.3.0
  */
 export default function FixedAmountRecurringMessage({
     isFixedAmount,

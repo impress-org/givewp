@@ -19,7 +19,7 @@ use Stripe\PaymentIntent;
 trait NextGenStripeRepository
 {
     /**
-     * @unreleased update params to use StripePaymentIntentData
+     * @since 0.3.0 update params to use StripePaymentIntentData
      * @since 0.1.0
      * @throws ApiErrorException
      */
@@ -128,7 +128,7 @@ trait NextGenStripeRepository
     }
 
     /**
-     * @unreleased
+     * @since 0.3.0
      *
      * @return void
      * @throws Exception
