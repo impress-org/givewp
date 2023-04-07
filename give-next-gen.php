@@ -9,6 +9,7 @@ use Give\NextGen\CustomFields\ServiceProvider as CustomFieldsServiceProvider;
 use Give\NextGen\DonationForm\ServiceProvider as DonationFormServiceProvider;
 use Give\NextGen\FormPage\ServiceProvider as FormPageServiceProvider;
 use Give\NextGen\Framework\FormDesigns\ServiceProvider as FormDesignServiceProvider;
+use Give\NextGen\Gateways\Stripe\LegacyStripeAdapter;
 use Give\NextGen\ServiceProvider as NextGenServiceProvider;
 use Give\NextGen\WelcomeBanner\ServiceProvider as WelcomeBannerServiceProvider;
 
@@ -53,9 +54,12 @@ register_uninstall_hook(GIVE_NEXT_GEN_FILE, [Activation::class, 'uninstallAddon'
 // Register the add-on service provider with the GiveWP core.
 add_action(
     'before_give_init',
-    function () {
+    static function () {
         // Check Give min required version.
         if (Environment::giveMinRequiredVersionCheck()) {
+            // this needs to load before the LegacyServiceProvider loads in GiveWP.
+            give(LegacyStripeAdapter::class)->addToStripeSupportedPaymentMethodsList();
+
             give()->registerServiceProvider(AddonServiceProvider::class);
             give()->registerServiceProvider(DonationFormServiceProvider::class);
             give()->registerServiceProvider(NextGenServiceProvider::class);

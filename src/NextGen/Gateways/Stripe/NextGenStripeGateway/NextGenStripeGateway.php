@@ -25,7 +25,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
      */
     public static function id(): string
     {
-        return 'next-gen-stripe';
+        return 'stripe_payment_element';
     }
 
     /**
@@ -41,7 +41,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
      */
     public function getName(): string
     {
-        return __('Stripe (Next Gen)', 'give');
+        return __('Stripe - Payment Element (Next Gen)', 'give');
     }
 
     /**
@@ -49,7 +49,7 @@ class NextGenStripeGateway extends PaymentGateway implements NextGenPaymentGatew
      */
     public function getPaymentMethodLabel(): string
     {
-        return __('Stripe (Next Gen)', 'give');
+        return __('Stripe Payment Element (Next Gen)', 'give');
     }
 
     /**

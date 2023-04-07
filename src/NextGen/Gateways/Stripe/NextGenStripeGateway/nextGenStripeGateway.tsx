@@ -74,7 +74,7 @@ interface StripeGateway extends Gateway {
 }
 
 const stripeGateway: StripeGateway = {
-    id: 'next-gen-stripe',
+    id: 'stripe_payment_element',
     initialize() {
         const {stripeKey, stripeConnectedAccountId} = this.settings;
 

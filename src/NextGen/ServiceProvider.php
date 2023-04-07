@@ -127,8 +127,7 @@ class ServiceProvider implements ServiceProviderInterface
             );
         }
 
-        give(LegacyStripeAdapter::class)->addDonationDetails();
-
+        $this->addLegacyStripeAdapter();
         $this->addStripeWebhookListeners();
     }
 
@@ -183,5 +182,17 @@ class ServiceProvider implements ServiceProviderInterface
             'give_recurring_stripe_processing_customer_subscription_deleted',
             CustomerSubscriptionDeleted::class
         );
+    }
+
+    /**
+     * @unreleased
+     */
+    private function addLegacyStripeAdapter()
+    {
+        /** @var LegacyStripeAdapter $legacyStripeAdapter */
+        $legacyStripeAdapter = give(LegacyStripeAdapter::class);
+
+        $legacyStripeAdapter->addDonationDetails();
+        $legacyStripeAdapter->loadLegacyStripeWebhooksAndFilters();
     }
 }
