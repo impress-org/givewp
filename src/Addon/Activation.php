@@ -21,6 +21,10 @@ class Activation
      */
     public static function activateAddon()
     {
+        if (!Environment::isGiveActive()) {
+            return;
+        }
+
         $gateways = give_get_option('gateways');
 
         if (!array_key_exists(NextGenTestGateway::id(), $gateways)) {
