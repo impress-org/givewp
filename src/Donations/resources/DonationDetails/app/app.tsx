@@ -12,6 +12,7 @@ import {pageInformation} from './config/pageInformation';
 import {defaultFormValues} from './utilities/defaultFormValues';
 import {actions} from './utilities/actions';
 
+import '@givewp/design-system-foundation/css/foundation.css';
 import './css/style.scss';
 
 /**
