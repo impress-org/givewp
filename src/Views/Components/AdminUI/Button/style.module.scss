@@ -3,17 +3,26 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    gap: var(--givewp-spacing-1);
     font-size: 1rem;
     font-stretch: normal;
     font-style: normal;
-    line-height: 1.5;
     letter-spacing: normal;
     border-radius: var(--givewp-rounded-4);
     cursor: pointer;
     border: 1px solid transparent;
+    height: 2.25rem;
 
-    > svg {
-        transform: translate(8px, 1px);
+    > span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 1rem;
+
+        > svg {
+            display: block;
+        }
     }
 }
 
@@ -61,7 +70,7 @@
 }
 
 .small {
-    padding: var(--givewp-spacing-2) var(--givewp-spacing-5);
+    padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
 }
 
 .large {
