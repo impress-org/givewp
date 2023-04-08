@@ -37,7 +37,7 @@ export default function AmountField() {
     return (
         <>
             <input hidden {...register('amount')} />
-            <CurrencyField label="Amount" editable onEdit={() => setIsModalOpen(true)}>
+            <CurrencyField label="Total Donation" editable onEdit={() => setIsModalOpen(true)}>
                 {formatCurrency(Number(amount), currency)}
             </CurrencyField>
             <ModalDialog
