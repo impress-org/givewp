@@ -44,8 +44,8 @@ export type InputFieldProps = {
 const TextInputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
     ({name, type, placeholder, label, ...props}, ref) => {
         return (
-            <label>
-                {label && <span className={styles.fieldLabel}>{label}</span>}
+            <label className={styles.fieldLabel}>
+                {label && <span className={styles.fieldLabelContent}>{label}</span>}
                 <div className={cx(styles.textFieldContainer)}>
                     <input ref={ref} name={name} type={type} placeholder={placeholder} {...props} />
                 </div>
@@ -130,7 +130,7 @@ export function SelectDropdownField({
     return (
         <>
             <label htmlFor={name} className={styles.fieldLabel}>
-                <span>{label}</span>
+                {label && <span className={styles.fieldLabelContent}>{label}</span>}
                 <Controller
                     name={name}
                     render={({
@@ -191,7 +191,7 @@ export function AsyncSelectDropdownField({
     return (
         <>
             <label htmlFor={name} className={styles.fieldLabel}>
-                <span>{label}</span>
+                {label && <span className={styles.fieldLabelContent}>{label}</span>}
                 <Controller
                     name={name}
                     render={({
@@ -237,8 +237,8 @@ export type DisabledTextFieldProps = {
 
 export function DisabledTextField({name, type, placeholder, label, value}: DisabledTextFieldProps) {
     return (
-        <label>
-            {label && <span className={styles.fieldLabel}>{label}</span>}
+        <label className={styles.fieldLabel}>
+            {label && <span className={styles.fieldLabelContent}>{label}</span>}
             <div className={cx(styles.textFieldContainer)}>
                 <input
                     className={styles.disabled}
