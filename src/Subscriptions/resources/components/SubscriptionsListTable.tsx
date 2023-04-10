@@ -118,16 +118,14 @@ const bulkActions: Array<BulkActionsConfig> = [
  * Displays a blank slate for the Subscriptions table.
  * @unreleased
  */
-const ListTableBlankSlate = () => {
-    return (
-        <BlankSlate
-            imagePath={`${window.GiveSubscriptions.pluginUrl}/assets/dist/images/list-table/blank-slate-recurring-icon.svg`}
-            description={__('No subscriptions found', 'give')}
-            href={'https://docs.givewp.com/subscriptions'}
-            linkText={__('Recurring Donations.', 'give')}
-        />
-    );
-};
+const ListTableBlankSlate = (
+    <BlankSlate
+        imagePath={`${window.GiveSubscriptions.pluginUrl}/assets/dist/images/list-table/blank-slate-recurring-icon.svg`}
+        description={__('No subscriptions found', 'give')}
+        href={'https://docs.givewp.com/subscriptions'}
+        linkText={__('Recurring Donations.', 'give')}
+    />
+);
 
 export default function SubscriptionsListTable() {
     return (
@@ -140,7 +138,7 @@ export default function SubscriptionsListTable() {
             apiSettings={window.GiveSubscriptions}
             filterSettings={filters}
             paymentMode={!!window.GiveSubscriptions.paymentMode}
-            blankSlate={ListTableBlankSlate}
+            listTableBlankSlate={ListTableBlankSlate}
         >
             <button className={tableStyles.addFormButton} onClick={showLegacyDonations}>
                 {__('Switch to Legacy View')}

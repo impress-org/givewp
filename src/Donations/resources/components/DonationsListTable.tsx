@@ -138,16 +138,14 @@ const bulkActions: Array<BulkActionsConfig> = [
  * Displays a blank slate for the Donations table.
  * @unreleased
  */
-const ListTableBlankSlate = () => {
-    return (
-        <BlankSlate
-            imagePath={`${window.GiveDonations.pluginUrl}/assets/dist/images/list-table/blank-slate-donations-icon.svg`}
-            description={__('No donations found', 'give')}
-            href={'https://docs.givewp.com/donations'}
-            linkText={__('GiveWP Donations.', 'give')}
-        />
-    );
-};
+const ListTableBlankSlate = (
+    <BlankSlate
+        imagePath={`${window.GiveDonations.pluginUrl}/assets/dist/images/list-table/blank-slate-donations-icon.svg`}
+        description={__('No donations found', 'give')}
+        href={'https://docs.givewp.com/donations'}
+        linkText={__('GiveWP Donations.', 'give')}
+    />
+);
 
 export default function DonationsListTable() {
     return (
@@ -160,7 +158,7 @@ export default function DonationsListTable() {
             apiSettings={window.GiveDonations}
             filterSettings={filters}
             paymentMode={!!window.GiveDonations.paymentMode}
-            blankSlate={ListTableBlankSlate}
+            listTableBlankSlate={ListTableBlankSlate}
         >
             {window.GiveDonations.manualDonations && (
                 <a

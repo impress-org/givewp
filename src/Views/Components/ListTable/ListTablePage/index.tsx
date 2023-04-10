@@ -28,7 +28,7 @@ export interface ListTablePageProps {
     filterSettings?;
     align?: 'start' | 'center' | 'end';
     paymentMode?: boolean;
-    blankSlate?: () => JSX.Element | Function | null;
+    listTableBlankSlate: JSX.Element;
 }
 
 export interface FilterConfig {
@@ -69,7 +69,7 @@ export default function ListTablePage({
     children = null,
     align = 'start',
     paymentMode,
-    blankSlate,
+    listTableBlankSlate,
 }: ListTablePageProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(30);
@@ -224,7 +224,7 @@ export default function ListTablePage({
                                 isLoading={isValidating}
                                 align={align}
                                 testMode={testMode}
-                                blankSlate={blankSlate}
+                                listTableBlankSlate={listTableBlankSlate}
                             />
                         </ShowConfirmModalContext.Provider>
                     </CheckboxContext.Provider>
