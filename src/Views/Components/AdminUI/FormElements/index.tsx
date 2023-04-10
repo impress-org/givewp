@@ -77,8 +77,8 @@ export function CurrencyInputField({
     label,
 }: CurrencyInputFieldProps) {
     return (
-        <label>
-            {label && <span className={styles.fieldLabel}>{label}</span>}
+        <label className={styles.fieldLabel}>
+            {label && <span className={styles.fieldLabelContent}>{label}</span>}
             <div className={cx(styles.textFieldContainer, styles.currencyField, {})}>
                 <CurrencyInput
                     name={'currency-input-field'}

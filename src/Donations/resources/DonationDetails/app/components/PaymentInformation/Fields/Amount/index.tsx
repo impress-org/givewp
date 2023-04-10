@@ -60,7 +60,7 @@ function AmountDialog({defaultAmount, amountChanged}: CurrencyAmountDialogProps)
     const [amount, setAmount] = useState<number>(defaultAmount);
 
     return (
-        <div>
+        <div className={styles.currencyDialog}>
             <WarningMessage />
             <CurrencyInputField
                 defaultValue={amount}
