@@ -163,7 +163,7 @@ const Inspector = ({attributes, setAttributes}) => {
                     />
                 </PanelBody>
             )}
-            <PanelBody title={__('Recurring donation', 'give')} initialOpen={false}>
+            <PanelBody title={__('Recurring Donations', 'give')} initialOpen={false}>
                 {!isRecurringSupported && <RecurringDonationsPromo />}
 
                 {isRecurringSupported && (
