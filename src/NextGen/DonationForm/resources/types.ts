@@ -271,3 +271,7 @@ export function isFormResponseGatewayError(response: FormResponse): response is 
 export function isResponseRedirected(response: Response): response is Response {
     return (response as Response).redirected === true;
 }
+
+export function isDonationTypeSubscription(donationType: string): boolean {
+    return donationType === 'subscription';
+}

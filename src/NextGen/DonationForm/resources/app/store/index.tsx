@@ -1,4 +1,4 @@
-import {createContext, ReactChild, useContext} from 'react';
+import {createContext, ReactNode, useContext} from 'react';
 import type {Gateway} from '@givewp/forms/types';
 
 const GiveDonationFormStore = createContext(null);
@@ -10,7 +10,7 @@ type PropTypes = {
     initialState: {
         gateways: Gateway[];
     };
-    children: ReactChild;
+    children: ReactNode;
 };
 
 const GiveDonationFormStoreProvider = ({initialState, children}: PropTypes) => (
