@@ -151,33 +151,35 @@ export function DonorNotes() {
 function SectionContainer({list, onEditNote, deleteNote}) {
     return (
         <FieldsetContainer>
-            {list.length ? (
-                list.map(({id: noteId, donorAvatar, content, createdAt, type}) => (
-                    <div key={noteId} className={styles.notes}>
-                        <div className={styles.wrapper}>
-                            <img src={donorAvatar} alt={'profile image'} />
-                            <div className={styles.container}>
-                                <span>
-                                    {format(createdAt, "do MMMM yyyy ' . ' hh:mma")}
-                                    <span className={cx(styles.noteType, styles[type])}>{type}</span>
-                                </span>
-                                <span className={styles.content}>{content}</span>
+            <div className={styles.notesContainer}>
+                {list.length ? (
+                    list.map(({id: noteId, donorAvatar, content, createdAt, type}) => (
+                        <div key={noteId} className={styles.notes}>
+                            <div className={styles.wrapper}>
+                                <img src={donorAvatar} alt={'profile image'} />
+                                <div className={styles.container}>
+                                    <span>
+                                        {format(createdAt, "do MMMM yyyy ' . ' hh:mma")}
+                                        <span className={cx(styles.noteType, styles[type])}>{type}</span>
+                                    </span>
+                                    <span className={styles.content}>{content}</span>
+                                </div>
                             </div>
-                        </div>
 
-                        <span className={styles.icons}>
-                            <span className={styles.delete} role={'button'} onClick={(id) => deleteNote(noteId)}>
-                                <TrashIcon />
+                            <span className={styles.icons}>
+                                <span className={styles.delete} role={'button'} onClick={(id) => deleteNote(noteId)}>
+                                    <TrashIcon />
+                                </span>
+                                <span className={styles.edit} role={'button'} onClick={(id) => onEditNote(noteId)}>
+                                    <PenToPaperIcon />
+                                </span>
                             </span>
-                            <span className={styles.edit} role={'button'} onClick={(id) => onEditNote(noteId)}>
-                                <PenToPaperIcon />
-                            </span>
-                        </span>
-                    </div>
-                ))
-            ) : (
-                <EmptyState message={__('No notes', 'give')} />
-            )}
+                        </div>
+                    ))
+                ) : (
+                    <EmptyState message={__('No notes', 'give')} />
+                )}
+            </div>
         </FieldsetContainer>
     );
 }

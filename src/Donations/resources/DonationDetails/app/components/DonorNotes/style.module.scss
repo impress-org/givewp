@@ -7,7 +7,6 @@
         display: flex;
         align-items: center;
         gap: var(--givewp-spacing-4);
-        margin-bottom: var(--givewp-spacing-6);
     }
 
     img {
@@ -95,6 +94,15 @@
     }
 }
 
+.notesContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--givewp-spacing-6);
+    max-height: 12rem;
+    overflow-y: scroll;
+}
+
 .radioButtonContainer {
     display: flex;
     flex-direction: column;
@@ -130,12 +138,6 @@
     }
 }
 
-
-.notes:last-child {
-    margin-bottom: 0;
-}
-
-
 @media (max-width: 850px) {
     .content {
         width: 30rem;
@@ -147,3 +149,4 @@
         width: 25rem;
     }
 }
+
