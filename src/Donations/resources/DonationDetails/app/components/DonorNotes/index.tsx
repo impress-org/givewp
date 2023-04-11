@@ -81,7 +81,7 @@ export function DonorNotes() {
             createdAt: new Date(),
         };
 
-        setNotesList([...notesList, createdNote]);
+        setNotesList([createdNote, ...notesList]);
     };
 
     const handleEditNote = (response, data) => {
