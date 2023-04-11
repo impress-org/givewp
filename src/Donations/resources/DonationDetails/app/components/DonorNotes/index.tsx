@@ -86,7 +86,7 @@ export function DonorNotes() {
 
     const handleEditNote = (response, data) => {
         const updatedNotesList = notesList.map((note) => {
-            if (note.id === (response?.id || 1)) {
+            if (note.id === noteId) {
                 return {
                     ...note,
                     content: data.content,
