@@ -4,6 +4,9 @@ namespace Give\Framework\Support\Facades;
 
 use Give\Log\Log;
 use Money\Converter;
+use Money\Currencies;
+use Money\Currencies\AggregateCurrencies;
+use Money\Currencies\BitcoinCurrencies;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use Money\Exchange\FixedExchange;
@@ -32,7 +35,7 @@ class CurrencyFacade
         }
 
         $converter = new Converter(
-            new ISOCurrencies(), new FixedExchange([
+            $this->getCurrenciesList(), new FixedExchange([
                 $amount->getCurrency()->getCode() => [
                     give_get_option('currency', 'USD') => $exchangeRate,
                 ],
@@ -51,7 +54,7 @@ class CurrencyFacade
      */
     public function parseFromDecimal($amount, string $currency): Money
     {
-        return (new DecimalMoneyParser(new ISOCurrencies()))->parse((string)$amount, new Currency($currency));
+        return (new DecimalMoneyParser($this->getCurrenciesList()))->parse((string)$amount, new Currency($currency));
     }
 
     /**
@@ -62,7 +65,7 @@ class CurrencyFacade
      */
     public function formatToDecimal(Money $amount): string
     {
-        return (new DecimalMoneyFormatter(new ISOCurrencies()))->format($amount);
+        return (new DecimalMoneyFormatter($this->getCurrenciesList()))->format($amount);
     }
 
     /**
@@ -112,5 +115,18 @@ class CurrencyFacade
     public function getBaseCurrency(): Currency
     {
         return new Currency(give_get_option('currency', 'USD'));
+    }
+
+    /**
+     * Retrieves a Currency list for both ISO & Bitcoin formats.
+     *
+     * @unreleased
+     */
+    private function getCurrenciesList(): Currencies
+    {
+        return new AggregateCurrencies([
+            new ISOCurrencies(),
+            new BitcoinCurrencies(),
+        ]);
     }
 }
