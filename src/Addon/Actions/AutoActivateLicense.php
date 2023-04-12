@@ -6,7 +6,7 @@ use Give\Log\Log;
 use Give_License;
 
 /**
- * @unreleased
+ * @since 0.3.2
  */
 class AutoActivateLicense
 {
