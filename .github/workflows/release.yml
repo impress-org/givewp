@@ -5,8 +5,15 @@ on:
         types: [ released ]
 
 jobs:
+    test:
+        uses: impress-org/givewp-github-actions/.github/workflows/addon-tests.yml@master
+        with:
+            addon_slug: givewp-next-gen
+            givewp_branch: develop
+
     build:
         uses: impress-org/givewp-github-actions/.github/workflows/givewp-release.yml@master
+        needs: test
         with:
             plugin_slug: give-visual-form-builder
             zip_name: give-visual-form-builder
