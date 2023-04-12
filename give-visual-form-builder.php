@@ -28,7 +28,7 @@ use Give\NextGen\WelcomeBanner\ServiceProvider as WelcomeBannerServiceProvider;
 defined('ABSPATH') or exit;
 
 // Add-on name
-define('GIVE_NEXT_GEN_NAME', 'GiveWP - Visual Donation Form Builder');
+define('GIVE_NEXT_GEN_NAME', 'Visual Form Builder');
 
 // Versions
 define('GIVE_NEXT_GEN_VERSION', '0.3.1');
