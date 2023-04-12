@@ -2582,7 +2582,7 @@ function give_check_addon_updates( $_transient_data ) {
 /**
  * Get page by title
  *
- * @unreleased
+ * @since 2.26.0
  *
  * @param string $page_title
  * @param string $output

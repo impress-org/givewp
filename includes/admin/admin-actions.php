@@ -710,7 +710,7 @@ function give_donation_import_callback() {
 
 	// Parent key id.
 	$main_key = is_serialized( $output['main_key'] )
-		/** @unreleased Avoid insecure usage of `unserialize` when the data could be submitted by the user. */
+		/** @since 2.26.0 Avoid insecure usage of `unserialize` when the data could be submitted by the user. */
 		? @unserialize( trim( $output['main_key'] ), ['allowed_classes' => false] )
 		: $output['main_key'];
 

@@ -352,7 +352,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * Handle gateway subscription command
      *
-     * @unreleased add RespondToBrowser command
+     * @since 2.26.0 add RespondToBrowser command
      * @since 2.21.0 Handle RedirectOffsite response.
      * @since 2.18.0
      *

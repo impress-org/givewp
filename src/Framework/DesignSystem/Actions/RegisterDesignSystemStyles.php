@@ -5,7 +5,7 @@ namespace Give\Framework\DesignSystem\Actions;
 class RegisterDesignSystemStyles
 {
     /**
-     * @unreleased
+     * @since 2.26.0
      */
     public function __invoke()
     {

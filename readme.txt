@@ -3,9 +3,9 @@ Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman
 Donate link: https://go.givewp.com/home
 Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
-Tested up to: 6.1
+Tested up to: 6.2
 Requires PHP: 7.0
-Stable tag: 2.25.3
+Stable tag: 2.26.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -258,6 +258,15 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.26.0: April 6th, 2023 =
+* Enhancement: Minor updates for improved WordPress 6.2 compatibility
+* Enhancement: A number of under the hood improvements in preparation for the upcoming Visual Donation Form Builder feature plugin release
+* Enhancement: Improvements to recurring donations in the Gateway API
+* Enhancement: Implemented our new GiveWP design system to improve designs across our website and prdocuts
+* Fix: Conditionals fields based on the amount field work again
+* Fix: Files with a text mime type now work when uploading files for import
+* Fix: If an error occurs in the Donor Dashboard when canceling a subscription, that subscription is no longer marked as canceled
+
 = 2.25.3: March 22nd, 2023 =
 * Security: Protect against CSRF during donation import
 
