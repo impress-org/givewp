@@ -1,0 +1,13 @@
+name: Release to GiveWP.com
+
+on:
+    release:
+        types: [ released ]
+
+jobs:
+    build:
+        uses: impress-org/givewp-github-actions/.github/workflows/givewp-release.yml@master
+        with:
+            plugin_slug: give-visual-form-builder
+            zip_name: give-visual-form-builder
+        secrets: inherit
