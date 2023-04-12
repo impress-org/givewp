@@ -10,4 +10,6 @@ jobs:
         with:
             plugin_slug: give-visual-form-builder
             zip_name: give-visual-form-builder
+            translation_slug: give
+            push_translations: false
         secrets: inherit
