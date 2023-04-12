@@ -15,6 +15,7 @@ class LegacyStripeAdapter
      * This makes it possible to load the files without having to enable a legacy stripe gateway.
      * This also makes it possible to load the files without the use of the give_stripe_supported_payment_methods filter.
      *
+     * @unreleased Fix reference to Next Gen gateway when loading Stripe (legacy) code.
      * @since 0.3.0
      */
     public function loadLegacyStripeWebhooksAndFilters()
@@ -31,7 +32,7 @@ class LegacyStripeAdapter
             $gatewaysFromSettings
         );
 
-        if (!class_exists('Give_Stripe_Webhooks') && array_key_exists(NextGenTestGateway::id(), $gateways)) {
+        if (!class_exists('Give_Stripe_Webhooks') && array_key_exists(NextGenStripeGateway::id(), $gateways)) {
             (new Give_Stripe())->include_frontend_files();
         }
     }
