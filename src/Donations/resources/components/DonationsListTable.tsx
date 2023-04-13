@@ -134,13 +134,13 @@ const bulkActions: Array<BulkActionsConfig> = [
 ];
 
 if (window.GiveDonations.pdfExportToolApiRoot) {
-    const pdfExportToolFetchWithArgs = (endpoint, args, method = 'POST') => {
-        const url = new URL(window.GiveDonations.pdfExportToolApiRoot + endpoint);
-        for (const [param, value] of Object.entries(args)) {
+    const CREATE_EXPORT_BY_DONATION_IDS = (donation_ids) => {
+        const url = new URL(window.GiveDonations.pdfExportToolApiRoot + '/create');
+        for (const [param, value] of Object.entries(donation_ids)) {
             value !== '' && url.searchParams.set(param, value as string);
         }
         return fetch(url.href, {
-            method: method,
+            method: 'POST',
             headers: {'X-WP-Nonce': window.GiveDonations.apiNonce},
         }).then((res) => {
             if (!res.ok) {
@@ -153,7 +153,7 @@ if (window.GiveDonations.pdfExportToolApiRoot) {
     bulkActions.push({
         label: __('Download Receipts', 'give'),
         value: 'downloadEmailReceipt',
-        action: async (selected) => await pdfExportToolFetchWithArgs('/create', {donation_ids: selected.join(',')}),
+        action: async (selected) => await CREATE_EXPORT_BY_DONATION_IDS({donation_ids: selected.join(',')}),
         confirm: (selected, names) => (
             <>
                 <p>{__('Download Email Receipts for following donations?', 'give')}</p>
