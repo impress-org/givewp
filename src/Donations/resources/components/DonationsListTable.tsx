@@ -18,6 +18,7 @@ declare global {
             paymentMode: boolean;
             manualDonations: boolean;
             pdfExportToolApiRoot: string;
+            pdfExportToolUrlRedirect: string;
         };
     }
 }
@@ -146,6 +147,7 @@ if (window.GiveDonations.pdfExportToolApiRoot) {
             if (!res.ok) {
                 throw new Error();
             }
+            window.location.href = window.GiveDonations.pdfExportToolUrlRedirect;
             return res.json();
         });
     };
