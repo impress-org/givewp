@@ -17,6 +17,7 @@ declare global {
             table: {columns: Array<object>};
             paymentMode: boolean;
             manualDonations: boolean;
+            pdfExportToolApiRoot: string;
         };
     }
 }
@@ -131,6 +132,42 @@ const bulkActions: Array<BulkActionsConfig> = [
         ),
     },
 ];
+
+if (window.GiveDonations.pdfExportToolApiRoot) {
+    const pdfExportToolFetchWithArgs = (endpoint, args, method = 'POST') => {
+        const url = new URL(window.GiveDonations.pdfExportToolApiRoot + endpoint);
+        for (const [param, value] of Object.entries(args)) {
+            value !== '' && url.searchParams.set(param, value as string);
+        }
+        return fetch(url.href, {
+            method: method,
+            headers: {'X-WP-Nonce': window.GiveDonations.apiNonce},
+        }).then((res) => {
+            if (!res.ok) {
+                throw new Error();
+            }
+            return res.json();
+        });
+    };
+
+    bulkActions.push({
+        label: __('Download Receipts', 'give'),
+        value: 'downloadEmailReceipt',
+        action: async (selected) => await pdfExportToolFetchWithArgs('/create', {donation_ids: selected.join(',')}),
+        confirm: (selected, names) => (
+            <>
+                <p>{__('Download Email Receipts for following donations?', 'give')}</p>
+                <ul role="document" tabIndex={0}>
+                    {selected.map((donationId, index) => (
+                        <li key={donationId}>
+                            <IdBadge id={donationId} /> <span>{sprintf(__('from %s', 'give'), names[index])}</span>
+                        </li>
+                    ))}
+                </ul>
+            </>
+        ),
+    });
+}
 
 export default function DonationsListTable() {
     return (

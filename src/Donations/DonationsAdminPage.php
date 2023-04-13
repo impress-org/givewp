@@ -6,6 +6,7 @@ use Give\Donations\ListTable\DonationsListTable;
 use Give\Framework\Database\DB;
 use Give\Helpers\EnqueueScript;
 use Give\Helpers\Utils;
+use GivePdfReceipt\PdfExport\Repositories\PdfExport;
 
 class DonationsAdminPage
 {
@@ -71,6 +72,7 @@ class DonationsAdminPage
             'adminUrl' => $this->adminUrl,
             'paymentMode' => give_is_test_mode(),
             'manualDonations' => Utils::isPluginActive('give-manual-donations/give-manual-donations.php'),
+            'pdfExportToolApiRoot' => class_exists(PdfExport::class) ? esc_url_raw(rest_url('give-api/v2/pdf-export')) : '',
         ];
 
         EnqueueScript::make('give-admin-donations', 'assets/dist/js/give-admin-donations.js')
