@@ -557,6 +557,8 @@ class Str
     /**
      * Reverse the given string.
      *
+     * @unreleased Required the symfony/polyfill-mbstring package.
+     *
      * @param  string  $value
      * @return string
      */
