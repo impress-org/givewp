@@ -58,9 +58,10 @@ class DonationsAdminPage
     }
 
     /**
-     * @since 2.24.0 Add ListTable columns
-     * @since 2.20.0
-     * @since 2.21.2 Localized the admin URL as a base for URL concatenation.
+     * @unreleased Adds "pdfExportToolApiRoot" and "pdfExportToolUrl" to the GiveDonations object
+     * @since      2.24.0 Add ListTable columns
+     * @since      2.20.0
+     * @since      2.21.2 Localized the admin URL as a base for URL concatenation.
      */
     public function loadScripts()
     {
