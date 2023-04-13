@@ -1,0 +1,28 @@
+name: PHP Compatibility
+
+on:
+    workflow_call: # Allows you to use this workflow as part of another workflow
+    workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+
+jobs:
+    check:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                testVersion: [ 7.0, 7.4, 8.0 ]
+
+        steps:
+            -   uses: actions/checkout@v3
+
+            -   name: Set up PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: 7.4
+                    extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+                    coverage: none
+
+            -   name: Install packages
+                run: composer global require squizlabs/php_codesniffer phpcompatibility/php-compatibility phpcompatibility/phpcompatibility-wp --no-progress --no-interaction
+
+            -   name: Check
+                run: ./vendor/bin/phpcs -p src/ --standard=PHPCompatibility --runtime-set testVersion ${{ matrix.php }} --warning-severity=0
