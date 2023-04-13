@@ -2,6 +2,8 @@ name: PHP Compatibility
 
 on:
     push:
+        branches:
+            - "debug/php-compatibility"
     workflow_call: # Allows you to use this workflow as part of another workflow
     workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
 
