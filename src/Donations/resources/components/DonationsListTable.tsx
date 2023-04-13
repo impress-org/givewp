@@ -158,7 +158,7 @@ if (window.GiveDonations.pdfExportToolApiRoot) {
         action: async (selected) => await CREATE_EXPORT_BY_DONATION_IDS({donation_ids: selected.join(',')}),
         confirm: (selected, names) => (
             <>
-                <p>{__('Download Email Receipts for following donations?', 'give')}</p>
+                <p>{__('Download Receipts for following donations?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((donationId, index) => (
                         <li key={donationId}>
