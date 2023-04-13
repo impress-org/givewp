@@ -28,4 +28,4 @@ jobs:
                 run: composer global require squizlabs/php_codesniffer phpcompatibility/php-compatibility phpcompatibility/phpcompatibility-wp --no-progress --no-interaction
 
             -   name: Check
-                run: ./vendor/bin/phpcs -p src/ --standard=PHPCompatibility --runtime-set testVersion ${{ matrix.php }} --warning-severity=0
+                run: ~/.composer/vendor/bin/phpcs -p src/ --standard=PHPCompatibility --runtime-set testVersion ${{ matrix.php }} --warning-severity=0
