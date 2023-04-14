@@ -120,7 +120,6 @@ export default function ListTablePage({
 
     const openBulkActionModal = (event) => {
         bulkActions = [...bulkActions, ...window.GiveDonations.addonsBulkActions];
-        console.log('openBulkActionModal');
         event.preventDefault();
         const formData = new FormData(event.target);
         const action = formData.get('giveListTableBulkActions');
@@ -136,7 +135,6 @@ export default function ListTablePage({
         });
         setSelectedIds(selected);
         setSelectedNames(names);
-        console.log('selected.length: ', selected.length);
         if (selected.length) {
             setModalContent({...bulkActions[actionIndex]});
             dialog.current.show();
