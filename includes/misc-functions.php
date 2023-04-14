@@ -2505,7 +2505,7 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 
 	// Tell WordPress to look for updates.
 	if ( $wp_check_updates ) {
-		set_site_transient( 'update_plugins', null );
+		delete_site_transient('update_plugins');
 	}
 
 	return [
