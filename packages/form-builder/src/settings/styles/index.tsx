@@ -47,7 +47,7 @@ const CustomStyleSettings = () => {
                         right: '0',
                     }}>
                         <div style={{
-                            margin: '-25px -31px -23px -31px', // Offset the modal padding in order to fill the available space.
+                            margin: '0 -31px -23px -31px', // Offset the modal padding in order to fill the available space.
                         }}>
                             <CustomStyleCodeControl />
                         </div>
