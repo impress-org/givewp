@@ -17,8 +17,6 @@ declare global {
             table: {columns: Array<object>};
             paymentMode: boolean;
             manualDonations: boolean;
-            pdfExportToolApiRoot: string;
-            pdfExportToolUrl: string;
             addonsBulkActions: Array<BulkActionsConfig>;
         };
     }
