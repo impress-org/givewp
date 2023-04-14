@@ -6,7 +6,6 @@ use Give\Donations\ListTable\DonationsListTable;
 use Give\Framework\Database\DB;
 use Give\Helpers\EnqueueScript;
 use Give\Helpers\Utils;
-use GivePdfReceipt\PdfExport\Repositories\PdfExport;
 
 class DonationsAdminPage
 {
@@ -58,7 +57,7 @@ class DonationsAdminPage
     }
 
     /**
-     * @unreleased Adds "pdfExportToolApiRoot" and "pdfExportToolUrl" to the GiveDonations object
+     * @unreleased Adds "addonsBulkActions" to the GiveDonations object
      * @since      2.24.0 Add ListTable columns
      * @since      2.20.0
      * @since      2.21.2 Localized the admin URL as a base for URL concatenation.
@@ -73,8 +72,7 @@ class DonationsAdminPage
             'adminUrl' => $this->adminUrl,
             'paymentMode' => give_is_test_mode(),
             'manualDonations' => Utils::isPluginActive('give-manual-donations/give-manual-donations.php'),
-            'pdfExportToolApiRoot' => class_exists(PdfExport::class) ? esc_url_raw(rest_url('give-api/v2/pdf-export')) : '',
-            'pdfExportToolUrl' => esc_url_raw(admin_url('edit.php?post_type=give_forms&page=give-tools&tab=pdf-export')),
+            'addonsBulkActions' => [],
         ];
 
         EnqueueScript::make('give-admin-donations', 'assets/dist/js/give-admin-donations.js')
