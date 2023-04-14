@@ -119,8 +119,12 @@ export default function ListTablePage({
     };
 
     const openBulkActionModal = (event) => {
-        bulkActions = [...bulkActions, ...window.GiveDonations.addonsBulkActions];
         event.preventDefault();
+
+        if (window.GiveDonations && window.GiveDonations.addonsBulkActions) {
+            bulkActions = [...bulkActions, ...window.GiveDonations.addonsBulkActions];
+        }
+
         const formData = new FormData(event.target);
         const action = formData.get('giveListTableBulkActions');
         const actionIndex = bulkActions.findIndex((config) => action == config.value);
