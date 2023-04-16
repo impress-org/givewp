@@ -15,7 +15,7 @@ final class DonationFormTest extends TestCase
     /**
      * @dataProvider mockFormTypeProvider
      *
-     * @unreleased
+     * @since 2.25.0
      * @return void
      */
     public function testFindShouldReturnDonationForm(string $mockFormType)
@@ -31,7 +31,7 @@ final class DonationFormTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      */
     public function mockFormTypeProvider(): array
     {

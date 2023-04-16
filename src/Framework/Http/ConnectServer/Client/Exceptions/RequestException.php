@@ -7,7 +7,7 @@ use Give\Framework\Exceptions\Primitives\RuntimeException;
 use Give\Framework\Exceptions\Traits\Loggable;
 
 /**
- * @unreleased
+ * @since 2.25.0
  */
 class RequestException extends RuntimeException implements LoggableException
 {

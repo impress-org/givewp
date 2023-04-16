@@ -49,7 +49,7 @@ class AccountManagerSettingField
     private $settings;
 
     /**
-     * @unreleased
+     * @since 2.25.0
      *
      * @var ConnectClient
      */
@@ -58,7 +58,7 @@ class AccountManagerSettingField
     /**
      * AccountManagerSettingField constructor.
      *
-     * @unreleased Use 'ConnectClient' class
+     * @since 2.25.0 Use 'ConnectClient' class
      * @since      2.13.0
      *
      * @param AccountDetail $accountDetailRepository
@@ -596,7 +596,7 @@ class AccountManagerSettingField
     }
 
     /**
-     * @unreleased Use 'ConnectClient' class
+     * @since 2.25.0 Use 'ConnectClient' class
      * @since      2.13.0
      * @return string
      */

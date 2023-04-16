@@ -3,9 +3,9 @@ Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman
 Donate link: https://go.givewp.com/home
 Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
-Tested up to: 6.1
+Tested up to: 6.2
 Requires PHP: 7.0
-Stable tag: 2.24.2
+Stable tag: 2.26.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -128,6 +128,13 @@ Are you a developer? GiveWP is built with best practices and easy to extend and 
 * [Site Redesigns Without Donation Data Loss](https://go.givewp.com/datalossdoc)
 * [Handling Custom CSS in WordPress](https://go.givewp.com/cssdoc)
 
+=== 🚀 Join the Journey to Create the Next Generation of WordPress Donation Forms === 
+Team Give has been working hard for the past several years on updating how donation forms are created. The user experience is going to change for the better, but we want your help shaping what that means! 
+
+Help us test our new visual form builder with the GiveWP 3.0 Feature plugin. The Feaure Plugin (or GiveWP 3.0 Beta) is meant to be used alongside GiveWP core on a staging or local environment. We are looking specifically at the form builder with this beta test and would love for all GiveWP users to give it a try. All feedback is welcome! [Download the beta plugin directly on WordPress](https://go.givewp.com/corewppg) or through your admin dashboard plugins area. 
+
+Learn more about how we're creating the next generation of WordPress donation forms, [directly on our website](https://go.givewp.com/corenextgen).
+
 === 💚 About the GiveWP Team ===
 
 GiveWP is part of StellarWP, a Liquid Web Family Brand. Our donation plugin is backed by a growing team of WordPress developers, support engineers, customer success managers, and marketing professionals who’ve worked with WordPress and nonprofits since 2009. This means GiveWP is made with best practices in mind; extremely extensible and customizable, stable, and reliable. We’ll be here in years to come for you and your nonprofit organization.
@@ -144,11 +151,11 @@ Stay in touch with us for important plugin news and updates:
 
 === 🐱‍💻 Contribute to GiveWP ===
 
-This plugin is proudly open source (GPL license) and we’re always looking for more contributors. Whether you know another language, can code like no one’s business, or just have an idea, we would love your help and input.
+This plugin is proudly open source (GPL license) and we’re always looking for more contributors. Whether you know another language, love to code, or just have an idea, we would love your help and input.
 
 Here’s a few ways you can contribute to GiveWP:
 
-* Star/fork/watch the [GiveWP GitHub repository](https://go.givewp.com/github "Visit the GiveWP GitHub Repo") to learn more about what issues we're tackling and the project is developing. If you've never worked with Github before, learn about [pull requests here](https://help.github.com/articles/about-pull-requests/) and submit one for GiveWP, we'd love to give you our feedback.
+* Star/fork/watch the [GiveWP GitHub repository](https://go.givewp.com/github) to learn more about what issues we're tackling and the project is developing. If you've never worked with Github before, learn about [pull requests here](https://help.github.com/articles/about-pull-requests/) and submit one for GiveWP, we'd love to give you our feedback.
 
 * Translate GiveWP into your native language. The best place to do that is here on wordpress.org. Go to [https://translate.wordpress.org/](https://translate.wordpress.org/projects/wp-plugins/give), then search for your language, click the "Plugins" tab, then search for "GiveWP". When you've submitted at least 95% of GiveWP's strings, the language moderators will review and approve your translations and then they will be available to all WordPress users for your native language. If you are interested in translating any of our Premium Add-ons, [contact us](https://go.givewp.com/contact), we'd love to chat with you about that.
 
@@ -251,6 +258,47 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.26.0: April 6th, 2023 =
+* Enhancement: Minor updates for improved WordPress 6.2 compatibility
+* Enhancement: A number of under the hood improvements in preparation for the upcoming Visual Donation Form Builder feature plugin release
+* Enhancement: Improvements to recurring donations in the Gateway API
+* Enhancement: Implemented our new GiveWP design system to improve designs across our website and prdocuts
+* Fix: Conditionals fields based on the amount field work again
+* Fix: Files with a text mime type now work when uploading files for import
+* Fix: If an error occurs in the Donor Dashboard when canceling a subscription, that subscription is no longer marked as canceled
+
+= 2.25.3: March 22nd, 2023 =
+* Security: Protect against CSRF during donation import
+
+= 2.25.2: March 8th, 2023 =
+* Security: Protect against CSRF during give cache clear settings
+* Security: Protect against CSV injection in donation export settings
+* Security: Protect against XSS and CSRF in donation import settings
+* Security: Protect against XSS in give_form_grid shortcode
+* Security: Protect against CSRF and Arbitrary Content Deletion in admin list tables
+* Security: Protect against SSRF in add-on changelog requests
+
+= 2.25.1: March 1st, 2023 =
+* Enhancement: Compatibility in the Donor Dashboard with the new Square recurring support
+* Enhancement: Exported donations are ordered by ID by default
+* Fix: Sites without the ctype PHP extension no longer run into problems
+* Fix: Prevent a handful of PHP 8.1 deprecation notices
+* Fix: Fixed a PHP 8.0 error in receipt templates
+
+= 2.25.0: February 21st, 2023 =
+* Feature: Donors now explicitly state whether they are donating as a company, useful for things like Gift Aid
+* Enhancement: Improvements to the Gateway API in preparation for GiveWP 3.0
+* Enhancement: Optimizations to how we interact with the GiveWP Gateway server
+* Enhancement: New method for storing donation notes using the Donation model
+* Fix: Improved how PayPal Donation tokens are handled to prevent the need to reconnect one's PayPal account
+* Fix: Classic forms using Authorize.Net as the default gateway now work as expected
+* Fix: Square credit card fields now work properly on safari
+* Fix: Resolved escaping issue preventing modal from displaying on some sites
+* Fix: The "Download Receipt" link in the PDF is more reliable after making donation updates
+* Fix: Prevented a filter from running twice on the donation summary
+* Fix: Styling looks better for modals in the Classic template
+* Fix: Corrected some styling in the Multi-Step and Classic template receipts that affected the Tributes add-on
+
 = 2.24.2: February 1st, 2023 =
 * Enhancement: Reorganized the GiveWP admin menu items to a cleaner, more intuitive order.
 * Fix: Servers without the PHP Intl extension broke the admin list tables. This is a fixed and a new Currency setting was introduced to [control automatic formatting](https://docs.givewp.com/currency-format).

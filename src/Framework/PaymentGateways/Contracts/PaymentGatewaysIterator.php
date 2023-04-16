@@ -12,6 +12,7 @@ class PaymentGatewaysIterator implements \Iterator
      * @since 2.18.0
      * @return string
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return current($this->gateways);
@@ -20,6 +21,7 @@ class PaymentGatewaysIterator implements \Iterator
     /**
      * @since 2.18.0
      */
+    #[\ReturnTypeWillChange]
     public function next()
     {
         next($this->gateways);
@@ -29,6 +31,7 @@ class PaymentGatewaysIterator implements \Iterator
      * @since 2.18.0
      * @return string
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return key($this->gateways);
@@ -38,6 +41,7 @@ class PaymentGatewaysIterator implements \Iterator
      * @since 2.18.0
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return key($this->gateways) !== null;
@@ -46,6 +50,7 @@ class PaymentGatewaysIterator implements \Iterator
     /**
      * @since 2.18.0
      */
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         reset($this->gateways);

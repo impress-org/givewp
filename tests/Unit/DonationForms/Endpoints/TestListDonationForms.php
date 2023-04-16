@@ -30,7 +30,7 @@ class TestListDonationForms extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      *
      * @return void
      * @throws Exception
@@ -51,7 +51,7 @@ class TestListDonationForms extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      *
      * @return void
      * @throws Exception
@@ -77,7 +77,7 @@ class TestListDonationForms extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      *
      * @return WP_REST_Request
      */
@@ -90,7 +90,7 @@ class TestListDonationForms extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      *
      * @param array  $donationForms
      * @param string $sortDirection
