@@ -118,6 +118,7 @@ class DonateFormRouteDataTest extends TestCase
                       "name": "custom-block-editor/donation-amount-levels",
                       "isValid": true,
                       "attributes": {
+                        "label": "Donation Amount",
                         "levels": [
                           "10",
                           "25",
