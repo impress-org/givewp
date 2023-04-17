@@ -412,8 +412,6 @@ class Give_Donor_Wall {
 				}
 			}
 
-			$comments = $this->get_donor_comments( $temp );
-
 			if ( ! empty( $temp ) ) {
 				foreach ( $temp as $donation_id => $donation_data ) {
 					$temp[ $donation_id ]['donation_id'] = $donation_id;
@@ -425,7 +423,10 @@ class Give_Donor_Wall {
 						]
 					);
 
-					$temp[ $donation_id ]['donor_comment'] = ! empty( $comments[ $donation_id ] ) ? $comments[ $donation_id ] : '';
+					$temp[$donation_id]['donor_comment'] = give_get_payment_meta(
+                        $donation_id,
+                        '_give_donation_comment'
+                    );
 				}
 			}
 
