@@ -102,7 +102,7 @@ class CurrencyFacade
         }
 
         $numberFormatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
-        $moneyFormatter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies());
+        $moneyFormatter = new IntlMoneyFormatter($numberFormatter, $this->getCurrenciesList());
 
         return $moneyFormatter->format($amount);
     }
