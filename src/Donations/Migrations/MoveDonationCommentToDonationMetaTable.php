@@ -65,10 +65,11 @@ class MoveDonationCommentToDonationMetaTable extends Migration
                 "
                 DELETE FROM $commentMetaTable
                 WHERE give_comment_id IN(
-                        SELECT
-                            comment_ID FROM $commentTable
-                        WHERE
-                            comment_type = 'donor_donation'
+                    SELECT
+                        comment_ID FROM $commentTable
+                    WHERE
+                        comment_type = 'donor_donation'
+                )
                 "
             );
 
