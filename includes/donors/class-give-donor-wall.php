@@ -368,14 +368,15 @@ class Give_Donor_Wall {
 	}
 
 	/**
-	 * Get donation data.
-	 *
-	 * @since 2.3.0
-	 *
-	 * @param array $atts
-	 *
-	 * @return array
-	 */
+     * Get donation data.
+     *
+     * @unreleased change to read comment from donation meta table
+     * @since 2.3.0
+     *
+     * @param  array  $atts
+     *
+     * @return array
+     */
 	private function get_donation_data( $atts = [] ) {
 		global $wpdb;
 
