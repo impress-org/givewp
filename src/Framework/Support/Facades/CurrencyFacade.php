@@ -7,6 +7,7 @@ use Money\Converter;
 use Money\Currencies;
 use Money\Currencies\AggregateCurrencies;
 use Money\Currencies\BitcoinCurrencies;
+use Money\Currencies\CurrencyList;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use Money\Exchange\FixedExchange;
@@ -15,6 +16,7 @@ use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
 use Money\Parser\DecimalMoneyParser;
 use NumberFormatter;
+
 
 class CurrencyFacade
 {
@@ -124,9 +126,13 @@ class CurrencyFacade
      */
     private function getCurrenciesList(): Currencies
     {
+
         return new AggregateCurrencies([
             new ISOCurrencies(),
             new BitcoinCurrencies(),
+            new CurrencyList([
+                'BTC' => 8,
+            ])
         ]);
     }
 }
