@@ -23,6 +23,8 @@ class CurrencyFacade
     /**
      * Immutably converts the given amount into the system currency.
      *
+     * @unreleased updated to use aggregated currency list.
+     *
      * @since 2.20.0
      *
      * @param Money $amount
@@ -50,6 +52,8 @@ class CurrencyFacade
     /**
      * Creates a new Money instance from a decimal amount
      *
+     * @unreleased updated to use aggregated currency list.
+     *
      * @since 2.20.0
      *
      * @param string|float|int $amount
@@ -72,6 +76,8 @@ class CurrencyFacade
 
     /**
      * Formats the amount to a currency format, including currency symbols, in the given locale.
+     *
+     * @unreleased updated to use aggregated currency list.
      *
      * @since 2.24.2 fallback on give formatting system if intl extension is not available
      * @since 2.20.0
@@ -120,13 +126,12 @@ class CurrencyFacade
     }
 
     /**
-     * Retrieves a Currency list for both ISO & Bitcoin formats.
+     * Retrieves a list for all supported currencies.
      *
      * @unreleased
      */
     private function getCurrenciesList(): Currencies
     {
-
         return new AggregateCurrencies([
             new ISOCurrencies(),
             new BitcoinCurrencies(),
