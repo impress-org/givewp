@@ -141,6 +141,11 @@ class TestGenerateConfirmationPageReceipt extends TestCase
             ),
         ]);
 
+        $subscriptionAmountLabel = sprintf(
+            $subscription->period->label($subscription->frequency),
+            $subscription->frequency
+        );
+
         $subscriptionDetails = new ReceiptDetailCollection([
             new ReceiptDetail(
                 __('Subscription', 'give'),
@@ -149,7 +154,7 @@ class TestGenerateConfirmationPageReceipt extends TestCase
                         sprintf(
                             '%s / %s',
                             $subscription->amount->formatToDecimal(),
-                            $subscription->period->getValue()
+                            $subscriptionAmountLabel
                         )
                 ]
             ),
