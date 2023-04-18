@@ -332,8 +332,7 @@ class onBoardingRedirectHandler
 
         $statusErrors = $this->isAdminSuccessfullyOnBoarded(
             $merchantDetails->merchantIdInPayPal,
-            $merchantDetails->accessToken,
-            $merchantDetails->supportsCustomPayments
+            $merchantDetails->accessToken
         );
         if ($statusErrors !== true) {
             $merchantDetails->accountIsReady = false;
@@ -349,6 +348,7 @@ class onBoardingRedirectHandler
     /**
      * Validate seller on Boarding status
      *
+     * @unreleased Validate only primary capabilities during PayPal donations on-boarding.
      * @since 2.9.0
      *
      * @param string $merchantId
@@ -357,7 +357,7 @@ class onBoardingRedirectHandler
      *
      * @return true|string[]
      */
-    private function isAdminSuccessfullyOnBoarded($merchantId, $accessToken, $usesCustomPayments)
+    private function isAdminSuccessfullyOnBoarded($merchantId, $accessToken)
     {
         $onBoardedData = (array)$this->payPalAuth->getSellerOnBoardingDetailsFromPayPal($merchantId, $accessToken);
         $onBoardedData = array_filter($onBoardedData); // Remove empty values.
@@ -370,7 +370,7 @@ class onBoardingRedirectHandler
         if (! is_ssl()) {
             $errorMessages[] = esc_html__(
                 'A valid SSL certificate is required to accept donations and set up your PayPal account. Once a
-					certificate is installed and the site is using https, please disconnect and reconnect your account.',
+                certificate is installed and the site is using https, please disconnect and reconnect your account.',
                 'give'
             );
         }
@@ -390,41 +390,17 @@ class onBoardingRedirectHandler
         }
 
         if (! $onBoardedData['primary_email_confirmed']) {
-            $errorMessage[] = esc_html__('Confirm your primary email address', 'give');
-        }
-
-        if (! $usesCustomPayments) {
-            return count($errorMessages) > 1 ? $errorMessages : true;
-        }
-
-        if (array_diff(['products', 'capabilities'], array_keys($onBoardedData))) {
-            $errorMessages[] = esc_html__(
-                'Your account was expected to be able to accept custom payments, but is not. Please make sure your
-				account country matches the country setting. If the problem persists, please contact PayPal.',
-                'give'
-            );
-
-            // Return here since the rest of the validations will definitely fail
-            return $errorMessages;
-        }
-
-        // Grab the PPCP_CUSTOM product from the status data
-        $customProduct = current(
-            array_filter(
-                $onBoardedData['products'],
-                function ($product) {
-                    return $product['name'] === 'PPCP_CUSTOM';
-                }
-            )
-        );
-
-        if (empty($customProduct) || $customProduct['vetting_status'] !== 'SUBSCRIBED') {
-            $errorMessages[] = esc_html__('Reach out to PayPal to enable PPCP_CUSTOM for your account', 'give');
+            $errorMessages[] = esc_html__('Confirm your primary email address', 'give');
         }
 
         // Loop through the capabilities and see if any are not active
+        $requiredCapabilities = ['CUSTOM_CARD_PROCESSING'];
         $invalidCapabilities = [];
         foreach ($onBoardedData['capabilities'] as $capability) {
+            if( ! in_array($capability['name'], $requiredCapabilities, true) ) {
+                continue;
+            }
+
             if ($capability['status'] !== 'ACTIVE') {
                 $invalidCapabilities[] = $capability['name'];
             }
