@@ -10,7 +10,6 @@ use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
-use Give\PaymentGateways\Actions\GetGatewayDataFromRequest;
 
 /**
  * @unreleased
@@ -35,20 +34,9 @@ class GatewayPaymentController
     /**
      * @unreleased
      */
-    public function create(Donation $donation)
+    public function create(Donation $donation, array $gatewayData = [])
     {
         try {
-            /**
-             * Filter hook to provide gateway data before transaction is processed by the gateway.
-             *
-             * @since 2.21.2
-             */
-            $gatewayData = apply_filters(
-                "givewp_create_payment_gateway_data_{$donation->gatewayId}",
-                (new GetGatewayDataFromRequest)(),
-                $donation
-            );
-
             $command = $this->gateway->createPayment($donation, $gatewayData);
             $this->handleGatewayCommand($command, $donation);
         } catch (\Exception $exception) {

@@ -10,7 +10,6 @@ use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
-use Give\PaymentGateways\Actions\GetGatewayDataFromRequest;
 use Give\Subscriptions\Models\Subscription;
 
 /**
@@ -36,21 +35,9 @@ class GatewaySubscriptionController
     /**
      * @unreleased
      */
-    public function create(Donation $donation, Subscription $subscription)
+    public function create(Donation $donation, Subscription $subscription, array $gatewayData = [])
     {
         try {
-            /**
-             * Filter hook to provide gateway data before initial transaction for subscription is processed by the gateway.
-             *
-             * @since 2.21.2
-             */
-            $gatewayData = apply_filters(
-                "givewp_create_subscription_gateway_data_{$donation->gatewayId}",
-                (new GetGatewayDataFromRequest)(),
-                $donation,
-                $subscription
-            );
-
             $command = $this->gateway->createSubscription($donation, $subscription, $gatewayData);
             $this->handleGatewayCommand($command, $donation, $subscription);
         } catch (\Exception $exception) {

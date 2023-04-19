@@ -9,6 +9,7 @@ use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Controllers\GatewayPaymentController;
 use Give\Framework\PaymentGateways\Controllers\GatewaySubscriptionController;
 use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\PaymentGateways\Actions\GetGatewayDataFromRequest;
 use Give\PaymentGateways\DataTransferObjects\FormData;
 use Give\PaymentGateways\DataTransferObjects\SubscriptionData;
 use Give\Subscriptions\Models\Subscription;
@@ -89,17 +90,40 @@ class LegacyPaymentGatewayAdapter
             give()->subscriptions->updateLegacyParentPaymentId($subscription->id, $donation->id);
 
             $this->setSession($donation->id);
-            
+
+            /**
+             * Filter hook to provide gateway data before initial transaction for subscription is processed by the gateway.
+             *
+             * @since 2.21.2
+             */
+            $gatewayData = apply_filters(
+                "givewp_create_subscription_gateway_data_{$donation->gatewayId}",
+                (new GetGatewayDataFromRequest)(),
+                $donation,
+                $subscription
+            );
+
             $controller = new GatewaySubscriptionController($registeredGateway);
-            $controller->create($donation, $subscription);
+            $controller->create($donation, $subscription, $gatewayData);
         } else {
             $donation->type = DonationType::SINGLE();
             $donation->save();
 
             $this->setSession($donation->id);
 
+            /**
+             * Filter hook to provide gateway data before transaction is processed by the gateway.
+             *
+             * @since 2.21.2
+             */
+            $gatewayData = apply_filters(
+                "givewp_create_payment_gateway_data_{$donation->gatewayId}",
+                (new GetGatewayDataFromRequest)(),
+                $donation
+            );
+
             $controller = new GatewayPaymentController($registeredGateway);
-            $controller->create($donation);
+            $controller->create($donation, $gatewayData);
         }
     }
 
