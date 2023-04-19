@@ -46,7 +46,7 @@ class LegacyPaymentGatewayRegisterAdapter
                 static function (int $donationId) use ($registeredGateway, $legacyPaymentGatewayAdapter) {
                     $legacyPaymentGatewayAdapter->addOptRefundCheckbox($donationId, $registeredGateway);
                 },
-                11
+                PHP_INT_MAX // Ensure this will be the last callback registered to this hook.
             );
             add_action(
                 "give_update_payment_status",
