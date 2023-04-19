@@ -97,7 +97,7 @@ class LegacyPaymentGatewayAdapter
              * @since 2.21.2
              */
             $gatewayData = apply_filters(
-                "givewp_create_subscription_gateway_data_{$donation->gatewayId}",
+                "givewp_create_subscription_gateway_data_{$registeredGateway::id()}",
                 (new GetGatewayDataFromRequest)(),
                 $donation,
                 $subscription
@@ -117,7 +117,7 @@ class LegacyPaymentGatewayAdapter
              * @since 2.21.2
              */
             $gatewayData = apply_filters(
-                "givewp_create_payment_gateway_data_{$donation->gatewayId}",
+                "givewp_create_payment_gateway_data_{$registeredGateway::id()}",
                 (new GetGatewayDataFromRequest)(),
                 $donation
             );
