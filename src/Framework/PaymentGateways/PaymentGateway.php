@@ -12,15 +12,11 @@ use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionAmountEdit
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionDashboardLinkable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPaymentMethodEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
-use Give\Framework\PaymentGateways\Controllers\GatewayPaymentController;
-use Give\Framework\PaymentGateways\Controllers\GatewaySubscriptionController;
 use Give\Framework\PaymentGateways\Controllers\PaymentGatewayController;
 use Give\Framework\PaymentGateways\Routes\RouteSignature;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Framework\PaymentGateways\Traits\HasRouteMethods;
 use Give\Framework\Support\ValueObjects\Money;
-use Give\Helpers\Call;
-use Give\PaymentGateways\Actions\GetGatewayDataFromRequest;
 use Give\Subscriptions\Models\Subscription;
 use ReflectionException;
 use ReflectionMethod;
@@ -68,53 +64,6 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     public function supportsSubscriptions(): bool
     {
         return isset($this->subscriptionModule) || $this->isFunctionImplementedInGatewayClass('createSubscription');
-    }
-
-    /**
-     *
-     * @deprecated use GatewaySubscriptionController instead
-     * @since 2.21.2 Add new filter hook to provide gateway data before donation is processed by the gateway.
-     * @since 2.21.0 Handle PHP exception.
-     * @since 2.19.0
-     */
-    public function handleCreatePayment(Donation $donation)
-    {
-        /**
-         * Filter hook to provide gateway data before transaction is processed by the gateway.
-         *
-         * @since 2.21.2
-         */
-        $gatewayData = apply_filters(
-            "givewp_create_payment_gateway_data_{$donation->gatewayId}",
-            (new GetGatewayDataFromRequest)(),
-            $donation
-        );
-
-        (new GatewayPaymentController($this))->create($donation, $gatewayData);
-    }
-
-    /**
-     * @deprecated use GatewayPaymentController instead
-     * @since 2.21.2 Add filter hook to provide gateway data before subscription is processed by the gateway.
-     * @since 2.21.0 Handle PHP exception.
-     * @since 2.19.0
-     *
-     */
-    public function handleCreateSubscription(Donation $donation, Subscription $subscription)
-    {
-        /**
-         * Filter hook to provide gateway data before initial transaction for subscription is processed by the gateway.
-         *
-         * @since 2.21.2
-         */
-        $gatewayData = apply_filters(
-            "givewp_create_subscription_gateway_data_{$donation->gatewayId}",
-            (new GetGatewayDataFromRequest)(),
-            $donation,
-            $subscription
-        );
-
-        (new GatewaySubscriptionController($this))->create($donation, $subscription, $gatewayData);
     }
 
     /**
@@ -260,7 +209,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      */
     public function generateGatewayRouteUrl(string $gatewayMethod, array $args = []): string
     {
-        return Call::invoke(GenerateGatewayRouteUrl::class, static::id(), $gatewayMethod, $args);
+        return (new GenerateGatewayRouteUrl())(static::id(), $gatewayMethod, $args);
     }
 
     /**
@@ -274,8 +223,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     {
         $signature = new RouteSignature(static::id(), $gatewayMethod, $donationId);
 
-        return Call::invoke(
-            GenerateGatewayRouteUrl::class,
+        return (new GenerateGatewayRouteUrl())(
             static::id(),
             $gatewayMethod,
             array_merge($args, [
