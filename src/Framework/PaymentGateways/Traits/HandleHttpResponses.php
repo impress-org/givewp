@@ -4,6 +4,7 @@ namespace Give\Framework\PaymentGateways\Traits;
 
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Http\Response\Types\RedirectResponse;
+use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 
 trait HandleHttpResponses
 {
@@ -24,5 +25,29 @@ trait HandleHttpResponses
         if ($type instanceof JsonResponse) {
             wp_send_json(['data' => $type->getData()]);
         }
+    }
+
+    /**
+     * Handle response on basis of request mode when exception occurs:
+     * 1. Redirect to donation form if donation form submit.
+     * 2. Return json response if processing payment on ajax.
+     *
+     * @since 2.21.0 Handle PHP exception.
+     * @since 2.19.0
+     */
+    public function handleExceptionResponse(\Exception $exception, string $message)
+    {
+        if ($exception instanceof PaymentGatewayException) {
+            $message = $exception->getMessage();
+        }
+
+        if (wp_doing_ajax()) {
+            $response = new JsonResponse($message);
+            
+            $this->handleResponse($response);
+        }
+
+        give_set_error('PaymentGatewayException', $message);
+        give_send_back_to_checkout();
     }
 }

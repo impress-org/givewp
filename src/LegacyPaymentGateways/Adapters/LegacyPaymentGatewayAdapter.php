@@ -6,6 +6,9 @@ use Exception;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Donors\Models\Donor;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
+use Give\Framework\PaymentGateways\Controllers\GatewayPaymentController;
+use Give\Framework\PaymentGateways\Controllers\GatewaySubscriptionController;
+use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\PaymentGateways\DataTransferObjects\FormData;
 use Give\PaymentGateways\DataTransferObjects\SubscriptionData;
 use Give\Subscriptions\Models\Subscription;
@@ -45,7 +48,7 @@ class LegacyPaymentGatewayAdapter
      *
      * @throws Exception
      */
-    public function handleBeforeGateway(array $legacyDonationData, PaymentGatewayInterface $registeredGateway)
+    public function handleBeforeGateway(array $legacyDonationData, PaymentGateway $registeredGateway)
     {
         $formData = FormData::fromRequest($legacyDonationData);
 
@@ -86,13 +89,17 @@ class LegacyPaymentGatewayAdapter
             give()->subscriptions->updateLegacyParentPaymentId($subscription->id, $donation->id);
 
             $this->setSession($donation->id);
-            $registeredGateway->handleCreateSubscription($donation, $subscription);
+            
+            $controller = new GatewaySubscriptionController($registeredGateway);
+            $controller->create($donation, $subscription);
         } else {
             $donation->type = DonationType::SINGLE();
             $donation->save();
 
             $this->setSession($donation->id);
-            $registeredGateway->handleCreatePayment($donation);
+
+            $controller = new GatewayPaymentController($registeredGateway);
+            $controller->create($donation);
         }
     }
 
