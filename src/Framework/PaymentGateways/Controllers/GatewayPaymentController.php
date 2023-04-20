@@ -68,6 +68,8 @@ class GatewayPaymentController
      */
     protected function handleGatewayCommand(GatewayCommand $command, Donation $donation)
     {
-        (new HandleGatewayPaymentCommand())($command, $donation);
+        $response = (new HandleGatewayPaymentCommand())($command, $donation);
+        
+        $this->handleResponse($response);
     }
 }

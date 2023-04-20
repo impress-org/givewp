@@ -5,6 +5,7 @@ namespace Give\Framework\PaymentGateways\Actions;
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
+use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentCompleteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentProcessingHandler;
@@ -15,7 +16,6 @@ use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
-use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 
 
 /**
@@ -23,15 +23,14 @@ use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
  */
 class HandleGatewayPaymentCommand
 {
-    use HandleHttpResponses;
-
     /**
      * Handle gateway command
      *
+     * @unreleased return responses
      * @since 2.18.0
      *
-     * @throws TypeNotSupported
-     * @throws Exception
+     * @return JsonResponse|RedirectResponse
+     * @throws TypeNotSupported|Exception
      */
     public function __invoke(GatewayCommand $command, Donation $donation)
     {
@@ -40,9 +39,7 @@ class HandleGatewayPaymentCommand
 
             $handler->handle($donation);
 
-            $response = new RedirectResponse(give_get_success_page_uri());
-
-            $this->handleResponse($response);
+            return new RedirectResponse(give_get_success_page_uri());
         }
 
         if ($command instanceof PaymentProcessing) {
@@ -50,21 +47,15 @@ class HandleGatewayPaymentCommand
 
             $handler->handle($donation);
 
-            $response = new RedirectResponse(give_get_success_page_uri());
-
-            $this->handleResponse($response);
+            return new RedirectResponse(give_get_success_page_uri());
         }
 
         if ($command instanceof RedirectOffsite) {
-            $response = (new RedirectOffsiteHandler())($command);
-
-            $this->handleResponse($response);
+            return (new RedirectOffsiteHandler())($command);
         }
 
         if ($command instanceof RespondToBrowser) {
-            $response = (new RespondToBrowserHandler())($command);
-
-            $this->handleResponse($response);
+            return (new RespondToBrowserHandler())($command);
         }
 
         throw new TypeNotSupported(

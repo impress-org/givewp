@@ -5,6 +5,7 @@ namespace Give\Framework\PaymentGateways\Actions;
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
+use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\CommandHandlers\RedirectOffsiteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\RespondToBrowserHandler;
@@ -15,7 +16,6 @@ use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
 use Give\Framework\PaymentGateways\Commands\SubscriptionProcessing;
-use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Subscriptions\Models\Subscription;
 
 
@@ -24,15 +24,16 @@ use Give\Subscriptions\Models\Subscription;
  */
 class HandleGatewaySubscriptionCommand
 {
-    use HandleHttpResponses;
-
     /**
+     *
      * Handle gateway subscription command
      *
+     * @unreleased return responses
      * @since 2.26.0 add RespondToBrowser command
      * @since 2.21.0 Handle RedirectOffsite response.
      * @since 2.18.0
      *
+     * @return JsonResponse|RedirectResponse
      * @throws TypeNotSupported
      * @throws Exception
      */
@@ -44,29 +45,21 @@ class HandleGatewaySubscriptionCommand
         if ($command instanceof SubscriptionComplete) {
             (new SubscriptionCompleteHandler())($command, $subscription, $donation);
 
-            $response = new RedirectResponse(give_get_success_page_uri());
-
-            $this->handleResponse($response);
+            return new RedirectResponse(give_get_success_page_uri());
         }
 
         if ($command instanceof SubscriptionProcessing) {
             (new SubscriptionProcessingHandler($command, $subscription, $donation))();
 
-            $response = new RedirectResponse(give_get_success_page_uri());
-
-            $this->handleResponse($response);
+            return new RedirectResponse(give_get_success_page_uri());
         }
 
         if ($command instanceof RedirectOffsite) {
-            $response = (new RedirectOffsiteHandler())($command);
-
-            $this->handleResponse($response);
+            return (new RedirectOffsiteHandler())($command);
         }
 
         if ($command instanceof RespondToBrowser) {
-            $response = (new RespondToBrowserHandler())($command);
-
-            $this->handleResponse($response);
+            return (new RespondToBrowserHandler())($command);
         }
 
         throw new TypeNotSupported(

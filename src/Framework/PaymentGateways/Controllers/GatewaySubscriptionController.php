@@ -75,6 +75,8 @@ class GatewaySubscriptionController
         Donation $donation,
         Subscription $subscription
     ) {
-        (new HandleGatewaySubscriptionCommand())($command, $donation, $subscription);
+        $response = (new HandleGatewaySubscriptionCommand())($command, $donation, $subscription);
+
+        $this->handleResponse($response);
     }
 }
