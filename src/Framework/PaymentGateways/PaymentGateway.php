@@ -141,7 +141,10 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     {
         try {
             $command = $this->refundDonation($donation);
-            $this->handleGatewayPaymentCommand($command, $donation);
+
+            if ($command instanceof GatewayCommand) {
+                $this->handleGatewayPaymentCommand($command, $donation);
+            }
         } catch (\Exception $exception) {
             PaymentGatewayLog::error(
                 $exception->getMessage(),
