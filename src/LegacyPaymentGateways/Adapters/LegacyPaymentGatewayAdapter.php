@@ -201,7 +201,7 @@ class LegacyPaymentGatewayAdapter
             </div>
             <script>
                 if (!!document.getElementById('give-payment-status') &&
-                    1 === document.querySelectorAll('div.give-admin-box > div.give-hidden input[type="checkbox"]').length
+                    1 === document.querySelectorAll('div.give-admin-box > div.give-hidden[id*="opt-refund"] input[type="checkbox"]').length
                 ) {
                     document.getElementById('give-payment-status').addEventListener('change', function (event) {
                         const refundCheckbox = document.getElementById('give-gateway-opt-refund');
