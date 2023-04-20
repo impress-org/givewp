@@ -17,6 +17,7 @@ use Give\Framework\PaymentGateways\Routes\RouteSignature;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Framework\PaymentGateways\Traits\HasRouteMethods;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\Log\Log;
 use Give\Subscriptions\Models\Subscription;
 use ReflectionException;
 use ReflectionMethod;
@@ -273,6 +274,16 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
         try {
             $reflector = new ReflectionMethod($this, $methodName);
         } catch (ReflectionException $e) {
+            Log::error(
+                sprintf(
+                    'ReflectionException thrown when trying to check if %s::%s is implemented in the gateway class.',
+                    static::id(),
+                    $methodName
+                ),
+                [
+                    'exception' => $e,
+                ]
+            );
             return false;
         }
 
