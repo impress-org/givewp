@@ -2,6 +2,7 @@
 
 namespace Give\Tests\Unit\PaymentGateways\Actions;
 
+use Exception;
 use Give\Donations\Models\Donation;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 use Give\Framework\Http\Response\Types\JsonResponse;
@@ -19,7 +20,8 @@ class HandleGatewayPaymentCommandTest extends TestCase {
     use RefreshDatabase;
 
     /**
-     * @throws TypeNotSupported
+     * @unreleased
+     * @throws TypeNotSupported|Exception
      */
     public function testShouldHandlePaymentCompleteCommand()
     {
@@ -34,7 +36,8 @@ class HandleGatewayPaymentCommandTest extends TestCase {
     }
 
     /**
-     * @throws TypeNotSupported
+     * @unreleased
+     * @throws TypeNotSupported|Exception
      */
     public function testShouldHandlePaymentProcessingCommand()
     {
@@ -49,7 +52,8 @@ class HandleGatewayPaymentCommandTest extends TestCase {
     }
 
     /**
-     * @throws TypeNotSupported
+     * @unreleased
+     * @throws TypeNotSupported|Exception
      */
     public function testShouldHandleRedirectOffsiteCommand()
     {
@@ -64,7 +68,8 @@ class HandleGatewayPaymentCommandTest extends TestCase {
     }
 
     /**
-     * @throws TypeNotSupported
+     * @unreleased
+     * @throws TypeNotSupported|Exception
      */
     public function testShouldHandleRespondToBrowserCommand()
     {
@@ -79,12 +84,13 @@ class HandleGatewayPaymentCommandTest extends TestCase {
     }
 
     /**
-     * @throws TypeNotSupported
+     * @unreleased
+     * @throws TypeNotSupported|Exception
      */
     public function testShouldThrowTypeNotSupportedForInvalidCommand()
     {
         $this->expectException(TypeNotSupported::class);
-        
+
         $donation = Donation::factory()->create();
 
         $command = new class implements GatewayCommand {};

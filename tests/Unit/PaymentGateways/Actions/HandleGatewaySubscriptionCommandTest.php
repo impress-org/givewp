@@ -2,6 +2,7 @@
 
 namespace Give\Tests\Unit\PaymentGateways\Actions;
 
+use Exception;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Http\Response\Types\RedirectResponse;
@@ -19,7 +20,8 @@ class HandleGatewaySubscriptionCommandTest extends TestCase {
     use RefreshDatabase;
 
     /**
-     * @throws TypeNotSupported
+     * @unreleased
+     * @throws TypeNotSupported|Exception
      */
     public function testShouldHandleSubscriptionCompleteCommand()
     {
@@ -35,7 +37,8 @@ class HandleGatewaySubscriptionCommandTest extends TestCase {
     }
 
     /**
-     * @throws TypeNotSupported
+     * @unreleased
+     * @throws TypeNotSupported|Exception
      */
     public function testShouldHandleSubscriptionProcessingCommand()
     {
@@ -51,7 +54,8 @@ class HandleGatewaySubscriptionCommandTest extends TestCase {
     }
 
     /**
-     * @throws TypeNotSupported
+     * @unreleased
+     * @throws TypeNotSupported|Exception
      */
     public function testShouldHandleRedirectOffsiteCommand()
     {
@@ -67,7 +71,8 @@ class HandleGatewaySubscriptionCommandTest extends TestCase {
     }
 
     /**
-     * @throws TypeNotSupported
+     * @unreleased
+     * @throws TypeNotSupported|Exception
      */
     public function testShouldHandleRespondToBrowserCommand()
     {
@@ -83,7 +88,8 @@ class HandleGatewaySubscriptionCommandTest extends TestCase {
     }
 
     /**
-     * @throws TypeNotSupported
+     * @unreleased
+     * @throws TypeNotSupported|Exception
      */
     public function testShouldThrowTypeNotSupportedForInvalidCommand()
     {
