@@ -30,7 +30,8 @@ const Edit = ({attributes, setAttributes}) => {
     } = attributes;
 
     const {gateways} = getFormBuilderData();
-    const isRecurringSupported = gateways.some((gateway) => gateway.supportsSubscriptions);
+
+    const isRecurringSupported = gateways.some((gateway) => gateway.enabled && gateway.supportsSubscriptions);
     const isRecurring = isRecurringSupported && recurringEnabled;
     const isMultiLevel = priceOption === 'multi';
     const isFixedAmount = priceOption === 'set';
