@@ -76,8 +76,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     public function createSubscription(
         Donation $donation,
         Subscription $subscription,
-        $gatewayData = null
-    ): GatewayCommand {
+        $gatewayData
+    ) {
         return $this->subscriptionModule->createSubscription($donation, $subscription, $gatewayData);
     }
 
