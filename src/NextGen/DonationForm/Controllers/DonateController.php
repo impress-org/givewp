@@ -4,9 +4,12 @@ namespace Give\NextGen\DonationForm\Controllers;
 
 use Exception;
 use Give\Donors\Models\Donor;
+use Give\Framework\PaymentGateways\Controllers\GatewayPaymentController;
+use Give\Framework\PaymentGateways\Controllers\GatewaySubscriptionController;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateControllerData;
+use Give\PaymentGateways\Actions\GetGatewayDataFromRequest;
 
 /**
  * @since 0.1.0
@@ -16,6 +19,7 @@ class DonateController
     /**
      * First we create a donation and/or subscription, then move on to the gateway processing
      *
+     * @unreleased use gateway controllers
      * @since 0.3.0 add support for subscriptions
      * @since 0.1.0
      *
@@ -37,7 +41,14 @@ class DonateController
 
             do_action('givewp_donate_controller_donation_created', $formData, $donation);
 
-            $registeredGateway->handleCreatePayment($donation);
+            $gatewayData = apply_filters(
+                "givewp_create_payment_gateway_data_{$registeredGateway::id()}",
+                (new GetGatewayDataFromRequest)(),
+                $donation
+            );
+
+            $controller = new GatewayPaymentController($registeredGateway);
+            $controller->create($donation, $gatewayData);
         }
 
         if ($formData->donationType->isSubscription()) {
@@ -53,7 +64,15 @@ class DonateController
 
             do_action('givewp_donate_controller_subscription_created', $formData, $subscription, $donation);
 
-            $registeredGateway->handleCreateSubscription($donation, $subscription);
+            $gatewayData = apply_filters(
+                "givewp_create_subscription_gateway_data_{$registeredGateway::id()}",
+                (new GetGatewayDataFromRequest)(),
+                $donation,
+                $subscription
+            );
+
+            $controller = new GatewaySubscriptionController($registeredGateway);
+            $controller->create($donation, $subscription, $gatewayData);
         }
     }
 
