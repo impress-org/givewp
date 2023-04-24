@@ -315,9 +315,7 @@ class Give_Donor_Wall {
         /**
          * @link https://github.com/impress-org/givewp/issues/6374
          */
-        if( wp_doing_ajax() ) {
-            check_ajax_referer( 'givewp-donor-wall-more', 'nonce' );
-        }
+        check_ajax_referer( 'givewp-donor-wall-more', 'nonce' );
 
 		$donors_comment_html = $this->render_shortcode( $shortcode_atts );
 
