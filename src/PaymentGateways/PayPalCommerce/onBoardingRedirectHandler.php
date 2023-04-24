@@ -394,23 +394,20 @@ class onBoardingRedirectHandler
         }
 
         // Loop through the capabilities and see if any are not active
-        $requiredCapabilities = ['CUSTOM_CARD_PROCESSING'];
-        $invalidCapabilities = [];
-        foreach ($onBoardedData['capabilities'] as $capability) {
-            if( ! in_array($capability['name'], $requiredCapabilities, true) ) {
-                continue;
-            }
+        $sellerCapabilities = wp_list_pluck( $onBoardedData['capabilities'], 'name');
+        $requiredCapability = 'CUSTOM_CARD_PROCESSING';
+        $hasCustomCardProcessingCapability = array_search($requiredCapability, $sellerCapabilities, true);
 
-            if ($capability['status'] !== 'ACTIVE') {
-                $invalidCapabilities[] = $capability['name'];
-            }
-        }
+        if( false !== $hasCustomCardProcessingCapability ) {
+            /* @var \stdClass $customCardProcessingCapability */
+            $customCardProcessingCapability = $sellerCapabilities[$hasCustomCardProcessingCapability];
 
-        if (! empty($invalidCapabilities)) {
-            $errorMessages[] = esc_html__(
-                'Reach out to PayPal to resolve the following capabilities:',
-                'give'
-            ) . ' ' . implode(', ', $invalidCapabilities);
+            if( 'ACTIVE' !== $customCardProcessingCapability->status ){
+                $errorMessages[] = __(
+                    'Custom card processing is not active. This means you can accept payment only with <a href="https://developer.paypal.com/docs/checkout/" title="Link to PayPal Docs">PayPal smart buttons</a>. To accept payment with <a href="https://developer.paypal.com/docs/checkout/advanced/#enable-your-account" title="Link to PayPal Docs">PayPal hosted card field</a>, Please contact PayPal to resolve this issue.',
+                    'give'
+                );
+            }
         }
 
         // If there were errors then redirect the user with notices
