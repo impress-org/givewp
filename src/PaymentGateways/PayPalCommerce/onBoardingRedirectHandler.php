@@ -118,9 +118,9 @@ class onBoardingRedirectHandler
             $errors[] = [
                 'type' => 'url',
                 'message' => esc_html__(
-                    'There was a problem with PayPal return url and we could not find valid merchant ID. Paypal return URL is:',
-                    'give'
-                ) . "\n",
+                                 'There was a problem with PayPal return url and we could not find valid merchant ID. Paypal return URL is:',
+                                 'give'
+                             ) . "\n",
                 'value' => urlencode($_SERVER['QUERY_STRING']),
             ];
 
@@ -280,9 +280,9 @@ class onBoardingRedirectHandler
     private function isPayPalAccountDetailsSaved()
     {
         return isset($_GET['paypal-commerce-account-connected']) && Give_Admin_Settings::is_setting_page(
-            'gateways',
-            'paypal'
-        );
+                'gateways',
+                'paypal'
+            );
     }
 
     /**
@@ -396,21 +396,23 @@ class onBoardingRedirectHandler
 
         // This error message is only for the case when the user is using custom payments.
         // Host card fields are supported only for specific countries and PayPal seller account of PPCP type.
-        if( $usesCustomPayments ) {
-            $sellerCapabilities = wp_list_pluck( $onBoardedData['capabilities'], 'name');
+        if ($usesCustomPayments) {
+            $sellerCapabilities = wp_list_pluck($onBoardedData['capabilities'], 'name');
             $requiredCapability = 'CUSTOM_CARD_PROCESSING';
-            $hasCustomCardProcessingCapability = array_search($requiredCapability, $sellerCapabilities, true);
+            $customCardProcessingCapabilityIndex = array_search($requiredCapability, $sellerCapabilities, true);
+            $hasCustomCardProcessingCapability = false !== $customCardProcessingCapabilityIndex;
 
-            if( false !== $hasCustomCardProcessingCapability ) {
-                /* @var \stdClass $customCardProcessingCapability */
-                $customCardProcessingCapability = $sellerCapabilities[$hasCustomCardProcessingCapability];
+            // If the capability is found then check if it is active.
+            if (false !== $customCardProcessingCapabilityIndex) {
+                $customCardProcessingCapability = $onBoardedData['capabilities'][$customCardProcessingCapabilityIndex];
+                $hasCustomCardProcessingCapability = 'ACTIVE' === $customCardProcessingCapability['status'];
+            }
 
-                if( 'ACTIVE' !== $customCardProcessingCapability->status ){
-                    $errorMessages[] = __(
-                        'Custom card processing is not active. This means you can accept payment only with <a href="https://developer.paypal.com/docs/checkout/" title="Link to PayPal Docs">PayPal smart buttons</a>. To accept payment with <a href="https://developer.paypal.com/docs/checkout/advanced/#enable-your-account" title="Link to PayPal Docs">PayPal hosted card field</a>, Please contact PayPal to resolve this issue.',
-                        'give'
-                    );
-                }
+            if (! $hasCustomCardProcessingCapability) {
+                $errorMessages[] = __(
+                    'Custom card processing is not active. This means you can accept payment only with <a href="https://developer.paypal.com/docs/checkout/" title="Link to PayPal Docs">PayPal smart buttons</a>. To accept payment with <a href="https://developer.paypal.com/docs/checkout/advanced/#enable-your-account" title="Link to PayPal Docs">PayPal hosted card field</a>, Please contact PayPal to resolve this issue.',
+                    'give'
+                );
             }
         }
 
