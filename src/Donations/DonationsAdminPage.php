@@ -71,6 +71,7 @@ class DonationsAdminPage
             'adminUrl' => $this->adminUrl,
             'paymentMode' => give_is_test_mode(),
             'manualDonations' => Utils::isPluginActive('give-manual-donations/give-manual-donations.php'),
+            'pluginUrl' => GIVE_PLUGIN_URL,
         ];
 
         EnqueueScript::make('give-admin-donations', 'assets/dist/js/give-admin-donations.js')

@@ -16,7 +16,8 @@
         "moneyphp/money": "v3.3.1",
         "stellarwp/field-conditions": "^1.0",
         "stellarwp/validation": "^1.0",
-        "symfony/polyfill-ctype": "^1.19"
+        "symfony/polyfill-ctype": "^1.19",
+        "symfony/polyfill-mbstring": "^1.19"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
@@ -89,11 +90,13 @@
             "packages": [
                 "stellarwp/validation",
                 "stellarwp/field-conditions",
-                "symfony/polyfill-ctype"
+                "symfony/polyfill-ctype",
+                "symfony/polyfill-mbstring"
             ],
             "delete_vendor_packages": true,
             "override_autoload": {
-                "symfony/polyfill-ctype": {}
+                "symfony/polyfill-ctype": {},
+                "symfony/polyfill-mbstring": {}
             }
         }
     },

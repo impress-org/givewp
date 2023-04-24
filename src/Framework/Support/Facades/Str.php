@@ -562,6 +562,7 @@ class Str
      */
     public static function reverse($value)
     {
+        // phpcs:ignore PHPCompatibility.FunctionUse.NewFunctions.mb_str_splitFound
         return implode(array_reverse(mb_str_split($value)));
     }
 

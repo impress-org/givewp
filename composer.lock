@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "831f87f59410347157c32dc792363c04",
+    "content-hash": "bf5e20f97ea1841fc2a1d47e2dea90ab",
     "packages": [
         {
             "name": "composer/installers",
@@ -580,73 +580,22 @@
             "time": "2022-12-20T21:29:17+00:00"
         },
         {
-            "name": "stellarwp/field-conditions",
-            "version": "1.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/stellarwp/field-conditions.git",
-                "reference": "03f5aff2f4977359e672efe5426bbb4ef62101cd"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/stellarwp/field-conditions/zipball/03f5aff2f4977359e672efe5426bbb4ef62101cd",
-                "reference": "03f5aff2f4977359e672efe5426bbb4ef62101cd",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*"
-            },
-            "require-dev": {
-                "codeception/module-asserts": "^1.0.0",
-                "codeception/module-phpbrowser": "^1.0.0",
-                "lucatume/wp-browser": "^3.0.14",
-                "phpunit/phpunit": "~6.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "StellarWP\\FieldConditions\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "StellarWP",
-                    "email": "dev@stellarwp.com"
-                },
-                {
-                    "name": "Jason Adams",
-                    "email": "jason.adams@givewp.com"
-                }
-            ],
-            "description": "A set of serializable classes for handling conditional logic for fields in PHP",
-            "support": {
-                "issues": "https://github.com/stellarwp/field-conditions/issues",
-                "source": "https://github.com/stellarwp/field-conditions/tree/1.1.1"
-            },
-            "time": "2023-04-01T00:38:22+00:00"
-        },
-        {
             "name": "stellarwp/validation",
-            "version": "1.3.2",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stellarwp/validation.git",
-                "reference": "67b0a4dabee7cb66f73cffe3f5d8275204655454"
+                "reference": "5af8236a151004c1c538c377bbf6a37c64407402"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stellarwp/validation/zipball/67b0a4dabee7cb66f73cffe3f5d8275204655454",
-                "reference": "67b0a4dabee7cb66f73cffe3f5d8275204655454",
+                "url": "https://api.github.com/repos/stellarwp/validation/zipball/5af8236a151004c1c538c377bbf6a37c64407402",
+                "reference": "5af8236a151004c1c538c377bbf6a37c64407402",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "stellarwp/container-contract": "1.0.4",
-                "stellarwp/field-conditions": "^1.0"
+                "stellarwp/container-contract": "1.0.4"
             },
             "require-dev": {
                 "codeception/module-asserts": "^1.0.0",
@@ -678,9 +627,9 @@
             "description": "An end-to-end ready PHP validation library",
             "support": {
                 "issues": "https://github.com/stellarwp/validation/issues",
-                "source": "https://github.com/stellarwp/validation/tree/1.3.2"
+                "source": "https://github.com/stellarwp/validation/tree/1.0.0"
             },
-            "time": "2023-04-03T23:48:36+00:00"
+            "time": "2023-01-05T00:45:49+00:00"
         },
         {
             "name": "stripe/stripe-php",
@@ -919,12 +868,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Mbstring\\": ""
-                },
                 "files": [
                     "bootstrap.php"
-                ]
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Mbstring\\": ""
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -6601,5 +6550,5 @@
     "platform-overrides": {
         "php": "7.0.8"
     },
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.3.0"
 }
