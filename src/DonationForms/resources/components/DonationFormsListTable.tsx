@@ -158,7 +158,7 @@ const donationFormsBulkActions: Array<BulkActionsConfig> = [
 ];
 
 /**
- * Displays a blank slate for the Subscriptions table.
+ * Displays a blank slate for the Forms table.
  * @unreleased
  */
 const ListTableBlankSlate = (
