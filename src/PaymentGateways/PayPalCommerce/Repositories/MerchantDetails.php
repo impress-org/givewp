@@ -6,6 +6,7 @@ use Give\Helpers\ArrayDataSet;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Traits\HasMode;
+use Give\PaymentGateways\PayPalCommerce\RefreshToken;
 
 /**
  * Class MerchantDetails
@@ -136,6 +137,7 @@ class MerchantDetails
         }
 
         /** @var MerchantDetail $merchant */
+        give(RefreshToken::class)->refreshToken(); // Avoid error "Access Token not found in cache"
         $merchant = give(MerchantDetail::class);
 
         $response = wp_remote_retrieve_body(
