@@ -24,9 +24,6 @@ jobs:
                     extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
                     coverage: none
 
-            -   name: Install composer dev dependencies
-                run: composer install --no-progress --no-interaction
-
             -   name: Remove dev dependencies
                 uses: php-actions/composer@v5
                 with:
