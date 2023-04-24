@@ -165,7 +165,7 @@ const ListTableBlankSlate = (
     <BlankSlate
         imagePath={`${window.GiveDonationForms.pluginUrl}/assets/dist/images/list-table/blank-slate-donation-forms-icon.svg`}
         description={__('No donation forms', 'give')}
-        href={'https://givewp.com/documentation/core/give-forms/'}
+        href={'https://docs.givewp.com/forms'}
         linkText={__('GiveWP Forms', 'give')}
     />
 );
