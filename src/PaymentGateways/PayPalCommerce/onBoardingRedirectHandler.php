@@ -118,7 +118,7 @@ class onBoardingRedirectHandler
             $errors[] = [
                 'type' => 'url',
                 'message' => esc_html__(
-                                 'There was a problem with PayPal return url and we could not find valid merchant ID. Paypal return URL is:',
+                                 'The Merchant ID for PayPal was not found. Try connecting to PayPal again. The PayPal return URL is:',
                                  'give'
                              ) . "\n",
                 'value' => urlencode($_SERVER['QUERY_STRING']),
