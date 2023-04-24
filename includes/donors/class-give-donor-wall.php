@@ -312,9 +312,6 @@ class Give_Donor_Wall {
 		$shortcode_atts['paged']           = $shortcode_atts['paged'] + 1;
 		$shortcode_atts['only_donor_html'] = true;
 
-        /**
-         * @link https://github.com/impress-org/givewp/issues/6374
-         */
         check_ajax_referer( 'givewp-donor-wall-more', 'nonce' );
 
 		$donors_comment_html = $this->render_shortcode( $shortcode_atts );
