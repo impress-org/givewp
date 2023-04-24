@@ -410,7 +410,7 @@ class onBoardingRedirectHandler
 
             if (! $hasCustomCardProcessingCapability) {
                 $errorMessages[] = __(
-                    'Custom card processing is not active. This means you can accept payment only with <a href="https://developer.paypal.com/docs/checkout/" title="Link to PayPal Docs">PayPal smart buttons</a>. To accept payment with <a href="https://developer.paypal.com/docs/checkout/advanced/#enable-your-account" title="Link to PayPal Docs">PayPal hosted card field</a>, Please contact PayPal to resolve this issue.',
+                    'Custom card processing is not active on your PayPal account. That capability is required in order to display card fields directly on your website. To accept donations with card fields directly on your site, called <a href="https://developer.paypal.com/docs/checkout/advanced/#enable-your-account" title="Link to PayPal Docs">hosted fields</a>, you'll need to enable custom card processing. This is something PayPal support can help with, and depends on factors outside of GiveWP's control. You can still accept donations with <a href="https://developer.paypal.com/docs/checkout/" title="Link to PayPal Docs">PayPal smart buttons</a>, which allow donors to log into PayPal and complete the donation in a modal window, in the meantime.',
                     'give'
                 );
             }
