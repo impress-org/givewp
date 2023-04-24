@@ -397,4 +397,15 @@ class Classic extends Template implements Hookable, Scriptable
 
         return null;
     }
+
+    /**
+     * @unreleased Return description from form settings.
+     * @param int $formId
+     *
+     * @return string
+     */
+    public function getFormExcerpt($formId)
+    {
+        return $this->options['visual_appearance']['description'];
+    }
 }
