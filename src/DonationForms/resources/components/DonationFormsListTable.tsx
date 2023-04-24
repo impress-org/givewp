@@ -5,6 +5,7 @@ import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.mod
 import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import Select from '@givewp/components/ListTable/Select';
 import {Interweave} from 'interweave';
+import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 
 declare global {
     interface Window {
@@ -13,11 +14,12 @@ declare global {
             apiRoot: string;
             authors: Array<{id: string | number; name: string}>;
             table: {columns: Array<object>};
+            pluginUrl: string;
         };
 
         GiveNextGen?: {
             newFormUrl: string;
-        }
+        };
     }
 }
 
@@ -155,6 +157,19 @@ const donationFormsBulkActions: Array<BulkActionsConfig> = [
     },
 ];
 
+/**
+ * Displays a blank slate for the Forms table.
+ * @unreleased
+ */
+const ListTableBlankSlate = (
+    <BlankSlate
+        imagePath={`${window.GiveDonationForms.pluginUrl}/assets/dist/images/list-table/blank-slate-donation-forms-icon.svg`}
+        description={__('No donation forms', 'give')}
+        href={'https://docs.givewp.com/forms'}
+        linkText={__('GiveWP Forms', 'give')}
+    />
+);
+
 export default function DonationFormsListTable() {
     return (
         <ListTablePage
@@ -165,8 +180,9 @@ export default function DonationFormsListTable() {
             bulkActions={donationFormsBulkActions}
             apiSettings={window.GiveDonationForms}
             filterSettings={donationFormsFilters}
+            listTableBlankSlate={ListTableBlankSlate}
         >
-            { !! window.GiveNextGen?.newFormUrl && (
+            {!!window.GiveNextGen?.newFormUrl && (
                 <a href={window.GiveNextGen.newFormUrl} className={styles.addFormButton}>
                     {__('Add Next Gen Form', 'give')}
                 </a>
