@@ -10,8 +10,10 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+use Give\Donations\ValueObjects\DonationMetaKeys;
+
+if (!defined('ABSPATH')) {
+    exit;
 }
 
 
@@ -367,10 +369,10 @@ class Give_Donor_Wall {
 		return $query_atts;
 	}
 
-	/**
+    /**
      * Get donation data.
      *
-     * @unreleased change to read comment from donation meta table
+     * @unreleased Change to read comment from donations meta table
      * @since 2.3.0
      *
      * @param  array  $atts
@@ -426,7 +428,7 @@ class Give_Donor_Wall {
 
 					$temp[$donation_id]['donor_comment'] = give_get_payment_meta(
                         $donation_id,
-                        '_give_donation_comment'
+                        DonationMetaKeys::COMMENT
                     );
 				}
 			}
