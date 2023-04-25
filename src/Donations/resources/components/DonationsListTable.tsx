@@ -1,4 +1,4 @@
-import {__, sprintf} from '@wordpress/i18n';
+import {__} from '@wordpress/i18n';
 import {ListTablePage} from '@givewp/components';
 import {DonationRowActions} from './DonationRowActions';
 import ListTableApi from '@givewp/components/ListTable/api';
@@ -19,6 +19,7 @@ declare global {
             paymentMode: boolean;
             manualDonations: boolean;
             pluginUrl: string;
+            addonsBulkActions: Array<BulkActionsConfig>;                    
         };
     }
 }
@@ -125,7 +126,8 @@ const bulkActions: Array<BulkActionsConfig> = [
                 <ul role="document" tabIndex={0}>
                     {selected.map((donationId, index) => (
                         <li key={donationId}>
-                            <IdBadge id={donationId} /> <span>{sprintf(__('from %s', 'give'), names[index])}</span>
+                            <IdBadge id={donationId} /> <span>{__('from', 'give')}</span>
+                            <Interweave content={names[index]} />
                         </li>
                     ))}
                 </ul>
