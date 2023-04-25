@@ -72,6 +72,7 @@ class DonationsAdminPage
             'adminUrl' => $this->adminUrl,
             'paymentMode' => give_is_test_mode(),
             'manualDonations' => Utils::isPluginActive('give-manual-donations/give-manual-donations.php'),
+            'pluginUrl' => GIVE_PLUGIN_URL,          
             'addonsBulkActions' => [],
         ];
 

@@ -22,6 +22,18 @@ use function give_is_setting_enabled;
 class Sequoia extends Template implements Hookable, Scriptable
 {
     /**
+     * Contains the options for the Sequoia form template.
+     * @unreleased
+     * @var array
+     */
+    private $options;
+
+    public function __construct()
+    {
+        $this->options = FormTemplateUtils::getOptions();
+    }
+
+    /**
      * @inheritDoc
      */
     public function getFormStartingHeight($formId)
@@ -448,9 +460,9 @@ class Sequoia extends Template implements Hookable, Scriptable
     /**
      * Get form excerpt
      *
-     * @since 2.7.0
-     *
+     * @unreleased Display only form description in Multi-Step donation form template.
      * @since 2.19.6 Form excerpt has precedence over form description
+     * @since 2.7.0
      *
      * @param int|null $formId
      *
@@ -458,16 +470,6 @@ class Sequoia extends Template implements Hookable, Scriptable
      */
     public function getFormExcerpt($formId)
     {
-        $excerpt = get_the_excerpt($formId);
-        $templateOptions = FormTemplateUtils::getOptions($formId);
-
-        if ( ! empty($excerpt)) {
-            return $excerpt;
-        }
-
-        // Backward compatibility
-        if ( ! empty($templateOptions['introduction']['description']) ) {
-            return $templateOptions['introduction']['description'];
-        }
+        return $this->options['introduction']['description'];
     }
 }
