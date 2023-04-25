@@ -9,6 +9,7 @@ use Give\Subscriptions\Models\Subscription;
 class DispatchGiveSubscriptionPostCreate
 {
     /**
+     * @unreleased Trigger "give_subscription_inserted" action hook when subscription is created.
      * @since 2.24.0 add support for payment_mode
      * @since 2.19.6
      *
@@ -34,6 +35,7 @@ class DispatchGiveSubscriptionPostCreate
             'profile_id' => $subscription->gatewaySubscriptionId,
         ];
 
+        Hooks::doAction('give_subscription_inserted', $subscription->id, $args);
         Hooks::doAction('give_subscription_post_create', $subscription->id, $args);
     }
 }

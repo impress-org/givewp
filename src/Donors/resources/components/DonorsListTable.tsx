@@ -5,6 +5,7 @@ import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/List
 import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import {Interweave} from 'interweave';
 import './style.scss';
+import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 
 declare global {
     interface Window {
@@ -13,6 +14,7 @@ declare global {
             apiRoot: string;
             forms: Array<{value: string; text: string}>;
             table: {columns: Array<object>};
+            pluginUrl: string;
         };
     }
 }
@@ -68,6 +70,19 @@ const donorsBulkActions: Array<BulkActionsConfig> = [
     },
 ];
 
+/**
+ * Displays a blank slate for the Donors table.
+ * @unreleased
+ */
+const ListTableBlankSlate = (
+    <BlankSlate
+        imagePath={`${window.GiveDonors.pluginUrl}assets/dist/images/list-table/blank-slate-donor-icon.svg`}
+        description={__('No donors found', 'give')}
+        href={'https://docs.givewp.com/donors'}
+        linkText={__('GiveWP Donors.', 'give')}
+    />
+);
+
 export default function DonorsListTable() {
     return (
         <ListTablePage
@@ -78,6 +93,7 @@ export default function DonorsListTable() {
             bulkActions={donorsBulkActions}
             apiSettings={window.GiveDonors}
             filterSettings={donorsFilters}
+            listTableBlankSlate={ListTableBlankSlate}
         >
             <button className={styles.addFormButton} onClick={showLegacyDonors}>
                 {__('Switch to Legacy View', 'give')}
