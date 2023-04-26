@@ -23,7 +23,7 @@ class PayPalConnection
                 'callback' => [$this, 'renderConnectButton'],
                 'permission_callback' => '__return_true',
                 'args' => [
-                    'action' => [
+                    'mode' => [
                         'type' => 'string',
                         'required' => true,
                         'enum' => ['live', 'sandbox']
@@ -33,7 +33,7 @@ class PayPalConnection
         );
 
         add_filter('rest_pre_serve_request', function ($served, $result, \WP_REST_Request $request) {
-            if ($request->get_route() === '/give-paypal-donation-settings/connect') {
+            if ($request->get_route() === '/give-api/v2/paypal-connect-button') {
                 echo $result->data;
 
                 return true;
@@ -56,13 +56,10 @@ class PayPalConnection
      */
     public function renderConnectButton(\WP_REST_Request $request): \WP_REST_Response
     {
-        $action = $request->get_param('action');
+        $this->mode = $request->get_param('mode');
 
         ob_start();
-
-        $this->mode = 'sandbox';
         echo $this->renderButtonView();
-
         $response = new \WP_REST_Response(ob_get_clean());
         $response->set_status(200);
         $response->header('Content-Type', 'text/html');
@@ -88,8 +85,13 @@ class PayPalConnection
                 <meta name="viewport"
                       content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
                 <meta http-equiv="X-UA-Compatible" content="ie=edge">
-                <title>%1$s</title>
-                <script src="<?php echo $viewData['partnerJsUrl']; ?>">
+                <title><?php echo $viewData['buttonTitle']; ?></title>
+                <script src="<?php echo $viewData['partnerJsUrl']; ?>"></script>
+                <style>
+                    .give-hidden {
+                        display: none;
+                    }
+                </style>
             </head>
             <body>
                 <button class="button button-primary button-large" id="js-give-paypal-on-boarding-handler">
@@ -97,8 +99,7 @@ class PayPalConnection
                 </button>
                 <a class="give-hidden" target="_blank"
                    data-paypal-onboard-complete="givePayPalOnBoardedCallback" href="#"
-                   data-paypal-button="true"><?php
-                    esc_html_e('Sign up for PayPal', 'give'); ?>
+                   data-paypal-button="true"><?php esc_html_e('Sign up for PayPal', 'give'); ?>
                 </a>
             </body>
         </html>
