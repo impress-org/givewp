@@ -82,6 +82,7 @@ class Give_Donor_Wall {
 	/**
 	 * Displays donors in a grid layout.
 	 *
+     * @unreleased Moved AJAX nonce verification to ajax_handler method.
 	 * @since  2.2.0
 	 *
 	 * @param array $atts                {
@@ -113,14 +114,6 @@ class Give_Donor_Wall {
 	 * @return string|bool The markup of the form grid or false.
 	 */
 	public function render_shortcode( $atts ) {
-
-        /**
-         * @since 2.20.0 Check nonce for AJAX request to prevent scrapping.
-         * @link https://github.com/impress-org/givewp/issues/6374
-         */
-        if( wp_doing_ajax() ) {
-            check_ajax_referer( 'givewp-donor-wall-more', 'nonce' );
-        }
 
 		$give_settings = give_get_settings();
 
@@ -308,8 +301,9 @@ class Give_Donor_Wall {
 
 
 	/**
-	 * Ajax handler
+	 * This function should return donor comment for ajax request.
 	 *
+     * @unreleased Check nonce for AJAX request to prevent scrapping, see https://github.com/impress-org/givewp/issues/6374.
 	 * @since  2.2.0
 	 * @access public
 	 */
@@ -319,6 +313,8 @@ class Give_Donor_Wall {
 		// Get next page donor comments.
 		$shortcode_atts['paged']           = $shortcode_atts['paged'] + 1;
 		$shortcode_atts['only_donor_html'] = true;
+
+        check_ajax_referer( 'givewp-donor-wall-more', 'nonce' );
 
 		$donors_comment_html = $this->render_shortcode( $shortcode_atts );
 
