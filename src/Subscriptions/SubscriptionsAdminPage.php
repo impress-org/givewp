@@ -5,7 +5,6 @@ namespace Give\Subscriptions;
 use Give\Framework\Database\DB;
 use Give\Helpers\EnqueueScript;
 use Give\Subscriptions\ListTable\SubscriptionsListTable;
-use WP_REST_Request;
 
 class SubscriptionsAdminPage
 {
@@ -43,6 +42,7 @@ class SubscriptionsAdminPage
             'table' => give(SubscriptionsListTable::class)->toArray(),
             'adminUrl' => $this->adminUrl,
             'paymentMode' => give_is_test_mode(),
+            'pluginUrl' => GIVE_PLUGIN_URL
         ];
 
         EnqueueScript::make('give-admin-subscriptions', 'assets/dist/js/give-admin-subscriptions.js')
