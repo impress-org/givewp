@@ -133,9 +133,9 @@ class AdminSettingFields
                         <div class="button-wrap connection-setting <?php
                         echo $accountRepository->accountIsConnected() ? 'give-hidden' : ''; ?>">
                             <div>
-                                <iframe src="https://givedev.test/wp-json/give-paypal-donation-settings/connect?action=paypal-live-connect"></iframe>
+                                <iframe src="<?php echo rest_url('/give-api/v2/paypal-connect-button?mode=live'); ?>"></iframe>
                                 <br>
-                                <iframe src="https://givedev.test/wp-json/give-paypal-donation-settings/connect?action=paypal-sandbox-connect"></iframe>
+                                <iframe src="<?php echo rest_url('/give-api/v2/paypal-connect-button?mode=sandbox'); ?>"></iframe>
                                 <br>
                                 <button class="button button-primary button-large"
                                         id="js-give-paypal-on-boarding-handler">
