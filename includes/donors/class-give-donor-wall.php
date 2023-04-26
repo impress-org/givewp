@@ -80,7 +80,7 @@ class Give_Donor_Wall {
 	/**
 	 * Displays donors in a grid layout.
 	 *
-     * @unreleased Remove ajax nonce verification. It is not required in shortcode rendering function.
+     * @unreleased Moved AJAX nonce verification to ajax_handler method.
 	 * @since  2.2.0
 	 *
 	 * @param array $atts                {
