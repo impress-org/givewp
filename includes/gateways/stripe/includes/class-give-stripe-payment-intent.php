@@ -56,21 +56,23 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 					$args,
 					give_stripe_get_connected_account_options()
 				);
-			} catch ( Exception $e ) {
+            } catch (Exception $e) {
+                give_record_gateway_error(
+                    __('Stripe Payment Intent Error', 'give'),
+                    sprintf(
+                    /* translators: %s Exception Error Message */
+                        __('Unable to create a payment intent. Details: %s', 'give'),
+                        $e->getMessage()
+                    )
+                );
 
-				give_record_gateway_error(
-					__( 'Stripe Payment Intent Error', 'give' ),
-					sprintf(
-						/* translators: %s Exception Error Message */
-						__( 'Unable to create a payment intent. Details: %s', 'give' ),
-						$e->getMessage()
-					)
-				);
+                give_set_error('stripe_payment_intent_error',
+                    $e->getMessage()
+                );
 
-				give_set_error( 'stripe_payment_intent_error', __( 'Error creating payment intent with Stripe. Please try again.', 'give' ) );
-				return false;
-			} // End try().
-		}
+                return false;
+            } // End try().
+        }
 
 		/**
 		 * This function is used to retrieve payment intent in Stripe.
