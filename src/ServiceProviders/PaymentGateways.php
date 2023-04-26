@@ -13,6 +13,7 @@ use Give\PaymentGateways\PayPalCommerce\DonationFormPaymentMethod;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\onBoardingRedirectHandler;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
+use Give\PaymentGateways\PayPalCommerce\PayPalConnection;
 use Give\PaymentGateways\PayPalCommerce\RefreshToken;
 use Give\PaymentGateways\PayPalCommerce\RefundPaymentHandler;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
@@ -78,6 +79,7 @@ class PaymentGateways implements ServiceProvider
                 );
             }
         );
+        give()->singleton(PayPalConnection::class);
 
         $this->registerPayPalCommerceClasses();
     }
@@ -95,6 +97,7 @@ class PaymentGateways implements ServiceProvider
         Hooks::addAction('wp_ajax_give_stripe_account_get_details', GetStripeAccountDetailsController::class);
         Hooks::addAction('admin_init', NewStripeAccountOnBoardingController::class);
         Hooks::addFilter('give_metabox_form_data_settings', DonationFormSettingPage::class, '__invoke', 10, 2);
+        Hooks::addAction('rest_api_init', PayPalConnection::class, 'registerRestRoutes');
 
         $this->registerMigrations();
         $this->registerStripeCustomFields();
