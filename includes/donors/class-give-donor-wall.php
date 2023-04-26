@@ -301,7 +301,7 @@ class Give_Donor_Wall {
 	/**
 	 * This function should return donor comment for ajax request.
 	 *
-     * @unreleased Check nonce for AJAX request to prevent scrapping.
+     * @unreleased Check nonce for AJAX request to prevent scrapping, see https://github.com/impress-org/givewp/issues/6374.
 	 * @since  2.2.0
 	 * @access public
 	 */
