@@ -108,6 +108,9 @@ class PayPalConnection
                     .give-hidden {
                         display: none;
                     }
+                    button{
+                        cursor: pointer;
+                    }
                 </style>
             </head>
             <body>
