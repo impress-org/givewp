@@ -7,7 +7,6 @@ use Money\Converter;
 use Money\Currencies;
 use Money\Currencies\AggregateCurrencies;
 use Money\Currencies\BitcoinCurrencies;
-use Money\Currencies\CurrencyList;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use Money\Exchange\FixedExchange;
@@ -135,9 +134,6 @@ class CurrencyFacade
         return new AggregateCurrencies([
             new ISOCurrencies(),
             new BitcoinCurrencies(),
-            new CurrencyList([
-                'BTC' => 8,
-            ])
         ]);
     }
 }
