@@ -2591,7 +2591,7 @@ function give_check_addon_updates( $_transient_data ) {
  *
  * @return null|WP_Post
  */
-function give_get_page_by_title($page_title, $output = OBJECT, $post_type)
+function give_get_page_by_title(string $page_title, string $output = OBJECT, string $post_type = 'page')
 {
     $args = [
         'title' => $page_title,

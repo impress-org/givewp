@@ -9,6 +9,8 @@
  * @since      2.2.0
  */
 
+use Give\Donations\ValueObjects\DonationMetaKeys;
+
 /**
  * Get the donor's Gravatar with a nice fallback.
  *
@@ -16,8 +18,8 @@
  *
  * @since 2.2.0
  *
- * @param Give_Donor $donor
- * @param int        $size
+ * @param  Give_Donor  $donor
+ * @param  int  $size
  *
  * @return string HTML output.
  */
@@ -155,13 +157,14 @@ function give_insert_donor_donation_comment( $donation_id, $donor, $note, $comme
  *
  * Note: currently donor can only add one comment per donation
  *
- * @param int    $donation_id The donation ID to retrieve comment for.
- * @param int    $donor_id    The donor ID to retrieve comment for.
- * @param string $search      Search for comment that contain a search term.
- *
+ * @unreleased Change to read comment from donations meta table
  * @since 2.2.0
  *
- * @return WP_Comment|array
+ * @param  int  $donation_id  The donation ID to retrieve comment for.
+ * @param  int  $donor_id  The donor ID to retrieve comment for.
+ * @param  string  $search  Search for comment that contain a search term.
+ *
+ * @return array|stdClass|WP_Comment
  */
 function give_get_donor_donation_comment( $donation_id, $donor_id, $search = '' ) {
 	// Backward compatibility.
@@ -182,20 +185,18 @@ function give_get_donor_donation_comment( $donation_id, $donor_id, $search = '' 
 			$search
 		);
 
-		$comment = ! empty( $comments ) ? current( $comments ) : array();
+		$comment = !empty($comments) ? current($comments) : array();
 
 		return $comment;
 	}
 
-	$comments = Give()->comment->db->get_comments(
-		array(
-			'number'         => 1,
-			'comment_parent' => $donation_id,
-			'comment_type'   => 'donor_donation',
-		)
-	);
+	$comment = new stdClass();
+	$comment->comment_ID = 0;
+	$comment->comment_content = give_get_payment_meta($donation_id, DonationMetaKeys::COMMENT, true);
+	$comment->comment_parent = $donation_id;
+	$comment->comment_type = 'donor_donation';
 
-	return ( ! empty( $comments ) ? current( $comments ) : array() );
+	return $comment;
 }
 
 /**

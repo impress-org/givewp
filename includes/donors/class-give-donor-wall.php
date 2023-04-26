@@ -10,8 +10,10 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+use Give\Donations\ValueObjects\DonationMetaKeys;
+
+if (!defined('ABSPATH')) {
+    exit;
 }
 
 
@@ -367,15 +369,16 @@ class Give_Donor_Wall {
 		return $query_atts;
 	}
 
-	/**
-	 * Get donation data.
-	 *
-	 * @since 2.3.0
-	 *
-	 * @param array $atts
-	 *
-	 * @return array
-	 */
+    /**
+     * Get donation data.
+     *
+     * @unreleased Change to read comment from donations meta table
+     * @since 2.3.0
+     *
+     * @param  array  $atts
+     *
+     * @return array
+     */
 	private function get_donation_data( $atts = [] ) {
 		global $wpdb;
 
@@ -412,8 +415,6 @@ class Give_Donor_Wall {
 				}
 			}
 
-			$comments = $this->get_donor_comments( $temp );
-
 			if ( ! empty( $temp ) ) {
 				foreach ( $temp as $donation_id => $donation_data ) {
 					$temp[ $donation_id ]['donation_id'] = $donation_id;
@@ -425,7 +426,10 @@ class Give_Donor_Wall {
 						]
 					);
 
-					$temp[ $donation_id ]['donor_comment'] = ! empty( $comments[ $donation_id ] ) ? $comments[ $donation_id ] : '';
+					$temp[$donation_id]['donor_comment'] = give_get_payment_meta(
+                        $donation_id,
+                        DonationMetaKeys::COMMENT
+                    );
 				}
 			}
 
