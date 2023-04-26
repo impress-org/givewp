@@ -18,21 +18,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * This function is used to get a list of slug which are supported by payment gateways.
  *
+ * @unreleased add filter for the array of supported stripe gateways.
  * @since 2.5.5
  *
  * @return array
  */
-function give_stripe_supported_payment_methods() {
-	return [
-		'stripe',
-		'stripe_ach',
-		'stripe_ideal',
-		'stripe_google_pay',
-		'stripe_apple_pay',
-		'stripe_checkout',
-		'stripe_sepa',
-		'stripe_becs',
-	];
+function give_stripe_supported_payment_methods()
+{
+    return apply_filters('give_stripe_supported_payment_methods', [
+        'stripe',
+        'stripe_ach',
+        'stripe_ideal',
+        'stripe_google_pay',
+        'stripe_apple_pay',
+        'stripe_checkout',
+        'stripe_sepa',
+        'stripe_becs',
+    ]);
 }
 
 /**

@@ -8,6 +8,11 @@ let selected = '';
 
 export const BulkActionSelect = ({bulkActions = null, showModal, data, parameters}) => {
     const [selectedState, setSelectedState] = useState(selected);
+
+    if (window.GiveDonations && window.GiveDonations.addonsBulkActions) {
+        bulkActions = [...bulkActions, ...window.GiveDonations.addonsBulkActions];
+    }
+
     if (!bulkActions) {
         return null;
     }
