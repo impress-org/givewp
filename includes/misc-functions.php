@@ -2407,12 +2407,13 @@ function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ) {
 /**
  * Refresh all givewp license.
  *
- * @param bool $wp_check_updates
+ * @unreleased delete update_plugins transient instead of invalidate it
+ * @since  2.5.0
+ *
+ * @param  bool  $wp_check_updates
  *
  * @access public
  * @return array|WP_Error
- *
- * @since  2.5.0
  */
 function give_refresh_licenses( $wp_check_updates = true ) {
 	$give_licenses = get_option( 'give_licenses', [] );
@@ -2505,7 +2506,7 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 
 	// Tell WordPress to look for updates.
 	if ( $wp_check_updates ) {
-		set_site_transient( 'update_plugins', null );
+		delete_site_transient('update_plugins');
 	}
 
 	return [
