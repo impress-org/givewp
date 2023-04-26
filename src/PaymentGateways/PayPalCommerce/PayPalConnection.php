@@ -75,7 +75,6 @@ class PayPalConnection
     private function renderButtonView(): string
     {
         $viewData = $this->buttonViewData();
-
         ob_start()
         ?>
         <!doctype html>
@@ -87,6 +86,24 @@ class PayPalConnection
                 <meta http-equiv="X-UA-Compatible" content="ie=edge">
                 <title><?php echo $viewData['buttonTitle']; ?></title>
                 <script src="<?php echo $viewData['partnerJsUrl']; ?>"></script>
+                <script>
+                    const ajaxurl = '<?php echo esc_url( admin_url('admin-ajax.php') ); ?>';
+                    function givePayPalOnBoardedCallback(authCode, sharedId) {
+                        const query = '&authCode=' + authCode + '&sharedId=' + sharedId;
+                        fetch( ajaxurl + '?action=give_paypal_commerce_user_on_boarded' + query )
+                            .then(function(res){ return res.json() })
+                            .then(function(res) {
+                                if ( true !== res.success ) {
+                                    alert('Something went wrong!');
+                                    return;
+                                }
+
+                                // Remove PayPal quick help container.
+                                const paypalErrorQuickHelp = document.getElementById('give-paypal-onboarding-trouble-notice');
+                                paypalErrorQuickHelp && paypalErrorQuickHelp.remove();
+                            });
+                    }
+                </script>
                 <style>
                     .give-hidden {
                         display: none;
@@ -101,6 +118,70 @@ class PayPalConnection
                    data-paypal-onboard-complete="givePayPalOnBoardedCallback" href="#"
                    data-paypal-button="true"><?php esc_html_e('Sign up for PayPal', 'give'); ?>
                 </a>
+                <script>
+                    document.getElementById('js-give-paypal-on-boarding-handler').addEventListener( 'click', function( evt ) {
+                        evt.preventDefault();
+                        removeErrors();
+
+                        const countryCode = countryField.value;
+                        const buttonState = {
+                            enable: () => {
+                                onBoardingButton.disabled = false;
+                                evt.target.innerText = onBoardingButton.getAttribute( 'data-initial-label' );
+                            },
+                            disable: () => {
+                                // Preserve initial label.
+                                if ( ! onBoardingButton.hasAttribute( 'data-initial-label' ) ) {
+                                    onBoardingButton.setAttribute( 'data-initial-label', onBoardingButton.innerText );
+                                }
+
+                                onBoardingButton.disabled = true;
+                                evt.target.innerText = Give.fn.getGlobalVar( 'loader_translation' ).processing;
+                            },
+                        };
+
+                        buttonState.disable();
+
+                        // Hide paypal quick help message.
+                        const paypalErrorQuickHelp = document.getElementById( 'give-paypal-onboarding-trouble-notice' );
+                        paypalErrorQuickHelp && paypalErrorQuickHelp.classList.add( 'give-hidden' );
+
+                        fetch( ajaxurl + `?action=give_paypal_commerce_get_partner_url&countryCode=${ countryCode }` )
+                            .then( response => response.json() )
+                            .then( function( res ) {
+                                if ( true === res.success ) {
+                                    const payPalLink = document.querySelector( '[data-paypal-button]' );
+
+                                    payPalLink.href = `${ res.data.partnerLink }&displayMode=minibrowser`;
+                                    payPalLink.click();
+
+                                    // This object will check if a class added to body or not.
+                                    // If class added that means modal opened.
+                                    // If class removed that means modal closed.
+                                    paypalModalObserver.observe( document.querySelector( 'body' ), { attributes: true, childList: true } );
+                                }
+
+                                buttonState.enable();
+                            } )
+                            .then( function() {
+                                fetch( ajaxurl + '?action=give_paypal_commerce_onboarding_trouble_notice' )
+                                    .then( response => response.json() )
+                                    .then( function( res ) {
+                                        if ( true === res.success ) {
+                                            function createElementFromHTML( htmlString ) {
+                                                const div = document.createElement( 'div' );
+                                                div.innerHTML = htmlString.trim();
+                                                return div.firstChild;
+                                            }
+
+                                            const buttonContainer = document.querySelector( '.connect-button-wrap' );
+                                            paypalErrorQuickHelp && paypalErrorQuickHelp.remove();
+                                            buttonContainer.append( createElementFromHTML( res.data ) );
+                                        }
+                                    } );
+                            } );
+                    } );
+                </script>
             </body>
         </html>
         <?php
