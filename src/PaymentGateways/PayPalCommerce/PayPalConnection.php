@@ -117,16 +117,20 @@ class PayPalConnection
                 <button class="button button-primary button-large" id="js-give-paypal-on-boarding-handler">
                     <i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php echo $viewData['buttonTitle']; ?>
                 </button>
-                <a class="give-hidden" target="_blank"
+                <a class="give-hidden" target="PPFrame"
                    data-paypal-onboard-complete="givePayPalOnBoardedCallback" href="#"
                    data-paypal-button="true"><?php esc_html_e('Sign up for PayPal', 'give'); ?>
                 </a>
                 <script>
-                    document.getElementById('js-give-paypal-on-boarding-handler').addEventListener( 'click', function( evt ) {
-                        evt.preventDefault();
-                        removeErrors();
+                    const onBoardingButton = document.getElementById('js-give-paypal-on-boarding-handler');
 
-                        const countryCode = countryField.value;
+                    onBoardingButton.addEventListener( 'click', function( evt ) {
+                        evt.preventDefault();
+                        //removeErrors();
+
+                        //const countryCode = countryField.value;
+                        const countryCode = "<?php echo 'sandbox' === $this->mode ? 'CO' : 'US'; ?>";
+                        const mode = "<?php echo $this->mode; ?>";
                         const buttonState = {
                             enable: () => {
                                 onBoardingButton.disabled = false;
@@ -139,17 +143,18 @@ class PayPalConnection
                                 }
 
                                 onBoardingButton.disabled = true;
-                                evt.target.innerText = Give.fn.getGlobalVar( 'loader_translation' ).processing;
+                                //evt.target.innerText = Give.fn.getGlobalVar( 'loader_translation' ).processing;
+                                evt.target.innerText = 'Processing';
                             },
                         };
 
                         buttonState.disable();
 
-                        // Hide paypal quick help message.
-                        const paypalErrorQuickHelp = document.getElementById( 'give-paypal-onboarding-trouble-notice' );
-                        paypalErrorQuickHelp && paypalErrorQuickHelp.classList.add( 'give-hidden' );
+                        // Hide PayPal quick help message.
+                        //const paypalErrorQuickHelp = document.getElementById( 'give-paypal-onboarding-trouble-notice' );
+                        //paypalErrorQuickHelp && paypalErrorQuickHelp.classList.add( 'give-hidden' );
 
-                        fetch( ajaxurl + `?action=give_paypal_commerce_get_partner_url&countryCode=${ countryCode }` )
+                        fetch( ajaxurl + `?action=give_paypal_commerce_get_partner_url&countryCode=${ countryCode }&mode=${ mode }` )
                             .then( response => response.json() )
                             .then( function( res ) {
                                 if ( true === res.success ) {
@@ -161,7 +166,7 @@ class PayPalConnection
                                     // This object will check if a class added to body or not.
                                     // If class added that means modal opened.
                                     // If class removed that means modal closed.
-                                    paypalModalObserver.observe( document.querySelector( 'body' ), { attributes: true, childList: true } );
+                                    //paypalModalObserver.observe( document.querySelector( 'body' ), { attributes: true, childList: true } );
                                 }
 
                                 buttonState.enable();

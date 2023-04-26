@@ -129,11 +129,13 @@ class AjaxRequestHandler
             wp_send_json_error('Must include valid 2-character country code');
         }
 
+        $country = sanitize_text_field(wp_unslash($_GET['countryCode']));
+        $mode = sanitize_text_field(wp_unslash($_GET['mode']));
+
         $data = $this->payPalAuth->getSellerPartnerLink(
-            admin_url(
-                'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce'
-            ),
-            $country
+            admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce'),
+            $country,
+            $mode
         );
 
         if ( ! $data) {

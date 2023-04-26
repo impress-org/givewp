@@ -130,13 +130,13 @@ class PayPalAuth
      *
      * @return array|null
      */
-    public function getSellerPartnerLink($returnUrl, $country)
+    public function getSellerPartnerLink($returnUrl, $country, $mode)
     {
         $response = wp_remote_retrieve_body(
             wp_remote_post(
                 sprintf(
                     $this->connectClient->getApiUrl('paypal?mode=%1$s&request=partner-link'),
-                    $this->payPalClient->mode
+                    $mode
                 ),
                 [
                     'body' => [
