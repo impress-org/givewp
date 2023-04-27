@@ -1,4 +1,4 @@
-import {__, sprintf} from '@wordpress/i18n';
+import {__} from '@wordpress/i18n';
 import {ListTablePage} from '@givewp/components';
 import {DonationRowActions} from './DonationRowActions';
 import ListTableApi from '@givewp/components/ListTable/api';
@@ -6,6 +6,7 @@ import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePag
 import {IdBadge} from '@givewp/components/ListTable/TableCell';
 import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import {Interweave} from 'interweave';
+import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 
 declare global {
     interface Window {
@@ -17,6 +18,8 @@ declare global {
             table: {columns: Array<object>};
             paymentMode: boolean;
             manualDonations: boolean;
+            pluginUrl: string;
+            addonsBulkActions: Array<BulkActionsConfig>;
         };
     }
 }
@@ -123,7 +126,8 @@ const bulkActions: Array<BulkActionsConfig> = [
                 <ul role="document" tabIndex={0}>
                     {selected.map((donationId, index) => (
                         <li key={donationId}>
-                            <IdBadge id={donationId} /> <span>{sprintf(__('from %s', 'give'), names[index])}</span>
+                            <IdBadge id={donationId} /> <span>{__('from', 'give')}</span>
+                            <Interweave content={names[index]} />
                         </li>
                     ))}
                 </ul>
@@ -131,6 +135,19 @@ const bulkActions: Array<BulkActionsConfig> = [
         ),
     },
 ];
+
+/**
+ * Displays a blank slate for the Donations table.
+ * @since 2.27.0
+ */
+const ListTableBlankSlate = (
+    <BlankSlate
+        imagePath={`${window.GiveDonations.pluginUrl}/assets/dist/images/list-table/blank-slate-donations-icon.svg`}
+        description={__('No donations found', 'give')}
+        href={'https://docs.givewp.com/donations'}
+        linkText={__('GiveWP Donations.', 'give')}
+    />
+);
 
 export default function DonationsListTable() {
     return (
@@ -143,6 +160,7 @@ export default function DonationsListTable() {
             apiSettings={window.GiveDonations}
             filterSettings={filters}
             paymentMode={!!window.GiveDonations.paymentMode}
+            listTableBlankSlate={ListTableBlankSlate}
         >
             {window.GiveDonations.manualDonations && (
                 <a

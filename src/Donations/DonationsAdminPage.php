@@ -57,9 +57,10 @@ class DonationsAdminPage
     }
 
     /**
-     * @since 2.24.0 Add ListTable columns
-     * @since 2.20.0
-     * @since 2.21.2 Localized the admin URL as a base for URL concatenation.
+     * @since 2.27.0 Adds "addonsBulkActions" to the GiveDonations object
+     * @since      2.24.0 Add ListTable columns
+     * @since      2.20.0
+     * @since      2.21.2 Localized the admin URL as a base for URL concatenation.
      */
     public function loadScripts()
     {
@@ -71,6 +72,8 @@ class DonationsAdminPage
             'adminUrl' => $this->adminUrl,
             'paymentMode' => give_is_test_mode(),
             'manualDonations' => Utils::isPluginActive('give-manual-donations/give-manual-donations.php'),
+            'pluginUrl' => GIVE_PLUGIN_URL,
+            'addonsBulkActions' => [],
         ];
 
         EnqueueScript::make('give-admin-donations', 'assets/dist/js/give-admin-donations.js')

@@ -10,14 +10,16 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
+use Give\Donations\ValueObjects\DonationMetaKeys;
+
+if (!defined('ABSPATH')) {
 	exit;
 }
 
-if ( ! current_user_can( 'view_give_payments' ) ) {
+if (!current_user_can('view_give_payments')) {
 	wp_die(
-		__( 'Sorry, you are not allowed to access this page.', 'give' ),
-		__( 'Error', 'give' ),
+		__('Sorry, you are not allowed to access this page.', 'give'),
+		__('Error', 'give'),
 		array(
 			'response' => 403,
 		)
@@ -909,9 +911,10 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 							/**
 							 * Fires on the donation details page, after the main area.
 							 *
+							 * @since 2.27.0 Change to read comment from donations meta table
 							 * @since 1.0
 							 *
-							 * @param int $payment_id Payment id.
+							 * @param  int  $payment_id  Payment id.
 							 */
 							do_action( 'give_view_donation_details_main_after', $payment_id );
 							?>
@@ -924,21 +927,10 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 										<div id="give-payment-donor-comment-inner">
 											<p>
 												<?php
-												$donor_comment = give_get_donor_donation_comment( $payment_id, $payment->donor_id );
-
-												echo sprintf(
-													'<input type="hidden" name="give_comment_id" value="%s">',
-													$donor_comment instanceof WP_Comment // Backward compatibility.
-														|| $donor_comment instanceof stdClass
-															? $donor_comment->comment_ID : 0
-												);
-
 												echo sprintf(
 													'<textarea name="give_comment" id="give_comment" placeholder="%s" class="large-text">%s</textarea>',
 													__( 'Add a comment', 'give' ),
-													$donor_comment instanceof WP_Comment // Backward compatibility.
-													|| $donor_comment instanceof stdClass
-														? $donor_comment->comment_content : ''
+													$payment->get_meta(DonationMetaKeys::COMMENT) ?? ''
 												);
 												?>
 											</p>

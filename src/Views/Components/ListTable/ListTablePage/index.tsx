@@ -28,6 +28,7 @@ export interface ListTablePageProps {
     filterSettings?;
     align?: 'start' | 'center' | 'end';
     paymentMode?: boolean;
+    listTableBlankSlate: JSX.Element;
 }
 
 export interface FilterConfig {
@@ -68,6 +69,7 @@ export default function ListTablePage({
     children = null,
     align = 'start',
     paymentMode,
+    listTableBlankSlate,
 }: ListTablePageProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(30);
@@ -120,6 +122,11 @@ export default function ListTablePage({
 
     const openBulkActionModal = (event) => {
         event.preventDefault();
+
+        if (window.GiveDonations && window.GiveDonations.addonsBulkActions) {
+            bulkActions = [...bulkActions, ...window.GiveDonations.addonsBulkActions];
+        }
+
         const formData = new FormData(event.target);
         const action = formData.get('giveListTableBulkActions');
         const actionIndex = bulkActions.findIndex((config) => action == config.value);
@@ -222,6 +229,7 @@ export default function ListTablePage({
                                 isLoading={isValidating}
                                 align={align}
                                 testMode={testMode}
+                                listTableBlankSlate={listTableBlankSlate}
                             />
                         </ShowConfirmModalContext.Provider>
                     </CheckboxContext.Provider>

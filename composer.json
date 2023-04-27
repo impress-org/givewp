@@ -15,7 +15,8 @@
         "symfony/http-foundation": "^v3.4.47",
         "moneyphp/money": "v3.3.1",
         "stellarwp/validation": "^1.0",
-        "symfony/polyfill-ctype": "^1.19"
+        "symfony/polyfill-ctype": "^1.19",
+        "symfony/polyfill-mbstring": "^1.19"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
@@ -39,7 +40,7 @@
         "test": "./vendor/bin/phpunit --colors --stop-on-failure",
         "unreleased": "./vendor/bin/since-unreleased.sh",
         "strauss": [
-            "test -f ./bin/strauss.phar || curl -o bin/strauss.phar -L -C - https://github.com/BrianHenryIE/strauss/releases/download/0.13.0/strauss.phar",
+            "test -f ./bin/strauss.phar || curl -o bin/strauss.phar -L -C - https://github.com/BrianHenryIE/strauss/releases/download/0.14.0/strauss.phar",
             "vendor/stellarwp/validation/bin/set-domain domain=give",
             "@php bin/strauss.phar"
         ],
@@ -87,11 +88,13 @@
             "constant_prefix": "GIVE_VENDORS_",
             "packages": [
                 "stellarwp/validation",
-                "symfony/polyfill-ctype"
+                "symfony/polyfill-ctype",
+                "symfony/polyfill-mbstring"
             ],
-            "delete_vendor_files": true,
+            "delete_vendor_packages": true,
             "override_autoload": {
-                "symfony/polyfill-ctype": {}
+                "symfony/polyfill-ctype": {},
+                "symfony/polyfill-mbstring": {}
             }
         }
     },
