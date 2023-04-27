@@ -32,7 +32,10 @@ trait HandlePaymentIntentStatus
                 return new PaymentProcessing($paymentIntent->id());
             default:
                 throw new PaymentIntentException(
-                    sprintf(__('Unhandled payment intent status: %s', 'give'), $paymentIntent->status())
+                    sprintf(__('%s Sorry, there was an issue with your payment. Please check your payment method
+                    or contact your card issuer for assistance. If the issue persists, please try again later or contact our support
+                    team for further assistance.', 'give'),
+                        $paymentIntent->status())
                 );
         }
     }
