@@ -11,7 +11,7 @@ trait HandleHttpResponses
     /**
      * Handle Response
      *
-     * @unreleased add support for json content-type
+     * @since 2.27.0 add support for json content-type
      * @since 2.18.0
      *
      * @param  RedirectResponse|JsonResponse  $type
@@ -53,7 +53,7 @@ trait HandleHttpResponses
 
         if (wp_doing_ajax()) {
             $response = new JsonResponse($message);
-            
+
             $this->handleResponse($response);
         }
 
