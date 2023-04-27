@@ -41,9 +41,12 @@ class SubscriptionRepository
     }
 
     /**
+     * @since 2.27.0  Add support for multiple return types.
      * @since 2.21.0
+     *
+     * @return Subscription|null
      */
-    public function getByGatewaySubscriptionId(string $gatewaySubscriptionId): Subscription
+    public function getByGatewaySubscriptionId(string $gatewaySubscriptionId)
     {
         return $this->queryByGatewaySubscriptionId($gatewaySubscriptionId)->get();
     }
