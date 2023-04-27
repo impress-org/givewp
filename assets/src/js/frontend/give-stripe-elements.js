@@ -308,14 +308,23 @@ class GiveStripeElements {
 	 * @param setupStripeElement
 	 * @param cardElements
 	 *
+     * @unreleased Scrolls Stripe checkout modal into view for all screen sizes.
+     *
 	 * @since 2.8.0
 	 */
 	triggerStripeModal( formElement, stripeElements, setupStripeElement, cardElements ) {
 		const idPrefixElement = formElement.querySelector( 'input[name="give-form-id-prefix"]' );
 		const stripeModalDonateBtn = formElement.querySelector( `#give-stripe-checkout-modal-donate-button-${ idPrefixElement.value }` );
 		const cardholderName = formElement.querySelector( 'input[name="card_name"]' );
+        const stripeModalContent = document.querySelector('.give-stripe-checkout-modal-container')
+        const purchaseButton = document.querySelector('#give-purchase-button')
 		const completeCardElements = {};
 		let completeCardStatus = false;
+
+        // Scroll checkout modal container into view.
+        purchaseButton.addEventListener('click', function(){
+            stripeModalContent.scrollIntoView({ behavior: 'smooth' });
+        })
 
 		cardElements.forEach( ( cardElement ) => {
 			completeCardElements.cardName = false;
