@@ -142,6 +142,7 @@ EOT;
 
         /**
          * List of PayPal query parameters: https://developer.paypal.com/docs/checkout/reference/customize-sdk/#query-parameters
+         * @unreleased Removes locale from parameters.
          */
         $payPalSdkQueryParameters = [
             'client-id' => $merchant->clientId,
