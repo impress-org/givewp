@@ -36,6 +36,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 		 *
 		 * @param array $args List of parameters required to create payment intent.
 		 *
+         * @unreleased Stripe payment intent error displays Exception message.
 		 * @since  2.5.0
 		 * @access public
 		 *
