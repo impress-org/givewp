@@ -32,7 +32,7 @@ define('GIVE_NEXT_GEN_NAME', 'Visual Form Builder');
 
 // Versions
 define('GIVE_NEXT_GEN_VERSION', '0.3.2');
-define('GIVE_NEXT_GEN_MIN_GIVE_VERSION', '2.26.0');
+define('GIVE_NEXT_GEN_MIN_GIVE_VERSION', '2.27.0');
 
 // Add-on paths
 define('GIVE_NEXT_GEN_FILE', __FILE__);
