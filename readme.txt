@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
 Tested up to: 6.2
 Requires PHP: 7.0
-Stable tag: 2.26.0
+Stable tag: 2.27.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -258,6 +258,20 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.27.0: April 27th, 2023 =
+* Feature: Added a nice new view to the list tables when there are no donations, donors, or subscriptions
+* Enhancement: Donation comments are now stored as meta to improve performance
+* Enhancement: Simplifications to the new Gateway API to make gateways easier to build
+* Enhancement: Added a simple way for gateways, in the Gateway API, to pass extra data back to the server
+* Enhancement: Improvements on our end that help make sure that GiveWP is compatbible with PHP 7.0-8.0
+* Enhancement: List table bulk actions are now extensible, used by the new Bulk Export feature in the PDF Receipts add-on
+* Fix: The give_subscription_inserted hook is now fired when a subscription is created in the new Gateway API
+* Fix: Added a polyfill (backwards compatibility) for the MBString PHP extension for PHP 7.0-7.2
+* Fix: The form grid now consistently uses the excerpt for the form description
+* Fix: Prevented a crash when searching for a subscription by its identifier on the gateway
+* Fix: Resolved an incompatibility with WooCommerce that threw an error on on the License page
+* Fix: Resolved an incompatibility with Beaver Builder that prevented the Donor Wall shortcode from working
+
 = 2.26.0: April 6th, 2023 =
 * Enhancement: Minor updates for improved WordPress 6.2 compatibility
 * Enhancement: A number of under the hood improvements in preparation for the upcoming Visual Donation Form Builder feature plugin release

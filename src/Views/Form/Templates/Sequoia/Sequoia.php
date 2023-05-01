@@ -23,7 +23,7 @@ class Sequoia extends Template implements Hookable, Scriptable
 {
     /**
      * Contains the options for the Sequoia form template.
-     * @unreleased
+     * @since 2.27.0
      * @var array
      */
     private $options;
@@ -460,7 +460,7 @@ class Sequoia extends Template implements Hookable, Scriptable
     /**
      * Get form excerpt
      *
-     * @unreleased Display only form description in Multi-Step donation form template.
+     * @since 2.27.0 Display only form description in Multi-Step donation form template.
      * @since 2.19.6 Form excerpt has precedence over form description
      * @since 2.7.0
      *
