@@ -132,24 +132,25 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 			give_stripe_set_app_info();
 
 			try {
-				return \Stripe\PaymentIntent::update(
-					$client_secret,
-					$args,
-					give_stripe_get_connected_account_options()
-				);
-			} catch ( Exception $e ) {
+                return \Stripe\PaymentIntent::update(
+                    $client_secret,
+                    $args,
+                    give_stripe_get_connected_account_options()
+                );
+            } catch (Exception $e) {
+                give_record_gateway_error(
+                    __('Stripe Payment Intent Error', 'give'),
+                    sprintf(
+                    /* translators: %s Exception Error Message */
+                        __('Unable to update a payment intent. Details: %s', 'give'),
+                        $e->getMessage()
+                    )
+                );
 
-				give_record_gateway_error(
-					__( 'Stripe Payment Intent Error', 'give' ),
-					sprintf(
-						/* translators: %s Exception Error Message */
-						__( 'Unable to update a payment intent. Details: %s', 'give' ),
-						$e->getMessage()
-					)
-				);
-
-				give_set_error( 'stripe_payment_intent_error', __( 'Error updating payment intent with Stripe. Please try again.', 'give' ) );
-			} // End try().
-		}
+                give_set_error('stripe_payment_intent_error',
+                    __('There was an issue with your donation transaction. Please check your payment method or contact your card issuer for assistance. If the issue persists, try a different payment method or contact the site administrators.',
+                        'give'));
+            } // End try().
+        }
 	}
 }
