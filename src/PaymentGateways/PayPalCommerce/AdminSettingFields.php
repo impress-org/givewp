@@ -133,25 +133,20 @@ class AdminSettingFields
                         <div class="button-wrap connection-setting <?php
                         echo $accountRepository->accountIsConnected() ? 'give-hidden' : ''; ?>">
                             <div>
-                                <iframe src="<?php echo rest_url('/give-api/v2/paypal-connect-button?mode=live'); ?>"></iframe>
-                                <br>
-                                <iframe src="<?php echo rest_url('/give-api/v2/paypal-connect-button?mode=sandbox'); ?>"></iframe>
-                                <br>
-                                <button class="button button-primary button-large"
-                                        id="js-give-paypal-on-boarding-handler">
+                                <button class="button button-primary button-large js-give-paypal-on-boarding-handler"
+                                        data-mode="live">
                                     <i class="fab fa-paypal"></i>&nbsp;&nbsp;
-                                    <?php
-                                    esc_html_e(
-                                        'Connect with PayPal',
-                                        'give'
-                                    );
-                                    ?>
+                                    <?php esc_html_e('Connect with PayPal Live', 'give'); ?>
                                 </button>
-                                <a class="give-hidden" target="_blank"
+                                <button class="button button-primary button-large js-give-paypal-on-boarding-handler"
+                                        data-mode="sandbox">
+                                    <i class="fab fa-paypal"></i>&nbsp;&nbsp;
+                                    <?php esc_html_e('Connect with PayPal Sandbox', 'give'); ?>
+                                </button>
+                                <a class="give-hidden" target="PPFrame"
                                    data-paypal-onboard-complete="givePayPalOnBoardedCallback" href="#"
                                    data-paypal-button="true">
-                                    <?php
-                                    esc_html_e('Sign up for PayPal', 'give'); ?>
+                                    <?php esc_html_e('Sign up for PayPal', 'give'); ?>
                                 </a>
                                 <span class="tooltip">
 							<span class="left-arrow"></span>

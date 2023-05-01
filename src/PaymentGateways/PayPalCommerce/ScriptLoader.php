@@ -214,9 +214,10 @@ EOT;
      */
     private function getPartnerJsUrl()
     {
-        return sprintf(
-            '%1$swebapps/merchantboarding/js/lib/lightbox/partner.js',
-            give(PayPalClient::class)->getHomePageUrl()
-        );
+        return 'https://www.paypal.com/webapps/merchantboarding/js/lib/lightbox/partner.js';
+//        return sprintf(
+//            '%1$swebapps/merchantboarding/js/lib/lightbox/partner.js',
+//            give(PayPalClient::class)->getHomePageUrl()
+//        );
     }
 }
