@@ -147,7 +147,6 @@ EOT;
             'client-id' => $merchant->clientId,
             'merchant-id' => $merchant->merchantIdInPayPal,
             'components' => 'hosted-fields,buttons',
-            'locale' => get_locale(),
             'disable-funding' => 'credit',
             'vault' => true,
             'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
