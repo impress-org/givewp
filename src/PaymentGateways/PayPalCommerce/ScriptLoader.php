@@ -128,6 +128,7 @@ EOT;
     /**
      * Load public assets.
      *
+     * @unreleased Remove locale from PayPal SDK.
      * @since 2.9.0
      */
     public function loadPublicAssets()
