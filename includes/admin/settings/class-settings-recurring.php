@@ -14,8 +14,11 @@ class Give_Settings_Recurring_Donations_Core extends Give_Settings_Page
      */
     public function __construct()
     {
-        $this->id    = 'recurring';
-        $this->label = __('Recurring Donations', 'give');
+        $this->id = 'recurring';
+        $this->label = sprintf(__('Recurring Donations %s', 'give'),
+            '<span style="display: inline-block; vertical-align: middle; margin-left: 8px; padding: 4px 12px; background:#F2CC0C; font-size:10px; border-radius: 4px;">
+                        <strong>MUST-HAVE</strong>
+                     </span>');
 
         parent::__construct();
 
