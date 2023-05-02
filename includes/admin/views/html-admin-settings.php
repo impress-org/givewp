@@ -1,74 +1,79 @@
 <?php
+
 /**
  * Admin View: Settings
  */
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+
+if ( ! defined('ABSPATH')) {
+    exit;
 }
 
+
 // Bailout: Do not output anything if setting tab is not defined.
-if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs ) ) :
-	/**
-	 * Filter the form action.
-	 *
-	 * Note: filter dynamically fire on basis of setting page slug
-	 * For example: if you register a setting page with give-settings menu slug and general current tab
-	 *              then filter will be give-settings_form_method_tab_general
-	 *
-	 * @since 1.8
-	 */
-	$form_method = apply_filters( self::$setting_filter_prefix . '_form_method_tab_' . $current_tab, 'post' );
+if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) :
+    /**
+     * Filter the form action.
+     *
+     * Note: filter dynamically fire on basis of setting page slug
+     * For example: if you register a setting page with give-settings menu slug and general current tab
+     *              then filter will be give-settings_form_method_tab_general
+     *
+     * @since 1.8
+     */
+    $form_method = apply_filters(self::$setting_filter_prefix . '_form_method_tab_' . $current_tab, 'post');
 
-	/**
-	 * Filter the main form tab.
-	 *
-	 * Note: You can stop print main form if you want to filter dynamically fire on basis of setting page slug
-	 * For example: if you register a setting page with give-settings menu slug
-	 *              then filter will be give-settings_open_form, give-settings_close_form
-	 *              We are using this filter in includes/admin/tools/class-settings-data.php#L52
-	 *
-	 * @since 1.8
-	 */
-	$form_open_tag  = apply_filters( self::$setting_filter_prefix . '_open_form', '<form method="' . $form_method . '" id="give-mainform" action="" enctype="multipart/form-data">' );
-	$form_close_tag = apply_filters( self::$setting_filter_prefix . '_close_form', '</form>' );
+    /**
+     * Filter the main form tab.
+     *
+     * Note: You can stop print main form if you want to filter dynamically fire on basis of setting page slug
+     * For example: if you register a setting page with give-settings menu slug
+     *              then filter will be give-settings_open_form, give-settings_close_form
+     *              We are using this filter in includes/admin/tools/class-settings-data.php#L52
+     *
+     * @since 1.8
+     */
+    $form_open_tag = apply_filters(self::$setting_filter_prefix . '_open_form',
+        '<form method="' . $form_method . '" id="give-mainform" action="" enctype="multipart/form-data">');
+    $form_close_tag = apply_filters(self::$setting_filter_prefix . '_close_form', '</form>');
 
-	$wrapper_class = implode(
-		' ',
-		array(
-			self::$setting_filter_prefix . '-setting-page',
-			self::$setting_filter_prefix . '-' . give_get_current_setting_section() . '-section',
-			self::$setting_filter_prefix . '-' . give_get_current_setting_tab() . '-tab',
-		)
-	);
-	?>
+    $wrapper_class = implode(
+        ' ',
+        [
+            self::$setting_filter_prefix . '-setting-page',
+            self::$setting_filter_prefix . '-' . give_get_current_setting_section() . '-section',
+            self::$setting_filter_prefix . '-' . give_get_current_setting_tab() . '-tab',
+        ]
+    );
+    ?>
 
-	<div class="wrap give-settings-page <?php echo esc_html( $wrapper_class ); ?>">
+    <div class="wrap give-settings-page <?php
+    echo esc_html($wrapper_class); ?>">
 
-		<?php echo $form_open_tag; ?>
+        <?php
+        echo $form_open_tag; ?>
 
-		<div class="give-settings-header">
-			<?php
-			/* @var Give_Settings_Page $current_setting_obj */
-			if (
-				! empty( $current_setting_obj )
-				&& method_exists( $current_setting_obj, 'get_heading_html' )
-			) {
-				echo $current_setting_obj->get_heading_html();
-			} else {
+        <div class="give-settings-header">
+            <?php
+            /* @var Give_Settings_Page $current_setting_obj */
+            if (
+                ! empty($current_setting_obj)
+                && method_exists($current_setting_obj, 'get_heading_html')
+            ) {
+                echo $current_setting_obj->get_heading_html();
+            } else {
+                // Backward compatibility.
+                echo sprintf(
+                    '<h1 class="wp-heading-inline">%s</h1>',
+                    esc_html($tabs[$current_tab])
+                );
+            }
 
-				// Backward compatibility.
-				echo sprintf(
-					'<h1 class="wp-heading-inline">%s</h1>',
-					esc_html( $tabs[ $current_tab ] )
-				);
-			}
-
-			self::show_messages();
+            self::show_messages();
 
             do_action('give_settings_page_header');
-			?>
+            ?>
 
-		</div>
+        </div>
 
         <?php
         /*
@@ -107,7 +112,8 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
             ?>
 
             <?php
-            echo '
+            if (class_exists('Give_Recurring')) {
+                echo '
                     <a class="give-nav-addons-tab" href="/wp-admin/edit.php?post_type=give_forms&page=give-add-ons" target="blank">
                         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -125,7 +131,8 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
                             ADD-ONS
                         </span>
                     </a>
-               '
+               ';
+            }
             ?>
 
             <div class="give-sub-nav-tab-wrapper">
