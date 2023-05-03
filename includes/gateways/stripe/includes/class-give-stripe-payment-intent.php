@@ -68,8 +68,8 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
                 );
 
                 give_set_error('stripe_payment_intent_error',
-                    $e->getMessage()
-                );
+                    __('There was an issue with your donation transaction. Please check your payment method or contact your card issuer for assistance. If the issue persists, try a different payment method or contact the site administrators.',
+                        'give'));
 
                 return false;
             } // End try().
@@ -148,8 +148,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
                 );
 
                 give_set_error('stripe_payment_intent_error',
-                    __('There was an issue with your donation transaction. Please check your payment method or contact your card issuer for assistance. If the issue persists, try a different payment method or contact the site administrators.',
-                        'give'));
+                    __('Error updating payment intent with Stripe. Please try again.', 'give'));
             } // End try().
         }
 	}
