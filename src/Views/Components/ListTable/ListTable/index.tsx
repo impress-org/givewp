@@ -6,6 +6,7 @@ import {Spinner} from '../../index';
 import {BulkActionCheckboxAll} from '@givewp/components/ListTable/BulkActions/BulkActionCheckbox';
 import ListTableHeaders from '@givewp/components/ListTable/ListTableHeaders';
 import ListTableRows from '@givewp/components/ListTable/ListTableRows';
+import ProductRecommendation from '@givewp/components/ListTable/ProductRecommendation';
 
 export interface ListTableProps {
     //required
@@ -184,6 +185,7 @@ export const ListTable = ({
                             </tr>
                         </thead>
                         <tbody className={styles.tableContent}>
+                            <ProductRecommendation />
                             <ListTableRows
                                 columns={visibleColumns}
                                 data={data}

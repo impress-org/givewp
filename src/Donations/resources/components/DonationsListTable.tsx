@@ -19,6 +19,7 @@ declare global {
             paymentMode: boolean;
             manualDonations: boolean;
             pluginUrl: string;
+            recurringUpgradeOption: boolean;
         };
     }
 }
