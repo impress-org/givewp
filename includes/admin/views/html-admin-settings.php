@@ -86,8 +86,11 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
         <div class="nav-tab-wrapper give-nav-tab-wrapper">
             <?php
             foreach ($tabs as $name => $label) {
-                echo '<a href="' . admin_url('edit.php?post_type=give_forms&page=' . self::$setting_filter_prefix . "&tab={$name}") . '" class="nav-tab ' . ($current_tab === $name ? 'nav-tab-active' : 'give-mobile-hidden') . '">' . $label . '</a>';
+                $target = $name === 'recurring' ? 'target="_blank" ' : '';
+                $urlPath = $name === 'recurring' ? 'https://docs.givewp.com/subscriptions' : admin_url('edit.php?post_type=give_forms&page=' . self::$setting_filter_prefix . "&tab={$name}");
+                echo '<a ' . $target . 'href="' . $urlPath . '" class="nav-tab ' . ($current_tab === $name ? 'nav-tab-active' : 'give-mobile-hidden') . '">' . $label . '</a>';
             }
+
 
             /**
              * Trigger Action.
