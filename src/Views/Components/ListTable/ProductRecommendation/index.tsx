@@ -7,6 +7,7 @@ export default function ProductRecommendation() {
     const [showRecommendation, setShowRecommendation] = useState<boolean>(true);
 
     const recommendedAddons = {
+        // ToDo: Use UTM links for documentationPage
         recurring: {
             documentationPage: '',
             tip: 'Increase your fundraising revenue by over 30% with recurring giving campaigns.',

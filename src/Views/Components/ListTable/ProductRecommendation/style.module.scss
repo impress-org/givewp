@@ -5,7 +5,7 @@
     white-space: nowrap;
     padding: .875rem;
     background: #F9F9F9;
-    font-size: .875rem;
+    font-size: 0.875rem;
     color: #707070;
 
     .container {
@@ -33,6 +33,9 @@
             display: flex;
             gap: .55rem;
             margin-left: 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            line-height: .5;
         }
     }
 
