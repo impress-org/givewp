@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Admin View: Settings
  */
@@ -88,7 +89,6 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
                 echo '<a ' . $target . 'href="' . $urlPath . '" class="nav-tab ' . ($current_tab === $name ? 'nav-tab-active' : 'give-mobile-hidden') . '">' . $label . '</a>';
             }
 
-
             /**
              * Trigger Action.
              *
@@ -141,6 +141,9 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
                 <a href="#" id="give-show-sub-nav" class="nav-tab give-not-tab"
                    title="<?php
                    esc_html_e('View remaining setting tabs', 'give'); ?>">
+            <div class="give-sub-nav-tab-wrapper">
+                <a href="#" id="give-show-sub-nav" class="nav-tab give-not-tab" title="<?php
+                esc_html_e('View remaining setting tabs', 'give'); ?>">
                     <span class="dashicons dashicons-arrow-down-alt2"></span>
                 </a>
                 <nav class="give-sub-nav-tab give-hidden"></nav>
