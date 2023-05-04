@@ -14,7 +14,7 @@ class Give_Settings_Recurring_Donations_Core extends Give_Settings_Page
      */
     public function __construct()
     {
-        $this->id    = 'recurring';
+        $this->id = 'recurring';
         $this->label = __('Recurring Donations', 'give');
 
         parent::__construct();

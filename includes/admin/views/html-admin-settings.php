@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Admin View: Settings
  */
@@ -79,76 +80,80 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
         <hr class="wp-header-end hidden">
 
         <div class="nav-tab-wrapper give-nav-tab-wrapper">
-				<?php
-				foreach ( $tabs as $name => $label ) {
-					echo '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=' . self::$setting_filter_prefix . "&tab={$name}" ) . '" class="nav-tab ' . ( $current_tab === $name ? 'nav-tab-active' : 'give-mobile-hidden' ) . '">' . $label . '</a>';
-				}
+            <?php
+            foreach ($tabs as $name => $label) {
+                echo '<a href="' . admin_url('edit.php?post_type=give_forms&page=' . self::$setting_filter_prefix . "&tab={$name}") . '" class="nav-tab ' . ($current_tab === $name ? 'nav-tab-active' : 'give-mobile-hidden') . '">' . $label . '</a>';
+            }
 
-				/**
-				 * Trigger Action.
-				 *
-				 * Note: action dynamically fire on basis of setting page slug.
-				 * For example: if you register a setting page with give-settings menu slug
-				 *              then action will be give-settings_tabs
-				 *
-				 * @since 1.8
-				 */
-				do_action( self::$setting_filter_prefix . '_tabs' );
+            /**
+             * Trigger Action.
+             *
+             * Note: action dynamically fire on basis of setting page slug.
+             * For example: if you register a setting page with give-settings menu slug
+             *              then action will be give-settings_tabs
+             *
+             * @since 1.8
+             */
+            do_action(self::$setting_filter_prefix . '_tabs');
 
-				// Show link to New Reports page
-				$isReports = isset( $_GET['page'] ) && $_GET['page'] === 'give-reports';
-				if ( $isReports === true ) {
-					echo sprintf(
-						'<a href="%1$s" class="nav-tab nav-tab" id="new-reports-link">%2$s</a>',
-						admin_url( 'edit.php?post_type=give_forms&page=give-reports' ),
-						esc_html__( 'New Reports Dashboard', 'give' )
-					);
-				}
-				?>
+            // Show link to New Reports page
+            $isReports = isset($_GET['page']) && $_GET['page'] === 'give-reports';
+            if ($isReports === true) {
+                echo sprintf(
+                    '<a href="%1$s" class="nav-tab nav-tab" id="new-reports-link">%2$s</a>',
+                    admin_url('edit.php?post_type=give_forms&page=give-reports'),
+                    esc_html__('New Reports Dashboard', 'give')
+                );
+            }
+            ?>
 
-				<div class="give-sub-nav-tab-wrapper">
-					<a href="#" id="give-show-sub-nav" class="nav-tab give-not-tab" title="<?php esc_html_e( 'View remaining setting tabs', 'give' ); ?>">
-						<span class="dashicons dashicons-arrow-down-alt2"></span>
-					</a>
-					<nav class="give-sub-nav-tab give-hidden"></nav>
-				</div>
-			</div>
+            <div class="give-sub-nav-tab-wrapper">
+                <a href="#" id="give-show-sub-nav" class="nav-tab give-not-tab" title="<?php
+                esc_html_e('View remaining setting tabs', 'give'); ?>">
+                    <span class="dashicons dashicons-arrow-down-alt2"></span>
+                </a>
+                <nav class="give-sub-nav-tab give-hidden"></nav>
+            </div>
+        </div>
 
-		<?php
+        <?php
 
-		/**
-		 * Trigger Action.
-		 *
-		 * Note: action dynamically fire on basis of setting page slug.
-		 * For example: if you register a setting page with give-settings menu slug and general current tab
-		 *              then action will be give-settings_sections_general_page
-		 *
-		 * @since 1.8
-		 */
-		do_action( self::$setting_filter_prefix . "_sections_{$current_tab}_page" );
+        /**
+         * Trigger Action.
+         *
+         * Note: action dynamically fire on basis of setting page slug.
+         * For example: if you register a setting page with give-settings menu slug and general current tab
+         *              then action will be give-settings_sections_general_page
+         *
+         * @since 1.8
+         */
+        do_action(self::$setting_filter_prefix . "_sections_{$current_tab}_page");
 
-		/**
-		 * Trigger Action.
-		 *
-		 * Note: action dynamically fire on basis of setting page slug.
-		 * For example: if you register a setting page with give-settings menu slug and general current tab
-		 *              then action will be give-settings_settings_general_page
-		 *
-		 * @since 1.8
-		 */
-		do_action( self::$setting_filter_prefix . "_settings_{$current_tab}_page" );
+        /**
+         * Trigger Action.
+         *
+         * Note: action dynamically fire on basis of setting page slug.
+         * For example: if you register a setting page with give-settings menu slug and general current tab
+         *              then action will be give-settings_settings_general_page
+         *
+         * @since 1.8
+         */
+        do_action(self::$setting_filter_prefix . "_settings_{$current_tab}_page");
 
-		wp_nonce_field( 'give-save-settings', '_give-save-settings' );
+        wp_nonce_field('give-save-settings', '_give-save-settings');
 
-		if ( empty( $GLOBALS['give_hide_save_button'] ) ) :
-			?>
-			<div class="give-submit-wrap">
-				<input name="save" class="button-primary give-save-button" type="submit" value="<?php esc_html_e( 'Save changes', 'give' ); ?>"/>
-			</div>
-		<?php endif; ?>
-		<?php echo $form_close_tag; ?>
-	</div>
-	<?php
+        if (empty($GLOBALS['give_hide_save_button'])) :
+            ?>
+            <div class="give-submit-wrap">
+                <input name="save" class="button-primary give-save-button" type="submit" value="<?php
+                esc_html_e('Save changes', 'give'); ?>" />
+            </div>
+        <?php
+        endif; ?>
+        <?php
+        echo $form_close_tag; ?>
+    </div>
+<?php
 else :
 	?>
 	<div class="error">
