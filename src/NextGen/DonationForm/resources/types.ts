@@ -189,6 +189,11 @@ export interface Form extends Group {
         progressPercentage: number;
         isAchieved: boolean;
     };
+    design?: {
+        id: string;
+        name: string;
+        isMultiStep: boolean;
+    };
     nodes: Section[];
 }
 

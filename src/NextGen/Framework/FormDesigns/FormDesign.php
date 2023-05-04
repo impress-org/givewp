@@ -11,6 +11,8 @@ use Give\NextGen\Framework\FormDesigns\Contracts\FormDesignInterface;
  */
 abstract class FormDesign implements FormDesignInterface
 {
+    protected $isMultiStep = false;
+
     /**
      * The unique identifier of the design
      *
@@ -60,5 +62,13 @@ abstract class FormDesign implements FormDesignInterface
     public function dependencies(): array
     {
         return [];
+    }
+
+    /**
+     * @unreleased
+     */
+    public function isMultiStep(): bool
+    {
+        return $this->isMultiStep;
     }
 }

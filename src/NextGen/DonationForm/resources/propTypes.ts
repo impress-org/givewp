@@ -94,6 +94,8 @@ export interface ParagraphProps extends ElementProps {
 
 export interface SectionProps {
     section: SectionType;
+    hideLabel?: boolean;
+    hideDescription?: boolean;
     children: ReactNode;
 }
 

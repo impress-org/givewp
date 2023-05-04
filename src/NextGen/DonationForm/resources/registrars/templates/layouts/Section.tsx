@@ -19,10 +19,19 @@ const SectionHeader = ({name, label, description}: {name: string; label?: string
     );
 };
 
-export default function Section({section: {name, label, description}, children}: SectionProps) {
+export default function Section({
+    section: {name, label, description},
+    hideLabel,
+    hideDescription,
+    children,
+}: SectionProps) {
     return (
         <fieldset className="givewp-layouts-section__fieldset" aria-labelledby={name}>
-            <SectionHeader name={name} label={label} description={description} />
+            <SectionHeader
+                name={name}
+                label={hideLabel ? '' : label}
+                description={hideDescription ? '' : description}
+            />
             <div className="givewp-section-nodes">{children}</div>
         </fieldset>
     );

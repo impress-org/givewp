@@ -8,6 +8,7 @@ use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Helpers\Hooks;
 use Give\NextGen\DonationForm\FormDesigns\ClassicFormDesign\ClassicFormDesign;
 use Give\NextGen\DonationForm\FormDesigns\DeveloperFormDesign\DeveloperFormDesign;
+use Give\NextGen\DonationForm\FormDesigns\MultiStepFormDesign\MultiStepFormDesign;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
@@ -140,6 +141,7 @@ class ServiceProvider implements ServiceProviderInterface
         add_action('givewp_register_form_design', static function (FormDesignRegistrar $formDesignRegistrar) {
             $formDesignRegistrar->registerDesign(ClassicFormDesign::class);
             $formDesignRegistrar->registerDesign(DeveloperFormDesign::class);
+            $formDesignRegistrar->registerDesign(MultiStepFormDesign::class);
         });
     }
 

@@ -9,12 +9,14 @@
   @import "components/amount";
   @import "components/donation-summary";
   @import "components/receipt";
+  @import "components/pagination";
 }
 
 @layer base-elements {
   @import "elements/header";
   @import "elements/form";
   @import "elements/sections";
+  @import "elements/multi-step-form";
 }
 
 @layer base-overrides {

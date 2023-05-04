@@ -22,6 +22,7 @@ import Goal from './layouts/Goal';
 import GoalAchieved from './layouts/GoalAchieved';
 import NodeWrapper from './layouts/NodeWrapper';
 import DonationReceipt from './layouts/DonationReceipt';
+import MultiStepForm from './layouts/MultiStepForm';
 
 const defaultFormTemplates = {
     fields: {
@@ -47,6 +48,7 @@ const defaultFormTemplates = {
         wrapper: NodeWrapper,
         section: SectionLayout,
         form: Form,
+        multiStepForm: MultiStepForm,
         fieldLabel: FieldLabel,
         fieldError: FieldError,
         header: Header,
