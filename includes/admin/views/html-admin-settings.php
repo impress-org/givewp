@@ -1,13 +1,10 @@
 <?php
-
 /**
  * Admin View: Settings
  */
-
 if ( ! defined('ABSPATH')) {
     exit;
 }
-
 
 // Bailout: Do not output anything if setting tab is not defined.
 if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) :
@@ -113,8 +110,7 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
                 );
             }
             ?>
-
-
+            
             <?php
             /**
              * Renders Addon product recommendation link if Recurring Donations is active.
