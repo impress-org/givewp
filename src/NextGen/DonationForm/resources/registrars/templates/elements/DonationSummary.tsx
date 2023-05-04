@@ -5,7 +5,7 @@ import {ReactElement, useCallback} from 'react';
 import {createInterpolateElement} from '@wordpress/element';
 
 /**
- * @unreleased update subscription frequency label
+ * @since 0.3.3 update subscription frequency label
  * @since 0.1.0
  */
 export default function DonationSummary() {

@@ -149,7 +149,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @unreleased update subscription amount label with frequency
+     * @since 0.3.3 update subscription amount label with frequency
      * @since 0.1.0
      *
      * @return void

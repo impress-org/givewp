@@ -32,7 +32,7 @@ class ConvertDonationFormBlocksToFieldsApi
     protected $currency;
 
     /**
-     * @unreleased conditionally append blocks if block has inner blocks
+     * @since 0.3.3 conditionally append blocks if block has inner blocks
      * @since 0.1.0
      *
      * @throws TypeNotSupported|NameCollisionException
@@ -59,7 +59,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @unreleased remove innerBlock appending
+     * @since 0.3.3 remove innerBlock appending
      * @since 0.1.0
      */
     protected function convertTopLevelBlockToSection(BlockModel $block, int $blockIndex): Section
