@@ -114,7 +114,13 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
             }
             ?>
 
+
             <?php
+            /**
+             * Renders Addon product recommendation link if Recurring Donations is active.
+             *
+             * @unreleased
+             */
             if (class_exists('Give_Recurring')) {
                 echo '
                     <a class="give-nav-addons-tab" href="https://givewp.com/addons/" target="_blank">

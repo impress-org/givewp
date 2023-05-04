@@ -2,6 +2,7 @@
 
 /**
  * @unreleased Removed React rendering element.
+ *
  * @since      2.17.1
  */
 class Give_Settings_Recurring_Donations_Core extends Give_Settings_Page
