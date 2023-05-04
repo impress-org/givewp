@@ -9,6 +9,10 @@ declare global {
         },
         formBuilderData?: {
             gateways: Gateway[];
+            recurringAddonData?: {
+                isInstalled: boolean;
+            },
+            gatewaySettingsUrl: string;
         },
     }
 }

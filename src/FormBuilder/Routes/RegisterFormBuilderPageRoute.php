@@ -7,6 +7,7 @@ use Give\FormBuilder\ViewModels\FormBuilderViewModel;
 use Give\Framework\EnqueueScript;
 
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
+use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 
 use function wp_enqueue_style;
@@ -85,20 +86,24 @@ class RegisterFormBuilderPageRoute
 
         $formBuilderStorage->loadInFooter()->enqueue();
 
-        $enabledGateways = array_filter(
-            give(DonationFormRepository::class)->getEnabledPaymentGateways($donationFormId),
+        $enabledGateways = array_keys(give_get_option('gateways'));
+
+        $supportedGateways = array_filter(
+            give(PaymentGatewayRegister::class)->getPaymentGateways(),
             static function ($gateway) {
-                return $gateway instanceof NextGenPaymentGatewayInterface;
+                return is_a($gateway, NextGenPaymentGatewayInterface::class, true);
             }
         );
 
-        $builderPaymentGatewayData = array_map(function ($gateway) {
+        $builderPaymentGatewayData = array_map(static function ($gatewayClass) use ($enabledGateways) {
+            $gateway = give($gatewayClass);
             return [
                 'id' => $gateway::id(),
+                'enabled' => in_array($gateway::id(), $enabledGateways, true),
                 'label' => give_get_gateway_checkout_label($gateway::id()) ?? $gateway->getPaymentMethodLabel(),
                 'supportsSubscriptions' => $gateway->supportsSubscriptions(),
             ];
-        }, $enabledGateways);
+        }, $supportedGateways);
 
         (new EnqueueScript(
             '@givewp/form-builder/script',
@@ -109,6 +114,11 @@ class RegisterFormBuilderPageRoute
         ))->loadInFooter()
             ->registerLocalizeData('formBuilderData', [
                 'gateways' => array_values($builderPaymentGatewayData),
+                'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
+                'recurringAddonData' => [
+                    'isInstalled' => defined('GIVE_RECURRING_VERSION') ,
+                ],
+                'gatewaySettingsUrl' => admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways'),
             ])
             ->enqueue();
 

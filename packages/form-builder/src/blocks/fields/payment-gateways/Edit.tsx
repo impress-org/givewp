@@ -32,7 +32,7 @@ export default function Edit(props: BlockEditProps<any>) {
             }}
         >
             <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
-                {gateways.map((gateway) => (
+                {gateways.filter(gateway => gateway.enabled).map((gateway) => (
                     <GatewayItem
                         key={gateway.id}
                         label={gateway.label}
