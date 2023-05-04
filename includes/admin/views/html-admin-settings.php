@@ -117,7 +117,7 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
             <?php
             if (class_exists('Give_Recurring')) {
                 echo '
-                    <a class="give-nav-addons-tab" href="/wp-admin/edit.php?post_type=give_forms&page=give-add-ons" target="blank">
+                    <a class="give-nav-addons-tab" href="https://givewp.com/addons/" target="_blank">
                         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M4.5 1C4.5 0.447715 4.05228 0 3.5 0C2.94772 0 2.5 0.447715 2.5 1V2.5H1C0.447715 2.5 0 2.94772 0 3.5C0 4.05228 0.447715 4.5 1 4.5H2.5V6C2.5 6.55228 2.94772 7 3.5 7C4.05228 7 4.5 6.55228 4.5 6V4.5H6C6.55228 4.5 7 4.05228 7 3.5C7 2.94772 6.55228 2.5 6 2.5H4.5V1Z"
