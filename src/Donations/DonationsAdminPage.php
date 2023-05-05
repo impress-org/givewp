@@ -72,6 +72,7 @@ class DonationsAdminPage
             'paymentMode' => give_is_test_mode(),
             'manualDonations' => Utils::isPluginActive('give-manual-donations/give-manual-donations.php'),
             'pluginUrl' => GIVE_PLUGIN_URL,
+            'dismissedRecommendations' => $this->getDismissedRecommendations(),
         ];
 
         EnqueueScript::make('give-admin-donations', 'assets/dist/js/give-admin-donations.js')
@@ -135,4 +136,25 @@ class DonationsAdminPage
             ],
         ], $options);
     }
+
+    private function getDismissedRecommendations()
+    {
+        $dismissedRecommendations = [];
+
+        $optionNames = [
+            'givewp_recurring_recommendation_dismissed',
+            'givewp_fee_recovery_recommendation_dismissed',
+            'givewp_designated_funds_recommendation_dismissed',
+        ];
+
+        foreach ($optionNames as $optionName) {
+            $dismissed = get_option($optionName, false);
+            if ($dismissed) {
+                $dismissedRecommendations[] = $optionName;
+            }
+        }
+
+        return $dismissedRecommendations;
+    }
+
 }
