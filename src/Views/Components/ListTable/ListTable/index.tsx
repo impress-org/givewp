@@ -133,7 +133,7 @@ export const ListTable = ({
                 >
                     {loadingOverlay && (
                         <div className={cx(styles.overlay, loadingOverlay)}>
-                            <div className={isScrollable() && styles.relativeContainer}>
+                            <div className={cx(isScrollable() && styles.relativeContainer)}>
                                 <div className={styles.fixedContent}>
                                     <Spinner size={'medium'} />
                                 </div>
