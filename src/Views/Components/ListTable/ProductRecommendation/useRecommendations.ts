@@ -44,8 +44,9 @@ const recommendedProducts: RecommendedProducts = {
 };
 
 export function useRecommendations() {
-    const [dismissedRecommendations, setDismissedRecommendations] = useState<string[]>([]);
-
+    const [dismissedRecommendations, setDismissedRecommendations] = useState<string[]>(
+        window.GiveDonations.dismissedRecommendations
+    );
     const getRecommendation = (): RecommendedProductData | null => {
         const options = [
             recommendedProducts.recurring,
@@ -78,7 +79,7 @@ export function useRecommendations() {
 
             const result = await response.json();
             if (result.success) {
-                setDismissedRecommendations((prev) => [...prev, data.enum]);
+                setDismissedRecommendations((prev) => [...prev, data.option]);
             }
         } catch (error) {
             console.error(error);
