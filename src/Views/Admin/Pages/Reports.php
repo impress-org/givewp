@@ -61,6 +61,9 @@ class Reports
             'currencies' => array_keys(give_get_currencies_list()),
             'currency' => give_get_currency(),
             'testMode' => give_is_test_mode(),
+            'pluginUrl' => GIVE_PLUGIN_URL,
+            'recommendRecurringAddon' => GIVE_PLUGIN_URL,
+            'productRecommendation' => get_option('givewp-reports-recurring-recommendation', false),
         ];
 
         EnqueueScript::make('give-admin-reports-v3-js', 'assets/dist/js/admin-reports.js')
