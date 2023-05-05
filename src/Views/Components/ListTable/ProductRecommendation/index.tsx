@@ -2,7 +2,10 @@ import React, {ReactElement, useState} from 'react';
 import styles from './style.module.scss';
 import {__} from '@wordpress/i18n';
 import {createInterpolateElement} from '@wordpress/element';
-import {useRecommendations, RecommendedProductData from '@givewp/components/ListTable/ProductRecommendation/useRecommendations';
+import {
+    useRecommendations,
+    RecommendedProductData,
+} from '@givewp/components/ListTable/ProductRecommendation/useRecommendations';
 
 // @unreleased
 export default function ProductRecommendation() {
