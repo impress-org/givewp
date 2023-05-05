@@ -2,45 +2,36 @@ import React, {ReactElement, useState} from 'react';
 import styles from './style.module.scss';
 import {__} from '@wordpress/i18n';
 import {createInterpolateElement} from '@wordpress/element';
+import {
+    recommendedProductData,
+    useRecommendations,
+} from '@givewp/components/ListTable/ListTable/ProductRecommendation/useRecommendations';
 
 // @unreleased
 export default function ProductRecommendation() {
-    const [showRecommendation, setShowRecommendation] = useState<boolean>(true);
+    const {getRecommendation, removeRecommendation} = useRecommendations();
+    const selectedOption = getRecommendation();
+    const [showRecommendation, setShowRecommendation] = useState<boolean>(!!selectedOption);
 
-    const closeMessage = () => {
+    const closeMessage = async (async) => {
+        await removeRecommendation({
+            option: selectedOption.enum,
+        });
+
         setShowRecommendation(false);
     };
 
-    return showRecommendation && <RotatingMessage closeMessage={closeMessage} />;
+    return showRecommendation && <RotatingMessage selectedOption={selectedOption} closeMessage={closeMessage} />;
 }
 
 // @unreleased
-function RotatingMessage({closeMessage}) {
-    const recommendedAddons = {
-        // ToDo: Use UTM links for documentationPage
-        recurring: {
-            documentationPage: '',
-            message: 'Increase your fundraising revenue by over 30% with recurring giving campaigns.',
-            innerHtml: __('Get More Donations', 'give'),
-        },
-        feeRecovery: {
-            documentationPage: '',
-            message:
-                'Maximize your total donated income to 100% by providing donors with the option to cover the credit card processing fees.',
-            innerHtml: __('Get More Donations', 'give'),
-        },
-        designatedFunds: {
-            documentationPage: ' ',
-            message:
-                'Elevate your fundraising campaigns with multiple forms, unlimited donation funds, and tailored fundraising reports.',
-            innerHtml: __('Start creating designated funds', 'give'),
-        },
-    };
+interface RotatingMessageProps {
+    selectedOption: recommendedProductData;
+    closeMessage: (async: any) => Promise<void>;
+}
 
-    const options = [recommendedAddons.recurring, recommendedAddons.feeRecovery, recommendedAddons.designatedFunds];
-    const randomIndex = Math.floor(Math.random() * 3);
-    const selectedOption = options[randomIndex];
-    const {message, documentationPage, innerHtml} = selectedOption;
+function RotatingMessage({selectedOption, closeMessage}: RotatingMessageProps) {
+    const {message = '', documentationPage = '', innerHtml = ''} = selectedOption;
 
     return (
         <tr>
@@ -75,7 +66,9 @@ function RotatingMessage({closeMessage}) {
 }
 
 // @unreleased
-function TranslatedMessage({message}) {
+type TranslatedMessageProps = {message: string};
+
+function TranslatedMessage({message}: TranslatedMessageProps) {
     const ProTip = <strong>Pro Tip: </strong>;
     const Recommendation = <p>{message}</p>;
 
@@ -85,5 +78,3 @@ function TranslatedMessage({message}) {
 
     return <Message />;
 }
-
-
