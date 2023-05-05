@@ -27,6 +27,7 @@ class RecommendedProducts extends Endpoint
                 [
                     'methods' => ['POST'],
                     'callback' => [$this, 'handleRequest'],
+                    'permission_callback' => [$this, 'permissionsCheck'],
                     'args' => [
                         'option' => [
                             'type' => 'string',
@@ -41,6 +42,22 @@ class RecommendedProducts extends Endpoint
                 ],
             ]
         );
+    }
+
+    /**
+     * @unreleased
+     */
+    public function permissionsCheck()
+    {
+        if ( ! current_user_can('manage_options')) {
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You don\'t have permission to edit Donations', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );
+        }
+
+        return true;
     }
 
     /**

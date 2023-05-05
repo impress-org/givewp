@@ -3,11 +3,13 @@ import styles from './style.module.scss';
 import {__} from '@wordpress/i18n';
 import {createInterpolateElement} from '@wordpress/element';
 import {
-    useRecommendations,
     RecommendedProductData,
+    useRecommendations,
 } from '@givewp/components/ListTable/ProductRecommendation/useRecommendations';
 
-// @unreleased
+/**
+ * @unreleased
+ */
 export default function ProductRecommendation() {
     const {getRecommendation, removeRecommendation} = useRecommendations();
     const selectedOption = getRecommendation();
@@ -24,7 +26,9 @@ export default function ProductRecommendation() {
     return showRecommendation && <RotatingMessage selectedOption={selectedOption} closeMessage={closeMessage} />;
 }
 
-// @unreleased
+/**
+ * @unreleased
+ */
 interface RotatingMessageProps {
     selectedOption: RecommendedProductData;
     closeMessage: (async: any) => Promise<void>;
@@ -65,7 +69,9 @@ function RotatingMessage({selectedOption, closeMessage}: RotatingMessageProps) {
     );
 }
 
-// @unreleased
+/**
+ * @unreleased
+ */
 type TranslatedMessageProps = {message: string};
 
 function TranslatedMessage({message}: TranslatedMessageProps) {

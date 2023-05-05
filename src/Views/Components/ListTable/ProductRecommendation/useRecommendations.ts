@@ -43,6 +43,9 @@ const recommendedProducts: RecommendedProducts = {
     },
 };
 
+/**
+ * @unreleased
+ */
 export function useRecommendations() {
     const [dismissedRecommendations, setDismissedRecommendations] = useState<string[]>(
         window.GiveDonations.dismissedRecommendations
@@ -63,7 +66,7 @@ export function useRecommendations() {
         const randomIndex = Math.floor(Math.random() * availableOptions.length);
         return availableOptions[randomIndex];
     };
-
+    
     const removeRecommendation = async (data: {option: EnumValues}): Promise<void> => {
         const url = `/wp-json/give-api/v2/admin/recommended-options`;
 
