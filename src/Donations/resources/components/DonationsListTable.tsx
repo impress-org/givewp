@@ -19,7 +19,7 @@ declare global {
             paymentMode: boolean;
             manualDonations: boolean;
             pluginUrl: string;
-            dismissedRecommendations: any;
+            dismissedRecommendations: Array<string>;
         };
     }
 }
