@@ -117,8 +117,9 @@ class AjaxRequestHandler
     }
 
     /**
-     * give_paypal_commerce_get_partner_url action handler
+     * This function handle ajax request with give_paypal_commerce_get_partner_url action.
      *
+     * @unreleased Add support for mode param.
      * @since 2.9.0
      */
     public function onGetPartnerUrlAjaxRequestHandler()
@@ -129,16 +130,22 @@ class AjaxRequestHandler
             wp_send_json_error('Must include valid 2-character country code');
         }
 
+        if (empty($country = $_GET['mode']) || ! in_array($country, ['sandbox', 'live'])) {
+            wp_send_json_error('Must include valid mode');
+        }
+
         $country = sanitize_text_field(wp_unslash($_GET['countryCode']));
         $mode = sanitize_text_field(wp_unslash($_GET['mode']));
 
         $data = $this->payPalAuth->getSellerPartnerLink(
-            admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce'),
+            admin_url(
+                'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce'
+            ),
             $country,
             $mode
         );
 
-        if ( ! $data) {
+        if (! $data) {
             wp_send_json_error();
         }
 
