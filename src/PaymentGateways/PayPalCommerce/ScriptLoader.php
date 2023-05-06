@@ -208,6 +208,7 @@ EOT;
     /**
      * Get PayPal partner js url.
      *
+     * @unreleased sandbox PayPal partner js loads slow. So we are using live url for now.
      * @since 2.9.0
      *
      * @return string
@@ -215,9 +216,5 @@ EOT;
     private function getPartnerJsUrl()
     {
         return 'https://www.paypal.com/webapps/merchantboarding/js/lib/lightbox/partner.js';
-//        return sprintf(
-//            '%1$swebapps/merchantboarding/js/lib/lightbox/partner.js',
-//            give(PayPalClient::class)->getHomePageUrl()
-//        );
     }
 }
