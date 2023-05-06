@@ -137,6 +137,9 @@ class AjaxRequestHandler
         $country = sanitize_text_field(wp_unslash($_GET['countryCode']));
         $mode = sanitize_text_field(wp_unslash($_GET['mode']));
 
+        // Set PayPal client mode.
+        give(PayPalClient::class)->mode = $mode;
+
         $data = $this->payPalAuth->getSellerPartnerLink(
             admin_url(
                 'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce'

@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\PayPalCommerce;
 
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
+use Give\PaymentGateways\PayPalCommerce\Repositories\Traits\HasMode;
 use PayPalCheckoutSdk\Core\PayPalHttpClient;
 use PayPalCheckoutSdk\Core\ProductionEnvironment;
 use PayPalCheckoutSdk\Core\SandboxEnvironment;
@@ -16,21 +17,14 @@ use PayPalCheckoutSdk\Core\SandboxEnvironment;
  */
 class PayPalClient
 {
-    /**
-     * Environment mode.
-     *
-     * @since 2.9.0
-     *
-     * @var string
-     */
-    public $mode = null;
+    use HasMode;
 
     /**
      * PayPalClient constructor.
      */
     public function __construct()
     {
-        $this->mode = give_is_test_mode() ? 'sandbox' : 'live';
+        $this->setMode(give_is_test_mode() ? 'sandbox' : 'live');
     }
 
     /**
