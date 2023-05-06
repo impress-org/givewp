@@ -1,4 +1,4 @@
-import {__, sprintf} from '@wordpress/i18n';
+import {__} from '@wordpress/i18n';
 import {ListTablePage} from '@givewp/components';
 import ListTableApi from '@givewp/components/ListTable/api';
 import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
@@ -6,6 +6,7 @@ import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/List
 import {SubscriptionsRowActions} from './SubscriptionsRowActions';
 import {IdBadge} from '@givewp/components/ListTable/TableCell';
 import {Interweave} from 'interweave';
+import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 
 declare global {
     interface Window {
@@ -15,6 +16,7 @@ declare global {
             table: {columns: Array<object>};
             forms: Array<{value: string; text: string}>;
             paymentMode: boolean;
+            pluginUrl: string;
         };
     }
 }
@@ -112,6 +114,19 @@ const bulkActions: Array<BulkActionsConfig> = [
     })(),
 ];
 
+/**
+ * Displays a blank slate for the Subscriptions table.
+ * @since 2.27.0
+ */
+const ListTableBlankSlate = (
+    <BlankSlate
+        imagePath={`${window.GiveSubscriptions.pluginUrl}/assets/dist/images/list-table/blank-slate-recurring-icon.svg`}
+        description={__('No subscriptions found', 'give')}
+        href={'https://docs.givewp.com/subscriptions'}
+        linkText={__('Recurring Donations.', 'give')}
+    />
+);
+
 export default function SubscriptionsListTable() {
     return (
         <ListTablePage
@@ -123,6 +138,7 @@ export default function SubscriptionsListTable() {
             apiSettings={window.GiveSubscriptions}
             filterSettings={filters}
             paymentMode={!!window.GiveSubscriptions.paymentMode}
+            listTableBlankSlate={ListTableBlankSlate}
         >
             <button className={tableStyles.addFormButton} onClick={showLegacyDonations}>
                 {__('Switch to Legacy View')}

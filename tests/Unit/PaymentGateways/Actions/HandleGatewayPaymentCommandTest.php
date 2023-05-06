@@ -20,7 +20,7 @@ class HandleGatewayPaymentCommandTest extends TestCase {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 2.27.0
      * @throws TypeNotSupported|Exception
      */
     public function testShouldHandlePaymentCompleteCommand()
@@ -36,7 +36,7 @@ class HandleGatewayPaymentCommandTest extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 2.27.0
      * @throws TypeNotSupported|Exception
      */
     public function testShouldHandlePaymentProcessingCommand()
@@ -52,7 +52,7 @@ class HandleGatewayPaymentCommandTest extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 2.27.0
      * @throws TypeNotSupported|Exception
      */
     public function testShouldHandleRedirectOffsiteCommand()
@@ -68,7 +68,7 @@ class HandleGatewayPaymentCommandTest extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 2.27.0
      * @throws TypeNotSupported|Exception
      */
     public function testShouldHandleRespondToBrowserCommand()
@@ -84,7 +84,7 @@ class HandleGatewayPaymentCommandTest extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 2.27.0
      * @throws TypeNotSupported|Exception
      */
     public function testShouldThrowTypeNotSupportedForInvalidCommand()

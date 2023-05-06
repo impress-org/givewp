@@ -20,7 +20,7 @@ use Give\Subscriptions\Models\Subscription;
 
 
 /**
- * @unreleased
+ * @since 2.27.0
  */
 class HandleGatewaySubscriptionCommand
 {
@@ -28,7 +28,7 @@ class HandleGatewaySubscriptionCommand
      *
      * Handle gateway subscription command
      *
-     * @unreleased return responses
+     * @since 2.27.0 return responses
      * @since 2.26.0 add RespondToBrowser command
      * @since 2.21.0 Handle RedirectOffsite response.
      * @since 2.18.0
