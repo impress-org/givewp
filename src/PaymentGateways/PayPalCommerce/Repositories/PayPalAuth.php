@@ -125,8 +125,9 @@ class PayPalAuth
     /**
      * Retrieves a Partner Link for on-boarding
      *
-     * @param $returnUrl
-     * @param $country
+     * @unreleased Add support for partner link for different modes.
+     *             Currently, it only supports "sandbox" and "live" modes.
+     * @since 2.9.0
      *
      * @return array|null
      */
