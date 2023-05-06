@@ -125,19 +125,17 @@ class PayPalAuth
     /**
      * Retrieves a Partner Link for on-boarding
      *
-     * @unreleased Add support for partner link for different modes.
-     *             Currently, it only supports "sandbox" and "live" modes.
      * @since 2.9.0
      *
      * @return array|null
      */
-    public function getSellerPartnerLink($returnUrl, $country, $mode)
+    public function getSellerPartnerLink($returnUrl, $country)
     {
         $response = wp_remote_retrieve_body(
             wp_remote_post(
                 sprintf(
                     $this->connectClient->getApiUrl('paypal?mode=%1$s&request=partner-link'),
-                    $mode
+                    $this->payPalClient->mode
                 ),
                 [
                     'body' => [
