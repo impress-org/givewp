@@ -137,24 +137,33 @@ class DonationsAdminPage
         ], $options);
     }
 
-    private function getDismissedRecommendations()
+    /**
+     * Retrieve a list of dismissed addon recommendations.
+     *
+     * @unreleased
+     * @return array
+     */
+    private function getDismissedRecommendations(): array
     {
         $dismissedRecommendations = [];
 
+        $recurringAddonIsActive = Utils::isPluginActive('give-recurring/give-recurring.php');
+        $feeRecoveryAddonIsActive = Utils::isPluginActive('give-fee-recovery/give-fee-recovery.php');
+        $designatedFundsAddonIsActive = Utils::isPluginActive('give-funds/give-funds.php');
+
         $optionNames = [
-            'givewp_recurring_recommendation_dismissed',
-            'givewp_fee_recovery_recommendation_dismissed',
-            'givewp_designated_funds_recommendation_dismissed',
+            'givewp_donations_recurring_recommendation_dismissed' => $recurringAddonIsActive,
+            'givewp_donations_fee_recovery_recommendation_dismissed' => $feeRecoveryAddonIsActive,
+            'givewp_donations_designated_funds_recommendation_dismissed' => $designatedFundsAddonIsActive,
         ];
 
-        foreach ($optionNames as $optionName) {
+        foreach ($optionNames as $optionName => $isActive) {
             $dismissed = get_option($optionName, false);
-            if ($dismissed) {
+            if ($dismissed || $isActive) {
                 $dismissedRecommendations[] = $optionName;
             }
         }
 
         return $dismissedRecommendations;
     }
-
 }
