@@ -33,9 +33,9 @@ class RecommendedProducts extends Endpoint
                             'type' => 'string',
                             'required' => true,
                             'enum' => [
-                                'givewp_recurring_recommendation_dismissed',
-                                'givewp_fee_recovery_recommendation_dismissed',
-                                'givewp_designated_funds_recommendation_dismissed',
+                                'givewp_donations_recurring_recommendation_dismissed',
+                                'givewp_donations_fee_recovery_recommendation_dismissed',
+                                'givewp_donations_designated_funds_recommendation_dismissed',
                             ],
                         ],
                     ],
@@ -75,18 +75,18 @@ class RecommendedProducts extends Endpoint
         try {
             switch ($request->get_param('option')) {
                 case 'givewp_donations_recurring_recommendation_dismissed':
-                    update_option('givewp_recurring_recommendation_dismissed', true);
-                    $successes[] = 'givewp_recurring_recommendation_dismissed';
+                    update_option('givewp_donations_recurring_recommendation_dismissed', true);
+                    $successes[] = 'givewp_donations_recurring_recommendation_dismissed';
                     break;
 
                 case 'givewp_donations_fee_recovery_recommendation_dismissed' :
-                    update_option('givewp_fee_recovery_recommendation_dismissed', true);
-                    $successes[] = 'givewp_fee_recovery_recommendation_dismissed';
+                    update_option('givewp_donations_fee_recovery_recommendation_dismissed', true);
+                    $successes[] = 'givewp_donations_fee_recovery_recommendation_dismissed';
                     break;
 
                 case 'givewp_donations_designated_funds_recommendation_dismissed':
-                    update_option('givewp_designated_funds_recommendation_dismissed', true);
-                    $successes[] = 'givewp_designated_funds_recommendation_dismissed';
+                    update_option('givewp_donations_designated_funds_recommendation_dismissed', true);
+                    $successes[] = 'givewp_donations_designated_funds_recommendation_dismissed';
                     break;
 
                 default:
