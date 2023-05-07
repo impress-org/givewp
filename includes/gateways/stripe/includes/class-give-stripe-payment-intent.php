@@ -32,16 +32,16 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 		}
 
 		/**
-		 * This function is used to create payment intent in Stripe.
-		 *
-		 * @param array $args List of parameters required to create payment intent.
-		 *
-         * @unreleased Stripe payment intent error displays Exception message.
-		 * @since  2.5.0
-		 * @access public
-		 *
-		 * @return bool|\Stripe\PaymentIntent
-		 */
+         * This function is used to create payment intent in Stripe.
+         *
+         * @unreleased Stripe payment intent error sets a more user friendly Exception message.
+         * @since      2.5.0
+         * @access     public
+         *
+         * @param array $args List of parameters required to create payment intent.
+         *
+         * @return bool|\Stripe\PaymentIntent
+         */
 		public function create( $args ) {
 
 			// Add application fee, if the Stripe premium add-on is not active.
