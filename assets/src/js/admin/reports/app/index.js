@@ -51,6 +51,7 @@ const App = () => {
                 <hr className="wp-header-end hidden" />
                 <Tabs />
                 {shouldShowRecommendation && <ProductRecommendation />}
+                <br />
                 <Routes />
             </div>
         </StoreProvider>

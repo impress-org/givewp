@@ -55,6 +55,8 @@ class Reports
             return;
         }
 
+        wp_enqueue_style('givewp-design-system-foundation');
+
         $data = [
             'legacyReportsUrl' => admin_url('/edit.php?post_type=give_forms&page=give-reports&legacy=true'),
             'allTimeStart' => $this->get_all_time_start(),

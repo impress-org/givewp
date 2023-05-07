@@ -4,7 +4,7 @@
     justify-content: space-between;
     white-space: nowrap;
     padding: .875rem;
-    margin: 12px 0;
+    margin-top: 0.8rem;
     background: #F9F9F9;
     border: 1px solid #E6E6E6;
     font-size: 0.875rem;
@@ -19,24 +19,25 @@
             align-items: center;
 
             strong {
-                margin: 0 4px 0 10px;
+                margin: 0 var(--givewp-spacing-1) 0 10px;
                 font-weight: 700;
+                color: var(--givewp-spacing-1)
             }
 
             p {
                 display: inline;
                 margin: 0;
                 padding: 0;
-                font-weight: 500;
+                font-weight: var(--givewp-font-weight-paragraph-lg);
             }
         }
 
         a {
             display: flex;
             gap: .55rem;
-            margin-left: 1rem;
+            margin-left: var(--givewp-spacing-4);
             font-size: 0.875rem;
-            font-weight: 500;
+            font-weight: var(--givewp-font-weight-paragraph-lg);
         }
     }
 
