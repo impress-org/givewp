@@ -185,7 +185,7 @@ export const ListTable = ({
                             </tr>
                         </thead>
                         <tbody className={styles.tableContent}>
-                            {window.GiveDonations && <ProductRecommendation />}
+                            {window.GiveDonations && <ProductRecommendation columns={visibleColumns.length + 1} />}
                             <ListTableRows
                                 columns={visibleColumns}
                                 data={data}

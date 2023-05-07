@@ -10,7 +10,8 @@ import {
 /**
  * @unreleased
  */
-export default function ProductRecommendation() {
+
+export default function ProductRecommendation({columns}: { columns: number }) {
     const {getRecommendation, removeRecommendation} = useRecommendations();
     const selectedOption = getRecommendation();
     const [showRecommendation, setShowRecommendation] = useState<boolean>(!!selectedOption);
@@ -23,7 +24,11 @@ export default function ProductRecommendation() {
         setShowRecommendation(false);
     };
 
-    return showRecommendation && <RotatingMessage selectedOption={selectedOption} closeMessage={closeMessage} />;
+    return (
+        showRecommendation && (
+            <RotatingMessage columns={columns} selectedOption={selectedOption} closeMessage={closeMessage} />
+        )
+    );
 }
 
 /**
@@ -32,14 +37,15 @@ export default function ProductRecommendation() {
 interface RotatingMessageProps {
     selectedOption: RecommendedProductData;
     closeMessage: (async: any) => Promise<void>;
+    columns: number;
 }
 
-function RotatingMessage({selectedOption, closeMessage}: RotatingMessageProps) {
+function RotatingMessage({selectedOption, closeMessage, columns}: RotatingMessageProps) {
     const {message = '', documentationPage = '', innerHtml = ''} = selectedOption;
 
     return (
         <tr>
-            <td colSpan={8}>
+            <td colSpan={columns}>
                 <div className={styles.productRecommendation}>
                     <div className={styles.container}>
                         <div>
