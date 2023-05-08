@@ -2,6 +2,23 @@
 
 namespace Give\ServiceProviders;
 
+use Give\API\Endpoints\Logs\FlushLogs;
+use Give\API\Endpoints\Logs\GetLogs;
+use Give\API\Endpoints\Migrations\GetMigrations;
+use Give\API\Endpoints\Migrations\RunMigration;
+use Give\API\Endpoints\Reports\AverageDonation;
+use Give\API\Endpoints\Reports\FormPerformance;
+use Give\API\Endpoints\Reports\Income;
+use Give\API\Endpoints\Reports\IncomeBreakdown;
+use Give\API\Endpoints\Reports\PaymentMethods;
+use Give\API\Endpoints\Reports\PaymentStatuses;
+use Give\API\Endpoints\Reports\ProductRecommendation;
+use Give\API\Endpoints\Reports\RecentDonations;
+use Give\API\Endpoints\Reports\TopDonors;
+use Give\API\Endpoints\Reports\TotalDonors;
+use Give\API\Endpoints\Reports\TotalIncome;
+use Give\API\Endpoints\Reports\TotalRefunds;
+use Give\API\RestRoute;
 use Give\DonationForms\Endpoints\FormActions;
 use Give\DonationForms\Endpoints\ListDonationForms;
 use Give\DonationForms\Endpoints\SwitchDonationFormView;
@@ -14,22 +31,6 @@ use Give\Donors\Endpoints\SwitchDonorView;
 use Give\Subscriptions\Endpoints\ListSubscriptions;
 use Give\Subscriptions\Endpoints\SubscriptionActions;
 use Give\Subscriptions\Endpoints\SwitchSubscriptionView;
-use Give\API\Endpoints\Logs\FlushLogs;
-use Give\API\Endpoints\Logs\GetLogs;
-use Give\API\Endpoints\Migrations\GetMigrations;
-use Give\API\Endpoints\Migrations\RunMigration;
-use Give\API\Endpoints\Reports\AverageDonation;
-use Give\API\Endpoints\Reports\FormPerformance;
-use Give\API\Endpoints\Reports\Income;
-use Give\API\Endpoints\Reports\IncomeBreakdown;
-use Give\API\Endpoints\Reports\PaymentMethods;
-use Give\API\Endpoints\Reports\PaymentStatuses;
-use Give\API\Endpoints\Reports\RecentDonations;
-use Give\API\Endpoints\Reports\TopDonors;
-use Give\API\Endpoints\Reports\TotalDonors;
-use Give\API\Endpoints\Reports\TotalIncome;
-use Give\API\Endpoints\Reports\TotalRefunds;
-use Give\API\RestRoute;
 
 class RestAPI implements ServiceProvider
 {
@@ -64,6 +65,7 @@ class RestAPI implements ServiceProvider
         FormActions::class,
         GetMigrations::class,
         RunMigration::class,
+        ProductRecommendation::class,
     ];
 
     /**
