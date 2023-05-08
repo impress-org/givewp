@@ -1,28 +1,19 @@
 import {ReactElement, useState} from 'react';
 import {__} from '@wordpress/i18n';
 import {createInterpolateElement} from '@wordpress/element';
-// import {
-//     RecommendedProductData,
-//     useRecommendations,
-// } from '@givewp/components/ListTable/ProductRecommendation/useRecommendations';
 import {getWindowData} from '../../utils';
-
 import './style.scss';
 
 /**
  * @unreleased
  */
 export default function ProductRecommendation() {
-    // const {getRecommendation, removeRecommendation} = useRecommendations();
     const [showRecommendation, setShowRecommendation] = useState<boolean>(true);
 
     const pluginUrl = getWindowData('pluginUrl');
 
     const closeMessage = async (async) => {
-        // await removeRecommendation({
-        //     option: selectedOption.enum,
-        // });
-
+        await removeRecommendation();
         setShowRecommendation(false);
     };
 
@@ -65,3 +56,26 @@ function TranslatedMessage() {
 
     return <Message />;
 }
+
+const removeRecommendation = async () => {
+    const option = 'givewp_reports_recurring_recommendation_dismissed';
+    const apiRoot = getWindowData('apiRoot');
+    const apiNonce = getWindowData('apiNonce');
+
+    try {
+        const response = await fetch(`${apiRoot}/product-recommendation`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-WP-Nonce': apiNonce,
+            },
+            body: JSON.stringify({option}),
+        });
+
+        const data = await response.json();
+
+        return data;
+    } catch (error) {
+        console.error(error);
+    }
+};

@@ -28,8 +28,9 @@ class Reports
 
     public function __construct()
     {
-        // Do nothing
+
     }
+
 
     // Enqueue app scripts
     public function enqueue_scripts($base)
@@ -65,7 +66,9 @@ class Reports
             'testMode' => give_is_test_mode(),
             'pluginUrl' => GIVE_PLUGIN_URL,
             'recommendRecurringAddon' => GIVE_PLUGIN_URL,
-            'productRecommendation' => get_option('givewp-reports-recurring-recommendation', false),
+            'productRecommendation' => get_option('givewp_reports_recurring_recommendation_dismissed', false),
+            'apiRoot' => esc_url_raw(rest_url('give-api/v2/reports')),
+            'apiNonce' => wp_create_nonce('wp_rest'),
         ];
 
         EnqueueScript::make('give-admin-reports-v3-js', 'assets/dist/js/admin-reports.js')
