@@ -3,7 +3,6 @@
 namespace Give\API\Endpoints\Reports;
 
 use WP_Error;
-use WP_REST_Request;
 use WP_REST_Response;
 
 /**
@@ -22,7 +21,6 @@ class ProductRecommendation extends Endpoint
     }
 
     /**
-     * @inheritDoc
      *
      * @unreleased
      */
@@ -47,13 +45,11 @@ class ProductRecommendation extends Endpoint
     }
 
     /**
+     * @inheritDoc
+     *
      * @unreleased
-     *
-     * @param WP_REST_Request $request
-     *
-     * @return WP_REST_Response
      */
-    public function handleRequest(WP_REST_Request $request)
+    public function handleRequest($request)
     {
         $errors = [];
         $successes = [];
