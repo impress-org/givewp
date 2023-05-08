@@ -14,9 +14,12 @@ use WP_REST_Response;
 class ProductRecommendation extends Endpoint
 {
     /**
-     * @var string
+     * @unreleased
      */
-    protected $endpoint = 'product-recommendation';
+    public function __construct()
+    {
+        $this->endpoint = 'product-recommendation';
+    }
 
     /**
      * @inheritDoc
@@ -26,7 +29,6 @@ class ProductRecommendation extends Endpoint
     public function registerRoute()
     {
         register_rest_route(
-            'give-api/v2/reports/',
             $this->endpoint,
             [
                 [
@@ -42,22 +44,6 @@ class ProductRecommendation extends Endpoint
                 ],
             ]
         );
-    }
-
-    /**
-     * @unreleased
-     */
-    public function permissionsCheck()
-    {
-        if ( ! current_user_can('manage_options')) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You don\'t have permission to edit Donations', 'give'),
-                ['status' => $this->authorizationStatusCode()]
-            );
-        }
-
-        return true;
     }
 
     /**

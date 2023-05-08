@@ -66,7 +66,7 @@ class Reports
             'testMode' => give_is_test_mode(),
             'pluginUrl' => GIVE_PLUGIN_URL,
             'recommendRecurringAddon' => GIVE_PLUGIN_URL,
-            'productRecommendation' => get_option('givewp_reports_recurring_recommendation_dismissed', false),
+            'productRecommendation' => $this->getDismissedRecommendation(),
             'apiRoot' => esc_url_raw(rest_url('give-api/v2/reports')),
             'apiNonce' => wp_create_nonce('wp_rest'),
         ];
@@ -122,4 +122,21 @@ class Reports
 
         return isset($donations[0]) ? $donations[0]->date : $start->format('Y-m-d H:i:s');
     }
+
+    /**
+     * @unreleased
+     */
+    private function getDismissedRecommendation(): string
+    {
+        $dismissedOption = '';
+        $option = get_option('givewp_reports_recurring_recommendation_dismissed', false);
+        $recurringAddonIsActive = '';
+
+        if ($option || $recurringAddonIsActive) {
+            $dismissedOption = 'givewp_reports_recurring_recommendation_dismissed';
+        }
+
+        return $dismissedOption;
+    }
 }
+
