@@ -96,30 +96,15 @@
         },
         "innerBlocks": [
             {
+                "name": "custom-block-editor/donation-summary",
+                "clientId": "b7114360-8542-4043-8296-26d2ae995d24",
+                "isValid": true,
+                "attributes": [],
+                "innerBlocks": []
+            },
+            {
                 "clientId": "145d8b8a-1870-4516-b0d5-fa7848578819",
                 "name": "custom-block-editor/payment-gateways",
-                "isValid": true,
-                "attributes": {
-                    "lock": {
-                        "remove": true
-                    }
-                },
-                "innerBlocks": []
-            }
-        ]
-    },
-    {
-        "clientId": "c1f1f1f1-1f1f-1f1f-1f1f-1f1f1f1f1f1f",
-        "name": "custom-block-editor/section",
-        "isValid": true,
-        "attributes": {
-            "title": "Donation Summary",
-            "description": "Please review your donation details below."
-        },
-        "innerBlocks": [
-            {
-                "clientId": "d1f1f1f1-1f1f-1f1f-1f1f-1f1f1f1f1f1f",
-                "name": "custom-block-editor/donation-summary",
                 "isValid": true,
                 "attributes": {
                     "lock": {
