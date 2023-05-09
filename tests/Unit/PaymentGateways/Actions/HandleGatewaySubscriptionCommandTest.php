@@ -20,7 +20,7 @@ class HandleGatewaySubscriptionCommandTest extends TestCase {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 2.27.0
      * @throws TypeNotSupported|Exception
      */
     public function testShouldHandleSubscriptionCompleteCommand()
@@ -37,7 +37,7 @@ class HandleGatewaySubscriptionCommandTest extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 2.27.0
      * @throws TypeNotSupported|Exception
      */
     public function testShouldHandleSubscriptionProcessingCommand()
@@ -54,7 +54,7 @@ class HandleGatewaySubscriptionCommandTest extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 2.27.0
      * @throws TypeNotSupported|Exception
      */
     public function testShouldHandleRedirectOffsiteCommand()
@@ -71,7 +71,7 @@ class HandleGatewaySubscriptionCommandTest extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 2.27.0
      * @throws TypeNotSupported|Exception
      */
     public function testShouldHandleRespondToBrowserCommand()
@@ -88,7 +88,7 @@ class HandleGatewaySubscriptionCommandTest extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 2.27.0
      * @throws TypeNotSupported|Exception
      */
     public function testShouldThrowTypeNotSupportedForInvalidCommand()

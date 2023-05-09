@@ -58,6 +58,7 @@ class DonationsAdminPage
 
     /**
      * @unreleased Add dismissed recommendations
+     * @since 2.27.0 Adds "addonsBulkActions" to the GiveDonations object
      * @since      2.24.0 Add ListTable columns
      * @since      2.20.0
      * @since      2.21.2 Localized the admin URL as a base for URL concatenation.
@@ -74,6 +75,7 @@ class DonationsAdminPage
             'manualDonations' => Utils::isPluginActive('give-manual-donations/give-manual-donations.php'),
             'pluginUrl' => GIVE_PLUGIN_URL,
             'dismissedRecommendations' => $this->getDismissedRecommendations(),
+            'addonsBulkActions' => [],
         ];
 
         EnqueueScript::make('give-admin-donations', 'assets/dist/js/give-admin-donations.js')
