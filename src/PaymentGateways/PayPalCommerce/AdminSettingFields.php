@@ -449,7 +449,7 @@ class AdminSettingFields
                                 </span>
                                 <span class="actions">
                                     <button
-                                        id="js-give-paypal-disconnect-paypal-account">
+                                        class="js-give-paypal-disconnect-paypal-account">
                                         <?php esc_html_e('Disconnect', 'give'); ?>
                                     </button>
                                 </span>
