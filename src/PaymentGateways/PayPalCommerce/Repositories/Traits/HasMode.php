@@ -34,4 +34,14 @@ trait HasMode
 
         return $this;
     }
+
+    /**
+     * This function returns the current mode
+     *
+     * @unreleased
+     */
+    public function getMode(): string
+    {
+        return $this->mode;
+    }
 }

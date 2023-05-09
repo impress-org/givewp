@@ -135,7 +135,7 @@ class PayPalAuth
             wp_remote_post(
                 sprintf(
                     $this->connectClient->getApiUrl('paypal?mode=%1$s&request=partner-link'),
-                    $this->payPalClient->mode
+                    $this->payPalClient->getMode()
                 ),
                 [
                     'body' => [
@@ -166,7 +166,7 @@ class PayPalAuth
             $this->connectClient->getApiUrl(
                 sprintf(
                     'paypal?mode=%1$s&request=seller-status',
-                    $this->payPalClient->mode
+                    $this->payPalClient->getMode()
                 )
             ),
             [
@@ -195,7 +195,7 @@ class PayPalAuth
             $this->connectClient->getApiUrl(
                 sprintf(
                     'paypal?mode=%1$s&request=seller-credentials',
-                    $this->payPalClient->mode
+                    $this->payPalClient->getMode()
                 )
             ),
             [
