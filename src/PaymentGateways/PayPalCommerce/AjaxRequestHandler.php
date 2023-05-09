@@ -297,7 +297,7 @@ class AjaxRequestHandler
         );
 
         $standardError = sprintf(
-            '<div id="give-paypal-onboarding-trouble-notice" class="give-hidden"><p class="error-message">%1$s</p><p>%2$s</p></div>',
+            '<div class="give-paypal-onboarding-trouble-notice give-hidden"><p class="error-message">%1$s</p><p>%2$s</p></div>',
             esc_html__('Having trouble connecting to PayPal?', 'give'),
             $actionList
         );
