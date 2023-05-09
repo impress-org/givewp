@@ -71,26 +71,24 @@ window.addEventListener( 'DOMContentLoaded', function() {
 		history.pushState( {}, '', newUrl );
 	}
 
-	/**
-	 * Remove error container.
-	 *
-	 * @since 2.9.6
-	 */
-	function removeErrors() {
-		const errorsContainer = document.querySelector( '.paypal-message-template' );
-
-		if ( errorsContainer ) {
-			errorsContainer.parentElement.remove();
-		}
-	}
-
 	if ( onBoardingButtons.length ) {
         onBoardingButtons.forEach( function( onBoardingButton ) {
             onBoardingButton.addEventListener( 'click', function( evt ) {
                 evt.preventDefault();
-                removeErrors();
 
+                const mode = onBoardingButton.getAttribute( 'data-mode' );
                 const countryCode = countryField.value;
+                const container = {
+                    $el_container: onBoardingButton.closest( 'td.give-forminp' ),
+                    removeErrors: () => {
+                        const errorsContainer = container.$el_container
+                            .querySelector( '.paypal-message-template' );
+
+                        if ( errorsContainer ) {
+                            errorsContainer.parentElement.remove();
+                        }
+                    }
+                }
                 const buttonState = {
                     enable: () => {
                         onBoardingButton.disabled = false;
@@ -106,14 +104,13 @@ window.addEventListener( 'DOMContentLoaded', function() {
                         evt.target.innerText = Give.fn.getGlobalVar( 'loader_translation' ).processing;
                     },
                 };
+                const paypalErrorQuickHelp = container.$el_container.querySelector( '.give-paypal-onboarding-trouble-notice' );
 
+                container.removeErrors();
                 buttonState.disable();
 
-                // Hide paypal quick help message.
-                const paypalErrorQuickHelp = document.getElementById( 'give-paypal-onboarding-trouble-notice' );
+                // Hide PayPal quick help message.
                 paypalErrorQuickHelp && paypalErrorQuickHelp.classList.add( 'give-hidden' );
-
-                const mode = onBoardingButton.getAttribute( 'data-mode' );
 
                 fetch( ajaxurl + `?action=give_paypal_commerce_get_partner_url&countryCode=${ countryCode }&mode=${ mode }` )
                     .then( response => response.json() )
@@ -145,7 +142,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
                                         return div.firstChild;
                                     }
 
-                                    const buttonContainer = document.querySelector( '.connect-button-wrap' );
+                                    const buttonContainer = container.$el_container.querySelector( '.connect-button-wrap' );
                                     paypalErrorQuickHelp && paypalErrorQuickHelp.remove();
                                     buttonContainer.append( createElementFromHTML( res.data ) );
                                 }
@@ -155,7 +152,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
                 return false;
             } );
         })
-	}
+    }
 
 	if ( disconnectPayPalAccountButton ) {
 		disconnectPayPalAccountButton.addEventListener( 'click', function( evt ) {
