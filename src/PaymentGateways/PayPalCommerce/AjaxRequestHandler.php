@@ -138,7 +138,7 @@ class AjaxRequestHandler
         $mode = sanitize_text_field(wp_unslash($_GET['mode']));
 
         // Set PayPal client mode.
-        give(PayPalClient::class)->mode = $mode;
+        give(PayPalClient::class)->setMode($mode);
 
         $data = $this->payPalAuth->getSellerPartnerLink(
             admin_url(
