@@ -119,14 +119,14 @@ class AdminSettingFields
         $isRecurringAddonActive = isset($recurringAddonInfo['Status']) && 'active' === $recurringAddonInfo['Status'];
 
         $paypalLiveSetting = new \stdClass();
-        $paypalLiveSetting->label = esc_html__('PayPal Sandbox Connection', 'give');
+        $paypalLiveSetting->label = esc_html__('PayPal Connection', 'give');
         $paypalLiveSetting->mode = 'live';
         $paypalLiveSetting->connectButtonLabel = esc_html__('Connect with PayPal Live', 'give');
         $paypalLiveSetting->description = esc_html__('PayPal is currently NOT connected.', 'give');
         $paypalLiveSetting->isRecurringAddonActive = $isRecurringAddonActive;
 
         $paypalSandboxSetting = new \stdClass();
-        $paypalSandboxSetting->label = esc_html__('PayPal Connection', 'give');
+        $paypalSandboxSetting->label = esc_html__('PayPal Sandbox Connection', 'give');
         $paypalSandboxSetting->mode = 'sandbox';
         $paypalSandboxSetting->connectButtonLabel = esc_html__('Connect with PayPal Sandbox', 'give');
         $paypalSandboxSetting->description = esc_html__(
