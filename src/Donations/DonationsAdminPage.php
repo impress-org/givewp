@@ -57,9 +57,10 @@ class DonationsAdminPage
     }
 
     /**
-     * @since 2.24.0 Add ListTable columns
-     * @since 2.20.0
-     * @since 2.21.2 Localized the admin URL as a base for URL concatenation.
+     * @unreleased Add dismissed recommendations
+     * @since      2.24.0 Add ListTable columns
+     * @since      2.20.0
+     * @since      2.21.2 Localized the admin URL as a base for URL concatenation.
      */
     public function loadScripts()
     {
@@ -138,9 +139,10 @@ class DonationsAdminPage
     }
 
     /**
-     * Retrieve a list of dismissed addon recommendations.
+     * Retrieve a list of dismissed recommendations.
      *
      * @unreleased
+     *
      * @return array
      */
     private function getDismissedRecommendations(): array

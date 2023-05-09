@@ -23,7 +23,7 @@ use Give\DonationForms\Endpoints\ListDonationForms;
 use Give\DonationForms\Endpoints\SwitchDonationFormView;
 use Give\Donations\Endpoints\DonationActions;
 use Give\Donations\Endpoints\ListDonations;
-use Give\Donations\Endpoints\RecommendedProducts;
+use Give\Donations\Endpoints\ProductRecommendations;
 use Give\Donations\Endpoints\SwitchDonationView;
 use Give\Donors\Endpoints\DeleteDonor;
 use Give\Donors\Endpoints\ListDonors;
@@ -65,7 +65,7 @@ class RestAPI implements ServiceProvider
         FormActions::class,
         GetMigrations::class,
         RunMigration::class,
-        RecommendedProducts::class,
+        ProductRecommendations::class,
     ];
 
     /**
