@@ -2,8 +2,7 @@ import { GiveConfirmModal } from '../../plugins/modal';
 
 window.addEventListener( 'DOMContentLoaded', function() {
 	const donationStatus = document.getElementById( 'give-payment-status' ),
-		  onBoardingButton = document.querySelector( 'button.js-give-paypal-on-boarding-handler' ),
-		  onSandboxBoardingButton = document.querySelector( 'button.js-give-paypal-sandbox-on-boarding-handler' ),
+		  onBoardingButtons = document.querySelectorAll( 'button.js-give-paypal-on-boarding-handler' ),
 		  disconnectPayPalAccountButton = document.getElementById( 'js-give-paypal-disconnect-paypal-account' ),
 		  connectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .connection-setting' ),
 		  disConnectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .disconnection-setting' ),
