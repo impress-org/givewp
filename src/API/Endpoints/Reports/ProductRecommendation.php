@@ -17,7 +17,7 @@ class ProductRecommendation extends Endpoint
      */
     public function __construct()
     {
-        $this->endpoint = 'product-recommendation';
+        $this->endpoint = '/reports/product-recommendation';
     }
 
     /**
@@ -27,8 +27,8 @@ class ProductRecommendation extends Endpoint
     public function registerRoute()
     {
         register_rest_route(
-            $this->endpoint,
-            [
+            'give-api/v2',
+            $this->endpoint, [
                 [
                     'methods' => ['POST'],
                     'callback' => [$this, 'handleRequest'],
