@@ -5,10 +5,8 @@ use Give\Addon\View;
 use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
 use Give\Framework\EnqueueScript;
-
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 
 use function wp_enqueue_style;
 
@@ -20,6 +18,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Use add_submenu_page to register page within WP admin
      *
+     * @unreleased enqueue form builder styles
      * @since 0.1.0
      *
      * @return void
@@ -45,6 +44,15 @@ class RegisterFormBuilderPageRoute
         add_action("admin_print_styles", static function () {
             if (FormBuilderRouteBuilder::isRoute()) {
                 wp_enqueue_style(
+                    '@givewp/form-builder/style-wordpress',
+                    GIVE_NEXT_GEN_URL . 'build/style-formBuilderApp.css'
+                );
+                wp_enqueue_style(
+                    '@givewp/form-builder/style-app',
+                    GIVE_NEXT_GEN_URL . 'build/formBuilderApp.css'
+                );
+
+                wp_enqueue_style(
                     'givewp-form-builder-admin-styles',
                     GIVE_NEXT_GEN_URL . 'src/FormBuilder/resources/css/admin-form-builder.css'
                 );
@@ -55,6 +63,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Render page with scripts
      *
+     * @unreleased enqueue form builder scripts from plugin root
      * @since 0.1.0
      *
      * @return void
@@ -107,7 +116,7 @@ class RegisterFormBuilderPageRoute
 
         (new EnqueueScript(
             '@givewp/form-builder/script',
-            $formBuilderViewModel->jsPathFromRoot(),
+            $formBuilderViewModel->jsPathFromPluginRoot(),
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
             'give'
@@ -122,7 +131,7 @@ class RegisterFormBuilderPageRoute
             ])
             ->enqueue();
 
-        wp_localize_script( '@givewp/form-builder/script', 'onboardingTourData', [
+        wp_localize_script('@givewp/form-builder/script', 'onboardingTourData', [
             'actionUrl' => admin_url('admin-ajax.php?action=givewp_tour_completed'),
             'autoStartTour' => !get_user_meta(get_current_user_id(), 'givewp-form-builder-tour-completed', true),
         ]);

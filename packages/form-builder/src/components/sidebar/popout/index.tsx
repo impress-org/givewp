@@ -8,6 +8,7 @@ export default function Popout({children}) {
     );
 }
 
+// @ts-ignore
 export const PopoutSlot = () => <Slot name="InspectorPopout" />;
 
 export const PopoutContainer = ({children}) => <div

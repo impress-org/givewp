@@ -1,15 +1,14 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {GiveIcon} from '../components/icons';
-import {close, cog, Icon, listView, plus, moreVertical, drawerRight} from '@wordpress/icons';
+import {drawerRight, listView, moreVertical, plus} from '@wordpress/icons';
 import {setFormSettings, useFormState, useFormStateDispatch} from '../stores/form-state';
 import {RichText} from '@wordpress/block-editor';
-import {Button, ExternalLink, TextControl, Dropdown, DropdownMenu, MenuGroup, MenuItem} from '@wordpress/components';
+import {Button, Dropdown, MenuGroup, MenuItem} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {Header} from '../components';
 import {Storage} from '../common';
 import {FormSettings, FormStatus} from '@givewp/form-builder/types';
 import {setIsDirty} from '@givewp/form-builder/stores/form-state/reducer';
-import {ShepherdTourContext} from "react-shepherd";
 
 const Logo = () => (
     <div
@@ -66,10 +65,13 @@ const HeaderContainer = ({
             contentLeft={
                 <>
                     <Logo />
-                    <div id="AddBlockButtonContainer" style={{
-                        padding: 'var(--givewp-spacing-2)',
-                        margin: 'calc(var(--givewp-spacing-2) * -1)',
-                    }}>
+                    <div
+                        id="AddBlockButtonContainer"
+                        style={{
+                            padding: 'var(--givewp-spacing-2)',
+                            margin: 'calc(var(--givewp-spacing-2) * -1)',
+                        }}
+                    >
                         <Button
                             style={{width: '32px', height: '32px', minWidth: '32px'}}
                             className="rotate-icon"
@@ -106,9 +108,8 @@ const HeaderContainer = ({
                         {isSaving && 'draft' === isSaving
                             ? __('Saving...', 'give')
                             : 'draft' === formSettings.formStatus
-                                ? __('Save as Draft', 'give')
-                                : __('Switch to Draft', 'give')
-                        }
+                            ? __('Save as Draft', 'give')
+                            : __('Switch to Draft', 'give')}
                     </Button>
                     <Button
                         onClick={() => onSave('publish')}
@@ -119,31 +120,25 @@ const HeaderContainer = ({
                         {isSaving && 'publish' === isSaving
                             ? __('Updating...', 'give')
                             : 'publish' === formSettings.formStatus
-                                ? __('Update', 'give')
-                                : __('Publish', 'give')
-                        }
+                            ? __('Update', 'give')
+                            : __('Publish', 'give')}
                     </Button>
                     <Button onClick={toggleShowSidebar} isPressed={showSidebar} icon={drawerRight} />
                     <Dropdown
+                        popoverProps={{placement: 'bottom-start'}}
                         // @ts-ignore
-                        popoverProps={ { placement: 'bottom-start' } }
-                        focusOnMount={"container"}
-                        renderToggle={ ( { isOpen, onToggle } ) => (
-                            <Button
-                                onClick={onToggle}
-                                icon={moreVertical}
-                            />
-                        ) }
-                        renderContent={ ({onClose}) => (
+                        focusOnMount={'container'}
+                        renderToggle={({isOpen, onToggle}) => <Button onClick={onToggle} icon={moreVertical} />}
+                        renderContent={({onClose}) => (
                             <div style={{minWidth: '280px', maxWidth: '400px'}}>
                                 <MenuGroup label={__('Tools', 'give')}>
                                     <MenuItem
                                         onClick={() => {
                                             // @ts-ignore
-                                            if(!window.tour.isActive()) {
+                                            if (!window.tour.isActive()) {
                                                 // @ts-ignore
-                                                window.tour.start()
-                                                onClose()
+                                                window.tour.start();
+                                                onClose();
                                             }
                                         }}
                                     >

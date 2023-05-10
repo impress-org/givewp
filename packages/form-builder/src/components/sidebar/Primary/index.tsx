@@ -13,7 +13,7 @@ import {
 import {PopoutSlot} from '../popout';
 import {useEffect} from 'react';
 import useSelectedBlocks from '../../../hooks/useSelectedBlocks';
-import BlockCard from '@wordpress/block-editor/build/components/block-card';
+import BlockCard from '../../forks/BlockCard';
 import {brush, settings} from '@wordpress/icons';
 
 const {Slot: InspectorSlot, Fill: InspectorFill} = createSlotFill('StandAloneBlockEditorSidebarInspector');

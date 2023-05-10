@@ -1,15 +1,18 @@
 import {__} from '@wordpress/i18n';
-import FieldTypesList from './panels/FieldTypesList';
 import BlockListTree from './panels/BlockListTree';
+import {__experimentalLibrary as Library} from '@wordpress/block-editor';
+
+const BlockListInserter = () => {
+    return <Library showInserterHelpPanel={false} />;
+};
 
 type PropTypes = {
     selected: string;
 };
 
 const Sidebar = ({selected}: PropTypes) => {
-
     const panels = {
-        add: FieldTypesList,
+        add: BlockListInserter,
         list: BlockListTree,
     };
 
@@ -28,6 +31,6 @@ const Sidebar = ({selected}: PropTypes) => {
             <PanelContent />
         </div>
     );
-}
+};
 
 export default Sidebar;

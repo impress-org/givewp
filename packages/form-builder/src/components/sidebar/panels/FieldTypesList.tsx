@@ -1,5 +1,5 @@
 import {useSelect} from '@wordpress/data';
-import {store as blockEditorStore} from '@wordpress/block-editor/build/store';
+import {store as blockEditorStore} from '@wordpress/block-editor';
 import {__} from '@wordpress/i18n';
 // @ts-ignore
 import {SearchControl} from '@wordpress/components';

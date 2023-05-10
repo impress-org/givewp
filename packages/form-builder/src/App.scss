@@ -527,3 +527,7 @@ This creates a consistent separator between the tabs and the rest of the sidebar
 .give-billing-period-control .components-radio-control__input[type='radio']:checked + label {
     border-color: black;
 }
+
+.block-editor-inserter__main-area {
+    width: 100%;
+}

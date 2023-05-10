@@ -5,7 +5,7 @@ import Edit from './Edit';
 
 const settings: SectionBlock['settings'] = {
     title: __('Section', 'give'),
-    category: 'layout',
+    category: 'section',
     description: __('A section groups form fields and content together.', 'give'),
     icon: () => (
         <Icon

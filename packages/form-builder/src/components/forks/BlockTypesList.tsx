@@ -11,8 +11,8 @@
  /**
  * Internal @wordpress dependencies
  */
-import InserterListItem from '@wordpress/block-editor/build/components/inserter-list-item';
-import {InserterListboxGroup, InserterListboxRow} from '@wordpress/block-editor/build/components/inserter-listbox';
+import InserterListItem from '@wordpress/block-editor/src/components/inserter-list-item';
+import {InserterListboxGroup, InserterListboxRow} from '@wordpress/block-editor/src/components/inserter-listbox';
 
 import {getBlockMenuDefaultClassName} from '@wordpress/blocks';
 

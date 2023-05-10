@@ -21,6 +21,7 @@ const Feedback = () => {
         setHidden(!!localStorage.getItem(HIDE_FEEDBACK));
     }, []);
 
+    // @ts-ignore
     return (
         <Container>
             {!hidden && (
@@ -38,7 +39,6 @@ const Feedback = () => {
                         <div>
                             <ExternalLink
                                 href={feedbackUrl}
-                                target="_blank"
                                 rel="noopener noreferrer"
                                 onClick={closeCallback}
                                 style={{color: 'var(--givewp-primary-600)'}}

@@ -20,13 +20,14 @@ export default function BlockEditorContainer() {
 
     return (
         <BlockEditorProvider value={blocks} onInput={dispatchFormBlocks} onChange={dispatchFormBlocks}>
-            <Onboarding/>
+            <Onboarding />
             <SlotFillProvider>
                 <Sidebar.InspectorFill>
-                    <BlockInspector/>
+                    <BlockInspector />
                 </Sidebar.InspectorFill>
-                <BlockEditorInterfaceSkeletonContainer/>
-                <Popover.Slot/>
+                <BlockEditorInterfaceSkeletonContainer />
+                {/*@ts-ignore*/}
+                <Popover.Slot />
             </SlotFillProvider>
         </BlockEditorProvider>
     );

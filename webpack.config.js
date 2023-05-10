@@ -20,6 +20,7 @@ module.exports = {
             '@givewp/forms/types': path.resolve(__dirname, 'src/NextGen/DonationForm/resources/types.ts'),
             '@givewp/forms/propTypes': path.resolve(__dirname, 'src/NextGen/DonationForm/resources/propTypes.ts'),
             '@givewp/forms/app': path.resolve(__dirname, 'src/NextGen/DonationForm/resources/app'),
+            '@givewp/form-builder': path.resolve(__dirname, 'packages/form-builder/src'),
         },
     },
     entry: {
@@ -43,6 +44,7 @@ module.exports = {
             'NextGen/DonationForm/resources/receipt/DonationConfirmationReceiptApp.tsx'
         ),
         baseFormDesignCss: srcPath('NextGen/DonationForm/resources/styles/base.scss'),
+        formBuilderApp: path.resolve(process.cwd(), 'packages/form-builder/src/index.tsx'),
     },
 };
 
