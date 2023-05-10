@@ -3,26 +3,63 @@
 namespace TestsNextGen\Unit\DataTransferObjects;
 
 use Give\Donations\ValueObjects\DonationType;
-use Give\NextGen\DonationForm\DataTransferObjects\DonateControllerData;
-use Give\NextGen\DonationForm\DataTransferObjects\DonateFormRouteData;
+use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Framework\Http\Response\Types\JsonResponse;
+use Give\NextGen\DonationForm\DataTransferObjects\ValidationRouteData;
+use Give\NextGen\DonationForm\Exceptions\DonationFormFieldErrorsException;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
 use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @since 0.1.0
+ * @unreleased
  */
-class DonateFormRouteDataTest extends TestCase
+class ValidationRouteDataTest extends TestCase
 {
+    use RefreshDatabase;
 
     /**
-     * @since 0.1.0
+     * @unreleased
+     * @throws DonationFormFieldErrorsException
      */
-    public function testValidatedShouldReturnValidatedData()
+    public function testValidateShouldReturnValidJsonResponse()
     {
+        /** @var DonationForm $form */
+        $form = DonationForm::factory()->create();
+
+        $request = [
+            'formId' => $form->id,
+            'gatewayId' => NextGenTestGateway::id(),
+            'amount' => 100,
+            'currency' => "USD",
+            'firstName' => "Bill",
+            'lastName' => "Murray",
+            'email' => "billmurray@givewp.com",
+            'formTitle' => $form->title,
+            'company' => null,
+            'donationType' => DonationType::SINGLE()->getValue(),
+            'subscriptionFrequency' => null,
+            'subscriptionPeriod' => null,
+            'subscriptionInstallments' => null,
+        ];
+
+        $formData = ValidationRouteData::fromRequest($request);
+
+        $this->assertEquals($formData->validate(), new JsonResponse(['valid' => true]));
+    }
+
+    /**
+     * @unreleased
+     * @throws DonationFormFieldErrorsException|Exception
+     */
+    public function testValidateShouldThrowDonationFormFieldErrorsException()
+    {
+        $this->expectException(DonationFormFieldErrorsException::class);
+
         /** @var DonationForm $form */
         $form = DonationForm::factory()->create();
 
@@ -48,39 +85,22 @@ class DonateFormRouteDataTest extends TestCase
 
         $form->save();
 
-        $data = new DonateControllerData();
+        $request = [
+            'formId' => $form->id,
+            'text_block_meta' => null
+        ];
 
-        $data->gatewayId = NextGenTestGateway::id();
-        $data->amount = 100;
-        $data->currency = "USD";
-        $data->firstName = "Bill";
-        $data->lastName = "Murray";
-        $data->email = "billmurray@givewp.com";
-        $data->formId = $form->id;
-        $data->formTitle = $form->title;
-        $data->company = null;
-        $data->wpUserId = 0;
-        $data->honorific = null;
-        $data->text_block_meta = 'text block meta value';
-        $data->donationType = DonationType::SINGLE();
-        $data->subscriptionFrequency = null;
-        $data->subscriptionPeriod = null;
-        $data->subscriptionInstallments = null;
+        $formData = ValidationRouteData::fromRequest($request);
 
-        $request = array_merge(get_object_vars($data), [
-            'text_block_meta' => 'text block meta value',
-            'donationType' => $data->donationType->getValue(),
-        ]);
-
-        $formData = DonateFormRouteData::fromRequest($request);
-
-        $this->assertEquals($formData->validated(), $data);
+        $this->assertEquals($formData->validate(), new JsonResponse(['valid' => true]));
     }
 
     /**
-     * @since 0.1.0
+     * @unreleased
+     *
+     * @throws DonationFormFieldErrorsException|Exception
      */
-    public function testValidatedShouldReturnValidatedDataWithSubscriptionData()
+    public function testValidateShouldReturnTrueWithRecurringOptions()
     {
         /** @var DonationForm $form */
         $form = DonationForm::factory()->create();
@@ -166,36 +186,25 @@ class DonateFormRouteDataTest extends TestCase
 
         $form->save();
 
-        $data = new DonateControllerData();
-
-        $data->gatewayId = NextGenTestGateway::id();
-        $data->amount = 100;
-        $data->currency = "USD";
-        $data->firstName = "Bill";
-        $data->lastName = "Murray";
-        $data->email = "billmurray@givewp.com";
-        $data->formId = $form->id;
-        $data->formTitle = $form->title;
-        $data->company = null;
-        $data->wpUserId = 0;
-        $data->honorific = null;
-        $data->text_block_meta = 'text block meta value';
-        $data->donationType = DonationType::SUBSCRIPTION();
-        $data->subscriptionFrequency = 1;
-        $data->subscriptionPeriod = SubscriptionPeriod::MONTH();
-        $data->subscriptionInstallments = 0;
-
-        $requestData = get_object_vars($data);
-
-        $request = array_merge($requestData, [
+        $request = [
+            'formId' => $form->id,
+            'gatewayId' => NextGenTestGateway::id(),
+            'amount' => 100,
+            'currency' => "USD",
+            'firstName' => "Bill",
+            'lastName' => "Murray",
+            'email' => "billmurray@givewp.com",
+            'formTitle' => $form->title,
+            'company' => null,
             'text_block_meta' => 'text block meta value',
-            'donationType' => $data->donationType->getValue(),
-            'subscriptionPeriod' => $data->subscriptionPeriod->getValue(),
-        ]);
+            'donationType' => DonationType::SUBSCRIPTION()->getValue(),
+            'subscriptionFrequency' => 1,
+            'subscriptionPeriod' => SubscriptionPeriod::MONTH()->getValue(),
+            'subscriptionInstallments' => 0,
+        ];
 
-        $formData = DonateFormRouteData::fromRequest($request);
-        $validData = $formData->validated();
+        $formData = ValidationRouteData::fromRequest($request);
 
-        $this->assertEquals($validData, $data);
+        $this->assertEquals($formData->validate(), new JsonResponse(['valid' => true]));
     }
 }

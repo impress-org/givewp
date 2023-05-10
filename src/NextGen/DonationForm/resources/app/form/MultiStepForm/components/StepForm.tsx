@@ -1,6 +1,6 @@
 import {FormProvider, useForm, useFormState} from 'react-hook-form';
 import {joiResolver} from '@hookform/resolvers/joi';
-import {ReactNode, useCallback} from 'react';
+import {ReactNode} from 'react';
 import DonationFormErrorBoundary from '@givewp/forms/app/errors/boundaries/DonationFormErrorBoundary';
 import handleSubmitRequest from '@givewp/forms/app/utilities/handleFormSubmitRequest';
 import {useDonationFormState} from '@givewp/forms/app/store';
@@ -9,6 +9,7 @@ import SubmitButton from '@givewp/forms/app/form/MultiStepForm/components/Submit
 import {withTemplateWrapper} from '@givewp/forms/app/templates';
 import getWindowData from '@givewp/forms/app/utilities/getWindowData';
 import NextButton from '@givewp/forms/app/form/MultiStepForm/components/NextButton';
+import useGetGatewayById from '@givewp/forms/app/form/MultiStepForm/hooks/useGetGatewayById';
 
 const {donateUrl, inlineRedirectRoutes} = getWindowData();
 const formTemplates = window.givewp.form.templates;
@@ -28,8 +29,8 @@ export default function StepForm({
     isFirstStep: boolean;
     isLastStep: boolean;
 }) {
-    const {gateways, defaultValues, validationSchema} = useDonationFormState();
-    const getGateway = useCallback((gatewayId) => gateways.find(({id}) => id === gatewayId), []);
+    const {defaultValues, validationSchema} = useDonationFormState();
+    const getGateway = useGetGatewayById();
 
     const methods = useForm<FormInputs>({
         defaultValues,

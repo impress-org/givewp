@@ -6,6 +6,8 @@ use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
+use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptUrl;
 use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptViewRouteUrl;
@@ -240,5 +242,13 @@ class DonateControllerData
     public function amount(): Money
     {
         return Money::fromDecimal($this->amount, $this->currency);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getGateway(): PaymentGateway
+    {
+        return give(PaymentGatewayRegister::class)->getPaymentGateway($this->gatewayId);
     }
 }

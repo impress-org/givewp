@@ -3,44 +3,25 @@
 namespace Give\NextGen\DonationForm\Routes;
 
 
-use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Log\Log;
-use Give\NextGen\DonationForm\Controllers\DonateController;
-use Give\NextGen\DonationForm\DataTransferObjects\DonateFormRouteData;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateRouteData;
+use Give\NextGen\DonationForm\DataTransferObjects\ValidationRouteData;
 use Give\NextGen\DonationForm\Exceptions\DonationFormFieldErrorsException;
 use WP_Error;
 
 /**
- * @since 0.1.0
+ * @unreleased
  */
-class DonateRoute
+class ValidationRoute
 {
     use HandleHttpResponses;
 
     /**
-     * @var DonateController
+     * @unreleased
      */
-    private $donateController;
-
-    /**
-     * @since 0.1.0
-     *
-     * @param  DonateController  $donateController
-     */
-    public function __construct(DonateController $donateController)
-    {
-        $this->donateController = $donateController;
-    }
-
-    /**
-     * @since 0.1.0
-     *
-     * @return void
-     */
-    public function __invoke(array $request)
+    public function __invoke(array $request): bool
     {
         // create DTO from GET request
         $routeData = DonateRouteData::fromRequest(give_clean($_GET));
@@ -49,31 +30,23 @@ class DonateRoute
         $this->validateSignature($routeData->routeSignature, $routeData);
 
         // create DTO from POST request
-        $formData = DonateFormRouteData::fromRequest($request);
+        $formData = ValidationRouteData::fromRequest($request);
 
         try {
-            $data = $formData->validated();
-
-            $this->donateController->donate($data, $data->getGateway());
+            $response = $formData->validate();
+            
+            $this->handleResponse($response);
         } catch (DonationFormFieldErrorsException $exception) {
             $type = 'validation_error';
             $this->logError($type, $exception->getMessage(), $formData);
             $this->sendJsonError($type, $exception->getError());
-        } catch (PaymentGatewayException $exception) {
-            $type = 'gateway_error';
-            $this->logError($type, $exception->getMessage(), $formData);
-            $this->sendJsonError($type, new WP_Error($type, $exception->getMessage()));
-        } catch (\Exception $exception) {
-            $type = 'unknown_error';
-            $this->logError($type, $exception->getMessage(), $formData);
-            $this->sendJsonError($type, new WP_Error($type, $exception->getMessage()));
         }
 
         exit;
     }
 
     /**
-     * @since 0.1.0
+     * @unreleased
      *
      * @return void
      */
@@ -102,12 +75,12 @@ class DonateRoute
     }
 
     /**
-     * @since 0.3.0
+     * @unreleased
      */
     private function logError(
         string $type,
         string $exceptionMessage,
-        DonateFormRouteData $formData
+        ValidationRouteData $formData
     ) {
         Log::error(
             "Donation Route Error: $type",

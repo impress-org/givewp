@@ -26,7 +26,7 @@ class DonateController
      * @return void
      * @throws Exception|PaymentGatewayException
      */
-    public function donate(DonateControllerData $formData, PaymentGateway $registeredGateway)
+    public function donate(DonateControllerData $formData, PaymentGateway $gateway)
     {
         $donor = $this->getOrCreateDonor(
             $formData->wpUserId,
@@ -42,17 +42,17 @@ class DonateController
             do_action('givewp_donate_controller_donation_created', $formData, $donation);
 
             $gatewayData = apply_filters(
-                "givewp_create_payment_gateway_data_{$registeredGateway::id()}",
+                "givewp_create_payment_gateway_data_{$gateway::id()}",
                 (new GetGatewayDataFromRequest)(),
                 $donation
             );
 
-            $controller = new GatewayPaymentController($registeredGateway);
+            $controller = new GatewayPaymentController($gateway);
             $controller->create($donation, $gatewayData);
         }
 
         if ($formData->donationType->isSubscription()) {
-            $this->validateGatewaySupportsSubscriptions($registeredGateway);
+            $this->validateGatewaySupportsSubscriptions($gateway);
 
             $subscription = $formData->toSubscription($donor->id);
             $subscription->save();
@@ -65,13 +65,13 @@ class DonateController
             do_action('givewp_donate_controller_subscription_created', $formData, $subscription, $donation);
 
             $gatewayData = apply_filters(
-                "givewp_create_subscription_gateway_data_{$registeredGateway::id()}",
+                "givewp_create_subscription_gateway_data_{$gateway::id()}",
                 (new GetGatewayDataFromRequest)(),
                 $donation,
                 $subscription
             );
 
-            $controller = new GatewaySubscriptionController($registeredGateway);
+            $controller = new GatewaySubscriptionController($gateway);
             $controller->create($donation, $subscription, $gatewayData);
         }
     }

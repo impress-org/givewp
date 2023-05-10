@@ -13,6 +13,7 @@ use Give\NextGen\DonationForm\DataTransferObjects\DonationConfirmationReceiptVie
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormPreviewRouteData;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormViewRouteData;
 use Give\NextGen\DonationForm\Routes\DonateRoute;
+use Give\NextGen\DonationForm\Routes\ValidationRoute;
 use Give\NextGen\Framework\Routes\Route;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -53,6 +54,11 @@ class ServiceProvider implements ServiceProviderInterface
          * @since 0.1.0
          */
         Route::post('donate', DonateRoute::class);
+
+        /**
+         * @unreleased
+         */
+        Route::post('validate', ValidationRoute::class);
 
         /**
          * @since 0.1.0

@@ -10,7 +10,7 @@ use Give\Donors\Models\Donor;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\NextGen\DonationForm\DataTransferObjects\DonateFormRouteData;
 use Give\NextGen\DonationForm\Models\DonationForm;
-use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
+use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
@@ -37,7 +37,7 @@ class DonateFormDataTest extends TestCase
         $form = DonationForm::factory()->create();
 
         $data = (object)[
-            'gatewayId' => TestGateway::id(),
+            'gatewayId' => NextGenTestGateway::id(),
             'amount' => 50,
             'currency' => 'USD',
             'firstName' => 'Bill',
@@ -91,7 +91,7 @@ class DonateFormDataTest extends TestCase
         $form = DonationForm::factory()->create();
 
         $data = (object)[
-            'gatewayId' => TestGateway::id(),
+            'gatewayId' => NextGenTestGateway::id(),
             'amount' => 50,
             'currency' => 'USD',
             'firstName' => 'Bill',

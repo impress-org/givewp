@@ -4,7 +4,7 @@
 import {UseFormSetError} from 'react-hook-form';
 import {__} from '@wordpress/i18n';
 
-const generateRequestErrors = (values: Array<any>, errors: Array<Object>, setError: UseFormSetError<any>) => {
+const generateRequestErrors = (values: Record<string, any>, errors: object[], setError: UseFormSetError<any>) => {
     Object.entries(errors).forEach(([field, value]) => {
         if (Object.keys(values).includes(field)) {
             setError(field, {message: Array.isArray(value) ? value[0] : value});
