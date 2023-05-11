@@ -17,11 +17,11 @@ export default function ProductRecommendation({columns}: { columns: number }) {
     const [showRecommendation, setShowRecommendation] = useState<boolean>(!!selectedOption);
 
     const closeMessage = async (async) => {
+        setShowRecommendation(false);
+
         await removeRecommendation({
             option: selectedOption.enum,
         });
-
-        setShowRecommendation(false);
     };
 
     if (!showRecommendation) {
