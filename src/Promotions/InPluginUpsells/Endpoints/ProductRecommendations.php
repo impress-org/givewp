@@ -1,7 +1,8 @@
 <?php
 
-namespace Give\Donations\Endpoints;
+namespace Give\Promotions\InPluginUpsells\Endpoints;
 
+use Give\Donations\Endpoints\Endpoint;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -53,7 +54,8 @@ class ProductRecommendations extends Endpoint
         if ( ! current_user_can('manage_options')) {
             return new WP_Error(
                 'rest_forbidden',
-                esc_html__('You don\'t have permission to edit Donations', 'give'),
+                esc_html__('You don\'t have permission to dismiss options. Only users with the "manage_options" capability can perform this action.',
+                    'give'),
                 ['status' => $this->authorizationStatusCode()]
             );
         }
