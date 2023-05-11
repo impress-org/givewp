@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Promotions\InPluginUpsells;
+namespace Give\Promotions\InPluginUpsells\Endpoints;
 
 use Give\Donations\Endpoints\Endpoint;
 use WP_Error;

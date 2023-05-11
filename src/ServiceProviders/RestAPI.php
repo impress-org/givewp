@@ -27,7 +27,6 @@ use Give\Donations\Endpoints\SwitchDonationView;
 use Give\Donors\Endpoints\DeleteDonor;
 use Give\Donors\Endpoints\ListDonors;
 use Give\Donors\Endpoints\SwitchDonorView;
-use Give\Promotions\InPluginUpsells\ProductRecommendationsRoute;
 use Give\Subscriptions\Endpoints\ListSubscriptions;
 use Give\Subscriptions\Endpoints\SubscriptionActions;
 use Give\Subscriptions\Endpoints\SwitchSubscriptionView;
@@ -65,7 +64,6 @@ class RestAPI implements ServiceProvider
         FormActions::class,
         GetMigrations::class,
         RunMigration::class,
-        ProductRecommendationsRoute::class,
     ];
 
     /**
