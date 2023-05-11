@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Promotions\InPluginUpsells\Endpoints;
+namespace Give\Promotions\InPluginUpsells;
 
 use Give\Donations\Endpoints\Endpoint;
 use WP_Error;
@@ -8,7 +8,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 
-class ProductRecommendations extends Endpoint
+class ProductRecommendationsRoute extends Endpoint
 {
     /**
      * @var string
