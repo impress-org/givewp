@@ -24,11 +24,11 @@ export default function ProductRecommendation({columns}: { columns: number }) {
         setShowRecommendation(false);
     };
 
-    return (
-        showRecommendation && (
-            <RotatingMessage columns={columns} selectedOption={selectedOption} closeMessage={closeMessage} />
-        )
-    );
+    if (!showRecommendation) {
+        return null;
+    }
+
+    return <RotatingMessage columns={columns} selectedOption={selectedOption} closeMessage={closeMessage} />;
 }
 
 /**
