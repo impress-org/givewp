@@ -2,16 +2,17 @@ import React, {useState} from 'react';
 import styles from './style.module.scss';
 import {__} from '@wordpress/i18n';
 import {createInterpolateElement} from '@wordpress/element';
-import {
-    RecommendedProductData,
-    useRecommendations,
-} from '@givewp/components/ListTable/ProductRecommendations/useRecommendations';
+import {RecommendedProductData, useRecommendations} from './useRecommendations';
 
 /**
  * @unreleased
  */
 
-export default function ProductRecommendations({columns}: { columns: number }) {
+interface ProductRecommendationsProps {
+    apiSettings: {table; pluginUrl};
+}
+
+export default function ProductRecommendations({apiSettings}: ProductRecommendationsProps) {
     const {getRecommendation, removeRecommendation} = useRecommendations();
     const selectedOption = getRecommendation();
     const [showRecommendation, setShowRecommendation] = useState<boolean>(!!selectedOption);
@@ -28,7 +29,14 @@ export default function ProductRecommendations({columns}: { columns: number }) {
         return null;
     }
 
-    return <RotatingMessage columns={columns} selectedOption={selectedOption} closeMessage={closeMessage} />;
+    return (
+        <RotatingMessage
+            columns={apiSettings.table.columns}
+            pluginUrl={apiSettings.pluginUrl}
+            selectedOption={selectedOption}
+            closeMessage={closeMessage}
+        />
+    );
 }
 
 /**
@@ -37,37 +45,34 @@ export default function ProductRecommendations({columns}: { columns: number }) {
 interface RotatingMessageProps {
     selectedOption: RecommendedProductData;
     closeMessage: (async: any) => Promise<void>;
-    columns: number;
+    pluginUrl: string;
+    columns: Array<{visible: boolean}>;
 }
 
-function RotatingMessage({selectedOption, closeMessage, columns}: RotatingMessageProps) {
+function RotatingMessage({selectedOption, closeMessage, pluginUrl, columns}: RotatingMessageProps) {
     const {message = '', documentationPage = '', innerHtml = ''} = selectedOption;
+
+    const visibleColumns = columns?.filter((column) => column.visible || column.visible === undefined);
 
     return (
         <tr>
-            <td colSpan={columns}>
+            <td colSpan={visibleColumns.length + 1}>
                 <div className={styles.productRecommendation}>
                     <div className={styles.container}>
                         <div>
-                            <img
-                                src={`${window.GiveDonations?.pluginUrl}/assets/dist/images/list-table/light-bulb-icon.svg`}
-                            />
+                            <img src={`${pluginUrl}/assets/dist/images/list-table/light-bulb-icon.svg`} />
 
                             <TranslatedMessage message={message} />
                         </div>
 
                         <a target="_blank" href={documentationPage}>
                             {innerHtml}
-                            <img
-                                src={`${window.GiveDonations?.pluginUrl}/assets/dist/images/list-table/external-link-icon.svg`}
-                            />
+                            <img src={`${pluginUrl}/assets/dist/images/list-table/external-link-icon.svg`} />
                         </a>
                     </div>
 
                     <button onClick={closeMessage}>
-                        <img
-                            src={`${window.GiveDonations?.pluginUrl}/assets/dist/images/list-table/circular-exit-icon.svg`}
-                        />
+                        <img src={`${pluginUrl}/assets/dist/images/list-table/circular-exit-icon.svg`} />
                     </button>
                 </div>
             </td>

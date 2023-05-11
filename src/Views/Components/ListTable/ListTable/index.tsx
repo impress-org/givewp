@@ -6,7 +6,6 @@ import {Spinner} from '../../index';
 import {BulkActionCheckboxAll} from '@givewp/components/ListTable/BulkActions/BulkActionCheckbox';
 import ListTableHeaders from '@givewp/components/ListTable/ListTableHeaders';
 import ListTableRows from '@givewp/components/ListTable/ListTableRows';
-import ProductRecommendations from 'src/Views/Components/ListTable/ProductRecommendations';
 
 export interface ListTableProps {
     //required
@@ -26,6 +25,7 @@ export interface ListTableProps {
     align?: 'start' | 'center' | 'end';
     testMode?: boolean;
     listTableBlankSlate: JSX.Element;
+    productRecommendation: JSX.Element;
 }
 
 export interface ListTableColumn {
@@ -55,6 +55,7 @@ export const ListTable = ({
     sortField,
     testMode,
     listTableBlankSlate,
+    productRecommendation,
 }: ListTableProps) => {
     const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>; successes: Array<number>}>({
         errors: [],
@@ -185,7 +186,7 @@ export const ListTable = ({
                             </tr>
                         </thead>
                         <tbody className={styles.tableContent}>
-                            {window.GiveDonations && <ProductRecommendations columns={visibleColumns.length + 1} />}
+                            {productRecommendation}
                             <ListTableRows
                                 columns={visibleColumns}
                                 data={data}

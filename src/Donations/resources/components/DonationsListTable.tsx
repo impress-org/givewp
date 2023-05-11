@@ -7,6 +7,7 @@ import {IdBadge} from '@givewp/components/ListTable/TableCell';
 import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import {Interweave} from 'interweave';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
+import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
 
 declare global {
     interface Window {
@@ -150,6 +151,9 @@ const ListTableBlankSlate = (
     />
 );
 
+const RotatingRecommendation = (<ProductRecommendations apiSettings={window.GiveDonations} />)
+
+
 export default function DonationsListTable() {
     return (
         <ListTablePage
@@ -162,6 +166,7 @@ export default function DonationsListTable() {
             filterSettings={filters}
             paymentMode={!!window.GiveDonations.paymentMode}
             listTableBlankSlate={ListTableBlankSlate}
+            productRecommendation={RotatingRecommendation}
         >
             {window.GiveDonations.manualDonations && (
                 <a
