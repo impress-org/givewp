@@ -178,7 +178,7 @@ const RecommendationConfig: DonationTableRecommendations = {
             'give'
         ),
 
-        innerHtml: __('Get More Donations', 'give'),
+        innerHtml: __('Increase Income Today', 'give'),
     },
     designatedFunds: {
         enum: 'givewp_donations_designated_funds_recommendation_dismissed',
@@ -191,7 +191,7 @@ const RecommendationConfig: DonationTableRecommendations = {
     },
 };
 
-const RotatingRecommendation = (
+const rotatingRecommendation = (
     <ProductRecommendations
         options={[
             RecommendationConfig.recurring,
@@ -215,7 +215,7 @@ export default function DonationsListTable() {
             filterSettings={filters}
             paymentMode={!!window.GiveDonations.paymentMode}
             listTableBlankSlate={ListTableBlankSlate}
-            productRecommendation={RotatingRecommendation}
+            productRecommendation={rotatingRecommendation}
         >
             {window.GiveDonations.manualDonations && (
                 <a
