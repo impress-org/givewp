@@ -93,7 +93,7 @@ class ProductRecommendationsRoute extends Endpoint
                     break;
 
                 default:
-                    $errors[] = 'Invalid option';
+                    $errors[] = "Invalid option: {$request->get_param('option')}";
             }
         } catch (\Exception $e) {
             $errors[] = $e->getMessage();
@@ -101,6 +101,11 @@ class ProductRecommendationsRoute extends Endpoint
 
         if (count($errors) > 0) {
             $response = new WP_Error('invalid_option', __('Invalid option'), ['status' => 400]);
+
+            Log::error('Invalid option', [
+                'Error' => $errors,
+                'Response' => $response,
+            ]);
         } else {
             $response = [
                 'successes' => $successes,
