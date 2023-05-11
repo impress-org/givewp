@@ -167,28 +167,40 @@ const RecommendationConfig: DonationTableRecommendations = {
     recurring: {
         enum: 'givewp_donations_recurring_recommendation_dismissed',
         documentationPage: '',
-        message: 'Increase your fundraising revenue by over 30% with recurring giving campaigns.',
+        message: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give'),
         innerHtml: __('Get More Donations', 'give'),
     },
     feeRecovery: {
         enum: 'givewp_donations_fee_recovery_recommendation_dismissed',
         documentationPage: '',
-        message:
-            'Maximize your total donated income to 100% by providing donors with the option to cover the credit card processing fees.',
+        message: __(
+            'Elevate your fundraising campaigns with multiple forms, unlimited donation funds, and tailored fundraising reports.',
+            'give'
+        ),
+
         innerHtml: __('Get More Donations', 'give'),
     },
     designatedFunds: {
         enum: 'givewp_donations_designated_funds_recommendation_dismissed',
         documentationPage: ' ',
-        message:
+        message: __(
             'Elevate your fundraising campaigns with multiple forms, unlimited donation funds, and tailored fundraising reports.',
+            'give'
+        ),
         innerHtml: __('Start creating designated funds', 'give'),
     },
 };
 
-const RotatingRecommendation = <ProductRecommendations
-    options={[RecommendationConfig.recurring, RecommendationConfig.feeRecovery, RecommendationConfig.designatedFunds]}
-    apiSettings={window.GiveDonations} />;
+const RotatingRecommendation = (
+    <ProductRecommendations
+        options={[
+            RecommendationConfig.recurring,
+            RecommendationConfig.feeRecovery,
+            RecommendationConfig.designatedFunds,
+        ]}
+        apiSettings={window.GiveDonations}
+    />
+);
 
 
 export default function DonationsListTable() {

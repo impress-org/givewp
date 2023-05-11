@@ -86,11 +86,10 @@ type TranslatedMessageProps = {message: string};
  * @unreleased
  */
 function TranslatedMessage({message}: TranslatedMessageProps) {
-    const Message = () => <p>{message}</p>;
 
     const translatedString = createInterpolateElement(__('<strong>ProTip: </strong> <message />', 'give'), {
         strong: <strong />,
-        message: <Message />,
+        message: <p>{message}</p>,
     });
 
     return translatedString;
