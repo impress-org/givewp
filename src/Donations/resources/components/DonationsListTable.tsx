@@ -215,7 +215,7 @@ export default function DonationsListTable() {
             filterSettings={filters}
             paymentMode={!!window.GiveDonations.paymentMode}
             listTableBlankSlate={ListTableBlankSlate}
-            productRecommendation={RotatingRecommendation}
+            productRecommendation={rotatingRecommendation}
         >
             {window.GiveDonations.manualDonations && (
                 <a
