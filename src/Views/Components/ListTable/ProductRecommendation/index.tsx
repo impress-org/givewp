@@ -1,4 +1,4 @@
-import React, {ReactElement, useState} from 'react';
+import React, {useState} from 'react';
 import styles from './style.module.scss';
 import {__} from '@wordpress/i18n';
 import {createInterpolateElement} from '@wordpress/element';
@@ -81,12 +81,12 @@ function RotatingMessage({selectedOption, closeMessage, columns}: RotatingMessag
 type TranslatedMessageProps = {message: string};
 
 function TranslatedMessage({message}: TranslatedMessageProps) {
-    const ProTip = <strong>Pro Tip: </strong>;
-    const Recommendation = <p>{message}</p>;
+    const Message = () => <p>{message}</p>;
 
-    const Message: () => ReactElement<string> = () => {
-        return createInterpolateElement(__('<ProTip/> <Recommendation/>'), {ProTip, Recommendation});
-    };
+    const translatedString = createInterpolateElement(__('<strong>ProTip: </strong> <message />', 'give'), {
+        strong: <strong />,
+        message: <Message />,
+    });
 
-    return <Message />;
+    return translatedString;
 }
