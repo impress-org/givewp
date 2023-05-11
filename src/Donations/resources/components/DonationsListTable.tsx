@@ -178,7 +178,7 @@ const RecommendationConfig: DonationTableRecommendations = {
             'give'
         ),
 
-        innerHtml: __('Get Fee Recovery', 'give'),
+        innerHtml: __('Increase Income Today', 'give'),
     },
     designatedFunds: {
         enum: 'givewp_donations_designated_funds_recommendation_dismissed',
