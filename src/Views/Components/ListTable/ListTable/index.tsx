@@ -25,7 +25,7 @@ export interface ListTableProps {
     align?: 'start' | 'center' | 'end';
     testMode?: boolean;
     listTableBlankSlate: JSX.Element;
-    productRecommendation: JSX.Element;
+    productRecommendation?: JSX.Element;
 }
 
 export interface ListTableColumn {

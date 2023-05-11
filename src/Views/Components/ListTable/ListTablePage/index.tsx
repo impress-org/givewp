@@ -29,7 +29,7 @@ export interface ListTablePageProps {
     align?: 'start' | 'center' | 'end';
     paymentMode?: boolean;
     listTableBlankSlate: JSX.Element;
-    productRecommendation: JSX.Element;
+    productRecommendation?: JSX.Element;
 }
 
 export interface FilterConfig {

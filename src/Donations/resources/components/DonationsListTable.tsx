@@ -8,6 +8,7 @@ import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/List
 import {Interweave} from 'interweave';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
+import {RecommendedProductData} from '@givewp/components/ListTable/ProductRecommendations/useRecommendations';
 
 declare global {
     interface Window {
@@ -151,7 +152,43 @@ const ListTableBlankSlate = (
     />
 );
 
-const RotatingRecommendation = (<ProductRecommendations apiSettings={window.GiveDonations} />)
+
+interface DonationTableRecommendations {
+    recurring: RecommendedProductData;
+    feeRecovery: RecommendedProductData;
+    designatedFunds: RecommendedProductData;
+}
+
+/**
+ * @unreleased
+ */
+const RecommendationConfig: DonationTableRecommendations = {
+    // ToDo: Use UTM links for documentationPage
+    recurring: {
+        enum: 'givewp_donations_recurring_recommendation_dismissed',
+        documentationPage: '',
+        message: 'Increase your fundraising revenue by over 30% with recurring giving campaigns.',
+        innerHtml: __('Get More Donations', 'give'),
+    },
+    feeRecovery: {
+        enum: 'givewp_donations_fee_recovery_recommendation_dismissed',
+        documentationPage: '',
+        message:
+            'Maximize your total donated income to 100% by providing donors with the option to cover the credit card processing fees.',
+        innerHtml: __('Get More Donations', 'give'),
+    },
+    designatedFunds: {
+        enum: 'givewp_donations_designated_funds_recommendation_dismissed',
+        documentationPage: ' ',
+        message:
+            'Elevate your fundraising campaigns with multiple forms, unlimited donation funds, and tailored fundraising reports.',
+        innerHtml: __('Start creating designated funds', 'give'),
+    },
+};
+
+const RotatingRecommendation = <ProductRecommendations
+    options={[RecommendationConfig.recurring, RecommendationConfig.feeRecovery, RecommendationConfig.designatedFunds]}
+    apiSettings={window.GiveDonations} />;
 
 
 export default function DonationsListTable() {

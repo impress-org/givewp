@@ -4,16 +4,16 @@ import {__} from '@wordpress/i18n';
 import {createInterpolateElement} from '@wordpress/element';
 import {RecommendedProductData, useRecommendations} from './useRecommendations';
 
+interface ProductRecommendationsProps {
+    apiSettings: {table; pluginUrl};
+    options: any;
+}
+
 /**
  * @unreleased
  */
-
-interface ProductRecommendationsProps {
-    apiSettings: {table; pluginUrl};
-}
-
-export default function ProductRecommendations({apiSettings}: ProductRecommendationsProps) {
-    const {getRecommendation, removeRecommendation} = useRecommendations();
+export default function ProductRecommendations({apiSettings, options}: ProductRecommendationsProps) {
+    const {getRecommendation, removeRecommendation} = useRecommendations(apiSettings, options);
     const selectedOption = getRecommendation();
     const [showRecommendation, setShowRecommendation] = useState<boolean>(!!selectedOption);
 
@@ -39,9 +39,6 @@ export default function ProductRecommendations({apiSettings}: ProductRecommendat
     );
 }
 
-/**
- * @unreleased
- */
 interface RotatingMessageProps {
     selectedOption: RecommendedProductData;
     closeMessage: (async: any) => Promise<void>;
@@ -49,6 +46,9 @@ interface RotatingMessageProps {
     columns: Array<{visible: boolean}>;
 }
 
+/**
+ * @unreleased
+ */
 function RotatingMessage({selectedOption, closeMessage, pluginUrl, columns}: RotatingMessageProps) {
     const {message = '', documentationPage = '', innerHtml = ''} = selectedOption;
 
@@ -80,11 +80,11 @@ function RotatingMessage({selectedOption, closeMessage, pluginUrl, columns}: Rot
     );
 }
 
+type TranslatedMessageProps = {message: string};
+
 /**
  * @unreleased
  */
-type TranslatedMessageProps = {message: string};
-
 function TranslatedMessage({message}: TranslatedMessageProps) {
     const Message = () => <p>{message}</p>;
 
