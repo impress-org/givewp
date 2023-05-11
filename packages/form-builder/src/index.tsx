@@ -1,4 +1,4 @@
-import React, {createRoot, render} from '@wordpress/element';
+import {createRoot, render, StrictMode} from '@wordpress/element';
 import {BlockSupports, getCategories, registerBlockType, setCategories} from '@wordpress/blocks';
 
 import App from './App';
@@ -62,9 +62,9 @@ if (createRoot) {
     createRoot(root).render(<App />);
 } else {
     render(
-        <React.StrictMode>
+        <StrictMode>
             <App />
-        </React.StrictMode>,
+        </StrictMode>,
         root
     );
 }
