@@ -5,13 +5,13 @@ import {createInterpolateElement} from '@wordpress/element';
 import {
     RecommendedProductData,
     useRecommendations,
-} from '@givewp/components/ListTable/ProductRecommendation/useRecommendations';
+} from '@givewp/components/ListTable/ProductRecommendations/useRecommendations';
 
 /**
  * @unreleased
  */
 
-export default function ProductRecommendation({columns}: { columns: number }) {
+export default function ProductRecommendations({columns}: { columns: number }) {
     const {getRecommendation, removeRecommendation} = useRecommendations();
     const selectedOption = getRecommendation();
     const [showRecommendation, setShowRecommendation] = useState<boolean>(!!selectedOption);

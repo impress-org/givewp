@@ -6,7 +6,7 @@ import {Spinner} from '../../index';
 import {BulkActionCheckboxAll} from '@givewp/components/ListTable/BulkActions/BulkActionCheckbox';
 import ListTableHeaders from '@givewp/components/ListTable/ListTableHeaders';
 import ListTableRows from '@givewp/components/ListTable/ListTableRows';
-import ProductRecommendation from '@givewp/components/ListTable/ProductRecommendation';
+import ProductRecommendations from 'src/Views/Components/ListTable/ProductRecommendations';
 
 export interface ListTableProps {
     //required
@@ -185,7 +185,7 @@ export const ListTable = ({
                             </tr>
                         </thead>
                         <tbody className={styles.tableContent}>
-                            {window.GiveDonations && <ProductRecommendation columns={visibleColumns.length + 1} />}
+                            {window.GiveDonations && <ProductRecommendations columns={visibleColumns.length + 1} />}
                             <ListTableRows
                                 columns={visibleColumns}
                                 data={data}
