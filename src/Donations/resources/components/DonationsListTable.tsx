@@ -174,7 +174,7 @@ const RecommendationConfig: DonationTableRecommendations = {
         enum: 'givewp_donations_fee_recovery_recommendation_dismissed',
         documentationPage: '',
         message: __(
-            'Elevate your fundraising campaigns with multiple forms, unlimited donation funds, and tailored fundraising reports.',
+            'Keep 100% of your donated income when you provide donors with the option to cover the credit card processing fees.',
             'give'
         ),
 
