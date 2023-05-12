@@ -64,6 +64,21 @@ class ProductRecommendationsRoute implements RestRoute
     }
 
     /**
+     * Sets up the proper HTTP status code for authorization.
+     * @unreleased
+     *
+     * @return int
+     */
+    public function authorizationStatusCode()
+    {
+        if (is_user_logged_in()) {
+            return 403;
+        }
+
+        return 401;
+    }
+
+    /**
      * @unreleased
      *
      * @param WP_REST_Request $request
