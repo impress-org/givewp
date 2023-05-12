@@ -2,13 +2,13 @@
 
 namespace Give\Promotions\InPluginUpsells\Endpoints;
 
-use Give\Donations\Endpoints\Endpoint;
+use Give\API\RestRoute;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
 
-class ProductRecommendationsRoute extends Endpoint
+class ProductRecommendationsRoute implements RestRoute
 {
     /**
      * @var string

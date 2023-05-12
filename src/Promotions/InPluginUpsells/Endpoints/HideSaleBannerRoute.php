@@ -3,6 +3,7 @@
 namespace Give\Promotions\InPluginUpsells\Endpoints;
 
 use Give\API\RestRoute;
+use Give\Promotions\InPluginUpsells\SaleBanners;
 use WP_REST_Request;
 use WP_REST_Response;
 
