@@ -65,12 +65,12 @@ class AjaxRequestHandler
      *
      * @since 2.9.0
      *
-     * @param Webhooks        $webhooksRepository
-     * @param MerchantDetail  $merchantDetails
+     * @param Webhooks $webhooksRepository
+     * @param MerchantDetail $merchantDetails
      * @param MerchantDetails $merchantRepository
-     * @param RefreshToken    $refreshToken
-     * @param Settings        $settings
-     * @param PayPalAuth      $payPalAuth
+     * @param RefreshToken $refreshToken
+     * @param Settings $settings
+     * @param PayPalAuth $payPalAuth
      */
     public function __construct(
         Webhooks $webhooksRepository,
@@ -105,7 +105,7 @@ class AjaxRequestHandler
             $partnerLinkInfo['nonce']
         );
 
-        if ( ! $payPalResponse || array_key_exists('error', $payPalResponse)) {
+        if (! $payPalResponse || array_key_exists('error', $payPalResponse)) {
             wp_send_json_error();
         }
 
@@ -136,17 +136,21 @@ class AjaxRequestHandler
 
         $country = sanitize_text_field(wp_unslash($_GET['countryCode']));
         $mode = sanitize_text_field(wp_unslash($_GET['mode']));
+        $redirectUrl = add_query_arg(
+            [
+                'tab' => 'gateways',
+                'section' => 'paypal',
+                'group' => 'paypal-commerce',
+                'mode' => $mode
+
+            ],
+            admin_url('edit.php?post_type=give_forms&page=give-settings')
+        );
 
         // Set PayPal client mode.
         give(PayPalClient::class)->setMode($mode);
 
-        $data = $this->payPalAuth->getSellerPartnerLink(
-            admin_url(
-                'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce'
-            ),
-            $country,
-            $mode
-        );
+        $data = $this->payPalAuth->getSellerPartnerLink($redirectUrl, $country);
 
         if (! $data) {
             wp_send_json_error();
@@ -273,7 +277,7 @@ class AjaxRequestHandler
      */
     public function onBoardingTroubleNotice()
     {
-        if ( ! current_user_can('manage_give_settings')) {
+        if (! current_user_can('manage_give_settings')) {
             wp_die();
         }
 
@@ -312,7 +316,7 @@ class AjaxRequestHandler
      */
     private function validateAdminRequest()
     {
-        if ( ! current_user_can('manage_give_settings')) {
+        if (! current_user_can('manage_give_settings')) {
             wp_die();
         }
     }
@@ -326,7 +330,7 @@ class AjaxRequestHandler
     {
         $formId = absint($_POST['give-form-id']);
 
-        if ( ! $formId || ! give_verify_donation_form_nonce(give_clean($_POST['give-form-hash']), $formId)) {
+        if (! $formId || ! give_verify_donation_form_nonce(give_clean($_POST['give-form-hash']), $formId)) {
             wp_die();
         }
     }
@@ -340,7 +344,7 @@ class AjaxRequestHandler
      */
     private function getDonorAddressFromPostedDataForPaypalOrder($postedData)
     {
-        if ( ! $this->settings->canCollectBillingInformation()) {
+        if (! $this->settings->canCollectBillingInformation()) {
             return [];
         }
 
