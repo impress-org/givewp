@@ -137,6 +137,7 @@ class PaymentGateways implements ServiceProvider
         give()->singleton(ScriptLoader::class);
         give()->singleton(WebhookRegister::class);
         give()->singleton(Webhooks::class);
+        give()->singleton(PayPalClient::class);
         give()->singleton(MerchantDetails::class);
         give()->singleton(PayPalAuth::class);
 
