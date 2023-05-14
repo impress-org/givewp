@@ -392,9 +392,12 @@ class AdminSettingFields
         /** @var MerchantDetails $accountRepository */
         $accountRepository = give(MerchantDetails::class);
         $accountRepository->setMode($paypalSetting->mode);
+
+        $merchantDetail = $accountRepository->getDetails();
+
         $canShowAccountInformation = $accountRepository->accountIsConnected();
         ?>
-        <tr valign="top">
+        <tr>
             <th scope="row" class="titledesc">
                 <label for="give_paypal_commerce_country">
                     <?php echo $paypalSetting->label ?>
@@ -443,7 +446,7 @@ class AdminSettingFields
                                     printf(
                                         '%1$s <span class="paypal-account-email">%2$s</span>',
                                         esc_html__('Connected for payments as', 'give'),
-                                        give(MerchantDetail::class)->merchantId
+                                        $merchantDetail->merchantId
                                     );
                                     ?>
                                 </span>
