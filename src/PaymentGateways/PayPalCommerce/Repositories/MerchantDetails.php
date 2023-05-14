@@ -26,8 +26,7 @@ class MerchantDetails
      */
     public function accountIsConnected()
     {
-        /* @var $merchantDetails MerchantDetail */
-        $merchantDetails = give(MerchantDetail::class);
+        $merchantDetails = $this->getDetails();
 
         return (bool)$merchantDetails->merchantIdInPayPal;
     }
