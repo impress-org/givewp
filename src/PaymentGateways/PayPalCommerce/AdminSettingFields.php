@@ -407,7 +407,7 @@ class AdminSettingFields
                 <div id="give-paypal-commerce-account-manager-field-wrap">
                     <div class="connect-button-wrap">
                         <div
-                            class="button-wrap connection-setting <?php echo $canShowAccountInformation ? 'give-hidden' : ''; ?>">
+                            class="button-wrap connection-setting<?php echo $canShowAccountInformation ? ' give-hidden' : ''; ?>">
                             <div>
                                 <button class="button button-primary button-large js-give-paypal-on-boarding-handler"
                                         data-mode="<?php echo $paypalSetting->mode; ?>">
@@ -432,7 +432,7 @@ class AdminSettingFields
                             </span>
                         </div>
                         <div
-                            class="button-wrap disconnection-setting <?php echo ! $canShowAccountInformation ? 'give-hidden' : ''; ?>">
+                            class="button-wrap disconnection-setting<?php echo ! $canShowAccountInformation ? ' give-hidden' : ''; ?>">
                             <div>
                                 <button class="button button-large disabled" disabled="disabled">
                                     <i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php
