@@ -68,6 +68,18 @@ class onBoardingRedirectHandler
         $this->merchantRepository = $merchantRepository;
         $this->settings = $settings;
         $this->payPalAuth = $payPalAuth;
+
+        $this->setModeFromRequest();
+    }
+
+    private function setModeFromRequest()
+    {
+        if (isset($_GET['mode']) && in_array($_GET['mode'], ['live', 'sandbox'])) {
+            $mode = sanitize_text_field(wp_unslash($_GET['mode']));
+            $this->webhooksRepository->setMode($mode);
+            $this->merchantRepository->setMode($mode);
+            give(PayPalClient::class)->setMode($mode);
+        }
     }
 
     /**
