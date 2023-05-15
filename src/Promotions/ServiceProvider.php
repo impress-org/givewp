@@ -10,6 +10,7 @@ use Give\Promotions\FreeAddonModal\Controllers\PreventFreshInstallPromotion;
 use Give\Promotions\InPluginUpsells\AddonsAdminPage;
 use Give\Promotions\InPluginUpsells\Endpoints\HideSaleBannerRoute;
 use Give\Promotions\InPluginUpsells\Endpoints\ProductRecommendationsRoute;
+use Give\Promotions\InPluginUpsells\Endpoints\ReportsProductRecommendationRoute;
 use Give\Promotions\InPluginUpsells\RecurringDonationsTab;
 use Give\Promotions\InPluginUpsells\SaleBanners;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderContract;

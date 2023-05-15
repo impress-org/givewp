@@ -3,7 +3,9 @@ import {useCallback, useState} from 'react';
 type EnumValues =
     | 'givewp_donations_recurring_recommendation_dismissed'
     | 'givewp_donations_fee_recovery_recommendation_dismissed'
-    | 'givewp_donations_designated_funds_recommendation_dismissed';
+    | 'givewp_donations_designated_funds_recommendation_dismissed'
+    | 'givewp_reports_recurring_recommendation_dismissed'
+    | 'givewp_reports_fee_recovery_recommendation_dismissed';
 
 export interface RecommendedProductData {
     enum: EnumValues;
@@ -19,8 +21,7 @@ export function useRecommendations(apiSettings, options) {
     const [dismissedRecommendations, setDismissedRecommendations] = useState<string[]>(
         apiSettings.dismissedRecommendations
     );
-
-    const getRecommendation = useCallback((): RecommendedProductData | null => {
+    const getRandomRecommendation = useCallback((): RecommendedProductData | null => {
         const availableOptions = options.filter((option) => !dismissedRecommendations.includes(option.enum));
 
         if (availableOptions.length === 0) {
@@ -32,7 +33,18 @@ export function useRecommendations(apiSettings, options) {
         return availableOptions[randomIndex];
     }, [dismissedRecommendations]);
 
-    const removeRecommendation = async (data: {option: EnumValues}): Promise<void> => {
+    const getRecommendation = useCallback((): RecommendedProductData | null => {
+        const availableOptions = options.filter((option) => !dismissedRecommendations.includes(option.enum));
+        console.log(availableOptions);
+
+        if (availableOptions.length === 0) {
+            return null;
+        }
+
+        return availableOptions[0];
+    }, [dismissedRecommendations]);
+
+    const removeRecommendation = async (data: { option: EnumValues }): Promise<void> => {
         const url = `/wp-json/give-api/v2/admin/recommended-options`;
 
         try {
@@ -54,5 +66,5 @@ export function useRecommendations(apiSettings, options) {
         }
     };
 
-    return {getRecommendation, removeRecommendation};
+    return {getRecommendation, getRandomRecommendation, removeRecommendation};
 }

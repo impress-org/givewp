@@ -9,6 +9,7 @@
 namespace Give\Views\Admin\Pages;
 
 use Give\Helpers\EnqueueScript;
+use Give\Helpers\Utils;
 
 defined('ABSPATH') || exit;
 
@@ -66,7 +67,7 @@ class Reports
             'testMode' => give_is_test_mode(),
             'pluginUrl' => GIVE_PLUGIN_URL,
             'recommendRecurringAddon' => GIVE_PLUGIN_URL,
-            'productRecommendation' => $this->getDismissedRecommendation(),
+            'dismissedRecommendations' => $this->getDismissedRecommendations(),
             'apiRoot' => esc_url_raw(rest_url('give-api/v2/reports')),
             'apiNonce' => wp_create_nonce('wp_rest'),
         ];
@@ -124,19 +125,33 @@ class Reports
     }
 
     /**
+     * Retrieve a list of dismissed recommendations.
+     *
      * @unreleased
+     *
+     * @return array
      */
-    private function getDismissedRecommendation(): string
+    private function getDismissedRecommendations(): array
     {
-        $dismissedOption = '';
-        $option = get_option('givewp_reports_recurring_recommendation_dismissed', false);
-        $recurringAddonIsActive = '';
+        $dismissedRecommendations = [];
 
-        if ($option || $recurringAddonIsActive) {
-            $dismissedOption = 'givewp_reports_recurring_recommendation_dismissed';
+        $recurringAddonIsActive = Utils::isPluginActive('give-recurring/give-recurring.php');
+        $feeRecoveryAddonIsActive = Utils::isPluginActive('give-fee-recovery/give-fee-recovery.php');
+
+        $optionNames = [
+            'givewp_reports_recurring_recommendation_dismissed' => $recurringAddonIsActive,
+            'givewp_reports_fee_recovery_recommendation_dismissed' => $feeRecoveryAddonIsActive,
+        ];
+
+        foreach ($optionNames as $optionName => $isActive) {
+            $dismissed = get_option($optionName, false);
+            if ($dismissed || $isActive) {
+                $dismissedRecommendations[] = $optionName;
+            }
         }
 
-        return $dismissedOption;
+        return $dismissedRecommendations;
     }
 }
+
 

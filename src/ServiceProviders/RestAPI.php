@@ -12,7 +12,6 @@ use Give\API\Endpoints\Reports\Income;
 use Give\API\Endpoints\Reports\IncomeBreakdown;
 use Give\API\Endpoints\Reports\PaymentMethods;
 use Give\API\Endpoints\Reports\PaymentStatuses;
-use Give\API\Endpoints\Reports\ProductRecommendation;
 use Give\API\Endpoints\Reports\RecentDonations;
 use Give\API\Endpoints\Reports\TopDonors;
 use Give\API\Endpoints\Reports\TotalDonors;
@@ -65,7 +64,6 @@ class RestAPI implements ServiceProvider
         FormActions::class,
         GetMigrations::class,
         RunMigration::class,
-        ProductRecommendation::class,
     ];
 
     /**

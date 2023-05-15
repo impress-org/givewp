@@ -39,6 +39,8 @@ class ProductRecommendationsRoute implements RestRoute
                                 'givewp_donations_recurring_recommendation_dismissed',
                                 'givewp_donations_fee_recovery_recommendation_dismissed',
                                 'givewp_donations_designated_funds_recommendation_dismissed',
+                                'givewp_reports_recurring_recommendation_dismissed',
+                                'givewp_reports_fee_recovery_recommendation_dismissed',
                             ],
                         ],
                     ],
@@ -107,6 +109,14 @@ class ProductRecommendationsRoute implements RestRoute
                     update_option('givewp_donations_designated_funds_recommendation_dismissed', true);
                     $successes[] = 'givewp_donations_designated_funds_recommendation_dismissed';
                     break;
+                case 'givewp_reports_recurring_recommendation_dismissed':
+                    update_option('givewp_reports_recurring_recommendation_dismissed', time());
+                    $successes[] = 'givewp_donations_recurring_recommendation_dismissed';
+
+                    break;
+                case 'givewp_reports_fee_recovery_recommendation_dismissed' :
+                    update_option('givewp_reports_fee_recovery_recommendation_dismissed', time());
+                    $successes[] = 'givewp_reports_fee_recovery_recommendation_dismissed';
 
                 default:
                     $errors[] = "Invalid option: {$request->get_param('option')}";
