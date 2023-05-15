@@ -57,7 +57,9 @@ class DonorsAdminPage
     }
 
     /**
-     * @since 2.20.0
+     * @unreleased Pass dissmissedRecommendations
+     *
+     * @since      2.20.0
      */
     public function loadScripts()
     {
