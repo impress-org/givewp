@@ -29,6 +29,7 @@ export interface ListTablePageProps {
     align?: 'start' | 'center' | 'end';
     paymentMode?: boolean;
     listTableBlankSlate: JSX.Element;
+    productRecommendation?: JSX.Element;
 }
 
 export interface FilterConfig {
@@ -70,6 +71,7 @@ export default function ListTablePage({
     align = 'start',
     paymentMode,
     listTableBlankSlate,
+    productRecommendation,
 }: ListTablePageProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(30);
@@ -230,6 +232,7 @@ export default function ListTablePage({
                                 align={align}
                                 testMode={testMode}
                                 listTableBlankSlate={listTableBlankSlate}
+                                productRecommendation={productRecommendation}
                             />
                         </ShowConfirmModalContext.Provider>
                     </CheckboxContext.Provider>
