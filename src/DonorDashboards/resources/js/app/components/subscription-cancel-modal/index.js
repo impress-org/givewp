@@ -6,7 +6,7 @@ import './style.scss';
 import {useState} from 'react';
 
 const responseIsError = (response) => {
-    return response?.data?.code?.includes('error');
+    return response?.data?.code.includes('error');
 };
 
 const getErrorMessageFromResponse = (response) => {
