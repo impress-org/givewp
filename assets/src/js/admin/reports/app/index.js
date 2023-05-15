@@ -20,7 +20,9 @@ import Tabs from '../components/tabs';
 import Routes from '../components/routes';
 import ProductRecommendation from "../components/ProductRecommendation";
 
-
+/**
+ * @unreleased
+ */
 const App = () => {
     // Initial app state (available in component through useStoreValue)
     const initialState = {
@@ -37,7 +39,6 @@ const App = () => {
         testMode: getWindowData('testMode'),
     };
 
-    const shouldShowRecommendation = !getWindowData('productRecommendation');
 
     return (
         <StoreProvider initialState={initialState} reducer={reducer}>
@@ -51,7 +52,7 @@ const App = () => {
                 </div>
                 <hr className="wp-header-end hidden" />
                 <Tabs />
-                {shouldShowRecommendation && <ProductRecommendation />}
+                <ProductRecommendation />
                 <br />
                 <Routes />
             </div>

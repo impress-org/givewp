@@ -37,7 +37,6 @@ interface ReportsPageRecommendations {
 }
 
 const RecommendationConfig: ReportsPageRecommendations = {
-    // ToDo: Use UTM links for documentationPage
     recurring: {
         enum: 'givewp_reports_recurring_recommendation_dismissed',
         documentationPage: ' https://docs.givewp.com/recurring-reports',
