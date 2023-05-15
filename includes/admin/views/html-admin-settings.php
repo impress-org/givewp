@@ -84,7 +84,9 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
             <?php
             foreach ($tabs as $name => $label) {
                 $target = $name === 'recurring' ? 'target="_blank" ' : false;
-                $urlPath = $name === 'recurring' ? 'https://docs.givewp.com/subscriptions' : admin_url('edit.php?post_type=give_forms&page=' . self::$setting_filter_prefix . "&tab={$name}");
+                $urlPath = $name === 'recurring' ? ' https://docs.givewp.com/recurring-link' : admin_url(
+                    'edit.php?post_type=give_forms&page=' . self::$setting_filter_prefix . "&tab={$name}"
+                );
                 echo '<a ' . $target . 'href="' . $urlPath . '"' . ' class="nav-tab ' . ($current_tab === $name ? 'nav-tab-active' : 'give-mobile-hidden') . '">' . $label . '</a>';
             }
 
