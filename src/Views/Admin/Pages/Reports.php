@@ -27,12 +27,6 @@ class Reports
         add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
     }
 
-    public function __construct()
-    {
-
-    }
-
-
     // Enqueue app scripts
     public function enqueue_scripts($base)
     {
