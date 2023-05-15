@@ -87,7 +87,7 @@ export default function ProductRecommendations() {
                     <TranslatedMessage message={selectedOption.message} />
                 </div>
 
-                <a target="_blank" href={'https://docs.givewp.com/subscriptions'}>
+                <a target="_blank" href={selectedOption.documentationPage}>
                     {selectedOption.innerHtml}
                     <img src={`${pluginUrl}/assets/dist/images/list-table/external-link-icon.svg`} />
                 </a>
