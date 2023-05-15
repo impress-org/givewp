@@ -1,14 +1,14 @@
 <?php
 
-namespace Give\Promotions\InPluginUpsells;
+namespace Give\Promotions\InPluginUpsells\Endpoints;
 
-use Give\Donations\Endpoints\Endpoint;
+use Give\API\RestRoute;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
 
-class ProductRecommendationsRoute extends Endpoint
+class ProductRecommendationsRoute implements RestRoute
 {
     /**
      * @var string
@@ -38,6 +38,8 @@ class ProductRecommendationsRoute extends Endpoint
                                 'givewp_donations_recurring_recommendation_dismissed',
                                 'givewp_donations_fee_recovery_recommendation_dismissed',
                                 'givewp_donations_designated_funds_recommendation_dismissed',
+                                'givewp_reports_recurring_recommendation_dismissed',
+                                'givewp_reports_fee_recovery_recommendation_dismissed',
                             ],
                         ],
                     ],
@@ -64,6 +66,21 @@ class ProductRecommendationsRoute extends Endpoint
     }
 
     /**
+     * Sets up the proper HTTP status code for authorization.
+     * @unreleased
+     *
+     * @return int
+     */
+    public function authorizationStatusCode()
+    {
+        if (is_user_logged_in()) {
+            return 403;
+        }
+
+        return 401;
+    }
+
+    /**
      * @unreleased
      *
      * @param WP_REST_Request $request
@@ -72,41 +89,27 @@ class ProductRecommendationsRoute extends Endpoint
      */
     public function handleRequest(WP_REST_Request $request)
     {
-        $errors = [];
-        $successes = [];
+        switch ($request->get_param('option')) {
+            case 'givewp_donations_recurring_recommendation_dismissed':
+                update_option('givewp_donations_recurring_recommendation_dismissed', true);
+                break;
 
-        try {
-            switch ($request->get_param('option')) {
-                case 'givewp_donations_recurring_recommendation_dismissed':
-                    update_option('givewp_donations_recurring_recommendation_dismissed', true);
-                    $successes[] = 'givewp_donations_recurring_recommendation_dismissed';
-                    break;
+            case 'givewp_donations_fee_recovery_recommendation_dismissed' :
+                update_option('givewp_donations_fee_recovery_recommendation_dismissed', true);
+                break;
 
-                case 'givewp_donations_fee_recovery_recommendation_dismissed' :
-                    update_option('givewp_donations_fee_recovery_recommendation_dismissed', true);
-                    $successes[] = 'givewp_donations_fee_recovery_recommendation_dismissed';
-                    break;
+            case 'givewp_donations_designated_funds_recommendation_dismissed':
+                update_option('givewp_donations_designated_funds_recommendation_dismissed', true);
+                break;
 
-                case 'givewp_donations_designated_funds_recommendation_dismissed':
-                    update_option('givewp_donations_designated_funds_recommendation_dismissed', true);
-                    $successes[] = 'givewp_donations_designated_funds_recommendation_dismissed';
-                    break;
-
-                default:
-                    $errors[] = 'Invalid option';
-            }
-        } catch (\Exception $e) {
-            $errors[] = $e->getMessage();
+            case 'givewp_reports_recurring_recommendation_dismissed':
+                update_option('givewp_reports_recurring_recommendation_dismissed', time());
+                break;
+            case 'givewp_reports_fee_recovery_recommendation_dismissed' :
+                update_option('givewp_reports_fee_recovery_recommendation_dismissed', time());
+                break;
         }
 
-        if (count($errors) > 0) {
-            $response = new WP_Error('invalid_option', __('Invalid option'), ['status' => 400]);
-        } else {
-            $response = [
-                'successes' => $successes,
-            ];
-        }
-
-        return new WP_REST_Response($response);
+        return new WP_REST_Response(['option_updated' => $request->get_param('option')]);
     }
 }

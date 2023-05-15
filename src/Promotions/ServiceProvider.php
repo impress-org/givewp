@@ -3,12 +3,13 @@
 namespace Give\Promotions;
 
 use Give\Helpers\Hooks;
+use Give\Promotions\FreeAddonModal\Controllers\CompleteRestApiEndpoint;
 use Give\Promotions\FreeAddonModal\Controllers\DisplaySettingsButton;
 use Give\Promotions\FreeAddonModal\Controllers\EnqueueModal;
-use Give\Promotions\FreeAddonModal\Controllers\CompleteRestApiEndpoint;
 use Give\Promotions\FreeAddonModal\Controllers\PreventFreshInstallPromotion;
 use Give\Promotions\InPluginUpsells\AddonsAdminPage;
-use Give\Promotions\InPluginUpsells\HideSaleBannerRoute;
+use Give\Promotions\InPluginUpsells\Endpoints\HideSaleBannerRoute;
+use Give\Promotions\InPluginUpsells\Endpoints\ProductRecommendationsRoute;
 use Give\Promotions\InPluginUpsells\RecurringDonationsTab;
 use Give\Promotions\InPluginUpsells\SaleBanners;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderContract;
@@ -44,6 +45,7 @@ class ServiceProvider implements ServiceProviderContract
     {
         Hooks::addAction('admin_menu', AddonsAdminPage::class, 'register', 70);
         Hooks::addAction('rest_api_init', HideSaleBannerRoute::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', ProductRecommendationsRoute::class, 'registerRoute');
 
         if (AddonsAdminPage::isShowing()) {
             Hooks::addAction('admin_enqueue_scripts', AddonsAdminPage::class, 'loadScripts');

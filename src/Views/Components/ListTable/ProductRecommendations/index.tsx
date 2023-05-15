@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styles from './style.module.scss';
 import {__} from '@wordpress/i18n';
 import {createInterpolateElement} from '@wordpress/element';
-import {RecommendedProductData, useRecommendations} from './useRecommendations';
+import {RecommendedProductData, useRecommendations} from '@givewp/promotions/hooks/useRecommendations';
 
 interface ProductRecommendationsProps {
     apiSettings: {table; pluginUrl};
@@ -13,8 +13,8 @@ interface ProductRecommendationsProps {
  * @unreleased
  */
 export default function ProductRecommendations({apiSettings, options}: ProductRecommendationsProps) {
-    const {getRecommendation, removeRecommendation} = useRecommendations(apiSettings, options);
-    const selectedOption = getRecommendation();
+    const {getRandomRecommendation, removeRecommendation} = useRecommendations(apiSettings, options);
+    const selectedOption = getRandomRecommendation();
     const [showRecommendation, setShowRecommendation] = useState<boolean>(!!selectedOption);
 
     const closeMessage = async (async) => {
