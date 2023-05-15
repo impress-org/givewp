@@ -8,6 +8,9 @@ import {
     useRecommendations,
 } from '../../../../../../../src/Promotions/sharedResources/hooks/useRecommendations';
 
+/**
+ * @unreleased
+ */
 declare global {
     interface Window {
         giveReportsData: {
@@ -101,13 +104,10 @@ export default function ProductRecommendations() {
 type TranslatedMessageProps = {message: string};
 
 function TranslatedMessage({message}: TranslatedMessageProps) {
-    const ProTip = <strong>Pro Tip: </strong>;
-    const Recommendation = <p>{message}</p>;
+    const translatedString = createInterpolateElement(__('<strong>ProTip: </strong> <message />', 'give'), {
+        strong: <strong />,
+        message: <p>{message}</p>,
+    });
 
-    const Message: () => ReactElement<string> = () => {
-        return createInterpolateElement(__('<ProTip/> <Recommendation/>'), {ProTip, Recommendation});
-    };
-
-    return <Message />;
+    return translatedString;
 }
-
