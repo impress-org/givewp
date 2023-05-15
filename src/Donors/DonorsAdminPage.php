@@ -90,7 +90,8 @@ class DonorsAdminPage
      * Preload initial table data
      * @since 2.20.0
      */
-    public function getForms(){
+    public function getForms()
+    {
         $options = DB::table('posts')
             ->select(
                 ['ID', 'value'],
@@ -104,7 +105,7 @@ class DonorsAdminPage
             [
                 'value' => '0',
                 'text' => 'Any',
-            ]
+            ],
         ], $options);
     }
 
@@ -126,20 +127,21 @@ class DonorsAdminPage
     {
         ?>
         <script type="text/javascript">
-            function showReactTable () {
-                fetch( '<?php echo esc_url_raw(rest_url('give-api/v2/admin/donors/view?isLegacy=0')) ?>', {
+            function showReactTable() {
+                fetch('<?php echo esc_url_raw(rest_url('give-api/v2/admin/donors/view?isLegacy=0')) ?>', {
                     method: 'GET',
                     headers: {
-                        ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>'
-                    }
+                        ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>',
+                    },
                 })
                     .then((res) => {
                         window.location.reload();
                     });
             }
-            jQuery( function() {
+
+            jQuery(function () {
                 jQuery(jQuery(".wrap .wp-header-end")).before(
-                    '<button class="page-title-action" onclick="showReactTable()">Switch to New View</button>'
+                    '<button class="page-title-action" onclick="showReactTable()">Switch to New View</button>',
                 );
             });
         </script>
@@ -171,6 +173,7 @@ class DonorsAdminPage
         $feeRecoveryAddonIsActive = Utils::isPluginActive('give-fee-recovery/give-fee-recovery.php');
 
         $optionName = 'givewp_donors_fee_recovery_recommendation_dismissed';
+        
         $dismissed = get_option($optionName, false);
 
         if ($dismissed || $feeRecoveryAddonIsActive) {
