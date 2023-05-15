@@ -60,7 +60,6 @@ class Reports
             'currency' => give_get_currency(),
             'testMode' => give_is_test_mode(),
             'pluginUrl' => GIVE_PLUGIN_URL,
-            'recommendRecurringAddon' => GIVE_PLUGIN_URL,
             'dismissedRecommendations' => $this->getDismissedRecommendations(),
             'apiRoot' => esc_url_raw(rest_url('give-api/v2/reports')),
             'apiNonce' => wp_create_nonce('wp_rest'),

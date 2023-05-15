@@ -35,7 +35,6 @@ export function useRecommendations(apiSettings, options) {
 
     const getRecommendation = useCallback((): RecommendedProductData | null => {
         const availableOptions = options.filter((option) => !dismissedRecommendations.includes(option.enum));
-        console.log(availableOptions);
 
         if (availableOptions.length === 0) {
             return null;

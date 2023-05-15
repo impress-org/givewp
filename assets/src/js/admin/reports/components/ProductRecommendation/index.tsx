@@ -20,7 +20,6 @@ declare global {
             currency: string;
             testMode: boolean;
             pluginUrl: string;
-            recommendRecurringAddon: string;
             dismissedRecommendations: string[];
             apiRoot: string;
             apiNonce: string;
