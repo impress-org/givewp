@@ -16,7 +16,7 @@ declare global {
             forms: Array<{value: string; text: string}>;
             table: {columns: Array<object>};
             pluginUrl: string;
-            dissedRecommendations: boolean;
+            dissedRecommendations: Array<string>;
         };
     }
 }
@@ -93,7 +93,7 @@ const RecommendationConfig: any = {
         enum: 'givewp_donors_fee_recovery_recommendation_dismissed',
         documentationPage: 'https://docs.givewp.com/feerecovery-donors-list',
         message: __(
-            'Keep 100% of your donated income when you provide donors with the option to cover the credit card processing fees. Get fee recovery',
+            'Keep 100% of your donated income when you provide donors with the option to cover the credit card processing fees.',
             'give'
         ),
         innerHtml: __('Get Fee Recovery', 'give'),
