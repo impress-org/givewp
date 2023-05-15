@@ -21,7 +21,11 @@ const Logo = () => (
         }}
     >
         <div>
-            <a href="edit.php?post_type=give_forms&page=give-forms" title={__('Return to GiveWP', 'give')}>
+            <a
+                style={{display: 'block', boxShadow: 'none'}}
+                href="edit.php?post_type=give_forms&page=give-forms"
+                title={__('Return to GiveWP', 'give')}
+            >
                 <GiveIcon />
             </a>
         </div>

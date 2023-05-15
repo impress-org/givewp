@@ -18,22 +18,10 @@ export default function Edit(props: BlockEditProps<any>) {
         []
     );
     const isSelectedOrIsInnerBlockSelected = props.isSelected || isParentOfSelectedBlock;
-    const borderColor = isSelectedOrIsInnerBlockSelected ? 'var(--wp-admin-theme-color)' : 'lightgray';
 
     return (
         <>
-            <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '24px',
-                    marginBottom: '36px',
-                    outline: '1px solid ' + borderColor,
-                    borderRadius: '5px',
-                    padding: '36px 40px 46px 40px',
-                    backgroundColor: 'white',
-                }}
-            >
+            <div className="block-editor-block-list__layout-section">
                 <header style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
                     {title.length > 0 && (
                         <RichText
@@ -41,6 +29,7 @@ export default function Edit(props: BlockEditProps<any>) {
                             value={title}
                             onChange={(val) => setAttributes({title: val})}
                             style={{margin: '0', fontSize: '22px', fontWeight: 700}}
+                            allowedFormats={[]}
                         />
                     )}
                     {description.length > 0 && (
@@ -49,6 +38,7 @@ export default function Edit(props: BlockEditProps<any>) {
                             value={description}
                             onChange={(val) => setAttributes({description: val})}
                             style={{fontSize: '16px', fontWeight: 500}}
+                            allowedFormats={[]}
                         />
                     )}
                 </header>

@@ -5,8 +5,8 @@ import {Storage} from './common';
 import defaultBlocks from './blocks.json';
 import Feedback from '@givewp/form-builder/feedback';
 import {BlockInstance} from '@wordpress/blocks';
-
 import './App.scss';
+import FormBuilderErrorBoundary from '@givewp/form-builder/errors/FormBuilderErrorBounday';
 
 const {blocks: initialBlocks, formSettings: initialFormSettings} = Storage.load();
 
@@ -22,15 +22,19 @@ if (initialBlocks instanceof Error) {
     console.error(initialBlocks);
 }
 
-function App() {
-    return (
-        <FormStateProvider initialState={initialState}>
-            <ShortcutProvider>
-                <BlockEditorContainer />
-                <Feedback />
-            </ShortcutProvider>
-        </FormStateProvider>
-    );
+if (ShortcutProvider === undefined) {
+    console.error('ShortcutProvider is undefined.');
 }
 
-export default App;
+export default function App() {
+    return (
+        <FormBuilderErrorBoundary>
+            <FormStateProvider initialState={initialState}>
+                <ShortcutProvider>
+                    <BlockEditorContainer />
+                    <Feedback />
+                </ShortcutProvider>
+            </FormStateProvider>
+        </FormBuilderErrorBoundary>
+    );
+}

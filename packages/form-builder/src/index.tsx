@@ -58,13 +58,14 @@ sectionBlocks.map(({name, settings}: FieldBlock) =>
 
 const root = document.getElementById('root');
 
+const RenderApp = () => (
+    <StrictMode>
+        <App />
+    </StrictMode>
+);
+
 if (createRoot) {
-    createRoot(root).render(<App />);
+    createRoot(root).render(<RenderApp />);
 } else {
-    render(
-        <StrictMode>
-            <App />
-        </StrictMode>,
-        root
-    );
+    render(<RenderApp />, root);
 }

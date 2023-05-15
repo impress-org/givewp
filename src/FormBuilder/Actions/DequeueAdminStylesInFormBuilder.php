@@ -21,7 +21,7 @@ class DequeueAdminStylesInFormBuilder
     {
         if ($this->isFormBuilderRoute()) {
             $wpStyles = wp_styles();
-            $wpStylesRegistered = array_column($wpStyles->registered, 'handle');
+
             $legacyGiveStyles = [
                 'give-styles',
                 'give-admin-global-styles',
@@ -29,8 +29,6 @@ class DequeueAdminStylesInFormBuilder
                 'give-admin-bar-notification',
                 'give-stripe-admin-css'
             ];
-
-            $allStyles = array_merge($wpStylesRegistered, $legacyGiveStyles);
 
             $wpStyles->dequeue($legacyGiveStyles);
         }

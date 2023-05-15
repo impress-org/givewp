@@ -3,6 +3,8 @@
 namespace Give\FormBuilder\ViewModels;
 
 use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
+use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
+use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\NextGen\DonationForm\Actions\GenerateDonationFormPreviewRouteUrl;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\Framework\FormDesigns\FormDesign;
@@ -47,7 +49,7 @@ class FormBuilderViewModel
      */
     public function jsPathFromRoot(): string
     {
-        return 'packages/form-builder/build/givewp-form-builder.js';
+        return GIVE_NEXT_GEN_URL . 'packages/form-builder/build/givewp-form-builder.js';
     }
 
     /**
@@ -55,6 +57,43 @@ class FormBuilderViewModel
      */
     public function jsPathFromPluginRoot(): string
     {
-        return 'build/formBuilderApp.js';
+        return GIVE_NEXT_GEN_URL . 'build/formBuilderApp.js';
+    }
+
+    /**
+     * @unreleased
+     */
+    public function jsDependencies(): array
+    {
+        $scriptAsset = require GIVE_NEXT_GEN_DIR . 'build/formBuilderApp.asset.php';
+
+        return $scriptAsset['dependencies'];
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getGateways(): array
+    {
+        $enabledGateways = array_keys(give_get_option('gateways'));
+
+        $supportedGateways = array_filter(
+            give(PaymentGatewayRegister::class)->getPaymentGateways(),
+            static function ($gateway) {
+                return is_a($gateway, NextGenPaymentGatewayInterface::class, true);
+            }
+        );
+
+        $builderPaymentGatewayData = array_map(static function ($gatewayClass) use ($enabledGateways) {
+            $gateway = give($gatewayClass);
+            return [
+                'id' => $gateway::id(),
+                'enabled' => in_array($gateway::id(), $enabledGateways, true),
+                'label' => give_get_gateway_checkout_label($gateway::id()) ?? $gateway->getPaymentMethodLabel(),
+                'supportsSubscriptions' => $gateway->supportsSubscriptions(),
+            ];
+        }, $supportedGateways);
+
+        return array_values($builderPaymentGatewayData);
     }
 }
