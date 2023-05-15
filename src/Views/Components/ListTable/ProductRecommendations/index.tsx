@@ -13,8 +13,8 @@ interface ProductRecommendationsProps {
  * @unreleased
  */
 export default function ProductRecommendations({apiSettings, options}: ProductRecommendationsProps) {
-    const {getRandomRecommendation, removeRecommendation} = useRecommendations(apiSettings, options);
-    const selectedOption = getRandomRecommendation();
+    const {getRandomRecommendation, getRecommendation, removeRecommendation} = useRecommendations(apiSettings, options);
+    const selectedOption = apiSettings === window.GiveDonors ? getRecommendation() : getRandomRecommendation();
     const [showRecommendation, setShowRecommendation] = useState<boolean>(!!selectedOption);
 
     const closeMessage = async (async) => {
