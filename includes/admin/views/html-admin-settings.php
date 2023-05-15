@@ -86,7 +86,7 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
         <div class="nav-tab-wrapper give-nav-tab-wrapper">
             <?php
             /**
-             * Renders Recurring Donations UTM link.
+             * Render Recurring Donations UTM link.
              *
              * @unreleased
              */
