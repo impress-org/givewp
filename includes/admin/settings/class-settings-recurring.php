@@ -7,8 +7,6 @@
  */
 class Give_Settings_Recurring_Donations_Core extends Give_Settings_Page
 {
-    public const CONTAINER_ID = 'give-in-plugin-upsells';
-
     protected $enable_save = false;
 
     /**
