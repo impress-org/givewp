@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Admin View: Settings
  */
@@ -29,8 +30,10 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
      *
      * @since 1.8
      */
-    $form_open_tag = apply_filters(self::$setting_filter_prefix . '_open_form',
-        '<form method="' . $form_method . '" id="give-mainform" action="" enctype="multipart/form-data">');
+    $form_open_tag = apply_filters(
+        self::$setting_filter_prefix . '_open_form',
+        '<form method="' . $form_method . '" id="give-mainform" action="" enctype="multipart/form-data">'
+    );
     $form_close_tag = apply_filters(self::$setting_filter_prefix . '_close_form', '</form>');
 
     $wrapper_class = implode(
@@ -82,16 +85,21 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
 
         <div class="nav-tab-wrapper give-nav-tab-wrapper">
             <?php
+            /**
+             * Renders Recurring Donations UTM link.
+             *
+             * @unreleased
+             */
             foreach ($tabs as $name => $label) {
                 $target = $name === 'recurring' ? 'target="_blank" ' : false;
-                $urlPath = $name === 'recurring' ? ' https://docs.givewp.com/recurring-link' : admin_url(
+                $urlPath = $name === 'recurring' ? 'https://docs.givewp.com/recurring-link' : admin_url(
                     'edit.php?post_type=give_forms&page=' . self::$setting_filter_prefix . "&tab={$name}"
                 );
                 echo '<a ' . $target . 'href="' . $urlPath . '"' . ' class="nav-tab ' . ($current_tab === $name ? 'nav-tab-active' : 'give-mobile-hidden') . '">' . $label . '</a>';
             }
 
             /**
-             * Renders Addon product recommendation link if Recurring Donations is active.
+             * Render Addon product recommendation link if Recurring Donations is active.
              *
              * @unreleased
              */
