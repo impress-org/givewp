@@ -1,4 +1,4 @@
-import {ReactElement, useState} from 'react';
+import {useState} from 'react';
 import {__} from '@wordpress/i18n';
 import {createInterpolateElement} from '@wordpress/element';
 import {getWindowData} from '../../utils';
@@ -74,27 +74,29 @@ export default function ProductRecommendations() {
         setShowRecommendation(false);
     };
 
+    if (!showRecommendation) {
+        return null;
+    }
+
     return (
-        showRecommendation && (
-            <div className={'givewp-reports-recommendation'}>
-                <div className={'givewp-reports-recommendation-container'}>
-                    <div>
-                        <img src={`${pluginUrl}/assets/dist/images/list-table/light-bulb-icon.svg`} />
+        <div className={'givewp-reports-recommendation'}>
+            <div className={'givewp-reports-recommendation-container'}>
+                <div>
+                    <img src={`${pluginUrl}/assets/dist/images/list-table/light-bulb-icon.svg`} />
 
-                        <TranslatedMessage message={selectedOption.message} />
-                    </div>
-
-                    <a target="_blank" href={'https://docs.givewp.com/subscriptions'}>
-                        {selectedOption.innerHtml}
-                        <img src={`${pluginUrl}/assets/dist/images/list-table/external-link-icon.svg`} />
-                    </a>
+                    <TranslatedMessage message={selectedOption.message} />
                 </div>
 
-                <button onClick={closeMessage}>
-                    <img src={`${pluginUrl}/assets/dist/images/close-icon.svg`} />
-                </button>
+                <a target="_blank" href={'https://docs.givewp.com/subscriptions'}>
+                    {selectedOption.innerHtml}
+                    <img src={`${pluginUrl}/assets/dist/images/list-table/external-link-icon.svg`} />
+                </a>
             </div>
-        )
+
+            <button onClick={closeMessage}>
+                <img src={`${pluginUrl}/assets/dist/images/close-icon.svg`} />
+            </button>
+        </div>
     );
 }
 
