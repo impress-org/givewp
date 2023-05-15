@@ -37,6 +37,7 @@ interface ReportsPageRecommendations {
 }
 
 const RecommendationConfig: ReportsPageRecommendations = {
+    // ToDo: Use UTM links for documentationPage
     recurring: {
         enum: 'givewp_reports_recurring_recommendation_dismissed',
         documentationPage: ' https://docs.givewp.com/recurring-reports',
@@ -50,6 +51,7 @@ const RecommendationConfig: ReportsPageRecommendations = {
             'Maximize your fundraising revenue to 100% and increase the impact of your cause by providing donors the option to cover credit card processing fees.',
             'give'
         ),
+
         innerHtml: __('Get Fee Recovery', 'give'),
     },
 };
@@ -85,7 +87,7 @@ export default function ProductRecommendations() {
                     <TranslatedMessage message={selectedOption.message} />
                 </div>
 
-                <a target="_blank" href={selectedOption.documentationPage}>
+                <a target="_blank" href={'https://docs.givewp.com/subscriptions'}>
                     {selectedOption.innerHtml}
                     <img src={`${pluginUrl}/assets/dist/images/list-table/external-link-icon.svg`} />
                 </a>
