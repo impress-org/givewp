@@ -163,7 +163,6 @@ interface DonationTableRecommendations {
  * @unreleased
  */
 const RecommendationConfig: DonationTableRecommendations = {
-    // ToDo: Use UTM links for documentationPage
     recurring: {
         enum: 'givewp_donations_recurring_recommendation_dismissed',
         documentationPage: 'https://docs.givewp.com/recurring-donations-list',
@@ -177,7 +176,6 @@ const RecommendationConfig: DonationTableRecommendations = {
             'Keep 100% of your donated income when you provide donors with the option to cover the credit card processing fees.',
             'give'
         ),
-
         innerHtml: __('Get Fee Recovery', 'give'),
     },
     designatedFunds: {
