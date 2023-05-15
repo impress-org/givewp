@@ -5,6 +5,7 @@ namespace Give\Donors;
 use Give\Donors\ListTable\DonorsListTable;
 use Give\Framework\Database\DB;
 use Give\Helpers\EnqueueScript;
+use Give\Helpers\Utils;
 
 class DonorsAdminPage
 {
@@ -66,7 +67,8 @@ class DonorsAdminPage
             'forms' => $this->getForms(),
             'table' => give(DonorsListTable::class)->toArray(),
             'adminUrl' => $this->adminUrl,
-            'pluginUrl' => GIVE_PLUGIN_URL
+            'pluginUrl' => GIVE_PLUGIN_URL,
+            'dismissedRecommendations' => $this->getDismissedRecommendations(),
         ];
 
         EnqueueScript::make('give-admin-donors', 'assets/dist/js/give-admin-donors.js')
@@ -150,6 +152,34 @@ class DonorsAdminPage
      */
     public static function isShowing()
     {
-        return isset($_GET['page']) && $_GET['page'] === 'give-donors' && !isset($_GET['id']);
+        return isset($_GET['page']) && $_GET['page'] === 'give-donors' && ! isset($_GET['id']);
     }
+
+    /**
+     * Retrieve a list of dismissed recommendations.
+     *
+     * @unreleased
+     *
+     * @return array
+     */
+    private function getDismissedRecommendations(): array
+    {
+        $dismissedRecommendations = [];
+
+        $feeRecoveryAddonIsActive = Utils::isPluginActive('give-fee-recovery/give-fee-recovery.php');
+
+        $optionNames = [
+            'givewp_donors_fee_recovery_recommendation_dismissed' => $feeRecoveryAddonIsActive,
+        ];
+
+        foreach ($optionNames as $optionName => $isActive) {
+            $dismissed = get_option($optionName, false);
+            if ($dismissed || $isActive) {
+                $dismissedRecommendations[] = $optionName;
+            }
+        }
+
+        return $dismissedRecommendations;
+    }
+
 }

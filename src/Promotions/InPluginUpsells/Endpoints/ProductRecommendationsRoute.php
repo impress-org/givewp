@@ -40,6 +40,7 @@ class ProductRecommendationsRoute implements RestRoute
                                 'givewp_donations_designated_funds_recommendation_dismissed',
                                 'givewp_reports_recurring_recommendation_dismissed',
                                 'givewp_reports_fee_recovery_recommendation_dismissed',
+                                'givewp_donors_fee_recovery_recommendation_dismissed',
                             ],
                         ],
                     ],
@@ -91,15 +92,15 @@ class ProductRecommendationsRoute implements RestRoute
     {
         switch ($request->get_param('option')) {
             case 'givewp_donations_recurring_recommendation_dismissed':
-                update_option('givewp_donations_recurring_recommendation_dismissed', true);
+                update_option('givewp_donations_recurring_recommendation_dismissed', time());
                 break;
 
             case 'givewp_donations_fee_recovery_recommendation_dismissed' :
-                update_option('givewp_donations_fee_recovery_recommendation_dismissed', true);
+                update_option('givewp_donations_fee_recovery_recommendation_dismissed', time());
                 break;
 
             case 'givewp_donations_designated_funds_recommendation_dismissed':
-                update_option('givewp_donations_designated_funds_recommendation_dismissed', true);
+                update_option('givewp_donations_designated_funds_recommendation_dismissed', time());
                 break;
 
             case 'givewp_reports_recurring_recommendation_dismissed':
@@ -108,8 +109,11 @@ class ProductRecommendationsRoute implements RestRoute
             case 'givewp_reports_fee_recovery_recommendation_dismissed' :
                 update_option('givewp_reports_fee_recovery_recommendation_dismissed', time());
                 break;
-        }
 
-        return new WP_REST_Response(['option_updated' => $request->get_param('option')]);
+            case 'givewp_donors_fee_recovery_recommendation_dismissed':
+                update_option('givewp_donors_fee_recovery_recommendation_dismissed', time());
+
+                return new WP_REST_Response(['option_updated' => $request->get_param('option')]);
+        }
     }
 }
