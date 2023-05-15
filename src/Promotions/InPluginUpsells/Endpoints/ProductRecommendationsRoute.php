@@ -91,15 +91,15 @@ class ProductRecommendationsRoute implements RestRoute
     {
         switch ($request->get_param('option')) {
             case 'givewp_donations_recurring_recommendation_dismissed':
-                update_option('givewp_donations_recurring_recommendation_dismissed', true);
+                update_option('givewp_donations_recurring_recommendation_dismissed', time());
                 break;
 
             case 'givewp_donations_fee_recovery_recommendation_dismissed' :
-                update_option('givewp_donations_fee_recovery_recommendation_dismissed', true);
+                update_option('givewp_donations_fee_recovery_recommendation_dismissed', time());
                 break;
 
             case 'givewp_donations_designated_funds_recommendation_dismissed':
-                update_option('givewp_donations_designated_funds_recommendation_dismissed', true);
+                update_option('givewp_donations_designated_funds_recommendation_dismissed', time());
                 break;
 
             case 'givewp_reports_recurring_recommendation_dismissed':
