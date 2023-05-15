@@ -113,8 +113,8 @@ class ProductRecommendationsRoute implements RestRoute
 
             case 'givewp_donors_fee_recovery_recommendation_dismissed':
                 update_option('givewp_donors_fee_recovery_recommendation_dismissed', time());
-
-                return new WP_REST_Response(['option_updated' => $request->get_param('option')]);
         }
+
+        return new WP_REST_Response(['option_updated' => $request->get_param('option')]);
     }
 }
