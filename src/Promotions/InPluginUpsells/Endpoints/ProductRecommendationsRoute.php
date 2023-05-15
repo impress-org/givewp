@@ -3,7 +3,6 @@
 namespace Give\Promotions\InPluginUpsells\Endpoints;
 
 use Give\API\RestRoute;
-use Give\Log\Log;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -90,54 +89,27 @@ class ProductRecommendationsRoute implements RestRoute
      */
     public function handleRequest(WP_REST_Request $request)
     {
-        $errors = [];
-        $successes = [];
+        switch ($request->get_param('option')) {
+            case 'givewp_donations_recurring_recommendation_dismissed':
+                update_option('givewp_donations_recurring_recommendation_dismissed', true);
+                break;
 
-        try {
-            switch ($request->get_param('option')) {
-                case 'givewp_donations_recurring_recommendation_dismissed':
-                    update_option('givewp_donations_recurring_recommendation_dismissed', true);
-                    $successes[] = 'givewp_donations_recurring_recommendation_dismissed';
-                    break;
+            case 'givewp_donations_fee_recovery_recommendation_dismissed' :
+                update_option('givewp_donations_fee_recovery_recommendation_dismissed', true);
+                break;
 
-                case 'givewp_donations_fee_recovery_recommendation_dismissed' :
-                    update_option('givewp_donations_fee_recovery_recommendation_dismissed', true);
-                    $successes[] = 'givewp_donations_fee_recovery_recommendation_dismissed';
-                    break;
+            case 'givewp_donations_designated_funds_recommendation_dismissed':
+                update_option('givewp_donations_designated_funds_recommendation_dismissed', true);
+                break;
 
-                case 'givewp_donations_designated_funds_recommendation_dismissed':
-                    update_option('givewp_donations_designated_funds_recommendation_dismissed', true);
-                    $successes[] = 'givewp_donations_designated_funds_recommendation_dismissed';
-                    break;
-                case 'givewp_reports_recurring_recommendation_dismissed':
-                    update_option('givewp_reports_recurring_recommendation_dismissed', time());
-                    $successes[] = 'givewp_donations_recurring_recommendation_dismissed';
-
-                    break;
-                case 'givewp_reports_fee_recovery_recommendation_dismissed' :
-                    update_option('givewp_reports_fee_recovery_recommendation_dismissed', time());
-                    $successes[] = 'givewp_reports_fee_recovery_recommendation_dismissed';
-
-                default:
-                    $errors[] = "Invalid option: {$request->get_param('option')}";
-            }
-        } catch (\Exception $e) {
-            $errors[] = $e->getMessage();
+            case 'givewp_reports_recurring_recommendation_dismissed':
+                update_option('givewp_reports_recurring_recommendation_dismissed', time());
+                break;
+            case 'givewp_reports_fee_recovery_recommendation_dismissed' :
+                update_option('givewp_reports_fee_recovery_recommendation_dismissed', time());
+                break;
         }
 
-        if (count($errors) > 0) {
-            $response = new WP_Error('invalid_option', __('Invalid option'), ['status' => 400]);
-
-            Log::error('Invalid option', [
-                'Error' => $errors,
-                'Response' => $response,
-            ]);
-        } else {
-            $response = [
-                'successes' => $successes,
-            ];
-        }
-
-        return new WP_REST_Response($response);
+        return new WP_REST_Response(['option_updated' => $request->get_param('option')]);
     }
 }
