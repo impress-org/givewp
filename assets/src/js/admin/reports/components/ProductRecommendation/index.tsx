@@ -3,10 +3,8 @@ import {__} from '@wordpress/i18n';
 import {createInterpolateElement} from '@wordpress/element';
 import {getWindowData} from '../../utils';
 import './style.scss';
-import {
-    RecommendedProductData,
-    useRecommendations,
-} from '../../../../../../../src/Promotions/sharedResources/hooks/useRecommendations';
+
+import {RecommendedProductData, useRecommendations} from '@givewp/promotions/sharedResources/hooks/useRecommendations';
 
 /**
  * @unreleased
@@ -49,7 +47,6 @@ const RecommendationConfig: ReportsPageRecommendations = {
             'Maximize your fundraising revenue to 100% and increase the impact of your cause by providing donors the option to cover credit card processing fees.',
             'give'
         ),
-
         innerHtml: __('Get Fee Recovery', 'give'),
     },
 };

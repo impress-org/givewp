@@ -106,6 +106,7 @@ class ProductRecommendationsRoute implements RestRoute
             case 'givewp_reports_recurring_recommendation_dismissed':
                 update_option('givewp_reports_recurring_recommendation_dismissed', time());
                 break;
+
             case 'givewp_reports_fee_recovery_recommendation_dismissed' :
                 update_option('givewp_reports_fee_recovery_recommendation_dismissed', time());
                 break;

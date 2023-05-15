@@ -6,7 +6,8 @@ type EnumValues =
     | 'givewp_donations_designated_funds_recommendation_dismissed'
     | 'givewp_reports_recurring_recommendation_dismissed'
     | 'givewp_reports_fee_recovery_recommendation_dismissed'
-    | 'givewp_donors_fee_recovery_recommendation_dismissed';
+    | 'givewp_donors_fee_recovery_recommendation_dismissed'
+    | 'givewp_reports_fee_recovery_recommendation_dismissed';
 
 export interface RecommendedProductData {
     enum: EnumValues;
