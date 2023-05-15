@@ -35,7 +35,6 @@ export function useRecommendations(apiSettings, options) {
     const removeRecommendation = async (data: {option: EnumValues}): Promise<void> => {
         const url = `/wp-json/give-api/v2/admin/recommended-options`;
 
-        try {
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
@@ -46,11 +45,9 @@ export function useRecommendations(apiSettings, options) {
             });
 
             const result = await response.json();
-            if (result.success) {
-                setDismissedRecommendations((prev) => [...prev, data.option]);
-            }
-        } catch (error) {
-            console.error(error);
+
+        if (result.success) {
+            setDismissedRecommendations((prev) => [...prev, data.option]);
         }
     };
 
