@@ -166,13 +166,13 @@ const RecommendationConfig: DonationTableRecommendations = {
     // ToDo: Use UTM links for documentationPage
     recurring: {
         enum: 'givewp_donations_recurring_recommendation_dismissed',
-        documentationPage: '',
+        documentationPage: 'https://docs.givewp.com/recurring-donations-list',
         message: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give'),
         innerHtml: __('Get More Donations', 'give'),
     },
     feeRecovery: {
         enum: 'givewp_donations_fee_recovery_recommendation_dismissed',
-        documentationPage: '',
+        documentationPage: 'https://docs.givewp.com/feerecovery-donations-list',
         message: __(
             'Keep 100% of your donated income when you provide donors with the option to cover the credit card processing fees.',
             'give'
@@ -182,7 +182,7 @@ const RecommendationConfig: DonationTableRecommendations = {
     },
     designatedFunds: {
         enum: 'givewp_donations_designated_funds_recommendation_dismissed',
-        documentationPage: ' ',
+        documentationPage: 'https://docs.givewp.com/funds-donations-list',
         message: __(
             'Elevate your fundraising campaigns with multiple forms, unlimited donation funds, and tailored fundraising reports.',
             'give'
