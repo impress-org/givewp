@@ -168,15 +168,11 @@ class DonorsAdminPage
 
         $feeRecoveryAddonIsActive = Utils::isPluginActive('give-fee-recovery/give-fee-recovery.php');
 
-        $optionNames = [
-            'givewp_donors_fee_recovery_recommendation_dismissed' => $feeRecoveryAddonIsActive,
-        ];
+        $optionName = 'givewp_donors_fee_recovery_recommendation_dismissed';
+        $dismissed = get_option($optionName, false);
 
-        foreach ($optionNames as $optionName => $isActive) {
-            $dismissed = get_option($optionName, false);
-            if ($dismissed || $isActive) {
-                $dismissedRecommendations[] = $optionName;
-            }
+        if ($dismissed || $feeRecoveryAddonIsActive) {
+            $dismissedRecommendations[] = $optionName;
         }
 
         return $dismissedRecommendations;
