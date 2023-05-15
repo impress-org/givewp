@@ -8,7 +8,7 @@ import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/List
 import {Interweave} from 'interweave';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
-import {RecommendedProductData} from '@givewp/components/ListTable/ProductRecommendations/useRecommendations';
+import {RecommendedProductData} from '@givewp/promotions/hooks/useRecommendations';
 
 declare global {
     interface Window {
