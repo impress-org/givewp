@@ -28,7 +28,7 @@ if (recurringProductRecommendation && preceedingContent) {
 
     dismissAction.addEventListener('click', async function (event) {
         recurringProductRecommendation.remove();
-        await postRequest();
+        await dismissProductRecommendation();
     });
 }
 
@@ -37,7 +37,7 @@ if (recurringProductRecommendation && preceedingContent) {
  * @unreleased
  *
  */
-async function postRequest() {
+async function dismissProductRecommendation() {
     const url = `${window.GiveLegacyFormEditor.apiRoot}/admin/recommended-options`;
     const response = await fetch(url, {
         method: 'POST',
