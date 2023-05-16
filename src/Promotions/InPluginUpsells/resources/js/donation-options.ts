@@ -9,11 +9,6 @@ declare global {
     }
 }
 
-/**
- *
- * @unreleased
- *
- */
 export interface GiveLegacyFormEditorData {
     apiRoot: string;
     apiNonce: string;
@@ -27,13 +22,12 @@ export interface GiveLegacyFormEditorData {
 const recurringProductRecommendation = document.querySelector('.givewp-donation-options');
 const dismissAction = document.querySelector('.givewp-donation-options_close');
 
-function renderContainer() {
+function updateContainerPlacement() {
     const preceedingContent = document.querySelector('._give_custom_amount_text_field');
-
     preceedingContent.insertAdjacentElement('afterend', recurringProductRecommendation);
 }
 
-renderContainer();
+updateContainerPlacement();
 
 /**
  *
