@@ -89,8 +89,6 @@ class Give_MetaBox_Form_Data {
 	/**
      * Get metabox settings
      *
-     * @unreleased Added panel section for Recurring product recommendation
-     *
      * @since      1.8
      *
      * @return array
