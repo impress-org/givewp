@@ -41,6 +41,7 @@ class ProductRecommendationsRoute implements RestRoute
                                 'givewp_reports_recurring_recommendation_dismissed',
                                 'givewp_reports_fee_recovery_recommendation_dismissed',
                                 'givewp_donors_fee_recovery_recommendation_dismissed',
+                                'givewp_form_editor_donation_options_recurring_recommendation',
                             ],
                         ],
                     ],
@@ -113,6 +114,10 @@ class ProductRecommendationsRoute implements RestRoute
 
             case 'givewp_donors_fee_recovery_recommendation_dismissed':
                 update_option('givewp_donors_fee_recovery_recommendation_dismissed', time());
+                break;
+
+            case 'givewp_form_editor_donation_options_recurring_recommendation' :
+                update_option('givewp_form_editor_donation_options_recurring_recommendation', time());
                 break;
         }
 

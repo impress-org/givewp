@@ -10,6 +10,7 @@ use Give\Promotions\FreeAddonModal\Controllers\PreventFreshInstallPromotion;
 use Give\Promotions\InPluginUpsells\AddonsAdminPage;
 use Give\Promotions\InPluginUpsells\Endpoints\HideSaleBannerRoute;
 use Give\Promotions\InPluginUpsells\Endpoints\ProductRecommendationsRoute;
+use Give\Promotions\InPluginUpsells\LegacyFormEditor;
 use Give\Promotions\InPluginUpsells\RecurringDonationsTab;
 use Give\Promotions\InPluginUpsells\SaleBanners;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderContract;
@@ -37,6 +38,8 @@ class ServiceProvider implements ServiceProviderContract
     }
 
     /**
+     * @unreleased
+     *
      * Boots the Plugin Upsell promotional page
      *
      * @since 2.19.0
@@ -58,6 +61,9 @@ class ServiceProvider implements ServiceProviderContract
         if (SaleBanners::isShowing()) {
             Hooks::addAction('admin_notices', SaleBanners::class, 'render');
             Hooks::addAction('admin_enqueue_scripts', SaleBanners::class, 'loadScripts');
+        }
+        if (LegacyFormEditor::isShowing()) {
+            Hooks::addAction('admin_enqueue_scripts', LegacyFormEditor::class, 'loadScripts');
         }
     }
 

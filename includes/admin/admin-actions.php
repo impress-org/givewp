@@ -1633,10 +1633,22 @@ add_action( 'give_post_form_template_options_settings', 'give_render_form_theme_
  *
  * @since 2.20.0
  */
-function give_render_form_grid_setting_panel() {
+function give_render_form_grid_setting_panel()
+{
     require_once GIVE_PLUGIN_DIR . 'src/Views/Admin/Form/FormGrid-Settings.php';
 }
 
-add_action( 'give_post_form_grid_options_settings', 'give_render_form_grid_setting_panel' );
+add_action('give_post_form_grid_options_settings', 'give_render_form_grid_setting_panel');
 
+/**
+ *
+ * @unreleased
+ */
+function render_donation_options_recurring_recommendation()
+{
+    if ( ! get_option('givewp_form_editor_donation_options_recurring_recommendation', false)) {
+        require_once GIVE_PLUGIN_DIR . 'src/Promotions/InPluginUpsells/resources/views/donation-options-form-editor.php';
+    }
+}
 
+add_action('give_post_form_grid_options_settings', 'render_donation_options_recurring_recommendation');

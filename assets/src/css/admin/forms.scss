@@ -857,6 +857,43 @@ Donations forms filter
     }
 }
 
+//-------------------------------------
+// Addon Recommendations
+//-------------------------------------
+.givewp-donation-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 24px 8px 16px;
+
+    > div {
+        display: flex;
+        align-items: center;
+    }
+
+    img {
+        margin-right: 9px;
+    }
+
+    p {
+        margin-right: 12px;
+    }
+
+    &_external {
+        display: flex;
+        align-items: center;
+        gap: .7rem;
+    }
+
+    &_close {
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
+
+}
+
+
 /*
 Prevent currency icon height issue with input field
 ref: https://github.com/impress-org/givewp/pull/4315
