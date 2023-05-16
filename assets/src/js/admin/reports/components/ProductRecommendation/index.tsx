@@ -8,8 +8,6 @@ import {
     useRecommendations,
 } from '../../../../../../../src/Promotions/sharedResources/hooks/useRecommendations';
 
-// import {RecommendedProductData, useRecommendations} from '@givewp/promotions/sharedResources/hooks/useRecommendations';
-
 /**
  * @unreleased
  */
