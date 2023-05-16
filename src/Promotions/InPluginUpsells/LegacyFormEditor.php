@@ -2,6 +2,8 @@
 
 namespace Give\Promotions\InPluginUpsells;
 
+use Give\Helpers\Utils;
+
 class LegacyFormEditor
 {
 
@@ -35,11 +37,16 @@ class LegacyFormEditor
      * @unreleased
      *
      */
-    public static function renderDonationOptionsRecurringRecommendation(): void
+    public function renderDonationOptionsRecurringRecommendation()
     {
-        if ( ! get_option('givewp_form_editor_donation_options_recurring_recommendation', false)) {
-            require_once GIVE_PLUGIN_DIR . 'src/Promotions/InPluginUpsells/resources/views/donation-options-form-editor.php';
+        $isDismissed = get_option('givewp_form_editor_donation_options_recurring_recommendation', false);
+        $recurringAddonIsActive = Utils::isPluginActive('give-recurring/give-recurring.php');
+
+        if ($recurringAddonIsActive | $isDismissed) {
+            return;
         }
+
+        require_once GIVE_PLUGIN_DIR . 'src/Promotions/InPluginUpsells/resources/views/donation-options-form-editor.php';
     }
 
     /**
