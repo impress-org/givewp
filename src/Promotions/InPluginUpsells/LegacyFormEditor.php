@@ -35,14 +35,12 @@ class LegacyFormEditor
      * @unreleased
      *
      */
-//    public function render_donation_options_recurring_recommendation()
-//    {
-//        if ( ! get_option('givewp_form_editor_donation_options_recurring_recommendation', false)) {
-//            require_once GIVE_PLUGIN_DIR . 'src/Promotions/InPluginUpsells/resources/views/donation-options-form-editor.php';
-//        }
-//
-//        add_action('give_post_form_grid_options_settings', 'give_render_donation_options_recurring_recommendation');
-//    }
+    public static function renderDonationOptionsRecurringRecommendation(): void
+    {
+        if ( ! get_option('givewp_form_editor_donation_options_recurring_recommendation', false)) {
+            require_once GIVE_PLUGIN_DIR . 'src/Promotions/InPluginUpsells/resources/views/donation-options-form-editor.php';
+        }
+    }
 
     /**
      *

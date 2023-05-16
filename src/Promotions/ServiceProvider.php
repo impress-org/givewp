@@ -64,6 +64,11 @@ class ServiceProvider implements ServiceProviderContract
         }
         if (LegacyFormEditor::isShowing()) {
             Hooks::addAction('admin_enqueue_scripts', LegacyFormEditor::class, 'loadScripts');
+            Hooks::addAction(
+                'give_post_form_field_options_settings',
+                LegacyFormEditor::class,
+                'renderDonationOptionsRecurringRecommendation'
+            );
         }
     }
 

@@ -27,6 +27,14 @@ export interface GiveLegacyFormEditorData {
 const recurringProductRecommendation = document.querySelector('.givewp-donation-options');
 const dismissAction = document.querySelector('.givewp-donation-options_close');
 
+function renderContainer() {
+    const preceedingContent = document.querySelector('._give_custom_amount_text_field');
+
+    preceedingContent.insertAdjacentElement('afterend', recurringProductRecommendation);
+}
+
+renderContainer();
+
 /**
  *
  * @unreleased

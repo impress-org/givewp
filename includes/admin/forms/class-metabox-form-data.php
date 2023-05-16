@@ -215,11 +215,6 @@ class Give_MetaBox_Form_Data {
                                 ],
                                 'wrapper_class' => 'give-hidden',
                             ],
-                            [
-                                'id' => $prefix . 'recurring_addon_recommendation',
-                                'type' => 'recommendation',
-                                'callback' => 'render_donation_options_recurring_recommendation',
-                            ],
                             // Donation Levels.
                             [
                                 'id' => $prefix . 'donation_levels',
