@@ -91,35 +91,7 @@ class ProductRecommendationsRoute implements RestRoute
      */
     public function handleRequest(WP_REST_Request $request)
     {
-        switch ($request->get_param('option')) {
-            case 'givewp_donations_recurring_recommendation_dismissed':
-                update_option('givewp_donations_recurring_recommendation_dismissed', time());
-                break;
-
-            case 'givewp_donations_fee_recovery_recommendation_dismissed' :
-                update_option('givewp_donations_fee_recovery_recommendation_dismissed', time());
-                break;
-
-            case 'givewp_donations_designated_funds_recommendation_dismissed':
-                update_option('givewp_donations_designated_funds_recommendation_dismissed', time());
-                break;
-
-            case 'givewp_reports_recurring_recommendation_dismissed':
-                update_option('givewp_reports_recurring_recommendation_dismissed', time());
-                break;
-
-            case 'givewp_reports_fee_recovery_recommendation_dismissed' :
-                update_option('givewp_reports_fee_recovery_recommendation_dismissed', time());
-                break;
-
-            case 'givewp_donors_fee_recovery_recommendation_dismissed':
-                update_option('givewp_donors_fee_recovery_recommendation_dismissed', time());
-                break;
-
-            case 'givewp_form_editor_donation_options_recurring_recommendation' :
-                update_option('givewp_form_editor_donation_options_recurring_recommendation', time());
-                break;
-        }
+        update_option($request->get_param('option'), time());
 
         return new WP_REST_Response(['option_updated' => $request->get_param('option')]);
     }
