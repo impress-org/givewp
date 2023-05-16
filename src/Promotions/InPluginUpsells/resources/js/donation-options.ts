@@ -23,7 +23,14 @@ const recurringProductRecommendation = document.querySelector('.givewp-donation-
 const dismissAction = document.querySelector('.givewp-donation-options_close');
 const preceedingContent = document.querySelector('._give_custom_amount_text_field');
 
-preceedingContent.insertAdjacentElement('afterend', recurringProductRecommendation);
+if (recurringProductRecommendation && preceedingContent) {
+    preceedingContent.insertAdjacentElement('afterend', recurringProductRecommendation);
+
+    dismissAction.addEventListener('click', async function (event) {
+        recurringProductRecommendation.remove();
+        await postRequest();
+    });
+}
 
 /**
  *
@@ -50,12 +57,3 @@ async function postRequest() {
     }
 }
 
-/**
- *
- * @unreleased
- *
- */
-dismissAction.addEventListener('click', async function (event) {
-    recurringProductRecommendation.remove();
-    await postRequest();
-});
