@@ -267,8 +267,10 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 
                     <p class="give-gateways-notice-title">
                         <strong>
-                            <?php
-                            esc_html_e('Want to accept credit card donations directly on your website?', 'give'); ?>
+                            <?php esc_html_e(
+                                'Want to accept credit card donations directly on your website?',
+                                'give'
+                            ); ?>
                         </strong>
                     </p>
 
@@ -293,12 +295,10 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
                     </p>
 
                     <div class="give-gateways-notice-button">
-                        <?php
-                        echo give(AccountManagerSettingField::class)->getStripeConnectButtonMarkup(); ?>
+                        <?php echo give(AccountManagerSettingField::class)->getStripeConnectButtonMarkup(); ?>
                         <a href="https://givewp.com/addons/category/payment-gateways/?utm_source=WP%20Admin%20%3E%20Donations%20%3E%20Settings%20%3E%20Gateways&utm_medium=banner"
                            target="_blank" class="give-view-gateways-btn button">
-                            <?php
-                            esc_html_e('View Premium Gateways', 'give'); ?>
+                            <?php esc_html_e('View Premium Gateways', 'give'); ?>
                         </a>
                     </div>
                 </div>
