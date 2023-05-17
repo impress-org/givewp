@@ -2,6 +2,7 @@
 
 namespace Give\Promotions\InPluginUpsells;
 
+use Give\Helpers\EnqueueScript;
 use Give\Helpers\Utils;
 
 class LegacyFormEditor
@@ -14,22 +15,19 @@ class LegacyFormEditor
      */
     public function loadScripts()
     {
-        wp_enqueue_script(
-            'give-in-plugin-upsells-legacy-form-editor',
-            GIVE_PLUGIN_URL . 'assets/dist/js/donation-options.js',
-            [],
-            GIVE_VERSION,
-            true
-        );
+        $data = [
+            'apiRoot' => esc_url_raw(rest_url('give-api/v2')),
+            'apiNonce' => wp_create_nonce('wp_rest'),
+        ];
 
-        wp_localize_script(
+        EnqueueScript::make(
             'give-in-plugin-upsells-legacy-form-editor',
-            'GiveLegacyFormEditor',
-            [
-                'apiRoot' => esc_url_raw(rest_url('give-api/v2')),
-                'apiNonce' => wp_create_nonce('wp_rest'),
-            ]
-        );
+            'assets/dist/js/donation-options.js'
+        )
+            ->loadInFooter()
+            ->registerTranslations()
+            ->registerLocalizeData('GiveLegacyFormEditor', $data)
+            ->enqueue();
     }
 
     /**
