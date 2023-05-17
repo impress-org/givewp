@@ -14,7 +14,7 @@ use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 /**
  * @since 2.27.0
  */
-class GatewayRefundController
+class GatewayPaymentController
 {
     use HandleHttpResponses;
 
@@ -32,22 +32,48 @@ class GatewayRefundController
     }
 
     /**
+     * @since 2.27.0
+     */
+    public function create(Donation $donation, array $gatewayData = [])
+    {
+        try {
+            $command = $this->gateway->createPayment($donation, $gatewayData);
+            $this->handleGatewayCommand($command, $donation);
+        } catch (\Exception $exception) {
+            PaymentGatewayLog::error(
+                $exception->getMessage(),
+                [
+                    'Payment Gateway' => $this->gateway::id(),
+                    'Donation' => $donation->toArray(),
+                ]
+            );
+
+            $message = __(
+                'An unexpected error occurred while processing the donation.  Please try again or contact a site administrator.',
+                'give'
+            );
+
+            $this->handleExceptionResponse($exception, $message);
+        }
+    }
+
+    /**
      * @unreleased
      */
     public function refund(Donation $donation)
     {
         try {
-            $command = $this->refundDonation($donation);
+            $command = $this->gateway->refundDonation($donation);
 
             if ($command instanceof GatewayCommand) {
-                $this->handleGatewayPaymentCommand($command, $donation);
+                $this->handleGatewayCommand($command, $donation);
             }
         } catch (\Exception $exception) {
             PaymentGatewayLog::error(
                 $exception->getMessage(),
                 [
-                    'Payment Gateway' => static::id(),
-                    'Donation' => $donation,
+                    'Payment Gateway' => $this->gateway::id(),
+                    'Donation' => $donation->toArray(),
                 ]
             );
 
@@ -75,17 +101,4 @@ class GatewayRefundController
 
         $this->handleResponse($response);
     }
-
-    /**
-     *
-     * handleGatewayPaymentCommand()
-     *
-     * * @unreleased Handle PaymentRefunded command
-     *
-     *  if ($command instanceof PaymentRefunded) {
-     * $handler = new PaymentRefundedHandler($command);
-     * $handler->handle($donation);
-     * return;
-     * }
-     */
 }

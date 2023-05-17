@@ -69,7 +69,7 @@ class TestGateway extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function createPayment(Donation $donation, $gatewayData = null): GatewayCommand
+    public function createPayment(Donation $donation, $gatewayData): GatewayCommand
     {
         return new PaymentComplete("test-gateway-transaction-id-$donation->id");
     }
@@ -82,7 +82,7 @@ class TestGateway extends PaymentGateway
     public function createSubscription(
         Donation $donation,
         Subscription $subscription,
-        $gatewayData = null
+        $gatewayData
     ): GatewayCommand {
         return new SubscriptionComplete(
             "test-gateway-transaction-id-$donation->id",

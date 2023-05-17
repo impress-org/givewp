@@ -365,13 +365,17 @@ class DonationRepository
             $meta[DonationMetaKeys::SUBSCRIPTION_ID] = $donation->subscriptionId;
         }
 
-        if ( $donation->type->isSubscription()) {
+        if ($donation->type->isSubscription()) {
             $meta[DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION] = 1;
             $meta[DonationMetaKeys::IS_RECURRING] = 1;
         }
 
         if ($donation->company !== null) {
             $meta[DonationMetaKeys::COMPANY] = $donation->company;
+        }
+
+        if ($donation->comment !== null) {
+            $meta[DonationMetaKeys::COMMENT] = $donation->comment;
         }
 
         return $meta;

@@ -162,7 +162,7 @@ class TestCase extends WP_UnitTestCase
      *
      * @see https://phpunit.de/manual/5.5/en/test-doubles.html
      *
-     * @unreleased add suppression for phpunit internal deprecated notice
+     * @since 2.25.0 add suppression for phpunit internal deprecated notice
      * @since 2.11.0
      *
      * @param  string  $abstract  The class to create a mock for
@@ -198,7 +198,7 @@ class TestCase extends WP_UnitTestCase
     /**
      * Set error handler to suppress `ReflectionType::__toString()` deprecation warning
      *
-     * @unreleased
+     * @since 2.25.0
      *
      * @return void
      */

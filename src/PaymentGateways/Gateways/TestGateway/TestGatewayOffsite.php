@@ -82,7 +82,7 @@ class TestGatewayOffsite extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function createPayment(Donation $donation, $gatewayData = null)
+    public function createPayment(Donation $donation, $gatewayData)
     {
         $redirectUrl = $this->generateSecureGatewayRouteUrl(
             'securelyReturnFromOffsiteRedirect',
@@ -96,7 +96,7 @@ class TestGatewayOffsite extends PaymentGateway
     public function createSubscription(
         Donation $donation,
         Subscription $subscription,
-        $gatewayData = null
+        $gatewayData
     ): GatewayCommand {
         $redirectUrl = $this->generateSecureGatewayRouteUrl(
             'securelyReturnFromOffsiteRedirect',

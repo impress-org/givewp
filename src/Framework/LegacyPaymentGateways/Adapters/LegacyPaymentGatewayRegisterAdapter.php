@@ -3,6 +3,7 @@
 namespace Give\Framework\LegacyPaymentGateways\Adapters;
 
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
+use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\LegacyPaymentGateways\Adapters\LegacyPaymentGatewayAdapter;
 
 use function method_exists;
@@ -20,7 +21,7 @@ class LegacyPaymentGatewayRegisterAdapter
         /** @var LegacyPaymentGatewayAdapter $legacyPaymentGatewayAdapter */
         $legacyPaymentGatewayAdapter = give(LegacyPaymentGatewayAdapter::class);
 
-        /** @var PaymentGatewayInterface $registeredGateway */
+        /** @var PaymentGateway $registeredGateway */
         $registeredGateway = give($gatewayClass);
         $registeredGatewayId = $registeredGateway::id();
 
@@ -66,7 +67,7 @@ class LegacyPaymentGatewayRegisterAdapter
     /**
      * Adds new payment gateways to legacy list for settings
      *
-     * @unreleased add is_visible key to $gatewayData
+     * @since 2.25.0 add is_visible key to $gatewayData
      * @since 2.19.0
      */
     public function addNewPaymentGatewaysToLegacyListSettings(array $gatewaysData, array $newPaymentGateways): array
@@ -86,7 +87,7 @@ class LegacyPaymentGatewayRegisterAdapter
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      */
     public function supportsLegacyForm(PaymentGatewayInterface $gateway): bool
     {
