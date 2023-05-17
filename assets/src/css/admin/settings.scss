@@ -836,6 +836,7 @@ a.give-delete {
     padding: 14px 17px;
     border: 1px solid #E6E6E6;
     background: #FAFAFA;
+    font-family: SF Pro;
     font-weight: 500;
     border-radius: 4px;
 
@@ -851,14 +852,12 @@ a.give-delete {
 
     p {
         margin-right: 10px;
-        font-size: 13px !important;
     }
 
     &_external {
         display: flex;
         align-items: center;
         gap: .7rem;
-        font-size: 13px !important;
     }
 
     &_close {
