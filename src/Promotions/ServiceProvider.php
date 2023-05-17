@@ -10,7 +10,6 @@ use Give\Promotions\FreeAddonModal\Controllers\PreventFreshInstallPromotion;
 use Give\Promotions\InPluginUpsells\AddonsAdminPage;
 use Give\Promotions\InPluginUpsells\Endpoints\HideSaleBannerRoute;
 use Give\Promotions\InPluginUpsells\Endpoints\ProductRecommendationsRoute;
-use Give\Promotions\InPluginUpsells\RecurringDonationsTab;
 use Give\Promotions\InPluginUpsells\SaleBanners;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderContract;
 
@@ -37,9 +36,11 @@ class ServiceProvider implements ServiceProviderContract
     }
 
     /**
+     * @unreleased Removed Recurring donations tab app.
+     *
      * Boots the Plugin Upsell promotional page
      *
-     * @since 2.19.0
+     * @since      2.19.0
      */
     private function bootPluginUpsells()
     {
@@ -49,10 +50,6 @@ class ServiceProvider implements ServiceProviderContract
 
         if (AddonsAdminPage::isShowing()) {
             Hooks::addAction('admin_enqueue_scripts', AddonsAdminPage::class, 'loadScripts');
-        }
-
-        if (RecurringDonationsTab::isShowing()) {
-            Hooks::addAction('admin_enqueue_scripts', RecurringDonationsTab::class, 'loadScripts');
         }
 
         if (SaleBanners::isShowing()) {
