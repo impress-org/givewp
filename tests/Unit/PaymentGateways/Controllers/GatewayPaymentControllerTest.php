@@ -15,7 +15,7 @@ class GatewayPaymentControllerTest extends TestCase {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 2.27.0
      */
     public function testShouldCallGatewayCreatePayment(){
         /** @var Donation $donation */
@@ -39,7 +39,7 @@ class GatewayPaymentControllerTest extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 2.27.0
      */
     protected function getMockGateway()
     {
@@ -55,7 +55,7 @@ class GatewayPaymentControllerTest extends TestCase {
     }
 
      /**
-     * @unreleased
+     * @since 2.27.0
      */
     protected function getMockController()
     {

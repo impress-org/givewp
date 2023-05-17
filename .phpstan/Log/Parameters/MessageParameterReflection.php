@@ -10,7 +10,7 @@ use PHPStan\Type\Type;
 /**
  * Adds support for the \Give\Log\Log::$message parameter reflection to the MagicCallStaticMethodReflection
  *
- * @unreleased
+ * @since 2.27.0
  */
 class MessageParameterReflection implements ParameterReflection
 {

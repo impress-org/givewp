@@ -12,7 +12,7 @@ use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 
 /**
- * @unreleased
+ * @since 2.27.0
  */
 class GatewayPaymentController
 {
@@ -24,7 +24,7 @@ class GatewayPaymentController
     protected $gateway;
 
     /**
-     * @unreleased
+     * @since 2.27.0
      */
     public function __construct(PaymentGateway $gateway)
     {
@@ -32,7 +32,7 @@ class GatewayPaymentController
     }
 
     /**
-     * @unreleased
+     * @since 2.27.0
      */
     public function create(Donation $donation, array $gatewayData = [])
     {
@@ -60,7 +60,7 @@ class GatewayPaymentController
     /**
      * Handle gateway command
      *
-     * @unreleased move logic into action
+     * @since 2.27.0 move logic into action
      * @since 2.18.0
      *
      * @throws TypeNotSupported
@@ -69,7 +69,7 @@ class GatewayPaymentController
     protected function handleGatewayCommand(GatewayCommand $command, Donation $donation)
     {
         $response = (new HandleGatewayPaymentCommand())($command, $donation);
-        
+
         $this->handleResponse($response);
     }
 }
