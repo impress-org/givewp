@@ -18,8 +18,11 @@ class Give_Settings_Recurring_Donations_Core extends Give_Settings_Page
         $this->label = sprintf(
             __('%s Recurring Donations %s', 'give'),
             '<img style="display: inline-block; vertical-align: middle; margin: 0 5px 2px 0; " src="' . GIVE_PLUGIN_URL . '/assets/dist/images/admin/black-external-icon.svg" alt="icon"/>',
-            '<span style="display: inline-block; vertical-align: middle; margin: 0 0 2px 8px; padding: 4px 8px; background:#F2CC0C; font-size: 10px; border-radius: 4px;"><strong>RECOMMENDED</strong></span>'
+            '<span style="display: inline-block; vertical-align: middle; margin: 0 0 2px 8px; padding: 4px 8px; background:#F2CC0C; font-size: 10px; border-radius: 4px;">
+                <strong>' . __('RECOMMENDED', 'give') . '</strong>
+            </span>'
         );
+
 
         parent::__construct();
     }
