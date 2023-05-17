@@ -13,7 +13,6 @@ use Give\PaymentGateways\Gateways\Stripe\BECSGateway as StripeBECSGateway;
 use Give\PaymentGateways\Gateways\Stripe\CheckoutGateway as StripeCheckoutGateway;
 use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway as StripeCreditCardGateway;
 use Give\PaymentGateways\Gateways\Stripe\SEPAGateway as StripeSEPAGateway;
-use Give\PaymentGateways\PayPalCommerce\Actions\GetPayPalOrderFromRequest;
 use Give\PaymentGateways\PayPalCommerce\Exceptions\PayPalOrderException;
 use Give\PaymentGateways\PayPalCommerce\Exceptions\PayPalOrderIdException;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
