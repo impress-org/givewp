@@ -49,6 +49,8 @@ class HandleGatewayPaymentCommand
             $handler = new PaymentProcessingHandler($command);
 
             $handler->handle($donation);
+
+            return new RedirectResponse(give_get_success_page_uri());
         }
 
         if ($command instanceof PaymentRefunded) {
