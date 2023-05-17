@@ -278,7 +278,6 @@ class LegacyPaymentGatewayAdapter
             'refunded' !== $oldStatus) {
             $controller = new GatewayPaymentController($registeredGateway);
             $controller->refund($donation);
-            //$registeredGateway->handleRefundDonation($donation);
         }
     }
 }
