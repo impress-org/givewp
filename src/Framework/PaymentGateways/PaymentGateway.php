@@ -9,7 +9,6 @@ use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface
 use Give\Framework\PaymentGateways\Actions\GenerateGatewayRouteUrl;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentCompleteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentProcessingHandler;
-use Give\Framework\PaymentGateways\CommandHandlers\PaymentRefundedHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\RedirectOffsiteHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\RespondToBrowserHandler;
 use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionCompleteHandler;
@@ -17,7 +16,6 @@ use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionProcessingHandler
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
-use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
@@ -345,7 +343,6 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * Handle gateway command
      *
-     * @unreleased Handle PaymentRefunded command
      * @since      2.18.0
      *
      * @throws TypeNotSupported
@@ -371,12 +368,6 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             $response = response()->redirectTo(give_get_success_page_uri());
 
             $this->handleResponse($response);
-        }
-
-        if ($command instanceof PaymentRefunded) {
-            $handler = new PaymentRefundedHandler($command);
-            $handler->handle($donation);
-            return;
         }
 
         if ($command instanceof RedirectOffsite) {
