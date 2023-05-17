@@ -10,6 +10,7 @@ use Give\Promotions\FreeAddonModal\Controllers\PreventFreshInstallPromotion;
 use Give\Promotions\InPluginUpsells\AddonsAdminPage;
 use Give\Promotions\InPluginUpsells\Endpoints\HideSaleBannerRoute;
 use Give\Promotions\InPluginUpsells\Endpoints\ProductRecommendationsRoute;
+use Give\Promotions\InPluginUpsells\LegacyFormEditor;
 use Give\Promotions\InPluginUpsells\PaymentGateways;
 use Give\Promotions\InPluginUpsells\RecurringDonationsTab;
 use Give\Promotions\InPluginUpsells\SaleBanners;
@@ -38,9 +39,11 @@ class ServiceProvider implements ServiceProviderContract
     }
 
     /**
+     * @unreleased Removed Recurring donations tab app.
+     *
      * Boots the Plugin Upsell promotional page
      *
-     * @since 2.19.0
+     * @since      2.19.0
      */
     private function bootPluginUpsells()
     {
@@ -50,10 +53,6 @@ class ServiceProvider implements ServiceProviderContract
 
         if (AddonsAdminPage::isShowing()) {
             Hooks::addAction('admin_enqueue_scripts', AddonsAdminPage::class, 'loadScripts');
-        }
-
-        if (RecurringDonationsTab::isShowing()) {
-            Hooks::addAction('admin_enqueue_scripts', RecurringDonationsTab::class, 'loadScripts');
         }
 
         if (SaleBanners::isShowing()) {
@@ -67,6 +66,15 @@ class ServiceProvider implements ServiceProviderContract
                 'give_admin_field_enabled_gateways',
                 PaymentGateways::class,
                 'renderPaymentGatewayRecommendation'
+            );
+        }
+
+        if (LegacyFormEditor::isShowing()) {
+            Hooks::addAction('admin_enqueue_scripts', LegacyFormEditor::class, 'loadScripts');
+            Hooks::addAction(
+                'give_post_form_field_options_settings',
+                LegacyFormEditor::class,
+                'renderDonationOptionsRecurringRecommendation'
             );
         }
     }
