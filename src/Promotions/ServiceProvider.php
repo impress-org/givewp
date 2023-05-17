@@ -38,11 +38,11 @@ class ServiceProvider implements ServiceProviderContract
     }
 
     /**
-     * @unreleased
+     * @unreleased Removed Recurring donations tab app.
      *
      * Boots the Plugin Upsell promotional page
      *
-     * @since 2.19.0
+     * @since      2.19.0
      */
     private function bootPluginUpsells()
     {
@@ -52,10 +52,6 @@ class ServiceProvider implements ServiceProviderContract
 
         if (AddonsAdminPage::isShowing()) {
             Hooks::addAction('admin_enqueue_scripts', AddonsAdminPage::class, 'loadScripts');
-        }
-
-        if (RecurringDonationsTab::isShowing()) {
-            Hooks::addAction('admin_enqueue_scripts', RecurringDonationsTab::class, 'loadScripts');
         }
 
         if (SaleBanners::isShowing()) {
