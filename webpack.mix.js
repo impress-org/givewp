@@ -42,10 +42,7 @@ mix.setPublicPath('assets/dist')
     .js('src/MigrationLog/Admin/index.js', 'js/give-migrations-list-table-app.js')
     .js('src/DonationSummary/resources/js/summary.js', 'js/give-donation-summary.js')
     .js('src/Promotions/InPluginUpsells/resources/js/addons-admin-page.js', 'js/admin-upsell-addons-page.js')
-    .js(
-        'src/Promotions/InPluginUpsells/resources/js/recurring-donations-settings-tab.js',
-        'js/admin-upsell-recurring-donations-settings-tab.js'
-    )
+    
     .ts('src/DonationForms/resources/admin-donation-forms.tsx', 'js/give-admin-donation-forms.js')
     .ts('src/Donors/resources/admin-donors.tsx', 'js/give-admin-donors.js')
     .ts('src/Donations/resources/index.tsx', 'js/give-admin-donations.js')
