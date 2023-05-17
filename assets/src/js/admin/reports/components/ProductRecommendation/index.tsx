@@ -3,10 +3,7 @@ import {__} from '@wordpress/i18n';
 import {createInterpolateElement} from '@wordpress/element';
 import {getWindowData} from '../../utils';
 import './style.scss';
-import {
-    RecommendedProductData,
-    useRecommendations,
-} from '../../../../../../../src/Promotions/sharedResources/hooks/useRecommendations';
+import {RecommendedProductData, useRecommendations} from '@givewp/promotions/hooks/useRecommendations';
 
 /**
  * @unreleased
