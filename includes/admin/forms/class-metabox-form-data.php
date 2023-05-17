@@ -87,12 +87,12 @@ class Give_MetaBox_Form_Data {
 
 
 	/**
-	 * Get metabox settings
-	 *
-	 * @since 1.8
-	 *
-	 * @return array
-	 */
+     * Get metabox settings
+     *
+     * @since      1.8
+     *
+     * @return array
+     */
 	function get_settings() {
 		$post_id           = give_get_admin_post_id();
 		$price_placeholder = give_format_decimal( '1.00', false, false );
@@ -126,176 +126,188 @@ class Give_MetaBox_Form_Data {
 			 */
 			'form_field_options'    => apply_filters(
 				'give_forms_field_options',
-				[
-					'id'        => 'form_field_options',
-					'title'     => __( 'Donation Options', 'give' ),
-					'icon-html' => '<i class="fas fa-heart"></i>',
-					'fields'    => apply_filters(
-						'give_forms_donation_form_metabox_fields',
-						[
-							// Donation Option.
-							[
-								'name'        => __( 'Donation Option', 'give' ),
-								'description' => __( 'Do you want this form to have one set donation price or multiple levels (for example, $10, $20, $50)?', 'give' ),
-								'id'          => $prefix . 'price_option',
-								'type'        => 'radio_inline',
-								'default'     => 'multi',
-								'options'     => apply_filters(
-									'give_forms_price_options',
-									[
-										'multi' => __( 'Multi-level Donation', 'give' ),
-										'set'   => __( 'Set Donation', 'give' ),
-									]
-								),
-							],
-							[
-								'name'          => __( 'Set Donation', 'give' ),
-								'description'   => __( 'This is the set donation amount for this form. If you have a "Custom Amount Minimum" set, make sure it is less than this amount.', 'give' ),
-								'id'            => $prefix . 'set_price',
-								'default'          => give_format_decimal( [ 'amount' => '25.00' ] ),
-								'type'          => 'text_small',
-								'data_type'     => 'price',
-								'attributes'    => [
-									'placeholder' => $price_placeholder,
-									'class'       => 'give-money-field',
-								],
-								'wrapper_class' => 'give-hidden',
-							],
-							// Custom Amount.
-							[
-								'name'        => __( 'Custom Amount', 'give' ),
-								'description' => __( 'Do you want the user to be able to input their own donation amount?', 'give' ),
-								'id'          => $prefix . 'custom_amount',
-								'type'        => 'radio_inline',
-								'default'     => 'enabled',
-								'options'     => [
-									'enabled'  => __( 'Enabled', 'give' ),
-									'disabled' => __( 'Disabled', 'give' ),
-								],
-							],
-							[
-								'name'          => __( 'Donation Limit', 'give' ),
-								'description'   => __( 'Set the minimum and maximum amount for all gateways.', 'give' ),
-								'id'            => $prefix . 'custom_amount_range',
-								'type'          => 'donation_limit',
-								'wrapper_class' => 'give-hidden',
-								'data_type'     => 'price',
-								'attributes'    => [
-									'placeholder' => $price_placeholder,
-									'class'       => 'give-money-field',
-								],
-								'options'       => [
-									'display_label' => __( 'Donation Limits: ', 'give' ),
-									'minimum'       => give_format_decimal( [ 'amount' => '5.00' ] ),
-									'maximum'       => give_format_decimal( [ 'amount' => '999999.99' ] ),
-								],
-							],
-							[
-								'name'          => __( 'Custom Amount Text', 'give' ),
-								'description'   => __( 'This text appears as a label below the custom amount field for set donation forms. For multi-level forms the text will appear as its own level (button, radio, or select option).', 'give' ),
-								'id'            => $prefix . 'custom_amount_text',
-								'type'          => 'text_medium',
-								'default'       => __( 'Custom Amount', 'give' ),
-								'attributes'    => [
-									'rows' => 3,
-								],
-								'wrapper_class' => 'give-hidden',
-							],
-							// Donation Levels.
-							[
-								'id'            => $prefix . 'donation_levels',
-								'type'          => 'group',
-								'options'       => [
-									'add_button'    => __( 'Add Level', 'give' ),
-									'header_title'  => __( 'Donation Level', 'give' ),
-									'remove_button' => '<span class="dashicons dashicons-no"></span>',
-								],
-								'default'       => [
-									[
-										'_give_id'     =>
-											[
-												'level_id' => 0,
-											],
-										'_give_amount' => '10.000000',
-									],
-									[
-										'_give_id'     =>
-											[
-												'level_id' => 1,
-											],
-										'_give_amount' => '25.000000',
-									],
-									[
-										'_give_id'     =>
-											[
-												'level_id' => 2,
-											],
-										'_give_amount' => '50.000000',
-									],
-									[
-										'_give_id'      =>
-											[
-												'level_id' => 3,
-											],
-										'_give_amount'  => '100.000000',
-										'_give_default' => 'default',
-									],
-									[
-										'_give_id'     =>
-											[
-												'level_id' => 5,
-											],
-										'_give_amount' => '250.000000',
-									],
-								],
-								'wrapper_class' => 'give-hidden',
-								// Fields array works the same, except id's only need to be unique for this group.
-								// Prefix is not needed.
-								'fields'        => apply_filters(
-									'give_donation_levels_table_row',
-									[
-										[
-											'name' => __( 'ID', 'give' ),
-											'id'   => $prefix . 'id',
-											'type' => 'levels_id',
-										],
-										[
-											'name'       => __( 'Amount', 'give' ),
-											'id'         => $prefix . 'amount',
-											'type'       => 'text_small',
-											'data_type'  => 'price',
-											'attributes' => [
-												'placeholder' => $price_placeholder,
-												'class' => 'give-money-field',
-											],
-										],
-										[
-											'name'       => __( 'Text', 'give' ),
-											'id'         => $prefix . 'text',
-											'type'       => 'text',
-											'attributes' => [
-												'placeholder' => __( 'Donation Level', 'give' ),
-												'class' => 'give-multilevel-text-field',
-											],
-										],
-										[
-											'name' => __( 'Default', 'give' ),
-											'id'   => $prefix . 'default',
-											'type' => 'give_default_radio_inline',
-										],
-									]
-								),
-							],
-							[
-								'name'  => 'donation_options_docs',
-								'type'  => 'docs_link',
-								'url'   => 'http://docs.givewp.com/form-donation-options',
-								'title' => __( 'Donation Options', 'give' ),
-							],
-						],
-						$post_id
-					),
-				]
+                [
+                    'id' => 'form_field_options',
+                    'title' => __('Donation Options', 'give'),
+                    'icon-html' => '<i class="fas fa-heart"></i>',
+                    'fields' => apply_filters(
+                        'give_forms_donation_form_metabox_fields',
+                        [
+                            // Donation Option.
+                            [
+                                'name' => __('Donation Option', 'give'),
+                                'description' => __(
+                                    'Do you want this form to have one set donation price or multiple levels (for example, $10, $20, $50)?',
+                                    'give'
+                                ),
+                                'id' => $prefix . 'price_option',
+                                'type' => 'radio_inline',
+                                'default' => 'multi',
+                                'options' => apply_filters(
+                                    'give_forms_price_options',
+                                    [
+                                        'multi' => __('Multi-level Donation', 'give'),
+                                        'set' => __('Set Donation', 'give'),
+                                    ]
+                                ),
+                            ],
+                            [
+                                'name' => __('Set Donation', 'give'),
+                                'description' => __(
+                                    'This is the set donation amount for this form. If you have a "Custom Amount Minimum" set, make sure it is less than this amount.',
+                                    'give'
+                                ),
+                                'id' => $prefix . 'set_price',
+                                'default' => give_format_decimal(['amount' => '25.00']),
+                                'type' => 'text_small',
+                                'data_type' => 'price',
+                                'attributes' => [
+                                    'placeholder' => $price_placeholder,
+                                    'class' => 'give-money-field',
+                                ],
+                                'wrapper_class' => 'give-hidden',
+                            ],
+                            // Custom Amount.
+                            [
+                                'name' => __('Custom Amount', 'give'),
+                                'description' => __(
+                                    'Do you want the user to be able to input their own donation amount?',
+                                    'give'
+                                ),
+                                'id' => $prefix . 'custom_amount',
+                                'type' => 'radio_inline',
+                                'default' => 'enabled',
+                                'options' => [
+                                    'enabled' => __('Enabled', 'give'),
+                                    'disabled' => __('Disabled', 'give'),
+                                ],
+                            ],
+                            [
+                                'name' => __('Donation Limit', 'give'),
+                                'description' => __('Set the minimum and maximum amount for all gateways.', 'give'),
+                                'id' => $prefix . 'custom_amount_range',
+                                'type' => 'donation_limit',
+                                'wrapper_class' => 'give-hidden',
+                                'data_type' => 'price',
+                                'attributes' => [
+                                    'placeholder' => $price_placeholder,
+                                    'class' => 'give-money-field',
+                                ],
+                                'options' => [
+                                    'display_label' => __('Donation Limits: ', 'give'),
+                                    'minimum' => give_format_decimal(['amount' => '5.00']),
+                                    'maximum' => give_format_decimal(['amount' => '999999.99']),
+                                ],
+                            ],
+                            [
+                                'name' => __('Custom Amount Text', 'give'),
+                                'description' => __(
+                                    'This text appears as a label below the custom amount field for set donation forms. For multi-level forms the text will appear as its own level (button, radio, or select option).',
+                                    'give'
+                                ),
+                                'id' => $prefix . 'custom_amount_text',
+                                'type' => 'text_medium',
+                                'default' => __('Custom Amount', 'give'),
+                                'attributes' => [
+                                    'rows' => 3,
+                                ],
+                                'wrapper_class' => 'give-hidden',
+                            ],
+                            // Donation Levels.
+                            [
+                                'id' => $prefix . 'donation_levels',
+                                'type' => 'group',
+                                'options' => [
+                                    'add_button' => __('Add Level', 'give'),
+                                    'header_title' => __('Donation Level', 'give'),
+                                    'remove_button' => '<span class="dashicons dashicons-no"></span>',
+                                ],
+                                'default' => [
+                                    [
+                                        '_give_id' =>
+                                            [
+                                                'level_id' => 0,
+                                            ],
+                                        '_give_amount' => '10.000000',
+                                    ],
+                                    [
+                                        '_give_id' =>
+                                            [
+                                                'level_id' => 1,
+                                            ],
+                                        '_give_amount' => '25.000000',
+                                    ],
+                                    [
+                                        '_give_id' =>
+                                            [
+                                                'level_id' => 2,
+                                            ],
+                                        '_give_amount' => '50.000000',
+                                    ],
+                                    [
+                                        '_give_id' =>
+                                            [
+                                                'level_id' => 3,
+                                            ],
+                                        '_give_amount' => '100.000000',
+                                        '_give_default' => 'default',
+                                    ],
+                                    [
+                                        '_give_id' =>
+                                            [
+                                                'level_id' => 5,
+                                            ],
+                                        '_give_amount' => '250.000000',
+                                    ],
+                                ],
+                                'wrapper_class' => 'give-hidden',
+                                // Fields array works the same, except id's only need to be unique for this group.
+                                // Prefix is not needed.
+                                'fields' => apply_filters(
+                                    'give_donation_levels_table_row',
+                                    [
+                                        [
+                                            'name' => __('ID', 'give'),
+                                            'id' => $prefix . 'id',
+                                            'type' => 'levels_id',
+                                        ],
+                                        [
+                                            'name' => __('Amount', 'give'),
+                                            'id' => $prefix . 'amount',
+                                            'type' => 'text_small',
+                                            'data_type' => 'price',
+                                            'attributes' => [
+                                                'placeholder' => $price_placeholder,
+                                                'class' => 'give-money-field',
+                                            ],
+                                        ],
+                                        [
+                                            'name' => __('Text', 'give'),
+                                            'id' => $prefix . 'text',
+                                            'type' => 'text',
+                                            'attributes' => [
+                                                'placeholder' => __('Donation Level', 'give'),
+                                                'class' => 'give-multilevel-text-field',
+                                            ],
+                                        ],
+                                        [
+                                            'name' => __('Default', 'give'),
+                                            'id' => $prefix . 'default',
+                                            'type' => 'give_default_radio_inline',
+                                        ],
+                                    ]
+                                ),
+                            ],
+                            [
+                                'name' => 'donation_options_docs',
+                                'type' => 'docs_link',
+                                'url' => 'http://docs.givewp.com/form-donation-options',
+                                'title' => __('Donation Options', 'give'),
+                            ],
+                        ],
+                        $post_id
+                    ),
+                ]
 			),
 
 			/**
