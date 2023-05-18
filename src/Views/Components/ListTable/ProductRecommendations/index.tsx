@@ -59,11 +59,9 @@ function RotatingMessage({selectedOption, closeMessage, pluginUrl, columns}: Rot
             <td colSpan={visibleColumns.length + 1}>
                 <div className={styles.productRecommendation}>
                     <div className={styles.container}>
-                        <div>
                             <img src={`${pluginUrl}/assets/dist/images/list-table/light-bulb-icon.svg`} />
 
                             <TranslatedMessage message={message} />
-                        </div>
 
                         <a target="_blank" href={documentationPage}>
                             {innerHtml}

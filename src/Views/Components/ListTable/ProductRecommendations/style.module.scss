@@ -2,7 +2,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    white-space: nowrap;
     padding: .875rem;
     background: #F9F9F9;
     font-size: 0.875rem;
@@ -11,31 +10,28 @@
     .container {
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
 
-        > div {
+        strong {
+            margin: 0 4px 0 10px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        p {
             display: flex;
-            align-items: center;
-
-            strong {
-                margin: 0 4px 0 10px;
-                font-weight: 700;
-            }
-
-            p {
-                display: inline;
-                margin: 0;
-                padding: 0;
-                font-weight: 500;
-            }
+            flex-wrap: wrap !important;
+            margin-right: 1rem;
+            padding: 0;
+            font-weight: 500;
         }
 
         a {
             display: flex;
             gap: .55rem;
-            margin-left: 1rem;
+            flex-wrap: wrap;
             font-size: 0.875rem;
             font-weight: 600;
-            line-height: .5;
         }
     }
 
@@ -55,3 +51,28 @@
 }
 
 
+@media (max-width: 1100px) {
+    .productRecommendation {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column-reverse;
+        width: 100%;
+        text-align: center;
+
+        .container {
+            display: inline;
+        }
+
+        a {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            text-align: center;
+        }
+
+        button {
+            margin-bottom: 1.5rem;
+        }
+    }
+}
