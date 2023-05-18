@@ -26,25 +26,25 @@
             margin: 0;
         }
     }
+}
 
-    .give-nav-addons-tab {
-        float: right;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 9px;
-        min-height: 54px;
-        width: 127px;
-        padding: 0 17px;
-        background: #F2F9FF;
-        text-decoration: none;
+.give-nav-addons-tab {
+    float: right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 9px;
+    min-height: 54px;
+    width: 127px;
+    padding: 0 17px;
+    background: #F2F9FF;
+    text-decoration: none;
 
-        > span {
-            color: #F2F9FF;
-            background: #0C7FF2;
-            padding: 4px 8px;
-            border-radius: 4px;
-        }
+    & span {
+        color: #F2F9FF;
+        background: #0C7FF2;
+        padding: 4px 8px;
+        border-radius: 4px;
     }
 }
 
