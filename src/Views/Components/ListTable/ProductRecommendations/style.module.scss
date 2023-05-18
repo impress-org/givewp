@@ -19,8 +19,8 @@
         }
 
         p {
-            display: flex;
-            flex-wrap: wrap !important;
+            display: inline-flex;
+            flex-wrap: wrap;
             margin-right: 1rem;
             padding: 0;
             font-weight: 500;
