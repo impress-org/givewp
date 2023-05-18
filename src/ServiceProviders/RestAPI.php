@@ -2,18 +2,6 @@
 
 namespace Give\ServiceProviders;
 
-use Give\DonationForms\Endpoints\FormActions;
-use Give\DonationForms\Endpoints\ListDonationForms;
-use Give\DonationForms\Endpoints\SwitchDonationFormView;
-use Give\Donations\Endpoints\DonationActions;
-use Give\Donations\Endpoints\ListDonations;
-use Give\Donations\Endpoints\SwitchDonationView;
-use Give\Donors\Endpoints\DeleteDonor;
-use Give\Donors\Endpoints\ListDonors;
-use Give\Donors\Endpoints\SwitchDonorView;
-use Give\Subscriptions\Endpoints\ListSubscriptions;
-use Give\Subscriptions\Endpoints\SubscriptionActions;
-use Give\Subscriptions\Endpoints\SwitchSubscriptionView;
 use Give\API\Endpoints\Logs\FlushLogs;
 use Give\API\Endpoints\Logs\GetLogs;
 use Give\API\Endpoints\Migrations\GetMigrations;
@@ -30,6 +18,18 @@ use Give\API\Endpoints\Reports\TotalDonors;
 use Give\API\Endpoints\Reports\TotalIncome;
 use Give\API\Endpoints\Reports\TotalRefunds;
 use Give\API\RestRoute;
+use Give\DonationForms\Endpoints\FormActions;
+use Give\DonationForms\Endpoints\ListDonationForms;
+use Give\DonationForms\Endpoints\SwitchDonationFormView;
+use Give\Donations\Endpoints\DonationActions;
+use Give\Donations\Endpoints\ListDonations;
+use Give\Donations\Endpoints\SwitchDonationView;
+use Give\Donors\Endpoints\DeleteDonor;
+use Give\Donors\Endpoints\ListDonors;
+use Give\Donors\Endpoints\SwitchDonorView;
+use Give\Subscriptions\Endpoints\ListSubscriptions;
+use Give\Subscriptions\Endpoints\SubscriptionActions;
+use Give\Subscriptions\Endpoints\SwitchSubscriptionView;
 
 class RestAPI implements ServiceProvider
 {

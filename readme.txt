@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
 Tested up to: 6.2
 Requires PHP: 7.0
-Stable tag: 2.27.0
+Stable tag: 2.27.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -258,6 +258,13 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.27.1: May 18th, 2023 =
+* Fix: Tributes are displayed even when only the last name of the tribute is filled in the form.
+* Fix: Subscriptions can be successfully canceled from the donor dashboard.
+* Fix: PayPal handles the user locale so it does not throw an error.
+* Fix: Stripe payments has user friendly error messages.
+* New: Pro tip messages are added to the Settings, Form Editor, Donation, and Donor pages.
+
 = 2.27.0: April 27th, 2023 =
 * Feature: Added a nice new view to the list tables when there are no donations, donors, or subscriptions
 * Enhancement: Donation comments are now stored as meta to improve performance
