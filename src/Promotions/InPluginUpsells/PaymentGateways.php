@@ -26,7 +26,7 @@ class PaymentGateways
         )
             ->loadInFooter()
             ->registerTranslations()
-            ->registerLocalizeData('GiveLegacyFormEditor', $data)
+            ->registerLocalizeData('GiveSettings', $data)
             ->enqueue();
     }
 

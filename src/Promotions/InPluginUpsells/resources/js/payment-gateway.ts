@@ -1,3 +1,5 @@
+import dismissRecommendation from '@givewp/promotions/requests/dismissRecommendation';
+
 /**
  *
  * @unreleased
@@ -31,31 +33,11 @@ preceedingContent.insertAdjacentElement('afterend', feeRecoveryProductRecommenda
 if (feeRecoveryProductRecommendation) {
     dismissAction.addEventListener('click', async function (event) {
         feeRecoveryProductRecommendation.remove();
-        await postRequest();
+        await dismissRecommendation(
+            'givewp_payment_gateway_fee_recovery_recommendation',
+            window.GiveSettings.apiRoot,
+            window.GiveSettings.apiNonce
+        );
     });
 }
 
-/**
- *
- * @unreleased
- *
- */
-async function postRequest() {
-    const url = `${window.GiveSettings.apiRoot}/admin/recommended-options`;
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-WP-Nonce': window.GiveSettings.apiNonce,
-        },
-        body: JSON.stringify({
-            option: 'givewp_payment_gateway_fee_recovery_recommendation',
-        }),
-    });
-
-    const responseData = await response.json();
-
-    if (responseData.success) {
-        console.log('Successfully removed option:', responseData);
-    }
-}
