@@ -182,7 +182,7 @@ const RecommendationConfig: DonationTableRecommendations = {
         enum: 'givewp_donations_designated_funds_recommendation_dismissed',
         documentationPage: 'https://docs.givewp.com/funds-donations-list',
         message: __(
-            'Elevate your fundraising campaigns with multiple forms, unlimited donation funds, and tailored fundraising reports.',
+            'Elevate your fundraising campaigns with unlimited donation fund designations, and tailored fundraising reports.',
             'give'
         ),
         innerHtml: __('Start creating designated funds', 'give'),
