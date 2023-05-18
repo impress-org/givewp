@@ -9,8 +9,7 @@ echo '
                              alt="light-bulb-icon" />
                         <p>';
 _e(
-    'Eliminate the impact of credit card processing fees per gateway by providing donors the option to
-                            cover that cost regardless of the gateway selected.',
+    'Dramatically reduce the impact of gateway credit card processing fees by providing donors the option to cover that cost regardless of the gateway selected.',
     'give'
 );
 echo '</p>
