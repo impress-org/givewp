@@ -173,7 +173,7 @@ const RecommendationConfig: DonationTableRecommendations = {
         enum: 'givewp_donations_fee_recovery_recommendation_dismissed',
         documentationPage: 'https://docs.givewp.com/feerecovery-donations-list',
         message: __(
-            'Keep 100% of your donated income when you provide donors with the option to cover the credit card processing fees.',
+            'Raise more money per donation by providing donors with the option to help cover the credit card processing fees.',
             'give'
         ),
         innerHtml: __('Get Fee Recovery', 'give'),
