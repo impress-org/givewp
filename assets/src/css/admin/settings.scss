@@ -811,17 +811,69 @@ a.give-delete {
 }
 
 @keyframes bounce {
-	0%,
-	20%,
-	50%,
-	80%,
-	100% {
-		transform: translateX(0);
-	}
-	40% {
-		transform: translateX(-30px);
-	}
-	60% {
-		transform: translateX(-15px);
-	}
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateX(0);
+    }
+    40% {
+        transform: translateX(-30px);
+    }
+    60% {
+        transform: translateX(-15px);
+    }
+}
+
+//-------------------------------------
+// Addon Recommendations
+//-------------------------------------
+
+.givewp-payment-gateway-fee-recovery-recommendation-row {
+    td {
+        padding-left: 0;
+    }
+}
+
+.givewp-payment-gateway-fee-recovery-recommendation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 17px;
+    border: 1px solid #E6E6E6;
+    background: #FAFAFA;
+    font-family: SF Pro Text, sans-serif;
+    font-weight: 500;
+    border-radius: 4px;
+
+    > div {
+        display: flex;
+        align-items: center;
+    }
+
+    img {
+        margin-right: 9px;
+    }
+
+    p {
+        margin-right: 10px;
+    }
+
+    &_external {
+        display: flex;
+        align-items: center;
+        gap: .7rem;
+    }
+
+    &_close {
+        display: block;
+        border: none;
+        background: none;
+        cursor: pointer;
+        margin: 0;
+        padding: 0;
+        transform: translateX(5px)
+    }
+
 }

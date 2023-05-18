@@ -9,6 +9,7 @@
 namespace Give\Views\Admin\Pages;
 
 use Give\Helpers\EnqueueScript;
+use Give\Helpers\Utils;
 
 defined('ABSPATH') || exit;
 
@@ -24,11 +25,6 @@ class Reports
     {
         add_action('admin_menu', [$this, 'add_page'], 40);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
-    }
-
-    public function __construct()
-    {
-        // Do nothing
     }
 
     // Enqueue app scripts
@@ -55,12 +51,18 @@ class Reports
             return;
         }
 
+        wp_enqueue_style('givewp-design-system-foundation');
+
         $data = [
             'legacyReportsUrl' => admin_url('/edit.php?post_type=give_forms&page=give-reports&legacy=true'),
             'allTimeStart' => $this->get_all_time_start(),
             'currencies' => array_keys(give_get_currencies_list()),
             'currency' => give_get_currency(),
             'testMode' => give_is_test_mode(),
+            'pluginUrl' => GIVE_PLUGIN_URL,
+            'dismissedRecommendations' => $this->getDismissedRecommendations(),
+            'apiRoot' => esc_url_raw(rest_url('give-api/v2/reports')),
+            'apiNonce' => wp_create_nonce('wp_rest'),
         ];
 
         EnqueueScript::make('give-admin-reports-v3-js', 'assets/dist/js/admin-reports.js')
@@ -114,4 +116,35 @@ class Reports
 
         return isset($donations[0]) ? $donations[0]->date : $start->format('Y-m-d H:i:s');
     }
+
+    /**
+     * Retrieve a list of dismissed recommendations.
+     *
+     * @unreleased
+     *
+     * @return array
+     */
+    private function getDismissedRecommendations(): array
+    {
+        $dismissedRecommendations = [];
+
+        $recurringAddonIsActive = Utils::isPluginActive('give-recurring/give-recurring.php');
+        $feeRecoveryAddonIsActive = Utils::isPluginActive('give-fee-recovery/give-fee-recovery.php');
+
+        $optionNames = [
+            'givewp_reports_recurring_recommendation_dismissed' => $recurringAddonIsActive,
+            'givewp_reports_fee_recovery_recommendation_dismissed' => $feeRecoveryAddonIsActive,
+        ];
+
+        foreach ($optionNames as $optionName => $isActive) {
+            $dismissed = get_option($optionName, false);
+            if ($dismissed || $isActive) {
+                $dismissedRecommendations[] = $optionName;
+            }
+        }
+
+        return $dismissedRecommendations;
+    }
 }
+
+

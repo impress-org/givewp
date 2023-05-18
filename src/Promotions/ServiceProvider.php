@@ -3,12 +3,15 @@
 namespace Give\Promotions;
 
 use Give\Helpers\Hooks;
+use Give\Promotions\FreeAddonModal\Controllers\CompleteRestApiEndpoint;
 use Give\Promotions\FreeAddonModal\Controllers\DisplaySettingsButton;
 use Give\Promotions\FreeAddonModal\Controllers\EnqueueModal;
-use Give\Promotions\FreeAddonModal\Controllers\CompleteRestApiEndpoint;
 use Give\Promotions\FreeAddonModal\Controllers\PreventFreshInstallPromotion;
 use Give\Promotions\InPluginUpsells\AddonsAdminPage;
-use Give\Promotions\InPluginUpsells\HideSaleBannerRoute;
+use Give\Promotions\InPluginUpsells\Endpoints\HideSaleBannerRoute;
+use Give\Promotions\InPluginUpsells\Endpoints\ProductRecommendationsRoute;
+use Give\Promotions\InPluginUpsells\LegacyFormEditor;
+use Give\Promotions\InPluginUpsells\PaymentGateways;
 use Give\Promotions\InPluginUpsells\RecurringDonationsTab;
 use Give\Promotions\InPluginUpsells\SaleBanners;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderContract;
@@ -36,26 +39,43 @@ class ServiceProvider implements ServiceProviderContract
     }
 
     /**
+     * @unreleased Removed Recurring donations tab app.
+     *
      * Boots the Plugin Upsell promotional page
      *
-     * @since 2.19.0
+     * @since      2.19.0
      */
     private function bootPluginUpsells()
     {
         Hooks::addAction('admin_menu', AddonsAdminPage::class, 'register', 70);
         Hooks::addAction('rest_api_init', HideSaleBannerRoute::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', ProductRecommendationsRoute::class, 'registerRoute');
 
         if (AddonsAdminPage::isShowing()) {
             Hooks::addAction('admin_enqueue_scripts', AddonsAdminPage::class, 'loadScripts');
         }
 
-        if (RecurringDonationsTab::isShowing()) {
-            Hooks::addAction('admin_enqueue_scripts', RecurringDonationsTab::class, 'loadScripts');
-        }
-
         if (SaleBanners::isShowing()) {
             Hooks::addAction('admin_notices', SaleBanners::class, 'render');
             Hooks::addAction('admin_enqueue_scripts', SaleBanners::class, 'loadScripts');
+        }
+
+        if (PaymentGateways::isShowing()) {
+            Hooks::addAction('admin_enqueue_scripts', PaymentGateways::class, 'loadScripts');
+            Hooks::addAction(
+                'give_admin_field_enabled_gateways',
+                PaymentGateways::class,
+                'renderPaymentGatewayRecommendation'
+            );
+        }
+
+        if (LegacyFormEditor::isShowing()) {
+            Hooks::addAction('admin_enqueue_scripts', LegacyFormEditor::class, 'loadScripts');
+            Hooks::addAction(
+                'give_post_form_field_options_settings',
+                LegacyFormEditor::class,
+                'renderDonationOptionsRecurringRecommendation'
+            );
         }
     }
 
