@@ -5,7 +5,7 @@ echo '<div class="givewp-donation-options inner-panel">
         <img src="' . GIVE_PLUGIN_URL . 'assets/dist/images/list-table/light-bulb-icon.svg' . '" alt="light-bulb-icon" />
         <p>';
 _e(
-    'Did you know you can provide donors with flexible recurring donation options to increase their annual giving by 30% or more.',
+    'Did you know? You can provide donors with flexible recurring donation options! Recurring donors give up to 30% more.',
     'give'
 );
 echo '</p>
