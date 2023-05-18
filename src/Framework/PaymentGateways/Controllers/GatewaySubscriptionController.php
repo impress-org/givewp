@@ -13,7 +13,7 @@ use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Subscriptions\Models\Subscription;
 
 /**
- * @unreleased
+ * @since 2.27.0
  */
 class GatewaySubscriptionController
 {
@@ -25,7 +25,7 @@ class GatewaySubscriptionController
     protected $gateway;
 
     /**
-     * @unreleased
+     * @since 2.27.0
      */
     public function __construct(PaymentGateway $gateway)
     {
@@ -33,7 +33,7 @@ class GatewaySubscriptionController
     }
 
     /**
-     * @unreleased
+     * @since 2.27.0
      */
     public function create(Donation $donation, Subscription $subscription, array $gatewayData = [])
     {
@@ -62,7 +62,7 @@ class GatewaySubscriptionController
     /**
      * Handle gateway subscription command
      *
-     * @unreleased move logic into action
+     * @since 2.27.0 move logic into action
      * @since 2.26.0 add RespondToBrowser command
      * @since 2.21.0 Handle RedirectOffsite response.
      * @since 2.18.0

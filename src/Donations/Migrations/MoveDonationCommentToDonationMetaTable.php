@@ -11,7 +11,7 @@ use Give\Log\Log;
 /**
  * Class MoveDonationCommentToDonationMetaTable
  *
- * @unreleased
+ * @since 2.27.0
  */
 class MoveDonationCommentToDonationMetaTable extends Migration
 {

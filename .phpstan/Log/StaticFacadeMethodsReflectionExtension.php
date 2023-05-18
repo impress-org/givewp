@@ -17,7 +17,7 @@ use PHPStan\Reflection\MethodsClassReflectionExtension;
  *       like __get, __set, and __call. Because PHPStan is all about static analysis (testing code for errors without running it),
  *       it has to know about those properties and methods beforehand.
  *
- * @unreleased
+ * @since 2.27.0
  */
 class StaticFacadeMethodsReflectionExtension implements MethodsClassReflectionExtension
 {

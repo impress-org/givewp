@@ -19,14 +19,14 @@ use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
 
 
 /**
- * @unreleased
+ * @since 2.27.0
  */
 class HandleGatewayPaymentCommand
 {
     /**
      * Handle gateway command
      *
-     * @unreleased return responses
+     * @since 2.27.0 return responses
      * @since 2.18.0
      *
      * @return JsonResponse|RedirectResponse

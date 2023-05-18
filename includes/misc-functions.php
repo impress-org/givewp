@@ -2407,7 +2407,7 @@ function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ) {
 /**
  * Refresh all givewp license.
  *
- * @unreleased delete update_plugins transient instead of invalidate it
+ * @since 2.27.0 delete update_plugins transient instead of invalidate it
  * @since  2.5.0
  *
  * @param  bool  $wp_check_updates

@@ -13,7 +13,7 @@ class RedirectOffsiteHandlerTest extends TestCase {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 2.27.0
      * @throws Exception
      */
     public function testShouldHandleRedirectOffsiteCommand()

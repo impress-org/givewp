@@ -911,7 +911,7 @@ $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-hi
 							/**
 							 * Fires on the donation details page, after the main area.
 							 *
-							 * @unreleased Change to read comment from donations meta table
+							 * @since 2.27.0 Change to read comment from donations meta table
 							 * @since 1.0
 							 *
 							 * @param  int  $payment_id  Payment id.

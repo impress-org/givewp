@@ -5,12 +5,12 @@ namespace Give\Tests\Unit\PaymentGateways\Stripe\Filters;
 use Give\Tests\TestCase;
 
 /**
- * @unreleased
+ * @since 2.27.0
  */
 class LegacyStripeFiltersTest extends TestCase
 {
     /**
-     * @unreleased
+     * @since 2.27.0
      */
     public function test_give_stripe_supported_payment_methods_returns_expected_payment_methods()
     {
