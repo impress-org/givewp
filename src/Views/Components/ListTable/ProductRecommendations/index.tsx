@@ -10,7 +10,7 @@ interface ProductRecommendationsProps {
 }
 
 /**
- * @unreleased
+ * @since 2.27.1
  */
 export default function ProductRecommendations({apiSettings, options}: ProductRecommendationsProps) {
     const {getRandomRecommendation, getRecommendation, removeRecommendation} = useRecommendations(apiSettings, options);
@@ -47,7 +47,7 @@ interface RotatingMessageProps {
 }
 
 /**
- * @unreleased
+ * @since 2.27.1
  */
 function RotatingMessage({selectedOption, closeMessage, pluginUrl, columns}: RotatingMessageProps) {
     const {message = '', documentationPage = '', innerHtml = ''} = selectedOption;
@@ -81,7 +81,7 @@ function RotatingMessage({selectedOption, closeMessage, pluginUrl, columns}: Rot
 type TranslatedMessageProps = {message: string};
 
 /**
- * @unreleased
+ * @since 2.27.1
  */
 function TranslatedMessage({message}: TranslatedMessageProps) {
 

@@ -34,7 +34,7 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
 		/**
          * This function is used to create payment intent in Stripe.
          *
-         * @unreleased Stripe payment intent error sets a more user friendly Exception message.
+         * @since 2.27.1 Stripe payment intent error sets a more user friendly Exception message.
          * @since      2.5.0
          * @access     public
          *

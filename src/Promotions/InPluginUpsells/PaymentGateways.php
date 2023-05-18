@@ -11,7 +11,7 @@ class PaymentGateways
     /**
      * Load scripts
      *
-     * @unreleased
+     * @since 2.27.1
      */
     public function loadScripts()
     {
@@ -32,7 +32,7 @@ class PaymentGateways
 
     /**
      *
-     * @unreleased
+     * @since 2.27.1
      *
      */
     public function renderPaymentGatewayRecommendation()
@@ -49,7 +49,7 @@ class PaymentGateways
 
     /**
      *
-     * @unreleased
+     * @since 2.27.1
      *
      */
     public static function isShowing(): bool

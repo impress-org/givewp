@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @unreleased Removed React rendering element.
+ * @since 2.27.1 Removed React rendering element.
  *
  * @since      2.17.1
  */

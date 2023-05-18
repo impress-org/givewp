@@ -39,7 +39,7 @@ class ServiceProvider implements ServiceProviderContract
     }
 
     /**
-     * @unreleased Removed Recurring donations tab app.
+     * @since 2.27.1 Removed Recurring donations tab app.
      *
      * Boots the Plugin Upsell promotional page
      *

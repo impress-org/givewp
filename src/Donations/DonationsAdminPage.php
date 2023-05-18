@@ -57,7 +57,7 @@ class DonationsAdminPage
     }
 
     /**
-     * @unreleased Add dismissed recommendations
+     * @since 2.27.1 Add dismissed recommendations
      * @since 2.27.0 Adds "addonsBulkActions" to the GiveDonations object
      * @since      2.24.0 Add ListTable columns
      * @since      2.20.0
@@ -143,7 +143,7 @@ class DonationsAdminPage
     /**
      * Retrieve a list of dismissed recommendations.
      *
-     * @unreleased
+     * @since 2.27.1
      *
      * @return array
      */

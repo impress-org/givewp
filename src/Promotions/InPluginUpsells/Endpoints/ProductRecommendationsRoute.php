@@ -18,7 +18,7 @@ class ProductRecommendationsRoute implements RestRoute
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 2.27.1
      */
     public function registerRoute()
     {
@@ -52,7 +52,7 @@ class ProductRecommendationsRoute implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 2.27.1
      */
     public function permissionsCheck()
     {
@@ -70,7 +70,7 @@ class ProductRecommendationsRoute implements RestRoute
 
     /**
      * Sets up the proper HTTP status code for authorization.
-     * @unreleased
+     * @since 2.27.1
      *
      * @return int
      */
@@ -84,7 +84,7 @@ class ProductRecommendationsRoute implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 2.27.1
      *
      * @param WP_REST_Request $request
      *

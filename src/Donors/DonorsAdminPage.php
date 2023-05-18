@@ -57,7 +57,7 @@ class DonorsAdminPage
     }
 
     /**
-     * @unreleased Pass dissmissedRecommendations
+     * @since 2.27.1 Pass dissmissedRecommendations
      *
      * @since      2.20.0
      */
@@ -162,7 +162,7 @@ class DonorsAdminPage
     /**
      * Retrieve a list of dismissed recommendations.
      *
-     * @unreleased
+     * @since 2.27.1
      *
      * @return array
      */

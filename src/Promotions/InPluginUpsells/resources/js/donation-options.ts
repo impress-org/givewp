@@ -2,7 +2,7 @@ import dismissRecommendation from '@givewp/promotions/requests/dismissRecommenda
 
 /**
  *
- * @unreleased
+ * @since 2.27.1
  *
  */
 declare global {
@@ -18,7 +18,7 @@ export interface GiveLegacyFormEditorData {
 
 /**
  *
- * @unreleased
+ * @since 2.27.1
  *
  */
 const recurringProductRecommendation = document.querySelector('.givewp-donation-options');

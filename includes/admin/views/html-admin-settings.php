@@ -90,7 +90,7 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
             /**
              * Render Recurring Donations UTM link.
              *
-             * @unreleased
+             * @since 2.27.1
              */
             foreach ($tabs as $name => $label) {
                 $target = $name === 'recurring' ? 'target="_blank" ' : false;
@@ -103,7 +103,7 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
             /**
              * Render Addon product recommendation link if Recurring Donations is active.
              *
-             * @unreleased
+             * @since 2.27.1
              */
             if (Utils::isPluginActive('give-recurring/give-recurring.php')) {
                 echo '

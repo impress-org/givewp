@@ -6,7 +6,7 @@ import './style.scss';
 import {RecommendedProductData, useRecommendations} from '@givewp/promotions/hooks/useRecommendations';
 
 /**
- * @unreleased
+ * @since 2.27.1
  */
 declare global {
     interface Window {
@@ -25,7 +25,7 @@ declare global {
 }
 
 /**
- * @unreleased
+ * @since 2.27.1
  */
 interface ReportsPageRecommendations {
     recurring: RecommendedProductData;
@@ -51,7 +51,7 @@ const RecommendationConfig: ReportsPageRecommendations = {
 };
 
 /**
- * @unreleased
+ * @since 2.27.1
  */
 export default function ProductRecommendations() {
     const {removeRecommendation, getRecommendation} = useRecommendations(window.giveReportsData, [
@@ -95,7 +95,7 @@ export default function ProductRecommendations() {
 }
 
 /**
- * @unreleased
+ * @since 2.27.1
  */
 type TranslatedMessageProps = {message: string};
 

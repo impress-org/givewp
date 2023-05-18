@@ -21,7 +21,7 @@ import Routes from '../components/routes';
 import ProductRecommendation from "../components/ProductRecommendation";
 
 /**
- * @unreleased
+ * @since 2.27.1
  */
 const App = () => {
     // Initial app state (available in component through useStoreValue)

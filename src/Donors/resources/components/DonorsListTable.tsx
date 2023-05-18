@@ -86,7 +86,7 @@ const ListTableBlankSlate = (
 );
 
 /**
- * @unreleased
+ * @since 2.27.1
  */
 const RecommendationConfig: any = {
     feeRecovery: {

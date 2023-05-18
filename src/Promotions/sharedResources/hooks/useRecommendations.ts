@@ -18,7 +18,7 @@ export interface RecommendedProductData {
 }
 
 /**
- * @unreleased
+ * @since 2.27.1
  */
 export function useRecommendations(apiSettings, options) {
     const [dismissedRecommendations, setDismissedRecommendations] = useState<string[]>(

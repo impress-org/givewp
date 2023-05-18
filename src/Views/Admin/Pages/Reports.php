@@ -120,7 +120,7 @@ class Reports
     /**
      * Retrieve a list of dismissed recommendations.
      *
-     * @unreleased
+     * @since 2.27.1
      *
      * @return array
      */

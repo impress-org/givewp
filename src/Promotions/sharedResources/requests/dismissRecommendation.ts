@@ -1,6 +1,6 @@
 /**
  *
- * @unreleased
+ * @since 2.27.1
  *
  */
 
