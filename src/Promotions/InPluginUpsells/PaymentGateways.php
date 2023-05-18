@@ -22,7 +22,7 @@ class PaymentGateways
 
         EnqueueScript::make(
             'give-in-plugin-upsells-payment-gateway',
-            'assets/dist/js/payment-gateway.js',
+            'assets/dist/js/payment-gateway.js'
         )
             ->loadInFooter()
             ->registerTranslations()
