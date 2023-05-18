@@ -314,7 +314,7 @@ final class Give
     {
         // Plugin version.
         if (!defined('GIVE_VERSION')) {
-            define('GIVE_VERSION', '2.27.0');
+            define('GIVE_VERSION', '2.27.1');
         }
 
         // Plugin Root File.
