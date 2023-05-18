@@ -50,7 +50,7 @@ export function useRecommendations(apiSettings, options) {
     const removeRecommendation = async (data: {option: EnumValues}): Promise<void> => {
         setDismissedRecommendations((prev) => [...prev, data.option]);
 
-        await dismissRecommendation(data.option, apiSettings.apiRoot, apiSettings.apiNonce);
+        await dismissRecommendation(data.option, apiSettings.apiNonce);
     };
 
     return {getRecommendation, getRandomRecommendation, removeRecommendation};

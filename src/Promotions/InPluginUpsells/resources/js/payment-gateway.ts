@@ -35,7 +35,6 @@ if (feeRecoveryProductRecommendation) {
         feeRecoveryProductRecommendation.remove();
         await dismissRecommendation(
             'givewp_payment_gateway_fee_recovery_recommendation',
-            window.GiveSettings.apiRoot,
             window.GiveSettings.apiNonce
         );
     });

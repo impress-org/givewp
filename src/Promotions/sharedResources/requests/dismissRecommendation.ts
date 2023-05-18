@@ -4,8 +4,8 @@
  *
  */
 
-export default async function dismissRecommendation(option: string, apiRoot: string, nonce: string) {
-    const url = `${apiRoot}/admin/recommended-options`;
+export default async function dismissRecommendation(option: string, nonce: string) {
+    const url = '/wp-json/give-api/v2/admin/recommended-options';
 
     await fetch(url, {
         method: 'POST',

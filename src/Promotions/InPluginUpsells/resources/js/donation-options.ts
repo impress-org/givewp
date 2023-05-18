@@ -32,7 +32,6 @@ if (recurringProductRecommendation && preceedingContent) {
         recurringProductRecommendation.remove();
         await dismissRecommendation(
             'givewp_form_editor_donation_options_recurring_recommendation',
-            window.GiveLegacyFormEditor.apiRoot,
             window.GiveLegacyFormEditor.apiNonce
         );
     });
