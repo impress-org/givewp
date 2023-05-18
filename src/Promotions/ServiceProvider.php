@@ -11,6 +11,7 @@ use Give\Promotions\InPluginUpsells\AddonsAdminPage;
 use Give\Promotions\InPluginUpsells\Endpoints\HideSaleBannerRoute;
 use Give\Promotions\InPluginUpsells\Endpoints\ProductRecommendationsRoute;
 use Give\Promotions\InPluginUpsells\LegacyFormEditor;
+use Give\Promotions\InPluginUpsells\PaymentGateways;
 use Give\Promotions\InPluginUpsells\RecurringDonationsTab;
 use Give\Promotions\InPluginUpsells\SaleBanners;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderContract;
@@ -58,6 +59,16 @@ class ServiceProvider implements ServiceProviderContract
             Hooks::addAction('admin_notices', SaleBanners::class, 'render');
             Hooks::addAction('admin_enqueue_scripts', SaleBanners::class, 'loadScripts');
         }
+
+        if (PaymentGateways::isShowing()) {
+            Hooks::addAction('admin_enqueue_scripts', PaymentGateways::class, 'loadScripts');
+            Hooks::addAction(
+                'give_admin_field_enabled_gateways',
+                PaymentGateways::class,
+                'renderPaymentGatewayRecommendation'
+            );
+        }
+
         if (LegacyFormEditor::isShowing()) {
             Hooks::addAction('admin_enqueue_scripts', LegacyFormEditor::class, 'loadScripts');
             Hooks::addAction(

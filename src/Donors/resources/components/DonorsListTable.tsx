@@ -93,10 +93,10 @@ const RecommendationConfig: any = {
         enum: 'givewp_donors_fee_recovery_recommendation_dismissed',
         documentationPage: 'https://docs.givewp.com/feerecovery-donors-list',
         message: __(
-            'Keep 100% of your donated income when you provide donors with the option to cover the credit card processing fees.',
+            ' 90% of donors opt to give more to help cover transaction fees when given the opportunity. Give donors that opportunity.',
             'give'
         ),
-        innerHtml: __('Get Fee Recovery', 'give'),
+        innerHtml: __('Get the Fee Recovery add-on today', 'give'),
     },
 };
 

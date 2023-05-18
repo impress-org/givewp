@@ -1,4 +1,5 @@
 import {useCallback, useState} from 'react';
+import dismissRecommendation from '@givewp/promotions/requests/dismissRecommendation';
 
 type EnumValues =
     | 'givewp_donations_recurring_recommendation_dismissed'
@@ -23,6 +24,7 @@ export function useRecommendations(apiSettings, options) {
     const [dismissedRecommendations, setDismissedRecommendations] = useState<string[]>(
         apiSettings.dismissedRecommendations
     );
+
     const getRandomRecommendation = useCallback((): RecommendedProductData | null => {
         const availableOptions = options.filter((option) => !dismissedRecommendations.includes(option.enum));
 
@@ -45,26 +47,10 @@ export function useRecommendations(apiSettings, options) {
         return availableOptions[0];
     }, [dismissedRecommendations]);
 
-    const removeRecommendation = async (data: { option: EnumValues }): Promise<void> => {
-        const url = `/wp-json/give-api/v2/admin/recommended-options`;
+    const removeRecommendation = async (data: {option: EnumValues}): Promise<void> => {
+        setDismissedRecommendations((prev) => [...prev, data.option]);
 
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-WP-Nonce': apiSettings.apiNonce,
-                },
-                body: JSON.stringify(data),
-            });
-
-            const result = await response.json();
-            if (result.success) {
-                setDismissedRecommendations((prev) => [...prev, data.option]);
-            }
-        } catch (error) {
-            console.error(error);
-        }
+        await dismissRecommendation(data.option, apiSettings.apiRoot, apiSettings.apiNonce);
     };
 
     return {getRecommendation, getRandomRecommendation, removeRecommendation};

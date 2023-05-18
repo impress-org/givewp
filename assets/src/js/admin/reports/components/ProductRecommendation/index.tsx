@@ -43,10 +43,10 @@ const RecommendationConfig: ReportsPageRecommendations = {
         enum: 'givewp_reports_fee_recovery_recommendation_dismissed',
         documentationPage: 'https://docs.givewp.com/feerecovery-reports',
         message: __(
-            'Maximize your fundraising revenue to 100% and increase the impact of your cause by providing donors the option to cover credit card processing fees.',
+            '90% of donors opt to give more to help cover transaction fees when given the opportunity. Give donors that opportunity.',
             'give'
         ),
-        innerHtml: __('Get Fee Recovery', 'give'),
+        innerHtml: __('Get the Fee Recovery add-on today', 'give'),
     },
 };
 
@@ -100,7 +100,7 @@ export default function ProductRecommendations() {
 type TranslatedMessageProps = {message: string};
 
 function TranslatedMessage({message}: TranslatedMessageProps) {
-    const translatedString = createInterpolateElement(__('<strong>ProTip: </strong> <message />', 'give'), {
+    const translatedString = createInterpolateElement(__('<strong>Pro tip: </strong> <message />', 'give'), {
         strong: <strong />,
         message: <p>{message}</p>,
     });

@@ -42,6 +42,7 @@ class ProductRecommendationsRoute implements RestRoute
                                 'givewp_reports_fee_recovery_recommendation_dismissed',
                                 'givewp_donors_fee_recovery_recommendation_dismissed',
                                 'givewp_form_editor_donation_options_recurring_recommendation',
+                                'givewp_payment_gateway_fee_recovery_recommendation',
                             ],
                         ],
                     ],
