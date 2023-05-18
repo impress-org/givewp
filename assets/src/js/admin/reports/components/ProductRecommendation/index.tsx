@@ -78,11 +78,11 @@ export default function ProductRecommendations() {
                 <div>
                     <img src={`${pluginUrl}/assets/dist/images/list-table/light-bulb-icon.svg`} />
 
-                    <TranslatedMessage message={selectedOption.message} />
+                    <TranslatedMessage message={selectedOption?.message} />
                 </div>
 
-                <a target="_blank" href={selectedOption.documentationPage}>
-                    {selectedOption.innerHtml}
+                <a target="_blank" href={selectedOption?.documentationPage}>
+                    {selectedOption?.innerHtml}
                     <img src={`${pluginUrl}/assets/dist/images/list-table/external-link-icon.svg`} />
                 </a>
             </div>
