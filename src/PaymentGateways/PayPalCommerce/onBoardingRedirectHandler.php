@@ -377,8 +377,8 @@ class onBoardingRedirectHandler
         }
 
         if (array_diff(['payments_receivable', 'primary_email_confirmed'], array_keys($onBoardedData))) {
-            $errorMessages[] = esc_html__(
-                'There was a problem with the status check for your account. Please try disconnecting and connecting again. If the problem persists, please contact support.',
+            $errorMessages[] = __(
+                'Your account is not fully set up and ready to receive payments. Please log into your PayPal account at <a href="https://paypal.com">paypal.com</a> and address the following issues. Reach out to PayPal support if you need help setting up your account.',
                 'give'
             );
 
@@ -387,11 +387,11 @@ class onBoardingRedirectHandler
         }
 
         if (! $onBoardedData['payments_receivable']) {
-            $errorMessages[] = esc_html__('Set up an account to receive payment from PayPal', 'give');
+            $errorMessages[] = esc_html__('An banking account needs to be connected to your PayPal account and verified', 'give');
         }
 
         if (! $onBoardedData['primary_email_confirmed']) {
-            $errorMessages[] = esc_html__('Confirm your primary email address', 'give');
+            $errorMessages[] = esc_html__('Your primary email address needs to be confirmed', 'give');
         }
 
         // This error message is only for the case when the user is using custom payments.
@@ -410,7 +410,7 @@ class onBoardingRedirectHandler
 
             if (! $hasCustomCardProcessingCapability) {
                 $errorMessages[] = __(
-                    'Custom card processing is not active on your PayPal account. That capability is required in order to display card fields directly on your website. To accept donations with card fields directly on your site, called <a href="https://developer.paypal.com/docs/checkout/advanced/#enable-your-account" title="Link to PayPal Docs">hosted fields</a>, you'll need to enable custom card processing. This is something PayPal support can help with, and depends on factors outside of GiveWP's control. You can still accept donations with <a href="https://developer.paypal.com/docs/checkout/" title="Link to PayPal Docs">PayPal smart buttons</a>, which allow donors to log into PayPal and complete the donation in a modal window, in the meantime.',
+                    'Advance card processing is not active on your PayPal account. That capability is required in order to display card fields directly on your website. To accept donations with card fields directly on your site, called <a href="https://developer.paypal.com/docs/checkout/advanced/#enable-your-account" title="Link to PayPal Docs">hosted fields</a>, you\'ll need to enable custom card processing. This is something PayPal support can help with, and depends on factors outside of GiveWP\'s control. You can still accept donations with <a href="https://developer.paypal.com/docs/checkout/" title="Link to PayPal Docs">PayPal smart buttons</a>, which allow donors to log into PayPal and complete the donation in a modal window, in the meantime.',
                     'give'
                 );
             }
