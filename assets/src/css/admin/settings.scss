@@ -829,6 +829,13 @@ a.give-delete {
 //-------------------------------------
 // Addon Recommendations
 //-------------------------------------
+
+.givewp-payment-gateway-fee-recovery-recommendation-row {
+    td {
+        padding-left: 0;
+    }
+}
+
 .givewp-payment-gateway-fee-recovery-recommendation {
     display: flex;
     align-items: center;
@@ -836,10 +843,9 @@ a.give-delete {
     padding: 14px 17px;
     border: 1px solid #E6E6E6;
     background: #FAFAFA;
-    font-family: SF Pro;
+    font-family: SF Pro Text, sans-serif;
     font-weight: 500;
     border-radius: 4px;
-
 
     > div {
         display: flex;
