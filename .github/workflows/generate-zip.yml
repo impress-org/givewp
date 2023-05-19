@@ -25,7 +25,7 @@ on:
 
 jobs:
     build:
-        uses: impress-org/givewp-github-actions/.github/workflows/generate-zip.yml@master
+        uses: impress-org/givewp-github-actions/.github/workflows/generate-zip.yml@feature/s3-and-dev-package
         with:
             ref: ${{ github.event.inputs.ref }}
             plugin_slug: give
