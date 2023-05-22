@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * List of changes
  *
- * @unreleased Use get_the_excerpt function to get short description of donation form to display in form grid.
+ * @since 2.27.1 Use get_the_excerpt function to get short description of donation form to display in form grid.
  */
 
 $form_id          = get_the_ID(); // Form ID.

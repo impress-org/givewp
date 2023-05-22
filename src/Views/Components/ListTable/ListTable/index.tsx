@@ -25,6 +25,7 @@ export interface ListTableProps {
     align?: 'start' | 'center' | 'end';
     testMode?: boolean;
     listTableBlankSlate: JSX.Element;
+    productRecommendation?: JSX.Element;
 }
 
 export interface ListTableColumn {
@@ -54,6 +55,7 @@ export const ListTable = ({
     sortField,
     testMode,
     listTableBlankSlate,
+    productRecommendation,
 }: ListTableProps) => {
     const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>; successes: Array<number>}>({
         errors: [],
@@ -132,7 +134,7 @@ export const ListTable = ({
                 >
                     {loadingOverlay && (
                         <div className={cx(styles.overlay, loadingOverlay)}>
-                            <div className={isScrollable() && styles.relativeContainer}>
+                            <div className={cx(isScrollable() && styles.relativeContainer)}>
                                 <div className={styles.fixedContent}>
                                     <Spinner size={'medium'} />
                                 </div>
@@ -184,6 +186,7 @@ export const ListTable = ({
                             </tr>
                         </thead>
                         <tbody className={styles.tableContent}>
+                            {productRecommendation}
                             <ListTableRows
                                 columns={visibleColumns}
                                 data={data}

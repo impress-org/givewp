@@ -57,6 +57,7 @@ class DonationsAdminPage
     }
 
     /**
+     * @since 2.27.1 Add dismissed recommendations
      * @since 2.27.0 Adds "addonsBulkActions" to the GiveDonations object
      * @since      2.24.0 Add ListTable columns
      * @since      2.20.0
@@ -73,6 +74,7 @@ class DonationsAdminPage
             'paymentMode' => give_is_test_mode(),
             'manualDonations' => Utils::isPluginActive('give-manual-donations/give-manual-donations.php'),
             'pluginUrl' => GIVE_PLUGIN_URL,
+            'dismissedRecommendations' => $this->getDismissedRecommendations(),
             'addonsBulkActions' => [],
         ];
 
@@ -136,5 +138,36 @@ class DonationsAdminPage
                 'text' => 'Any',
             ],
         ], $options);
+    }
+
+    /**
+     * Retrieve a list of dismissed recommendations.
+     *
+     * @since 2.27.1
+     *
+     * @return array
+     */
+    private function getDismissedRecommendations(): array
+    {
+        $dismissedRecommendations = [];
+
+        $recurringAddonIsActive = Utils::isPluginActive('give-recurring/give-recurring.php');
+        $feeRecoveryAddonIsActive = Utils::isPluginActive('give-fee-recovery/give-fee-recovery.php');
+        $designatedFundsAddonIsActive = Utils::isPluginActive('give-funds/give-funds.php');
+
+        $optionNames = [
+            'givewp_donations_recurring_recommendation_dismissed' => $recurringAddonIsActive,
+            'givewp_donations_fee_recovery_recommendation_dismissed' => $feeRecoveryAddonIsActive,
+            'givewp_donations_designated_funds_recommendation_dismissed' => $designatedFundsAddonIsActive,
+        ];
+
+        foreach ($optionNames as $optionName => $isActive) {
+            $dismissed = get_option($optionName, false);
+            if ($dismissed || $isActive) {
+                $dismissedRecommendations[] = $optionName;
+            }
+        }
+
+        return $dismissedRecommendations;
     }
 }
