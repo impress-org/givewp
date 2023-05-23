@@ -1,7 +1,7 @@
 [
     {
         "clientId": "8371d4c7-0e8d-4aff-a1a1-b4520f008132",
-        "name": "custom-block-editor/section",
+        "name": "givewp/section",
         "isValid": true,
         "attributes": {
             "title": "How much would you like to donate today?",
@@ -10,7 +10,7 @@
         "innerBlocks": [
             {
                 "clientId": "bddaa0ea-29bf-4143-b62d-aae3396e9b0f",
-                "name": "custom-block-editor/donation-amount-levels",
+                "name": "givewp/donation-amount",
                 "isValid": true,
                 "attributes": {
                     "label": "Donation Amount",
@@ -45,7 +45,7 @@
     },
     {
         "clientId": "2d74bf4b-4b82-4bea-aed7-431801709351",
-        "name": "custom-block-editor/section",
+        "name": "givewp/section",
         "isValid": true,
         "attributes": {
             "title": "Who's Giving Today?",
@@ -54,7 +54,7 @@
         "innerBlocks": [
             {
                 "clientId": "1dc9cc78-698b-443a-8679-572d0667b7d8",
-                "name": "custom-block-editor/donor-name",
+                "name": "givewp/donor-name",
                 "isValid": true,
                 "attributes": {
                     "lock": {
@@ -76,7 +76,7 @@
             },
             {
                 "clientId": "6f0af86f-703d-400d-9cf9-322d5691307b",
-                "name": "custom-block-editor/email-field",
+                "name": "givewp/email",
                 "isValid": true,
                 "attributes": {
                     "label": "Email Address",
@@ -88,7 +88,7 @@
     },
     {
         "clientId": "52596cc5-ab49-433e-b8e9-23fb4871fb5c",
-        "name": "custom-block-editor/section",
+        "name": "givewp/section",
         "isValid": true,
         "attributes": {
             "title": "Payment Details",
@@ -96,7 +96,7 @@
         },
         "innerBlocks": [
             {
-                "name": "custom-block-editor/donation-summary",
+                "name": "givewp/donation-summary",
                 "clientId": "b7114360-8542-4043-8296-26d2ae995d24",
                 "isValid": true,
                 "attributes": [],
@@ -104,7 +104,7 @@
             },
             {
                 "clientId": "145d8b8a-1870-4516-b0d5-fa7848578819",
-                "name": "custom-block-editor/payment-gateways",
+                "name": "givewp/payment-gateways",
                 "isValid": true,
                 "attributes": {
                     "lock": {

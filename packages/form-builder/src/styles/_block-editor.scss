@@ -92,10 +92,10 @@
     }
 }
 
-[data-type='custom-block-editor/section'],
-[data-type='custom-block-editor/donor-info'],
-[data-type='custom-block-editor/donation-amount'],
-[data-type='custom-block-editor/payment-details'] {
+[data-type='givewp/section'],
+[data-type='givewp/donor-info'],
+[data-type='givewp/donation-amount'],
+[data-type='givewp/payment-details'] {
     & > div > .block-editor-inner-blocks > .block-editor-block-list__layout {
         display: flex;
         gap: 2rem;
@@ -103,7 +103,7 @@
     }
 }
 
-[data-type='custom-block-editor/paragraph'] .rich-text {
+[data-type='givewp/paragraph'] .rich-text {
     font-size: 1.1rem;
     line-height: 1.5;
 }

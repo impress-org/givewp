@@ -52,8 +52,15 @@ class ConvertDonationFormBlocksToFieldsApi
 
             if ($block->innerBlocks) {
                 $innerBlocks = $block->innerBlocks->getBlocks();
+                $nodes = array_filter(
+                    array_map([$this, 'convertInnerBlockToNode'], $innerBlocks, array_keys($innerBlocks)),
+                    static function ($node) {
+                        return $node instanceof Node;
+                    }
+                );
+
                 $section->append(
-                    ...array_map([$this, 'convertInnerBlockToNode'], $innerBlocks, array_keys($innerBlocks))
+                    ...$nodes
                 );
             }
 
@@ -78,51 +85,61 @@ class ConvertDonationFormBlocksToFieldsApi
      * @since 0.1.0
      *
      * @throws EmptyNameException|NameCollisionException
+     *
+     * @return Node|null
      */
-    protected function convertInnerBlockToNode(BlockModel $block, int $blockIndex): Node
+    protected function convertInnerBlockToNode(BlockModel $block, int $blockIndex)
     {
         $node = $this->createNodeFromBlockWithUniqueAttributes($block, $blockIndex);
 
-        return $this->mapGenericBlockAttributesToNode($node, $block);
+        if ($node instanceof Node) {
+            return $this->mapGenericBlockAttributesToNode($node, $block);
+        }
+
+        return null;
     }
 
     /**
-     * @unreleased add blockIndex for unique field names
+     * @unreleased add blockIndex for unique field names, add filter `givewp_donation_form_block_render_{$blockName}`
      * @since 0.1.0
      *
      * @throws EmptyNameException
      * @throws NameCollisionException
+     *
+     * @return Node|null
      */
-    protected function createNodeFromBlockWithUniqueAttributes(BlockModel $block, int $blockIndex): Node
+    protected function createNodeFromBlockWithUniqueAttributes(BlockModel $block, int $blockIndex)
     {
-        switch ($block->name) {
-            case "custom-block-editor/donation-amount-levels":
+        $blockName = $block->name;
+
+        switch ($blockName) {
+            case "givewp/donation-amount":
                 return $this->createNodeFromAmountBlock($block);
 
-            case "custom-block-editor/donor-name":
+            case "givewp/donor-name":
                 return $this->createNodeFromDonorNameBlock($block);
 
-            case "custom-block-editor/paragraph":
+            case "givewp/paragraph":
                 return Paragraph::make($block->getShortName() . '-' . $blockIndex)
                     ->content($block->getAttribute('content'));
 
-            case "custom-block-editor/email-field":
+            case "givewp/email":
                 return Email::make('email')
                     ->emailTag('email')
                     ->rules('required', 'email');
 
-            case "custom-block-editor/payment-gateways":
+            case "givewp/payment-gateways":
                 return PaymentGateways::make('gatewayId')
                     ->rules(new GatewayRule())
                     ->required();
 
-            case "custom-block-editor/donation-summary":
+            case "givewp/donation-summary":
                 return DonationSummary::make('donation-summary');
 
-            case "custom-block-editor/company-field":
+            case "givewp/company":
                 return Text::make('company');
 
-            default:
+            case "givewp/text":
                 return Text::make(
                     $block->hasAttribute('fieldName') ?
                         $block->getAttribute('fieldName') :
@@ -130,6 +147,19 @@ class ConvertDonationFormBlocksToFieldsApi
                 )->storeAsDonorMeta(
                     $block->hasAttribute('storeAsDonorMeta') ? $block->getAttribute('storeAsDonorMeta') : false
                 );
+
+            default:
+                $customField = apply_filters(
+                    "givewp_donation_form_block_render_{$blockName}",
+                    $block,
+                    $blockIndex
+                );
+
+                if ($customField instanceof Node) {
+                    return $customField;
+                }
+
+                return null;
         }
     }
 

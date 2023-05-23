@@ -2,7 +2,7 @@ import settings from './settings';
 import {FieldBlock} from '@givewp/form-builder/types';
 
 const company: FieldBlock = {
-    name: 'custom-block-editor/company-field',
+    name: 'givewp/company',
     settings,
 };
 

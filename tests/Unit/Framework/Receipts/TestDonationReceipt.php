@@ -217,11 +217,11 @@ class TestDonationReceipt extends TestCase
         $donationForm = $this->createFormWithCustomFields(
             [
                 BlockModel::make([
-                    'name' => 'custom-block-editor/section',
+                    'name' => 'givewp/section',
                     'attributes' => ['title' => '', 'description' => ''],
                     'innerBlocks' => [
                         [
-                            'name' => 'custom-block-editor/custom-text-block',
+                            'name' => 'givewp/text',
                             'attributes' => [
                                 'fieldName' => 'custom_text_block_meta',
                                 'storeAsDonorMeta' => false,
@@ -272,11 +272,11 @@ class TestDonationReceipt extends TestCase
 
         $customBlocks = $blocks ?: [
             BlockModel::make([
-                'name' => 'custom-block-editor/section',
+                'name' => 'givewp/section',
                 'attributes' => ['title' => '', 'description' => ''],
                 'innerBlocks' => [
                     [
-                        'name' => 'custom-block-editor/custom-text-block',
+                        'name' => 'givewp/text',
                         'attributes' => [
                             'fieldName' => 'custom_text_block_meta',
                             'storeAsDonorMeta' => false,

@@ -2,15 +2,22 @@
 
 namespace Give\Tests\Unit\DonationForm\Repositories;
 
+use Closure;
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\FieldsAPI\Form;
+use Give\Framework\FieldsAPI\Hidden;
+use Give\Framework\FieldsAPI\Section;
+use Give\Framework\FieldsAPI\Text;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\NextGen\DonationForm\Factories\DonationFormFactory;
 use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
+use Give\NextGen\Framework\Blocks\BlockCollection;
+use Give\NextGen\Framework\Blocks\BlockModel;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
@@ -239,5 +246,68 @@ final class TestDonationFormRepository extends TestCase
         $form = DonationForm::factory()->create();
 
         $this->assertFalse($this->repository->isLegacyForm($form->id));
+    }
+
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testGetFormSchemaFromBlocksShouldReturnFormSchema()
+    {
+        $block = BlockModel::make([
+            'clientId' => '8371d4c7-0e8d-4aff-a1a1-b4520f008132',
+            'name' => 'givewp/section',
+            'isValid' => true,
+            'attributes' => [
+                'title' => 'custom section title',
+                'description' => 'custom section description',
+            ],
+            'innerBlocks' => [
+                [
+                    'clientId' => 'bddaa0ea-29bf-4143-b62d-aae3396e9b0f',
+                    'name' => 'givewp/text',
+                    'isValid' => true,
+                    'attributes' => [
+                        'fieldName' => 'givewp-custom-field-name',
+                        'label' => 'GiveWP Custom Block',
+                    ],
+                ],
+            ],
+        ]);
+
+        $blockIndex = 1;
+        $formId = 1;
+
+        $blocks = BlockCollection::make([$block]);
+
+        /** @var Form $formSchema */
+        $formSchema = $this->repository->getFormSchemaFromBlocks($formId, $blocks);
+
+        $form = new Form('donation-form');
+        $form->append(
+            Section::make('section-' . $blockIndex)
+                ->label('custom section title')
+                ->description('custom section description')
+                ->append(
+                    Text::make('givewp-custom-field-name')
+                        ->label('GiveWP Custom Block')
+                        ->storeAsDonorMeta(false),
+                    Hidden::make('formId')
+                        ->defaultValue($formId)
+                        ->rules(
+                            'required', 'integer',
+                            function ($value, Closure $fail, string $key, array $values) use ($formId) {
+                                if ($value !== $formId) {
+                                    $fail('Invalid donation form ID');
+                                }
+                            }
+                        )
+                )
+        );
+
+        $this->assertEquals($formSchema, $form);
     }
 }

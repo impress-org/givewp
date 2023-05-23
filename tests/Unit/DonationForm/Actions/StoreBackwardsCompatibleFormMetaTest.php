@@ -69,7 +69,7 @@ class StoreBackwardsCompatibleFormMetaTest extends TestCase
 
         $amountFieldModified = BlockModel::make([
             'clientId' => '8371d4c7-0e8d-4aff-a1a1-b4520f008132',
-            'name' => 'custom-block-editor/section',
+            'name' => 'givewp/section',
             'isValid' => true,
             'attributes' => [
                 'title' => 'How much would you like to donate today?',
@@ -78,7 +78,7 @@ class StoreBackwardsCompatibleFormMetaTest extends TestCase
             'innerBlocks' => [
                 [
                     'clientId' => 'bddaa0ea-29bf-4143-b62d-aae3396e9b0f',
-                    'name' => 'custom-block-editor/donation-amount-levels',
+                    'name' => 'givewp/donation-amount',
                     'isValid' => true,
                     'attributes' => [
                         'label' => 'Donation Amount',
@@ -119,7 +119,7 @@ class StoreBackwardsCompatibleFormMetaTest extends TestCase
     {
         $amountFieldModified = BlockModel::make([
             'clientId' => '8371d4c7-0e8d-4aff-a1a1-b4520f008132',
-            'name' => 'custom-block-editor/section',
+            'name' => 'givewp/section',
             'isValid' => true,
             'attributes' => [
                 'title' => 'How much would you like to donate today?',
@@ -128,7 +128,7 @@ class StoreBackwardsCompatibleFormMetaTest extends TestCase
             'innerBlocks' => [
                 [
                     'clientId' => 'bddaa0ea-29bf-4143-b62d-aae3396e9b0f',
-                    'name' => 'custom-block-editor/donation-amount-levels',
+                    'name' => 'givewp/donation-amount',
                     'isValid' => true,
                     'attributes' => [
                         'label' => 'Donation Amount',

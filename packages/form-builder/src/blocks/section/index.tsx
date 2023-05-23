@@ -2,7 +2,7 @@ import {SectionBlock} from '@givewp/form-builder/types/block';
 import settings from './settings';
 
 const section: SectionBlock = {
-    name: 'custom-block-editor/section',
+    name: 'givewp/section',
     settings,
 };
 

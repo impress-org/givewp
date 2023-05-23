@@ -28,11 +28,11 @@ class StoreCustomFieldsTest extends TestCase
         $form = DonationForm::factory()->create();
 
         $customFieldBlockModel = BlockModel::make([
-            'name' => 'custom-block-editor/section',
+            'name' => 'givewp/section',
             'attributes' => ['title' => '', 'description' => ''],
             'innerBlocks' => [
                 [
-                    'name' => 'custom-block-editor/custom-text-block',
+                    'name' => 'givewp/text',
                     'attributes' => [
                         'fieldName' => 'custom_text_block_meta',
                         'storeAsDonorMeta' => true,
@@ -77,11 +77,11 @@ class StoreCustomFieldsTest extends TestCase
         $form = DonationForm::factory()->create();
 
         $customFieldBlockModel = BlockModel::make([
-            'name' => 'custom-block-editor/section',
+            'name' => 'givewp/section',
             'attributes' => ['title' => '', 'description' => ''],
             'innerBlocks' => [
                 [
-                    'name' => 'custom-block-editor/custom-text-block',
+                    'name' => 'givewp/text',
                     'attributes' => [
                         'fieldName' => 'custom_text_block_meta',
                         'storeAsDonorMeta' => false,

@@ -1,10 +1,10 @@
-import {useContext, useEffect} from "react";
-import {useDispatch} from "@wordpress/data";
-import {ShepherdTour, ShepherdTourContext} from "react-shepherd";
-import options from './options'
-import steps from './steps'
+import {useContext, useEffect} from 'react';
+import {useDispatch} from '@wordpress/data';
+import {ShepherdTour, ShepherdTourContext} from 'react-shepherd';
+import options from './options';
+import steps from './steps';
 
-import "shepherd.js/dist/css/shepherd.css";
+import 'shepherd.js/dist/css/shepherd.css';
 
 declare global {
     interface Window {
@@ -23,7 +23,7 @@ function TourEffectsAndEvents() {
 
     useEffect(() => {
         const selectAmountBlockCallback = () => {
-            const amountBlock = document.querySelector('[data-type="custom-block-editor/donation-amount-levels"]');
+            const amountBlock = document.querySelector('[data-type="givewp/donation-amount"]');
             const amountBlockId = amountBlock.getAttribute('data-block');
             selectBlock(amountBlockId).then(() => console.log('Amount block selected'));
         }
