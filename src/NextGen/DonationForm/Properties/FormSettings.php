@@ -13,6 +13,10 @@ class FormSettings implements Arrayable, Jsonable
     /**
      * @var boolean
      */
+    public $showHeader;
+    /**
+     * @var boolean
+     */
     public $showHeading;
     /**
      * @var boolean
@@ -98,6 +102,7 @@ class FormSettings implements Arrayable, Jsonable
     {
         $self = new self();
 
+        $self->showHeader = $array['showHeader'] ?? true;
         $self->showHeading = $array['showHeading'] ?? true;
         $self->heading = $array['heading'] ?? __('Support Our Cause', 'give');
         $self->showDescription = $array['showDescription'] ?? true;
