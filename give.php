@@ -523,11 +523,13 @@ final class Give
  * @since 2.8.0 add parameter for quick retrieval from container
  * @since 1.0
  *
- * @param null $abstract Selector for data to retrieve from the service container
+ * @template T
  *
- * @return object|Give
+ * @param class-string<T>|null $abstract Selector for data to retrieve from the service container
+ *
+ * @return Give|T
  */
-function give($abstract = null)
+function give(string $abstract = null)
 {
     static $instance = null;
 
