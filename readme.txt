@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
 Tested up to: 6.2
 Requires PHP: 7.0
-Stable tag: 2.27.1
+Stable tag: 2.27.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -258,6 +258,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.27.2: May 24th, 2023 =
+* Fix: No errors are thrown for missing JavaScript files in the Payment Gateway Settings page.
+
 = 2.27.1: May 18th, 2023 =
 * Fix: Tributes are displayed even when only the last name of the tribute is filled in the form.
 * Fix: Subscriptions can be successfully canceled from the donor dashboard.
