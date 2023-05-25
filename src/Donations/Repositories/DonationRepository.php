@@ -350,6 +350,8 @@ class DonationRepository
 
         if ($donation->feeAmountRecovered !== null) {
             $meta[DonationMetaKeys::FEE_AMOUNT_RECOVERED] = $donation->feeAmountRecovered->formatToDecimal();
+            $meta[DonationMetaKeys::FEE_DONATION_AMOUNT] = $donation->amount->formatToDecimal();
+            $meta[DonationMetaKeys::AMOUNT] = $donation->amount->add($donation->feeAmountRecovered)->formatToDecimal();
         }
 
         if ($donation->billingAddress !== null) {
