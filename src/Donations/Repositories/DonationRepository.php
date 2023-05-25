@@ -316,6 +316,7 @@ class DonationRepository
     }
 
     /**
+     * @unreleased update _give_fee_donation_amount meta with donation amount and add the recovered fee to donation total
      * @since 2.20.0 update amount to use new type, and add currency and exchange rate
      * @since 2.19.6
      */
@@ -349,9 +350,15 @@ class DonationRepository
         ];
 
         if ($donation->feeAmountRecovered !== null) {
-            $meta[DonationMetaKeys::FEE_AMOUNT_RECOVERED] = $donation->feeAmountRecovered->formatToDecimal();
-            $meta[DonationMetaKeys::FEE_DONATION_AMOUNT] = $donation->amount->formatToDecimal();
-            $meta[DonationMetaKeys::AMOUNT] = $donation->amount->add($donation->feeAmountRecovered)->formatToDecimal();
+            $meta[DonationMetaKeys::FEE_DONATION_AMOUNT] = $meta[DonationMetaKeys::AMOUNT];
+            $meta[DonationMetaKeys::FEE_AMOUNT_RECOVERED] = give_sanitize_amount_for_db(
+                $donation->feeAmountRecovered->formatToDecimal(),
+                ['currency' => $donation->amount->getCurrency()]
+            );
+            $meta[DonationMetaKeys::AMOUNT] = give_sanitize_amount_for_db(
+                $donation->amount->add($donation->feeAmountRecovered)->formatToDecimal(),
+                ['currency' => $donation->amount->getCurrency()]
+            );
         }
 
         if ($donation->billingAddress !== null) {
