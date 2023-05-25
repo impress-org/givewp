@@ -544,5 +544,6 @@ function give($abstract = null)
 
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/vendor/vendor-prefixed/autoload.php';
+require_once trailingslashit(GIVE_PDF_PLUGIN_DIR) . 'vendor/woocommerce/action-scheduler/action-scheduler.php';
 
 give()->boot();
