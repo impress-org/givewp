@@ -5,6 +5,7 @@ namespace Give\Framework\PaymentGateways;
 use Give\Container\Container;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewaysIterator;
 use Give\Framework\PaymentGateways\Exceptions\OverflowException;
 
@@ -23,6 +24,21 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
     public function getPaymentGateways(): array
     {
         return $this->gateways;
+    }
+
+    /**
+     * Get NextGen Gateways
+     *
+     * @unreleased
+     */
+    public function getNextGenPaymentGateways(): array
+    {
+        return array_filter(
+            $this->gateways,
+            static function ($gateway) {
+                return is_a($gateway, NextGenPaymentGatewayInterface::class, true);
+            }
+        );
     }
 
     /**
