@@ -4,8 +4,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	const donationStatus = document.getElementById( 'give-payment-status' ),
 		  onBoardingButtons = document.querySelectorAll( 'button.js-give-paypal-on-boarding-handler' ),
 		  disconnectPayPalAccountButton = document.getElementById( 'js-give-paypal-disconnect-paypal-account' ),
-		  connectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .connection-setting' ),
-		  disConnectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .disconnection-setting' ),
 		  countryField = document.getElementById( 'paypal_commerce_account_country' ),
 		  paypalModalObserver = new MutationObserver( function( mutationsRecord ) {
 			  mutationsRecord.forEach( function( record ) {
@@ -157,6 +155,9 @@ window.addEventListener( 'DOMContentLoaded', function() {
 	if ( disconnectPayPalAccountButton ) {
 		disconnectPayPalAccountButton.addEventListener( 'click', function( evt ) {
 			evt.preventDefault();
+            const $connectionSetting = evt.target.closest( 'div..connection-setting' );
+            const $disConnectionSetting = evt.target.closest( 'div.disconnection-setting' );
+
 			removeErrors();
 
 			new GiveConfirmModal( {
@@ -165,8 +166,8 @@ window.addEventListener( 'DOMContentLoaded', function() {
 					desc: givePayPalCommerce.translations.disconnectPayPalAccount,
 				},
 				successConfirm: () => {
-					connectionSettingContainer.classList.remove( 'give-hidden' );
-					disConnectionSettingContainer.classList.add( 'give-hidden' );
+                    $connectionSetting.classList.remove( 'give-hidden' );
+                    $disConnectionSetting.classList.add( 'give-hidden' );
 					countryField.parentElement.parentElement.classList.remove( 'hide-with-position' );
 
 					let billingSettingContainer = document.querySelector('label[for=\'paypal_commerce_collect_billing_details\']');

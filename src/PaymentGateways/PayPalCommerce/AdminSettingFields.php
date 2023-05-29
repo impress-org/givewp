@@ -404,7 +404,7 @@ class AdminSettingFields
                 </label>
             </th>
             <td class="give-forminp">
-                <div id="give-paypal-commerce-account-manager-field-wrap">
+                <div class="give-paypal-commerce-account-manager-field-wrap">
                     <div class="connect-button-wrap">
                         <div
                             class="button-wrap connection-setting<?php echo $canShowAccountInformation ? ' give-hidden' : ''; ?>">
