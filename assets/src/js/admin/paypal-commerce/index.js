@@ -3,7 +3,7 @@ import { GiveConfirmModal } from '../../plugins/modal';
 window.addEventListener( 'DOMContentLoaded', function() {
 	const donationStatus = document.getElementById( 'give-payment-status' ),
 		  onBoardingButtons = document.querySelectorAll( 'button.js-give-paypal-on-boarding-handler' ),
-		  disconnectPayPalAccountButton = document.getElementById( 'js-give-paypal-disconnect-paypal-account' ),
+		  disconnectPayPalAccountButtons = document.getElementsByClassName( 'js-give-paypal-disconnect-paypal-account' ),
 		  countryField = document.getElementById( 'paypal_commerce_account_country' ),
 		  paypalModalObserver = new MutationObserver( function( mutationsRecord ) {
 			  mutationsRecord.forEach( function( record ) {
@@ -152,32 +152,37 @@ window.addEventListener( 'DOMContentLoaded', function() {
         })
     }
 
-	if ( disconnectPayPalAccountButton ) {
-		disconnectPayPalAccountButton.addEventListener( 'click', function( evt ) {
-			evt.preventDefault();
-            const $connectionSetting = evt.target.closest( 'div..connection-setting' );
-            const $disConnectionSetting = evt.target.closest( 'div.disconnection-setting' );
+    if ( disconnectPayPalAccountButtons.length ) {
+        disconnectPayPalAccountButtons.forEach( function( disconnectPayPalAccountButton ) {
+            disconnectPayPalAccountButton.addEventListener( 'click', function( evt ) {
+                evt.preventDefault();
 
-			removeErrors();
+                const $connectionSetting = evt.target.closest( 'div.connection-setting' );
+                const $disConnectionSetting = evt.target.closest( 'div.disconnection-setting' );
 
-			new GiveConfirmModal( {
-				modalContent: {
-					title: givePayPalCommerce.translations.confirmPaypalAccountDisconnection,
-					desc: givePayPalCommerce.translations.disconnectPayPalAccount,
-				},
-				successConfirm: () => {
-                    $connectionSetting.classList.remove( 'give-hidden' );
-                    $disConnectionSetting.classList.add( 'give-hidden' );
-					countryField.parentElement.parentElement.classList.remove( 'hide-with-position' );
+                removeErrors();
 
-					let billingSettingContainer = document.querySelector('label[for=\'paypal_commerce_collect_billing_details\']');
-					billingSettingContainer.parentElement.parentElement.classList.add('give-hidden');
+                new GiveConfirmModal( {
+                    modalContent: {
+                        title: givePayPalCommerce.translations.confirmPaypalAccountDisconnection,
+                        desc: givePayPalCommerce.translations.disconnectPayPalAccount,
+                    },
+                    successConfirm: () => {
+                        $connectionSetting.classList.remove( 'give-hidden' );
+                        $disConnectionSetting.classList.add( 'give-hidden' );
+                        countryField.parentElement.parentElement.classList.remove( 'hide-with-position' );
 
-					fetch( ajaxurl + '?action=give_paypal_commerce_disconnect_account' );
-				},
-			} ).render();
+                        let billingSettingContainer = document.querySelector('label[for=\'paypal_commerce_collect_billing_details\']');
+                        billingSettingContainer.parentElement.parentElement.classList.add('give-hidden');
 
-			return false;
-		} );
+                        fetch( ajaxurl + '?action=give_paypal_commerce_disconnect_account' );
+                    },
+                } ).render();
+
+                return false;
+            } );
+        });
 	}
 } );
+
+// @TODO: use  WordPress JS translation function.
