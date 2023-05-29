@@ -170,7 +170,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
                     successConfirm: () => {
                         $connectionSetting.classList.remove( 'give-hidden' );
                         $disConnectionSetting.classList.add( 'give-hidden' );
-                        countryField.parentElement.parentElement.classList.remove( 'hide-with-position' );
 
                         let billingSettingContainer = document.querySelector('label[for=\'paypal_commerce_collect_billing_details\']');
                         billingSettingContainer.parentElement.parentElement.classList.add('give-hidden');

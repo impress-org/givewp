@@ -84,13 +84,8 @@ class AdminSettingFields
                 'selected' => $this->merchantModel->accountCountry ?: $this->settingRepository->getAccountCountry(),
             ]
         );
-
-        $trClass = $this->merchantRepository->accountIsConnected() ?
-            'js-fields-has-custom-saving-logic hide-with-position' :
-            'js-fields-has-custom-saving-logic';
         ?>
-        <tr valign="top" class="<?php
-        echo $trClass; ?>">
+        <tr valign="top" class="js-fields-has-custom-saving-logic">
             <th scope="row" class="titledesc">
                 <label for="give_paypal_commerce_country"><?php
                     esc_html_e('Account Country', 'give'); ?></label>
