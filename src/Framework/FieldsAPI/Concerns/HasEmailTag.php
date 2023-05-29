@@ -9,11 +9,9 @@ trait HasEmailTag
     protected $emailTag;
 
     /**
-     * @param string $emailTag
-     *
-     * @return $this
+     * @unreleased add types
      */
-    public function emailTag($emailTag)
+    public function emailTag(string $emailTag): self
     {
         $this->emailTag = $emailTag;
 
@@ -21,9 +19,9 @@ trait HasEmailTag
     }
 
     /**
-     * @return string
+     * @unreleased add types
      */
-    public function getEmailTag()
+    public function getEmailTag(): string
     {
         return $this->emailTag;
     }

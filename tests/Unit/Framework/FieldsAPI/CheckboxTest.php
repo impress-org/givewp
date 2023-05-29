@@ -1,39 +1,44 @@
 <?php
 
-namespace Give\Tests\Unit\Framework\FieldsAPI;
+namespace Unit\Framework\FieldsAPI;
 
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\FieldsAPI\Checkbox;
 use Give\Tests\TestCase;
 
 class CheckboxTest extends TestCase
 {
     /**
-     * @since 2.19.0
+     * @unreleased
      */
-    public function testChecked()
+    public function testIndeterminateSupport()
     {
-        // Default is true
-        $checkbox = Checkbox::make('test')->checked();
-        self::assertTrue($checkbox->isChecked());
+        $checkbox = new Checkbox('test');
 
-        // Can pass a truthy value
-        $checkbox = Checkbox::make('test')->checked(true);
-        self::assertTrue($checkbox->isChecked());
+        // should not support indeterminate value by default
+        self::assertFalse($checkbox->supportsIndeterminateValue());
 
-        $checkbox = Checkbox::make('test')->checked(1);
-        self::assertTrue($checkbox->isChecked());
+        // should support indeterminate value if set to support
+        $checkbox->supportIndeterminateValue();
+        self::assertTrue($checkbox->supportsIndeterminateValue());
 
-        // Can pass a falsey value
-        $checkbox = Checkbox::make('test')->checked(false);
-        self::assertFalse($checkbox->isChecked());
+        // should now allow an indeterminate value
+        $checkbox->indeterminate();
+        self::assertTrue($checkbox->isIndeterminate());
 
-        $checkbox = Checkbox::make('test')->checked(0);
-        self::assertFalse($checkbox->isChecked());
+        // support can be explicitly set to false
+        $checkbox->supportIndeterminateValue(false);
+        self::assertFalse($checkbox->supportsIndeterminateValue());
+    }
 
-        // Can pass a callable
-        $checkbox = Checkbox::make('test')->checked(function () {
-            return true;
-        });
-        self::assertTrue($checkbox->isChecked());
+    /**
+     * @unreleased
+     */
+    public function testShouldThrowExceptionIfSetToIndeterminateWithSupportDisabled()
+    {
+        $checkbox = new Checkbox('test');
+
+        $this->expectException(InvalidArgumentException::class);
+        $checkbox->indeterminate();
     }
 }

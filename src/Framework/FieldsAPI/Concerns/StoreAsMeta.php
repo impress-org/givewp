@@ -18,9 +18,9 @@ trait StoreAsMeta
      * @since 2.10.2
      * @return $this
      */
-    public function storeAsDonorMeta($storeAsDonorMeta = true)
+    public function storeAsDonorMeta(bool $storeAsDonorMeta = true): self
     {
-        $this->storeAsDonorMeta = (bool)$storeAsDonorMeta;
+        $this->storeAsDonorMeta = $storeAsDonorMeta;
 
         return $this;
     }
@@ -29,7 +29,7 @@ trait StoreAsMeta
      * @since 2.10.2
      * @return bool
      */
-    public function shouldStoreAsDonorMeta()
+    public function shouldStoreAsDonorMeta(): bool
     {
         return $this->storeAsDonorMeta;
     }

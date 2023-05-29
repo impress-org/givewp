@@ -3,6 +3,7 @@
 namespace Give\Form\LegacyConsumer;
 
 use Give\Framework\FieldsAPI\Contracts\Node;
+use Give\Framework\FieldsAPI\LegacyNodes\CheckboxGroup;
 use Give\Framework\FieldsAPI\Types;
 
 /**
@@ -57,6 +58,7 @@ class FieldView
         switch ($type) {
             case Types::HTML:
             case Types::CHECKBOX:
+            case CheckboxGroup::TYPE:
             case Types::RADIO: // Radio provides its own label
                 include static::getTemplatePath($type);
                 break;
