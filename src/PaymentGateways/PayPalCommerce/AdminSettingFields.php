@@ -265,7 +265,6 @@ class AdminSettingFields
     private function printErrors()
     {
         $accountErrors = give(MerchantDetails::class)->getAccountErrors();
-        $hasUnknownPayPalError = isset($_GET['paypal-error']);
 
         if (! empty($accountErrors)) :
             ?>
