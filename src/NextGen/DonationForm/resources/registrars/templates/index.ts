@@ -2,6 +2,7 @@ import TextField from './fields/Text';
 import TextAreaField from './fields/TextArea';
 import EmailField from './fields/Email';
 import HiddenField from './fields/Hidden';
+import CheckboxField from './fields/Checkbox';
 import RadioField from './fields/Radio';
 import HtmlElement from './elements/Html';
 import DonationSummaryElement from './elements/DonationSummary';
@@ -33,6 +34,7 @@ const defaultFormTemplates = {
         hidden: HiddenField,
         gateways: Gateways,
         select: SelectField,
+        checkbox: CheckboxField,
         radio: RadioField,
     },
     elements: {

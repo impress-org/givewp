@@ -45,10 +45,15 @@ function getJoiRulesForField(field: Field): AnySchema {
 }
 
 /**
+ * @unreelased do not validate fields with no rules
  * @since 0.1.0
  */
 function convertFieldAPIRulesToJoi(rules): AnySchema {
     let joiRules;
+
+    if (Object.keys(rules).length === 0) {
+        return Joi.any();
+    }
 
     if (rules.hasOwnProperty('numeric') || rules.hasOwnProperty('integer')) {
         joiRules = Joi.number();
@@ -95,7 +100,6 @@ function convertFieldAPIRulesToJoi(rules): AnySchema {
     return joiRules;
 }
 
-
 /**
  * @since 0.2.0
  */
@@ -116,16 +120,16 @@ function getJoiRulesForAmountField(rules, joiRules): AnySchema {
         joiRules = Joi.when('donationType', {
             is: 'subscription',
             then: Joi.number().integer().required(),
-            otherwise: Joi.optional()
-        })
+            otherwise: Joi.optional(),
+        });
     }
 
     if (rules.hasOwnProperty('subscriptionInstallments')) {
         joiRules = Joi.when('donationType', {
             is: 'subscription',
             then: Joi.number().integer().required(),
-            otherwise: Joi.optional()
-        })
+            otherwise: Joi.optional(),
+        });
     }
 
     return joiRules;
