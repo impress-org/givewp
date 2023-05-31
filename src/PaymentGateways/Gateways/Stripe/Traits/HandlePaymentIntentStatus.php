@@ -13,6 +13,7 @@ use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentIntent;
 trait HandlePaymentIntentStatus
 {
     /**
+     * @since 2.27.1 Update PaymentIntentException message.
      * @since 2.21.0 Update second argument type to Donation model
      * @since 2.19.7 fix param order and only pass donationId
      *
@@ -32,8 +33,7 @@ trait HandlePaymentIntentStatus
                 return new PaymentProcessing($paymentIntent->id());
             default:
                 throw new PaymentIntentException(
-                    sprintf(__('Unhandled payment intent status: %s', 'give'), $paymentIntent->status())
-                );
+                    sprintf(__('Unhandled payment intent status: %s', 'give'), $paymentIntent->status()));
         }
     }
 }

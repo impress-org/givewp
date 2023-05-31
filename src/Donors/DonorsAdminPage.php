@@ -5,6 +5,7 @@ namespace Give\Donors;
 use Give\Donors\ListTable\DonorsListTable;
 use Give\Framework\Database\DB;
 use Give\Helpers\EnqueueScript;
+use Give\Helpers\Utils;
 
 class DonorsAdminPage
 {
@@ -56,7 +57,9 @@ class DonorsAdminPage
     }
 
     /**
-     * @since 2.20.0
+     * @since 2.27.1 Pass dissmissedRecommendations
+     *
+     * @since      2.20.0
      */
     public function loadScripts()
     {
@@ -66,7 +69,8 @@ class DonorsAdminPage
             'forms' => $this->getForms(),
             'table' => give(DonorsListTable::class)->toArray(),
             'adminUrl' => $this->adminUrl,
-            'pluginUrl' => GIVE_PLUGIN_URL
+            'pluginUrl' => GIVE_PLUGIN_URL,
+            'dismissedRecommendations' => $this->getDismissedRecommendations(),
         ];
 
         EnqueueScript::make('give-admin-donors', 'assets/dist/js/give-admin-donors.js')
@@ -86,7 +90,8 @@ class DonorsAdminPage
      * Preload initial table data
      * @since 2.20.0
      */
-    public function getForms(){
+    public function getForms()
+    {
         $options = DB::table('posts')
             ->select(
                 ['ID', 'value'],
@@ -100,7 +105,7 @@ class DonorsAdminPage
             [
                 'value' => '0',
                 'text' => 'Any',
-            ]
+            ],
         ], $options);
     }
 
@@ -122,20 +127,21 @@ class DonorsAdminPage
     {
         ?>
         <script type="text/javascript">
-            function showReactTable () {
-                fetch( '<?php echo esc_url_raw(rest_url('give-api/v2/admin/donors/view?isLegacy=0')) ?>', {
+            function showReactTable() {
+                fetch('<?php echo esc_url_raw(rest_url('give-api/v2/admin/donors/view?isLegacy=0')) ?>', {
                     method: 'GET',
                     headers: {
-                        ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>'
-                    }
+                        ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>',
+                    },
                 })
                     .then((res) => {
                         window.location.reload();
                     });
             }
-            jQuery( function() {
+
+            jQuery(function () {
                 jQuery(jQuery(".wrap .wp-header-end")).before(
-                    '<button class="page-title-action" onclick="showReactTable()">Switch to New View</button>'
+                    '<button class="page-title-action" onclick="showReactTable()">Switch to New View</button>',
                 );
             });
         </script>
@@ -150,6 +156,31 @@ class DonorsAdminPage
      */
     public static function isShowing()
     {
-        return isset($_GET['page']) && $_GET['page'] === 'give-donors' && !isset($_GET['id']);
+        return isset($_GET['page']) && $_GET['page'] === 'give-donors' && ! isset($_GET['id']);
     }
+
+    /**
+     * Retrieve a list of dismissed recommendations.
+     *
+     * @since 2.27.1
+     *
+     * @return array
+     */
+    private function getDismissedRecommendations(): array
+    {
+        $dismissedRecommendations = [];
+
+        $feeRecoveryAddonIsActive = Utils::isPluginActive('give-fee-recovery/give-fee-recovery.php');
+
+        $optionName = 'givewp_donors_fee_recovery_recommendation_dismissed';
+        
+        $dismissed = get_option($optionName, false);
+
+        if ($dismissed || $feeRecoveryAddonIsActive) {
+            $dismissedRecommendations[] = $optionName;
+        }
+
+        return $dismissedRecommendations;
+    }
+
 }
