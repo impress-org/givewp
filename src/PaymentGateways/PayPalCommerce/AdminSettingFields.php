@@ -95,7 +95,7 @@ class AdminSettingFields
                 printf(
                     '%1$s<div class="give-field-description">%2$s</div>',
                     $settingHtml,
-                    esc_html__('The country your site operates from.', 'give')
+                    esc_html__('The country your site operates from. Admin should check if the country selected is the right before proceeding to connect', 'give')
                 )
                 ?>
             </td>
