@@ -16,6 +16,11 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			  } );
 		  } );
 
+    // This object will check if a class added to body or not.
+    // If class added that means modal opened.
+    // If class removed that means modal closed.
+    paypalModalObserver.observe( document.querySelector( 'body' ), { attributes: true, childList: true } );
+
 	if ( donationStatus ) {
 		donationStatus.addEventListener( 'change', ( event ) => {
 			const paypalDonationsCheckbox = document.getElementById( 'give-paypal-commerce-opt-refund' );
@@ -118,13 +123,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 
                             payPalLink.href = `${ res.data.partnerLink }&displayMode=minibrowser`;
                             payPalLink.click();
-
-                            //PAYPAL.apps.Signup.MiniBrowser.init();
-
-                            // This object will check if a class added to body or not.
-                            // If class added that means modal opened.
-                            // If class removed that means modal closed.
-                            paypalModalObserver.observe( document.querySelector( 'body' ), { attributes: true, childList: true } );
                         }
 
                         buttonState.enable();
