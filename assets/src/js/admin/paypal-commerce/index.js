@@ -194,9 +194,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 
                             connectionSettingEl.classList.remove('give-hidden');
                             disConnectionSettingEl.classList.add('give-hidden');
-
-                            let billingSettingContainer = document.querySelector('label[for=\'paypal_commerce_collect_billing_details\']');
-                            billingSettingContainer.parentElement.parentElement.classList.add('give-hidden');
                         });
 
                 };
