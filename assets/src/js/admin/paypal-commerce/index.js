@@ -102,13 +102,13 @@ window.addEventListener( 'DOMContentLoaded', function() {
                         evt.target.innerText = Give.fn.getGlobalVar( 'loader_translation' ).processing;
                     },
                 };
-                const paypalErrorQuickHelp = container.$el_container.querySelector( '.give-paypal-onboarding-trouble-notice' );
+                const paypalErrorQuickHelp = document.getElementById( 'give-paypal-onboarding-trouble-notice' );
 
                 container.removeErrors();
                 buttonState.disable();
 
                 // Hide PayPal quick help message.
-                paypalErrorQuickHelp && paypalErrorQuickHelp.classList.add( 'give-hidden' );
+                paypalErrorQuickHelp && paypalErrorQuickHelp.remove();
 
                 fetch( ajaxurl + `?action=give_paypal_commerce_get_partner_url&countryCode=${ countryCode }&mode=${ mode }` )
                     .then( response => response.json() )
@@ -141,7 +141,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
                                     }
 
                                     const buttonContainer = container.$el_container.querySelector( '.connect-button-wrap' );
-                                    paypalErrorQuickHelp && paypalErrorQuickHelp.remove();
                                     buttonContainer.append( createElementFromHTML( res.data ) );
                                 }
                             } );
