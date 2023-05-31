@@ -5,10 +5,9 @@ import {__} from '@wordpress/i18n';
 import {SearchControl} from '@wordpress/components';
 import {Fragment, useState} from 'react';
 import {BlockInstance} from '@wordpress/blocks';
-import fieldBlocks from '@givewp/form-builder/blocks/fields';
-import elementBlocks from '@givewp/form-builder/blocks/elements';
 import {FieldBlock} from '@givewp/form-builder/types';
 import BlockTypesList from '@givewp/form-builder/components/forks/BlockTypesList';
+import blockRegistrar from '@givewp/form-builder/common/registrars/blocks';
 
 type SearchBlock = {
     id: string;
@@ -35,7 +34,7 @@ const FieldTypesList = () => {
         })
         .flat();
 
-    const blocks = [...fieldBlocks, ...elementBlocks].map((blockData: FieldBlock) => {
+    const blocks = blockRegistrar.getAll().map((blockData: FieldBlock) => {
         return {
             id: blockData.name,
             name: blockData.name,

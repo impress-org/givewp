@@ -1,22 +1,37 @@
+import {useMemo} from 'react';
 import {__} from '@wordpress/i18n';
-import useCurrencyFormatter from '@givewp/forms/app/hooks/useCurrencyFormatter';
 import {isSubscriptionPeriod, SubscriptionPeriod} from '../groups/DonationAmount/subscriptionPeriod';
-import {ReactElement, useCallback} from 'react';
 import {createInterpolateElement} from '@wordpress/element';
+
+/**
+ * @unreleased
+ */
+const getDonationTotal = (totals: any, amount: any) =>
+    Number(
+        Object.values({
+            ...totals,
+            amount: Number(amount),
+        }).reduce((total: number, amount: number) => {
+            return total + amount;
+        }, 0)
+    );
 
 /**
  * @since 0.3.3 update subscription frequency label
  * @since 0.1.0
  */
 export default function DonationSummary() {
-    const {useWatch} = window.givewp.form.hooks;
+    const DonationSummaryItemsTemplate = window.givewp.form.templates.layouts.donationSummaryItems;
+    const {useWatch, useCurrencyFormatter, useDonationSummary} = window.givewp.form.hooks;
+    const {items, totals} = useDonationSummary();
     const currency = useWatch({name: 'currency'});
+    const formatter = useCurrencyFormatter(currency);
+
     const amount = useWatch({name: 'amount'});
     const period = useWatch({name: 'subscriptionPeriod'});
     const frequency = useWatch({name: 'subscriptionFrequency'});
-    const formatter = useCurrencyFormatter(currency, {});
 
-    const givingFrequency = useCallback(() => {
+    const givingFrequency = useMemo(() => {
         if (isSubscriptionPeriod(period)) {
             const subscriptionPeriod = new SubscriptionPeriod(period);
 
@@ -30,25 +45,23 @@ export default function DonationSummary() {
         }
 
         return __('One time', 'give');
-    }, [period]);
+    }, [period, frequency]);
 
-    return (
-        <ul className="givewp-elements-donationSummary__list">
-            <LineItem label={__('Payment Amount', 'give')} value={formatter.format(Number(amount))} />
-            <LineItem label={__('Giving Frequency', 'give')} value={givingFrequency()} />
-            <LineItem label={__('Donation Total', 'give')} value={formatter.format(Number(amount))} />
-        </ul>
-    );
+    const amountItem = {
+        id: 'amount',
+        label: __('Payment Amount', 'give'),
+        value: formatter.format(Number(amount)),
+    };
+
+    const frequencyItem = {
+        id: 'frequency',
+        label: __('Giving Frequency', 'give'),
+        value: givingFrequency,
+    };
+
+    const donationSummaryItems = [amountItem, frequencyItem, ...Object.values(items)];
+    
+    const donationTotal = formatter.format(getDonationTotal(totals, amount));
+
+    return <DonationSummaryItemsTemplate items={donationSummaryItems} total={donationTotal} />;
 }
-
-/**
- * @since 0.1.0
- */
-const LineItem = ({label, value}: { label: string; value: string | ReactElement }) => {
-    return (
-        <li className="givewp-elements-donationSummary__list-item">
-            <div>{label}</div>
-            <div>{value}</div>
-        </li>
-    );
-};

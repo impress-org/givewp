@@ -2,7 +2,9 @@
 
 namespace Give\NextGen\DonationForm\ViewModels;
 
+use Give\Framework\DesignSystem\Actions\RegisterDesignSystemStyles;
 use Give\Framework\EnqueueScript;
+use Give\Helpers\Hooks;
 use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
 use Give\NextGen\DonationForm\Actions\GenerateDonationFormValidationRouteUrl;
 use Give\NextGen\DonationForm\DataTransferObjects\DonationFormGoalData;
@@ -12,7 +14,6 @@ use Give\NextGen\DonationForm\ValueObjects\GoalType;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\FormDesigns\FormDesign;
 use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
-
 use function implode;
 use function wp_enqueue_style;
 use function wp_print_styles;
@@ -83,6 +84,9 @@ class DonationFormViewModel
      */
     public function enqueueGlobalStyles()
     {
+        (new RegisterDesignSystemStyles())();
+        wp_enqueue_style('givewp-design-system-foundation');
+
         wp_register_style(
             'givewp-global-form-styles',
             GIVE_NEXT_GEN_URL . 'src/NextGen/DonationForm/resources/styles/global.css'
@@ -232,6 +236,7 @@ class DonationFormViewModel
     /**
      * Loads scripts in order: [Registrars, Designs, Gateways, Block]
      *
+     * @unreleased Add support for custom form extensions
      * @since 0.1.0
      *
      * @return void
@@ -249,6 +254,8 @@ class DonationFormViewModel
             GIVE_NEXT_GEN_URL,
             'give'
         ))->loadInFooter()->enqueue();
+
+        Hooks::doAction('givewp_donation_form_enqueue_scripts');
 
         $design = $this->getFormDesign($formDesignId);
 

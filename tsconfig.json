@@ -27,6 +27,9 @@
             ],
             "@givewp/forms/app/*": [
                 "./src/NextGen/DonationForm/resources/app/*"
+            ],
+            "@givewp/form-builder/*": [
+                "./packages/form-builder/src/*"
             ]
         }
     },

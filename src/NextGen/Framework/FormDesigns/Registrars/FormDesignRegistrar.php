@@ -71,7 +71,7 @@ class FormDesignRegistrar
      */
     public function unregisterDesign(string $designId)
     {
-        if (isset($this->designs[$designId])) {
+        if ($this->hasDesign($designId)) {
             unset($this->designs[$designId]);
         }
     }

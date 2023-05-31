@@ -10,6 +10,7 @@ import SectionNode from '../fields/SectionNode';
 import {ObjectSchema} from 'joi';
 import DonationFormErrorBoundary from '@givewp/forms/app/errors/boundaries/DonationFormErrorBoundary';
 import handleSubmitRequest from '@givewp/forms/app/utilities/handleFormSubmitRequest';
+import {DonationSummaryProvider} from '@givewp/forms/app/store/donation-summary';
 
 const {donateUrl, inlineRedirectRoutes} = getWindowData();
 const formTemplates = window.givewp.form.templates;
@@ -37,38 +38,40 @@ export default function Form({defaultValues, sections, validationSchema}: PropTy
     return (
         <FormProvider {...methods}>
             <DonationFormErrorBoundary>
-                <FormTemplate
-                    formProps={{
-                        id: 'give-next-gen',
-                        onSubmit: handleSubmit((values) =>
-                            handleSubmitRequest(
-                                values,
-                                setError,
-                                getGateway(values.gatewayId),
-                                donateUrl,
-                                inlineRedirectRoutes
-                            )
-                        ),
-                    }}
-                    isSubmitting={isSubmitting || isSubmitSuccessful}
-                    formError={formError}
-                >
-                    <>
-                        {sections.map((section) => {
-                            return (
-                                <DonationFormErrorBoundary key={section.name}>
-                                    <FormSectionTemplate key={section.name} section={section}>
-                                        {section.nodes.map((node) => (
-                                            <DonationFormErrorBoundary key={node.name}>
-                                                <SectionNode key={node.name} node={node} />
-                                            </DonationFormErrorBoundary>
-                                        ))}
-                                    </FormSectionTemplate>
-                                </DonationFormErrorBoundary>
-                            );
-                        })}
-                    </>
-                </FormTemplate>
+                <DonationSummaryProvider>
+                    <FormTemplate
+                        formProps={{
+                            id: 'give-next-gen',
+                            onSubmit: handleSubmit((values) =>
+                                handleSubmitRequest(
+                                    values,
+                                    setError,
+                                    getGateway(values.gatewayId),
+                                    donateUrl,
+                                    inlineRedirectRoutes
+                                )
+                            ),
+                        }}
+                        isSubmitting={isSubmitting || isSubmitSuccessful}
+                        formError={formError}
+                    >
+                        <>
+                            {sections.map((section) => {
+                                return (
+                                    <DonationFormErrorBoundary key={section.name}>
+                                        <FormSectionTemplate key={section.name} section={section}>
+                                            {section.nodes.map((node) => (
+                                                <DonationFormErrorBoundary key={node.name}>
+                                                    <SectionNode key={node.name} node={node} />
+                                                </DonationFormErrorBoundary>
+                                            ))}
+                                        </FormSectionTemplate>
+                                    </DonationFormErrorBoundary>
+                                );
+                            })}
+                        </>
+                    </FormTemplate>
+                </DonationSummaryProvider>
             </DonationFormErrorBoundary>
         </FormProvider>
     );

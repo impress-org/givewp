@@ -14,6 +14,7 @@ use Give\Framework\FieldsAPI\Paragraph;
 use Give\Framework\FieldsAPI\PaymentGateways;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
+use Give\NextGen\DonationForm\Repositories\DonationFormRepository;
 use Give\NextGen\DonationForm\Rules\GatewayRule;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
@@ -129,9 +130,12 @@ class ConvertDonationFormBlocksToFieldsApi
                     ->rules('required', 'email');
 
             case "givewp/payment-gateways":
+                $defaultGatewayId = give(DonationFormRepository::class)->getDefaultEnabledGatewayId($this->formId);
+
                 return PaymentGateways::make('gatewayId')
                     ->rules(new GatewayRule())
-                    ->required();
+                    ->required()
+                    ->defaultValue($defaultGatewayId);
 
             case "givewp/donation-summary":
                 return DonationSummary::make('donation-summary');
@@ -152,7 +156,8 @@ class ConvertDonationFormBlocksToFieldsApi
                 $customField = apply_filters(
                     "givewp_donation_form_block_render_{$blockName}",
                     $block,
-                    $blockIndex
+                    $blockIndex,
+                    $this->formId
                 );
 
                 if ($customField instanceof Node) {

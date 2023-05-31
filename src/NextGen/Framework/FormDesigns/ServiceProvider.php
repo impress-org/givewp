@@ -18,12 +18,7 @@ class ServiceProvider implements ServiceProviderInterface
     public function register()
     {
         give()->singleton(FormDesignRegistrar::class, function () {
-            $registrar = new FormDesignRegistrar();
-
-            Hooks::doAction('givewp_register_form_design', $registrar);
-            Hooks::doAction('givewp_unregister_form_design', $registrar);
-
-            return $registrar;
+            return new FormDesignRegistrar();
         });
     }
 
@@ -32,6 +27,9 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot()
     {
-        //
+        $registrar = give()->make(FormDesignRegistrar::class);
+
+        Hooks::doAction('givewp_register_form_design', $registrar);
+        Hooks::doAction('givewp_unregister_form_design', $registrar);
     }
 }

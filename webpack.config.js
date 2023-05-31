@@ -45,6 +45,7 @@ module.exports = {
         ),
         baseFormDesignCss: srcPath('NextGen/DonationForm/resources/styles/base.scss'),
         formBuilderApp: path.resolve(process.cwd(), 'packages/form-builder/src/index.tsx'),
+        formBuilderRegistrars: srcPath('FormBuilder/resources/js/registrars/index.ts'),
     },
 };
 

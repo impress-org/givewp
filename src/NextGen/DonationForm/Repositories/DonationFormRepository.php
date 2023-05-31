@@ -11,6 +11,7 @@ use Give\Framework\FieldsAPI\Form;
 use Give\Framework\FieldsAPI\Hidden;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\Models\ModelQueryBuilder;
+use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Support\Facades\DateTime\Temporal;
@@ -296,8 +297,13 @@ class DonationFormRepository
         $defaultGateway = give_get_default_gateway($formId);
 
         foreach ($enabledGateways as $gatewayId => $enabled) {
-            if ($enabled && $this->paymentGatewayRegister->hasPaymentGateway($gatewayId)) {
-                $gateways[$gatewayId] = $this->paymentGatewayRegister->getPaymentGateway($gatewayId);
+            if (!$enabled || !$this->paymentGatewayRegister->hasPaymentGateway($gatewayId)) {
+                continue;
+            }
+
+            $gateway = $this->paymentGatewayRegister->getPaymentGateway($gatewayId);
+            if (is_a($gateway, NextGenPaymentGatewayInterface::class, true)) {
+                $gateways[$gatewayId] = $gateway;
             }
         }
 
@@ -306,6 +312,16 @@ class DonationFormRepository
         }
 
         return $gateways;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getDefaultEnabledGatewayId(int $formId): string
+    {
+        $gateways = $this->getEnabledPaymentGateways($formId);
+
+        return !empty($gateways) ? current($gateways)::id() : '';
     }
 
     /**

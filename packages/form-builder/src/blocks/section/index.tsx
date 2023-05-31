@@ -1,4 +1,5 @@
 import {SectionBlock} from '@givewp/form-builder/types/block';
+
 import settings from './settings';
 
 const section: SectionBlock = {
@@ -8,7 +9,7 @@ const section: SectionBlock = {
 
 const sectionBlocks: SectionBlock[] = [section];
 
-const sectionBlockNames = sectionBlocks.map(({name}) => name);
+const sectionBlockNames: string[] = sectionBlocks.map(({name}) => name);
 
 export default sectionBlocks;
 export {sectionBlockNames};

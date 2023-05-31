@@ -67,12 +67,36 @@ class BlockCollection implements Arrayable
     }
 
     /**
+     * @return BlockModel[]
      * @since 0.1.0
      *
-     * @return BlockModel[]
      */
     public function getBlocks(): array
     {
         return $this->blocks;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param BlockModel[] $blocks
+     * @param string $name
+     * @return BlockModel|null
+     */
+    public function findByName(string $name, array $blocks = null)
+    {
+        if ($blocks === null) {
+            $blocks = $this->blocks;
+        }
+
+        foreach ($blocks as $block) {
+            if ($block->name === $name) {
+                return $block;
+            } else if ($block->innerBlocks) {
+                return $this->findByName($name, $block->innerBlocks->blocks);
+            }
+        }
+
+        return null;
     }
 }

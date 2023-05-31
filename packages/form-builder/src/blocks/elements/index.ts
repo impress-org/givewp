@@ -1,8 +1,10 @@
+import {ElementBlock} from '@givewp/form-builder/types/block';
+
 import paragraph from './paragraph';
 
-const ElementBlocks = [paragraph];
+const ElementBlocks: ElementBlock[] = [paragraph];
 
-const blockNames = ElementBlocks.map((block) => block.name);
+const blockNames: string[] = ElementBlocks.map((block) => block.name);
 
-export default ElementBlocks;
 export {blockNames};
+export default ElementBlocks;

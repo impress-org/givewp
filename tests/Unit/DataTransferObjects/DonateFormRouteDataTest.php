@@ -26,6 +26,14 @@ class DonateFormRouteDataTest extends TestCase
         /** @var DonationForm $form */
         $form = DonationForm::factory()->create();
 
+        add_filter('give_get_option_gateways', static function ($gateways) {
+            return array_merge($gateways, [NextGenTestGateway::id() => true]);
+        });
+
+        add_filter('give_default_gateway', static function () {
+            return NextGenTestGateway::id();
+        });
+
         $customFieldBlockModel = BlockModel::make([
             'name' => 'givewp/section',
             'attributes' => ['title' => '', 'description' => ''],
@@ -84,6 +92,14 @@ class DonateFormRouteDataTest extends TestCase
     {
         /** @var DonationForm $form */
         $form = DonationForm::factory()->create();
+
+        add_filter('give_get_option_gateways', static function ($gateways) {
+            return array_merge($gateways, [NextGenTestGateway::id() => true]);
+        });
+
+        add_filter('give_default_gateway', static function () {
+            return NextGenTestGateway::id();
+        });
 
         $customFieldBlockModel = BlockModel::make([
             'name' => 'givewp/section',

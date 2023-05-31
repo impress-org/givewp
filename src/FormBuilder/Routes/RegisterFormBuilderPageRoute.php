@@ -1,10 +1,12 @@
 <?php
 
 namespace Give\FormBuilder\Routes;
+
 use Give\Addon\View;
 use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
 use Give\Framework\EnqueueScript;
+use Give\Helpers\Hooks;
 use Give\Log\Log;
 
 use function wp_enqueue_style;
@@ -60,7 +62,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Render page with scripts
      *
-     * @unreleased enqueue form builder scripts from plugin root
+     * @unreleased Add support for custom form extensions
      * @since 0.1.0
      *
      * @return void
@@ -76,6 +78,14 @@ class RegisterFormBuilderPageRoute
         if (!get_post($donationFormId)) {
             wp_die(__('Donation form does not exist.'));
         }
+
+        wp_enqueue_script(
+            '@givewp/form-builder/registrars',
+            $formBuilderViewModel->jsPathToRegistrars(),
+            [],
+            GIVE_NEXT_GEN_VERSION,
+            true
+        );
 
         $formBuilderStorage = (new EnqueueScript(
             '@givewp/form-builder/storage',
@@ -93,6 +103,8 @@ class RegisterFormBuilderPageRoute
             )
             ->loadInFooter()
             ->enqueue();
+
+        Hooks::doAction('givewp_form_builder_enqueue_scripts');
 
         wp_enqueue_script(
             '@givewp/form-builder/script',

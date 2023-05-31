@@ -1,18 +1,9 @@
 import {createRoot, render, StrictMode} from '@wordpress/element';
-import {BlockSupports, getCategories, registerBlockType, setCategories} from '@wordpress/blocks';
-
-import App from './App';
-
-import sectionBlocks, {sectionBlockNames} from './blocks/section';
-import fieldBlocks from './blocks/fields';
-import elementBlocks from './blocks/elements';
-import {FieldBlock} from '@givewp/form-builder/types';
+import {getCategories, setCategories} from '@wordpress/blocks';
+import registerBlocks from './common/registerBlocks';
 import {__} from '@wordpress/i18n';
 
-const supportOverrides: BlockSupports = {
-    customClassName: false,
-    html: false,
-};
+import App from './App';
 
 setCategories([
     ...getCategories(),
@@ -33,28 +24,13 @@ setCategories([
         slug: 'custom',
         title: __('Custom Fields', 'give'),
     },
+    {
+        slug: 'addons',
+        title: __('Add-ons', 'give'),
+    },
 ]);
 
-sectionBlocks.map(({name, settings}: FieldBlock) =>
-    registerBlockType(name, {
-        ...settings,
-        supports: {
-            ...settings.supports,
-            ...supportOverrides,
-        },
-    })
-);
-
-[...fieldBlocks, ...elementBlocks].map(({name, settings}: FieldBlock) =>
-    registerBlockType(name, {
-        ...settings,
-        parent: sectionBlockNames,
-        supports: {
-            ...settings.supports,
-            ...supportOverrides,
-        },
-    })
-);
+registerBlocks();
 
 const root = document.getElementById('root');
 

@@ -5,7 +5,9 @@ namespace Give\Tests\Feature\Controllers;
 use Exception;
 use Give\FormBuilder\Controllers\FormBuilderResourceController;
 use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
+use Give\Framework\Database\DB;
 use Give\NextGen\DonationForm\Models\DonationForm;
+use Give\NextGen\DonationForm\ValueObjects\DonationFormMetaKeys;
 use Give\NextGen\DonationForm\ValueObjects\GoalType;
 use Give\NextGen\Framework\Blocks\BlockCollection;
 use Give\NextGen\Framework\Blocks\BlockModel;
@@ -79,7 +81,13 @@ class FormBuilderResourceControllerTest extends TestCase
             'form' => $mockForm->id,
         ]);
 
-        $this->assertSame($updatedSettings->toJson(), get_post_meta($mockForm->id, 'formBuilderSettings', true));
+        $query = DB::table('give_formmeta')
+            ->select('meta_value as formBuilderSettings')
+            ->where('form_id', $mockForm->id)
+            ->where('meta_key', DonationFormMetaKeys::SETTINGS()->getValue())
+            ->get();
+
+        $this->assertSame($updatedSettings->toJson(), $query->formBuilderSettings);
     }
 
     /**
