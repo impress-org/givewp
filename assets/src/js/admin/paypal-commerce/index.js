@@ -45,10 +45,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			.map( instruction => `<li>${ instruction }</li>` )
 			.join( '' );
 
-		const liveWarning = window.givePayPalCommerce.translations.liveWarning ?
-			`<p class="give-modal__description__warning">${ window.givePayPalCommerce.translations.liveWarning }</p>` :
-			'';
-
 		// eslint-disable-next-line no-undef
 		new Give.modal.GiveSuccessAlert( {
 			classes: {
@@ -59,7 +55,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 				title: window.givePayPalCommerce.translations.connectSuccessTitle,
 				body: `
 					<div class="give-modal__description">
-						${ liveWarning }
 						<p>${ window.givePayPalCommerce.translations.pciWarning }</p>
 						<ul>${ pciWarnings }</ul>
 					</div>
