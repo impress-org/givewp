@@ -382,7 +382,7 @@ class onBoardingRedirectHandler
         if (! is_ssl()) {
             $errorMessages[] = esc_html__(
                 'A valid SSL certificate is required to accept donations and set up your PayPal account. Once a
-					certificate is installed and the site is using https, please disconnect and reconnect your account.',
+                certificate is installed and the site is using https, please disconnect and reconnect your account.',
                 'give'
             );
         }
@@ -402,7 +402,7 @@ class onBoardingRedirectHandler
         }
 
         if (! $onBoardedData['primary_email_confirmed']) {
-            $errorMessage[] = esc_html__('Confirm your primary email address', 'give');
+            $errorMessages[] = esc_html__('Confirm your primary email address', 'give');
         }
 
         if (! $usesCustomPayments) {
@@ -412,7 +412,7 @@ class onBoardingRedirectHandler
         if (array_diff(['products', 'capabilities'], array_keys($onBoardedData))) {
             $errorMessages[] = esc_html__(
                 'Your account was expected to be able to accept custom payments, but is not. Please make sure your
-				account country matches the country setting. If the problem persists, please contact PayPal.',
+                account country matches the country setting. If the problem persists, please contact PayPal.',
                 'give'
             );
 
