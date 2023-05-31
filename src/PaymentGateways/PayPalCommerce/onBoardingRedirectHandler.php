@@ -469,8 +469,16 @@ class onBoardingRedirectHandler
     private function redirectWhenOnBoardingFail()
     {
         wp_redirect(
-            admin_url(
-                'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-error=1'
+            add_query_arg(
+                [
+                    'post_type' => 'give_forms',
+                    'page' => 'give-settings',
+                    'tab' => 'gateways',
+                    'section' => 'paypal',
+                    'group' => 'paypal-commerce',
+                    'paypal-error' => '1',
+                ],
+                admin_url('edit.php')
             )
         );
 
