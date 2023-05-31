@@ -310,9 +310,7 @@ class AdminSettingFields
                             'paypalStatusCheck' => '1',
                             'mode' => $merchantDetailsRepository->getMode()
                         ],
-                        admin_url(
-                            'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&paypalStatusCheck'
-                        )
+                        admin_url('edit.php')
                     );
                     ?>
                     <p>
