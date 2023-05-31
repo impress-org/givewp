@@ -173,9 +173,6 @@ class AjaxRequestHandler
     public function removePayPalAccount()
     {
        try{
-
-           wp_send_json_success();
-
            $mode = give_clean($_POST['mode']);
            $this->webhooksRepository->setMode($mode);
 
