@@ -1,9 +1,9 @@
-import { GiveConfirmModal } from '../../plugins/modal';
+import { GiveConfirmModal, GiveErrorAlert } from '../../plugins/modal';
 
 window.addEventListener( 'DOMContentLoaded', function() {
 	const donationStatus = document.getElementById( 'give-payment-status' ),
 		  onBoardingButtons = document.querySelectorAll( 'button.js-give-paypal-on-boarding-handler' ),
-		  disconnectPayPalAccountButtons = document.getElementsByClassName( 'js-give-paypal-disconnect-paypal-account' ),
+		  disconnectPayPalAccountButtons = document.querySelectorAll( '.js-give-paypal-disconnect-paypal-account' ),
 		  countryField = document.getElementById( 'paypal_commerce_account_country' ),
 		  paypalModalObserver = new MutationObserver( function( mutationsRecord ) {
 			  mutationsRecord.forEach( function( record ) {
@@ -152,36 +152,71 @@ window.addEventListener( 'DOMContentLoaded', function() {
         })
     }
 
-    if ( disconnectPayPalAccountButtons.length ) {
-        disconnectPayPalAccountButtons.forEach( function( disconnectPayPalAccountButton ) {
-            disconnectPayPalAccountButton.addEventListener( 'click', function( evt ) {
+    if (disconnectPayPalAccountButtons.length) {
+        disconnectPayPalAccountButtons.forEach(function (disconnectPayPalAccountButton) {
+            disconnectPayPalAccountButton.addEventListener('click', function (evt) {
                 evt.preventDefault();
 
-                const $connectionSetting = evt.target.closest( 'div.connection-setting' );
-                const $disConnectionSetting = evt.target.closest( 'div.disconnection-setting' );
+                const button = evt.target;
+                const ButtonContainerEl = button.closest('div.connect-button-wrap');
+                const connectionSettingEl = ButtonContainerEl.querySelector('div.connection-setting');
+                const disConnectionSettingEl = ButtonContainerEl.querySelector('div.disconnection-setting');
+                let isConfirmed = false;
+                const disconnectPayPalAccountFn = () => {
+                    const formData = new FormData();
+                    const requestData = {};
 
-                removeErrors();
+                    // Do nothing if user cancel the confirmation.
+                    if (!isConfirmed) {
+                        return;
+                    }
 
-                new GiveConfirmModal( {
+                    formData.append('action', 'give_paypal_commerce_disconnect_account');
+                    formData.append('mode', button.getAttribute('data-mode'));
+
+                    requestData.method = 'POST';
+                    requestData.body = formData;
+
+                    // Send request to disconnect PayPal account.
+                    fetch(ajaxurl, requestData)
+                        .then(response => response.json())
+                        .then(function (response) {
+                            if (!response.success) {
+                                // Show error message.
+                                new GiveErrorAlert({
+                                    modalContent: {
+                                        desc: response.data.error,
+                                    }
+                                }).render();
+
+                                return;
+                            }
+
+                            connectionSettingEl.classList.remove('give-hidden');
+                            disConnectionSettingEl.classList.add('give-hidden');
+
+                            let billingSettingContainer = document.querySelector('label[for=\'paypal_commerce_collect_billing_details\']');
+                            billingSettingContainer.parentElement.parentElement.classList.add('give-hidden');
+                        });
+
+                };
+
+                // Show confirmation modal.
+                new GiveConfirmModal({
                     modalContent: {
                         title: givePayPalCommerce.translations.confirmPaypalAccountDisconnection,
                         desc: givePayPalCommerce.translations.disconnectPayPalAccount,
                     },
-                    successConfirm: () => {
-                        $connectionSetting.classList.remove( 'give-hidden' );
-                        $disConnectionSetting.classList.add( 'give-hidden' );
-
-                        let billingSettingContainer = document.querySelector('label[for=\'paypal_commerce_collect_billing_details\']');
-                        billingSettingContainer.parentElement.parentElement.classList.add('give-hidden');
-
-                        fetch( ajaxurl + '?action=give_paypal_commerce_disconnect_account' );
-                    },
-                } ).render();
+                    successConfirm: () => isConfirmed = true,
+                    callbacks: {
+                        afterClose: () => disconnectPayPalAccountFn()
+                    }
+                }).render()
 
                 return false;
-            } );
+            });
         });
-	}
+    }
 } );
 
 // @TODO: use  WordPress JS translation function.
