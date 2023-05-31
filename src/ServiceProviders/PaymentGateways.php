@@ -108,7 +108,9 @@ class PaymentGateways implements ServiceProvider
      */
     public function handleSellerOnBoardingRedirect()
     {
-        give(onBoardingRedirectHandler::class)->boot();
+        if( current_user_can('manage_give_settings') ) {
+            give(onBoardingRedirectHandler::class)->boot();
+        }
     }
 
     /**
