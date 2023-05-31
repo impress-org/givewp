@@ -172,6 +172,10 @@ class AjaxRequestHandler
      */
     public function removePayPalAccount()
     {
+        if (! current_user_can('manage_give_settings')) {
+            wp_send_json_error(['error' => esc_html__('You are not allowed to perform this action.', 'give')]);
+        }
+
        try{
            $mode = give_clean($_POST['mode']);
            $this->webhooksRepository->setMode($mode);
