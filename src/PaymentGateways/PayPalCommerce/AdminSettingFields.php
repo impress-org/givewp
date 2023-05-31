@@ -262,18 +262,16 @@ class AdminSettingFields
      *
      * @since 2.9.6
      */
-    private function printErrors()
+    private function printErrors( MerchantDetails $merchantDetailsRepository )
     {
-        $accountErrors = give(MerchantDetails::class)->getAccountErrors();
+        $accountErrors = $merchantDetailsRepository->getAccountErrors();
 
         if (! empty($accountErrors)) :
             ?>
             <div>
-                <p class="error-message"><?php
-                    esc_html_e('Warning, your account is not ready to accept donations.', 'give'); ?></p>
+                <p class="error-message"><?php esc_html_e('Warning, your account is not ready to accept donations.', 'give'); ?></p>
                 <p>
-                    <?php
-                    printf(
+                    <?php printf(
                         '%1$s %2$s',
                         esc_html__(
                             'There is an issue with your PayPal account that is preventing you from being able to accept donations.',
@@ -284,39 +282,48 @@ class AdminSettingFields
                     ?>
                 </p>
                 <div class="paypal-message-template">
-                    <?php
-                    esc_html_e('Greetings!', 'give'); ?><br><br>
-                    <?php
-                    esc_html_e(
+                    <?php esc_html_e('Greetings!', 'give'); ?><br><br>
+                    <?php esc_html_e(
                         'I am trying to connect my PayPal account to the GiveWP plugin for WordPress. I have gone through the onboarding process to connect my account, but when I finish I\'m given the following message from GiveWP:',
                         'give'
-                    ); ?><br>
+                    );
+                    ?><br>
+                    <?php echo $this->formatErrors($accountErrors); ?>
+                    <br>
                     <?php
-                    echo $this->formatErrors($accountErrors); ?>
-                    <br><?php
                     esc_html_e(
                         'Please help me resolve these account errors so I can begin accepting payments via PayPal on GiveWP.',
                         'give'
-                    ); ?>
+                    );
+                    ?>
                 </div>
 
-                <?php
-                if ($this->merchantRepository->accountIsConnected()) : ?>
-                    <p>
-                        <a href="<?php
-                        echo admin_url(
+                <?php if ($this->merchantRepository->accountIsConnected()) :?>
+                    <?php
+                    $reCheckAccountStatusUrl = add_query_arg(
+                        [
+                            'post_type' => 'give_forms',
+                            'page' => 'give-settings',
+                            'tab' => 'gateways',
+                            'section' => 'paypal',
+                            'group' => 'paypal-commerce',
+                            'paypalStatusCheck' => '1',
+                            'mode' => $merchantDetailsRepository->getMode()
+                        ],
+                        admin_url(
                             'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&paypalStatusCheck'
-                        ); ?>">
-                            <?php
-                            esc_html_e('Re-Check Account Status', 'give'); ?>
+                        )
+                    );
+                    ?>
+                    <p>
+                        <a href="<?php echo $reCheckAccountStatusUrl; ?>">
+                            <?php esc_html_e('Re-Check Account Status', 'give'); ?>
                         </a>
                     </p>
-                <?php
-                endif; ?>
+                <?php endif; ?>
 
             </div>
-        <?php
-        endif;
+        <?php endif;
     }
 
     /**
@@ -383,13 +390,13 @@ class AdminSettingFields
     {
         ob_start();
 
-        /** @var MerchantDetails $accountRepository */
-        $accountRepository = give(MerchantDetails::class);
-        $accountRepository->setMode($paypalSetting->mode);
+        /** @var MerchantDetails $mechantDetailsRepository */
+        $mechantDetailsRepository = give(MerchantDetails::class);
+        $mechantDetailsRepository->setMode($paypalSetting->mode);
 
-        $merchantDetail = $accountRepository->getDetails();
+        $merchantDetail = $mechantDetailsRepository->getDetails();
 
-        $canShowAccountInformation = $accountRepository->accountIsConnected();
+        $canShowAccountInformation = $mechantDetailsRepository->accountIsConnected();
         ?>
         <tr>
             <th scope="row" class="titledesc">
@@ -463,7 +470,7 @@ class AdminSettingFields
                                 </ul>
                             </div>
                         </div>
-                        <?php $this->printErrors(); ?>
+                        <?php $this->printErrors($mechantDetailsRepository); ?>
                     </div>
                 </div>
             </td>
