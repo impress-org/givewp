@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Http\ConnectServer\Client\ConnectClient;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
@@ -165,26 +166,35 @@ class AjaxRequestHandler
     /**
      * give_paypal_commerce_disconnect_account ajax request handler.
      *
+     * @unreleased Add support for mode param.
      * @since 2.25.0 Remove merchant seller token.
      * @since 2.9.0
      */
     public function removePayPalAccount()
     {
-        $this->validateAdminRequest();
+       try{
 
-        // Remove the webhook from PayPal if there is one
-        if ($webhookConfig = $this->webhooksRepository->getWebhookConfig()) {
-            $this->webhooksRepository->deleteWebhook($this->merchantDetails->accessToken, $webhookConfig->id);
-            $this->webhooksRepository->deleteWebhookConfig();
-        }
+           $mode = give_clean($_POST['mode']);
+           $this->webhooksRepository->setMode($mode);
 
-        $this->merchantRepository->delete();
-        $this->merchantRepository->deleteAccountErrors();
-        $this->merchantRepository->deleteClientToken();
-        $this->settings->deleteSellerAccessToken();
-        $this->refreshToken->deleteRefreshTokenCronJob();
+           $this->validateAdminRequest();
 
-        wp_send_json_success();
+           // Remove the webhook from PayPal if there is one
+           if ($webhookConfig = $this->webhooksRepository->getWebhookConfig()) {
+               $this->webhooksRepository->deleteWebhook($this->merchantDetails->accessToken, $webhookConfig->id);
+               $this->webhooksRepository->deleteWebhookConfig();
+           }
+
+           $this->merchantRepository->delete();
+           $this->merchantRepository->deleteAccountErrors();
+           $this->merchantRepository->deleteClientToken();
+           $this->settings->deleteSellerAccessToken();
+           $this->refreshToken->deleteRefreshTokenCronJob();
+
+           wp_send_json_success();
+       } catch ( \Exception $exception ) {
+           wp_send_json_error( [ 'error' => $exception->getMessage()] );
+       }
     }
 
     /**
