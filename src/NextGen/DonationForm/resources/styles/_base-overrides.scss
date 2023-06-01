@@ -31,6 +31,10 @@ input[aria-invalid="false"] {
   }
 }
 
+input, select, textarea {
+  margin-bottom: 0;
+}
+
 h1, h2, h3, h4, h5, h6 {
   --typography-spacing-vertical: 1rem;
 }

@@ -25,6 +25,7 @@ export default function NextButton() {
         !isLastStep && (
             <div>
                 <button
+                    className="givewp-donation-form__steps-button-next"
                     type="button"
                     disabled={isValidating}
                     aria-busy={isValidating}
