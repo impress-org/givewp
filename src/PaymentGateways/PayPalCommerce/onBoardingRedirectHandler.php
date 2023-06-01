@@ -72,6 +72,12 @@ class onBoardingRedirectHandler
         $this->setModeFromRequest();
     }
 
+    /**
+     * This function set mode from request.
+     *
+     * @unreleased
+     * @return void
+     */
     private function setModeFromRequest()
     {
         if (isset($_GET['mode']) && in_array($_GET['mode'], ['live', 'sandbox'])) {
