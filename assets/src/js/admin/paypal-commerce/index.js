@@ -207,5 +207,3 @@ window.addEventListener( 'DOMContentLoaded', function() {
         });
     }
 } );
-
-// @TODO: use  WordPress JS translation function.
