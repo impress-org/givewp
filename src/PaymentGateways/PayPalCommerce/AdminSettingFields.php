@@ -113,13 +113,16 @@ class AdminSettingFields
         $recurringAddonInfo = Give_License::get_plugin_by_slug('give-recurring');
         $isRecurringAddonActive = isset($recurringAddonInfo['Status']) && 'active' === $recurringAddonInfo['Status'];
 
+        // Show live PayPal connect button.
         $paypalLiveSetting = new \stdClass();
         $paypalLiveSetting->label = esc_html__('PayPal Connection', 'give');
         $paypalLiveSetting->mode = 'live';
         $paypalLiveSetting->connectButtonLabel = esc_html__('Connect with PayPal Live', 'give');
         $paypalLiveSetting->description = esc_html__('PayPal is currently NOT connected.', 'give');
         $paypalLiveSetting->isRecurringAddonActive = $isRecurringAddonActive;
+        echo $this->getPayPalConnectionSettingView($paypalLiveSetting);
 
+        // Show sandbox PayPal connect button.
         $paypalSandboxSetting = new \stdClass();
         $paypalSandboxSetting->label = esc_html__('PayPal Sandbox Connection', 'give');
         $paypalSandboxSetting->mode = 'sandbox';
@@ -129,8 +132,6 @@ class AdminSettingFields
             'give'
         );
         $paypalSandboxSetting->isRecurringAddonActive = $isRecurringAddonActive;
-
-        echo $this->getPayPalConnectionSettingView($paypalLiveSetting);
         echo $this->getPayPalConnectionSettingView($paypalSandboxSetting);
     }
 
