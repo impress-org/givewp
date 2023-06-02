@@ -11,34 +11,19 @@ class CheckboxTest extends TestCase
     /**
      * @unreleased
      */
-    public function testIndeterminateSupport()
+    public function testChecked()
     {
         $checkbox = new Checkbox('test');
 
-        // should not support indeterminate value by default
-        self::assertFalse($checkbox->supportsIndeterminateValue());
+        self::assertFalse($checkbox->isChecked());
 
-        // should support indeterminate value if set to support
-        $checkbox->supportIndeterminateValue();
-        self::assertTrue($checkbox->supportsIndeterminateValue());
+        $checkbox->checked();
+        self::assertTrue($checkbox->isChecked());
 
-        // should now allow an indeterminate value
-        $checkbox->indeterminate();
-        self::assertTrue($checkbox->isIndeterminate());
+        $checkbox->checked(false);
+        self::assertFalse($checkbox->isChecked());
 
-        // support can be explicitly set to false
-        $checkbox->supportIndeterminateValue(false);
-        self::assertFalse($checkbox->supportsIndeterminateValue());
-    }
-
-    /**
-     * @unreleased
-     */
-    public function testShouldThrowExceptionIfSetToIndeterminateWithSupportDisabled()
-    {
-        $checkbox = new Checkbox('test');
-
-        $this->expectException(InvalidArgumentException::class);
-        $checkbox->indeterminate();
+        $checkbox->checked(true);
+        self::assertTrue($checkbox->isChecked());
     }
 }
