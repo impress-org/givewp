@@ -2,8 +2,6 @@
 
 namespace Give\Framework\FieldsAPI;
 
-use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-
 /**
  * A single checkbox input. If supported, an indeterminate value is represented as a null value, as opposed to true or
  * false value.
@@ -23,6 +21,42 @@ class Checkbox extends Field
      * @var bool whether the checkbox is checked by default
      */
     protected $checked = false;
+
+    /**
+     * @var mixed the value of the checkbox when checked
+     */
+    protected $value;
+
+    /**
+     * Sets the value the checkbox returns when checked
+     *
+     * @unreleased
+     */
+    public function value($value): self
+    {
+        $this->value = $value;
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
+     * Makes sure that the default value is based on whether the checkbox is checked and whatever the underlying value
+     * is. Without this, it would be necessary to always set the value before setting whether the checkbox is checked.
+     *
+     * @unreleased
+     */
+    public function getDefaultValue()
+    {
+        return $this->checked ? $this->value : null;
+    }
 
     /**
      * Sets the checkbox as checked by default
