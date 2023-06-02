@@ -20,38 +20,9 @@ class Checkbox extends Field
     const TYPE = 'checkbox';
 
     /**
-     * @var bool|null
+     * @var bool whether the checkbox is checked by default
      */
-    protected $defaultValue = false;
-
-    /**
-     * @var bool
-     */
-    protected $supportIndeterminateValue = false;
-
-    /**
-     * @unreleased
-     *
-     * @param bool|null $defaultValue
-     *
-     * @return void
-     */
-    public function defaultValue($defaultValue = null)
-    {
-        if ($defaultValue === null && !$this->supportIndeterminateValue) {
-            throw new InvalidArgumentException(
-                'Checkbox field does not support intermediate value'
-            );
-        }
-
-        if (!is_bool($defaultValue) && $defaultValue !== null) {
-            throw new InvalidArgumentException(
-                'Checkbox field only supports boolean or null value'
-            );
-        }
-
-        $this->defaultValue = $defaultValue;
-    }
+    protected $checked = false;
 
     /**
      * Sets the checkbox as checked by default
@@ -60,19 +31,7 @@ class Checkbox extends Field
      */
     public function checked(bool $checked = true): self
     {
-        $this->defaultValue($checked);
-
-        return $this;
-    }
-
-    /**
-     * Sets the checkbox as indeterminate by default
-     *
-     * @unreleased
-     */
-    public function indeterminate(): self
-    {
-        $this->defaultValue(null);
+        $this->checked = $checked;
 
         return $this;
     }
@@ -82,32 +41,6 @@ class Checkbox extends Field
      */
     public function isChecked(): bool
     {
-        return (bool)$this->defaultValue;
-    }
-
-    /**
-     * @unreleased
-     */
-    public function isIndeterminate(): bool
-    {
-        return $this->defaultValue === null;
-    }
-
-    /**
-     * @unreleased
-     */
-    public function supportIndeterminateValue(bool $support = true): self
-    {
-        $this->supportIndeterminateValue = $support;
-
-        return $this;
-    }
-
-    /**
-     * @unreleased
-     */
-    public function supportsIndeterminateValue(): bool
-    {
-        return $this->supportIndeterminateValue;
+        return $this->checked;
     }
 }
