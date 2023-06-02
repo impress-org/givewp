@@ -292,7 +292,9 @@ class Give_Subscription {
 	 */
 	public function update( $args ) {
 
+        $old_status = '';
 		if ( isset( $args['status'] ) && strtolower( $this->status ) !== strtolower( $args['status'] ) ) {
+            $old_status = $this->status;
 			$this->add_note( sprintf( __( 'Status changed from %s to %s', 'give' ), $this->status, $args['status'] ) );
 		}
 
@@ -301,6 +303,10 @@ class Give_Subscription {
 		$ret = $this->subs_db->update( $this->id, $args );
 
 		do_action( 'give_recurring_update_subscription', $this->id, $args, $this );
+
+        if (!empty($old_status)) {
+            do_action( 'give_recurring_update_subscription_status', $this->id, $args['status'], $old_status );
+        }
 
 		return $ret;
 
