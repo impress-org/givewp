@@ -3,6 +3,7 @@ import {ListTablePage} from '@givewp/components';
 import {DonationRowActions} from './DonationRowActions';
 import ListTableApi from '@givewp/components/ListTable/api';
 import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
+import styles from './ListTable.module.scss';
 import {IdBadge} from '@givewp/components/ListTable/TableCell';
 import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import {Interweave} from 'interweave';
@@ -152,7 +153,6 @@ const ListTableBlankSlate = (
     />
 );
 
-
 interface DonationTableRecommendations {
     recurring: RecommendedProductData;
     feeRecovery: RecommendedProductData;
@@ -200,7 +200,6 @@ const rotatingRecommendation = (
     />
 );
 
-
 export default function DonationsListTable() {
     return (
         <ListTablePage
@@ -215,12 +214,33 @@ export default function DonationsListTable() {
             listTableBlankSlate={ListTableBlankSlate}
             productRecommendation={rotatingRecommendation}
         >
-            {window.GiveDonations.manualDonations && (
+            {window.GiveDonations.manualDonations ? (
                 <a
                     className={tableStyles.addFormButton}
                     href={`${window.GiveDonations.adminUrl}edit.php?post_type=give_forms&page=give-manual-donation`}
                 >
                     {__('New Donation', 'give')}
+                </a>
+            ) : (
+                <a
+                    className={styles.manualDonationsNotice}
+                    href={`${window.GiveDonations.adminUrl}edit.php?post_type=give_forms&page=give-manual-donation`}
+                >
+                    <img
+                        src={`${window.GiveDonations.pluginUrl}/assets/dist/images/admin/add-on-star-icon.svg`}
+                        alt={'manual donations'}
+                    />
+                    {__('Enter Donations', 'give')}
+                    <span className={styles.manualDonationsMessage}>
+                        <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7 0L13.9282 12H0.0717969L7 0Z" fill="#074A8C" />
+                        </svg>
+
+                        {__(
+                            'Keep track of your offline donations by creating donations directly from here, ensuring accurate records with minimal effort.',
+                            'give'
+                        )}
+                    </span>
                 </a>
             )}
             <a

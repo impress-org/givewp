@@ -1,3 +1,46 @@
 .paymentType {
     padding-inline-end: 0;
 }
+
+.manualDonationsNotice {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .5rem 1rem;
+    background: #F2F9FF;
+    box-shadow: 0px 1px 2px rgba(14, 14, 14, 0.15);
+    border-radius: 4px;
+    text-decoration: none;
+    color: #0B72D9;
+    font-weight: 600;
+    font-size: .875rem;
+
+    img {
+        transform: scale(.8)
+    }
+
+    .manualDonationsMessage {
+        display: none;
+        position: absolute;
+        top: 3.35rem;
+        left: -40%;
+        background: #074A8C;
+        box-shadow: 0px 4px 8px rgba(14, 14, 14, 0.15);
+        border-radius: 4px;
+        color: var(--givewp-shades-white);
+        padding: .75rem 2rem .75rem 1rem;
+        width: 330px;
+        font-weight: 400;
+
+        svg {
+            position: absolute;
+            top: -.45rem;
+            right: 50%;
+        }
+    }
+
+    &:hover .manualDonationsMessage {
+        display: block;
+    }
+}
