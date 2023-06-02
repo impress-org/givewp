@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Give\DonationForms\ListTable\Columns;
+namespace Give\DonationForms\V2\ListTable\Columns;
 
-use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
@@ -12,8 +12,11 @@ use Give\Framework\ListTable\ModelColumn;
  *
  * @extends ModelColumn<DonationForm>
  */
-class ShortcodeColumn extends ModelColumn
+class DateCreatedColumn extends ModelColumn
 {
+
+    protected $sortColumn = 'createdAt';
+
     /**
      * @since 2.24.0
      *
@@ -21,7 +24,7 @@ class ShortcodeColumn extends ModelColumn
      */
     public static function getId(): string
     {
-        return 'shortcode';
+        return 'dateCreated';
     }
 
     /**
@@ -31,7 +34,7 @@ class ShortcodeColumn extends ModelColumn
      */
     public function getLabel(): string
     {
-        return __('Shortcode', 'give');
+        return __('Date', 'give');
     }
 
     /**
@@ -43,9 +46,8 @@ class ShortcodeColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        return sprintf(
-            '<div class="shortcode">[give_form id="%d"]</div>',
-            $model->id
-        );
+        $format = _x('m/d/Y \a\t g:i a', 'human-readable datetime format', 'give');
+
+        return $model->createdAt->format($format);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\DonationForms\Endpoints;
+namespace Give\DonationForms\V2\Endpoints;
 
 use Give\Donations\Endpoints\SwitchDonationView;
 
