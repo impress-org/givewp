@@ -2,67 +2,42 @@
 
 namespace Give\DonorDashboards\Pipeline\Stages;
 
+use Give\Donors\Models\Donor;
+
 /**
- * @since 2.10.0
+ * @unreleased Use Donor model to update data used by webhooks addon to prevent multiple events creation
+ * @since      2.10.0
  */
 class UpdateDonorEmails implements Stage
 {
-
+    /**
+     * @var array
+     */
     protected $data;
+
+    /**
+     * @var Donor
+     */
     protected $donor;
 
-    public function __invoke($payload)
+    /**
+     * @unreleased
+     */
+    public function __construct(Donor &$donor)
     {
-        $this->data = $payload['data'];
-        $this->donor = $payload['donor'];
-
-        $this->updateEmailsInMetaDB();
-        $this->updateEmailsInDonorDB();
-
-        return $payload;
+        $this->donor = &$donor;
     }
 
     /**
-     * Updates additional emails stored in meta database
-     *
-     * @since 2.10.0
-     * @return void
-     *
+     * @return mixed
      */
-    protected function updateEmailsInMetaDB()
+    public function __invoke($payload)
     {
-        $additionalEmails = $this->data['additionalEmails'] ? $this->data['additionalEmails'] : [];
+        $this->data = $payload['data'];
 
-        /**
-         * Remove additional emails that exist in the donor meta table,
-         * but do not appear in the new array of additional emails
-         */
+        $this->donor->email = $this->data['primaryEmail'];
+        $this->donor->additionalEmails = $this->data['additionalEmails'] ? $this->data['additionalEmails'] : [];
 
-        $storedAdditionalEmails = $this->donor->get_meta('additional_email', false);
-        $diffEmails = array_diff($storedAdditionalEmails, $additionalEmails);
-
-        foreach ($diffEmails as $diffEmail) {
-            $this->donor->delete_meta('additional_email', $diffEmail);
-        }
-
-        /**
-         * Add any new additional emails
-         */
-
-        foreach ($additionalEmails as $email) {
-            if ( ! in_array($email, $storedAdditionalEmails)) {
-                $this->donor->add_meta('additional_email', $email);
-            }
-        }
-    }
-
-    protected function updateEmailsInDonorDB()
-    {
-        $updateArgs = [];
-        if ( ! empty($this->data['primaryEmail'])) {
-            $updateArgs['email'] = $this->data['primaryEmail'];
-        }
-
-        $this->donor->update($updateArgs);
+        return $payload;
     }
 }

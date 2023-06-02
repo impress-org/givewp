@@ -2,50 +2,48 @@
 
 namespace Give\DonorDashboards\Pipeline\Stages;
 
+use Give\Donors\Models\Donor;
+
 /**
- * @since 2.10.0
+ * @unreleased Use Donor model to update data used by webhooks addon to prevent multiple events creation
+ *
+ * @since      2.10.0
  */
 class UpdateDonorName implements Stage
 {
-
+    /**
+     * @var array
+     */
     protected $data;
+
+    /**
+     * @var Donor
+     */
     protected $donor;
 
+    /**
+     * @unreleased
+     */
+    public function __construct(Donor &$donor)
+    {
+        $this->donor = &$donor;
+    }
+
+    /**
+     * @return mixed
+     */
     public function __invoke($payload)
     {
         $this->data = $payload['data'];
-        $this->donor = $payload['donor'];
 
-        $this->updateNameInMetaDB();
-        $this->updateNameInDonorDB();
-
-        return $payload;
-    }
-
-    protected function updateNameInMetaDB()
-    {
-        $attributeMetaMap = [
-            'firstName' => '_give_donor_first_name',
-            'lastName' => '_give_donor_last_name',
-            'titlePrefix' => '_give_donor_title_prefix',
-        ];
-
-        foreach ($attributeMetaMap as $attribute => $metaKey) {
-            if (key_exists($attribute, $this->data)) {
-                $this->donor->update_meta($metaKey, $this->data[$attribute]);
-            }
-        }
-    }
-
-    protected function updateNameInDonorDB()
-    {
-        $updateArgs = [];
         if ( ! empty($this->data['firstName']) && ! empty($this->data['lastName'])) {
             $firstName = $this->data['firstName'];
             $lastName = $this->data['lastName'];
-            $updateArgs['name'] = "{$firstName} {$lastName}";
+            $this->donor->name = "{$firstName} {$lastName}";
+            $this->donor->firstName = $firstName;
+            $this->donor->lastName = $lastName;
         }
 
-        $this->donor->update($updateArgs);
+        return $payload;
     }
 }
