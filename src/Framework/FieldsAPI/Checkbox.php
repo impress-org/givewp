@@ -30,13 +30,16 @@ class Checkbox extends Field
     protected $value;
 
     /**
-     * Sets the value the checkbox returns when checked
+     * Sets the value the checkbox returns when checked.
+     *
+     * The default value is also set because the getDefaultMethod() method is not called during serialization.
      *
      * @unreleased
      */
     public function value($value): self
     {
         $this->value = $value;
+        $this->defaultValue = $this->checked ? $value : null;
 
         return $this;
     }
@@ -62,24 +65,16 @@ class Checkbox extends Field
     }
 
     /**
-     * Makes sure that the default value is based on whether the checkbox is checked and whatever the underlying value
-     * is. Without this, it would be necessary to always set the value before setting whether the checkbox is checked.
-     *
-     * @unreleased
-     */
-    public function getDefaultValue()
-    {
-        return $this->checked ? $this->value : null;
-    }
-
-    /**
      * Sets the checkbox as checked by default
+     *
+     * The default value is also set because the getDefaultMethod() method is not called during serialization.
      *
      * @unreleased
      */
     public function checked(bool $checked = true): self
     {
         $this->checked = $checked;
+        $this->defaultValue = $this->checked ? $this->value : null;
 
         return $this;
     }

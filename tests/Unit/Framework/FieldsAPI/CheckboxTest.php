@@ -44,10 +44,19 @@ class CheckboxTest extends TestCase
     {
         $checkbox = new Checkbox('test');
 
+        // Default value is null when not checked
         $checkbox->value('test-value');
+        self::assertNull($checkbox->getDefaultValue());
+
+        // Default value is set to the value when checked
         $checkbox->checked();
         self::assertEquals('test-value', $checkbox->getDefaultValue());
 
+        // Default value changes when value changes
+        $checkbox->value('new-value');
+        self::assertEquals('new-value', $checkbox->getDefaultValue());
+
+        // Default value is set to null when unchecked
         $checkbox->checked(false);
         self::assertNull($checkbox->getDefaultValue());
     }
