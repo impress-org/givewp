@@ -2,6 +2,7 @@
 
 namespace Unit\Framework\FieldsAPI;
 
+use Give\Framework\Exceptions\Primitives\RuntimeException;
 use Give\Framework\FieldsAPI\Checkbox;
 use Give\Tests\TestCase;
 
@@ -49,5 +50,16 @@ class CheckboxTest extends TestCase
 
         $checkbox->checked(false);
         self::assertNull($checkbox->getDefaultValue());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testShouldThrowRuntimeExceptionWhenDefaultValueMethodIsUsed()
+    {
+        $this->expectException(RuntimeException::class);
+
+        $checkbox = new Checkbox('test');
+        $checkbox->defaultValue('test-value');
     }
 }

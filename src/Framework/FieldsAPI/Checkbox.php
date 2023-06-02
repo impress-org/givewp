@@ -2,6 +2,8 @@
 
 namespace Give\Framework\FieldsAPI;
 
+use Give\Framework\Exceptions\Primitives\RuntimeException;
+
 /**
  * A single checkbox input. If supported, an indeterminate value is represented as a null value, as opposed to true or
  * false value.
@@ -45,6 +47,18 @@ class Checkbox extends Field
     public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * Since the default value needs to reflect the value of the checkbox, this method is not supported.
+     *
+     * @unreleased
+     */
+    public function defaultValue($defaultValue)
+    {
+        throw new RuntimeException(
+            'Do not set the default value. Instead, set the value and use the checked() method.'
+        );
     }
 
     /**
