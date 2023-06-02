@@ -28,15 +28,13 @@ const dismissAction = document.querySelector('.givewp-payment-gateway-fee-recove
 const table = document.querySelector('.give-setting-tab-body-gateways');
 const preceedingContent = table.querySelector('tr');
 
-preceedingContent.insertAdjacentElement('afterend', feeRecoveryProductRecommendation);
+if (preceedingContent) {
+    preceedingContent.insertAdjacentElement('afterend', feeRecoveryProductRecommendation);
+}
 
 if (feeRecoveryProductRecommendation) {
     dismissAction.addEventListener('click', async function (event) {
         feeRecoveryProductRecommendation.remove();
-        await dismissRecommendation(
-            'givewp_payment_gateway_fee_recovery_recommendation',
-            window.GiveSettings.apiNonce
-        );
+        await dismissRecommendation('givewp_payment_gateway_fee_recovery_recommendation', window.GiveSettings.apiNonce);
     });
 }
-
