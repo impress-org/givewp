@@ -296,6 +296,8 @@ class Give_Subscription {
 			$this->add_note( sprintf( __( 'Status changed from %s to %s', 'give' ), $this->status, $args['status'] ) );
 		}
 
+        do_action( 'give_recurring_pre_update_subscription', $this->id, $args, $this );
+
 		$ret = $this->subs_db->update( $this->id, $args );
 
 		do_action( 'give_recurring_update_subscription', $this->id, $args, $this );
