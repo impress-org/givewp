@@ -5,7 +5,7 @@ namespace Give\Framework\FieldsAPI\Concerns;
 trait HasEmailTag
 {
 
-    /** @var string */
+    /** @var string|null */
     protected $emailTag;
 
     /**
@@ -20,8 +20,10 @@ trait HasEmailTag
 
     /**
      * @unreleased add types
+     *
+     * @return string|null
      */
-    public function getEmailTag(): string
+    public function getEmailTag()
     {
         return $this->emailTag;
     }
