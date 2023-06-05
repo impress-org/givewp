@@ -160,7 +160,7 @@ class PayPalCommerce extends PaymentGateway
                     'Displays a button allowing Donors to pay with Venmo (a PayPal Company). Donations still come into your PayPal account and are subject to normal PayPal transaction fees.',
                     'give'
                 ),
-                'default' => 'disabled',
+                'default' => 'enabled',
                 'options' => [
                     'enabled' => esc_html__('Enabled', 'give'),
                     'disabled' => esc_html__('Disabled', 'give'),
