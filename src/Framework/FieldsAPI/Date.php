@@ -13,6 +13,7 @@ class Date extends Field
     use Concerns\HasLabel;
     use Concerns\HasPlaceholder;
     use Concerns\ShowInReceipt;
+    use Concerns\ShowInAdmin;
     use Concerns\StoreAsMeta;
 
     const TYPE = 'date';

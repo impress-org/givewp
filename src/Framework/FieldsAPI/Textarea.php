@@ -14,6 +14,8 @@ class Textarea extends Field
     use Concerns\HasLabel;
     use Concerns\HasPlaceholder;
     use Concerns\ShowInReceipt;
+    use Concerns\ShowInAdmin;
+    use Concerns\ShowInAdmin;
     use Concerns\StoreAsMeta;
     use Concerns\HasMaxLength;
     use Concerns\HasMinLength;

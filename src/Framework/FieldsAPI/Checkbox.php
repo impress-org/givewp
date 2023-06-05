@@ -14,6 +14,7 @@ class Checkbox extends Field
     use Concerns\HasOptions;
     use Concerns\HasPlaceholder;
     use Concerns\ShowInReceipt;
+    use Concerns\ShowInAdmin;
     use Concerns\StoreAsMeta;
 
     const TYPE = 'checkbox';
