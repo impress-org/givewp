@@ -1,12 +1,11 @@
 <?php
 
-namespace Give\DonationForms\Models;
+namespace Give\DonationForms\V2\Models;
 
 use DateTime;
-use Give\DonationForms\DataTransferObjects\DonationFormQueryData;
-use Give\DonationForms\Properties\DonationFormLevel;
-use Give\DonationForms\ValueObjects\DonationFormStatus;
-use Give\Framework\Models\Contracts\ModelHasFactory;
+use Give\DonationForms\V2\DataTransferObjects\DonationFormQueryData;
+use Give\DonationForms\V2\Properties\DonationFormLevel;
+use Give\DonationForms\V2\ValueObjects\DonationFormStatus;
 use Give\Framework\Models\Contracts\ModelReadOnly;
 use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;

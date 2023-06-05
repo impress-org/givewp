@@ -24,19 +24,16 @@ export interface GiveSettingsData {
 const feeRecoveryProductRecommendation = document.querySelector(
     '.givewp-payment-gateway-fee-recovery-recommendation-row'
 );
-const dismissAction = document.querySelector('.givewp-payment-gateway-fee-recovery-recommendation_close');
-const table = document.querySelector('.give-setting-tab-body-gateways');
-const preceedingContent = table.querySelector('tr');
-
-preceedingContent.insertAdjacentElement('afterend', feeRecoveryProductRecommendation);
 
 if (feeRecoveryProductRecommendation) {
+    const dismissAction = document.querySelector('.givewp-payment-gateway-fee-recovery-recommendation_close');
+    const table = document.querySelector('.give-setting-tab-body-gateways');
+    const preceedingContent = table.querySelector('tr');
+
+    preceedingContent.insertAdjacentElement('afterend', feeRecoveryProductRecommendation);
+
     dismissAction.addEventListener('click', async function (event) {
         feeRecoveryProductRecommendation.remove();
-        await dismissRecommendation(
-            'givewp_payment_gateway_fee_recovery_recommendation',
-            window.GiveSettings.apiNonce
-        );
+        await dismissRecommendation('givewp_payment_gateway_fee_recovery_recommendation', window.GiveSettings.apiNonce);
     });
 }
-
