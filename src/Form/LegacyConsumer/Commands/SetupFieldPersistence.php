@@ -7,6 +7,7 @@ use Give\Framework\FieldsAPI\Concenrs\StoreAsMeta;
 use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\File;
 use Give\Framework\FieldsAPI\Group;
+use Give\Framework\FieldsAPI\LegacyNodes\CheckboxGroup;
 use Give\Framework\FieldsAPI\Text;
 use Give\Framework\FieldsAPI\Types;
 
@@ -52,6 +53,7 @@ class SetupFieldPersistence implements HookCommandInterface
     /**
      * Process the given field.
      *
+     * @unreleased add shim for CheckboxGroup, only necessary for legacy FFM fields.
      * @since 2.10.2
      * @since 2.14.0 Handle File field type and custom field type separately. Use add meta function to persist field value.
      *
@@ -77,7 +79,7 @@ class SetupFieldPersistence implements HookCommandInterface
                     }
                 }
             }
-        } elseif (in_array($field->getType(), Types::all(), true)) {
+        } elseif (in_array($field->getType(), Types::all(), true) || $field->getType() === CheckboxGroup::TYPE) {
             if (isset($_POST[$field->getName()])) {
                 $data = give_clean($_POST[$field->getName()]);
                 $value = is_array($data) ?

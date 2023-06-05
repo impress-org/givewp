@@ -19,6 +19,7 @@ class FieldView
     ];
 
     /**
+     * @unreleased add shim for CheckboxGroup, only necessary for legacy FFM fields.
      * @since 2.10.2
      * @since 2.14.0 add $formId as a param
      * @since 2.14.0 Add filter to allow rendering logic for custom fields
@@ -40,6 +41,10 @@ class FieldView
             return;
         }
 
+        if ($type === CheckboxGroup::TYPE) {
+            $type = Types::CHECKBOX;
+        }
+
         $classList = apply_filters("give_form_{$formId}_field_classes_{$field->getName()}", [
             'form-row',
             'form-row-wide',
@@ -49,7 +54,7 @@ class FieldView
         printf(
             '<div class="%1$s" data-field-type="%2$s" data-field-name="%3$s" %4$s>',
             $className,
-            $field->getType(),
+            $type,
             $field->getName(),
             self::getVisibilityConditionAttribute($field)
         );
@@ -58,7 +63,6 @@ class FieldView
         switch ($type) {
             case Types::HTML:
             case Types::CHECKBOX:
-            case CheckboxGroup::TYPE:
             case Types::RADIO: // Radio provides its own label
                 include static::getTemplatePath($type);
                 break;
