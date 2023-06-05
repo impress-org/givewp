@@ -5,9 +5,6 @@ namespace Give\Framework\FieldsAPI;
 use Give\Framework\Exceptions\Primitives\RuntimeException;
 
 /**
- * A single checkbox input. If supported, an indeterminate value is represented as a null value, as opposed to true or
- * false value.
- *
  * @unreleased
  */
 class Checkbox extends Field
