@@ -10,15 +10,13 @@ trait ShowInAdmin
 
     /**
      * @unreleased
-     * @var bool
      */
     protected $showInAdmin = false;
 
     /**
      * @unreleased
-     * @return $this
      */
-    public function showInAdmin($showInAdmin = true)
+    public function showInAdmin($showInAdmin = true): self
     {
         $this->showInAdmin = $showInAdmin;
 
@@ -27,9 +25,8 @@ trait ShowInAdmin
 
     /**
      * @unreleased
-     * @return bool
      */
-    public function shouldShowInAdmin()
+    public function shouldShowInAdmin(): bool
     {
         return $this->showInReceipt;
     }
