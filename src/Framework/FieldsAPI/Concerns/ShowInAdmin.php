@@ -28,6 +28,6 @@ trait ShowInAdmin
      */
     public function shouldShowInAdmin(): bool
     {
-        return $this->showInReceipt;
+        return $this->showInAdmin;
     }
 }
