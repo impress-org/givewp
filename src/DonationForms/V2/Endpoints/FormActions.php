@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\DonationForms\Endpoints;
+namespace Give\DonationForms\V2\Endpoints;
 
 use WP_Error;
 use WP_REST_Request;

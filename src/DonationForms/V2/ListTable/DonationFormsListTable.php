@@ -1,16 +1,16 @@
 <?php
 
-namespace Give\DonationForms\ListTable;
+namespace Give\DonationForms\V2\ListTable;
 
-use Give\DonationForms\ListTable\Columns\DateCreatedColumn;
-use Give\DonationForms\ListTable\Columns\DonationCountColumn;
-use Give\DonationForms\ListTable\Columns\DonationRevenueColumn;
-use Give\DonationForms\ListTable\Columns\GoalColumn;
-use Give\DonationForms\ListTable\Columns\IdColumn;
-use Give\DonationForms\ListTable\Columns\LevelsColumn;
-use Give\DonationForms\ListTable\Columns\ShortcodeColumn;
-use Give\DonationForms\ListTable\Columns\StatusColumn;
-use Give\DonationForms\ListTable\Columns\TitleColumn;
+use Give\DonationForms\V2\ListTable\Columns\DateCreatedColumn;
+use Give\DonationForms\V2\ListTable\Columns\DonationCountColumn;
+use Give\DonationForms\V2\ListTable\Columns\DonationRevenueColumn;
+use Give\DonationForms\V2\ListTable\Columns\GoalColumn;
+use Give\DonationForms\V2\ListTable\Columns\IdColumn;
+use Give\DonationForms\V2\ListTable\Columns\LevelsColumn;
+use Give\DonationForms\V2\ListTable\Columns\ShortcodeColumn;
+use Give\DonationForms\V2\ListTable\Columns\StatusColumn;
+use Give\DonationForms\V2\ListTable\Columns\TitleColumn;
 use Give\Framework\ListTable\ListTable;
 
 /**

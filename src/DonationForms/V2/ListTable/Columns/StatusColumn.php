@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Give\DonationForms\ListTable\Columns;
+namespace Give\DonationForms\V2\ListTable\Columns;
 
-use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
@@ -12,10 +12,9 @@ use Give\Framework\ListTable\ModelColumn;
  *
  * @extends ModelColumn<DonationForm>
  */
-class TitleColumn extends ModelColumn
+class StatusColumn extends ModelColumn
 {
-
-    protected $sortColumn = 'title';
+    protected $sortColumn = 'status';
 
     /**
      * @since 2.24.0
@@ -24,7 +23,7 @@ class TitleColumn extends ModelColumn
      */
     public static function getId(): string
     {
-        return 'title';
+        return 'status';
     }
 
     /**
@@ -34,7 +33,7 @@ class TitleColumn extends ModelColumn
      */
     public function getLabel(): string
     {
-        return __('Name', 'give');
+        return __('Status', 'give');
     }
 
     /**
@@ -47,9 +46,9 @@ class TitleColumn extends ModelColumn
     public function getCellValue($model): string
     {
         return sprintf(
-            '<a href="%s" class="giveDonationFormsLink">%s</a>',
-            get_edit_post_link( $model->id ),
-            $model->title
+            '<div class="statusBadge statusBadge--%1$s"><p>%2$s</p></div>',
+            $model->status->getValue(),
+            $model->status->label()
         );
     }
 }

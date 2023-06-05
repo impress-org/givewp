@@ -1,8 +1,8 @@
 <?php
 
-namespace Give\DonationForms\Endpoints;
+namespace Give\DonationForms\V2\Endpoints;
 
-use Give\DonationForms\ListTable\DonationFormsListTable;
+use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_REST_Request;

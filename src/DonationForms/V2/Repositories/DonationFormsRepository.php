@@ -1,9 +1,9 @@
 <?php
 
-namespace Give\DonationForms\Repositories;
+namespace Give\DonationForms\V2\Repositories;
 
-use Give\DonationForms\Models\DonationForm;
-use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
+use Give\DonationForms\V2\Models\DonationForm;
+use Give\DonationForms\V2\ValueObjects\DonationFormMetaKeys;
 use Give\Donations\Models\Donation;
 use Give\Framework\Models\ModelQueryBuilder;
 

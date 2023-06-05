@@ -43,8 +43,8 @@
  */
 
 use Give\Container\Container;
-use Give\DonationForms\Repositories\DonationFormsRepository;
-use Give\DonationForms\ServiceProvider as DonationFormsServiceProvider;
+use Give\DonationForms\V2\Repositories\DonationFormsRepository;
+use Give\DonationForms\V2\ServiceProvider as DonationFormsServiceProvider;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ServiceProvider as DonationServiceProvider;
 use Give\DonationSummary\ServiceProvider as DonationSummaryServiceProvider;

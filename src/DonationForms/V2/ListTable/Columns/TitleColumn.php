@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Give\DonationForms\ListTable\Columns;
+namespace Give\DonationForms\V2\ListTable\Columns;
 
-use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
@@ -12,10 +12,10 @@ use Give\Framework\ListTable\ModelColumn;
  *
  * @extends ModelColumn<DonationForm>
  */
-class DateCreatedColumn extends ModelColumn
+class TitleColumn extends ModelColumn
 {
 
-    protected $sortColumn = 'createdAt';
+    protected $sortColumn = 'title';
 
     /**
      * @since 2.24.0
@@ -24,7 +24,7 @@ class DateCreatedColumn extends ModelColumn
      */
     public static function getId(): string
     {
-        return 'dateCreated';
+        return 'title';
     }
 
     /**
@@ -34,7 +34,7 @@ class DateCreatedColumn extends ModelColumn
      */
     public function getLabel(): string
     {
-        return __('Date', 'give');
+        return __('Name', 'give');
     }
 
     /**
@@ -46,8 +46,10 @@ class DateCreatedColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        $format = _x('m/d/Y \a\t g:i a', 'human-readable datetime format', 'give');
-
-        return $model->createdAt->format($format);
+        return sprintf(
+            '<a href="%s" class="giveDonationFormsLink">%s</a>',
+            get_edit_post_link( $model->id ),
+            $model->title
+        );
     }
 }
