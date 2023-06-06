@@ -128,7 +128,7 @@ class AdminSettingFields
         $paypalSandboxSetting->mode = 'sandbox';
         $paypalSandboxSetting->connectButtonLabel = esc_html__('Connect with PayPal Sandbox', 'give');
         $paypalSandboxSetting->description = esc_html__(
-            'PayPal sandbox is currently NOT connected. This is a separate sandbox PayPal account used for testing. Live PayPal accounts will not work.',
+            'PayPal sandbox is currently NOT connected. This is a separate PayPal Sandbox account, used for testing. Live PayPal accounts will not work.',
             'give'
         );
         $paypalSandboxSetting->isRecurringAddonActive = $isRecurringAddonActive;
