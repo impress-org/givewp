@@ -157,7 +157,7 @@ function give_insert_donor_donation_comment( $donation_id, $donor, $note, $comme
  *
  * Note: currently donor can only add one comment per donation
  *
- * @unreleased Change to read comment from donations meta table
+ * @since 2.27.0 Change to read comment from donations meta table
  * @since 2.2.0
  *
  * @param  int  $donation_id  The donation ID to retrieve comment for.

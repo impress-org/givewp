@@ -41,7 +41,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased  Add support for multiple return types.
+     * @since 2.27.0  Add support for multiple return types.
      * @since 2.21.0
      *
      * @return Subscription|null

@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
  *
  * Process the payment details edit
  *
- * @unreleased Change to save comment to donations meta table
+ * @since 2.27.0 Change to save comment to donations meta table
  * @since  1.0
  *
  * @access private

@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * This function is used to get a list of slug which are supported by payment gateways.
  *
- * @unreleased add filter for the array of supported stripe gateways.
+ * @since 2.27.0 add filter for the array of supported stripe gateways.
  * @since 2.5.5
  *
  * @return array

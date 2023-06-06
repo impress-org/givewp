@@ -82,7 +82,7 @@ class Give_Donor_Wall {
 	/**
 	 * Displays donors in a grid layout.
 	 *
-     * @unreleased Moved AJAX nonce verification to ajax_handler method.
+     * @since 2.27.0 Moved AJAX nonce verification to ajax_handler method.
 	 * @since  2.2.0
 	 *
 	 * @param array $atts                {
@@ -303,7 +303,7 @@ class Give_Donor_Wall {
 	/**
 	 * This function should return donor comment for ajax request.
 	 *
-     * @unreleased Check nonce for AJAX request to prevent scrapping, see https://github.com/impress-org/givewp/issues/6374.
+     * @since 2.27.0 Check nonce for AJAX request to prevent scrapping, see https://github.com/impress-org/givewp/issues/6374.
 	 * @since  2.2.0
 	 * @access public
 	 */
@@ -368,7 +368,7 @@ class Give_Donor_Wall {
     /**
      * Get donation data.
      *
-     * @unreleased Change to read comment from donations meta table
+     * @since 2.27.0 Change to read comment from donations meta table
      * @since 2.3.0
      *
      * @param  array  $atts

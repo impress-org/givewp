@@ -12,7 +12,7 @@ use PHPStan\Type\Type;
 /**
  * Adds support for the \Give\Log\Log::$context parameter reflection to the MagicCallStaticMethodReflection
  *
- * @unreleased
+ * @since 2.27.0
  */
 class ContextParameterReflection implements ParameterReflection
 {

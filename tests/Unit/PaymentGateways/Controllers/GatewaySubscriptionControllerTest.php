@@ -15,7 +15,7 @@ class GatewaySubscriptionControllerTest extends TestCase {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 2.27.0
      */
     public function testShouldCallGatewayCreateSubscription(){
         /** @var Subscription $subscription */
@@ -41,7 +41,7 @@ class GatewaySubscriptionControllerTest extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 2.27.0
      */
     protected function getMockGateway()
     {
@@ -57,7 +57,7 @@ class GatewaySubscriptionControllerTest extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 2.27.0
      */
     protected function getMockController()
     {

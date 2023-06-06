@@ -16,7 +16,7 @@ class SubscriptionProcessingHandlerTest extends TestCase {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 2.27.0
      * @throws TypeNotSupported|Exception
      */
     public function testShouldHandlePaymentCompleteCommand()

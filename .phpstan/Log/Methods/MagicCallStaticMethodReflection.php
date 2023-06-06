@@ -16,7 +16,7 @@ use PHPStan\Type\ObjectType;
 /**
  * Adds support for __callStatic method reflection to the LogMethodsReflectionExtension.
  *
- * @unreleased
+ * @since 2.27.0
  */
 class MagicCallStaticMethodReflection implements MethodReflection
 {

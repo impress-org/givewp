@@ -2,8 +2,8 @@
 
 namespace Give\Tests\Unit\DonationForms\DataTransferObjects;
 
-use Give\DonationForms\DataTransferObjects\DonationFormQueryData;
-use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
+use Give\DonationForms\V2\DataTransferObjects\DonationFormQueryData;
+use Give\DonationForms\V2\ValueObjects\DonationFormMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
