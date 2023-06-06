@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\DonationForms\Properties;
+namespace Give\DonationForms\V2\Properties;
 
 use Give\Framework\Support\ValueObjects\Money;
 

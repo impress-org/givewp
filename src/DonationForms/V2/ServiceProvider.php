@@ -1,9 +1,9 @@
 <?php
 
-namespace Give\DonationForms;
+namespace Give\DonationForms\V2;
 
-use Give\DonationForms\ListTable\DonationFormsListTable;
-use Give\DonationForms\Repositories\DonationFormsRepository;
+use Give\DonationForms\V2\ListTable\DonationFormsListTable;
+use Give\DonationForms\V2\Repositories\DonationFormsRepository;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
