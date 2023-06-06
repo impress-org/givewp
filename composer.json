@@ -16,7 +16,8 @@
         "moneyphp/money": "v3.3.1",
         "stellarwp/validation": "^1.0",
         "symfony/polyfill-ctype": "^1.19",
-        "symfony/polyfill-mbstring": "^1.19"
+        "symfony/polyfill-mbstring": "^1.19",
+        "woocommerce/action-scheduler": "^3.6"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
@@ -96,6 +97,11 @@
                 "symfony/polyfill-ctype": {},
                 "symfony/polyfill-mbstring": {}
             }
+        },
+        "installer-paths": {
+            "vendor/{$vendor}/{$name}/": [
+                "woocommerce/action-scheduler"
+            ]
         }
     },
     "repositories": [
