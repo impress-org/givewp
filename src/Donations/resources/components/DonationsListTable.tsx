@@ -224,7 +224,8 @@ export default function DonationsListTable() {
             ) : (
                 <a
                     className={styles.manualDonationsNotice}
-                    href={`${window.GiveDonations.adminUrl}edit.php?post_type=give_forms&page=give-manual-donation`}
+                    href={'https://docs.givewp.com/enterdonation'}
+                    target={'_blank'}
                 >
                     <img
                         src={`${window.GiveDonations.pluginUrl}/assets/dist/images/admin/add-on-star-icon.svg`}
@@ -232,10 +233,10 @@ export default function DonationsListTable() {
                     />
                     {__('Enter Donations', 'give')}
                     <span className={styles.manualDonationsMessage}>
-                        <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M7 0L13.9282 12H0.0717969L7 0Z" fill="#074A8C" />
-                        </svg>
-
+                        <img
+                            src={`${window.GiveDonations.pluginUrl}/assets/dist/images/admin/triangle-tip.svg`}
+                            alt={'manual donations'}
+                        />{' '}
                         {__(
                             'Keep track of your offline donations by creating donations directly from here, ensuring accurate records with minimal effort.',
                             'give'
