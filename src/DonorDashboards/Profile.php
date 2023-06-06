@@ -10,8 +10,6 @@ use Give\DonorDashboards\Pipeline\Stages\UpdateDonorAddresses;
 use Give\DonorDashboards\Pipeline\Stages\UpdateDonorAnonymousGiving;
 use Give\DonorDashboards\Pipeline\Stages\UpdateDonorAvatar;
 use Give\DonorDashboards\Pipeline\Stages\UpdateDonorCompany;
-use Give\DonorDashboards\Pipeline\Stages\UpdateDonorEmails;
-use Give\DonorDashboards\Pipeline\Stages\UpdateDonorName;
 use Give\Donors\Models\Donor;
 
 /**
@@ -48,11 +46,22 @@ class Profile
     {
         $donor = Donor::find($this->donor->id);
 
+        $donor->email = $data['primaryEmail'];
+        $donor->additionalEmails = $data['additionalEmails'] ?: [];
+
+        if ( ! empty($data['firstName']) && ! empty($data['lastName'])) {
+            $firstName = $data['firstName'];
+            $lastName = $data['lastName'];
+            $donor->name = "{$firstName} {$lastName}";
+            $donor->firstName = $firstName;
+            $donor->lastName = $lastName;
+        }
+
+        $donor->save();
+
         $pipeline = (new DonorProfilePipeline)
-            ->pipe(new UpdateDonorName($donor))
             ->pipe(new UpdateDonorCompany)
             ->pipe(new UpdateDonorAvatar)
-            ->pipe(new UpdateDonorEmails($donor))
             ->pipe(new UpdateDonorAddresses)
             ->pipe(new UpdateDonorAnonymousGiving);
 
@@ -62,8 +71,6 @@ class Profile
                 'donor' => $this->donor,
             ]
         );
-
-        $donor->save();
 
         // Return updated donor profile data
         return $this->getProfileData();
