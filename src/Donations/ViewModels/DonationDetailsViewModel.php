@@ -48,6 +48,11 @@ class DonationDetailsViewModel
             ];
         }
 
+        if ( ! is_null($this->donation->donor->id)) {
+            $userId = $this->donation->donor->userId;
+            $donationArray['donorAvatar'] = get_avatar_url($userId, ['size' => 40]);
+        }
+
         if ( ! is_null($this->donation->feeAmountRecovered)) {
             $donationArray['feeAmountRecovered'] = [
                 'currency' => $this->donation->feeAmountRecovered->getCurrency(),
@@ -55,7 +60,9 @@ class DonationDetailsViewModel
             ];
         }
 
-        $donationArray['gatewayLabel'] = give_get_gateway_checkout_label($this->donation->gatewayId);
+        if ( ! is_null($this->donation->gatewayId)) {
+            $donationArray['gatewayLabel'] = give_get_gateway_checkout_label($this->donation->gatewayId);
+        }
 
         return $donationArray;
     }

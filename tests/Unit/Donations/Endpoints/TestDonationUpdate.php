@@ -190,6 +190,35 @@ class TestDonationUpdate extends RestApiTestCase
     }
 
     /**
+     * Test that a valid billing address details update request returns a successful response.
+     *
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testValidRequestWithComment()
+    {
+        $donation = Donation::factory()->create();
+        $donationId = $donation->id;
+
+        $comment = $this->faker()->text(144);
+
+        $response = $this->handleRequest($donationId, ['comment' => $comment]);
+
+        $this->assertInstanceOf(WP_REST_Response::class, $response);
+        $this->assertEquals(200, $response->get_status());
+
+        $data = $response->get_data();
+        $this->assertArrayHasKey('success', $data);
+        $this->assertTrue($data['success']);
+        $this->assertCount(1, $data['updatedFields']);
+
+        $donation = give()->donations->getById($donationId);
+
+        $this->assertEquals($comment, $donation->comment);
+    }
+
+    /**
      * Test that an invalid donation ID returns an error.
      *
      * @unreleased
