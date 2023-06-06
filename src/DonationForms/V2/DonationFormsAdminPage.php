@@ -1,8 +1,8 @@
 <?php
 
-namespace Give\DonationForms;
+namespace Give\DonationForms\V2;
 
-use Give\DonationForms\ListTable\DonationFormsListTable;
+use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\Helpers\EnqueueScript;
 use WP_REST_Request;
 
