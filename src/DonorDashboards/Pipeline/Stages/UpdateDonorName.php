@@ -23,9 +23,9 @@ class UpdateDonorName implements Stage
     /**
      * @unreleased
      */
-    public function __construct(Donor &$donor)
+    public function __construct(Donor $donor)
     {
-        $this->donor = &$donor;
+        $this->donor = $donor;
     }
 
     /**
