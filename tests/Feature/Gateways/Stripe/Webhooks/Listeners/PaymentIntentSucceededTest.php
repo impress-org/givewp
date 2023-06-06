@@ -6,8 +6,8 @@ use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
-use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
-use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\PaymentIntentSucceeded;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\PaymentIntentSucceeded;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Stripe\Event;
@@ -16,6 +16,7 @@ use Stripe\PaymentIntent;
 class PaymentIntentSucceededTest extends TestCase
 {
     use RefreshDatabase;
+
     /**
      * @since 0.3.0
      *
@@ -28,7 +29,7 @@ class PaymentIntentSucceededTest extends TestCase
             'status' => DonationStatus::PROCESSING(),
         ]);
 
-        $donation->gatewayId = NextGenStripeGateway::id();
+        $donation->gatewayId = StripePaymentElementGateway::id();
         $donation->gatewayTransactionId = 'stripe-payment-intent-id';
         $donation->save();
 

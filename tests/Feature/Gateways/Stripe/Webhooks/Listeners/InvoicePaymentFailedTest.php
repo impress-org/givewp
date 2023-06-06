@@ -4,8 +4,8 @@ namespace Give\Tests\Feature\Gateways\Stripe\Webhooks\Listeners;
 
 use Exception;
 use Give\Donations\Models\Donation;
-use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
-use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\InvoicePaymentFailed;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\InvoicePaymentFailed;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
@@ -36,7 +36,7 @@ class InvoicePaymentFailedTest extends TestCase
             'frequency' => 1,
             'period' => SubscriptionPeriod::MONTH(),
             'gatewaySubscriptionId' => 'stripe-subscription-id',
-            'gatewayId' => NextGenStripeGateway::id(),
+            'gatewayId' => StripePaymentElementGateway::id(),
         ]);
 
         $donation = $subscription->initialDonation();

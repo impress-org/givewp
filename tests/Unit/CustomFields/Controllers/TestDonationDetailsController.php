@@ -2,21 +2,23 @@
 
 namespace Give\Tests\Unit\CustomFields\Controllers;
 
+use Give\DonationForms\Models\DonationForm;
+use Give\Donations\CustomFields\Controllers\DonationDetailsController;
+use Give\Donations\CustomFields\Views\DonationDetailsView;
 use Give\Donations\Models\Donation;
 use Give\Framework\Database\DB;
-use Give\NextGen\CustomFields\Controllers\DonationDetailsController;
-use Give\NextGen\CustomFields\Views\DonationDetailsView;
-use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
-class TestDonationDetailsController extends TestCase {
+class TestDonationDetailsController extends TestCase
+{
     use RefreshDatabase;
 
     /**
      * @since 0.1.0
      */
-    public function testShowShouldReturnDonationDetailsViewRendered() {
+    public function testShowShouldReturnDonationDetailsViewRendered()
+    {
         $donationForm = DonationForm::factory()->create();
 
         $donation = Donation::factory()->create([
@@ -26,7 +28,7 @@ class TestDonationDetailsController extends TestCase {
         $controller = new DonationDetailsController();
 
         $fields = array_filter($donationForm->schema()->getFields(), static function ($field) {
-            return $field->shouldDisplayInAdmin() && !$field->shouldStoreAsDonorMeta();
+            return $field->shouldShowInAdmin() && !$field->shouldStoreAsDonorMeta();
         });
 
         $view = new DonationDetailsView($donation, $fields);

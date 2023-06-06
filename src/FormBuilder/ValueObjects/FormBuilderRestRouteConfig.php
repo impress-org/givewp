@@ -7,6 +7,6 @@ namespace Give\FormBuilder\ValueObjects;
  */
 class FormBuilderRestRouteConfig
 {
-    const NAMESPACE = 'givewp/next-gen';
+    const NAMESPACE = 'givewp/v3';
     const PATH = '/form/(?P<id>\d+)';
 }

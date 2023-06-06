@@ -5,8 +5,8 @@ namespace Give\Tests\Feature\Gateways\Stripe\Webhooks\Listeners;
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
-use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\ChargeRefunded;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\ChargeRefunded;
 use Give\Tests\Feature\Gateways\Stripe\TestTraits\HasMockStripeAccounts;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -29,7 +29,7 @@ class ChargeRefundedTest extends TestCase
         $donation = Donation::factory()->create([
             'status' => DonationStatus::COMPLETE(),
             'gatewayTransactionId' => 'stripe-payment-intent-id',
-            'gatewayId' => NextGenStripeGateway::id()
+            'gatewayId' => StripePaymentElementGateway::id()
         ]);
 
         $stripeCharge = Charge::constructFrom([

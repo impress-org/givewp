@@ -2,15 +2,15 @@
 
 namespace TestsNextGen\Unit\DataTransferObjects;
 
+use Give\DonationForms\DataTransferObjects\ValidationRouteData;
+use Give\DonationForms\Exceptions\DonationFormFieldErrorsException;
+use Give\DonationForms\Models\DonationForm;
 use Give\Donations\ValueObjects\DonationType;
+use Give\Framework\Blocks\BlockCollection;
+use Give\Framework\Blocks\BlockModel;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Http\Response\Types\JsonResponse;
-use Give\NextGen\DonationForm\DataTransferObjects\ValidationRouteData;
-use Give\NextGen\DonationForm\Exceptions\DonationFormFieldErrorsException;
-use Give\NextGen\DonationForm\Models\DonationForm;
-use Give\NextGen\Framework\Blocks\BlockCollection;
-use Give\NextGen\Framework\Blocks\BlockModel;
-use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
+use Give\PaymentGateways\Gateways\NextGenTestGateway\NextGenTestGateway;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;

@@ -2,7 +2,7 @@
 
 namespace Give\Tests\NextGen\Framework\TemplateTags\Actions;
 
-use Give\NextGen\Framework\TemplateTags\Actions\TransformTemplateTags;
+use Give\Framework\TemplateTags\Actions\TransformTemplateTags;
 use Give\Tests\TestCase;
 
 class TestTransformTemplateTags extends TestCase {

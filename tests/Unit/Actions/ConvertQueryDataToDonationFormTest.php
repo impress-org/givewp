@@ -2,18 +2,19 @@
 
 namespace Give\Tests\Unit\Actions;
 
+use Give\DonationForms\Actions\ConvertQueryDataToDonationForm;
+use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\Properties\FormSettings;
+use Give\DonationForms\ValueObjects\DonationFormStatus;
+use Give\DonationForms\ValueObjects\GoalType;
+use Give\Framework\Blocks\BlockCollection;
+use Give\Framework\Blocks\BlockModel;
 use Give\Framework\Support\Facades\DateTime\Temporal;
-use Give\NextGen\DonationForm\Actions\ConvertQueryDataToDonationForm;
-use Give\NextGen\DonationForm\Models\DonationForm;
-use Give\NextGen\DonationForm\Properties\FormSettings;
-use Give\NextGen\DonationForm\ValueObjects\DonationFormStatus;
-use Give\NextGen\DonationForm\ValueObjects\GoalType;
-use Give\NextGen\Framework\Blocks\BlockCollection;
-use Give\NextGen\Framework\Blocks\BlockModel;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
-class ConvertQueryDataToDonationFormTest extends TestCase {
+class ConvertQueryDataToDonationFormTest extends TestCase
+{
     use RefreshDatabase;
 
     /**
@@ -26,7 +27,7 @@ class ConvertQueryDataToDonationFormTest extends TestCase {
         $createdAt = Temporal::getCurrentFormattedDateForDatabase();
         $updatedAt = Temporal::getCurrentFormattedDateForDatabase();
         $blockCollection = new BlockCollection([
-                new BlockModel('namespace/block', 'client-id', true)
+            new BlockModel('namespace/block', 'client-id', true)
         ]);
 
         $queryData = (object)[

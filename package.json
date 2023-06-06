@@ -4,16 +4,10 @@
         "dev": "wp-scripts build",
         "watch": "wp-scripts start",
         "build": "wp-scripts build",
-        "dev:form-builder": "npm run dev --workspace=packages/form-builder",
-        "watch:form-builder": "npm run watch --workspace=packages/form-builder",
-        "build:form-builder": "npm run build --workspace=packages/form-builder",
         "packages-update": "wp-scripts packages-update",
         "plugin-zip": "wp-scripts plugin-zip",
         "env": "wp-env"
     },
-    "workspaces": [
-        "packages/form-builder"
-    ],
     "dependencies": {
         "@fortawesome/fontawesome-free": "^6.2.1",
         "@hookform/error-message": "^2.0.1",
@@ -32,6 +26,7 @@
         "@wordpress/hooks": "^3.25.0",
         "@wordpress/html-entities": "^3.25.0",
         "@wordpress/i18n": "^4.25.0",
+        "@wordpress/interface": "^5.11.0",
         "@wordpress/server-side-render": "^4.2.0",
         "accounting": "^0.4.1",
         "classnames": "^2.3.2",

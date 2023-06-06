@@ -2,8 +2,8 @@
 
 namespace Give\Tests\Unit\Framework\Blocks;
 
-use Give\NextGen\Framework\Blocks\BlockCollection;
-use Give\NextGen\Framework\Blocks\BlockModel;
+use Give\Framework\Blocks\BlockCollection;
+use Give\Framework\Blocks\BlockModel;
 use Give\Tests\TestCase;
 
 /**

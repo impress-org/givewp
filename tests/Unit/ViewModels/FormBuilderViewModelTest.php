@@ -3,12 +3,12 @@
 namespace Give\Tests\Unit\VieModels;
 
 use Exception;
+use Give\DonationForms\Actions\GenerateDonationFormPreviewRouteUrl;
+use Give\DonationForms\Models\DonationForm;
 use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
-use Give\NextGen\DonationForm\Actions\GenerateDonationFormPreviewRouteUrl;
-use Give\NextGen\DonationForm\Models\DonationForm;
-use Give\NextGen\Framework\FormDesigns\FormDesign;
-use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
+use Give\Framework\FormDesigns\FormDesign;
+use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 

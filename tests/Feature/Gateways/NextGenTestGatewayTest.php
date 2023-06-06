@@ -4,7 +4,7 @@ namespace Give\Tests\Feature\Gateways;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
-use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
+use Give\PaymentGateways\Gateways\NextGenTestGateway\NextGenTestGateway;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 

@@ -3,13 +3,13 @@
 namespace Give\Tests\Feature\Controllers;
 
 use Exception;
+use Give\DonationForms\Controllers\DonateController;
+use Give\DonationForms\DataTransferObjects\DonateFormRouteData;
+use Give\DonationForms\Exceptions\DonationFormFieldErrorsException;
+use Give\DonationForms\Models\DonationForm;
 use Give\Donations\ValueObjects\DonationType;
-use Give\NextGen\DonationForm\Controllers\DonateController;
-use Give\NextGen\DonationForm\DataTransferObjects\DonateFormRouteData;
-use Give\NextGen\DonationForm\Exceptions\DonationFormFieldErrorsException;
-use Give\NextGen\DonationForm\Models\DonationForm;
-use Give\NextGen\Framework\Blocks\BlockCollection;
-use Give\NextGen\Framework\Blocks\BlockModel;
+use Give\Framework\Blocks\BlockCollection;
+use Give\Framework\Blocks\BlockModel;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;

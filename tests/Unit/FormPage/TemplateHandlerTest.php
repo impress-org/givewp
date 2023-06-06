@@ -2,8 +2,8 @@
 
 namespace Give\Tests\Unit\FormPage;
 
-use Give\NextGen\DonationForm\Models\DonationForm;
-use Give\NextGen\FormPage\TemplateHandler;
+use Give\DonationForms\Models\DonationForm;
+use Give\FormPage\TemplateHandler;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 

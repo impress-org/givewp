@@ -2,13 +2,13 @@
 
 namespace Give\Tests\Unit\CustomFields\Views;
 
+use Give\DonationForms\Listeners\StoreCustomFields;
+use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
+use Give\Donors\CustomFields\Views\DonorDetailsView;
 use Give\Donors\Models\Donor;
-use Give\NextGen\CustomFields\Views\DonorDetailsView;
-use Give\NextGen\DonationForm\Listeners\StoreCustomFields;
-use Give\NextGen\DonationForm\Models\DonationForm;
-use Give\NextGen\Framework\Blocks\BlockCollection;
-use Give\NextGen\Framework\Blocks\BlockModel;
+use Give\Framework\Blocks\BlockCollection;
+use Give\Framework\Blocks\BlockModel;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
@@ -57,7 +57,7 @@ class TestDonorDetailsView extends TestCase
         $form = DonationForm::find($form->id);
 
         $fields = array_filter($form->schema()->getFields(), static function ($field) {
-            return $field->shouldDisplayInAdmin() && $field->shouldStoreAsDonorMeta();
+            return $field->shouldShowInAdmin() && $field->shouldStoreAsDonorMeta();
         });
 
         $donorDetailsView = new DonorDetailsView($donation->donor, $fields);

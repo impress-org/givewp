@@ -5,9 +5,9 @@ namespace Give\Tests\Feature\Gateways\Stripe\Webhooks\Listeners;
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\NextGenStripeGateway;
-use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\Webhooks\Decorators\SubscriptionModelDecorator;
-use Give\NextGen\Gateways\Stripe\NextGenStripeGateway\Webhooks\Listeners\InvoicePaymentSucceeded;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Decorators\SubscriptionModelDecorator;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\InvoicePaymentSucceeded;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
@@ -31,13 +31,13 @@ class InvoicePaymentSucceededTest extends TestCase
     public function testShouldUpdateDonationStatusOfInitialDonation()
     {
         $subscription = Subscription::factory()->createWithDonation();
-        $subscription->gatewayId = NextGenStripeGateway::id();
+        $subscription->gatewayId = StripePaymentElementGateway::id();
         $subscription->gatewaySubscriptionId = 'stripe-subscription-id';
         $subscription->save();
 
         $donation = $subscription->initialDonation();
         $donation->status = DonationStatus::PROCESSING();
-        $donation->gatewayId = NextGenStripeGateway::id();
+        $donation->gatewayId = StripePaymentElementGateway::id();
         $donation->gatewayTransactionId = 'stripe-payment-intent-id';
         $donation->save();
 
@@ -80,7 +80,7 @@ class InvoicePaymentSucceededTest extends TestCase
             'frequency' => 1,
             'period' => SubscriptionPeriod::MONTH(),
             'gatewaySubscriptionId' => 'stripe-subscription-id',
-            'gatewayId' => NextGenStripeGateway::id(),
+            'gatewayId' => StripePaymentElementGateway::id(),
         ]);
 
         // refresh subscription model
@@ -129,7 +129,7 @@ class InvoicePaymentSucceededTest extends TestCase
             'frequency' => 1,
             'period' => SubscriptionPeriod::MONTH(),
             'gatewaySubscriptionId' => 'stripe-subscription-id',
-            'gatewayId' => NextGenStripeGateway::id(),
+            'gatewayId' => StripePaymentElementGateway::id(),
         ]);
 
         $donation = $subscription->initialDonation();
@@ -197,7 +197,7 @@ class InvoicePaymentSucceededTest extends TestCase
             'frequency' => 1,
             'period' => SubscriptionPeriod::MONTH(),
             'gatewaySubscriptionId' => 'stripe-subscription-id',
-            'gatewayId' => NextGenStripeGateway::id(),
+            'gatewayId' => StripePaymentElementGateway::id(),
         ]);
 
         $donation = $subscription->initialDonation();

@@ -27,7 +27,7 @@ class RegisterFormBuilderPageRoute
     public function __invoke()
     {
         $pageTitle = __('Visual Donation Form Builder', 'givewp');
-        $menuTitle = __('Add Next Gen Form', 'givewp');
+        $menuTitle = __('Add v3 Form', 'givewp');
         $version = __('Beta', 'givewp');
 
         add_submenu_page(

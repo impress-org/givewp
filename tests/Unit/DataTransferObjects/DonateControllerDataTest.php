@@ -3,13 +3,13 @@
 namespace TestsNextGen\Unit\DataTransferObjects;
 
 use Exception;
+use Give\DonationForms\DataTransferObjects\DonateControllerData;
+use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Donors\Models\Donor;
 use Give\Framework\Support\ValueObjects\Money;
-use Give\NextGen\DonationForm\DataTransferObjects\DonateControllerData;
-use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionMode;

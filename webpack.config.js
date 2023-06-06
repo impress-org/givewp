@@ -17,34 +17,34 @@ module.exports = {
         ...defaultConfig.resolve,
         alias: {
             ...defaultConfig.resolve.alias,
-            '@givewp/forms/types': path.resolve(__dirname, 'src/NextGen/DonationForm/resources/types.ts'),
-            '@givewp/forms/propTypes': path.resolve(__dirname, 'src/NextGen/DonationForm/resources/propTypes.ts'),
-            '@givewp/forms/app': path.resolve(__dirname, 'src/NextGen/DonationForm/resources/app'),
-            '@givewp/form-builder': path.resolve(__dirname, 'packages/form-builder/src'),
+            '@givewp/forms/types': srcPath('DonationForms/resources/types.ts'),
+            '@givewp/forms/propTypes': srcPath('DonationForms/resources/propTypes.ts'),
+            '@givewp/forms/app': srcPath('DonationForms/resources/app'),
+            '@givewp/form-builder': srcPath('FormBuilder/resources/js/form-builder/src'),
         },
     },
     entry: {
-        donationFormBlock: srcPath('NextGen/DonationForm/Blocks/DonationFormBlock/resources/block.ts'),
-        donationFormBlockStyle: srcPath(
-            'NextGen/DonationForm/Blocks/DonationFormBlock/resources/editor/styles/index.scss'
+        donationFormBlock: srcPath('DonationForms/Blocks/DonationFormBlock/resources/block.ts'),
+        donationFormBlockStyle: srcPath('DonationForms/Blocks/DonationFormBlock/resources/editor/styles/index.scss'),
+        donationFormApp: srcPath('DonationForms/resources/app/DonationFormApp.tsx'),
+        donationFormRegistrars: srcPath('DonationForms/resources/registrars/index.ts'),
+        donationFormEmbed: srcPath('DonationForms/resources/embed.ts'),
+        donationFormEmbedInside: srcPath('DonationForms/resources/embedInside.ts'),
+        stripePaymentElementGateway: srcPath(
+            'PaymentGateways/Gateways/Stripe/StripePaymentElementGateway/stripePaymentElementGateway.tsx'
         ),
-        donationFormApp: srcPath('NextGen/DonationForm/resources/app/DonationFormApp.tsx'),
-        donationFormRegistrars: srcPath('NextGen/DonationForm/resources/registrars/index.ts'),
-        donationFormEmbed: srcPath('NextGen/DonationForm/resources/embed.ts'),
-        donationFormEmbedInside: srcPath('NextGen/DonationForm/resources/embedInside.ts'),
-        nextGenStripeGateway: srcPath('NextGen/Gateways/Stripe/NextGenStripeGateway/nextGenStripeGateway.tsx'),
-        nextGenTestGateway: srcPath('NextGen/Gateways/NextGenTestGateway/nextGenTestGateway.tsx'),
-        payPalStandardGateway: srcPath('NextGen/Gateways/PayPal/PayPalStandardGateway/payPalStandardGateway.tsx'),
-        payPalCommerceGateway: srcPath('NextGen/Gateways/PayPalCommerce/payPalCommerceGateway.tsx'),
-        classicFormDesignCss: srcPath('NextGen/DonationForm/FormDesigns/ClassicFormDesign/css/main.scss'),
-        classicFormDesignJs: srcPath('NextGen/DonationForm/FormDesigns/ClassicFormDesign/js/main.ts'),
-        multiStepFormDesignCss: srcPath('NextGen/DonationForm/FormDesigns/MultiStepFormDesign/css/main.scss'),
-        multiStepFormDesignJs: srcPath('NextGen/DonationForm/FormDesigns/MultiStepFormDesign/js/main.ts'),
-        donationConfirmationReceiptApp: srcPath(
-            'NextGen/DonationForm/resources/receipt/DonationConfirmationReceiptApp.tsx'
+        nextGenTestGateway: srcPath('PaymentGateways/Gateways/NextGenTestGateway/nextGenTestGateway.tsx'),
+        payPalStandardGateway: srcPath(
+            'PaymentGateways/Gateways/PayPal/PayPalStandardGateway/payPalStandardGateway.tsx'
         ),
-        baseFormDesignCss: srcPath('NextGen/DonationForm/resources/styles/base.scss'),
-        formBuilderApp: path.resolve(process.cwd(), 'packages/form-builder/src/index.tsx'),
+        payPalCommerceGateway: srcPath('PaymentGateways/Gateways/PayPalCommerce/payPalCommerceGateway.tsx'),
+        classicFormDesignCss: srcPath('DonationForms/FormDesigns/ClassicFormDesign/css/main.scss'),
+        classicFormDesignJs: srcPath('DonationForms/FormDesigns/ClassicFormDesign/js/main.ts'),
+        multiStepFormDesignCss: srcPath('DonationForms/FormDesigns/MultiStepFormDesign/css/main.scss'),
+        multiStepFormDesignJs: srcPath('DonationForms/FormDesigns/MultiStepFormDesign/js/main.ts'),
+        donationConfirmationReceiptApp: srcPath('DonationForms/resources/receipt/DonationConfirmationReceiptApp.tsx'),
+        baseFormDesignCss: srcPath('DonationForms/resources/styles/base.scss'),
+        formBuilderApp: srcPath('FormBuilder/resources/js/form-builder/src/index.tsx'),
         formBuilderRegistrars: srcPath('FormBuilder/resources/js/registrars/index.ts'),
     },
 };

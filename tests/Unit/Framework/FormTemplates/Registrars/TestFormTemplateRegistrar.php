@@ -3,9 +3,9 @@
 namespace Give\Tests\Unit\Framework\FormDesigns\Registrars;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\NextGen\Framework\FormDesigns\Exceptions\OverflowException;
-use Give\NextGen\Framework\FormDesigns\FormDesign;
-use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
+use Give\Framework\FormDesigns\Exceptions\OverflowException;
+use Give\Framework\FormDesigns\FormDesign;
+use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Tests\TestCase;
 
 /**

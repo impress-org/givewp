@@ -2,7 +2,7 @@
 
 namespace Give\Tests\Unit\DataTransferObjects;
 
-use Give\NextGen\DonationForm\DataTransferObjects\DonationConfirmationReceiptViewRouteData;
+use Give\DonationForms\DataTransferObjects\DonationConfirmationReceiptViewRouteData;
 use Give\Tests\TestCase;
 
 /**

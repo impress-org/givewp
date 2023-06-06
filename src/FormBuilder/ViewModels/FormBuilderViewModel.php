@@ -2,13 +2,13 @@
 
 namespace Give\FormBuilder\ViewModels;
 
+use Give\DonationForms\Actions\GenerateDonationFormPreviewRouteUrl;
+use Give\DonationForms\Models\DonationForm;
 use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
+use Give\Framework\FormDesigns\FormDesign;
+use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
-use Give\NextGen\DonationForm\Actions\GenerateDonationFormPreviewRouteUrl;
-use Give\NextGen\DonationForm\Models\DonationForm;
-use Give\NextGen\Framework\FormDesigns\FormDesign;
-use Give\NextGen\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 
 class FormBuilderViewModel
 {
@@ -42,14 +42,6 @@ class FormBuilderViewModel
                 'rewriteSlug' => get_post_type_object('give_forms')->rewrite['slug'],
             ],
         ];
-    }
-
-    /**
-     * @since 0.1.0
-     */
-    public function jsPathFromRoot(): string
-    {
-        return GIVE_NEXT_GEN_URL . 'packages/form-builder/build/givewp-form-builder.js';
     }
 
     /**

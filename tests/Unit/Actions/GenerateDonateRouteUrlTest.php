@@ -2,11 +2,12 @@
 
 namespace Give\Tests\Unit\Actions;
 
-use Give\NextGen\DonationForm\Actions\GenerateDonateRouteUrl;
-use Give\NextGen\DonationForm\Routes\DonateRouteSignature;
+use Give\DonationForms\Actions\GenerateDonateRouteUrl;
+use Give\DonationForms\Routes\DonateRouteSignature;
 use Give\Tests\TestCase;
 
-class GenerateDonateRouteUrlTest extends TestCase {
+class GenerateDonateRouteUrlTest extends TestCase
+{
     /**
      * @since 0.1.0
      *

@@ -3,7 +3,7 @@
 namespace Give\Tests\NextGen\Framework\TemplateTags;
 
 use Give\Donations\Models\Donation;
-use Give\NextGen\Framework\TemplateTags\DonationTemplateTags;
+use Give\Framework\TemplateTags\DonationTemplateTags;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 

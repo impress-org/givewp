@@ -2,8 +2,8 @@
 
 namespace Give\Tests\Unit\Actions;
 
-use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptViewRouteUrl;
-use Give\NextGen\Framework\Routes\Route;
+use Give\DonationForms\Actions\GenerateDonationConfirmationReceiptViewRouteUrl;
+use Give\Framework\Routes\Route;
 use Give\Tests\TestCase;
 
 class GenerateDonationConfirmationReceiptViewRouteUrlTest extends TestCase

@@ -3,7 +3,7 @@
 namespace Give\Addon;
 
 use Give\Addon\Actions\AutoActivateLicense;
-use Give\NextGen\Gateways\NextGenTestGateway\NextGenTestGateway;
+use Give\PaymentGateways\Gateways\NextGenTestGateway\NextGenTestGateway;
 
 /**
  * Example of a helper class responsible for registering and handling add-on activation hooks.

@@ -1,13 +1,13 @@
 <?php
 
-namespace Give\NextGen\Framework\Receipts;
+namespace Give\Framework\Receipts;
 
+use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
-use Give\NextGen\DonationForm\Models\DonationForm;
-use Give\NextGen\Framework\Receipts\Actions\GenerateConfirmationPageReceipt;
-use Give\NextGen\Framework\Receipts\Properties\ReceiptDetail;
-use Give\NextGen\Framework\Receipts\Properties\ReceiptDetailCollection;
-use Give\NextGen\Framework\TemplateTags\DonationTemplateTags;
+use Give\Framework\Receipts\Actions\GenerateConfirmationPageReceipt;
+use Give\Framework\Receipts\Properties\ReceiptDetail;
+use Give\Framework\Receipts\Properties\ReceiptDetailCollection;
+use Give\Framework\TemplateTags\DonationTemplateTags;
 use Give\Subscriptions\Models\Subscription;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;

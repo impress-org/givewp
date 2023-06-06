@@ -4,7 +4,7 @@ namespace Give\FormBuilder;
 
 class FormBuilderRouteBuilder
 {
-    const SLUG = 'form-builder-next-gen';
+    const SLUG = 'givewp-form-builder';
 
     /**
      * @var int|string

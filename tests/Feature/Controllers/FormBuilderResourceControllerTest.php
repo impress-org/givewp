@@ -3,14 +3,14 @@
 namespace Give\Tests\Feature\Controllers;
 
 use Exception;
+use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
+use Give\DonationForms\ValueObjects\GoalType;
 use Give\FormBuilder\Controllers\FormBuilderResourceController;
 use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
+use Give\Framework\Blocks\BlockCollection;
+use Give\Framework\Blocks\BlockModel;
 use Give\Framework\Database\DB;
-use Give\NextGen\DonationForm\Models\DonationForm;
-use Give\NextGen\DonationForm\ValueObjects\DonationFormMetaKeys;
-use Give\NextGen\DonationForm\ValueObjects\GoalType;
-use Give\NextGen\Framework\Blocks\BlockCollection;
-use Give\NextGen\Framework\Blocks\BlockModel;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_Error;
@@ -64,7 +64,7 @@ class FormBuilderResourceControllerTest extends TestCase
         $mockRequest = $this->getMockRequest(WP_REST_Server::CREATABLE);
 
         $updatedSettings = $mockForm->settings;
-        $updatedSettings->formTitle = 'Updated Next Gen Form Builder Title';
+        $updatedSettings->formTitle = 'Updated v3 Form Builder Title';
 
         $mockRequest->set_param('id', $mockForm->id);
         $mockRequest->set_param('settings', $updatedSettings->toJson());

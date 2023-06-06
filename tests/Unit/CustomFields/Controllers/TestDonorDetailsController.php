@@ -3,12 +3,12 @@
 namespace Give\Tests\Unit\CustomFields\Controllers;
 
 use Exception;
+use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
+use Give\Donors\CustomFields\Controllers\DonorDetailsController;
+use Give\Donors\CustomFields\Views\DonorDetailsView;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
-use Give\NextGen\CustomFields\Controllers\DonorDetailsController;
-use Give\NextGen\CustomFields\Views\DonorDetailsView;
-use Give\NextGen\DonationForm\Models\DonationForm;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
@@ -32,7 +32,7 @@ class TestDonorDetailsController extends TestCase
 
         $fields = array_reduce([$donationForm], static function ($fields, DonationForm $form) {
             return $fields + array_filter($form->schema()->getFields(), static function ($field) {
-                    return $field->shouldDisplayInAdmin() && $field->shouldStoreAsDonorMeta();
+                    return $field->shouldShowInAdmin() && $field->shouldStoreAsDonorMeta();
                 });
         }, []);
 

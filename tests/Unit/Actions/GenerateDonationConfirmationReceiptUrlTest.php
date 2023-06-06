@@ -2,8 +2,8 @@
 
 namespace Give\Tests\Unit\Actions;
 
+use Give\DonationForms\Actions\GenerateDonationConfirmationReceiptUrl;
 use Give\Donations\Models\Donation;
-use Give\NextGen\DonationForm\Actions\GenerateDonationConfirmationReceiptUrl;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
