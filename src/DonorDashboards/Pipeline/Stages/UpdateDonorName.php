@@ -6,7 +6,6 @@ use Give\Donors\Models\Donor;
 
 /**
  * @unreleased Use Donor model to update data used by webhooks addon to prevent multiple events creation
- *
  * @since      2.10.0
  */
 class UpdateDonorName implements Stage
