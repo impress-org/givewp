@@ -16,7 +16,20 @@
         gap: var(--givewp-spacing-3);
         background: none;
         border: none;
+        height: 24px;
+        line-height: 1.5;
         cursor: pointer;
+
+        > h3 {
+            font-size: 1rem;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: normal;
+            text-align: left;
+            color: var(--givewp-grey-900);
+        }
 
         .spinContainer {
             display: flex;
@@ -40,7 +53,7 @@
         line-height: normal;
         letter-spacing: normal;
         text-align: right;
-        color: var(--givewp-blue-500);
+        color: var(--wp-blue-blue-50);
         text-decoration: none;
     }
 

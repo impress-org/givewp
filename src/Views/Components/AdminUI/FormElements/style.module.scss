@@ -5,17 +5,19 @@
 }
 
 .fieldLabel {
+    display: flex;
+    flex-direction: column;
+    gap: .19rem;
+}
+
+.fieldLabelContent {
     font-size: 0.875rem;
     font-stretch: normal;
     font-style: normal;
     letter-spacing: normal;
     text-align: left;
-    font-weight: 500;
+    font-weight: normal;
     color: var(--givewp-grey-600);
-
-    > * {
-        margin-top: .45rem;
-    }
 }
 
 .textFieldContainer {

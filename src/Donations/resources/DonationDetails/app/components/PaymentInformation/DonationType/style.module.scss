@@ -3,8 +3,8 @@
     align-items: center;
     justify-content: flex-start;
     border-radius: 4px;
-    font-size: .8rem;
-    font-weight: 500;
+    font-size: 0.75rem;
+    font-weight: 600;
     font-stretch: normal;
     font-style: normal;
     line-height: normal;
@@ -15,7 +15,7 @@
     > span {
         flex: 1;
         text-align: center;
-        padding: 0 var(--givewp-spacing-5);
+        padding: var(--givewp-spacing-2);
     }
 
     .typeContainer {
@@ -25,7 +25,6 @@
         height: 100%;
         width: 2.25rem;
         border-radius: 2px 0 0 2px;
-
     }
 
     .subscriptionContainer {

@@ -56,7 +56,9 @@ export default function FormNavigation({onSubmit, actionConfig, isDirty, pageInf
                             disabled={false}
                         >
                             {__('More Actions', 'give')}
-                            <DownArrowIcon color={'#2271b1'} />
+                            <span>
+                                <DownArrowIcon color={'#2271b1'} />
+                            </span>
                         </Button>
                         {toggleActions && <ActionMenu menuConfig={actionConfig} toggle={toggleMoreActions} />}
                     </div>
