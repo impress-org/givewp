@@ -31,6 +31,7 @@ use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
  * @method static DonationMetaKeys ANONYMOUS()
  * @method static DonationMetaKeys LEVEL_ID()
  * @method static DonationMetaKeys COMPANY()
+ * @method static DonationMetaKeys COMMENT()
  * @method static DonationMetaKeys GATEWAY_TRANSACTION_ID()
  * @method static DonationMetaKeys SUBSCRIPTION_INITIAL_DONATION()
  * @method static DonationMetaKeys IS_RECURRING()
@@ -66,6 +67,7 @@ class DonationMetaKeys extends Enum
     const ANONYMOUS = '_give_anonymous_donation';
     const LEVEL_ID = '_give_payment_price_id';
     const COMPANY = '_give_donation_company';
+    const COMMENT = '_give_donation_comment';
     const GATEWAY_TRANSACTION_ID = '_give_payment_transaction_id';
     const SUBSCRIPTION_INITIAL_DONATION = '_give_subscription_payment';
     const IS_RECURRING = '_give_is_donation_recurring';
