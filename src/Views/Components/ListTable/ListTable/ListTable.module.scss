@@ -121,6 +121,9 @@
 }
 
 .statusMessage {
+    display: flex;
+    justify-content: center;
+    align-content: center;
     font-weight: 600;
     font-size: 1.2em;
     padding-inline: 2.5em;
@@ -188,6 +191,11 @@
 
 .donations .amount {
     inline-size: 5.5rem;
+}
+
+
+.donations .status {
+    inline-size: 6.25rem;
 }
 
 .donors .donorInformation {

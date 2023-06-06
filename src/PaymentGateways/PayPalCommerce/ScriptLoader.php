@@ -142,12 +142,12 @@ EOT;
 
         /**
          * List of PayPal query parameters: https://developer.paypal.com/docs/checkout/reference/customize-sdk/#query-parameters
+         * @since 2.27.1 Removed locale query parameter.
          */
         $payPalSdkQueryParameters = [
             'client-id' => $merchant->clientId,
             'merchant-id' => $merchant->merchantIdInPayPal,
             'components' => 'hosted-fields,buttons',
-            'locale' => get_locale(),
             'disable-funding' => 'credit',
             'vault' => true,
             'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),

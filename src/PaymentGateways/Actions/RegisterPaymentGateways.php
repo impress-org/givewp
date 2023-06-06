@@ -18,8 +18,6 @@ use Give\PaymentGateways\PayPalCommerce\Exceptions\PayPalOrderException;
 use Give\PaymentGateways\PayPalCommerce\Exceptions\PayPalOrderIdException;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalOrder;
-use PayPalHttp\HttpException;
-use PayPalHttp\IOException;
 
 class RegisterPaymentGateways
 {

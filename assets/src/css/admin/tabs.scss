@@ -9,76 +9,95 @@
 	overflow: hidden;
 
 	.nav-tab {
-		border: none;
-		margin: 0;
-		padding: 15px 30px;
-		outline: none;
-		box-shadow: none;
-		background: $settings-tabs-bg;
+        border: none;
+        margin: 0;
+        padding: 15px 30px;
+        outline: none;
+        box-shadow: none;
+        background: $settings-tabs-bg;
 
-		&:hover {
-			background: $settings-tabs-tg-hover;
-		}
+        &:hover {
+            background: $settings-tabs-tg-hover;
+        }
 
-		&.nav-tab-active {
-			background: $settings-tabs-tg-active;
-			box-shadow: inset 0 4px 0 $give-green;
-			margin:0;
-		}
-	}
+        &.nav-tab-active {
+            background: $settings-tabs-tg-active;
+            box-shadow: inset 0 4px 0 $give-green;
+            margin: 0;
+        }
+    }
+}
 
+.give-nav-addons-tab {
+    float: right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 9px;
+    min-height: 54px;
+    width: 127px;
+    padding: 0 17px;
+    background: #F2F9FF;
+    text-decoration: none;
+
+    & span {
+        color: #F2F9FF;
+        background: #0C7FF2;
+        padding: 4px 8px;
+        border-radius: 4px;
+    }
 }
 
 
 @media screen and (max-width: 600px) {
-	.give-nav-tab-wrapper {
-		position: relative;
-		padding-top: 0 !important;
-		
-		> a {
-			width: 100%;
-			box-sizing: border-box;
-			margin: 0;
-			background-color: #ffffff;
-			border: 1px solid #cccccc;
+    .give-nav-tab-wrapper {
+        position: relative;
+        padding-top: 0 !important;
 
-			&:hover {
-				border-bottom: 1px solid #ccc;
-			}
-		}
+        > a {
+            width: 100%;
+            box-sizing: border-box;
+            margin: 0;
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
 
-		div.give-sub-nav-tab-wrapper {
-			position: absolute;
-			top: 0;
-			right: 0;
+            &:hover {
+                border-bottom: 1px solid #ccc;
+            }
+        }
 
-			#give-show-sub-nav {
-				height: 28px;
-				width: 30px;
-				border-radius: 0;
-				margin: 0;
+        div.give-sub-nav-tab-wrapper {
+            position: absolute;
+            top: 0;
+            right: 0;
 
-				> span.dashicons {
-					margin: 6px auto 0;
-					display: block;
-				}
+            #give-show-sub-nav {
+                height: 28px;
+                width: 30px;
+                border-radius: 0;
+                margin: 0;
 
-			}
+                > span.dashicons {
+                    margin: 6px auto 0;
+                    display: block;
+                }
 
-			nav.give-sub-nav-tab {
-				top: 35px;
-				right: 0;
-				left: auto;
+            }
 
-				a {
-					background: #ffffff;
+            nav.give-sub-nav-tab {
+                top: 35px;
+                right: 0;
+                left: auto;
 
-					&:hover {
-						background: #e5e5e5;
-					}
-				}
-			}
-		}
+                a {
+                    background: #ffffff;
+
+                    &:hover {
+                        background: #e5e5e5;
+                    }
+                }
+            }
+        }
 
 	}
 

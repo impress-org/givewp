@@ -13,6 +13,7 @@ use Give\Donations\LegacyListeners\RemoveSequentialId;
 use Give\Donations\LegacyListeners\UpdateDonorPaymentIds;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Migrations\AddMissingDonorIdToDonationComments;
+use Give\Donations\Migrations\MoveDonationCommentToDonationMetaTable;
 use Give\Donations\Migrations\SetAutomaticFormattingOption;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationNotesRepository;
@@ -49,6 +50,7 @@ class ServiceProvider implements ServiceProviderInterface
         give(MigrationsRegister::class)->addMigrations([
             AddMissingDonorIdToDonationComments::class,
             SetAutomaticFormattingOption::class,
+            MoveDonationCommentToDonationMetaTable::class,
         ]);
     }
 
