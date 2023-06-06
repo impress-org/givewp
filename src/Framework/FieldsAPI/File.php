@@ -15,13 +15,10 @@ use function wp_max_upload_size;
  */
 class File extends Field
 {
-
     use Concerns\AllowMultiple;
     use Concerns\HasEmailTag;
     use Concerns\HasHelpText;
     use Concerns\HasLabel;
-    use Concerns\ShowInReceipt;
-    use Concerns\StoreAsMeta;
     use Concerns\AllowMultiple;
 
     const TYPE = 'file';

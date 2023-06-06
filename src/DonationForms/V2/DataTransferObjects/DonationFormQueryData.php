@@ -1,12 +1,12 @@
 <?php
 
-namespace Give\DonationForms\DataTransferObjects;
+namespace Give\DonationForms\V2\DataTransferObjects;
 
 use DateTime;
-use Give\DonationForms\Models\DonationForm;
-use Give\DonationForms\Properties\DonationFormLevel;
-use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
-use Give\DonationForms\ValueObjects\DonationFormStatus;
+use Give\DonationForms\V2\Models\DonationForm;
+use Give\DonationForms\V2\Properties\DonationFormLevel;
+use Give\DonationForms\V2\ValueObjects\DonationFormMetaKeys;
+use Give\DonationForms\V2\ValueObjects\DonationFormStatus;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
 

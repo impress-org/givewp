@@ -10,15 +10,13 @@ trait StoreAsMeta
 
     /**
      * @since 2.10.2
-     * @var bool
      */
     protected $storeAsDonorMeta = false;
 
     /**
      * @since 2.10.2
-     * @return $this
      */
-    public function storeAsDonorMeta($storeAsDonorMeta = true)
+    public function storeAsDonorMeta($storeAsDonorMeta = true): self
     {
         $this->storeAsDonorMeta = (bool)$storeAsDonorMeta;
 
@@ -27,9 +25,8 @@ trait StoreAsMeta
 
     /**
      * @since 2.10.2
-     * @return bool
      */
-    public function shouldStoreAsDonorMeta()
+    public function shouldStoreAsDonorMeta(): bool
     {
         return $this->storeAsDonorMeta;
     }
