@@ -3,8 +3,10 @@
 namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
 use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Log\Log;
 use Give\PaymentGateways\PayPalCommerce\DataTransferObjects\PayPalWebhookHeaders;
 use Give\PaymentGateways\PayPalCommerce\Models\WebhookConfig;
+use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\Requests\CreateWebhook;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Traits\HasMode;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookRegister;
@@ -106,50 +108,44 @@ class Webhooks
      * @see https://developer.paypal.com/docs/api/webhooks/v1/#webhooks_post
      * @since 2.9.0
      *
-     * @param string $token
-     *
      * @return WebhookConfig
      * @throws Exception
      */
-    public function createWebhook($token)
+    public function createWebhook(): WebhookConfig
     {
-        $apiUrl = $this->payPalClient->getApiUrl('v1/notifications/webhooks');
-
         $events = $this->webhooksRegister->getRegisteredEvents();
         $webhookUrl = $this->webhookRoute->getRouteUrl();
 
-        $response = wp_remote_post(
-            $apiUrl,
-            [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Authorization' => "Bearer $token",
-                ],
-                'body' => json_encode(
-                    [
-                        'url' => $webhookUrl,
-                        'event_types' => array_map(
-                            static function ($eventType) {
-                                return [
-                                    'name' => $eventType,
-                                ];
-                            },
-                            $events
-                        ),
-                    ]
-                ),
-            ]
-        );
+        $request = new CreateWebhook([
+            'url' => $webhookUrl,
+            'event_types' => array_map(
+                static function ($eventType) {
+                    return [
+                        'name' => $eventType,
+                    ];
+                },
+                $events
+            ),
+        ]);
 
-        $response = json_decode($response['body'], false);
+        try {
+            $response = give(PayPalClient::class)
+                ->getHttpClient()
+                ->execute($request)->result;
 
-        if ( ! isset($response->id)) {
-            give_record_gateway_error('Create PayPal Commerce Webhook Failure', print_r($response, true));
+            if (! isset($response->id)) {
+                Log::error(
+                    'Create PayPal Commerce Webhook Failure',
+                    ['Response' => print_r($response, true)]
+                );
 
-            throw new Exception('Failed to create webhook');
+                throw new Exception('Failed to create webhook');
+            }
+
+            return new WebhookConfig($response->id, $webhookUrl, $events);
+        } catch (\Exception $exception) {
+            throw new Exception($exception->getMessage());
         }
-
-        return new WebhookConfig($response->id, $webhookUrl, $events);
     }
 
     /**

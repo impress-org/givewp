@@ -208,7 +208,7 @@ class onBoardingRedirectHandler
         }
 
         try {
-            $webhookConfig = $this->webhooksRepository->createWebhook($merchant_details->accessToken);
+            $webhookConfig = $this->webhooksRepository->createWebhook();
             $this->webhooksRepository->saveWebhookConfig($webhookConfig);
         } catch (Exception $ex) {
             $errors[] = esc_html__(
