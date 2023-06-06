@@ -9,7 +9,7 @@
  * @since       1.0
  */
 
-use Give\DonationForms\DonationFormsAdminPage;
+use Give\DonationForms\V2\DonationFormsAdminPage;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {

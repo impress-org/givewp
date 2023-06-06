@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Give\DonationForms\ListTable\Columns;
+namespace Give\DonationForms\V2\ListTable\Columns;
 
-use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\ListTable\ModelColumn;
 
 /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\DonationForms\ValueObjects;
+namespace Give\DonationForms\V2\ValueObjects;
 
 use Give\Framework\Support\ValueObjects\Enum;
 
@@ -9,7 +9,7 @@ use Give\Framework\Support\ValueObjects\Enum;
  *
  * @method static DonationFormStatus PENDING()
  * @method static DonationFormStatus PUBLISHED()
- * @method static DonationFormStatus PRIVATE()
+ * @method static DonationFormStatus PRIVATE ()
  * @method static DonationFormStatus DRAFT()
  * @method static DonationFormStatus TRASH()
  * @method bool isPending()

@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\DonationForms\ValueObjects;
+namespace Give\DonationForms\V2\ValueObjects;
 
 use Give\Framework\Support\ValueObjects\Enum;
 use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
