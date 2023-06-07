@@ -252,3 +252,31 @@ export function DisabledTextField({name, type, placeholder, label, value}: Disab
         </label>
     );
 }
+
+/**
+ *
+ * @unreleased
+ */
+export type TextAreaProps = InputFieldProps & {
+    defaultValue: string;
+};
+
+export const TextAreaField = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
+    ({name, placeholder, label, defaultValue, ...props}, ref) => {
+        return (
+            <label>
+                {label && <span className={styles.fieldLabel}>{label}</span>}{' '}
+                <div className={cx(styles.textFieldContainer)}>
+                    <textarea
+                        defaultValue={defaultValue}
+                        className={cx(styles.textAreaField)}
+                        ref={ref}
+                        name={name}
+                        placeholder={placeholder}
+                        {...props}
+                    />
+                </div>
+            </label>
+        );
+    }
+);

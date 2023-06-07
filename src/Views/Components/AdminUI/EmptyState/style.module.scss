@@ -1,0 +1,15 @@
+.emptyState{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--givewp-spacing-2);
+    padding: var(--givewp-spacing-8);
+    font-size: 1rem;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: left;
+    color: var(--givewp-grey-500);
+}
