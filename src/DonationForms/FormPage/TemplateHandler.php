@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\FormPage;
+namespace Give\DonationForms\FormPage;
 
 use WP_Post as Post;
 

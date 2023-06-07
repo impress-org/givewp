@@ -15,6 +15,7 @@ use Give\DonationForms\DataTransferObjects\DonationFormViewRouteData;
 use Give\DonationForms\FormDesigns\ClassicFormDesign\ClassicFormDesign;
 use Give\DonationForms\FormDesigns\DeveloperFormDesign\DeveloperFormDesign;
 use Give\DonationForms\FormDesigns\MultiStepFormDesign\MultiStepFormDesign;
+use Give\DonationForms\FormPage\TemplateHandler;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\DonationForms\Routes\DonateRoute;
 use Give\DonationForms\Routes\ValidationRoute;
@@ -33,6 +34,15 @@ class ServiceProvider implements ServiceProviderInterface
     public function register()
     {
         give()->singleton('forms', DonationFormRepository::class);
+
+        give()->singleton(TemplateHandler::class, function () {
+            global $post;
+
+            return new TemplateHandler(
+                $post,
+                GIVE_NEXT_GEN_DIR . 'src/DonationForms/FormPage/templates/form-single.php'
+            );
+        });
     }
 
     /*
@@ -46,6 +56,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         $this->registerRoutes();
         $this->registerFormDesigns();
+        $this->registerSingleFormPage();
 
         Hooks::addAction('givewp_donation_form_created', StoreBackwardsCompatibleFormMeta::class);
         Hooks::addAction('givewp_donation_form_updated', StoreBackwardsCompatibleFormMeta::class);
@@ -126,9 +137,9 @@ class ServiceProvider implements ServiceProviderInterface
     {
         add_action('givewp_register_form_design', static function (FormDesignRegistrar $formDesignRegistrar) {
             try {
-            $formDesignRegistrar->registerDesign(ClassicFormDesign::class);
-            $formDesignRegistrar->registerDesign(DeveloperFormDesign::class);
-            $formDesignRegistrar->registerDesign(MultiStepFormDesign::class);
+                $formDesignRegistrar->registerDesign(ClassicFormDesign::class);
+                $formDesignRegistrar->registerDesign(DeveloperFormDesign::class);
+                $formDesignRegistrar->registerDesign(MultiStepFormDesign::class);
             } catch (Exception $e) {
                 Log::error('Error registering form designs', [
                     'message' => $e->getMessage(),
@@ -136,5 +147,13 @@ class ServiceProvider implements ServiceProviderInterface
                 ]);
             }
         });
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function registerSingleFormPage()
+    {
+        Hooks::addFilter('template_include', TemplateHandler::class, 'handle', 11);
     }
 }
