@@ -190,6 +190,7 @@ function give_goal_shortcode( $atts ) {
 			'id'        => '',
 			'show_text' => true,
 			'show_bar'  => true,
+			'color'		=> '',
 		],
 		$atts,
 		'give_goal'

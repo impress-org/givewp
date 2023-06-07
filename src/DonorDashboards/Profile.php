@@ -2,6 +2,7 @@
 
 namespace Give\DonorDashboards;
 
+use Exception;
 use Give\DonorDashboards\Factories\DonorFactory;
 use Give\DonorDashboards\Helpers as DonorDashboardHelpers;
 use Give\DonorDashboards\Pipeline\DonorProfilePipeline;
@@ -9,8 +10,7 @@ use Give\DonorDashboards\Pipeline\Stages\UpdateDonorAddresses;
 use Give\DonorDashboards\Pipeline\Stages\UpdateDonorAnonymousGiving;
 use Give\DonorDashboards\Pipeline\Stages\UpdateDonorAvatar;
 use Give\DonorDashboards\Pipeline\Stages\UpdateDonorCompany;
-use Give\DonorDashboards\Pipeline\Stages\UpdateDonorEmails;
-use Give\DonorDashboards\Pipeline\Stages\UpdateDonorName;
+use Give\Donors\Models\Donor;
 
 /**
  * @since 2.10.0
@@ -33,20 +33,35 @@ class Profile
     /**
      * Handles updating relevant profile fields in donor database and meta database
      *
-     * @since 2.10.0
+     * @unreleased Use Donor model to update data used by webhooks addon to prevent multiple events creation
+     * @since      2.10.0
      *
      * @param object $data Object representing profile data to update
      *
      * @return array
      *
+     * @throws Exception
      */
     public function update($data)
     {
+        $donor = Donor::find($this->donor->id);
+
+        $donor->email = $data['primaryEmail'];
+        $donor->additionalEmails = $data['additionalEmails'] ?: [];
+
+        if ( ! empty($data['firstName']) && ! empty($data['lastName'])) {
+            $firstName = $data['firstName'];
+            $lastName = $data['lastName'];
+            $donor->name = "{$firstName} {$lastName}";
+            $donor->firstName = $firstName;
+            $donor->lastName = $lastName;
+        }
+
+        $donor->save();
+
         $pipeline = (new DonorProfilePipeline)
-            ->pipe(new UpdateDonorName)
             ->pipe(new UpdateDonorCompany)
             ->pipe(new UpdateDonorAvatar)
-            ->pipe(new UpdateDonorEmails)
             ->pipe(new UpdateDonorAddresses)
             ->pipe(new UpdateDonorAnonymousGiving);
 

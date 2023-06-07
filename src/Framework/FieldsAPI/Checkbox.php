@@ -7,14 +7,11 @@ namespace Give\Framework\FieldsAPI;
  */
 class Checkbox extends Field
 {
-
     use Concerns\HasEmailTag;
     use Concerns\HasHelpText;
     use Concerns\HasLabel;
     use Concerns\HasOptions;
     use Concerns\HasPlaceholder;
-    use Concerns\ShowInReceipt;
-    use Concerns\StoreAsMeta;
 
     const TYPE = 'checkbox';
 
@@ -23,7 +20,7 @@ class Checkbox extends Field
      *
      * @since 2.12.0
      *
-     * @param bool|callable $isChecked
+     * @param  bool|callable  $isChecked
      *
      * @return $this
      */

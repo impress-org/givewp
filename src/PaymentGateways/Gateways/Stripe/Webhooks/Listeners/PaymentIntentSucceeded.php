@@ -19,6 +19,11 @@ class PaymentIntentSucceeded extends StripeEventListener
      */
     public function processEvent(Event $event)
     {
+        /**
+         * @since 2.26.0
+         */
+        do_action('give_stripe_processing_payment_intent_succeeded', $event);
+
         /* @var PaymentIntent $paymentIntent */
         $paymentIntent = $event->data->object;
 

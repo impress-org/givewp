@@ -13,9 +13,7 @@ use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\Gateways\PayPalStandard\Actions\GenerateDonationReceiptPageUrl;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
-
 use Give\Subscriptions\Models\Subscription;
-
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 use function Give\Framework\Http\Response\response;
@@ -83,7 +81,7 @@ class TestGatewayOffsite extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function createPayment(Donation $donation, $gatewayData = null)
+    public function createPayment(Donation $donation, $gatewayData)
     {
         $redirectUrl = $this->generateSecureGatewayRouteUrl(
             'securelyReturnFromOffsiteRedirect',
@@ -97,7 +95,7 @@ class TestGatewayOffsite extends PaymentGateway
     public function createSubscription(
         Donation $donation,
         Subscription $subscription,
-        $gatewayData = null
+        $gatewayData
     ): GatewayCommand {
         $redirectUrl = $this->generateSecureGatewayRouteUrl(
             'securelyReturnFromOffsiteRedirect',
