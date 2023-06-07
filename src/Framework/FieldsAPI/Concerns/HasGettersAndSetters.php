@@ -6,12 +6,21 @@ use BadMethodCallException;
 use ReflectionClass;
 
 /**
- * Trait HasSettersAndGetters
- *
- * @unreleased
+ * Trait HasGettersAndSetters
  */
 trait HasGettersAndSetters
 {
+    protected $methodsCache = [];
+
+    /**
+     * Handle dynamic method calls to the object.
+     *
+     * @unreleased
+     *
+     * @return mixed
+     *
+     * @throws BadMethodCallException
+     */
     public function __call($name, $arguments = null)
     {
         $gettersAndSetters = $this->extractGettersAndSetters();
@@ -24,10 +33,18 @@ trait HasGettersAndSetters
             $property = lcfirst(substr($name, 3));
 
             if (!property_exists($this, $property)) {
-                throw new BadMethodCallException(sprintf(__('Property %s does not exist', 'givewp'), $name));
+                throw new BadMethodCallException(sprintf(__('Property %s does not exist', 'givewp'), $property));
             }
 
             return $this->$property;
+        }
+
+        if (!property_exists($this, $name)) {
+            throw new BadMethodCallException(sprintf(__('Property %s does not exist', 'givewp'), $name));
+        }
+
+        if (empty($arguments)) {
+            throw new BadMethodCallException(sprintf(__('No argument provided for %s', 'givewp'), $name));
         }
 
         $this->$name = $arguments[0];
@@ -36,14 +53,19 @@ trait HasGettersAndSetters
     }
 
     /**
+     * Extract and cache method annotations from the docblock
+     *
      * @unreleased
      */
     private function extractGettersAndSetters(): array
     {
+        if (null !== $this->methodsCache) {
+            return $this->methodsCache;
+        }
+
         $methods = [];
         $class = new ReflectionClass($this);
 
-        // Extract @method annotations
         $docComment = $class->getDocComment();
         $docComment = explode("\n", $docComment);
         $docComment = array_filter($docComment, function ($line) {
@@ -60,6 +82,8 @@ trait HasGettersAndSetters
                 array_slice(array_pad($matches, 4, ''), 1)
             );
         }
+
+        $this->methodsCache = $methods;
 
         return $methods;
     }
