@@ -227,10 +227,7 @@ export default function DonationsListTable() {
                     href={'https://docs.givewp.com/enterdonation'}
                     target={'_blank'}
                 >
-                    <img
-                        src={`${window.GiveDonations.pluginUrl}/assets/dist/images/admin/add-on-star-icon.svg`}
-                        alt={'manual donations'}
-                    />
+                    <span className={styles.manualDonationsAddOn}>{__('ADD-ON', 'give')}</span>
                     {__('Enter Donations', 'give')}
                     <span className={styles.manualDonationsMessage}>
                         <img
