@@ -10,7 +10,7 @@ use ReflectionClass;
  */
 trait HasGettersAndSetters
 {
-    protected $methodsCache = [];
+    protected $methodsCache = null;
 
     /**
      * Handle dynamic method calls to the object.
