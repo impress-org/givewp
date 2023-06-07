@@ -2,34 +2,26 @@
 
 namespace Give\Framework\FieldsAPI\Concerns;
 
-use BadMethodCallException;
-
 /**
- * Trait HasGettersAndSetters
+ * Trait HasSettersAndGetters
  *
- * @unreleased 
+ * @unreleased
  */
 trait HasGettersAndSetters
 {
-    public function __call($name, $arguments)
+    use HasGetters {
+        HasGetters::__call as protected callGetters;
+    }
+    use HasSetters {
+        HasSetters::__call as protected callSetters;
+    }
+
+    public function __call($name, $arguments = null)
     {
-        $prefix = substr($name, 0, 3);
-        $property = lcfirst(substr($name, 3));
-
-        if (!property_exists($this, $property)) {
-            throw new BadMethodCallException(sprintf(__('Property %s does not exist', 'givewp'), $name));
+        if ($arguments) {
+            return $this->callSetters($name, $arguments);
+        } else {
+            return $this->callGetters($name, $arguments);
         }
-
-        if ($prefix === 'get') {
-            return $this->$property;
-        }
-
-        if ($prefix === 'set') {
-            $this->$property = $arguments[0];
-
-            return $this;
-        }
-
-        throw new BadMethodCallException(sprintf(__('Method %s does not exist', 'givewp'), $name));
     }
 }
