@@ -19,8 +19,6 @@ class CheckboxGroup extends Field
     use Concerns\HasLabel;
     use Concerns\HasOptions;
     use Concerns\HasPlaceholder;
-    use Concerns\ShowInReceipt;
-    use Concerns\StoreAsMeta;
 
     const TYPE = 'legacy-checkbox-group';
 
