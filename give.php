@@ -43,8 +43,8 @@
  */
 
 use Give\Container\Container;
-use Give\DonationForms\Repositories\DonationFormsRepository;
-use Give\DonationForms\ServiceProvider as DonationFormsServiceProvider;
+use Give\DonationForms\V2\Repositories\DonationFormsRepository;
+use Give\DonationForms\V2\ServiceProvider as DonationFormsServiceProvider;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ServiceProvider as DonationServiceProvider;
 use Give\DonationSummary\ServiceProvider as DonationSummaryServiceProvider;
@@ -525,11 +525,13 @@ final class Give
  * @since 2.8.0 add parameter for quick retrieval from container
  * @since 1.0
  *
- * @param null $abstract Selector for data to retrieve from the service container
+ * @template T
  *
- * @return object|Give
+ * @param class-string<T>|null $abstract Selector for data to retrieve from the service container
+ *
+ * @return Give|T
  */
-function give($abstract = null)
+function give(string $abstract = null)
 {
     static $instance = null;
 
@@ -546,5 +548,6 @@ function give($abstract = null)
 
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/vendor/vendor-prefixed/autoload.php';
+require __DIR__ . '/vendor/woocommerce/action-scheduler/action-scheduler.php';
 
 give()->boot();

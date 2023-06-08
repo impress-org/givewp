@@ -197,8 +197,8 @@ function give_sanitize_amount_for_db( $number, $args = array() ) {
 	$args['number_decimals'] = 6;
 
 	if (
-		( isset( $args['currency'] ) && 'BTC' === $args['currency'] )
-		|| 'BTC' === give_get_currency()
+		( isset( $args['currency'] ) && 'XBT' === $args['currency'] )
+		|| 'XBT' === give_get_currency()
 	) {
 		$args['number_decimals'] = 10;
 	}
