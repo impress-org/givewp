@@ -84,6 +84,7 @@ use Give\Subscriptions\Repositories\SubscriptionRepository;
 use Give\Subscriptions\ServiceProvider as SubscriptionServiceProvider;
 use Give\TestData\ServiceProvider as TestDataServiceProvider;
 use Give\Tracking\TrackingServiceProvider;
+use Give\VendorOverrides\FieldConditions\FieldConditionsServiceProvider;
 use Give\VendorOverrides\Validation\ValidationServiceProvider;
 
 // Exit if accessed directly.
@@ -211,6 +212,7 @@ final class Give
         ValidationRulesServiceProvider::class,
         HttpServiceProvider::class,
         DesignSystemServiceProvider::class,
+        FieldConditionsServiceProvider::class,
     ];
 
     /**

@@ -15,7 +15,6 @@ class Group implements Node, Collection
     use Concerns\HasName;
     use Concerns\HasNodes;
     use Concerns\HasType;
-    use Concerns\HasVisibilityConditions;
     use Concerns\InsertNode;
     use Concerns\MoveNode;
     use Concerns\NameCollision;
@@ -23,6 +22,9 @@ class Group implements Node, Collection
     use Concerns\SerializeAsJson;
     use Concerns\TapNode;
     use Concerns\WalkNodes;
+    use Concerns\HasVisibilityConditions {
+        Concerns\HasVisibilityConditions::__construct as private __visibilityConditionsConstruct;
+    }
 
     /**
      * @since 2.12.2
@@ -38,6 +40,8 @@ class Group implements Node, Collection
     final public function __construct($name)
     {
         $this->name = $name;
+
+        $this->__visibilityConditionsConstruct();
     }
 
     /**
