@@ -5,7 +5,9 @@
     right: 0;
     bottom: 0;
     left: 0;
+    -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
+    background-color: rgba(0, 0, 0, 0.25);
 }
 
 .container {
@@ -38,6 +40,7 @@
     position: relative;
     margin: auto;
     max-width: 30vw;
+    min-width: 30vw;
     background-color: var(--givewp-shades-white);
     box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
     border: solid 1px var(--givewp-grey-200);
@@ -80,7 +83,7 @@
     .modalContentContainer {
         display: flex;
         justify-content: center;
-        margin-bottom: var(--givewp-spacing-11);
+        margin-bottom: var(--givewp-spacing-8);
         padding: 0 var(--givewp-spacing-6);
 
         div:first-child {
@@ -90,7 +93,6 @@
         }
 
         button {
-            margin-top: var(--givewp-spacing-11);
             height: 3.5rem;
         }
     }

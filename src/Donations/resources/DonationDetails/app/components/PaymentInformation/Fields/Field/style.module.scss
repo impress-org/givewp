@@ -7,27 +7,28 @@
     cursor: pointer;
 
     span {
-        font-size: .925rem;
+        font-size: 1rem;
     }
 
     > .labelContainer {
         display: flex;
-        gap: var(--givewp-spacing-1);
         align-items: flex-start;
         padding: 0;
+        margin: 0 0 var(--givewp-spacing-2) 0;
         background: none;
         border: none;
         cursor: pointer;
 
+
         span:first-child {
-            font-weight: 500;
+            font-size: 0.875rem;
+            font-weight: bold;
             font-stretch: normal;
             font-style: normal;
-            line-height: 1.5;
+            line-height: 1.43;
             letter-spacing: normal;
             text-align: left;
             color: var(--givewp-grey-900);
-            margin-bottom: var(--givewp-spacing-2);
         }
 
         .button {

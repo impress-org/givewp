@@ -58,7 +58,7 @@ function FeeRecoveredDialog({defaultAmount, amountChanged}: CurrencyAmountDialog
     const [amount, setAmount] = useState<number>(defaultAmount);
 
     return (
-        <div>
+        <div className={styles.currencyDialog}>
             <WarningMessage />
             <CurrencyInputField
                 defaultValue={amount}

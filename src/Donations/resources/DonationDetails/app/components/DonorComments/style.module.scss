@@ -1,0 +1,32 @@
+.comments {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    margin-bottom: var(--givewp-spacing-6);
+
+    img {
+        height: 2.5rem;
+        width: 2.5rem;
+        border-radius: var(--givewp-rounded-full);
+    }
+
+    svg {
+        height: 2.5rem;
+        width: 2.5rem;
+    }
+
+    span {
+        font-size: .875rem;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: left;
+        color: var(--givewp-grey-900);
+    }
+}
+
+.comments:last-child {
+    margin-bottom: 0;
+}

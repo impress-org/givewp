@@ -1,14 +1,11 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 
 import PaymentInformation from '../PaymentInformation';
-import {Container, LeftContainer} from '@givewp/components/AdminUI/ContainerLayout';
+import {Container, LeftContainer, RightContainer} from '@givewp/components/AdminUI/ContainerLayout';
 import BillingAddress from '../BillingAddress';
 import DonorDetails from '../DonorDetails';
-<<<<<<< Updated upstream
-=======
 import DonorComments from '../DonorComments';
 import {DonorNotes} from '../DonorNotes';
->>>>>>> Stashed changes
 
 /**
  *
@@ -17,21 +14,19 @@ import {DonorNotes} from '../DonorNotes';
 
 export default function FormTemplate() {
     return (
-        <>
+        <Fragment>
             <PaymentInformation />
             <Container>
                 <LeftContainer>
                     <DonorDetails />
                     <BillingAddress />
                 </LeftContainer>
-<<<<<<< Updated upstream
-=======
+
                 <RightContainer>
                     <DonorComments />
                     <DonorNotes />
                 </RightContainer>
->>>>>>> Stashed changes
             </Container>
-        </>
+        </Fragment>
     );
 }

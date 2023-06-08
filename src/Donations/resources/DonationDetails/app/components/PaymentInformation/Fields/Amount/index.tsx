@@ -37,7 +37,7 @@ export default function AmountField() {
     return (
         <>
             <input hidden {...register('amount')} />
-            <CurrencyField label="Amount" editable onEdit={() => setIsModalOpen(true)}>
+            <CurrencyField label="Total Donation" editable onEdit={() => setIsModalOpen(true)}>
                 {formatCurrency(Number(amount), currency)}
             </CurrencyField>
             <ModalDialog
@@ -60,7 +60,7 @@ function AmountDialog({defaultAmount, amountChanged}: CurrencyAmountDialogProps)
     const [amount, setAmount] = useState<number>(defaultAmount);
 
     return (
-        <div>
+        <div className={styles.currencyDialog}>
             <WarningMessage />
             <CurrencyInputField
                 defaultValue={amount}

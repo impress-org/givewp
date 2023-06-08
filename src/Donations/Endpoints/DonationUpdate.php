@@ -7,6 +7,7 @@ use Give\Donations\Endpoints\DonationUpdateAttributes\Address2Attribute;
 use Give\Donations\Endpoints\DonationUpdateAttributes\AmountAttribute;
 use Give\Donations\Endpoints\DonationUpdateAttributes\AttributeUpdatesModel;
 use Give\Donations\Endpoints\DonationUpdateAttributes\CityAttribute;
+use Give\Donations\Endpoints\DonationUpdateAttributes\CommentAttribute;
 use Give\Donations\Endpoints\DonationUpdateAttributes\CountryAttribute;
 use Give\Donations\Endpoints\DonationUpdateAttributes\CreatedAtAttribute;
 use Give\Donations\Endpoints\DonationUpdateAttributes\DonorIdAttribute;
@@ -52,6 +53,7 @@ class DonationUpdate extends Endpoint
         CityAttribute::class,
         StateAttribute::class,
         ZipAttribute::class,
+        CommentAttribute::class,
     ];
 
     /**
@@ -114,7 +116,7 @@ class DonationUpdate extends Endpoint
                 if ( ! $request->has_param($attrId) || ! is_a($attr, AttributeUpdatesModel::class, true)) {
                     continue;
                 }
-                
+
                 $attr::update($request->get_param($attrId), $donation);
                 $updatedFields[] = $attrId;
             }

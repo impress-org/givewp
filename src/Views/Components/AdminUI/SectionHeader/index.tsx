@@ -4,7 +4,6 @@ import DownArrowIcon from '@givewp/components/AdminUI/Icons/DownArrowIcon';
 import ExternalIcon from '@givewp/components/AdminUI/Icons/ExternalIcon';
 
 import styles from './style.module.scss';
-import AddIcon from '@givewp/components/AdminUI/Icons/AddIcon';
 
 /**
  *
@@ -88,7 +87,6 @@ export type HeaderActionProps = {
 export function HeaderAction({children, action}: HeaderActionProps) {
     return (
         <button className={styles.headerAction} type={'button'} onClick={action}>
-            <AddIcon />
             {children}
         </button>
     );
