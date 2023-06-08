@@ -3,14 +3,15 @@
 namespace Give\Framework\FieldsAPI\Concerns;
 
 use BadMethodCallException;
-use ReflectionClass;
+use ReflectionException;
+use ReflectionProperty;
 
 /**
  * Trait HasGettersAndSetters
  */
 trait HasGettersAndSetters
 {
-    protected $methodsCache = null;
+    private static $cache = [];
 
     /**
      * Handle dynamic method calls to the object.
@@ -20,31 +21,38 @@ trait HasGettersAndSetters
      * @return mixed
      *
      * @throws BadMethodCallException
+     * @throws ReflectionException
      */
     public function __call($name, $arguments = null)
     {
-        $gettersAndSetters = $this->extractGettersAndSetters();
-
-        if (!array_key_exists($name, $gettersAndSetters)) {
-            throw new BadMethodCallException(sprintf(__('Method %s does not exist', 'givewp'), $name));
-        }
+        $action = 'set';
+        $property = $name;
 
         if (strpos($name, 'get') === 0) {
+            $action = 'get';
             $property = lcfirst(substr($name, 3));
-
-            if (!property_exists($this, $property)) {
-                throw new BadMethodCallException(sprintf(__('Property %s does not exist', 'givewp'), $property));
-            }
-
-            return $this->$property;
         }
 
-        if (!property_exists($this, $name)) {
-            throw new BadMethodCallException(sprintf(__('Property %s does not exist', 'givewp'), $name));
+        if (!property_exists($this, $property)) {
+            throw new BadMethodCallException(sprintf(__('Property %s does not exist', 'givewp'), $property));
+        }
+
+        $propertyAttributes = self::parseProperty($property);
+
+        if (!$propertyAttributes[$action]) {
+            throw new BadMethodCallException(sprintf(__('No permissions to %s the property %s', 'givewp'), $action, $property));
+        }
+
+        if ($action === 'get') {
+            return $this->$property;
         }
 
         if (empty($arguments)) {
             throw new BadMethodCallException(sprintf(__('No argument provided for %s', 'givewp'), $name));
+        }
+
+        if (gettype($arguments[0]) !== $propertyAttributes['type']) {
+            throw new BadMethodCallException(sprintf(__('Argument provided for %s is not of type %s', 'givewp'), $name, $propertyAttributes['type']));
         }
 
         $this->$name = $arguments[0];
@@ -53,38 +61,42 @@ trait HasGettersAndSetters
     }
 
     /**
-     * Extract and cache method annotations from the docblock
+     * Parse property docblock and extract getters and setters.
      *
      * @unreleased
+     * @throws ReflectionException
      */
-    private function extractGettersAndSetters(): array
+    private static function parseProperty($propertyName): array
     {
-        if (null !== $this->methodsCache) {
-            return $this->methodsCache;
+        if (isset(self::$cache[$propertyName])) {
+            return self::$cache[$propertyName];
         }
 
-        $methods = [];
-        $class = new ReflectionClass($this);
+        $propertyAttributes = [];
 
-        $docComment = $class->getDocComment();
-        $docComment = explode("\n", $docComment);
-        $docComment = array_filter($docComment, function ($line) {
-            return strpos($line, '@method') !== false;
+        $property = new ReflectionProperty(static::class, $propertyName);
+        $propertyDocComment = $property->getDocComment();
+        $propertyDocComment = explode("\n", $propertyDocComment);
+
+        /** @var array $propertyDocComment */
+        $propertyDocComment = array_filter($propertyDocComment, function ($line) {
+            return strpos($line, '@') !== false;
         });
 
-        /** @var array $docComment */
-        foreach ($docComment as $line) {
-            $pattern = '/@method\s*(\w+)\((\w+\s+\$\w+)?\):?\s*(\w+)?/';
-            preg_match($pattern, $line, $matches);
+        foreach ($propertyDocComment as $attribute) {
+            $attribute = trim(str_replace('*', '', $attribute));
 
-            $methods[$matches[1]] = array_combine(
-                ['method', 'params', 'return'],
-                array_slice(array_pad($matches, 4, ''), 1)
-            );
+            if ($attribute === '@getter') {
+                $propertyAttributes['get'] = true;
+            } elseif ($attribute === '@setter') {
+                $propertyAttributes['set'] = true;
+            } elseif (strpos($attribute, '@type') === 0) {
+                $propertyAttributes['type'] = trim(str_replace('@type', '', $attribute));
+            }
         }
 
-        $this->methodsCache = $methods;
+        self::$cache[$propertyName] = $propertyAttributes;
 
-        return $methods;
+        return $propertyAttributes;
     }
 }
