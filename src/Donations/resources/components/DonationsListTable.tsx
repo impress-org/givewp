@@ -235,7 +235,7 @@ export default function DonationsListTable() {
                             alt={'manual donations'}
                         />{' '}
                         {__(
-                            'Keep track of your offline donations by creating donations directly from here, ensuring accurate records with minimal effort.',
+                            'Need to add in a record for a donation received elsewhere, or reconcile with the payment gateway? Add donation records with the Manual Donations add-on!',
                             'give'
                         )}
                     </span>
