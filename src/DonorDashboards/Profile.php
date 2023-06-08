@@ -33,7 +33,7 @@ class Profile
     /**
      * Handles updating relevant profile fields in donor database and meta database
      *
-     * @unreleased Use Donor model to update data used by webhooks addon to prevent multiple events creation
+     * @since 2.27.3 Use Donor model to update data used by webhooks addon to prevent multiple events creation
      * @since      2.10.0
      *
      * @param object $data Object representing profile data to update

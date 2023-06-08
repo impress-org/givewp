@@ -19,7 +19,7 @@ trait HasVisibilityConditions
     /**
      * The node is visible by default. These are the conditions for it to remain visible.
      *
-     * @unreleased update to use SimpleConditionSet
+     * @since 2.27.3 update to use SimpleConditionSet
      * @since 2.13.0
      *
      * @var SimpleConditionSet
@@ -27,7 +27,7 @@ trait HasVisibilityConditions
     protected $visibilityConditions;
 
     /**
-     * @unreleased
+     * @since 2.27.3
      */
     public function __construct()
     {
@@ -37,7 +37,7 @@ trait HasVisibilityConditions
     /**
      * Get the visibility conditions.
      *
-     * @unreleased update to use SimpleConditionSet
+     * @since 2.27.3 update to use SimpleConditionSet
      * @since 2.13.0
      *
      * @return Condition[]
@@ -48,7 +48,7 @@ trait HasVisibilityConditions
     }
 
     /**
-     * @unreleased replace with native condition set method
+     * @since 2.27.3 replace with native condition set method
      * @since 2.16.0
      */
     public function hasVisibilityConditions(): bool
@@ -57,7 +57,7 @@ trait HasVisibilityConditions
     }
 
     /**
-     * @unreleased
+     * @since 2.27.3
      */
     public function passesVisibilityConditions(array $values): bool
     {
@@ -65,7 +65,7 @@ trait HasVisibilityConditions
     }
 
     /**
-     * @unreleased
+     * @since 2.27.3
      */
     public function failsVisibilityConditions(array $values): bool
     {
@@ -75,7 +75,7 @@ trait HasVisibilityConditions
     /**
      * Set a condition for showing the node.
      *
-     * @unreleased update to use SimpleConditionSet
+     * @since 2.27.3 update to use SimpleConditionSet
      * @since 2.13.0
      */
     public function showIf(string $field, string $operator, $value, string $boolean = 'and'): self
@@ -94,7 +94,7 @@ trait HasVisibilityConditions
     /**
      * Add an "or" visibility condition, useful when chained for readability.
      *
-     * @unreleased
+     * @since 2.27.3
      */
     public function orShowIf(string $field, string $operator, $value): self
     {
@@ -108,7 +108,7 @@ trait HasVisibilityConditions
     /**
      * Add an "and" visibility condition, useful when chained for readability.
      *
-     * @unreleased
+     * @since 2.27.3
      */
     public function andShowIf(string $field, string $operator, $value): self
     {
@@ -122,7 +122,7 @@ trait HasVisibilityConditions
     /**
      * Set multiple conditions for showing the node.
      *
-     * @unreleased update to use FieldCondition
+     * @since 2.27.3 update to use FieldCondition
      * @since 2.13.0
      *
      * @param FieldCondition|array ...$conditions
@@ -144,7 +144,7 @@ trait HasVisibilityConditions
      *
      * This also only adds the validation rule if the node has validation rules.
      *
-     * @unreleased
+     * @since 2.27.3
      */
     protected function updateValidationRules()
     {
@@ -156,7 +156,7 @@ trait HasVisibilityConditions
     /**
      * Normalize the condition if in array format.
      *
-     * @unreleased update to use FieldCondition
+     * @since 2.27.3 update to use FieldCondition
      * @since 2.13.0
      *
      * @param FieldCondition|array $condition

@@ -11,7 +11,7 @@ class FieldConditionsServiceProvider implements ServiceProvider
     /**
      * {@inheritDoc}
      *
-     * @unreleased
+     * @since 2.27.3
      */
     public function register()
     {
@@ -21,7 +21,7 @@ class FieldConditionsServiceProvider implements ServiceProvider
     /**
      * {@inheritDoc}
      *
-     * @unreleased
+     * @since 2.27.3
      */
     public function boot()
     {

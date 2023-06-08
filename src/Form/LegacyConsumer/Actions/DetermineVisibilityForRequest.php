@@ -7,7 +7,7 @@ use Give\Vendors\StellarWP\FieldConditions\Contracts\Condition;
 use Give\Vendors\StellarWP\FieldConditions\FieldCondition;
 
 /**
- * @unreleased change postData to an array
+ * @since 2.27.3 change postData to an array
  * @since 2.21.0
  */
 class DetermineVisibilityForRequest
@@ -22,7 +22,7 @@ class DetermineVisibilityForRequest
     protected $postData;
 
     /**
-     * @unreleased add parameter and return types
+     * @since 2.27.3 add parameter and return types
      * @since 2.21.0
      */
     public function __construct(Field $field, array $postData)
@@ -55,7 +55,7 @@ class DetermineVisibilityForRequest
     }
 
     /**
-     * @unreleased update to use FieldConditions
+     * @since 2.27.3 update to use FieldConditions
      * @since 2.21.0
      */
     protected function reduceVisibility(bool $visibility, Condition $condition): bool
@@ -68,7 +68,7 @@ class DetermineVisibilityForRequest
     }
 
     /**
-     * @unreleased update to use FieldConditions
+     * @since 2.27.3 update to use FieldConditions
      * @since 2.21.0
      */
     protected function compareConditionWithOperator(Condition $condition): bool

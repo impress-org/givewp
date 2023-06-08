@@ -22,7 +22,7 @@ class CurrencyFacade
     /**
      * Immutably converts the given amount into the system currency.
      *
-     * @unreleased updated to use aggregated currency list.
+     * @since 2.27.3 updated to use aggregated currency list.
      *
      * @since 2.20.0
      *
@@ -51,7 +51,7 @@ class CurrencyFacade
     /**
      * Creates a new Money instance from a decimal amount
      *
-     * @unreleased updated to use aggregated currency list.
+     * @since 2.27.3 updated to use aggregated currency list.
      *
      * @since 2.20.0
      *
@@ -76,7 +76,7 @@ class CurrencyFacade
     /**
      * Formats the amount to a currency format, including currency symbols, in the given locale.
      *
-     * @unreleased updated to use aggregated currency list.
+     * @since 2.27.3 updated to use aggregated currency list.
      *
      * @since 2.24.2 fallback on give formatting system if intl extension is not available
      * @since 2.20.0
@@ -127,7 +127,7 @@ class CurrencyFacade
     /**
      * Retrieves a list for all supported currencies.
      *
-     * @unreleased
+     * @since 2.27.3
      */
     private function getCurrenciesList(): Currencies
     {

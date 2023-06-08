@@ -18,7 +18,7 @@ final class HasVisibilityConditionsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.27.3
      */
     public function testCanCheckIfHasVisibilityConditions()
     {
