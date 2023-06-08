@@ -8,11 +8,13 @@ StoreContext.displayName = 'DonationFormMultiStepState';
 const StoreContextDispatch = createContext(null);
 StoreContextDispatch.displayName = 'DonationFormMultiStepStateDispatch';
 
+export type MultiStepFormContextState = {
+    steps: StepObject[];
+    currentStep: number;
+};
+
 type PropTypes = {
-    initialState: {
-        steps: StepObject[];
-        currentStep: number;
-    };
+    initialState: MultiStepFormContextState;
     children: ReactNode;
 };
 
@@ -29,7 +31,7 @@ const DonationFormMultiStepStateProvider = ({initialState, children}: PropTypes)
     );
 };
 
-const useDonationFormMultiStepState = () => useContext(StoreContext);
+const useDonationFormMultiStepState = () => useContext<MultiStepFormContextState>(StoreContext);
 const useDonationFormMultiStepStateDispatch = () => useContext(StoreContextDispatch);
 
 export {DonationFormMultiStepStateProvider, useDonationFormMultiStepState, useDonationFormMultiStepStateDispatch};

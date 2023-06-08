@@ -1,4 +1,5 @@
-import {ReactElement} from 'react';
+import type {ReactElement} from 'react';
+import {Section} from '@givewp/forms/types';
 
 /**
  * @unreleased
@@ -21,4 +22,6 @@ export type StepObject = {
     description: string;
     element: ReactElement;
     fields: string[];
+    visibilityConditions: Section['visibilityConditions'];
+    isVisible: boolean;
 };

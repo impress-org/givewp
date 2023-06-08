@@ -1,6 +1,7 @@
 import Joi, {AnySchema, ObjectSchema} from 'joi';
-import {Field, Form, isField} from '@givewp/forms/types';
+import {BasicCondition, Field, FieldCondition, Form, isField} from '@givewp/forms/types';
 import {__, sprintf} from '@wordpress/i18n';
+import conditionOperatorFunctions from '@givewp/forms/app/utilities/conditionOperatorFunctions';
 
 /**
  * @since 0.1.0
@@ -45,7 +46,7 @@ function getJoiRulesForField(field: Field): AnySchema {
 }
 
 /**
- * @unreelased do not validate fields with no rules
+ * @unreleased add support for excludeUnless rule with basic conditions; do not validate fields with no rules
  * @since 0.1.0
  */
 function convertFieldAPIRulesToJoi(rules): AnySchema {
@@ -90,7 +91,34 @@ function convertFieldAPIRulesToJoi(rules): AnySchema {
     }
 
     if (rules.required) {
-        joiRules = joiRules.required();
+        if (rules.hasOwnProperty('excludeUnless')) {
+            /**
+             * This applies requirements to a field if the field is not being excluded by its conditions. It only
+             * supports basic conditions at this time, but could be expanded to support more complex conditions.
+             *
+             * Note that this unsets the value if the field conditions are not met.
+             */
+            joiRules = joiRules.custom((value, helpers) => {
+                const formValues = helpers.state.ancestors[0];
+
+                const passesConditions = rules.excludeUnless.every((condition: BasicCondition) => {
+                    return conditionOperatorFunctions[condition.comparisonOperator](
+                        formValues[condition.field],
+                        condition.value
+                    );
+                });
+
+                if (passesConditions && (value === '' || value === null)) {
+                    return helpers.error('required');
+                } else if (!passesConditions) {
+                    return undefined;
+                }
+
+                return value;
+            }, 'exclude unless validation');
+        } else {
+            joiRules = joiRules.required();
+        }
     } else {
         joiRules = joiRules.optional().allow('', null);
     }

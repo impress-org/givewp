@@ -103,19 +103,29 @@ export interface Gateway extends RegisteredGateway {
     afterCreatePayment?(response: FormResponse): Promise<void> | Error;
 }
 
-export interface VisibilityCondition {
-    type: string;
+export interface BasicCondition {
+    type: 'basic';
+    logicalOperator: 'and' | 'or';
     field: string;
+    comparisonOperator: '==' | '!=' | '>' | '<' | '>=' | '<=' | 'contains' | 'not_contains';
     value: any;
-    operator: '==' | '!=' | '>' | '<' | '>=' | '<=';
-    boolean: 'AND' | 'OR';
 }
+
+export interface NestedCondition {
+    type: 'nested';
+
+    boolean: 'and' | 'or';
+
+    conditions: FieldCondition[];
+}
+
+export type FieldCondition = BasicCondition | NestedCondition;
 
 export interface Node {
     name: string;
     type: string;
     nodeType: string;
-    VisibilityConditions: VisibilityCondition[];
+    visibilityConditions: FieldCondition[];
 }
 
 export interface Field extends Node {
@@ -208,6 +218,10 @@ export function isElement(node: Node): node is Element {
 
 export function isGroup(node: Node): node is Group {
     return node.nodeType === 'group';
+}
+
+export function isSection(node: Node): node is Section {
+    return node.nodeType === 'section';
 }
 
 export interface SelectOption {

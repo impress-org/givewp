@@ -424,13 +424,16 @@ class DonationFormRepository
                         )
                 );
             }
-
-            return $form;
         } catch (Exception $exception) {
             Log::error('Failed converting donation form blocks to fields', compact('formId', 'blocks'));
+
+            $formId = 'donation-form';
+            $form = new Form($formId);
         }
 
-        return new Form('donation-form');
+        Hooks::doAction('givewp_donation_form_schema', $form, $formId);
+
+        return $form;
     }
 
     /**

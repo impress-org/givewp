@@ -1,5 +1,4 @@
-import {useRef} from '@wordpress/element';
-import {useEffect} from 'react';
+import {useRef, useEffect} from '@wordpress/element';
 
 /**
  * @unreleased

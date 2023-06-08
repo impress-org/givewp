@@ -30,6 +30,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
+     * @unreleased skip fields with non-existing meta
      * @since 0.1.0
      */
     protected function getCustomFields(Donation $donation): array
@@ -45,19 +46,30 @@ class GenerateConfirmationPageReceipt
             return $field->shouldShowInReceipt();
         });
 
-        return array_map(static function (Field $field) use ($donation) {
+        $receiptDetails = [];
+        foreach($customFields as $field) {
             /** @var Field|HasLabel|HasName $field */
             if ($field->shouldStoreAsDonorMeta()) {
+                if (!metadata_exists('donor', $donation->donor->id, $field->getName()) ) {
+                    continue;
+                }
+
                 $value = give()->donor_meta->get_meta($donation->donor->id, $field->getName(), true);
             } else {
+                if (!metadata_exists('donation', $donation->id, $field->getName()) ) {
+                    continue;
+                }
+
                 $value = give()->payment_meta->get_meta($donation->id, $field->getName(), true);
             }
 
-            return new ReceiptDetail(
+            $receiptDetails[] = new ReceiptDetail(
                 $field->getLabel(),
                 $value
             );
-        }, $customFields);
+        }
+
+        return $receiptDetails;
     }
 
     /**

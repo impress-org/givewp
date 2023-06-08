@@ -1,5 +1,5 @@
 import {createContext, ReactNode, useContext, useReducer} from 'react';
-import type {Gateway} from '@givewp/forms/types';
+import type {Gateway, Section} from '@givewp/forms/types';
 import reducer from '@givewp/forms/app/store/reducer';
 import {ObjectSchema} from 'joi';
 
