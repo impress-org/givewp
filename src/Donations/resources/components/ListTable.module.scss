@@ -1,3 +1,62 @@
 .paymentType {
     padding-inline-end: 0;
 }
+
+.manualDonationsNotice {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .5rem 1rem;
+    background: #FAFAFA;
+    color: var(--givewp-grey-600);
+    box-shadow: 0px 1px 2px rgba(14, 14, 14, 0.15);
+    border: 1px solid #E6E6E6;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: .875rem;
+    $depth: 0px 1px 0px rgba(0, 0, 0, 0.25);
+
+    img {
+        transform: scale(.8)
+    }
+
+    .manualDonationsAddOn {
+        background: var(--givewp-blue-50);
+        color: var(--givewp-blue-500);
+        font-size: 0.625rem;
+        font-weight: 700;
+        padding: 0.15rem 0.5rem;
+        border-radius: 4px;
+    }
+
+    .manualDonationsMessage {
+        display: none;
+        visibility: hidden;
+        position: absolute;
+        top: 3.35rem;
+        left: -5%;
+        background: var(--givewp-blue-700);
+        box-shadow: 0px 4px 8px rgba(14, 14, 14, 0.15);
+        border-radius: 4px;
+        color: var(--givewp-shades-white);
+        padding: .75rem 3rem .75rem 1rem;
+        width: 290px;
+        font-weight: 400;
+        font-size: 0.75rem;
+        line-height: 150%;
+        z-index: 999;
+
+        img {
+            position: absolute;
+            top: -.5rem;
+            right: 49%;
+        }
+    }
+
+    &:hover .manualDonationsMessage {
+        display: block;
+        visibility: visible;
+    }
+}
