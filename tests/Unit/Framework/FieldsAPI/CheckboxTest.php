@@ -9,7 +9,7 @@ use Give\Tests\TestCase;
 class CheckboxTest extends TestCase
 {
     /**
-     * @unreleased
+     * @since 2.28.0
      */
     public function testShouldToggleCheckedState()
     {
@@ -28,7 +28,7 @@ class CheckboxTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.28.0
      */
     public function testShouldSetAndGetValue()
     {
@@ -38,7 +38,7 @@ class CheckboxTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.28.0
      */
     public function testShouldReturnValueAsDefaultWhenChecked()
     {
@@ -62,7 +62,7 @@ class CheckboxTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.28.0
      */
     public function testShouldThrowRuntimeExceptionWhenDefaultValueMethodIsUsed()
     {

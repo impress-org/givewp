@@ -9,7 +9,7 @@ use Give\Framework\FieldsAPI\Field;
  * This class is a legacy node for the old Form Field Manager Checkbox field. It should not be used in any other context
  * and will be eventually be removed.
  *
- * @unreleased Moved here to discourage future use
+ * @since 2.28.0 Moved here to discourage future use
  * @since 2.12.0
  */
 class CheckboxGroup extends Field

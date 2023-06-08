@@ -54,7 +54,7 @@ class SetupFieldValidation implements HookCommandInterface
     /**
      * Validate the given field.
      *
-     * @unreleased add shim for CheckboxGroup, only necessary for legacy FFM fields.
+     * @since 2.28.0 add shim for CheckboxGroup, only necessary for legacy FFM fields.
      * @since 2.14.0 Add max length validation for input and textarea field
      *
      * @param Field|File|Text $field

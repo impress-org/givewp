@@ -15,7 +15,7 @@ class Html extends Element
     /**
      * Set the HTML for the element.
      *
-     * @unreleased added types
+     * @since 2.28.0 added types
      * @since 2.12.2
      */
     public function html(string $html): self
@@ -28,7 +28,7 @@ class Html extends Element
     /**
      * Get the HTML for the element.
      *
-     * @unreleased added types
+     * @since 2.28.0 added types
      * @since 2.12.2
      */
     public function getHtml(): string

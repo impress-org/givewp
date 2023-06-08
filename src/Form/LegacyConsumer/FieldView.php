@@ -19,7 +19,7 @@ class FieldView
     ];
 
     /**
-     * @unreleased add shim for CheckboxGroup, only necessary for legacy FFM fields.
+     * @since 2.28.0 add shim for CheckboxGroup, only necessary for legacy FFM fields.
      * @since 2.10.2
      * @since 2.14.0 add $formId as a param
      * @since 2.14.0 Add filter to allow rendering logic for custom fields

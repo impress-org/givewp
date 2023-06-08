@@ -13,7 +13,7 @@ trait StoreAsMeta
     protected $storeAsDonorMeta = false;
 
     /**
-     * @unreleased added types
+     * @since 2.28.0 added types
      * @since 2.10.2
      */
     public function storeAsDonorMeta(bool $storeAsDonorMeta = true): self
@@ -24,7 +24,7 @@ trait StoreAsMeta
     }
 
     /**
-     * @unreleased added types
+     * @since 2.28.0 added types
      * @since 2.10.2
      */
     public function shouldStoreAsDonorMeta(): bool

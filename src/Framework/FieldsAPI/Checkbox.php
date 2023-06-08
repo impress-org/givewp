@@ -5,7 +5,7 @@ namespace Give\Framework\FieldsAPI;
 use Give\Framework\Exceptions\Primitives\RuntimeException;
 
 /**
- * @unreleased
+ * @since 2.28.0
  */
 class Checkbox extends Field
 {
@@ -29,7 +29,7 @@ class Checkbox extends Field
      *
      * The default value is also set because the getDefaultMethod() method is not called during serialization.
      *
-     * @unreleased
+     * @since 2.28.0
      */
     public function value($value): self
     {
@@ -40,7 +40,7 @@ class Checkbox extends Field
     }
 
     /**
-     * @unreleased
+     * @since 2.28.0
      */
     public function getValue()
     {
@@ -50,7 +50,7 @@ class Checkbox extends Field
     /**
      * Since the default value needs to reflect the value of the checkbox, this method is not supported.
      *
-     * @unreleased
+     * @since 2.28.0
      */
     public function defaultValue($defaultValue)
     {
@@ -64,7 +64,7 @@ class Checkbox extends Field
      *
      * The default value is also set because the getDefaultMethod() method is not called during serialization.
      *
-     * @unreleased
+     * @since 2.28.0
      */
     public function checked(bool $checked = true): self
     {
@@ -75,7 +75,7 @@ class Checkbox extends Field
     }
 
     /**
-     * @unreleased
+     * @since 2.28.0
      */
     public function isChecked(): bool
     {

@@ -9,7 +9,7 @@ trait HasEmailTag
     protected $emailTag;
 
     /**
-     * @unreleased add types
+     * @since 2.28.0 add types
      */
     public function emailTag(string $emailTag): self
     {
@@ -19,7 +19,7 @@ trait HasEmailTag
     }
 
     /**
-     * @unreleased add types
+     * @since 2.28.0 add types
      *
      * @return string|null
      */

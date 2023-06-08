@@ -53,7 +53,7 @@ class SetupFieldPersistence implements HookCommandInterface
     /**
      * Process the given field.
      *
-     * @unreleased add shim for CheckboxGroup, only necessary for legacy FFM fields.
+     * @since 2.28.0 add shim for CheckboxGroup, only necessary for legacy FFM fields.
      * @since 2.10.2
      * @since 2.14.0 Handle File field type and custom field type separately. Use add meta function to persist field value.
      *
