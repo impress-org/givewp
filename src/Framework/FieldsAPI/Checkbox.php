@@ -11,8 +11,6 @@ class Checkbox extends Field
 {
     use Concerns\HasHelpText;
     use Concerns\HasLabel;
-    use Concerns\ShowInReceipt;
-    use Concerns\StoreAsMeta;
 
     const TYPE = 'checkbox';
 

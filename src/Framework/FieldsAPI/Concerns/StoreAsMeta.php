@@ -9,7 +9,6 @@ trait StoreAsMeta
 {
     /**
      * @since 2.10.2
-     * @var bool
      */
     protected $storeAsDonorMeta = false;
 

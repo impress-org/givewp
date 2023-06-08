@@ -2,13 +2,12 @@
 
 namespace Give\Form\LegacyConsumer\Actions;
 
-use ArrayObject;
-use Give\Framework\FieldsAPI\Conditions\BasicCondition;
-use Give\Framework\FieldsAPI\Conditions\Condition;
 use Give\Framework\FieldsAPI\Field;
-use Give\ValueObjects\Money;
+use Give\Vendors\StellarWP\FieldConditions\Contracts\Condition;
+use Give\Vendors\StellarWP\FieldConditions\FieldCondition;
 
 /**
+ * @unreleased change postData to an array
  * @since 2.21.0
  */
 class DetermineVisibilityForRequest
@@ -19,24 +18,23 @@ class DetermineVisibilityForRequest
     /** @var Field */
     private $field;
 
-    /** @var ArrayObject */
+    /** @var array */
     protected $postData;
 
     /**
+     * @unreleased add parameter and return types
      * @since 2.21.0
-     * @param Field $field
-     * @param array $postData
      */
     public function __construct(Field $field, array $postData)
     {
         $this->field = $field;
-        $this->postData = new ArrayObject($postData);
+        $this->postData = $postData;
     }
 
     /**
      * @since 2.21.0
      */
-    public function __invoke()
+    public function __invoke(): bool
     {
         if (!$this->fieldHasVisibilityConditions()) {
             return self::IS_VISIBLE;
@@ -50,91 +48,35 @@ class DetermineVisibilityForRequest
      * @since 2.21.0
      * @return bool
      */
-    protected function fieldHasVisibilityConditions()
+    protected function fieldHasVisibilityConditions(): bool
     {
         return method_exists($this->field, 'hasVisibilityConditions')
             && $this->field->hasVisibilityConditions();
     }
 
     /**
+     * @unreleased update to use FieldConditions
      * @since 2.21.0
-     * @param bool $visibility
-     * @param Condition $condition
-     * @return bool
      */
-    protected function reduceVisibility($visibility, Condition $condition)
+    protected function reduceVisibility(bool $visibility, Condition $condition): bool
     {
         $result = $this->compareConditionWithOperator($condition);
 
-        return 'and' === $condition->boolean
+        return 'and' === $condition->getLogicalOperator()
             ? $visibility && $result
             : $visibility || $result;
     }
 
     /**
+     * @unreleased update to use FieldConditions
      * @since 2.21.0
-     * @param Condition $condition
-     * @return bool
      */
-    protected function compareConditionWithOperator(Condition $condition)
+    protected function compareConditionWithOperator(Condition $condition): bool
     {
-        if (is_a($condition, BasicCondition::class)) {
-            return $this->compareBasicConditionWithOperator($condition);
+        if (is_a($condition, FieldCondition::class)) {
+            return $condition->passes($this->postData);
         }
 
-        // @TODO Implement nested conditions.
         return self::IS_VISIBLE;
-    }
-
-    /**
-     * @since 2.21.0
-     * @param BasicCondition $condition
-     * @return bool
-     */
-    protected function compareBasicConditionWithOperator(BasicCondition $condition)
-    {
-        $conditionValue = $condition->value;
-        $comparisonValue = $this->postData[$condition->field];
-
-        if ('give-amount' === $condition->field) {
-            $conditionValue = $this->normalizeMinorAmount($conditionValue);
-            $comparisonValue = $this->normalizeMinorAmount($comparisonValue);
-        }
-
-        switch ($condition->operator) {
-            case '=':
-                return $comparisonValue === $conditionValue;
-            case '!=':
-                return $comparisonValue !== $conditionValue;
-            case '>':
-                return $comparisonValue > $conditionValue;
-            case '>=':
-                return $comparisonValue >= $conditionValue;
-            case '<':
-                return $comparisonValue < $conditionValue;
-            case '<=':
-                return $comparisonValue <= $conditionValue;
-            default:
-                return false;
-        }
-    }
-
-    /**
-     * @since 2.21.0
-     * @param $amount
-     * @return int
-     */
-    protected function normalizeMinorAmount($amount)
-    {
-        $currency = give_get_currency($this->postData['give-form-id']);
-        $settings = give_get_currencies('all')[$currency]['setting'];
-
-        $amount = str_replace(
-            [$settings['thousands_separator'], $settings['decimal_separator']],
-            ['', '.'],
-            $amount
-        );
-
-        return Money::of($amount, $currency)->getMinorAmount();
     }
 }
