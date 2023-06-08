@@ -7,23 +7,24 @@ namespace Give\Framework\FieldsAPI\Concerns;
  */
 trait StoreAsMeta
 {
-
     /**
      * @since 2.10.2
      */
     protected $storeAsDonorMeta = false;
 
     /**
+     * @unreleased added types
      * @since 2.10.2
      */
-    public function storeAsDonorMeta($storeAsDonorMeta = true): self
+    public function storeAsDonorMeta(bool $storeAsDonorMeta = true): self
     {
-        $this->storeAsDonorMeta = (bool)$storeAsDonorMeta;
+        $this->storeAsDonorMeta = $storeAsDonorMeta;
 
         return $this;
     }
 
     /**
+     * @unreleased added types
      * @since 2.10.2
      */
     public function shouldStoreAsDonorMeta(): bool

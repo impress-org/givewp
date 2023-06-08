@@ -7,7 +7,6 @@ namespace Give\Framework\FieldsAPI;
  */
 class Html extends Element
 {
-
     const TYPE = 'html';
 
     /** @var string */
@@ -16,13 +15,10 @@ class Html extends Element
     /**
      * Set the HTML for the element.
      *
+     * @unreleased added types
      * @since 2.12.2
-     *
-     * @param string $html
-     *
-     * @return $this
      */
-    public function html($html)
+    public function html(string $html): self
     {
         $this->html = $html;
 
@@ -32,11 +28,10 @@ class Html extends Element
     /**
      * Get the HTML for the element.
      *
+     * @unreleased added types
      * @since 2.12.2
-     *
-     * @return string
      */
-    public function getHtml()
+    public function getHtml(): string
     {
         return $this->html;
     }

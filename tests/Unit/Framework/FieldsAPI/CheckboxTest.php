@@ -1,39 +1,74 @@
 <?php
 
-namespace Give\Tests\Unit\Framework\FieldsAPI;
+namespace Unit\Framework\FieldsAPI;
 
+use Give\Framework\Exceptions\Primitives\RuntimeException;
 use Give\Framework\FieldsAPI\Checkbox;
 use Give\Tests\TestCase;
 
 class CheckboxTest extends TestCase
 {
     /**
-     * @since 2.19.0
+     * @unreleased
      */
-    public function testChecked()
+    public function testShouldToggleCheckedState()
     {
-        // Default is true
-        $checkbox = Checkbox::make('test')->checked();
-        self::assertTrue($checkbox->isChecked());
+        $checkbox = new Checkbox('test');
 
-        // Can pass a truthy value
-        $checkbox = Checkbox::make('test')->checked(true);
-        self::assertTrue($checkbox->isChecked());
-
-        $checkbox = Checkbox::make('test')->checked(1);
-        self::assertTrue($checkbox->isChecked());
-
-        // Can pass a falsey value
-        $checkbox = Checkbox::make('test')->checked(false);
         self::assertFalse($checkbox->isChecked());
 
-        $checkbox = Checkbox::make('test')->checked(0);
+        $checkbox->checked();
+        self::assertTrue($checkbox->isChecked());
+
+        $checkbox->checked(false);
         self::assertFalse($checkbox->isChecked());
 
-        // Can pass a callable
-        $checkbox = Checkbox::make('test')->checked(function () {
-            return true;
-        });
+        $checkbox->checked(true);
         self::assertTrue($checkbox->isChecked());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testShouldSetAndGetValue()
+    {
+        $checkbox = new Checkbox('test');
+        $checkbox->value('test-value');
+        self::assertEquals('test-value', $checkbox->getValue());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testShouldReturnValueAsDefaultWhenChecked()
+    {
+        $checkbox = new Checkbox('test');
+
+        // Default value is null when not checked
+        $checkbox->value('test-value');
+        self::assertNull($checkbox->getDefaultValue());
+
+        // Default value is set to the value when checked
+        $checkbox->checked();
+        self::assertEquals('test-value', $checkbox->getDefaultValue());
+
+        // Default value changes when value changes
+        $checkbox->value('new-value');
+        self::assertEquals('new-value', $checkbox->getDefaultValue());
+
+        // Default value is set to null when unchecked
+        $checkbox->checked(false);
+        self::assertNull($checkbox->getDefaultValue());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testShouldThrowRuntimeExceptionWhenDefaultValueMethodIsUsed()
+    {
+        $this->expectException(RuntimeException::class);
+
+        $checkbox = new Checkbox('test');
+        $checkbox->defaultValue('test-value');
     }
 }

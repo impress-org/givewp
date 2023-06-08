@@ -1,5 +1,5 @@
 <?php
-/** @var Give\Framework\FieldsAPI\Checkbox $field */ ?>
+/** @var \Give\Framework\FieldsAPI\LegacyNodes\CheckboxGroup $field */ ?>
 <?php
 /** @var string $fieldIdAttribute */ ?>
 

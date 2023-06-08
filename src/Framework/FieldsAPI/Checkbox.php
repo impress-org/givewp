@@ -2,45 +2,83 @@
 
 namespace Give\Framework\FieldsAPI;
 
+use Give\Framework\Exceptions\Primitives\RuntimeException;
+
 /**
- * @since 2.12.0
+ * @unreleased
  */
 class Checkbox extends Field
 {
-    use Concerns\HasEmailTag;
     use Concerns\HasHelpText;
     use Concerns\HasLabel;
-    use Concerns\HasOptions;
-    use Concerns\HasPlaceholder;
 
     const TYPE = 'checkbox';
 
     /**
-     * Helper for marking the checkbox as checked by default
-     *
-     * @since 2.12.0
-     *
-     * @param  bool|callable  $isChecked
-     *
-     * @return $this
+     * @var bool whether the checkbox is checked by default
      */
-    public function checked($isChecked = true)
+    protected $checked = false;
+
+    /**
+     * @var mixed the value of the checkbox when checked
+     */
+    protected $value;
+
+    /**
+     * Sets the value the checkbox returns when checked.
+     *
+     * The default value is also set because the getDefaultMethod() method is not called during serialization.
+     *
+     * @unreleased
+     */
+    public function value($value): self
     {
-        $default = is_callable($isChecked) ? $isChecked() : $isChecked;
-        $this->defaultValue((bool)$default);
+        $this->value = $value;
+        $this->defaultValue = $this->checked ? $value : null;
 
         return $this;
     }
 
     /**
-     * Returns whether the checkbox is checked by default
-     *
-     * @since 2.12.0
-     *
-     * @return bool
+     * @unreleased
      */
-    public function isChecked()
+    public function getValue()
     {
-        return (bool)$this->defaultValue;
+        return $this->value;
+    }
+
+    /**
+     * Since the default value needs to reflect the value of the checkbox, this method is not supported.
+     *
+     * @unreleased
+     */
+    public function defaultValue($defaultValue)
+    {
+        throw new RuntimeException(
+            'Do not set the default value. Instead, set the value and use the checked() method.'
+        );
+    }
+
+    /**
+     * Sets the checkbox as checked by default
+     *
+     * The default value is also set because the getDefaultMethod() method is not called during serialization.
+     *
+     * @unreleased
+     */
+    public function checked(bool $checked = true): self
+    {
+        $this->checked = $checked;
+        $this->defaultValue = $this->checked ? $this->value : null;
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function isChecked(): bool
+    {
+        return $this->checked;
     }
 }

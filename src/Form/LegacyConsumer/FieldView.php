@@ -3,6 +3,7 @@
 namespace Give\Form\LegacyConsumer;
 
 use Give\Framework\FieldsAPI\Contracts\Node;
+use Give\Framework\FieldsAPI\LegacyNodes\CheckboxGroup;
 use Give\Framework\FieldsAPI\Types;
 
 /**
@@ -18,6 +19,7 @@ class FieldView
     ];
 
     /**
+     * @unreleased add shim for CheckboxGroup, only necessary for legacy FFM fields.
      * @since 2.10.2
      * @since 2.14.0 add $formId as a param
      * @since 2.14.0 Add filter to allow rendering logic for custom fields
@@ -39,6 +41,10 @@ class FieldView
             return;
         }
 
+        if ($type === CheckboxGroup::TYPE) {
+            $type = Types::CHECKBOX;
+        }
+
         $classList = apply_filters("give_form_{$formId}_field_classes_{$field->getName()}", [
             'form-row',
             'form-row-wide',
@@ -48,7 +54,7 @@ class FieldView
         printf(
             '<div class="%1$s" data-field-type="%2$s" data-field-name="%3$s" %4$s>',
             $className,
-            $field->getType(),
+            $type,
             $field->getName(),
             self::getVisibilityConditionAttribute($field)
         );
