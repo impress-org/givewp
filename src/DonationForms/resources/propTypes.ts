@@ -35,6 +35,10 @@ export interface RadioFieldProps extends FieldProps {
     options: Array<RadioOption>;
 }
 
+export interface CheckboxProps extends FieldProps {
+    value: string | number;
+}
+
 export interface ElementProps extends Element {}
 
 export interface GroupProps extends Group {
