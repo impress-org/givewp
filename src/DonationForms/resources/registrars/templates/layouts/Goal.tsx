@@ -15,7 +15,7 @@ export default function Goal({
     return (
         <div className="givewp-form-goal-progress">
             <label htmlFor="goal-progress" className="givewp-form-goal-progress-description">
-                {__(`${currentAmountFormatted} of ${targetAmountFormatted} ${goalLabel} goal`, 'give')}
+                {__(`${currentAmountFormatted} of ${targetAmountFormatted} ${goalLabel}`, 'give')}
             </label>
             <progress
                 id="goal-progress"
