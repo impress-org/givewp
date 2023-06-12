@@ -24,21 +24,27 @@ const ReceiptSettings = () => {
     const dispatch = useFormStateDispatch();
 
     const headingHelpText = createInterpolateElement(
-        __('This is the first message that displays in the receipt. Available template tags are: <tags />', 'give'),
+        __(
+            'This is the first message that displays in the donation confirmation. Available template tags are: <tags />',
+            'give'
+        ),
         {
             tags: <TemplateTags />,
         }
     );
 
     const descriptionHelpText = createInterpolateElement(
-        __('This is the second message that displays in the receipt.Available template tags are: <tags />', 'give'),
+        __(
+            'This is the second message that displays in the donation confirmation. Available template tags are: <tags />',
+            'give'
+        ),
         {
             tags: <TemplateTags />,
         }
     );
 
     return (
-        <PanelBody title={__('Receipt and Thank You')} initialOpen={false}>
+        <PanelBody title={__('Donation Confirmation')} initialOpen={false}>
             <PanelRow>
                 <TextControl
                     label={__('Heading', 'give')}
