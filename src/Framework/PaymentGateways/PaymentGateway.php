@@ -11,7 +11,6 @@ use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionAmountEdit
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionDashboardLinkable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPaymentMethodEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
-use Give\Framework\PaymentGateways\Controllers\PaymentGatewayController;
 use Give\Framework\PaymentGateways\Routes\RouteSignature;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Framework\PaymentGateways\Traits\HasRouteMethods;
@@ -56,6 +55,16 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
         }
 
         $this->subscriptionModule = $subscriptionModule;
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @unreleased
+     */
+    public function supportsRefund(): bool
+    {
+        return $this->isFunctionImplementedInGatewayClass('refundDonation');
     }
 
     /**

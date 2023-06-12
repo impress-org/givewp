@@ -13,7 +13,6 @@ use Give\PaymentGateways\Gateways\Stripe\BECSGateway as StripeBECSGateway;
 use Give\PaymentGateways\Gateways\Stripe\CheckoutGateway as StripeCheckoutGateway;
 use Give\PaymentGateways\Gateways\Stripe\CreditCardGateway as StripeCreditCardGateway;
 use Give\PaymentGateways\Gateways\Stripe\SEPAGateway as StripeSEPAGateway;
-use Give\PaymentGateways\PayPalCommerce\Actions\GetPayPalOrderFromRequest;
 use Give\PaymentGateways\PayPalCommerce\Exceptions\PayPalOrderException;
 use Give\PaymentGateways\PayPalCommerce\Exceptions\PayPalOrderIdException;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
@@ -52,7 +51,7 @@ class RegisterPaymentGateways
      * @since 2.25.0 add afterRegisteredGateways
      * @since 2.18.0
      *
-     * @param  array  $gateways
+     * @param array $gateways
      *
      * @return array
      *
@@ -149,7 +148,7 @@ class RegisterPaymentGateways
             function ($gatewayData) {
                 $paypalOrderId = $gatewayData['payPalOrderId'] ?? give_clean($_POST['payPalOrderId']);
 
-                if( ! $paypalOrderId ) {
+                if ( ! $paypalOrderId) {
                     throw new PayPalOrderIdException(__('PayPal order id is missing.', 'give'));
                 }
 
