@@ -47,7 +47,8 @@ class DonorsExport extends Give_Batch_Export
     }
 
     /**
-     * @since 2.21.2
+     * @unreleased Include donor created date
+     * @since      2.21.2
      */
     public function get_data(): array
     {
@@ -135,7 +136,8 @@ class DonorsExport extends Give_Batch_Export
     }
 
     /**
-     * @since 2.21.2
+     * @unreleased Include donor created col
+     * @since      2.21.2
      */
     public function csv_cols(): array
     {
