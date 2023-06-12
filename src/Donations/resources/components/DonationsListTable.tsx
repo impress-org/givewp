@@ -3,6 +3,7 @@ import {ListTablePage} from '@givewp/components';
 import {DonationRowActions} from './DonationRowActions';
 import ListTableApi from '@givewp/components/ListTable/api';
 import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
+import styles from './ListTable.module.scss';
 import {IdBadge} from '@givewp/components/ListTable/TableCell';
 import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import {Interweave} from 'interweave';
@@ -152,7 +153,6 @@ const ListTableBlankSlate = (
     />
 );
 
-
 interface DonationTableRecommendations {
     recurring: RecommendedProductData;
     feeRecovery: RecommendedProductData;
@@ -200,7 +200,6 @@ const rotatingRecommendation = (
     />
 );
 
-
 export default function DonationsListTable() {
     return (
         <ListTablePage
@@ -215,12 +214,31 @@ export default function DonationsListTable() {
             listTableBlankSlate={ListTableBlankSlate}
             productRecommendation={rotatingRecommendation}
         >
-            {window.GiveDonations.manualDonations && (
+            {window.GiveDonations.manualDonations ? (
                 <a
                     className={tableStyles.addFormButton}
                     href={`${window.GiveDonations.adminUrl}edit.php?post_type=give_forms&page=give-manual-donation`}
                 >
                     {__('New Donation', 'give')}
+                </a>
+            ) : (
+                <a
+                    className={styles.manualDonationsNotice}
+                    href={'https://docs.givewp.com/enterdonation'}
+                    target={'_blank'}
+                >
+                    <span className={styles.manualDonationsAddOn}>{__('ADD-ON', 'give')}</span>
+                    {__('Enter Donations', 'give')}
+                    <span className={styles.manualDonationsMessage}>
+                        <img
+                            src={`${window.GiveDonations.pluginUrl}/assets/dist/images/admin/triangle-tip.svg`}
+                            alt={'manual donations'}
+                        />{' '}
+                        {__(
+                            'Need to add in a record for a donation received elsewhere, or reconcile with the payment gateway? Add donation records with the Manual Donations add-on!',
+                            'give'
+                        )}
+                    </span>
                 </a>
             )}
             <a

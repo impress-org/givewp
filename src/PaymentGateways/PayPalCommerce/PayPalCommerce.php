@@ -105,7 +105,7 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
-     * @unreleased Enable Venmo payment method by default.
+     * @since 2.27.3 Enable Venmo payment method by default.
      * @since 2.16.2 Add setting "Transaction type".
      */
     public function getOptions()
