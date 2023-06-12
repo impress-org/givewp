@@ -152,7 +152,7 @@ class DonorsExport extends Give_Batch_Export
                     'address_country' => __('Country', 'give'),
                 ],
                 'userid' => __('User ID', 'give'),
-                'donor_created_date' => __('Donor Created Date', 'give'),
+                'donor_created_date' => __('Donor Created', 'give'),
                 'donations' => __('Number of donations', 'give'),
                 'donation_sum' => __('Total Donated', 'give'),
             ], $this->postedData['give_export_columns'])
