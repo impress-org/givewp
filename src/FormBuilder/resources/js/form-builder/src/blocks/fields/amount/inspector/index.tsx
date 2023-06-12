@@ -15,7 +15,6 @@ import {CurrencyControl} from '@givewp/form-builder/common/currency';
 import periodLookup from '../period-lookup';
 import RecurringDonationsPromo from '@givewp/form-builder/promos/recurring-donations';
 import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
-import Label from '@givewp/form-builder/blocks/fields/settings/Label';
 
 const Inspector = ({attributes, setAttributes}) => {
     const {
@@ -101,11 +100,16 @@ const Inspector = ({attributes, setAttributes}) => {
                             label={__('Minimum', 'give')}
                             value={customAmountMin}
                             onValueChange={(value) => setAttributes({customAmountMin: value})}
+                            help={__('Sets the minimum donation amount for all gateways.', 'give')}
                         />
                         <CurrencyControl
                             label={__('Maximum', 'give')}
                             value={customAmountMax}
                             onValueChange={(value) => setAttributes({customAmountMax: value})}
+                            help={__(
+                                'Sets the maximum donation amount for all gateways. Leave empty for no maximum amount.',
+                                'give'
+                            )}
                         />
                     </>
                 )}
@@ -166,24 +170,36 @@ const Inspector = ({attributes, setAttributes}) => {
                 </PanelBody>
             )}
             <PanelBody title={__('Recurring Donations', 'give')} initialOpen={false}>
-                {!isRecurringSupported && (
-                    recurringAddonData.isInstalled
-                        ? <div style={{
-                            fontSize: '13px',
-                            lineHeight: '1.3em',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '12px',
-                            padding: '6px 12px 12px 0',
-                        }}>
-                            <div>{__('None of the payment gateways currently enabled support Recurring Donations. To collect recurring donations, enable one of the following payment gateways:', 'give')}</div>
+                {!isRecurringSupported &&
+                    (recurringAddonData.isInstalled ? (
+                        <div
+                            style={{
+                                fontSize: '13px',
+                                lineHeight: '1.3em',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '12px',
+                                padding: '6px 12px 12px 0',
+                            }}
+                        >
+                            <div>
+                                {__(
+                                    'None of the payment gateways currently enabled support Recurring Donations. To collect recurring donations, enable one of the following payment gateways:',
+                                    'give'
+                                )}
+                            </div>
                             <ul style={{listStyleType: 'inherit', marginLeft: '12px'}}>
-                                {recurringGateways.map((gateway) => <li key={gateway.id}>{gateway.label}</li>)}
+                                {recurringGateways.map((gateway) => (
+                                    <li key={gateway.id}>{gateway.label}</li>
+                                ))}
                             </ul>
-                            <a href={gatewaySettingsUrl} target="_blank" rel="noreferrer noopener">Go to Payment Gateway Settings</a>
+                            <a href={gatewaySettingsUrl} target="_blank" rel="noreferrer noopener">
+                                Go to Payment Gateway Settings
+                            </a>
                         </div>
-                        : <RecurringDonationsPromo />
-                )}
+                    ) : (
+                        <RecurringDonationsPromo />
+                    ))}
 
                 {isRecurringSupported && (
                     <PanelRow>

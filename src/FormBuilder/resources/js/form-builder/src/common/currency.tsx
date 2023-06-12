@@ -18,14 +18,15 @@ const Currency = ({amount}: {amount: string}) => {
 interface CurrencyControlProps extends CurrencyInputProps {
     label?: string;
     hideLabelFromVision?: boolean;
+    help?: string;
 }
 
-const CurrencyControl = ({label, hideLabelFromVision, ...rest}: CurrencyControlProps) => {
+const CurrencyControl = ({label, help, hideLabelFromVision, ...rest}: CurrencyControlProps) => {
     // simplified implementation of useBaseControlProps()
     const uniqueId = useInstanceId(BaseControl, 'wp-components-base-control');
 
     return (
-        <BaseControl label={label} id={uniqueId} hideLabelFromVision={hideLabelFromVision}>
+        <BaseControl label={label} help={help} id={uniqueId} hideLabelFromVision={hideLabelFromVision}>
             <CurrencyInput
                 {...rest}
                 id={uniqueId}
