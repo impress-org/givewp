@@ -7,6 +7,7 @@ use Give\Form\LegacyConsumer\Validators\FileUploadValidator;
 use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\File;
 use Give\Framework\FieldsAPI\Group;
+use Give\Framework\FieldsAPI\LegacyNodes\CheckboxGroup;
 use Give\Framework\FieldsAPI\Text;
 use Give\Framework\FieldsAPI\Types;
 
@@ -53,6 +54,7 @@ class SetupFieldValidation implements HookCommandInterface
     /**
      * Validate the given field.
      *
+     * @since 2.28.0 add shim for CheckboxGroup, only necessary for legacy FFM fields.
      * @since 2.14.0 Add max length validation for input and textarea field
      *
      * @param Field|File|Text $field
@@ -73,7 +75,7 @@ class SetupFieldValidation implements HookCommandInterface
 
             $validator = new FileUploadValidator($field);
             $validator();
-        } elseif (in_array($field->getType(), Types::all(), true)) {
+        } elseif (in_array($field->getType(), Types::all(), true) || $field->getType() === CheckboxGroup::TYPE) {
             if ( $field->isRequired() ) {
                 if( ! isset($_POST[$field->getName()]) || empty($_POST[$field->getName()]) ) {
                     give_set_error(

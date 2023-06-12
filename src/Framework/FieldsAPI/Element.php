@@ -13,9 +13,11 @@ abstract class Element implements Node
 {
     use Concerns\HasName;
     use Concerns\HasType;
-    use Concerns\HasVisibilityConditions;
     use Concerns\SerializeAsJson;
     use Concerns\TapNode;
+    use Concerns\HasVisibilityConditions {
+        Concerns\HasVisibilityConditions::__construct as private __visibilityConditionsConstruct;
+    }
 
     /**
      * @since      2.12.0
@@ -26,6 +28,8 @@ abstract class Element implements Node
     final public function __construct($name)
     {
         $this->name = $name;
+
+        $this->__visibilityConditionsConstruct();
     }
 
     /**

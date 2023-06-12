@@ -6,7 +6,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.27.2
+ * Version: 2.28.0
  * Requires at least: 5.0
  * Requires PHP: 7.0
  * Text Domain: give
@@ -84,6 +84,7 @@ use Give\Subscriptions\Repositories\SubscriptionRepository;
 use Give\Subscriptions\ServiceProvider as SubscriptionServiceProvider;
 use Give\TestData\ServiceProvider as TestDataServiceProvider;
 use Give\Tracking\TrackingServiceProvider;
+use Give\VendorOverrides\FieldConditions\FieldConditionsServiceProvider;
 use Give\VendorOverrides\Validation\ValidationServiceProvider;
 
 // Exit if accessed directly.
@@ -211,6 +212,7 @@ final class Give
         ValidationRulesServiceProvider::class,
         HttpServiceProvider::class,
         DesignSystemServiceProvider::class,
+        FieldConditionsServiceProvider::class,
     ];
 
     /**
@@ -314,7 +316,7 @@ final class Give
     {
         // Plugin version.
         if (!defined('GIVE_VERSION')) {
-            define('GIVE_VERSION', '2.27.2');
+            define('GIVE_VERSION', '2.28.0');
         }
 
         // Plugin Root File.
@@ -523,11 +525,13 @@ final class Give
  * @since 2.8.0 add parameter for quick retrieval from container
  * @since 1.0
  *
- * @param null $abstract Selector for data to retrieve from the service container
+ * @template T
  *
- * @return object|Give
+ * @param class-string<T>|null $abstract Selector for data to retrieve from the service container
+ *
+ * @return Give|T
  */
-function give($abstract = null)
+function give(string $abstract = null)
 {
     static $instance = null;
 
@@ -544,5 +548,6 @@ function give($abstract = null)
 
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/vendor/vendor-prefixed/autoload.php';
+require __DIR__ . '/vendor/woocommerce/action-scheduler/action-scheduler.php';
 
 give()->boot();

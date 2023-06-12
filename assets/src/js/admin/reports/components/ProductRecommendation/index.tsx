@@ -100,7 +100,7 @@ export default function ProductRecommendations() {
 type TranslatedMessageProps = {message: string};
 
 function TranslatedMessage({message}: TranslatedMessageProps) {
-    const translatedString = createInterpolateElement(__('<strong>Pro tip: </strong> <message />', 'give'), {
+    const translatedString = createInterpolateElement(__('<strong>PRO TIP: </strong> <message />', 'give'), {
         strong: <strong />,
         message: <p>{message}</p>,
     });

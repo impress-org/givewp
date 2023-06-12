@@ -66,7 +66,7 @@ document.addEventListener('readystatechange', (event) => {
             const fieldName = fieldWrapper.getAttribute('data-field-name');
             const visibilityCondition = visibilityConditions[0]; // Currently we support only one visibility condition.
             let visible = false;
-            const {operator} = visibilityCondition;
+            const {comparisonOperator} = visibilityCondition;
             let {value} = visibilityCondition;
 
             const inputs = donationForm.querySelectorAll(`[name="${watchedFieldName}"]`);
@@ -87,12 +87,12 @@ document.addEventListener('readystatechange', (event) => {
                         value = Math.abs(parseFloat(value));
                     }
 
-                    const comparisonResult = compareWithOperator(operator, inputValue, value);
+                    const comparisonResult = compareWithOperator(comparisonOperator, inputValue, value);
 
                     if (fieldType === 'checkbox') {
                         if (
-                            (comparisonResult && input.checked && operator === '=') ||
-                            (!input.checked && operator === '!=')
+                            (comparisonResult && input.checked && comparisonOperator === '=') ||
+                            (!input.checked && comparisonOperator === '!=')
                         ) {
                             visible = true;
                         }

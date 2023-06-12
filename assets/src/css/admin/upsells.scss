@@ -9,37 +9,53 @@
 */
 
 .give-upsell-notice {
-	border: 1px solid #e2e2e2;
-	padding: 13px;
-	margin: 20px 15px 0;
-	box-shadow: 1px 1px 5px #e2e2e2;
-	display: flex;
-	align-items: center;
+    border: 1px solid #e2e2e2;
+    padding: 13px;
+    margin: 20px 15px 0;
+    box-shadow: 1px 1px 5px #e2e2e2;
+    display: flex;
+    align-items: center;
 
-	a {
-		text-decoration: none;
-		font-weight: bold;
-	}
+    a {
+        text-decoration: none;
+        font-weight: bold;
+    }
 
-	.icon,
-	.description {
-		font-style: normal;
-	}
+    .icon,
+    .description {
+        font-style: normal;
+    }
 
-	.icon {
-		color: #aaa;
-		font-size: 30px;
-		line-height: 22px;
-		width: 30px;
-	}
+    .icon {
+        color: #aaa;
+        font-size: 30px;
+        line-height: 22px;
+        width: 30px;
+    }
 
-	.description {
-		padding: 0 10px;
-	}
+    .description {
+        padding: 0 10px;
+    }
 
-	a.view-addon-link {
-		background: none !important;
-		margin-left: auto;
-		font-weight: normal;
-	}
+    a.view-addon-link {
+        background: none !important;
+        margin-left: auto;
+        font-weight: normal;
+    }
+}
+
+.givewp-upsells-recurring-recommended {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 0 2px 8px;
+    padding: 4px 8px;
+    background: #F2CC0C;
+    font-size: 10px;
+    border-radius: 4px;
+}
+
+@media (max-width: 1540px) {
+    .givewp-upsells-recurring-recommended {
+        transform: translate(-9px, 5px);
+    }
 }

@@ -851,7 +851,7 @@ return array(
 			'number_decimals'     => 0,
 		),
 	),
-	'BTC' => array(
+	'XBT' => array(
 		'admin_label' => sprintf( __( 'Bitcoin (%1$s)', 'give' ), '&#3647;' ),
 		'symbol'      => '&#3647;',
 		'setting'     => array(

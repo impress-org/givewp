@@ -3,18 +3,18 @@
 namespace Give\Framework\FieldsAPI\Concerns;
 
 /**
- * @unreleased
+ * @since 2.27.3
  */
 trait ShowInAdmin
 {
 
     /**
-     * @unreleased
+     * @since 2.27.3
      */
     protected $showInAdmin = false;
 
     /**
-     * @unreleased
+     * @since 2.27.3
      */
     public function showInAdmin($showInAdmin = true): self
     {
@@ -24,7 +24,7 @@ trait ShowInAdmin
     }
 
     /**
-     * @unreleased
+     * @since 2.27.3
      */
     public function shouldShowInAdmin(): bool
     {
