@@ -10,8 +10,10 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+use Give\Donations\ValueObjects\DonationMetaKeys;
+
+if (!defined('ABSPATH')) {
+    exit;
 }
 
 
@@ -80,6 +82,7 @@ class Give_Donor_Wall {
 	/**
 	 * Displays donors in a grid layout.
 	 *
+     * @since 2.27.0 Moved AJAX nonce verification to ajax_handler method.
 	 * @since  2.2.0
 	 *
 	 * @param array $atts                {
@@ -111,14 +114,6 @@ class Give_Donor_Wall {
 	 * @return string|bool The markup of the form grid or false.
 	 */
 	public function render_shortcode( $atts ) {
-
-        /**
-         * @since 2.20.0 Check nonce for AJAX request to prevent scrapping.
-         * @link https://github.com/impress-org/givewp/issues/6374
-         */
-        if( wp_doing_ajax() ) {
-            check_ajax_referer( 'givewp-donor-wall-more', 'nonce' );
-        }
 
 		$give_settings = give_get_settings();
 
@@ -306,8 +301,9 @@ class Give_Donor_Wall {
 
 
 	/**
-	 * Ajax handler
+	 * This function should return donor comment for ajax request.
 	 *
+     * @since 2.27.0 Check nonce for AJAX request to prevent scrapping, see https://github.com/impress-org/givewp/issues/6374.
 	 * @since  2.2.0
 	 * @access public
 	 */
@@ -317,6 +313,8 @@ class Give_Donor_Wall {
 		// Get next page donor comments.
 		$shortcode_atts['paged']           = $shortcode_atts['paged'] + 1;
 		$shortcode_atts['only_donor_html'] = true;
+
+        check_ajax_referer( 'givewp-donor-wall-more', 'nonce' );
 
 		$donors_comment_html = $this->render_shortcode( $shortcode_atts );
 
@@ -367,15 +365,16 @@ class Give_Donor_Wall {
 		return $query_atts;
 	}
 
-	/**
-	 * Get donation data.
-	 *
-	 * @since 2.3.0
-	 *
-	 * @param array $atts
-	 *
-	 * @return array
-	 */
+    /**
+     * Get donation data.
+     *
+     * @since 2.27.0 Change to read comment from donations meta table
+     * @since 2.3.0
+     *
+     * @param  array  $atts
+     *
+     * @return array
+     */
 	private function get_donation_data( $atts = [] ) {
 		global $wpdb;
 
@@ -412,8 +411,6 @@ class Give_Donor_Wall {
 				}
 			}
 
-			$comments = $this->get_donor_comments( $temp );
-
 			if ( ! empty( $temp ) ) {
 				foreach ( $temp as $donation_id => $donation_data ) {
 					$temp[ $donation_id ]['donation_id'] = $donation_id;
@@ -425,7 +422,10 @@ class Give_Donor_Wall {
 						]
 					);
 
-					$temp[ $donation_id ]['donor_comment'] = ! empty( $comments[ $donation_id ] ) ? $comments[ $donation_id ] : '';
+					$temp[$donation_id]['donor_comment'] = give_get_payment_meta(
+                        $donation_id,
+                        DonationMetaKeys::COMMENT
+                    );
 				}
 			}
 

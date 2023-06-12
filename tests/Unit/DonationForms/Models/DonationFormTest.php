@@ -2,7 +2,7 @@
 
 namespace Give\Tests\Unit\DonationForms\DataTransferObjects;
 
-use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\V2\Models\DonationForm;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
@@ -15,7 +15,7 @@ final class DonationFormTest extends TestCase
     /**
      * @dataProvider mockFormTypeProvider
      *
-     * @unreleased
+     * @since 2.25.0
      * @return void
      */
     public function testFindShouldReturnDonationForm(string $mockFormType)
@@ -31,7 +31,7 @@ final class DonationFormTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.25.0
      */
     public function mockFormTypeProvider(): array
     {

@@ -2,10 +2,10 @@
 
 namespace Give\Tests\Unit\DonationForms\Repositories;
 
-use Give\DonationForms\Endpoints\ListDonationForms;
+use Give\DonationForms\V2\Endpoints\ListDonationForms;
 use Give\Framework\Database\DB;
-use Give_Helper_Form;
 use Give\Tests\TestCase;
+use Give_Helper_Form;
 use WP_REST_Request;
 
 final class DonationFormsRepositoryTest extends TestCase

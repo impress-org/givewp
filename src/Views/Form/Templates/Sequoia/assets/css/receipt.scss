@@ -215,6 +215,23 @@
         .details-table:empty {
             display: none !important;
         }
+
+        &.additionalinformation-section {
+            .details-row {
+
+                .value {
+                    white-space: normal;
+                    
+                    p {
+                        margin: 0;
+
+                        + p {
+                            margin-top: 10px;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     #give-pdf-receipt-link,

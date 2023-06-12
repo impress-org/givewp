@@ -1,0 +1,23 @@
+.container {
+    text-align: center;
+    color: #424242;
+    margin: 4.4rem 0 2.75rem;
+
+    img {
+        margin-bottom: 1.5rem;
+    }
+
+    > h3 {
+        font-size: 1.125rem;
+        margin: 0;
+        padding: 0;
+    }
+
+    .helpMessage {
+        font-weight: 400;
+
+        > a {
+            color: #0073AA
+        }
+    }
+}

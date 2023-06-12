@@ -207,7 +207,7 @@ jQuery( document ).ready( function( $ ) {
      *
      * @description: Process the donation submit
      *
-     * @unreleased Fix: displays the errors thrown by the backend in multi-step forms.
+     * @since 2.25.0 Fix: displays the errors thrown by the backend in multi-step forms.
      */
 	$( 'body' ).on( 'click', 'form.give-form input[name="give-purchase"].give-submit', function( e ) {
 		//this form object

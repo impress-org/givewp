@@ -11,6 +11,12 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+/**
+ * List of changes
+ *
+ * @since 2.27.1 Use get_the_excerpt function to get short description of donation form to display in form grid.
+ */
+
 $form_id          = get_the_ID(); // Form ID.
 $give_settings    = $args[0]; // Give settings.
 $atts             = $args[1]; // Shortcode attributes.
@@ -46,15 +52,23 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
 
     $tag_elements = array_map(
         static function($term)use($tag_text_color,$tag_bg_color){
-            return "<span style='color: $tag_text_color; background-color: $tag_bg_color;'>$term->name</span>";
+            $style = sprintf(
+                'color: %s; background-color: %s;',
+                esc_attr($tag_text_color),
+                esc_attr($tag_bg_color)
+            );
+            return "<span style='$style'>$term->name</span>";
         }, $tags
     );
 
     $tag_elements = implode('', $tag_elements);
-    $styles = $apply_styles ? "style='background-color: $tag_container_color;'" : '';
+    $styles = sprintf(
+            "background-color: %s;",
+            $apply_styles ? esc_attr($tag_container_color) : ''
+        );
 
     return "
-         <div class='$wrapper_class' $styles >
+         <div class='$wrapper_class' style='$styles' >
             $tag_elements
          </div>
     ";
@@ -86,7 +100,7 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
         );
     }
     ?>
-    <div class="give-form-grid" style="flex-direction:<?php echo $flex_direction ?>">
+    <div class="give-form-grid" style="flex-direction:<?php echo esc_attr($flex_direction) ?>">
         <?php
         // Maybe display the featured image.
         if (
@@ -128,7 +142,7 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
         {
             echo "
                             <div id='row-media' class='give-form-grid-media'>
-                                <img class='give-form-grid-media' src='$imageSrc' alt='' />
+                                <img class='give-form-grid-media' src='". esc_url($imageSrc). "' alt='' />
 
                                 {$renderTags('give-form-grid-media__tags')}
                             </div>
@@ -141,7 +155,7 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
                 <?php
                 if( !$atts['show_featured_image']){
                     echo "
-                                 <div class='give-form-grid-media' >
+                                 <div class='give-form-grid-media'>
                                         {$renderTags('give-form-grid-media__tags_no_image', false)}
                                    </div>
                             ";
@@ -160,7 +174,7 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
 
                 // Maybe display the form excerpt.
                 if ( true === $atts['show_excerpt'] ) {
-                    if ( $raw_content = $formTemplate->getFormExcerpt( $form_id ) ) {
+                    if ( $raw_content = get_the_excerpt( $form_id ) ) {
                         $stripped_content = wp_strip_all_tags(
                             strip_shortcodes( $raw_content )
                         );
@@ -198,11 +212,11 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
                         : '#000000';
                     ?>
                     <button style="text-decoration-color: <?php
-                    echo $button_text_color; ?>">
+                    echo esc_attr($button_text_color); ?>">
                                     <span style="color: <?php
-                                    echo $button_text_color; ?>">
+                                    echo esc_attr($button_text_color); ?>">
                                         <?php
-                                        echo $button_text ?: __('Donate', 'give'); ?>
+                                        echo esc_html($button_text) ?: __('Donate', 'give'); ?>
                                     </span>
                     </button>
                 <?php endif; ?>
@@ -271,7 +285,7 @@ $renderTags = static function($wrapper_class, $apply_styles = true) use($form_id
                     echo "
                                             <div class='give-form-grid-progress-bar'>
                                                     <div class='give-progress-bar' role='progressbar' aria-valuemin='0' aria-valuemax='100' aria-valuenow='$progress_bar_value'>
-                                                        <span style='$style'></span>
+                                                        <span style='" . esc_attr($style) . "'></span>
                                                     </div>
                                             </div>
                                         ";

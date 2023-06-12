@@ -4,41 +4,22 @@ namespace Give\Framework\PaymentGateways;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
-use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
 use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Actions\GenerateGatewayRouteUrl;
-use Give\Framework\PaymentGateways\CommandHandlers\PaymentCompleteHandler;
-use Give\Framework\PaymentGateways\CommandHandlers\PaymentProcessingHandler;
-use Give\Framework\PaymentGateways\CommandHandlers\RedirectOffsiteHandler;
-use Give\Framework\PaymentGateways\CommandHandlers\RespondToBrowserHandler;
-use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionCompleteHandler;
-use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionProcessingHandler;
-use Give\Framework\PaymentGateways\CommandHandlers\SubscriptionSyncedHandler;
-use Give\Framework\PaymentGateways\Commands\GatewayCommand;
-use Give\Framework\PaymentGateways\Commands\PaymentComplete;
-use Give\Framework\PaymentGateways\Commands\PaymentProcessing;
-use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
-use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
-use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
-use Give\Framework\PaymentGateways\Commands\SubscriptionProcessing;
-use Give\Framework\PaymentGateways\Commands\SubscriptionSynced;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionAmountEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionDashboardLinkable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPaymentMethodEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
-use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
-use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
+use Give\Framework\PaymentGateways\Controllers\PaymentGatewayController;
 use Give\Framework\PaymentGateways\Routes\RouteSignature;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Framework\PaymentGateways\Traits\HasRouteMethods;
 use Give\Framework\Support\ValueObjects\Money;
-use Give\Helpers\Call;
-use Give\PaymentGateways\Actions\GetGatewayDataFromRequest;
+use Give\Log\Log;
 use Give\Subscriptions\Models\Subscription;
+use ReflectionException;
 use ReflectionMethod;
-
-use function Give\Framework\Http\Response\response;
 
 /**
  * @since 2.18.0
@@ -86,113 +67,6 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * @since 2.21.2 Add new filter hook to provide gateway data before donation is processed by the gateway.
-     * @since 2.21.0 Handle PHP exception.
-     * @since 2.19.0
-     */
-    public function handleCreatePayment(Donation $donation)
-    {
-        try {
-            /**
-             * Filter hook to provide gateway data before transaction is processed by the gateway.
-             *
-             * @since 2.21.2
-             */
-            $gatewayData = apply_filters(
-                "givewp_create_payment_gateway_data_{$donation->gatewayId}",
-                (new GetGatewayDataFromRequest)(),
-                $donation
-            );
-
-            $command = $this->createPayment($donation, $gatewayData);
-            $this->handleGatewayPaymentCommand($command, $donation);
-        } catch (\Exception $exception) {
-            PaymentGatewayLog::error(
-                $exception->getMessage(),
-                [
-                    'Payment Gateway' => static::id(),
-                    'Donation' => $donation,
-                ]
-            );
-
-            $message = __(
-                'An unexpected error occurred while processing the donation.  Please try again or contact a site administrator.',
-                'give'
-            );
-
-            $this->handleExceptionResponse($exception, $message);
-        }
-    }
-
-    /**
-     * @since 2.21.2 Add filter hook to provide gateway data before subscription is processed by the gateway.
-     * @since 2.21.0 Handle PHP exception.
-     * @since 2.19.0
-     *
-     */
-    public function handleCreateSubscription(Donation $donation, Subscription $subscription)
-    {
-        try {
-            /**
-             * Filter hook to provide gateway data before initial transaction for subscription is processed by the gateway.
-             *
-             * @since 2.21.2
-             */
-            $gatewayData = apply_filters(
-                "givewp_create_subscription_gateway_data_{$donation->gatewayId}",
-                (new GetGatewayDataFromRequest)(),
-                $donation,
-                $subscription
-            );
-
-            $command = $this->createSubscription($donation, $subscription, $gatewayData);
-            $this->handleGatewaySubscriptionCommand($command, $donation, $subscription);
-        } catch (\Exception $exception) {
-            PaymentGatewayLog::error(
-                $exception->getMessage(),
-                [
-                    'Payment Gateway' => static::id(),
-                    'Donation' => $donation,
-                    'Subscription' => $subscription,
-                ]
-            );
-
-            $message = __(
-                'An unexpected error occurred while processing the subscription.  Please try again or contact the site administrator.',
-                'give'
-            );
-
-            $this->handleExceptionResponse($exception, $message);
-        }
-    }
-
-    /**
-     * @unreleased
-     */
-    public function handleSynchronizeSubscription(Subscription $subscription)
-    {
-        try {
-            $command = $this->synchronizeSubscription($subscription);
-            $this->handleGatewaySubscriptionCommand($command, $subscription->initialDonation(), $subscription);
-        } catch (\Exception $exception) {
-            PaymentGatewayLog::error(
-                $exception->getMessage(),
-                [
-                    'Payment Gateway' => static::id(),
-                    'Subscription' => $subscription,
-                ]
-            );
-
-            $message = __(
-                'An unexpected error occurred while synchronizing the subscription.  Please try again or contact the site administrator.',
-                'give'
-            );
-
-            $this->handleExceptionResponse($exception, $message);
-        }
-    }
-
-    /**
      * If a subscription module isn't wanted this method can be overridden by a child class instead.
      * Just make sure to override the supportsSubscriptions method as well.
      *
@@ -201,8 +75,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     public function createSubscription(
         Donation $donation,
         Subscription $subscription,
-        $gatewayData = null
-    ): GatewayCommand {
+        $gatewayData
+    ) {
         return $this->subscriptionModule->createSubscription($donation, $subscription, $gatewayData);
     }
 
@@ -254,9 +128,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
+     * @since 2.25.0 update return logic
      * @since 2.21.2
-     * @since 2.21.2
-     * @throws Exception
      */
     public function hasGatewayDashboardSubscriptionUrl(): bool
     {
@@ -264,49 +137,52 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             return $this->subscriptionModule->hasGatewayDashboardSubscriptionUrl();
         }
 
-        throw new Exception('Method has not been implemented yet.');
+        return $this->isFunctionImplementedInGatewayClass('gatewayDashboardSubscriptionUrl');
     }
 
     /**
-     * @unreleased Return synchronizeSubscription() instead of nothing
-     * @since      2.21.2
+     * @since 2.21.2
      * @inheritDoc
      * @throws Exception
      */
     public function synchronizeSubscription(Subscription $subscription)
     {
         if ($this->subscriptionModule instanceof SubscriptionTransactionsSynchronizable) {
-            return $this->subscriptionModule->synchronizeSubscription($subscription);
+            $this->subscriptionModule->synchronizeSubscription($subscription);
+
+            return;
         }
 
         throw new Exception('Gateway does not support syncing subscriptions.');
     }
 
     /**
-     * @unreleased Return updateSubscriptionAmount() instead of nothing
-     * @since      2.21.2
+     * @since 2.21.2
      * @inheritDoc
      * @throws Exception
      */
     public function updateSubscriptionAmount(Subscription $subscription, Money $newRenewalAmount)
     {
         if ($this->subscriptionModule instanceof SubscriptionAmountEditable) {
-            return $this->subscriptionModule->updateSubscriptionAmount($subscription, $newRenewalAmount);
+            $this->subscriptionModule->updateSubscriptionAmount($subscription, $newRenewalAmount);
+
+            return;
         }
 
         throw new Exception('Gateway does not support updating the subscription amount.');
     }
 
     /**
-     * @unreleased Return updateSubscriptionPaymentMethod() instead of nothing
-     * @since      2.21.2
+     * @since 2.21.2
      * @inheritDoc
      * @throws Exception
      */
     public function updateSubscriptionPaymentMethod(Subscription $subscription, $gatewayData)
     {
         if ($this->subscriptionModule instanceof SubscriptionPaymentMethodEditable) {
-            return $this->subscriptionModule->updateSubscriptionPaymentMethod($subscription, $gatewayData);
+            $this->subscriptionModule->updateSubscriptionPaymentMethod($subscription, $gatewayData);
+
+            return;
         }
 
         throw new Exception('Gateway does not support updating the subscription payment method.');
@@ -315,7 +191,6 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * @since 2.21.2
      * @inheritDoc
-     * @throws Exception
      */
     public function gatewayDashboardSubscriptionUrl(Subscription $subscription): string
     {
@@ -323,111 +198,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
             return $this->subscriptionModule->gatewayDashboardSubscriptionUrl($subscription);
         }
 
-        throw new Exception('Gateway does not support providing a dashboard link.');
-    }
-
-    /**
-     * Handle gateway command
-     *
-     * @since 2.18.0
-     *
-     * @throws TypeNotSupported
-     * @throws Exception
-     */
-    public function handleGatewayPaymentCommand(GatewayCommand $command, Donation $donation)
-    {
-        if ($command instanceof PaymentComplete) {
-            $handler = new PaymentCompleteHandler($command);
-
-            $handler->handle($donation);
-
-            $response = response()->redirectTo(give_get_success_page_uri());
-
-            $this->handleResponse($response);
-        }
-
-        if ($command instanceof PaymentProcessing) {
-            $handler = new PaymentProcessingHandler($command);
-
-            $handler->handle($donation);
-
-            $response = response()->redirectTo(give_get_success_page_uri());
-
-            $this->handleResponse($response);
-        }
-
-        if ($command instanceof RedirectOffsite) {
-            $response = Call::invoke(RedirectOffsiteHandler::class, $command);
-
-            $this->handleResponse($response);
-        }
-
-        if ($command instanceof RespondToBrowser) {
-            $response = Call::invoke(RespondToBrowserHandler::class, $command);
-
-            $this->handleResponse($response);
-        }
-
-        throw new TypeNotSupported(
-            sprintf(
-                "Return type must be an instance of %s",
-                GatewayCommand::class
-            )
-        );
-    }
-
-    /**
-     * Handle gateway subscription command
-     *
-     * @since 2.21.0 Handle RedirectOffsite response.
-     * @since 2.18.0
-     *
-     * @throws TypeNotSupported
-     */
-    public function handleGatewaySubscriptionCommand(
-        GatewayCommand $command,
-        Donation $donation,
-        Subscription $subscription
-    ) {
-        if ($command instanceof SubscriptionComplete) {
-            Call::invoke(
-                SubscriptionCompleteHandler::class,
-                $command,
-                $subscription,
-                $donation
-            );
-
-            $response = response()->redirectTo(give_get_success_page_uri());
-
-            $this->handleResponse($response);
-        }
-
-        if ($command instanceof SubscriptionProcessing) {
-            $handler = new SubscriptionProcessingHandler($command, $subscription, $donation);
-            $handler();
-
-            $response = response()->redirectTo(give_get_success_page_uri());
-
-            $this->handleResponse($response);
-        }
-
-        if ($command instanceof RedirectOffsite) {
-            $response = Call::invoke(RedirectOffsiteHandler::class, $command);
-
-            $this->handleResponse($response);
-        }
-
-        if ($command instanceof SubscriptionSynced) {
-            $response = (new SubscriptionSyncedHandler())($command);
-            $this->handleResponse($response);
-        }
-
-        throw new TypeNotSupported(
-            sprintf(
-                "Return type must be an instance of %s",
-                GatewayCommand::class
-            )
-        );
+        return false;
     }
 
     /**
@@ -438,7 +209,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      */
     public function generateGatewayRouteUrl(string $gatewayMethod, array $args = []): string
     {
-        return Call::invoke(GenerateGatewayRouteUrl::class, static::id(), $gatewayMethod, $args);
+        return (new GenerateGatewayRouteUrl())(static::id(), $gatewayMethod, $args);
     }
 
     /**
@@ -452,8 +223,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     {
         $signature = new RouteSignature(static::id(), $gatewayMethod, $donationId);
 
-        return Call::invoke(
-            GenerateGatewayRouteUrl::class,
+        return (new GenerateGatewayRouteUrl())(
             static::id(),
             $gatewayMethod,
             array_merge($args, [
@@ -462,28 +232,6 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
                 'give-route-signature-expiration' => $signature->expiration,
             ])
         );
-    }
-
-    /**
-     * Handle response on basis of request mode when exception occurs:
-     * 1. Redirect to donation form if donation form submit.
-     * 2. Return json response if processing payment on ajax.
-     *
-     * @since 2.21.0 Handle PHP exception.
-     * @since 2.19.0
-     */
-    private function handleExceptionResponse(\Exception $exception, string $message)
-    {
-        if ($exception instanceof PaymentGatewayException) {
-            $message = $exception->getMessage();
-        }
-
-        if (wp_doing_ajax()) {
-            $this->handleResponse(response()->json($message));
-        }
-
-        give_set_error('PaymentGatewayException', $message);
-        give_send_back_to_checkout();
     }
 
     /**
@@ -522,7 +270,22 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      */
     private function isFunctionImplementedInGatewayClass(string $methodName): bool
     {
-        $reflector = new ReflectionMethod($this, $methodName);
+        try {
+            $reflector = new ReflectionMethod($this, $methodName);
+        } catch (ReflectionException $e) {
+            Log::error(
+                sprintf(
+                    'ReflectionException thrown when trying to check if %s::%s is implemented in the gateway class.',
+                    static::id(),
+                    $methodName
+                ),
+                [
+                    'exception' => $e,
+                ]
+            );
+
+            return false;
+        }
 
         return ($reflector->getDeclaringClass()->getName() === get_class($this));
     }

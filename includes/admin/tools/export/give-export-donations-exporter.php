@@ -284,6 +284,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 			'number' => 30,
 			'page'   => $this->step,
 			'status' => $this->status,
+			'order'  => 'ASC',
 		);
 		// Date query.
 		if ( ! empty( $this->start ) || ! empty( $this->end ) ) {
@@ -653,7 +654,7 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 				foreach ( $row as $col_id => $column ) {
 					// Make sure the column is valid
 					if ( array_key_exists( $col_id, $cols ) ) {
-						$row_data .= '"' . preg_replace( '/"/', "'", $column ) . '"';
+						$row_data .= '"' . $this->escape_csv_cell_data(preg_replace( '/"/', "'", $column )) . '"';
 						$row_data .= $i == count( $cols ) ? '' : ',';
 						$i ++;
 					}
@@ -668,4 +669,22 @@ class Give_Export_Donations_CSV extends Give_Batch_Export {
 
 		return false;
 	}
+
+    /**
+     * Escapes CSV cell data to protect against CSV injection.
+     * @link https://owasp.org/www-community/attacks/CSV_Injection
+     *
+     * @since 2.25.2
+     *
+     * @param mixed|string $cellData
+     *
+     * @return mixed|string
+     */
+    protected function escape_csv_cell_data($cellData) {
+        $firstCharacter = substr($cellData, 0, 1);
+        if( in_array($firstCharacter, array('=', '+', '-', '@')) ) {
+            $cellData = "'" . $cellData;
+        }
+        return $cellData;
+    }
 }

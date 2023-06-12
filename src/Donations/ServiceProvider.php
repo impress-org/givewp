@@ -2,6 +2,8 @@
 
 namespace Give\Donations;
 
+use Give\Donations\LegacyListeners\ClearDonationPostCache;
+use Give\Donations\LegacyListeners\DispatchDonationNoteEmailNotification;
 use Give\Donations\LegacyListeners\DispatchGiveInsertPayment;
 use Give\Donations\LegacyListeners\DispatchGivePreInsertPayment;
 use Give\Donations\LegacyListeners\DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment;
@@ -11,6 +13,7 @@ use Give\Donations\LegacyListeners\RemoveSequentialId;
 use Give\Donations\LegacyListeners\UpdateDonorPaymentIds;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Migrations\AddMissingDonorIdToDonationComments;
+use Give\Donations\Migrations\MoveDonationCommentToDonationMetaTable;
 use Give\Donations\Migrations\SetAutomaticFormattingOption;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationNotesRepository;
@@ -47,12 +50,13 @@ class ServiceProvider implements ServiceProviderInterface
         give(MigrationsRegister::class)->addMigrations([
             AddMissingDonorIdToDonationComments::class,
             SetAutomaticFormattingOption::class,
+            MoveDonationCommentToDonationMetaTable::class,
         ]);
     }
 
     /**
      * Legacy Listeners
-     *
+     * @since 2.25.0 Call ClearDonationPostCache on the "givewp_donation_updated" hook
      * @since 2.24.0 Remove UpdateSequentialId from "givewp_donation_updated" action hook.
      * @since 2.19.6
      */
@@ -80,10 +84,17 @@ class ServiceProvider implements ServiceProviderInterface
         });
 
         add_action('givewp_donation_updated', function (Donation $donation) {
+            (new ClearDonationPostCache())($donation);
             (new DispatchGiveUpdatePaymentStatus())($donation);
         });
 
         Hooks::addAction('givewp_donation_deleted', RemoveSequentialId::class);
+
+        add_action('givewp_donation_note_created', static function ($donationNote) {
+            if ($donationNote->type->isDonor()) {
+                (new DispatchDonationNoteEmailNotification())($donationNote);
+            }
+        });
     }
 
     /**
