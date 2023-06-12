@@ -2,6 +2,7 @@
 
 namespace Give\Framework\PaymentGateways\CommandHandlers;
 
+use Exception;
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\PaymentGateways\Commands\SubscriptionSynced;
 
@@ -14,6 +15,8 @@ class SubscriptionSyncedHandler
 {
     /**
      * @unreleased
+     *
+     * @throws Exception
      */
     public function __invoke(SubscriptionSynced $subscriptionSynced): JsonResponse
     {
