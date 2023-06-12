@@ -128,7 +128,7 @@ class DonateController
     {
         if (!$gateway->supportsSubscriptions()) {
             $gatewayName = $gateway->getName();
-            
+
             throw new PaymentGatewayException(
                 sprintf(
                     __(

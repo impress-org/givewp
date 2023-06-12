@@ -3,6 +3,7 @@
 namespace Give\DonationForms;
 
 use Exception;
+use Give\DonationForms\Routes\AuthenticationRoute;
 use Give\DonationForms\Actions\DispatchDonateControllerDonationCreatedListeners;
 use Give\DonationForms\Actions\DispatchDonateControllerSubscriptionCreatedListeners;
 use Give\DonationForms\Actions\StoreBackwardsCompatibleFormMeta;
@@ -78,6 +79,11 @@ class ServiceProvider implements ServiceProviderInterface
          * @unreleased
          */
         Route::post('validate', ValidationRoute::class);
+
+        /**
+         * @unreleased
+         */
+        Route::post('authenticate', AuthenticationRoute::class);
 
         /**
          * @since 0.1.0

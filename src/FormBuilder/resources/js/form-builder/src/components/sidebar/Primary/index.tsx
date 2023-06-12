@@ -9,6 +9,7 @@ import {
     FormDesignSettings,
     FormSummarySettings,
     ReceiptSettings,
+    RegistrationSettings,
 } from '../../../settings';
 import {PopoutSlot} from '../popout';
 import {useEffect} from 'react';
@@ -35,10 +36,10 @@ const tabs = [
                 />
                 <FormSummarySettings />
                 <DonationGoalSettings />
+                <RegistrationSettings />
                 <ReceiptSettings />
                 {/*The settings below have not been implemented yet.*/}
                 {/*<OfflineDonationsSettings/>*/}
-                {/*<FormFields />*/}
             </>
         ),
     },

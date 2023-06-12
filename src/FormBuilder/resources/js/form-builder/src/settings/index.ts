@@ -1,5 +1,5 @@
 import DonationGoalSettings from './donation-goal';
-import FormFieldSettings from './form-fields';
+import RegistrationSettings from './registration';
 import FormSummarySettings from './form-summary';
 import OfflineDonationsSettings from './offline-donation';
 import FormDesignSettings from './design';
@@ -8,7 +8,7 @@ import ReceiptSettings from './receipt';
 
 export {
     DonationGoalSettings,
-    FormFieldSettings,
+    RegistrationSettings,
     FormSummarySettings,
     OfflineDonationsSettings,
     FormDesignSettings,

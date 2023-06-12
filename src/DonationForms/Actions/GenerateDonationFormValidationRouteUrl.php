@@ -21,11 +21,7 @@ class GenerateDonationFormValidationRouteUrl
     {
         $signature = new DonateRouteSignature('givewp-donation-form-validation');
 
-        $queryArgs = [
-            'givewp-route-signature' => $signature->toHash(),
-            'givewp-route-signature-id' => 'givewp-donation-form-validation',
-            'givewp-route-signature-expiration' => $signature->expiration,
-        ];
+        $queryArgs = (new GenerateDonateRouteSignatureArgs())($signature, 'givewp-donation-form-validation');
 
         return esc_url_raw(Route::url('validate', $queryArgs));
     }

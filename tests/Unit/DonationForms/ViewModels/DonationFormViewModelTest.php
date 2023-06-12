@@ -2,6 +2,7 @@
 
 namespace Give\Tests\Unit\DonationForms\VieModels;
 
+use Give\DonationForms\Actions\GenerateAuthUrl;
 use Give\DonationForms\Actions\GenerateDonateRouteUrl;
 use Give\DonationForms\Actions\GenerateDonationFormValidationRouteUrl;
 use Give\DonationForms\DataTransferObjects\DonationFormGoalData;
@@ -25,7 +26,7 @@ class DonationFormViewModelTest extends TestCase
     public function testExportsShouldReturnExpectedArrayOfData()
     {
         $formDesign = new ClassicFormDesign();
-        
+
         /** @var DonationForm $donationForm */
         $donationForm = DonationForm::factory()->create([
             'settings' => FormSettings::fromArray(['designId' => $formDesign::id()]),
@@ -38,6 +39,7 @@ class DonationFormViewModelTest extends TestCase
         $goalType = $donationForm->settings->goalType ?? GoalType::AMOUNT();
         $donateUrl = (new GenerateDonateRouteUrl())();
         $validateUrl = (new GenerateDonationFormValidationRouteUrl())();
+        $authUrl = (new GenerateAuthUrl())();
         $formDataGateways = $donationFormRepository->getFormDataGateways($donationForm->id);
         $formApi = $donationFormRepository->getFormSchemaFromBlocks(
             $donationForm->id,
@@ -49,6 +51,7 @@ class DonationFormViewModelTest extends TestCase
         $this->assertEquals($viewModel->exports(), [
             'donateUrl' => $donateUrl,
             'validateUrl' => $validateUrl,
+            'authUrl' => $authUrl,
             'inlineRedirectRoutes' => [
                 'donation-confirmation-receipt-view'
             ],

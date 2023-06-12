@@ -21,11 +21,7 @@ class GenerateDonateRouteUrl
     {
         $signature = new DonateRouteSignature('givewp-donate');
 
-        $queryArgs = [
-            'givewp-route-signature' => $signature->toHash(),
-            'givewp-route-signature-id' => 'givewp-donate',
-            'givewp-route-signature-expiration' => $signature->expiration,
-        ];
+        $queryArgs = (new GenerateDonateRouteSignatureArgs())($signature, 'givewp-donate');
 
         return esc_url_raw(Route::url('donate', $queryArgs));
     }

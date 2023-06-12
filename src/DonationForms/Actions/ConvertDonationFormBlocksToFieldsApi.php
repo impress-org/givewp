@@ -3,9 +3,11 @@
 namespace Give\DonationForms\Actions;
 
 use Give\DonationForms\Repositories\DonationFormRepository;
+use Give\DonationForms\Rules\AuthenticationRule;
 use Give\DonationForms\Rules\GatewayRule;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
+use Give\Framework\FieldsAPI\Authentication;
 use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\DonationSummary;
 use Give\Framework\FieldsAPI\Email;
@@ -18,6 +20,7 @@ use Give\Framework\FieldsAPI\Paragraph;
 use Give\Framework\FieldsAPI\PaymentGateways;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
+use WP_User;
 
 /**
  * @since 0.1.0
@@ -127,7 +130,13 @@ class ConvertDonationFormBlocksToFieldsApi
             case "givewp/email":
                 return Email::make('email')
                     ->emailTag('email')
-                    ->rules('required', 'email');
+                    ->rules('required', 'email')
+                    ->tap(function ($email) use ($block) {
+                        if(is_user_logged_in()) {
+                            $email->defaultValue(wp_get_current_user()->user_email);
+                        }
+                        return $email;
+                    });
 
             case "givewp/payment-gateways":
                 $defaultGatewayId = give(DonationFormRepository::class)->getDefaultEnabledGatewayId($this->formId);
@@ -151,6 +160,25 @@ class ConvertDonationFormBlocksToFieldsApi
                 )->storeAsDonorMeta(
                     $block->hasAttribute('storeAsDonorMeta') ? $block->getAttribute('storeAsDonorMeta') : false
                 );
+
+            case "givewp/login":
+                return Authentication::make('login')
+                    ->required($block->getAttribute('required'))
+                    ->isAuthenticated(is_user_logged_in())
+                    ->lostPasswordUrl(wp_lostpassword_url())
+                    ->loginRedirect($block->getAttribute('loginRedirect'))
+                    ->loginRedirectUrl(wp_login_url())
+                    ->loginNotice($block->getAttribute('loginNotice'))
+                    ->loginConfirmation($block->getAttribute('loginConfirmation'))
+                    ->tapNode('login', function($field) use ($block) {
+                        if($block->getAttribute('required')) {
+                            if (!is_user_logged_in()) {
+                                $field->required();
+                            }
+                            
+                            $field->rules(new AuthenticationRule());
+                        }
+                    });
 
             default:
                 $customField = apply_filters(
@@ -177,6 +205,7 @@ class ConvertDonationFormBlocksToFieldsApi
             $group->getNodeByName('firstName')
                 ->label($block->getAttribute('firstNameLabel'))
                 ->placeholder($block->getAttribute('firstNamePlaceholder'))
+                ->required($block->getAttribute('requireFirstName'))
                 ->rules('required', 'max:255');
 
             $group->getNodeByName('lastName')
@@ -184,6 +213,20 @@ class ConvertDonationFormBlocksToFieldsApi
                 ->placeholder($block->getAttribute('lastNamePlaceholder'))
                 ->required($block->getAttribute('requireLastName'))
                 ->rules('max:255');
+
+            if (is_user_logged_in()) {
+                /** @var WP_User $user */
+                $user = wp_get_current_user();
+
+                if ($user->first_name) {
+                    $group->getNodeByName('firstName')->defaultValue($user->first_name);
+                }
+
+                if ($user->last_name) {
+                    $group->getNodeByName('lastName')->defaultValue($user->last_name);
+                }
+            }
+
 
             if ($block->hasAttribute('showHonorific') && $block->getAttribute('showHonorific') === true) {
                 $group->getNodeByName('honorific')

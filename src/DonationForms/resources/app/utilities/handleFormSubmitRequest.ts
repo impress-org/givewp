@@ -11,6 +11,7 @@ import FormRequestError from '../errors/FormRequestError';
 
 import {__} from '@wordpress/i18n';
 import handleRedirect from '@givewp/forms/app/utilities/handleFormRedirect';
+import getCurrentFormUrlData from '@givewp/forms/app/utilities/getCurrentFormUrlData';
 
 export default async function handleSubmitRequest(
     values,
@@ -35,27 +36,13 @@ export default async function handleSubmitRequest(
             beforeCreatePaymentGatewayResponse = await gateway.beforeCreatePayment(values);
         }
 
-        const originUrl = window.top.location.href;
-
-        const isEmbed = window.frameElement !== null;
-
-        const getEmbedId = () => {
-            if (!isEmbed) {
-                return null;
-            }
-
-            if (window.frameElement.hasAttribute('data-givewp-embed-id')) {
-                return window.frameElement.getAttribute('data-givewp-embed-id');
-            }
-
-            return window.frameElement.id;
-        };
+        const {originUrl, isEmbed, embedId} = getCurrentFormUrlData();
 
         const {response} = await postData(donateUrl, {
             ...values,
             originUrl,
             isEmbed,
-            embedId: getEmbedId(),
+            embedId,
             gatewayData: beforeCreatePaymentGatewayResponse,
         });
 

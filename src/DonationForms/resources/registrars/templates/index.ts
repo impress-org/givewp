@@ -1,4 +1,5 @@
 import TextField from './fields/Text';
+import PasswordField from './fields/Password';
 import TextAreaField from './fields/TextArea';
 import EmailField from './fields/Email';
 import HiddenField from './fields/Hidden';
@@ -13,6 +14,7 @@ import Form from './layouts/Form';
 import AmountField from './fields/Amount';
 import SelectField from './fields/Select';
 import Gateways from './fields/Gateways';
+import Authentication from "./groups/Authentication";
 import Paragraph from './elements/Paragraph';
 import FieldLabel from './layouts/FieldLabel';
 import FieldError from './layouts/FieldError';
@@ -30,6 +32,7 @@ const defaultFormTemplates = {
     fields: {
         amount: AmountField,
         text: TextField,
+        password: PasswordField,
         textarea: TextAreaField,
         email: EmailField,
         hidden: HiddenField,
@@ -46,6 +49,7 @@ const defaultFormTemplates = {
     groups: {
         name: NameGroup,
         donationAmount: DonationAmountGroup,
+        authentication: Authentication,
     },
     layouts: {
         wrapper: NodeWrapper,

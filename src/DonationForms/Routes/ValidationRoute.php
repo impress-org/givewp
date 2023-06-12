@@ -6,7 +6,6 @@ namespace Give\DonationForms\Routes;
 use Give\DonationForms\DataTransferObjects\DonateRouteData;
 use Give\DonationForms\DataTransferObjects\ValidationRouteData;
 use Give\DonationForms\Exceptions\DonationFormFieldErrorsException;
-use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Log\Log;
 use WP_Error;
@@ -27,7 +26,7 @@ class ValidationRoute
         $routeData = DonateRouteData::fromRequest(give_clean($_GET));
 
         // validate signature
-        $this->validateSignature($routeData->routeSignature, $routeData);
+        $routeData->validateSignature();
 
         // create DTO from POST request
         $formData = ValidationRouteData::fromRequest($request);
@@ -43,35 +42,6 @@ class ValidationRoute
         }
 
         exit;
-    }
-
-    /**
-     * @unreleased
-     *
-     * @return void
-     */
-    private function validateSignature(string $routeSignature, DonateRouteData $data)
-    {
-        $signature = new DonateRouteSignature(
-            $data->routeSignatureId,
-            $data->routeSignatureExpiration
-        );
-
-        if (!$signature->isValid($routeSignature)) {
-            PaymentGatewayLog::error(
-                'Invalid Secure Route',
-                [
-                    'routeSignature' => $routeSignature,
-                    'signature' => $signature,
-                    'signatureString' => $signature->toString(),
-                    'signatureHash' => $signature->toHash(),
-                    'signatureExpiration' => $signature->expiration,
-                    'data' => $data
-                ]
-            );
-
-            wp_die('Forbidden', 403);
-        }
     }
 
     /**
