@@ -150,16 +150,15 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * @since 2.21.2
+     * @unreleased Return synchronizeSubscription() instead nothing
+     * @since      2.21.2
      * @inheritDoc
      * @throws Exception
      */
     public function synchronizeSubscription(Subscription $subscription)
     {
         if ($this->subscriptionModule instanceof SubscriptionTransactionsSynchronizable) {
-            $this->subscriptionModule->synchronizeSubscription($subscription);
-
-            return;
+            return $this->subscriptionModule->synchronizeSubscription($subscription);
         }
 
         throw new Exception('Gateway does not support syncing subscriptions.');
