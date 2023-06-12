@@ -29,9 +29,9 @@ class SubscriptionSyncedHandler
         return response()->json([
             'subscription' => [
                 'attributes' => $subscriptionSynced->subscription->getAttributes(),
-                'attributes-changed' => $subscriptionAttributesChanged,
-                'old-status' => $subscriptionOldStatus,
-                'new-status' => $subscriptionNewStatus,
+                'attributesChanged' => $subscriptionAttributesChanged,
+                'oldStatus' => $subscriptionOldStatus,
+                'newStatus' => $subscriptionNewStatus,
             ],
             'donations' => $subscriptionSynced->donations,
             'notice' => $subscriptionSynced->notice,
