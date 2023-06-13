@@ -10,15 +10,13 @@ trait ShowInReceipt
 
     /**
      * @since 2.10.2
-     * @var bool
      */
     protected $showInReceipt = false;
 
     /**
      * @since 2.10.2
-     * @return $this
      */
-    public function showInReceipt($showInReceipt = true)
+    public function showInReceipt($showInReceipt = true): self
     {
         $this->showInReceipt = $showInReceipt;
 
@@ -27,9 +25,8 @@ trait ShowInReceipt
 
     /**
      * @since 2.10.2
-     * @return bool
      */
-    public function shouldShowInReceipt()
+    public function shouldShowInReceipt(): bool
     {
         return $this->showInReceipt;
     }

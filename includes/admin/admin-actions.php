@@ -1633,10 +1633,10 @@ add_action( 'give_post_form_template_options_settings', 'give_render_form_theme_
  *
  * @since 2.20.0
  */
-function give_render_form_grid_setting_panel() {
+function give_render_form_grid_setting_panel()
+{
     require_once GIVE_PLUGIN_DIR . 'src/Views/Admin/Form/FormGrid-Settings.php';
 }
 
-add_action( 'give_post_form_grid_options_settings', 'give_render_form_grid_setting_panel' );
-
+add_action('give_post_form_grid_options_settings', 'give_render_form_grid_setting_panel');
 

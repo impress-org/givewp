@@ -6,6 +6,7 @@ import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.mod
 import {Interweave} from 'interweave';
 import './style.scss';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
+import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
 
 declare global {
     interface Window {
@@ -15,6 +16,7 @@ declare global {
             forms: Array<{value: string; text: string}>;
             table: {columns: Array<object>};
             pluginUrl: string;
+            dissedRecommendations: Array<string>;
         };
     }
 }
@@ -83,6 +85,25 @@ const ListTableBlankSlate = (
     />
 );
 
+/**
+ * @since 2.27.1
+ */
+const RecommendationConfig: any = {
+    feeRecovery: {
+        enum: 'givewp_donors_fee_recovery_recommendation_dismissed',
+        documentationPage: 'https://docs.givewp.com/feerecovery-donors-list',
+        message: __(
+            ' 90% of donors opt to give more to help cover transaction fees when given the opportunity. Give donors that opportunity.',
+            'give'
+        ),
+        innerHtml: __('Get the Fee Recovery add-on today', 'give'),
+    },
+};
+
+const recommendation = (
+    <ProductRecommendations options={[RecommendationConfig.feeRecovery]} apiSettings={window.GiveDonors} />
+);
+
 export default function DonorsListTable() {
     return (
         <ListTablePage
@@ -94,6 +115,7 @@ export default function DonorsListTable() {
             apiSettings={window.GiveDonors}
             filterSettings={donorsFilters}
             listTableBlankSlate={ListTableBlankSlate}
+            productRecommendation={recommendation}
         >
             <button className={styles.addFormButton} onClick={showLegacyDonors}>
                 {__('Switch to Legacy View', 'give')}

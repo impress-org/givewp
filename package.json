@@ -19,6 +19,17 @@
         "url": "https://github.com/impress-org/give/issues"
     },
     "homepage": "https://github.com/impress-org/give#readme",
+    "_zipname": "give",
+    "_version_files": [
+        {
+            "file": "give.php",
+            "regex": "(define\\('GIVE_VERSION', ')([^']+)"
+        },
+        {
+            "file": "give.php",
+            "regex": "(Version: )([^\\s]+)"
+        }
+    ],
     "devDependencies": {
         "@babel/core": "^7.13.10",
         "@babel/eslint-parser": "^7.13.10",

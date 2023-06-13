@@ -126,7 +126,7 @@ class CreditCardSettingField
                         esc_html_e('Multiple Fields', 'give'); ?></span>
                     <span class="stripe-cc-fields-radio-description"><?php
                         esc_html_e(
-                            'This is the more traditional credit card fieldset format that many are familiar with. All fields areseparate from one another.',
+                            'This is the more traditional credit card fieldset format that many are familiar with. All fields are separate from one another.',
                             'give'
                         ); ?></span>
 

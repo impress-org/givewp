@@ -4,7 +4,7 @@ namespace Give\Onboarding\Wizard;
 
 defined('ABSPATH') || exit;
 
-use Give\DonationForms\DonationFormsAdminPage;
+use Give\DonationForms\V2\DonationFormsAdminPage;
 use Give\Helpers\EnqueueScript;
 use Give\Onboarding\FormRepository;
 use Give\Onboarding\Helpers\FormatList;
