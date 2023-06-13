@@ -104,13 +104,13 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @unreleased add blockIndex for unique field names, add filter `givewp_donation_form_block_render_{$blockName}`
+     * @unreleased add blockIndex for unique field names, add filter `givewp_donation_form_block_render` filters
      * @since 0.1.0
      *
-     * @throws EmptyNameException
+     * @return Node|null
      * @throws NameCollisionException
      *
-     * @return Node|null
+     * @throws EmptyNameException
      */
     protected function createNodeFromBlockWithUniqueAttributes(BlockModel $block, int $blockIndex)
     {
@@ -175,14 +175,23 @@ class ConvertDonationFormBlocksToFieldsApi
                             if (!is_user_logged_in()) {
                                 $field->required();
                             }
-                            
+
                             $field->rules(new AuthenticationRule());
                         }
                     });
 
             default:
                 $customField = apply_filters(
+                    'givewp_donation_form_block_render',
+                    null,
+                    $block,
+                    $blockIndex,
+                    $this->formId
+                );
+
+                $customField = apply_filters(
                     "givewp_donation_form_block_render_{$blockName}",
+                    $customField,
                     $block,
                     $blockIndex,
                     $this->formId

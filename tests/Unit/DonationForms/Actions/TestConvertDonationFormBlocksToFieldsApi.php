@@ -108,11 +108,11 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
 
         add_filter(
             'givewp_donation_form_block_render_givewp/givewp-custom-block',
-            static function (BlockModel $block, int $blockIndex) {
+            static function ($node, BlockModel $block, int $blockIndex) {
                 return Email::make('givewp-custom-block');
             },
             10,
-            2
+            3
         );
 
         $formSchema = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
