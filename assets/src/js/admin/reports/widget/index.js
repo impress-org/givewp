@@ -71,7 +71,7 @@ function RecurringAddonOverlay() {
                     )}
                 </p>
 
-                <a href={' https://docs.givewp.com/recurring-dash'}>
+                <a href={' https://docs.givewp.com/recurring-dash'} target={'_blank'}>
                     <img src={`${assets}assets/dist/images/admin/white-external-icon.svg`} alt={'external link'} />
                     {__('Get more donations', 'give')}
                 </a>
