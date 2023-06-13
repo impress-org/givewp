@@ -2,8 +2,6 @@
 
 namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
-use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
-
 class Settings
 {
     /**
