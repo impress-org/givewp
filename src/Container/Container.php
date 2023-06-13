@@ -511,10 +511,12 @@ class Container implements ArrayAccess, ContainerInterface
     /**
      * Resolve the given type from the container.
      *
-     * @param string $abstract
+     * @template T
+     *
+     * @param class-string<T> $abstract
      * @param array  $parameters
      *
-     * @return mixed
+     * @return T|mixed
      */
     public function make(string $abstract, array $parameters = [])
     {
@@ -524,9 +526,11 @@ class Container implements ArrayAccess, ContainerInterface
     /**
      * Finds an entry of the container by its identifier and returns it.
      *
-     * @param string $id Identifier of the entry to look for.
+     * @template T
      *
-     * @return mixed Entry.
+     * @param class-string<T> $id Identifier of the entry to look for.
+     *
+     * @return T|mixed Entry.
      * @throws InvalidArgumentException|BindingResolutionException
      */
     public function get(string $id)
@@ -545,7 +549,11 @@ class Container implements ArrayAccess, ContainerInterface
     /**
      * Resolve the given type from the container.
      *
-     * @return mixed
+     * @template T
+     *
+     * @param class-string<T> $abstract
+     *
+     * @return T|mixed
      * @throws BindingResolutionException
      */
     protected function resolve(string $abstract, array $parameters = [], bool $raiseEvents = true)

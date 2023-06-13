@@ -126,7 +126,7 @@ class SmartButtons extends PaymentMethod {
 			return actions.resolve();
 		}
 
-		Give.form.fn.addErrors( this.jQueryForm, result );
+		this.showError( result );
 		return actions.reject();
 	}
 

@@ -7,6 +7,21 @@ on:
                 description: 'Git Commit Ref (branch, tag, or hash)'
                 required: true
                 type: string
+            production:
+                description: 'Is this a production build?'
+                default: false
+                type: boolean
+            slack_channel:
+                description: 'Slack channel ID to post to'
+                default: ''
+                required: false
+                type: string
+            slack_thread:
+                description: 'Slack thread to post to'
+                default: ''
+                required: false
+                type: string
+
 
 jobs:
     build:
@@ -14,3 +29,7 @@ jobs:
         with:
             ref: ${{ github.event.inputs.ref }}
             plugin_slug: give
+            production: ${{ github.event.inputs.production }}
+            slack_channel: ${{ github.event.inputs.slack_channel }}
+            slack_thread: ${{ github.event.inputs.slack_thread }}
+        secrets: inherit
