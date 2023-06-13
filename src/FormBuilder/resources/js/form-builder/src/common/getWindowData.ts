@@ -1,18 +1,30 @@
-import {FormDesign, FormPageSettings, Gateway} from '@givewp/form-builder/types';
+import {
+    FormDesign,
+    FormPageSettings,
+    Gateway,
+    TemplateTag,
+    EmailNotification,
+} from '@givewp/form-builder/types';
 
 declare global {
     interface Window {
+
+        wp?: any;
         storageData?: {
+            formId: number;
+            nonce: string;
             formDesigns: FormDesign[];
             formPage: FormPageSettings;
             currency: string;
-        },
-        formBuilderData?: {
             gateways: Gateway[];
             recurringAddonData?: {
                 isInstalled: boolean;
             },
             gatewaySettingsUrl: string;
+            emailPreviewURL: string;
+            emailTemplateTags: TemplateTag[];
+            emailNotifications: EmailNotification[];
+            emailDefaultAddress: string;
         },
     }
 }
@@ -26,5 +38,5 @@ export function getStorageData() {
 }
 
 export function getFormBuilderData() {
-    return window.formBuilderData;
+    return window.storageData;
 }

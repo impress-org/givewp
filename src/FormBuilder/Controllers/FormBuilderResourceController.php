@@ -2,6 +2,8 @@
 
 namespace Give\FormBuilder\Controllers;
 
+use Give\FormBuilder\Actions\UpdateEmailSettingsMeta;
+use Give\FormBuilder\Actions\UpdateEmailTemplateMeta;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\FormSettings;
 use Give\Framework\Blocks\BlockCollection;
@@ -75,6 +77,8 @@ class FormBuilderResourceController
         if ($requiredFieldsError = $this->validateRequiredFields($form->schema())) {
             return rest_ensure_response($requiredFieldsError);
         }
+
+        do_action('givewp_form_builder_updated', $form);
 
         $form->status = $updatedSettings->formStatus;
         $form->save();

@@ -1,4 +1,5 @@
 import {FormStatus} from "@givewp/form-builder/types/formStatus";
+import {EmailTemplateOption} from "@givewp/form-builder/types/emailTemplateOption";
 
 /**
  * @since 0.1.0
@@ -23,4 +24,10 @@ export type FormSettings = {
     receiptHeading: string;
     receiptDescription: string;
     formStatus: FormStatus;
+    emailTemplateOptions: EmailTemplateOption[];
+    emailOptionsStatus: string;
+    emailTemplate: string;
+    emailLogo: string;
+    emailFromName: string;
+    emailFromEmail: string;
 };

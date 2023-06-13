@@ -44,7 +44,9 @@
         "react-select": "^5.7.0",
         "react-shepherd": "^4.2.0",
         "swr": "^2.0.1",
-        "use-immer": "^0.9.0"
+        "use-immer": "^0.9.0",
+        "react-quill": "^2.0.0",
+        "react-use-clipboard": "^1.0.9"
     },
     "devDependencies": {
         "@types/react": "^18.0.27",

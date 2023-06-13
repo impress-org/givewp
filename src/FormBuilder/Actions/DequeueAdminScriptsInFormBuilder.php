@@ -31,10 +31,6 @@ class DequeueAdminScriptsInFormBuilder
             ];
 
             $wpScripts->dequeue($legacyGiveScripts);
-
-            foreach(['admin_notices', 'admin_footer', 'admin_head'] as $hook){
-                remove_all_actions($hook);
-            }
         }
     }
 

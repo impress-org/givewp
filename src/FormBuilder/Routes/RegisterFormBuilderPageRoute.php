@@ -87,23 +87,25 @@ class RegisterFormBuilderPageRoute
             true
         );
 
-        $formBuilderStorage = (new EnqueueScript(
+        (new EnqueueScript(
             '@givewp/form-builder/storage',
             'src/FormBuilder/resources/js/storage.js',
             GIVE_NEXT_GEN_DIR,
             GIVE_NEXT_GEN_URL,
             'give'
-        ));
-
-        $formBuilderStorage
+        ))
             ->dependencies(['jquery'])
-            ->registerLocalizeData(
-                'storageData',
-                $formBuilderViewModel->storageData($donationFormId)
-            )
+            ->registerLocalizeData('storageData', $formBuilderViewModel->storageData($donationFormId))
             ->loadInFooter()
             ->enqueue();
 
+        /**
+         * @unreleased
+         * Using `wp_enqueue_script` instead of `new EnqueueScript` for more control over dependencies.
+         * The `EnqueueScript` class discovers the dependencies from the associated `asset.php` file,
+         * which might include dependencies that are not supported in some version of WordPress.
+         * @link https://github.com/impress-org/givewp-next-gen/pull/181#discussion_r1202686731
+         */
         Hooks::doAction('givewp_form_builder_enqueue_scripts');
 
         wp_enqueue_script(
@@ -115,15 +117,6 @@ class RegisterFormBuilderPageRoute
             GIVE_NEXT_GEN_VERSION,
             true
         );
-
-        wp_localize_script('@givewp/form-builder/script', 'formBuilderData', [
-            'gateways' => $formBuilderViewModel->getGateways(),
-            'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
-            'recurringAddonData' => [
-                'isInstalled' => defined('GIVE_RECURRING_VERSION'),
-            ],
-            'gatewaySettingsUrl' => admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways'),
-        ]);
 
         wp_localize_script('@givewp/form-builder/script', 'onboardingTourData', [
             'actionUrl' => admin_url('admin-ajax.php?action=givewp_tour_completed'),
