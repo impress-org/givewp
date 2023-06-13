@@ -143,7 +143,6 @@ class AjaxRequestHandler
                 'section' => 'paypal',
                 'group' => 'paypal-commerce',
                 'mode' => $mode
-
             ],
             admin_url('edit.php?post_type=give_forms&page=give-settings')
         );
