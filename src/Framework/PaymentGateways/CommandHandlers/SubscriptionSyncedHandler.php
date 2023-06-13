@@ -20,21 +20,21 @@ class SubscriptionSyncedHandler
      */
     public function __invoke(SubscriptionSynced $subscriptionSynced): JsonResponse
     {
-        $subscriptionAttributesChanged = $subscriptionSynced->subscription->getDirty();
-        $subscriptionOldStatus = $subscriptionSynced->subscription->getOriginal('status');
-        $subscriptionNewStatus = $subscriptionSynced->subscription->status->getValue();
+        $response = response()->json([
+            'details' => [
+                'currentStatus' => $subscriptionSynced->subscription->getOriginal('status'),
+                'gatewayStatus' => $subscriptionSynced->subscription->status,
+                'currentPeriod' => $subscriptionSynced->subscription->getOriginal('period'),
+                'gatewayPeriod' => $subscriptionSynced->subscription->period,
+                'currentCreatedDate' => $subscriptionSynced->subscription->getOriginal('createdAt'),
+                'gatewayCreatedDate' => $subscriptionSynced->subscription->createdAt,
+            ],
+            'transactions' => $subscriptionSynced->donations,
+            'notice' => $subscriptionSynced->notice,
+        ]);
 
         $subscriptionSynced->subscription->save();
 
-        return response()->json([
-            'subscription' => [
-                'attributes' => $subscriptionSynced->subscription->getAttributes(),
-                'attributesChanged' => $subscriptionAttributesChanged,
-                'oldStatus' => $subscriptionOldStatus,
-                'newStatus' => $subscriptionNewStatus,
-            ],
-            'donations' => $subscriptionSynced->donations,
-            'notice' => $subscriptionSynced->notice,
-        ]);
+        return $response;
     }
 }
