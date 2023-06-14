@@ -13,7 +13,6 @@ import Grid from '../components/grid';
 import Card from '../components/card';
 import RESTChart from '../components/rest-chart';
 import RESTMiniChart from '../components/rest-mini-chart';
-import NoDataNotice from '../components/no-data-notice';
 import LoadingNotice from '../components/loading-notice';
 import MiniPeriodSelector from '../components/mini-period-selector';
 
@@ -22,8 +21,7 @@ const Widget = () => {
 
     return (
         <div className="givewp-reports-widget-container">
-            <RecurringAddonOverlay />
-            {giveStatus === 'no_donations_found' && <NoDataNotice version={'dashboard'} />}
+            {giveStatus === 'no_donations_found' && <RecurringAddonOverlay />}
             {pageLoaded === false && <LoadingNotice />}
             <Grid gap="12px" visible={pageLoaded}>
                 <Card width={12}>
@@ -60,7 +58,6 @@ function RecurringAddonOverlay() {
         <div className={'givewp-reports-widget-overlay'}>
             <div className={'givewp-reports-widget-overlay-content'}>
                 <h3 className={'givewp-reports-widget-overlay-content-title'}>
-                    {' '}
                     {__('Get a quick view of your donation activity', 'give')}
                 </h3>
                 <p>{__("You don't have any donations yet", 'give')}</p>
