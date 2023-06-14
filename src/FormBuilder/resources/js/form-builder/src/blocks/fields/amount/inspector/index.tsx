@@ -163,7 +163,10 @@ const Inspector = ({attributes, setAttributes}) => {
                     <AddButton
                         onClick={() => {
                             const newLevels = [...levels];
-                            newLevels.push('');
+                            const lastLevel = newLevels[newLevels.length - 1];
+                            const nextLevel = lastLevel ? lastLevel * 2 : 10;
+
+                            newLevels.push(nextLevel.toString());
                             setAttributes({levels: newLevels});
                         }}
                     />
