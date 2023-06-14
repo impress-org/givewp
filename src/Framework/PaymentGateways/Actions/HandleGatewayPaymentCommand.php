@@ -28,7 +28,7 @@ class HandleGatewayPaymentCommand
     /**
      * Handle gateway command
      *
-     * @unreleased Handle PaymentRefunded command
+     * @since 2.29.0 Handle PaymentRefunded command
      * @since      2.27.0 return responses
      * @since      2.18.0
      *
