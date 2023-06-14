@@ -48,6 +48,15 @@ interface PaymentGatewayInterface extends SubscriptionModuleInterface
     public function getPaymentMethodLabel(): string;
 
     /**
+     * Determines if refunds are supported
+     *
+     * @unreleased
+     *
+     * @return bool
+     */
+    public function supportsRefund(): bool;
+
+    /**
      * Determines if subscriptions are supported
      *
      * @since 2.18.0

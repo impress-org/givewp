@@ -4,6 +4,7 @@ namespace Give\Tests\Unit\PaymentGateways\Controllers;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
+use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Controllers\GatewayPaymentController;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Tests\TestCase;
@@ -27,7 +28,7 @@ class GatewayPaymentControllerTest extends TestCase {
 
         $mockCommand = new PaymentComplete('mock-transaction-id');
 
-         /** @var PHPUnit_Framework_MockObject_MockObject $mockGateway */
+        /** @var PHPUnit_Framework_MockObject_MockObject $mockGateway */
         $mockGateway->expects($this->once())
             ->method('createPayment')
             ->with($donation)
@@ -39,6 +40,31 @@ class GatewayPaymentControllerTest extends TestCase {
     }
 
     /**
+     * @unreleased
+     */
+    public function testShouldCallGatewayRefundDonation()
+    {
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'gatewayId' => TestGateway::id(),
+        ]);
+
+        $mockGateway = $this->getMockGateway();
+
+        $mockCommand = new PaymentRefunded('mock-transaction-id');
+
+        /** @var PHPUnit_Framework_MockObject_MockObject $mockGateway */
+        $mockGateway->expects($this->once())
+            ->method('refundDonation')
+            ->with($donation)
+            ->willReturn($mockCommand);
+
+        $mockController = $this->getMockController();
+        $controller = new $mockController($mockGateway);
+        $controller->refund($donation);
+    }
+
+    /**
      * @since 2.27.0
      */
     protected function getMockGateway()
@@ -47,7 +73,7 @@ class GatewayPaymentControllerTest extends TestCase {
             TestGateway::class,
             function (PHPUnit_Framework_MockObject_MockBuilder $mockBuilder) {
                 // partial mock gateway by setting methods on the mock builder
-                $mockBuilder->setMethods(['createPayment']);
+                $mockBuilder->setMethods(['createPayment', 'refundDonation']);
 
                 return $mockBuilder->getMock();
             }
