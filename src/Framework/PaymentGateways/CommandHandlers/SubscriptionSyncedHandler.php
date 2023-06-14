@@ -28,9 +28,9 @@ class SubscriptionSyncedHandler
             'gatewayStatus' => $subscriptionSynced->subscription->status,
             'currentPeriod' => $subscriptionSynced->subscription->getOriginal('period'),
             'gatewayPeriod' => $subscriptionSynced->subscription->period,
-            'currentCreatedDate' => date($dateTimeFormat,
+            'currentCreatedAt' => date($dateTimeFormat,
                 $subscriptionSynced->subscription->getOriginal('createdAt')->getTimestamp()),
-            'gatewayCreatedDate' => date($dateTimeFormat, $subscriptionSynced->subscription->createdAt->getTimestamp()),
+            'gatewayCreatedAt' => date($dateTimeFormat, $subscriptionSynced->subscription->createdAt->getTimestamp()),
         ];
         $subscriptionSynced->subscription->save();
 
@@ -62,8 +62,8 @@ class SubscriptionSyncedHandler
         return [
             'id' => $donation->id,
             'gatewayTransactionId' => $donation->gatewayTransactionId,
-            'amount' => $donation->amount->formatToDecimal(),
-            'creatAt' => date($dateTimeFormat, $donation->createdAt->getTimestamp()),
+            'amount' => $donation->amount->getCurrency()->getCode() . ' ' . $donation->amount->formatToDecimal(),
+            'createdAt' => date($dateTimeFormat, $donation->createdAt->getTimestamp()),
             'status' => $donation->status->getValue(),
             'type' => $donation->type->getValue(),
         ];
