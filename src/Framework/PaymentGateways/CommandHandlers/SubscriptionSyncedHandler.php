@@ -21,13 +21,15 @@ class SubscriptionSyncedHandler
      */
     public function __invoke(SubscriptionSynced $subscriptionSynced): JsonResponse
     {
+        $dateTimeFormat = get_option('date_format') . ' ' . get_option('time_format');
+
         $details = [
             'currentStatus' => $subscriptionSynced->subscription->getOriginal('status'),
             'gatewayStatus' => $subscriptionSynced->subscription->status,
             'currentPeriod' => $subscriptionSynced->subscription->getOriginal('period'),
             'gatewayPeriod' => $subscriptionSynced->subscription->period,
-            'currentCreatedDate' => $subscriptionSynced->subscription->getOriginal('createdAt'),
-            'gatewayCreatedDate' => $subscriptionSynced->subscription->createdAt,
+            'currentCreatedDate' => date($dateTimeFormat, $subscriptionSynced->subscription->getOriginal('createdAt')->getTimestamp()),
+            'gatewayCreatedDate' => date($dateTimeFormat, $subscriptionSynced->subscription->createdAt->getTimestamp()),
         ];
         $subscriptionSynced->subscription->save();
 
