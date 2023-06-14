@@ -51,6 +51,9 @@ const Widget = () => {
     );
 };
 
+/**
+ * @unreleased
+ */
 function RecurringAddonOverlay() {
     const [{assets}] = useStoreValue();
 
