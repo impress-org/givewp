@@ -28,24 +28,44 @@ class SubscriptionSyncedHandler
             'gatewayStatus' => $subscriptionSynced->subscription->status,
             'currentPeriod' => $subscriptionSynced->subscription->getOriginal('period'),
             'gatewayPeriod' => $subscriptionSynced->subscription->period,
-            'currentCreatedDate' => date($dateTimeFormat, $subscriptionSynced->subscription->getOriginal('createdAt')->getTimestamp()),
+            'currentCreatedDate' => date($dateTimeFormat,
+                $subscriptionSynced->subscription->getOriginal('createdAt')->getTimestamp()),
             'gatewayCreatedDate' => date($dateTimeFormat, $subscriptionSynced->subscription->createdAt->getTimestamp()),
         ];
         $subscriptionSynced->subscription->save();
 
-        $transactions = [];
-        foreach ($subscriptionSynced->donations as $donation) {
-            if ($donation instanceof Donation) {
-                $transactions[] = $donation->getAttributes();
-            } else {
-                $transactions = $donation;
-            }
+        $missingTransactions = [];
+        foreach ($subscriptionSynced->missingDonations as $missingDonation) {
+            $missingTransactions[] = $this->getTransactionData($missingDonation);
+        }
+
+        $presentTransactions = [];
+        foreach ($subscriptionSynced->presentDonations as $presentDonation) {
+            $presentTransactions[] = $this->getTransactionData($presentDonation);
         }
 
         return response()->json([
             'details' => $details,
-            'transactions' => $transactions,
+            'missingTransactions' => $missingTransactions,
+            'presentTransactions' => $presentTransactions,
             'notice' => $subscriptionSynced->notice,
         ]);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function getTransactionData(Donation $donation): array
+    {
+        $dateTimeFormat = get_option('date_format') . ' ' . get_option('time_format');
+
+        return [
+            'id' => $donation->id,
+            'gatewayTransactionId' => $donation->gatewayTransactionId,
+            'amount' => $donation->amount->formatToDecimal(),
+            'creatAt' => date($dateTimeFormat, $donation->createdAt->getTimestamp()),
+            'status' => $donation->status->getValue(),
+            'type' => $donation->type->getValue(),
+        ];
     }
 }
