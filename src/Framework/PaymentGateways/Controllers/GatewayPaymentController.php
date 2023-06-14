@@ -58,7 +58,7 @@ class GatewayPaymentController
     }
 
     /**
-     * @unreleased
+     * @since 2.29.0
      */
     public function refund(Donation $donation)
     {

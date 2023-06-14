@@ -50,7 +50,7 @@ interface PaymentGatewayInterface extends SubscriptionModuleInterface
     /**
      * Determines if refunds are supported
      *
-     * @unreleased
+     * @since 2.29.0
      *
      * @return bool
      */

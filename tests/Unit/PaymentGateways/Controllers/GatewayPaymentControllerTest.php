@@ -40,7 +40,7 @@ class GatewayPaymentControllerTest extends TestCase {
     }
 
     /**
-     * @unreleased
+     * @since 2.29.0
      */
     public function testShouldCallGatewayRefundDonation()
     {

@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
 Tested up to: 6.2
 Requires PHP: 7.0
-Stable tag: 2.28.0
+Stable tag: 2.29.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -258,6 +258,11 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.29.0: June 14th, 2023 =
+* Feature: A refund checkbox can be enabled on the admin screen.
+* Enhancement: PayPal Donations onboarding validates only the PayPal seller capabilities that block payment processing.
+* Fix: Donor Created Date column is now included in the Donor csv export.
+
 = 2.28.0: June 8th, 2023 =
 * Enhancement: Improvements to checkboxes in the Field API in preparation for GiveWP 3.0
 * Fix: Resolves an issue with Form Field Manager caused in 2.27.3. Please update both GiveWP and Form Field Manager.

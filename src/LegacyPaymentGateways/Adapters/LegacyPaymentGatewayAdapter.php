@@ -212,7 +212,7 @@ class LegacyPaymentGatewayAdapter
     }
 
     /**
-     * @unreleased
+     * @since 2.29.0
      */
     public function addOptRefundCheckbox(int $donationId, PaymentGatewayInterface $registeredGateway)
     {
@@ -256,7 +256,7 @@ class LegacyPaymentGatewayAdapter
     }
 
     /**
-     * @unreleased
+     * @since 2.29.0
      */
     public function maybeRefundOnGateway(
         int $donationId,

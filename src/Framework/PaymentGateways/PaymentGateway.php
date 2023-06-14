@@ -60,7 +60,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 2.29.0
      */
     public function supportsRefund(): bool
     {
