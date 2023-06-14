@@ -16,7 +16,7 @@ use Stripe\Customer;
 use Stripe\Plan;
 use Stripe\Product;
 
-class NextGenStripeGatewaySubscriptionModuleTest extends TestCase
+class TestStripePaymentElementGatewaySubscriptionModule extends TestCase
 {
     use RefreshDatabase;
 

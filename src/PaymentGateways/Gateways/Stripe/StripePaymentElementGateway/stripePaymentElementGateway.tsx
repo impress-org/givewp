@@ -56,7 +56,19 @@ const StripeFields = ({gateway}) => {
         stripePaymentMethodIsCreditCard = event.value.type === 'card';
     };
 
-    return <PaymentElement onChange={handleOnChange} />;
+    return (
+        <PaymentElement
+            onChange={handleOnChange}
+            options={{
+                fields: {
+                    billingDetails: {
+                        name: 'never',
+                        email: 'never',
+                    },
+                },
+            }}
+        />
+    );
 };
 
 interface StripeSettings extends GatewaySettings {
@@ -114,12 +126,19 @@ const stripePaymentElementGateway: StripeGateway = {
         data: {
             clientSecret: string;
             returnUrl: string;
+            billingDetails: {
+                name: string;
+                email: string;
+            };
         };
     }): Promise<void> {
         const {error} = await this.stripe.confirmPayment({
             elements: this.elements,
             clientSecret: response.data.clientSecret,
             confirmParams: {
+                payment_method_data: {
+                    billing_details: response.data.billingDetails,
+                },
                 return_url: response.data.returnUrl,
             },
         });

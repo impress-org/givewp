@@ -20,7 +20,7 @@ use Stripe\Customer;
 use Stripe\Exception\ApiErrorException;
 use Stripe\PaymentIntent;
 
-class NextGenStripeGatewayTest extends TestCase
+class TestStripePaymentElementGateway extends TestCase
 {
     use RefreshDatabase;
 
@@ -137,6 +137,10 @@ class NextGenStripeGatewayTest extends TestCase
             new RespondToBrowser([
                 'clientSecret' => $stripePaymentIntent->client_secret,
                 'returnUrl' => $gatewayData['successUrl'],
+                'billingDetails' => [
+                    'name' => trim("$donation->firstName $donation->lastName"),
+                    'email' => $donation->email
+                ]
             ])
         );
     }

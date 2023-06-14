@@ -134,6 +134,10 @@ class StripePaymentElementGateway extends PaymentGateway implements NextGenPayme
         return new RespondToBrowser([
             'clientSecret' => $intent->client_secret,
             'returnUrl' => $stripeGatewayData->successUrl,
+            'billingDetails' => [
+                'name' => trim("$donation->firstName $donation->lastName"),
+                'email' => $donation->email
+            ],
         ]);
     }
 
