@@ -8,6 +8,7 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
+use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
@@ -135,14 +136,13 @@ class TestGatewayOffsite extends PaymentGateway
     }
 
     /**
-     * @since 2.20.0
+     * @since 2.29.0 Return PaymentRefunded instead of a bool value
+     * @since      2.20.0
      * @inerhitDoc
-     * @throws Exception
      */
-    public function refundDonation(Donation $donation)
+    public function refundDonation(Donation $donation): PaymentRefunded
     {
-        $donation->status = DonationStatus::REFUNDED();
-        $donation->save();
+        return new PaymentRefunded();
     }
 
     /**
@@ -167,6 +167,7 @@ class TestGatewayOffsite extends PaymentGateway
      * @since 2.23.0
      *
      * @return void
+     * @throws \Exception
      */
     private function updateSubscription(Subscription $subscription)
     {

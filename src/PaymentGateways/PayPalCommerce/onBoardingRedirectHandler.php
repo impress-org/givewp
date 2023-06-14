@@ -118,9 +118,9 @@ class onBoardingRedirectHandler
             $errors[] = [
                 'type' => 'url',
                 'message' => esc_html__(
-                    'There was a problem with PayPal return url and we could not find valid merchant ID. Paypal return URL is:',
-                    'give'
-                ) . "\n",
+                                 'The Merchant ID for PayPal was not found. Try connecting to PayPal again. The PayPal return URL is:',
+                                 'give'
+                             ) . "\n",
                 'value' => urlencode($_SERVER['QUERY_STRING']),
             ];
 
@@ -280,9 +280,9 @@ class onBoardingRedirectHandler
     private function isPayPalAccountDetailsSaved()
     {
         return isset($_GET['paypal-commerce-account-connected']) && Give_Admin_Settings::is_setting_page(
-            'gateways',
-            'paypal'
-        );
+                'gateways',
+                'paypal'
+            );
     }
 
     /**
@@ -349,6 +349,7 @@ class onBoardingRedirectHandler
     /**
      * Validate seller on Boarding status
      *
+     * @since 2.29.0 Validate only primary capabilities during PayPal donations on-boarding.
      * @since 2.9.0
      *
      * @param string $merchantId
@@ -370,14 +371,14 @@ class onBoardingRedirectHandler
         if (! is_ssl()) {
             $errorMessages[] = esc_html__(
                 'A valid SSL certificate is required to accept donations and set up your PayPal account. Once a
-					certificate is installed and the site is using https, please disconnect and reconnect your account.',
+                certificate is installed and the site is using https, please disconnect and reconnect your account.',
                 'give'
             );
         }
 
         if (array_diff(['payments_receivable', 'primary_email_confirmed'], array_keys($onBoardedData))) {
-            $errorMessages[] = esc_html__(
-                'There was a problem with the status check for your account. Please try disconnecting and connecting again. If the problem persists, please contact support.',
+            $errorMessages[] = __(
+                'Your account is not fully set up and ready to receive payments. Please log into your PayPal account at <a href="https://paypal.com">paypal.com</a> and address the following issues. Reach out to PayPal support if you need help setting up your account.',
                 'give'
             );
 
@@ -386,55 +387,33 @@ class onBoardingRedirectHandler
         }
 
         if (! $onBoardedData['payments_receivable']) {
-            $errorMessages[] = esc_html__('Set up an account to receive payment from PayPal', 'give');
+            $errorMessages[] = esc_html__('An banking account needs to be connected to your PayPal account and verified', 'give');
         }
 
         if (! $onBoardedData['primary_email_confirmed']) {
-            $errorMessage[] = esc_html__('Confirm your primary email address', 'give');
+            $errorMessages[] = esc_html__('Your primary email address needs to be confirmed', 'give');
         }
 
-        if (! $usesCustomPayments) {
-            return count($errorMessages) > 1 ? $errorMessages : true;
-        }
+        // This error message is only for the case when the user is using custom payments.
+        // Host card fields are supported only for specific countries and PayPal seller account of PPCP type.
+        if ($usesCustomPayments) {
+            $sellerCapabilities = wp_list_pluck($onBoardedData['capabilities'], 'name');
+            $requiredCapability = 'CUSTOM_CARD_PROCESSING';
+            $customCardProcessingCapabilityIndex = array_search($requiredCapability, $sellerCapabilities, true);
+            $hasCustomCardProcessingCapability = false !== $customCardProcessingCapabilityIndex;
 
-        if (array_diff(['products', 'capabilities'], array_keys($onBoardedData))) {
-            $errorMessages[] = esc_html__(
-                'Your account was expected to be able to accept custom payments, but is not. Please make sure your
-				account country matches the country setting. If the problem persists, please contact PayPal.',
-                'give'
-            );
-
-            // Return here since the rest of the validations will definitely fail
-            return $errorMessages;
-        }
-
-        // Grab the PPCP_CUSTOM product from the status data
-        $customProduct = current(
-            array_filter(
-                $onBoardedData['products'],
-                function ($product) {
-                    return $product['name'] === 'PPCP_CUSTOM';
-                }
-            )
-        );
-
-        if (empty($customProduct) || $customProduct['vetting_status'] !== 'SUBSCRIBED') {
-            $errorMessages[] = esc_html__('Reach out to PayPal to enable PPCP_CUSTOM for your account', 'give');
-        }
-
-        // Loop through the capabilities and see if any are not active
-        $invalidCapabilities = [];
-        foreach ($onBoardedData['capabilities'] as $capability) {
-            if ($capability['status'] !== 'ACTIVE') {
-                $invalidCapabilities[] = $capability['name'];
+            // If the capability is found then check if it is active.
+            if (false !== $customCardProcessingCapabilityIndex) {
+                $customCardProcessingCapability = $onBoardedData['capabilities'][$customCardProcessingCapabilityIndex];
+                $hasCustomCardProcessingCapability = 'ACTIVE' === $customCardProcessingCapability['status'];
             }
-        }
 
-        if (! empty($invalidCapabilities)) {
-            $errorMessages[] = esc_html__(
-                'Reach out to PayPal to resolve the following capabilities:',
-                'give'
-            ) . ' ' . implode(', ', $invalidCapabilities);
+            if (! $hasCustomCardProcessingCapability) {
+                $errorMessages[] = __(
+                    'Advance card processing is not active on your PayPal account. That capability is required in order to display card fields directly on your website. To accept donations with card fields directly on your site, called <a href="https://developer.paypal.com/docs/checkout/advanced/#enable-your-account" title="Link to PayPal Docs">hosted fields</a>, you\'ll need to enable custom card processing. This is something PayPal support can help with, and depends on factors outside of GiveWP\'s control. You can still accept donations with <a href="https://developer.paypal.com/docs/checkout/" title="Link to PayPal Docs">PayPal smart buttons</a>, which allow donors to log into PayPal and complete the donation in a modal window, in the meantime.',
+                    'give'
+                );
+            }
         }
 
         // If there were errors then redirect the user with notices
