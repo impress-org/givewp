@@ -184,28 +184,28 @@ class AjaxRequestHandler
             wp_send_json_error(['error' => esc_html__('You are not allowed to perform this action.', 'give')]);
         }
 
-       try{
-           $mode = give_clean($_POST['mode']);
-           $this->webhooksRepository->setMode($mode);
+        try {
+            $mode = give_clean($_POST['mode']);
+            $this->webhooksRepository->setMode($mode);
 
-           $this->validateAdminRequest();
+            $this->validateAdminRequest();
 
-           // Remove the webhook from PayPal if there is one
-           if ($webhookConfig = $this->webhooksRepository->getWebhookConfig()) {
-               $this->webhooksRepository->deleteWebhook($this->merchantDetails->accessToken, $webhookConfig->id);
-               $this->webhooksRepository->deleteWebhookConfig();
-           }
+            // Remove the webhook from PayPal if there is one
+            if ($webhookConfig = $this->webhooksRepository->getWebhookConfig()) {
+                $this->webhooksRepository->deleteWebhook($this->merchantDetails->accessToken, $webhookConfig->id);
+                $this->webhooksRepository->deleteWebhookConfig();
+            }
 
-           $this->merchantRepository->delete();
-           $this->merchantRepository->deleteAccountErrors();
-           $this->merchantRepository->deleteClientToken();
-           $this->settings->deleteSellerAccessToken();
-           $this->refreshToken->deleteRefreshTokenCronJob();
+            $this->merchantRepository->delete();
+            $this->merchantRepository->deleteAccountErrors();
+            $this->merchantRepository->deleteClientToken();
+            $this->settings->deleteSellerAccessToken();
+            $this->refreshToken->deleteRefreshTokenCronJob();
 
-           wp_send_json_success();
-       } catch ( \Exception $exception ) {
-           wp_send_json_error( [ 'error' => $exception->getMessage()] );
-       }
+            wp_send_json_success();
+        } catch (\Exception $exception) {
+            wp_send_json_error([ 'error' => $exception->getMessage()]);
+        }
     }
 
     /**
