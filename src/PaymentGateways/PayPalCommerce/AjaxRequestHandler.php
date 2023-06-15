@@ -98,7 +98,7 @@ class AjaxRequestHandler
     {
         $this->validateAdminRequest();
 
-        if (empty($country = $_GET['mode']) || ! in_array($country, ['sandbox', 'live'])) {
+        if (empty($_GET['mode']) || ! in_array($_GET['mode'], ['sandbox', 'live'])) {
             wp_send_json_error('Must include valid mode');
         }
 
@@ -140,7 +140,7 @@ class AjaxRequestHandler
             wp_send_json_error('Must include valid 2-character country code');
         }
 
-        if (empty($country = $_GET['mode']) || ! in_array($country, ['sandbox', 'live'])) {
+        if (empty($_GET['mode']) || ! in_array($_GET['mode'], ['sandbox', 'live'])) {
             wp_send_json_error('Must include valid mode');
         }
 
