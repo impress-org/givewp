@@ -375,7 +375,7 @@ class onBoardingRedirectHandler
     /**
      * Validate seller on Boarding status
      *
-     * @unreleased Validate only primary capabilities during PayPal donations on-boarding.
+     * @since 2.29.0 Validate only primary capabilities during PayPal donations on-boarding.
      * @since 2.9.0
      *
      * @param string $merchantId
