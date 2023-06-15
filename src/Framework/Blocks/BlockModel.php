@@ -29,21 +29,21 @@ class BlockModel implements Arrayable
     public $innerBlocks;
 
     /**
-     * @param  string  $name
-     * @param  string|null  $clientId
-     * @param  bool  $isValid
-     * @param  array  $attributes
-     * @param  BlockCollection|null  $innerBlocks
+     * @param string $name
+     * @param string $clientId
+     * @param bool $isValid
+     * @param array $attributes
+     * @param BlockCollection|null $innerBlocks
      */
     public function __construct(
         string $name,
-        $clientId,
-        bool $isValid = true,
-        array $attributes = [],
-        $innerBlocks = null
+        string $clientId = null,
+        bool   $isValid = true,
+        array  $attributes = [],
+               $innerBlocks = null
     ) {
         $this->name = $name;
-        $this->clientId = $clientId ?? $name;
+        $this->clientId = $clientId ?? wp_generate_uuid4();
         $this->isValid = $isValid;
         $this->attributes = $attributes;
         $this->innerBlocks = $innerBlocks;
@@ -74,6 +74,18 @@ class BlockModel implements Arrayable
     }
 
     /**
+     * @unreleased
+     */
+    public function setAttribute(string $name, $value): BlockModel
+    {
+        if ($this->hasAttribute($name)) {
+            $this->attributes[$name] = $value;
+        }
+
+        return $this;
+    }
+
+    /**
      * Returns the unqualified, or short name, of the block without the namespace.
      *
      * @since 0.1.0
@@ -98,7 +110,7 @@ class BlockModel implements Arrayable
 
         return new BlockModel(
             $blockData['name'],
-            !empty($blockData['clientId']) ? $blockData['clientId'] : $blockData['name'],
+            !empty($blockData['clientId']) ? $blockData['clientId'] : wp_generate_uuid4(),
             !empty($blockData['isValid']) ? $blockData['isValid'] : true,
             !empty($blockData['attributes']) ? $blockData['attributes'] : [],
             $innerBlocks

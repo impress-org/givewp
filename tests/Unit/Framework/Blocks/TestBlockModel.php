@@ -43,8 +43,25 @@ class TestBlockModel extends TestCase
     }
 
     /**
-     * @since 0.1.0
+     * @unreleased
      * @return void
+     */
+    public function testSetAttributes()
+    {
+        $block = BlockModel::make([
+            'name' => 'namespace/block-name',
+            'attributes' => [
+                'foo' => 'bar'
+            ],
+        ]);
+
+        $block->setAttribute('foo', 'baz');
+        $this->assertEquals('baz', $block->getAttribute('foo'));
+    }
+
+    /**
+     * @return void
+     * @since 0.1.0
      */
     public function testHasInnerBlocksCollection()
     {

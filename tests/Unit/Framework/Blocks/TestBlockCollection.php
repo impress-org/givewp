@@ -11,10 +11,35 @@ use Give\Tests\TestCase;
  */
 class TestBlockCollection extends TestCase
 {
+    protected $blocks;
+    protected $blockCollection;
+
     /**
-     * @since 0.1.0
+     * @unreleased
      *
      * @return void
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->blocks = [
+            new BlockModel('givewp/block1'),
+            new BlockModel('givewp/block2'),
+            new BlockModel('givewp/block3'),
+        ];
+        $this->blocks[1]->innerBlocks = BlockCollection::make([
+            new BlockModel('givewp/block2-child1'),
+            new BlockModel('givewp/block2-child2'),
+        ]);
+
+        $this->blockCollection = BlockCollection::make($this->blocks);
+    }
+
+    /**
+     * @return void
+     * @since 0.1.0
+     *
      */
     public function testMakesCollectionFromArray()
     {
@@ -55,5 +80,89 @@ class TestBlockCollection extends TestCase
             ],
             $collection->toArray()
         );
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testInsertBeforeAddsNewBlockBeforeReference()
+    {
+        $blockName = 'givewp/block2';
+        $blockIndex = 0;
+        $newBlock = new BlockModel('givewp/newBlock');
+
+        $this->blockCollection->insertBefore($blockName, $newBlock, $blockIndex);
+
+        $expectedBlocks = array_merge(
+            array_slice($this->blocks, 0, 1),
+            [$newBlock],
+            array_slice($this->blocks, 1)
+        );
+
+        $this->assertEquals($expectedBlocks, $this->blockCollection->getBlocks());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testInsertAfterAddsNewBlockAfterReference()
+    {
+        $blockName = 'givewp/block2';
+        $blockIndex = 0;
+        $newBlock = new BlockModel('givewp/newBlock');
+
+        $this->blockCollection->insertAfter($blockName, $newBlock, $blockIndex);
+
+        $expectedBlocks = array_merge(
+            array_slice($this->blocks, 0, 2),
+            [$newBlock],
+            array_slice($this->blocks, 2)
+        );
+
+        $this->assertEquals($expectedBlocks, $this->blockCollection->getBlocks());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testPrependAddsNewBlockAsFirstChild()
+    {
+        $blockName = 'givewp/block2';
+        $blockIndex = 0;
+        $newBlock = new BlockModel('givewp/newBlock');
+
+        $this->blockCollection->prepend($blockName, $newBlock, $blockIndex);
+
+        $expectedBlocks = $this->blocks;
+        $expectedBlocks[1]->innerBlocks = BlockCollection::make(
+            array_merge(
+                [$newBlock],
+                array_slice($this->blocks[1]->innerBlocks->toArray(), 1)
+            )
+        );
+
+        $this->assertEquals($expectedBlocks, $this->blockCollection->getBlocks());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testAppendAddsNewBlockAsLastChild()
+    {
+        $blockName = 'givewp/block2';
+        $blockIndex = 0;
+        $newBlock = new BlockModel('givewp/newBlock');
+
+        $this->blockCollection->append($blockName, $newBlock, $blockIndex);
+
+        $expectedBlocks = $this->blocks;
+        $expectedBlocks[1]->innerBlocks = BlockCollection::make(
+            array_merge(
+                $this->blocks[1]->innerBlocks->toArray(),
+                [$newBlock]
+            )
+        );
+
+        $this->assertEquals($expectedBlocks, $this->blockCollection->getBlocks());
     }
 }

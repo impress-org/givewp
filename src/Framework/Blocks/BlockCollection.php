@@ -79,24 +79,117 @@ class BlockCollection implements Arrayable
     /**
      * @unreleased
      *
-     * @param BlockModel[] $blocks
-     * @param string $name
      * @return BlockModel|null
      */
-    public function findByName(string $name, array $blocks = null)
+    public function findByName(string $blockName, int $blockIndex = 0)
     {
-        if ($blocks === null) {
-            $blocks = $this->blocks;
+        return $this->findByNameRecursive($blockName, $blockIndex);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return BlockModel|BlockCollection|null
+     */
+    private function findByNameRecursive(string $blockName, int $blockIndex = 0, string $return = 'self', BlockCollection $blockCollection = null, int &$count = 0)
+    {
+        if (!$blockCollection) {
+            $blockCollection = $this;
         }
 
-        foreach ($blocks as $block) {
-            if ($block->name === $name) {
-                return $block;
-            } else if ($block->innerBlocks) {
-                return $this->findByName($name, $block->innerBlocks->blocks);
+        foreach ($blockCollection->blocks as $block) {
+            if ($block->name === $blockName) {
+                $count++;
+
+                if ($count === $blockIndex + 1) {
+                    if ($return === 'self') {
+                        return $block;
+                    } elseif ($return === 'parent') {
+                        return $blockCollection;
+                    }
+                }
+            } elseif ($block->innerBlocks) {
+                $result = $this->findByNameRecursive($blockName, $blockIndex, $return, $block->innerBlocks, $count);
+                if ($result) {
+                    return $result;
+                }
             }
         }
 
         return null;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function insertBefore(string $blockName, BlockModel $block, int $blockIndex = 0): BlockCollection
+    {
+        $blockCollection = $this->findByNameRecursive($blockName, $blockIndex, 'parent');
+
+        if (!$blockCollection) {
+            return $this;
+        }
+
+        $innerBlocks = $blockCollection->blocks;
+        $blockIndex = array_search($blockName, array_column($innerBlocks, 'name'));
+        array_splice($innerBlocks, $blockIndex, 0, [$block]);
+        $blockCollection->blocks = $innerBlocks;
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function insertAfter(string $blockName, BlockModel $block, int $blockIndex = 0): BlockCollection
+    {
+        $blockCollection = $this->findByNameRecursive($blockName, $blockIndex, 'parent');
+
+        if (!$blockCollection) {
+            return $this;
+        }
+
+        $innerBlocks = $blockCollection->blocks;
+        $blockIndex = array_search($blockName, array_column($innerBlocks, 'name'));
+        array_splice($innerBlocks, $blockIndex + 1, 0, [$block]);
+        $blockCollection->blocks = $innerBlocks;
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function prepend(string $blockName, BlockModel $block, int $blockIndex = 0): BlockCollection
+    {
+        $blockCollection = $this->findByNameRecursive($blockName, $blockIndex);
+
+        if (!$blockCollection) {
+            return $this;
+        }
+
+        $innerBlocks = $blockCollection->innerBlocks->blocks;
+        array_unshift($innerBlocks, $block);
+        $blockCollection->blocks = $innerBlocks;
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function append(string $blockName, BlockModel $block, int $blockIndex = 0): BlockCollection
+    {
+        $blockCollection = $this->findByNameRecursive($blockName, $blockIndex);
+
+        if (!$blockCollection) {
+            return $this;
+        }
+
+        $innerBlocks = $blockCollection->innerBlocks->blocks;
+        $innerBlocks[] = $block;
+        $blockCollection->blocks = $innerBlocks;
+
+        return $this;
     }
 }

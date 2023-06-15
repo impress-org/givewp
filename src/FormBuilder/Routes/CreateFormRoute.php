@@ -8,6 +8,7 @@ use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\Framework\Blocks\BlockCollection;
+use Give\Helpers\Hooks;
 
 /**
  * Route to create a new form
@@ -33,7 +34,7 @@ class CreateFormRoute
                     GIVE_NEXT_GEN_DIR . 'src/FormBuilder/resources/js/form-builder/src/blocks.json'
                 );
 
-                $form = DonationForm::create([
+                $form = new DonationForm([
                     'title' => __('GiveWP Donation Form', 'give'),
                     'status' => DonationFormStatus::DRAFT(),
                     'settings' => FormSettings::fromArray([
@@ -41,6 +42,10 @@ class CreateFormRoute
                     ]),
                     'blocks' => BlockCollection::fromJson($blocksJson)
                 ]);
+
+                Hooks::doAction('givewp_form_builder_new_form', $form);
+
+                $form->save();
 
                 wp_redirect(FormBuilderRouteBuilder::makeEditFormRoute($form->id));
                 exit();
