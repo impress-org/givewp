@@ -423,7 +423,9 @@ class onBoardingRedirectHandler
         // This error message is only for the case when the user is using custom payments.
         // Host card fields are supported only for specific countries and PayPal seller account of PPCP type.
         if ($usesCustomPayments) {
-            $sellerCapabilities = wp_list_pluck($onBoardedData['capabilities'], 'name');
+            $sellerCapabilities = array_key_exists('capabilities', $onBoardedData)
+                ? wp_list_pluck($onBoardedData['capabilities'], 'name')
+                : [];
             $requiredCapability = 'CUSTOM_CARD_PROCESSING';
             $customCardProcessingCapabilityIndex = array_search($requiredCapability, $sellerCapabilities, true);
             $hasCustomCardProcessingCapability = false !== $customCardProcessingCapabilityIndex;
