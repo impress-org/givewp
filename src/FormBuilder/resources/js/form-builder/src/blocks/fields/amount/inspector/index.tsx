@@ -106,7 +106,7 @@ const Inspector = ({attributes, setAttributes}) => {
                     <CurrencyControl
                         label={__('Set Donation', 'give')}
                         value={setPrice}
-                        onBlur={() => setPrice || setAttributes({setPrice: 25})}
+                        onBlur={() => !setPrice && setAttributes({setPrice: 25})}
                         onValueChange={(setPrice) => setAttributes({setPrice: setPrice ? parseInt(setPrice) : 0})}
                     />
                 )}
