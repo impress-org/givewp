@@ -97,21 +97,31 @@ class ScriptLoader
         );
 
         $script = <<<EOT
-				function givePayPalOnBoardedCallback(authCode, sharedId) {
-					const query = '&authCode=' + authCode + '&sharedId=' + sharedId;
-					fetch( ajaxurl + '?action=give_paypal_commerce_user_on_boarded' + query )
-						.then(function(res){ return res.json() })
-						.then(function(res) {
-							if ( true !== res.success ) {
-								alert('Something went wrong!');
-								return;
-							}
+                function giveSandboxPayPalOnBoardedCallback(authCode, sharedId){
+                    givePayPalOnBoardedCallback('sandbox', authCode, sharedId);
+                }
 
-							// Remove PayPal quick help container.
-							const paypalErrorQuickHelp = document.getElementById('give-paypal-onboarding-trouble-notice');
-							paypalErrorQuickHelp && paypalErrorQuickHelp.remove();
-						});
-				}
+                function giveLivePayPalOnBoardedCallback(authCode, sharedId){
+                    givePayPalOnBoardedCallback('live', authCode, sharedId);
+                }
+
+                function givePayPalOnBoardedCallback(mode, authCode, sharedId) {
+                    const query = '&mode=' + mode + '&authCode=' + authCode + '&sharedId=' + sharedId;
+
+                    fetch( ajaxurl + '?action=give_paypal_commerce_user_on_boarded' + query )
+                        .then(function(res){ return res.json() })
+                        .then(function(res) {
+                            if ( true !== res.success ) {
+                                console.log(res);
+                                alert('Something went wrong!');
+                                return;
+                            }
+
+                            // Remove PayPal quick help container.
+                            const paypalErrorQuickHelp = document.getElementById('give-paypal-onboarding-trouble-notice');
+                            paypalErrorQuickHelp && paypalErrorQuickHelp.remove();
+                        });
+                }
 EOT;
 
         wp_add_inline_script(

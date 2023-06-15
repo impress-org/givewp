@@ -116,7 +116,17 @@ window.addEventListener( 'DOMContentLoaded', function() {
                         if ( true === res.success ) {
                             const payPalLink = document.querySelector( '[data-paypal-button]' );
 
+                            // Dynamically set callback function name.
+                            payPalLink.setAttribute(
+                                'data-paypal-onboard-complete',
+                                'live' === mode
+                                    ? 'giveLivePayPalOnBoardedCallback'
+                                    : 'giveSandboxPayPalOnBoardedCallback'
+                            );
+
+                            // Set PayPal button link (Partener link).
                             payPalLink.href = `${ res.data.partnerLink }&displayMode=minibrowser`;
+
                             payPalLink.click();
                         }
 

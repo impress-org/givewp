@@ -98,6 +98,15 @@ class AjaxRequestHandler
     {
         $this->validateAdminRequest();
 
+        if (empty($country = $_GET['mode']) || ! in_array($country, ['sandbox', 'live'])) {
+            wp_send_json_error('Must include valid mode');
+        }
+
+        $mode = sanitize_text_field(wp_unslash($_GET['mode']));
+
+        // Set PayPal client mode.
+        give(PayPalClient::class)->setMode($mode);
+
         $partnerLinkInfo = $this->settings->getPartnerLinkDetails();
 
         $payPalResponse = $this->payPalAuth->getTokenFromAuthorizationCode(
