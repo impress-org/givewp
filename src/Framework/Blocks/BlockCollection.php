@@ -77,7 +77,7 @@ class BlockCollection implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      *
      * @return BlockModel|null
      */
@@ -87,7 +87,7 @@ class BlockCollection implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      *
      * @return BlockModel|BlockCollection|null
      */
@@ -120,7 +120,7 @@ class BlockCollection implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     public function insertBefore(string $blockName, BlockModel $block, int $blockIndex = 0): BlockCollection
     {
@@ -139,7 +139,7 @@ class BlockCollection implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     public function insertAfter(string $blockName, BlockModel $block, int $blockIndex = 0): BlockCollection
     {
@@ -158,7 +158,7 @@ class BlockCollection implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     public function prepend(string $blockName, BlockModel $block, int $blockIndex = 0): BlockCollection
     {
@@ -176,7 +176,7 @@ class BlockCollection implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     public function append(string $blockName, BlockModel $block, int $blockIndex = 0): BlockCollection
     {

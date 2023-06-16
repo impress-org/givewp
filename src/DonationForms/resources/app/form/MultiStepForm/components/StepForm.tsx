@@ -16,7 +16,7 @@ const formTemplates = window.givewp.form.templates;
 
 const MultiStepFormTemplate = withTemplateWrapper(formTemplates.layouts.multiStepForm);
 /**
- * @unreleased
+ * @since 0.4.0
  */
 export default function StepForm({
     currentStep,

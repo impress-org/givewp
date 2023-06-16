@@ -4,7 +4,7 @@ import {isSubscriptionPeriod, SubscriptionPeriod} from '../groups/DonationAmount
 import {createInterpolateElement} from '@wordpress/element';
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 const getDonationTotal = (totals: any, amount: any) =>
     Number(

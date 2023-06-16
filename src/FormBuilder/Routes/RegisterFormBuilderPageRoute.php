@@ -19,7 +19,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Use add_submenu_page to register page within WP admin
      *
-     * @unreleased enqueue form builder styles
+     * @since 0.4.0 enqueue form builder styles
      * @since 0.1.0
      *
      * @return void
@@ -62,7 +62,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Render page with scripts
      *
-     * @unreleased Add support for custom form extensions
+     * @since 0.4.0 Add support for custom form extensions
      * @since 0.1.0
      *
      * @return void
@@ -100,7 +100,7 @@ class RegisterFormBuilderPageRoute
             ->enqueue();
 
         /**
-         * @unreleased
+         * @since 0.4.0
          * Using `wp_enqueue_script` instead of `new EnqueueScript` for more control over dependencies.
          * The `EnqueueScript` class discovers the dependencies from the associated `asset.php` file,
          * which might include dependencies that are not supported in some version of WordPress.
@@ -131,7 +131,7 @@ class RegisterFormBuilderPageRoute
      *
      * @see https://github.com/Automattic/isolated-block-editor/blob/trunk/examples/wordpress-php/iso-gutenberg.php
      *
-     * @unreleased
+     * @since 0.4.0
      */
     public function loadGutenbergScripts()
     {
@@ -148,7 +148,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Loop through the form builder js dependencies and check if they are registered before adding to enqueue_script.
      *
-     * @unreleased
+     * @since 0.4.0
      */
     protected function getRegisteredFormBuilderJsDependencies(array $formBuilderJsDependencies): array
     {

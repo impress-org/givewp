@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Give\Framework\FieldsAPI;
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 class Password extends Field
 {

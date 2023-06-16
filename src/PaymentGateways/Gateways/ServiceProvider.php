@@ -31,7 +31,7 @@ use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     public function register()
     {
@@ -39,7 +39,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     public function boot()
     {

@@ -245,7 +245,7 @@ class DonateControllerData
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     public function getGateway(): PaymentGateway
     {

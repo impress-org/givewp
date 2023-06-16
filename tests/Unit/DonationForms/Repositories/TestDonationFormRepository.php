@@ -250,7 +250,7 @@ final class TestDonationFormRepository extends TestCase
 
 
     /**
-     * @unreleased
+     * @since 0.4.0
      *
      * @return void
      * @throws Exception

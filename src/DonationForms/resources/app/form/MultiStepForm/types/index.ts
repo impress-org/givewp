@@ -2,7 +2,7 @@ import type {ReactElement} from 'react';
 import {Section} from '@givewp/forms/types';
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 export type FormInputs = {
     FORM_ERROR: string;
@@ -14,7 +14,7 @@ export type FormInputs = {
 };
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 export type StepObject = {
     id: number;

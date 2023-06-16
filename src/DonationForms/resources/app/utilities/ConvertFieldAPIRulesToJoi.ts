@@ -1,5 +1,5 @@
 import Joi, {AnySchema, ObjectSchema} from 'joi';
-import {BasicCondition, Field, FieldCondition, Form, isField} from '@givewp/forms/types';
+import {BasicCondition, Field, Form, isField} from '@givewp/forms/types';
 import {__, sprintf} from '@wordpress/i18n';
 import conditionOperatorFunctions from '@givewp/forms/app/utilities/conditionOperatorFunctions';
 
@@ -46,7 +46,7 @@ function getJoiRulesForField(field: Field): AnySchema {
 }
 
 /**
- * @unreleased add support for excludeUnless rule with basic conditions; do not validate fields with no rules
+ * @since 0.4.0 add support for excludeUnless rule with basic conditions; do not validate fields with no rules
  * @since 0.1.0
  */
 function convertFieldAPIRulesToJoi(rules): AnySchema {

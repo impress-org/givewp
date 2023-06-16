@@ -5,7 +5,7 @@ import classNames from "classnames";
 import StepsWrapper from "@givewp/forms/app/form/MultiStepForm/components/StepsWrapper";
 
 /**
- * @unreleased
+ * @since 0.4.0
  *
  * This loops through the steps and lazy loads them using a waterfall approach.
  * Only current and previous steps are rendered.  Obviously all previous steps are hidden.

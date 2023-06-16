@@ -65,7 +65,7 @@ abstract class FormDesign implements FormDesignInterface
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     public function isMultiStep(): bool
     {

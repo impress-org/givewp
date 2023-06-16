@@ -1,7 +1,7 @@
 import {__} from '@wordpress/i18n';
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 export default function SubmitButton({
     isSubmitting,

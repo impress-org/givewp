@@ -15,7 +15,7 @@ class TestBlockCollection extends TestCase
     protected $blockCollection;
 
     /**
-     * @unreleased
+     * @since 0.4.0
      *
      * @return void
      */
@@ -83,7 +83,7 @@ class TestBlockCollection extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     public function testInsertBeforeAddsNewBlockBeforeReference()
     {
@@ -103,7 +103,7 @@ class TestBlockCollection extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     public function testInsertAfterAddsNewBlockAfterReference()
     {
@@ -123,7 +123,7 @@ class TestBlockCollection extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     public function testPrependAddsNewBlockAsFirstChild()
     {
@@ -145,7 +145,7 @@ class TestBlockCollection extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     public function testAppendAddsNewBlockAsLastChild()
     {

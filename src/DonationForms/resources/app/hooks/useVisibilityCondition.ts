@@ -9,7 +9,7 @@ type WatchedFields = Map<string, any>;
  * Adds visibility conditions to a field. The given conditions are watched and the hook returns true or false based on
  * whether the conditions are met.
  *
- * @unreleased
+ * @since 0.4.0
  */
 export default function useVisibilityCondition(conditions: FieldCondition[]): boolean {
     const watchedFieldNames = useMemo<string[]>(() => {
@@ -44,7 +44,7 @@ export default function useVisibilityCondition(conditions: FieldCondition[]): bo
 /**
  * Returns true or false based on whether the conditions are met.
  *
- * @unreleased
+ * @since 0.4.0
  */
 export function visibliityConditionsPass(conditions: FieldCondition[], watchedFields: WatchedFields): boolean {
     if (!conditions.length) {
@@ -71,7 +71,7 @@ export function visibliityConditionsPass(conditions: FieldCondition[], watchedFi
 /**
  * A recursive reducer that returns a set of fields that are being watched by the conditions.
  *
- * @unreleased
+ * @since 0.4.0
  */
 function watchFieldsReducer(fields: Set<string>, condition: FieldCondition) {
     if (condition.type === 'basic') {

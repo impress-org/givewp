@@ -6,7 +6,7 @@ import {setCurrentStep} from '@givewp/forms/app/form/MultiStepForm/store/reducer
 import classNames from 'classnames';
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 export default function StepsPagination() {
     const {steps, currentStep} = useDonationFormMultiStepState();

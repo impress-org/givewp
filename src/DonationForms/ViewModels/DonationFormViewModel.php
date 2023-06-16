@@ -240,7 +240,7 @@ class DonationFormViewModel
     /**
      * Loads scripts in order: [Registrars, Designs, Gateways, Block]
      *
-     * @unreleased Add support for custom form extensions
+     * @since 0.4.0 Add support for custom form extensions
      * @since 0.1.0
      *
      * @return void
@@ -319,7 +319,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      *
      * @return FormDesign|null
      */

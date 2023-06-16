@@ -30,7 +30,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @unreleased skip fields with non-existing meta
+     * @since 0.4.0 skip fields with non-existing meta
      * @since 0.1.0
      */
     protected function getCustomFields(Donation $donation): array

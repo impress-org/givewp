@@ -18,7 +18,7 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 0.4.0
      *
      * @return void
      * @throws Exception
@@ -69,7 +69,7 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      *
      * @return void
      * @throws Exception

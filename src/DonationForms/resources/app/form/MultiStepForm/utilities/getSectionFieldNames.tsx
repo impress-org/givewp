@@ -1,7 +1,7 @@
 import {Field, isField, Section} from '@givewp/forms/types';
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 export default function getSectionFieldNames(section: Section) {
     return section.reduceNodes(

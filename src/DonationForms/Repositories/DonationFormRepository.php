@@ -315,7 +315,7 @@ class DonationFormRepository
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     public function getDefaultEnabledGatewayId(int $formId): string
     {
@@ -398,7 +398,7 @@ class DonationFormRepository
     }
 
     /**
-     * @unreleased append formId to first section instead of last with multistep in mind.
+     * @since 0.4.0 append formId to first section instead of last with multistep in mind.
      * @since 0.1.0
      */
     public function getFormSchemaFromBlocks(int $formId, BlockCollection $blocks): Form

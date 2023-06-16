@@ -7,13 +7,13 @@ use Give\DonationForms\Models\DonationForm;
 /**
  * Update email settings on backwards compatible form meta.
  *
- * @unreleased
+ * @since 0.4.0
  */
 class UpdateEmailSettingsMeta
 {
     /**
-     * @unreleased
-     * @param DonationForm $form
+     * @since 0.4.0
+     * @param  DonationForm  $form
      */
     public function __invoke(DonationForm $form)
     {

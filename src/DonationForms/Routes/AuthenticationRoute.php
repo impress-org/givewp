@@ -9,14 +9,14 @@ use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use WP_User;
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 class AuthenticationRoute
 {
     use HandleHttpResponses;
 
     /**
-     * @unreleased
+     * @since 0.4.0
      *
      * @return void
      */
@@ -34,7 +34,7 @@ class AuthenticationRoute
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     protected function authenticate(AuthenticationData $auth): WP_User
     {

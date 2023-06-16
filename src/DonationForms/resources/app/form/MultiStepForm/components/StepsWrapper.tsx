@@ -5,7 +5,7 @@ import {__} from "@wordpress/i18n";
 import useCurrentStep from "@givewp/forms/app/form/MultiStepForm/hooks/useCurrentStep";
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 function StepsWrapperTitle() {
     const step = useCurrentStep();
@@ -14,7 +14,7 @@ function StepsWrapperTitle() {
 }
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 export default function StepsWrapper({children}: { children: ReactNode }) {
     return (

@@ -1,7 +1,7 @@
 const UPDATE_DEFAULT_VALUES = 'update_default_values';
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 export default function reducer(state, action) {
     switch (action.type) {
@@ -20,7 +20,7 @@ export default function reducer(state, action) {
 }
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 export function setFormDefaultValues(values: object) {
     return {

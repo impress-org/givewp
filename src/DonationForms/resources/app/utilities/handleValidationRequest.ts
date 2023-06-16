@@ -7,7 +7,7 @@ import {__} from '@wordpress/i18n';
 import {FieldValues, UseFormSetError} from 'react-hook-form';
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 export default async function handleValidationRequest(
     validateUrl: string,

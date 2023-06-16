@@ -3,7 +3,6 @@
 namespace Give\DonationForms;
 
 use Exception;
-use Give\DonationForms\Routes\AuthenticationRoute;
 use Give\DonationForms\Actions\DispatchDonateControllerDonationCreatedListeners;
 use Give\DonationForms\Actions\DispatchDonateControllerSubscriptionCreatedListeners;
 use Give\DonationForms\Actions\StoreBackwardsCompatibleFormMeta;
@@ -18,6 +17,7 @@ use Give\DonationForms\FormDesigns\DeveloperFormDesign\DeveloperFormDesign;
 use Give\DonationForms\FormDesigns\MultiStepFormDesign\MultiStepFormDesign;
 use Give\DonationForms\FormPage\TemplateHandler;
 use Give\DonationForms\Repositories\DonationFormRepository;
+use Give\DonationForms\Routes\AuthenticationRoute;
 use Give\DonationForms\Routes\DonateRoute;
 use Give\DonationForms\Routes\ValidationRoute;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
@@ -76,12 +76,12 @@ class ServiceProvider implements ServiceProviderInterface
         Route::post('donate', DonateRoute::class);
 
         /**
-         * @unreleased
+         * @since 0.4.0
          */
         Route::post('validate', ValidationRoute::class);
 
         /**
-         * @unreleased
+         * @since 0.4.0
          */
         Route::post('authenticate', AuthenticationRoute::class);
 
@@ -156,7 +156,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     protected function registerSingleFormPage()
     {

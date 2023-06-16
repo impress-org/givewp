@@ -9,7 +9,7 @@ use Give\Tests\TestCase;
 final class TestGenerateDonateRouteSignatureArgs extends TestCase
 {
     /**
-     * @unreleased 
+     * @since 0.4.0
      */
     public function testShouldReturnArrayOfQueryArgs()
     {

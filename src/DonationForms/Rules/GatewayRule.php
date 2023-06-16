@@ -10,7 +10,7 @@ class GatewayRule implements ValidationRule, ValidatesOnFrontEnd
 {
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     public static function id(): string
     {
@@ -18,7 +18,7 @@ class GatewayRule implements ValidationRule, ValidatesOnFrontEnd
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     public static function fromString(string $options = null): ValidationRule
     {
@@ -26,7 +26,7 @@ class GatewayRule implements ValidationRule, ValidatesOnFrontEnd
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
     {
@@ -50,7 +50,7 @@ class GatewayRule implements ValidationRule, ValidatesOnFrontEnd
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     public function serializeOption()
     {

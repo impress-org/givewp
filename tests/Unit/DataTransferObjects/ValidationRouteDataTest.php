@@ -16,14 +16,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 class ValidationRouteDataTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 0.4.0
      * @throws DonationFormFieldErrorsException
      */
     public function testValidateShouldReturnValidJsonResponse()
@@ -61,7 +61,7 @@ class ValidationRouteDataTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      * @throws DonationFormFieldErrorsException|Exception
      */
     public function testValidateShouldThrowDonationFormFieldErrorsException()
@@ -104,7 +104,7 @@ class ValidationRouteDataTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      *
      * @throws DonationFormFieldErrorsException|Exception
      */

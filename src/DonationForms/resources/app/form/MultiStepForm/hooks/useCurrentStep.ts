@@ -3,7 +3,7 @@ import getCurrentStepObject from '@givewp/forms/app/form/MultiStepForm/utilities
 import {StepObject} from '@givewp/forms/app/form/MultiStepForm/types';
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 export default function useCurrentStep(): StepObject {
     const {steps, currentStep} = useDonationFormMultiStepState();

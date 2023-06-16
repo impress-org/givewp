@@ -3,15 +3,15 @@ import {BlockSupports, registerBlockType} from '@wordpress/blocks';
 const blockRegistrar = window.givewp.form.blocks;
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 const supportOverrides: BlockSupports = {
     customClassName: false,
     html: false,
 };
 
- /**
- * @unreleased
+/**
+ * @since 0.4.0
  */
 export default function registerBlocks(): void {
     const [sectionBlock] = blockRegistrar.getAll();

@@ -1,7 +1,7 @@
 import {BlockConfiguration} from '@wordpress/blocks';
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 export interface Block {
     name: string;
@@ -9,7 +9,7 @@ export interface Block {
 }
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 interface Registrar {
     register(name: string, settings: BlockConfiguration): void;
@@ -20,30 +20,30 @@ interface Registrar {
 }
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 export default class BlockRegistrar implements Registrar {
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     private blocks: Block[] = [];
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     public get(blockName: string): Block | undefined {
         return this.blocks.find(({name}) => name === blockName);
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     public getAll(): Block[] {
         return this.blocks;
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     public register(name, settings: BlockConfiguration): void {
         if (this.get(name)) {

@@ -7,12 +7,12 @@ use Give\DonationForms\Routes\DonateRouteSignature;
 use Give\Framework\Routes\Route;
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 class GenerateDonationFormValidationRouteUrl
 {
     /**
-     * @unreleased
+     * @since 0.4.0
      *
      * @return string
      *

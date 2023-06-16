@@ -74,7 +74,7 @@ class BlockModel implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     public function setAttribute(string $name, $value): BlockModel
     {

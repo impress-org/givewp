@@ -40,7 +40,7 @@ class DonateRouteData
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      *
      * @return void
      */

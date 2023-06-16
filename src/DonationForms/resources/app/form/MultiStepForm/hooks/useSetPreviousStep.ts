@@ -3,7 +3,7 @@ import {setCurrentStep} from '@givewp/forms/app/form/MultiStepForm/store/reducer
 import {useCallback} from 'react';
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 export default function useSetPreviousStep() {
     const dispatchMultiStep = useDonationFormMultiStepStateDispatch();

@@ -7,7 +7,7 @@ use Give\FormBuilder\DataTransferObjects\EmailNotificationData;
 /**
  * Convert data from legacy configuration into DTO.
  *
- * @unreleased
+ * @since 0.4.0
  */
 class ConvertLegacyNotificationToEmailNotificationData
 {

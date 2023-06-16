@@ -43,7 +43,7 @@ class TestBlockModel extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      * @return void
      */
     public function testSetAttributes()

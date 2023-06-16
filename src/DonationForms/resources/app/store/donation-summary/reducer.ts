@@ -6,7 +6,7 @@ const ADD_AMOUNT_TO_TOTAL = 'add_amount_to_total';
 const REMOVE_AMOUNT_FROM_TOTAL = 'remove_amount_from_total';
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 export default function reducer(draft, action) {
     switch (action.type) {
@@ -31,7 +31,7 @@ export default function reducer(draft, action) {
 }
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 export function addItem(item: DonationSummaryLineItem) {
     return {
@@ -41,7 +41,7 @@ export function addItem(item: DonationSummaryLineItem) {
 }
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 export function addAmountToTotal(itemId: string, amount: number) {
     return {
@@ -52,7 +52,7 @@ export function addAmountToTotal(itemId: string, amount: number) {
 }
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 export function removeAmountFromTotal(itemId: string) {
     return {
@@ -62,7 +62,7 @@ export function removeAmountFromTotal(itemId: string) {
 }
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 export function removeItem(itemId: string) {
     return {

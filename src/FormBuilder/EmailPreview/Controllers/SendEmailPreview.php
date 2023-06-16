@@ -9,14 +9,14 @@ use WP_REST_Response;
 /**
  * Send email preview.
  *
- * @unreleased
+ * @since 0.4.0
  */
 class SendEmailPreview
 {
     /**
-     * @unreleased
+     * @since 0.4.0
      *
-     * @param WP_REST_Request $request
+     * @param  WP_REST_Request  $request
      *
      * @return WP_REST_Response
      */

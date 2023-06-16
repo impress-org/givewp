@@ -12,7 +12,7 @@ import {
 import {useCallback} from '@wordpress/element';
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 export default function useDonationSummary() {
     const {items, totals} = useDonationSummaryContext();

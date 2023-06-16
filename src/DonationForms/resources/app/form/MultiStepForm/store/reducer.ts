@@ -7,7 +7,7 @@ const SET_NEXT_STEP = 'set_next_step';
 type Action<T> = {type: typeof SET_CURRENT_STEP; step: T} | {type: typeof SET_NEXT_STEP; formValues: T};
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 export default function reducer<T>(state: MultiStepFormContextState, action: Action<T>) {
     switch (action.type) {
@@ -41,7 +41,7 @@ export default function reducer<T>(state: MultiStepFormContextState, action: Act
 }
 
 /**
- * @unreleased
+ * @since 0.4.0
  */
 export function setCurrentStep(step: number) {
     return {

@@ -65,7 +65,7 @@ class FormBuilderViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     public function jsPathFromPluginRoot(): string
     {
@@ -73,7 +73,7 @@ class FormBuilderViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     public function jsPathToRegistrars(): string
     {
@@ -81,7 +81,7 @@ class FormBuilderViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     public function jsDependencies(): array
     {
@@ -91,7 +91,7 @@ class FormBuilderViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.4.0
      */
     public function getGateways(): array
     {
