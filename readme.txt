@@ -21,6 +21,7 @@ Create the donation form of your dreams using an easy-to-use visual donation for
 * Update: require minimum versions for GiveWP 2.29.0 and WordPress 5.9
 * Fix: donation amount block's order of recurring period options
 * Fix: omit redundant name and email fields from Stripe Payment Element
+* Fix: various form builder UI fixes and bugs
 
 = 0.3.3: May 4th, 2023 =
 * Enhancement: The GiveWP Jedi high council is hosting a beta focus group on May 11th 2023 to provide focused feedback about our new visual donation form builder.  We updated the welcome banner to announce this.
