@@ -1,4 +1,4 @@
-import {useRef} from '@wordpress/element';
+import {useCallback, useRef} from '@wordpress/element';
 import type {AmountProps} from '@givewp/forms/propTypes';
 import CustomAmount from './CustomAmount';
 import AmountLevels from './AmountLevels';
@@ -29,10 +29,13 @@ export default function Amount({
     const currencySymbol = formatter.formatToParts().find(({type}) => type === 'currency').value;
 
     const isFixedAmount = !allowLevels;
-    const resetCustomAmountInput = () => {
-        customAmountInputRef.current.value = '';
-        customAmountInputRef.current.attributes.getNamedItem('value').value = '';
-    };
+    
+    const resetCustomAmountInput = useCallback(() => {
+        if (customAmountInputRef.current !== null) {
+            customAmountInputRef.current.value = '';
+            customAmountInputRef.current.attributes.getNamedItem('value').value = '';
+        }
+    }, [customAmountInputRef.current]);
 
     return (
         <>

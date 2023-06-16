@@ -92,10 +92,13 @@ $borderColor: #9A9A9A;
     &__levels--container {
         display: grid;
         grid-auto-rows: 1fr;
-        gap: 1rem;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
         inline-size: 100%;
         list-style: none;
+
         @media screen and (min-width: variables.$givewp-breakpoint-sm) {
+            gap: 1rem;
             grid-template-columns: repeat(3, 1fr);
         }
     }
@@ -116,13 +119,17 @@ $borderColor: #9A9A9A;
         line-height: 1.2;
         block-size: 100%;
         font-size: 1.5rem;
-        padding: 1.5rem 0.5rem;
+        padding: 1rem 0.5rem;
         transition-property: background-color, color, filter, box-shadow, transform;
         transition-duration: 200ms;
         transition-timing-function: ease-in;
         width: 100%;
         margin-bottom: 0;
         box-shadow: none;
+
+        @media screen and (min-width: variables.$givewp-breakpoint-sm) {
+            padding: 1.5rem 0.5rem;
+        }
 
         &--selected {
             background-color: var(--givewp-primary-color);

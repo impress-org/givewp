@@ -82,7 +82,7 @@ class ConvertLegacyNotificationToEmailNotificationData
         $defaultValues = [];
         foreach($this->fields as $field){
             $key = str_replace("_give_{$this->id}_", '', $field['id']);
-            $defaultValues[$key] = $field['default'];
+            $defaultValues[$key] = $field['default'] ?? '';
         }
         return $defaultValues;
     }
