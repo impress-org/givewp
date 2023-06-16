@@ -13,7 +13,7 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Create the donation form of your dreams using an easy-to-use visual donation form builder.
 
 = 0.4.0: June 15th, 2023 =
-* NOTE: This is another beta release with breaking changes to the form builder. Please delete any existing v3 forms and start fresh for the best experience.
+* NOTE: This is another beta release with breaking changes to the form builder. For the best experience, please delete any existing v3 forms and start fresh.
 * New: Added multi-step form design
 * New: Added per-form email settings
 * New: Added login and registration block and settings
