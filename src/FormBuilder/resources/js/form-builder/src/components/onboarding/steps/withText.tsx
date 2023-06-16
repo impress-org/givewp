@@ -5,7 +5,7 @@ import {__, sprintf} from '@wordpress/i18n';
 
 const TextContent = ({title, description, stepNumber, stepCount, isFirst, isLast}) => {
     return (
-        <div>
+        <div style={{textAlign: isFirst ? 'center' : 'initial'}}>
             {isFirst && (
                 <div style={{display: 'flex', justifyContent: 'center', margin: '0 auto var(--givewp-spacing-4)'}}>
                     <Logo />
@@ -17,14 +17,14 @@ const TextContent = ({title, description, stepNumber, stepCount, isFirst, isLast
                         display: 'flex',
                         backgroundColor: 'var(--givewp-blue-25)',
                         fontSize: '12px',
-                        padding: '4px',
+                        padding: 'var(--givewp-spacing-1) var(--givewp-spacing-3)',
                         borderRadius: '2px',
                         justifyContent: 'space-between',
                         alignItems: 'center',
                     }}
                 >
                     <div>{sprintf(__('Step %s of %s', 'give'), stepNumber, stepCount)}</div>
-                    <Button variant="tertiary" className={'js-exit-tour'}>
+                    <Button variant="link" className={'js-exit-tour'}>
                         {__('Exit tour', 'give')}
                     </Button>
                 </div>
@@ -32,7 +32,8 @@ const TextContent = ({title, description, stepNumber, stepCount, isFirst, isLast
             <h3
                 style={{
                     fontSize: isFirst || isLast ? '20px' : '16px',
-                    margin: 'var(--givewp-spacing-3) 0',
+                    margin: 'var(--givewp-spacing-3) 0' + (isFirst ? ' var(--givewp-spacing-5)' : ''),
+                    textWrap: 'balance',
                 }}
             >
                 {title}

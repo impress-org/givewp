@@ -18,6 +18,7 @@ export default function Edit(props: BlockEditProps<any>) {
                 style={{
                     padding: '30px 20px',
                     display: 'flex',
+                    fontSize: '16px',
                     gap: '16px',
                     flexDirection: 'column',
                     border: '1px dashed var(--givewp-gray-100)',
@@ -27,7 +28,7 @@ export default function Edit(props: BlockEditProps<any>) {
             >
                 <LineItem label={__('Payment Amount', 'give')} />
                 <LineItem label={__('Giving Frequency', 'give')} />
-                <LineItem label={<strong>{__('Donation Total', 'give')}</strong>}/>
+                <LineItem label={<strong>{__('Donation Total', 'give')}</strong>} />
             </div>
         </>
     );

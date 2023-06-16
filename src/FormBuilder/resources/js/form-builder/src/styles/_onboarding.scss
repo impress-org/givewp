@@ -7,7 +7,17 @@
     padding-top: var(--givewp-spacing-4);
 }
 .shepherd-text {
-    padding-bottom: 0;
+    padding: 0;
+
+    .js-exit-tour {
+        height: auto;
+        padding: 0;
+        text-decoration: underline;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
 }
 .shepherd-target {
     border: solid 2px var(--wp-blue-blue-50);
@@ -24,6 +34,7 @@
 }
 .shepherd-footer {
     margin-top: var(--givewp-spacing-5);
+    padding: 0;
 }
 .shepherd-button {
     flex: 1;
