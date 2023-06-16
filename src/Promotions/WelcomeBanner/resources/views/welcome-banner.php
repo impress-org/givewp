@@ -94,21 +94,6 @@
 
                 <div
                     style="height: calc(100% - 26px); display:flex; flex-direction:column; justify-content: space-between; gap:26px;">
-
-                    <!-- Join the Journey -->
-                    <div style="display: flex; flex-direction: column;">
-                        <h3 style="font-size: 16px; margin: 12px 0;"><?php
-                            _e('Participate in a Beta Focus Group and get a $25 Amazon Gift Card', 'give'); ?></h3>
-                        <p style="font-size: 12px; margin: 0 0 12px 0;"><?php
-                            printf(__('Join us on %s to provide focused feedback about our new visual donation form builder. Spacing is limited to %s participants per session.',
-                                'give'), '<strong>11 May 2023</strong>', '<strong>eight (8)</strong>'); ?></p>
-                        <a href="https://givewp.com/focus-groups/" target="blank"
-                           style="flex: 1; font-size: 14px; text-align: center; color: white; padding: 12px 24px;border-radius: 2px; border: solid 1px var(--givewp-green-500); background-color: var(--givewp-green-500); text-decoration: none;">
-                            <?php
-                            _e('Three (3) time slots available - Register now', 'give'); ?>
-                        </a>
-                    </div>
-
                     <!-- Create your new donation form -->
                     <div>
                         <h3 style="font-size: 16px;margin: 12px 0;"><?php
