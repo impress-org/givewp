@@ -39,11 +39,12 @@ class SubscriptionSynced implements GatewayCommand
     public $notice;
 
     /**
+     * @unreleased
+     *
      * @param Subscription $subscription     Do not save the subscription, just return it so the API can see what's dirty
      * @param Donation[]   $missingDonations The missing donations added to the subscription
-     * @param Donation[]   $presentDonations The already present donations of the subscription
+     * @param Donation[]   $presentDonations Optional. The already present donations of the subscription
      * @param string       $notice           Optional. Use to notify users about some limitation or specificity of the gateway
-     *
      */
     public function __construct(
         Subscription $subscription,
