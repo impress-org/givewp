@@ -24,7 +24,7 @@ const initialState = {
     giveStatus: null,
     currency: getWindowData('currency'),
     testMode: getWindowData('testMode'),
-    assets: getWindowData('assets'),
+    assetsUrl: getWindowData('assetsUrl'),
 };
 
 const container = document.getElementById('givewp-reports-widget');

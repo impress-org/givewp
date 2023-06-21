@@ -55,7 +55,7 @@ const Widget = () => {
  * @unreleased
  */
 function RecurringAddonOverlay() {
-    const [{assets}] = useStoreValue();
+    const [{assetsUrl}] = useStoreValue();
 
     return (
         <div className={'givewp-reports-widget-overlay'}>
@@ -72,7 +72,7 @@ function RecurringAddonOverlay() {
                 </p>
 
                 <a href={' https://docs.givewp.com/recurring-dash'} target={'_blank'}>
-                    <img src={`${assets}assets/dist/images/admin/white-external-icon.svg`} alt={'external link'} />
+                    <img src={`${assetsUrl}/images/admin/white-external-icon.svg`} alt={'external link'} />
                     {__('Get more donations', 'give')}
                 </a>
             </div>

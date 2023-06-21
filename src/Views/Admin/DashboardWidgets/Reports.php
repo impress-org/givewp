@@ -68,7 +68,7 @@ class Reports
                 'allTimeStart' => $this->get_all_time_start(),
                 'currency' => give_get_currency(),
                 'testMode' => give_is_test_mode(),
-                'assets' => GIVE_PLUGIN_URL,
+                'assetsUrl' => GIVE_PLUGIN_URL . 'assets/dist',
             ]
         );
     }
