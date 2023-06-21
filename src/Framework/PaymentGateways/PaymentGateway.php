@@ -4,7 +4,6 @@ namespace Give\Framework\PaymentGateways;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
-use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Actions\GenerateGatewayRouteUrl;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionAmountEditable;
@@ -24,7 +23,6 @@ use ReflectionMethod;
  * @since 2.18.0
  */
 abstract class PaymentGateway implements PaymentGatewayInterface,
-                                         LegacyPaymentGatewayInterface,
                                          SubscriptionDashboardLinkable,
                                          SubscriptionAmountEditable,
                                          SubscriptionPaymentMethodEditable,
@@ -46,7 +44,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      * @since 2.20.0 Change first argument type to SubscriptionModule abstract class.
      * @since 2.18.0
      *
-     * @param SubscriptionModule|null $subscriptionModule
+     * @param  SubscriptionModule|null  $subscriptionModule
      */
     public function __construct(SubscriptionModule $subscriptionModule = null)
     {
@@ -55,6 +53,14 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
         }
 
         $this->subscriptionModule = $subscriptionModule;
+    }
+
+    /**
+     * @unreleased
+     */
+    public static function apiVersion(): int
+    {
+        return 2;
     }
 
     /**

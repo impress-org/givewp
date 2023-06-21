@@ -2,11 +2,10 @@
 
 namespace Give\Framework\LegacyPaymentGateways\Adapters;
 
+use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\LegacyPaymentGateways\Adapters\LegacyPaymentGatewayAdapter;
-
-use function method_exists;
 
 class LegacyPaymentGatewayRegisterAdapter
 {
@@ -73,11 +72,11 @@ class LegacyPaymentGatewayRegisterAdapter
     public function addNewPaymentGatewaysToLegacyListSettings(array $gatewaysData, array $newPaymentGateways): array
     {
         foreach ($newPaymentGateways as $gatewayClassName) {
-            /* @var PaymentGatewayInterface $paymentGateway */
+            /* @var PaymentGateway $paymentGateway */
             $paymentGateway = give($gatewayClassName);
 
             $gatewaysData[$paymentGateway::id()] = [
-                'admin_label' => $paymentGateway->getName(),
+                'admin_label' => $this->getAdminLabel($paymentGateway),
                 'checkout_label' => $paymentGateway->getPaymentMethodLabel(),
                 'is_visible' => $this->supportsLegacyForm($paymentGateway),
             ];
@@ -87,10 +86,23 @@ class LegacyPaymentGatewayRegisterAdapter
     }
 
     /**
+     * @unreleased check if implementing legacy interface or method
      * @since 2.25.0
      */
     public function supportsLegacyForm(PaymentGatewayInterface $gateway): bool
     {
-        return method_exists($gateway, 'supportsLegacyForm') ? $gateway->supportsLegacyForm() : true;
+        return is_a($gateway, LegacyPaymentGatewayInterface::class) || method_exists(
+                $gateway,
+                'getLegacyFormFieldMarkup'
+            );
+    }
+
+    public function getAdminLabel(PaymentGatewayInterface $gateway): string
+    {
+        $name = $gateway->getName();
+        $apiVersion = $gateway::apiVersion();
+        $version = $apiVersion < 3 ? "(v$apiVersion)" : '';
+
+        return trim("$name $version");
     }
 }

@@ -14,11 +14,11 @@ use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 interface PaymentGatewayInterface extends SubscriptionModuleInterface
 {
     /**
-     * Return a unique identifier for the gateway
+     * The API version required for this gateway to function.  Typically, this will correspond to a major GiveWP version.  If specifying 2.0, the gateway will not show up on 3.0 forms.
      *
-     * @since 2.18.0
+     * @unreleased
      */
-    public static function id(): string;
+    public static function apiVersion(): int;
 
     /**
      * Return a unique identifier for the gateway
