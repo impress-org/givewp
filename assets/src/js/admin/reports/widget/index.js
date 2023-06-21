@@ -52,7 +52,7 @@ const Widget = () => {
 };
 
 /**
- * @unreleased
+ * @since 2.29.1
  */
 function RecurringAddonOverlay() {
     const [{assetsUrl}] = useStoreValue();
