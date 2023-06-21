@@ -100,8 +100,11 @@ class LegacyPaymentGatewayRegisterAdapter
     public function getAdminLabel(PaymentGatewayInterface $gateway): string
     {
         $name = $gateway->getName();
-        $apiVersion = $gateway::apiVersion();
-        $version = $apiVersion < 3 ? "(v$apiVersion)" : '';
+        $version = in_array(2, $gateway::formVersions(), true) && !in_array(
+            3,
+            $gateway::formVersions(),
+            true
+        ) ? "(v2)" : '';
 
         return trim("$name $version");
     }

@@ -57,10 +57,34 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
 
     /**
      * @unreleased
+     *
+     * @return array
      */
-    public static function apiVersion(): int
+    public static function formVersions(): array
     {
-        return 2;
+        return [2];
+    }
+
+    /**
+     * Convenient alternative to hooking into givewp_donation_form_enqueue_gateway_scripts
+     *
+     * @unreleased
+     *
+     * @return void
+     */
+    public function enqueueScript(int $formId)
+    {
+        // wp_enqueue_script();
+    }
+
+    /**
+     * Convenient way of localizing data to the JS gateway object accessible from `this.settings`.
+     *
+     * @unreleased
+     */
+    public function formSettings(int $formId): array
+    {
+        return [];
     }
 
     /**
