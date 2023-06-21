@@ -7,14 +7,18 @@ use Give\Log\Log;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
+use Give\PaymentGateways\PayPalCommerce\Repositories\Traits\HasMode;
 
 /**
  * Class RefreshToken
  *
+ * @unreleased Add support for mode.
  * @since 2.9.0
  */
 class RefreshToken
 {
+    use HasMode;
+
     /* @var MerchantDetail */
     private $merchantDetail;
 
@@ -59,6 +63,8 @@ class RefreshToken
         $this->detailsRepository = $detailsRepository;
         $this->payPalAuth = $payPalAuth;
         $this->merchantDetail = $merchantDetail;
+
+        $this->setMode(give_is_test_mode() ? 'sandbox' : 'live');
     }
 
     /**
@@ -68,7 +74,7 @@ class RefreshToken
      */
     private function getCronJobHookName(): string
     {
-        return 'give_paypal_commerce_refresh_token';
+        return "give_paypal_commerce_refresh_{$this->mode}_token";
     }
 
     /**
