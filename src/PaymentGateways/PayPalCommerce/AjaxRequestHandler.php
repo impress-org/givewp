@@ -121,7 +121,10 @@ class AjaxRequestHandler
 
         $this->settings->updateAccessToken($payPalResponse);
 
-        give(RefreshToken::class)->registerCronJobToRefreshToken($payPalResponse['expiresIn']);
+        // Set cron job to refresh token.
+        $refreshToken = give(RefreshToken::class);
+        $refreshToken->setMode($mode);
+        $refreshToken->registerCronJobToRefreshToken($payPalResponse['expiresIn']);
 
         wp_send_json_success();
     }
