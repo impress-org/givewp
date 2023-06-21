@@ -43,7 +43,7 @@ class RegisterPayPalDonationsRefreshTokenCronJobByMode extends Migration
         $liveMerchantDetails = $liveMerchantDetailsRepository->getDetails();
 
         if ($liveMerchantDetails->accountIsReady) {
-            $liveRefreshToken->registerCronJobToRefreshToken($liveRefreshToken->toArray()['token']['expiresIn']);
+            $liveRefreshToken->registerCronJobToRefreshToken($liveMerchantDetails->toArray()['token']['expiresIn']);
         }
 
         // Register cron job for sandbox mode if connected.
