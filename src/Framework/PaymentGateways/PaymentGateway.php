@@ -57,16 +57,40 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
 
     /**
      * @unreleased
-     *
-     * @return array
      */
-    public static function formVersions(): array
+    public function isDeprecated(): bool
     {
-        return [2];
+        if (!in_array(3, $this->formVersions(), true)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
-     * Convenient alternative to hooking into givewp_donation_form_enqueue_gateway_scripts
+     * @unreleased
+     *
+     * @return array
+     */
+    public function formVersions(): array
+    {
+        $versions = [];
+
+        if (method_exists($this, 'getLegacyFormFieldMarkup') && $this->isFunctionImplementedInGatewayClass(
+                'getLegacyFormFieldMarkup'
+            )) {
+            $versions[] = 2;
+        }
+
+        if ($this->isFunctionImplementedInGatewayClass('enqueueScript')) {
+            $versions[] = 3;
+        }
+
+        return $versions;
+    }
+
+    /**
+     * Enqueue gateway scripts using WordPress wp_enqueue_script().
      *
      * @unreleased
      *

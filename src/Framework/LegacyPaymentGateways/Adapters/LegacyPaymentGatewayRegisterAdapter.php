@@ -3,7 +3,6 @@
 namespace Give\Framework\LegacyPaymentGateways\Adapters;
 
 use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface;
-use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\LegacyPaymentGateways\Adapters\LegacyPaymentGatewayAdapter;
 
@@ -86,25 +85,24 @@ class LegacyPaymentGatewayRegisterAdapter
     }
 
     /**
-     * @unreleased check if implementing legacy interface or method
+     * @unreleased check if v2 compatible
      * @since 2.25.0
      */
-    public function supportsLegacyForm(PaymentGatewayInterface $gateway): bool
+    public function supportsLegacyForm(PaymentGateway $gateway): bool
     {
         return is_a($gateway, LegacyPaymentGatewayInterface::class) || method_exists(
                 $gateway,
                 'getLegacyFormFieldMarkup'
-            );
+            ) || in_array(2, $gateway->formVersions(), true);
     }
 
-    public function getAdminLabel(PaymentGatewayInterface $gateway): string
+    /**
+     * @unreleased
+     */
+    public function getAdminLabel(PaymentGateway $gateway): string
     {
         $name = $gateway->getName();
-        $version = in_array(2, $gateway::formVersions(), true) && !in_array(
-            3,
-            $gateway::formVersions(),
-            true
-        ) ? "(v2)" : '';
+        $version = $gateway->isDeprecated() ? "(v2)" : '';
 
         return trim("$name $version");
     }

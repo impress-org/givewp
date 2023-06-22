@@ -20,7 +20,16 @@ interface PaymentGatewayInterface extends SubscriptionModuleInterface
      *
      * @return int[]
      */
-    public static function formVersions(): array;
+    public function formVersions(): array;
+
+    /**
+     * Specify if the gateway is deprecated
+     *
+     * @unreleased
+     *
+     * @return bool
+     */
+    public function isDeprecated(): bool;
 
     /**
      * Return a unique identifier for the gateway

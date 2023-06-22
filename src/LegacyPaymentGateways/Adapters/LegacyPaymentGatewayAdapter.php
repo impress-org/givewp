@@ -38,7 +38,11 @@ class LegacyPaymentGatewayAdapter
         array $args,
         PaymentGatewayInterface $registeredGateway
     ): string {
-        return $registeredGateway->getLegacyFormFieldMarkup($formId, $args);
+        if (method_exists($registeredGateway, 'getLegacyFormFieldMarkup')) {
+            return $registeredGateway->getLegacyFormFieldMarkup($formId, $args);
+        }
+        
+        return false;
     }
 
     /**
