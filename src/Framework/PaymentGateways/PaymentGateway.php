@@ -58,35 +58,10 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * @unreleased
      */
-    public function isDeprecated(): bool
+    public static function isDeprecated(): bool
     {
-        if (!in_array(3, $this->formVersions(), true)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @unreleased
-     *
-     * @return array
-     */
-    public function formVersions(): array
-    {
-        $versions = [];
-
-        if (method_exists($this, 'getLegacyFormFieldMarkup') && $this->isFunctionImplementedInGatewayClass(
-                'getLegacyFormFieldMarkup'
-            )) {
-            $versions[] = 2;
-        }
-
-        if ($this->isFunctionImplementedInGatewayClass('enqueueScript')) {
-            $versions[] = 3;
-        }
-
-        return $versions;
+        // gateways are considered deprecated until GIVE 3.0, or they specify otherwise
+        return !(defined('GIVE_VERSION') && version_compare(GIVE_VERSION, '3.0.0', '>='));
     }
 
     /**

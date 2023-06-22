@@ -9,11 +9,19 @@ use Give\Framework\PaymentGateways\Contracts\PaymentGatewaysIterator;
 use Give\Framework\PaymentGateways\Exceptions\OverflowException;
 
 /**
+ * @unreleased add deprecated gateways
  * @since 2.18.0
  */
 class PaymentGatewayRegister extends PaymentGatewaysIterator
 {
+    /**
+     * @var string[]
+     */
     protected $gateways = [];
+    /**
+     * @var string[]
+     */
+    protected $deprecatedGateways = [];
 
     /**
      * Get Gateways
@@ -23,6 +31,16 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
     public function getPaymentGateways(): array
     {
         return $this->gateways;
+    }
+
+    /**
+     * Get Deprecated Gateways
+     *
+     * @unreleased
+     */
+    public function getDeprecatedPaymentGateways(): array
+    {
+        return $this->deprecatedGateways;
     }
 
     /**
@@ -75,7 +93,11 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
             throw new OverflowException("Cannot register a gateway with an id that already exists: $gatewayId");
         }
 
-        $this->gateways[$gatewayId] = $gatewayClass;
+        if (!$gatewayClass::isDeprecated()) {
+            $this->gateways[$gatewayId] = $gatewayClass;
+        } else {
+            $this->deprecatedGateways[$gatewayId] = $gatewayClass;
+        }
 
         $this->registerGatewayWithServiceContainer($gatewayClass, $gatewayId);
     }

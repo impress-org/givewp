@@ -14,22 +14,13 @@ use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 interface PaymentGatewayInterface extends SubscriptionModuleInterface
 {
     /**
-     * The form versions compatible with this gateway.  Typically, this will correspond to major GiveWP versions.
-     *
-     * @unreleased
-     *
-     * @return int[]
-     */
-    public function formVersions(): array;
-
-    /**
      * Specify if the gateway is deprecated
      *
      * @unreleased
      *
      * @return bool
      */
-    public function isDeprecated(): bool;
+    public static function isDeprecated(): bool;
 
     /**
      * Return a unique identifier for the gateway

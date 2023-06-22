@@ -2,7 +2,6 @@
 
 namespace Give\Framework\LegacyPaymentGateways\Adapters;
 
-use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\LegacyPaymentGateways\Adapters\LegacyPaymentGatewayAdapter;
 
@@ -80,6 +79,8 @@ class LegacyPaymentGatewayRegisterAdapter
                 'is_visible' => $this->supportsLegacyForm($paymentGateway),
             ];
         }
+        $gatewaysData['offline']['admin_label'] .= " (v2)";
+        $gatewaysData['manual']['admin_label'] .= " (v2)";
 
         return $gatewaysData;
     }
@@ -90,10 +91,7 @@ class LegacyPaymentGatewayRegisterAdapter
      */
     public function supportsLegacyForm(PaymentGateway $gateway): bool
     {
-        return is_a($gateway, LegacyPaymentGatewayInterface::class) || method_exists(
-                $gateway,
-                'getLegacyFormFieldMarkup'
-            ) || in_array(2, $gateway->formVersions(), true);
+        return method_exists($gateway, 'getLegacyFormFieldMarkup');
     }
 
     /**
@@ -102,7 +100,7 @@ class LegacyPaymentGatewayRegisterAdapter
     public function getAdminLabel(PaymentGateway $gateway): string
     {
         $name = $gateway->getName();
-        $version = $gateway->isDeprecated() ? "(v2)" : '';
+        $version = $gateway::isDeprecated() ? "(v2)" : '';
 
         return trim("$name $version");
     }
