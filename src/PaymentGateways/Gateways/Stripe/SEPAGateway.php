@@ -46,11 +46,19 @@ class SEPAGateway extends PaymentGateway
     }
 
     /**
+     * @unreleased
+     */
+    public static function isDeprecated(): bool
+    {
+        return true;
+    }
+
+    /**
      * @inheritDoc
      * @since 2.19.7 fix handlePaymentIntentStatus not receiving extra param
      * @since 2.19.0
      *
-     * @param array{stripePaymentMethod: PaymentMethod} $gatewayData
+     * @param  array{stripePaymentMethod: PaymentMethod}  $gatewayData
      *
      * @return GatewayCommand
      * @throws PaymentGatewayException

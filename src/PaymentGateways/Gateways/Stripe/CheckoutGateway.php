@@ -26,10 +26,18 @@ class CheckoutGateway extends PaymentGateway
     use Traits\HandlePaymentIntentStatus;
 
     /**
+     * @unreleased
+     */
+    public static function isDeprecated(): bool
+    {
+        return true;
+    }
+
+    /**
      * @inheritDoc
      * @since 2.19.0
      *
-     * @param array{stripePaymentMethod: PaymentMethod} $gatewayData
+     * @param  array{stripePaymentMethod: PaymentMethod}  $gatewayData
      *
      * @throws PaymentGatewayException
      */

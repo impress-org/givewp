@@ -60,7 +60,8 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      */
     public static function isDeprecated(): bool
     {
-        // gateways are considered deprecated until GIVE 3.0, or they specify otherwise
+        // To help with migration, gateways are considered deprecated until GiveWP 3.0 until they specify otherwise.
+        // TODO: determine if we should hardcode this as true and let gateways specify themselves until GIVE 4.0 or just assume all gateways are compatible with GIVE 3.0
         return !(defined('GIVE_VERSION') && version_compare(GIVE_VERSION, '3.0.0', '>='));
     }
 
