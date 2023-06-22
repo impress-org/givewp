@@ -14,6 +14,7 @@ use Give\PaymentGateways\Gateways\Stripe\Traits\HandlePaymentIntentStatus;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
 
 /**
+ * @deprecated 3.0.0
  * @since 2.19.0
  */
 class BECSGateway extends PaymentGateway

@@ -64,6 +64,7 @@ class LegacyPaymentGatewayRegisterAdapter
     /**
      * Adds new payment gateways to legacy list for settings
      *
+     * @unreleased update admin_label to include version compatibility
      * @since 2.25.0 add is_visible key to $gatewayData
      * @since 2.19.0
      */

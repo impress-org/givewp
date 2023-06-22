@@ -30,6 +30,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * Get legacy form field markup to display gateway specific payment fields
      *
+     * @unreleased check for getLegacyFormFieldMarkup before attempting to use
      * @since 2.18.0
      * @since 2.19.0 Added missing $args parameter for ID prefixing and general backwards compatibility.
      */
