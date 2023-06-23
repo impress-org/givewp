@@ -82,6 +82,7 @@ class PayPalWebhooks
                     'headers' => getallheaders(),
                 ]
             );
+
             throw new Exception('Failed event verification');
         }
 
@@ -91,8 +92,14 @@ class PayPalWebhooks
                 ->processEvent($event);
         } catch (Exception $exception) {
             $eventType = empty($event->event_type) ? 'Unknown' : $event->event_type;
-            give_record_gateway_error("Error processing webhook: {$eventType}", print_r($event, true));
 
+            Log::http(
+                "Error processing webhook: {$eventType}",
+                [
+                    'category' => 'PayPal Commerce Webhook',
+                    'Webhook Event' => $event
+                ]
+            );
             throw $exception;
         }
     }
