@@ -3,6 +3,7 @@
 namespace Give\Controller;
 
 use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Log\Log;
 use Give\PaymentGateways\PayPalCommerce\DataTransferObjects\PayPalWebhookHeaders;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
@@ -62,8 +63,6 @@ class PayPalWebhooks
             return;
         }
 
-        $merchantDetails = $this->merchantRepository->getDetails();
-
         $event = json_decode(file_get_contents('php://input'), false);
 
         // If we receive an event that we're not expecting, just ignore it
@@ -73,17 +72,15 @@ class PayPalWebhooks
 
         $payPalHeaders = PayPalWebhookHeaders::fromHeaders(getallheaders());
 
-        if ( ! $this->webhookRepository->verifyEventSignature($merchantDetails->accessToken, $event, $payPalHeaders)) {
-            give_record_gateway_error(
+        if (! $this->webhookRepository->verifyEventSignature($event, $payPalHeaders)) {
+            Log::http(
                 'Failed webhook event verification',
-                print_r(
-                    [
-                        'merchant' => $merchantDetails,
-                        'event' => $event,
-                        'headers' => getallheaders(),
-                    ],
-                    true
-                )
+                [
+                    'category' => 'PayPal Commerce Webhook',
+                    'merchant' => $this->merchantRepository->getDetails(),
+                    'event' => $event,
+                    'headers' => getallheaders(),
+                ]
             );
             throw new Exception('Failed event verification');
         }
