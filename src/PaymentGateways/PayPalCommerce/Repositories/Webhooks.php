@@ -79,13 +79,12 @@ class Webhooks
 
         $response = give(PayPalClient::class)
             ->getHttpClient()
-            ->execute(new VerifyWebhookSignature($requestData))
-            ->result;
+            ->execute(new VerifyWebhookSignature($requestData));
 
         if (
-            ! $response ||
-            ! property_exists($response, 'verification_status')
-            || $response->verification_status !== 'SUCCESS'
+            $response->statusCode !== 200 ||
+            ! property_exists($response->result, 'verification_status')
+            || $response->result->verification_status !== 'SUCCESS'
         ) {
             Log::http(
                 'Webhook signature failure response',
