@@ -231,7 +231,8 @@ class PaymentGateways implements ServiceProvider
         Hooks::addAction('wp_enqueue_scripts', ScriptLoader::class, 'loadPublicAssets');
         Hooks::addAction('give_pre_form_output', DonationFormPaymentMethod::class, 'handle');
 
-        Hooks::addAction('give_paypal_commerce_refresh_token', RefreshToken::class, 'refreshToken');
+        Hooks::addAction('give_paypal_commerce_refresh_sandbox_token', RefreshToken::class, 'cronJobRefreshToken');
+        Hooks::addAction('give_paypal_commerce_refresh_live_token', RefreshToken::class, 'cronJobRefreshToken');
 
         Hooks::addAction('admin_init', AccountAdminNotices::class, 'displayNotices');
         Hooks::addFilter(

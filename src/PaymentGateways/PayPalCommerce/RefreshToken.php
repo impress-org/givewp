@@ -149,4 +149,30 @@ class RefreshToken
 
         $this->registerCronJobToRefreshToken($expiresIn);
     }
+
+    /**
+     * This function handles cron job to refresh access token.
+     *
+     * Cron job action names:
+     * - give_paypal_commerce_refresh_sandbox_token
+     * - give_paypal_commerce_refresh_live_token
+     *
+     * @unreleased
+     * @return void
+     */
+    public function cronJobRefreshToken()
+    {
+        // Set mode.
+        $mode = 'live';
+        if (doing_action('give_paypal_commerce_refresh_sandbox_token')) {
+            $mode = 'sandbox';
+        }
+        $this->setMode($mode);
+
+        // Fetch merchant details.
+        $this->detailsRepository->setMode($mode);
+        $this->merchantDetail = $this->detailsRepository->getDetails();
+
+        $this->refreshToken();
+    }
 }
