@@ -19,6 +19,11 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
  */
 class TestGateway extends PaymentGateway
 {
+    public static function isDeprecated(): bool
+    {
+        return false;
+    }
+
     /**
      * @inheritDoc
      */
