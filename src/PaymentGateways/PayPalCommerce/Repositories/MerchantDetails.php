@@ -138,7 +138,8 @@ class MerchantDetails
         }
 
         try {
-            $response = give(PayPalClient::class)->getHttpClient()
+            $response = give(PayPalClient::class)
+                ->getHttpClient()
                 ->execute(new GenerateClientToken());
 
             // If the response is empty or does not have the client token, return empty string.
