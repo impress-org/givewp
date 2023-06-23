@@ -4,6 +4,7 @@ namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
 use Give\Helpers\ArrayDataSet;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
+use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\Requests\GenerateClientToken;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Traits\HasMode;
 
@@ -122,11 +123,13 @@ class MerchantDetails
     /**
      * Get client token for hosted credit card fields.
      *
+     * @unreleased Use PayPal client to generate client token.
      * @since 2.9.0
      *
      * @return string
+     * @throws \Exception If there is an error generating the client token.
      */
-    public function getClientToken()
+    public function getClientToken(): string
     {
         $optionName = $this->getClientTokenKey();
 
@@ -134,43 +137,26 @@ class MerchantDetails
             return $optionValue;
         }
 
-        /** @var MerchantDetail $merchant */
-        $merchant = give(MerchantDetail::class);
+        try {
+            $response = give(PayPalClient::class)->getHttpClient()
+                ->execute(new GenerateClientToken())->result;
 
-        $response = wp_remote_retrieve_body(
-            wp_remote_post(
-                give(PayPalClient::class)->getApiUrl('v1/identity/generate-token'),
-                [
-                    'headers' => [
-                        'Accept' => 'application/json',
-                        'Accept-Language' => 'en_US',
-                        'Authorization' => sprintf(
-                            'Bearer %1$s',
-                            $merchant->accessToken
-                        ),
-                        'Content-Type' => 'application/json',
-                    ],
-                ]
-            )
-        );
+            // If the response is empty or does not have the client token, return empty string.
+            if (! $response || ! property_exists($response, 'client_token')) {
+                throw new \Exception(esc_html__('Unable to generate client token.', 'give'));
+            }
 
-        if ( ! $response) {
-            return '';
+            // Save the client token in the transient.
+            set_transient(
+                $optionName,
+                $response->client_token,
+                $response->expires_in - 60 // Expire token before one minute to prevent unnecessary race condition.
+            );
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
         }
 
-        $response = ArrayDataSet::camelCaseKeys(json_decode($response, true));
-
-        if ( ! array_key_exists('clientToken', $response)) {
-            return '';
-        }
-
-        set_transient(
-            $optionName,
-            $response['clientToken'],
-            $response['expiresIn'] - 60 // Expire token before one minute to prevent unnecessary race condition.
-        );
-
-        return $response['clientToken'];
+        return $response->client_token;
     }
 
     /**
