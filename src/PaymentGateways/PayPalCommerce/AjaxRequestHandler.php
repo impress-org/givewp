@@ -191,6 +191,7 @@ class AjaxRequestHandler
             $mode = give_clean($_POST['mode']);
             $this->webhooksRepository->setMode($mode);
             $this->merchantRepository->setMode($mode);
+            $this->refreshToken->setMode($mode);
 
             $this->validateAdminRequest();
 
