@@ -147,6 +147,7 @@ class RefreshToken
             );
         }
 
+        $this->deleteRefreshTokenCronJob();
         $this->registerCronJobToRefreshToken($expiresIn);
     }
 
@@ -172,6 +173,10 @@ class RefreshToken
         // Fetch merchant details.
         $this->detailsRepository->setMode($mode);
         $this->merchantDetail = $this->detailsRepository->getDetails();
+
+        // Set mode to PayPalClient. PayPalAuth use it to make api request to paypal.
+        $paypalClient = give(PayPalClient::class);
+        $paypalClient->setMode($mode);
 
         $this->refreshToken();
     }
