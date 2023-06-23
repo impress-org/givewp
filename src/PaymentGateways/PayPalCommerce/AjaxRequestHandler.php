@@ -2,7 +2,6 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
-use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Http\ConnectServer\Client\ConnectClient;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
@@ -204,12 +203,12 @@ class AjaxRequestHandler
             $this->merchantRepository->delete();
             $this->merchantRepository->deleteAccountErrors();
             $this->merchantRepository->deleteClientToken();
-            $this->settings->deleteSellerAccessToken();
+            $this->settings->deleteSellerAccessToken($mode);
             $this->refreshToken->deleteRefreshTokenCronJob();
 
             wp_send_json_success();
         } catch (\Exception $exception) {
-            wp_send_json_error([ 'error' => $exception->getMessage()]);
+            wp_send_json_error(['error' => $exception->getMessage()]);
         }
     }
 

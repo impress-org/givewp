@@ -150,9 +150,9 @@ class Settings
      *
      * @since 2.25.0
      */
-    public function updateSellerAccessToken(array $sellerAccessToken): bool
+    public function updateSellerAccessToken(array $sellerAccessToken, string $mode): bool
     {
-        return update_option($this->getSellerAccessTokenOptionName(), $sellerAccessToken);
+        return update_option($this->getSellerAccessTokenOptionName($mode), $sellerAccessToken);
     }
 
     /**
@@ -160,9 +160,9 @@ class Settings
      *
      * @since 2.25.0
      */
-    public function deleteSellerAccessToken(): bool
+    public function deleteSellerAccessToken(string $mode): bool
     {
-        return delete_option($this->getSellerAccessTokenOptionName());
+        return delete_option($this->getSellerAccessTokenOptionName($mode));
     }
 
     /**
@@ -189,11 +189,16 @@ class Settings
      *
      * @since 2.25.0
      */
-    private function getSellerAccessTokenOptionName(): string
+    private function getSellerAccessTokenOptionName(string $mode = ''): string
     {
+        // If mode is empty, then get the mode from the test mode
+        if (empty($mode)) {
+            $mode = give_is_test_mode() ? 'sandbox' : 'live';
+        }
+
         return sprintf(
             'give_paypal_commerce_%s_seller_access_token',
-            give_is_test_mode() ? 'sandbox' : 'live'
+            $mode
         );
     }
 }

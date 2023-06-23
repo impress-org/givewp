@@ -187,7 +187,10 @@ class onBoardingRedirectHandler
 
         // Preserve the seller access token.
         // This is required to get the merchant rest api credentials.
-        $this->settings->updateSellerAccessToken($this->settings->getAccessToken());
+        $this->settings->updateSellerAccessToken(
+            $this->settings->getAccessToken(),
+            $this->merchantRepository->getMode()
+        );
 
         $this->deleteTempOptions();
 
