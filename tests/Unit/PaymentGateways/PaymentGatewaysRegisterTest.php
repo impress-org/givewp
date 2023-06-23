@@ -83,6 +83,70 @@ class PaymentGatewaysRegisterTest extends TestCase
             MockPaypal::id() => MockPaypal::class
         ], $gateways);
     }
+
+    /**
+     * @unreleased
+     * @throws Exception
+     * @throws OverflowException
+     */
+    public function testShouldGetDeprecatedRegisteredPaymentGateways()
+    {
+        $this->paymentGatewayRegister->registerGateway(MockDeprecatedGateway::class);
+
+        $gateways = $this->paymentGatewayRegister->getDeprecatedPaymentGateways();
+
+        $this->assertEquals([
+            MockDeprecatedGateway::id() => MockDeprecatedGateway::class,
+        ], $gateways);
+    }
+}
+
+class MockDeprecatedGateway extends PaymentGateway
+{
+
+    /**
+     * @inheritDoc
+     */
+    public static function isDeprecated(): bool
+    {
+        return true;
+    }
+
+    /**
+     * @return string
+     */
+    public static function id(): string
+    {
+        return 'deprecated-gateway';
+    }
+
+    /**
+     * @return string
+     */
+    public function getId(): string
+    {
+        return self::id();
+    }
+
+    public function getName(): string
+    {
+        return 'Deprecated Gateway';
+    }
+
+    public function getPaymentMethodLabel(): string
+    {
+        return 'Deprecated Gateway';
+    }
+
+    public function createPayment(Donation $donation, $gatewayData)
+    {
+        // TODO: Implement createPayment() method.
+    }
+
+    public function refundDonation(Donation $donation)
+    {
+        // TODO: Implement refundDonation() method.
+    }
 }
 
 class MockAuthorizeNet
@@ -91,6 +155,14 @@ class MockAuthorizeNet
 
 class MockStripe extends PaymentGateway
 {
+    /**
+     * @inheritDoc
+     */
+    public static function isDeprecated(): bool
+    {
+        return false;
+    }
+
     /**
      * @return string
      */
@@ -145,6 +217,14 @@ class MockStripe extends PaymentGateway
 
 class MockPaypal extends PaymentGateway
 {
+    /**
+     * @inheritDoc
+     */
+    public static function isDeprecated(): bool
+    {
+        return false;
+    }
+
     /**
      * @return string
      */
