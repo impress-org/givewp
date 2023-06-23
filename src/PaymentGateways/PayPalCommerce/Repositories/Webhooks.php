@@ -82,7 +82,11 @@ class Webhooks
             ->execute(new VerifyWebhookSignature($requestData))
             ->result;
 
-        if (! $response || ! property_exists($response, 'verification_status')) {
+        if (
+            ! $response ||
+            ! property_exists($response, 'verification_status')
+            || $response->verification_status !== 'SUCCESS'
+        ) {
             Log::http(
                 'Webhook signature failure response',
                 [
@@ -96,7 +100,7 @@ class Webhooks
             return false;
         }
 
-        return $response->verification_status === 'SUCCESS';
+        return true;
     }
 
     /**
