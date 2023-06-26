@@ -20,14 +20,6 @@ class PayPalClient
     use HasMode;
 
     /**
-     * PayPalClient constructor.
-     */
-    public function __construct()
-    {
-        $this->setMode(give_is_test_mode() ? 'sandbox' : 'live');
-    }
-
-    /**
      * Get environment.
      *
      * @sicne 2.9.0

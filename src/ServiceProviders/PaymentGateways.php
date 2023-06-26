@@ -175,6 +175,13 @@ class PaymentGateways implements ServiceProvider
                 $repository->setMode(give_is_test_mode() ? 'sandbox' : 'live');
             }
         );
+
+        give()->resolving(
+            PayPalClient::class,
+            static function (PayPalClient $object) {
+                $object->setMode(give_is_test_mode() ? 'sandbox' : 'live');
+            }
+        );
     }
 
     /**
