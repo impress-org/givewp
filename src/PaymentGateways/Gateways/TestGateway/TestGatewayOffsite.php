@@ -12,12 +12,9 @@ use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
-use Give\PaymentGateways\Gateways\PayPalStandard\Actions\GenerateDonationReceiptPageUrl;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
-
-use function Give\Framework\Http\Response\response;
 
 /**
  * Class TestGatewayOffsite
@@ -34,6 +31,14 @@ class TestGatewayOffsite extends PaymentGateway
 
     /**
      * @inheritDoc
+     */
+    public static function isDeprecated(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @since 2.18.0
      */
     public static function id(): string
     {
@@ -53,7 +58,7 @@ class TestGatewayOffsite extends PaymentGateway
      */
     public function getName(): string
     {
-        return __('Test Gateway Offsite', 'give');
+        return __('Test Gateway (Offsite)', 'give');
     }
 
     /**
@@ -61,11 +66,11 @@ class TestGatewayOffsite extends PaymentGateway
      */
     public function getPaymentMethodLabel(): string
     {
-        return __('Test Gateway Offsite', 'give');
+        return __('Test Gateway (Offsite)', 'give');
     }
 
     /**
-     * @inheritDoc
+     * @since 2.18.0
      */
     public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
@@ -87,12 +92,18 @@ class TestGatewayOffsite extends PaymentGateway
         $redirectUrl = $this->generateSecureGatewayRouteUrl(
             'securelyReturnFromOffsiteRedirect',
             $donation->id,
-            ['give-donation-id' => $donation->id]
+            [
+                'givewp-donation-id' => $donation->id,
+                'givewp-return-url' => $gatewayData['successUrl']
+            ]
         );
 
         return new RedirectOffsite($redirectUrl);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function createSubscription(
         Donation $donation,
         Subscription $subscription,
@@ -102,8 +113,9 @@ class TestGatewayOffsite extends PaymentGateway
             'securelyReturnFromOffsiteRedirect',
             $donation->id,
             [
-                'give-donation-id' => $donation->id,
+                'givewp-donation-id' => $donation->id,
                 'give-subscription-id' => $subscription->id,
+                'givewp-return-url' => $gatewayData['successUrl']
             ]
         );
 
@@ -113,26 +125,29 @@ class TestGatewayOffsite extends PaymentGateway
     /**
      * An example of using a secureRouteMethod for extending the Gateway API to handle a redirect.
      *
+     * @unreleased update with new gatewayData params
      * @since 2.21.0 update to use Donation model
      * @since 2.19.0
      *
-     * @param array $queryParams
+     * @param  array  $queryParams
      *
      * @return RedirectResponse
      * @throws Exception
+     * @throws \Exception
      */
     protected function securelyReturnFromOffsiteRedirect(array $queryParams): RedirectResponse
     {
-        $donation = Donation::find($queryParams['give-donation-id']);
-
+        /** @var Donation $donation */
+        $donation = Donation::find($queryParams['givewp-donation-id']);
         $this->updateDonation($donation);
 
-        if ( $donation->type->isSubscription() ) {
-            $subscription = Subscription::find($queryParams['give-subscription-id']);
+        if ($donation->type->isSubscription()) {
+            /** @var Subscription $subscription */
+            $subscription = Subscription::find($queryParams['givewp-subscription-id']);
             $this->updateSubscription($subscription);
         }
 
-        return response()->redirectTo((new GenerateDonationReceiptPageUrl())($donation->id));
+        return new RedirectResponse($queryParams['givewp-return-url']);
     }
 
     /**

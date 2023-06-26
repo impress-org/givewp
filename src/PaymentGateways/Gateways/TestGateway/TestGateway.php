@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
+use Exception;
 use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
@@ -19,13 +20,16 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
  */
 class TestGateway extends PaymentGateway
 {
+    /**
+     * @inheritDoc
+     */
     public static function isDeprecated(): bool
     {
         return false;
     }
 
     /**
-     * @inheritDoc
+     * @since 2.18.0
      */
     public static function id(): string
     {
@@ -57,7 +61,7 @@ class TestGateway extends PaymentGateway
     }
 
     /**
-     * @inheritDoc
+     * @since 2.18.0
      */
     public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
@@ -76,7 +80,9 @@ class TestGateway extends PaymentGateway
      */
     public function createPayment(Donation $donation, $gatewayData): GatewayCommand
     {
-        return new PaymentComplete("test-gateway-transaction-id-$donation->id");
+        $intent = $gatewayData['testGatewayIntent'] ?? 'test-gateway-intent';
+        
+        return new PaymentComplete("test-gateway-transaction-id-{$intent}-$donation->id");
     }
 
     /**
@@ -99,7 +105,7 @@ class TestGateway extends PaymentGateway
      * @since 2.23.0
      *
      * @inheritDoc
-     * @throws \Exception
+     * @throws Exception
      */
     public function cancelSubscription(Subscription $subscription)
     {
