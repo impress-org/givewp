@@ -191,6 +191,7 @@ class AjaxRequestHandler
             $this->webhooksRepository->setMode($mode);
             $this->merchantRepository->setMode($mode);
             $this->refreshToken->setMode($mode);
+            $this->settings->setMode($mode);
 
             $this->validateAdminRequest();
 
@@ -203,7 +204,7 @@ class AjaxRequestHandler
             $this->merchantRepository->delete();
             $this->merchantRepository->deleteAccountErrors();
             $this->merchantRepository->deleteClientToken();
-            $this->settings->deleteSellerAccessToken($mode);
+            $this->settings->deleteSellerAccessToken();
             $this->refreshToken->deleteRefreshTokenCronJob();
 
             wp_send_json_success();

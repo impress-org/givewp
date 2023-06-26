@@ -2,8 +2,12 @@
 
 namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
+use Give\PaymentGateways\PayPalCommerce\Repositories\Traits\HasMode;
+
 class Settings
 {
+    use HasMode;
+
     /**
      * wp_options key for the account country
      *
@@ -150,9 +154,9 @@ class Settings
      *
      * @since 2.25.0
      */
-    public function updateSellerAccessToken(array $sellerAccessToken, string $mode): bool
+    public function updateSellerAccessToken(array $sellerAccessToken): bool
     {
-        return update_option($this->getSellerAccessTokenOptionName($mode), $sellerAccessToken);
+        return update_option($this->getSellerAccessTokenOptionName(), $sellerAccessToken);
     }
 
     /**
@@ -160,9 +164,9 @@ class Settings
      *
      * @since 2.25.0
      */
-    public function deleteSellerAccessToken(string $mode): bool
+    public function deleteSellerAccessToken(): bool
     {
-        return delete_option($this->getSellerAccessTokenOptionName($mode));
+        return delete_option($this->getSellerAccessTokenOptionName());
     }
 
     /**
@@ -189,16 +193,11 @@ class Settings
      *
      * @since 2.25.0
      */
-    private function getSellerAccessTokenOptionName(string $mode = ''): string
+    private function getSellerAccessTokenOptionName(): string
     {
-        // If mode is empty, then get the mode from the test mode
-        if (empty($mode)) {
-            $mode = give_is_test_mode() ? 'sandbox' : 'live';
-        }
-
         return sprintf(
             'give_paypal_commerce_%s_seller_access_token',
-            $mode
+            $this->getMode()
         );
     }
 }

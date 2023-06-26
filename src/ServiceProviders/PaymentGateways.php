@@ -17,6 +17,7 @@ use Give\PaymentGateways\PayPalCommerce\RefreshToken;
 use Give\PaymentGateways\PayPalCommerce\RefundPaymentHandler;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
+use Give\PaymentGateways\PayPalCommerce\Repositories\Settings;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
 use Give\PaymentGateways\PayPalCommerce\ScriptLoader;
 use Give\PaymentGateways\PayPalCommerce\Webhooks\WebhookChecker;
@@ -142,6 +143,7 @@ class PaymentGateways implements ServiceProvider
         give()->singleton(PayPalClient::class);
         give()->singleton(MerchantDetails::class);
         give()->singleton(PayPalAuth::class);
+        give()->singleton(Settings::class);
 
         give()->singleton(
             MerchantDetail::class,
@@ -163,6 +165,13 @@ class PaymentGateways implements ServiceProvider
         give()->resolving(
             Webhooks::class,
             static function (Webhooks $repository) {
+                $repository->setMode(give_is_test_mode() ? 'sandbox' : 'live');
+            }
+        );
+
+        give()->resolving(
+            Settings::class,
+            static function (Settings $repository) {
                 $repository->setMode(give_is_test_mode() ? 'sandbox' : 'live');
             }
         );
