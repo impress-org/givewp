@@ -18,29 +18,22 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
      * @var string[]
      */
     protected $gateways = [];
-    /**
-     * @var string[]
-     */
-    protected $deprecatedGateways = [];
 
     /**
      * Get Gateways
      *
+     * @unreleased add $apiVersion filter param
      * @since 2.18.0
      */
-    public function getPaymentGateways(): array
+    public function getPaymentGateways(int $apiVersion = null): array
     {
-        return $this->gateways;
-    }
+        if (!$apiVersion) {
+            return $this->gateways;
+        }
 
-    /**
-     * Get Deprecated Gateways
-     *
-     * @unreleased
-     */
-    public function getDeprecatedPaymentGateways(): array
-    {
-        return $this->deprecatedGateways;
+        return array_filter($this->gateways, static function (string $gatewayClass) use ($apiVersion) {
+            return in_array($apiVersion, $gatewayClass::supportsApiVersions(), true);
+        });
     }
 
     /**
@@ -93,11 +86,9 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
             throw new OverflowException("Cannot register a gateway with an id that already exists: $gatewayId");
         }
 
-        if (!$gatewayClass::isDeprecated()) {
-            $this->gateways[$gatewayId] = $gatewayClass;
-        } else {
-            $this->deprecatedGateways[$gatewayId] = $gatewayClass;
-        }
+
+        $this->gateways[$gatewayId] = $gatewayClass;
+
 
         $this->registerGatewayWithServiceContainer($gatewayClass, $gatewayId);
     }

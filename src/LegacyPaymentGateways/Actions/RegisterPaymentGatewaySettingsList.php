@@ -23,10 +23,7 @@ class RegisterPaymentGatewaySettingsList
         /** @var PaymentGatewayRegister $paymentGatewayRegister */
         $paymentGatewayRegister = give(PaymentGatewayRegister::class);
 
-        $newPaymentGateways = array_merge(
-            $paymentGatewayRegister->getDeprecatedPaymentGateways(),
-            $paymentGatewayRegister->getPaymentGateways()
-        );
+        $newPaymentGateways = $paymentGatewayRegister->getPaymentGateways();
 
         if (!$newPaymentGateways) {
             return $gatewayData;

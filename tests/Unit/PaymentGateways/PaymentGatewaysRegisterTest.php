@@ -89,27 +89,27 @@ class PaymentGatewaysRegisterTest extends TestCase
      * @throws Exception
      * @throws OverflowException
      */
-    public function testShouldGetDeprecatedRegisteredPaymentGateways()
+    public function testShouldGetV2RegisteredPaymentGateways()
     {
-        $this->paymentGatewayRegister->registerGateway(MockDeprecatedGateway::class);
+        $this->paymentGatewayRegister->registerGateway(MockV2Gateway::class);
 
-        $gateways = $this->paymentGatewayRegister->getDeprecatedPaymentGateways();
+        $gateways = $this->paymentGatewayRegister->getPaymentGateways(2);
 
         $this->assertEquals([
-            MockDeprecatedGateway::id() => MockDeprecatedGateway::class,
+            MockV2Gateway::id() => MockV2Gateway::class,
         ], $gateways);
     }
 }
 
-class MockDeprecatedGateway extends PaymentGateway
+class MockV2Gateway extends PaymentGateway
 {
 
     /**
-     * @inheritDoc
+     * @unreleased
      */
-    public static function isDeprecated(): bool
+    public static function supportsApiVersions(): array
     {
-        return true;
+        return [2];
     }
 
     /**
@@ -117,7 +117,7 @@ class MockDeprecatedGateway extends PaymentGateway
      */
     public static function id(): string
     {
-        return 'deprecated-gateway';
+        return 'v2-gateway';
     }
 
     /**

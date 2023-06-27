@@ -77,7 +77,7 @@ class LegacyPaymentGatewayRegisterAdapter
             $gatewaysData[$paymentGateway::id()] = [
                 'admin_label' => $this->getAdminLabel($paymentGateway),
                 'checkout_label' => $paymentGateway->getPaymentMethodLabel(),
-                'is_visible' => $this->supportsLegacyForm($paymentGateway),
+                'is_visible' => $this->supportsV2Forms($paymentGateway),
             ];
         }
         $gatewaysData['offline']['admin_label'] .= " (v2)";
@@ -90,9 +90,12 @@ class LegacyPaymentGatewayRegisterAdapter
      * @unreleased check if v2 compatible
      * @since 2.25.0
      */
-    public function supportsLegacyForm(PaymentGateway $gateway): bool
+    public function supportsV2Forms(PaymentGateway $gateway): bool
     {
-        return method_exists($gateway, 'getLegacyFormFieldMarkup');
+        return in_array(2, $gateway::supportsApiVersions(), true) || method_exists(
+                $gateway,
+                'getLegacyFormFieldMarkup'
+            );
     }
 
     /**
@@ -101,7 +104,11 @@ class LegacyPaymentGatewayRegisterAdapter
     public function getAdminLabel(PaymentGateway $gateway): string
     {
         $name = $gateway->getName();
-        $version = $gateway::isDeprecated() ? "(v2)" : '';
+        $version = in_array(2, $gateway::supportsApiVersions(), true) && !in_array(
+            3,
+            $gateway::supportsApiVersions(),
+            true
+        ) ? "(v2)" : '';
 
         return trim("$name $version");
     }

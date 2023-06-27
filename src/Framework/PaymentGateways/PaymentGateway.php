@@ -20,6 +20,7 @@ use ReflectionException;
 use ReflectionMethod;
 
 /**
+ * @unreleased add supportsApiVersions
  * @since 2.18.0
  */
 abstract class PaymentGateway implements PaymentGatewayInterface,
@@ -58,11 +59,15 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * @unreleased
      */
-    public static function isDeprecated(): bool
+    public static function supportsApiVersions(): array
     {
-        // To help with migration, gateways are considered deprecated until GiveWP 3.0 until they specify otherwise.
-        // TODO: determine if we should hardcode this as true and let gateways specify themselves until GIVE 4.0 or just assume all gateways are compatible with GIVE 3.0
-        return !(defined('GIVE_VERSION') && version_compare(GIVE_VERSION, '3.0.0', '>='));
+        $versions = [];
+
+        if (method_exists(static::class, 'getLegacyFormFieldMarkup')) {
+            $versions[] = 2;
+        }
+
+        return $versions;
     }
 
     /**

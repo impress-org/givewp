@@ -16,7 +16,6 @@ use Give\PaymentGateways\Gateways\Stripe\Exceptions\CheckoutTypeException;
 use Give\PaymentGateways\Gateways\Stripe\ValueObjects\PaymentMethod;
 
 /**
- * @deprecated 3.0.0
  * @since 2.19.0
  */
 class CheckoutGateway extends PaymentGateway
@@ -29,9 +28,9 @@ class CheckoutGateway extends PaymentGateway
     /**
      * @unreleased
      */
-    public static function isDeprecated(): bool
+    public static function supportsApiVersions(): array
     {
-        return true;
+        return [2];
     }
 
     /**

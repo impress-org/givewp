@@ -21,11 +21,11 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class TestGateway extends PaymentGateway
 {
     /**
-     * @inheritDoc
+     * @unreleased
      */
-    public static function isDeprecated(): bool
+    public static function supportsApiVersions(): array
     {
-        return false;
+        return [2, 3];
     }
 
     /**

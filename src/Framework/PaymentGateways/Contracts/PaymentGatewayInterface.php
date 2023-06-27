@@ -13,14 +13,13 @@ use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
  */
 interface PaymentGatewayInterface extends SubscriptionModuleInterface
 {
+
     /**
-     * Specify if the gateway is deprecated
+     * Specify which gateway api versions the gateway supports
      *
      * @unreleased
-     *
-     * @return bool
      */
-    public static function isDeprecated(): bool;
+    public static function supportsApiVersions(): array;
 
     /**
      * Return a unique identifier for the gateway
