@@ -1,6 +1,7 @@
 import {__} from '@wordpress/i18n';
 import {ListTableApi, ListTablePage} from '@givewp/components';
 import {DonationFormsRowActions} from './DonationFormsRowActions';
+import MigrationBanner from './Migration';
 import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import Select from '@givewp/components/ListTable/Select';
@@ -12,9 +13,11 @@ declare global {
         GiveDonationForms: {
             apiNonce: string;
             apiRoot: string;
-            authors: Array<{id: string | number; name: string}>;
-            table: {columns: Array<object>};
+            authors: Array<{ id: string | number; name: string }>;
+            table: { columns: Array<object> };
             pluginUrl: string;
+            showMigrationOnboarding: boolean;
+            unsupportedAddons: Array<string>;
         };
 
         GiveNextGen?: {
@@ -181,6 +184,7 @@ export default function DonationFormsListTable() {
             apiSettings={window.GiveDonationForms}
             filterSettings={donationFormsFilters}
             listTableBlankSlate={ListTableBlankSlate}
+            banner={MigrationBanner}
         >
             {!!window.GiveNextGen?.newFormUrl && (
                 <a href={window.GiveNextGen.newFormUrl} className={styles.addFormButton}>

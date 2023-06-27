@@ -1,0 +1,84 @@
+.button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: var(--givewp-spacing-1);
+    font-size: .875rem;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    border-radius: var(--givewp-rounded-4);
+    cursor: pointer;
+    border: 1px solid transparent;
+    height: 2.25rem;
+
+    > span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 1rem;
+
+        > svg {
+            display: block;
+        }
+    }
+}
+
+.primary {
+    color: var(--givewp-shades-white);
+    background: var(--wp-blue-blue-50);
+
+    &:hover {
+        background-color: var(--wp-blue-blue-40);
+    }
+
+    &:active {
+        background-color: var(--wp-blue-blue-60);
+    }
+}
+
+.secondary {
+    background: var(--givewp-shades-white);
+    color: var(--wp-blue-blue-50);
+    border-color: var(--wp-blue-blue-50);
+
+    &:hover {
+        color: var(--wp-blue-blue-40);
+        border-color: var(--wp-blue-blue-40);
+    }
+
+    &:active {
+        color: var(--wp-blue-blue-60);
+        border-color: var(--wp-blue-blue-60);
+    }
+}
+
+.danger {
+    background-color: var(--givewp-red-500);
+    color: var(--givewp-shades-white);
+    border-color: var(--givewp-red-500);
+
+    &:hover {
+        background-color: var(--givewp-red-400);
+    }
+
+    &:active {
+        background-color: var(--givewp-red-600);
+    }
+}
+
+.small {
+    padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+}
+
+.large {
+    padding: var(--givewp-spacing-4) var(--givewp-spacing-20);
+}
+
+.button:disabled {
+    background-color: var(--givewp-grey-300);
+    color: var(--givewp-shades-white);
+    border-color: var(--givewp-grey-300);
+}

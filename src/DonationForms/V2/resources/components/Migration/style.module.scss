@@ -1,0 +1,58 @@
+.banner {
+    //background-color: var(--givewp-blue-500);
+    background-color: #0B72D9;
+    padding: 1.3rem 1.8rem;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.875rem;
+    line-height: 1.625rem;
+
+    span {
+        font-weight: bold;
+        margin-right: 10px;
+        padding: 0.3rem 0.5rem;
+        border-radius: 0.4rem;
+        //color: var(--givewp-blue-500);
+        //background-color: var(--givewp-blue-25);
+        color: #0B72D9;
+        background-color: #F2F9FF;
+    }
+
+    strong {
+        margin-left: 0.625rem;
+    }
+}
+
+
+.title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    padding-bottom: 0.625rem;
+    display: flex;
+    align-items: center;
+
+    svg {
+        margin-right: 0.625rem;
+    }
+}
+
+.title:not(:first-child)  {
+    padding-top: 1.25rem;
+}
+
+.addonsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 0.625rem;
+
+    .addon {
+        display: flex;
+        flex-basis: 50%;
+        margin-bottom: 0.625rem;
+        align-items: center;
+
+        svg {
+            margin-right: 0.625rem;
+        }
+    }
+}

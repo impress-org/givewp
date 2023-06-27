@@ -59,7 +59,7 @@ class DonationFormsAdminPage
         global $submenu;
         $pages = [
             '/wp-admin/admin.php?page=give-forms', // Donation main menu page.
-            '/wp-admin/edit.php?post_type=give_forms' // Legacy donation form listing page.
+            '/wp-admin/edit.php?post_type=give_forms', // Legacy donation form listing page.
         ];
 
         if (in_array($_SERVER['REQUEST_URI'], $pages)) {
@@ -76,7 +76,7 @@ class DonationFormsAdminPage
      */
     public function loadScripts()
     {
-        $data =  [
+        $data = [
             'apiRoot' => $this->apiRoot,
             'apiNonce' => $this->apiNonce,
             'preload' => $this->preloadDonationForms(),
@@ -84,6 +84,8 @@ class DonationFormsAdminPage
             'table' => give(DonationFormsListTable::class)->toArray(),
             'adminUrl' => $this->adminUrl,
             'pluginUrl' => GIVE_PLUGIN_URL,
+            'showMigrationOnboarding' => give_get_option('show_migration_onboarding', true),
+            'unsupportedAddons' => $this->getUnsupportedAddons(),
         ];
 
         EnqueueScript::make('give-admin-donation-forms', 'assets/dist/js/give-admin-donation-forms.js')
@@ -112,10 +114,12 @@ class DonationFormsAdminPage
             'perPage' => 30,
         ];
 
-        $request = WP_REST_Request::from_url(add_query_arg(
-            $queryParameters,
-            $this->apiRoot
-        ));
+        $request = WP_REST_Request::from_url(
+            add_query_arg(
+                $queryParameters,
+                $this->apiRoot
+            )
+        );
 
         return rest_do_request($request)->get_data();
     }
@@ -127,12 +131,13 @@ class DonationFormsAdminPage
     public function getAuthors()
     {
         $author_users = get_users([
-            'role__in'  => ['author', 'administrator']
+            'role__in' => ['author', 'administrator'],
         ]);
-        return array_map(function($user){
+
+        return array_map(function ($user) {
             return [
-                'id'    => $user->ID,
-                'name'  => $user->display_name,
+                'id' => $user->ID,
+                'name' => $user->display_name,
             ];
         }, $author_users);
     }
@@ -154,20 +159,21 @@ class DonationFormsAdminPage
     {
         ?>
         <script type="text/javascript">
-            function showReactTable () {
-                fetch( '<?php echo esc_url_raw(rest_url('give-api/v2/admin/forms/view?isLegacy=0')) ?>', {
+            function showReactTable() {
+                fetch('<?php echo esc_url_raw(rest_url('give-api/v2/admin/forms/view?isLegacy=0')) ?>', {
                     method: 'GET',
                     headers: {
-                        ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>'
-                    }
+                        ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>',
+                    },
                 })
                     .then((res) => {
                         window.location = window.location.href = '/wp-admin/edit.php?post_type=give_forms&page=give-forms';
                     });
             }
-            jQuery( function() {
+
+            jQuery(function () {
                 jQuery(jQuery(".wrap .page-title-action")[0]).after(
-                    '<button class="page-title-action" onclick="showReactTable()">Switch to New View</button>'
+                    '<button class="page-title-action" onclick="showReactTable()">Switch to New View</button>',
                 );
             });
         </script>
@@ -201,5 +207,35 @@ class DonationFormsAdminPage
     public static function getUrl()
     {
         return add_query_arg(['page' => 'give-forms'], admin_url('edit.php?post_type=give_forms'));
+    }
+
+    /**
+     * Get an array of unsupported addons for addons compatibility modal
+     *
+     * @unreleased
+     * @return array
+     */
+    public function getUnsupportedAddons(): array
+    {
+        $unsupportedAddons = [
+            [
+                'Tributes' => true, //class_exists('Give_Tributes'),
+                'Funds' => true,
+                'Test' => true,
+                'Another Test' => true,
+            ],
+        ];
+
+        $output = [];
+
+        foreach ($unsupportedAddons as $addon) {
+            foreach ($addon as $name => $isInstalled) {
+                if ($isInstalled) {
+                    $output[] = $name;
+                }
+            }
+        }
+
+        return $output;
     }
 }

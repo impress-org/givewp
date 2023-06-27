@@ -30,6 +30,7 @@ export interface ListTablePageProps {
     paymentMode?: boolean;
     listTableBlankSlate: JSX.Element;
     productRecommendation?: JSX.Element;
+    banner?: () => JSX.Element;
 }
 
 export interface FilterConfig {
@@ -72,6 +73,7 @@ export default function ListTablePage({
     paymentMode,
     listTableBlankSlate,
     productRecommendation,
+    banner
 }: ListTablePageProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(30);
@@ -201,6 +203,11 @@ export default function ListTablePage({
                     </div>
                     {children && <div className={styles.flexRow}>{children}</div>}
                 </header>
+                {banner && (
+                    <section role="banner">
+                        {banner()}
+                    </section>
+                )}
                 <section role="search" id={styles.searchContainer}>
                     {filterSettings.map((filter) => (
                         <Filter
