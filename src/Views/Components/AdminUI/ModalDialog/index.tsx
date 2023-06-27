@@ -54,15 +54,13 @@ export default function Modal({title, children, insertInto, handleClose, isOpen 
                 ) : (
                     <>
                         {handleClose && (
-                            <div className={styles.header2}>
-                                <button
-                                    aria-label={__('Close dialog', 'give')}
-                                    className={styles.close}
-                                    onClick={handleClose}
-                                >
-                                    <ExitIcon aria-label={__('Close dialog icon', 'give')} />
-                                </button>
-                            </div>
+                            <button
+                                aria-label={__('Close dialog', 'give')}
+                                className={styles.closeAbsolute}
+                                onClick={handleClose}
+                            >
+                                <ExitIcon aria-label={__('Close dialog icon', 'give')} />
+                            </button>
                         )}
                     </>
                 )}
