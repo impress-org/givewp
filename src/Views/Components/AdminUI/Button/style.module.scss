@@ -11,7 +11,6 @@
     border-radius: var(--givewp-rounded-4);
     cursor: pointer;
     border: 1px solid transparent;
-    height: 2.25rem;
 
     > span {
         display: flex;
@@ -75,6 +74,7 @@
 
 .large {
     padding: var(--givewp-spacing-4) var(--givewp-spacing-20);
+    font-weight: 600;
 }
 
 .button:disabled {
