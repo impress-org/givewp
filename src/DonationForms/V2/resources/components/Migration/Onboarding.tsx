@@ -2,6 +2,7 @@ import {MouseEventHandler, useState} from 'react';
 import cx from 'classnames';
 import {__} from '@wordpress/i18n';
 import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
+import ButtonGroup from '@givewp/components/AdminUI/ButtonGroup';
 import Button from '@givewp/components/AdminUI/Button';
 import {CompassIcon, MinusIcon, QuestionMarkIcon, StarsIcon} from '@givewp/components/AdminUI/Icons';
 import styles from './style.module.scss';
@@ -13,8 +14,8 @@ interface OnboardingProps {
 export default function Onboarding({handleClose}: OnboardingProps) {
     const [step, setStep] = useState<number>(0);
     const [showHeader, setShowHeader] = useState<boolean>(true);
-    const getImage = (name: string) => `${window.GiveDonationForms.pluginUrl}assets/dist/images/form-migration/${name}`;
 
+    const getImage = (name: string) => `${window.GiveDonationForms.pluginUrl}assets/dist/images/form-migration/${name}`;
     const nextStep = () => setStep((prev) => prev + 1);
     const previousStep = () => setStep((prev) => prev - 1);
 
@@ -22,14 +23,14 @@ export default function Onboarding({handleClose}: OnboardingProps) {
         const indicators: JSX.Element[] = [];
 
         for (let i = 1; i <= 3; i++) {
-            const stepElement = (
+            const indicator = (
                 <li
                     key={i}
                     onClick={() => setStep(i)}
                     className={cx({[styles.active]: i === active, [styles.stepIndicator]: true})}
                 />
             )
-            indicators.push(stepElement);
+            indicators.push(indicator);
         }
 
         return (
@@ -64,16 +65,18 @@ export default function Onboarding({handleClose}: OnboardingProps) {
                     <CompassIcon /> {__('Migration guide', 'give')}
                 </div>
 
-                {__('This section highlights a list of add-ons that are not supported with v3 forms yet. Take note of these add-ons before making your migration to v3 forms.', 'give')}
-
-                <br />
-                <br />
+                <div className={styles.info}>
+                    {__('This section highlights a list of add-ons that are not supported with v3 forms yet. Take note of these add-ons before making your migration to v3 forms.', 'give')}
+                </div>
 
                 <Button
+                    size="large"
                     onClick={() => {
                         nextStep();
                         setShowHeader(false);
-                    }}>
+                    }}
+                    style={{width: '100%'}}
+                >
                     {__('Get started', 'give')}
                 </Button>
             </>
@@ -83,7 +86,7 @@ export default function Onboarding({handleClose}: OnboardingProps) {
     const Step1 = () => {
         return (
             <>
-                <div className={styles.image}>
+                <div className={styles.imageContainer}>
                     <img key="step1" src={getImage('step1.jpg')} alt={__('Make a copy of your v2 form', 'give')} />
                 </div>
 
@@ -93,15 +96,18 @@ export default function Onboarding({handleClose}: OnboardingProps) {
                     {__('Make a copy of your v2 form', 'give')}
                 </div>
 
-                {__('Click "migrate" on the form you want to make a corresponding v3 form copy of', 'give')}
+                <div className={styles.info}>
+                    {__('Click "migrate" on the form you want to make a corresponding v3 form copy of', 'give')}
+                </div>
 
-                <br />
-                <br />
-
-                <Button
-                    onClick={nextStep}>
-                    {__('Next', 'give')}
-                </Button>
+                <ButtonGroup align="right">
+                    <Button
+                        size="large"
+                        onClick={nextStep}
+                    >
+                        {__('Next', 'give')}
+                    </Button>
+                </ButtonGroup>
             </>
         );
     }
@@ -109,7 +115,7 @@ export default function Onboarding({handleClose}: OnboardingProps) {
     const Step2 = () => {
         return (
             <>
-                <div className={styles.image}>
+                <div className={styles.imageContainer}>
                     <img key="step2" src={getImage('step2.jpg')} alt={__('Test out the new form', 'give')} />
                 </div>
 
@@ -119,18 +125,26 @@ export default function Onboarding({handleClose}: OnboardingProps) {
                     {__('Test out the new form', 'give')}
                 </div>
 
-                {__('Look at it in the form builder to make sure all your settings are as you like, check the form on the front end, and run some test donations', 'give')}
+                <div className={styles.info}>
+                    {__('Look at it in the form builder to make sure all your settings are as you like, check the form on the front end, and run some test donations', 'give')}
+                </div>
 
-                <br />
-                <br />
+                 <ButtonGroup align="space-between">
+                     <Button
+                         size="large"
+                         variant="secondary"
+                         onClick={previousStep}
+                     >
+                         {__('Previous', 'give')}
+                     </Button>
 
-                <Button onClick={previousStep}>
-                    {__('Previous', 'give')}
-                </Button>
-
-                <Button onClick={nextStep}>
-                    {__('Next', 'give')}
-                </Button>
+                     <Button
+                         size="large"
+                         onClick={nextStep}
+                     >
+                         {__('Next', 'give')}
+                     </Button>
+                 </ButtonGroup>
             </>
         );
     }
@@ -138,7 +152,7 @@ export default function Onboarding({handleClose}: OnboardingProps) {
     const Step3 = () => {
         return (
             <>
-                <div className={styles.image}>
+                <div className={styles.imageContainer}>
                     <img key="step3" src={getImage('step3.jpg')} alt={__('Transfer donation data', 'give')} />
                 </div>
 
@@ -148,18 +162,26 @@ export default function Onboarding({handleClose}: OnboardingProps) {
                     {__('Transfer donation data', 'give')}
                 </div>
 
-                {__('Click on “transfer data” to migrate all your donation data for the selected v2 form to the v3 form', 'give')}
+                <div className={styles.info}>
+                    {__('Click on "transfer data" to migrate all your donation data for the selected v2 form to the v3 form', 'give')}
+                </div>
 
-                <br />
-                <br />
+                <ButtonGroup align="space-between">
+                    <Button
+                        size="large"
+                        variant="secondary"
+                        onClick={previousStep}
+                    >
+                        {__('Previous', 'give')}
+                    </Button>
 
-                <Button onClick={previousStep}>
-                    {__('Previous', 'give')}
-                </Button>
-
-                <Button onClick={handleClose}>
-                    {__('Got it', 'give')}
-                </Button>
+                    <Button
+                        size="large"
+                        onClick={handleClose}
+                    >
+                        {__('Got it', 'give')}
+                    </Button>
+                </ButtonGroup>
             </>
         );
     }
