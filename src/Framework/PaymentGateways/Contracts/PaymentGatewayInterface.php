@@ -25,6 +25,13 @@ interface PaymentGatewayInterface extends SubscriptionModuleInterface
      * Return a unique identifier for the gateway
      *
      * @since 2.18.0
+     */
+    public static function id(): string;
+
+    /**
+     * Return a unique identifier for the gateway
+     *
+     * @since 2.18.0
      *
      * @deprecated 2.22.2 use static id() method instead, can use on an instance: $this::id() or $gateway::id() — even in strings
      */

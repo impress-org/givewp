@@ -29,7 +29,7 @@ class TestGateway extends PaymentGateway
     }
 
     /**
-     * @since 2.18.0
+     * @inheritDoc
      */
     public static function id(): string
     {
