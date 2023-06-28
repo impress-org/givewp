@@ -18,7 +18,7 @@
         font-family: 'Open Sans', sans-serif;
         max-width: 35rem;
         width: 100%;
-        border-radius: 6px;
+        border-radius: var(--givewp-rounded-4);
         background-color: #fff;
         box-shadow: 0 0.25rem 0.5rem 0 rgba(14, 14, 14, 0.15);
         animation: appear 112ms ease-in 0s;
@@ -29,15 +29,12 @@
             font-size: 1rem;
             font-weight: 700;
             align-items: center;
-            padding: 1rem 1.5rem;
+            padding: var(--givewp-spacing-4) var(--givewp-spacing-5);
             justify-content: space-between;
-            //background-color: var(--givewp-gray-25);
-            background-color: #FAFAFA;
-            border-top-left-radius: 0.375rem;
-            border-top-right-radius: 0.375rem;
-            //border-bottom: 1px solid var(--givewp-gray-50);
-            border-bottom: 0.063rem solid #E6E6E6;
-
+            background-color: var(--givewp-grey-25);
+            border-top-left-radius: var(--givewp-rounded-6);
+            border-top-right-radius: var(--givewp-rounded-6);
+            border-bottom: 1px solid var(--givewp-grey-50);
         }
 
         .close,
@@ -49,13 +46,19 @@
 
         .closeAbsolute {
             position: absolute;
-            top: 1rem;
-            right: 1.5rem;
+            display: flex;
+            top: var(--givewp-spacing-4);
+            right: var(--givewp-spacing-5);
+            align-items: center;
+            justify-content: center;
+            padding: var(--givewp-spacing-1);
+            background-color: var(--givewp-grey-50);
+            border-radius: 50%;
         }
 
         .content {
             font-size: 0.875rem;
-            padding: 1.25rem;
+            padding: var(--givewp-spacing-5);
         }
     }
 }
