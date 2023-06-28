@@ -49,6 +49,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * First we create a payment, then move on to the gateway processing
      *
+     * @unreleased  Add success, cancel and failed URLs to gateway data.  This will be used in both v2 and v3 forms so gateways can just refer to the gateway data.
      * @since 2.24.0 add support for payment mode
      * @since 2.21.0 Replace give_insert_payment with donation model. Store legacy subscription data in donation meta.
      *             Attach subscription id to donation.
@@ -111,6 +112,8 @@ class LegacyPaymentGatewayAdapter
                 $subscription
             );
 
+            $gatewayData = $this->addUrlsToGatewayData($donation, $gatewayData, $registeredGateway);
+
             $controller = new GatewaySubscriptionController($registeredGateway);
             $controller->create($donation, $subscription, $gatewayData);
         } else {
@@ -130,19 +133,7 @@ class LegacyPaymentGatewayAdapter
                 $donation
             );
 
-            /**
-             * Add success, cancel and failed URLs to gateway data.  This will be used in both v2 and v3 forms so gateways can just refer to the gateway data.
-             *
-             * @unreleased
-             */
-            $gatewayData = array_merge($gatewayData, [
-                'successUrl' => add_query_arg(
-                    ['payment-confirmation' => $registeredGateway::id()],
-                    $this->getGatewayDataSuccessUrl($donation->id)
-                ),
-                'cancelUrl' => $this->getGatewayDataCancelUrl($donation->id),
-                'failedUrl' => $this->getGatewayDataFailedUrl($donation->id)
-            ]);
+            $gatewayData = $this->addUrlsToGatewayData($donation, $gatewayData, $registeredGateway);
 
             $controller = new GatewayPaymentController($registeredGateway);
             $controller->create($donation, $gatewayData);
@@ -338,5 +329,20 @@ class LegacyPaymentGatewayAdapter
             $controller = new GatewayPaymentController($registeredGateway);
             $controller->refund($donation);
         }
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function addUrlsToGatewayData(Donation $donation, $gatewayData, PaymentGateway $registeredGateway)
+    {
+        return array_merge($gatewayData, [
+            'successUrl' => add_query_arg(
+                ['payment-confirmation' => $registeredGateway::id()],
+                $this->getGatewayDataSuccessUrl($donation->id)
+            ),
+            'cancelUrl' => $this->getGatewayDataCancelUrl($donation->id),
+            'failedUrl' => $this->getGatewayDataFailedUrl($donation->id)
+        ]);
     }
 }
