@@ -49,7 +49,13 @@ export default function Banner() {
                         </div>)}
                     </div>
 
-                    <Button onClick={handleClose}>
+                    <br />
+
+                    <Button
+                        size="large"
+                        onClick={handleClose}
+                        style={{width: '100%'}}
+                    >
                         {__('Close', 'give')}
                     </Button>
                 </>
