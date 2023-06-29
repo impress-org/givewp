@@ -2,7 +2,7 @@
 
 namespace Give\Framework\LegacyPaymentGateways\Adapters;
 
-use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Framework\PaymentGateways\BasePaymentGateway;
 use Give\LegacyPaymentGateways\Adapters\LegacyPaymentGatewayAdapter;
 
 class LegacyPaymentGatewayRegisterAdapter
@@ -13,13 +13,11 @@ class LegacyPaymentGatewayRegisterAdapter
      *
      * @since 2.19.0
      */
-    public function connectGatewayToLegacyPaymentGatewayAdapter(string $gatewayClass)
+    public function connectGatewayToLegacyPaymentGatewayAdapter(BasePaymentGateway $registeredGateway)
     {
         /** @var LegacyPaymentGatewayAdapter $legacyPaymentGatewayAdapter */
         $legacyPaymentGatewayAdapter = give(LegacyPaymentGatewayAdapter::class);
 
-        /** @var PaymentGateway $registeredGateway */
-        $registeredGateway = give($gatewayClass);
         $registeredGatewayId = $registeredGateway::id();
 
         add_action(
@@ -70,10 +68,7 @@ class LegacyPaymentGatewayRegisterAdapter
      */
     public function addNewPaymentGatewaysToLegacyListSettings(array $gatewaysData, array $newPaymentGateways): array
     {
-        foreach ($newPaymentGateways as $gatewayClassName) {
-            /* @var PaymentGateway $paymentGateway */
-            $paymentGateway = give($gatewayClassName);
-
+        foreach ($newPaymentGateways as $paymentGateway) {
             $gatewaysData[$paymentGateway::id()] = [
                 'admin_label' => $this->getAdminLabel($paymentGateway),
                 'checkout_label' => $paymentGateway->getPaymentMethodLabel(),
@@ -90,7 +85,7 @@ class LegacyPaymentGatewayRegisterAdapter
      * @unreleased check if v2 compatible
      * @since 2.25.0
      */
-    public function supportsV2Forms(PaymentGateway $gateway): bool
+    public function supportsV2Forms(BasePaymentGateway $gateway): bool
     {
         return in_array(2, $gateway::supportsApiVersions(), true) || method_exists(
                 $gateway,
@@ -101,7 +96,7 @@ class LegacyPaymentGatewayRegisterAdapter
     /**
      * @unreleased
      */
-    public function getAdminLabel(PaymentGateway $gateway): string
+    public function getAdminLabel(BasePaymentGateway $gateway): string
     {
         $name = $gateway->getName();
         $version = in_array(2, $gateway::supportsApiVersions(), true) && !in_array(

@@ -53,7 +53,7 @@ class GatewayRoute
              *
              * @var PaymentGateway $gateway
              */
-            $gateway = give($paymentGateways[$data->gatewayId]);
+            $gateway = $paymentGateways[$data->gatewayId];
 
             if (!$gateway->supportsMethodRoute($data->gatewayMethod)) {
                 throw new PaymentGatewayException('The gateway method does not exist.');

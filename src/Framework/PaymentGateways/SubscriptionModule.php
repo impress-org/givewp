@@ -26,7 +26,7 @@ abstract class SubscriptionModule implements SubscriptionModuleInterface
     /**
      * @param G $gateway
      */
-    public function setGateway(PaymentGateway $gateway)
+    public function setGateway(BasePaymentGateway $gateway)
     {
         $this->gateway = $gateway;
     }

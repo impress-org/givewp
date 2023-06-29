@@ -26,14 +26,6 @@ class CheckoutGateway extends PaymentGateway
     use Traits\HandlePaymentIntentStatus;
 
     /**
-     * @unreleased
-     */
-    public static function supportsApiVersions(): array
-    {
-        return [2];
-    }
-
-    /**
      * @inheritDoc
      * @since 2.19.0
      *

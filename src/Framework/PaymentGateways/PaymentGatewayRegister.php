@@ -27,12 +27,16 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
      */
     public function getPaymentGateways(int $apiVersion = null): array
     {
+        $gateways = array_map(static function (string $gatewayClass) {
+            return give($gatewayClass);
+        }, $this->gateways);
+
         if (!$apiVersion) {
-            return $this->gateways;
+            return $gateways;
         }
 
-        return array_filter($this->gateways, static function (string $gatewayClass) use ($apiVersion) {
-            return in_array($apiVersion, $gatewayClass::supportsApiVersions(), true);
+        return array_filter($gateways, static function (BasePaymentGateway $gateway) use ($apiVersion) {
+            return in_array($apiVersion, $gateway::supportsApiVersions(), true);
         });
     }
 
@@ -41,7 +45,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
      *
      * @since 2.18.0
      */
-    public function getPaymentGateway(string $id): PaymentGateway
+    public function getPaymentGateway(string $id): BasePaymentGateway
     {
         if (!$this->hasPaymentGateway($id)) {
             throw new InvalidArgumentException("No gateway exists with the ID {$id}");
@@ -70,12 +74,12 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
      */
     public function registerGateway(string $gatewayClass)
     {
-        if (!is_subclass_of($gatewayClass, PaymentGateway::class)) {
+        if (!is_subclass_of($gatewayClass, BasePaymentGateway::class)) {
             throw new InvalidArgumentException(
                 sprintf(
                     '%1$s must extend %2$s',
                     $gatewayClass,
-                    PaymentGateway::class
+                    BasePaymentGateway::class
                 )
             );
         }

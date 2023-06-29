@@ -6,6 +6,7 @@ use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Donors\Models\Donor;
+use Give\Framework\PaymentGateways\BasePaymentGateway;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Controllers\GatewayPaymentController;
 use Give\Framework\PaymentGateways\Controllers\GatewaySubscriptionController;
@@ -312,7 +313,7 @@ class LegacyPaymentGatewayAdapter
         int $donationId,
         string $newStatus,
         string $oldStatus,
-        PaymentGateway $registeredGateway
+        BasePaymentGateway $registeredGateway
     ) {
         $gatewayOptRefund = ! empty($_POST['give_gateway_opt_refund']) ? give_clean($_POST['give_gateway_opt_refund']) : '';
         $canProcessRefund = ! empty($gatewayOptRefund) ? $gatewayOptRefund : false;

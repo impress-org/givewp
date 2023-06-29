@@ -30,14 +30,6 @@ class TestGatewayOffsite extends PaymentGateway
     ];
 
     /**
-     * @unreleased
-     */
-    public static function supportsApiVersions(): array
-    {
-        return [2, 3];
-    }
-
-    /**
      * @inheritDoc
      */
     public static function id(): string

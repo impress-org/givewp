@@ -174,8 +174,8 @@ class RegisterPaymentGateways
         /** @var LegacyPaymentGatewayRegisterAdapter $legacyPaymentGatewayRegisterAdapter */
         $legacyPaymentGatewayRegisterAdapter = give(LegacyPaymentGatewayRegisterAdapter::class);
 
-        foreach ($paymentGatewayRegister->getPaymentGateways() as $gatewayClass) {
-            $legacyPaymentGatewayRegisterAdapter->connectGatewayToLegacyPaymentGatewayAdapter($gatewayClass);
+        foreach ($paymentGatewayRegister->getPaymentGateways() as $gateway) {
+            $legacyPaymentGatewayRegisterAdapter->connectGatewayToLegacyPaymentGatewayAdapter($gateway);
         }
     }
 }

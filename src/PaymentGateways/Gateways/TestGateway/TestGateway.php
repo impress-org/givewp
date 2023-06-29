@@ -4,11 +4,12 @@ namespace Give\PaymentGateways\Gateways\TestGateway;
 
 use Exception;
 use Give\Donations\Models\Donation;
+use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
-use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Framework\PaymentGateways\PaymentGatewayV3;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
 use Give\Subscriptions\Models\Subscription;
@@ -18,15 +19,8 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
  * Class TestGateway
  * @since 2.18.0
  */
-class TestGateway extends PaymentGateway
+class TestGateway extends PaymentGatewayV3 implements LegacyPaymentGatewayInterface
 {
-    /**
-     * @unreleased
-     */
-    public static function supportsApiVersions(): array
-    {
-        return [2, 3];
-    }
 
     /**
      * @inheritDoc
@@ -34,14 +28,6 @@ class TestGateway extends PaymentGateway
     public static function id(): string
     {
         return 'test-gateway';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getId(): string
-    {
-        return self::id();
     }
 
     /**
@@ -78,15 +64,14 @@ class TestGateway extends PaymentGateway
     /**
      * @inheritDoc
      */
-    public function createPayment(Donation $donation, $gatewayData): GatewayCommand
+    public function createPayment(Donation $donation, array $gatewayData): GatewayCommand
     {
         $intent = $gatewayData['testGatewayIntent'] ?? 'test-gateway-intent';
-        
+
         return new PaymentComplete("test-gateway-transaction-id-{$intent}-$donation->id");
     }
 
     /**
-     * @inheritDoc
      *
      * @since 2.23.0
      */
