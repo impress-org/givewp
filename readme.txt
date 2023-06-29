@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
 Tested up to: 6.2
 Requires PHP: 7.0
-Stable tag: 2.29.1
+Stable tag: 2.29.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -258,6 +258,10 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.29.2: June 29th, 2023 =
+* Enhancement: PayPal Donations now has separate buttons to connect to PayPal Live and PayPal Sandbox.
+* Fix: Form Field Manager conditional radio and checkbox fields that are not visible no longer prevent donation submission.
+
 = 2.29.1: June 21st, 2023 =
 * Feature: Add Recurring Donations add-on overlay to Reports widget
 

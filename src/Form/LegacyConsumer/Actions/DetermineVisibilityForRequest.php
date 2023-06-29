@@ -68,7 +68,7 @@ class DetermineVisibilityForRequest
     }
 
     /**
-     * @unreleased Return false if the condition's field isn't present in the post data
+     * @since 2.29.2 Return false if the condition's field isn't present in the post data
      * @since      2.27.3 update to use FieldConditions
      * @since      2.21.0
      */
