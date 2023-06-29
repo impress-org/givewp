@@ -54,7 +54,7 @@ class AuthorizationInjector implements Injector
             if (is_null($this->accessToken) || $this->accessToken->isExpired()) {
                 $this->accessToken = $this->fetchAccessToken();
             }
-            $request->headers['Authorization'] = 'Bearer ' . $this->accessToken->token;
+            $request->headers['Authorization'] = "Bearer {$this->accessToken->token}";
         }
     }
 
@@ -66,11 +66,12 @@ class AuthorizationInjector implements Injector
     protected function fetchAccessToken(): AccessToken
     {
         $accessTokenResponse = $this->client->execute(new AccessTokenRequest($this->environment, $this->refreshToken));
-        $accessToken = $accessTokenResponse->result;
+        $accessToken = (array) $accessTokenResponse->result;
+        $accessToken = ArrayDataSet::camelCaseKeys($accessToken);
 
         $this->registerRefreshTokenCronJob($accessToken);
 
-        return AccessToken::fromObject($accessToken);
+        return AccessToken::fromArray($accessToken);
     }
 
     /**
@@ -100,17 +101,16 @@ class AuthorizationInjector implements Injector
      *
      * @return void
      */
-    private function registerRefreshTokenCronJob($accessToken)
+    private function registerRefreshTokenCronJob(array $accessToken)
     {
         $refreshToken = give(RefreshToken::class);
         $merchantDetail = give(MerchantDetail::class);
         $merchantDetailRepository = give(MerchantDetails::class);
-        $accessToken = ArrayDataSet::camelCaseKeys($accessToken);
 
         $merchantDetail->setTokenDetails($accessToken);
         $merchantDetailRepository->save($merchantDetail);
 
         $refreshToken->deleteRefreshTokenCronJob();
-        $refreshToken->registerCronJobToRefreshToken($accessToken['expires_in']);
+        $refreshToken->registerCronJobToRefreshToken($accessToken['expiresIn']);
     }
 }

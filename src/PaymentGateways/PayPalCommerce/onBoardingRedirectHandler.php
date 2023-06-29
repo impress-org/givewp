@@ -68,6 +68,24 @@ class onBoardingRedirectHandler
         $this->merchantRepository = $merchantRepository;
         $this->settings = $settings;
         $this->payPalAuth = $payPalAuth;
+
+        $this->setModeFromRequest();
+    }
+
+    /**
+     * This function set mode from request.
+     *
+     * @unreleased
+     * @return void
+     */
+    private function setModeFromRequest()
+    {
+        if (isset($_GET['mode']) && in_array($_GET['mode'], ['live', 'sandbox'], true)) {
+            $mode = $_GET['mode'];
+            $this->webhooksRepository->setMode($mode);
+            $this->merchantRepository->setMode($mode);
+            give(PayPalClient::class)->setMode($mode);
+        }
     }
 
     /**
@@ -169,7 +187,10 @@ class onBoardingRedirectHandler
 
         // Preserve the seller access token.
         // This is required to get the merchant rest api credentials.
-        $this->settings->updateSellerAccessToken($this->settings->getAccessToken());
+        $this->settings->updateSellerAccessToken(
+            $this->settings->getAccessToken(),
+            $this->merchantRepository->getMode()
+        );
 
         $this->deleteTempOptions();
 
@@ -186,8 +207,16 @@ class onBoardingRedirectHandler
         $this->refreshAccountStatus();
 
         wp_redirect(
-            admin_url(
-                'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-commerce-account-connected=1'
+            add_query_arg(
+                [
+                    'post_type' => 'give_forms',
+                    'page' => 'give-settings',
+                    'tab' => 'gateways',
+                    'section' => 'paypal',
+                    'group' => 'paypal-commerce',
+                    'paypal-commerce-account-connected' => '1'
+                ],
+                admin_url('edit.php')
             )
         );
 
@@ -349,7 +378,7 @@ class onBoardingRedirectHandler
     /**
      * Validate seller on Boarding status
      *
-     * @unreleased Validate only primary capabilities during PayPal donations on-boarding.
+     * @since 2.29.0 Validate only primary capabilities during PayPal donations on-boarding.
      * @since 2.9.0
      *
      * @param string $merchantId
@@ -397,7 +426,9 @@ class onBoardingRedirectHandler
         // This error message is only for the case when the user is using custom payments.
         // Host card fields are supported only for specific countries and PayPal seller account of PPCP type.
         if ($usesCustomPayments) {
-            $sellerCapabilities = wp_list_pluck($onBoardedData['capabilities'], 'name');
+            $sellerCapabilities = array_key_exists('capabilities', $onBoardedData)
+                ? wp_list_pluck($onBoardedData['capabilities'], 'name')
+                : [];
             $requiredCapability = 'CUSTOM_CARD_PROCESSING';
             $customCardProcessingCapabilityIndex = array_search($requiredCapability, $sellerCapabilities, true);
             $hasCustomCardProcessingCapability = false !== $customCardProcessingCapabilityIndex;
@@ -428,8 +459,16 @@ class onBoardingRedirectHandler
     private function redirectWhenOnBoardingFail()
     {
         wp_redirect(
-            admin_url(
-                'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce&paypal-error=1'
+            add_query_arg(
+                [
+                    'post_type' => 'give_forms',
+                    'page' => 'give-settings',
+                    'tab' => 'gateways',
+                    'section' => 'paypal',
+                    'group' => 'paypal-commerce',
+                    'paypal-error' => '1',
+                ],
+                admin_url('edit.php')
             )
         );
 

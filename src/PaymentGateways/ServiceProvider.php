@@ -14,6 +14,7 @@ use Give\PaymentGateways\Gateways\Stripe\Controllers\UpdateStatementDescriptorAj
 use Give\PaymentGateways\Gateways\Stripe\Migrations\AddMissingTransactionIdForUncompletedDonations;
 use Give\PaymentGateways\Gateways\Stripe\Migrations\AddStatementDescriptorToStripeAccounts;
 use Give\PaymentGateways\Gateways\Stripe\Migrations\RemovePaymentIntentSecretMeta;
+use Give\PaymentGateways\PayPalCommerce\Migrations\RegisterPayPalDonationsRefreshTokenCronJobByMode;
 use Give\PaymentGateways\PayPalCommerce\Migrations\RemoveLogWithCardInfo;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -69,6 +70,7 @@ class ServiceProvider implements ServiceProviderInterface
             AddMissingTransactionIdForUncompletedDonations::class,
             RemoveLogWithCardInfo::class,
             RemovePaymentIntentSecretMeta::class,
+            RegisterPayPalDonationsRefreshTokenCronJobByMode::class,
         ]);
     }
 }

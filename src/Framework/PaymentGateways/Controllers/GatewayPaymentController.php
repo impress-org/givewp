@@ -58,6 +58,35 @@ class GatewayPaymentController
     }
 
     /**
+     * @since 2.29.0
+     */
+    public function refund(Donation $donation)
+    {
+        try {
+            $command = $this->gateway->refundDonation($donation);
+
+            if ($command instanceof GatewayCommand) {
+                $this->handleGatewayCommand($command, $donation);
+            }
+        } catch (\Exception $exception) {
+            PaymentGatewayLog::error(
+                $exception->getMessage(),
+                [
+                    'Payment Gateway' => $this->gateway::id(),
+                    'Donation' => $donation->toArray(),
+                ]
+            );
+
+            $message = __(
+                'An unexpected error occurred while refunding the donation.  Please try again or contact a site administrator.',
+                'give'
+            );
+
+            $this->handleExceptionResponse($exception, $message);
+        }
+    }
+
+    /**
      * Handle gateway command
      *
      * @since 2.27.0 move logic into action

@@ -3,9 +3,9 @@
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
 use Give\Donations\Models\Donation;
-use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
+use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
@@ -94,6 +94,7 @@ class TestGateway extends PaymentGateway
      * @since 2.23.0
      *
      * @inheritDoc
+     * @throws \Exception
      */
     public function cancelSubscription(Subscription $subscription)
     {
@@ -102,12 +103,12 @@ class TestGateway extends PaymentGateway
     }
 
     /**
-     * @since 2.20.0
+     * @since 2.29.0 Return PaymentRefunded instead of a bool value
+     * @since      2.20.0
      * @inerhitDoc
-     * @throws Exception
      */
-    public function refundDonation(Donation $donation)
+    public function refundDonation(Donation $donation): PaymentRefunded
     {
-        throw new Exception('Method has not been implemented yet. Please use the legacy method in the meantime.');
+        return new PaymentRefunded();
     }
 }

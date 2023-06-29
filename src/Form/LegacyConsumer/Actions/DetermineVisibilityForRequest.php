@@ -68,12 +68,19 @@ class DetermineVisibilityForRequest
     }
 
     /**
-     * @since 2.27.3 update to use FieldConditions
-     * @since 2.21.0
+     * @since 2.29.2 Return false if the condition's field isn't present in the post data
+     * @since      2.27.3 update to use FieldConditions
+     * @since      2.21.0
      */
     protected function compareConditionWithOperator(Condition $condition): bool
     {
         if (is_a($condition, FieldCondition::class)) {
+            $conditionField = $condition->jsonSerialize()['field'];
+
+            if ( ! isset($this->postData[$conditionField])) {
+                return false;
+            }
+
             return $condition->passes($this->postData);
         }
 
