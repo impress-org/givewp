@@ -34,7 +34,9 @@ class TestGatewayOffsite extends PaymentGateway
      */
     public function enqueueScript(int $formId)
     {
-        // temporary action to enqueue gateway scripts in feature plugin
+        // This is temporary action to enqueue gateway scripts in the GiveWP 3.0 feature plugin.
+        // Eventually, these scripts will be moved to the GiveWP core plugin.
+        // TODO: enqueue scripts for 3.0 when feature plugin is merged into GiveWP
         do_action('givewp_donation_form_enqueue_test_gateway_offsite_scripts');
     }
 
