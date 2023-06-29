@@ -32,9 +32,10 @@ class TestGatewayOffsite extends PaymentGateway
     /**
      * @unreleased
      */
-    public static function supportsApiVersions(): array
+    public function enqueueScript(int $formId)
     {
-        return [2, 3];
+        // temporary action to enqueue gateway scripts in feature plugin
+        do_action('givewp_donation_form_enqueue_test_gateway_offsite_scripts');
     }
 
     /**

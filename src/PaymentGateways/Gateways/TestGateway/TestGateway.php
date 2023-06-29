@@ -21,14 +21,6 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class TestGateway extends PaymentGateway
 {
     /**
-     * @unreleased
-     */
-    public static function supportsApiVersions(): array
-    {
-        return [2, 3];
-    }
-
-    /**
      * @inheritDoc
      */
     public static function id(): string
@@ -50,6 +42,15 @@ class TestGateway extends PaymentGateway
     public function getName(): string
     {
         return __('Test Gateway', 'give');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function enqueueScript(int $formId)
+    {
+        // temporary action to enqueue gateway scripts in feature plugin
+        do_action('givewp_donation_form_enqueue_test_gateway_scripts');
     }
 
     /**

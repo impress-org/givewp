@@ -80,8 +80,8 @@ class LegacyPaymentGatewayRegisterAdapter
                 'is_visible' => $this->supportsV2Forms($paymentGateway),
             ];
         }
-        $gatewaysData['offline']['admin_label'] .= " (v2)";
-        $gatewaysData['manual']['admin_label'] .= " (v2)";
+        $gatewaysData['offline']['admin_label'] .= " *(v2)";
+        $gatewaysData['manual']['admin_label'] .= " *(v2)";
 
         return $gatewaysData;
     }
@@ -92,10 +92,7 @@ class LegacyPaymentGatewayRegisterAdapter
      */
     public function supportsV2Forms(PaymentGateway $gateway): bool
     {
-        return in_array(2, $gateway::supportsApiVersions(), true) || method_exists(
-                $gateway,
-                'getLegacyFormFieldMarkup'
-            );
+        return in_array(2, $gateway->supportsFormVersions(), true);
     }
 
     /**
@@ -104,11 +101,11 @@ class LegacyPaymentGatewayRegisterAdapter
     public function getAdminLabel(PaymentGateway $gateway): string
     {
         $name = $gateway->getName();
-        $version = in_array(2, $gateway::supportsApiVersions(), true) && !in_array(
+        $version = in_array(2, $gateway->supportsFormVersions(), true) && !in_array(
             3,
-            $gateway::supportsApiVersions(),
+            $gateway->supportsFormVersions(),
             true
-        ) ? "(v2)" : '';
+        ) ? "*(v2)" : '';
 
         return trim("$name $version");
     }

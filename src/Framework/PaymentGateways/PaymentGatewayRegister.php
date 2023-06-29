@@ -25,14 +25,17 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
      * @unreleased add $apiVersion filter param
      * @since 2.18.0
      */
-    public function getPaymentGateways(int $apiVersion = null): array
+    public function getPaymentGateways(int $supportedFormVersion = null): array
     {
-        if (!$apiVersion) {
+        if (!$supportedFormVersion) {
             return $this->gateways;
         }
 
-        return array_filter($this->gateways, static function (string $gatewayClass) use ($apiVersion) {
-            return in_array($apiVersion, $gatewayClass::supportsApiVersions(), true);
+        return array_filter($this->gateways, static function (string $gatewayClass) use ($supportedFormVersion) {
+            /** @var PaymentGateway $gateway */
+            $gateway = give($gatewayClass);
+            
+            return in_array($supportedFormVersion, $gateway->supportsFormVersions(), true);
         });
     }
 

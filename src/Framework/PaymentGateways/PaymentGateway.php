@@ -20,7 +20,7 @@ use ReflectionException;
 use ReflectionMethod;
 
 /**
- * @unreleased add supportsApiVersions
+ * @unreleased added enqueueScript() and formSettings() methods.
  * @since 2.18.0
  */
 abstract class PaymentGateway implements PaymentGatewayInterface,
@@ -59,12 +59,18 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * @unreleased
      */
-    public static function supportsApiVersions(): array
+    public function supportsFormVersions(): array
     {
         $versions = [];
 
-        if (method_exists(static::class, 'getLegacyFormFieldMarkup')) {
+        if (method_exists($this, 'getLegacyFormFieldMarkup') && $this->isFunctionImplementedInGatewayClass(
+                'getLegacyFormFieldMarkup'
+            )) {
             $versions[] = 2;
+        }
+
+        if (method_exists($this, 'enqueueScript') && $this->isFunctionImplementedInGatewayClass('enqueueScript')) {
+            $versions[] = 3;
         }
 
         return $versions;
@@ -79,7 +85,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      */
     public function enqueueScript(int $formId)
     {
-        // wp_enqueue_script();
+        //wp_enqueue_scripts();
     }
 
     /**

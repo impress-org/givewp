@@ -45,14 +45,6 @@ class SEPAGateway extends PaymentGateway
         );
     }
 
-   /**
-     * @unreleased
-     */
-    public static function supportsApiVersions(): array
-    {
-        return [2];
-    }
-
     /**
      * @inheritDoc
      * @since 2.19.7 fix handlePaymentIntentStatus not receiving extra param

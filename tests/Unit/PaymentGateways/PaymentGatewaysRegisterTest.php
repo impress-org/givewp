@@ -105,14 +105,6 @@ class MockV2Gateway extends PaymentGateway
 {
 
     /**
-     * @unreleased
-     */
-    public static function supportsApiVersions(): array
-    {
-        return [2];
-    }
-
-    /**
      * @return string
      */
     public static function id(): string
@@ -128,9 +120,14 @@ class MockV2Gateway extends PaymentGateway
         return self::id();
     }
 
+    public function getLegacyFormFieldMarkup(int $formId, array $args): string
+    {
+        return '';
+    }
+
     public function getName(): string
     {
-        return 'Deprecated Gateway';
+        return 'v2 Gateway';
     }
 
     public function getPaymentMethodLabel(): string
