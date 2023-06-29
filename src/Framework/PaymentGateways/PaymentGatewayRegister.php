@@ -9,7 +9,6 @@ use Give\Framework\PaymentGateways\Contracts\PaymentGatewaysIterator;
 use Give\Framework\PaymentGateways\Exceptions\OverflowException;
 
 /**
- * @unreleased add deprecated gateways
  * @since 2.18.0
  */
 class PaymentGatewayRegister extends PaymentGatewaysIterator

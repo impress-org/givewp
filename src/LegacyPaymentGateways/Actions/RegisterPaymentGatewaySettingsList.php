@@ -10,7 +10,6 @@ class RegisterPaymentGatewaySettingsList
     /**
      * Add gateways to settings list
      *
-     * @unreleased add deprecated gateways to legacy list
      * @since 2.18.0
      *
      * @param  array  $gatewayData
