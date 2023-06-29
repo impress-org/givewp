@@ -2,6 +2,7 @@
 
 namespace Give\Framework\LegacyPaymentGateways\Adapters;
 
+use Exception;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\LegacyPaymentGateways\Adapters\LegacyPaymentGatewayAdapter;
 
@@ -11,7 +12,10 @@ class LegacyPaymentGatewayRegisterAdapter
      * Run the necessary legacy hooks on our LegacyPaymentGatewayAdapter
      * that prepares data to be sent to each gateway
      *
+     * @unreleased check for getLegacyFormFieldMarkup before attempting to use
+     *
      * @since 2.19.0
+     * @throws Exception
      */
     public function connectGatewayToLegacyPaymentGatewayAdapter(string $gatewayClass)
     {
@@ -22,14 +26,16 @@ class LegacyPaymentGatewayRegisterAdapter
         $registeredGateway = give($gatewayClass);
         $registeredGatewayId = $registeredGateway::id();
 
-        add_action(
-            "give_{$registeredGatewayId}_cc_form",
-            static function ($formId, $args) use ($registeredGateway, $legacyPaymentGatewayAdapter) {
-                echo $legacyPaymentGatewayAdapter->getLegacyFormFieldMarkup($formId, $args, $registeredGateway);
-            },
-            10,
-            2
-        );
+        if (method_exists($registeredGateway, 'getLegacyFormFieldMarkup')) {
+            add_action(
+                "give_{$registeredGatewayId}_cc_form",
+                static function ($formId, $args) use ($registeredGateway, $legacyPaymentGatewayAdapter) {
+                    echo $legacyPaymentGatewayAdapter->getLegacyFormFieldMarkup($formId, $args, $registeredGateway);
+                },
+                10,
+                2
+            );
+        }
 
         add_action(
             "give_gateway_{$registeredGatewayId}",
