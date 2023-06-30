@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadPayPalScript($form)
             .then(() => {
                 // If card disabled but hosted fields are not available.
-                // We need to reload script because after PayPal SDK loads than we can actual eligibility of hosted fields.
+                // We need to reload script because after PayPal SDK loads, we get actual eligibility of hosted fields.
                 const disabledFunding = givePayPalCommerce.payPalSdkQueryParameters['disable-funding'].split(',');
 
                 if (!AdvancedCardFields.canShow() && disabledFunding.includes('card')) {
