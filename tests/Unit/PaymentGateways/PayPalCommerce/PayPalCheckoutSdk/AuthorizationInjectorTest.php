@@ -89,23 +89,19 @@ class AuthorizationInjectorMock extends AuthorizationInjector
 {
     public function fetchAccessToken(): AccessToken
     {
-        return AccessToken::fromObject(
-            json_decode(
-                json_encode(
-                    [
-                        'accessToken' => 'new-A21AAKWsfmPmn',
-                        'tokenType' => 'Bearer',
-                        'appId' => 'APP-80W2844',
-                        'expiresIn' => 32400,
+        return AccessToken::fromArray(
+            [
+                'accessToken' => 'new-A21AAKWsfmPmn',
+                'tokenType' => 'Bearer',
+                'appId' => 'APP-80W2844',
+                'expiresIn' => 32400,
 
-                        // Latest access token creation date to prevent refetch latest access token http request action.
-                        'nonce' => sprintf(
-                            '%sZPeYxT6_thWGlTaamtMGYt5RQzVHx5B4dlNjLNhoF0tM',
-                            date('c')
-                        ),
-                    ]
-                )
-            )
+                // Latest access token creation date to prevent refetch latest access token http request action.
+                'nonce' => sprintf(
+                    '%sZPeYxT6_thWGlTaamtMGYt5RQzVHx5B4dlNjLNhoF0tM',
+                    date('c')
+                ),
+            ]
         );
     }
 }

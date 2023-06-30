@@ -15,8 +15,7 @@ class Url extends Field
     use Concerns\HasMaxLength;
     use Concerns\HasMinLength;
     use Concerns\HasPlaceholder;
-    use Concerns\ShowInReceipt;
-    use Concerns\StoreAsMeta;
+
 
     const TYPE = 'url';
 }

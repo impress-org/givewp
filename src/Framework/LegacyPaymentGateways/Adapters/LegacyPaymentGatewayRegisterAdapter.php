@@ -3,6 +3,7 @@
 namespace Give\Framework\LegacyPaymentGateways\Adapters;
 
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
+use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\LegacyPaymentGateways\Adapters\LegacyPaymentGatewayAdapter;
 
 use function method_exists;
@@ -20,7 +21,7 @@ class LegacyPaymentGatewayRegisterAdapter
         /** @var LegacyPaymentGatewayAdapter $legacyPaymentGatewayAdapter */
         $legacyPaymentGatewayAdapter = give(LegacyPaymentGatewayAdapter::class);
 
-        /** @var PaymentGatewayInterface $registeredGateway */
+        /** @var PaymentGateway $registeredGateway */
         $registeredGateway = give($gatewayClass);
         $registeredGatewayId = $registeredGateway::id();
 
@@ -39,6 +40,28 @@ class LegacyPaymentGatewayRegisterAdapter
                 $legacyPaymentGatewayAdapter->handleBeforeGateway(give_clean($legacyPaymentData), $registeredGateway);
             }
         );
+
+        if ($registeredGateway->supportsRefund()) {
+            add_action(
+                "give_view_donation_details_totals_after",
+                static function (int $donationId) use ($registeredGateway, $legacyPaymentGatewayAdapter) {
+                    $legacyPaymentGatewayAdapter->addOptRefundCheckbox($donationId, $registeredGateway);
+                },
+                PHP_INT_MAX // Ensure this will be the last callback registered to this hook.
+            );
+            add_action(
+                "give_update_payment_status",
+                static function (int $donationId, string $newStatus, string $oldStatus) use (
+                    $registeredGateway,
+                    $legacyPaymentGatewayAdapter
+                ) {
+                    $legacyPaymentGatewayAdapter->maybeRefundOnGateway($donationId, $newStatus, $oldStatus,
+                        $registeredGateway);
+                },
+                11,
+                3
+            );
+        }
     }
 
     /**

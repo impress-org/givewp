@@ -36,7 +36,8 @@ class DonationFactory extends ModelFactory
             'formId' => 1,
             'formTitle' => 'Form Title',
             'anonymous' => $this->faker->optional(0.5, false)->boolean(true),
-            'company' => $this->faker->optional()->company
+            'company' => $this->faker->optional()->company,
+            'comment' => $this->faker->optional()->text,
         ];
     }
 }

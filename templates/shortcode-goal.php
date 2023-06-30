@@ -32,7 +32,7 @@ if ( ( isset( $args['show_goal'] ) && ! filter_var( $args['show_goal'], FILTER_V
 
 $goal_progress_stats = give_goal_progress_stats( $form );
 $goal_format         = $goal_progress_stats['format'];
-$color               = give_get_meta( $form_id, '_give_goal_color', true );
+$color               = empty($args['color']) ? give_get_meta( $form_id, '_give_goal_color', true ) : sanitize_hex_color( $args['color'] );
 $show_text           = isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
 $show_bar            = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
 

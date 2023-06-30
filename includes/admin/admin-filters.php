@@ -42,7 +42,7 @@ function __give_sanitize_number_decimals_setting_field( $value ) {
 	}
 
 	$value                      = absint( $value );
-	$is_currency_set_to_bitcoin = ( 'BTC' === give_get_option( 'currency' ) && ! isset( $_POST['currency'] ) ) || 'BTC' === $_POST['currency'];
+	$is_currency_set_to_bitcoin = ( 'XBT' === give_get_option( 'currency' ) && ! isset( $_POST['currency'] ) ) || 'XBT' === $_POST['currency'];
 
 	if ( $is_currency_set_to_bitcoin && 8 < $value ) {
 		$value       = 8;
