@@ -147,7 +147,7 @@ EOT;
 
         $disableFunding = ['credit'];
 
-        if( $merchant->supportsCustomPayments ) {
+        if ($merchant->supportsCustomPayments) {
             $disableFunding[] = 'card';
         }
 

@@ -149,13 +149,6 @@ document.addEventListener('DOMContentLoaded', () => {
         options.vault = !!isRecurring;
         options.currency = Give.form.fn.getInfo('currency_code', jQuery(form));
 
-        // Disable debit and credit payment smart button if hosted card fields are supported.
-        if( AdvancedCardFields.canShow() ) {
-            options['disable-funding'] = options['disable-funding'].split(',')
-                .filter(funding => funding !== 'card')
-                .join(',');
-        }
-
         return loadScript(options)
     }
 
