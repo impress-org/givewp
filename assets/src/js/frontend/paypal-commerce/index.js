@@ -153,6 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
+     * @unreleased Add logic to reload PayPal SDK script for donation form, if hosted fields are not available but card smart button disabled.
      * @since 2.20.0
      * @param {object} $form
      */

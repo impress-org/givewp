@@ -133,6 +133,7 @@ EOT;
     /**
      * Load public assets.
      *
+     * @unreleased Add logic to disable funding based on merchant settings.
      * @since 2.9.0
      */
     public function loadPublicAssets()
@@ -147,6 +148,7 @@ EOT;
 
         $disableFunding = ['credit'];
 
+        // Disable card funding if custom payments are supported.
         if ($merchant->supportsCustomPayments) {
             $disableFunding[] = 'card';
         }
