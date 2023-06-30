@@ -1,4 +1,4 @@
-/* globals Give, jQuery, givePayPalCommerce */
+/* globals Give, jQuery, givePayPalCommerce, paypal */
 import DonationForm from './DonationForm';
 import SmartButtons from './SmartButtons';
 import AdvancedCardFields from './AdvancedCardFields';
@@ -142,14 +142,21 @@ document.addEventListener('DOMContentLoaded', () => {
      * @return {Promise}  PayPal sdk load promise.
      */
     function loadPayPalScript(form) {
-        const options = {};
+        const options = {...givePayPalCommerce.payPalSdkQueryParameters};
         const isRecurring = DonationForm.isRecurringDonation(form);
 
         options.intent = isRecurring ? 'subscription' : 'capture';
         options.vault = !!isRecurring;
         options.currency = Give.form.fn.getInfo('currency_code', jQuery(form));
 
-        return loadScript({...givePayPalCommerce.payPalSdkQueryParameters, ...options});
+        // Disable debit and credit payment smart button if hosted card fields are supported.
+        if( AdvancedCardFields.canShow() ) {
+            options['disable-funding'] = options['disable-funding'].split(',')
+                .filter(funding => funding !== 'card')
+                .join(',');
+        }
+
+        return loadScript(options)
     }
 
     /**

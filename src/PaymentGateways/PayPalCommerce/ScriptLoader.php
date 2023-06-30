@@ -145,6 +145,12 @@ EOT;
         $merchant = give(MerchantDetail::class);
         $scriptId = 'give-paypal-commerce-js';
 
+        $disableFunding = ['credit'];
+
+        if( $merchant->supportsCustomPayments ) {
+            $disableFunding[] = 'card';
+        }
+
         /**
          * List of PayPal query parameters: https://developer.paypal.com/docs/checkout/reference/customize-sdk/#query-parameters
          * @since 2.27.1 Removed locale query parameter.
@@ -153,7 +159,7 @@ EOT;
             'client-id' => $merchant->clientId,
             'merchant-id' => $merchant->merchantIdInPayPal,
             'components' => 'hosted-fields,buttons',
-            'disable-funding' => 'credit',
+            'disable-funding' => implode(',', $disableFunding),
             'vault' => true,
             'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
             'data-client-token' => $this->merchantRepository->getClientToken(),
