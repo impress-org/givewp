@@ -182,6 +182,7 @@ class Give_Donor_Wall {
 	/**
 	 * Parse shortcode attributes
 	 *
+	 * @unreleased
 	 * @since  2.2.0
 	 * @access public
 	 *
@@ -219,7 +220,8 @@ class Give_Donor_Wall {
 				'only_donor_html'   => false, // Only for internal use.,
                 'show_time'         => true,
 			],
-			$atts
+			$atts,
+			'give_donor_wall'
 		);
 
 		// Validate boolean attributes.
