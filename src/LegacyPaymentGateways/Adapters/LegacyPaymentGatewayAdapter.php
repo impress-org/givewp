@@ -75,6 +75,7 @@ class LegacyPaymentGatewayAdapter
 
             $subscription = Subscription::create([
                 'amount' => $donation->amount,
+                'feeAmountRecovered' => $donation->feeAmountRecovered,
                 'period' => new SubscriptionPeriod($subscriptionData->period),
                 'frequency' => (int)$subscriptionData->frequency,
                 'donorId' => $donor->id,
