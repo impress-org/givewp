@@ -1,7 +1,10 @@
+import {createContext, useState, useCallback} from 'react';
 import {__} from '@wordpress/i18n';
 import {ListTableApi, ListTablePage} from '@givewp/components';
 import {DonationFormsRowActions} from './DonationFormsRowActions';
 import MigrationBanner from './Migration';
+import MigrationSuccessDialog from './Migration/MigrationSuccessDialog';
+import TransferSuccessDialog from './Migration/TransferSuccessDialog';
 import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import Select from '@givewp/components/ListTable/Select';
@@ -17,6 +20,8 @@ declare global {
             table: { columns: Array<object> };
             pluginUrl: string;
             showMigrationOnboarding: boolean;
+            migrationOnboardingCompleted: boolean;
+            transferOnboardingCompleted: boolean;
             unsupportedAddons: Array<string>;
         };
 
@@ -26,7 +31,17 @@ declare global {
     }
 }
 
+interface OnboardingStateProps {
+    migrationOnboardingCompleted: boolean;
+    transferOnboardingCompleted: boolean;
+    showMigrationSuccessDialog: boolean;
+    showTransferSuccessDialog: boolean;
+    formId: number | null;
+}
+
 const API = new ListTableApi(window.GiveDonationForms);
+
+export const MigrationOnboardingContext = createContext(null);
 
 const donationStatus = [
     {
@@ -174,30 +189,57 @@ const ListTableBlankSlate = (
 );
 
 export default function DonationFormsListTable() {
+
+    const [state, setState] = useState<OnboardingStateProps>({
+        migrationOnboardingCompleted: Boolean(window.GiveDonationForms.migrationOnboardingCompleted),
+        transferOnboardingCompleted: Boolean(window.GiveDonationForms.transferOnboardingCompleted),
+        showMigrationSuccessDialog: false,
+        showTransferSuccessDialog: false,
+        formId: null
+    })
+
+    const closeMigrationSuccessDialog = useCallback(() => setState(prev => ({
+        ...prev,
+        showMigrationSuccessDialog: false
+    })), []);
+
+    const closeTransferSuccessDialog = useCallback(() => setState(prev => ({
+        ...prev,
+        showTransferSuccessDialog: false
+    })), []);
+
     return (
-        <ListTablePage
-            title={__('Donation Forms', 'give')}
-            singleName={__('donation form', 'give')}
-            pluralName={__('donation forms', 'give')}
-            rowActions={DonationFormsRowActions}
-            bulkActions={donationFormsBulkActions}
-            apiSettings={window.GiveDonationForms}
-            filterSettings={donationFormsFilters}
-            listTableBlankSlate={ListTableBlankSlate}
-            banner={MigrationBanner}
-        >
-            {!!window.GiveNextGen?.newFormUrl && (
-                <a href={window.GiveNextGen.newFormUrl} className={styles.addFormButton}>
-                    {__('Add Next Gen Form', 'give')}
+        <MigrationOnboardingContext.Provider value={[state, setState]}>
+            <ListTablePage
+                title={__('Donation Forms', 'give')}
+                singleName={__('donation form', 'give')}
+                pluralName={__('donation forms', 'give')}
+                rowActions={DonationFormsRowActions}
+                bulkActions={donationFormsBulkActions}
+                apiSettings={window.GiveDonationForms}
+                filterSettings={donationFormsFilters}
+                listTableBlankSlate={ListTableBlankSlate}
+                banner={MigrationBanner}
+            >
+                {!!window.GiveNextGen?.newFormUrl && (
+                    <a href={window.GiveNextGen.newFormUrl} className={styles.addFormButton}>
+                        {__('Add Next Gen Form', 'give')}
+                    </a>
+                )}
+                <a href={'post-new.php?post_type=give_forms'} className={styles.addFormButton}>
+                    {__('Add Form', 'give')}
                 </a>
+                <button className={styles.addFormButton} onClick={showLegacyDonationForms}>
+                    {__('Switch to Legacy View')}
+                </button>
+            </ListTablePage>
+            {!state.migrationOnboardingCompleted && state.showMigrationSuccessDialog && (
+                <MigrationSuccessDialog formId={state.formId} handleClose={closeMigrationSuccessDialog} />
             )}
-            <a href={'post-new.php?post_type=give_forms'} className={styles.addFormButton}>
-                {__('Add Form', 'give')}
-            </a>
-            <button className={styles.addFormButton} onClick={showLegacyDonationForms}>
-                {__('Switch to Legacy View')}
-            </button>
-        </ListTablePage>
+            {!state.transferOnboardingCompleted && state.showTransferSuccessDialog && (
+                <TransferSuccessDialog formId={state.formId} handleClose={closeTransferSuccessDialog} />
+            )}
+        </MigrationOnboardingContext.Provider>
     );
 }
 
