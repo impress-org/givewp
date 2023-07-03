@@ -4,6 +4,7 @@ import RowAction from '@givewp/components/ListTable/RowAction';
 import ListTableApi from '@givewp/components/ListTable/api';
 import {useContext} from 'react';
 import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
+import {MigrationOnboardingContext} from './DonationFormsListTable';
 import {Interweave} from 'interweave';
 
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
@@ -11,6 +12,7 @@ const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdateErrors, parameters}) {
     const {mutate} = useSWRConfig();
     const showConfirmModal = useContext(ShowConfirmModalContext);
+    const [onboardingState, setOnboardingState] = useContext(MigrationOnboardingContext);
     const trashEnabled = Boolean(data?.trash);
     const deleteEndpoint = trashEnabled && !item.status.includes('trash') ? '/trash' : '/delete';
 
@@ -66,6 +68,47 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                         hiddenText={item?.name}
                     />
                     <RowAction href={item.permalink} displayText={__('View', 'give')} hiddenText={item?.name} />
+                    {item.migrate && (
+                        <RowAction
+                            onClick={addRow(async (id) => {
+                                const response = await fetchAndUpdateErrors(parameters, '/duplicate', id, 'POST');
+
+                                if (!onboardingState.migrationOnboardingCompleted) {
+                                    setOnboardingState(prev => ({
+                                        ...prev,
+                                        showMigrationSuccessDialog: true,
+                                        formId: response.successes[0]
+                                    }))
+                                }
+
+                                return response
+                            })}
+                            actionId={item.id}
+                            displayText={__('Migrate', 'give')}
+                            hiddenText={item?.name}
+                        />
+                    )}
+                    {item.transfer && (
+                        <RowAction
+                            onClick={addRow(async (id) => {
+                                const response = await fetchAndUpdateErrors(parameters, '/duplicate', id, 'POST');
+
+                                console.log(response)
+
+                                if (!onboardingState.transferOnboardingCompleted) {
+                                    setOnboardingState(prev => ({
+                                        ...prev,
+                                        showTransferSuccessDialog: true,
+                                        formId: response.successes[0]
+                                    }))
+                                }
+                                return response
+                            })}
+                            actionId={item.id}
+                            displayText={__('Transfer', 'give')}
+                            hiddenText={item?.name}
+                        />
+                    )}
                     <RowAction
                         onClick={addRow(async (id) => await fetchAndUpdateErrors(parameters, '/duplicate', id, 'POST'))}
                         actionId={item.id}
