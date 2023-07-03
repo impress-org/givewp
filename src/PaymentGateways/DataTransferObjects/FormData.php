@@ -164,6 +164,10 @@ final class FormData
                 $request['post_data']['give_anonymous_donation']
             );
 
+        $isFeeEnabled = isset($request['post_data']['give-fee-mode-enable']) ? 
+        filter_var( $request['post_data']['give-fee-mode-enable'], FILTER_VALIDATE_BOOLEAN ) : false;
+        $self->feeAmountRecovered = ($isFeeEnabled && !empty($request['post_data']['give-fee-amount'])) ? $request['post_data']['give-fee-amount'] : 0;
+
         $self->company = !empty($request['post_data']['give_company_name']) ? $request['post_data']['give_company_name'] : null;
 
         return $self;
@@ -180,6 +184,7 @@ final class FormData
             'status' => DonationStatus::PENDING(),
             'gatewayId' => $this->paymentGateway,
             'amount' => Money::fromDecimal($this->price, $this->currency),
+            'feeAmountRecovered' => Money::fromDecimal($this->feeAmountRecovered, $this->currency),
             'donorId' => $donorId,
             'firstName' => $this->donorInfo->firstName,
             'lastName' => $this->donorInfo->lastName,
