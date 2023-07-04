@@ -37,6 +37,7 @@ interface OnboardingStateProps {
     showMigrationSuccessDialog: boolean;
     showTransferSuccessDialog: boolean;
     formId: number | null;
+    formName: string | null;
 }
 
 const API = new ListTableApi(window.GiveDonationForms);
@@ -195,7 +196,8 @@ export default function DonationFormsListTable() {
         transferOnboardingCompleted: Boolean(window.GiveDonationForms.transferOnboardingCompleted),
         showMigrationSuccessDialog: false,
         showTransferSuccessDialog: false,
-        formId: null
+        formId: null,
+        formName: null,
     })
 
     const closeMigrationSuccessDialog = useCallback(() => setState(prev => ({
@@ -237,7 +239,7 @@ export default function DonationFormsListTable() {
                 <MigrationSuccessDialog formId={state.formId} handleClose={closeMigrationSuccessDialog} />
             )}
             {!state.transferOnboardingCompleted && state.showTransferSuccessDialog && (
-                <TransferSuccessDialog formId={state.formId} handleClose={closeTransferSuccessDialog} />
+                <TransferSuccessDialog formId={state.formId} formName={state.formName} handleClose={closeTransferSuccessDialog} />
             )}
         </MigrationOnboardingContext.Provider>
     );
