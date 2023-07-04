@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 setupPaymentMethods();
             })
-            .catch(() => {
+            .catch((e) => {
                 const jQueryForm = jQuery($form);
                 Give.form.fn.addErrors(
                     jQueryForm,
@@ -185,7 +185,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     }])
                 );
 
-                Give.form.fn.disable(jQueryForm, true)
+                Give.form.fn.disable(jQueryForm, true);
+                console.error(e);
             });
     }
 });
