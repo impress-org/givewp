@@ -17,8 +17,10 @@ class CustomCardFields extends PaymentMethod {
         this.separator = this.ccFieldsContainer.querySelector( '.separator-with-text' );
 
         // Display separator if smart buttons are enabled for payment.
-        // Custom card field only display if hosted fields are not available and donor opted for recurring donation.
-		if (! this.separator && CustomCardFields.canShow(this.form) ) {
+        // Smart buttons enabled when:
+        // 1. Custom card field display. The hosted fields are not available when donor opted for recurring donation.
+        // 2. Smart buttons are enabled for payment from settings.
+		if (! this.separator && ( CustomCardFields.canShow(this.form) || 'auto' === givePayPalCommerce.paymentFieldType) ) {
 			this.separator = this.cardFields.number.el ?
 				this.cardFields.number.el.parentElement.insertAdjacentElement( 'beforebegin', this.separatorHtml() ) :
 				null;
