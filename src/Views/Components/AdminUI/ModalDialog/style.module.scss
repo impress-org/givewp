@@ -30,25 +30,35 @@
             font-weight: 700;
             align-items: center;
             padding: var(--givewp-spacing-4) var(--givewp-spacing-5);
-            justify-content: space-between;
             background-color: var(--givewp-grey-25);
             border-top-left-radius: var(--givewp-rounded-6);
             border-top-right-radius: var(--givewp-rounded-6);
             border-bottom: 1px solid var(--givewp-grey-50);
         }
 
-        .close,
-        .closeAbsolute {
-            all: unset;
-            cursor: pointer;
-            z-index: 999;
+        .iconHeader {
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .closeAbsolute {
+        .iconCenter {
+            align-items: center;
+        }
+
+        .close,
+        .closeHeadless {
+            all: unset;
             position: absolute;
-            display: flex;
+            cursor: pointer;
+            z-index: 999;
             top: var(--givewp-spacing-4);
             right: var(--givewp-spacing-5);
+        }
+
+        .closeHeadless {
+            display: flex;
             align-items: center;
             justify-content: center;
             padding: var(--givewp-spacing-1);

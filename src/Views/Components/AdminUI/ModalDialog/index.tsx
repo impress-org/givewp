@@ -8,12 +8,21 @@ export interface ModalProps {
     children: JSX.Element | JSX.Element[];
     title: string;
     isOpen?: boolean;
+    icon?: JSX.Element | JSX.Element[];
     insertInto?: string;
     handleClose?: MouseEventHandler;
     showHeader?: boolean;
 }
 
-export default function Modal({title, children, insertInto, handleClose, isOpen = true, showHeader = true}: ModalProps) {
+export default function Modal({
+                                  title,
+                                  icon,
+                                  children,
+                                  insertInto,
+                                  handleClose,
+                                  isOpen = true,
+                                  showHeader = true
+                              }: ModalProps) {
     // ESC key closes modal
     const closeModal = useCallback(e => {
         if (e.keyCode === 27 && typeof handleClose === 'function') {
@@ -40,6 +49,11 @@ export default function Modal({title, children, insertInto, handleClose, isOpen 
             >
                 {showHeader ? (
                     <div className={styles.header}>
+                        {icon && (
+                            <div className={styles.iconHeader}>
+                                {icon}
+                            </div>
+                        )}
                         {title}
                         {handleClose && (
                             <button
@@ -56,11 +70,16 @@ export default function Modal({title, children, insertInto, handleClose, isOpen 
                         {handleClose && (
                             <button
                                 aria-label={__('Close dialog', 'give')}
-                                className={styles.closeAbsolute}
+                                className={styles.closeHeadless}
                                 onClick={handleClose}
                             >
                                 <ExitIcon aria-label={__('Close dialog icon', 'give')} />
                             </button>
+                        )}
+                        {icon && (
+                            <div className={styles.iconCenter}>
+                                {icon}
+                            </div>
                         )}
                     </>
                 )}
