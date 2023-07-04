@@ -90,20 +90,17 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                     )}
                     {item.transfer && (
                         <RowAction
-                            onClick={addRow(async (id) => {
-                                const response = await fetchAndUpdateErrors(parameters, '/duplicate', id, 'POST');
-
-                                console.log(response)
-
+                            onClick={() => {
                                 if (!onboardingState.transferOnboardingCompleted) {
                                     setOnboardingState(prev => ({
                                         ...prev,
                                         showTransferSuccessDialog: true,
-                                        formId: response.successes[0]
+                                        formName: item?.name,
                                     }))
+                                } else {
+                                    addRow(async (id) => await fetchAndUpdateErrors(parameters, '/duplicate', id, 'POST'));
                                 }
-                                return response
-                            })}
+                            }}
                             actionId={item.id}
                             displayText={__('Transfer', 'give')}
                             hiddenText={item?.name}
