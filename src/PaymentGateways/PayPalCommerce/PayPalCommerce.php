@@ -105,11 +105,14 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
+     * @unreleased Register new payment field type setting.
      * @since 2.27.3 Enable Venmo payment method by default.
      * @since 2.16.2 Add setting "Transaction type".
      */
     public function getOptions()
     {
+        $merchantDetails = give(MerchantDetail::class);
+
         $settings = [
             [
                 'type' => 'title',
@@ -180,7 +183,7 @@ class PayPalCommerce extends PaymentGateway
             ],
         ];
 
-        if (give(MerchantDetail::class)->accountIsReady) {
+        if ($merchantDetails->accountIsReady) {
             $settings = give_settings_array_insert(
                 $settings,
                 'paypal_commerce_gateway_settings_docs_link',
@@ -199,6 +202,27 @@ class PayPalCommerce extends PaymentGateway
                             'disabled' => esc_html__('Disabled', 'give'),
                         ],
                     ],
+                ]
+            );
+        }
+
+        if ($merchantDetails->supportsCustomPayments) {
+            $settings = give_settings_array_insert(
+                $settings,
+                'paypal_commerce_gateway_settings_docs_link',
+                [
+                    [
+                        'name' => esc_html__('Payment Field Type', 'give'),
+                        'desc' => esc_html__('Choose the type of payment field you would like to use.', 'give'),
+                        'id' => 'paypal_payment_field_type',
+                        'type' => 'radio_inline',
+                        'options' => [
+                            'standard' => esc_html__('Smart Buttons', 'give'),
+                            'advanced' => esc_html__('Hosted Fields', 'give'),
+                            'auto' => esc_html__('Both', 'give'),
+                        ],
+                        'default' => 'auto',
+                    ]
                 ]
             );
         }
