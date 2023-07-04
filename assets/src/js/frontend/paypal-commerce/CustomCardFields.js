@@ -2,6 +2,7 @@
 import PaymentMethod from './PaymentMethod';
 import DonationForm from './DonationForm';
 import AdvancedCardFields from './AdvancedCardFields';
+import SmartButtons from "./SmartButtons";
 
 class CustomCardFields extends PaymentMethod {
 	/**
@@ -13,8 +14,11 @@ class CustomCardFields extends PaymentMethod {
 		this.ccFieldsContainer = this.form.querySelector( '[id^="give_cc_fields-"]' );
 		this.cardFields = this.getCardFields();
 		this.recurringChoiceHiddenField = this.form.querySelector( 'input[name="_give_is_donation_recurring"]' );
+        this.separator = this.ccFieldsContainer.querySelector( '.separator-with-text' );
 
-		if ( ! ( this.separator = this.ccFieldsContainer.querySelector( '.separator-with-text' ) ) ) {
+        // Display separator if smart buttons are enabled for payment.
+        // Custom card field only display if hosted fields are not available and donor opted for recurring donation.
+		if (! this.separator && CustomCardFields.canShow(this.form) ) {
 			this.separator = this.cardFields.number.el ?
 				this.cardFields.number.el.parentElement.insertAdjacentElement( 'beforebegin', this.separatorHtml() ) :
 				null;
@@ -67,13 +71,13 @@ class CustomCardFields extends PaymentMethod {
 	}
 
 	/**
-	 * Return whether or not custom card field available to process subscriptions.
+	 * Return whether custom card field available to process subscriptions.
 	 *
 	 * @since 2.9.0
 	 *
 	 * @param {object} form Form javascript selector
 	 *
-	 * @return {boolean} Return whether or not display custom card fields.
+	 * @return {boolean} Return whether display custom card fields.
 	 */
 	static canShow( form ) {
 		return AdvancedCardFields.canShow() &&

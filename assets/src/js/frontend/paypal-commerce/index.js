@@ -117,7 +117,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const smartButtons = new SmartButtons($form);
         const customCardFields = new CustomCardFields($form);
 
-        smartButtons.boot();
+        if (SmartButtons.canShow() || CustomCardFields.canShow($form)) {
+            smartButtons.boot();
+        }
 
         // Boot CustomCardFields class before AdvancedCardFields because of internal dependencies.
         if (AdvancedCardFields.canShow()) {

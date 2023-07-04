@@ -133,7 +133,6 @@ EOT;
     /**
      * Load public assets.
      *
-     * @unreleased Add logic to disable funding based on merchant settings.
      * @since 2.9.0
      */
     public function loadPublicAssets()
@@ -145,6 +144,7 @@ EOT;
         /* @var MerchantDetail $merchant */
         $merchant = give(MerchantDetail::class);
         $scriptId = 'give-paypal-commerce-js';
+        $paymentFieldType = give_get_option('paypal_payment_field_type', 'auto');
 
         $disableFunding = ['credit'];
 
@@ -214,6 +214,7 @@ EOT;
                     esc_html__('Checking donation status with PayPal.', 'give'),
                     esc_html__('This will only take a second!', 'give')
                 ),
+                'paymentFieldType' => $paymentFieldType,
             ]
         );
     }
