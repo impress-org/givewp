@@ -81,13 +81,11 @@ class LegacyPaymentGatewayRegisterAdapter
             $paymentGateway = give($gatewayClassName);
 
             $gatewaysData[$paymentGateway::id()] = [
-                'admin_label' => $this->getAdminLabel($paymentGateway),
+                'admin_label' => $paymentGateway->getName(),
                 'checkout_label' => $paymentGateway->getPaymentMethodLabel(),
                 'is_visible' => $this->supportsV2Forms($paymentGateway),
             ];
         }
-        $gatewaysData['offline']['admin_label'] .= " *(v2)";
-        $gatewaysData['manual']['admin_label'] .= " *(v2)";
 
         return $gatewaysData;
     }
@@ -104,7 +102,7 @@ class LegacyPaymentGatewayRegisterAdapter
     /**
      * @unreleased
      */
-    public function getAdminLabel(PaymentGateway $gateway): string
+    public function getRegisteredGatewayAdminLabelWithSupportedFormVersion(PaymentGateway $gateway): string
     {
         $name = $gateway->getName();
         $version = in_array(2, $gateway->supportsFormVersions(), true) && !in_array(
@@ -114,5 +112,25 @@ class LegacyPaymentGatewayRegisterAdapter
         ) ? "*(v2)" : '';
 
         return trim("$name $version");
+    }
+
+    /**
+     * Update the admin label for gateways to display version compatibility
+     *
+     * @unreleased
+     */
+    public function updatePaymentGatewayAdminLabelsWithSupportedFormVersions(string $label, string $gatewayId): string
+    {
+        $version = "*(v2)";
+
+        $gateway = give()->gateways->hasPaymentGateway($gatewayId) ? give()->gateways->getPaymentGateway(
+            $gatewayId
+        ) : false;
+
+        if (!$gateway) {
+            return trim("$label $version");
+        }
+
+        return $this->getRegisteredGatewayAdminLabelWithSupportedFormVersion($gateway);
     }
 }

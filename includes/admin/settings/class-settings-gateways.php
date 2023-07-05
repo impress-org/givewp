@@ -392,7 +392,11 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 
             echo '</div>'; // end gateway-enabled-wrap.
 
-            echo '<div style="padding-top: 1rem;"><p><sup>*</sup>(v2) This gateway is only supported on GiveWP version 2.x.x donation forms (aka v2 forms)</p></div>';
+            if (defined('GIVE_VERSION') && version_compare(GIVE_VERSION, '3.0.0', '<')) {
+                echo '<div style="padding-top: 1rem;"><p><sup>*</sup>(v2) GiveWP 3.0 is coming! In preparation for that, gateways that only work on forms created with GiveWP version 2.x.x are distinguished with a (v2) label.</p></div>';
+            } else {
+                echo '<div style="padding-top: 1rem;"><p><sup>*</sup>(v2) Gateways that only work on forms created with GiveWP version 2.x.x are distinguished with a (v2) label.</p></div>';
+            }
 
             printf(
                 '<tr><th>%1$s</th><td>%2$s</td></tr>',
