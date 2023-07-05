@@ -13,6 +13,25 @@ use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
  */
 interface PaymentGatewayInterface extends SubscriptionModuleInterface
 {
+
+    /**
+     * Specify which form versions the gateway supports
+     *
+     * Currently, this corresponds to the major GiveWP versions (2, 3, etc)
+     *
+     * This will likely be removed in the future when GiveWP 2.x is no longer supported
+     *
+     * @unreleased
+     */
+    public function supportsFormVersions(): array;
+
+    /**
+     * Enqueue script for the gateway to display fields and interact with the form
+     *
+     * @unreleased
+     */
+    public function enqueueScript(int $formId);
+
     /**
      * Return a unique identifier for the gateway
      *
