@@ -171,6 +171,18 @@ class PayPalCommerce extends PaymentGateway
                 ],
             ],
             [
+                'name' => esc_html__('Payment Field Type', 'give'),
+                'desc' => esc_html__('Choose the type of payment field you would like to use.', 'give'),
+                'id' => 'paypal_payment_field_type',
+                'type' => 'radio_inline',
+                'options' => [
+                    'standard' => esc_html__('Smart Buttons', 'give'),
+                    'advanced' => esc_html__('Hosted Fields', 'give'),
+                    'auto' => esc_html__('Both', 'give'),
+                ],
+                'default' => 'auto',
+            ],
+            [
                 'name' => esc_html__('PayPal Donations Gateway Settings Docs Link', 'give'),
                 'id' => 'paypal_commerce_gateway_settings_docs_link',
                 'url' => esc_url('http://docs.givewp.com/paypal-donations'),
@@ -202,27 +214,6 @@ class PayPalCommerce extends PaymentGateway
                             'disabled' => esc_html__('Disabled', 'give'),
                         ],
                     ],
-                ]
-            );
-        }
-
-        if ($merchantDetails->supportsCustomPayments) {
-            $settings = give_settings_array_insert(
-                $settings,
-                'paypal_commerce_gateway_settings_docs_link',
-                [
-                    [
-                        'name' => esc_html__('Payment Field Type', 'give'),
-                        'desc' => esc_html__('Choose the type of payment field you would like to use.', 'give'),
-                        'id' => 'paypal_payment_field_type',
-                        'type' => 'radio_inline',
-                        'options' => [
-                            'standard' => esc_html__('Smart Buttons', 'give'),
-                            'advanced' => esc_html__('Hosted Fields', 'give'),
-                            'auto' => esc_html__('Both', 'give'),
-                        ],
-                        'default' => 'auto',
-                    ]
                 ]
             );
         }
