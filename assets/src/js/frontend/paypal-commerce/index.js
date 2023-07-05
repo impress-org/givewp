@@ -162,18 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function loadPayPalSDKScriptForDonationForm($form) {
         loadPayPalScript($form)
             .then(() => {
-                // If card disabled but hosted fields are not available.
-                // We need to reload script because after PayPal SDK loads, we get actual eligibility of hosted fields.
-                const disabledFunding = givePayPalCommerce.payPalSdkQueryParameters['disable-funding'].split(',');
-
-                if (!AdvancedCardFields.canShow() && disabledFunding.includes('card')) {
-                    disabledFunding.splice(disabledFunding.indexOf('card'), 1);
-                    givePayPalCommerce.payPalSdkQueryParameters['disable-funding'] = disabledFunding.join(',');
-
-                    loadPayPalSDKScriptForDonationForm($form);
-                    return;
-                }
-
                 setupPaymentMethods();
             })
             .catch((e) => {

@@ -146,13 +146,6 @@ EOT;
         $scriptId = 'give-paypal-commerce-js';
         $paymentFieldType = give_get_option('paypal_payment_field_type', 'auto');
 
-        $disableFunding = ['credit'];
-
-        // Disable card funding if custom payments are supported.
-        if ($merchant->supportsCustomPayments) {
-            $disableFunding[] = 'card';
-        }
-
         /**
          * List of PayPal query parameters: https://developer.paypal.com/docs/checkout/reference/customize-sdk/#query-parameters
          * @since 2.27.1 Removed locale query parameter.
@@ -161,7 +154,7 @@ EOT;
             'client-id' => $merchant->clientId,
             'merchant-id' => $merchant->merchantIdInPayPal,
             'components' => 'hosted-fields,buttons',
-            'disable-funding' => implode(',', $disableFunding),
+            'disable-funding' => 'credit',
             'vault' => true,
             'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
             'data-client-token' => $this->merchantRepository->getClientToken(),
