@@ -1,4 +1,4 @@
-import {ChangeEventHandler, memo} from 'react';
+import {ChangeEventHandler} from 'react';
 
 import styles from './style.module.scss';
 
@@ -9,10 +9,13 @@ interface InputProps {
     type?: string;
     onChange?: ChangeEventHandler<HTMLInputElement>;
     disabled?: boolean;
+    label?: string;
+    [x: string]: any;
 }
 
-const Input = memo(({name, placeholder, onChange, disabled = false, type = 'text', ...rest}: InputProps) => {
-    return (
+const Input = ({name, placeholder, onChange, label, disabled = false, type = 'text', ...rest}: InputProps) => {
+
+    const Input = () => (
         <input
             {...rest}
             type={type}
@@ -24,6 +27,17 @@ const Input = memo(({name, placeholder, onChange, disabled = false, type = 'text
             disabled={disabled}
         />
     )
-})
+
+    if (label) {
+        return (
+            <label className={styles.label}>
+                <Input />
+                {label}
+            </label>
+        )
+    }
+
+    return <Input />;
+}
 
 export default Input
