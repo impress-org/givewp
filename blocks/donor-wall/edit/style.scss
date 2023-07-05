@@ -38,7 +38,9 @@
     }
 }
 
-.components-form-token-field {
-    margin-top: -18px !important;
-    label { display: none !important;}
+.give-wall--wall-settings {
+    .components-form-token-field {
+        margin-top: -18px !important;
+        label { display: none !important;}
+    }
 }

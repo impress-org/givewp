@@ -49,12 +49,14 @@
     }
 }
 
-.components-form-token-field {
-    label { display: none !important;}
-}
+.give-donation-form-grid--grid-settings {
+    .components-form-token-field {
+        label { display: none !important;}
+    }
 
-.exclude__form {
-    margin-top: 20px !important;
-    border: 1px solid transparent;
+    .exclude__form {
+        margin-top: 20px !important;
+        border: 1px solid transparent;
+    }
 }
 
