@@ -14,6 +14,7 @@ use Give\Framework\DesignSystem\Actions\RegisterDesignSystemStyles;
 use Give\Framework\FormDesigns\FormDesign;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
+use Give\Helpers\Hooks;
 
 /**
  * @since 0.1.0
@@ -240,8 +241,8 @@ class DonationFormViewModel
     private function enqueueFormScripts(int $formId, string $formDesignId)
     {
         $this->enqueueRegistrars();
-        $this->enqueueGateways($formId);
         $this->enqueueDesign($formDesignId);
+        $this->enqueueGateways($formId);
         $this->enqueueFormApp();
     }
 
@@ -276,6 +277,8 @@ class DonationFormViewModel
             'window.givewpDonationFormExports = ' . wp_json_encode($this->exports()) . ';',
             'before'
         );
+
+        Hooks::doAction('givewp_donation_form_enqueue_scripts');
     }
 
     /**
