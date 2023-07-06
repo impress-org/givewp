@@ -190,12 +190,36 @@ export default function TransferSuccessDialog({handleClose, formName, formId}) {
         </>
     )
 
+    const Error = () => (
+        <>
+            <div className={cx(styles.title, styles.center)}>
+                {__('Transfer not completed!', 'give')}
+            </div>
+
+            <div className={styles.center}>
+                {__('Something went wrong with the transfer.', 'give')}
+            </div>
+
+            <br /><br />
+
+            <Button
+                size="large"
+                onClick={handleClose}
+                style={{width: '100%'}}
+            >
+                {__('Go back to your donation form list', 'give')}
+            </Button>
+        </>
+    )
+
     const Screen = () => {
         switch (state.step) {
             case 1:
                 return <Confirmation handleTransferConfirmation={handleTransferConfirmation} />;
             case 2:
                 return <Completed />;
+            case 3:
+                return <Error />;
             default:
                 return <Notice />;
         }
