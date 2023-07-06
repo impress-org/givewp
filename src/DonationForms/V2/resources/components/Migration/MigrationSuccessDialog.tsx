@@ -3,7 +3,7 @@ import {__} from '@wordpress/i18n';
 import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import ButtonGroup from '@givewp/components/AdminUI/ButtonGroup';
 import Button from '@givewp/components/AdminUI/Button';
-import {AlertTriangle, Award} from '@givewp/components/AdminUI/Icons';
+import {Award} from '@givewp/components/AdminUI/Icons';
 
 import styles from './style.module.scss';
 
