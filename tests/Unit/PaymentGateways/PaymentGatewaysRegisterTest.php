@@ -83,6 +83,67 @@ class PaymentGatewaysRegisterTest extends TestCase
             MockPaypal::id() => MockPaypal::class
         ], $gateways);
     }
+
+    /**
+     * @unreleased
+     * @throws Exception
+     * @throws OverflowException
+     */
+    public function testShouldGetV2RegisteredPaymentGateways()
+    {
+        $this->paymentGatewayRegister->registerGateway(MockV2Gateway::class);
+
+        $gateways = $this->paymentGatewayRegister->getPaymentGateways(2);
+
+        $this->assertEquals([
+            MockV2Gateway::id() => MockV2Gateway::class,
+        ], $gateways);
+    }
+}
+
+class MockV2Gateway extends PaymentGateway
+{
+
+    /**
+     * @return string
+     */
+    public static function id(): string
+    {
+        return 'v2-gateway';
+    }
+
+    /**
+     * @return string
+     */
+    public function getId(): string
+    {
+        return self::id();
+    }
+
+    public function getLegacyFormFieldMarkup(int $formId, array $args): string
+    {
+        return '';
+    }
+
+    public function getName(): string
+    {
+        return 'v2 Gateway';
+    }
+
+    public function getPaymentMethodLabel(): string
+    {
+        return 'Deprecated Gateway';
+    }
+
+    public function createPayment(Donation $donation, $gatewayData)
+    {
+        // TODO: Implement createPayment() method.
+    }
+
+    public function refundDonation(Donation $donation)
+    {
+        // TODO: Implement refundDonation() method.
+    }
 }
 
 class MockAuthorizeNet
@@ -91,6 +152,14 @@ class MockAuthorizeNet
 
 class MockStripe extends PaymentGateway
 {
+    /**
+     * @inheritDoc
+     */
+    public static function isDeprecated(): bool
+    {
+        return false;
+    }
+
     /**
      * @return string
      */
@@ -145,6 +214,14 @@ class MockStripe extends PaymentGateway
 
 class MockPaypal extends PaymentGateway
 {
+    /**
+     * @inheritDoc
+     */
+    public static function isDeprecated(): bool
+    {
+        return false;
+    }
+
     /**
      * @return string
      */

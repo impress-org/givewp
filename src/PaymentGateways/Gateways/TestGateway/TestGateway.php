@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
+use Exception;
 use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
@@ -44,6 +45,17 @@ class TestGateway extends PaymentGateway
     }
 
     /**
+     * @unreleased
+     */
+    public function enqueueScript(int $formId)
+    {
+        // This is temporary action to enqueue gateway scripts in the GiveWP 3.0 feature plugin.
+        // Eventually, these scripts will be moved to the GiveWP core plugin.
+        // TODO: enqueue scripts for 3.0 when feature plugin is merged into GiveWP
+        do_action('givewp_donation_form_enqueue_test_gateway_scripts');
+    }
+
+    /**
      * @inheritDoc
      */
     public function getPaymentMethodLabel(): string
@@ -52,7 +64,7 @@ class TestGateway extends PaymentGateway
     }
 
     /**
-     * @inheritDoc
+     * @since 2.18.0
      */
     public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
@@ -71,7 +83,9 @@ class TestGateway extends PaymentGateway
      */
     public function createPayment(Donation $donation, $gatewayData): GatewayCommand
     {
-        return new PaymentComplete("test-gateway-transaction-id-$donation->id");
+        $intent = $gatewayData['testGatewayIntent'] ?? 'test-gateway-intent';
+        
+        return new PaymentComplete("test-gateway-transaction-id-{$intent}-$donation->id");
     }
 
     /**
@@ -94,7 +108,7 @@ class TestGateway extends PaymentGateway
      * @since 2.23.0
      *
      * @inheritDoc
-     * @throws \Exception
+     * @throws Exception
      */
     public function cancelSubscription(Subscription $subscription)
     {

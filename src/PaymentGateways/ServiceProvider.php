@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways;
 
+use Give\Framework\LegacyPaymentGateways\Adapters\LegacyPaymentGatewayRegisterAdapter;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\PaymentGateways\Routes\GatewayRoute;
@@ -45,6 +46,14 @@ class ServiceProvider implements ServiceProviderInterface
 
         Hooks::addFilter('give_register_gateway', RegisterPaymentGateways::class);
         Hooks::addFilter('give_payment_gateways', RegisterPaymentGatewaySettingsList::class);
+        Hooks::addFilter(
+            'give_payment_gateways_admin_label',
+            LegacyPaymentGatewayRegisterAdapter::class,
+            'updatePaymentGatewayAdminLabelsWithSupportedFormVersions',
+            10,
+            2
+        );
+
         Hooks::addAction('template_redirect', GatewayRoute::class);
         Hooks::addAction(
             'wp_ajax_edit_stripe_account_statement_descriptor',
