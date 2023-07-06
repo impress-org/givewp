@@ -15,7 +15,6 @@ use Give\Framework\FieldsAPI\Form;
 use Give\Framework\FieldsAPI\Hidden;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\Models\ModelQueryBuilder;
-use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Support\Facades\DateTime\Temporal;
@@ -302,9 +301,12 @@ class DonationFormRepository
             }
 
             $gateway = $this->paymentGatewayRegister->getPaymentGateway($gatewayId);
-            if (is_a($gateway, NextGenPaymentGatewayInterface::class, true)) {
-                $gateways[$gatewayId] = $gateway;
+
+            if (!in_array(3, $gateway->supportsFormVersions(), true)) {
+                continue;
             }
+
+            $gateways[$gatewayId] = $gateway;
         }
 
         if (array_key_exists($defaultGateway, $gateways)) {

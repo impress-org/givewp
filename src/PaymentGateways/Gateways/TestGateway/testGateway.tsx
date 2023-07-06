@@ -2,7 +2,7 @@ import {__} from '@wordpress/i18n';
 import type {FormData, Gateway} from '@givewp/forms/types';
 
 const gateway: Gateway = {
-    id: 'test-gateway-next-gen',
+    id: 'test-gateway',
     async beforeCreatePayment(values: FormData) {
         if (values.firstName === 'error') {
             throw new Error('Failed in some way');

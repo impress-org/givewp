@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways\Gateways\NextGenTestGateway;
+namespace Give\PaymentGateways\Gateways\TestGateway;
 
 use Exception;
 use Give\Donations\Models\Donation;
@@ -11,7 +11,7 @@ use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
-class NextGenTestGatewaySubscriptionModule extends SubscriptionModule implements SubscriptionAmountEditable
+class TestGatewaySubscriptionModule extends SubscriptionModule implements SubscriptionAmountEditable
 {
     /**
      * @since 0.3.0

@@ -4,38 +4,30 @@ namespace Give\PaymentGateways\Gateways\PayPal\PayPalStandardGateway;
 
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\Framework\EnqueueScript;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
-use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
+use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 
-use function add_query_arg;
-
-class PayPalStandardGateway extends PayPalStandard implements NextGenPaymentGatewayInterface
+class PayPalStandardGateway extends PayPalStandard
 {
     use HandleHttpResponses;
+    use HasScriptAssetFile;
 
     /**
-     * @inheritdoc
+     * @unreleased
      */
-    public function supportsLegacyForm(): bool
+    public function enqueueScript(int $formId)
     {
-        return true;
-    }
+        $assets = $this->getScriptAsset(GIVE_NEXT_GEN_DIR . 'build/payPalStandardGateway.asset.php');
 
-    /**
-     * @inheritdoc
-     */
-    public function enqueueScript(): EnqueueScript
-    {
-        return new EnqueueScript(
+        wp_enqueue_script(
             self::id(),
-            'build/payPalStandardGateway.js',
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
-            'give'
+            GIVE_NEXT_GEN_URL . 'build/payPalStandardGateway.js',
+            $assets['dependencies'],
+            $assets['version'],
+            true
         );
     }
 
@@ -61,7 +53,7 @@ class PayPalStandardGateway extends PayPalStandard implements NextGenPaymentGate
      */
     public function getName(): string
     {
-        return __('PayPal Standard (v3)', 'give');
+        return __('PayPal Standard', 'give');
     }
 
     /**

@@ -26,6 +26,7 @@ use Give\Helpers\Hooks;
 use Give\Log\Log;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
+
 class ServiceProvider implements ServiceProviderInterface
 {
 

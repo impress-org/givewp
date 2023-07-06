@@ -33,7 +33,7 @@ module.exports = {
         stripePaymentElementGateway: srcPath(
             'PaymentGateways/Gateways/Stripe/StripePaymentElementGateway/stripePaymentElementGateway.tsx'
         ),
-        nextGenTestGateway: srcPath('PaymentGateways/Gateways/NextGenTestGateway/nextGenTestGateway.tsx'),
+        testGateway: srcPath('PaymentGateways/Gateways/TestGateway/testGateway.tsx'),
         payPalStandardGateway: srcPath(
             'PaymentGateways/Gateways/PayPal/PayPalStandardGateway/payPalStandardGateway.tsx'
         ),

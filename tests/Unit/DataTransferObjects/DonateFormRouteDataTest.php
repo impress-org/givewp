@@ -8,7 +8,7 @@ use Give\DonationForms\Models\DonationForm;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
-use Give\PaymentGateways\Gateways\NextGenTestGateway\NextGenTestGateway;
+use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Tests\TestCase;
 
@@ -27,11 +27,11 @@ class DonateFormRouteDataTest extends TestCase
         $form = DonationForm::factory()->create();
 
         add_filter('give_get_option_gateways', static function ($gateways) {
-            return array_merge($gateways, [NextGenTestGateway::id() => true]);
+            return array_merge($gateways, [TestGateway::id() => true]);
         });
 
         add_filter('give_default_gateway', static function () {
-            return NextGenTestGateway::id();
+            return TestGateway::id();
         });
 
         $customFieldBlockModel = BlockModel::make([
@@ -58,7 +58,7 @@ class DonateFormRouteDataTest extends TestCase
 
         $data = new DonateControllerData();
 
-        $data->gatewayId = NextGenTestGateway::id();
+        $data->gatewayId = TestGateway::id();
         $data->amount = 100;
         $data->currency = "USD";
         $data->firstName = "Bill";
@@ -94,11 +94,11 @@ class DonateFormRouteDataTest extends TestCase
         $form = DonationForm::factory()->create();
 
         add_filter('give_get_option_gateways', static function ($gateways) {
-            return array_merge($gateways, [NextGenTestGateway::id() => true]);
+            return array_merge($gateways, [TestGateway::id() => true]);
         });
 
         add_filter('give_default_gateway', static function () {
-            return NextGenTestGateway::id();
+            return TestGateway::id();
         });
 
         $customFieldBlockModel = BlockModel::make([
@@ -184,7 +184,7 @@ class DonateFormRouteDataTest extends TestCase
 
         $data = new DonateControllerData();
 
-        $data->gatewayId = NextGenTestGateway::id();
+        $data->gatewayId = TestGateway::id();
         $data->amount = 100;
         $data->currency = "USD";
         $data->firstName = "Bill";

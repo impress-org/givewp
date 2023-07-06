@@ -6,16 +6,18 @@ use Give\DonationForms\FormDesigns\DeveloperFormDesign\DeveloperFormDesign;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\Donations\Models\Donation;
-use Give\Framework\EnqueueScript;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\Receipts\DonationReceipt;
 use Give\Framework\Receipts\DonationReceiptBuilder;
+use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 
 /**
  * @since 0.1.0
  */
 class DonationConfirmationReceiptViewModel
 {
+    use HasScriptAssetFile;
+
     /**
      * @var Donation
      */
@@ -108,11 +110,6 @@ class DonationConfirmationReceiptViewModel
         wp_print_head_scripts();
         ?>
 
-        <script>
-            window.givewpDonationFormExports = <?= wp_json_encode($this->formExports()) ?>;
-            window.givewpDonationConfirmationReceiptExports = <?= wp_json_encode($this->exports()) ?>;
-        </script>
-
         <?php
         if ($customCss): ?>
             <style><?= $customCss ?></style>
@@ -171,14 +168,25 @@ class DonationConfirmationReceiptViewModel
      */
     private function enqueueFormScripts(int $formId, string $formDesignId)
     {
-        // load registrars
-        (new EnqueueScript(
-            'givewp-donation-form-registrars-js',
-            'build/donationFormRegistrars.js',
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
-            'give'
-        ))->loadInFooter()->enqueue();
+        wp_enqueue_script(
+            'givewp-donation-form-registrars',
+            GIVE_NEXT_GEN_URL . 'build/donationFormRegistrars.js',
+            $this->getScriptAssetDependencies(GIVE_NEXT_GEN_DIR . 'build/donationFormRegistrars.asset.php'),
+            GIVE_NEXT_GEN_VERSION,
+            true
+        );
+
+        wp_add_inline_script(
+            'givewp-donation-form-registrars',
+            'window.givewpDonationFormExports = ' . wp_json_encode($this->formExports()) . ';',
+            'before'
+        );
+
+        wp_add_inline_script(
+            'givewp-donation-form-registrars',
+            'window.givewpDonationConfirmationReceiptExports = ' . wp_json_encode($this->exports()) . ';',
+            'before'
+        );
 
         // load template
         /** @var FormDesignRegistrar $formDesignRegistrar */
@@ -197,7 +205,7 @@ class DonationConfirmationReceiptViewModel
                     'givewp-form-design-' . $design::id(),
                     $design->js(),
                     array_merge(
-                        ['givewp-donation-form-registrars-js'],
+                        ['givewp-donation-form-registrars'],
                         $design->dependencies()
                     ),
                     false,
@@ -207,25 +215,28 @@ class DonationConfirmationReceiptViewModel
         }
 
         // load receipt app
-        (new EnqueueScript(
-            'givewp-donation-confirmation-receipt-js',
-            'build/donationConfirmationReceiptApp.js',
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
-            'give'
-        ))->dependencies(['givewp-donation-form-registrars-js'])->loadInFooter()->enqueue();
+        wp_enqueue_script(
+            'givewp-donation-confirmation-receipt',
+            GIVE_NEXT_GEN_URL . 'build/donationConfirmationReceiptApp.js',
+            array_merge(
+                $this->getScriptAssetDependencies(GIVE_NEXT_GEN_DIR . 'build/donationConfirmationReceiptApp.asset.php'),
+                ['givewp-donation-form-registrars']
+            ),
+            GIVE_NEXT_GEN_VERSION,
+            true
+        );
 
         /**
          * Load iframeResizer.contentWindow.min.js inside iframe
          *
          * @see https://github.com/davidjbradshaw/iframe-resizer
          */
-        (new EnqueueScript(
+        wp_enqueue_script(
             'givewp-donation-form-embed-inside',
-            'build/donationFormEmbedInside.js',
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
-            'give'
-        ))->loadInFooter()->enqueue();
+            GIVE_NEXT_GEN_URL . 'build/donationFormEmbedInside.js',
+            [],
+            GIVE_NEXT_GEN_VERSION,
+            true
+        );
     }
 }

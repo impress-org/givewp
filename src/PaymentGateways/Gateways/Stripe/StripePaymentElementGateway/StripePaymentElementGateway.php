@@ -3,20 +3,20 @@
 namespace Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway;
 
 use Give\Donations\Models\Donation;
-use Give\Framework\EnqueueScript;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
-use Give\Framework\PaymentGateways\Contracts\NextGenPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\DataTransferObjects\StripeGatewayData;
 use Stripe\Exception\ApiErrorException;
 
 /**
  * @since 0.1.0
  */
-class StripePaymentElementGateway extends PaymentGateway implements NextGenPaymentGatewayInterface
+class StripePaymentElementGateway extends PaymentGateway
 {
     use StripePaymentElementRepository;
+    use HasScriptAssetFile;
 
     /**
      * @inheritDoc
@@ -53,14 +53,16 @@ class StripePaymentElementGateway extends PaymentGateway implements NextGenPayme
     /**
      * @since 0.1.0
      */
-    public function enqueueScript(): EnqueueScript
+    public function enqueueScript(int $formId)
     {
-        return new EnqueueScript(
+        $assets = $this->getScriptAsset(GIVE_NEXT_GEN_DIR . 'build/stripePaymentElementGateway.asset.php');
+
+        wp_enqueue_script(
             self::id(),
-            'build/stripePaymentElementGateway.js',
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
-            'give'
+            GIVE_NEXT_GEN_URL . 'build/stripePaymentElementGateway.js',
+            $assets['dependencies'],
+            $assets['version'],
+            true
         );
     }
 
@@ -144,24 +146,8 @@ class StripePaymentElementGateway extends PaymentGateway implements NextGenPayme
     /**
      * @inheritDoc
      */
-    public function getLegacyFormFieldMarkup(int $formId, array $args): string
-    {
-        return false;
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function refundDonation(Donation $donation)
     {
         // TODO: Implement refundDonation() method.
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function supportsLegacyForm(): bool
-    {
-        return false;
     }
 }

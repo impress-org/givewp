@@ -3,7 +3,7 @@
 namespace Give\Addon;
 
 use Give\Addon\Actions\AutoActivateLicense;
-use Give\PaymentGateways\Gateways\NextGenTestGateway\NextGenTestGateway;
+use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 
 /**
  * Example of a helper class responsible for registering and handling add-on activation hooks.
@@ -17,7 +17,7 @@ class Activation
      * Activate add-on action hook.
      *
      * @since 0.3.2 auto-activate free license key
-     * @since 0.3.0 enable the NextGenTestGateway gateway by default
+     * @since 0.3.0 enable the TestGateway gateway by default
      * @since 0.1.0
      * @return void
      */
@@ -29,8 +29,8 @@ class Activation
 
         $gateways = give_get_option('gateways');
 
-        if (!array_key_exists(NextGenTestGateway::id(), $gateways)) {
-            $gateways[NextGenTestGateway::id()] = "1";
+        if (!array_key_exists(TestGateway::id(), $gateways)) {
+            $gateways[TestGateway::id()] = "1";
 
             give_update_option('gateways', $gateways);
         }
