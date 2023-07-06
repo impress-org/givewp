@@ -1,15 +1,18 @@
 import {useState} from 'react';
+import cx from 'classnames';
 import {__} from '@wordpress/i18n';
 import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import Button from '@givewp/components/AdminUI/Button';
 import Input from '@givewp/components/AdminUI/Input';
-import {AlertTriangle} from '@givewp/components/AdminUI/Icons';
+import {AlertTriangle, CheckCircle} from '@givewp/components/AdminUI/Icons';
 
 import styles from './style.module.scss';
 
 interface DialogStateProps {
+    isOpen: boolean;
     step: number;
     showHeader: boolean;
+    showCloseIcon: boolean;
     dialogTitle: string;
     dialogIcon: JSX.Element;
 }
@@ -100,8 +103,10 @@ function Confirmation({handleConfirmation}) {
 
 export default function TransferSuccessDialog({handleClose, formName, formId}) {
     const [state, setState] = useState<DialogStateProps>({
+        isOpen: true,
         step: 0,
         showHeader: true,
+        showCloseIcon: true,
         dialogTitle: __('Transfer existing donation data', 'give'),
         dialogIcon: <AlertTriangle />
     });
@@ -114,7 +119,9 @@ export default function TransferSuccessDialog({handleClose, formName, formId}) {
             ...prev,
             step: 2,
             showHeader: false,
-            dialogTitle: __('Success', 'give')
+            showCloseIcon: false,
+            dialogTitle: __('Success', 'give'),
+            dialogIcon: <CheckCircle />
         }))
     }
 
@@ -150,18 +157,25 @@ export default function TransferSuccessDialog({handleClose, formName, formId}) {
 
     const Completed = () => (
         <>
-            <div className={styles.title}>
-                {__('Completed', 'give')}
+            <div className={cx(styles.title, styles.center)}>
+                {__('Transfer completed successfully', 'give')}
+            </div>
+
+            <div className={styles.center}>
+                {__('Your donation data was successfully transferred to the new v3 form created.','give')}
             </div>
 
             <br /><br />
 
             <Button
                 size="large"
-                onClick={() => console.log(formId)}
+                onClick={() => setState(prev => ({
+                    ...prev,
+                    isOpen: false,
+                }))}
                 style={{width: '100%'}}
             >
-                {__('Close', 'give')}
+                {__('Go back to your donation form list', 'give')}
             </Button>
         </>
     )
@@ -179,8 +193,10 @@ export default function TransferSuccessDialog({handleClose, formName, formId}) {
 
     return (
         <ModalDialog
+            isOpen={state.isOpen}
             icon={state.dialogIcon}
             showHeader={state.showHeader}
+            showCloseIcon={state.showCloseIcon}
             handleClose={handleClose}
             title={state.dialogTitle}
         >
