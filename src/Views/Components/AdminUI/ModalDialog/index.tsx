@@ -12,17 +12,20 @@ export interface ModalProps {
     insertInto?: string;
     handleClose?: MouseEventHandler;
     showHeader?: boolean;
+    showCloseIcon?: boolean;
 }
 
-export default function Modal({
-                                  title,
-                                  icon,
-                                  children,
-                                  insertInto,
-                                  handleClose,
-                                  isOpen = true,
-                                  showHeader = true
-                              }: ModalProps) {
+export default function Modal
+({
+     title,
+     icon,
+     children,
+     insertInto,
+     handleClose,
+     isOpen = true,
+     showHeader = true,
+     showCloseIcon = true
+ }: ModalProps) {
     // ESC key closes modal
     const closeModal = useCallback(e => {
         if (e.keyCode === 27 && typeof handleClose === 'function') {
@@ -55,7 +58,7 @@ export default function Modal({
                             </div>
                         )}
                         {title}
-                        {handleClose && (
+                        {showCloseIcon && handleClose && (
                             <button
                                 aria-label={__('Close dialog', 'give')}
                                 className={styles.close}
@@ -67,7 +70,7 @@ export default function Modal({
                     </div>
                 ) : (
                     <>
-                        {handleClose && (
+                        {showCloseIcon && handleClose && (
                             <button
                                 aria-label={__('Close dialog', 'give')}
                                 className={styles.closeHeadless}
