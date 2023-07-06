@@ -24,13 +24,14 @@ interface ConfirmDialogStateProps {
     redirect: boolean;
 }
 
-function Confirmation({handleConfirmation}) {
+function Confirmation({handleTransferConfirmation}) {
     const [state, setState] = useState<ConfirmDialogStateProps>({
         input: '',
         delete: false,
         changeUrl: false,
         redirect: false
     });
+
     function handleInputChange(e) {
         e.persist();
         setState(prev => ({...prev, input: e.target.value}))
@@ -93,7 +94,11 @@ function Confirmation({handleConfirmation}) {
                 disabled={state.input !== 'transfer'}
                 size="large"
                 style={{width: '100%'}}
-                onClick={() => handleConfirmation(state.delete, state.changeUrl, state.redirect)}
+                onClick={() => handleTransferConfirmation({
+                    delete: state.delete,
+                    changeUrl: state.changeUrl,
+                    redirect: state.redirect
+                })}
             >
                 {__('Yes, proceed', 'give')}
             </Button>
@@ -111,18 +116,23 @@ export default function TransferSuccessDialog({handleClose, formName, formId}) {
         dialogIcon: <AlertTriangle />
     });
 
-    function handleConfirmation(deleteForms, changeUrl, redirect) {
-        // make request
-
-
-        setState(prev => ({
-            ...prev,
-            step: 2,
-            showHeader: false,
-            showCloseIcon: false,
-            dialogTitle: __('Success', 'give'),
-            dialogIcon: <CheckCircle />
-        }))
+    function handleTransferConfirmation(params) {
+        fetch(window.GiveDonationForms.apiRoot, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-WP-Nonce': window.GiveDonationForms.apiNonce
+            },
+            body: JSON.stringify(params)
+        }).then((response) => {
+            setState(prev => ({
+                ...prev,
+                showHeader: false,
+                showCloseIcon: false,
+                step: response.ok ? 2 : 3,
+                dialogIcon: response.ok ? <CheckCircle /> : <AlertTriangle />
+            }))
+        })
     }
 
     const Notice = () => (
@@ -162,7 +172,7 @@ export default function TransferSuccessDialog({handleClose, formName, formId}) {
             </div>
 
             <div className={styles.center}>
-                {__('Your donation data was successfully transferred to the new v3 form created.','give')}
+                {__('Your donation data was successfully transferred to the new v3 form created.', 'give')}
             </div>
 
             <br /><br />
@@ -183,7 +193,7 @@ export default function TransferSuccessDialog({handleClose, formName, formId}) {
     const Screen = () => {
         switch (state.step) {
             case 1:
-                return <Confirmation handleConfirmation={handleConfirmation} />;
+                return <Confirmation handleTransferConfirmation={handleTransferConfirmation} />;
             case 2:
                 return <Completed />;
             default:
