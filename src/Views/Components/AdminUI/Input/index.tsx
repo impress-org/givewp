@@ -1,4 +1,4 @@
-import {ChangeEventHandler} from 'react';
+import {ChangeEventHandler, forwardRef} from 'react';
 
 import styles from './style.module.scss';
 
@@ -13,31 +13,34 @@ interface InputProps {
     [x: string]: any;
 }
 
-const Input = ({name, placeholder, onChange, label, disabled = false, type = 'text', ...rest}: InputProps) => {
+const Input = forwardRef<HTMLInputElement, InputProps>(
+    ({name, value, placeholder, onChange, label, disabled = false, type = 'text', ...rest}, ref) => {
 
-    const Input = () => (
-        <input
-            {...rest}
-            type={type}
-            name={name}
-            aria-label={name}
-            placeholder={placeholder}
-            className={styles.input}
-            onChange={onChange}
-            disabled={disabled}
-        />
-    )
-
-    if (label) {
-        return (
-            <label className={styles.label}>
-                <Input />
-                {label}
-            </label>
+        const Input = () => (
+            <input
+                ref={ref}
+                type={type}
+                name={name}
+                aria-label={name}
+                placeholder={placeholder}
+                className={styles.input}
+                onChange={onChange}
+                disabled={disabled}
+                value={value}
+                {...rest}
+            />
         )
-    }
 
-    return <Input />;
-}
+        if (label) {
+            return (
+                <label className={styles.label}>
+                    {Input()}
+                    {label}
+                </label>
+            )
+        }
+
+        return Input();
+    })
 
 export default Input
