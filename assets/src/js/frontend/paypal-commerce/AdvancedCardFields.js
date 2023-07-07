@@ -55,7 +55,7 @@ class AdvancedCardFields extends PaymentMethod {
 	static canShow() {
 		return paypal.HostedFields.isEligible() === true
             && '1' === window.givePayPalCommerce.supportsCustomPayments
-            && ['auto', 'advanced'].includes(givePayPalCommerce.paymentFieldType);
+            && 'advanced' === givePayPalCommerce.paymentFieldType;
 	}
 
 	/**

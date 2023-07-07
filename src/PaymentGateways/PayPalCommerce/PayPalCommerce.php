@@ -177,10 +177,13 @@ class PayPalCommerce extends PaymentGateway
                 'type' => 'radio_inline',
                 'options' => [
                     'standard' => esc_html__('Smart Buttons', 'give'),
-                    'advanced' => esc_html__('Hosted Fields', 'give'),
-                    'auto' => esc_html__('Both', 'give'),
+                    'advanced' => sprintf(
+                        '%1$s + %2$s',
+                        esc_html__('Smart Buttons', 'give'),
+                        esc_html__('Hosted Fields', 'give')
+                    ),
                 ],
-                'default' => 'auto',
+                'default' => 'standard',
             ],
             [
                 'name' => esc_html__('PayPal Donations Gateway Settings Docs Link', 'give'),
