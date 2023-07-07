@@ -7,6 +7,7 @@ use Give\Log\Log;
 use Give\PaymentGateways\PayPalCommerce\DataTransferObjects\PayPalWebhookHeaders;
 use Give\PaymentGateways\PayPalCommerce\Models\WebhookConfig;
 use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\Requests\CreateWebhook;
+use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\Requests\UpdateWebhook;
 use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\Requests\VerifyWebhookSignature;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Traits\HasMode;
@@ -134,10 +135,13 @@ class Webhooks
                 ->getHttpClient()
                 ->execute($request)->result;
 
-            if (! isset($response->id)) {
+            if (200 !== $response->statusCode || ! property_exists($response, 'id')) {
                 Log::error(
                     'Create PayPal Commerce Webhook Failure',
-                    ['Response' => print_r($response, true)]
+                    [
+                        'category' => 'PayPal Commerce Webhook',
+                        'Response' => $response
+                    ]
                 );
 
                 throw new Exception('Failed to create webhook');
@@ -161,46 +165,39 @@ class Webhooks
      */
     public function updateWebhook($token, $webhookId)
     {
-        $apiUrl = $this->payPalClient->getApiUrl("v1/notifications/webhooks/$webhookId");
-
         $webhookUrl = $this->webhookRoute->getRouteUrl();
-
-        $response = wp_remote_request(
-            $apiUrl,
+        $requestBody = [
             [
-                'method' => 'PATCH',
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Authorization' => "Bearer $token",
-                ],
-                'body' => json_encode(
-                    [
-                        [
-                            'op' => 'replace',
-                            'path' => '/url',
-                            'value' => $webhookUrl,
-                        ],
-                        [
-                            'op' => 'replace',
-                            'path' => '/event_types',
-                            'value' => array_map(
-                                static function ($eventType) {
-                                    return [
-                                        'name' => $eventType,
-                                    ];
-                                },
-                                $this->webhooksRegister->getRegisteredEvents()
-                            ),
-                        ],
-                    ]
+                'op' => 'replace',
+                'path' => '/url',
+                'value' => $webhookUrl,
+            ],
+            [
+                'op' => 'replace',
+                'path' => '/event_types',
+                'value' => array_map(
+                    static function ($eventType) {
+                        return [
+                            'name' => $eventType,
+                        ];
+                    },
+                    $this->webhooksRegister->getRegisteredEvents()
                 ),
-            ]
-        );
+            ],
+        ];
 
-        $response = json_decode(wp_remote_retrieve_body($response), true);
+        $response = $this->payPalClient
+            ->getHttpClient()
+            ->execute(new UpdateWebhook($webhookId, $requestBody));
 
-        if (empty($response) || ! isset($response['id'])) {
-            give_record_gateway_error('Failed to update PayPal Commerce webhook', print_r($response, true));
+        if (200 !== $response->statusCode || ! property_exists($response->result, 'id')) {
+            Log::error(
+                'Failed to update PayPal Commerce webhook',
+                [
+                    'category' => 'PayPal Commerce Webhook',
+                    'Response' => $response
+                ]
+            );
 
             throw new Exception('Failed to update PayPal Commerce webhook');
         }
