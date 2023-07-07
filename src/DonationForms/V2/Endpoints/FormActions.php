@@ -40,6 +40,8 @@ class FormActions extends Endpoint
                             'delete',
                             'duplicate',
                             'edit',
+                            'migrate',
+                            'transfer',
                         ],
                     ],
                     'ids'    => [
@@ -147,6 +149,14 @@ class FormActions extends Endpoint
                     $form = wp_update_post(array_merge($update_args, ['ID' => $id]));
                     !empty($form) ? $successes[] = $id : $errors[] = $id;
                 }
+                break;
+
+            case 'migrate':
+
+                break;
+
+            case 'transfer':
+
                 break;
         }
 
