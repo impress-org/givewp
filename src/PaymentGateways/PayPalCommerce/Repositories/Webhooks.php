@@ -6,6 +6,7 @@ use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Log\Log;
 use Give\PaymentGateways\PayPalCommerce\DataTransferObjects\PayPalWebhookHeaders;
 use Give\PaymentGateways\PayPalCommerce\Models\WebhookConfig;
+use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\Requests\CreateWebhook;
 use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\Requests\VerifyWebhookSignature;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Traits\HasMode;
