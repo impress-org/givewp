@@ -190,84 +190,89 @@ add_action( 'wp_ajax_nopriv_give_checkout_register', 'give_load_checkout_fields'
 /**
  * Retrieve a states drop down
  *
+ * @unreleased add 'state_label' & 'states' to response
  * @since  1.0
  *
  * @return void
  */
 function give_ajax_get_states_field() {
-	$states_found   = false;
-	$show_field     = true;
-	$states_require = true;
-	// Get the Country code from the $_POST.
-	$country = sanitize_text_field( $_POST['country'] );
+    $states_found = false;
+    $show_field = true;
+    $states_require = true;
+    // Get the Country code from the $_POST.
+    $country = sanitize_text_field($_POST['country']);
 
-	// Get the field name from the $_POST.
-	$field_name = sanitize_text_field( $_POST['field_name'] );
+    // Get the field name from the $_POST.
+    $field_name = sanitize_text_field($_POST['field_name']);
 
-	$label        = __( 'State', 'give' );
-	$states_label = give_get_states_label();
+    $label = __('State', 'give');
+    $states_label = give_get_states_label();
 
-	$default_state = '';
-	if ( give_get_country() === $country ) {
-		$default_state = give_get_state();
-	}
+    $default_state = '';
+    if (give_get_country() === $country) {
+        $default_state = give_get_state();
+    }
 
-	// Check if $country code exists in the array key for states label.
-	if ( array_key_exists( $country, $states_label ) ) {
-		$label = $states_label[ $country ];
-	}
+    // Check if $country code exists in the array key for states label.
+    if (array_key_exists($country, $states_label)) {
+        $label = $states_label[$country];
+    }
 
-	if ( empty( $country ) ) {
-		$country = give_get_country();
-	}
+    if (empty($country)) {
+        $country = give_get_country();
+    }
 
-	$states = give_get_states( $country );
-	if ( ! empty( $states ) ) {
-		$args         = [
-			'name'             => $field_name,
-			'id'               => $field_name,
-			'class'            => $field_name . '  give-select',
-			'options'          => $states,
-			'show_option_all'  => false,
-			'show_option_none' => false,
-			'placeholder'      => $label,
-			'selected'         => $default_state,
-			'autocomplete'     => 'address-level1',
-		];
-		$data         = Give()->html->select( $args );
-		$states_found = true;
-	} else {
-		$data = 'nostates';
+    $states = give_get_states($country);
+    if (!empty($states)) {
+        $args = [
+            'name' => $field_name,
+            'id' => $field_name,
+            'class' => $field_name . '  give-select',
+            'options' => $states,
+            'show_option_all' => false,
+            'show_option_none' => false,
+            'placeholder' => $label,
+            'selected' => $default_state,
+            'autocomplete' => 'address-level1',
+        ];
+        $data = Give()->html->select($args);
+        $states_found = true;
+    } else {
+        $data = 'nostates';
 
-		// Get the country list that does not have any states init.
-		$no_states_country = give_no_states_country_list();
+        // Get the country list that does not have any states init.
+        $no_states_country = give_no_states_country_list();
 
-		// Check if $country code exists in the array key.
-		if ( array_key_exists( $country, $no_states_country ) ) {
-			$show_field = false;
-		}
+        // Check if $country code exists in the array key.
+        if (array_key_exists($country, $no_states_country)) {
+            $show_field = false;
+        }
 
-		// Get the country list that does not require states.
-		$states_not_required_country_list = give_states_not_required_country_list();
+        // Get the country list that does not require states.
+        $states_not_required_country_list = give_states_not_required_country_list();
 
-		// Check if $country code exists in the array key.
-		if ( array_key_exists( $country, $states_not_required_country_list ) ) {
-			$states_require = false;
-		}
-	}
+        // Check if $country code exists in the array key.
+        if (array_key_exists($country, $states_not_required_country_list)) {
+            $states_require = false;
+        }
+    }
 
-	$response = [
-		'success'        => true,
-		'states_found'   => $states_found,
-		'states_label'   => $label,
-		'show_field'     => $show_field,
-		'states_require' => $states_require,
-		'data'           => $data,
-		'default_state'  => $default_state,
-		'city_require'   => ! array_key_exists( $country, give_city_not_required_country_list() ),
-		'zip_require'    => ! array_key_exists( $country, give_get_country_list_without_postcodes() ),
-	];
-	wp_send_json( $response );
+    $response = [
+        'success' => true,
+        'states_found' => $states_found,
+        'states_label' => $label,
+        'show_field' => $show_field,
+        'states_require' => $states_require,
+        'data' => $data,
+        'default_state' => $default_state,
+        'city_require' => !array_key_exists($country, give_city_not_required_country_list()),
+        'zip_require' => !array_key_exists($country, give_get_country_list_without_postcodes()),
+        'state_label' => $label,
+        'states' => array_map(static function ($state) {
+            return html_entity_decode($state, ENT_QUOTES);
+        }, $states),
+    ];
+    wp_send_json($response);
 }
 
 add_action( 'wp_ajax_give_get_states', 'give_ajax_get_states_field' );
