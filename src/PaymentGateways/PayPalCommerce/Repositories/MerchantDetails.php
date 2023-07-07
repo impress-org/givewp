@@ -27,8 +27,7 @@ class MerchantDetails
      */
     public function accountIsConnected()
     {
-        /* @var $merchantDetails MerchantDetail */
-        $merchantDetails = give(MerchantDetail::class);
+        $merchantDetails = $this->getDetails();
 
         return (bool)$merchantDetails->merchantIdInPayPal;
     }
@@ -130,7 +129,7 @@ class MerchantDetails
      * @return string
      * @throws \Exception If there is an error generating the client token.
      */
-    public function getClientToken()
+    public function getClientToken(): string
     {
         $optionName = $this->getClientTokenKey();
 
@@ -139,25 +138,29 @@ class MerchantDetails
         }
 
         try {
-            $response = give(PayPalClient::class)->getHttpClient()
-                ->execute(new GenerateClientToken())->result;
+            $response = give(PayPalClient::class)
+                ->getHttpClient()
+                ->execute(new GenerateClientToken());
 
             // If the response is empty or does not have the client token, return empty string.
-            if (! $response || ! property_exists($response, 'client_token')) {
+            if (
+                $response->statusCode !== 200
+                || ! property_exists($response->result, 'client_token')
+            ) {
                 throw new \Exception(esc_html__('Unable to generate client token.', 'give'));
             }
 
             // Save the client token in the transient.
             set_transient(
                 $optionName,
-                $response->client_token,
-                $response->expires_in - 60 // Expire token before one minute to prevent unnecessary race condition.
+                $response->result->client_token,
+                $response->result->expires_in - 60 // Expire token before one minute to prevent unnecessary race condition.
             );
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
 
-        return $response->client_token;
+        return $response->result->client_token;
     }
 
     /**

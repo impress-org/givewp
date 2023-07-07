@@ -13,16 +13,29 @@ use Give\Framework\PaymentGateways\Exceptions\OverflowException;
  */
 class PaymentGatewayRegister extends PaymentGatewaysIterator
 {
+    /**
+     * @var string[]
+     */
     protected $gateways = [];
 
     /**
      * Get Gateways
      *
+     * @unreleased added $supportedFormVersion param to filter gateways by supported form version
      * @since 2.18.0
      */
-    public function getPaymentGateways(): array
+    public function getPaymentGateways(int $supportedFormVersion = null): array
     {
-        return $this->gateways;
+        if (!$supportedFormVersion) {
+            return $this->gateways;
+        }
+
+        return array_filter($this->gateways, static function (string $gatewayClass) use ($supportedFormVersion) {
+            /** @var PaymentGateway $gateway */
+            $gateway = give($gatewayClass);
+
+            return in_array($supportedFormVersion, $gateway->supportsFormVersions(), true);
+        });
     }
 
     /**
@@ -75,7 +88,9 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
             throw new OverflowException("Cannot register a gateway with an id that already exists: $gatewayId");
         }
 
+
         $this->gateways[$gatewayId] = $gatewayClass;
+
 
         $this->registerGatewayWithServiceContainer($gatewayClass, $gatewayId);
     }

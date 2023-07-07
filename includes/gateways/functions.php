@@ -17,27 +17,40 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Returns a list of all available gateways.
  *
+ * @unreleased add filter give_payment_gateways_admin_label
  * @since 1.0
  * @return array $gateways All the available gateways
  */
-function give_get_payment_gateways() {
-	// Default, built-in gateways
-	$gateways      = apply_filters(
-		'give_payment_gateways',
-		Give_Cache_Setting::get_option( 'gateways', [] )
-	);
-	$gatewayLabels = give_get_option( 'gateways_label', [] );
+function give_get_payment_gateways()
+{
+    // Default, built-in gateways
+    $gateways = apply_filters(
+        'give_payment_gateways',
+        Give_Cache_Setting::get_option('gateways', [])
+    );
 
-	// Replace payment gateway checkout label with admin defined checkout label.
-	if ( $gatewayLabels ) {
-		foreach ( $gatewayLabels as $gatewayId => $checkoutLabel ) {
-			if ( $checkoutLabel && array_key_exists( $gatewayId, $gateways ) ) {
-				$gateways[ $gatewayId ]['checkout_label'] = $checkoutLabel;
-			}
-		}
-	}
+    array_walk($gateways, static function (&$gateway, $gatewayId) {
+        if (isset($gateway['admin_label'])) {
+            $gateway['admin_label'] = apply_filters(
+                'give_payment_gateways_admin_label',
+                $gateway['admin_label'],
+                $gatewayId
+            );
+        }
+    });
 
-	return $gateways;
+    $gatewayLabels = give_get_option('gateways_label', []);
+
+    // Replace payment gateway checkout label with admin defined checkout label.
+    if ($gatewayLabels) {
+        foreach ($gatewayLabels as $gatewayId => $checkoutLabel) {
+            if ($checkoutLabel && array_key_exists($gatewayId, $gateways)) {
+                $gateways[$gatewayId]['checkout_label'] = $checkoutLabel;
+            }
+        }
+    }
+
+    return $gateways;
 }
 
 /**

@@ -29,7 +29,7 @@ class CheckoutGateway extends PaymentGateway
      * @inheritDoc
      * @since 2.19.0
      *
-     * @param array{stripePaymentMethod: PaymentMethod} $gatewayData
+     * @param  array{stripePaymentMethod: PaymentMethod}  $gatewayData
      *
      * @throws PaymentGatewayException
      */

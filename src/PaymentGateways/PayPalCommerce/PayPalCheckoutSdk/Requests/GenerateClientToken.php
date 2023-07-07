@@ -1,4 +1,5 @@
 <?php
+
 namespace Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\Requests;
 
 use PayPalHttp\HttpRequest;
@@ -12,8 +13,11 @@ use PayPalHttp\HttpRequest;
  */
 class GenerateClientToken extends HttpRequest
 {
+    /**
+     * @unreleased
+     */
     public function __construct()
     {
-        parent::__construct('/v1/identity/generate-token', "POST");
+        parent::__construct('/v1/identity/generate-token', 'POST');
     }
 }

@@ -65,12 +65,12 @@ class AjaxRequestHandler
      *
      * @since 2.9.0
      *
-     * @param Webhooks        $webhooksRepository
-     * @param MerchantDetail  $merchantDetails
+     * @param Webhooks $webhooksRepository
+     * @param MerchantDetail $merchantDetails
      * @param MerchantDetails $merchantRepository
-     * @param RefreshToken    $refreshToken
-     * @param Settings        $settings
-     * @param PayPalAuth      $payPalAuth
+     * @param RefreshToken $refreshToken
+     * @param Settings $settings
+     * @param PayPalAuth $payPalAuth
      */
     public function __construct(
         Webhooks $webhooksRepository,
@@ -97,6 +97,15 @@ class AjaxRequestHandler
     {
         $this->validateAdminRequest();
 
+        if (empty($_GET['mode']) || ! in_array($_GET['mode'], ['sandbox', 'live'])) {
+            wp_send_json_error('Must include valid mode');
+        }
+
+        $mode = sanitize_text_field(wp_unslash($_GET['mode']));
+
+        // Set PayPal client mode.
+        give(PayPalClient::class)->setMode($mode);
+
         $partnerLinkInfo = $this->settings->getPartnerLinkDetails();
 
         $payPalResponse = $this->payPalAuth->getTokenFromAuthorizationCode(
@@ -105,20 +114,24 @@ class AjaxRequestHandler
             $partnerLinkInfo['nonce']
         );
 
-        if ( ! $payPalResponse || array_key_exists('error', $payPalResponse)) {
+        if (! $payPalResponse || array_key_exists('error', $payPalResponse)) {
             wp_send_json_error();
         }
 
         $this->settings->updateAccessToken($payPalResponse);
 
-        give(RefreshToken::class)->registerCronJobToRefreshToken($payPalResponse['expiresIn']);
+        // Set cron job to refresh token.
+        $refreshToken = give(RefreshToken::class);
+        $refreshToken->setMode($mode);
+        $refreshToken->registerCronJobToRefreshToken($payPalResponse['expiresIn']);
 
         wp_send_json_success();
     }
 
     /**
-     * give_paypal_commerce_get_partner_url action handler
+     * This function handle ajax request with give_paypal_commerce_get_partner_url action.
      *
+     * @unreleased Add support for mode param.
      * @since 2.9.0
      */
     public function onGetPartnerUrlAjaxRequestHandler()
@@ -129,14 +142,28 @@ class AjaxRequestHandler
             wp_send_json_error('Must include valid 2-character country code');
         }
 
-        $data = $this->payPalAuth->getSellerPartnerLink(
-            admin_url(
-                'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&group=paypal-commerce'
-            ),
-            $country
+        if (empty($_GET['mode']) || ! in_array($_GET['mode'], ['sandbox', 'live'])) {
+            wp_send_json_error('Must include valid mode');
+        }
+
+        $country = sanitize_text_field(wp_unslash($_GET['countryCode']));
+        $mode = sanitize_text_field(wp_unslash($_GET['mode']));
+        $redirectUrl = add_query_arg(
+            [
+                'tab' => 'gateways',
+                'section' => 'paypal',
+                'group' => 'paypal-commerce',
+                'mode' => $mode
+            ],
+            admin_url('edit.php?post_type=give_forms&page=give-settings')
         );
 
-        if ( ! $data) {
+        // Set PayPal client mode.
+        give(PayPalClient::class)->setMode($mode);
+
+        $data = $this->payPalAuth->getSellerPartnerLink($redirectUrl, $country);
+
+        if (! $data) {
             wp_send_json_error();
         }
 
@@ -149,26 +176,41 @@ class AjaxRequestHandler
     /**
      * give_paypal_commerce_disconnect_account ajax request handler.
      *
+     * @unreleased Add support for mode param.
      * @since 2.25.0 Remove merchant seller token.
      * @since 2.9.0
      */
     public function removePayPalAccount()
     {
-        $this->validateAdminRequest();
-
-        // Remove the webhook from PayPal if there is one
-        if ($webhookConfig = $this->webhooksRepository->getWebhookConfig()) {
-            $this->webhooksRepository->deleteWebhook($this->merchantDetails->accessToken, $webhookConfig->id);
-            $this->webhooksRepository->deleteWebhookConfig();
+        if (! current_user_can('manage_give_settings')) {
+            wp_send_json_error(['error' => esc_html__('You are not allowed to perform this action.', 'give')]);
         }
 
-        $this->merchantRepository->delete();
-        $this->merchantRepository->deleteAccountErrors();
-        $this->merchantRepository->deleteClientToken();
-        $this->settings->deleteSellerAccessToken();
-        $this->refreshToken->deleteRefreshTokenCronJob();
+        try {
+            $mode = give_clean($_POST['mode']);
+            $this->webhooksRepository->setMode($mode);
+            $this->merchantRepository->setMode($mode);
+            $this->refreshToken->setMode($mode);
+            $this->settings->setMode($mode);
 
-        wp_send_json_success();
+            $this->validateAdminRequest();
+
+            // Remove the webhook from PayPal if there is one
+            if ($webhookConfig = $this->webhooksRepository->getWebhookConfig()) {
+                $this->webhooksRepository->deleteWebhook($this->merchantDetails->accessToken, $webhookConfig->id);
+                $this->webhooksRepository->deleteWebhookConfig();
+            }
+
+            $this->merchantRepository->delete();
+            $this->merchantRepository->deleteAccountErrors();
+            $this->merchantRepository->deleteClientToken();
+            $this->settings->deleteSellerAccessToken();
+            $this->refreshToken->deleteRefreshTokenCronJob();
+
+            wp_send_json_success();
+        } catch (\Exception $exception) {
+            wp_send_json_error(['error' => $exception->getMessage()]);
+        }
     }
 
     /**
@@ -261,7 +303,7 @@ class AjaxRequestHandler
      */
     public function onBoardingTroubleNotice()
     {
-        if ( ! current_user_can('manage_give_settings')) {
+        if (! current_user_can('manage_give_settings')) {
             wp_die();
         }
 
@@ -300,7 +342,7 @@ class AjaxRequestHandler
      */
     private function validateAdminRequest()
     {
-        if ( ! current_user_can('manage_give_settings')) {
+        if (! current_user_can('manage_give_settings')) {
             wp_die();
         }
     }
@@ -314,7 +356,7 @@ class AjaxRequestHandler
     {
         $formId = absint($_POST['give-form-id']);
 
-        if ( ! $formId || ! give_verify_donation_form_nonce(give_clean($_POST['give-form-hash']), $formId)) {
+        if (! $formId || ! give_verify_donation_form_nonce(give_clean($_POST['give-form-hash']), $formId)) {
             wp_die();
         }
     }
@@ -328,7 +370,7 @@ class AjaxRequestHandler
      */
     private function getDonorAddressFromPostedDataForPaypalOrder($postedData)
     {
-        if ( ! $this->settings->canCollectBillingInformation()) {
+        if (! $this->settings->canCollectBillingInformation()) {
             return [];
         }
 

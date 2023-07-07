@@ -66,21 +66,4 @@ class AccessToken extends \PayPalCheckoutSdk\Core\AccessToken
 
         return $accessToken;
     }
-
-    /**
-     * Returns the class object.
-     *
-     * @since 2.25.0
-     */
-    public static function fromObject(\stdClass $data): self
-    {
-        $accessToken = new self(
-            $data->accessToken,
-            $data->tokenType,
-            $data->expiresIn
-        );
-        $accessToken->nonce = $data->nonce;
-
-        return $accessToken;
-    }
 }

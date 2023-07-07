@@ -2,10 +2,12 @@
 
 namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
-use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
+use Give\PaymentGateways\PayPalCommerce\Repositories\Traits\HasMode;
 
 class Settings
 {
+    use HasMode;
+
     /**
      * wp_options key for the account country
      *
@@ -195,7 +197,7 @@ class Settings
     {
         return sprintf(
             'give_paypal_commerce_%s_seller_access_token',
-            give_is_test_mode() ? 'sandbox' : 'live'
+            $this->getMode()
         );
     }
 }
