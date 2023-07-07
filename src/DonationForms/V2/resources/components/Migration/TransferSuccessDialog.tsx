@@ -6,6 +6,8 @@ import Button from '@givewp/components/AdminUI/Button';
 import Input from '@givewp/components/AdminUI/Input';
 import {AlertTriangle, CheckCircle} from '@givewp/components/AdminUI/Icons';
 
+import {updateOnboardingOption} from '../DonationFormsListTable'
+
 import styles from './style.module.scss';
 
 interface DialogStateProps {
@@ -117,7 +119,7 @@ export default function TransferSuccessDialog({handleClose, formName, formId}) {
     });
 
     function handleTransferConfirmation(params) {
-        fetch(window.GiveDonationForms.apiRoot, {
+        fetch(window.GiveDonationForms.apiRoot + '/transfer', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -133,6 +135,8 @@ export default function TransferSuccessDialog({handleClose, formName, formId}) {
                 dialogIcon: response.ok ? <CheckCircle /> : <AlertTriangle />
             }))
         })
+
+        updateOnboardingOption('transfer_onboarding_completed')
     }
 
     const Notice = () => (

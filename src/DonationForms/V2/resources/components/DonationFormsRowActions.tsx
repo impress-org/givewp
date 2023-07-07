@@ -7,6 +7,8 @@ import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePag
 import {MigrationOnboardingContext} from './DonationFormsListTable';
 import {Interweave} from 'interweave';
 
+import {updateOnboardingOption} from './DonationFormsListTable'
+
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 
 export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdateErrors, parameters}) {
@@ -71,14 +73,16 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                     {item.migrate && (
                         <RowAction
                             onClick={addRow(async (id) => {
-                                const response = await fetchAndUpdateErrors(parameters, '/duplicate', id, 'POST');
+                                const response = await fetchAndUpdateErrors(parameters, '/migrate', id, 'POST');
 
                                 if (!onboardingState.migrationOnboardingCompleted) {
-                                    setOnboardingState(prev => ({
-                                        ...prev,
-                                        showMigrationSuccessDialog: true,
-                                        formId: response.successes[0]
-                                    }))
+                                    updateOnboardingOption('migration_onboarding_completed').then((data) => {
+                                        setOnboardingState(prev => ({
+                                            ...prev,
+                                            showMigrationSuccessDialog: true,
+                                            formId: response.successes[0]
+                                        }))
+                                    })
                                 }
 
                                 return response
@@ -98,7 +102,7 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                                         formName: item?.name,
                                     }))
                                 } else {
-                                    addRow(async (id) => await fetchAndUpdateErrors(parameters, '/duplicate', id, 'POST'));
+                                    addRow(async (id) => await fetchAndUpdateErrors(parameters, '/transfer', id, 'POST'));
                                 }
                             }}
                             actionId={item.id}

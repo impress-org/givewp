@@ -15,6 +15,7 @@ declare global {
     interface Window {
         GiveDonationForms: {
             apiNonce: string;
+            onboardingApiRoot: string;
             apiRoot: string;
             authors: Array<{ id: string | number; name: string }>;
             table: { columns: Array<object> };
@@ -43,6 +44,15 @@ interface OnboardingStateProps {
 const API = new ListTableApi(window.GiveDonationForms);
 
 export const MigrationOnboardingContext = createContext(null);
+
+export const updateOnboardingOption = async optionName => fetch(window.GiveDonationForms.onboardingApiRoot, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-WP-Nonce': window.GiveDonationForms.apiNonce
+    },
+    body: JSON.stringify({option: optionName})
+})
 
 const donationStatus = [
     {
