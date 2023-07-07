@@ -78,7 +78,7 @@ class Webhooks
             'webhook_event' => $event,
         ];
 
-        $response = give(PayPalClient::class)
+        $response = $this->payPalClient
             ->getHttpClient()
             ->execute(new VerifyWebhookSignature($requestData));
 
@@ -130,7 +130,7 @@ class Webhooks
         ]);
 
         try {
-            $response = give(PayPalClient::class)
+            $response = $this->payPalClient
                 ->getHttpClient()
                 ->execute($request)->result;
 
