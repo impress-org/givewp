@@ -7,6 +7,7 @@ use Give\Log\Log;
 use Give\PaymentGateways\PayPalCommerce\DataTransferObjects\PayPalWebhookHeaders;
 use Give\PaymentGateways\PayPalCommerce\Models\WebhookConfig;
 use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\Requests\CreateWebhook;
+use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\Requests\DeleteWebhook;
 use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\Requests\UpdateWebhook;
 use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\Requests\VerifyWebhookSignature;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
@@ -195,6 +196,7 @@ class Webhooks
                 'Failed to update PayPal Commerce webhook',
                 [
                     'category' => 'PayPal Commerce Webhook',
+                    'Webhook ID' => $webhookId,
                     'Response' => $response
                 ]
             );
@@ -215,22 +217,25 @@ class Webhooks
      */
     public function deleteWebhook($token, $webhookId)
     {
-        $apiUrl = $this->payPalClient->getApiUrl("v1/notifications/webhooks/$webhookId");
+        $response = $this->payPalClient
+            ->getHttpClient()
+            ->execute(new DeleteWebhook($webhookId));
 
-        $response = wp_remote_request(
-            $apiUrl,
-            [
-                'method' => 'DELETE',
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Authorization' => "Bearer $token",
-                ],
-            ]
-        );
+        $code = $response->statusCode;
+        $isDeleted = $code >= 200 && $code < 300;
 
-        $code = wp_remote_retrieve_response_code($response);
+        if (! $isDeleted) {
+            Log::error(
+                'Failed to delete PayPal Commerce webhook',
+                [
+                    'category' => 'PayPal Commerce Webhook',
+                    'Webhook ID' => $webhookId,
+                    'Response' => $response
+                ]
+            );
+        }
 
-        return $code >= 200 && $code < 300;
+        return $isDeleted;
     }
 
     /**

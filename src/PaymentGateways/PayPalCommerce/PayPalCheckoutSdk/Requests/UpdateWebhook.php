@@ -21,7 +21,7 @@ class UpdateWebhook extends HttpRequest
     {
         parent::__construct("/v1/notifications/webhooks/$webhookId", 'PATCH');
 
-        $this->headers["Content-Type"] = "application/json";
+        $this->headers['Content-Type'] = 'application/json';
         $this->body = wp_json_encode($requestBody);
     }
 }
