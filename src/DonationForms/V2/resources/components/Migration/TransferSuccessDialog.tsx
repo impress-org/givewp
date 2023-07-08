@@ -183,10 +183,7 @@ export default function TransferSuccessDialog({handleClose, formName, formId}) {
 
             <Button
                 size="large"
-                onClick={() => setState(prev => ({
-                    ...prev,
-                    isOpen: false,
-                }))}
+                onClick={() => window.location.reload()}
                 style={{width: '100%'}}
             >
                 {__('Go back to your donation form list', 'give')}
