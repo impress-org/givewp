@@ -94,17 +94,18 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                     )}
                     {item.transfer && (
                         <RowAction
-                            onClick={() => {
+                            onClick={addRow(async (id) => {
                                 if (!onboardingState.transferOnboardingCompleted) {
                                     setOnboardingState(prev => ({
                                         ...prev,
                                         showTransferSuccessDialog: true,
                                         formName: item?.name,
                                     }))
+                                    return {successes: [0]} // we have to return this due to the nature of the addRow function
                                 } else {
-                                    addRow(async (id) => await fetchAndUpdateErrors(parameters, '/transfer', id, 'POST'));
+                                    return await fetchAndUpdateErrors(parameters, '/transfer', id, 'POST')
                                 }
-                            }}
+                            })}
                             actionId={item.id}
                             displayText={__('Transfer', 'give')}
                             hiddenText={item?.name}
