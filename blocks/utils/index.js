@@ -56,8 +56,10 @@ export function isLegacyForm( forms, SelectedFormId ) {
 	if ( forms ) {
 		const data = forms.find( form => parseInt( form.id ) === parseInt( SelectedFormId ) );
 
-		return data && ( ! data.formTemplate || data.formTemplate === 'legacy' );
-	}
+        return (
+            data && data.excerpt.rendered !== '<p>[]</p>\n' && (!data.formTemplate || data.formTemplate === 'legacy')
+        );
+    }
 
 	return false;
 }
