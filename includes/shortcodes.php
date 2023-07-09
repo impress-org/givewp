@@ -148,6 +148,13 @@ function give_form_shortcode( $atts ) {
 	$atts['id'] = $atts['id'] ?: FrontendFormTemplateUtils::getFormId();
 	$formId     = absint( $atts['id'] );
 
+    // Short-circuit the shortcode output if the filter returns a non-empty string.
+    $output = apply_filters('givewp_form_shortcode_output', '', $atts);
+
+    if ($output) {
+        return $output;
+    }
+
 	// Fetch the Give Form.
 	ob_start();
 
