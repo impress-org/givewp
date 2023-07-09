@@ -2,13 +2,13 @@
 
 namespace Give\Views\Form\Templates\Classic;
 
-use Give\Helpers\Form\Template\Utils\Frontend;
-use Give_Donate_Form;
 use Give\Form\Template;
 use Give\Form\Template\Hookable;
 use Give\Form\Template\Scriptable;
 use Give\Helpers\Form\Template as FormTemplateUtils;
+use Give\Helpers\Form\Template\Utils\Frontend;
 use Give\Receipt\DonationReceipt;
+use Give_Donate_Form;
 use InvalidArgumentException;
 
 /**
@@ -200,7 +200,9 @@ class Classic extends Template implements Hookable, Scriptable
     public function getLoadingView()
     {
         return $this->loadFile('views/loading.php', [
-            'options' => $this->options[ 'visual_appearance' ]
+            'options' => array_key_exists('visual_appearance', $this->options)
+                ? $this->options['visual_appearance']
+                : [],
         ]);
     }
 
