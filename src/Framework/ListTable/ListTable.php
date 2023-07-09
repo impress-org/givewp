@@ -25,12 +25,14 @@ abstract class ListTable implements Arrayable
 
     /**
      * @since 2.24.0
+     * @unreleased
      *
      * @throws ColumnIdCollisionException
      */
     public function __construct()
     {
-        $this->addColumns(...$this->getDefaultColumns());
+        $default_columns = apply_filters('list_table_default_columns_'.$this->id(), $this->getDefaultColumns());
+        $this->addColumns(...$default_columns);
     }
 
     /**
