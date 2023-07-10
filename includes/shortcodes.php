@@ -131,9 +131,10 @@ add_shortcode( 'donation_history', 'give_donation_history' );
  *
  * Show the Give donation form.
  *
+ * @unreleased Add short-circuit filter to allow for custom output.
  * @since  1.0
- *
- * @param  array $atts Shortcode attributes
+ 
+ * @param array $atts Shortcode attributes
  *
  * @return string
  */
