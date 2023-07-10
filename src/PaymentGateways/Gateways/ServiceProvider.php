@@ -196,7 +196,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     protected function enqueueGatewayScripts()
     {

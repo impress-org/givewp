@@ -5,12 +5,16 @@ Tags: givewp, donation, donations, donation plugin, wordpress donation plugin, w
 Requires at least: 5.9
 Tested up to: 6.2
 Requires PHP: 7.2
-Stable tag: 0.4.0
-Requires Give: 2.29.0
+Stable tag: 0.5.0
+Requires Give: 2.29.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Create the donation form of your dreams using an easy-to-use visual donation form builder.
+
+= 0.5.0: July 10th, 2023 =
+* Refactor: Payment gateway compatibility with v3.
+* Refactor: Rename donation form block.
 
 = 0.4.0: June 15th, 2023 =
 * NOTE: This is another beta release with breaking changes to the form builder. For the best experience, please delete any existing v3 forms and start fresh.

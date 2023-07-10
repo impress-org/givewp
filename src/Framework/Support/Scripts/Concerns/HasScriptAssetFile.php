@@ -4,7 +4,7 @@ namespace Give\Framework\Support\Scripts\Concerns;
 
 trait HasScriptAssetFile {
      /**
-     * @unreleased
+     * @since 0.5.0
      */
     protected function getScriptAssetDependencies(string $path)
     {
@@ -14,7 +14,7 @@ trait HasScriptAssetFile {
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     protected function getScriptAssetVersion(string $path)
     {
@@ -26,7 +26,7 @@ trait HasScriptAssetFile {
     /**
      * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-dependency-extraction-webpack-plugin/#wordpress
      *
-     * @unreleased
+     * @since 0.5.0
      */
     protected function getScriptAsset(string $path): array
     {

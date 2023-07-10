@@ -260,7 +260,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     private function enqueueRegistrars()
     {
@@ -282,7 +282,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     private function enqueueGateways(int $formId)
     {
@@ -298,7 +298,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     private function enqueueDesign(string $formDesignId)
     {
@@ -325,7 +325,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     private function enqueueFormApp()
     {
