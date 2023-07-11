@@ -2,6 +2,9 @@
 
 namespace Give\Framework\FieldsAPI\Concerns;
 
+/**
+ * @unrleased
+ */
 trait HasDescription
 {
 
