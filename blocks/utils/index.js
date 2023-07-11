@@ -1,14 +1,14 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n'
+import {__} from '@wordpress/i18n';
 
 /**
  * getSiteUrl from API root
  * @returns {string} siteurl
  */
 export function getSiteUrl() {
-	return wpApiSettings.root.replace( '/wp-json/', '' );
+    return wpApiSettings.root.replace('/wp-json/', '');
 }
 
 /**
@@ -20,24 +20,22 @@ export function getSiteUrl() {
  *
  * @return {[]}
  */
-export function getFormOptions( forms ) {
-	let formOptions = [];
+export function getFormOptions(forms) {
+    let formOptions = [];
 
-	if ( forms ) {
-		formOptions = forms.map(
-			( { id, title: { rendered: title } } ) => {
-				return {
-					value: id,
-					label: title === '' ? `${ id } : ${ __( 'No form title', 'give' ) }` : title,
-				};
-			}
-		);
-	}
+    if (forms) {
+        formOptions = forms.map(({id, title: {rendered: title}}) => {
+            return {
+                value: id,
+                label: title === '' ? `${id} : ${__('No form title', 'give')}` : title,
+            };
+        });
+    }
 
-	// Add Default option
-	formOptions.unshift( { value: '0', label: __( '-- Select Form --', 'give' ) } );
+    // Add Default option
+    formOptions.unshift({value: '0', label: __('-- Select Form --', 'give')});
 
-	return formOptions;
+    return formOptions;
 }
 
 /**
@@ -45,6 +43,7 @@ export function getFormOptions( forms ) {
  *
  * Note: if selected form has legacy form template or empty (old forms) then it will return true otherwise false.
  *
+ * @unreleased Filter v3 forms out of the form list.
  * @since 2.7.0
  *
  * @param {object} forms
@@ -52,12 +51,14 @@ export function getFormOptions( forms ) {
  *
  * @return {boolean}
  */
-export function isLegacyForm( forms, SelectedFormId ) {
-	if ( forms ) {
-		const data = forms.find( form => parseInt( form.id ) === parseInt( SelectedFormId ) );
+export function isLegacyForm(forms, SelectedFormId) {
+    if (forms) {
+        const data = forms.find((form) => parseInt(form.id) === parseInt(SelectedFormId));
 
-		return data && ( ! data.formTemplate || data.formTemplate === 'legacy' );
-	}
+        return (
+            data && data.excerpt.rendered !== '<p>[]</p>\n' && (!data.formTemplate || data.formTemplate === 'legacy')
+        );
+    }
 
-	return false;
+    return false;
 }

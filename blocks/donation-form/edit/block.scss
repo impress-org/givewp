@@ -4,6 +4,11 @@
 	form[id*='give-form'] #give-gateway-radio-list > li input[type='radio'] {
 		display: inline-block;
 	}
+
+    iframe {
+        pointer-events: none;
+        width: 100% !important;
+    }
 }
 
 .give-change-donation-form-btn {

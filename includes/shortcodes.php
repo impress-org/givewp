@@ -131,9 +131,10 @@ add_shortcode( 'donation_history', 'give_donation_history' );
  *
  * Show the Give donation form.
  *
+ * @unreleased Add short-circuit filter to allow for custom output.
  * @since  1.0
- *
- * @param  array $atts Shortcode attributes
+ 
+ * @param array $atts Shortcode attributes
  *
  * @return string
  */
@@ -147,6 +148,13 @@ function give_form_shortcode( $atts ) {
 	// Set form id.
 	$atts['id'] = $atts['id'] ?: FrontendFormTemplateUtils::getFormId();
 	$formId     = absint( $atts['id'] );
+
+    // Short-circuit the shortcode output if the filter returns a non-empty string.
+    $output = apply_filters('givewp_form_shortcode_output', '', $atts);
+
+    if ($output) {
+        return $output;
+    }
 
 	// Fetch the Give Form.
 	ob_start();
