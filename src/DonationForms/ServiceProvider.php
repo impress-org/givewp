@@ -20,6 +20,7 @@ use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\DonationForms\Routes\AuthenticationRoute;
 use Give\DonationForms\Routes\DonateRoute;
 use Give\DonationForms\Routes\ValidationRoute;
+use Give\DonationForms\Shortcodes\GiveFormShortcode;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\Routes\Route;
 use Give\Helpers\Hooks;
@@ -59,6 +60,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->registerRoutes();
         $this->registerFormDesigns();
         $this->registerSingleFormPage();
+        $this->registerShortcodes();
 
         Hooks::addAction('givewp_donation_form_created', StoreBackwardsCompatibleFormMeta::class);
         Hooks::addAction('givewp_donation_form_updated', StoreBackwardsCompatibleFormMeta::class);
@@ -162,5 +164,13 @@ class ServiceProvider implements ServiceProviderInterface
     protected function registerSingleFormPage()
     {
         Hooks::addFilter('template_include', TemplateHandler::class, 'handle', 11);
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function registerShortcodes()
+    {
+        Hooks::addFilter('givewp_form_shortcode_output', GiveFormShortcode::class, '__invoke', 10, 2);
     }
 }
