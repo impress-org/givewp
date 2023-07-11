@@ -8,10 +8,21 @@ import paymentGateways from './payment-gateways';
 import donationSummary from './donation-summary';
 import amount from './amount';
 import login from './login';
+import termsAndConditions from './terms-and-conditions';
 
 /**
  * @note Blocks in the appender are listed in the order that the blocks are registered.
  */
-const FieldBlocks: FieldBlock[] = [text, company, donorName, email, paymentGateways, donationSummary, amount, login];
+const FieldBlocks: FieldBlock[] = [
+    text,
+    company,
+    donorName,
+    email,
+    paymentGateways,
+    donationSummary,
+    amount,
+    login,
+    termsAndConditions,
+];
 
 export default FieldBlocks;

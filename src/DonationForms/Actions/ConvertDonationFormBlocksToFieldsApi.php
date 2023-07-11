@@ -88,9 +88,9 @@ class ConvertDonationFormBlocksToFieldsApi
     /**
      * @since 0.1.0
      *
+     * @return Node|null
      * @throws EmptyNameException|NameCollisionException
      *
-     * @return Node|null
      */
     protected function convertInnerBlockToNode(BlockModel $block, int $blockIndex)
     {
@@ -132,9 +132,10 @@ class ConvertDonationFormBlocksToFieldsApi
                     ->emailTag('email')
                     ->rules('required', 'email')
                     ->tap(function ($email) use ($block) {
-                        if(is_user_logged_in()) {
+                        if (is_user_logged_in()) {
                             $email->defaultValue(wp_get_current_user()->user_email);
                         }
+
                         return $email;
                     });
 
@@ -161,6 +162,11 @@ class ConvertDonationFormBlocksToFieldsApi
                     $block->hasAttribute('storeAsDonorMeta') ? $block->getAttribute('storeAsDonorMeta') : false
                 );
 
+            case "givewp/terms-and-conditions":
+                return $this->createNodeFromConsentBlock($block, $blockIndex)
+                    ->label(__('Terms and Conditions', 'give'))
+                    ->required();
+
             case "givewp/login":
                 return Authentication::make('login')
                     ->required($block->getAttribute('required'))
@@ -170,9 +176,9 @@ class ConvertDonationFormBlocksToFieldsApi
                     ->loginRedirectUrl(wp_login_url())
                     ->loginNotice($block->getAttribute('loginNotice'))
                     ->loginConfirmation($block->getAttribute('loginConfirmation'))
-                    ->tapNode('login', function($field) use ($block) {
-                        if($block->getAttribute('required')) {
-                            if (!is_user_logged_in()) {
+                    ->tapNode('login', function ($field) use ($block) {
+                        if ($block->getAttribute('required')) {
+                            if ( ! is_user_logged_in()) {
                                 $field->required();
                             }
 
@@ -256,6 +262,14 @@ class ConvertDonationFormBlocksToFieldsApi
     protected function createNodeFromAmountBlock(BlockModel $block): Node
     {
         return (new ConvertDonationAmountBlockToFieldsApi())($block, $this->currency);
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function createNodeFromConsentBlock(BlockModel $block, int $blockIndex): Node
+    {
+        return (new ConvertConsentBlockToFieldsApi())($block, $blockIndex);
     }
 
     /**

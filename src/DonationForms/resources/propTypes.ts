@@ -176,3 +176,14 @@ export interface DonationReceiptProps {
     subscriptionDetails: ReceiptDetail[];
     additionalDetails: ReceiptDetail[];
 }
+
+export interface ConsentProps extends FieldProps {
+    useGlobalSettings: boolean;
+    checkboxLabel: string;
+    displayType: string;
+    linkUrl: string;
+    linkText: string;
+    modalHeading: string;
+    modalAcceptanceText: string;
+    agreementText: string;
+}

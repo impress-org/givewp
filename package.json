@@ -33,6 +33,7 @@
         "iframe-resizer": "^4.3.2",
         "iframe-resizer-react": "^1.1.0",
         "immer": "^10.0.2",
+        "interweave": "^13.1.0",
         "joi": "^17.7.0",
         "prop-types": "^15.8.1",
         "react": "^18.2.0",
