@@ -124,18 +124,26 @@ class GenerateConfirmationPageReceipt
      */
     private function fillDonorDetails(DonationReceipt $receipt)
     {
-        $receipt->donorDetails->addDetails(
-            [
-                new ReceiptDetail(
-                    __('Donor Name', 'give'),
-                    trim("{$receipt->donation->firstName} {$receipt->donation->lastName}")
-                ),
-                new ReceiptDetail(
-                    __('Email Address', 'give'),
-                    $receipt->donation->email
-                ),
-            ]
-        );
+        $details = [
+            new ReceiptDetail(
+                __('Donor Name', 'give'),
+                trim("{$receipt->donation->firstName} {$receipt->donation->lastName}")
+            ),
+            new ReceiptDetail(
+                __('Email Address', 'give'),
+                $receipt->donation->email
+            ),
+        ];
+
+        if ($receipt->donation->billingAddress->country) {
+            $details[] = new ReceiptDetail(
+                __('Billing Address', 'give'),
+                $receipt->donation->billingAddress->address1 . ' ' . $receipt->donation->billingAddress->address2 . PHP_EOL .
+                $receipt->donation->billingAddress->city . ($receipt->donation->billingAddress->state ? ', ' . $receipt->donation->billingAddress->state : '') . ' ' . $receipt->donation->billingAddress->zip . PHP_EOL .
+                $receipt->donation->billingAddress->country . PHP_EOL);
+        }
+
+        $receipt->donorDetails->addDetails($details);
     }
 
     /**

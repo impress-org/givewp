@@ -10,7 +10,7 @@ export default function GroupNode({node}: {node: Group}) {
 
     const fields = node.reduceNodes(
         (fields, field: Field) => {
-            fields[field.name] = () => <FieldNode node={field} />;
+            fields[field.name] = (props: Field) => <FieldNode node={{...field, ...props}} />;
 
             return fields;
         },

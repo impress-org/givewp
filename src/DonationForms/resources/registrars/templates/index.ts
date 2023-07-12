@@ -8,6 +8,7 @@ import RadioField from './fields/Radio';
 import HtmlElement from './elements/Html';
 import DonationSummaryElement from './elements/DonationSummary';
 import NameGroup from './groups/Name';
+import BillingAddressGroup from './groups/BillingAddress';
 import DonationAmountGroup from './groups/DonationAmount';
 import SectionLayout from './layouts/Section';
 import Form from './layouts/Form';
@@ -52,6 +53,7 @@ const defaultFormTemplates = {
         name: NameGroup,
         donationAmount: DonationAmountGroup,
         authentication: Authentication,
+        billingAddress: BillingAddressGroup,
     },
     layouts: {
         wrapper: NodeWrapper,

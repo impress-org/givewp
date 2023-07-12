@@ -63,6 +63,19 @@ export interface NameProps extends GroupProps {
     };
 }
 
+export interface BillingAddressProps extends GroupProps {
+    groupLabel: string;
+    fields: {
+        country: FC<Partial<SelectFieldProps> | {}>;
+        address1: FC<FieldProps | {}>;
+        address2: FC<FieldProps | {}>;
+        city: FC<Partial<FieldProps> | {}>;
+        state: FC<FieldProps | {}>;
+        zip: FC<Partial<FieldProps> | {}>;
+    };
+    apiUrl: string;
+}
+
 export interface DonationAmountProps extends GroupProps {
     fields: {
         amount: FC<AmountProps | {}>;

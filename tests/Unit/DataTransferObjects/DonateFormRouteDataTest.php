@@ -74,6 +74,12 @@ class DonateFormRouteDataTest extends TestCase
         $data->subscriptionFrequency = null;
         $data->subscriptionPeriod = null;
         $data->subscriptionInstallments = null;
+        $data->country = null;
+        $data->address1 = null;
+        $data->address2 = null;
+        $data->city = null;
+        $data->state = null;
+        $data->zip = null;
 
         $request = array_merge(get_object_vars($data), [
             'text_block_meta' => 'text block meta value',
@@ -200,6 +206,12 @@ class DonateFormRouteDataTest extends TestCase
         $data->subscriptionFrequency = 1;
         $data->subscriptionPeriod = SubscriptionPeriod::MONTH();
         $data->subscriptionInstallments = 0;
+        $data->country = null;
+        $data->address1 = null;
+        $data->address2 = null;
+        $data->city = null;
+        $data->state = null;
+        $data->zip = null;
 
         $requestData = get_object_vars($data);
 

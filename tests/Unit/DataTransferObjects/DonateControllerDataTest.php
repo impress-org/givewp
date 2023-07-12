@@ -50,6 +50,12 @@ class DonateControllerDataTest extends TestCase
         $data->originUrl = "https://givewp.com";
         $data->embedId = '123';
         $data->isEmbed = true;
+        $data->country = 'Country';
+        $data->address1 = 'Address 1';
+        $data->address2 = 'Address 2';
+        $data->city = 'City';
+        $data->state = 'State';
+        $data->zip = 'Zip';
 
         $donation = new Donation([
             'status' => DonationStatus::PENDING(),
@@ -62,7 +68,8 @@ class DonateControllerDataTest extends TestCase
             'formId' => $data->formId,
             'formTitle' => $data->formTitle,
             'company' => $data->company,
-            'type' => DonationType::SINGLE()
+            'type' => DonationType::SINGLE(),
+            'billingAddress' => $data->getBillingAddress(),
         ]);
 
         $this->assertEquals(
@@ -102,6 +109,12 @@ class DonateControllerDataTest extends TestCase
         $data->subscriptionPeriod = SubscriptionPeriod::MONTH();
         $data->subscriptionFrequency = 1;
         $data->subscriptionInstallments = 12;
+        $data->country = 'Country';
+        $data->address1 = 'Address 1';
+        $data->address2 = 'Address 2';
+        $data->city = 'City';
+        $data->state = 'State';
+        $data->zip = 'Zip';
 
         $donation = new Donation([
             'status' => DonationStatus::PENDING(),
@@ -114,7 +127,8 @@ class DonateControllerDataTest extends TestCase
             'formId' => $data->formId,
             'formTitle' => $data->formTitle,
             'company' => $data->company,
-            'type' => DonationType::SINGLE()
+            'type' => DonationType::SINGLE(),
+            'billingAddress' => $data->getBillingAddress(),
         ]);
 
         $subscription = new Subscription([
@@ -165,6 +179,12 @@ class DonateControllerDataTest extends TestCase
         $data->subscriptionPeriod = SubscriptionPeriod::MONTH();
         $data->subscriptionFrequency = 1;
         $data->subscriptionInstallments = 12;
+        $data->country = 'Country';
+        $data->address1 = 'Address 1';
+        $data->address2 = 'Address 2';
+        $data->city = 'City';
+        $data->state = 'State';
+        $data->zip = 'Zip';
 
         $subscription = Subscription::create([
             'amount' => Money::fromDecimal($data->amount, $data->currency),
@@ -190,6 +210,7 @@ class DonateControllerDataTest extends TestCase
             'company' => $data->company,
             'type' => DonationType::SUBSCRIPTION(),
             'subscriptionId' => $subscription->id,
+            'billingAddress' => $data->getBillingAddress(),
         ]);
 
         $this->assertEquals(
@@ -225,6 +246,12 @@ class DonateControllerDataTest extends TestCase
         $data->customFieldString = 'customFieldString';
         $data->customFieldInteger = 2;
         $data->customFieldBoolean = false;
+        $data->country = 'Country';
+        $data->address1 = 'Address 1';
+        $data->address2 = 'Address 2';
+        $data->city = 'City';
+        $data->state = 'State';
+        $data->zip = 'Zip';
 
         $this->assertSame(
             [

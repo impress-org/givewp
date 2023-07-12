@@ -8,6 +8,7 @@ import paymentGateways from './payment-gateways';
 import donationSummary from './donation-summary';
 import amount from './amount';
 import login from './login';
+import billingAddress from './billing-address';
 import termsAndConditions from './terms-and-conditions';
 
 /**
@@ -22,6 +23,7 @@ const FieldBlocks: FieldBlock[] = [
     donationSummary,
     amount,
     login,
+    billingAddress,
     termsAndConditions,
 ];
 

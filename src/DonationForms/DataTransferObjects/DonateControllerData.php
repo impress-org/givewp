@@ -7,6 +7,7 @@ use Give\DonationForms\Actions\GenerateDonationConfirmationReceiptUrl;
 use Give\DonationForms\Actions\GenerateDonationConfirmationReceiptViewRouteUrl;
 use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
+use Give\Donations\Properties\BillingAddress;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\PaymentGateways\PaymentGateway;
@@ -91,9 +92,34 @@ class DonateControllerData
      * @var int|null
      */
     public $subscriptionInstallments;
+    /**
+     * @var string
+     */
+    public $country;
+    /**
+     * @var string
+     */
+    public $address1;
+    /**
+     * @var string
+     */
+    public $address2;
+    /**
+     * @var string
+     */
+    public $city;
+    /**
+     * @var string
+     */
+    public $state;
+    /**
+     * @var string
+     */
+    public $zip;
 
     /**
-     * @since 0.1.0
+     * @unreleased Add support billing address field
+     * @since      0.1.0
      */
     public function toDonation(int $donorId): Donation
     {
@@ -110,12 +136,14 @@ class DonateControllerData
             'formId' => $this->formId,
             'formTitle' => $form->title,
             'company' => $this->company,
-            'type' => DonationType::SINGLE()
+            'type' => DonationType::SINGLE(),
+            'billingAddress' => $this->getBillingAddress(),
         ]);
     }
 
     /**
-     * @since 0.3.0
+     * @unreleased Add support billing address field
+     * @since      0.3.0
      */
     public function toInitialSubscriptionDonation(int $donorId, int $subscriptionId): Donation
     {
@@ -134,6 +162,7 @@ class DonateControllerData
             'company' => $this->company,
             'type' => DonationType::SUBSCRIPTION(),
             'subscriptionId' => $subscriptionId,
+            'billingAddress' => $this->getBillingAddress(),
         ]);
     }
 
@@ -209,7 +238,13 @@ class DonateControllerData
                         'donationType',
                         'subscriptionPeriod',
                         'subscriptionFrequency',
-                        'subscriptionInstallments'
+                        'subscriptionInstallments',
+                        'country',
+                        'address1',
+                        'address2',
+                        'city',
+                        'state',
+                        'zip',
                     ]
                 ),
                 true
@@ -250,5 +285,20 @@ class DonateControllerData
     public function getGateway(): PaymentGateway
     {
         return give(PaymentGatewayRegister::class)->getPaymentGateway($this->gatewayId);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getBillingAddress(): BillingAddress
+    {
+        return BillingAddress::fromArray([
+            'country' => $this->country,
+            'address1' => $this->address1,
+            'address2' => $this->address2,
+            'city' => $this->city,
+            'state' => $this->state,
+            'zip' => $this->zip,
+        ]);
     }
 }

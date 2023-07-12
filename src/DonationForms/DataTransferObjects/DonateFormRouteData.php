@@ -61,7 +61,8 @@ class DonateFormRouteData implements Arrayable
      * compares the request against the individual fields,
      * their types and validation rules.
      *
-     * @since 0.1.0
+     * @unreleased Add support for billing address field
+     * @since      0.1.0
      *
      * @throws DonationFormFieldErrorsException
      */
@@ -73,7 +74,7 @@ class DonateFormRouteData implements Arrayable
         /** @var DonationForm $form */
         $form = DonationForm::find($this->formId);
 
-        if (!$form) {
+        if ( ! $form) {
             $this->throwDonationFormFieldErrorsException(['formId' => 'Invalid Form ID, Form not found']);
         }
 
