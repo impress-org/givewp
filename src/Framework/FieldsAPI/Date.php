@@ -11,6 +11,7 @@ class Date extends Field
     use Concerns\HasHelpText;
     use Concerns\HasLabel;
     use Concerns\HasPlaceholder;
+    use Concerns\HasDescription;
 
     const TYPE = 'date';
 }
