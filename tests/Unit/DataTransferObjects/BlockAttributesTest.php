@@ -18,12 +18,16 @@ class BlockAttributesTest extends TestCase
      */
     public function testShouldReturnAttributesArray()
     {
-        $blockAttributes = BlockAttributes::fromArray([
+        $attributes = [
             'formId' => 1,
             'blockId' => '123',
-        ]);
+            'formFormat' => 'modal',
+            'openFormButton' => 'Open Form'
+        ];
 
-        $this->assertSame(['formId' => 1, 'blockId' => '123'], $blockAttributes->toArray());
+        $blockAttributes = BlockAttributes::fromArray($attributes);
+
+        $this->assertSame($attributes, $blockAttributes->toArray());
     }
 
     /**

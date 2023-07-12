@@ -16,6 +16,16 @@ class BlockAttributes implements Arrayable
     public $blockId;
 
     /**
+     * @var string
+     */
+    public $formFormat;
+
+    /**
+     * @var string
+     */
+    public $openFormButton;
+
+    /**
      * @since 0.1.0
      */
     public static function fromArray(array $array): BlockAttributes
@@ -24,6 +34,8 @@ class BlockAttributes implements Arrayable
 
         $self->formId = !empty($array['formId']) ? (int)$array['formId'] : null;
         $self->blockId = !empty($array['blockId']) ? (string)$array['blockId'] : null;
+        $self->formFormat = !empty($array['formFormat']) ? (string)$array['formFormat'] : null;
+        $self->openFormButton = !empty($array['openFormButton']) ? (string)$array['openFormButton'] : null;
 
         return $self;
     }

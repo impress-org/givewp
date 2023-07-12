@@ -16,9 +16,17 @@
         },
         "blockId": {
             "type": "string"
+        },
+        "formFormat": {
+            "type": "string",
+            "default": "full"
+        },
+        "openFormButton": {
+            "type": "string",
+            "default": "Donate now"
         }
     },
     "textdomain": "give",
-    "editorStyle": "file:../../../../build/donationFormBlockStyle.css",
+    "editorStyle": "file:../../../../build/donationFormBlock.css",
     "editorScript": "file:../../../../build/donationFormBlock.js"
 }

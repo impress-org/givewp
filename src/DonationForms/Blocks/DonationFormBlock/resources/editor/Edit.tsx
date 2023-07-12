@@ -1,21 +1,26 @@
 import {__} from '@wordpress/i18n';
 import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
-import {ExternalLink, PanelBody, PanelRow, SelectControl} from '@wordpress/components';
-import {Fragment, useEffect} from '@wordpress/element';
+import {ExternalLink, PanelBody, PanelRow, SelectControl, TextControl} from '@wordpress/components';
+import {Fragment, useCallback, useEffect, useState} from '@wordpress/element';
 import useFormOptions from './hooks/useFormOptions';
 import ConfirmButton from './components/ConfirmButton';
 import Logo from './components/Logo';
-import {BlockEditProps} from "@wordpress/blocks";
+import {BlockEditProps} from '@wordpress/blocks';
 import ReactSelect from 'react-select';
-import {useCallback} from 'react';
+import BlockPreview from './components/BlockPreview';
 
+import './styles/index.scss';
 
 /**
+ * @unreleased Render block preview in the editor.
  * @since 0.1.0
  */
 export default function Edit({clientId, attributes, setAttributes}: BlockEditProps<any>) {
-    const {formId, blockId} = attributes;
+    const {formId, blockId, formFormat, openFormButton} = attributes;
     const {formOptions, isResolving} = useFormOptions();
+    const [showPreview, setShowPreview] = useState<boolean>(!!formId);
+
+    const showOpenFormButton = formFormat === 'reveal' || formFormat === 'modal';
 
     useEffect(() => {
         if (!blockId) {
@@ -53,6 +58,40 @@ export default function Edit({clientId, attributes, setAttributes}: BlockEditPro
                         )}
                     </PanelRow>
                     <PanelRow>
+                        <SelectControl
+                            label={__('Form Format', 'give')}
+                            value={formFormat}
+                            options={[
+                                {
+                                    label: __('Full Form', 'give'),
+                                    value: 'full',
+                                },
+                                {
+                                    label: __('Reveal', 'give'),
+                                    value: 'reveal',
+                                },
+                                {
+                                    label: __('Modal', 'give'),
+                                    value: 'modal',
+                                },
+                            ]}
+                            onChange={(value) => {
+                                setAttributes({formFormat: value});
+                            }}
+                        />
+                    </PanelRow>
+                    {showOpenFormButton && (
+                        <PanelRow>
+                            <TextControl
+                                label={__('Open Form Button', 'give')}
+                                value={openFormButton}
+                                onChange={(value) => {
+                                    setAttributes({openFormButton: value});
+                                }}
+                            />
+                        </PanelRow>
+                    )}
+                    <PanelRow>
                         {formId && (
                             <ExternalLink
                                 href={`/wp-admin/edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=${formId}`}
@@ -66,61 +105,70 @@ export default function Edit({clientId, attributes, setAttributes}: BlockEditPro
 
             {/*block preview*/}
             <div {...useBlockProps()}>
-                <div className="givewp-form-block--container">
-                    <Logo />
+                {formId && showPreview ? (
+                    <BlockPreview
+                        clientId={clientId}
+                        formId={formId}
+                        formFormat={formFormat}
+                        openFormButton={openFormButton}
+                    />
+                ) : (
+                    <div className="givewp-form-block--container">
+                        <Logo />
 
-                    <div className="givewp-form-block__select--container">
-                        <label htmlFor="formId" className="givewp-form-block__select--label">
-                            {__('Choose a donation form', 'give')}
-                        </label>
+                        <div className="givewp-form-block__select--container">
+                            <label htmlFor="formId" className="givewp-form-block__select--label">
+                                {__('Choose a donation form', 'give')}
+                            </label>
 
-                        <ReactSelect
-                            classNamePrefix="givewp-form-block__select"
-                            name="formId"
-                            inputId="formId"
-                            value={getDefaultFormId()}
-                            placeholder={
-                                isResolving ? __('Loading Donation Forms...', 'give') : __('Select...', 'give')
-                            }
-                            onChange={(option) => {
-                                if (option) {
-                                    setAttributes({formId: option.value});
+                            <ReactSelect
+                                classNamePrefix="givewp-form-block__select"
+                                name="formId"
+                                inputId="formId"
+                                value={getDefaultFormId()}
+                                placeholder={
+                                    isResolving ? __('Loading Donation Forms...', 'give') : __('Select...', 'give')
                                 }
-                            }}
-                            noOptionsMessage={() => (
-                                <p>{__('No forms were found using the GiveWP form builder.', 'give')}</p>
-                            )}
-                            options={formOptions}
-                            loadingMessage={() => <>{__('Loading Donation Forms...', 'give')}</>}
-                            isLoading={isResolving}
-                            theme={(theme) => ({
-                                ...theme,
-                                colors: {
-                                    ...theme.colors,
-                                    primary: '#27ae60',
-                                },
-                            })}
-                            styles={{
-                                input: (provided, state) => ({
-                                    ...provided,
-                                    height: '3rem',
-                                }),
-                                option: (provided, state) => ({
-                                    ...provided,
-                                    paddingTop: '0.8rem',
-                                    paddingBottom: '0.8rem',
-                                    fontSize: '1rem',
-                                }),
-                                control: (provided, state) => ({
-                                    ...provided,
-                                    fontSize: '1rem',
-                                }),
-                            }}
-                        />
-                    </div>
+                                onChange={(option) => {
+                                    if (option) {
+                                        setAttributes({formId: option.value});
+                                    }
+                                }}
+                                noOptionsMessage={() => (
+                                    <p>{__('No forms were found using the GiveWP form builder.', 'give')}</p>
+                                )}
+                                options={formOptions}
+                                loadingMessage={() => <>{__('Loading Donation Forms...', 'give')}</>}
+                                isLoading={isResolving}
+                                theme={(theme) => ({
+                                    ...theme,
+                                    colors: {
+                                        ...theme.colors,
+                                        primary: '#27ae60',
+                                    },
+                                })}
+                                styles={{
+                                    input: (provided, state) => ({
+                                        ...provided,
+                                        height: '3rem',
+                                    }),
+                                    option: (provided, state) => ({
+                                        ...provided,
+                                        paddingTop: '0.8rem',
+                                        paddingBottom: '0.8rem',
+                                        fontSize: '1rem',
+                                    }),
+                                    control: (provided, state) => ({
+                                        ...provided,
+                                        fontSize: '1rem',
+                                    }),
+                                }}
+                            />
+                        </div>
 
-                    <ConfirmButton />
-                </div>
+                        <ConfirmButton formId={formId} enablePreview={() => setShowPreview(true)} />
+                    </div>
+                )}
             </div>
         </Fragment>
     );

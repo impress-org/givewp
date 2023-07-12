@@ -25,7 +25,7 @@ module.exports = {
     },
     entry: {
         donationFormBlock: srcPath('DonationForms/Blocks/DonationFormBlock/resources/block.ts'),
-        donationFormBlockStyle: srcPath('DonationForms/Blocks/DonationFormBlock/resources/editor/styles/index.scss'),
+        donationFormBlockApp: srcPath('DonationForms/Blocks/DonationFormBlock/resources/app/index.tsx'),
         donationFormApp: srcPath('DonationForms/resources/app/DonationFormApp.tsx'),
         donationFormRegistrars: srcPath('DonationForms/resources/registrars/index.ts'),
         donationFormEmbed: srcPath('DonationForms/resources/embed.ts'),

@@ -13,7 +13,8 @@ use Give\Framework\Routes\RouteListener;
 class BlockRenderController
 {
     /**
-     * @since 0.1.0
+     * @unreleased replace iframe with root element for react
+     * @since      0.1.0
      *
      * @return string|null
      */
@@ -26,7 +27,7 @@ class BlockRenderController
 
         $blockAttributes = BlockAttributes::fromArray($attributes);
 
-        if (!$blockAttributes->formId) {
+        if ( ! $blockAttributes->formId) {
             return null;
         }
 
@@ -43,7 +44,7 @@ class BlockRenderController
          * Note: iframe-resizer uses querySelectorAll so using a data attribute makes the most sense to target.
          * It will also generate a dynamic ID - so when we have multiple embeds on a page there will be no conflict.
          */
-        return "<iframe data-givewp-embed src='$viewUrl' data-givewp-embed-id='$embedId' style='width: 1px;min-width: 100%;border: 0;transition: height 0.25s;'></iframe>";
+        return "<div class='root-data-givewp-embed' data-src='$viewUrl' data-givewp-embed-id='$embedId' data-form-format='$blockAttributes->formFormat' data-open-form-button='$blockAttributes->openFormButton'></div>";
     }
 
     /**
@@ -87,9 +88,10 @@ class BlockRenderController
     /**
      *
      * Load embed givewp script to resize iframe
-     * @see https://github.com/davidjbradshaw/iframe-resizer
+     * @see        https://github.com/davidjbradshaw/iframe-resizer
      *
-     * @since 0.1.0
+     * @unreleased load app scripts
+     * @since      0.1.0
      */
     private function loadEmbedScript()
     {
@@ -100,5 +102,21 @@ class BlockRenderController
             GIVE_NEXT_GEN_URL,
             'give'
         ))->loadInFooter()->enqueue();
+
+        (new EnqueueScript(
+            'givewp-donation-form-embed-app',
+            'build/donationFormBlockApp.js',
+            GIVE_NEXT_GEN_DIR,
+            GIVE_NEXT_GEN_URL,
+            'give'
+        ))
+            ->dependencies(['jquery'])
+            ->loadInFooter()
+            ->enqueue();
+
+        wp_enqueue_style(
+            'givewp-donation-form-embed-app',
+            GIVE_NEXT_GEN_URL . 'build/donationFormBlockApp.css'
+        );
     }
 }
