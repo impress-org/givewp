@@ -38,7 +38,7 @@ trait HasMode
     /**
      * This function returns the current mode
      *
-     * @unreleased
+     * @since 2.30.0
      */
     public function getMode(): string
     {

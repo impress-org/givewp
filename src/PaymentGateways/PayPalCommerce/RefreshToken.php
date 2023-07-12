@@ -12,7 +12,7 @@ use Give\PaymentGateways\PayPalCommerce\Repositories\Traits\HasMode;
 /**
  * Class RefreshToken
  *
- * @unreleased Add support for mode.
+ * @since 2.30.0 Add support for mode.
  * @since 2.9.0
  */
 class RefreshToken
@@ -158,7 +158,7 @@ class RefreshToken
      * - give_paypal_commerce_refresh_sandbox_token
      * - give_paypal_commerce_refresh_live_token
      *
-     * @unreleased
+     * @since 2.30.0
      * @return void
      */
     public function cronJobRefreshToken()

@@ -43,7 +43,7 @@ export function getFormOptions(forms) {
  *
  * Note: if selected form has legacy form template or empty (old forms) then it will return true otherwise false.
  *
- * @unreleased Filter v3 forms out of the form list.
+ * @since 2.30.0 Filter v3 forms out of the form list.
  * @since 2.7.0
  *
  * @param {object} forms

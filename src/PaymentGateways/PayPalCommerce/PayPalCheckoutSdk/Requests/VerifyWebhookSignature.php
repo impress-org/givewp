@@ -6,12 +6,12 @@ use PayPalHttp\HttpRequest;
 /**
  * Class VerifyWebhookSignature
  *
- * @unreleased
+ * @since 2.30.0
  */
 class VerifyWebhookSignature extends HttpRequest
 {
     /**
-     * @unreleased
+     * @since 2.30.0
      * @param array $requestBody Request body.
      */
     public function __construct(array $requestBody)

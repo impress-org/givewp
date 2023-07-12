@@ -197,7 +197,7 @@ class Classic extends Template implements Hookable, Scriptable
     /**
      * @inheritDoc
      *
-     * @unreleased Check if visual_appearance is set before accessing it.
+     * @since 2.30.0 Check if visual_appearance is set before accessing it.
      */
     public function getLoadingView()
     {
