@@ -12,6 +12,8 @@ class Radio extends Field
     use Concerns\HasLabel;
     use Concerns\HasOptions;
     use Concerns\HasPlaceholder;
+    use Concerns\HasDescription;
+
 
     const TYPE = 'radio';
 }
