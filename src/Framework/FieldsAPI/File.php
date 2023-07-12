@@ -11,7 +11,7 @@ use function wp_max_upload_size;
  * A file upload field.
  *
  * @since      2.12.0
- * @since 2.23.1 Moved default rule values inline since inherited constructor is final.
+ * @since      2.23.1 Moved default rule values inline since inherited constructor is final.
  */
 class File extends Field
 {
@@ -20,6 +20,7 @@ class File extends Field
     use Concerns\HasHelpText;
     use Concerns\HasLabel;
     use Concerns\AllowMultiple;
+    use Concerns\HasDescription;
 
     const TYPE = 'file';
 
@@ -48,7 +49,7 @@ class File extends Field
      */
     public function getMaxSize(): int
     {
-        if (!$this->hasRule('max')) {
+        if ( ! $this->hasRule('max')) {
             return wp_max_upload_size();
         }
 
@@ -82,7 +83,7 @@ class File extends Field
      */
     public function getAllowedTypes()
     {
-        if (!$this->hasRule('allowedTypes')) {
+        if ( ! $this->hasRule('allowedTypes')) {
             return get_allowed_mime_types();
         }
 
