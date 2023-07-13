@@ -75,7 +75,7 @@ class onBoardingRedirectHandler
     /**
      * This function set mode from request.
      *
-     * @unreleased
+     * @since 2.30.0
      * @return void
      */
     private function setModeFromRequest()

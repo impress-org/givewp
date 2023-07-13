@@ -131,7 +131,7 @@ class AjaxRequestHandler
     /**
      * This function handle ajax request with give_paypal_commerce_get_partner_url action.
      *
-     * @unreleased Add support for mode param.
+     * @since 2.30.0 Add support for mode param.
      * @since 2.9.0
      */
     public function onGetPartnerUrlAjaxRequestHandler()
@@ -176,7 +176,7 @@ class AjaxRequestHandler
     /**
      * give_paypal_commerce_disconnect_account ajax request handler.
      *
-     * @unreleased Add support for mode param.
+     * @since 2.30.0 Add support for mode param.
      * @since 2.25.0 Remove merchant seller token.
      * @since 2.9.0
      */

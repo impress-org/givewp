@@ -213,7 +213,7 @@ EOT;
     /**
      * Get PayPal partner js url.
      *
-     * @unreleased sandbox PayPal partner js loads slow. So we are using live url for now.
+     * @since 2.30.0 sandbox PayPal partner js loads slow. So we are using live url for now.
      * @since 2.9.0
      *
      * @return string

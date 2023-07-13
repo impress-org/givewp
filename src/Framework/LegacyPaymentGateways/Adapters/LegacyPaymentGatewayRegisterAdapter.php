@@ -12,7 +12,7 @@ class LegacyPaymentGatewayRegisterAdapter
      * Run the necessary legacy hooks on our LegacyPaymentGatewayAdapter
      * that prepares data to be sent to each gateway
      *
-     * @unreleased check for getLegacyFormFieldMarkup before attempting to use
+     * @since 2.30.0 check for getLegacyFormFieldMarkup before attempting to use
      *
      * @since 2.19.0
      * @throws Exception
@@ -70,7 +70,7 @@ class LegacyPaymentGatewayRegisterAdapter
     /**
      * Adds new payment gateways to legacy list for settings
      *
-     * @unreleased update admin_label to include version compatibility
+     * @since 2.30.0 update admin_label to include version compatibility
      * @since 2.25.0 add is_visible key to $gatewayData
      * @since 2.19.0
      */
@@ -91,7 +91,7 @@ class LegacyPaymentGatewayRegisterAdapter
     }
 
     /**
-     * @unreleased check if v2 compatible
+     * @since 2.30.0 check if v2 compatible
      * @since 2.25.0
      */
     public function supportsV2Forms(PaymentGateway $gateway): bool
@@ -100,7 +100,7 @@ class LegacyPaymentGatewayRegisterAdapter
     }
 
     /**
-     * @unreleased
+     * @since 2.30.0
      */
     public function getRegisteredGatewayAdminLabelWithSupportedFormVersion(PaymentGateway $gateway): string
     {
@@ -117,7 +117,7 @@ class LegacyPaymentGatewayRegisterAdapter
     /**
      * Update the admin label for gateways to display version compatibility
      *
-     * @unreleased
+     * @since 2.30.0
      */
     public function updatePaymentGatewayAdminLabelsWithSupportedFormVersions(string $label, string $gatewayId): string
     {

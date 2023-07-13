@@ -123,7 +123,7 @@ class MerchantDetails
     /**
      * Get client token for hosted credit card fields.
      *
-     * @unreleased Use PayPal client to generate client token.
+     * @since 2.30.0 Use PayPal client to generate client token.
      * @since 2.9.0
      *
      * @return string

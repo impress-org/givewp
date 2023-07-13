@@ -85,7 +85,7 @@ class PaymentGatewaysRegisterTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.30.0
      * @throws Exception
      * @throws OverflowException
      */
