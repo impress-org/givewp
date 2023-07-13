@@ -6,6 +6,7 @@ use Give\Helpers\ArrayDataSet;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\RefreshToken;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
+use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
 use PayPalCheckoutSdk\Core\AccessTokenRequest;
 use PayPalCheckoutSdk\Core\PayPalEnvironment;
 use PayPalCheckoutSdk\Core\RefreshTokenRequest;
@@ -61,13 +62,16 @@ class AuthorizationInjector implements Injector
     /**
      * Returns an AccessToken.
      *
+     * @unreleased use client credentials to fetch access token.
      * @since 2.25.0
      */
     protected function fetchAccessToken(): AccessToken
     {
-        $accessTokenResponse = $this->client->execute(new AccessTokenRequest($this->environment, $this->refreshToken));
-        $accessToken = (array) $accessTokenResponse->result;
-        $accessToken = ArrayDataSet::camelCaseKeys($accessToken);
+        $merchantDetail = give(MerchantDetails::class)->getDetails();
+        $accessToken = give(PayPalAuth::class)->getTokenFromClientCredentials(
+            $merchantDetail->clientId,
+            $merchantDetail->clientSecret
+        );
 
         $this->registerRefreshTokenCronJob($accessToken);
 
