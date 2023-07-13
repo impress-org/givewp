@@ -50,6 +50,7 @@ class PayPalClient
     /**
      * Get api url.
      *
+     * @deprecated x.x.x
      * @since 2.9.0
      *
      * @param string $endpoint
