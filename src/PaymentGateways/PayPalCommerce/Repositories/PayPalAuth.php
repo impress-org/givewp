@@ -93,10 +93,7 @@ class PayPalAuth
      */
     public function getTokenFromAuthorizationCode($authCode, $sharedId, $nonce)
     {
-        $auth = sprintf(
-            'Basic %1$s',
-            base64_encode($sharedId)
-        );
+        $auth = base64_encode($sharedId);
 
         $response = $this->payPalClient->getHttpClient()
             ->execute(new GetAccessToken(
@@ -232,7 +229,7 @@ class PayPalAuth
             'scope',
             'access_token',
             'token_type',
-            'app_id',
+            // 'app_id', Not required. This does not return when get access token with authorization code.
             'expires_in',
             'nonce'
         ];
