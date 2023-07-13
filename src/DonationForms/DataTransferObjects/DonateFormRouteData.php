@@ -61,7 +61,7 @@ class DonateFormRouteData implements Arrayable
      * compares the request against the individual fields,
      * their types and validation rules.
      *
-     * @unreleased Add support for billing address field
+     * @since 0.5.0 Add support for billing address field
      * @since      0.1.0
      *
      * @throws DonationFormFieldErrorsException

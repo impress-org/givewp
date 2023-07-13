@@ -108,7 +108,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @unreleased Add support to billing address field
+     * @since 0.5.0 Add support to billing address field
      * @since      0.4.0 add blockIndex for unique field names, add filter `givewp_donation_form_block_render` filters
      * @since      0.1.0
      *
@@ -262,7 +262,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     protected function createNodeFromBillingAddressBlock(BlockModel $block): Node
     {
@@ -326,7 +326,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     protected function createNodeFromConsentBlock(BlockModel $block, int $blockIndex): Node
     {

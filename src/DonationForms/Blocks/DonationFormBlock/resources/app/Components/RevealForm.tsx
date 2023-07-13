@@ -2,7 +2,7 @@ import {useState} from '@wordpress/element';
 import IframeResizer from 'iframe-resizer-react';
 
 /**
- * @unreleased
+ * @since 0.5.0
  */
 export default function RevealForm({dataSrc, embedId, openFormButton}) {
     const [isRevealed, setIsRevealed] = useState(false);

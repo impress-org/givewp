@@ -8,7 +8,7 @@ use Give\DonationForms\Blocks\DonationFormBlock\Controllers\BlockRenderControlle
 class GiveFormShortcode
 {
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     public function __invoke(string $output, array $atts): string
     {

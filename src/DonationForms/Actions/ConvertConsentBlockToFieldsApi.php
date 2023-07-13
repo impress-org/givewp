@@ -8,7 +8,7 @@ use Give\Framework\FieldsAPI\Consent;
 class ConvertConsentBlockToFieldsApi
 {
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     public function __invoke(BlockModel $block, int $blockIndex)
     {
@@ -25,7 +25,7 @@ class ConvertConsentBlockToFieldsApi
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      *
      * @return void
      */
@@ -40,7 +40,7 @@ class ConvertConsentBlockToFieldsApi
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      *
      * @return void
      */

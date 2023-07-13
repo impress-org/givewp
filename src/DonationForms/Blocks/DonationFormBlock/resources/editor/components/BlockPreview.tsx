@@ -11,7 +11,7 @@ interface BlockPreviewProps {
 }
 
 /**
- * @unreleased
+ * @since 0.5.0
  */
 export default function BlockPreview({clientId, formId, formFormat, openFormButton}: BlockPreviewProps) {
     const selectedBlock = useSelect((select) => select('core/block-editor').getSelectedBlock(), []);

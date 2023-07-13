@@ -5,24 +5,24 @@ declare(strict_types=1);
 namespace Give\Framework\FieldsAPI;
 
 /**
- * @unreleased
+ * @since 0.5.0
  */
 class BillingAddress extends Group
 {
     const TYPE = 'billingAddress';
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     public $apiUrl;
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     public $groupLabel;
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     public function setApiUrl(string $url): BillingAddress
     {
@@ -32,7 +32,7 @@ class BillingAddress extends Group
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     public function setGroupLabel(string $groupLabel): BillingAddress
     {
@@ -42,7 +42,7 @@ class BillingAddress extends Group
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      *
      * @throws Exceptions\EmptyNameException|Exceptions\NameCollisionException
      */

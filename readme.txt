@@ -6,15 +6,20 @@ Requires at least: 5.9
 Tested up to: 6.2
 Requires PHP: 7.2
 Stable tag: 0.5.0
-Requires Give: 2.29.2
+Requires Give: 2.30.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Create the donation form of your dreams using an easy-to-use visual donation form builder.
 
-= 0.5.0: July 10th, 2023 =
-* Refactor: Payment gateway compatibility with v3.
-* Refactor: Rename donation form block.
+= 0.5.0: July 12th, 2023 =
+* Feature: The give_form shortcode now supports v3 forms
+* Feature: Added a Terms and Conditions block
+* Feature: Added a Billing Address block
+* Feature: Added Reveal and Modal display options to the v3 Donation Form block v3
+* Feature: A selected v3 form is rendered in the block editor
+* Refactor: The Payment Gateway API is now compatible with v3
+* Refactor: Renamed the Donation form block
 
 = 0.4.0: June 15th, 2023 =
 * NOTE: This is another beta release with breaking changes to the form builder. For the best experience, please delete any existing v3 forms and start fresh.

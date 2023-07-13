@@ -12,7 +12,7 @@ import BlockPreview from './components/BlockPreview';
 import './styles/index.scss';
 
 /**
- * @unreleased Render block preview in the editor.
+ * @since 0.5.0 Render block preview in the editor.
  * @since 0.1.0
  */
 export default function Edit({clientId, attributes, setAttributes}: BlockEditProps<any>) {

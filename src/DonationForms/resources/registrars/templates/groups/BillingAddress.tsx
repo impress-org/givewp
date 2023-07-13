@@ -6,7 +6,7 @@ import {useCallback} from '@wordpress/element';
 import Label from '@givewp/form-builder/blocks/fields/settings/Label';
 
 /**
- * @unreleased
+ * @since 0.5.0
  */
 type StatesJsonResponse = {
     state_label: string;
@@ -19,7 +19,7 @@ type StatesJsonResponse = {
 };
 
 /**
- * @unreleased
+ * @since 0.5.0
  */
 type State = {
     label: string;
@@ -29,7 +29,7 @@ type State = {
 /**
  * Get states from the server based on the country value
  *
- * @unreleased
+ * @since 0.5.0
  */
 async function getStates(url, country) {
     return await fetch(url, {
@@ -44,7 +44,7 @@ async function getStates(url, country) {
 /**
  * This component is used to dynamically update the state field based on the country value
  *
- * @unreleased
+ * @since 0.5.0
  */
 function StateFieldContainer({
     apiUrl,
@@ -199,7 +199,7 @@ function StateFieldContainer({
 }
 
 /**
- * @unreleased
+ * @since 0.5.0
  */
 export default function BillingAddress({
     groupLabel,

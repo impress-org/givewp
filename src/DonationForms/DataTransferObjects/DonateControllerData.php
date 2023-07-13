@@ -118,7 +118,7 @@ class DonateControllerData
     public $zip;
 
     /**
-     * @unreleased Add support billing address field
+     * @since 0.5.0 Add support billing address field
      * @since      0.1.0
      */
     public function toDonation(int $donorId): Donation
@@ -142,7 +142,7 @@ class DonateControllerData
     }
 
     /**
-     * @unreleased Add support billing address field
+     * @since 0.5.0 Add support billing address field
      * @since      0.3.0
      */
     public function toInitialSubscriptionDonation(int $donorId, int $subscriptionId): Donation
@@ -288,7 +288,7 @@ class DonateControllerData
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     public function getBillingAddress(): BillingAddress
     {

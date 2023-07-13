@@ -3,7 +3,7 @@ import {createPortal} from 'react-dom';
 import IframeResizer from 'iframe-resizer-react';
 
 /**
- * @unreleased
+ * @since 0.5.0
  */
 export default function ModalPreview({enableIframe, formId, openFormButton}) {
     const [isOpen, setIsOpen] = useState(false);

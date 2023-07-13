@@ -20,7 +20,7 @@ class Consent extends field
     const TYPE = 'consent';
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     public function getUseGlobalSettings(): bool
     {
@@ -28,7 +28,7 @@ class Consent extends field
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     public function useGlobalSettings(bool $useGlobalSettings): Consent
     {
@@ -38,7 +38,7 @@ class Consent extends field
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     public function getCheckboxLabel(): string
     {
@@ -46,7 +46,7 @@ class Consent extends field
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     public function checkboxLabel(string $text): Consent
     {
@@ -56,7 +56,7 @@ class Consent extends field
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     public function getDisplayType(): string
     {
@@ -64,7 +64,7 @@ class Consent extends field
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     public function displayType(string $text): Consent
     {
@@ -74,7 +74,7 @@ class Consent extends field
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     public function getLinkText(): string
     {
@@ -82,7 +82,7 @@ class Consent extends field
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     public function linkText(string $text): Consent
     {
@@ -92,7 +92,7 @@ class Consent extends field
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     public function getLinkUrl(): string
     {
@@ -100,7 +100,7 @@ class Consent extends field
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     public function linkUrl(string $url): Consent
     {
@@ -110,7 +110,7 @@ class Consent extends field
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     public function getModalHeading(): string
     {
@@ -118,7 +118,7 @@ class Consent extends field
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     public function modalHeading(string $text): Consent
     {
@@ -128,7 +128,7 @@ class Consent extends field
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     public function getModalAcceptanceText(): string
     {
@@ -136,7 +136,7 @@ class Consent extends field
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     public function modalAcceptanceText(string $text): Consent
     {
@@ -146,7 +146,7 @@ class Consent extends field
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     public function getAgreementText(): string
     {
@@ -154,7 +154,7 @@ class Consent extends field
     }
 
     /**
-     * @unreleased
+     * @since 0.5.0
      */
     public function agreementText(string $text): Consent
     {
