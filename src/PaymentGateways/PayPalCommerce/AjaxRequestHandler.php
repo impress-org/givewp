@@ -108,13 +108,13 @@ class AjaxRequestHandler
 
         $partnerLinkInfo = $this->settings->getPartnerLinkDetails();
 
-        $payPalResponse = $this->payPalAuth->getTokenFromAuthorizationCode(
-            give_clean($_GET['authCode']),
-            give_clean($_GET['sharedId']),
-            $partnerLinkInfo['nonce']
-        );
-
-        if (! $payPalResponse || array_key_exists('error', $payPalResponse)) {
+        try{
+            $payPalResponse = $this->payPalAuth->getTokenFromAuthorizationCode(
+                give_clean($_GET['authCode']),
+                give_clean($_GET['sharedId']),
+                $partnerLinkInfo['nonce']
+            );
+        } catch ( \Exception $exception ) {
             wp_send_json_error();
         }
 
