@@ -134,9 +134,9 @@ class Webhooks
         try {
             $response = $this->payPalClient
                 ->getHttpClient()
-                ->execute($request)->result;
+                ->execute($request);
 
-            if (200 !== $response->statusCode || ! property_exists($response, 'id')) {
+            if (201 !== $response->statusCode || ! property_exists($response->result, 'id')) {
                 Log::error(
                     'Create PayPal Commerce Webhook Failure',
                     [
@@ -148,7 +148,7 @@ class Webhooks
                 throw new Exception('Failed to create webhook');
             }
 
-            return new WebhookConfig($response->id, $webhookUrl, $events);
+            return new WebhookConfig($response->result->id, $webhookUrl, $events);
         } catch (\Exception $exception) {
             throw new Exception($exception->getMessage());
         }
