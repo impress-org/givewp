@@ -2,15 +2,11 @@
 
 namespace Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk;
 
-use Give\Helpers\ArrayDataSet;
-use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\RefreshToken;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
 use PayPalCheckoutSdk\Core\AccessTokenRequest;
-use PayPalCheckoutSdk\Core\PayPalEnvironment;
 use PayPalCheckoutSdk\Core\RefreshTokenRequest;
-use PayPalHttp\HttpClient;
 use PayPalHttp\HttpRequest;
 use PayPalHttp\Injector;
 
@@ -27,22 +23,7 @@ use PayPalHttp\Injector;
  */
 class AuthorizationInjector implements Injector
 {
-    private $client;
-    private $environment;
-    private $refreshToken;
     public $accessToken;
-
-    /**
-     * Class constructor.
-     *
-     * @since 2.25.0
-     */
-    public function __construct(HttpClient $client, PayPalEnvironment $environment, $refreshToken)
-    {
-        $this->client = $client;
-        $this->environment = $environment;
-        $this->refreshToken = $refreshToken;
-    }
 
     /**
      * Adds an Authorization header to the request.

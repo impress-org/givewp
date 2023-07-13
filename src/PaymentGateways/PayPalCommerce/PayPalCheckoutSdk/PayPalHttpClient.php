@@ -22,19 +22,19 @@ class PayPalHttpClient extends \PayPalCheckoutSdk\Core\PayPalHttpClient
      *
      * @since 2.25.0
      */
-    public function __construct(PayPalEnvironment $environment, $refreshToken = null)
+    public function __construct(PayPalEnvironment $environment)
     {
         parent::__construct($environment);
 
         // Remove existing AuthorizationInjector.
-        foreach ($this->injectors as $index => $injector ) {
+        foreach ($this->injectors as $index => $injector) {
             if ($injector instanceof \PayPalCheckoutSdk\Core\AuthorizationInjector) {
                 unset($this->injectors[$index]);
             }
         }
 
         // Add custom AuthorizationInjector.
-        $this->authInjector = $this->getAuthorizationInjector($environment, $refreshToken);
+        $this->authInjector = $this->getAuthorizationInjector($environment);
         $this->addInjector($this->authInjector);
     }
 
@@ -43,10 +43,10 @@ class PayPalHttpClient extends \PayPalCheckoutSdk\Core\PayPalHttpClient
      *
      * @since 2.25.0
      */
-    private function getAuthorizationInjector($environment, $refreshToken): AuthorizationInjector
+    private function getAuthorizationInjector($environment): AuthorizationInjector
     {
         $merchant = give(MerchantDetail::class);
-        $authorizationInjector = new AuthorizationInjector($this, $environment, $refreshToken);
+        $authorizationInjector = new AuthorizationInjector();
 
         // Set access token if exists.
         if ($merchant->accessToken) {
