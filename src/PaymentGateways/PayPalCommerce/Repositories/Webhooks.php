@@ -159,12 +159,11 @@ class Webhooks
      *
      * @since 2.9.0
      *
-     * @param string $token
      * @param string $webhookId
      *
      * @throws Exception
      */
-    public function updateWebhook($token, $webhookId)
+    public function updateWebhook($webhookId)
     {
         $webhookUrl = $this->webhookRoute->getRouteUrl();
         $requestBody = [

@@ -94,7 +94,7 @@ class WebhookChecker
         // Update the webhook if the return url or events have changed
         if ($webhookUrl !== $webhookConfig->returnUrl || $hasMissingEvents) {
             try {
-                $this->webhooksRepository->updateWebhook($this->merchantDetails->accessToken, $webhookConfig->id);
+                $this->webhooksRepository->updateWebhook($webhookConfig->id);
 
                 $webhookConfig->returnUrl = $webhookUrl;
                 $webhookConfig->events = $registeredEvents;
