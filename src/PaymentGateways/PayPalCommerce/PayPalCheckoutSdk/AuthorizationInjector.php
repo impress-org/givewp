@@ -108,8 +108,8 @@ class AuthorizationInjector implements Injector
     private function registerRefreshTokenCronJob(array $accessToken)
     {
         $refreshToken = give(RefreshToken::class);
-        $merchantDetail = give(MerchantDetail::class);
         $merchantDetailRepository = give(MerchantDetails::class);
+        $merchantDetail = $merchantDetailRepository->getDetails();
 
         $merchantDetail->setTokenDetails($accessToken);
         $merchantDetailRepository->save($merchantDetail);
