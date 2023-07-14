@@ -231,7 +231,7 @@ class PayPalAuth
             'scope',
             'access_token',
             'token_type',
-             'app_id',
+            'app_id',
             'expires_in',
             'nonce'
         ];
