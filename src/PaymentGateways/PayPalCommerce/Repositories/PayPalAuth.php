@@ -122,7 +122,7 @@ class PayPalAuth
 
         $result = (array)$response->result;
 
-        $this->validateAccessToken($result);
+        $this->validateSellerAccessToken($result);
 
         return ArrayDataSet::camelCaseKeys($result);
     }
@@ -218,7 +218,6 @@ class PayPalAuth
      *
      * Sample paypal access token: https://developer.paypal.com/api/rest/authentication/#link-sampleresponse
      *
-     * @unreleased Remove "app_id" from
      * @since 2.25.0
      *
      * @param array $accessToken Access token response from PayPal.
@@ -232,7 +231,7 @@ class PayPalAuth
             'scope',
             'access_token',
             'token_type',
-            // 'app_id', Not required. This does not return when get access token with authorization code.
+             'app_id',
             'expires_in',
             'nonce'
         ];
@@ -248,6 +247,43 @@ class PayPalAuth
             );
 
             throw new Exception('PayPal Commerce: Error retrieving access token');
+        }
+    }
+
+    /**
+     * Validate PayPal seller access token.
+     *
+     * Sample paypal access token: https://developer.paypal.com/docs/multiparty/seller-onboarding/build-onboarding/#link-sampleresponse
+     *
+     * @unreleased
+     *
+     * @param array $sellerAccessToken Seller access token response from PayPal.
+     *
+     * @return void
+     * @throws Exception
+     */
+    private function validateSellerAccessToken(array $sellerAccessToken)
+    {
+        $requiredKeys = [
+            'scope',
+            'access_token',
+            'token_type',
+            'refresh_token',
+            'expires_in',
+            'nonce'
+        ];
+
+        if (array_diff($requiredKeys, array_keys($sellerAccessToken))) {
+            give(Log::class)->error(
+                'PayPal Commerce: Invalid seller access token',
+                [
+                    'category' => 'Payment Gateway',
+                    'source' => 'Paypal Commerce',
+                    'response' => $sellerAccessToken,
+                ]
+            );
+
+            throw new Exception('PayPal Commerce: Error retrieving seller access token');
         }
     }
 }
