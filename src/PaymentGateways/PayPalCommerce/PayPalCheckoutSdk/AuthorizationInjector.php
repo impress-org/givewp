@@ -17,6 +17,7 @@ use PayPalHttp\Injector;
  * Authorization header build with merchant access token.
  * Fresh Merchant access token will be fetched from PayPal if expired, for http request.
  *
+ * @unreleased Remove unnecessary properties and methods.
  * @since 2.25.0
  *
  * @see \PayPalCheckoutSdk\Core\AuthorizationInjector
@@ -82,6 +83,7 @@ class AuthorizationInjector implements Injector
     /**
      * Should save new access token and add a cron job to refresh token.
      *
+     * @unreleased Get latest merchant details from database.
      * @since 2.25.0
      *
      * @return void

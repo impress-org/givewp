@@ -192,6 +192,7 @@ final class MerchantDetail
     /**
      * Get refresh token code.
      *
+     * @unreleased Set default value for empty tokenDetails.
      * @since 2.25.0 Set accessToken property.
      * @since 2.9.0
      *
