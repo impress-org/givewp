@@ -16,10 +16,8 @@ class CustomCardFields extends PaymentMethod {
 		this.recurringChoiceHiddenField = this.form.querySelector( 'input[name="_give_is_donation_recurring"]' );
         this.separator = this.ccFieldsContainer.querySelector( '.separator-with-text' );
 
-        // Display separator if smart buttons are enabled for payment.
-        // Smart buttons enabled when:
-        // - Custom card field display. The hosted fields are not available when donor opted for recurring donation.
-		if (! this.separator && CustomCardFields.canShow(this.form) ) {
+        // Display separator if smart buttons and custom cad fields od hosted card fields are enabled for payment.
+		if (! this.separator && (CustomCardFields.canShow(this.form) || AdvancedCardFields.canShow()) ) {
 			this.separator = this.cardFields.number.el ?
 				this.cardFields.number.el.parentElement.insertAdjacentElement( 'beforebegin', this.separatorHtml() ) :
 				null;
