@@ -25,7 +25,7 @@ class SmartButtons extends PaymentMethod {
      * @return {boolean}
      */
     static canShow() {
-        return 'standard' === givePayPalCommerce.paymentFieldType;
+        return ['standard', 'advanced'].includes(givePayPalCommerce.paymentFieldType);
     }
 
 	/**
