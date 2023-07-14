@@ -30,7 +30,7 @@ class TestGatewayOffsite extends PaymentGateway
     ];
 
     /**
-     * @unreleased
+     * @since 2.30.0
      */
     public function enqueueScript(int $formId)
     {
@@ -128,7 +128,7 @@ class TestGatewayOffsite extends PaymentGateway
     /**
      * An example of using a secureRouteMethod for extending the Gateway API to handle a redirect.
      *
-     * @unreleased update with new gatewayData params
+     * @since 2.30.0 update with new gatewayData params
      * @since 2.21.0 update to use Donation model
      * @since 2.19.0
      *

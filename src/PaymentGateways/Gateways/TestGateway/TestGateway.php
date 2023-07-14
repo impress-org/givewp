@@ -45,7 +45,7 @@ class TestGateway extends PaymentGateway
     }
 
     /**
-     * @unreleased
+     * @since 2.30.0
      */
     public function enqueueScript(int $formId)
     {

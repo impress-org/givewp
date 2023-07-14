@@ -20,7 +20,7 @@ use ReflectionException;
 use ReflectionMethod;
 
 /**
- * @unreleased added enqueueScript() and formSettings() methods.
+ * @since 2.30.0 added enqueueScript() and formSettings() methods.
  * @since 2.18.0
  */
 abstract class PaymentGateway implements PaymentGatewayInterface,
@@ -57,7 +57,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * @unreleased
+     * @since 2.30.0
      */
     public function supportsFormVersions(): array
     {
@@ -79,7 +79,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * Enqueue gateway scripts using WordPress wp_enqueue_script().
      *
-     * @unreleased
+     * @since 2.30.0
      *
      * @return void
      */
@@ -91,7 +91,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * Convenient way of localizing data to the JS gateway object accessible from `this.settings`.
      *
-     * @unreleased
+     * @since 2.30.0
      */
     public function formSettings(int $formId): array
     {

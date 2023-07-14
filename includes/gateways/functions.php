@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Returns a list of all available gateways.
  *
- * @unreleased add filter give_payment_gateways_admin_label
+ * @since 2.30.0 add filter give_payment_gateways_admin_label
  * @since 1.0
  * @return array $gateways All the available gateways
  */

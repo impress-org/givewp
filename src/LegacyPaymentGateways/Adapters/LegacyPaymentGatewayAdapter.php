@@ -44,7 +44,7 @@ class LegacyPaymentGatewayAdapter
     /**
      * First we create a payment, then move on to the gateway processing
      *
-     * @unreleased  Add success, cancel and failed URLs to gateway data.  This will be used in both v2 and v3 forms so gateways can just refer to the gateway data.
+     * @since 2.30.0  Add success, cancel and failed URLs to gateway data.  This will be used in both v2 and v3 forms so gateways can just refer to the gateway data.
      * @since 2.24.0 add support for payment mode
      * @since 2.21.0 Replace give_insert_payment with donation model. Store legacy subscription data in donation meta.
      *             Attach subscription id to donation.
@@ -136,7 +136,7 @@ class LegacyPaymentGatewayAdapter
     }
 
     /**
-     * @unreleased
+     * @since 2.30.0
      */
     protected function getGatewayDataSuccessUrl(int $donationId): string
     {
@@ -150,7 +150,7 @@ class LegacyPaymentGatewayAdapter
     }
 
     /**
-     * @unreleased
+     * @since 2.30.0
      */
     protected function getGatewayDataFailedUrl(int $donationId): string
     {
@@ -164,7 +164,7 @@ class LegacyPaymentGatewayAdapter
     }
 
     /**
-     * @unreleased
+     * @since 2.30.0
      */
     protected function getGatewayDataCancelUrl(int $donationId): string
     {
@@ -327,7 +327,7 @@ class LegacyPaymentGatewayAdapter
     }
 
     /**
-     * @unreleased
+     * @since 2.30.0
      */
     protected function addUrlsToGatewayData(Donation $donation, $gatewayData, PaymentGateway $registeredGateway)
     {

@@ -182,7 +182,7 @@ class Give_Donor_Wall {
 	/**
 	 * Parse shortcode attributes
 	 *
-	 * @unreleased
+	 * @since 2.30.0
 	 * @since  2.2.0
 	 * @access public
 	 *

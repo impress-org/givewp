@@ -21,14 +21,14 @@ interface PaymentGatewayInterface extends SubscriptionModuleInterface
      *
      * This will likely be removed in the future when GiveWP 2.x is no longer supported
      *
-     * @unreleased
+     * @since 2.30.0
      */
     public function supportsFormVersions(): array;
 
     /**
      * Enqueue script for the gateway to display fields and interact with the form
      *
-     * @unreleased
+     * @since 2.30.0
      */
     public function enqueueScript(int $formId);
 
