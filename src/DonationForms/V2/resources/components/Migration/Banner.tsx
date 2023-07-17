@@ -36,7 +36,7 @@ export default function Banner() {
                         <StarsIcon /> {__("What's new", 'give')}
                     </div>
 
-                    {__('The new forms introduced in GiveWP 3.0 which use the Visual Donation Form Builder are called v3 forms. At this time, not all of the existing GiveWP add-ons and gateways are compatible with v3 forms. While we work on making all add-ons compatible, understand that using a v3 form means these features cannot be used. In the meantime, we suggest using the v2 forms when the add-on features are required for that form.', 'give')}
+                    {__('The new forms introduced in GiveWP 3.0 which use the Visual Donation Form Builder are called v3 forms. At this time, not all currently installed GiveWP add-ons and gateways are compatible with v3 forms. While we work on making all add-ons compatible, understand that using a v3 form means these features cannot be used. In the meantime, we suggest using the v2 forms when the add-on features are required for that form.', 'give')}
 
                     <div className={styles.title}>
                         <QuestionMarkIcon /> {__('Add-ons compatibility', 'give')}
