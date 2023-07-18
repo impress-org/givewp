@@ -15,7 +15,7 @@ class SummerSalesBanner extends SaleBanners
     public function getBanners(): array
     {
         $commonBannerInfo = [
-            'accessibleLabel' => __('Black Friday/Giving Tuesday Sale', 'give'),
+            'accessibleLabel' => __('Save 30% on all GiveWP Pricing Plans.', 'give'),
             'leadHeader' => __('Make it yours.', 'give'),
             'contentText' => __(
                 'Purchase any StellarWP product during the sale and get 100% off WP Business Reviews and take 40% off all other brands.',
@@ -29,9 +29,9 @@ class SummerSalesBanner extends SaleBanners
             'endDate' => '2023-07-19 23:59',
         ];
 
-        $has_valid_license = self::hasValidLicenses();
+        $hasValidLicenses = self::hasValidLicenses();
 
-        if ($has_valid_license) {
+        if ($hasValidLicenses) {
             return [
                 array_merge($commonBannerInfo, [
                     'id' => 'bfgt2023stellar',
@@ -84,9 +84,9 @@ class SummerSalesBanner extends SaleBanners
      */
     public function render()
     {
-        $banners = $this->getVisibleBanners();
+        $banner = $this->getVisibleBanners();
 
-        if ( ! empty($banners)) {
+        if ( ! empty($banner)) {
             include __DIR__ . '/resources/views/summer-sales-banner.php';
         }
     }
@@ -115,14 +115,16 @@ class SummerSalesBanner extends SaleBanners
             'peer_to_peer' => 'give-peer-to-peer',
         ];
 
+        $licensedPluginSlugs = self::getLicensedPluginSlugs();
 
-        return sort($requiredPluginSlugs) === sort(self::getAllExistingLicenseSlugs());
+
+        return sort($requiredPluginSlugs) === sort($licensedPluginSlugs);
     }
 
     /**
      * @unreleased
      */
-    public static function getAllExistingLicenseSlugs(): array
+    public static function getLicensedPluginSlugs(): array
     {
         $pluginSlugs = [];
         $licenses = get_option("give_licenses", []);
