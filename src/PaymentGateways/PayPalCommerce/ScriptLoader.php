@@ -143,8 +143,15 @@ EOT;
 
         /* @var MerchantDetail $merchant */
         $merchant = give(MerchantDetail::class);
+
         $scriptId = 'give-paypal-commerce-js';
         $paymentFieldType = give_get_option('paypal_payment_field_type', 'auto');
+
+        // Add hosted fields if payment field type is auto.
+        $paymentComponents[] = 'buttons';
+        if( 'auto' === $paymentFieldType ) {
+            $paymentComponents[] = 'hosted-fields';
+        }
 
         /**
          * List of PayPal query parameters: https://developer.paypal.com/docs/checkout/reference/customize-sdk/#query-parameters
@@ -153,7 +160,7 @@ EOT;
         $payPalSdkQueryParameters = [
             'client-id' => $merchant->clientId,
             'merchant-id' => $merchant->merchantIdInPayPal,
-            'components' => 'hosted-fields,buttons',
+            'components' => implode(',', $paymentComponents),
             'disable-funding' => 'credit',
             'vault' => true,
             'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
