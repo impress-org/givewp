@@ -117,11 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const smartButtons = new SmartButtons($form);
         const customCardFields = new CustomCardFields($form);
 
-        if (
-            SmartButtons.canShow() ||
-            CustomCardFields.canShow($form) ||
-            ! AdvancedCardFields.canShow()
-        ) {
+        if (SmartButtons.canShow() || CustomCardFields.canShow($form)) {
             smartButtons.boot();
         }
 
