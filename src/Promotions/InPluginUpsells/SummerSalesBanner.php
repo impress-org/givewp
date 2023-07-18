@@ -52,7 +52,7 @@ class SummerSalesBanner extends SaleBanners
     /**
      * @unrleased
      */
-    public function loadScripts(): void
+    public function loadScripts()
     {
         wp_enqueue_script(
             'give-in-plugin-upsells-sale-banners',
@@ -74,7 +74,6 @@ class SummerSalesBanner extends SaleBanners
         wp_enqueue_style(
             'give-in-plugin-upsells-summer-sales-banner',
             GIVE_PLUGIN_URL . 'assets/dist/css/admin-summer-sales-banner.css',
-            '1.0.0',
         );
 
         wp_enqueue_style('givewp-admin-fonts');
@@ -83,7 +82,7 @@ class SummerSalesBanner extends SaleBanners
     /**
      * @unreleased
      */
-    public function render(): void
+    public function render()
     {
         $banners = $this->getVisibleBanners();
 
