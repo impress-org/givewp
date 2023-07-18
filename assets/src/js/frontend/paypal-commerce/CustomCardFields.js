@@ -80,8 +80,7 @@ class CustomCardFields extends PaymentMethod {
 	 */
 	static canShow( form ) {
 		return AdvancedCardFields.canShow() &&
-			DonationForm.isRecurringDonation( form ) &&
-			[ 'US', 'AU' ].includes( window.givePayPalCommerce.accountCountry );
+			DonationForm.isRecurringDonation( form );
 	}
 
 	/**
