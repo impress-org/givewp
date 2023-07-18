@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
      *
      * @return {Promise}  PayPal sdk load promise.
      */
-    function loadPayPalScript(form) {
+    async function loadPayPalScript(form) {
         const options = {...givePayPalCommerce.payPalSdkQueryParameters};
         const isRecurring = DonationForm.isRecurringDonation(form);
 
@@ -151,18 +151,31 @@ document.addEventListener('DOMContentLoaded', () => {
         options.vault = !!isRecurring;
         options.currency = Give.form.fn.getInfo('currency_code', jQuery(form));
 
-        return loadScript(options)
+        return await loadScript(options)
     }
 
     /**
-     * @unreleased Add logic to reload PayPal SDK script for donation form, if hosted fields are not available but card smart button disabled.
+     * @unreleased Add logic to reload PayPal SDK script for donation form.
      * @since 2.20.0
      * @param {object} $form
      */
     function loadPayPalSDKScriptForDonationForm($form) {
         loadPayPalScript($form)
+            .then(() => {setupPaymentMethods();})
             .then(() => {
-                setupPaymentMethods();
+                // Check if hosted fields are not available but enabled in admin settings.
+                let payPalComponents = givePayPalCommerce.payPalSdkQueryParameters.components.split(',');
+                const canReloadPayPalComponents = payPalComponents.includes('hosted-fields')
+                    && !AdvancedCardFields.canShow();
+
+                if( canReloadPayPalComponents ) {
+                    // Reset PayPal components to reload hosted fields.
+                    payPalComponents = payPalComponents.filter(component => component !== 'hosted-fields');
+                    givePayPalCommerce.payPalSdkQueryParameters.components = payPalComponents.join(',');
+
+                    // Load PayPal script again.
+                    loadPayPalSDKScriptForDonationForm($form);
+                }
             })
             .catch((e) => {
                 const jQueryForm = jQuery($form);
