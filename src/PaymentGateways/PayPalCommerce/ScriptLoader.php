@@ -144,7 +144,7 @@ EOT;
         /* @var MerchantDetail $merchant */
         $merchant = give(MerchantDetail::class);
         $scriptId = 'give-paypal-commerce-js';
-        $paymentFieldType = give_get_option('paypal_payment_field_type', 'standard');
+        $paymentFieldType = give_get_option('paypal_payment_field_type', 'auto');
 
         /**
          * List of PayPal query parameters: https://developer.paypal.com/docs/checkout/reference/customize-sdk/#query-parameters

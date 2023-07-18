@@ -172,18 +172,21 @@ class PayPalCommerce extends PaymentGateway
             ],
             [
                 'name' => esc_html__('Payment Field Type', 'give'),
-                'desc' => esc_html__('Choose the type of payment field you would like to use.', 'give'),
+                'desc' => sprintf(
+                    esc_html__(
+                        '"Auto" provides the most payment options to the donor as possible, based on your account. "Smart Buttons Only" shows only the payment buttons. There is no "Hosted Only" option at this time due to limitations with PayPal\'s hosted fields. Not sure what this means? %1$sRead here%2$s.',
+                        'give'
+                    ),
+                    '<a href="https://docs.givewp.com/paypal-settings" target="_blank">',
+                    '</a>'
+                ),
                 'id' => 'paypal_payment_field_type',
                 'type' => 'radio_inline',
                 'options' => [
-                    'standard' => esc_html__('Smart Buttons', 'give'),
-                    'advanced' => sprintf(
-                        '%1$s + %2$s',
-                        esc_html__('Smart Buttons', 'give'),
-                        esc_html__('Hosted Fields', 'give')
-                    ),
+                    'auto' => esc_html__('Autos', 'give'),
+                    'smart-buttons' => esc_html__('Smart Buttons Only', 'give'),
                 ],
-                'default' => 'standard',
+                'default' => 'auto',
             ],
             [
                 'name' => esc_html__('PayPal Donations Gateway Settings Docs Link', 'give'),
