@@ -6,25 +6,6 @@
     & ::after {
         box-sizing: border-box;
     }
-
-    display: grid;
-    row-gap: 1.875rem;
-    font-family: 'Open Sans', system-ui, sans-serif;
-
-    #give-in-plugin-upsells & {
-        margin-top: 2rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .give_forms_page_give-payment-history &,
-    .give_forms_page_give-donors &,
-    .post-type-give_forms.post-new-php &,
-    .post-type-give_forms.edit-php & {
-        background-color: #fff;
-        margin: -10px -20px 30px -20px;
-        border-bottom: 1px solid #dbdbdb;
-        padding: 30px 20px;
-    }
 }
 
 .give-sale-banner {
