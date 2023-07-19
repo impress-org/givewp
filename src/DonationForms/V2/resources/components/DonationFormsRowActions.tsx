@@ -70,7 +70,7 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                         hiddenText={item?.name}
                     />
                     <RowAction href={item.permalink} displayText={__('View', 'give')} hiddenText={item?.name} />
-                    {item.migrate && (
+                    {!item.migrate && (
                         <RowAction
                             onClick={addRow(async (id) => {
                                 const response = await fetchAndUpdateErrors(parameters, '/migrate', id, 'POST');
@@ -92,7 +92,7 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                             hiddenText={item?.name}
                         />
                     )}
-                    {item.transfer && (
+                    {item.migrate && !item.transfer && (
                         <RowAction
                             onClick={addRow(async (id) => {
                                 if (!onboardingState.transferOnboardingCompleted) {
