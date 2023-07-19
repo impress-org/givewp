@@ -26,6 +26,7 @@ export interface ListTableProps {
     testMode?: boolean;
     listTableBlankSlate: JSX.Element;
     productRecommendation?: JSX.Element;
+    rowBadge?: (item: object) => JSX.Element | null;
 }
 
 export interface ListTableColumn {
@@ -56,6 +57,7 @@ export const ListTable = ({
     testMode,
     listTableBlankSlate,
     productRecommendation,
+    rowBadge = null,
 }: ListTableProps) => {
     const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>; successes: Array<number>}>({
         errors: [],
@@ -195,6 +197,7 @@ export const ListTable = ({
                                 rowActions={rowActions}
                                 parameters={parameters}
                                 setUpdateErrors={setUpdateErrors}
+                                rowBadge={rowBadge}
                             />
                         </tbody>
                     </table>

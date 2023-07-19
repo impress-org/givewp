@@ -31,6 +31,7 @@ export interface ListTablePageProps {
     listTableBlankSlate: JSX.Element;
     productRecommendation?: JSX.Element;
     banner?: () => JSX.Element;
+    rowBadge?: (item: object) => JSX.Element|null;
 }
 
 export interface FilterConfig {
@@ -73,7 +74,8 @@ export default function ListTablePage({
     paymentMode,
     listTableBlankSlate,
     productRecommendation,
-    banner
+    banner,
+    rowBadge = null,
 }: ListTablePageProps) {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(30);
@@ -240,6 +242,7 @@ export default function ListTablePage({
                                 testMode={testMode}
                                 listTableBlankSlate={listTableBlankSlate}
                                 productRecommendation={productRecommendation}
+                                rowBadge={rowBadge}
                             />
                         </ShowConfirmModalContext.Provider>
                     </CheckboxContext.Provider>

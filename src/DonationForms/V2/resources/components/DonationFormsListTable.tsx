@@ -43,7 +43,7 @@ interface OnboardingStateProps {
 
 const API = new ListTableApi(window.GiveDonationForms);
 
-export const MigrationOnboardingContext = createContext(null);
+export const MigrationOnboardingContext = createContext([]);
 
 export const updateOnboardingOption = async optionName => fetch(window.GiveDonationForms.onboardingApiRoot, {
     method: 'POST',
@@ -92,6 +92,18 @@ const donationFormsFilters: Array<FilterConfig> = [
         options: donationStatus,
     },
 ];
+
+const v2FormBadge = item => {
+    if (item.v2form) {
+        return <div className={styles.v2Badge}>
+            <svg width="4" height="4" viewBox="0 0 4 4" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="2" cy="2" r="2" fill="#2B13BF"/>
+            </svg>
+            V2
+        </div>;
+    }
+    return null;
+}
 
 const donationFormsBulkActions: Array<BulkActionsConfig> = [
     {
@@ -232,6 +244,7 @@ export default function DonationFormsListTable() {
                 filterSettings={donationFormsFilters}
                 listTableBlankSlate={ListTableBlankSlate}
                 banner={MigrationBanner}
+                rowBadge={v2FormBadge}
             >
                 {!!window.GiveNextGen?.newFormUrl && (
                     <a href={window.GiveNextGen.newFormUrl} className={styles.addFormButton}>

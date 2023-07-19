@@ -306,6 +306,27 @@ $button-blue: rgba(8 120 176);
     color: white;
 }
 
+.v2Badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 2px 4px;
+    border-radius: 0 4px 4px 0;
+    background: var(--purple-25, #F4F2FF);
+    color: var(--purple-400, #2B13BF);
+    text-align: center;
+    font-size: 0.6rem;
+    font-weight: 700;
+
+    svg {
+        float: left;
+        margin-top: 8px;
+        margin-left: 4px;
+        margin-right: 4px;
+        fill: var(--purple-400, #2B13BF);
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .container {
         animation: none;
