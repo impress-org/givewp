@@ -76,7 +76,7 @@ class SummerSalesBanner extends SaleBanners
             'give-in-plugin-upsells-summer-sales-banner',
             GIVE_PLUGIN_URL . 'assets/dist/css/admin-summer-sales-banner.css',
             [],
-            GIVE_VERSION,
+            GIVE_VERSION
         );
 
         wp_enqueue_style('givewp-admin-fonts');
