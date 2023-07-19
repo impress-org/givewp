@@ -86,6 +86,17 @@ class BlockCollection implements Arrayable
         return $this->findByNameRecursive($blockName, $blockIndex);
     }
 
+    public function findParentByChildName($blockName, int $blockIndex = 0)
+    {
+        foreach($this->blocks as $block) {
+            if($block->innerBlocks->findByName($blockName)) {
+                return $block;
+            }
+        }
+
+        // @todo Throw exception if not found.
+    }
+
     /**
      * @since 0.4.0
      *
@@ -160,36 +171,38 @@ class BlockCollection implements Arrayable
     /**
      * @since 0.4.0
      */
-    public function prepend(string $blockName, BlockModel $block, int $blockIndex = 0): BlockCollection
+    public function prepend(BlockModel $block): BlockCollection
     {
-        $blockCollection = $this->findByNameRecursive($blockName, $blockIndex);
-
-        if (!$blockCollection) {
-            return $this;
-        }
-
-        $innerBlocks = $blockCollection->innerBlocks->blocks;
-        array_unshift($innerBlocks, $block);
-        $blockCollection->blocks = $innerBlocks;
-
+        array_unshift($this->blocks, $block);
         return $this;
     }
 
     /**
      * @since 0.4.0
      */
-    public function append(string $blockName, BlockModel $block, int $blockIndex = 0): BlockCollection
+    public function append(BlockModel $block): BlockCollection
     {
-        $blockCollection = $this->findByNameRecursive($blockName, $blockIndex);
-
-        if (!$blockCollection) {
-            return $this;
-        }
-
-        $innerBlocks = $blockCollection->innerBlocks->blocks;
-        $innerBlocks[] = $block;
-        $blockCollection->blocks = $innerBlocks;
-
+        $this->blocks[] = $block;
         return $this;
+    }
+
+    public function remove($blockName) {
+        $blockCollection = $this->findByNameRecursive($blockName, 0, 'parent');
+        $innerBlocks = $blockCollection->blocks;
+        $blockIndex = array_search($blockName, array_column($innerBlocks, 'name'));
+        array_splice($innerBlocks, $blockIndex, 1);
+        $blockCollection->blocks = $innerBlocks;
+        return $this;
+    }
+
+    public function walk(callable $callback)
+    {
+        foreach ($this->blocks as $block) {
+            $callback($block);
+
+            if ($block->innerBlocks) {
+                $block->innerBlocks->walk($callback);
+            }
+        }
     }
 }

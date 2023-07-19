@@ -127,21 +127,14 @@ class TestBlockCollection extends TestCase
      */
     public function testPrependAddsNewBlockAsFirstChild()
     {
-        $blockName = 'givewp/block2';
-        $blockIndex = 0;
-        $newBlock = new BlockModel('givewp/newBlock');
-
-        $this->blockCollection->prepend($blockName, $newBlock, $blockIndex);
-
-        $expectedBlocks = $this->blocks;
-        $expectedBlocks[1]->innerBlocks = BlockCollection::make(
-            array_merge(
-                [$newBlock],
-                array_slice($this->blocks[1]->innerBlocks->toArray(), 1)
-            )
+        $collection = BlockCollection::make([
+            new BlockModel('namespace/nested-block', 'namespace/nested-block', true)
+        ])
+        ->prepend(
+            $newBlock = new BlockModel('namespace/new-block', 'namespace/new-block', true)
         );
 
-        $this->assertEquals($expectedBlocks, $this->blockCollection->getBlocks());
+        $this->assertEquals($newBlock, $collection->getBlocks()[0]);
     }
 
     /**
@@ -149,20 +142,13 @@ class TestBlockCollection extends TestCase
      */
     public function testAppendAddsNewBlockAsLastChild()
     {
-        $blockName = 'givewp/block2';
-        $blockIndex = 0;
-        $newBlock = new BlockModel('givewp/newBlock');
-
-        $this->blockCollection->append($blockName, $newBlock, $blockIndex);
-
-        $expectedBlocks = $this->blocks;
-        $expectedBlocks[1]->innerBlocks = BlockCollection::make(
-            array_merge(
-                $this->blocks[1]->innerBlocks->toArray(),
-                [$newBlock]
-            )
+        $collection = BlockCollection::make([
+            new BlockModel('namespace/nested-block', 'namespace/nested-block', true)
+        ])
+        ->append(
+            $newBlock = new BlockModel('namespace/new-block', 'namespace/new-block', true)
         );
 
-        $this->assertEquals($expectedBlocks, $this->blockCollection->getBlocks());
+        $this->assertEquals($newBlock, $collection->getBlocks()[1]);
     }
 }

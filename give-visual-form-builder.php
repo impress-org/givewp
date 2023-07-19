@@ -65,6 +65,7 @@ add_action(
             give()->registerServiceProvider(Promotions\ServiceProviderV3::class);
             give()->registerServiceProvider(Donations\ServiceProviderV3::class);
             give()->registerServiceProvider(Donors\ServiceProviderV3::class);
+            give()->registerServiceProvider(FormMigration\ServiceProvider::class);
         }
     }
 );
