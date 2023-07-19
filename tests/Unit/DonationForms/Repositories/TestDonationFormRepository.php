@@ -13,7 +13,7 @@ use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\FieldsAPI\Form;
+use Give\Framework\FieldsAPI\DonationForm as Form;
 use Give\Framework\FieldsAPI\Hidden;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
@@ -287,6 +287,7 @@ final class TestDonationFormRepository extends TestCase
         $formSchema = $this->repository->getFormSchemaFromBlocks($formId, $blocks);
 
         $form = new Form('donation-form');
+        $form->defaultCurrency('USD');
         $form->append(
             Section::make('section-' . $blockIndex)
                 ->label('custom section title')

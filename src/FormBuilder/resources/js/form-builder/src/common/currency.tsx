@@ -2,9 +2,9 @@ import CurrencyInput, {CurrencyInputProps, formatValue} from 'react-currency-inp
 import {BaseControl} from '@wordpress/components';
 import {useInstanceId} from '@wordpress/compose';
 
-const {currency = 'USD'} = window?.storageData ?? {};
-
 const formatCurrencyAmount = (amount: string) => {
+    const {currency = 'USD'} = window?.storageData ?? {};
+
     return formatValue({
         value: amount,
         intlConfig: {locale: window.navigator.language, currency},
@@ -22,6 +22,7 @@ interface CurrencyControlProps extends CurrencyInputProps {
 }
 
 const CurrencyControl = ({label, help, hideLabelFromVision, ...rest}: CurrencyControlProps) => {
+    const {currency = 'USD'} = window?.storageData ?? {};
     // simplified implementation of useBaseControlProps()
     const uniqueId = useInstanceId(BaseControl, 'wp-components-base-control');
 
@@ -41,7 +42,6 @@ const CurrencyControl = ({label, help, hideLabelFromVision, ...rest}: CurrencyCo
 };
 
 export {
-    currency,
     formatCurrencyAmount,
     Currency,
     CurrencyControl,

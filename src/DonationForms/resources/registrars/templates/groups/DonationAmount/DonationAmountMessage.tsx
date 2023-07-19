@@ -8,14 +8,14 @@ import {isDonationTypeSubscription} from '@givewp/forms/types';
  */
 export default function DonationAmountMessage({
     isFixedAmount,
-    fixedAmountValue,
     subscriptionDetailsAreFixed,
 }) {
     const {useWatch, useCurrencyFormatter} = window.givewp.form.hooks;
 
+    const amount = useWatch({name: 'amount'});
     const currency = useWatch({name: 'currency'});
     const formatter = useCurrencyFormatter(currency);
-    const fixedAmountFormatted = formatter.format(Number(fixedAmountValue));
+    const fixedAmountFormatted = formatter.format(Number(amount));
 
     const donationType = useWatch({name: 'donationType'});
     const subscriptionPeriod = useWatch({name: 'subscriptionPeriod'});

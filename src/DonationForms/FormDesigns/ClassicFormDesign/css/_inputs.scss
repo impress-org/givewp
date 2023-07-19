@@ -22,7 +22,7 @@
     display: none;
 }
 
-select {
+select:not(.givewp-fields-amount__currency-select) {
     border: 0.078rem solid #666;
     border-radius: 0.25rem;
     background-color: #fff;

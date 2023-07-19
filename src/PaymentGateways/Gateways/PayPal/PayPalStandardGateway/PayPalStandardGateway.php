@@ -17,6 +17,14 @@ class PayPalStandardGateway extends PayPalStandard
     use HasScriptAssetFile;
 
     /**
+     * @inheritDoc
+     */
+    public function getLegacyFormFieldMarkup(int $formId, array $args): string
+    {
+        return (new PayPalStandardBillingFields())($formId);
+    }
+
+    /**
      * @since 0.5.0
      */
     public function enqueueScript(int $formId)
@@ -30,14 +38,6 @@ class PayPalStandardGateway extends PayPalStandard
             $assets['version'],
             true
         );
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getLegacyFormFieldMarkup(int $formId, array $args): string
-    {
-        return (new PayPalStandardBillingFields())($formId);
     }
 
     /**

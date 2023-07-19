@@ -1,5 +1,5 @@
 import type {FC} from 'react';
-import type {FormSettings} from '@givewp/form-builder/src/types';
+import {FormSettings} from "@givewp/form-builder/types";
 
 /**
  * Used for a single currency. The amount is an integer in the smallest unit of the currency.
@@ -15,6 +15,15 @@ export interface Currency {
      */
     currency: string;
 }
+
+/**
+ * @unreleased
+ */
+export type CurrencySwitcherSetting = {
+    id: string;
+    exchangeRate: number;
+    gateways: string[];
+};
 
 export interface FormData {
     honorific?: string;
@@ -207,6 +216,8 @@ export interface Form extends Group {
         isMultiStep: boolean;
     };
     nodes: Section[];
+    currencySwitcherSettings?: CurrencySwitcherSetting[];
+    currencySwitcherMessage?: string;
 }
 
 export function isField(node: Node): node is Field {

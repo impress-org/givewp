@@ -24,7 +24,7 @@ export interface GatewayFieldProps extends FieldProps {
 export type GatewayOptionProps = {
     inputProps: UseFormRegisterReturn;
     gateway: Gateway;
-    index: number;
+    defaultChecked: boolean;
 };
 
 export interface SelectFieldProps extends FieldProps {
@@ -78,7 +78,7 @@ export interface BillingAddressProps extends GroupProps {
 
 export interface DonationAmountProps extends GroupProps {
     fields: {
-        amount: FC<AmountProps | {}>;
+        amount: FC<Partial<AmountProps> | {}>;
         donationType: FC<FieldProps | {}>;
         currency: FC<FieldProps | {}>;
         subscriptionFrequency: FC<FieldProps | {}>;
@@ -98,11 +98,11 @@ export interface DonationAmountProps extends GroupProps {
 }
 
 export interface AmountProps extends FieldProps {
-    levels: Number[];
+    levels: number[];
     allowLevels: boolean;
     allowCustomAmount: boolean;
-
     fixedAmountValue: number;
+    messages?: ReactNode;
 }
 
 export interface ParagraphProps extends ElementProps {

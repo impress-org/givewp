@@ -4,6 +4,7 @@ import type {useFormContext, useFormState, useWatch} from 'react-hook-form';
 import defaultFormTemplates from './templates';
 import useCurrencyFormatter from '@givewp/forms/app/hooks/useCurrencyFormatter';
 import useDonationSummary from '@givewp/forms/app/hooks/useDonationSummary';
+import {useDonationFormSettings} from '@givewp/forms/app/store/form-settings';
 
 declare global {
     interface Window {
@@ -19,6 +20,7 @@ declare global {
                     useFormState: typeof useFormState;
                     useCurrencyFormatter: typeof useCurrencyFormatter;
                     useDonationSummary: typeof useDonationSummary;
+                    useDonationFormSettings: typeof useDonationFormSettings;
                 };
             };
         };

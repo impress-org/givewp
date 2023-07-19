@@ -10,6 +10,8 @@ import mountWindowData from '@givewp/forms/app/utilities/mountWindowData';
 import {withTemplateWrapper} from '@givewp/forms/app/templates';
 import DonationFormErrorBoundary from '@givewp/forms/app/errors/boundaries/DonationFormErrorBoundary';
 import MultiStepForm from '@givewp/forms/app/form/MultiStepForm';
+import getDonationFormNodeSettings from '@givewp/forms/app/utilities/getDonationFormNodeSettings';
+import {DonationFormSettingsProvider} from '@givewp/forms/app/store/form-settings';
 
 const formTemplates = window.givewp.form.templates;
 const GoalAchievedTemplate = withTemplateWrapper(formTemplates.layouts.goalAchieved);
@@ -36,28 +38,38 @@ const initialState = {
     validationSchema: schema,
 };
 
+const formSettings = {...form.settings, ...getDonationFormNodeSettings(form)};
+
+/**
+ * @unreleased add DonationFormSettingsProvider
+ * @since 0.1.0
+ */
 function App() {
     if (form.goal.isAchieved) {
         return (
             <DonationFormErrorBoundary>
-                <GoalAchievedTemplate goalAchievedMessage={form.settings.goalAchievedMessage} />
+                <GoalAchievedTemplate goalAchievedMessage={form.settings.goalAchievedMessage}/>
             </DonationFormErrorBoundary>
         );
     }
 
     if (form.design?.isMultiStep) {
         return (
-            <DonationFormStateProvider initialState={initialState}>
-                <MultiStepForm sections={form.nodes} showHeader={form.settings?.showHeader} />
-            </DonationFormStateProvider>
+            <DonationFormSettingsProvider value={formSettings}>
+                <DonationFormStateProvider initialState={initialState}>
+                    <MultiStepForm sections={form.nodes} showHeader={form.settings?.showHeader} />
+                </DonationFormStateProvider>
+            </DonationFormSettingsProvider>
         );
     }
 
     return (
-        <DonationFormStateProvider initialState={initialState}>
-            {form.settings?.showHeader && <Header />}
-            <Form defaultValues={defaultValues} sections={form.nodes} validationSchema={schema} />
-        </DonationFormStateProvider>
+        <DonationFormSettingsProvider value={formSettings}>
+            <DonationFormStateProvider initialState={initialState}>
+                {form.settings?.showHeader && <Header />}
+                <Form defaultValues={defaultValues} sections={form.nodes} validationSchema={schema} />
+            </DonationFormStateProvider>
+        </DonationFormSettingsProvider>
     );
 }
 

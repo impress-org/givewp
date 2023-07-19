@@ -21,6 +21,7 @@ class DonationFormViewModelTest extends TestCase
     use RefreshDatabase;
 
     /**
+     * @unreleased update form export data
      * @since 0.1.0
      */
     public function testExportsShouldReturnExpectedArrayOfData()
@@ -44,7 +45,7 @@ class DonationFormViewModelTest extends TestCase
         $formApi = $donationFormRepository->getFormSchemaFromBlocks(
             $donationForm->id,
             $donationForm->blocks
-        )->jsonSerialize();
+        );
 
         $viewModel = new DonationFormViewModel($donationForm->id, $donationForm->blocks, $donationForm->settings);
 
@@ -56,9 +57,9 @@ class DonationFormViewModelTest extends TestCase
                 'donation-confirmation-receipt-view'
             ],
             'registeredGateways' => $formDataGateways,
-            'form' => array_merge($formApi, [
+            'form' => array_merge($formApi->jsonSerialize(), [
                 'settings' => $donationForm->settings,
-                'currency' => give_get_currency(),
+                'currency' => $formApi->getDefaultCurrency(),
                 'goal' => $donationFormGoalData->toArray(),
                 'stats' => [
                     'totalRevenue' => $totalRevenue,

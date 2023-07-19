@@ -11,7 +11,7 @@ use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\FieldsAPI\Form;
+use Give\Framework\FieldsAPI\DonationForm as DonationFormNode;
 use Give\Framework\FieldsAPI\Hidden;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\Models\ModelQueryBuilder;
@@ -400,10 +400,11 @@ class DonationFormRepository
     }
 
     /**
+     * @unreleased return DonationFormNode
      * @since 0.4.0 append formId to first section instead of last with multistep in mind.
      * @since 0.1.0
      */
-    public function getFormSchemaFromBlocks(int $formId, BlockCollection $blocks): Form
+    public function getFormSchemaFromBlocks(int $formId, BlockCollection $blocks): DonationFormNode
     {
         try {
             $form = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
@@ -428,9 +429,8 @@ class DonationFormRepository
             }
         } catch (Exception $exception) {
             Log::error('Failed converting donation form blocks to fields', compact('formId', 'blocks'));
-
-            $formId = 'donation-form';
-            $form = new Form($formId);
+            
+            $form = new DonationFormNode('donation-form');
         }
 
         Hooks::doAction('givewp_donation_form_schema', $form, $formId);

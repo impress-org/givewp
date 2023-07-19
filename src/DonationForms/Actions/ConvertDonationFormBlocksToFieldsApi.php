@@ -13,12 +13,12 @@ use Give\Framework\Blocks\BlockModel;
 use Give\Framework\FieldsAPI\Authentication;
 use Give\Framework\FieldsAPI\BillingAddress;
 use Give\Framework\FieldsAPI\Contracts\Node;
+use Give\Framework\FieldsAPI\DonationForm;
 use Give\Framework\FieldsAPI\DonationSummary;
 use Give\Framework\FieldsAPI\Email;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
 use Give\Framework\FieldsAPI\Exceptions\TypeNotSupported;
-use Give\Framework\FieldsAPI\Form;
 use Give\Framework\FieldsAPI\Name;
 use Give\Framework\FieldsAPI\Paragraph;
 use Give\Framework\FieldsAPI\PaymentGateways;
@@ -41,18 +41,21 @@ class ConvertDonationFormBlocksToFieldsApi
     protected $currency;
 
     /**
+     * @unreleased return DonationForm Node
      * @since 0.4.0 conditionally append blocks if block has inner blocks. Add blockIndex to inner blocks node converter.
      * @since 0.3.3 conditionally append blocks if block has inner blocks
      * @since 0.1.0
      *
      * @throws TypeNotSupported|NameCollisionException
      */
-    public function __invoke(BlockCollection $blocks, int $formId): Form
+    public function __invoke(BlockCollection $blocks, int $formId): DonationForm
     {
         $this->formId = $formId;
         $this->currency = give_get_currency($formId);
 
-        $form = new Form('donation-form');
+        $form = new DonationForm('donation-form');
+        $form->defaultCurrency($this->currency);
+        
         $blockIndex = 0;
         foreach ($blocks->getBlocks() as $block) {
             $blockIndex++;

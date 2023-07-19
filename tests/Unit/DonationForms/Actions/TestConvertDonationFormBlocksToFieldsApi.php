@@ -6,8 +6,8 @@ use Exception;
 use Give\DonationForms\Actions\ConvertDonationFormBlocksToFieldsApi;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
+use Give\Framework\FieldsAPI\DonationForm as DonationFormNode;
 use Give\Framework\FieldsAPI\Email;
-use Give\Framework\FieldsAPI\Form;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
 use Give\Tests\TestCase;
@@ -53,7 +53,8 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
 
         $formSchema = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
 
-        $form = new Form('donation-form');
+        $form = new DonationFormNode('donation-form');
+        $form->defaultCurrency('USD');
         $form->append(
             Section::make('section-' . $blockIndex)
                 ->label('custom section title')
@@ -117,7 +118,8 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
 
         $formSchema = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
 
-        $form = new Form('donation-form');
+        $form = new DonationFormNode('donation-form');
+        $form->defaultCurrency('USD');
         $form->append(
             Section::make('section-' . $blockIndex)
                 ->label('custom section title')

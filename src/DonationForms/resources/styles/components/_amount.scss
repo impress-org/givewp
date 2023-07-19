@@ -10,12 +10,6 @@ $borderColor: #9A9A9A;
     display: grid;
     row-gap: 1rem;
 
-    &__directions {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
     &__fixed-message {
         background-color: #DAF0E3;
         padding: 0.5rem 1rem;
@@ -23,16 +17,50 @@ $borderColor: #9A9A9A;
         border-radius: 5px;
     }
 
-    &__currency {
-        &--container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.5rem;
-            font-size: 0.8rem;
-            background-color: #E9E9E9;
-            padding: 0.25rem 0.75rem;
-            border-radius: 5px;
+    &__currency-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+        background-color: #E9E9E9;
+        padding: 0.25rem 0.75rem;
+        border-radius: 5px;
+    }
+
+    &__currency-select {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+        background-color: #DAF0E3;
+        padding: 0.25rem 2rem 0.25rem 0.75rem;
+        border-radius: 5px;
+    }
+
+    &__input-label-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__input-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-width: 0.125rem;
+        border-style: solid;
+        border-color: $borderColor;
+        border-radius: 0.5rem;
+        padding: 1rem 0;
+
+        &.invalid {
+            border-color: red;
+        }
+
+        &:focus-within {
+            border-color: var(--givewp-primary-color);
         }
     }
 
@@ -58,38 +86,9 @@ $borderColor: #9A9A9A;
             font-weight: 300;
             color: #828282;
         }
-
-        &--container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-width: 0.125rem;
-            border-style: solid;
-            border-color: $borderColor;
-            border-radius: 0.5rem;
-            padding: 1rem 0;
-
-            &.invalid {
-                border-color: red;
-            }
-
-            &:focus-within {
-                border-color: var(--givewp-primary-color);
-            }
-        }
-
-        &--currency-symbol {
-            display: block;
-            padding-left: 1.5rem;
-            padding-right: 1.5rem;
-            color: rgb(85, 85, 85);
-            font-size: 1.375rem;
-            font-weight: 500;
-            border-right: 1px solid #D9D9D9;
-        }
     }
 
-    &__levels--container {
+    &__levels-container {
         display: grid;
         grid-auto-rows: 1fr;
         grid-template-columns: repeat(2, 1fr);
@@ -157,7 +156,7 @@ $borderColor: #9A9A9A;
         border: 1px solid var(--givewp-primary-color);
         border-radius: 5px;
 
-        .givewp-fields-radio__option--container {
+        .givewp-fields-radio__option-container {
             position: relative;
             display: flex;
             align-items: center;

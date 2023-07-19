@@ -9,7 +9,7 @@ export default function Radio({Label, ErrorMessage, options, inputProps}: RadioF
                 </legend>
                 <div className="givewp-fields-radio__options">
                     {options.map(({value, label}, index) => (
-                        <div key={index} className="givewp-fields-radio__option--container">
+                        <div key={index} className="givewp-fields-radio__option-container">
                             <input type="radio" name={inputProps.name} value={value} {...inputProps} />
                             <label htmlFor={inputProps.name}>{label}</label>
                         </div>
