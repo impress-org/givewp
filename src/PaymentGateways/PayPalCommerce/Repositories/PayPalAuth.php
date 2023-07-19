@@ -8,6 +8,7 @@ use Give\Helpers\ArrayDataSet;
 use Give\Log\Log;
 use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\Requests\GetAccessToken;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
+use RuntimeException;
 
 class PayPalAuth
 {
@@ -49,7 +50,7 @@ class PayPalAuth
      * @param string $client_id
      * @param string $client_secret
      *
-     * @throws Exception
+     * @throws RuntimeException|\Exception
      */
     public function getTokenFromClientCredentials($client_id, $client_secret): array
     {
@@ -71,7 +72,7 @@ class PayPalAuth
                 ]
             );
 
-            throw new Exception('PayPal Commerce: Error retrieving access token with client credentials');
+            throw new RuntimeException('PayPal Commerce: Error retrieving access token with client credentials');
         }
 
         $result = (array)$response->result;
@@ -92,6 +93,7 @@ class PayPalAuth
      * @param string $nonce
      *
      * @return array|null
+     * @throws RuntimeException|\Exception
      */
     public function getTokenFromAuthorizationCode($authCode, $sharedId, $nonce)
     {
@@ -117,7 +119,7 @@ class PayPalAuth
                 ]
             );
 
-            throw new Exception('PayPal Commerce: Error retrieving access token with authorization code');
+            throw new RuntimeException('PayPal Commerce: Error retrieving access token with authorization code');
         }
 
         $result = (array)$response->result;
@@ -216,14 +218,13 @@ class PayPalAuth
     /**
      * Validate PayPal access token.
      *
-     * Sample paypal access token: https://developer.paypal.com/api/rest/authentication/#link-sampleresponse
+     * Sample PayPal access token: https://developer.paypal.com/api/rest/authentication/#link-sampleresponse
      *
      * @since 2.25.0
      *
      * @param array $accessToken Access token response from PayPal.
      *
      * @return void
-     * @throws Exception
      */
     private function validateAccessToken(array $accessToken)
     {
@@ -246,21 +247,21 @@ class PayPalAuth
                 ]
             );
 
-            throw new Exception('PayPal Commerce: Error retrieving access token');
+            throw new RuntimeException('PayPal Commerce: Error retrieving access token');
         }
     }
 
     /**
      * Validate PayPal seller access token.
      *
-     * Sample paypal access token: https://developer.paypal.com/docs/multiparty/seller-onboarding/build-onboarding/#link-sampleresponse
+     * Sample PayPal access token: https://developer.paypal.com/docs/multiparty/seller-onboarding/build-onboarding/#link-sampleresponse
      *
      * @unreleased
      *
      * @param array $sellerAccessToken Seller access token response from PayPal.
      *
      * @return void
-     * @throws Exception
+     * @throws RuntimeException
      */
     private function validateSellerAccessToken(array $sellerAccessToken)
     {
@@ -283,7 +284,7 @@ class PayPalAuth
                 ]
             );
 
-            throw new Exception('PayPal Commerce: Error retrieving seller access token');
+            throw new RuntimeException('PayPal Commerce: Error retrieving seller access token');
         }
     }
 }
