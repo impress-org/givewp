@@ -126,6 +126,10 @@ class TestStripePaymentElementGatewaySubscriptionModule extends TestCase
             new RespondToBrowser([
                 'clientSecret' => $stripeSubscription->latest_invoice->payment_intent->client_secret,
                 'returnUrl' => $gatewayData['successUrl'],
+                'billingDetails' => [
+                    'name' => trim("$donation->firstName $donation->lastName"),
+                    'email' => $donation->email
+                ],
             ])
         );
     }
