@@ -105,6 +105,10 @@ class StripePaymentElementGatewaySubscriptionModule extends SubscriptionModule i
         return new RespondToBrowser([
             'clientSecret' => $stripeSubscription->latest_invoice->payment_intent->client_secret,
             'returnUrl' => $stripeGatewayData->successUrl,
+            'billingDetails' => [
+                'name' => trim("$donation->firstName $donation->lastName"),
+                'email' => $donation->email
+            ],
         ]);
     }
 
