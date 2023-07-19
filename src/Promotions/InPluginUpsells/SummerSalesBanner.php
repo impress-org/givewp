@@ -23,7 +23,6 @@ class SummerSalesBanner extends SaleBanners
             ),
             'actionText' => __('Shop Now', 'give'),
             'alternateActionText' => __('View all StellarWP Deals', 'give'),
-            'actionURL' => 'https://go.givewp.com/ss23give',
             'alternateActionURL' => 'https://go.givewp.com/ss23stellar',
             'startDate' => '2023-07-16 00:00',
             'endDate' => '2023-07-19 23:59',
@@ -36,6 +35,7 @@ class SummerSalesBanner extends SaleBanners
                 array_merge($commonBannerInfo, [
                     'id' => 'bfgt2023stellar',
                     'leadText' => __('Save 30% on all GiveWP Pricing Plans.', 'give'),
+                    'actionURL' => 'https://go.givewp.com/ss23give',
                 ]),
             ];
         }
@@ -44,6 +44,7 @@ class SummerSalesBanner extends SaleBanners
             array_merge($commonBannerInfo, [
                 'id' => 'bfgt2023givewp',
                 'leadText' => __('Save 30% on all StellarWP products.', 'give'),
+                'actionURL' => 'https://go.givewp.com/ss23stellar',
             ]),
         ];
     }
