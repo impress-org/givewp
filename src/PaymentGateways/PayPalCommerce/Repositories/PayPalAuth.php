@@ -9,6 +9,7 @@ use Give\Log\Log;
 use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\Requests\GetAccessToken;
 use Give\PaymentGateways\PayPalCommerce\PayPalClient;
 use RuntimeException;
+use UnexpectedValueException;
 
 class PayPalAuth
 {
@@ -225,6 +226,7 @@ class PayPalAuth
      * @param array $accessToken Access token response from PayPal.
      *
      * @return void
+     * @throws UnexpectedValueException
      */
     private function validateAccessToken(array $accessToken)
     {
@@ -247,7 +249,7 @@ class PayPalAuth
                 ]
             );
 
-            throw new RuntimeException('PayPal Commerce: Error retrieving access token');
+            throw new UnexpectedValueException('PayPal Commerce: Error retrieving access token');
         }
     }
 
@@ -261,7 +263,7 @@ class PayPalAuth
      * @param array $sellerAccessToken Seller access token response from PayPal.
      *
      * @return void
-     * @throws RuntimeException
+     * @throws UnexpectedValueException
      */
     private function validateSellerAccessToken(array $sellerAccessToken)
     {
@@ -284,7 +286,7 @@ class PayPalAuth
                 ]
             );
 
-            throw new RuntimeException('PayPal Commerce: Error retrieving seller access token');
+            throw new UnexpectedValueException('PayPal Commerce: Error retrieving seller access token');
         }
     }
 }
