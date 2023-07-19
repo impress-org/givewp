@@ -24,8 +24,8 @@ class SummerSalesBanner extends SaleBanners
             'actionText' => __('Shop Now', 'give'),
             'alternateActionText' => __('View all StellarWP Deals', 'give'),
             'alternateActionURL' => 'https://go.givewp.com/ss23stellar',
-            'startDate' => '2023-07-16 00:00',
-            'endDate' => '2023-07-19 23:59',
+            'startDate' => '2023-07-24 00:00',
+            'endDate' => '2023-07-31 23:59',
         ];
 
         $hasValidLicenses = self::hasValidLicenses();
