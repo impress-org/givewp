@@ -23,6 +23,10 @@ class DonationFormsAdminPage
      * @var string
      */
     protected $adminUrl;
+    /**
+     * @var string
+     */
+    private $onboardingApiRoot;
 
     public function __construct()
     {
