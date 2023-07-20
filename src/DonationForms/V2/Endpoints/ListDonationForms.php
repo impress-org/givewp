@@ -47,13 +47,13 @@ class ListDonationForms extends Endpoint
                         'type' => 'integer',
                         'required' => false,
                         'default' => 1,
-                        'minimum' => 1
+                        'minimum' => 1,
                     ],
                     'perPage' => [
                         'type' => 'integer',
                         'required' => false,
                         'default' => 30,
-                        'minimum' => 1
+                        'minimum' => 1,
                     ],
                     'status' => [
                         'type' => 'string',
@@ -67,12 +67,12 @@ class ListDonationForms extends Endpoint
                             'trash',
                             'auto-draft',
                             'inherit',
-                            'any'
-                        ]
+                            'any',
+                        ],
                     ],
                     'search' => [
                         'type' => 'string',
-                        'required' => false
+                        'required' => false,
                     ],
                     'sortColumn' => [
                         'type' => 'string',
@@ -84,7 +84,7 @@ class ListDonationForms extends Endpoint
                         'required' => false,
                         'enum' => [
                             'asc',
-                            'desc'
+                            'desc',
                         ],
                     ],
                     'locale' => [
@@ -98,7 +98,7 @@ class ListDonationForms extends Endpoint
                         'default' => 'columns',
                         'enum' => [
                             'model',
-                            'columns'
+                            'columns',
                         ],
                     ],
                 ],
@@ -128,13 +128,21 @@ class ListDonationForms extends Endpoint
             $this->listTable->items($forms, $this->request->get_param('locale') ?? '');
             $items = $this->listTable->getItems();
 
-            foreach($items as &$item ) {
+            foreach ($items as &$item) {
+                $v2form = ! get_post_meta($item['id'], 'formBuilderFields');
+                $migrate = $v2form
+                           && ! get_post_meta($item['id'], 'migratedFormId');
+
+                $transfer = $v2form
+                            && get_post_meta($item['id'], 'migratedFormId')
+                            && ! get_post_meta($item['id'], 'transferredFormId');
+
                 $item['name'] = get_the_title($item['id']);
                 $item['edit'] = get_edit_post_link($item['id'], 'edit');
                 $item['permalink'] = get_permalink($item['id']);
-                $item['migrate'] = (bool)get_post_meta($item['id'], 'migratedFormId');
-                $item['transfer'] = (bool)get_post_meta($item['id'], 'transferredFormId');;
-                $item['v2form'] = ! get_post_meta($item['id'], 'formBuilderFields');
+                $item['migrate'] = $migrate;
+                $item['transfer'] = $transfer;
+                $item['v2form'] = $v2form;
             }
         }
 
@@ -172,7 +180,7 @@ class ListDonationForms extends Endpoint
 
         $donationForms = $query->getAll();
 
-        if (!$donationForms) {
+        if ( ! $donationForms) {
             return [];
         }
 
