@@ -29,8 +29,13 @@ extract($banner[0])
             <div class="give-sale-banner-content__primary-cta">
                 <h1><?= $leadHeader ?></h1>
                 <p><?= $leadText ?></p>
-                <a href="<?= $actionURL ?>" rel="noopener"
-                   target="_blank"><?= $actionText ?></a>
+
+                <a class="give-sale-banner-content__primary-cta-link href="<?= $actionURL ?>" rel="noopener"
+                target="_blank"><?= $actionText ?></a>
+
+                <a class="give-sale-banner-content__primary-cta-mobile-link" href="<?= $alternateActionURL ?>"
+                   rel="noopener"
+                   target="_blank"><?= $alternateActionText ?></a>
             </div>
 
             <div class="give-sale-banner-content__secondary-cta">
