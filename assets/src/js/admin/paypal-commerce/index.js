@@ -1,11 +1,9 @@
-import { GiveConfirmModal } from '../../plugins/modal';
+import { GiveConfirmModal, GiveErrorAlert } from '../../plugins/modal';
 
 window.addEventListener( 'DOMContentLoaded', function() {
 	const donationStatus = document.getElementById( 'give-payment-status' ),
-		  onBoardingButton = document.getElementById( 'js-give-paypal-on-boarding-handler' ),
-		  disconnectPayPalAccountButton = document.getElementById( 'js-give-paypal-disconnect-paypal-account' ),
-		  connectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .connection-setting' ),
-		  disConnectionSettingContainer = document.querySelector( '#give-paypal-commerce-account-manager-field-wrap .disconnection-setting' ),
+		  onBoardingButtons = document.querySelectorAll( 'button.js-give-paypal-on-boarding-handler' ),
+		  disconnectPayPalAccountButtons = document.querySelectorAll( '.js-give-paypal-disconnect-paypal-account' ),
 		  countryField = document.getElementById( 'paypal_commerce_account_country' ),
 		  paypalModalObserver = new MutationObserver( function( mutationsRecord ) {
 			  mutationsRecord.forEach( function( record ) {
@@ -17,6 +15,11 @@ window.addEventListener( 'DOMContentLoaded', function() {
 				} );
 			  } );
 		  } );
+
+    // This object will check if a class added to body or not.
+    // If class added that means modal opened.
+    // If class removed that means modal closed.
+    paypalModalObserver.observe( document.querySelector( 'body' ), { attributes: true, childList: true } );
 
 	if ( donationStatus ) {
 		donationStatus.addEventListener( 'change', ( event ) => {
@@ -42,10 +45,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 			.map( instruction => `<li>${ instruction }</li>` )
 			.join( '' );
 
-		const liveWarning = window.givePayPalCommerce.translations.liveWarning ?
-			`<p class="give-modal__description__warning">${ window.givePayPalCommerce.translations.liveWarning }</p>` :
-			'';
-
 		// eslint-disable-next-line no-undef
 		new Give.modal.GiveSuccessAlert( {
 			classes: {
@@ -56,7 +55,6 @@ window.addEventListener( 'DOMContentLoaded', function() {
 				title: window.givePayPalCommerce.translations.connectSuccessTitle,
 				body: `
 					<div class="give-modal__description">
-						${ liveWarning }
 						<p>${ window.givePayPalCommerce.translations.pciWarning }</p>
 						<ul>${ pciWarnings }</ul>
 					</div>
@@ -71,109 +69,151 @@ window.addEventListener( 'DOMContentLoaded', function() {
 		history.pushState( {}, '', newUrl );
 	}
 
-	/**
-	 * Remove error container.
-	 *
-	 * @since 2.9.6
-	 */
-	function removeErrors() {
-		const errorsContainer = document.querySelector( '.paypal-message-template' );
+	if ( onBoardingButtons.length ) {
+        onBoardingButtons.forEach( function( onBoardingButton ) {
+            onBoardingButton.addEventListener( 'click', function( evt ) {
+                evt.preventDefault();
 
-		if ( errorsContainer ) {
-			errorsContainer.parentElement.remove();
-		}
-	}
+                const mode = onBoardingButton.getAttribute( 'data-mode' );
+                const countryCode = countryField.value;
+                const container = {
+                    $el_container: onBoardingButton.closest( 'td.give-forminp' ),
+                    removeErrors: () => {
+                        const errorsContainer = container.$el_container
+                            .querySelector( '.paypal-message-template' );
 
-	if ( onBoardingButton ) {
-		onBoardingButton.addEventListener( 'click', function( evt ) {
-			evt.preventDefault();
-			removeErrors();
+                        if ( errorsContainer ) {
+                            errorsContainer.parentElement.remove();
+                        }
+                    }
+                }
+                const buttonState = {
+                    enable: () => {
+                        onBoardingButton.disabled = false;
+                        evt.target.innerText = onBoardingButton.getAttribute( 'data-initial-label' );
+                    },
+                    disable: () => {
+                        // Preserve initial label.
+                        if ( ! onBoardingButton.hasAttribute( 'data-initial-label' ) ) {
+                            onBoardingButton.setAttribute( 'data-initial-label', onBoardingButton.innerText );
+                        }
 
-			const countryCode = countryField.value;
-			const buttonState = {
-				enable: () => {
-					onBoardingButton.disabled = false;
-					evt.target.innerText = onBoardingButton.getAttribute( 'data-initial-label' );
-				},
-				disable: () => {
-					// Preserve initial label.
-					if ( ! onBoardingButton.hasAttribute( 'data-initial-label' ) ) {
-						onBoardingButton.setAttribute( 'data-initial-label', onBoardingButton.innerText );
-					}
+                        onBoardingButton.disabled = true;
+                        evt.target.innerText = Give.fn.getGlobalVar( 'loader_translation' ).processing;
+                    },
+                };
+                const paypalErrorQuickHelp = document.getElementById( 'give-paypal-onboarding-trouble-notice' );
 
-					onBoardingButton.disabled = true;
-					evt.target.innerText = Give.fn.getGlobalVar( 'loader_translation' ).processing;
-				},
-			};
+                container.removeErrors();
+                buttonState.disable();
 
-			buttonState.disable();
+                // Hide PayPal quick help message.
+                paypalErrorQuickHelp && paypalErrorQuickHelp.remove();
 
-			// Hide paypal quick help message.
-			const paypalErrorQuickHelp = document.getElementById( 'give-paypal-onboarding-trouble-notice' );
-			paypalErrorQuickHelp && paypalErrorQuickHelp.classList.add( 'give-hidden' );
+                fetch( ajaxurl + `?action=give_paypal_commerce_get_partner_url&countryCode=${ countryCode }&mode=${ mode }` )
+                    .then( response => response.json() )
+                    .then( function( res ) {
+                        if ( true === res.success ) {
+                            const payPalLink = document.querySelector( '[data-paypal-button]' );
 
-			fetch( ajaxurl + `?action=give_paypal_commerce_get_partner_url&countryCode=${ countryCode }` )
-				.then( response => response.json() )
-				.then( function( res ) {
-					if ( true === res.success ) {
-						const payPalLink = document.querySelector( '[data-paypal-button]' );
+                            // Dynamically set callback function name.
+                            payPalLink.setAttribute(
+                                'data-paypal-onboard-complete',
+                                'live' === mode
+                                    ? 'giveLivePayPalOnBoardedCallback'
+                                    : 'giveSandboxPayPalOnBoardedCallback'
+                            );
 
-						payPalLink.href = `${ res.data.partnerLink }&displayMode=minibrowser`;
-						payPalLink.click();
+                            // Set PayPal button link (Partener link).
+                            payPalLink.href = `${ res.data.partnerLink }&displayMode=minibrowser`;
 
-						// This object will check if a class added to body or not.
-						// If class added that means modal opened.
-						// If class removed that means modal closed.
-						paypalModalObserver.observe( document.querySelector( 'body' ), { attributes: true, childList: true } );
-					}
+                            payPalLink.click();
+                        }
 
-					buttonState.enable();
-				} )
-				.then( function() {
-					fetch( ajaxurl + '?action=give_paypal_commerce_onboarding_trouble_notice' )
-						.then( response => response.json() )
-						.then( function( res ) {
-							if ( true === res.success ) {
-								function createElementFromHTML( htmlString ) {
-									const div = document.createElement( 'div' );
-									div.innerHTML = htmlString.trim();
-									return div.firstChild;
-								}
+                        buttonState.enable();
+                    } )
+                    .then( function() {
+                        fetch( ajaxurl + '?action=give_paypal_commerce_onboarding_trouble_notice' )
+                            .then( response => response.json() )
+                            .then( function( res ) {
+                                if ( true === res.success ) {
+                                    function createElementFromHTML( htmlString ) {
+                                        const div = document.createElement( 'div' );
+                                        div.innerHTML = htmlString.trim();
+                                        return div.firstChild;
+                                    }
 
-								const buttonContainer = document.querySelector( '.connect-button-wrap' );
-								paypalErrorQuickHelp && paypalErrorQuickHelp.remove();
-								buttonContainer.append( createElementFromHTML( res.data ) );
-							}
-						} );
-				} );
+                                    const buttonContainer = container.$el_container.querySelector( '.connect-button-wrap' );
+                                    buttonContainer.append( createElementFromHTML( res.data ) );
+                                }
+                            } );
+                    } );
 
-			return false;
-		} );
-	}
+                return false;
+            } );
+        })
+    }
 
-	if ( disconnectPayPalAccountButton ) {
-		disconnectPayPalAccountButton.addEventListener( 'click', function( evt ) {
-			evt.preventDefault();
-			removeErrors();
+    if (disconnectPayPalAccountButtons.length) {
+        disconnectPayPalAccountButtons.forEach(function (disconnectPayPalAccountButton) {
+            disconnectPayPalAccountButton.addEventListener('click', function (evt) {
+                evt.preventDefault();
 
-			new GiveConfirmModal( {
-				modalContent: {
-					title: givePayPalCommerce.translations.confirmPaypalAccountDisconnection,
-					desc: givePayPalCommerce.translations.disconnectPayPalAccount,
-				},
-				successConfirm: () => {
-					connectionSettingContainer.classList.remove( 'give-hidden' );
-					disConnectionSettingContainer.classList.add( 'give-hidden' );
-					countryField.parentElement.parentElement.classList.remove( 'hide-with-position' );
+                const button = evt.target;
+                const ButtonContainerEl = button.closest('div.connect-button-wrap');
+                const connectionSettingEl = ButtonContainerEl.querySelector('div.connection-setting');
+                const disConnectionSettingEl = ButtonContainerEl.querySelector('div.disconnection-setting');
+                let isConfirmed = false;
+                const disconnectPayPalAccountFn = () => {
+                    const formData = new FormData();
+                    const requestData = {};
 
-					let billingSettingContainer = document.querySelector('label[for=\'paypal_commerce_collect_billing_details\']');
-					billingSettingContainer.parentElement.parentElement.classList.add('give-hidden');
+                    // Do nothing if user cancel the confirmation.
+                    if (!isConfirmed) {
+                        return;
+                    }
 
-					fetch( ajaxurl + '?action=give_paypal_commerce_disconnect_account' );
-				},
-			} ).render();
+                    formData.append('action', 'give_paypal_commerce_disconnect_account');
+                    formData.append('mode', button.getAttribute('data-mode'));
 
-			return false;
-		} );
-	}
+                    requestData.method = 'POST';
+                    requestData.body = formData;
+
+                    // Send request to disconnect PayPal account.
+                    fetch(ajaxurl, requestData)
+                        .then(response => response.json())
+                        .then(function (response) {
+                            if (!response.success) {
+                                // Show error message.
+                                new GiveErrorAlert({
+                                    modalContent: {
+                                        desc: response.data.error,
+                                    }
+                                }).render();
+
+                                return;
+                            }
+
+                            connectionSettingEl.classList.remove('give-hidden');
+                            disConnectionSettingEl.classList.add('give-hidden');
+                        });
+
+                };
+
+                // Show confirmation modal.
+                new GiveConfirmModal({
+                    modalContent: {
+                        title: givePayPalCommerce.translations.confirmPaypalAccountDisconnection,
+                        desc: givePayPalCommerce.translations.disconnectPayPalAccount,
+                    },
+                    successConfirm: () => isConfirmed = true,
+                    callbacks: {
+                        afterClose: () => disconnectPayPalAccountFn()
+                    }
+                }).render()
+
+                return false;
+            });
+        });
+    }
 } );

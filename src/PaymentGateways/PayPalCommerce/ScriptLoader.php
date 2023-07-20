@@ -91,32 +91,37 @@ class ScriptLoader
                         ),
                         esc_html__('Implement an SSL certificate to keep your donations secure.', 'give'),
                         esc_html__('Keep plugins up to date to ensure latest security fixes are present.', 'give'),
-                    ],
-                    'liveWarning' => give_is_test_mode() ? esc_html__(
-                        'You have connected your account for test mode. You will need to connect again once you
-						are in live mode.',
-                        'give'
-                    ) : '',
+                    ]
                 ],
             ]
         );
 
         $script = <<<EOT
-				function givePayPalOnBoardedCallback(authCode, sharedId) {
-					const query = '&authCode=' + authCode + '&sharedId=' + sharedId;
-					fetch( ajaxurl + '?action=give_paypal_commerce_user_on_boarded' + query )
-						.then(function(res){ return res.json() })
-						.then(function(res) {
-							if ( true !== res.success ) {
-								alert('Something went wrong!');
-								return;
-							}
+                function giveSandboxPayPalOnBoardedCallback(authCode, sharedId){
+                    givePayPalOnBoardedCallback('sandbox', authCode, sharedId);
+                }
 
-							// Remove PayPal quick help container.
-							const paypalErrorQuickHelp = document.getElementById('give-paypal-onboarding-trouble-notice');
-							paypalErrorQuickHelp && paypalErrorQuickHelp.remove();
-						});
-				}
+                function giveLivePayPalOnBoardedCallback(authCode, sharedId){
+                    givePayPalOnBoardedCallback('live', authCode, sharedId);
+                }
+
+                function givePayPalOnBoardedCallback(mode, authCode, sharedId) {
+                    const query = '&mode=' + mode + '&authCode=' + authCode + '&sharedId=' + sharedId;
+
+                    fetch( ajaxurl + '?action=give_paypal_commerce_user_on_boarded' + query )
+                        .then(function(res){ return res.json() })
+                        .then(function(res) {
+                            if ( true !== res.success ) {
+                                console.log(res);
+                                alert('Something went wrong!');
+                                return;
+                            }
+
+                            // Remove PayPal quick help container.
+                            const paypalErrorQuickHelp = document.getElementById('give-paypal-onboarding-trouble-notice');
+                            paypalErrorQuickHelp && paypalErrorQuickHelp.remove();
+                        });
+                }
 EOT;
 
         wp_add_inline_script(
@@ -142,12 +147,12 @@ EOT;
 
         /**
          * List of PayPal query parameters: https://developer.paypal.com/docs/checkout/reference/customize-sdk/#query-parameters
+         * @since 2.27.1 Removed locale query parameter.
          */
         $payPalSdkQueryParameters = [
             'client-id' => $merchant->clientId,
             'merchant-id' => $merchant->merchantIdInPayPal,
             'components' => 'hosted-fields,buttons',
-            'locale' => get_locale(),
             'disable-funding' => 'credit',
             'vault' => true,
             'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
@@ -208,15 +213,13 @@ EOT;
     /**
      * Get PayPal partner js url.
      *
+     * @since 2.30.0 sandbox PayPal partner js loads slow. So we are using live url for now.
      * @since 2.9.0
      *
      * @return string
      */
     private function getPartnerJsUrl()
     {
-        return sprintf(
-            '%1$swebapps/merchantboarding/js/lib/lightbox/partner.js',
-            give(PayPalClient::class)->getHomePageUrl()
-        );
+        return 'https://www.paypal.com/webapps/merchantboarding/js/lib/lightbox/partner.js';
     }
 }

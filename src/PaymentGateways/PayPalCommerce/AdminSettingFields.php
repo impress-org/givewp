@@ -84,13 +84,8 @@ class AdminSettingFields
                 'selected' => $this->merchantModel->accountCountry ?: $this->settingRepository->getAccountCountry(),
             ]
         );
-
-        $trClass = $this->merchantRepository->accountIsConnected() ?
-            'js-fields-has-custom-saving-logic hide-with-position' :
-            'js-fields-has-custom-saving-logic';
         ?>
-        <tr valign="top" class="<?php
-        echo $trClass; ?>">
+        <tr valign="top" class="js-fields-has-custom-saving-logic">
             <th scope="row" class="titledesc">
                 <label for="give_paypal_commerce_country"><?php
                     esc_html_e('Account Country', 'give'); ?></label>
@@ -100,7 +95,7 @@ class AdminSettingFields
                 printf(
                     '%1$s<div class="give-field-description">%2$s</div>',
                     $settingHtml,
-                    esc_html__('The country your site operates from.', 'give')
+                    esc_html__('The country the PayPal account is based from. Make sure to select before connecting.', 'give')
                 )
                 ?>
             </td>
@@ -117,99 +112,27 @@ class AdminSettingFields
     {
         $recurringAddonInfo = Give_License::get_plugin_by_slug('give-recurring');
         $isRecurringAddonActive = isset($recurringAddonInfo['Status']) && 'active' === $recurringAddonInfo['Status'];
-        ?>
-        <tr valign="top">
-            <th scope="row" class="titledesc">
-                <label for="give_paypal_commerce_country"><?php
-                    esc_html_e('PayPal Connection', 'give'); ?></label>
-            </th>
-            <td class="give-forminp">
-                <div id="give-paypal-commerce-account-manager-field-wrap">
-                    <div class="connect-button-wrap">
-                        <?php
-                        /** @var MerchantDetails $accountRepository */
-                        $accountRepository = give(MerchantDetails::class);
-                        ?>
-                        <div class="button-wrap connection-setting <?php
-                        echo $accountRepository->accountIsConnected() ? 'give-hidden' : ''; ?>">
-                            <div>
-                                <button class="button button-primary button-large"
-                                        id="js-give-paypal-on-boarding-handler">
-                                    <i class="fab fa-paypal"></i>&nbsp;&nbsp;
-                                    <?php
-                                    esc_html_e(
-                                        'Connect with PayPal',
-                                        'give'
-                                    );
-                                    ?>
-                                </button>
-                                <a class="give-hidden" target="_blank"
-                                   data-paypal-onboard-complete="givePayPalOnBoardedCallback" href="#"
-                                   data-paypal-button="true">
-                                    <?php
-                                    esc_html_e('Sign up for PayPal', 'give'); ?>
-                                </a>
-                                <span class="tooltip">
-							<span class="left-arrow"></span>
-							<?php
-                            esc_html_e('Click to get started!', 'give'); ?>
-						</span>
-                            </div>
-                            <span class="give-field-description">
-							<i class="fa fa-exclamation"></i>
-							<?php
-                            esc_html_e('PayPal is currently NOT connected.', 'give'); ?>
-						</span>
-                        </div>
-                        <div class="button-wrap disconnection-setting <?php
-                        echo ! $accountRepository->accountIsConnected() ? 'give-hidden' : ''; ?>">
-                            <div>
-                                <button class="button button-large disabled" disabled="disabled">
-                                    <i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php
-                                    esc_html_e('Connected', 'give'); ?>
-                                </button>
-                            </div>
-                            <div>
-						<span class="give-field-description">
-							<i class="fa fa-check"></i>
-							<?php
-                            printf(
-                                '%1$s <span class="paypal-account-email">%2$s</span>',
-                                esc_html__('Connected for payments as', 'give'),
-                                give(MerchantDetail::class)->merchantId
-                            );
-                            ?>
-						</span>
-                                <span class="actions">
-							<button
-                               id="js-give-paypal-disconnect-paypal-account"><?php
-                                    esc_html_e('Disconnect', 'give'); ?></button>
-						</span>
-                            </div>
-                            <div class="api-access-feature-list-wrap">
-                                <p><?php
-                                    esc_html_e('APIs Connected:', 'give'); ?></p>
-                                <ul>
-                                    <li><?php
-                                        esc_html_e('Payments', 'give'); ?></li>
-                                    <?php
-                                    if ($isRecurringAddonActive) : ?>
-                                        <li><?php
-                                            esc_html_e('Subscriptions', 'give'); ?></li>
-                                    <?php
-                                    endif; ?>
-                                    <li><?php
-                                        esc_html_e('Refunds', 'give'); ?></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <?php
-                        $this->printErrors(); ?>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        <?php
+
+        // Show live PayPal connect button.
+        $paypalLiveSetting = new \stdClass();
+        $paypalLiveSetting->label = esc_html__('PayPal Connection', 'give');
+        $paypalLiveSetting->mode = 'live';
+        $paypalLiveSetting->connectButtonLabel = esc_html__('Connect with PayPal Live', 'give');
+        $paypalLiveSetting->description = esc_html__('PayPal is currently NOT connected.', 'give');
+        $paypalLiveSetting->isRecurringAddonActive = $isRecurringAddonActive;
+        echo $this->getPayPalConnectionSettingView($paypalLiveSetting);
+
+        // Show sandbox PayPal connect button.
+        $paypalSandboxSetting = new \stdClass();
+        $paypalSandboxSetting->label = esc_html__('PayPal Sandbox Connection', 'give');
+        $paypalSandboxSetting->mode = 'sandbox';
+        $paypalSandboxSetting->connectButtonLabel = esc_html__('Connect with PayPal Sandbox', 'give');
+        $paypalSandboxSetting->description = esc_html__(
+            'PayPal sandbox is currently NOT connected. This is a separate PayPal Sandbox account, used for testing. Live PayPal accounts will not work.',
+            'give'
+        );
+        $paypalSandboxSetting->isRecurringAddonActive = $isRecurringAddonActive;
+        echo $this->getPayPalConnectionSettingView($paypalSandboxSetting);
     }
 
     /**
@@ -340,19 +263,16 @@ class AdminSettingFields
      *
      * @since 2.9.6
      */
-    private function printErrors()
+    private function printErrors( MerchantDetails $merchantDetailsRepository )
     {
-        $accountErrors = give(MerchantDetails::class)->getAccountErrors();
-        $hasUnknownPayPalError = isset($_GET['paypal-error']);
+        $accountErrors = $merchantDetailsRepository->getAccountErrors();
 
-        if ( ! empty($accountErrors)) :
+        if (! empty($accountErrors)) :
             ?>
             <div>
-                <p class="error-message"><?php
-                    esc_html_e('Warning, your account is not ready to accept donations.', 'give'); ?></p>
+                <p class="error-message"><?php esc_html_e('Warning, your account is not ready to accept donations.', 'give'); ?></p>
                 <p>
-                    <?php
-                    printf(
+                    <?php printf(
                         '%1$s %2$s',
                         esc_html__(
                             'There is an issue with your PayPal account that is preventing you from being able to accept donations.',
@@ -363,39 +283,46 @@ class AdminSettingFields
                     ?>
                 </p>
                 <div class="paypal-message-template">
-                    <?php
-                    esc_html_e('Greetings!', 'give'); ?><br><br>
-                    <?php
-                    esc_html_e(
+                    <?php esc_html_e('Greetings!', 'give'); ?><br><br>
+                    <?php esc_html_e(
                         'I am trying to connect my PayPal account to the GiveWP plugin for WordPress. I have gone through the onboarding process to connect my account, but when I finish I\'m given the following message from GiveWP:',
                         'give'
-                    ); ?><br>
+                    );
+                    ?><br>
+                    <?php echo $this->formatErrors($accountErrors); ?>
+                    <br>
                     <?php
-                    echo $this->formatErrors($accountErrors); ?>
-                    <br><?php
                     esc_html_e(
                         'Please help me resolve these account errors so I can begin accepting payments via PayPal on GiveWP.',
                         'give'
-                    ); ?>
+                    );
+                    ?>
                 </div>
 
-                <?php
-                if ($this->merchantRepository->accountIsConnected()) : ?>
+                <?php if ($this->merchantRepository->accountIsConnected()) :?>
+                    <?php
+                    $reCheckAccountStatusUrl = add_query_arg(
+                        [
+                            'post_type' => 'give_forms',
+                            'page' => 'give-settings',
+                            'tab' => 'gateways',
+                            'section' => 'paypal',
+                            'group' => 'paypal-commerce',
+                            'paypalStatusCheck' => '1',
+                            'mode' => $merchantDetailsRepository->getMode()
+                        ],
+                        admin_url('edit.php')
+                    );
+                    ?>
                     <p>
-                        <a href="<?php
-                        echo admin_url(
-                            'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal&paypalStatusCheck'
-                        ); ?>">
-                            <?php
-                            esc_html_e('Re-Check Account Status', 'give'); ?>
+                        <a href="<?php echo $reCheckAccountStatusUrl; ?>">
+                            <?php esc_html_e('Re-Check Account Status', 'give'); ?>
                         </a>
                     </p>
-                <?php
-                endif; ?>
+                <?php endif; ?>
 
             </div>
-        <?php
-        endif;
+        <?php endif;
     }
 
     /**
@@ -443,7 +370,7 @@ class AdminSettingFields
 
         $output = implode('', $formattedArray);
 
-        if ( ! $isSingleError) {
+        if (! $isSingleError) {
             $output = sprintf(
                 '<ul class="ul-disc">%1$s</ul>',
                 $output
@@ -451,5 +378,103 @@ class AdminSettingFields
         }
 
         return $output;
+    }
+
+    /**
+     * This function return html for "PayPal Connection" and "PayPal Sandbox Connection".
+     *
+     * @param \stdClass $paypalSetting PayPal setting data.
+     */
+    private function getPayPalConnectionSettingView(\stdClass $paypalSetting): string
+    {
+        ob_start();
+
+        /** @var MerchantDetails $mechantDetailsRepository */
+        $mechantDetailsRepository = give(MerchantDetails::class);
+        $mechantDetailsRepository->setMode($paypalSetting->mode);
+
+        $merchantDetail = $mechantDetailsRepository->getDetails();
+
+        $canShowAccountInformation = $mechantDetailsRepository->accountIsConnected();
+        ?>
+        <tr>
+            <th scope="row" class="titledesc">
+                <label for="give_paypal_commerce_country">
+                    <?php echo $paypalSetting->label ?>
+                </label>
+            </th>
+            <td class="give-forminp">
+                <div class="give-paypal-commerce-account-manager-field-wrap">
+                    <div class="connect-button-wrap">
+                        <div
+                            class="button-wrap connection-setting<?php echo $canShowAccountInformation ? ' give-hidden' : ''; ?>">
+                            <div>
+                                <button class="button button-primary button-large js-give-paypal-on-boarding-handler"
+                                        data-mode="<?php echo $paypalSetting->mode; ?>">
+                                    <i class="fab fa-paypal"></i>&nbsp;&nbsp;
+                                    <?php echo $paypalSetting->connectButtonLabel; ?>
+                                </button>
+                                <?php if ('live' === $paypalSetting->mode): ?>
+                                    <span class="tooltip">
+                                        <span class="left-arrow"></span>
+                                        <?php esc_html_e('Click to get started!', 'give'); ?>
+                                    </span>
+                                    <?php // We are using one PayPal button to handle both sandbox and live mode connection.?>
+                                    <a class="give-hidden" target="PPFrame"
+                                       data-paypal-onboard-complete="givePayPalOnBoardedCallback" href="#"
+                                       data-paypal-button="true">
+                                        <?php esc_html_e('Sign up for PayPal', 'give'); ?>
+                                    </a>
+                                <?php endif; ?>
+                            </div>
+                            <span class="give-field-description">
+                                <i class="fa fa-exclamation"></i><?php echo $paypalSetting->description ?>
+                            </span>
+                        </div>
+                        <div
+                            class="button-wrap disconnection-setting<?php echo ! $canShowAccountInformation ? ' give-hidden' : ''; ?>">
+                            <div>
+                                <button class="button button-large disabled" disabled="disabled">
+                                    <i class="fab fa-paypal"></i>&nbsp;&nbsp;<?php
+                                    esc_html_e('Connected', 'give'); ?>
+                                </button>
+                            </div>
+                            <div>
+                                <span class="give-field-description">
+                                    <i class="fa fa-check"></i>
+                                    <?php
+                                    printf(
+                                        '%1$s <span class="paypal-account-email">%2$s</span>',
+                                        esc_html__('Connected for payments as', 'give'),
+                                        $merchantDetail->merchantId
+                                    );
+                                    ?>
+                                </span>
+                                <span class="actions">
+                                    <button
+                                        class="js-give-paypal-disconnect-paypal-account"
+                                        data-mode="<?php echo $paypalSetting->mode; ?>">
+                                        <?php esc_html_e('Disconnect', 'give'); ?>
+                                    </button>
+                                </span>
+                            </div>
+                            <div class="api-access-feature-list-wrap">
+                                <p><?php esc_html_e('APIs Connected:', 'give'); ?></p>
+                                <ul>
+                                    <li><?php esc_html_e('Payments', 'give'); ?></li>
+                                    <?php if ($paypalSetting->isRecurringAddonActive) : ?>
+                                        <li><?php esc_html_e('Subscriptions', 'give'); ?></li>
+                                    <?php endif; ?>
+                                    <li><?php esc_html_e('Refunds', 'give'); ?></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <?php $this->printErrors($mechantDetailsRepository); ?>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <?php
+        return ob_get_clean();
     }
 }

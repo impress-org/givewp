@@ -439,7 +439,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Fixed
 
 - Custom Fields on the Sequoia template now match alignment (#5669)
-- Add since-unreleased script for updating @unreleased docblocks. (#5602)
+- Add since-unreleased script for updating @since 2.27.1 docblocks. (#5602)
 - Reports endpoints no longer throw an error due to missing $schema property (#5642)
 - Zip Code required field indicator now toggles correctly for the Legacy Form template (#5627)
 
@@ -477,7 +477,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Migrations table (#5580)
 - Legacy functions used for logging are now updated to use the new Logging API (#5614)
 - The new Logs UI is implemented (#5591)
-- Add since-unreleased script for updating @unreleased docblocks. (#5602)
+- Add since-unreleased script for updating @since 2.27.1 docblocks. (#5602)
 
 ### Changed
 

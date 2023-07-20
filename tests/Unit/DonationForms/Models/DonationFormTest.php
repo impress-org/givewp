@@ -2,7 +2,7 @@
 
 namespace Give\Tests\Unit\DonationForms\DataTransferObjects;
 
-use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\V2\Models\DonationForm;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;

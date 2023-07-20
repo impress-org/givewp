@@ -4,6 +4,9 @@ namespace Give\Framework\Support\Facades;
 
 use Give\Log\Log;
 use Money\Converter;
+use Money\Currencies;
+use Money\Currencies\AggregateCurrencies;
+use Money\Currencies\BitcoinCurrencies;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use Money\Exchange\FixedExchange;
@@ -13,10 +16,13 @@ use Money\Money;
 use Money\Parser\DecimalMoneyParser;
 use NumberFormatter;
 
+
 class CurrencyFacade
 {
     /**
      * Immutably converts the given amount into the system currency.
+     *
+     * @since 2.27.3 updated to use aggregated currency list.
      *
      * @since 2.20.0
      *
@@ -32,7 +38,7 @@ class CurrencyFacade
         }
 
         $converter = new Converter(
-            new ISOCurrencies(), new FixedExchange([
+            $this->getCurrenciesList(), new FixedExchange([
                 $amount->getCurrency()->getCode() => [
                     give_get_option('currency', 'USD') => $exchangeRate,
                 ],
@@ -45,13 +51,15 @@ class CurrencyFacade
     /**
      * Creates a new Money instance from a decimal amount
      *
+     * @since 2.27.3 updated to use aggregated currency list.
+     *
      * @since 2.20.0
      *
      * @param string|float|int $amount
      */
     public function parseFromDecimal($amount, string $currency): Money
     {
-        return (new DecimalMoneyParser(new ISOCurrencies()))->parse((string)$amount, new Currency($currency));
+        return (new DecimalMoneyParser($this->getCurrenciesList()))->parse((string)$amount, new Currency($currency));
     }
 
     /**
@@ -62,11 +70,13 @@ class CurrencyFacade
      */
     public function formatToDecimal(Money $amount): string
     {
-        return (new DecimalMoneyFormatter(new ISOCurrencies()))->format($amount);
+        return (new DecimalMoneyFormatter($this->getCurrenciesList()))->format($amount);
     }
 
     /**
      * Formats the amount to a currency format, including currency symbols, in the given locale.
+     *
+     * @since 2.27.3 updated to use aggregated currency list.
      *
      * @since 2.24.2 fallback on give formatting system if intl extension is not available
      * @since 2.20.0
@@ -97,7 +107,7 @@ class CurrencyFacade
         }
 
         $numberFormatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
-        $moneyFormatter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies());
+        $moneyFormatter = new IntlMoneyFormatter($numberFormatter, $this->getCurrenciesList());
 
         return $moneyFormatter->format($amount);
     }
@@ -112,5 +122,18 @@ class CurrencyFacade
     public function getBaseCurrency(): Currency
     {
         return new Currency(give_get_option('currency', 'USD'));
+    }
+
+    /**
+     * Retrieves a list for all supported currencies.
+     *
+     * @since 2.27.3
+     */
+    private function getCurrenciesList(): Currencies
+    {
+        return new AggregateCurrencies([
+            new ISOCurrencies(),
+            new BitcoinCurrencies(),
+        ]);
     }
 }

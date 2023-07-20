@@ -8,7 +8,7 @@
 
 namespace Give\Onboarding\Setup;
 
-use Give\DonationForms\DonationFormsAdminPage;
+use Give\DonationForms\V2\DonationFormsAdminPage;
 
 defined('ABSPATH') || exit;
 

@@ -2,9 +2,11 @@
 
 namespace Give\DonorDashboards\Tabs\Contracts;
 
+use Exception;
 use Give\API\RestRoute;
 use Give\DonorDashboards\Helpers as DonorDashboardHelpers;
 use Give\Log\Log;
+use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -69,6 +71,9 @@ abstract class Route implements RestRoute
         );
     }
 
+    /**
+     * @since 2.26.0 add try/catch to handleRequest
+     */
     public function handleRequestWithDonorIdCheck(WP_REST_Request $request)
     {
         // Check that the provided donor ID is valid
@@ -102,6 +107,14 @@ abstract class Route implements RestRoute
             );
         }
 
-        return $this->handleRequest($request);
+        try {
+            $response = $this->handleRequest($request);
+
+            return rest_ensure_response($response ?? []);
+        } catch (Exception $exception) {
+            $error = new WP_Error('error', $exception->getMessage());
+
+            return rest_ensure_response($error);
+        }
     }
 }

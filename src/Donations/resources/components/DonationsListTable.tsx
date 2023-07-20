@@ -1,11 +1,15 @@
-import {__, sprintf} from '@wordpress/i18n';
+import {__} from '@wordpress/i18n';
 import {ListTablePage} from '@givewp/components';
 import {DonationRowActions} from './DonationRowActions';
 import ListTableApi from '@givewp/components/ListTable/api';
 import tableStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
+import styles from './ListTable.module.scss';
 import {IdBadge} from '@givewp/components/ListTable/TableCell';
 import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import {Interweave} from 'interweave';
+import BlankSlate from '@givewp/components/ListTable/BlankSlate';
+import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
+import {RecommendedProductData} from '@givewp/promotions/hooks/useRecommendations';
 
 declare global {
     interface Window {
@@ -17,6 +21,9 @@ declare global {
             table: {columns: Array<object>};
             paymentMode: boolean;
             manualDonations: boolean;
+            pluginUrl: string;
+            dismissedRecommendations: Array<string>;
+            addonsBulkActions: Array<BulkActionsConfig>;
         };
     }
 }
@@ -123,7 +130,8 @@ const bulkActions: Array<BulkActionsConfig> = [
                 <ul role="document" tabIndex={0}>
                     {selected.map((donationId, index) => (
                         <li key={donationId}>
-                            <IdBadge id={donationId} /> <span>{sprintf(__('from %s', 'give'), names[index])}</span>
+                            <IdBadge id={donationId} /> <span>{__('from', 'give')}</span>
+                            <Interweave content={names[index]} />
                         </li>
                     ))}
                 </ul>
@@ -131,6 +139,66 @@ const bulkActions: Array<BulkActionsConfig> = [
         ),
     },
 ];
+
+/**
+ * Displays a blank slate for the Donations table.
+ * @since 2.27.0
+ */
+const ListTableBlankSlate = (
+    <BlankSlate
+        imagePath={`${window.GiveDonations.pluginUrl}/assets/dist/images/list-table/blank-slate-donations-icon.svg`}
+        description={__('No donations found', 'give')}
+        href={'https://docs.givewp.com/donations'}
+        linkText={__('GiveWP Donations.', 'give')}
+    />
+);
+
+interface DonationTableRecommendations {
+    recurring: RecommendedProductData;
+    feeRecovery: RecommendedProductData;
+    designatedFunds: RecommendedProductData;
+}
+
+/**
+ * @since 2.27.1
+ */
+const RecommendationConfig: DonationTableRecommendations = {
+    recurring: {
+        enum: 'givewp_donations_recurring_recommendation_dismissed',
+        documentationPage: 'https://docs.givewp.com/recurring-donations-list',
+        message: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give'),
+        innerHtml: __('Get More Donations', 'give'),
+    },
+    feeRecovery: {
+        enum: 'givewp_donations_fee_recovery_recommendation_dismissed',
+        documentationPage: 'https://docs.givewp.com/feerecovery-donations-list',
+        message: __(
+            'Raise more money per donation by providing donors with the option to help cover the credit card processing fees.',
+            'give'
+        ),
+        innerHtml: __('Get Fee Recovery', 'give'),
+    },
+    designatedFunds: {
+        enum: 'givewp_donations_designated_funds_recommendation_dismissed',
+        documentationPage: 'https://docs.givewp.com/funds-donations-list',
+        message: __(
+            'Elevate your fundraising campaigns with unlimited donation fund designations, and tailored fundraising reports.',
+            'give'
+        ),
+        innerHtml: __('Start creating designated funds', 'give'),
+    },
+};
+
+const rotatingRecommendation = (
+    <ProductRecommendations
+        options={[
+            RecommendationConfig.recurring,
+            RecommendationConfig.feeRecovery,
+            RecommendationConfig.designatedFunds,
+        ]}
+        apiSettings={window.GiveDonations}
+    />
+);
 
 export default function DonationsListTable() {
     return (
@@ -143,13 +211,34 @@ export default function DonationsListTable() {
             apiSettings={window.GiveDonations}
             filterSettings={filters}
             paymentMode={!!window.GiveDonations.paymentMode}
+            listTableBlankSlate={ListTableBlankSlate}
+            productRecommendation={rotatingRecommendation}
         >
-            {window.GiveDonations.manualDonations && (
+            {window.GiveDonations.manualDonations ? (
                 <a
                     className={tableStyles.addFormButton}
                     href={`${window.GiveDonations.adminUrl}edit.php?post_type=give_forms&page=give-manual-donation`}
                 >
                     {__('New Donation', 'give')}
+                </a>
+            ) : (
+                <a
+                    className={styles.manualDonationsNotice}
+                    href={'https://docs.givewp.com/enterdonation'}
+                    target={'_blank'}
+                >
+                    <span className={styles.manualDonationsAddOn}>{__('ADD-ON', 'give')}</span>
+                    {__('Enter Donations', 'give')}
+                    <span className={styles.manualDonationsMessage}>
+                        <img
+                            src={`${window.GiveDonations.pluginUrl}/assets/dist/images/admin/triangle-tip.svg`}
+                            alt={'manual donations'}
+                        />{' '}
+                        {__(
+                            'Need to add in a record for a donation received elsewhere, or reconcile with the payment gateway? Add donation records with the Manual Donations add-on!',
+                            'give'
+                        )}
+                    </span>
                 </a>
             )}
             <a

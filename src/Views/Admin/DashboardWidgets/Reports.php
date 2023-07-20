@@ -15,7 +15,6 @@ defined('ABSPATH') || exit;
  */
 class Reports
 {
-
     /**
      * Initialize Reports Dashboard Widget
      */
@@ -25,12 +24,8 @@ class Reports
         add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
     }
 
-    public function __construct()
-    {
-        // Do nothing
-    }
-
     // Add dashboard widget
+
     public function add_dashboard_widget()
     {
         $reportsURL = admin_url('/edit.php?post_type=give_forms&page=give-reports');
@@ -73,13 +68,9 @@ class Reports
                 'allTimeStart' => $this->get_all_time_start(),
                 'currency' => give_get_currency(),
                 'testMode' => give_is_test_mode(),
+                'assetsUrl' => GIVE_PLUGIN_URL . 'assets/dist',
             ]
         );
-    }
-
-    public function render_template()
-    {
-        include_once GIVE_PLUGIN_DIR . 'src/Views/Admin/DashboardWidgets/templates/reports-template.php';
     }
 
     public function get_all_time_start()
@@ -102,5 +93,10 @@ class Reports
         $donations = $donations->get_payments();
 
         return isset($donations[0]) ? $donations[0]->date : $start->format('Y-m-d H:i:s');
+    }
+
+    public function render_template()
+    {
+        include_once GIVE_PLUGIN_DIR . 'src/Views/Admin/DashboardWidgets/templates/reports-template.php';
     }
 }
