@@ -38,7 +38,7 @@ export default function MigrationSuccessDialog({handleClose, formId}) {
 
                 <Button
                     size="large"
-                    onClick={ () => console.log(formId) }
+                    onClick={ () => window.location.href = `edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=${formId}`}
                 >
                     {__('Test it out', 'give')}
                 </Button>
