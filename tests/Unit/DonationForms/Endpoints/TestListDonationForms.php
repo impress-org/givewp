@@ -108,9 +108,20 @@ class TestListDonationForms extends TestCase
             foreach ( $columns as $column ) {
                 $expectedItem[$column::getId()] = $column->getCellValue($donationForm);
             }
+            $v2form = ! get_post_meta($donationForm->id, 'formBuilderFields');
+            $migrate = $v2form
+                       && ! get_post_meta($donationForm->id, 'migratedFormId');
+
+            $transfer = $v2form
+                        && get_post_meta($donationForm->id, 'migratedFormId')
+                        && ! get_post_meta($donationForm->id, 'transferredFormId');
+
             $expectedItem['name'] = $donationForm->title;
             $expectedItem['edit'] = get_edit_post_link($donationForm->id, 'edit');
             $expectedItem['permalink'] = get_permalink($donationForm->id);
+            $expectedItem['migrate'] = $migrate;
+            $expectedItem['transfer'] = $transfer;
+            $expectedItem['v2form'] = $v2form;
             $expectedItems[] = $expectedItem;
         }
 
