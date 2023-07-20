@@ -4,15 +4,11 @@ namespace Give\Promotions;
 
 use Give\Helpers\Hooks;
 use Give\Promotions\FreeAddonModal\Controllers\CompleteRestApiEndpoint;
-use Give\Promotions\FreeAddonModal\Controllers\DisplaySettingsButton;
-use Give\Promotions\FreeAddonModal\Controllers\EnqueueModal;
-use Give\Promotions\FreeAddonModal\Controllers\PreventFreshInstallPromotion;
 use Give\Promotions\InPluginUpsells\AddonsAdminPage;
 use Give\Promotions\InPluginUpsells\Endpoints\HideSaleBannerRoute;
 use Give\Promotions\InPluginUpsells\Endpoints\ProductRecommendationsRoute;
 use Give\Promotions\InPluginUpsells\LegacyFormEditor;
 use Give\Promotions\InPluginUpsells\PaymentGateways;
-use Give\Promotions\InPluginUpsells\RecurringDonationsTab;
 use Give\Promotions\InPluginUpsells\SaleBanners;
 use Give\Promotions\InPluginUpsells\SummerSalesBanner;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderContract;

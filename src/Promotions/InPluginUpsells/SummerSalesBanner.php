@@ -2,8 +2,6 @@
 
 namespace Give\Promotions\InPluginUpsells;
 
-use Give\Framework\Shims\Shim;
-
 /**
  * @unrleased
  */
