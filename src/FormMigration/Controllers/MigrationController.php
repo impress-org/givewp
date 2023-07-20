@@ -28,9 +28,8 @@ class MigrationController
 
     public function __invoke($formIdV2)
     {
-        $payload = new FormMigrationPayload(
-            DonationFormV2::find($formIdV2),
-            DonationFormV3::factory()->make()
+        $payload = FormMigrationPayload::fromFormV2(
+            DonationFormV2::find($formIdV2)
         );
 
         give(Pipeline::class)
@@ -53,7 +52,6 @@ class MigrationController
             })
             ->process($payload)
             ->finally(function($payload) {
-                $payload->formV3->save();
                 Log::info(esc_html__('Form migrated from v2 to v3.', 'give'), $this->debugContext);
             });
 

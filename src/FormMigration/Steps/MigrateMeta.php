@@ -10,6 +10,6 @@ class MigrateMeta extends FormMigrationStep
     {
         $oldFormId = $this->formV2->id;
         $newFormId = $this->formV3->id;
-        update_post_meta($newFormId, 'migratedFormId', $oldFormId);
+        give_update_meta( $newFormId, 'migratedFormId', $oldFormId );
     }
 }

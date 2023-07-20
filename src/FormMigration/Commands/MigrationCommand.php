@@ -27,9 +27,8 @@ class MigrationCommand
     {
         [$formIdV2] = $args;
 
-        $payload = new FormMigrationPayload(
-            DonationFormV2::find($formIdV2),
-            DonationFormV3::factory()->make()
+        $payload = FormMigrationPayload::fromFormV2(
+            DonationFormV2::find($formIdV2)
         );
 
         $pipeline = give(Pipeline::class);
@@ -44,7 +43,6 @@ class MigrationCommand
         $pipeline
             ->process($payload)
             ->finally(function($payload) {
-                $payload->formV3->save();
                 WP_CLI::success( 'Migration Complete ' . $payload->formV3->id );
             });
     }
