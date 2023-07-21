@@ -21,15 +21,24 @@ class CurrencySwitcherSetting implements JsonSerializable
      * @var string[]
      */
     protected $gateways = [];
+    /**
+     * @var int
+     */
+    protected $exchangeRateFractionDigits;
 
     /**
      * @unreleased
      */
-    public function __construct(string $id, float $exchangeRate = 0, array $gateways = [])
-    {
+    public function __construct(
+        string $id,
+        float $exchangeRate = 0,
+        array $gateways = [],
+        int $exchangeRateFractionDigits = 2
+    ) {
         $this->id = $id;
         $this->exchangeRate = $exchangeRate;
         $this->gateways = $gateways;
+        $this->exchangeRateFractionDigits = $exchangeRateFractionDigits;
     }
 
     /**
@@ -56,6 +65,16 @@ class CurrencySwitcherSetting implements JsonSerializable
     public function exchangeRate(float $rate): CurrencySwitcherSetting
     {
         $this->exchangeRate = $rate;
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function exchangeRateFractionDigits(int $exchangeRateFractionDigits): CurrencySwitcherSetting
+    {
+        $this->exchangeRateFractionDigits = $exchangeRateFractionDigits;
 
         return $this;
     }

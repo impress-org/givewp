@@ -23,6 +23,7 @@ export type CurrencySwitcherSetting = {
     id: string;
     exchangeRate: number;
     gateways: string[];
+    exchangeRateFractionDigits: number;
 };
 
 export interface FormData {

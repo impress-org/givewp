@@ -54,21 +54,25 @@ export default function DonationAmountCurrencySwitcherMessage({
 }: DonationAmountCurrencySwitcherMessageProps) {
     const {useWatch, useCurrencyFormatter} = window.givewp.form.hooks;
     const currency = useWatch({name: 'currency'});
-    const newCurrencyFormatter = useCurrencyFormatter(currency);
 
     const baseCurrency = currencySettings.find((setting) => setting.exchangeRate === 0)?.id ?? 'USD';
 
     const baseCurrencyFormatter = useCurrencyFormatter(baseCurrency);
 
-    const newCurrencyRate =
-        currencySettings.find((setting) => setting.id === currency)?.exchangeRate.toFixed(2) ?? '1.00';
+    const newCurrencySetting = currencySettings.find((setting) => setting.id === currency);
+
+    const newCurrencyRate = newCurrencySetting?.exchangeRate ?? Number('1.00');
+
+    const newCurrencyRateFormatter = useCurrencyFormatter(currency, {
+        minimumFractionDigits: newCurrencySetting.exchangeRateFractionDigits,
+    });
 
     return (
         <CurrencySwitcherMessage
             baseCurrency={baseCurrency}
             message={message.replace('1.00', baseCurrencyFormatter.format(1))}
             newCurrency={currency}
-            newCurrencyRate={newCurrencyFormatter.format(Number(newCurrencyRate))}
+            newCurrencyRate={newCurrencyRateFormatter.format(newCurrencyRate)}
         />
     );
 }
