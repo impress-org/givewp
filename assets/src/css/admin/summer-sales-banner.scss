@@ -29,7 +29,7 @@
 .give-sale-banner-content {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     gap: 3rem;
     width: 70%;
 
@@ -179,6 +179,7 @@
     .give-sale-banner {
         padding-left: 1rem;
     }
+
     .give-sale-banner-content__secondary-cta {
         display: none;
     }
@@ -190,5 +191,11 @@
     .give-sale-banner__abstract-icon {
         max-width: 8.25rem;
         max-height: 9.5rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .give-sale-banner-content__primary-cta-mobile-link {
+        margin-left: 0;
     }
 }
