@@ -17,4 +17,29 @@ class Phone extends Field
     use Concerns\HasDescription;
 
     const TYPE = 'phone';
+
+    /** @var string */
+    protected $phoneFormat = '';
+
+    /**
+     * Set the phone format for the element.
+     *
+     * @unreleased
+     */
+    public function phoneFormat(string $phoneFormat): self
+    {
+        $this->phoneFormat = $phoneFormat;
+
+        return $this;
+    }
+
+    /**
+     * Get the phone format for the element.
+     *
+     * @unreleased
+     */
+    public function getPhoneFormat(): string
+    {
+        return $this->phoneFormat;
+    }
 }

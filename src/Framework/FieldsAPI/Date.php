@@ -14,4 +14,29 @@ class Date extends Field
     use Concerns\HasDescription;
 
     const TYPE = 'date';
+
+    /** @var string */
+    protected $dateFormat = '';
+
+    /**
+     * Set the date format for the element.
+     *
+     * @unreleased
+     */
+    public function dateFormat(string $dateFormat): self
+    {
+        $this->dateFormat = $dateFormat;
+
+        return $this;
+    }
+
+    /**
+     * Get the date format for the element.
+     *
+     * @unreleased
+     */
+    public function getDateFormat(): string
+    {
+        return $this->dateFormat;
+    }
 }
