@@ -35,7 +35,7 @@
 
     & * {
         font-size: inherit;
-        font-family: Neurial Grotesk;
+        font-family: 'Neurial Grotesk', Montserrat, sans-serif;
     }
 
     a {
@@ -44,8 +44,6 @@
         text-decoration-thickness: 0.05em;
         transform-style: preserve-3d;
         font-size: 0.875rem;
-        font-family: Inconsolata;
-
 
         &::after {
             content: "";
@@ -88,6 +86,7 @@
 
 
         &-link {
+            font-family: 'Inconsolata', Montserrat, sans-serif;;
             margin-top: 1.125rem;
             display: inline-flex;
             padding: 0.73125rem 1.6714375rem;
@@ -124,20 +123,17 @@
     }
 }
 
-.give-sale-banner-action {
-    margin-top: .25rem;
-
-    &__abstract-icon {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-    }
+.give-sale-banner__abstract-icon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
+
 
 .give-sale-banner-dismiss {
     --size: 1.25rem;
     /* Artificially align this with the sale icon, since we shouldn’t use align-items: center on the banner */
-    margin-top: calc((var(--sale-icon-size) - var(--size)) / 2);
+    //margin-top: calc((var(--sale-icon-size) - var(--size)) / 2);
     appearance: none;
     background: none;
     display: grid;
@@ -146,18 +142,17 @@
     width: var(--size);
     height: var(--size);
     border: 0;
-    border-radius: 9999px;
     outline-offset: 0.25rem;
     color: inherit;
     cursor: pointer;
     font-size: inherit;
     transition: color 0.2s, transform 0.2s;
+    z-index: 999;
 
     & svg {
         width: var(--size);
         height: var(--size);
         transition: fill 200ms ease-in-out;
-
         fill: none;
 
         /* This ensures that the event target is the button when clicked. */
@@ -192,7 +187,7 @@
         display: inline-block;
     }
 
-    .give-sale-banner-action__abstract-icon {
+    .give-sale-banner__abstract-icon {
         max-width: 8.25rem;
         max-height: 9.5rem;
     }

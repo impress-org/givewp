@@ -79,6 +79,14 @@ class SummerSalesBanner extends SaleBanners
         );
 
         wp_enqueue_style('givewp-admin-fonts');
+
+        wp_enqueue_style(
+            'Inconsolpata',
+            'https://fonts.googleapis.com/css2?family=Inconsolata&display=swap',
+            [],
+            '1.0',
+            'all'
+        );
     }
 
     /**
