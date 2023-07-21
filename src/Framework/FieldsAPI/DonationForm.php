@@ -42,6 +42,14 @@ class DonationForm extends Form {
     /**
      * @unreleased
      */
+    public function getCurrencySwitcherSettings(): array
+    {
+        return $this->currencySwitcherSettings;
+    }
+
+    /**
+     * @unreleased
+     */
     public function currencySwitcherMessage(string $message): DonationForm
     {
         $this->currencySwitcherMessage = $message;

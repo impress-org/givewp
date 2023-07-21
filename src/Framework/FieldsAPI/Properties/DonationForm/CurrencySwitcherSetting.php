@@ -62,11 +62,27 @@ class CurrencySwitcherSetting implements JsonSerializable
     /**
      * @unreleased
      */
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @unreleased
+     */
     public function exchangeRate(float $rate): CurrencySwitcherSetting
     {
         $this->exchangeRate = $rate;
 
         return $this;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getExchangeRate(): float
+    {
+        return $this->exchangeRate;
     }
 
     /**
@@ -82,10 +98,26 @@ class CurrencySwitcherSetting implements JsonSerializable
     /**
      * @unreleased
      */
+    public function getExchangeRateFractionDigits(): int
+    {
+        return $this->exchangeRateFractionDigits;
+    }
+
+    /**
+     * @unreleased
+     */
     public function gateways(array $gateways): CurrencySwitcherSetting
     {
         $this->gateways = $gateways;
 
         return $this;
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public function getGateways(): array
+    {
+        return $this->gateways;
     }
 }

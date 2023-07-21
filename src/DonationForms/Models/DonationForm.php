@@ -11,7 +11,7 @@ use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\FieldsAPI\Form;
+use Give\Framework\FieldsAPI\DonationForm as Form;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Model;
@@ -131,6 +131,7 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
 
     /**
      *
+     * @unreleased return DonationForm node
      * @since 0.1.0
      */
     public function schema(): Form
