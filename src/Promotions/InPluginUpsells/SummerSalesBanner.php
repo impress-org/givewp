@@ -90,7 +90,7 @@ class SummerSalesBanner extends SaleBanners
     }
 
     /**
-     * @unreleased
+     * @since 2.31.0
      */
     public function render()
     {
@@ -103,7 +103,7 @@ class SummerSalesBanner extends SaleBanners
 
 
     /**
-     * @unreleased
+     * @since 2.31.0
      */
     public static function isShowing(): bool
     {
@@ -113,7 +113,7 @@ class SummerSalesBanner extends SaleBanners
     }
 
     /**
-     * @unreleased
+     * @since 2.31.0
      */
     public static function hasValidLicenses(): bool
     {
@@ -134,7 +134,7 @@ class SummerSalesBanner extends SaleBanners
     }
 
     /**
-     * @unreleased
+     * @since 2.31.0
      */
     public static function getLicensedPluginSlugs(): array
     {
