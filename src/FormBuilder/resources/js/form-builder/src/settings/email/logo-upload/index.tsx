@@ -40,21 +40,23 @@ export default ({value, onChange}) => {
         });
 
         // Finally, open the modal on click
-        frame.open()
-    }
+        frame.open();
+    };
     return (
-        <div style={{display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '8px'}}>
-            <div> {/* Wrapping the TextControl solves a spacing issue */}
-                <TextControl
-                    type={'url'}
-                    label={__('Logo URL', 'givewp')}
-                    value={value}
-                    onChange={onChange}
-                />
+        <div style={{display: 'flex', flexDirection: 'column', marginBottom: '8px', width: '100%'}}>
+            <div>
+                {' '}
+                {/* Wrapping the TextControl solves a spacing issue */}
+                <TextControl type={'url'} label={__('Logo URL', 'givewp')} value={value} onChange={onChange} />
             </div>
-            <Button icon={upload} variant={'secondary'} onClick={openMediaLibrary} style={{width:'100%', justifyContent:'center'}}>
+            <Button
+                icon={upload}
+                variant={'secondary'}
+                onClick={openMediaLibrary}
+                style={{width: '100%', justifyContent: 'center', marginBottom: '8px'}}
+            >
                 {__('Add or upload file', 'givewp')}
             </Button>
         </div>
-    )
-}
+    );
+};

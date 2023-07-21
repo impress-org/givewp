@@ -81,8 +81,16 @@ export default () => {
                         <>
                             <CloseButton label={__('Set and close', 'givewp')} onClick={closeModal} />
                             {/* Note: I tried extracting these to a wrapper component, but that broken focus due to re-renders. */}
-                            <div style={{ display: 'flex', gap: 'var(--givewp-spacing-10)', height: '100%', overflow: 'hidden', flex: 1}}>
-                                <div style={{ flex: '2'}}>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    gap: 'var(--givewp-spacing-10)',
+                                    height: '100%',
+                                    overflow: 'hidden',
+                                    flex: 1,
+                                }}
+                            >
+                                <div style={{flex: '2'}}>
                                     <TabPanel
                                         className={'email-settings-modal-tabs'}
                                         orientation={'vertical' as 'horizontal' | 'vertical' | 'both'}
@@ -90,50 +98,64 @@ export default () => {
                                             return {
                                                 name: notification.id,
                                                 title: notification.title,
-                                            }
+                                            };
                                         })}
                                         initialTabName={emailNotifications[0].id}
                                         state={[selectedTab, setSelectedTab]}
                                     >
                                         {(tab) => (
-                                            <div style={{
-                                                height: '100%',
-                                                overflowX: 'hidden',
-                                                overflowY: 'scroll',
-                                                padding: '20px', // Adjust for scrollbar
-                                            }}>
-                                                <h2 style={{margin:0}}>Notification</h2>
+                                            <div
+                                                style={{
+                                                    height: '100%',
+                                                    overflowX: 'hidden',
+                                                    overflowY: 'auto',
+                                                    padding: '20px', // Adjust for scrollbar
+                                                }}
+                                            >
+                                                <h2 style={{margin: 0}}>Notification</h2>
                                                 <p></p>
                                                 <EmailTemplateSettings notification={tab.name} />
                                             </div>
                                         )}
                                     </TabPanel>
                                 </div>
-                                <div style={{
-                                    flex: '1',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    gap: 'var(--givewp-spacing-6)',
-                                    paddingRight: '10px', // Adjust for overflow
-                                    visibility: 'enabled' === selectedNotificationStatus ? 'visible' : 'hidden',
-                                }}>
-                                    <div style={{flex:1}}>
+                                <div
+                                    style={{
+                                        flex: '1',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        gap: 'var(--givewp-spacing-6)',
+                                        paddingRight: '10px', // Adjust for overflow
+                                        visibility: 'enabled' === selectedNotificationStatus ? 'visible' : 'hidden',
+                                    }}
+                                >
+                                    <div style={{flex: 1}}>
                                         <h2 style={{margin: 0}}>{__('Preview email', 'givewp')}</h2>
-                                        <p>{__('Specify below the email address you want to send a test email to', 'givewp')}</p>
+                                        <p>
+                                            {__(
+                                                'Specify below the email address you want to send a test email to',
+                                                'givewp'
+                                            )}
+                                        </p>
                                         <Button
                                             variant={'secondary'}
-                                            style={{width:'100%',justifyContent:'center'}}
+                                            style={{width: '100%', justifyContent: 'center'}}
                                             onClick={() => setShowPreview(true)}
                                         >
                                             {__('Preview email', 'givewp')}
                                         </Button>
                                     </div>
-                                    <div style={{flex:1}}>
+                                    <div style={{flex: 1}}>
                                         <SendPreviewEmail emailType={selectedTab} />
                                     </div>
-                                    <div style={{flex:3}}>
+                                    <div style={{flex: 3}}>
                                         <h2 style={{margin: 0}}>{__('Template tags', 'givewp')}</h2>
-                                        <p>{__('Available template tags for this email. HTML is accepted. See our documentation for examples of how to use custom meta email tags to output additional donor or donation information in your GiveWP emails', 'givewp')}</p>
+                                        <p>
+                                            {__(
+                                                'Available template tags for this email. HTML is accepted. See our documentation for examples of how to use custom meta email tags to output additional donor or donation information in your GiveWP emails',
+                                                'givewp'
+                                            )}
+                                        </p>
                                         <ul className={'email-template-tags'}>
                                             {emailTemplateTags.map((tag) => (
                                                 <li key={tag.tag}>

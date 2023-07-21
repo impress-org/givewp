@@ -16,9 +16,14 @@
         &.is-active {
             background-color: var(--givewp-grey-25);
         }
+
         &:after {
             background: initial; // Remove the underline.
         }
+    }
+
+    .components-button {
+        text-align: left;
     }
 }
 
