@@ -31,18 +31,19 @@ class SummerSalesBanner extends SaleBanners
         if ($hasValidLicenses) {
             return [
                 array_merge($commonBannerInfo, [
-                    'id' => 'bfgt2023givewp',
-                    'leadText' => __('Save 30% on all GiveWP Pricing Plans.', 'give'),
-                    'actionURL' => 'https://go.givewp.com/ss23give',
+                    'id' => 'bfgt2023stellar',
+                    'leadText' => __('Save 30% on all StellarWP products.', 'give'),
+                    'actionURL' => 'https://go.givewp.com/ss23stellar',
                 ]),
             ];
         }
 
         return [
             array_merge($commonBannerInfo, [
-                'id' => 'bfgt2023stellar',
-                'leadText' => __('Save 30% on all StellarWP products.', 'give'),
-                'actionURL' => 'https://go.givewp.com/ss23stellar',
+                'id' => 'bfgt2023givewp',
+                'leadText' => __('Save 30% on all GiveWP Pricing Plans.', 'give'),
+                'actionURL' => 'https://go.givewp.com/ss23give',
+
             ]),
         ];
     }
