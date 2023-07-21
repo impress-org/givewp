@@ -118,8 +118,10 @@ class SummerSalesBanner extends SaleBanners
 
         $licensedPluginSlugs = self::getLicensedPluginSlugs();
 
+        sort($requiredPluginSlugs);
+        sort($licensedPluginSlugs);
 
-        return sort($requiredPluginSlugs) === sort($licensedPluginSlugs);
+        return $requiredPluginSlugs == $licensedPluginSlugs;
     }
 
     /**
