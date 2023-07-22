@@ -12,7 +12,7 @@
  */
 
 .givewp-next-gen-sidebar.givewp-next-gen-sidebar-primary {
-    input,
+    input:not([type=radio]):not([type=checkbox]),
     textarea,
     .components-form-token-field__input-container {
         width: 100%;
