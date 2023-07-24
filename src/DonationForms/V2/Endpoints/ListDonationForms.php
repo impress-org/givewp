@@ -129,7 +129,7 @@ class ListDonationForms extends Endpoint
             $items = $this->listTable->getItems();
 
             foreach ($items as &$item) {
-                $v2form = ! get_post_meta($item['id'], 'formBuilderFields');
+                $v2form = defined('GIVE_NEXT_GEN_VERSION') && ! get_post_meta($item['id'], 'formBuilderFields');
                 $migrate = $v2form
                            && ! get_post_meta($item['id'], 'migratedFormId');
 
