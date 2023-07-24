@@ -108,7 +108,7 @@ class TestListDonationForms extends TestCase
             foreach ( $columns as $column ) {
                 $expectedItem[$column::getId()] = $column->getCellValue($donationForm);
             }
-            $v2form = ! get_post_meta($donationForm->id, 'formBuilderFields');
+            $v2form = defined('GIVE_NEXT_GEN_VERSION') && ! get_post_meta($donationForm->id, 'formBuilderFields');
             $migrate = $v2form
                        && ! get_post_meta($donationForm->id, 'migratedFormId');
 
