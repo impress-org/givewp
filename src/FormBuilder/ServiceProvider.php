@@ -7,6 +7,7 @@ use Give\FormBuilder\Actions\DequeueAdminScriptsInFormBuilder;
 use Give\FormBuilder\Actions\DequeueAdminStylesInFormBuilder;
 use Give\FormBuilder\Actions\UpdateEmailSettingsMeta;
 use Give\FormBuilder\Actions\UpdateEmailTemplateMeta;
+use Give\FormBuilder\Actions\UpdateFormGridMeta;
 use Give\FormBuilder\EmailPreview\Routes\RegisterEmailPreviewRoutes;
 use Give\FormBuilder\Routes\CreateFormRoute;
 use Give\FormBuilder\Routes\EditFormRoute;
@@ -54,6 +55,7 @@ class ServiceProvider implements ServiceProviderInterface
         });
 
         add_action('givewp_form_builder_updated', static function (DonationForm $form) {
+            give(UpdateFormGridMeta::class)->__invoke($form);
             give(UpdateEmailSettingsMeta::class)->__invoke($form);
             give(UpdateEmailTemplateMeta::class)->__invoke($form);
         });

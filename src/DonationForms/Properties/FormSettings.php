@@ -127,6 +127,26 @@ class FormSettings implements Arrayable, Jsonable
     public $emailFromEmail;
 
     /**
+     * @var boolean
+     */
+    public $formGridCustomize;
+
+    /**
+     * @var string
+     */
+    public $formGridRedirectUrl;
+
+    /**
+     * @var string
+     */
+    public $formGridDonateButtonText;
+
+    /**
+     * @var boolean
+     */
+    public $formGridHideDocumentationLink;
+
+    /**
      * @since 0.1.0
      */
     public static function fromArray(array $array): self
@@ -165,8 +185,13 @@ class FormSettings implements Arrayable, Jsonable
             'give'
         );
         $self->formStatus = !empty($array['formStatus']) ? new DonationFormStatus($array['formStatus']) : DonationFormStatus::DRAFT();
-        $self->emailTemplateOptions = $array['emailTemplateOptions'] ?? [];
 
+        $self->formGridCustomize = $array['formGridCustomize'] ?? false;
+        $self->formGridRedirectUrl = $array['formGridRedirectUrl'] ?? '';
+        $self->formGridDonateButtonText = $array['formGridDonateButtonText'] ?? '';
+        $self->formGridHideDocumentationLink = $array['formGridHideDocumentationLink'] ?? false;
+
+        $self->emailTemplateOptions = $array['emailTemplateOptions'] ?? [];
 
         $self->emailOptionsStatus = $array['emailOptionsStatus'] ?? 'global';
 
