@@ -148,10 +148,11 @@ class FormMetaDecorator extends FormModelDecorator
         return give_get_meta( $this->form->id, '_give_agree_text', true );
     }
 
-    public function isOfflineDonationsEnabled()
+    public function isOfflineDonationsCustomized()
     {
         return give_is_setting_enabled(
-            give_get_meta( $this->form->id, '_give_customize_offline_donations', true )
+            give_get_meta( $this->form->id, '_give_customize_offline_donations', true ),
+            'custom'
         );
     }
 

@@ -12,6 +12,7 @@ import {
     ReceiptSettings,
     RegistrationSettings,
     FormGridSettings,
+    OfflineDonationsSettings,
 } from '../../../settings';
 import {PopoutSlot} from '../popout';
 import {useEffect} from 'react';
@@ -43,7 +44,7 @@ const tabs = [
                 <FormGridSettings />
                 <EmailSettings />
                 {/*The settings below have not been implemented yet.*/}
-                {/*<OfflineDonationsSettings/>*/}
+                <OfflineDonationsSettings/>
             </>
         ),
     },

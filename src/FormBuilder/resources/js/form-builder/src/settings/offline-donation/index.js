@@ -5,7 +5,7 @@ import DonationInstructions from './donation-instructions';
 
 const OfflineDonationsSettings = () => {
     const {
-        settings: {enableOfflineDonations, enableBillingFields},
+        settings: {offlineDonationsCustomize},
     } = useFormState();
     const dispatch = useFormStateDispatch();
 
@@ -21,17 +21,6 @@ const OfflineDonationsSettings = () => {
             </PanelRow>
             {enableOfflineDonations && (
                 <>
-                    <PanelRow>
-                        <ToggleControl
-                            label={__('Enable Billing Fields', 'give')}
-                            help={__(
-                                "DThis option will enable the billing details section for this form's offline donation payment gateway. The fieldset will appear above the offline donation instructions.",
-                                'give'
-                            )}
-                            checked={enableBillingFields}
-                            onChange={() => dispatch(setFormSettings({enableBillingFields: !enableBillingFields}))}
-                        />
-                    </PanelRow>
                     <PanelRow>
                         <DonationInstructions />
                     </PanelRow>

@@ -9,7 +9,7 @@ class OfflineDonations extends FormMigrationStep
 {
     public function canHandle(): bool
     {
-        return $this->formV2->isOfflineDonationsEnabled();
+        return $this->formV2->isOfflineDonationsCustomized();
     }
 
     public function process()

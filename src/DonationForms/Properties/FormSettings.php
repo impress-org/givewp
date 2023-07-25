@@ -147,6 +147,16 @@ class FormSettings implements Arrayable, Jsonable
     public $formGridHideDocumentationLink;
 
     /**
+     * @var boolean
+     */
+    public $offlineDonationsCustomize;
+
+    /**
+     * @var string
+     */
+    public $offlineDonationsInstructions;
+
+    /**
      * @since 0.1.0
      */
     public static function fromArray(array $array): self
@@ -202,6 +212,10 @@ class FormSettings implements Arrayable, Jsonable
         $self->emailFromEmail = $array['emailFromEmail'] ?? '';
 
         $self->emailLogo = $array['emailLogo'] ?? '';
+
+        $self->offlineDonationsCustomize = $array['offlineDonationsCustomize'] ?? false;
+
+        $self->offlineDonationsInstructions = $array['offlineDonationsInstructions'] ?? '';
 
         return $self;
     }
