@@ -2,6 +2,11 @@
 
 namespace Give\Framework\WordPressLibraries;
 
+/**
+ * @abstract
+ *
+ * @unreleased
+ */
 abstract class WPAsyncRequest
 {
 

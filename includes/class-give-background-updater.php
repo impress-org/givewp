@@ -9,12 +9,13 @@ use Give\Framework\WordPressLibraries\WPBackgroundProcess;
  * updates in the background.
  *
  * @package    Give/Classes
- * @deprecated Please see.
  *
  * @class      Give_Background_Updater
  * @version    2.0.0
  * @category   Class
  * @author     GiveWP
+ *
+ * @deprecated Use src/Framework/WordPressLibraries.
  */
 if ( ! defined('ABSPATH')) {
     exit;

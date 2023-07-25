@@ -2,16 +2,11 @@
 
 namespace Give\Framework\WordPressLibraries;
 
-/**
- * WP Background Process
- *
- * @package WP-Background-Processing
- */
 
 /**
- * Abstract WP_Background_Process class.
- *
  * @abstract
+ *
+ * @unreleased
  */
 abstract class WPBackgroundProcess extends WPAsyncRequest
 {
