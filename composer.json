@@ -26,7 +26,8 @@
     "autoload": {
         "psr-4": {
             "Give\\": "src/"
-        }
+        },
+        "files": ["src/FormMigration/functions.php"]
     },
     "autoload-dev": {
         "psr-4": {
