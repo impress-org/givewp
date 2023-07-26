@@ -90,9 +90,9 @@ class DonationFormsAdminPage
             'table' => give(DonationFormsListTable::class)->toArray(),
             'adminUrl' => $this->adminUrl,
             'pluginUrl' => GIVE_PLUGIN_URL,
-            'showMigrationOnboarding' => ! give_get_option('show_migration_onboarding'),
-            'migrationOnboardingCompleted' => (bool)give_get_option('migration_onboarding_completed'),
-            'transferOnboardingCompleted' => (bool)give_get_option('transfer_onboarding_completed'),
+            'showMigrationOnboarding' => defined('GIVE_NEXT_GEN_VERSION') && ! give_get_option('show_migration_onboarding'),
+            'migrationOnboardingCompleted' => defined('GIVE_NEXT_GEN_VERSION') && give_get_option('migration_onboarding_completed'),
+            'transferOnboardingCompleted' => defined('GIVE_NEXT_GEN_VERSION') && give_get_option('transfer_onboarding_completed'),
             'unsupportedAddons' => $this->getUnsupportedAddons(),
         ];
 
