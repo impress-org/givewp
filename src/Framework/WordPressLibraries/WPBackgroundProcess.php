@@ -298,7 +298,7 @@ abstract class WPBackgroundProcess extends WPAsyncRequest
             )
         );
 
-        $batch = new stdClass();
+        $batch = new \stdClass();
         $batch->key = $query->$column;
         $batch->data = maybe_unserialize($query->$value_column);
 
