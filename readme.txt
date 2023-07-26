@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
 Tested up to: 6.2
 Requires PHP: 7.0
-Stable tag: 2.30.0
+Stable tag: 2.31.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -258,6 +258,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.31.0: July 21st, 2023 =
+* Feature: New banner added to the plugin page for annual summer discounts
+
 = 2.30.0: July 12th, 2023 =
 * Feature: Attributes of the [give_donor_wall] shortcode can now be filtered.
 * Feature: Added state label and list of states for the v3 form billing address block. Existing functionality is not modified.
