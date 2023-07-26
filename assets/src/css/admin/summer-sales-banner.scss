@@ -1,0 +1,201 @@
+.give-sale-banners-container {
+    /* Box-sizing reset */
+    &,
+    & *,
+    & ::before,
+    & ::after {
+        box-sizing: border-box;
+    }
+
+    overflow: hidden;
+}
+
+.give-sale-banner {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    background: #1D202F;
+    min-height: 180px;
+    --banner-y-pad: 0.6875em;
+    padding-top: var(--banner-y-pad);
+    padding-bottom: var(--banner-y-pad);
+    padding-left: 3.25em;
+    padding-right: 1.3125em;
+    box-shadow: 0 0.0625em 0.25em rgba(0, 0, 0, 0.25);
+    font-size: clamp(max(0.875rem, 14px), 2vw, max(1rem, 16px));
+    color: #F9FAF9;
+}
+
+.give-sale-banner-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    width: 70%;
+
+    & * {
+        font-size: inherit;
+        font-family: 'Neurial Grotesk', Montserrat, sans-serif;
+    }
+
+    a {
+        color: inherit;
+        font-weight: 700;
+        text-decoration-thickness: 0.05em;
+        transform-style: preserve-3d;
+        font-size: 0.875rem;
+
+        &::after {
+            content: "";
+            position: absolute;
+            transform: translateZ(-1px);
+            display: block;
+            background-color: #fff;
+            height: calc(100% + 0.2em);
+            width: calc(100% + 0.6em);
+            top: -0.1em;
+            left: -0.3em;
+            opacity: 0;
+            box-shadow: 0 0.0625em 0.125em rgba(0, 0, 0, 0.05);
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        &:focus {
+            outline: none;
+            box-shadow: none;
+        }
+    }
+
+    &__primary-cta {
+        width: fit-content;
+
+        > h1 {
+            font-size: 1.5rem;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            color: #F9FAF9;
+        }
+
+        > p {
+            font-size: 1.375rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
+
+
+        &-link {
+            font-family: 'Inconsolata', Montserrat, sans-serif;;
+            margin-top: 1.125rem;
+            display: inline-flex;
+            padding: 0.73125rem 1.6714375rem;
+            justify-content: center;
+            align-items: center;
+            background: #62B265;
+            border-radius: 9999px;
+            text-decoration: none;
+            margin-right: auto;
+        }
+
+        &-mobile-link {
+            display: none;
+            margin: 1rem 0 0 1rem;
+            color: #fff;
+            background: none;
+        }
+    }
+
+    &__secondary-cta {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1.125rem;
+    }
+
+    & p {
+        display: flex;
+        flex-wrap: wrap;
+        row-gap: 0.25rem;
+        column-gap: 0.9375em;
+        margin: 0;
+        line-height: 1.37;
+    }
+}
+
+.give-sale-banner__abstract-icon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+
+.give-sale-banner-dismiss {
+    --size: 1.25rem;
+    /* Artificially align this with the sale icon, since we shouldn’t use align-items: center on the banner */
+    //margin-top: calc((var(--sale-icon-size) - var(--size)) / 2);
+    appearance: none;
+    background: none;
+    display: grid;
+    place-content: center;
+    padding: 0;
+    width: var(--size);
+    height: var(--size);
+    border: 0;
+    outline-offset: 0.25rem;
+    color: inherit;
+    cursor: pointer;
+    font-size: inherit;
+    transition: color 0.2s, transform 0.2s;
+    z-index: 999;
+
+    & svg {
+        width: var(--size);
+        height: var(--size);
+        transition: fill 200ms ease-in-out;
+        fill: none;
+
+        /* This ensures that the event target is the button when clicked. */
+        pointer-events: none;
+    }
+
+    &:hover {
+        transform: scale(1.15);
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
+}
+
+@media screen and (max-width: 1100px) {
+    .give-sale-banner-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media screen and (max-width: 770px) {
+    .give-sale-banner {
+        padding-left: 1rem;
+    }
+
+    .give-sale-banner-content__secondary-cta {
+        display: none;
+    }
+
+    .give-sale-banner-content__primary-cta-mobile-link {
+        display: inline-block;
+    }
+
+    .give-sale-banner__abstract-icon {
+        max-width: 8.25rem;
+        max-height: 9.5rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .give-sale-banner-content__primary-cta-mobile-link {
+        margin-left: 0;
+    }
+}
