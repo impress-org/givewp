@@ -183,7 +183,7 @@ class PayPalCommerce extends PaymentGateway
                 'id' => 'paypal_payment_field_type',
                 'type' => 'radio_inline',
                 'options' => [
-                    'auto' => esc_html__('Autos', 'give'),
+                    'auto' => esc_html__('Auto', 'give'),
                     'smart-buttons' => esc_html__('Smart Buttons Only', 'give'),
                 ],
                 'default' => 'auto',
