@@ -41,7 +41,7 @@
         box-sizing: inherit;
     }
 
-    input,
+    input:not([type=radio]):not([type=checkbox]),
     select,
     .components-text-control__input,
     .components-select-control__input {
