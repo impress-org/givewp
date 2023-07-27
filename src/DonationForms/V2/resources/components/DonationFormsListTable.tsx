@@ -22,7 +22,6 @@ declare global {
             pluginUrl: string;
             showMigrationOnboarding: boolean;
             migrationOnboardingCompleted: boolean;
-            transferOnboardingCompleted: boolean;
             unsupportedAddons: Array<string>;
         };
 
@@ -34,7 +33,6 @@ declare global {
 
 interface OnboardingStateProps {
     migrationOnboardingCompleted: boolean;
-    transferOnboardingCompleted: boolean;
     showMigrationSuccessDialog: boolean;
     showTransferSuccessDialog: boolean;
     formId: number | null;
@@ -94,7 +92,7 @@ const donationFormsFilters: Array<FilterConfig> = [
 ];
 
 const v2FormBadge = item => {
-    if (item.v2form) {
+    if (!item.v3form) {
         return <div className={styles.v2Badge}>
             <svg width="4" height="4" viewBox="0 0 4 4" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="2" cy="2" r="2" fill="#2B13BF"/>
@@ -215,7 +213,6 @@ export default function DonationFormsListTable() {
 
     const [state, setState] = useState<OnboardingStateProps>({
         migrationOnboardingCompleted: Boolean(window.GiveDonationForms.migrationOnboardingCompleted),
-        transferOnboardingCompleted: Boolean(window.GiveDonationForms.transferOnboardingCompleted),
         showMigrationSuccessDialog: false,
         showTransferSuccessDialog: false,
         formId: null,
@@ -261,7 +258,7 @@ export default function DonationFormsListTable() {
             {!state.migrationOnboardingCompleted && state.showMigrationSuccessDialog && (
                 <MigrationSuccessDialog formId={state.formId} handleClose={closeMigrationSuccessDialog} />
             )}
-            {!state.transferOnboardingCompleted && state.showTransferSuccessDialog && (
+            {state.showTransferSuccessDialog && (
                 <TransferSuccessDialog formId={state.formId} formName={state.formName} handleClose={closeTransferSuccessDialog} />
             )}
         </MigrationOnboardingContext.Provider>
