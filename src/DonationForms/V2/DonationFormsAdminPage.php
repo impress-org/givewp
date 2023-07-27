@@ -229,10 +229,29 @@ class DonationFormsAdminPage
     {
         $unsupportedAddons = [
             [
-                'Tributes' => true, //class_exists('Give_Tributes'),
-                'Funds' => true,
-                'Test' => true,
-                'Another Test' => true,
+                'Tributes' => class_exists('Give_Tributes'),
+                'Funds' => defined('GIVE_FUNDS_ADDON_NAME'),
+                'Recurring Donation' => class_exists('Give_Recurring'),
+                'Currency Switcher' => class_exists('Give_Currency_Switcher'),
+                'Form Field Manager' => class_exists('Give_Form_Fields_Manager'),
+                'Fee Recovery' => class_exists('Give_Fee_Recovery'),
+                'Peer-to-Peer' => defined('GIVE_P2P_NAME'),
+                'PDF Receipts' => class_exists('Give_PDF_Receipts'),
+                'Manual Donations' => class_exists('Give_Manual_Donations'),
+                'Gift Aid' => class_exists('Give_Gift_Aid'),
+                'Annual Receipts' => class_exists('Give_Annual_Receipts'),
+                'MailChimp' => class_exists('Give_MailChimp'),
+                'Text-to-Give' => defined('GIVE_TEXT_TO_GIVE_ADDON_NAME'),
+                'Donation Block for Stripe' => defined('DONATION_BLOCK_FILE'),
+                'Double the Donation' => defined('GIVE_DTD_NAME'),
+                'Donation Upsells for WooCommerce' => class_exists('Give_WooCommerce'),
+                'Simple Social Shout' => class_exists('SIMPLE_SOCIAL_SHARE_4_GIVEWP'),
+                'Receipt Attachments' => defined('GIVERA_VERSION'),
+                'Per Form Gateways' => class_exists('Give_Per_Form_Gateways'),
+                'Per Form Confirmations' => class_exists('Per_Form_Confirmations_4_GIVEWP'),
+                'Form Countdown' => class_exists('Give_Form_Countdown'),
+                'ActiveCampaign' => class_exists('Give_ActiveCampaign'),
+                'Constant Contact' => class_exists('Give_Constant_Contact'),
             ],
         ];
 
