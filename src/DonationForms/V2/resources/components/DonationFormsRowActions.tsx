@@ -99,6 +99,7 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                                     ...prev,
                                     showTransferSuccessDialog: true,
                                     formName: item?.name,
+                                    formId: id
                                 }))
 
                                 return await fetchAndUpdateErrors(parameters, '/transfer', id, 'POST')
