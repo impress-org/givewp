@@ -128,6 +128,7 @@ trait StripePaymentElementRepository
     }
 
     /**
+     * @unreleased no longer store the intent secret
      * @since 0.3.0
      *
      * @return void
@@ -150,12 +151,6 @@ trait StripePaymentElementRepository
             'donationId' => $donation->id,
             'content' => sprintf(__('Stripe Payment Intent Client Secret: %s', 'give'), $intent->client_secret)
         ]);
-
-        give_update_meta(
-            $donation->id,
-            '_give_stripe_payment_intent_client_secret',
-            $intent->client_secret
-        );
     }
 
     /**
