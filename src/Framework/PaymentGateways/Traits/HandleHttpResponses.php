@@ -19,7 +19,7 @@ trait HandleHttpResponses
     public function handleResponse($type)
     {
         if ($type instanceof RedirectResponse) {
-            if (isset($_SERVER['CONTENT_TYPE']) && str_contains($_SERVER['CONTENT_TYPE'], "application/json")) {
+            if ($this->shouldSendAsJson()) {
                 wp_send_json([
                     'type' => 'redirect',
                     'data' => [
@@ -59,5 +59,18 @@ trait HandleHttpResponses
 
         give_set_error('PaymentGatewayException', $message);
         give_send_back_to_checkout();
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return bool
+     */
+    protected function shouldSendAsJson(): bool
+    {
+        return isset($_SERVER['CONTENT_TYPE']) && (str_contains(
+                    $_SERVER['CONTENT_TYPE'],
+                    "application/json"
+                ) || str_contains($_SERVER['CONTENT_TYPE'], "multipart/form-data"));
     }
 }
