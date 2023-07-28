@@ -16,12 +16,12 @@ use Give\Framework\Database\DB;
  *
  * @return void Note: $formId is an "output argument" - not a return value.
  */
-function givewp_migrated_form_id(&$formId, &...$extraReference) {
+function give_redirect_form_id(&$formId, &...$extraReference) {
     global $wpdb;
 
     if(is_array($formId)) {
         foreach($formId as &$id) {
-            givewp_migrated_form_id($id);
+            give_redirect_form_id($id);
         }
     } else {
         $formId = absint(DB::get_var(
@@ -29,7 +29,7 @@ function givewp_migrated_form_id(&$formId, &...$extraReference) {
                 "
                     SELECT `form_id`
                     FROM `{$wpdb->prefix}give_formmeta`
-                    WHERE `meta_key` = 'migratedFormId'
+                    WHERE `meta_key` = 'redirectedFormId'
                       AND `meta_value` = %d",
                 $formId
             )
