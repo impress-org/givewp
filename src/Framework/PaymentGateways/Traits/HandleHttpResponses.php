@@ -11,6 +11,7 @@ trait HandleHttpResponses
     /**
      * Handle Response
      *
+     * @unreleased add support for multipart/form-data content-type
      * @since 2.27.0 add support for json content-type
      * @since 2.18.0
      *
@@ -62,6 +63,11 @@ trait HandleHttpResponses
     }
 
     /**
+     * This checks the server content-type to determine how to respond.
+     *
+     * v2 GiveWP forms uses content-type application/x-www-form-urlencoded
+     * v3 GiveWP forms uses content-type application/json and/or multipart/form-data
+     *
      * @unreleased
      *
      * @return bool
@@ -71,7 +77,7 @@ trait HandleHttpResponses
         if (!isset($_SERVER['CONTENT_TYPE'])) {
             return false;
         }
-        
+
         $contentType = isset($_SERVER['CONTENT_TYPE']);
 
         return str_contains($contentType, "application/json") || str_contains($contentType, "multipart/form-data");
