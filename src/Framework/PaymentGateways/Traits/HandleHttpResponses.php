@@ -68,9 +68,12 @@ trait HandleHttpResponses
      */
     protected function shouldSendAsJson(): bool
     {
-        return isset($_SERVER['CONTENT_TYPE']) && (str_contains(
-                    $_SERVER['CONTENT_TYPE'],
-                    "application/json"
-                ) || str_contains($_SERVER['CONTENT_TYPE'], "multipart/form-data"));
+        if (!isset($_SERVER['CONTENT_TYPE'])) {
+            return false;
+        }
+        
+        $contentType = isset($_SERVER['CONTENT_TYPE']);
+
+        return str_contains($contentType, "application/json") || str_contains($contentType, "multipart/form-data");
     }
 }
