@@ -40,3 +40,43 @@ function give_redirect_form_id(&$formId, &...$extraReference) {
         }
     }
 }
+
+/**
+ * @param $formId
+ *
+ * @return bool
+ */
+function give_is_form_migrated($formId) {
+    global $wpdb;
+
+    return (bool) DB::get_var(
+        DB::prepare(
+            "
+                    SELECT `form_id`
+                    FROM `{$wpdb->prefix}give_formmeta`
+                    WHERE `meta_key` = 'migratedFormId'
+                      AND `meta_value` = %d",
+            $formId
+        )
+    );
+}
+
+/**
+ * @param $formId
+ *
+ * @return bool
+ */
+function give_is_form_donations_transferred($formId) {
+    global $wpdb;
+
+    return (bool) DB::get_var(
+        DB::prepare(
+            "
+                    SELECT `form_id`
+                    FROM `{$wpdb->prefix}give_formmeta`
+                    WHERE `meta_key` = 'transferredFormId'
+                      AND `meta_value` = %d",
+            $formId
+        )
+    );
+}
