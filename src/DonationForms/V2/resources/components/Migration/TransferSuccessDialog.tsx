@@ -125,7 +125,7 @@ export default function TransferSuccessDialog({handleClose, formName, formId}) {
                 'Content-Type': 'application/json',
                 'X-WP-Nonce': window.GiveDonationForms.apiNonce
             },
-            body: JSON.stringify(params)
+            body: JSON.stringify({...params, formId})
         }).then((response) => {
             setState(prev => ({
                 ...prev,
