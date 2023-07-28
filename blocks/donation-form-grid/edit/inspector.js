@@ -213,7 +213,7 @@ const Inspector = ({attributes, setAttributes}) => {
                 </PanelBody>
             </Panel>
             <Panel>
-                <PanelBody title= {__('Grid Settings', 'give')} initialOpen={ true }>
+                <PanelBody className="give-donation-form-grid--grid-settings" title= {__('Grid Settings', 'give')} initialOpen={ true }>
                     <SelectControl
                         className="give-form-grid-inspector"
                         label={__('Order By', 'give')}
