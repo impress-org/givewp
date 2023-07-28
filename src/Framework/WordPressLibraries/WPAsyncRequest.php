@@ -3,7 +3,7 @@
 namespace Give\Framework\WordPressLibraries;
 
 /**
- * @abstract
+ *  This is a fork of WP_Async_Request that adds GiveWP namespaces to prevent conflicts with other plugins.
  *
  * @unreleased
  */

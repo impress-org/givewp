@@ -4,7 +4,7 @@ namespace Give\Framework\WordPressLibraries;
 
 
 /**
- * @abstract
+ * This is a fork of WP_Background_Process that  adds GiveWP namespaces to prevent conflicts with other plugins.
  *
  * @unreleased
  */
