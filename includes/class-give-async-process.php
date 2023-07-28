@@ -1,5 +1,6 @@
 <?php
 /**
+ * @deprecated Use src/Framework/WordPressLibraries.
  * Background Process
  *
  * Uses https://github.com/A5hleyRich/wp-background-processing to handle DB
