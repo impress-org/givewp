@@ -33,7 +33,7 @@ class RemovePaymentIntentSecretMeta extends Migration
      */
     public static function timestamp()
     {
-        return strtotime('2020-08-20 00:00:00');
+        return strtotime('2023-06-29 00:00:00');
     }
 
     /**
