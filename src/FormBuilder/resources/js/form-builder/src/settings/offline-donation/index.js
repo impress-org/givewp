@@ -5,7 +5,7 @@ import DonationInstructions from './donation-instructions';
 
 const OfflineDonationsSettings = () => {
     const {
-        settings: {offlineDonationsCustomize},
+        settings: {enableOfflineDonations, offlineDonationsCustomize},
     } = useFormState();
     const dispatch = useFormStateDispatch();
 
