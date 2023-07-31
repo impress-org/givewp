@@ -54,7 +54,11 @@ const HeaderContainer = ({
         dispatch(setFormSettings({formStatus}))
 
         Storage.save({blocks, formSettings: {...formSettings, formStatus}})
-            .catch((error) => alert(error.message))
+            .catch((error) => {
+                dispatch(setIsDirty(false));
+                setSaving(null);
+                alert(error.message);
+            })
             .then(({pageSlug}: FormSettings) => {
                 dispatch(setFormSettings({pageSlug}));
                 dispatch(setIsDirty(false));
