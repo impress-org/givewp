@@ -3,6 +3,7 @@
 namespace Give\Framework\FieldsAPI;
 
 use Give\Framework\ValidationRules\Rules\AllowedTypes;
+use Give\Framework\ValidationRules\Rules\File as FileRule;
 
 use function get_allowed_mime_types;
 use function wp_max_upload_size;
@@ -10,7 +11,8 @@ use function wp_max_upload_size;
 /**
  * A file upload field.
  *
- * @since      2.12.0
+ * @unreleased Updated to use the new Validation File Rule
+ * @since 2.12.0
  * @since 2.23.1 Moved default rule values inline since inherited constructor is final.
  */
 class File extends Field
@@ -25,20 +27,17 @@ class File extends Field
 
     /**
      * Set the maximum file size.
-     *
-     * @param int $maxSize
-     *
-     * @return $this
      */
-    public function maxSize($maxSize)
+    public function maxSize(int $maxSize): File
     {
-        if ($this->hasRule('max')) {
-            /** @var Max $rule */
-            $rule = $this->getRule('max');
+        if ($this->hasRule('file')) {
+            /** @var FileRule $rule */
+            $rule = $this->getRule('file');
             $rule->size($maxSize);
         }
 
-        $this->rules("max:$maxSize");
+        // TODO: add support for file:maxSize
+        $this->rules((new FileRule())->size($maxSize));
 
         return $this;
     }
@@ -48,21 +47,22 @@ class File extends Field
      */
     public function getMaxSize(): int
     {
-        if (!$this->hasRule('max')) {
+        if (!$this->hasRule('file')) {
             return wp_max_upload_size();
         }
 
-        return $this->getRule('max')->getSize();
+        /** @var FileRule $rule */
+        $rule = $this->getRule('file');
+
+        return $rule->getSize();
     }
 
     /**
      * Set the allowed file types.
      *
-     * @param string[] $allowedTypes
-     *
-     * @return $this
+     * @param  string[]  $allowedTypes
      */
-    public function allowedTypes(array $allowedTypes)
+    public function allowedTypes(array $allowedTypes): File
     {
         if ($this->hasRule('allowedTypes')) {
             /** @var AllowedTypes $rule */
@@ -80,12 +80,15 @@ class File extends Field
      *
      * @return string[]
      */
-    public function getAllowedTypes()
+    public function getAllowedTypes(): array
     {
         if (!$this->hasRule('allowedTypes')) {
             return get_allowed_mime_types();
         }
 
-        return $this->getRule('allowedTypes')->getAllowedTypes();
+        /** @var AllowedTypes $rule */
+        $rule = $this->getRule('allowedTypes');
+
+        return $rule->getAllowedTypes();
     }
 }
