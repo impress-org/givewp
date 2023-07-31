@@ -4,6 +4,7 @@ namespace Give\Framework\FieldsAPI;
 
 use Give\Framework\ValidationRules\Rules\AllowedTypes;
 use Give\Framework\ValidationRules\Rules\File as FileRule;
+use Give\Vendors\StellarWP\Validation\Rules\Max;
 
 /**
  * A file upload field.
@@ -24,9 +25,45 @@ class File extends Field
     /**
      * Set the maximum file size.
      *
-     * @unreleased updated to set max size on file rule
+     * @deprecated use maxUploadSize() instead
+     *
+     * @param  int  $maxSize
+     *
+     * @return $this
      */
-    public function maxSize(int $maxSize): File
+    public function maxSize($maxSize)
+    {
+        if ($this->hasRule('max')) {
+            /** @var Max $rule */
+            $rule = $this->getRule('max');
+            $rule->size($maxSize);
+        }
+
+        $this->rules("max:$maxSize");
+
+        return $this;
+    }
+
+    /**
+     * Access the maximum file size.
+     *
+     * @deprecated use getMaxUploadSize() instead
+     */
+    public function getMaxSize(): int
+    {
+        if (!$this->hasRule('max')) {
+            return wp_max_upload_size();
+        }
+
+        return $this->getRule('max')->getSize();
+    }
+
+    /**
+     * Set the maximum file upload size.
+     *
+     * @unreleased
+     */
+    public function maxUploadSize(int $maxSize): File
     {
         if ($this->hasRule(FileRule::id())) {
             /** @var FileRule $rule */
@@ -41,11 +78,11 @@ class File extends Field
     }
 
     /**
-     * Access the maximum file size.
+     * Access the maximum file upload size.
      *
-     * @unreleased updated to get max size from file rule
+     * @unreleased
      */
-    public function getMaxSize(): int
+    public function getMaxUploadSize(): int
     {
         if (!$this->hasRule(FileRule::id())) {
             return wp_max_upload_size();
