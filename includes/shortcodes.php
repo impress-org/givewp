@@ -133,7 +133,7 @@ add_shortcode( 'donation_history', 'give_donation_history' );
  *
  * @since 2.30.0 Add short-circuit filter to allow for custom output.
  * @since  1.0
- 
+
  * @param array $atts Shortcode attributes
  *
  * @return string
@@ -148,6 +148,8 @@ function give_form_shortcode( $atts ) {
 	// Set form id.
 	$atts['id'] = $atts['id'] ?: FrontendFormTemplateUtils::getFormId();
 	$formId     = absint( $atts['id'] );
+
+    give_redirect_form_id($formId, $atts['id']);
 
     // Short-circuit the shortcode output if the filter returns a non-empty string.
     $output = apply_filters('givewp_form_shortcode_output', '', $atts);
@@ -211,6 +213,8 @@ function give_goal_shortcode( $atts ) {
 	if ( empty( $atts['id'] ) ) {
 		Give_Notices::print_frontend_notice( __( 'The shortcode is missing Donation Form ID attribute.', 'give' ), true );
 	}
+
+    give_redirect_form_id($atts['id']);
 
 	// Sanity check 2: Check the form even has Goals enabled.
 	if ( ! give_is_setting_enabled( give_get_meta( $atts['id'], '_give_goal_option', true ) ) ) {
@@ -607,6 +611,8 @@ function give_totals_shortcode( $atts ) {
 		'give_totals'
 	);
 
+    give_redirect_form_id($atts['ids']);
+
 	// Total Goal.
 	$total_goal = give_maybe_sanitize_amount( $atts['total_goal'] );
 
@@ -845,6 +851,8 @@ function give_form_grid_shortcode( $atts ) {
 		],
 		$atts
 	);
+
+    give_redirect_form_id($atts['ids']);
 
 	// Validate integer attributes.
 	$atts['forms_per_page'] = intval( $atts['forms_per_page'] );
