@@ -41,25 +41,25 @@
 
     &.topLeft {
         top: var(--givewp-spacing-15);
-        left: var(--givewp-spacing-10);
+        left: var(--givewp-spacing-6);
         animation: slideRight 300ms ease-in;
     }
 
     &.topRight {
         top: var(--givewp-spacing-15);
-        right: var(--givewp-spacing-10);
+        right: var(--givewp-spacing-6);
         animation: slideLeft 300ms ease-in;
     }
 
     &.bottomLeft {
         bottom: var(--givewp-spacing-15);
-        left: var(--givewp-spacing-10);
+        left: var(--givewp-spacing-6);
         animation: slideRight 300ms ease-in;
     }
 
     &.bottomRight {
         bottom: var(--givewp-spacing-15);
-        right: var(--givewp-spacing-10);
+        right: var(--givewp-spacing-6);
         animation: slideLeft 300ms ease-in;
     }
 
