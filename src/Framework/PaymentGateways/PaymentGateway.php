@@ -4,15 +4,12 @@ namespace Give\Framework\PaymentGateways;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
-use Give\Framework\LegacyPaymentGateways\Contracts\LegacyPaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Actions\GenerateGatewayRouteUrl;
-use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionAmountEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionDashboardLinkable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPaymentMethodEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
-use Give\Framework\PaymentGateways\Controllers\PaymentGatewayController;
 use Give\Framework\PaymentGateways\Routes\RouteSignature;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Framework\PaymentGateways\Traits\HasRouteMethods;
@@ -23,10 +20,10 @@ use ReflectionException;
 use ReflectionMethod;
 
 /**
+ * @since 2.30.0 added enqueueScript() and formSettings() methods.
  * @since 2.18.0
  */
 abstract class PaymentGateway implements PaymentGatewayInterface,
-                                         LegacyPaymentGatewayInterface,
                                          SubscriptionDashboardLinkable,
                                          SubscriptionAmountEditable,
                                          SubscriptionPaymentMethodEditable,
@@ -48,7 +45,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      * @since 2.20.0 Change first argument type to SubscriptionModule abstract class.
      * @since 2.18.0
      *
-     * @param SubscriptionModule|null $subscriptionModule
+     * @param  SubscriptionModule|null  $subscriptionModule
      */
     public function __construct(SubscriptionModule $subscriptionModule = null)
     {
@@ -57,6 +54,58 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
         }
 
         $this->subscriptionModule = $subscriptionModule;
+    }
+
+    /**
+     * @since 2.30.0
+     */
+    public function supportsFormVersions(): array
+    {
+        $versions = [];
+
+        if (method_exists($this, 'getLegacyFormFieldMarkup') && $this->isFunctionImplementedInGatewayClass(
+                'getLegacyFormFieldMarkup'
+            )) {
+            $versions[] = 2;
+        }
+
+        if (method_exists($this, 'enqueueScript') && $this->isFunctionImplementedInGatewayClass('enqueueScript')) {
+            $versions[] = 3;
+        }
+
+        return $versions;
+    }
+
+    /**
+     * Enqueue gateway scripts using WordPress wp_enqueue_script().
+     *
+     * @since 2.30.0
+     *
+     * @return void
+     */
+    public function enqueueScript(int $formId)
+    {
+        //wp_enqueue_scripts();
+    }
+
+    /**
+     * Convenient way of localizing data to the JS gateway object accessible from `this.settings`.
+     *
+     * @since 2.30.0
+     */
+    public function formSettings(int $formId): array
+    {
+        return [];
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @since 2.29.0
+     */
+    public function supportsRefund(): bool
+    {
+        return $this->isFunctionImplementedInGatewayClass('refundDonation');
     }
 
     /**

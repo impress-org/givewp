@@ -225,7 +225,7 @@ const { donorsPerPage,
                     </PanelBody>
                 </Panel>
                 <Panel>
-                    <PanelBody title= {__('Wall Settings', 'give')} initialOpen={ false }>
+                    <PanelBody className="give-wall--wall-settings" title= {__('Wall Settings', 'give')} initialOpen={ false }>
                         <SelectControl
                             className="give-donor-wall-inspector"
                             label={ __( 'Sort By', 'give' ) }

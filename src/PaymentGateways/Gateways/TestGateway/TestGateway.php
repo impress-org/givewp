@@ -2,10 +2,11 @@
 
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
+use Exception;
 use Give\Donations\Models\Donation;
-use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
+use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
@@ -44,6 +45,17 @@ class TestGateway extends PaymentGateway
     }
 
     /**
+     * @since 2.30.0
+     */
+    public function enqueueScript(int $formId)
+    {
+        // This is temporary action to enqueue gateway scripts in the GiveWP 3.0 feature plugin.
+        // Eventually, these scripts will be moved to the GiveWP core plugin.
+        // TODO: enqueue scripts for 3.0 when feature plugin is merged into GiveWP
+        do_action('givewp_donation_form_enqueue_test_gateway_scripts');
+    }
+
+    /**
      * @inheritDoc
      */
     public function getPaymentMethodLabel(): string
@@ -52,7 +64,7 @@ class TestGateway extends PaymentGateway
     }
 
     /**
-     * @inheritDoc
+     * @since 2.18.0
      */
     public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
@@ -71,7 +83,9 @@ class TestGateway extends PaymentGateway
      */
     public function createPayment(Donation $donation, $gatewayData): GatewayCommand
     {
-        return new PaymentComplete("test-gateway-transaction-id-$donation->id");
+        $intent = $gatewayData['testGatewayIntent'] ?? 'test-gateway-intent';
+        
+        return new PaymentComplete("test-gateway-transaction-id-{$intent}-$donation->id");
     }
 
     /**
@@ -94,6 +108,7 @@ class TestGateway extends PaymentGateway
      * @since 2.23.0
      *
      * @inheritDoc
+     * @throws Exception
      */
     public function cancelSubscription(Subscription $subscription)
     {
@@ -102,12 +117,12 @@ class TestGateway extends PaymentGateway
     }
 
     /**
-     * @since 2.20.0
+     * @since 2.29.0 Return PaymentRefunded instead of a bool value
+     * @since      2.20.0
      * @inerhitDoc
-     * @throws Exception
      */
-    public function refundDonation(Donation $donation)
+    public function refundDonation(Donation $donation): PaymentRefunded
     {
-        throw new Exception('Method has not been implemented yet. Please use the legacy method in the meantime.');
+        return new PaymentRefunded();
     }
 }

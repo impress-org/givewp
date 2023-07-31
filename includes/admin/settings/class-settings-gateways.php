@@ -344,58 +344,66 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 			echo '<ul class="give-checklist-fields give-payment-gatways-list">';
 			foreach ( $gateways as $key => $option ) :
 				$enabled = null;
-				if ( is_array( $settings ) && array_key_exists( $key, $settings ) ) {
-					$enabled = '1';
-				}
+                if (is_array($settings) && array_key_exists($key, $settings)) {
+                    $enabled = '1';
+                }
 
-				echo '<li>';
-				printf( '<span class="give-drag-handle"><span class="dashicons dashicons-menu"></span></span>' );
-				printf(
-					'<span class="admin-label">%1$s %2$s</span>',
-					esc_html( $option['admin_label'] ),
-					! empty( $option['admin_tooltip'] ) ? Give()->tooltips->render_help( esc_attr( $option['admin_tooltip'] ) ) : ''
-				);
+                echo '<li>';
+                printf('<span class="give-drag-handle"><span class="dashicons dashicons-menu"></span></span>');
+                printf(
+                    '<span class="admin-label">%1$s %2$s</span>',
+                    esc_html($option['admin_label']),
+                    !empty($option['admin_tooltip']) ? Give()->tooltips->render_help(
+                        esc_attr($option['admin_tooltip'])
+                    ) : ''
+                );
 
-				$label = '';
-				if ( ! empty( $gateways_label[ $key ] ) ) {
-					$label = $gateways_label[ $key ];
-				}
+                $label = '';
+                if (!empty($gateways_label[$key])) {
+                    $label = $gateways_label[$key];
+                }
 
-				printf(
-					'<input class="checkout-label" type="text" id="%1$s[%2$s]" name="%1$s[%2$s]" value="%3$s" placeholder="%4$s"/>',
-					'gateways_label',
-					esc_attr( $key ),
-					esc_html( $label ),
-					esc_html( $option['checkout_label'] )
-				);
+                printf(
+                    '<input class="checkout-label" type="text" id="%1$s[%2$s]" name="%1$s[%2$s]" value="%3$s" placeholder="%4$s"/>',
+                    'gateways_label',
+                    esc_attr($key),
+                    esc_html($label),
+                    esc_html($option['checkout_label'])
+                );
 
-				printf(
-					'<input class="gateways-radio" type="radio" name="%1$s" value="%2$s" %3$s %4$s>',
-					'default_gateway',
-					$key,
-					checked( $key, $default_gateway, false ),
-					disabled( null, $enabled, false )
-				);
+                printf(
+                    '<input class="gateways-radio" type="radio" name="%1$s" value="%2$s" %3$s %4$s>',
+                    'default_gateway',
+                    $key,
+                    checked($key, $default_gateway, false),
+                    disabled(null, $enabled, false)
+                );
 
-				printf(
-					'<input class="gateways-checkbox" name="%1$s[%2$s]" id="%1$s[%2$s]" type="checkbox" value="1" %3$s data-payment-gateway="%4$s"/>',
-					esc_attr( $id ),
-					esc_attr( $key ),
-					checked( '1', $enabled, false ),
-					esc_html( $option['admin_label'] )
-				);
-				echo '</li>';
-			endforeach;
-			echo '</ul>';
+                printf(
+                    '<input class="gateways-checkbox" name="%1$s[%2$s]" id="%1$s[%2$s]" type="checkbox" value="1" %3$s data-payment-gateway="%4$s"/>',
+                    esc_attr($id),
+                    esc_attr($key),
+                    checked('1', $enabled, false),
+                    esc_html($option['admin_label'])
+                );
+                echo '</li>';
+            endforeach;
+            echo '</ul>';
 
-			echo '</div>'; // end gateway-enabled-wrap.
+            echo '</div>'; // end gateway-enabled-wrap.
 
-			printf(
-				'<tr><th>%1$s</th><td>%2$s</td></tr>',
-				$field['title'],
-				ob_get_clean()
-			);
-		}
+            if (defined('GIVE_VERSION') && version_compare(GIVE_VERSION, '3.0.0', '<')) {
+                echo '<div style="padding-top: 1rem;"><p><sup>*</sup>(v2) GiveWP 3.0 is coming! In preparation for that, gateways that only work on forms created with GiveWP version 2.x.x are distinguished with a (v2) label.</p></div>';
+            } else {
+                echo '<div style="padding-top: 1rem;"><p><sup>*</sup>(v2) Gateways that only work on forms created with GiveWP version 2.x.x are distinguished with a (v2) label.</p></div>';
+            }
+
+            printf(
+                '<tr><th>%1$s</th><td>%2$s</td></tr>',
+                $field['title'],
+                ob_get_clean()
+            );
+        }
 	}
 
 endif;

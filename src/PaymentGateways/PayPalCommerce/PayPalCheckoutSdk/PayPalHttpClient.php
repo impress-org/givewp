@@ -3,8 +3,6 @@
 namespace Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk;
 
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
-use PayPalCheckoutSdk\Core\FPTIInstrumentationInjector;
-use PayPalCheckoutSdk\Core\GzipInjector;
 use PayPalCheckoutSdk\Core\PayPalEnvironment;
 
 /**
@@ -27,10 +25,17 @@ class PayPalHttpClient extends \PayPalCheckoutSdk\Core\PayPalHttpClient
     public function __construct(PayPalEnvironment $environment, $refreshToken = null)
     {
         parent::__construct($environment);
+
+        // Remove existing AuthorizationInjector.
+        foreach ($this->injectors as $index => $injector ) {
+            if ($injector instanceof \PayPalCheckoutSdk\Core\AuthorizationInjector) {
+                unset($this->injectors[$index]);
+            }
+        }
+
+        // Add custom AuthorizationInjector.
         $this->authInjector = $this->getAuthorizationInjector($environment, $refreshToken);
         $this->addInjector($this->authInjector);
-        $this->addInjector(new GzipInjector());
-        $this->addInjector(new FPTIInstrumentationInjector());
     }
 
     /**
@@ -45,7 +50,7 @@ class PayPalHttpClient extends \PayPalCheckoutSdk\Core\PayPalHttpClient
 
         // Set access token if exists.
         if ($merchant->accessToken) {
-            $authorizationInjector->accessToken = $merchant->toArray()['token'];
+            $authorizationInjector->accessToken = AccessToken::fromArray($merchant->toArray()['token']);
         }
 
         return $authorizationInjector;

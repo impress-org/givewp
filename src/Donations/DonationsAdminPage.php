@@ -57,8 +57,8 @@ class DonationsAdminPage
     }
 
     /**
-     * @since 2.27.1 Add dismissed recommendations
-     * @since 2.27.0 Adds "addonsBulkActions" to the GiveDonations object
+     * @since      2.27.1 Add dismissed recommendations
+     * @since      2.27.0 Adds "addonsBulkActions" to the GiveDonations object
      * @since      2.24.0 Add ListTable columns
      * @since      2.20.0
      * @since      2.21.2 Localized the admin URL as a base for URL concatenation.
@@ -89,6 +89,8 @@ class DonationsAdminPage
             [],
             null
         );
+
+        wp_enqueue_style('givewp-design-system-foundation');
     }
 
     /**
@@ -112,7 +114,7 @@ class DonationsAdminPage
      */
     public static function isShowing()
     {
-        return isset($_GET['page']) && $_GET['page'] === 'give-payment-history' && !isset($_GET['view']);
+        return isset($_GET['page']) && $_GET['page'] === 'give-payment-history' && ! isset($_GET['view']);
     }
 
     /**

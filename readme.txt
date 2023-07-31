@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
 Tested up to: 6.2
 Requires PHP: 7.0
-Stable tag: 2.27.2
+Stable tag: 2.31.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -258,6 +258,48 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.31.0: July 21st, 2023 =
+* Feature: New banner added to the plugin page for annual summer discounts
+
+= 2.30.0: July 12th, 2023 =
+* Feature: Attributes of the [give_donor_wall] shortcode can now be filtered.
+* Feature: Added state label and list of states for the v3 form billing address block. Existing functionality is not modified.
+* Fix: Empty excerpt fields for v3 forms no longer display as [] on the Form Grid.
+* Refactor: Updated the gateway adapter for v3 forms.
+* Refactor: Updated legacy donation form block title with a (v2) suffix.
+* Refactor: The v2 Donation Form block now supports v3 forms.
+
+= 2.29.2: June 29th, 2023 =
+* Enhancement: PayPal Donations now has separate buttons to connect to PayPal Live and PayPal Sandbox.
+* Fix: Form Field Manager conditional radio and checkbox fields that are not visible no longer prevent donation submission.
+
+= 2.29.1: June 21st, 2023 =
+* Feature: Add Recurring Donations add-on overlay to Reports widget
+
+= 2.29.0: June 14th, 2023 =
+* Feature: A refund checkbox can be enabled on the admin screen.
+* Enhancement: PayPal Donations onboarding validates only the PayPal seller capabilities that block payment processing.
+* Fix: Donor Created Date column is now included in the Donor csv export.
+
+= 2.28.0: June 8th, 2023 =
+* Enhancement: Improvements to checkboxes in the Field API in preparation for GiveWP 3.0
+* Fix: Resolves an issue with Form Field Manager caused in 2.27.3. Please update both GiveWP and Form Field Manager.
+
+= 2.27.3: June 8th, 2023 =
+* Feature: Support Slack-bot-based zip packaging requests
+* Feature: Add ShowInAdmin trait to the Field API
+* Feature: Add color parameter to give_goal shortcode
+* Feature: Implement necessary tweaks to accommodate the Webhooks Add-on
+* Feature: Add a recommendation for manual donations
+* Feature: Update visibility conditions in the Field API to use new framework and handle validations
+* Enhancement: Enable Venmo by default for PayPal Donations if available for country
+* Enhancement: Add generics to container functions so autocomplete works when passing a class
+* Fix: Improve error handling for fee recovery product recommendation on Settings page
+* Fix: Display errors for PayPal Smart Buttons
+* Fix: MoneyPHP support for Bitcoin currencies
+* Refactor: Move legacy donation forms into v2 domain
+* Chore: Remove redundent composer install
+
 = 2.27.2: May 24th, 2023 =
 * Fix: No errors are thrown for missing JavaScript files in the Payment Gateway Settings page.
 
