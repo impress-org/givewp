@@ -135,7 +135,7 @@ class DonorsAdminPage
                     },
                 })
                     .then((res) => {
-                        window.location.reload();
+                        window.location = window.location.href = '/wp-admin/edit.php?post_type=give_forms&page=give-donors';
                     });
             }
 
