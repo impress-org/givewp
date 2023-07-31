@@ -21,7 +21,6 @@ class File extends Field
     use Concerns\HasEmailTag;
     use Concerns\HasHelpText;
     use Concerns\HasLabel;
-    use Concerns\AllowMultiple;
 
     const TYPE = 'file';
 
@@ -30,9 +29,9 @@ class File extends Field
      */
     public function maxSize(int $maxSize): File
     {
-        if ($this->hasRule('file')) {
+        if ($this->hasRule(FileRule::id())) {
             /** @var FileRule $rule */
-            $rule = $this->getRule('file');
+            $rule = $this->getRule(FileRule::id());
             $rule->size($maxSize);
         }
 
@@ -47,12 +46,12 @@ class File extends Field
      */
     public function getMaxSize(): int
     {
-        if (!$this->hasRule('file')) {
+        if (!$this->hasRule(FileRule::id())) {
             return wp_max_upload_size();
         }
 
         /** @var FileRule $rule */
-        $rule = $this->getRule('file');
+        $rule = $this->getRule(FileRule::id());
 
         return $rule->getSize();
     }

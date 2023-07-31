@@ -44,7 +44,7 @@ class File implements ValidationRule
 
         return $this;
     }
-    
+
     /**
      * @unreleased
      **/
