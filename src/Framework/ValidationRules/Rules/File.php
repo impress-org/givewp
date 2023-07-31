@@ -17,7 +17,12 @@ class File implements ValidationRule
      *
      * @var int
      */
-    protected $size;
+    protected $maxSize;
+
+    /**
+     * @var string[]
+     */
+    protected $allowedMimeTypes;
 
     /**
      * @unreleased
@@ -27,22 +32,43 @@ class File implements ValidationRule
         return 'file';
     }
 
+
     /**
      * @unreleased
      */
-    public function getSize(): int
+    public function maxSize(int $maxSize): ValidationRule
     {
-        return $this->size;
+        $this->maxSize = $maxSize;
+
+        return $this;
     }
 
     /**
      * @unreleased
      */
-    public function size(int $size): ValidationRule
+    public function getMaxSize(): int
     {
-        $this->size = $size;
+        return $this->maxSize;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function allowedMimeTypes(array $allowedMimeTypes): ValidationRule
+    {
+        $this->allowedMimeTypes = $allowedMimeTypes;
 
         return $this;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return string[]
+     */
+    public function getAllowedMimeTypes(): array
+    {
+        return $this->allowedMimeTypes ?? [];
     }
 
     /**
@@ -53,12 +79,22 @@ class File implements ValidationRule
         try {
             $fileType = FileType::fromArray($value);
 
-            if ($fileType->size > $this->getSize()) {
-                $fail(sprintf(__('%s must be less than or equal to %d bytes', 'give'), '{field}', $this->getSize()));
+            if (!$fileType->isUploadedFile()) {
+                $fail(sprintf(__('%s must be a valid file.', 'give'), '{field}'));
             }
 
-            if ($fileType->error !== UPLOAD_ERR_OK) {
-                $fail(sprintf(__('%s must be a valid file', 'give'), '{field}'));
+            if (!in_array($fileType->getMimeType(), $this->getAllowedMimeTypes(), true)) {
+                $fail(sprintf(__('%s must be a valid file type.', 'give'), '{field}'));
+            }
+
+            if ($fileType->getSize() > $this->getMaxSize()) {
+                $fail(
+                    sprintf(__('%s must be less than or equal to %d bytes.', 'give'), '{field}', $this->getMaxSize())
+                );
+            }
+
+            if ($fileType->getError() !== UPLOAD_ERR_OK) {
+                $fail(sprintf(__('%s must be a valid file.', 'give'), '{field}'));
             }
         } catch (\Throwable $e) {
             $fail($e->getMessage());

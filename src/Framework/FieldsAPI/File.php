@@ -5,9 +5,6 @@ namespace Give\Framework\FieldsAPI;
 use Give\Framework\ValidationRules\Rules\AllowedTypes;
 use Give\Framework\ValidationRules\Rules\File as FileRule;
 
-use function get_allowed_mime_types;
-use function wp_max_upload_size;
-
 /**
  * A file upload field.
  *
@@ -32,11 +29,11 @@ class File extends Field
         if ($this->hasRule(FileRule::id())) {
             /** @var FileRule $rule */
             $rule = $this->getRule(FileRule::id());
-            $rule->size($maxSize);
+            $rule->maxSize($maxSize);
         }
 
         // TODO: add support for file:maxSize
-        $this->rules((new FileRule())->size($maxSize));
+        $this->rules((new FileRule())->maxSize($maxSize));
 
         return $this;
     }
@@ -53,11 +50,52 @@ class File extends Field
         /** @var FileRule $rule */
         $rule = $this->getRule(FileRule::id());
 
-        return $rule->getSize();
+        return $rule->getMaxSize();
     }
 
     /**
      * Set the allowed file types.
+     *
+     * @unreleased
+     *
+     * @param  string[]  $allowedMimeTypes
+     */
+    public function allowedMimeTypes(array $allowedMimeTypes): File
+    {
+        if ($this->hasRule(FileRule::id())) {
+            /** @var FileRule $rule */
+            $rule = $this->getRule(FileRule::id());
+            // TODO: add support for file:allowedMimeTypes
+            $rule->allowedMimeTypes($allowedMimeTypes);
+        } else {
+            $this->rules((new FileRule())->allowedMimeTypes($allowedMimeTypes));
+        }
+
+
+        return $this;
+    }
+
+    /**
+     * Access the allowed file mime types.
+     *
+     * @return string[]
+     */
+    public function getAllowedMimeTypes(): array
+    {
+        if (!$this->hasRule(FileRule::id())) {
+            return get_allowed_mime_types();
+        }
+
+        /** @var FileRule $rule */
+        $rule = $this->getRule(FileRule::id());
+
+        return $rule->getAllowedMimeTypes();
+    }
+
+    /**
+     * Set the allowed file types.
+     *
+     * @deprecated use allowedMimeTypes() instead
      *
      * @param  string[]  $allowedTypes
      */
@@ -76,6 +114,8 @@ class File extends Field
 
     /**
      * Access the allowed file types.
+     *
+     * @deprecated use getAllowedMimeTypes() instead
      *
      * @return string[]
      */
