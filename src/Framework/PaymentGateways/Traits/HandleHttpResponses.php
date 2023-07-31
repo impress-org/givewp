@@ -20,7 +20,7 @@ trait HandleHttpResponses
     public function handleResponse($type)
     {
         if ($type instanceof RedirectResponse) {
-            if ($this->shouldSendAsJson()) {
+            if ($this->wantsJson()) {
                 wp_send_json([
                     'type' => 'redirect',
                     'data' => [
@@ -63,23 +63,18 @@ trait HandleHttpResponses
     }
 
     /**
-     * This checks the server content-type to determine how to respond.
-     *
-     * v2 GiveWP forms uses content-type application/x-www-form-urlencoded
-     * v3 GiveWP forms uses content-type application/json and/or multipart/form-data
+     * This checks the server headers for 'application/json' to determine if it should respond with json.
      *
      * @unreleased
      *
      * @return bool
      */
-    protected function shouldSendAsJson(): bool
+    protected function wantsJson(): bool
     {
-        if (!isset($_SERVER['CONTENT_TYPE'])) {
-            return false;
+        if (isset($_SERVER['HTTP_ACCEPT']) && str_contains($_SERVER['HTTP_ACCEPT'], 'application/json')) {
+            return true;
         }
 
-        $contentType = isset($_SERVER['CONTENT_TYPE']);
-
-        return str_contains($contentType, "application/json") || str_contains($contentType, "multipart/form-data");
+        return isset($_SERVER['CONTENT_TYPE']) && str_contains($_SERVER['CONTENT_TYPE'], 'application/json');
     }
 }
