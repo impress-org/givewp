@@ -1,5 +1,5 @@
 import {createContext, useState, useCallback} from 'react';
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import {ListTableApi, ListTablePage} from '@givewp/components';
 import {DonationFormsRowActions} from './DonationFormsRowActions';
 import MigrationBanner from './Migration';
@@ -10,6 +10,7 @@ import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/List
 import Select from '@givewp/components/ListTable/Select';
 import {Interweave} from 'interweave';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
+import Toast from "@givewp/components/AdminUI/Toast";
 
 declare global {
     interface Window {
@@ -31,10 +32,11 @@ declare global {
     }
 }
 
-interface OnboardingStateProps {
+interface MigrationTransferStateProps {
     migrationOnboardingCompleted: boolean;
     showMigrationSuccessDialog: boolean;
     showTransferSuccessDialog: boolean;
+    showMigrationCompletedToast: boolean;
     formId: number | null;
     formName: string | null;
 }
@@ -95,7 +97,7 @@ const v2FormBadge = item => {
     if (item.v2form) {
         return <div className={styles.v2Badge}>
             <svg width="4" height="4" viewBox="0 0 4 4" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="2" cy="2" r="2" fill="#2B13BF"/>
+                <circle cx="2" cy="2" r="2" fill="#2B13BF" />
             </svg>
             V2
         </div>;
@@ -211,10 +213,11 @@ const ListTableBlankSlate = (
 
 export default function DonationFormsListTable() {
 
-    const [state, setState] = useState<OnboardingStateProps>({
+    const [state, setState] = useState<MigrationTransferStateProps>({
         migrationOnboardingCompleted: Boolean(window.GiveDonationForms.migrationOnboardingCompleted),
         showMigrationSuccessDialog: false,
         showTransferSuccessDialog: false,
+        showMigrationCompletedToast: false,
         formId: null,
         formName: null,
     })
@@ -227,6 +230,11 @@ export default function DonationFormsListTable() {
     const closeTransferSuccessDialog = useCallback(() => setState(prev => ({
         ...prev,
         showTransferSuccessDialog: false
+    })), []);
+
+    const closeMigrationCompletedToast = useCallback(() => setState(prev => ({
+        ...prev,
+        showMigrationCompletedToast: false
     })), []);
 
     return (
@@ -259,7 +267,16 @@ export default function DonationFormsListTable() {
                 <MigrationSuccessDialog formId={state.formId} handleClose={closeMigrationSuccessDialog} />
             )}
             {state.showTransferSuccessDialog && (
-                <TransferSuccessDialog formId={state.formId} formName={state.formName} handleClose={closeTransferSuccessDialog} />
+                <TransferSuccessDialog formId={state.formId} formName={state.formName}
+                                       handleClose={closeTransferSuccessDialog} />
+            )}
+            {state.showMigrationCompletedToast && (
+                <Toast
+                    type="success"
+                    autoClose={6000}
+                    handleClose={closeMigrationCompletedToast}>
+                    {sprintf(__('Migration of the form "%s" completed successfully', 'give'), state.formName)}
+                </Toast>
             )}
         </MigrationOnboardingContext.Provider>
     );

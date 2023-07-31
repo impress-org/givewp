@@ -14,7 +14,7 @@ const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdateErrors, parameters}) {
     const {mutate} = useSWRConfig();
     const showConfirmModal = useContext(ShowConfirmModalContext);
-    const [onboardingState, setOnboardingState] = useContext(MigrationOnboardingContext);
+    const [MigrationTransferState, setMigrationTransferState] = useContext(MigrationOnboardingContext);
     const trashEnabled = Boolean(data?.trash);
     const deleteEndpoint = trashEnabled && !item.status.includes('trash') ? '/trash' : '/delete';
 
@@ -75,14 +75,20 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                             onClick={addRow(async (id) => {
                                 const response = await fetchAndUpdateErrors(parameters, '/migrate', id, 'POST');
 
-                                if (!onboardingState.migrationOnboardingCompleted) {
+                                if (!MigrationTransferState.migrationOnboardingCompleted) {
                                     updateOnboardingOption('migration_onboarding_completed').then((data) => {
-                                        setOnboardingState(prev => ({
+                                        setMigrationTransferState(prev => ({
                                             ...prev,
                                             showMigrationSuccessDialog: true,
                                             formId: response.successes[0]
                                         }))
                                     })
+                                } else {
+                                    setMigrationTransferState(prev => ({
+                                        ...prev,
+                                        formName: item?.name,
+                                        showMigrationCompletedToast: true
+                                    }))
                                 }
 
                                 return response
@@ -95,7 +101,7 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                     {item.transfer && (
                         <RowAction
                             onClick={addRow(async (id) => {
-                                setOnboardingState(prev => ({
+                                setMigrationTransferState(prev => ({
                                     ...prev,
                                     showTransferSuccessDialog: true,
                                     formName: item?.name,
