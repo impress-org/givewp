@@ -1,6 +1,5 @@
 <?php
 /**
- * @deprecated Use src/Framework/WordPressLibraries.
  * Background Process
  *
  * Uses https://github.com/A5hleyRich/wp-background-processing to handle DB
@@ -11,6 +10,8 @@
  * @package  Give/Classes
  * @category Class
  * @author   GiveWP
+ *
+ * @unreleased updated to extend WPAsyncRequest
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
