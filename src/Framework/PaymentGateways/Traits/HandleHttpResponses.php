@@ -11,7 +11,7 @@ trait HandleHttpResponses
     /**
      * Handle Response
      *
-     * @unreleased add support for multipart/form-data content-type
+     * @unreleased added check for responding with json
      * @since 2.27.0 add support for json content-type
      * @since 2.18.0
      *
