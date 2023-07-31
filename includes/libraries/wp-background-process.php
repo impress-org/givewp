@@ -1,6 +1,6 @@
 <?php
 /**
- * @deprecated Use src/Framework/WordPressLibraries.
+ * @deprecated Use src/Framework/WordPressLibraries\WPBackgroundProcess.
  * WP Background Process
  *
  * @package WP-Background-Processing
