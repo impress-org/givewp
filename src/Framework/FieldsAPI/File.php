@@ -23,6 +23,8 @@ class File extends Field
 
     /**
      * Set the maximum file size.
+     *
+     * @unreleased updated to set max size on file rule
      */
     public function maxSize(int $maxSize): File
     {
@@ -40,6 +42,8 @@ class File extends Field
 
     /**
      * Access the maximum file size.
+     *
+     * @unreleased updated to get max size from file rule
      */
     public function getMaxSize(): int
     {
@@ -54,7 +58,7 @@ class File extends Field
     }
 
     /**
-     * Set the allowed file types.
+     * Set the allowed mime types.
      *
      * @unreleased
      *
@@ -76,7 +80,7 @@ class File extends Field
     }
 
     /**
-     * Access the allowed file mime types.
+     * Access the allowed mime types.
      *
      * @return string[]
      */

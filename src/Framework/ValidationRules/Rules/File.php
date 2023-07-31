@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Give\Framework\ValidationRules\Rules;
 
 use Closure;
-use Give\Framework\Http\Types\FileType;
+use Give\Framework\Http\Types\FileRequest;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidationRule;
 
 /**
@@ -31,7 +31,6 @@ class File implements ValidationRule
     {
         return 'file';
     }
-
 
     /**
      * @unreleased
@@ -77,23 +76,23 @@ class File implements ValidationRule
     public function __invoke($value, Closure $fail, string $key, array $values)
     {
         try {
-            $fileType = FileType::fromArray($value);
+            $fileRequest = FileRequest::fromArray($value);
 
-            if (!$fileType->isUploadedFile()) {
+            if (!$fileRequest->isUploadedFile()) {
                 $fail(sprintf(__('%s must be a valid file.', 'give'), '{field}'));
             }
 
-            if (!in_array($fileType->getMimeType(), $this->getAllowedMimeTypes(), true)) {
+            if (!in_array($fileRequest->getMimeType(), $this->getAllowedMimeTypes(), true)) {
                 $fail(sprintf(__('%s must be a valid file type.', 'give'), '{field}'));
             }
 
-            if ($fileType->getSize() > $this->getMaxSize()) {
+            if ($fileRequest->getSize() > $this->getMaxSize()) {
                 $fail(
                     sprintf(__('%s must be less than or equal to %d bytes.', 'give'), '{field}', $this->getMaxSize())
                 );
             }
 
-            if ($fileType->getError() !== UPLOAD_ERR_OK) {
+            if ($fileRequest->getError() !== UPLOAD_ERR_OK) {
                 $fail(sprintf(__('%s must be a valid file.', 'give'), '{field}'));
             }
         } catch (\Throwable $e) {

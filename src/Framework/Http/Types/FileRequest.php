@@ -9,7 +9,8 @@ namespace Give\Framework\Http\Types;
  *
  * @unreleased
  */
-class FileType {
+class FileRequest
+{
     /**
      * The original name of the file on the client machine.
      *
@@ -45,7 +46,7 @@ class FileType {
     /**
      * @unreleased
      */
-    public static function fromArray(array $fileArray): FileType
+    public static function fromArray(array $fileArray): FileRequest
     {
         $file = new self();
 
