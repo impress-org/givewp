@@ -133,6 +133,7 @@ EOT;
     /**
      * Load public assets.
      *
+     * @unreleased Handle exception if client token is not generated.
      * @since 2.9.0
      */
     public function loadPublicAssets()
@@ -144,6 +145,22 @@ EOT;
         /* @var MerchantDetail $merchant */
         $merchant = give(MerchantDetail::class);
         $scriptId = 'give-paypal-commerce-js';
+        $clientToken = '';
+
+        try{
+            $clientToken = $this->merchantRepository->getClientToken();
+        } catch ( \Exception $exception ) {
+            give_set_error(
+                'give-paypal-commerce-client-token-error',
+                sprintf(
+                    esc_html__(
+                        'Unable to load PayPal Commerce client token. Please try again later. Error: %1$s',
+                        'give'
+                    ),
+                    $exception->getMessage()
+                )
+            );
+        }
 
         /**
          * List of PayPal query parameters: https://developer.paypal.com/docs/checkout/reference/customize-sdk/#query-parameters
@@ -156,7 +173,7 @@ EOT;
             'disable-funding' => 'credit',
             'vault' => true,
             'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
-            'data-client-token' => $this->merchantRepository->getClientToken(),
+            'data-client-token' => $clientToken,
         ];
 
         if (give_is_setting_enabled(give_get_option('paypal_commerce_accept_venmo', 'disabled'))) {
