@@ -109,8 +109,8 @@ class TestListDonationForms extends TestCase
                 $expectedItem[$column::getId()] = $column->getCellValue($donationForm);
             }
             $v2form = defined('GIVE_NEXT_GEN_VERSION') && ! get_post_meta($donationForm->id, 'formBuilderFields');
-            $canMigrate = $v2form && ! give_is_form_migrated($donationForm->id);
-            $canTransfer = $v2form && ! $canMigrate && ! give_is_form_donations_transferred($donationForm->id);
+            $canMigrate = $v2form && ! give_is_form_migrated($donationForm->id); // @phpstan-ignore
+            $canTransfer = $v2form && ! $canMigrate && ! give_is_form_donations_transferred($donationForm->id); // @phpstan-ignore
 
             $expectedItem['name'] = $donationForm->title;
             $expectedItem['edit'] = get_edit_post_link($donationForm->id, 'edit');
