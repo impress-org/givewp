@@ -162,7 +162,7 @@ class DonationFormsAdminPage
                     }
                 })
                     .then((res) => {
-                        window.location = window.location.href = '/wp-admin/edit.php?post_type=give_forms&page=give-forms';
+                        window.location.href = '<?php echo admin_url('edit.php?post_type=give_forms&page=give-forms'); ?>';
                     });
             }
             jQuery( function() {
