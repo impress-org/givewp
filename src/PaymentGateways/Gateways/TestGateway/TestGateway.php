@@ -45,14 +45,25 @@ class TestGateway extends PaymentGateway
     }
 
     /**
+     * @unreleased updated to enqueue script
      * @since 2.30.0
      */
     public function enqueueScript(int $formId)
     {
-        // This is temporary action to enqueue gateway scripts in the GiveWP 3.0 feature plugin.
-        // Eventually, these scripts will be moved to the GiveWP core plugin.
-        // TODO: enqueue scripts for 3.0 when feature plugin is merged into GiveWP
-        do_action('givewp_donation_form_enqueue_test_gateway_scripts');
+        $assetPath = GIVE_PLUGIN_DIR . 'build/testGateway.asset.php';
+
+        $scriptAsset = file_exists($assetPath) ? require $assetPath : [
+            'dependencies' => [],
+            'version' => filemtime($assetPath)
+        ];
+
+        wp_enqueue_script(
+            $this::id(),
+            GIVE_PLUGIN_URL . 'build/testGateway.js',
+            $scriptAsset['dependencies'],
+            $scriptAsset['version'],
+            true
+        );
     }
 
     /**

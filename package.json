@@ -5,9 +5,14 @@
         "start": "npm install && npm run watch",
         "dev": "mix",
         "production": "mix --production",
-        "build": "mix --production",
+        "build": "mix --production && npm run build:v3",
         "watch": "mix watch",
-        "env": "wp-env"
+        "env": "wp-env",
+        "dev:v3": "wp-scripts build",
+        "watch:v3": "wp-scripts start",
+        "build:v3": "wp-scripts build",
+        "packages-update": "wp-scripts packages-update",
+        "plugin-zip": "wp-scripts plugin-zip"
     },
     "repository": {
         "type": "git",
@@ -44,6 +49,7 @@
         "@types/react-dom": "^17.0.11",
         "@wordpress/dependency-extraction-webpack-plugin": "^3.3.2",
         "@wordpress/env": "^4",
+        "@wordpress/scripts": "^26.9.0",
         "autoprefixer": "^9.5.0",
         "axios-mock-adapter": "^1.18.2",
         "babel-loader": "^8.2.2",
