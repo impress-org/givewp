@@ -130,8 +130,8 @@ class ListDonationForms extends Endpoint
 
             foreach ($items as &$item) {
                 $v2form = defined('GIVE_NEXT_GEN_VERSION') && ! get_post_meta($item['id'], 'formBuilderFields');
-                $canMigrate = $v2form && ! give_is_form_migrated($item['id']);
-                $canTransfer = $v2form && ! $canMigrate && ! give_is_form_donations_transferred($item['id']);
+                $canMigrate = $v2form && ! give_is_form_migrated($item['id']); // @phpstan-ignore-line
+                $canTransfer = $v2form && ! $canMigrate && ! give_is_form_donations_transferred($item['id']); // @phpstan-ignore-line
 
                 $item['name'] = get_the_title($item['id']);
                 $item['edit'] = get_edit_post_link($item['id'], 'edit');
