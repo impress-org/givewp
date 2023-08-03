@@ -2,14 +2,14 @@
 
 namespace Give\Framework\FieldsAPI\Concerns;
 
-use Give\Framework\FieldsAPI\ValueObjects\Scope;
+use Give\Framework\FieldsAPI\ValueObjects\PersistenceScope;
 
 trait HasPersistence
 {
     /**
      * @unreleased
      *
-     * @var Scope|null
+     * @var PersistenceScope|null
      */
     protected $scope;
 
@@ -23,11 +23,11 @@ trait HasPersistence
     /**
      * @unreleased
      *
-     * @param string|Scope $scope
+     * @param string|PersistenceScope $scope
      */
     public function scope($scope): self
     {
-        $this->scope = $scope instanceof Scope ? $scope : new Scope($scope);
+        $this->scope = $scope instanceof PersistenceScope ? $scope : new PersistenceScope($scope);
 
         return $this;
     }
@@ -35,7 +35,7 @@ trait HasPersistence
     /**
      * @unreleased
      */
-    public function getScope(): Scope
+    public function getScope(): PersistenceScope
     {
         return $this->scope;
     }
@@ -74,8 +74,8 @@ trait HasPersistence
     public function storeAsDonorMeta(bool $storeAsDonorMeta = true): self
     {
         $this->scope = $storeAsDonorMeta
-            ? Scope::donor()
-            : Scope::donation();
+            ? PersistenceScope::donor()
+            : PersistenceScope::donation();
 
         return $this;
     }

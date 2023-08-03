@@ -4,7 +4,7 @@ namespace Give\Framework\FieldsAPI;
 
 use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
-use Give\Framework\FieldsAPI\ValueObjects\Scope;
+use Give\Framework\FieldsAPI\ValueObjects\PersistenceScope;
 use Give\Vendors\StellarWP\Validation\Concerns\HasValidationRules;
 
 /**
@@ -48,7 +48,7 @@ abstract class Field implements Node
         }
 
         $this->name = $name;
-        $this->scope = Scope::donation();
+        $this->scope = PersistenceScope::donation();
         $this->__validationRulesConstruct();
         $this->__visibilityConditionsConstruct();
     }

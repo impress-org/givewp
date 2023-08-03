@@ -9,7 +9,7 @@ namespace Give\Framework\FieldsAPI\ValueObjects;
  *
  * @unreleased
  */
-class Scope
+class PersistenceScope
 {
     const DONATION = 'donation';
     const DONOR = 'donor';
