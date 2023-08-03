@@ -9,6 +9,7 @@ import {Header} from '../components';
 import {Storage} from '../common';
 import {FormSettings, FormStatus} from '@givewp/form-builder/types';
 import {setIsDirty} from '@givewp/form-builder/stores/form-state/reducer';
+import revertMissingBlocks from '@givewp/form-builder/common/revertMissingBlocks';
 
 const Logo = () => (
     <div
@@ -51,7 +52,9 @@ const HeaderContainer = ({
     const onSave = (formStatus: FormStatus) => {
         setSaving(formStatus);
 
-        dispatch(setFormSettings({formStatus}))
+        dispatch(setFormSettings({formStatus}));
+
+        revertMissingBlocks(blocks);
 
         Storage.save({blocks, formSettings: {...formSettings, formStatus}})
             .catch((error) => {

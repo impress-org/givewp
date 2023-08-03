@@ -19,6 +19,7 @@
         "@stripe/stripe-js": "^1.52.0",
         "@svgr/webpack": "^6.5.1",
         "@wordpress/block-editor": "^11.2.0",
+        "@wordpress/block-library": "^8.15.0",
         "@wordpress/components": "^23.2.0",
         "@wordpress/compose": "6.2.0",
         "@wordpress/core-data": "^6.2.0",
