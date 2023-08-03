@@ -13,7 +13,7 @@ class PersistenceScopeTest extends TestCase
     /**
      * @unreleased
      */
-    public function testStaticBuilders(): void
+    public function testStaticBuilders()
     {
         $donation = PersistenceScope::donation();
         $donor = PersistenceScope::donor();
