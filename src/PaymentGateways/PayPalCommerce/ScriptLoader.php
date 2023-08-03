@@ -15,11 +15,23 @@ use Give_Admin_Settings;
 class ScriptLoader
 {
     /**
-     * List of countries that support custom payment accounts
+     * List of connection account type.
      *
+     * @unreleased
      * @var string[]
      */
-    private $countriesAvailableForAdvancdeConnection = [
+    private $accountTypes = [
+        'PPCP',
+        'EXPRESS_CHECKOUT'
+    ];
+
+    /**
+     * List of countries that support custom payment accounts
+     *
+     * @unreleased
+     * @var string[]
+     */
+    private $countriesAvailableForAdvanceConnection = [
         'AU',
         'AT',
         'BE',
@@ -100,7 +112,8 @@ class ScriptLoader
             'give-paypal-partner-js',
             'givePayPalCommerce',
             [
-                'countriesAvailableForAdvanceConnection' => $this->countriesAvailableForAdvancdeConnection,
+                'countriesAvailableForAdvanceConnection' => $this->countriesAvailableForAdvanceConnection,
+                'accountTypes' => $this->accountTypes,
                 'translations' => [
                     'confirmPaypalAccountDisconnection' => esc_html__('Disconnect PayPal Account', 'give'),
                     'disconnectPayPalAccount' => esc_html__(

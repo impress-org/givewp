@@ -82,6 +82,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
             onBoardingButton.addEventListener( 'click', function( evt ) {
                 evt.preventDefault();
 
+                let connectionAccountType = null;
                 const mode = onBoardingButton.getAttribute( 'data-mode' );
                 const countryCode = countryField.value;
                 const container = {
@@ -154,6 +155,9 @@ window.addEventListener( 'DOMContentLoaded', function() {
                         closeOnBgClick: true,
                         callbacks: {
                             close: () => {
+                                // Reset connection account type.
+                                connectionAccountType = null;
+
                                 container.removeErrors();
                                 buttonState.enable();
 
@@ -162,8 +166,19 @@ window.addEventListener( 'DOMContentLoaded', function() {
                             }
                         },
                         successConfirm: () => {
+                            const radioField = document.querySelector('input[name="paypal_donations_connection_account_type"]:checked');
+                            radioField && ( connectionAccountType = radioField.value );
+
+                            // Exit if admin available for both conneciton account types but did not select any.
+                            if(
+                                givePayPalCommerce.countriesAvailableForAdvanceConnection.includes( countryCode )
+                                && ! givePayPalCommerce.accountTypes.includes( connectionAccountType )
+                            ){
+                                return;
+                            }
+
                             // Request partner obboarding link.
-                            fetch( ajaxurl + `?action=give_paypal_commerce_get_partner_url&countryCode=${ countryCode }&mode=${ mode }` )
+                            fetch( ajaxurl + `?action=give_paypal_commerce_get_partner_url&countryCode=${countryCode}&mode=${mode}&accountType=${connectionAccountType}` )
                                 .then( response => response.json() )
                                 .then( function( res ) {
                                     if ( true === res.success ) {
