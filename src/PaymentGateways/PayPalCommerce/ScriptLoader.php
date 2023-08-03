@@ -15,6 +15,43 @@ use Give_Admin_Settings;
 class ScriptLoader
 {
     /**
+     * List of countries that support custom payment accounts
+     *
+     * @var string[]
+     */
+    private $countriesAvailableForAdvancdeConnection = [
+        'AU',
+        'AT',
+        'BE',
+        'BG',
+        'CY',
+        'CZ',
+        'DK',
+        'EE',
+        'FI',
+        'FR',
+        'GR',
+        'HU',
+        'IT',
+        'LV',
+        'LI',
+        'LT',
+        'LU',
+        'MT',
+        'NL',
+        'NO',
+        'PL',
+        'PT',
+        'RO',
+        'SK',
+        'SI',
+        'ES',
+        'SE',
+        'GB',
+        'US',
+    ];
+
+    /**
      * @since 2.9.0
      *
      * @var MerchantDetails
@@ -73,9 +110,9 @@ class ScriptLoader
                     'pciWarning' => sprintf(
                         __(
                             'PayPal allows you to accept credit or debit cards directly on your website. Because of
-							this, your site needs to maintain <a href="%1$s" target="_blank">PCI-DDS compliance</a>.
-							GiveWP never stores sensitive information like card details to your server and works
-							seamlessly with SSL certificates. Compliance is comprised of, but not limited to:',
+                            this, your site needs to maintain <a href="%1$s" target="_blank">PCI-DDS compliance</a>.
+                            GiveWP never stores sensitive information like card details to your server and works
+                            seamlessly with SSL certificates. Compliance is comprised of, but not limited to:',
                             'give'
                         ),
                         'https://givewp.com/documentation/resources/pci-compliance/'
@@ -91,7 +128,8 @@ class ScriptLoader
                         ),
                         esc_html__('Implement an SSL certificate to keep your donations secure.', 'give'),
                         esc_html__('Keep plugins up to date to ensure latest security fixes are present.', 'give'),
-                    ]
+                    ],
+                    'countriesAvailableForAdvanceConnection' => $this->countriesAvailableForAdvancdeConnection
                 ],
             ]
         );
