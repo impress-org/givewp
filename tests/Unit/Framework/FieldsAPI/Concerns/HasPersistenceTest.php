@@ -27,15 +27,22 @@ class HasPersistenceTest extends TestCase
         $this->assertFalse($mock->shouldStoreAsDonorMeta());
     }
 
+    /**
+     * @unreleased
+     */
     public function testSettingTheScopeByString()
     {
         /** @var HasPersistence $mock */
         $mock = $this->getMockForTrait(HasPersistence::class);
 
         $mock->scope('test');
-        $this->assertEquals('test', $mock->getScopeValue());
+        $this->assertSame('test', $mock->getScopeValue());
+        $this->assertTrue($mock->getScope()->is('test'));
     }
 
+    /**
+     * @unreleased
+     */
     public function testSettingTheScopeByInstance()
     {
         /** @var HasPersistence $mock */
@@ -43,5 +50,18 @@ class HasPersistenceTest extends TestCase
 
         $mock->scope(new PersistenceScope('test'));
         $this->assertEquals('test', $mock->getScopeValue());
+        $this->assertTrue($mock->getScope()->is('test'));
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testSettingTheMetaKey()
+    {
+        /** @var HasPersistence $mock */
+        $mock = $this->getMockForTrait(HasPersistence::class);
+
+        $mock->metaKey('test');
+        $this->assertEquals('test', $mock->getMetaKey());
     }
 }
