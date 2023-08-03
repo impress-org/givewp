@@ -60,11 +60,13 @@ class PersistenceScope
     }
 
     /**
+     * @unreleased
+     *
      * @param self|string $scope
      */
     public function is($scope): bool
     {
-        if ( $scope instanceof self ) {
+        if ($scope instanceof self) {
             $scope = $scope->scope;
         }
 
