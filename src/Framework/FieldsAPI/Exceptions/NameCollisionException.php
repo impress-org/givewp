@@ -9,9 +9,24 @@ use Give\Framework\Exceptions\Primitives\Exception;
  */
 class NameCollisionException extends Exception
 {
+    /**
+     * @var string
+     */
+    protected $nodeNameCollision;
+    
     public function __construct($name, $code = 0, Exception $previous = null)
     {
+        $this->nodeNameCollision = $name;
+
         $message = "Node name collision for $name";
         parent::__construct($message, $code, $previous);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getNodeNameCollision(): string
+    {
+        return $this->nodeNameCollision;
     }
 }
