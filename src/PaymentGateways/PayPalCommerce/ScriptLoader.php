@@ -100,6 +100,7 @@ class ScriptLoader
             'give-paypal-partner-js',
             'givePayPalCommerce',
             [
+                'countriesAvailableForAdvanceConnection' => $this->countriesAvailableForAdvancdeConnection,
                 'translations' => [
                     'confirmPaypalAccountDisconnection' => esc_html__('Disconnect PayPal Account', 'give'),
                     'disconnectPayPalAccount' => esc_html__(
@@ -129,7 +130,6 @@ class ScriptLoader
                         esc_html__('Implement an SSL certificate to keep your donations secure.', 'give'),
                         esc_html__('Keep plugins up to date to ensure latest security fixes are present.', 'give'),
                     ],
-                    'countriesAvailableForAdvanceConnection' => $this->countriesAvailableForAdvancdeConnection
                 ],
             ]
         );
