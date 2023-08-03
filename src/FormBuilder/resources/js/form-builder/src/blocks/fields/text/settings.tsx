@@ -6,25 +6,20 @@ import {Icon} from '@wordpress/icons';
 
 const settings: FieldBlock['settings'] = {
     ...defaultSettings,
-    title: __('Text', 'custom-block-editor'),
+    title: __('Text', 'give'),
     category: 'custom',
     description: __('A custom text field that donors can use.', 'give'),
-    attributes: {
-        ...defaultSettings.attributes,
-        storeAsDonorMeta: {
-            type: 'boolean',
-            source: 'attribute',
-            default: false,
-        },
-        displayInAdmin: {
-            type: 'boolean',
-            source: 'attribute',
-            default: true,
-        },
-        displayInReceipt: {
-            type: 'boolean',
-            source: 'attribute',
-            default: true,
+    supports: {
+        // @ts-ignore
+        givewp: {
+            fieldSettings: {
+                label: {
+                    default: __('Text field', 'give'),
+                },
+                placeholder: true,
+                defaultValue: true,
+                emailTag: true,
+            },
         },
     },
     icon: () => (

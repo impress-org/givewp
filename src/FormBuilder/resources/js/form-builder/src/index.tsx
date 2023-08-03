@@ -1,6 +1,7 @@
 import {createRoot, render, StrictMode} from '@wordpress/element';
 import {getCategories, setCategories} from '@wordpress/blocks';
 import registerBlocks from './common/registerBlocks';
+import registerHooks from './supports';
 import {__} from '@wordpress/i18n';
 
 import App from './App';
@@ -30,6 +31,7 @@ setCategories([
     },
 ]);
 
+registerHooks();
 registerBlocks();
 
 const root = document.getElementById('root');
