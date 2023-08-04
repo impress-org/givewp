@@ -308,8 +308,6 @@ class GiveConfirmModal extends GiveModal {
 
 		this.config.classes.modalWrapper += ' give-modal--confirm';
 
-		console.log(this.config);
-
 		this.init();
 	}
 
