@@ -151,12 +151,13 @@ class ConvertDonationFormBlocksToFieldsApi
                     });
 
             case "givewp/payment-gateways":
-                $defaultGatewayId = give(DonationFormRepository::class)->getDefaultEnabledGatewayId($this->formId);
+                $defaultGatewayId = give( DonationFormRepository::class )->getDefaultEnabledGatewayId( $this->formId );
 
-                return PaymentGateways::make('gatewayId')
-                    ->rules(new GatewayRule())
-                    ->required()
-                    ->defaultValue($defaultGatewayId);
+                return PaymentGateways::make( 'gatewayId' )
+                                      ->testMode( give_is_test_mode() )
+                                      ->rules( new GatewayRule() )
+                                      ->required()
+                                      ->defaultValue( $defaultGatewayId );
 
             case "givewp/donation-summary":
                 return DonationSummary::make('donation-summary');

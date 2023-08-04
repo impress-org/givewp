@@ -18,6 +18,7 @@ export interface FieldProps extends Field {
 }
 
 export interface GatewayFieldProps extends FieldProps {
+    isTestMode: boolean;
     gateways: Gateway[];
 }
 
