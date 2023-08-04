@@ -68,20 +68,6 @@ const FormDesignSettings = () => {
                 {showHeader && (
                     <>
                         <PanelRow>
-                            <TextControl
-                                label={__('Heading', 'give')}
-                                value={heading}
-                                onChange={(heading) => dispatch(setFormSettings({heading}))}
-                            />
-                        </PanelRow>
-                        <PanelRow>
-                            <TextareaControl
-                                label={__('Description', 'give')}
-                                value={description}
-                                onChange={(description) => dispatch(setFormSettings({description}))}
-                            />
-                        </PanelRow>
-                        <PanelRow>
                             <ToggleControl
                                 label={__('Show Heading', 'give')}
                                 checked={showHeading}
@@ -95,6 +81,24 @@ const FormDesignSettings = () => {
                                 onChange={() => dispatch(setFormSettings({showDescription: !showDescription}))}
                             />
                         </PanelRow>
+                        {showHeading && (
+                            <PanelRow>
+                                <TextControl
+                                    label={__('Heading', 'give')}
+                                    value={heading}
+                                    onChange={(heading) => dispatch(setFormSettings({heading}))}
+                                />
+                            </PanelRow>
+                        )}
+                        {showDescription && (
+                            <PanelRow>
+                                <TextareaControl
+                                    label={__('Description', 'give')}
+                                    value={description}
+                                    onChange={(description) => dispatch(setFormSettings({description}))}
+                                />
+                            </PanelRow>
+                        )}
                     </>
                 )}
             </PanelBody>
