@@ -122,24 +122,38 @@ window.addEventListener( 'DOMContentLoaded', function() {
                 // eslint-disable-next-line no-undef
                 const modalBody  =  `
                     <div class="give-modal__description">
+                        <p class="welcome-text">Select account type for connection</p>
                         <p>
                             <label for="paypal_donations_connection_account_type_ppcp">
                                 <input type="radio"
                                     name="paypal_donations_connection_account_type"
                                     id="paypal_donations_connection_account_type_ppcp"
-                                    value="PPCP">&nbsp;${ __( 'PPCP', 'givewp') }
+                                    value="PPCP">&nbsp;${ __( 'Advancded Card Processing', 'givewp') }
                             </label>
+                            <ul>
+                                <li>${__( 'Accept Credit & Debit Cards', 'givewp')}</li>
+                                <li>${__( 'Seller Protection', 'givewp')}</li>
+                            </ul>
                         </p>
                         <p>
                             <label for="paypal_donations_connection_account_type_express_checkout">
                                 <input type="radio"
                                     name="paypal_donations_connection_account_type"
                                     id="paypal_donations_connection_account_type_express_checkout"
-                                    value="EXPRESS_CHECKOUT">&nbsp;${ __( 'EXPRESS CHECKOUT', 'givewp') }
+                                    value="EXPRESS_CHECKOUT">&nbsp;${__( 'Standard Card Processing', 'give')}
+                                <span>${__( 'Requires Application Approval', 'give')}</span>
                             </label>
+                            <ul class="flex2x2">
+                                <li>${__( 'Accept Credit & Debit Cards', 'give')}</li>
+                                <li>${__( 'Seller Protection', 'give')}</li>
+                                <li>${__( 'Fraud Protection', 'give')}</li>
+                                <li>${__( 'Chargeback Protection', 'give')}</li>
+                            </ul>
                         </p>
                         <div class="give-field-description">
-                            ${ __( 'Explaination will be here', 'givewp' ) }
+                            <a href="https://docs.givewp.com/connection-comparison" target="_blank">
+                                ${__('Read more about the connection types', 'give')}
+                            </a>
                         </div>
                     </div>
                 `.trim();
@@ -149,7 +163,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
                             modalWrapper: 'paypal-commerce-connection-account-type-selection-modal',
                         },
                         modalContent: {
-                            title: __( 'Select account type for connection', 'givewp' ),
+                            title: __( 'PayPal Connection', 'givewp' ),
                             body: modalBody,
                         },
                         closeOnBgClick: true,
