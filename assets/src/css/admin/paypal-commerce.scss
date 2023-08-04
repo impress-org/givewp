@@ -50,14 +50,15 @@
 .paypal-commerce-connection-account-type-selection-modal{
 		color: #0E0E0E;
 
-	p.welcome-text{
-		color: #404040;
+	ul{
+		margin-left: 22px;
+
+		li{
+			font-size: 0.8em;
+			color: #666;
+		}
 	}
 
-	li{
-		font-size: 0.8em;
-		color: #666;
-	}
     ul.flex2x2 {
         display: flex;
         flex-wrap: wrap;
@@ -75,6 +76,10 @@
 
 	p{
 		font-size: 16px;
+
+		&.welcome-text{
+			color: #404040;
+		}
 	}
 
     span{
