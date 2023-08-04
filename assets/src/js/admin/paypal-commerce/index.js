@@ -168,6 +168,12 @@ window.addEventListener( 'DOMContentLoaded', function() {
                         },
                         closeOnBgClick: true,
                         callbacks: {
+                            open: () => {
+                                                            document.querySelector('.give-popup-confirm-button').disabled = true;
+                                document.querySelector('input[name="paypal_donations_connection_account_type"]').addEventListener('change', function(){
+                                    document.querySelector('.give-popup-confirm-button').disabled = false;
+                                });
+                            },
                             close: () => {
                                 // Reset connection account type.
                                 connectionAccountType = null;
