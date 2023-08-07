@@ -244,7 +244,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
                         }
                 });
 
-                // Ask for connection account type if admin select acountry which is available for PPCP and Express Checkout account.
+                // Ask for connection account type if admin selected acount which is available for PPCP and Express Checkout account.
                 // Request parther link otherwise which will fetch onboarding link for Express Checkout account type.
                 if( givePayPalCommerce.countriesAvailableForAdvanceConnection.includes( countryCode ) ) {
                     modal.render();
