@@ -237,8 +237,9 @@ window.addEventListener( 'DOMContentLoaded', function() {
                             const radioField = document.querySelector('input[name="paypal_donations_connection_account_type"]:checked');
                                                     radioField && ( connectionAccountType = radioField.value );
 
-                            canOptInForAdvancedCardProcessing =   givePayPalCommerce.countriesAvailableForAdvanceConnection.includes( countryCode )
-                                && givePayPalCommerce.accountTypes.includes( connectionAccountType );
+                                                    // Modal will only open when admin available for both conneciton account types.
+                            // So we only need to validate if admin selected any account type or not.
+                            canOptInForAdvancedCardProcessing =   givePayPalCommerce.accountTypes.includes( connectionAccountType );
 
                             // Exit if admin available for both conneciton account types but did not select any.
                             if(! canOptInForAdvancedCardProcessing){
