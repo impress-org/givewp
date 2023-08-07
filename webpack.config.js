@@ -17,6 +17,7 @@ module.exports = {
         ...defaultConfig.resolve,
         alias: {
             ...defaultConfig.resolve.alias,
+            //TODO - enable aliases when files are available in GiveWP 3.0. Will also need to update tsconfig to match.
             //'@givewp/forms/types': srcPath('DonationForms/resources/types.ts'),
             //'@givewp/forms/propTypes': srcPath('DonationForms/resources/propTypes.ts'),
             //'@givewp/forms/app': srcPath('DonationForms/resources/app'),
