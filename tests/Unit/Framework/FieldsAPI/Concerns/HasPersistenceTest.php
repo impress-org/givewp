@@ -18,13 +18,13 @@ class HasPersistenceTest extends TestCase
     public function testStoreAsDonorMetaMethods()
     {
         /** @var HasPersistence $mock */
-        $mock = $this->getMockForTrait(HasPersistence::class);
+        $mock = self::getMockForTrait(HasPersistence::class);
 
         $mock->storeAsDonorMeta();
-        $this->assertTrue($mock->shouldStoreAsDonorMeta());
+        self::assertTrue($mock->shouldStoreAsDonorMeta());
 
         $mock->storeAsDonorMeta(false);
-        $this->assertFalse($mock->shouldStoreAsDonorMeta());
+        self::assertFalse($mock->shouldStoreAsDonorMeta());
     }
 
     /**
@@ -33,11 +33,11 @@ class HasPersistenceTest extends TestCase
     public function testSettingTheScopeByString()
     {
         /** @var HasPersistence $mock */
-        $mock = $this->getMockForTrait(HasPersistence::class);
+        $mock = self::getMockForTrait(HasPersistence::class);
 
         $mock->scope('test');
-        $this->assertSame('test', $mock->getScopeValue());
-        $this->assertTrue($mock->getScope()->is('test'));
+        self::assertSame('test', $mock->getScopeValue());
+        self::assertTrue($mock->getScope()->is('test'));
     }
 
     /**
@@ -46,17 +46,17 @@ class HasPersistenceTest extends TestCase
     public function testSettingTheScopeByInstance()
     {
         /** @var HasPersistence $mock */
-        $mock = $this->getMockForTrait(HasPersistence::class);
+        $mock = self::getMockForTrait(HasPersistence::class);
 
         $mock->scope(new PersistenceScope('test'));
-        $this->assertEquals('test', $mock->getScopeValue());
-        $this->assertTrue($mock->getScope()->is('test'));
+        self::assertEquals('test', $mock->getScopeValue());
+        self::assertTrue($mock->getScope()->is('test'));
     }
 
     public function testUsingClosureForScope()
     {
         /** @var HasPersistence $mock */
-        $mock = $this->getMockForTrait(HasPersistence::class);
+        $mock = self::getMockForTrait(HasPersistence::class);
 
         $callback = function () {
             return 'test';
@@ -73,9 +73,9 @@ class HasPersistenceTest extends TestCase
     public function testSettingTheMetaKey()
     {
         /** @var HasPersistence $mock */
-        $mock = $this->getMockForTrait(HasPersistence::class);
+        $mock = self::getMockForTrait(HasPersistence::class);
 
         $mock->metaKey('test');
-        $this->assertEquals('test', $mock->getMetaKey());
+        self::assertEquals('test', $mock->getMetaKey());
     }
 }
