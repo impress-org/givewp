@@ -56,6 +56,12 @@
 		li{
 			font-size: 0.8em;
 			color: #666;
+
+            span.icon{
+                position: relative;
+                top: 3px;
+                padding-right: 8px;
+            }
 		}
 	}
 
@@ -82,7 +88,7 @@
 		}
 	}
 
-    span{
+    span:not(.icon){
 		color: #0B72D9;
 		font-size: 0.7em;
         float: right;
