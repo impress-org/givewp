@@ -82,10 +82,26 @@ class onBoardingRedirectHandler
     {
         if (isset($_GET['mode']) && in_array($_GET['mode'], ['live', 'sandbox'], true)) {
             $mode = $_GET['mode'];
-            $this->webhooksRepository->setMode($mode);
-            $this->merchantRepository->setMode($mode);
-            give(PayPalClient::class)->setMode($mode);
+
+            $this->setModeForServices($mode);
         }
+    }
+
+    /**
+     * Set mode for services.
+     *
+     * Use this function to manually set connection mode. Values can be 'live' or 'sandbox'.
+     * Services are classes which depends upon connection mode and used to interact with PayPal API or core logic.
+     *
+     * @unreleased
+     *
+     * @return void
+     */
+    public function setModeForServices(string $mode)
+    {
+        $this->webhooksRepository->setMode($mode);
+        $this->merchantRepository->setMode($mode);
+        give(PayPalClient::class)->setMode($mode);
     }
 
     /**
