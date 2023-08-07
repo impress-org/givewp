@@ -53,6 +53,20 @@ class HasPersistenceTest extends TestCase
         $this->assertTrue($mock->getScope()->is('test'));
     }
 
+    public function testUsingClosureForScope()
+    {
+        /** @var HasPersistence $mock */
+        $mock = $this->getMockForTrait(HasPersistence::class);
+
+        $callback = function () {
+            return 'test';
+        };
+        $mock->scope($callback);
+
+        self::assertTrue($mock->getScope()->isCallback());
+        self::assertSame($callback, $mock->getScopeCallback());
+    }
+
     /**
      * @unreleased
      */
