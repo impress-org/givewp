@@ -16,6 +16,10 @@ class CustomerMerchantIntegrationProductSubscriptionUpdated extends PaymentEvent
     /**
      * This function will process the PayPal event.
      *
+     * Connected PayPal account will be verified again if:
+     * - Account is not ready for payment, and
+     * - Merchant ID from event matches with connected PayPal account.
+     *
      * @inheritDoc
      */
     public function processEvent($event)
