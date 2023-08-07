@@ -171,12 +171,12 @@ window.addEventListener( 'DOMContentLoaded', function() {
                                 <input type="radio"
                                     name="paypal_donations_connection_account_type"
                                     id="paypal_donations_connection_account_type_ppcp"
-                                    value="PPCP">&nbsp;${ __( 'Advancded Card Processing', 'givewp') }
+                                    value="PPCP">&nbsp;${ __( 'Advancded Card Processing', 'give') }
                             </label>
                         </p>
                         <ul>
-                            <li><span class="icon">${checkVerifiedIcon}</span>${__( 'Accept Credit & Debit Cards', 'givewp')}</li>
-                            <li><span class="icon">${checkVerifiedIcon}</span>${__( 'Seller Protection', 'givewp')}</li>
+                            <li><span class="icon">${checkVerifiedIcon}</span>${__( 'Accept Credit & Debit Cards', 'give')}</li>
+                            <li><span class="icon">${checkVerifiedIcon}</span>${__( 'Seller Protection', 'give')}</li>
                         </ul>
                         <p>
                             <label for="paypal_donations_connection_account_type_express_checkout">
@@ -206,7 +206,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
                             modalWrapper: 'paypal-commerce-connection-account-type-selection-modal',
                         },
                         modalContent: {
-                            title: __( 'PayPal Connection', 'givewp' ),
+                            title: __( 'PayPal Connection', 'give' ),
                             body: modalBody,
                         },
                         closeOnBgClick: true,
