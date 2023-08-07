@@ -120,7 +120,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
                 const ajaxRequest = () => {
                     {
                         // Request partner obboarding link.
-                        fetch( ajaxurl + `?action=give_paypal_commerce_get_partner_url&countryCode=${countryCode}&mode=${mode}&accountType=${connectionAccountType}` )
+                        fetch( ajaxurl + `?action=give_paypal_commerce_get_partner_url&countryCode=${countryCode}&mode=${mode}&accountType=${connectionAccountType  ?? 'EXPRESS_CHECKOUT'}` )
                             .then( response => response.json() )
                             .then( function( res ) {
                                 if ( true === res.success ) {

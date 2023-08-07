@@ -129,7 +129,7 @@ class PayPalAuth
      *
      * @return array|null
      */
-    public function getSellerPartnerLink($returnUrl, $country)
+    public function getSellerPartnerLink($returnUrl, $accountType)
     {
         $response = wp_remote_retrieve_body(
             wp_remote_post(
@@ -140,7 +140,7 @@ class PayPalAuth
                 [
                     'body' => [
                         'return_url' => $returnUrl,
-                        'country_code' => $country,
+                        'account_type' => $accountType,
                     ],
                 ]
             )

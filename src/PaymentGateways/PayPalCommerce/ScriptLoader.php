@@ -20,7 +20,7 @@ class ScriptLoader
      * @unreleased
      * @var string[]
      */
-    private $accountTypes = [
+    public static $accountTypes = [
         'PPCP',
         'EXPRESS_CHECKOUT'
     ];
