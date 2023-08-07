@@ -212,10 +212,16 @@ window.addEventListener( 'DOMContentLoaded', function() {
                         closeOnBgClick: true,
                         callbacks: {
                             open: () => {
-                                                            document.querySelector('.give-popup-confirm-button').disabled = true;
-                                document.querySelector('input[name="paypal_donations_connection_account_type"]').addEventListener('change', function(){
-                                    document.querySelector('.give-popup-confirm-button').disabled = false;
-                                });
+                                // Disable confirm button in modal till user selects account type.
+                                document.querySelector('.give-popup-confirm-button').disabled = true;
+
+                                // Add event listener to enable confirm button when user selects account type.
+                                document.querySelectorAll('input[name="paypal_donations_connection_account_type"]')
+                                    .forEach( (radioField) => {
+                                        radioField.addEventListener('click', function () {
+                                            document.querySelector('.give-popup-confirm-button').disabled = false;
+                                        })
+                                    })
                             },
                             close: () => {
                                 // Reset connection account type.

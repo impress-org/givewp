@@ -113,7 +113,7 @@ class ScriptLoader
             'givePayPalCommerce',
             [
                 'countriesAvailableForAdvanceConnection' => $this->countriesAvailableForAdvanceConnection,
-                'accountTypes' => $this->accountTypes,
+                'accountTypes' => self::$accountTypes,
                 'translations' => [
                     'confirmPaypalAccountDisconnection' => esc_html__('Disconnect PayPal Account', 'give'),
                     'disconnectPayPalAccount' => esc_html__(
