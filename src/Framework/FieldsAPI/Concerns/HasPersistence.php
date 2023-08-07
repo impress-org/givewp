@@ -2,6 +2,8 @@
 
 namespace Give\Framework\FieldsAPI\Concerns;
 
+use Closure;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\FieldsAPI\ValueObjects\PersistenceScope;
 
 /**
@@ -12,6 +14,11 @@ use Give\Framework\FieldsAPI\ValueObjects\PersistenceScope;
  */
 trait HasPersistence
 {
+    /**
+     * @var Closure
+     */
+    private $scopeCallback;
+
     /**
      * @unreleased
      *
@@ -29,11 +36,20 @@ trait HasPersistence
     /**
      * @unreleased
      *
-     * @param string|PersistenceScope $scope
+     * @param string|PersistenceScope|Closure $scope
      */
     public function scope($scope): self
     {
-        $this->scope = $scope instanceof PersistenceScope ? $scope : new PersistenceScope($scope);
+        if ($scope instanceof Closure) {
+            $this->scopeCallback = $scope;
+            $scope = PersistenceScope::callback();
+        } elseif (is_string($scope)) {
+            $scope = new PersistenceScope($scope);
+        } elseif (!$scope instanceof PersistenceScope) {
+            throw new InvalidArgumentException('Scope must be a string, Closure, or PersistenceScope');
+        }
+
+        $this->scope = $scope;
 
         return $this;
     }
@@ -52,6 +68,14 @@ trait HasPersistence
     public function getScopeValue(): string
     {
         return (string)$this->scope;
+    }
+
+    /**
+     * @return Closure|null
+     */
+    public function getScopeCallback()
+    {
+        return $this->scopeCallback;
     }
 
     /**

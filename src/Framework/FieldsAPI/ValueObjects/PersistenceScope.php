@@ -13,6 +13,8 @@ class PersistenceScope
 {
     const DONATION = 'donation';
     const DONOR = 'donor';
+    const FILE = 'file';
+    const CALLBACK = 'callback';
 
     /**
      * @var string
@@ -38,6 +40,22 @@ class PersistenceScope
     /**
      * @unreleased
      */
+    public static function file(): self
+    {
+        return new self(self::FILE);
+    }
+
+    /**
+     * @unreleased
+     */
+    public static function callback(): self
+    {
+        return new self(self::CALLBACK);
+    }
+
+    /**
+     * @unreleased
+     */
     public function __construct(string $scope)
     {
         $this->scope = $scope;
@@ -57,6 +75,22 @@ class PersistenceScope
     public function isDonor(): bool
     {
         return $this->scope === self::DONOR;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function isFile(): bool
+    {
+        return $this->scope === self::FILE;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function isCallback(): bool
+    {
+        return $this->scope === self::CALLBACK;
     }
 
     /**
