@@ -12,6 +12,7 @@ use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\FieldsAPI\DonationForm as Form;
+use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
 use Give\Framework\Models\Model;
@@ -131,8 +132,9 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
 
     /**
      *
-     * @unreleased return DonationForm node
+     * @unreleased return DonationForm node; throw NameCollisionException
      * @since 0.1.0
+     * @throws NameCollisionException
      */
     public function schema(): Form
     {
