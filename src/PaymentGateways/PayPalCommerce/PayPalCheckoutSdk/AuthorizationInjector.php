@@ -2,14 +2,11 @@
 
 namespace Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk;
 
-use Give\Helpers\ArrayDataSet;
-use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\RefreshToken;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
+use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
 use PayPalCheckoutSdk\Core\AccessTokenRequest;
-use PayPalCheckoutSdk\Core\PayPalEnvironment;
 use PayPalCheckoutSdk\Core\RefreshTokenRequest;
-use PayPalHttp\HttpClient;
 use PayPalHttp\HttpRequest;
 use PayPalHttp\Injector;
 
@@ -20,28 +17,14 @@ use PayPalHttp\Injector;
  * Authorization header build with merchant access token.
  * Fresh Merchant access token will be fetched from PayPal if expired, for http request.
  *
+ * @unreleased Remove unnecessary properties and methods.
  * @since 2.25.0
  *
  * @see \PayPalCheckoutSdk\Core\AuthorizationInjector
  */
 class AuthorizationInjector implements Injector
 {
-    private $client;
-    private $environment;
-    private $refreshToken;
     public $accessToken;
-
-    /**
-     * Class constructor.
-     *
-     * @since 2.25.0
-     */
-    public function __construct(HttpClient $client, PayPalEnvironment $environment, $refreshToken)
-    {
-        $this->client = $client;
-        $this->environment = $environment;
-        $this->refreshToken = $refreshToken;
-    }
 
     /**
      * Adds an Authorization header to the request.
@@ -61,13 +44,16 @@ class AuthorizationInjector implements Injector
     /**
      * Returns an AccessToken.
      *
+     * @unreleased use client credentials to fetch access token.
      * @since 2.25.0
      */
     protected function fetchAccessToken(): AccessToken
     {
-        $accessTokenResponse = $this->client->execute(new AccessTokenRequest($this->environment, $this->refreshToken));
-        $accessToken = (array) $accessTokenResponse->result;
-        $accessToken = ArrayDataSet::camelCaseKeys($accessToken);
+        $merchantDetail = give(MerchantDetails::class)->getDetails();
+        $accessToken = give(PayPalAuth::class)->getTokenFromClientCredentials(
+            $merchantDetail->clientId,
+            $merchantDetail->clientSecret
+        );
 
         $this->registerRefreshTokenCronJob($accessToken);
 
@@ -97,6 +83,7 @@ class AuthorizationInjector implements Injector
     /**
      * Should save new access token and add a cron job to refresh token.
      *
+     * @unreleased Get latest merchant details from database.
      * @since 2.25.0
      *
      * @return void
@@ -104,8 +91,8 @@ class AuthorizationInjector implements Injector
     private function registerRefreshTokenCronJob(array $accessToken)
     {
         $refreshToken = give(RefreshToken::class);
-        $merchantDetail = give(MerchantDetail::class);
         $merchantDetailRepository = give(MerchantDetails::class);
+        $merchantDetail = $merchantDetailRepository->getDetails();
 
         $merchantDetail->setTokenDetails($accessToken);
         $merchantDetailRepository->save($merchantDetail);
