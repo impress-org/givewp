@@ -9,7 +9,7 @@ namespace Give\Framework\Http\Types;
  *
  * @unreleased
  */
-class FileRequest
+class UploadedFile
 {
     /**
      * The original name of the file on the client machine.
@@ -46,7 +46,7 @@ class FileRequest
     /**
      * @unreleased
      */
-    public static function fromArray(array $fileArray): FileRequest
+    public static function fromArray(array $fileArray): UploadedFile
     {
         $file = new self();
 
