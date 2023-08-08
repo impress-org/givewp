@@ -9,7 +9,7 @@ use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
 use Give\Framework\PaymentGateways\PaymentGateway;
-use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
+use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Form\Utils as FormUtils;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
 use Give\Subscriptions\Models\Subscription;
@@ -21,7 +21,6 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
  */
 class TestGateway extends PaymentGateway
 {
-    use HasScriptAssetFile;
     /**
      * @inheritDoc
      */
@@ -52,7 +51,7 @@ class TestGateway extends PaymentGateway
      */
     public function enqueueScript(int $formId)
     {
-        $scriptAsset = $this->getScriptAsset(GIVE_PLUGIN_DIR . 'build/testGateway.asset.php');
+        $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/testGateway.asset.php');
 
         wp_enqueue_script(
             $this::id(),
