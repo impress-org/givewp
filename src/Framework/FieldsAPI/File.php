@@ -63,16 +63,15 @@ class File extends Field
      *
      * @unreleased
      */
-    public function maxUploadSize(int $maxSize): File
+    public function maxUploadSize(int $maxUploadSize): File
     {
         if ($this->hasRule(FileRule::id())) {
             /** @var FileRule $rule */
             $rule = $this->getRule(FileRule::id());
-            $rule->maxSize($maxSize);
+            $rule->maxSize($maxUploadSize);
         }
 
-        // TODO: add support for file:maxSize
-        $this->rules((new FileRule())->maxSize($maxSize));
+        $this->rules((new FileRule())->maxSize($maxUploadSize));
 
         return $this;
     }
@@ -106,7 +105,7 @@ class File extends Field
         if ($this->hasRule(FileRule::id())) {
             /** @var FileRule $rule */
             $rule = $this->getRule(FileRule::id());
-            // TODO: add support for file:allowedMimeTypes
+
             $rule->allowedMimeTypes($allowedMimeTypes);
         } else {
             $this->rules((new FileRule())->allowedMimeTypes($allowedMimeTypes));
