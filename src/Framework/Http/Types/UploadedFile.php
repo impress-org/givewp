@@ -28,7 +28,7 @@ class UploadedFile
      *
      * @var string
      */
-    protected $tmpName;
+    protected $temporaryName;
     /**
      * The error code associated with this file upload.
      *
@@ -52,11 +52,35 @@ class UploadedFile
 
         $file->name = (string)$fileArray['name'];
         $file->browserMimeType = (string)$fileArray['type'];
-        $file->tmpName = (string)$fileArray['tmp_name'];
+        $file->temporaryName = (string)$fileArray['tmp_name'];
         $file->error = (int)$fileArray['error'];
         $file->size = (int)$fileArray['size'];
 
         return $file;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getTemporaryName(): string
+    {
+        return $this->temporaryName;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getBrowserMimeType(): string
+    {
+        return $this->browserMimeType;
     }
 
     /**
@@ -66,7 +90,7 @@ class UploadedFile
      */
     public function isUploadedFile(): bool
     {
-        return is_uploaded_file($this->tmpName);
+        return is_uploaded_file($this->temporaryName);
     }
 
     /**
@@ -76,7 +100,7 @@ class UploadedFile
      */
     public function getMimeType(): string
     {
-        return mime_content_type($this->tmpName);
+        return mime_content_type($this->temporaryName);
     }
 
     /**

@@ -47,7 +47,7 @@ class File implements ValidationRule
      */
     public function getMaxSize(): int
     {
-        return $this->maxSize;
+        return $this->maxSize ?? wp_max_upload_size();
     }
 
     /**
@@ -67,7 +67,7 @@ class File implements ValidationRule
      */
     public function getAllowedMimeTypes(): array
     {
-        return $this->allowedMimeTypes ?? [];
+        return $this->allowedMimeTypes ?? get_allowed_mime_types();
     }
 
     /**
@@ -82,11 +82,14 @@ class File implements ValidationRule
                 $fail(sprintf(__('%s must be a valid file.', 'give'), '{field}'));
             }
 
-            if (!in_array($file->getMimeType(), $this->getAllowedMimeTypes(), true)) {
+            // check against both the allowed mime types defined by the file rule and the server
+            if (!in_array($file->getMimeType(), $this->getAllowedMimeTypes(), true) ||
+                !in_array($file->getMimeType(), get_allowed_mime_types(), true)) {
                 $fail(sprintf(__('%s must be a valid file type.', 'give'), '{field}'));
             }
 
-            if ($file->getSize() > $this->getMaxSize()) {
+            // check against both the max upload size defined by the file rule and the server
+            if ($file->getSize() > $this->getMaxSize() || $file->getSize() > wp_max_upload_size()) {
                 $fail(
                     sprintf(__('%s must be less than or equal to %d bytes.', 'give'), '{field}', $this->getMaxSize())
                 );
