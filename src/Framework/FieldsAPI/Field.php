@@ -4,6 +4,7 @@ namespace Give\Framework\FieldsAPI;
 
 use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
+use Give\Framework\FieldsAPI\ValueObjects\PersistenceScope;
 use Give\Vendors\StellarWP\Validation\Concerns\HasValidationRules;
 
 /**
@@ -18,6 +19,7 @@ abstract class Field implements Node
     use Concerns\HasDefaultValue;
     use Concerns\HasName;
     use Concerns\HasType;
+    use Concerns\HasPersistence;
     use Concerns\IsReadOnly;
     use Concerns\IsRequired;
     use Concerns\Macroable;
@@ -25,7 +27,6 @@ abstract class Field implements Node
     use Concerns\TapNode;
     use Concerns\ShowInAdmin;
     use Concerns\ShowInReceipt;
-    use Concerns\StoreAsMeta;
     use Concerns\HasVisibilityConditions {
         Concerns\HasVisibilityConditions::__construct as private __visibilityConditionsConstruct;
     }
@@ -34,8 +35,9 @@ abstract class Field implements Node
     }
 
     /**
-     * @since      2.12.0
-     * @since 2.23.1 Make constructor final to avoid unsafe usage of `new static()`.
+     * @unreleased sets the default scope to donation
+     * @since 2.23.1 make constructor final to avoid unsafe usage of `new static()`.
+     * @since 2.12.0
      *
      * @throws EmptyNameException
      */
@@ -46,6 +48,7 @@ abstract class Field implements Node
         }
 
         $this->name = $name;
+        $this->scope = PersistenceScope::donation();
         $this->__validationRulesConstruct();
         $this->__visibilityConditionsConstruct();
     }
