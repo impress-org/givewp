@@ -5,6 +5,7 @@ import {__} from '@wordpress/i18n';
 const gateway = {
     id: 'test-gateway',
     async beforeCreatePayment(values) {
+        // To test out a gateway error, you can fill in the donation form with "error" as the first name.
         if (values.firstName === 'error') {
             throw new Error('Failed in some way');
         }
