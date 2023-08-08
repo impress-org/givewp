@@ -42,7 +42,8 @@ class MigrationCommand
 
         $pipeline
             ->process($payload)
-            ->finally(function($payload) {
+            ->finally(function(FormMigrationPayload $payload) {
+                $payload->formV3->save();
                 WP_CLI::success( 'Migration Complete ' . $payload->formV3->id );
             });
     }
