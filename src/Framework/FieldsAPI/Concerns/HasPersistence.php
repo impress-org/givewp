@@ -90,8 +90,10 @@ trait HasPersistence
 
     /**
      * @unreleased
+     *
+     * @return  string|null
      */
-    public function getMetaKey(): string
+    public function getMetaKey()
     {
         return $this->metaKey;
     }
