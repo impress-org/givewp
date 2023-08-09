@@ -132,6 +132,7 @@ class AjaxRequestHandler
     /**
      * This function handle ajax request with give_paypal_commerce_get_partner_url action.
      *
+     * @unreleased Add support for accountType. This param is required to get partner link.
      * @since 2.30.0 Add support for mode param.
      * @since 2.9.0
      */

@@ -10,6 +10,7 @@ use Give_Admin_Settings;
  * Class ScriptLoader
  * @package Give\PaymentGateways\PayPalCommerce
  *
+ * @unreleased Implement on-demand PayPal connection. Admin can select Advance or standard card processing.
  * @since 2.9.0
  */
 class ScriptLoader
