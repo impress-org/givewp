@@ -18,6 +18,6 @@ class GenerateClientToken extends HttpRequest
      */
     public function __construct()
     {
-        parent::__construct('/v1/identity/generate-token', "POST");
+        parent::__construct('/v1/identity/generate-token', 'POST');
     }
 }

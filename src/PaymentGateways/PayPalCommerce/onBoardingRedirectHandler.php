@@ -114,6 +114,7 @@ class onBoardingRedirectHandler
     /**
      * Save PayPal merchant details
      *
+     * @unreleased Remove second argument from updateSellerAccessToken function.
      * @since 2.25.0 Handle exception.
      * @since 2.9.0
      *
@@ -187,10 +188,7 @@ class onBoardingRedirectHandler
 
         // Preserve the seller access token.
         // This is required to get the merchant rest api credentials.
-        $this->settings->updateSellerAccessToken(
-            $this->settings->getAccessToken(),
-            $this->merchantRepository->getMode()
-        );
+        $this->settings->updateSellerAccessToken($this->settings->getAccessToken());
 
         $this->deleteTempOptions();
 
@@ -226,6 +224,7 @@ class onBoardingRedirectHandler
     /**
      * Sets up the webhook for the connected account
      *
+     * @unreleased Remove second argument from createWebhook function.
      * @since 2.9.0
      *
      * @param MerchantDetail $merchant_details
@@ -237,7 +236,7 @@ class onBoardingRedirectHandler
         }
 
         try {
-            $webhookConfig = $this->webhooksRepository->createWebhook($merchant_details->accessToken);
+            $webhookConfig = $this->webhooksRepository->createWebhook();
             $this->webhooksRepository->saveWebhookConfig($webhookConfig);
         } catch (Exception $ex) {
             $errors[] = esc_html__(
