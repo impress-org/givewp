@@ -189,8 +189,8 @@ window.addEventListener( 'DOMContentLoaded', function() {
                         </p>
                          <ul class="flex2x2">
                             <li><span class="icon">${checkVerifiedIcon}</span>${__( 'Accept Credit & Debit Cards', 'give')}</li>
-                            <li><span class="icon">${checkVerifiedIcon}</span>${__( 'Seller Protection', 'give')}</li>
                             <li><span class="icon">${checkVerifiedIcon}</span>${__( 'Fraud Protection', 'give')}</li>
+                            <li><span class="icon">${checkVerifiedIcon}</span>${__( 'Seller Protection', 'give')}</li>
                             <li><span class="icon">${checkVerifiedIcon}</span>${__( 'Chargeback Protection', 'give')}</li>
                         </ul>
                         <div class="give-field-description">
