@@ -308,67 +308,82 @@ class GiveStripeElements {
 	 * @param setupStripeElement
 	 * @param cardElements
 	 *
+     * @unreleased Scrolls Stripe checkout modal into view for all screen sizes.
+     *
 	 * @since 2.8.0
 	 */
 	triggerStripeModal( formElement, stripeElements, setupStripeElement, cardElements ) {
-		const idPrefixElement = formElement.querySelector( 'input[name="give-form-id-prefix"]' );
-		const stripeModalDonateBtn = formElement.querySelector( `#give-stripe-checkout-modal-donate-button-${ idPrefixElement.value }` );
-		const cardholderName = formElement.querySelector( 'input[name="card_name"]' );
-		const completeCardElements = {};
-		let completeCardStatus = false;
+        const idPrefixElement = formElement.querySelector('input[name="give-form-id-prefix"]');
+        const stripeModalDonateBtn = formElement.querySelector(
+            `#give-stripe-checkout-modal-donate-button-${idPrefixElement.value}`
+        );
+        const cardholderName = formElement.querySelector('input[name="card_name"]');
+        const stripeModalContent = document.querySelector('.give-stripe-checkout-modal-container');
+        const purchaseButton = document.querySelector('#give-purchase-button');
+        const completeCardElements = {};
+        let completeCardStatus = false;
 
-		cardElements.forEach( ( cardElement ) => {
-			completeCardElements.cardName = false;
+        // Scroll checkout modal container into view.
+        purchaseButton.addEventListener('click', function () {
+            stripeModalContent.scrollIntoView({behavior: 'smooth'});
+        });
 
-			cardElement.addEventListener( 'ready', ( e ) => {
-				completeCardElements[ e.elementType ] = false;
-				completeCardElements.cardName = 'card' === e.elementType;
-			} );
+        cardElements.forEach((cardElement) => {
+            completeCardElements.cardName = false;
 
-			cardElement.addEventListener( 'change', ( e ) => {
-				completeCardElements[ e.elementType ] = e.complete;
-				completeCardStatus = Object.values( completeCardElements ).every( ( string ) => {
-					return true === string;
-				} );
+            cardElement.addEventListener('ready', (e) => {
+                completeCardElements[e.elementType] = false;
+                completeCardElements.cardName = 'card' === e.elementType;
+            });
 
-				completeCardStatus ? stripeModalDonateBtn.removeAttribute( 'disabled' ) : stripeModalDonateBtn.setAttribute( 'disabled', 'disabled' );
-			} );
-		} );
+            cardElement.addEventListener('change', (e) => {
+                completeCardElements[e.elementType] = e.complete;
+                completeCardStatus = Object.values(completeCardElements).every((string) => {
+                    return true === string;
+                });
 
-		if ( null !== cardholderName ) {
-			cardholderName.addEventListener( 'keyup', ( e ) => {
-				completeCardElements.cardName = '' !== e.target.value;
-				completeCardStatus = Object.values( completeCardElements ).every( ( string ) => {
-					return true === string;
-				} );
-				completeCardStatus ? stripeModalDonateBtn.removeAttribute( 'disabled' ) : stripeModalDonateBtn.setAttribute( 'disabled', 'disabled' );
-			} );
-		}
+                completeCardStatus
+                    ? stripeModalDonateBtn.removeAttribute('disabled')
+                    : stripeModalDonateBtn.setAttribute('disabled', 'disabled');
+            });
+        });
 
-		if ( null !== stripeModalDonateBtn ) {
-			// Process donation on the click of the modal donate button.
-			stripeModalDonateBtn.addEventListener( 'click', ( e ) => {
-				const currentModalDonateBtn = e.target;
-				const loadingAnimationElement = currentModalDonateBtn.nextElementSibling;
-				const isLegacyForm = stripeModalDonateBtn.getAttribute( 'data-is_legacy_form' );
+        if (null !== cardholderName) {
+            cardholderName.addEventListener('keyup', (e) => {
+                completeCardElements.cardName = '' !== e.target.value;
+                completeCardStatus = Object.values(completeCardElements).every((string) => {
+                    return true === string;
+                });
+                completeCardStatus
+                    ? stripeModalDonateBtn.removeAttribute('disabled')
+                    : stripeModalDonateBtn.setAttribute('disabled', 'disabled');
+            });
+        }
 
-				if ( isLegacyForm ) {
-					currentModalDonateBtn.value = give_global_vars.purchase_loading;
-					loadingAnimationElement.style.display = 'inline-block';
-				} else {
-					currentModalDonateBtn.value = '';
-					loadingAnimationElement.classList.add( 'sequoia-loader' );
-					loadingAnimationElement.classList.add( 'spinning' );
-					loadingAnimationElement.classList.remove( 'give-loading-animation' );
-				}
+        if (null !== stripeModalDonateBtn) {
+            // Process donation on the click of the modal donate button.
+            stripeModalDonateBtn.addEventListener('click', (e) => {
+                const currentModalDonateBtn = e.target;
+                const loadingAnimationElement = currentModalDonateBtn.nextElementSibling;
+                const isLegacyForm = stripeModalDonateBtn.getAttribute('data-is_legacy_form');
 
-				// Create Payment Method.
-				stripeElements.createPaymentMethod( formElement, setupStripeElement, cardElements );
+                if (isLegacyForm) {
+                    currentModalDonateBtn.value = give_global_vars.purchase_loading;
+                    loadingAnimationElement.style.display = 'inline-block';
+                } else {
+                    currentModalDonateBtn.value = '';
+                    loadingAnimationElement.classList.add('sequoia-loader');
+                    loadingAnimationElement.classList.add('spinning');
+                    loadingAnimationElement.classList.remove('give-loading-animation');
+                }
 
-				e.preventDefault();
-			} );
-		}
-	}
+                // Create Payment Method.
+                stripeElements.createPaymentMethod(formElement, setupStripeElement, cardElements);
+
+                e.preventDefault();
+            });
+        }
+    }
 }
 
 export { GiveStripeElements };
