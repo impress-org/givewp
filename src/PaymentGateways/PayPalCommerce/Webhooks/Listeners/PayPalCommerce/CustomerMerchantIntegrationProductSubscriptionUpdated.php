@@ -27,36 +27,23 @@ class CustomerMerchantIntegrationProductSubscriptionUpdated extends PaymentEvent
         $onBoardingRedirectHandler = give(onBoardingRedirectHandler::class);
         $merchantId = $event->resource->merchant_id;
 
-        /* Refresh sandbox account */
-        $liveMerchantDetailsRepository = clone give(MerchantDetails::class);
-        $liveMerchantDetailsRepository->setMode('live');
-        $liveMerchantDetails = $liveMerchantDetailsRepository->getDetails();
+        $modes = ['live', 'sandbox'];
 
-        if ($liveMerchantDetails->merchantId === $merchantId) {
-            // Do not need to refresh account status if live account is already ready.
-            if ($liveMerchantDetails->accountIsReady) {
-                return;
+        foreach ($modes as $mode ){
+            $merchantDetailsRepository = clone give(MerchantDetails::class);
+            $merchantDetailsRepository->setMode($mode);
+            $merchantDetails = $merchantDetailsRepository->getDetails();
+
+            if ($merchantDetails->merchantIdInPayPal === $merchantId) {
+                // Do not need to refresh account status if live account is already ready.
+                if ($merchantDetails->accountIsReady) {
+                    return;
+                }
+
+                // Refresh account status.
+                $onBoardingRedirectHandler->setModeForServices($mode);
+                $onBoardingRedirectHandler->refreshAccountStatus();
             }
-
-            // Refresh account status.
-            $onBoardingRedirectHandler->setModeForServices('live');
-            $onBoardingRedirectHandler->refreshAccountStatus();
-        }
-
-        /* Refresh sandbox account */
-        $sandboxMerchantDetailsRepository = clone give(MerchantDetails::class);
-        $sandboxMerchantDetailsRepository->setMode('sandbox');
-        $sandboxMerchantDetails = $sandboxMerchantDetailsRepository->getDetails();
-
-        if ($sandboxMerchantDetails->merchantId === $merchantId) {
-            // Do not need to refresh account status if sandbox account is already ready.
-            if ($sandboxMerchantDetails->accountIsReady) {
-                return;
-            }
-
-            // Refresh account status.
-            $onBoardingRedirectHandler->setModeForServices('sandbox');
-            $onBoardingRedirectHandler->refreshAccountStatus();
         }
     }
 }
