@@ -1,6 +1,6 @@
 import {__} from '@wordpress/i18n';
 import {createPortal} from 'react-dom';
-import {Interweave} from 'interweave';
+import {Markup} from 'interweave';
 import {Button} from '@wordpress/components';
 
 export default function ConsentModal({setShowModal, modalHeading, modalAcceptanceText, agreementText, acceptTerms}) {
@@ -41,7 +41,7 @@ export default function ConsentModal({setShowModal, modalHeading, modalAcceptanc
                 <h2 style={{fontSize: '1.25rem', color: 'var(--givewp-primary-color)'}}>{modalHeading}</h2>
 
                 <div style={{maxHeight: '24rem', marginBottom: '1.5rem', overflowY: 'scroll'}}>
-                    <Interweave content={agreementText} />
+                    <Markup content={agreementText} />
                 </div>
 
                 <div

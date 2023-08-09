@@ -1,7 +1,7 @@
-import ReactQuill from "react-quill";
-import {useEffect, useRef} from "react";
-import _ from "lodash";
-import {__} from "@wordpress/i18n";
+import ReactQuill from 'react-quill';
+import {useEffect, useRef} from 'react';
+import _ from 'lodash';
+import {__} from '@wordpress/i18n';
 
 import 'react-quill/dist/quill.snow.css';
 
@@ -12,7 +12,6 @@ import 'react-quill/dist/quill.snow.css';
  * @param value
  */
 const Editor = ({onChange, value}) => {
-
     // The media library uses Backbone.js, which can conflict with lodash.
     _.noConflict();
     let frame;
@@ -20,12 +19,12 @@ const Editor = ({onChange, value}) => {
     const editorRef = useRef();
 
     const openMediaLibrary = (event) => {
-        event.preventDefault()
-        event.stopPropagation()
+        event.preventDefault();
+        event.stopPropagation();
 
         if (frame) {
-            frame.open()
-            return
+            frame.open();
+            return;
         }
 
         frame = window.wp.media({
@@ -34,31 +33,30 @@ const Editor = ({onChange, value}) => {
                 text: __('Use this media', 'givewp'),
             },
             multiple: false, // Set to true to allow multiple files to be selected
-        })
+        });
 
-        frame.on( 'select', function() {
-
+        frame.on('select', function () {
             // Get media attachment details from the frame state
             var attachment = frame.state().get('selection').first().toJSON();
 
             // @ts-ignore
-            const editor = editorRef.current.getEditor()
+            const editor = editorRef.current.getEditor();
             const cursorPosition = editor.getSelection()?.index ?? 0;
             editor.insertEmbed(cursorPosition, 'image', attachment.url);
             editor.setSelection(cursorPosition + 1);
         });
 
         // Finally, open the modal on click
-        frame.open()
-    }
+        frame.open();
+    };
 
     useEffect(() => {
-        const mediaToolbarButton = document.querySelector('.ql-wpmedia')
-        if(mediaToolbarButton) {
+        const mediaToolbarButton = document.querySelector('.ql-wpmedia');
+        if (mediaToolbarButton) {
             mediaToolbarButton.addEventListener('click', openMediaLibrary);
             return () => {
                 mediaToolbarButton.removeEventListener('click', openMediaLibrary);
-            }
+            };
         }
     }, []);
 
@@ -66,14 +64,21 @@ const Editor = ({onChange, value}) => {
         toolbar: {
             container: '#toolbar',
         },
-    }
+    };
 
     const formats = [
         'header',
-        'bold', 'italic', 'underline', 'strike', 'blockquote',
-        'list', 'bullet', 'indent',
-        'link', 'image'
-    ]
+        'bold',
+        'italic',
+        'underline',
+        'strike',
+        'blockquote',
+        'list',
+        'bullet',
+        'indent',
+        'link',
+        'image',
+    ];
 
     return (
         <div className="text-editor givewp-ql-text-editor">
@@ -84,6 +89,7 @@ const Editor = ({onChange, value}) => {
             </CustomToolbar>
 
             <ReactQuill
+                style={{height: '16rem'}}
                 ref={editorRef}
                 theme="snow"
                 value={value}
@@ -94,7 +100,7 @@ const Editor = ({onChange, value}) => {
             />
         </div>
     );
-}
+};
 
 const CustomToolbar = ({children}) => {
     return (
@@ -113,17 +119,16 @@ const CustomToolbar = ({children}) => {
             {children}
         </div>
     );
-}
+};
 
 const MediaIcon = () => {
     return (
         <svg viewBox="0 0 18 18">
             <rect className="ql-stroke" height="10" width="12" x="3" y="4"></rect>
             <circle className="ql-fill" cx="6" cy="7" r="1"></circle>
-            <polyline className="ql-even ql-fill"
-                      points="5 12 5 11 7 9 8 10 11 7 13 9 13 12 5 12"></polyline>
+            <polyline className="ql-even ql-fill" points="5 12 5 11 7 9 8 10 11 7 13 9 13 12 5 12"></polyline>
         </svg>
-    )
-}
+    );
+};
 
 export default Editor;

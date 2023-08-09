@@ -5,6 +5,7 @@ namespace Give\DonationForms;
 use Exception;
 use Give\DonationForms\Actions\DispatchDonateControllerDonationCreatedListeners;
 use Give\DonationForms\Actions\DispatchDonateControllerSubscriptionCreatedListeners;
+use Give\DonationForms\Actions\SanitizeDonationFormPreviewRequest;
 use Give\DonationForms\Actions\StoreBackwardsCompatibleFormMeta;
 use Give\DonationForms\Blocks\DonationFormBlock\Block as DonationFormBlock;
 use Give\DonationForms\Controllers\DonationConfirmationReceiptViewController;
@@ -110,8 +111,9 @@ class ServiceProvider implements ServiceProviderInterface
         /**
          * @since 0.1.0
          */
-        Route::post('donation-form-view-preview', static function (array $request) {
-            $routeData = DonationFormPreviewRouteData::fromRequest($request);
+        Route::post('donation-form-view-preview', static function () {
+            $requestData = (new SanitizeDonationFormPreviewRequest())($_REQUEST);
+            $routeData = DonationFormPreviewRouteData::fromRequest($requestData);
 
             return give(DonationFormViewController::class)->preview($routeData);
         });

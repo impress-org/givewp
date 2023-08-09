@@ -71,7 +71,11 @@ class FormBuilderViewModelTest extends TestCase
                 }, apply_filters('give_email_notification_options_metabox_fields', array(), $formId)),
                 'emailPreviewURL' => rest_url('givewp/form-builder/email-preview'),
                 'emailDefaultAddress' => get_option('admin_email'),
-            ],
+                'termsAndConditions' => [
+                    'checkboxLabel' => give_get_option('agree_to_terms_label'),
+                    'agreementText' => give_get_option('agreement_text')
+                    ],
+                ],
             $viewModel->storageData($formId)
         );
     }

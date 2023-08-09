@@ -4,6 +4,7 @@ import {
     Gateway,
     TemplateTag,
     EmailNotification,
+    TermsAndConditions,
 } from '@givewp/form-builder/types';
 
 declare global {
@@ -25,6 +26,7 @@ declare global {
             emailTemplateTags: TemplateTag[];
             emailNotifications: EmailNotification[];
             emailDefaultAddress: string;
+            termsAndConditions: TermsAndConditions;
         },
     }
 }

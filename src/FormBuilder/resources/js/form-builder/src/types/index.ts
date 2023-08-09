@@ -9,3 +9,4 @@ export type {FormStatus} from './formStatus';
 export type {TemplateTag} from './templateTag';
 export type {EmailNotification} from './emailNotification';
 export type {EmailTemplateOption} from './emailTemplateOption';
+export type {TermsAndConditions} from './termsAndConditions';

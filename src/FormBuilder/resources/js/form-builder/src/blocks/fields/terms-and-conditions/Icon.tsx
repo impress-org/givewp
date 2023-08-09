@@ -1,5 +1,5 @@
 import {Icon} from '@wordpress/icons';
-import {Path, SVG} from '@wordpress/components';
+import {Path, SVG} from "@wordpress/components";
 
 export default function BlockIcon() {
     return (
@@ -18,10 +18,3 @@ export default function BlockIcon() {
     );
 }
 
-export function MenuIcon() {
-    return (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M12 11L12 13M12 5L12 7M12 17L12 19" stroke="#1E1E1E" strokeWidth="2" />
-        </svg>
-    );
-}

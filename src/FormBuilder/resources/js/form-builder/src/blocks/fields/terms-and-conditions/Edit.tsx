@@ -2,19 +2,29 @@ import {
     BaseControl,
     Button,
     CheckboxControl,
+    Icon,
     Modal,
     PanelBody,
     PanelRow,
     SelectControl,
     TextControl,
 } from '@wordpress/components';
+import {moreVertical} from '@wordpress/icons';
 import {useState} from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import {BlockEditProps} from '@wordpress/blocks';
 import {InspectorControls} from '@wordpress/block-editor';
+import {Markup} from 'interweave';
 
-import {MenuIcon} from '@givewp/form-builder/blocks/fields/terms-and-conditions/Icon';
 import Editor from '@givewp/form-builder/settings/email/template-options/components/editor';
+import GlobalSettingsLink from '@givewp/form-builder/blocks/fields/terms-and-conditions/GlobalSettingsLink';
+import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
+
+const DisplayTypeEnum = {
+    SHOW_MODAL_TERMS: 'showModalTerms',
+    SHOW_FORM_TERMS: 'showFormTerms',
+    SHOW_LINK_TERMS: 'showLinkTerms',
+};
 
 export default function Edit({
     attributes: {
@@ -30,29 +40,49 @@ export default function Edit({
     setAttributes,
 }: BlockEditProps<any>) {
     const [showAgreementTextModal, setShowAgreementTextModal] = useState(false);
-    const isModalDisplay = displayType === 'showModalTerms';
-    const isLinkDisplay = displayType === 'showLinkTerms';
+    const globalSettings = getFormBuilderData().termsAndConditions;
+
+    if (useGlobalSettings) {
+        checkboxLabel = globalSettings.checkboxLabel;
+        agreementText = globalSettings.agreementText;
+    }
+
+    const isModalDisplay = displayType === DisplayTypeEnum.SHOW_MODAL_TERMS;
+    const isFormDisplay = displayType === DisplayTypeEnum.SHOW_FORM_TERMS;
+    const isLinkDisplay = displayType === DisplayTypeEnum.SHOW_LINK_TERMS;
 
     return (
         <>
-            <Checkbox label={checkboxLabel} linkText={linkText} />
+            <CheckboxPlaceholder
+                label={checkboxLabel}
+                linkText={linkText}
+                isFormDisplay={isFormDisplay}
+                agreementText={agreementText}
+            />
 
             <InspectorControls>
                 <PanelBody title={__('Field Options', 'give')} initialOpen={true}>
                     <PanelRow>
                         <SelectControl
                             label={__('TERMS AND CONDITIONS', 'give')}
-                            onChange={(value) => setAttributes({useGlobalSettings: !value})}
+                            onChange={() => setAttributes({useGlobalSettings: !useGlobalSettings})}
                             value={useGlobalSettings}
                             options={[
                                 {label: __('Global', 'give'), value: 'true'},
                                 {label: __('Customize', 'give'), value: 'false'},
                             ]}
-                            help={''}
                         />
                     </PanelRow>
 
-                    {useGlobalSettings === false && (
+                    {useGlobalSettings && (
+                        <GlobalSettingsLink
+                            href={
+                                '/wp-admin/edit.php?post_type=give_forms&page=give-settings&tab=display&section=terms-and-conditions'
+                            }
+                        />
+                    )}
+
+                    {!useGlobalSettings && (
                         <>
                             <PanelRow>
                                 <TextControl
@@ -67,21 +97,28 @@ export default function Edit({
                                     onChange={(value) => setAttributes({displayType: value})}
                                     value={displayType}
                                     options={[
-                                        {label: __('Show terms in modal', 'give'), value: 'showModalTerms'},
-                                        {label: __('Show terms in form', 'give'), value: 'showFormTerms'},
-                                        {label: __('Link to terms', 'give'), value: 'showLinkTerms'},
+                                        {
+                                            label: __('Show terms in modal', 'give'),
+                                            value: DisplayTypeEnum.SHOW_MODAL_TERMS,
+                                        },
+                                        {
+                                            label: __('Show terms in form', 'give'),
+                                            value: DisplayTypeEnum.SHOW_FORM_TERMS,
+                                        },
+                                        {label: __('Link to terms', 'give'), value: DisplayTypeEnum.SHOW_LINK_TERMS},
                                     ]}
-                                    help={''}
                                 />
                             </PanelRow>
 
-                            <PanelRow>
-                                <TextControl
-                                    label={__('Link Text', 'give')}
-                                    value={linkText}
-                                    onChange={(value) => setAttributes({linkText: value})}
-                                />
-                            </PanelRow>
+                            {isLinkDisplay && (
+                                <PanelRow>
+                                    <TextControl
+                                        label={__('Link Text', 'give')}
+                                        value={linkText}
+                                        onChange={(value) => setAttributes({linkText: value})}
+                                    />
+                                </PanelRow>
+                            )}
 
                             {isLinkDisplay && (
                                 <PanelRow>
@@ -109,13 +146,17 @@ export default function Edit({
                                                 justifyContent: 'space-between',
                                             }}
                                         >
-                                            {__('Agreement text')}
+                                            <span>{__('Agreement text')}</span>
                                             <Button
-                                                style={{background: 'transparent', verticalAlign: 'center'}}
+                                                style={{
+                                                    color: showAgreementTextModal ? '#ffffff' : ' #1e1e1e',
+                                                    background: showAgreementTextModal ? '#3D5A66' : 'transparent',
+                                                    verticalAlign: 'center',
+                                                }}
                                                 variant={'primary'}
                                                 onClick={() => setShowAgreementTextModal(true)}
                                             >
-                                                <MenuIcon />
+                                                <Icon icon={moreVertical} />
                                             </Button>
                                         </div>
                                     </BaseControl>
@@ -145,6 +186,7 @@ export default function Edit({
                                 <Modal
                                     title={__('Agreement Text', 'give')}
                                     onRequestClose={() => setShowAgreementTextModal(false)}
+                                    shouldCloseOnClickOutside={false}
                                     style={{maxWidth: '35rem'}}
                                 >
                                     <Editor
@@ -161,29 +203,58 @@ export default function Edit({
     );
 }
 
-function Checkbox({label, linkText}) {
-    return (
-        <div
-            style={{
-                display: 'flex',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                gap: 5,
-                width: 'fit-content',
-                border: 'none',
-            }}
-        >
-            <CheckboxControl label={label} onChange={null} disabled={true} />
+type CheckboxPlaceholderProps = {
+    label: string;
+    linkText: string;
+    isFormDisplay: boolean;
+    agreementText: string;
+};
 
-            <span
+function CheckboxPlaceholder({label, linkText, isFormDisplay, agreementText}: CheckboxPlaceholderProps) {
+    return (
+        <div style={{display: 'block'}}>
+            <div
                 style={{
-                    minWidth: 'fit-content',
-                    color: 'var(--givewp-grey-80)',
-                    fontSize: '1rem',
+                    display: isFormDisplay ? 'block' : 'inline-flex',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    gap: 5,
+                    border: 'none',
                 }}
             >
-                {linkText}
-            </span>
+                <CheckboxControl label={label} onChange={null} disabled={true} />
+
+                {isFormDisplay && (
+                    <div
+                        style={{
+                            marginTop: '1rem',
+                            lineHeight: '150%',
+                            maxHeight: '17.5rem',
+                            minHeight: '6.5rem',
+                            overflowY: 'scroll',
+                            border: '1px solid var(--givewp-grey-200, #BFBFBF)',
+                            borderRadius: 5,
+                            padding: '0 1rem',
+                            background: 'var(--givewp-shades-white, #fff)',
+                        }}
+                    >
+                        <Markup content={agreementText} />
+                    </div>
+                )}
+
+                {!isFormDisplay && (
+                    <div
+                        style={{
+                            display: 'inline-block',
+                            minWidth: 'fit-content',
+                            color: 'var(--givewp-grey-80), #595959',
+                            fontSize: '1rem',
+                        }}
+                    >
+                        {linkText}
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
