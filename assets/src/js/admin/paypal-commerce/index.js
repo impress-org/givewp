@@ -167,11 +167,11 @@ window.addEventListener( 'DOMContentLoaded', function() {
                     <div class="give-modal__description">
                         <p class="welcome-text">Select account type for connection</p>
                         <p>
-                            <label for="paypal_donations_connection_account_type_ppcp">
+                            <label for="paypal_donations_connection_account_type_express_checkout">
                                 <input type="radio"
                                     name="paypal_donations_connection_account_type"
-                                    id="paypal_donations_connection_account_type_ppcp"
-                                    value="PPCP">&nbsp;${ __( 'Advancded Card Processing', 'give') }
+                                    id="paypal_donations_connection_account_type_express_checkout"
+                                    value="EXPRESS_CHECKOUT">&nbsp;${ __( 'Standard Card Processing', 'give') }
                             </label>
                         </p>
                         <ul>
@@ -179,11 +179,11 @@ window.addEventListener( 'DOMContentLoaded', function() {
                             <li><span class="icon">${checkVerifiedIcon}</span>${__( 'Seller Protection', 'give')}</li>
                         </ul>
                         <p>
-                            <label for="paypal_donations_connection_account_type_express_checkout">
+                            <label for="paypal_donations_connection_account_type_ppcp">
                                 <input type="radio"
                                     name="paypal_donations_connection_account_type"
-                                    id="paypal_donations_connection_account_type_express_checkout"
-                                    value="EXPRESS_CHECKOUT">&nbsp;${__( 'Standard Card Processing', 'give')}
+                                    id="paypal_donations_connection_account_type_ppcp"
+                                    value="PPCP">&nbsp;${__( 'Advanced Card Processing', 'give')}
                             </label>
                             <span>${__( 'Requires Application Approval', 'give')}</span>
                         </p>
@@ -203,7 +203,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 
                 const modal = new Give.modal.GiveConfirmModal({
                         classes: {
-                            modalWrapper: 'paypal-commerce-connection-account-type-selection-modal',
+                            modalWrapper: 'givewp-paypal-commerce-connection-account-type-selection-modal',
                         },
                         modalContent: {
                             title: __( 'PayPal Connection', 'give' ),
