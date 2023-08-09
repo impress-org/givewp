@@ -190,7 +190,7 @@ add_action( 'wp_ajax_nopriv_give_checkout_register', 'give_load_checkout_fields'
 /**
  * Retrieve a states drop down
  *
- * @unreleased add 'state_label' & 'states' to response
+ * @since 2.30.0 add 'state_label' & 'states' to response
  * @since  1.0
  *
  * @return void

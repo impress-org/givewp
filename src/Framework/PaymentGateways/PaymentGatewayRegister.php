@@ -21,7 +21,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
     /**
      * Get Gateways
      *
-     * @unreleased added $supportedFormVersion param to filter gateways by supported form version
+     * @since 2.30.0 added $supportedFormVersion param to filter gateways by supported form version
      * @since 2.18.0
      */
     public function getPaymentGateways(int $supportedFormVersion = null): array

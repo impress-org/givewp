@@ -18,6 +18,7 @@ mix.setPublicPath('assets/dist')
     .sass('src/Views/Form/Templates/Classic/resources/css/form.scss', 'css/give-classic-template.css')
     .sass('src/MultiFormGoals/resources/css/common.scss', 'css/multi-form-goal-block.css')
     .sass('src/DonationSummary/resources/css/summary.scss', 'css/give-donation-summary.css')
+    .sass('assets/src/css/admin/summer-sales-banner.scss', 'css/admin-summer-sales-banner.css')
 
     .js('assets/src/js/frontend/give.js', 'js/')
     .js('assets/src/js/frontend/give-stripe.js', 'js/')

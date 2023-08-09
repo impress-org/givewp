@@ -89,8 +89,9 @@ class AjaxRequestHandler
     }
 
     /**
-     *  give_paypal_commerce_user_onboarded ajax action handler
+     * give_paypal_commerce_user_onboarded ajax action handler
      *
+     * @unreleased Return error response on exception when fetch access token from authorization code.
      * @since 2.9.0
      */
     public function onBoardedUserAjaxRequestHandler()
@@ -108,13 +109,13 @@ class AjaxRequestHandler
 
         $partnerLinkInfo = $this->settings->getPartnerLinkDetails();
 
-        $payPalResponse = $this->payPalAuth->getTokenFromAuthorizationCode(
-            give_clean($_GET['authCode']),
-            give_clean($_GET['sharedId']),
-            $partnerLinkInfo['nonce']
-        );
-
-        if (! $payPalResponse || array_key_exists('error', $payPalResponse)) {
+        try{
+            $payPalResponse = $this->payPalAuth->getTokenFromAuthorizationCode(
+                give_clean($_GET['authCode']),
+                give_clean($_GET['sharedId']),
+                $partnerLinkInfo['nonce']
+            );
+        } catch ( \Exception $exception ) {
             wp_send_json_error();
         }
 
@@ -131,7 +132,7 @@ class AjaxRequestHandler
     /**
      * This function handle ajax request with give_paypal_commerce_get_partner_url action.
      *
-     * @unreleased Add support for mode param.
+     * @since 2.30.0 Add support for mode param.
      * @since 2.9.0
      */
     public function onGetPartnerUrlAjaxRequestHandler()
@@ -176,7 +177,7 @@ class AjaxRequestHandler
     /**
      * give_paypal_commerce_disconnect_account ajax request handler.
      *
-     * @unreleased Add support for mode param.
+     * @since 2.30.0 Add support for mode param.
      * @since 2.25.0 Remove merchant seller token.
      * @since 2.9.0
      */
