@@ -25,6 +25,11 @@ class PayPalStandardToDonationsMigrationGlobalBanner
      */
     public function setHook()
     {
+        // Bailout if user is not can not edit GiveWP settings.
+        if (! current_user_can('manage_give_settings')) {
+            return;
+        }
+
         add_action('admin_enqueue_scripts', function () {
             if (give_is_gateway_active(PayPalStandard::id())) {
                 wp_add_inline_script('give-admin-scripts', $this->getModalScript());
