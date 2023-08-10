@@ -3,6 +3,7 @@
 namespace Give\Framework\FieldsAPI;
 
 /**
+ * @unreleased added description
  * @since 2.12.0
  * @since 2.14.0 Add support for min/max length
  */
@@ -14,6 +15,7 @@ class Textarea extends Field
     use Concerns\HasPlaceholder;
     use Concerns\HasMaxLength;
     use Concerns\HasMinLength;
+    use Concerns\HasDescription;
 
     const TYPE = 'textarea';
 }
