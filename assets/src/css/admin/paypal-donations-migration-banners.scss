@@ -1,0 +1,32 @@
+/**
+ * PayPal Donations Migration Banners
+ * --------------------------------------------------
+ */
+
+// Banner for gateways setting page.
+.give-paypal-migration-banner{
+    &.gateway-settiing-page{
+        background-color: #F29718;
+        padding: 8px 14px;
+        border: 1px solid #F29718;
+
+        .message{
+            color: white;
+            font-size: 15px;
+
+            a{
+                color: white;
+                text-decoration: none;
+                font-weight: bold;
+            }
+
+            .label{
+                text-transform: uppercase;
+                color: #F29718;
+                background-color: white;
+                padding: 3px 7px;
+                margin-right: 10px;
+            }
+        }
+    }
+}
