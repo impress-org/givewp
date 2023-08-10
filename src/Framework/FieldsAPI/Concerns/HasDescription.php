@@ -3,7 +3,7 @@
 namespace Give\Framework\FieldsAPI\Concerns;
 
 /**
- * @unreleased
+ * @since 2.32.0
  */
 trait HasDescription
 {
@@ -12,7 +12,7 @@ trait HasDescription
     protected $description;
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function description(string $description): self
     {
@@ -22,7 +22,7 @@ trait HasDescription
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      *
      * @return string|null
      */

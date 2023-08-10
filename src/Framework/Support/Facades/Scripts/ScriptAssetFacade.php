@@ -7,12 +7,12 @@ namespace Give\Framework\Support\Facades\Scripts;
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-dependency-extraction-webpack-plugin/#wordpress
  *
- * @unreleased
+ * @since 2.32.0
  */
 class ScriptAssetFacade
 {
      /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function getDependencies(string $path): array
     {
@@ -22,7 +22,7 @@ class ScriptAssetFacade
     }
 
      /**
-     * @unreleased
+     * @since 2.32.0
       *
       * @return int|string
      */
@@ -38,7 +38,7 @@ class ScriptAssetFacade
      *
      * @return array{dependencies: array<string>, version: int|string}
      *
-     * @unreleased
+     * @since 2.32.0
      */
     public function get(string $path): array
     {

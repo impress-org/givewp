@@ -7,12 +7,12 @@ use PayPalHttp\HttpRequest;
 /**
  * Class GetAccessTokenWithClientCredentials
  *
- * @unreleased
+ * @since 2.32.0
  */
 class GetAccessToken extends HttpRequest
 {
     /**
-     * @unreleased
+     * @since 2.32.0
      *
      * @param array $requestBody Request body.
      * @param array $headers Headers to be added to the request.

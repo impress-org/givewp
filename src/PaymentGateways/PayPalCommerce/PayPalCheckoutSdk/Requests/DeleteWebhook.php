@@ -7,7 +7,7 @@ use PayPalHttp\HttpRequest;
 class DeleteWebhook extends HttpRequest
 {
     /**
-     * @unreleased
+     * @since 2.32.0
      *
      * @param string $webhookId Webhook ID.
      */

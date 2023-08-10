@@ -11,7 +11,7 @@ use Give\Tests\TestCase;
 class PersistenceScopeTest extends TestCase
 {
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function testStaticBuilders()
     {
@@ -30,7 +30,7 @@ class PersistenceScopeTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function testToString()
     {
@@ -39,7 +39,7 @@ class PersistenceScopeTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function testIsMethods()
     {
@@ -52,7 +52,7 @@ class PersistenceScopeTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function testConstructor()
     {

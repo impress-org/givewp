@@ -8,7 +8,7 @@ use Give\Framework\Http\Types\UploadedFile;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidationRule;
 
 /**
- * @unreleased
+ * @since 2.32.0
  */
 class File implements ValidationRule
 {
@@ -25,7 +25,7 @@ class File implements ValidationRule
     protected $allowedMimeTypes;
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public static function id(): string
     {
@@ -33,7 +33,7 @@ class File implements ValidationRule
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function maxSize(int $maxSize): ValidationRule
     {
@@ -43,7 +43,7 @@ class File implements ValidationRule
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function getMaxSize(): int
     {
@@ -51,7 +51,7 @@ class File implements ValidationRule
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function allowedMimeTypes(array $allowedMimeTypes): ValidationRule
     {
@@ -61,7 +61,7 @@ class File implements ValidationRule
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      *
      * @return string[]
      */
@@ -71,7 +71,7 @@ class File implements ValidationRule
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      **/
     public function __invoke($value, Closure $fail, string $key, array $values)
     {
@@ -104,7 +104,7 @@ class File implements ValidationRule
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public static function fromString(string $options = null): ValidationRule
     {
