@@ -133,7 +133,15 @@ class AdminSettingFields
             'give'
         );
         $paypalSandboxSetting->isRecurringAddonActive = $isRecurringAddonActive;
+
         echo $this->getPayPalConnectionSettingView($paypalSandboxSetting);
+
+        if (
+            give(MerchantDetail::class)->accountIsReady
+            && ! give_is_gateway_active(PayPalCommerce::id())
+        ) {
+            echo give(PayPalDonationsSettingPageBanner::class)->render();
+        }
     }
 
     /**
@@ -469,11 +477,6 @@ class AdminSettingFields
                                     <li><?php esc_html_e('Refunds', 'give'); ?></li>
                                 </ul>
                             </div>
-                            <?php
-                            if (! give_is_gateway_active(PayPalCommerce::id())) {
-                                echo give(PayPalDonationsSettingPageBanner::class)->render();
-                            }
-                            ?>
                         </div>
                         <?php $this->printErrors($mechantDetailsRepository); ?>
                     </div>
