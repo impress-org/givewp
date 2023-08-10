@@ -84,7 +84,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * This method registers the banners for the migration from PayPal Standard to PayPal Donations.
+     * This method registers the banners.
      * @unreleased
      * @return void
      */
@@ -94,6 +94,7 @@ class ServiceProvider implements ServiceProviderInterface
             return;
         }
 
+        // Banner for the migration from PayPal Standard to PayPal Donations.
         give(GatewaySettingPageBanner::class)->setupHook();
     }
 }
