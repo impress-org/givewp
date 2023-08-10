@@ -3,7 +3,7 @@
 namespace Give\Framework\FieldsAPI\Concerns;
 
 /**
- * @unrleased
+ * @unreleased
  */
 trait HasDescription
 {
@@ -12,9 +12,7 @@ trait HasDescription
     protected $description;
 
     /**
-     * @param string $description
-     *
-     * @return $this
+     * @unreleased
      */
     public function description(string $description): self
     {
@@ -23,6 +21,11 @@ trait HasDescription
         return $this;
     }
 
+    /**
+     * @unreleased
+     *
+     * @return string|null
+     */
     public function getDescription()
     {
         return $this->description;
