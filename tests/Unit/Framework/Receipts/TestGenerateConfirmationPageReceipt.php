@@ -74,6 +74,15 @@ class TestGenerateConfirmationPageReceipt extends TestCase
             );
         }
 
+        if ($donation->comment) {
+            $additionalDetails->addDetail(
+                new ReceiptDetail(
+                    __('Comment', 'give'),
+                    $receipt->donation->comment
+                )
+            );
+        }
+
         $heading = (new DonationTemplateTags($donation, $donationForm->settings->receiptHeading))->getContent();
         $description = (new DonationTemplateTags($donation, $donationForm->settings->receiptDescription))->getContent();
 
