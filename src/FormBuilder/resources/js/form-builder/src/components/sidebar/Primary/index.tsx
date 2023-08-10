@@ -5,14 +5,14 @@ import TabPanel from '../TabPanel';
 
 import {
     CustomStyleSettings,
+    DonationConfirmation,
     DonationGoalSettings,
     EmailSettings,
     FormDesignSettings,
-    FormSummarySettings,
-    ReceiptSettings,
-    RegistrationSettings,
     FormGridSettings,
+    FormSummarySettings,
     OfflineDonationsSettings,
+    RegistrationSettings,
 } from '../../../settings';
 import {PopoutSlot} from '../popout';
 import {useEffect} from 'react';
@@ -40,11 +40,11 @@ const tabs = [
                 <FormSummarySettings />
                 <DonationGoalSettings />
                 <RegistrationSettings />
-                <ReceiptSettings />
+                <DonationConfirmation />
                 <FormGridSettings />
                 <EmailSettings />
                 {/*The settings below have not been implemented yet.*/}
-                <OfflineDonationsSettings/>
+                <OfflineDonationsSettings />
             </>
         ),
     },

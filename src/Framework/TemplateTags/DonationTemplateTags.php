@@ -19,7 +19,8 @@ class DonationTemplateTags
     /**
      * @since 0.1.0
      */
-    public function __construct(Donation $donation, string $content) {
+    public function __construct(Donation $donation, string $content)
+    {
         $this->donation = $donation;
         $this->content = $content;
     }

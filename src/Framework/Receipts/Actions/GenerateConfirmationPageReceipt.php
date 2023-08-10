@@ -223,12 +223,12 @@ class GenerateConfirmationPageReceipt
 
         $receipt->settings->addSetting(
             'heading',
-            $this->getHeading($receipt, $donationForm)
+            nl2br($this->getHeading($receipt, $donationForm))
         );
 
         $receipt->settings->addSetting(
             'description',
-            $this->getDescription($receipt, $donationForm)
+            nl2br($this->getDescription($receipt, $donationForm))
         );
 
         $receipt->settings->addSetting('currency', $receipt->donation->amount->getCurrency()->getCode());
@@ -251,33 +251,50 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
+     * @unreleased added backwards compatability for v2 forms tags
      * @since 0.1.0
      */
     protected function getHeading(DonationReceipt $receipt, DonationForm $donationForm = null): string
     {
         if (!$donationForm) {
-            $content = __("Hey {donation.firstName}, thanks for your donation!", 'give');
+            $content = __("Hey {first_name}, thanks for your donation!", 'give');
         } else {
             $content = $donationForm->settings->receiptHeading;
         }
 
-        return (new DonationTemplateTags($receipt->donation, $content))->getContent();
+        return $this->transformV2FormTags(
+            (new DonationTemplateTags($receipt->donation, $content))->getContent(),
+            $receipt->donation
+        );
     }
 
     /**
+     * @unreleased added backwards compatability for v2 forms tags
      * @since 0.1.0
      */
     protected function getDescription(DonationReceipt $receipt, DonationForm $donationForm = null): string
     {
         if (!$donationForm) {
             $content = __(
-                "{donation.firstName}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {donation.email}.",
+                "{first_name}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {email}.",
                 'give'
             );
         } else {
             $content = $donationForm->settings->receiptDescription;
         }
 
-        return (new DonationTemplateTags($receipt->donation, $content))->getContent();
+        return $this->transformV2FormTags(
+            (new DonationTemplateTags($receipt->donation, $content))->getContent(),
+            $receipt->donation
+        );
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function transformV2FormTags(string $content, Donation $donation): string
+    {
+        return give_do_email_tags($content, ['payment_id' => $donation->id, 'form_id' => $donation->formId]
+        );
     }
 }

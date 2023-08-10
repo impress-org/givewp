@@ -4,7 +4,7 @@ import FormSummarySettings from './form-summary';
 import OfflineDonationsSettings from './offline-donation';
 import FormDesignSettings from './design';
 import CustomStyleSettings from './styles';
-import ReceiptSettings from './receipt';
+import DonationConfirmation from './donation-confirmation';
 import FormGridSettings from './form-grid';
 import EmailSettings from './email';
 
@@ -15,7 +15,7 @@ export {
     OfflineDonationsSettings,
     FormDesignSettings,
     CustomStyleSettings,
-    ReceiptSettings,
+    DonationConfirmation,
     FormGridSettings,
     EmailSettings,
 };

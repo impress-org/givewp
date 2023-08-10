@@ -1,15 +1,14 @@
 import {
+    EmailNotification,
     FormDesign,
     FormPageSettings,
     Gateway,
     TemplateTag,
-    EmailNotification,
     TermsAndConditions,
 } from '@givewp/form-builder/types';
 
 declare global {
     interface Window {
-
         wp?: any;
         storageData?: {
             formId: number;
@@ -20,14 +19,15 @@ declare global {
             gateways: Gateway[];
             recurringAddonData?: {
                 isInstalled: boolean;
-            },
+            };
             gatewaySettingsUrl: string;
             emailPreviewURL: string;
             emailTemplateTags: TemplateTag[];
             emailNotifications: EmailNotification[];
             emailDefaultAddress: string;
+            donationConfirmationTemplateTags: TemplateTag[];
             termsAndConditions: TermsAndConditions;
-        },
+        };
     }
 }
 
