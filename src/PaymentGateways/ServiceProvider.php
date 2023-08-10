@@ -15,6 +15,7 @@ use Give\PaymentGateways\Gateways\Stripe\Controllers\UpdateStatementDescriptorAj
 use Give\PaymentGateways\Gateways\Stripe\Migrations\AddMissingTransactionIdForUncompletedDonations;
 use Give\PaymentGateways\Gateways\Stripe\Migrations\AddStatementDescriptorToStripeAccounts;
 use Give\PaymentGateways\PayPalCommerce\Banners\GatewaySettingPageBanner;
+use Give\PaymentGateways\PayPalCommerce\Banners\PayPalStandardToDonationsMigrationGlobalBanner;
 use Give\PaymentGateways\PayPalCommerce\Migrations\RegisterPayPalDonationsRefreshTokenCronJobByMode;
 use Give\PaymentGateways\PayPalCommerce\Migrations\RemoveLogWithCardInfo;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -96,5 +97,6 @@ class ServiceProvider implements ServiceProviderInterface
 
         // Banner for the migration from PayPal Standard to PayPal Donations.
         give(GatewaySettingPageBanner::class)->setupHook();
+        give(PayPalStandardToDonationsMigrationGlobalBanner::class)->setHook();
     }
 }
