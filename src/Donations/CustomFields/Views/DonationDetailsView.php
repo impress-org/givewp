@@ -4,6 +4,7 @@ namespace Give\Donations\CustomFields\Views;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\FieldsAPI\Field;
+use Give\Framework\FieldsAPI\Types;
 
 /**
  * @since 0.1.0
@@ -52,6 +53,7 @@ class DonationDetailsView
     }
 
     /**
+     * @unreleased updated to conditionally display value and label
      * @since 0.1.0
      *
      * @return string
@@ -59,16 +61,24 @@ class DonationDetailsView
     protected function getContents(): string
     {
         return array_reduce($this->fields, function ($output, Field $field) {
+            $value = $this->getFieldValue($field);
+            $label = method_exists($field, 'getLabel') ? $field->getLabel() : $field->getName();
+
+            if (empty($value)) {
+                return $output;
+            }
+
             return $output . "
                 <div>
-                    <strong>{$field->getLabel()}:</strong>&nbsp;
-                    {$this->getFieldValue($field)}
+                    <strong>{$label}:</strong>&nbsp;
+                    {$value}
                 </div>
             ";
         }, '');
     }
 
     /**
+     * @unreleased updated to format file fields
      * @since 0.1.0
      *
      * @param  Field  $field
@@ -77,6 +87,16 @@ class DonationDetailsView
      */
     protected function getFieldValue(Field $field)
     {
-        return give()->payment_meta->get_meta($this->donation->id, $field->getName(), true);
+        $metaValue = give()->payment_meta->get_meta($this->donation->id, $field->getName(), true);
+
+        if (empty($metaValue)) {
+            return '';
+        }
+
+        if ($field->getType() === Types::FILE) {
+            return wp_get_attachment_link($metaValue);
+        }
+
+        return $metaValue;
     }
 }

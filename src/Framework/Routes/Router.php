@@ -56,6 +56,7 @@ class Router
     }
 
     /**
+     * @unreleased updated to check for "application/json" content-type first before accessing request super globals
      * @since 0.1.0
      */
     protected function getDataFromPostRequest(): array
@@ -66,18 +67,15 @@ class Router
             return $requestData;
         }
 
-        $contentType = $_SERVER['CONTENT_TYPE'];
-
-        // this content type is typically used throughout legacy with jQuery and wp-ajax
-        if (str_contains($contentType, "application/x-www-form-urlencoded")) {
-            $requestData = give_clean($_REQUEST);
-        }
-
-        // this content type is typically used with the fetch api and our custom routes
-        if (str_contains($contentType,"application/json")) {
+        if (str_contains($_SERVER['CONTENT_TYPE'], "application/json")) {
             $requestData = file_get_contents('php://input');
             $requestData = json_decode($requestData, true);
             $requestData = give_clean($requestData);
+        } else {
+            $requestData = array_merge(
+                give_clean($_REQUEST),
+                give_clean($_FILES)
+            );
         }
 
         return $requestData;

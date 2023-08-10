@@ -5,13 +5,14 @@ import {
     isFormResponseValidationError,
     isResponseRedirected,
 } from '@givewp/forms/types';
-import postData from '../utilities/postData';
 import generateRequestErrors from '../utilities/generateRequestErrors';
 import FormRequestError from '../errors/FormRequestError';
 
 import {__} from '@wordpress/i18n';
 import handleRedirect from '@givewp/forms/app/utilities/handleFormRedirect';
 import getCurrentFormUrlData from '@givewp/forms/app/utilities/getCurrentFormUrlData';
+import postFormData from '@givewp/forms/app/utilities/postFormData';
+import convertValuesToFormData from '@givewp/forms/app/utilities/convertValuesToFormData';
 
 export default async function handleSubmitRequest(
     values,
@@ -29,22 +30,29 @@ export default async function handleSubmitRequest(
         });
     }
 
-    let beforeCreatePaymentGatewayResponse = {};
-
     try {
-        if (gateway.beforeCreatePayment) {
-            beforeCreatePaymentGatewayResponse = await gateway.beforeCreatePayment(values);
-        }
-
         const {originUrl, isEmbed, embedId} = getCurrentFormUrlData();
 
-        const {response} = await postData(donateUrl, {
+        const formValues = {
             ...values,
             originUrl,
             isEmbed,
             embedId,
-            gatewayData: beforeCreatePaymentGatewayResponse,
-        });
+        };
+
+        const formData = convertValuesToFormData(formValues);
+
+        let beforeCreatePaymentGatewayResponse = {};
+
+        if (gateway.beforeCreatePayment) {
+            beforeCreatePaymentGatewayResponse = await gateway.beforeCreatePayment(values);
+
+            for (const gatewayDataKey in beforeCreatePaymentGatewayResponse) {
+                formData.append(`gatewayData[${gatewayDataKey}]`, beforeCreatePaymentGatewayResponse[gatewayDataKey]);
+            }
+        }
+
+        const {response} = await postFormData(donateUrl, formData);
 
         if (isResponseRedirected(response)) {
             await handleRedirect(response.url, inlineRedirectRoutes);

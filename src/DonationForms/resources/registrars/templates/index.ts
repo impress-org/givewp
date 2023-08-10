@@ -29,6 +29,7 @@ import NodeWrapper from './layouts/NodeWrapper';
 import DonationReceipt from './layouts/DonationReceipt';
 import MultiStepForm from './layouts/MultiStepForm';
 import DonationSummaryItems from './layouts/DonationSummaryItems';
+import FileField from './fields/File';
 
 const defaultFormTemplates = {
     fields: {
@@ -43,6 +44,7 @@ const defaultFormTemplates = {
         select: SelectField,
         checkbox: CheckboxField,
         radio: RadioField,
+        file: FileField,
     },
     elements: {
         paragraph: Paragraph,

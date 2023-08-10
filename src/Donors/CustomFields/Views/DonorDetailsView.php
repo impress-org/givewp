@@ -4,6 +4,7 @@ namespace Give\Donors\CustomFields\Views;
 
 use Give\Donors\Models\Donor;
 use Give\Framework\FieldsAPI\Field;
+use Give\Framework\FieldsAPI\Types;
 
 /**
  * @since 0.1.0
@@ -60,6 +61,7 @@ class DonorDetailsView
     }
 
     /**
+     * @unreleased updated to conditionally display value and label
      * @since 0.1.0
      *
      * @return string
@@ -67,22 +69,40 @@ class DonorDetailsView
     protected function getTableRows(): string
     {
         return array_reduce($this->fields, function($output, Field $field) {
+            $value = $this->getFieldValue($field);
+            $label = method_exists($field, 'getLabel') ? $field->getLabel() : $field->getName();
+
+            if (empty($value)) {
+                return $output;
+            }
+
             return $output . "
                 <tr>
-                    <td>{$field->getLabel()}</td>
-                    <td>{$this->getFieldValue($field)}</td>
+                    <td>{$label}</td>
+                    <td>{$value}</td>
                 </tr>
             ";
         }, '');
     }
 
     /**
+     * @unreleased updated to format file fields
      * @since 0.1.0
      *
      * @return mixed
      */
     protected function getFieldValue(Field $field)
     {
-        return give()->donor_meta->get_meta($this->donor->id, $field->getName(), true);
+        $metaValue = give()->donor_meta->get_meta($this->donor->id, $field->getName(), true);
+
+        if (empty($metaValue)) {
+            return '';
+        }
+
+        if ($field->getType() === Types::FILE) {
+            return wp_get_attachment_link($metaValue);
+        }
+
+        return $metaValue;
     }
 }

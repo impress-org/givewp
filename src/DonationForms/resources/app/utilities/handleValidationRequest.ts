@@ -1,10 +1,11 @@
 import {Gateway, isFormResponseGatewayError, isFormResponseValidationError} from '@givewp/forms/types';
-import postData from '../utilities/postData';
 import generateRequestErrors from '../utilities/generateRequestErrors';
 import FormRequestError from '../errors/FormRequestError';
 
 import {__} from '@wordpress/i18n';
 import {FieldValues, UseFormSetError} from 'react-hook-form';
+import postFormData from '@givewp/forms/app/utilities/postFormData';
+import convertValuesToFormData from '@givewp/forms/app/utilities/convertValuesToFormData';
 
 /**
  * @since 0.4.0
@@ -25,7 +26,9 @@ export default async function handleValidationRequest(
     }
 
     try {
-        const {response} = await postData(validateUrl, values);
+        const formData = convertValuesToFormData(values);
+
+        const {response} = await postFormData(validateUrl, formData);
 
         const formResponse = await response.json();
 
