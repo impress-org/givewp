@@ -2,7 +2,6 @@
 
 namespace Give\Framework\FieldsAPI;
 
-use Give\Framework\FieldsAPI\LegacyNodes\CheckboxGroup;
 use ReflectionClass;
 
 /**

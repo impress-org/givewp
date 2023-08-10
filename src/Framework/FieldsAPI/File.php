@@ -9,7 +9,7 @@ use Give\Vendors\StellarWP\Validation\Rules\Max;
 /**
  * A file upload field.
  *
- * @unreleased Updated to use the new Validation File Rule
+ * @unreleased Updated to use the new Validation File Rule; added description
  * @since 2.12.0
  * @since 2.23.1 Moved default rule values inline since inherited constructor is final.
  */
@@ -19,6 +19,8 @@ class File extends Field
     use Concerns\HasEmailTag;
     use Concerns\HasHelpText;
     use Concerns\HasLabel;
+    use Concerns\AllowMultiple;
+    use Concerns\HasDescription;
 
     const TYPE = 'file';
 
@@ -51,7 +53,7 @@ class File extends Field
      */
     public function getMaxSize(): int
     {
-        if (!$this->hasRule('max')) {
+        if ( ! $this->hasRule('max')) {
             return wp_max_upload_size();
         }
 
@@ -161,7 +163,7 @@ class File extends Field
      */
     public function getAllowedTypes(): array
     {
-        if (!$this->hasRule('allowedTypes')) {
+        if ( ! $this->hasRule('allowedTypes')) {
             return get_allowed_mime_types();
         }
 

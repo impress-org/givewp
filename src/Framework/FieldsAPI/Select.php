@@ -3,6 +3,7 @@
 namespace Give\Framework\FieldsAPI;
 
 /**
+ * @unreleased added description
  * @since 2.12.0
  */
 class Select extends Field
@@ -13,6 +14,7 @@ class Select extends Field
     use Concerns\HasLabel;
     use Concerns\HasOptions;
     use Concerns\HasPlaceholder;
-    
+    use Concerns\HasDescription;
+
     const TYPE = 'select';
 }
