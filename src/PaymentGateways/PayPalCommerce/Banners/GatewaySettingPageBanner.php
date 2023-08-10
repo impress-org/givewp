@@ -42,7 +42,7 @@ class GatewaySettingPageBanner
         printf(
             '<div class="give-paypal-migration-banner gateway-settiing-page">
                 <p class="message">
-                    <i class="label">%1$s</i>%2$s <a href="%3$s">%4$s</a>
+                    <i class="label">%1$s</i>%2$s <a href="https://docs.givewp.com/paypal-migrate">%3$s</a>
                 <p>
             </div>',
             esc_html__('Important', 'give'),
@@ -50,7 +50,6 @@ class GatewaySettingPageBanner
                 'PayPal Standard is no longer supported by PayPal. It is recommended to migrate to PayPal Donations.',
                 'give'
             ),
-            '#',
             esc_html__('How to migrate safely', 'give')
         );
     }

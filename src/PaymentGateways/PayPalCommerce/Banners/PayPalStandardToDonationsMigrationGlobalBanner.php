@@ -108,7 +108,7 @@ class PayPalStandardToDonationsMigrationGlobalBanner
 							const modal = document.querySelector('.give-modal');
 
 							modal.querySelector('.give-popup-close-button').addEventListener('click', () => {
-								window.open('https://google.com', '_blank')
+								window.open('https://docs.givewp.com/paypal-migration-doc', '_blank')
 							});
 
 							modal.querySelector('.give-popup-confirm-button').addEventListener('click', () => {
