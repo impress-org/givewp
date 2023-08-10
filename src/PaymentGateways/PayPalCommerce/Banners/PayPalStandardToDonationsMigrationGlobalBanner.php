@@ -80,12 +80,13 @@ class PayPalStandardToDonationsMigrationGlobalBanner
                         confirmBtnTitle: '$modalConfirmButtonTitle'
                     },
                     closeOnBgClick: true,
+                    showCloseBtn: true,
                     callbacks: {
                     	open: () => {
 							const modal = document.querySelector('.give-modal');
 
 							modal.querySelector('.give-popup-close-button').addEventListener('click', () => {
-								window.location.assign('https://google.com');
+								window.open('https://google.com', '_blank')
 							});
 
 							modal.querySelector('.give-popup-confirm-button').addEventListener('click', () => {
