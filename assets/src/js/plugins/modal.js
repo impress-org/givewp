@@ -147,7 +147,10 @@ class GiveModal {
 	 */
 	static __closePopup( event ) {
 		event.preventDefault();
-		jQuery.magnificPopup.instance.close();
+
+		if( ! event.target.classList.contains( 'js-has-event-handler' )){
+			jQuery.magnificPopup.instance.close();
+		}
 	}
 
 	/**
