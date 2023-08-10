@@ -67,6 +67,7 @@ class PayPalStandardToDonationsMigrationGlobalBanner
                 new Give.modal.GiveConfirmModal( {
                     classes: {
                         modalWrapper: 'give-paypal-standard-to-donations-migration-banner',
+                        cancelBtn: 'give-button--secondary js-has-event-handler',
                     },
                     modalContent: {
                         title: '$modalTitle',
