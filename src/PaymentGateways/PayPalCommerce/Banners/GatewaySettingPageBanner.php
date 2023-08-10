@@ -29,8 +29,13 @@ class GatewaySettingPageBanner
      */
     public function render()
     {
-        // Bailout if not on the gateway settings page.
-        if ('gateways-settings' !== give_get_current_setting_section()) {
+        // Bailout if:
+        // - not on the gateway settings page, or
+        // - PayPal Standard is not active.
+        if (
+            'gateways-settings' !== give_get_current_setting_section() ||
+            ! give_is_gateway_active('paypal')
+        ) {
             return;
         }
 
@@ -41,7 +46,10 @@ class GatewaySettingPageBanner
                 <p>
             </div>',
             esc_html__('Important', 'give'),
-            esc_html__('PayPal Standard is no longer supported by PayPal. It is recommended to migrate to PayPal Donations.', 'give'),
+            esc_html__(
+                'PayPal Standard is no longer supported by PayPal. It is recommended to migrate to PayPal Donations.',
+                'give'
+            ),
             '#',
             esc_html__('How to migrate safely', 'give')
         );
