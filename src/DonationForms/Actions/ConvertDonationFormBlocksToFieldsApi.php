@@ -41,7 +41,7 @@ class ConvertDonationFormBlocksToFieldsApi
     protected $currency;
 
     /**
-     * @unreleased return DonationForm Node
+     * @0.6.0 return DonationForm Node
      * @since 0.4.0 conditionally append blocks if block has inner blocks. Add blockIndex to inner blocks node converter.
      * @since 0.3.3 conditionally append blocks if block has inner blocks
      * @since 0.1.0

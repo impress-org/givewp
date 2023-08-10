@@ -3,7 +3,7 @@ import {__} from '@wordpress/i18n';
 import CurrencyInput from 'react-currency-input-field';
 
 /**
- * @unreleased add value prop
+ * @0.6.0 add value prop
  * @since 0.2.0
  */
 type CustomAmountProps = {
@@ -16,7 +16,7 @@ type CustomAmountProps = {
 };
 
 /**
- * @unreleased remove forwardRef and use state for value instead
+ * @0.6.0 remove forwardRef and use state for value instead
  * @since 0.2.0
  */
 const CustomAmount = (

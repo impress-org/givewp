@@ -128,7 +128,7 @@ trait StripePaymentElementRepository
     }
 
     /**
-     * @unreleased no longer store the intent secret
+     * @0.6.0 no longer store the intent secret
      * @since 0.3.0
      *
      * @return void

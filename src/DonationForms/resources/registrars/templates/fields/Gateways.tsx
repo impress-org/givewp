@@ -6,7 +6,7 @@ import {useEffect, useMemo} from 'react';
 import {createInterpolateElement} from '@wordpress/element';
 
 /**
- * @unreleased
+ * @0.6.0
  */
 function GatewayMissingMessage({currencyNotSupported}: {currencyNotSupported?: boolean}) {
     return (
@@ -45,7 +45,7 @@ function GatewayFieldsErrorFallback({error, resetErrorBoundary}) {
 }
 
 /**
- * @unreleased
+ * @0.6.0
  */
 const TestModeNotice = () => {
     return (
@@ -74,7 +74,7 @@ const TestModeNotice = () => {
 };
 
 /**
- * @unreleased update to support currency switcher settings and test mode notice
+ * @0.6.0 update to support currency switcher settings and test mode notice
  * @since 0.1.0
  */
 export default function Gateways({isTestMode, defaultValue, inputProps, gateways}: GatewayFieldProps) {
@@ -141,7 +141,7 @@ export default function Gateways({isTestMode, defaultValue, inputProps, gateways
 }
 
 /**
- * @unreleased replace index prop with defaultChecked
+ * @0.6.0 replace index prop with defaultChecked
  * @since 0.1.0
  */
 function GatewayOption({gateway, defaultChecked, inputProps}: GatewayOptionProps) {

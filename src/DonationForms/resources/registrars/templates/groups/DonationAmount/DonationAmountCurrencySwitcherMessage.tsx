@@ -2,7 +2,7 @@ import {CurrencySwitcherSetting} from '@givewp/forms/types';
 import {__} from '@wordpress/i18n';
 
 /**
- * @unreleased
+ * @0.6.0
  */
 type CurrencySwitcherMessageProps = {
     message: string;
@@ -12,7 +12,7 @@ type CurrencySwitcherMessageProps = {
 };
 
 /**
- * @unreleased
+ * @0.6.0
  */
 type DonationAmountCurrencySwitcherMessageProps = {
     currencySettings: CurrencySwitcherSetting[];
@@ -20,7 +20,7 @@ type DonationAmountCurrencySwitcherMessageProps = {
 };
 
 /**
- * @unreleased
+ * @0.6.0
  */
 const CurrencySwitcherMessage = ({
                                      message,
@@ -46,7 +46,7 @@ const CurrencySwitcherMessage = ({
 };
 
 /**
- * @unreleased
+ * @0.6.0
  */
 export default function DonationAmountCurrencySwitcherMessage({
     currencySettings,

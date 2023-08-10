@@ -401,7 +401,7 @@ class DonationFormRepository
     }
 
     /**
-     * @unreleased return DonationFormNode; throw NameCollisionException
+     * @0.6.0 return DonationFormNode; throw NameCollisionException
      * @since 0.4.0 append formId to first section instead of last with multistep in mind.
      * @since 0.1.0
      * @throws NameCollisionException

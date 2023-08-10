@@ -3,7 +3,7 @@ import {ChangeEvent, useMemo} from 'react';
 import amountFormatter from '@givewp/forms/app/utilities/amountFormatter';
 
 /**
- * @unreleased
+ * @0.6.0
  */
 const convertCurrencySettingsToOptions = (currencySettings: CurrencySwitcherSetting[]): CurrencyOption[] => {
     return currencySettings.map(({id}) => {
@@ -18,7 +18,7 @@ const convertCurrencySettingsToOptions = (currencySettings: CurrencySwitcherSett
 };
 
 /**
- * @unreleased
+ * @0.6.0
  */
 export type CurrencyOption = {
     id: string;
@@ -28,7 +28,7 @@ export type CurrencyOption = {
 /**
  * Find the currency setting by currency id
  *
- * @unreleased
+ * @0.6.0
  */
 export const getCurrencySetting = (
     currency: string,
@@ -38,14 +38,14 @@ export const getCurrencySetting = (
 };
 
 /**
- * @unreleased
+ * @0.6.0
  */
 export const isBaseCurrency = (currencySetting: CurrencySwitcherSetting) => currencySetting.exchangeRate === 0;
 
 /**
  * Calculate the amount based on the currency exchange rate, taking into account the from and to currency values
  *
- * @unreleased
+ * @0.6.0
  */
 export const calculateCurrencyAmount = (
     amount: number,
@@ -71,7 +71,7 @@ export const calculateCurrencyAmount = (
 };
 
 /**
- * @unreleased
+ * @0.6.0
  */
 type CurrencySwitcherProps = {
     defaultCurrency: string;
@@ -82,7 +82,7 @@ type CurrencySwitcherProps = {
 /**
  * The currency select and static component
  *
- * @unreleased
+ * @0.6.0
  */
 function CurrencySwitcher({defaultCurrency, currencySettings, onSelect}: CurrencySwitcherProps) {
     const currencyOptions = useMemo(

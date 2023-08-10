@@ -17,7 +17,7 @@ import MetaKeyTextControl, {slugifyMeta} from '@givewp/form-builder/supports/fie
 /**
  * Higher Order Component that adds field settings to the inspector controls.
  *
- * @unreleased
+ * @0.6.0
  */
 const FieldSettingsHOC = createHigherOrderComponent((BlockEdit) => {
     return (props) => {
@@ -56,7 +56,7 @@ const generateEmailTag = (fieldName, storeAsDonorMeta) => {
 /**
  * Renders the field settings inspector controls.
  *
- * @unreleased
+ * @0.6.0
  */
 function FieldSettingsEdit({attributes, setAttributes, fieldSettings}) {
     const validateFieldName = useFieldNameValidator();

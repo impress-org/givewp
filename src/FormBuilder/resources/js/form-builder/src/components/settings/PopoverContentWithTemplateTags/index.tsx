@@ -7,7 +7,7 @@ import {close as closeIcon, copy as copyIcon} from '@wordpress/icons';
 import './styles.scss';
 
 /**
- * @unreleased
+ * @0.6.0
  */
 type TemplateTag = {
     id: string;
@@ -15,7 +15,7 @@ type TemplateTag = {
 };
 
 /**
- * @unreleased
+ * @0.6.0
  */
 type PopoverContentWithTemplateTagsProps = {
     onClose?(): void;
@@ -26,7 +26,7 @@ type PopoverContentWithTemplateTagsProps = {
 };
 
 /**
- * @unreleased
+ * @0.6.0
  */
 function CopyTagButton({textToCopy}) {
     const [isCopied, setCopied] = useState(false);
@@ -50,7 +50,7 @@ function CopyTagButton({textToCopy}) {
 }
 
 /**
- * @unreleased
+ * @0.6.0
  */
 export default function PopoverContentWithTemplateTags({
     content,

@@ -65,7 +65,7 @@ class FormBuilderViewModel
     }
 
     /**
-     * @unreleased
+     * @0.6.0
      */
     public function getEmailTemplateTags(array $tags = []): array
     {
@@ -79,7 +79,7 @@ class FormBuilderViewModel
     }
 
     /**
-     * @unreleased
+     * @0.6.0
      */
     public function getDonationConfirmationPageTemplateTags(): array
     {

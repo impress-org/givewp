@@ -136,7 +136,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased update form object data to use DonationForm Node
+     * @0.6.0 update form object data to use DonationForm Node
      * @since 0.1.0
      */
     public function exports(): array

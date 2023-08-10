@@ -3,14 +3,41 @@ Contributors: givewp, dlocc, webdevmattcrom
 Donate link: https://givewp.com/
 Tags: givewp, donation, donations, donation plugin, wordpress donation plugin, wp donation, donors, display donors, give donors, anonymous donations
 Requires at least: 5.9
-Tested up to: 6.2
+Tested up to: 6.3
 Requires PHP: 7.2
-Stable tag: 0.5.0
-Requires Give: 2.30.0
+Stable tag: 0.6.0
+Requires Give: 2.32.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Create the donation form of your dreams using an easy-to-use visual donation form builder.
+
+= 0.5.0: July 12th, 2023 =
+* Feature: Added ability to migrate forms to the visual donation form builder
+* Feature: Updated form with currency settings
+* Feature: Added currency setting exchange rate fraction digits
+* Feature: Added form grid settings to the visual donation form builder
+* Feature: Added Offline Donation Instruction settings 
+* Feature: Added redirect for migrated form IDs in shortcodes and blocks 
+* Feature: Added migrated and transfer checks 
+* Feature: Added server-side required block validation to the visual form builder
+* Feature: Added a focus ring to indicate when blocks are selected in the visual form builder
+* Feature: Added a missing block type to replace previously registered blocks that are not available
+* Feature: Added field settings block support 
+* Feature: Added a test mode notice
+* Feature: Added name collision exception during form builder updated
+* Feature: Added ability to transfer donation data to a form built with the visual donation form builder
+* Feature: Added support for multipart/form-data and file field uploads
+* Feature: Added a "default level" option to the Donation amount and levels block
+* Feature: Added donation confirmation settings UI
+* Enhancement: Form ID redirect helper has been updated to differentiate between which migrated forms are also redirected
+* Enhancement: Reorganizaed form header controls 
+* Enhancement: Updated Terms and Conditions block display style for in-form agreement text
+* Fix: Corrected several small CSS issues 
+* Fix: Next Gen editor styles no longer affect the visual appearance of radio and checkboxk components
+* Fix: Adjusted the media frame index to allow media-close-button to be clicked
+* Fix: The payment intent secret is no longer stored
+* Fix: Radio labels select the corresponding option
 
 = 0.5.0: July 12th, 2023 =
 * Feature: The give_form shortcode now supports v3 forms

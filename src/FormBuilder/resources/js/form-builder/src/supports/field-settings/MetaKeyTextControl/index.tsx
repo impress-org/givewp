@@ -9,7 +9,7 @@ import styles from './styles.module.scss'
  * The text control for meta keys. The key can be optionally locked so the user has to explicitly decide to change it
  * after being warned.
  *
- * @unreleased
+ * @0.6.0
  */
 export default function MetaKeyTextControl({value, lockValue, onChange, onBlur}) {
     const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
@@ -52,7 +52,7 @@ export default function MetaKeyTextControl({value, lockValue, onChange, onBlur})
  * Takes a string and returns a slugified version of it. This is not intended to be a general purpose slugify function
  * and is specific to meta keys.
  *
- * @unreleased
+ * @0.6.0
  */
 export function slugifyMeta(value) {
     return value
@@ -85,7 +85,7 @@ function EditButton({onClick}) {
 /**
  * The popover that allows the user to override the meta key.
  *
- * @unreleased
+ * @0.6.0
  */
 function EditPopover({visible, onCancel, onConfirm}) {
     if ( ! visible ) {

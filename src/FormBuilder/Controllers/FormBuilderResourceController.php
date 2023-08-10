@@ -17,7 +17,7 @@ class FormBuilderResourceController
     /**
      * Get the form builder instance
      *
-     * @unreleased add required block validation
+     * @0.6.0 add required block validation
      * @since 0.1.0
      *
      * @param  WP_REST_Request  $request
@@ -47,7 +47,7 @@ class FormBuilderResourceController
     /**
      * Update the form builder
      *
-     * @unreleased add required block validation
+     * @0.6.0 add required block validation
      * @since 0.1.0
      *
      * @return WP_Error|WP_HTTP_Response|WP_REST_Response
@@ -104,7 +104,7 @@ class FormBuilderResourceController
     }
 
     /**
-     * @unreleased
+     * @0.6.0
      *
      * @return string[]
      */
@@ -119,7 +119,7 @@ class FormBuilderResourceController
     }
 
     /**
-     * @unreleased
+     * @0.6.0
      *
      * @return WP_Error|void
      */

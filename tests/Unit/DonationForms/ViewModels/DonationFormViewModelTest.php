@@ -21,7 +21,7 @@ class DonationFormViewModelTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased update form export data
+     * @0.6.0 update form export data
      * @since 0.1.0
      */
     public function testExportsShouldReturnExpectedArrayOfData()

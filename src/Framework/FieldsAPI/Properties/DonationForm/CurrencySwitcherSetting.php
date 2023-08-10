@@ -5,7 +5,7 @@ namespace Give\Framework\FieldsAPI\Properties\DonationForm;
 use JsonSerializable;
 
 /**
- * @unreleased
+ * @0.6.0
  */
 class CurrencySwitcherSetting implements JsonSerializable
 {
@@ -27,7 +27,7 @@ class CurrencySwitcherSetting implements JsonSerializable
     protected $exchangeRateFractionDigits;
 
     /**
-     * @unreleased
+     * @0.6.0
      */
     public function __construct(
         string $id,
@@ -42,7 +42,7 @@ class CurrencySwitcherSetting implements JsonSerializable
     }
 
     /**
-     * @unreleased
+     * @0.6.0
      */
     public function jsonSerialize()
     {
@@ -50,7 +50,7 @@ class CurrencySwitcherSetting implements JsonSerializable
     }
 
     /**
-     * @unreleased
+     * @0.6.0
      */
     public function id(string $id): CurrencySwitcherSetting
     {
@@ -60,7 +60,7 @@ class CurrencySwitcherSetting implements JsonSerializable
     }
 
     /**
-     * @unreleased
+     * @0.6.0
      */
     public function getId(): string
     {
@@ -68,7 +68,7 @@ class CurrencySwitcherSetting implements JsonSerializable
     }
 
     /**
-     * @unreleased
+     * @0.6.0
      */
     public function exchangeRate(float $rate): CurrencySwitcherSetting
     {
@@ -78,7 +78,7 @@ class CurrencySwitcherSetting implements JsonSerializable
     }
 
     /**
-     * @unreleased
+     * @0.6.0
      */
     public function getExchangeRate(): float
     {
@@ -86,7 +86,7 @@ class CurrencySwitcherSetting implements JsonSerializable
     }
 
     /**
-     * @unreleased
+     * @0.6.0
      */
     public function exchangeRateFractionDigits(int $exchangeRateFractionDigits): CurrencySwitcherSetting
     {
@@ -96,7 +96,7 @@ class CurrencySwitcherSetting implements JsonSerializable
     }
 
     /**
-     * @unreleased
+     * @0.6.0
      */
     public function getExchangeRateFractionDigits(): int
     {
@@ -104,7 +104,7 @@ class CurrencySwitcherSetting implements JsonSerializable
     }
 
     /**
-     * @unreleased
+     * @0.6.0
      */
     public function gateways(array $gateways): CurrencySwitcherSetting
     {

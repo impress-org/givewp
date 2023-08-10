@@ -5,7 +5,7 @@ namespace Give\DonationForms\Actions;
 class SanitizeDonationFormPreviewRequest
 {
     /**
-     * @unreleased
+     * @0.6.0
      */
     public function __invoke($var)
     {
