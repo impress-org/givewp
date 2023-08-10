@@ -33,6 +33,9 @@ class PayPalStandardToDonationsMigrationGlobalBanner
      */
     public function getModalScript(): string
     {
+        $bannerId = 'PayPalStandardToDonationsMigrationGlobalBanner';
+        $nonce = wp_create_nonce("give_edit_{$bannerId}_notice");
+
         $modalTitle = esc_html__(
             'PayPal Standard Deprecation',
             'give'
@@ -94,6 +97,15 @@ class PayPalStandardToDonationsMigrationGlobalBanner
 
 							modal.querySelector('.give-popup-confirm-button').addEventListener('click', () => {
 								window.location.assign('$linkToPayPalDonationsSettingPage');
+							});
+						},
+						close: () => {
+							wp.ajax.post({
+								'give-action': 'dismiss_notices',
+								'notice_id': '$bannerId',
+								'dismissible_type': 'user',
+								'dismiss_interval': 'permanent',
+								'_wpnonce': '$nonce'
 							});
 						}
 					}
