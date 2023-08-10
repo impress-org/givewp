@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Give\PaymentGateways\PayPalCommerce\Banners\PayPalDonationsSettingPageBanner;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Settings;
@@ -468,6 +469,7 @@ class AdminSettingFields
                                     <li><?php esc_html_e('Refunds', 'give'); ?></li>
                                 </ul>
                             </div>
+                            <?php echo give(PayPalDonationsSettingPageBanner::class)->render(); ?>
                         </div>
                         <?php $this->printErrors($mechantDetailsRepository); ?>
                     </div>
