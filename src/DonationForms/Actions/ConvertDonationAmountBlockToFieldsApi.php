@@ -56,6 +56,7 @@ class ConvertDonationAmountBlockToFieldsApi
 
             /** @var Amount $amountNode */
             $amountNode = $group->getNodeByName('amount');
+            $defaultLevel = (float)$block->getAttribute('defaultLevel') > 0 ? (float)$block->getAttribute('defaultLevel') : 10;
             $amountNode
                 ->label($block->getAttribute('label'))
                 ->levels(...array_map('absint', $block->getAttribute('levels')))
@@ -64,7 +65,7 @@ class ConvertDonationAmountBlockToFieldsApi
                 ->fixedAmountValue($block->getAttribute('setPrice'))
                 ->defaultValue(
                     $block->getAttribute('priceOption') === 'set' ?
-                        $block->getAttribute('setPrice') : 50
+                        $block->getAttribute('setPrice') : $defaultLevel
                 )
                 ->rules(...$amountRules);
 
@@ -137,7 +138,7 @@ class ConvertDonationAmountBlockToFieldsApi
         $options = $this->mergePeriodOptionsWithOneTime(
             array_map(static function ($option) {
                 $subscriptionPeriod = new SubscriptionPeriod($option);
-                
+
                 return new Option($subscriptionPeriod->getValue(), $subscriptionPeriod->label(0));
             }, $recurringBillingPeriodOptions)
         );

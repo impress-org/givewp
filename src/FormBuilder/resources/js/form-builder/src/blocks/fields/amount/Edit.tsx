@@ -15,6 +15,7 @@ const Edit = ({attributes, setAttributes}) => {
     const {
         label = __('Donation Amount', 'give'),
         levels,
+        defaultLevel,
         priceOption,
         setPrice,
         customAmount,
@@ -37,7 +38,7 @@ const Edit = ({attributes, setAttributes}) => {
     const isFixedAmount = priceOption === 'set';
     const isRecurringAdmin = isRecurring && 'admin' === recurringDonationChoice;
     const isRecurringDonor = isRecurring && 'donor' === recurringDonationChoice;
-    
+
     const amountFormatted = formatCurrencyAmount(setPrice.toString());
 
     const DonationLevels = () => (

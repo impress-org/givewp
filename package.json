@@ -39,6 +39,7 @@
         "prop-types": "^15.8.1",
         "react": "^18.2.0",
         "react-ace": "^10.1.0",
+        "react-beautiful-dnd": "^13.1.1",
         "react-currency-input-field": "^3.6.10",
         "react-error-boundary": "^3.1.4",
         "react-hook-form": "^7.42.1",

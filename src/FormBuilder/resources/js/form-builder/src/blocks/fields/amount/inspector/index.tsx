@@ -9,13 +9,13 @@ import {
 } from '@wordpress/components';
 import {__, sprintf} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
-import DeleteButton from './delete-button';
-import AddButton from './add-button';
-import {CurrencyControl} from '@givewp/form-builder/common/currency';
+import {CurrencyControl, formatCurrencyAmount} from '@givewp/form-builder/common/currency';
 import periodLookup from '../period-lookup';
 import RecurringDonationsPromo from '@givewp/form-builder/promos/recurring-donations';
 import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
-import {useCallback} from '@wordpress/element';
+import {useCallback, useState} from '@wordpress/element';
+import Options from '@givewp/form-builder/components/OptionsPanel';
+import {OptionProps} from '@givewp/form-builder/components/OptionsPanel/types';
 
 const compareBillingPeriods = (val1: string, val2: string): number => {
     const index1 = Object.keys(periodLookup).indexOf(val1);
@@ -28,6 +28,7 @@ const Inspector = ({attributes, setAttributes}) => {
     const {
         label = __('Donation Amount', 'give'),
         levels,
+        defaultLevel,
         priceOption,
         setPrice,
         customAmount,
@@ -75,6 +76,34 @@ const Inspector = ({attributes, setAttributes}) => {
     const recurringGateways = gateways.filter((gateway) => gateway.supportsSubscriptions);
     const isRecurringSupported = enabledGateways.some((gateway) => gateway.supportsSubscriptions);
     const isRecurring = isRecurringSupported && recurringEnabled;
+
+    const [donationLevels, setDonationLevels] = useState<OptionProps[]>(
+        levels.map((level) => ({
+            label: formatCurrencyAmount(level),
+            value: level,
+            checked: defaultLevel === level,
+        }))
+    );
+
+    const handleLevelsChange = (options: OptionProps[]) => {
+        if (options.length > 1 && options[options.length - 1].value === '') {
+            const values = options.filter((option) => Number(option.value) > 0).map((option) => Number(option.value));
+            options[options.length - 1].value = String(2 * Math.max(...values));
+        } else if (options.length === 1 && options[0].value === '') {
+            options[0].value = '10';
+        }
+
+        const checkedLevel = options.filter((option) => option.checked);
+        if (!!checkedLevel && checkedLevel.length === 1) {
+            setAttributes({defaultLevel: checkedLevel[0].value});
+        } else if (options.length > 0) {
+            options[0].checked = true;
+        }
+
+        setDonationLevels(options);
+        const newLevels = options.filter((option) => option.value).map((option) => option.value);
+        setAttributes({levels: newLevels});
+    };
 
     return (
         <InspectorControls>
@@ -139,59 +168,11 @@ const Inspector = ({attributes, setAttributes}) => {
             </PanelBody>
             {priceOption === 'multi' && (
                 <PanelBody title={__('Donation Levels', 'give')} initialOpen={false}>
-                    {levels.length > 0 && (
-                        <ul
-                            style={{
-                                listStyleType: 'none',
-                                padding: 0,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '16px',
-                            }}
-                        >
-                            {levels.map((amount, index) => {
-                                return (
-                                    <li
-                                        key={'level-option-inspector-' + index}
-                                        style={{
-                                            display: 'flex',
-                                            gap: '16px',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'flex-end',
-                                        }}
-                                        className={'givewp-donation-level-control'}
-                                    >
-                                        <CurrencyControl
-                                            label={__('Donation amount level', 'give')}
-                                            hideLabelFromVision
-                                            value={amount}
-                                            onValueChange={(value) => {
-                                                const newLevels = [...levels];
-
-                                                newLevels[index] = value;
-                                                setAttributes({levels: newLevels});
-                                            }}
-                                        />
-                                        <DeleteButton
-                                            onClick={() => {
-                                                levels.splice(index, 1);
-                                                setAttributes({levels: levels.slice()});
-                                            }}
-                                        />
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    )}
-                    <AddButton
-                        onClick={() => {
-                            const newLevels = [...levels];
-                            const lastLevel = newLevels[newLevels.length - 1];
-                            const nextLevel = lastLevel ? lastLevel * 2 : 10;
-
-                            newLevels.push(nextLevel.toString());
-                            setAttributes({levels: newLevels});
-                        }}
+                    <Options
+                        currency={true}
+                        multiple={false}
+                        options={donationLevels}
+                        setOptions={handleLevelsChange}
                     />
                 </PanelBody>
             )}

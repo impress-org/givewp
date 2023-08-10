@@ -19,6 +19,7 @@ const {
     setPrice,
     priceOption,
     levels,
+    defaultLevel,
 } = getDefaultBlockAttributes('givewp/donation-amount');
 
 const settings: FieldBlock['settings'] = {
@@ -38,6 +39,10 @@ const settings: FieldBlock['settings'] = {
         levels: {
             type: 'array',
             default: levels,
+        },
+        defaultLevel: {
+            type: 'number',
+            default: defaultLevel,
         },
         priceOption: {
             type: 'string',
@@ -83,6 +88,7 @@ const settings: FieldBlock['settings'] = {
             default: recurringLengthOfTime, // ongoing
         },
     },
+    edit: Edit,
     icon: () => (
         <Icon
             icon={
@@ -98,7 +104,6 @@ const settings: FieldBlock['settings'] = {
             }
         />
     ),
-    edit: Edit,
 };
 
 export default settings;
