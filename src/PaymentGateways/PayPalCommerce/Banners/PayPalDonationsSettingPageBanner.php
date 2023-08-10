@@ -25,7 +25,7 @@ class PayPalDonationsSettingPageBanner
                 'Make sure you enable PayPal Donation in the gateway settings to receive payment on your form.',
                 'give'
             ),
-            '#',
+            esc_url(admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways')),
             esc_html__('Go to gateway settings', 'give')
         );
     }
