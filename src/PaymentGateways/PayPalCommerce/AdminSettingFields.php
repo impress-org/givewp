@@ -469,7 +469,11 @@ class AdminSettingFields
                                     <li><?php esc_html_e('Refunds', 'give'); ?></li>
                                 </ul>
                             </div>
-                            <?php echo give(PayPalDonationsSettingPageBanner::class)->render(); ?>
+                            <?php
+                            if (! give_is_gateway_active(PayPalCommerce::id())) {
+                                echo give(PayPalDonationsSettingPageBanner::class)->render();
+                            }
+                            ?>
                         </div>
                         <?php $this->printErrors($mechantDetailsRepository); ?>
                     </div>
