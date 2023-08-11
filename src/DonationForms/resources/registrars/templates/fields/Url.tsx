@@ -1,11 +1,11 @@
 import {FieldHasDescriptionProps} from '@givewp/forms/propTypes';
 
-export default function Email({
+export default function Url({
     Label,
     ErrorMessage,
-    description,
-    placeholder,
     fieldError,
+    placeholder,
+    description,
     inputProps,
 }: FieldHasDescriptionProps) {
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
@@ -14,12 +14,7 @@ export default function Email({
         <label>
             <Label />
             {description && <FieldDescription description={description} />}
-            <input
-                type="email"
-                aria-invalid={fieldError ? 'true' : 'false'}
-                placeholder={placeholder}
-                {...inputProps}
-            />
+            <input type="text" aria-invalid={fieldError ? 'true' : 'false'} placeholder={placeholder} {...inputProps} />
 
             <ErrorMessage />
         </label>

@@ -17,6 +17,7 @@ import {InspectorControls} from '@wordpress/block-editor';
 import {Markup} from 'interweave';
 
 import Editor from '@givewp/form-builder/settings/email/template-options/components/editor';
+import StyledPopover from '@givewp/form-builder/blocks/fields/terms-and-conditions/StyledPopover';
 import GlobalSettingsLink from '@givewp/form-builder/blocks/fields/terms-and-conditions/GlobalSettingsLink';
 import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
 
@@ -181,6 +182,17 @@ export default function Edit({
                                     </PanelRow>
                                 </>
                             )}
+
+                            <StyledPopover
+                                title={__('Agreement Text', 'give')}
+                                visible={showAgreementTextModal}
+                                onClose={() => setShowAgreementTextModal(false)}
+                            >
+                                <Editor
+                                    value={agreementText}
+                                    onChange={(value) => setAttributes({agreementText: value})}
+                                />
+                            </StyledPopover>
 
                             {showAgreementTextModal && (
                                 <Modal

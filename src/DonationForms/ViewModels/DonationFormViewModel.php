@@ -265,6 +265,13 @@ class DonationFormViewModel
      */
     private function enqueueRegistrars()
     {
+        wp_enqueue_style(
+            'givewp-donation-form-registrars',
+            GIVE_NEXT_GEN_URL . 'build/donationFormRegistrars.css',
+            [],
+            GIVE_NEXT_GEN_VERSION
+        );
+
         wp_enqueue_script(
             'givewp-donation-form-registrars',
             GIVE_NEXT_GEN_URL . 'build/donationFormRegistrars.js',

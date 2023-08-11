@@ -1,10 +1,20 @@
-import type {SelectFieldProps} from '@givewp/forms/propTypes';
+import type {SelectableFieldProps} from '@givewp/forms/propTypes';
 
-export default function Select({Label, ErrorMessage, placeholder, fieldError, options, inputProps}: SelectFieldProps) {
+export default function Select({
+    Label,
+    ErrorMessage,
+    placeholder,
+    fieldError,
+    options,
+    description,
+    inputProps,
+}: SelectableFieldProps) {
+    const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
+
     return (
         <label>
             <Label />
-
+            {description && <FieldDescription description={description} />}
             <select {...inputProps} aria-invalid={fieldError ? 'true' : 'false'}>
                 {placeholder && (
                     <>
