@@ -6,7 +6,7 @@ use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\FieldsAPI\Contracts\Node;
 
 /**
- * @unreleased add existing and incoming nodes to exception
+ * @since 2.32.0 add existing and incoming nodes to exception
  * @since 2.10.2
  */
 class NameCollisionException extends Exception
@@ -41,7 +41,7 @@ class NameCollisionException extends Exception
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function getNodeNameCollision(): string
     {
@@ -49,7 +49,7 @@ class NameCollisionException extends Exception
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function getIncomingNode(): Node
     {
@@ -57,7 +57,7 @@ class NameCollisionException extends Exception
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function getExistingNode(): Node
     {

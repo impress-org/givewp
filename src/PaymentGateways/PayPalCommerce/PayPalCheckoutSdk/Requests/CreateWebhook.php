@@ -9,7 +9,7 @@ use PayPalHttp\HttpRequest;
  *
  * This class use  as request to create a webhook.
  *
- * @unreleased
+ * @since 2.32.0
  */
 class CreateWebhook extends HttpRequest
 {

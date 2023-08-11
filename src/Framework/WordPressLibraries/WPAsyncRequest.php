@@ -5,7 +5,7 @@ namespace Give\Framework\WordPressLibraries;
 /**
  *  This is a fork of WP_Async_Request that adds GiveWP namespaces to prevent conflicts with other plugins.
  *
- * @unreleased
+ * @since 2.32.0
  */
 abstract class WPAsyncRequest
 {

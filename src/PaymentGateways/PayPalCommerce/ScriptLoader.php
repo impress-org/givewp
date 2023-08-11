@@ -133,7 +133,7 @@ EOT;
     /**
      * Load public assets.
      *
-     * @unreleased Handle exception if client token is not generated.
+     * @since 2.32.0 Handle exception if client token is not generated.
      * @since 2.9.0
      */
     public function loadPublicAssets()

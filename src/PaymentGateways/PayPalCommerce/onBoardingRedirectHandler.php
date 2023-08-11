@@ -114,7 +114,7 @@ class onBoardingRedirectHandler
     /**
      * Save PayPal merchant details
      *
-     * @unreleased Remove second argument from updateSellerAccessToken function.
+     * @since 2.32.0 Remove second argument from updateSellerAccessToken function.
      * @since 2.25.0 Handle exception.
      * @since 2.9.0
      *
@@ -224,7 +224,7 @@ class onBoardingRedirectHandler
     /**
      * Sets up the webhook for the connected account
      *
-     * @unreleased Remove second argument from createWebhook function.
+     * @since 2.32.0 Remove second argument from createWebhook function.
      * @since 2.9.0
      *
      * @param MerchantDetail $merchant_details

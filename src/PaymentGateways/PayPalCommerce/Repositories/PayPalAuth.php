@@ -44,7 +44,7 @@ class PayPalAuth
     /**
      * Retrieves a token for the Client ID and Secret
      *
-     * @unreleased Use PayPal client for rest api calls.
+     * @since 2.32.0 Use PayPal client for rest api calls.
      * @since 2.25.0 Validate paypal response.
      * @since 2.9.0
      *
@@ -86,7 +86,7 @@ class PayPalAuth
     /**
      * Retrieves a token from the authorization code
      *
-     * @unreleased Use PayPal client for rest api calls.
+     * @since 2.32.0 Use PayPal client for rest api calls.
      * @since 2.9.0
      *
      * @param string $authCode
@@ -258,7 +258,7 @@ class PayPalAuth
      *
      * Sample PayPal access token: https://developer.paypal.com/docs/multiparty/seller-onboarding/build-onboarding/#link-sampleresponse
      *
-     * @unreleased
+     * @since 2.32.0
      *
      * @param array $sellerAccessToken Seller access token response from PayPal.
      *
