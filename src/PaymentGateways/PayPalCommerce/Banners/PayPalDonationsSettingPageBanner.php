@@ -17,7 +17,7 @@ class PayPalDonationsSettingPageBanner
         return sprintf(
             '<div class="give-paypal-migration-banner paypal-donations-setting-page">
                 <p class="message">
-                    <i class="label">%1$s</i>%2$s <a href="%3$s">%4$s</a>
+                    <span class="icon">%1$s</span>%2$s <a href="%3$s">%4$s</a>
                 <p>
             </div>',
             $this->getIcon(),

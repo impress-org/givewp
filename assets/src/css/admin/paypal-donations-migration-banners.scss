@@ -11,15 +11,20 @@
 
     // Common styles.
     .message{
-            font-size: 15px;
+        font-size: 15px;
 
         .label{
-            margin-right: 10px;
+            border-radius: 4px;
+            font-weight: 600;
         }
 
         a{
             text-decoration: underline;
             font-weight: 600;
+        }
+
+        .icon, .label{
+            margin-right: 10px;
         }
     }
 
@@ -50,7 +55,7 @@
         color: #594B05;
         border-color: #ffea82;
 
-        .label{
+        .icon{
             vertical-align: middle;
         }
 
