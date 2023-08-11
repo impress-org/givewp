@@ -60,7 +60,7 @@ class Webhooks
      *
      * @see https://developer.paypal.com/docs/api/webhooks/v1/#verify-webhook-signature
      *
-     * @unreleased Use PayPal client for rest api calls.
+     * @since 2.32.0 Use PayPal client for rest api calls.
      * @since 2.9.0
      *
      * @param object               $event The event to verify
@@ -112,7 +112,7 @@ class Webhooks
      *
      * @see https://developer.paypal.com/docs/api/webhooks/v1/#webhooks_post
      *
-     * @unreleased Use PayPal client for rest api calls.
+     * @since 2.32.0 Use PayPal client for rest api calls.
      * @since 2.9.0
      *
      * @return WebhookConfig
@@ -161,7 +161,7 @@ class Webhooks
     /**
      * Updates the webhook url and events
      *
-     * @unreleased Use PayPal client for rest api calls.
+     * @since 2.32.0 Use PayPal client for rest api calls.
      * @since 2.9.0
      *
      * @param string $webhookId
@@ -212,7 +212,7 @@ class Webhooks
     /**
      * Deletes the webhook with the given id.
      *
-     * @unreleased Use PayPal client for rest api calls.
+     * @since 2.32.0 Use PayPal client for rest api calls.
      * @since 2.9.0
      *
      * @param string $token

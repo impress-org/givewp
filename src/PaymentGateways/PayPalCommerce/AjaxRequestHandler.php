@@ -91,7 +91,7 @@ class AjaxRequestHandler
     /**
      * give_paypal_commerce_user_onboarded ajax action handler
      *
-     * @unreleased Return error response on exception when fetch access token from authorization code.
+     * @since 2.32.0 Return error response on exception when fetch access token from authorization code.
      * @since 2.9.0
      */
     public function onBoardedUserAjaxRequestHandler()

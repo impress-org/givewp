@@ -10,7 +10,7 @@ use Give\Framework\FieldsAPI\ValueObjects\PersistenceScope;
  * This provides the ability to set a scope and meta key for a field. The scope is used to determine if and where the
  * field should be stored. The meta key is used to store the field in the database.
  *
- * @unreleased
+ * @since 2.32.0
  */
 trait HasPersistence
 {
@@ -20,21 +20,21 @@ trait HasPersistence
     private $scopeCallback;
 
     /**
-     * @unreleased
+     * @since 2.32.0
      *
      * @var PersistenceScope|null
      */
     protected $scope;
 
     /**
-     * @unreleased
+     * @since 2.32.0
      *
      * @var string|null
      */
     protected $metaKey = null;
 
     /**
-     * @unreleased
+     * @since 2.32.0
      *
      * @param string|PersistenceScope|Closure $scope
      */
@@ -55,7 +55,7 @@ trait HasPersistence
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function getScope(): PersistenceScope
     {
@@ -63,7 +63,7 @@ trait HasPersistence
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function getScopeValue(): string
     {
@@ -79,7 +79,7 @@ trait HasPersistence
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function metaKey(string $metaKey): self
     {
@@ -89,7 +89,7 @@ trait HasPersistence
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      *
      * @return  string|null
      */
@@ -99,7 +99,7 @@ trait HasPersistence
     }
 
     /**
-     * @unreleased updated to use scoping under the hood, no signature change
+     * @since 2.32.0 updated to use scoping under the hood, no signature change
      * @since 2.28.0 added types
      * @since 2.10.2
      */
@@ -113,7 +113,7 @@ trait HasPersistence
     }
 
     /**
-     * @unreleased updated to use scoping under the hood, no signature change
+     * @since 2.32.0 updated to use scoping under the hood, no signature change
      * @since 2.28.0 added types
      * @since 2.10.2
      */

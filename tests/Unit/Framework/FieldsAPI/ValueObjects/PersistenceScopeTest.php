@@ -11,13 +11,12 @@ use Give\Tests\TestCase;
 class PersistenceScopeTest extends TestCase
 {
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function testStaticBuilders()
     {
         $donation = PersistenceScope::donation();
         $donor = PersistenceScope::donor();
-        $file = PersistenceScope::file();
         $callback = PersistenceScope::callback();
 
         self::assertInstanceOf(PersistenceScope::class, $donation);
@@ -26,15 +25,12 @@ class PersistenceScopeTest extends TestCase
         self::assertInstanceOf(PersistenceScope::class, $donor);
         self::assertTrue($donor->isDonor());
 
-        self::assertInstanceOf(PersistenceScope::class, $file);
-        self::assertTrue($file->isFile());
-
         self::assertInstanceOf(PersistenceScope::class, $callback);
         self::assertTrue($callback->isCallback());
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function testToString()
     {
@@ -43,7 +39,7 @@ class PersistenceScopeTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function testIsMethods()
     {
@@ -51,13 +47,12 @@ class PersistenceScopeTest extends TestCase
 
         self::assertTrue($donation->isDonation());
         self::assertFalse($donation->isDonor());
-        self::assertFalse($donation->isFile());
         self::assertFalse($donation->isCallback());
         self::assertTrue($donation->is(PersistenceScope::DONATION));
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function testConstructor()
     {

@@ -13,7 +13,7 @@ use Give\Tests\TestCase;
 class HasPersistenceTest extends TestCase
 {
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function testStoreAsDonorMetaMethods()
     {
@@ -28,7 +28,7 @@ class HasPersistenceTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function testSettingTheScopeByString()
     {
@@ -41,7 +41,7 @@ class HasPersistenceTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function testSettingTheScopeByInstance()
     {
@@ -68,7 +68,7 @@ class HasPersistenceTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function testSettingTheMetaKey()
     {

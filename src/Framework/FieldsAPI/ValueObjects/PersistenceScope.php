@@ -7,13 +7,12 @@ namespace Give\Framework\FieldsAPI\ValueObjects;
  * any custom string. Using a custom scope allows for an add-on to either not store the field, or store it in a custom
  * location.
  *
- * @unreleased
+ * @since 2.32.0
  */
 class PersistenceScope
 {
     const DONATION = 'donation';
     const DONOR = 'donor';
-    const FILE = 'file';
     const CALLBACK = 'callback';
 
     /**
@@ -22,7 +21,7 @@ class PersistenceScope
     private $scope;
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public static function donation(): self
     {
@@ -30,7 +29,7 @@ class PersistenceScope
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public static function donor(): self
     {
@@ -38,15 +37,7 @@ class PersistenceScope
     }
 
     /**
-     * @unreleased
-     */
-    public static function file(): self
-    {
-        return new self(self::FILE);
-    }
-
-    /**
-     * @unreleased
+     * @since 2.32.0
      */
     public static function callback(): self
     {
@@ -54,7 +45,7 @@ class PersistenceScope
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function __construct(string $scope)
     {
@@ -62,7 +53,7 @@ class PersistenceScope
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function isDonation(): bool
     {
@@ -70,7 +61,7 @@ class PersistenceScope
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function isDonor(): bool
     {
@@ -78,15 +69,7 @@ class PersistenceScope
     }
 
     /**
-     * @unreleased
-     */
-    public function isFile(): bool
-    {
-        return $this->scope === self::FILE;
-    }
-
-    /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function isCallback(): bool
     {
@@ -94,7 +77,7 @@ class PersistenceScope
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      *
      * @param self|string $scope
      */
@@ -108,7 +91,7 @@ class PersistenceScope
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function __toString()
     {
