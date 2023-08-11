@@ -6,6 +6,7 @@ use Give\DonationForms\Models\DonationForm;
 use Give\FormBuilder\Actions\ConvertGlobalDefaultOptionsToDefaultBlocks;
 use Give\FormBuilder\Actions\DequeueAdminScriptsInFormBuilder;
 use Give\FormBuilder\Actions\DequeueAdminStylesInFormBuilder;
+use Give\FormBuilder\Actions\UpdateDonorCommentsMeta;
 use Give\FormBuilder\Actions\UpdateEmailSettingsMeta;
 use Give\FormBuilder\Actions\UpdateEmailTemplateMeta;
 use Give\FormBuilder\Actions\UpdateFormGridMeta;
@@ -59,8 +60,11 @@ class ServiceProvider implements ServiceProviderInterface
             give(UpdateFormGridMeta::class)->__invoke($form);
             give(UpdateEmailSettingsMeta::class)->__invoke($form);
             give(UpdateEmailTemplateMeta::class)->__invoke($form);
+            give(UpdateDonorCommentsMeta::class)->__invoke($form);
         });
         
+        Hooks::addAction('givewp_form_builder_new_form', ConvertGlobalDefaultOptionsToDefaultBlocks::class);
+
         Hooks::addAction('givewp_form_builder_new_form', ConvertGlobalDefaultOptionsToDefaultBlocks::class);
 
         $this->setupOnboardingTour();

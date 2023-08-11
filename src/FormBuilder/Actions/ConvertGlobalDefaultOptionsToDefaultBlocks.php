@@ -18,7 +18,26 @@ class ConvertGlobalDefaultOptionsToDefaultBlocks
      */
     public function __invoke(DonationForm $form)
     {
+        $this->handleDonorComments($form);
         $this->handleAnonymousDonations($form);
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function handleDonorComments(DonationForm $form)
+    {
+        if (give_is_donor_comment_field_enabled($form->id)) {
+            $block = BlockModel::make([
+                'name' => 'givewp/donor-comments',
+                'attributes' => [
+                    'label' => __('Comment', 'give'),
+                    'description' => __('Would you like to add a comment to this donation?', 'give'),
+                ],
+            ]);
+
+            $form->blocks->insertAfter('givewp/email', $block);
+        }
     }
 
     /**

@@ -40,6 +40,34 @@ export const getFieldNameSuggestion = (name, names) => {
  */
 export const flattenBlocks = (block) => [block, ...block.innerBlocks.flatMap(flattenBlocks)];
 
+const builtInFieldNames = [
+    'amount',
+    'currency',
+    'gatewayId',
+    'email',
+    'company',
+    'name',
+    'firstName',
+    'lastName',
+    'honorific',
+    'billingAddress',
+    'country',
+    'address1',
+    'address2',
+    'city',
+    'state',
+    'zip',
+    'login',
+    'donation-summary',
+    'donationType',
+    'subscriptionFrequency',
+    'subscriptionInstallments',
+    'subscriptionPeriod',
+    'subscription_id',
+    'additional_email',
+    'formId',
+    'comment',
+];
 
 /**
  * A hook for validating uniqueness of the 'fieldName' attribute.

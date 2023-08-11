@@ -73,6 +73,16 @@ class TestDonationReceiptBuilder extends TestCase
             );
         }
 
+
+        if ($donation->comment) {
+            $additionalDetails->addDetail(
+                new ReceiptDetail(
+                    __('Comment', 'give'),
+                    $receipt->donation->comment
+                )
+            );
+        }
+      
         if ($receipt->donation->anonymous) {
             $additionalDetails->addDetail(
                 new ReceiptDetail(

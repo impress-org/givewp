@@ -74,6 +74,16 @@ class TestGenerateConfirmationPageReceipt extends TestCase
             );
         }
 
+
+        if ($donation->comment) {
+            $additionalDetails->addDetail(
+                new ReceiptDetail(
+                    __('Comment', 'give'),
+                    $receipt->donation->comment
+                )
+            );
+        }
+
         if ($receipt->donation->anonymous) {
             $additionalDetails->addDetail(
                 new ReceiptDetail(
@@ -192,6 +202,15 @@ class TestGenerateConfirmationPageReceipt extends TestCase
                 new ReceiptDetail(
                     __('Company Name', 'give'),
                     $receipt->donation->company
+                )
+            );
+        }
+
+        if ($donation->comment) {
+            $additionalDetails->addDetail(
+                new ReceiptDetail(
+                    __('Comment', 'give'),
+                    $receipt->donation->comment
                 )
             );
         }

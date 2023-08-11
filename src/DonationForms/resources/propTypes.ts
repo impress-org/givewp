@@ -41,6 +41,10 @@ export interface CheckboxProps extends FieldProps {
     helpText?: string;
 }
 
+export interface TextareaProps extends FieldProps {
+    helpText?: string;
+}
+
 export interface ElementProps extends Element {}
 
 export interface GroupProps extends Group {

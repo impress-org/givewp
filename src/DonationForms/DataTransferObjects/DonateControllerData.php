@@ -120,8 +120,13 @@ class DonateControllerData
      * @var string
      */
     public $zip;
+    /**
+     * @var string
+     */
+    public $comment;
 
     /**
+     * @unreleased added support for comment property
      * @unreleased added support for anonymous
      * @since 0.5.0 Add support billing address field
      * @since      0.1.0
@@ -142,12 +147,14 @@ class DonateControllerData
             'formId' => $this->formId,
             'formTitle' => $form->title,
             'company' => $this->company,
+            'comment' => $this->comment,
             'type' => DonationType::SINGLE(),
             'billingAddress' => $this->getBillingAddress(),
         ]);
     }
 
     /**
+     * @unreleased added support for comment property
      * @unreleased added support for anonymous
      * @since 0.5.0 Add support billing address field
      * @since      0.3.0
@@ -168,6 +175,7 @@ class DonateControllerData
             'formId' => $this->formId,
             'formTitle' => $form->title,
             'company' => $this->company,
+            'comment' => $this->comment,
             'type' => DonationType::SUBSCRIPTION(),
             'subscriptionId' => $subscriptionId,
             'billingAddress' => $this->getBillingAddress(),

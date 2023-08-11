@@ -25,6 +25,7 @@ use Give\Framework\FieldsAPI\Paragraph;
 use Give\Framework\FieldsAPI\PaymentGateways;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
+use Give\Framework\FieldsAPI\Textarea;
 use WP_User;
 
 /**
@@ -131,6 +132,12 @@ class ConvertDonationFormBlocksToFieldsApi
 
             case "givewp/donor-name":
                 return $this->createNodeFromDonorNameBlock($block);
+                
+            case "givewp/donor-comments":
+                return Textarea::make('comment')
+                    ->label($block->getAttribute('label'))
+                    ->helpText($block->getAttribute('description'))
+                    ->rules('max:5000');
 
             case "givewp/billing-address":
                 return $this->createNodeFromBillingAddressBlock($block);

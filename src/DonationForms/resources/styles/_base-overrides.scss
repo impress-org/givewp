@@ -25,7 +25,8 @@
 }
 
 // remove the green checkbox in inputs
-input[aria-invalid="false"] {
+input[aria-invalid="false"],
+textarea[aria-invalid="false"] {
   &:not([type="checkbox"]) {
     background-image: none;
   }
