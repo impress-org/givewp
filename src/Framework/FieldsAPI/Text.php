@@ -8,14 +8,12 @@ namespace Give\Framework\FieldsAPI;
  */
 class Text extends Field
 {
-
     use Concerns\HasEmailTag;
     use Concerns\HasHelpText;
     use Concerns\HasLabel;
     use Concerns\HasMaxLength;
     use Concerns\HasMinLength;
     use Concerns\HasPlaceholder;
-
 
     const TYPE = 'text';
 }
