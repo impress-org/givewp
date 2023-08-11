@@ -9,7 +9,6 @@ use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
 use Give\PaymentGateways\Gateways\PayPal\PayPalStandardGateway\PayPalStandardGateway;
-use Give\PaymentGateways\Gateways\PayPal\PayPalStandardGateway\PayPalStandardGatewaySubscriptionModule;
 use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceGateway;
 use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceSubscriptionModule;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
@@ -107,13 +106,6 @@ class ServiceProvider implements ServiceProviderInterface
          * This module will eventually live in give-recurring
          */
         if (defined('GIVE_RECURRING_VERSION') && GIVE_RECURRING_VERSION) {
-            add_filter(
-                sprintf("givewp_gateway_%s_subscription_module", PayPalStandardGateway::id()),
-                static function () {
-                    return PayPalStandardGatewaySubscriptionModule::class;
-                }
-            );
-
             add_filter(
                 sprintf("givewp_gateway_%s_subscription_module", TestGateway::id()),
                 static function () {
