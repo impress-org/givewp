@@ -45,9 +45,15 @@ export default ({emailType}) => {
 
     return (
         <>
+            <h2 style={{}}>{__('Send a test email', 'givewp')}</h2>
+            <p style={{fontSize: '0.75rem', color:'rgb(117,117,117)'}}>
+                {__(
+                    'Specify below the email address you want to send a test email to',
+                    'givewp'
+                )}
+            </p>
             <TextControl
                 label={__('Email address', 'givewp')}
-                help={__('Specify below the email address you want to send a test email to', 'givewp')}
                 onChange={setEmailAddress}
                 value={emailAddress}
             />

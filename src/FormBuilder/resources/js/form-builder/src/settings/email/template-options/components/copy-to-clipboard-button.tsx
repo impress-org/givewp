@@ -1,7 +1,7 @@
 import useClipboard from "react-use-clipboard";
 import {__} from "@wordpress/i18n";
 import {Button} from "@wordpress/components";
-import {copy} from "@wordpress/icons";
+import {copy, Icon} from "@wordpress/icons";
 
 const CopyToClipboardButton = ({text}) => {
     const [isCopied, setCopied] = useClipboard(text, {
@@ -10,12 +10,20 @@ const CopyToClipboardButton = ({text}) => {
     const label = isCopied
         ? __('Copied!', 'givewp')
         : __('Copy tag', 'givewp');
+
+    const CopyIcon = ({ size }) => {
+        return (
+            <Icon icon={copy} size={size} />
+        );
+    };
+
     return (
         <Button
+            style={{display:'flex', alignItems:'center', gap: '0.25rem', height:'fit-content', paddingBlock:'0.5rem'}}
             variant={'tertiary'}
-            icon={copy}
             onClick={setCopied}
         >
+            <CopyIcon size={15}/>
             {label}
         </Button>
     )

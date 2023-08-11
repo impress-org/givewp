@@ -109,11 +109,10 @@ export default () => {
                                                     height: '100%',
                                                     overflowX: 'hidden',
                                                     overflowY: 'auto',
-                                                    padding: '20px', // Adjust for scrollbar
+                                                    padding: selectedNotificationStatus === 'global' ? '16px 20px' : '0 20px', // Adjust for scrollbar
                                                 }}
                                             >
-                                                <h2 style={{margin: 0}}>Notification</h2>
-                                                <p></p>
+                                                <h2 style={{margin: '0 0 .5rem 0'}}>Notification</h2>
                                                 <EmailTemplateSettings notification={tab.name} />
                                             </div>
                                         )}
@@ -131,9 +130,9 @@ export default () => {
                                 >
                                     <div style={{flex: 1}}>
                                         <h2 style={{margin: 0}}>{__('Preview email', 'givewp')}</h2>
-                                        <p>
+                                        <p style={{fontSize: '0.75rem', color:'rgb(117,117,117)'}}>
                                             {__(
-                                                'Specify below the email address you want to send a test email to',
+                                                'Preview the email message in your browser',
                                                 'givewp'
                                             )}
                                         </p>
@@ -158,9 +157,9 @@ export default () => {
                                         </p>
                                         <ul className={'email-template-tags'}>
                                             {emailTemplateTags.map((tag) => (
-                                                <li key={tag.tag}>
-                                                    <strong>{'{' + tag.tag + '}'}</strong>
-                                                    <p>{tag.desc}</p>
+                                                <li key={tag.tag} >
+                                                    <strong style={{display:'inline-block', marginBottom:'0.5rem', fontSize:'.813rem'}}>{'{' + tag.tag + '}'}</strong>
+                                                    <p style={{fontSize:'.75rem'}}>{tag.desc}</p>
                                                     <CopyToClipboardButton text={'{' + tag.tag + '}'} />
                                                 </li>
                                             ))}
