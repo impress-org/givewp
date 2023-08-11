@@ -8,7 +8,7 @@ final class HasDescriptionTest extends TestCase
 {
 
     /**
-     * @unreleased 
+     * @since 2.32.0 
      */
     public function testHasDescriptionTag()
     {

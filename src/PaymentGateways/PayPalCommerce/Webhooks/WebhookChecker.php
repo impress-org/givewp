@@ -63,7 +63,7 @@ class WebhookChecker
     /**
      * Checks whether the webhook configuration has changed. If it has, then update the webhook with PayPal.
      *
-     * @unreleased Remove second argument from updateWebhook function.
+     * @since 2.32.0 Remove second argument from updateWebhook function.
      * @since 2.9.0
      */
     public function checkWebhookCriteria()

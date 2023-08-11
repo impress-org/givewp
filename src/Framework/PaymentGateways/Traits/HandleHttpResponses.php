@@ -11,7 +11,7 @@ trait HandleHttpResponses
     /**
      * Handle Response
      *
-     * @unreleased added check for responding with json
+     * @since 2.32.0 added check for responding with json
      * @since 2.27.0 add support for json content-type
      * @since 2.18.0
      *
@@ -65,7 +65,7 @@ trait HandleHttpResponses
     /**
      * This checks the server headers for 'application/json' to determine if it should respond with json.
      *
-     * @unreleased
+     * @since 2.32.0
      *
      * @return bool
      */

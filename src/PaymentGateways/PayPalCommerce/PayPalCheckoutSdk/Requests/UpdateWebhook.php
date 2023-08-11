@@ -7,12 +7,12 @@ use PayPalHttp\HttpRequest;
 /**
  * Class UpdateWebhook.
  *
- * @unreleased
+ * @since 2.32.0
  */
 class UpdateWebhook extends HttpRequest
 {
     /**
-     * @unreleased
+     * @since 2.32.0
      *
      * @param string $webhookId Webhook ID.
      * @param array $requestBody Request body.

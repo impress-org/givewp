@@ -4,7 +4,7 @@ namespace Give\Framework\FieldsAPI;
 
 
 /**
- * @unreleased added description
+ * @since 2.32.0 added description
  * @since 2.22.0
  */
 class Section extends Group

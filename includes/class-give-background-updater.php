@@ -15,7 +15,7 @@ use Give\Framework\WordPressLibraries\WPBackgroundProcess;
  * @category   Class
  * @author     GiveWP
  *
- * @unreleased updated to extend WPBackgroundProcess
+ * @since 2.32.0 updated to extend WPBackgroundProcess
  */
 if ( ! defined('ABSPATH')) {
     exit;

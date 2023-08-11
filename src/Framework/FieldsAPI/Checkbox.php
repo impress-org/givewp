@@ -5,7 +5,7 @@ namespace Give\Framework\FieldsAPI;
 use Give\Framework\Exceptions\Primitives\RuntimeException;
 
 /**
- * @unreleased added description
+ * @since 2.32.0 added description
  * @since 2.28.0
  */
 class Checkbox extends Field

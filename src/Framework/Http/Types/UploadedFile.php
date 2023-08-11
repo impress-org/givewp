@@ -7,7 +7,7 @@ namespace Give\Framework\Http\Types;
  *
  * @see https://www.php.net/manual/en/reserved.variables.files.php
  *
- * @unreleased
+ * @since 2.32.0
  */
 class UploadedFile
 {
@@ -44,7 +44,7 @@ class UploadedFile
     protected $size;
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public static function fromArray(array $fileArray): UploadedFile
     {
@@ -60,7 +60,7 @@ class UploadedFile
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function getName(): string
     {
@@ -68,7 +68,7 @@ class UploadedFile
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function getTemporaryName(): string
     {
@@ -76,7 +76,7 @@ class UploadedFile
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function getBrowserMimeType(): string
     {
@@ -84,7 +84,7 @@ class UploadedFile
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      *
      * @see https://www.php.net/manual/en/function.is-uploaded-file.php
      */
@@ -94,7 +94,7 @@ class UploadedFile
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      *
      * @see https://www.php.net/manual/en/function.mime-content-type.php
      */
@@ -104,7 +104,7 @@ class UploadedFile
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function getSize(): int
     {
@@ -112,7 +112,7 @@ class UploadedFile
     }
 
     /**
-     * @unreleased
+     * @since 2.32.0
      */
     public function getError(): int
     {

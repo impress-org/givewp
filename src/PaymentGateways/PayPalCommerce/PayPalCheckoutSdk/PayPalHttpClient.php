@@ -13,7 +13,7 @@ use PayPalCheckoutSdk\Core\PayPalEnvironment;
  * We register AuthorizationInjector class to inject access token in http request header.
  * AuthorizationInjector clas refresh access token only if expired.
  *
- * @unreleased Remove unnecessary properties.
+ * @since 2.32.0 Remove unnecessary properties.
  * @since 2.25.0
  */
 class PayPalHttpClient extends \PayPalCheckoutSdk\Core\PayPalHttpClient

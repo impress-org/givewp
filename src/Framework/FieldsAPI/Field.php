@@ -35,7 +35,7 @@ abstract class Field implements Node
     }
 
     /**
-     * @unreleased sets the default scope to donation
+     * @since 2.32.0 sets the default scope to donation
      * @since 2.23.1 make constructor final to avoid unsafe usage of `new static()`.
      * @since 2.12.0
      *

@@ -308,7 +308,7 @@ class GiveStripeElements {
 	 * @param setupStripeElement
 	 * @param cardElements
 	 *
-     * @unreleased Scrolls Stripe checkout modal into view for all screen sizes.
+     * @since 2.32.0 Scrolls Stripe checkout modal into view for all screen sizes.
      *
 	 * @since 2.8.0
 	 */
