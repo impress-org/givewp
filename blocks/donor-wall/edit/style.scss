@@ -1,4 +1,4 @@
-.give-donor-wall-inspector{
+.give-donor-wall-inspector {
     flex-direction: row !important;
     align-items: center !important;
     justify-content: space-between !important;
@@ -32,13 +32,15 @@
     .components-input-control__container {
         max-width: 165px !important;
 
-            > select {
-                line-height: 1.2 !important;
-            }
+        > select {
+            line-height: 1.2 !important;
         }
     }
+}
 
-.components-form-token-field {
-    margin-top: -18px !important;
-    label { display: none !important;}
+.give-wall--wall-settings {
+    .components-form-token-field {
+        margin-top: -18px !important;
+        label { display: none !important;}
+    }
 }
