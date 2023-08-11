@@ -5,11 +5,16 @@ namespace Give\Tests\Unit\VieModels;
 use Exception;
 use Give\DonationForms\Actions\GenerateDonationFormPreviewRouteUrl;
 use Give\DonationForms\Models\DonationForm;
+use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Donors\Models\Donor;
+use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\FormBuilder\DataTransferObjects\EmailNotificationData;
 use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
 use Give\Framework\FormDesigns\FormDesign;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
+use Give\Subscriptions\Models\Subscription;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
@@ -66,6 +71,7 @@ class FormBuilderViewModelTest extends TestCase
                 }, apply_filters('give_email_notification_options_metabox_fields', array(), $formId)),
                 'emailPreviewURL' => rest_url('givewp/form-builder/email-preview'),
                 'emailDefaultAddress' => get_option('admin_email'),
+                'disallowedFieldNames' => $this->getDisallowedFieldNames(),
                 'donationConfirmationTemplateTags' => $viewModel->getDonationConfirmationPageTemplateTags(),
                 'termsAndConditions' => [
                     'checkboxLabel' => give_get_option('agree_to_terms_label'),
@@ -74,5 +80,24 @@ class FormBuilderViewModelTest extends TestCase
                 ],
             $viewModel->storageData($formId)
         );
+    }
+
+    private function getDisallowedFieldNames(): array
+    {
+        $disallowedFieldNames = array_merge(
+            Donation::propertyKeys(),
+            array_values(DonationMetaKeys::toArray()),
+            Donor::propertyKeys(),
+            array_values(DonorMetaKeys::toArray()),
+            Subscription::propertyKeys(),
+            [
+                'fund_id',
+                'login',
+                'consent',
+                'donation-summary',
+            ]
+        );
+
+        return array_values(array_unique($disallowedFieldNames));
     }
 }

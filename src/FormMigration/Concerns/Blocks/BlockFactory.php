@@ -97,4 +97,21 @@ class BlockFactory
             ], $attributes),
         ]);
     }
+
+    /**
+     * @unreleased
+     */
+    public static function anonymousDonations(array $attributes = []): BlockModel
+    {
+        return BlockModel::make([
+            'name' => 'givewp/anonymous',
+            'attributes' => array_merge([
+                'label' => __('Make this an anonymous donation.', 'give'),
+                'description' => __(
+                    'Would you like to prevent your name, image, and comment from being displayed publicly?',
+                    'give'
+                ),
+            ], $attributes),
+        ]);
+    }
 }

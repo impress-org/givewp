@@ -1,4 +1,10 @@
 import {useSelect} from '@wordpress/data';
+import {getWindowData} from "@givewp/form-builder/common";
+
+/**
+ * @unreleased
+ */
+const {disallowedFieldNames} = getWindowData();
 
 /**
  * @since 0.1.0
@@ -34,33 +40,6 @@ export const getFieldNameSuggestion = (name, names) => {
  */
 export const flattenBlocks = (block) => [block, ...block.innerBlocks.flatMap(flattenBlocks)];
 
-const builtInFieldNames = [
-    'amount',
-    'currency',
-    'gatewayId',
-    'email',
-    'company',
-    'name',
-    'firstName',
-    'lastName',
-    'honorific',
-    'billingAddress',
-    'country',
-    'address1',
-    'address2',
-    'city',
-    'state',
-    'zip',
-    'login',
-    'donation-summary',
-    'donationType',
-    'subscriptionFrequency',
-    'subscriptionInstallments',
-    'subscriptionPeriod',
-    'subscription_id',
-    'additional_email',
-    'formId',
-];
 
 /**
  * A hook for validating uniqueness of the 'fieldName' attribute.
@@ -86,7 +65,7 @@ const useFieldNameValidator = () => {
      * @param {boolean} allowOne Whether to allow a single instance of the name — useful for when a field name is being edited
      */
     return (n, allowOne = false): ValidationSet => {
-        if (builtInFieldNames.includes(n)) {
+        if (disallowedFieldNames.includes(n)) {
             return [false, getFieldNameSuggestion(n, fieldNames ?? [])];
         }
 

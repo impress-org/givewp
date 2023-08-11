@@ -12,6 +12,7 @@ use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
 use Give\Framework\FieldsAPI\Authentication;
 use Give\Framework\FieldsAPI\BillingAddress;
+use Give\Framework\FieldsAPI\Checkbox;
 use Give\Framework\FieldsAPI\Contracts\Node;
 use Give\Framework\FieldsAPI\DonationForm;
 use Give\Framework\FieldsAPI\DonationSummary;
@@ -197,6 +198,14 @@ class ConvertDonationFormBlocksToFieldsApi
                             $field->rules(new AuthenticationRule());
                         }
                     });
+
+            case "givewp/anonymous":
+                return Checkbox::make('anonymous')
+                    ->label($block->getAttribute('label'))
+                    ->helpText($block->getAttribute('description'))
+                    ->showInAdmin()
+                    ->showInReceipt()
+                    ->rules('boolean');
 
             default:
                 $customField = apply_filters(

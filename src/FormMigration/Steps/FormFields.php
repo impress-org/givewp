@@ -2,6 +2,7 @@
 
 namespace Give\FormMigration\Steps;
 
+use Give\FormMigration\Concerns\Blocks\BlockFactory;
 use Give\FormMigration\Contracts\FormMigrationStep;
 
 class FormFields extends FormMigrationStep
@@ -18,9 +19,21 @@ class FormFields extends FormMigrationStep
         // @note No corresponding setting in v3 for "Default Gateway"
 
         // Anonymous Donations
-        // @note No corresponding setting in v3 for "Anonymous Donations"
+        $this->handleAnonymousDonations();
 
         // Donor Comments
         // @note no corresponding setting in v3 for "Donor Comments"
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function handleAnonymousDonations()
+    {
+        if (give_is_anonymous_donation_field_enabled($this->formV2->id)) {
+            $block = BlockFactory::anonymousDonations();
+
+            $this->fieldBlocks->insertAfter('givewp/email', $block);
+        }
     }
 }

@@ -74,6 +74,15 @@ class TestGenerateConfirmationPageReceipt extends TestCase
             );
         }
 
+        if ($receipt->donation->anonymous) {
+            $additionalDetails->addDetail(
+                new ReceiptDetail(
+                    __('Anonymous Donation', 'give'),
+                    'Yes'
+                )
+            );
+        }
+
         $heading = (new DonationTemplateTags($donation, $donationForm->settings->receiptHeading))->getContent();
         $description = (new DonationTemplateTags($donation, $donationForm->settings->receiptDescription))->getContent();
 
@@ -183,6 +192,15 @@ class TestGenerateConfirmationPageReceipt extends TestCase
                 new ReceiptDetail(
                     __('Company Name', 'give'),
                     $receipt->donation->company
+                )
+            );
+        }
+
+        if ($donation->anonymous) {
+            $additionalDetails->addDetail(
+                new ReceiptDetail(
+                    __('Anonymous Donation', 'give'),
+                    'Yes'
                 )
             );
         }

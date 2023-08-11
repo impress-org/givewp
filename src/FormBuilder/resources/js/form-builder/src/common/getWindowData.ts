@@ -1,4 +1,4 @@
-import {
+import type {
     EmailNotification,
     FormDesign,
     FormPageSettings,
@@ -25,6 +25,7 @@ declare global {
             emailTemplateTags: TemplateTag[];
             emailNotifications: EmailNotification[];
             emailDefaultAddress: string;
+            disallowedFieldNames: string[];
             donationConfirmationTemplateTags: TemplateTag[];
             termsAndConditions: TermsAndConditions;
         };

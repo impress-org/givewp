@@ -4,12 +4,17 @@ namespace Give\FormBuilder\ViewModels;
 
 use Give\DonationForms\Actions\GenerateDonationFormPreviewRouteUrl;
 use Give\DonationForms\Models\DonationForm;
+use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Donors\Models\Donor;
+use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\FormBuilder\DataTransferObjects\EmailNotificationData;
 use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
 use Give\Framework\FormDesigns\FormDesign;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\Subscriptions\Models\Subscription;
 
 class FormBuilderViewModel
 {
@@ -56,6 +61,7 @@ class FormBuilderViewModel
             }, apply_filters('give_email_notification_options_metabox_fields', array(), $donationFormId)),
             'emailPreviewURL' => rest_url('givewp/form-builder/email-preview'),
             'emailDefaultAddress' => get_option('admin_email'),
+            'disallowedFieldNames' => $this->getDisallowedFieldNames(),
             'donationConfirmationTemplateTags' => $this->getDonationConfirmationPageTemplateTags(),
             'termsAndConditions' => [
                 'checkboxLabel' => give_get_option('agree_to_terms_label'),
@@ -170,5 +176,31 @@ class FormBuilderViewModel
         }, give(PaymentGatewayRegister::class)->getPaymentGateways(3));
 
         return array_values($builderPaymentGatewayData);
+    }
+
+    /**
+     * In the Form Builder custom fields have meta keys. These meta keys are used for both the field name and the meta,
+     * as not to be too confusing. This array is used to prevent the user from creating meta keys that conflict with the
+     * existing meta or field names.
+     *
+     * @unreleased
+     */
+    protected function getDisallowedFieldNames(): array
+    {
+        $disallowedFieldNames = array_merge(
+            Donation::propertyKeys(),
+            array_values(DonationMetaKeys::toArray()),
+            Donor::propertyKeys(),
+            array_values(DonorMetaKeys::toArray()),
+            Subscription::propertyKeys(),
+            [
+                'fund_id',
+                'login',
+                'consent',
+                'donation-summary',
+            ]
+        );
+
+        return array_values(array_unique($disallowedFieldNames));
     }
 }

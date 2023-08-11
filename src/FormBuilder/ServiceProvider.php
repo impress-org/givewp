@@ -3,6 +3,7 @@
 namespace Give\FormBuilder;
 
 use Give\DonationForms\Models\DonationForm;
+use Give\FormBuilder\Actions\ConvertGlobalDefaultOptionsToDefaultBlocks;
 use Give\FormBuilder\Actions\DequeueAdminScriptsInFormBuilder;
 use Give\FormBuilder\Actions\DequeueAdminStylesInFormBuilder;
 use Give\FormBuilder\Actions\UpdateEmailSettingsMeta;
@@ -59,6 +60,8 @@ class ServiceProvider implements ServiceProviderInterface
             give(UpdateEmailSettingsMeta::class)->__invoke($form);
             give(UpdateEmailTemplateMeta::class)->__invoke($form);
         });
+        
+        Hooks::addAction('givewp_form_builder_new_form', ConvertGlobalDefaultOptionsToDefaultBlocks::class);
 
         $this->setupOnboardingTour();
     }
