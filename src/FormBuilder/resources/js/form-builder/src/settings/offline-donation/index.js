@@ -5,7 +5,7 @@ import DonationInstructions from './donation-instructions';
 
 const OfflineDonationsSettings = () => {
     const {
-        settings: {enableOfflineDonations},
+        settings: {offlineDonationsCustomize},
     } = useFormState();
     const dispatch = useFormStateDispatch();
 
@@ -15,11 +15,11 @@ const OfflineDonationsSettings = () => {
                 <ToggleControl
                     label={__('Enable Offline Donations', 'give')}
                     help={__('Do you want to customize the donation instructions for this form?', 'give')}
-                    checked={enableOfflineDonations}
-                    onChange={() => dispatch(setFormSettings({enableOfflineDonations: !enableOfflineDonations}))}
+                    checked={offlineDonationsCustomize}
+                    onChange={() => dispatch(setFormSettings({offlineDonationsCustomize: !offlineDonationsCustomize}))}
                 />
             </PanelRow>
-            {enableOfflineDonations && (
+            {offlineDonationsCustomize && (
                 <>
                     <PanelRow>
                         <DonationInstructions />

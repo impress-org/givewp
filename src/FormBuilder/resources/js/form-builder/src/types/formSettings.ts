@@ -35,4 +35,5 @@ export type FormSettings = {
     formGridDonateButtonText: string;
     formGridHideDocumentationLink: boolean;
     offlineDonationsCustomize: boolean;
+    offlineDonationsInstructions: string;
 };
