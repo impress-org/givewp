@@ -1,5 +1,6 @@
 <?php
 /**
+ * @deprecated Use src/Framework/WordPressLibraries\WPAsyncRequest.
  * WP Async Request
  *
  * @package WP-Background-Processing
