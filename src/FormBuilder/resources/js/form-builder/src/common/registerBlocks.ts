@@ -6,7 +6,7 @@ import {__experimentalGetCoreBlocks} from '@wordpress/block-library';
  *
  * @see https://github.com/WordPress/gutenberg/tree/trunk/packages/block-library/src/missing
  *
- * @0.6.0
+ * @since 0.6.0
  */
 const registerMissingBlock = () => {
     //TODO: should probably replace this with a custom block

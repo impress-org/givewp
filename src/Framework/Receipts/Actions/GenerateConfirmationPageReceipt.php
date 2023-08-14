@@ -270,7 +270,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @0.6.0 added backwards compatability for v2 forms tags
+     * @since 0.6.0 added backwards compatability for v2 forms tags
      * @since 0.1.0
      */
     protected function getHeading(DonationReceipt $receipt, DonationForm $donationForm = null): string
@@ -288,7 +288,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @0.6.0 added backwards compatability for v2 forms tags
+     * @since 0.6.0 added backwards compatability for v2 forms tags
      * @since 0.1.0
      */
     protected function getDescription(DonationReceipt $receipt, DonationForm $donationForm = null): string
@@ -309,7 +309,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @0.6.0
+     * @since 0.6.0
      */
     protected function transformV2FormTags(string $content, Donation $donation): string
     {

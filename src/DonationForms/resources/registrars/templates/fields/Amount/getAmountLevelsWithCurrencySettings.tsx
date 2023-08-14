@@ -4,7 +4,7 @@ import {isBaseCurrency} from './CurrencySwitcher';
 /**
  * Convert level amounts to the selected currency and fallback to original values if no currency setting is found or exchange rate is 0.
  *
- * @0.6.0
+ * @since 0.6.0
  */
 export default function getAmountLevelsWithCurrencySettings(
     levels: number[],

@@ -1,5 +1,5 @@
 /**
- * @0.6.0
+ * @since 0.6.0
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#supplying_request_options
  */

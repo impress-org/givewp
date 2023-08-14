@@ -5,7 +5,7 @@ namespace Give\FormMigration\DataTransferObjects;
 /**
  * The `Sequoia` and `Classic` templates share a structure for Donation Summary settings.
  *
- * @0.6.0
+ * @since 0.6.0
  */
 class DonationSummarySettings
 {
@@ -50,7 +50,7 @@ class DonationSummarySettings
     }
 
     /**
-     * @0.6.0
+     * @since 0.6.0
      *
      * @note `give_donation_form_user_info` is presented as "Before payment fields".
      * @note `give_donation_form_before_submit` is the default location, presented as "After payment fields".

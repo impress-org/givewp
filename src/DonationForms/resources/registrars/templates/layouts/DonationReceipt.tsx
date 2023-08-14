@@ -36,7 +36,7 @@ const Details = ({id, heading, details}: { id: string; heading: string; details:
         </div>
     );
 /**
- * @0.6.0 updated to use Interweave for rich text content
+ * @since 0.6.0 updated to use Interweave for rich text content
  * @since 0.1.0
  */
 export default function DonationReceipt({

@@ -2,7 +2,7 @@ import {CurrencySwitcherSetting} from '@givewp/forms/types';
 import CurrencySwitcher, {calculateCurrencyAmount} from './CurrencySwitcher';
 
 /**
- * @0.6.0
+ * @since 0.6.0
  */
 export default function DonationAmountCurrency({currencySettings, onCurrencyAmountChange}: {
     currencySettings: CurrencySwitcherSetting[],

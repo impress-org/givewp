@@ -56,7 +56,7 @@ class Router
     }
 
     /**
-     * @0.6.0 updated to check for "application/json" content-type first before accessing request super globals
+     * @since 0.6.0 updated to check for "application/json" content-type first before accessing request super globals
      * @since 0.1.0
      */
     protected function getDataFromPostRequest(): array

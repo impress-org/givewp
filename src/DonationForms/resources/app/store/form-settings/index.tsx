@@ -14,7 +14,7 @@ type PropTypes = {
 };
 
 /**
- * @0.6.0
+ * @since 0.6.0
  */
 const DonationFormSettingsProvider = ({value, children}: PropTypes) => {
     return (

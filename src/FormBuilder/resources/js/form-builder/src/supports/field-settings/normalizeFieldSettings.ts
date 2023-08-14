@@ -5,7 +5,7 @@ import {__} from '@wordpress/i18n';
  * Takes in the "supports" settings for a field and normalizes them into a standard object. It is recommended to use
  * this function rather than the settings directly.
  *
- * @0.6.0
+ * @since 0.6.0
  */
 export default function normalizeFieldSettings(settings: FieldSettingsSupport | false): FieldSettings | null {
     if (settings === undefined || settings === false) {
