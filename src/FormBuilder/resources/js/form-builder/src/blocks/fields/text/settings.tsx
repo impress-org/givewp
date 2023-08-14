@@ -21,6 +21,7 @@ const settings: FieldBlock['settings'] = {
                 defaultValue: true,
                 emailTag: true,
             },
+            conditionalLogic: true,
         },
     },
     icon: () => (

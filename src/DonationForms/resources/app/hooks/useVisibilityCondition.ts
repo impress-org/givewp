@@ -57,15 +57,17 @@ export function visibliityConditionsPass(conditions: FieldCondition[], watchedFi
 
             const conditionPasses = conditionOperatorFunctions[condition.comparisonOperator](value, condition.value);
 
-            return condition.logicalOperator === 'and' ? passing && conditionPasses : passing || conditionPasses;
+            return condition.logicalOperator === 'and'
+                ? (passing ?? true) && conditionPasses
+                : (passing ?? false) || conditionPasses;
         }
 
         return condition.boolean === 'and'
-            ? passing && condition.conditions.reduce(conditionPassReducer, true)
-            : passing || condition.conditions.reduce(conditionPassReducer, true);
+            ? (passing ?? true) && condition.conditions.reduce(conditionPassReducer, null)
+            : (passing ?? false) || condition.conditions.reduce(conditionPassReducer, null);
     }
 
-    return conditions.reduce(conditionPassReducer, true);
+    return conditions.reduce(conditionPassReducer, null);
 }
 
 /**

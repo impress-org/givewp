@@ -23,6 +23,10 @@ const settings: SectionBlock['settings'] = {
 
     supports: {
         html: false, // Removes support for an HTML mode,
+        // @ts-ignore
+        givewp: {
+            conditionalLogic: true,
+        },
     },
 
     attributes: {

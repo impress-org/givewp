@@ -57,7 +57,7 @@ class ConvertDonationFormBlocksToFieldsApi
 
         $form = new DonationForm('donation-form');
         $form->defaultCurrency($this->currency);
-        
+
         $blockIndex = 0;
         foreach ($blocks->getBlocks() as $block) {
             $blockIndex++;
@@ -132,7 +132,7 @@ class ConvertDonationFormBlocksToFieldsApi
 
             case "givewp/donor-name":
                 return $this->createNodeFromDonorNameBlock($block);
-                
+
             case "givewp/donor-comments":
                 return Textarea::make('comment')
                     ->label($block->getAttribute('label'))

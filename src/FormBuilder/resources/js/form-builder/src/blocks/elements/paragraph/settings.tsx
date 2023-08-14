@@ -9,6 +9,10 @@ const settings: ElementBlock['settings'] = {
     supports: {
         html: false,
         multiple: true,
+        // @ts-ignore
+        givewp: {
+            conditionalLogic: true,
+        },
     },
     attributes: {
         content: {
