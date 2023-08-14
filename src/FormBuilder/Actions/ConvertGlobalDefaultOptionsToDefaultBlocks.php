@@ -27,7 +27,7 @@ class ConvertGlobalDefaultOptionsToDefaultBlocks
      */
     protected function handleDonorComments(DonationForm $form)
     {
-        if (give_is_donor_comment_field_enabled($form->id)) {
+        if (give_is_donor_comment_field_enabled($form->id) && !$form->blocks->findByName('givewp/donor-comments')) {
             $block = BlockModel::make([
                 'name' => 'givewp/donor-comments',
                 'attributes' => [
@@ -45,7 +45,7 @@ class ConvertGlobalDefaultOptionsToDefaultBlocks
      */
     protected function handleAnonymousDonations(DonationForm $form)
     {
-        if (give_is_anonymous_donation_field_enabled($form->id)) {
+        if (give_is_anonymous_donation_field_enabled($form->id) && !$form->blocks->findByName('givewp/anonymous')) {
             $anonymousDonationsBlock = BlockModel::make([
                 'name' => 'givewp/anonymous',
                 'attributes' => [
@@ -56,7 +56,6 @@ class ConvertGlobalDefaultOptionsToDefaultBlocks
                     ),
                 ],
             ]);
-
             $form->blocks->insertAfter('givewp/email', $anonymousDonationsBlock);
         }
     }
