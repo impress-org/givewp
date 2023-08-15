@@ -409,7 +409,7 @@ class DonationFormRepository
     public function getFormSchemaFromBlocks(int $formId, BlockCollection $blocks): DonationFormNode
     {
         try {
-            $form = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
+            list($form, $blockNodeRelationships) = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
             $formNodes = $form->all();
 
             /** @var Section $firstSection */
@@ -435,9 +435,10 @@ class DonationFormRepository
             Log::error('Failed converting donation form blocks to fields', compact('formId', 'blocks'));
 
             $form = new DonationFormNode('donation-form');
+            $blockNodeRelationships = [];
         }
 
-        Hooks::doAction('givewp_donation_form_schema', $form, $formId);
+        Hooks::doAction('givewp_donation_form_schema', $form, $formId, $blockNodeRelationships);
 
         return $form;
     }

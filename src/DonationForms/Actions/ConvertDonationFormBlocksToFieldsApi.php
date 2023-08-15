@@ -26,7 +26,6 @@ use Give\Framework\FieldsAPI\PaymentGateways;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
 use Give\Framework\FieldsAPI\Textarea;
-use Give\Helpers\Hooks;
 use WP_User;
 
 /**
@@ -42,6 +41,10 @@ class ConvertDonationFormBlocksToFieldsApi
      * @var string
      */
     protected $currency;
+    /**
+     * @var array {blockClientId: {node: Node, block: BlockModel}}
+     */
+    protected $blockNodeRelationships = [];
 
     /**
      * @since 3.0.0 return DonationForm Node
@@ -49,9 +52,10 @@ class ConvertDonationFormBlocksToFieldsApi
      * @since 0.3.3 conditionally append blocks if block has inner blocks
      * @since 3.0.0
      *
+     * @return array {DonationForm, array {blockClientId: {node: Node, block: BlockModel}}}
      * @throws TypeNotSupported|NameCollisionException
      */
-    public function __invoke(BlockCollection $blocks, int $formId): DonationForm
+    public function __invoke(BlockCollection $blocks, int $formId): array
     {
         $this->formId = $formId;
         $this->currency = give_get_currency($formId);
@@ -81,7 +85,7 @@ class ConvertDonationFormBlocksToFieldsApi
             $form->append($section);
         }
 
-        return $form;
+        return [$form, $this->blockNodeRelationships];
     }
 
     /**
@@ -110,7 +114,10 @@ class ConvertDonationFormBlocksToFieldsApi
         if ($node instanceof Node) {
             $node = $this->mapGenericBlockAttributesToNode($node, $block);
 
-            Hooks::doAction('givewp_donation_form_block_converted_to_node', $node, $block);
+            $this->blockNodeRelationships[$block->clientId] = [
+                'block' => $block,
+                'node' => $node,
+            ];
 
             return $node;
         }
