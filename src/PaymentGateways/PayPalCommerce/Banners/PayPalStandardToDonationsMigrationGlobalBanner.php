@@ -85,6 +85,16 @@ class PayPalStandardToDonationsMigrationGlobalBanner
 
         return <<<EOT
             document.addEventListener("DOMContentLoaded", () => {
+            	const dismissModalAjaxRequest = () => {
+            		wp.ajax.post({
+						'give-action': 'dismiss_notices',
+						'notice_id': '$this->bannerId',
+						'dismissible_type': 'user',
+						'dismiss_interval': 'permanent',
+						'_wpnonce': '$nonce'
+					});
+            	};
+
                 new Give.modal.GiveConfirmModal( {
                     classes: {
                         modalWrapper: 'give-paypal-standard-to-donations-migration-banner',
@@ -112,17 +122,12 @@ class PayPalStandardToDonationsMigrationGlobalBanner
 							});
 
 							modal.querySelector('.give-popup-confirm-button').addEventListener('click', () => {
+								dismissModalAjaxRequest();
 								window.location.assign('$linkToPayPalDonationsSettingPage');
 							});
 						},
 						close: () => {
-							wp.ajax.post({
-								'give-action': 'dismiss_notices',
-								'notice_id': '$this->bannerId',
-								'dismissible_type': 'user',
-								'dismiss_interval': 'permanent',
-								'_wpnonce': '$nonce'
-							});
+							dismissModalAjaxRequest();
 						}
 					}
                 } ).render();
