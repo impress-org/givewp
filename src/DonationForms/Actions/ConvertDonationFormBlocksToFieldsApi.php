@@ -26,6 +26,7 @@ use Give\Framework\FieldsAPI\PaymentGateways;
 use Give\Framework\FieldsAPI\Section;
 use Give\Framework\FieldsAPI\Text;
 use Give\Framework\FieldsAPI\Textarea;
+use Give\Helpers\Hooks;
 use WP_User;
 
 /**
@@ -95,18 +96,23 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
+     * @unlreased add `givewp_donation_form_block_converted_to_node` action hook
      * @since 0.1.0
      *
-     * @return Node|null
      * @throws EmptyNameException|NameCollisionException
      *
+     * @return Node|null
      */
     protected function convertInnerBlockToNode(BlockModel $block, int $blockIndex)
     {
         $node = $this->createNodeFromBlockWithUniqueAttributes($block, $blockIndex);
 
         if ($node instanceof Node) {
-            return $this->mapGenericBlockAttributesToNode($node, $block);
+            $node = $this->mapGenericBlockAttributesToNode($node, $block);
+
+            Hooks::doAction('givewp_donation_form_block_converted_to_node', $node, $block);
+
+            return $node;
         }
 
         return null;
