@@ -258,7 +258,7 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
-= 2.32.0: August 10th, 2023 =
+= 2.32.0: August 11th, 2023 =
 * Feature: Scroll Stripe modal into view for Legacy + Multi-step forms
 * Feature: Added check for application/json in form headers accept 
 * Feature: Added a `$nodeNameCollision` property on `NameCollisionException` for flexibility in throwing exception messages 

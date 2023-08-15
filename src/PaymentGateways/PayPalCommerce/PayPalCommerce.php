@@ -105,11 +105,14 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
+     * @unreleased Register new payment field type setting.
      * @since 2.27.3 Enable Venmo payment method by default.
      * @since 2.16.2 Add setting "Transaction type".
      */
     public function getOptions()
     {
+        $merchantDetails = give(MerchantDetail::class);
+
         $settings = [
             [
                 'type' => 'title',
@@ -168,6 +171,24 @@ class PayPalCommerce extends PaymentGateway
                 ],
             ],
             [
+                'name' => esc_html__('Payment Field Type', 'give'),
+                'desc' => sprintf(
+                    esc_html__(
+                        '"Auto" provides the most payment options to the donor as possible, based on your account. "Smart Buttons Only" shows only the payment buttons. There is no "Hosted Only" option at this time due to limitations with PayPal\'s hosted fields. Not sure what this means? %1$sRead here%2$s.',
+                        'give'
+                    ),
+                    '<a href="https://docs.givewp.com/paypal-settings" target="_blank">',
+                    '</a>'
+                ),
+                'id' => 'paypal_payment_field_type',
+                'type' => 'radio_inline',
+                'options' => [
+                    'auto' => esc_html__('Auto', 'give'),
+                    'smart-buttons' => esc_html__('Smart Buttons Only', 'give'),
+                ],
+                'default' => 'auto',
+            ],
+            [
                 'name' => esc_html__('PayPal Donations Gateway Settings Docs Link', 'give'),
                 'id' => 'paypal_commerce_gateway_settings_docs_link',
                 'url' => esc_url('http://docs.givewp.com/paypal-donations'),
@@ -180,7 +201,7 @@ class PayPalCommerce extends PaymentGateway
             ],
         ];
 
-        if (give(MerchantDetail::class)->accountIsReady) {
+        if ($merchantDetails->accountIsReady) {
             $settings = give_settings_array_insert(
                 $settings,
                 'paypal_commerce_gateway_settings_docs_link',

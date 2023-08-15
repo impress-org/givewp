@@ -94,7 +94,7 @@ $give_updates = Give_Updates::get_instance();
 			}
 
 			if ( $memory < 67108864 ) {
-				echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( '%1$s - We recommend setting memory to at least 64 MB. See: %2$s', 'give' ), size_format( $memory ), '<a href="https://codex.wordpress.org/Editing_wp-config.php#Increasing_memory_allocated_to_PHP" target="_blank">' . __( 'Increasing memory allocated to PHP', 'give' ) . '</a>' ) . '</mark>';
+				echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( '%1$s - We recommend setting memory to at least 64 MB. See: %2$s', 'give' ), size_format( $memory ), '<a href="https://developer.wordpress.org/apis/wp-config-php/#increasing-memory-allocated-to-php" target="_blank">' . __( 'Increasing memory allocated to PHP', 'give' ) . '</a>' ) . '</mark>';
 			} else {
 				echo '<mark class="yes">' . size_format( $memory ) . '</mark>';
 			}

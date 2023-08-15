@@ -1,4 +1,4 @@
-/* globals Give, jQuery, givePayPalCommerce */
+/* globals Give, jQuery, givePayPalCommerce, paypal */
 import DonationForm from './DonationForm';
 import SmartButtons from './SmartButtons';
 import AdvancedCardFields from './AdvancedCardFields';
@@ -117,7 +117,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const smartButtons = new SmartButtons($form);
         const customCardFields = new CustomCardFields($form);
 
-        smartButtons.boot();
+        if (SmartButtons.canShow() || CustomCardFields.canShow($form)) {
+            smartButtons.boot();
+        }
 
         // Boot CustomCardFields class before AdvancedCardFields because of internal dependencies.
         if (AdvancedCardFields.canShow()) {
@@ -141,27 +143,41 @@ document.addEventListener('DOMContentLoaded', () => {
      *
      * @return {Promise}  PayPal sdk load promise.
      */
-    function loadPayPalScript(form) {
-        const options = {};
+    async function loadPayPalScript(form) {
+        const options = {...givePayPalCommerce.payPalSdkQueryParameters};
         const isRecurring = DonationForm.isRecurringDonation(form);
 
         options.intent = isRecurring ? 'subscription' : 'capture';
         options.vault = !!isRecurring;
         options.currency = Give.form.fn.getInfo('currency_code', jQuery(form));
 
-        return loadScript({...givePayPalCommerce.payPalSdkQueryParameters, ...options});
+        return await loadScript(options)
     }
 
     /**
+     * @unreleased Add logic to reload PayPal SDK script for donation form.
      * @since 2.20.0
      * @param {object} $form
      */
     function loadPayPalSDKScriptForDonationForm($form) {
         loadPayPalScript($form)
+            .then(() => {setupPaymentMethods();})
             .then(() => {
-                setupPaymentMethods();
+                // Check if hosted fields are not available but enabled in admin settings.
+                let payPalComponents = givePayPalCommerce.payPalSdkQueryParameters.components.split(',');
+                const canReloadPayPalComponents = payPalComponents.includes('hosted-fields')
+                    && !AdvancedCardFields.canShow();
+
+                if( canReloadPayPalComponents ) {
+                    // Reset PayPal components to reload hosted fields.
+                    payPalComponents = payPalComponents.filter(component => component !== 'hosted-fields');
+                    givePayPalCommerce.payPalSdkQueryParameters.components = payPalComponents.join(',');
+
+                    // Load PayPal script again.
+                    loadPayPalSDKScriptForDonationForm($form);
+                }
             })
-            .catch(() => {
+            .catch((e) => {
                 const jQueryForm = jQuery($form);
                 Give.form.fn.addErrors(
                     jQueryForm,
@@ -170,7 +186,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     }])
                 );
 
-                Give.form.fn.disable(jQueryForm, true)
+                Give.form.fn.disable(jQueryForm, true);
+                console.error(e);
             });
     }
 });
