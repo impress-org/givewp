@@ -48,12 +48,12 @@ class RegisterFormBuilderPageRoute
 
                 wp_enqueue_style(
                     '@givewp/form-builder/style-app',
-                    GIVE_NEXT_GEN_URL . 'build/formBuilderApp.css'
+                    GIVE_PLUGIN_URL . 'build/formBuilderApp.css'
                 );
 
                 wp_enqueue_style(
                     'givewp-form-builder-admin-styles',
-                    GIVE_NEXT_GEN_URL . 'src/FormBuilder/resources/css/admin-form-builder.css'
+                    GIVE_PLUGIN_URL . 'src/FormBuilder/resources/css/admin-form-builder.css'
                 );
             }
         });
@@ -90,8 +90,8 @@ class RegisterFormBuilderPageRoute
         (new EnqueueScript(
             '@givewp/form-builder/storage',
             'src/FormBuilder/resources/js/storage.js',
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
+            GIVE_PLUGIN_DIR,
+            GIVE_PLUGIN_URL,
             'give'
         ))
             ->dependencies(['jquery'])

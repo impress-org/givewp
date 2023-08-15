@@ -19,11 +19,11 @@ class PayPalCommerceGateway extends PayPalCommerce
      */
     public function enqueueScript(int $formId)
     {
-        $assets = $this->getScriptAsset(GIVE_NEXT_GEN_DIR . 'build/payPalCommerceGateway.asset.php');
+        $assets = $this->getScriptAsset(GIVE_PLUGIN_DIR . 'build/payPalCommerceGateway.asset.php');
 
         wp_enqueue_script(
             self::id(),
-            GIVE_NEXT_GEN_URL . 'build/payPalCommerceGateway.js',
+            GIVE_PLUGIN_URL . 'build/payPalCommerceGateway.js',
             $assets['dependencies'],
             $assets['version'],
             true

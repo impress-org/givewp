@@ -32,7 +32,7 @@ class MultiStepFormDesign extends FormDesign
      */
     public function css(): string
     {
-        return GIVE_NEXT_GEN_URL . 'build/multiStepFormDesignCss.css';
+        return GIVE_PLUGIN_URL . 'build/multiStepFormDesignCss.css';
     }
 
     /**
@@ -40,7 +40,7 @@ class MultiStepFormDesign extends FormDesign
      */
     public function js(): string
     {
-        return GIVE_NEXT_GEN_URL . 'build/multiStepFormDesignJs.js';
+        return GIVE_PLUGIN_URL . 'build/multiStepFormDesignJs.js';
     }
 
     /**
@@ -48,7 +48,7 @@ class MultiStepFormDesign extends FormDesign
      */
     public function dependencies(): array
     {
-        $scriptAsset = require GIVE_NEXT_GEN_DIR . 'build/multiStepFormDesignJs.asset.php';
+        $scriptAsset = require GIVE_PLUGIN_DIR . 'build/multiStepFormDesignJs.asset.php';
 
         return $scriptAsset['dependencies'];
     }

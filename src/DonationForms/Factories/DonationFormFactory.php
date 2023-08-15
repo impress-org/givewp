@@ -16,7 +16,7 @@ class DonationFormFactory extends ModelFactory
     public function definition(): array
     {
         $blocksJson = file_get_contents(
-            GIVE_NEXT_GEN_DIR . 'src/FormBuilder/resources/js/form-builder/src/blocks.json'
+            GIVE_PLUGIN_DIR . 'src/FormBuilder/resources/js/form-builder/src/blocks.json'
         );
 
         return [

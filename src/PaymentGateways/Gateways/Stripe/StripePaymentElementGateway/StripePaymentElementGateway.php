@@ -55,11 +55,11 @@ class StripePaymentElementGateway extends PaymentGateway
      */
     public function enqueueScript(int $formId)
     {
-        $assets = $this->getScriptAsset(GIVE_NEXT_GEN_DIR . 'build/stripePaymentElementGateway.asset.php');
+        $assets = $this->getScriptAsset(GIVE_PLUGIN_DIR . 'build/stripePaymentElementGateway.asset.php');
 
         wp_enqueue_script(
             self::id(),
-            GIVE_NEXT_GEN_URL . 'build/stripePaymentElementGateway.js',
+            GIVE_PLUGIN_URL . 'build/stripePaymentElementGateway.js',
             $assets['dependencies'],
             $assets['version'],
             true

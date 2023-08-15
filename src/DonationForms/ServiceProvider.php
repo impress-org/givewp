@@ -44,7 +44,7 @@ class ServiceProvider implements ServiceProviderInterface
 
             return new TemplateHandler(
                 $post,
-                GIVE_NEXT_GEN_DIR . 'src/DonationForms/FormPage/templates/form-single.php'
+                GIVE_PLUGIN_DIR . 'src/DonationForms/FormPage/templates/form-single.php'
             );
         });
     }

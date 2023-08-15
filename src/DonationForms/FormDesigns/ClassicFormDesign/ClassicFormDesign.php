@@ -30,7 +30,7 @@ class ClassicFormDesign extends FormDesign
      */
     public function css(): string
     {
-        return GIVE_NEXT_GEN_URL . 'build/classicFormDesignCss.css';
+        return GIVE_PLUGIN_URL . 'build/classicFormDesignCss.css';
     }
 
     /**
@@ -38,7 +38,7 @@ class ClassicFormDesign extends FormDesign
      */
     public function js(): string
     {
-        return GIVE_NEXT_GEN_URL . 'build/classicFormDesignJs.js';
+        return GIVE_PLUGIN_URL . 'build/classicFormDesignJs.js';
     }
 
     /**
@@ -46,7 +46,7 @@ class ClassicFormDesign extends FormDesign
      */
     public function dependencies(): array
     {
-        $scriptAsset = require GIVE_NEXT_GEN_DIR . 'build/classicFormDesignJs.asset.php';
+        $scriptAsset = require GIVE_PLUGIN_DIR . 'build/classicFormDesignJs.asset.php';
 
         return $scriptAsset['dependencies'];
     }

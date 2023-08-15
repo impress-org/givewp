@@ -184,11 +184,11 @@ class ServiceProvider implements ServiceProviderInterface
     protected function enqueueGatewayScripts()
     {
         add_action('givewp_donation_form_enqueue_test_gateway_scripts', function ($formId) {
-            $testGatewayAssets = $this->getScriptAsset(GIVE_NEXT_GEN_DIR . 'build/testGateway.asset.php');
+            $testGatewayAssets = $this->getScriptAsset(GIVE_PLUGIN_DIR . 'build/testGateway.asset.php');
 
             wp_enqueue_script(
                 TestGateway::id(),
-                GIVE_NEXT_GEN_URL . 'build/testGateway.js',
+                GIVE_PLUGIN_URL . 'build/testGateway.js',
                 $testGatewayAssets['dependencies'],
                 $testGatewayAssets['version'],
                 true
@@ -198,7 +198,7 @@ class ServiceProvider implements ServiceProviderInterface
         add_action('givewp_donation_form_enqueue_test_gateway_offsite_scripts', static function () {
             wp_enqueue_script(
                 TestGatewayOffsite::id(),
-                GIVE_NEXT_GEN_URL . 'src/PaymentGateways/Gateways/TestOffsiteGateway/testOffsiteGateway.js',
+                GIVE_PLUGIN_URL . 'src/PaymentGateways/Gateways/TestOffsiteGateway/testOffsiteGateway.js',
                 [],
                 false,
                 true

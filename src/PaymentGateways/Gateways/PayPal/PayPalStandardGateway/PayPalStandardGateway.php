@@ -29,11 +29,11 @@ class PayPalStandardGateway extends PayPalStandard
      */
     public function enqueueScript(int $formId)
     {
-        $assets = $this->getScriptAsset(GIVE_NEXT_GEN_DIR . 'build/payPalStandardGateway.asset.php');
+        $assets = $this->getScriptAsset(GIVE_PLUGIN_DIR . 'build/payPalStandardGateway.asset.php');
 
         wp_enqueue_script(
             self::id(),
-            GIVE_NEXT_GEN_URL . 'build/payPalStandardGateway.js',
+            GIVE_PLUGIN_URL . 'build/payPalStandardGateway.js',
             $assets['dependencies'],
             $assets['version'],
             true

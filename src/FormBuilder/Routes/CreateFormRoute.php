@@ -31,7 +31,7 @@ class CreateFormRoute
             }
             if ('new' === $_GET['donationFormID']) {
                 $blocksJson = file_get_contents(
-                    GIVE_NEXT_GEN_DIR . 'src/FormBuilder/resources/js/form-builder/src/blocks.json'
+                    GIVE_PLUGIN_DIR . 'src/FormBuilder/resources/js/form-builder/src/blocks.json'
                 );
 
                 $form = new DonationForm([

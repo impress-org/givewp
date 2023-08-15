@@ -135,7 +135,7 @@ class FormBuilderViewModel
      */
     public function jsPathFromPluginRoot(): string
     {
-        return GIVE_NEXT_GEN_URL . 'build/formBuilderApp.js';
+        return GIVE_PLUGIN_URL . 'build/formBuilderApp.js';
     }
 
     /**
@@ -143,7 +143,7 @@ class FormBuilderViewModel
      */
     public function jsPathToRegistrars(): string
     {
-        return GIVE_NEXT_GEN_URL . 'build/formBuilderRegistrars.js';
+        return GIVE_PLUGIN_URL . 'build/formBuilderRegistrars.js';
     }
 
     /**
@@ -151,7 +151,7 @@ class FormBuilderViewModel
      */
     public function jsDependencies(): array
     {
-        $scriptAsset = require GIVE_NEXT_GEN_DIR . 'build/formBuilderApp.asset.php';
+        $scriptAsset = require GIVE_PLUGIN_DIR . 'build/formBuilderApp.asset.php';
 
         return array_merge($scriptAsset['dependencies'], ['@givewp/form-builder/registrars']);
     }

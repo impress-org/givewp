@@ -43,8 +43,9 @@
  */
 
 use Give\Container\Container;
+use Give\DonationForms\ServiceProvider as DonationFormsServiceProvider;
 use Give\DonationForms\V2\Repositories\DonationFormsRepository;
-use Give\DonationForms\V2\ServiceProvider as DonationFormsServiceProvider;
+use Give\DonationForms\V2\ServiceProvider as DonationFormsServiceProviderV2;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ServiceProvider as DonationServiceProvider;
 use Give\DonationSummary\ServiceProvider as DonationSummaryServiceProvider;
@@ -55,10 +56,13 @@ use Give\Donors\Repositories\DonorRepositoryProxy;
 use Give\Donors\ServiceProvider as DonorsServiceProvider;
 use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
 use Give\Form\Templates;
+use Give\FormBuilder\ServiceProvider as FormBuilderServiceProvider;
+use Give\FormMigration\ServiceProvider as FormMigrationServiceProvider;
 use Give\Framework\Database\ServiceProvider as DatabaseServiceProvider;
 use Give\Framework\DesignSystem\DesignSystemServiceProvider;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
+use Give\Framework\FormDesigns\ServiceProvider as FormDesignServiceProvider;
 use Give\Framework\Http\ServiceProvider as HttpServiceProvider;
 use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
@@ -202,7 +206,7 @@ final class Give
         DonationServiceProvider::class,
         DonorsServiceProvider::class,
         SubscriptionServiceProvider::class,
-        DonationFormsServiceProvider::class,
+        DonationFormsServiceProviderV2::class,
         PromotionsServiceProvider::class,
         LegacySubscriptionsServiceProvider::class,
         WordPressShimsServiceProvider::class,
@@ -213,6 +217,16 @@ final class Give
         HttpServiceProvider::class,
         DesignSystemServiceProvider::class,
         FieldConditionsServiceProvider::class,
+        FormBuilderServiceProvider::class,
+        DonationFormsServiceProvider::class,
+        FormDesignServiceProvider::class,
+        FormMigrationServiceProvider::class,
+        //TODO merge this service providers
+        Give\Promotions\ServiceProviderV3::class,
+        Give\Donations\ServiceProviderV3::class,
+        Give\Donors\ServiceProviderV3::class,
+        Give\PaymentGateways\Gateways\ServiceProvider::class
+
     ];
 
     /**

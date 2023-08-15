@@ -140,7 +140,7 @@ class DonationConfirmationReceiptViewModel
     {
         wp_register_style(
             'givewp-global-form-styles',
-            GIVE_NEXT_GEN_URL . 'src/DonationForm/resources/styles/global.css'
+            GIVE_PLUGIN_URL . 'src/DonationForm/resources/styles/global.css'
         );
 
         wp_add_inline_style(
@@ -155,7 +155,7 @@ class DonationConfirmationReceiptViewModel
 
         wp_enqueue_style(
             'givewp-base-form-styles',
-            GIVE_NEXT_GEN_URL . 'build/baseFormDesignCss.css'
+            GIVE_PLUGIN_URL . 'build/baseFormDesignCss.css'
         );
     }
 
@@ -170,8 +170,8 @@ class DonationConfirmationReceiptViewModel
     {
         wp_enqueue_script(
             'givewp-donation-form-registrars',
-            GIVE_NEXT_GEN_URL . 'build/donationFormRegistrars.js',
-            $this->getScriptAssetDependencies(GIVE_NEXT_GEN_DIR . 'build/donationFormRegistrars.asset.php'),
+            GIVE_PLUGIN_URL . 'build/donationFormRegistrars.js',
+            $this->getScriptAssetDependencies(GIVE_PLUGIN_DIR . 'build/donationFormRegistrars.asset.php'),
             GIVE_NEXT_GEN_VERSION,
             true
         );
@@ -217,9 +217,9 @@ class DonationConfirmationReceiptViewModel
         // load receipt app
         wp_enqueue_script(
             'givewp-donation-confirmation-receipt',
-            GIVE_NEXT_GEN_URL . 'build/donationConfirmationReceiptApp.js',
+            GIVE_PLUGIN_URL . 'build/donationConfirmationReceiptApp.js',
             array_merge(
-                $this->getScriptAssetDependencies(GIVE_NEXT_GEN_DIR . 'build/donationConfirmationReceiptApp.asset.php'),
+                $this->getScriptAssetDependencies(GIVE_PLUGIN_DIR . 'build/donationConfirmationReceiptApp.asset.php'),
                 ['givewp-donation-form-registrars']
             ),
             GIVE_NEXT_GEN_VERSION,
@@ -233,7 +233,7 @@ class DonationConfirmationReceiptViewModel
          */
         wp_enqueue_script(
             'givewp-donation-form-embed-inside',
-            GIVE_NEXT_GEN_URL . 'build/donationFormEmbedInside.js',
+            GIVE_PLUGIN_URL . 'build/donationFormEmbedInside.js',
             [],
             GIVE_NEXT_GEN_VERSION,
             true

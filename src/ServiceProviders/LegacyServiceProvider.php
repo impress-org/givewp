@@ -4,6 +4,7 @@ namespace Give\ServiceProviders;
 
 use _PHPStan_9a6ded56a\Nette\Neon\Exception;
 use Closure;
+use Give\PaymentGateways\Gateways\Stripe\LegacyStripeAdapter;
 use Give\Route\Form;
 
 /**
@@ -20,6 +21,10 @@ class LegacyServiceProvider implements ServiceProvider
      */
     public function register()
     {
+        // TODO: move this
+        // this needs to load before the LegacyServiceProvider loads in GiveWP.
+        give(LegacyStripeAdapter::class)->addToStripeSupportedPaymentMethodsList();
+
         $this->includeLegacyFiles();
         $this->bindClasses();
     }

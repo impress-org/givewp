@@ -98,16 +98,16 @@ class BlockRenderController
         (new EnqueueScript(
             'givewp-donation-form-embed',
             'build/donationFormEmbed.js',
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
+            GIVE_PLUGIN_DIR,
+            GIVE_PLUGIN_URL,
             'give'
         ))->loadInFooter()->enqueue();
 
         (new EnqueueScript(
             'givewp-donation-form-embed-app',
             'build/donationFormBlockApp.js',
-            GIVE_NEXT_GEN_DIR,
-            GIVE_NEXT_GEN_URL,
+            GIVE_PLUGIN_DIR,
+            GIVE_PLUGIN_URL,
             'give'
         ))
             ->dependencies(['jquery'])
@@ -116,7 +116,7 @@ class BlockRenderController
 
         wp_enqueue_style(
             'givewp-donation-form-embed-app',
-            GIVE_NEXT_GEN_URL . 'build/donationFormBlockApp.css'
+            GIVE_PLUGIN_URL . 'build/donationFormBlockApp.css'
         );
     }
 }
