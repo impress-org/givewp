@@ -79,7 +79,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 
 	if ( onBoardingButtons.length ) {
         onBoardingButtons.forEach( function( onBoardingButton ) {
-            onBoardingButton.addEventListener( 'click', function( evt ) {
+            onBoardingButton.addEventListener( 'click', async function( evt ) {
                 evt.preventDefault();
 
                 let canOptInForAdvancedCardProcessing  =  false;
@@ -113,50 +113,47 @@ window.addEventListener( 'DOMContentLoaded', function() {
                     },
                 };
                 const paypalErrorQuickHelp = document.getElementById( 'give-paypal-onboarding-trouble-notice' );
-                const ajaxRequest = () => {
-                    {
-                        // Request partner obboarding link.
-                        fetch( ajaxurl + `?action=give_paypal_commerce_get_partner_url&countryCode=${countryCode}&mode=${mode}&accountType=${connectionAccountType  ?? 'EXPRESS_CHECKOUT'}` )
-                            .then( response => response.json() )
-                            .then( function( res ) {
-                                if ( true === res.success ) {
-                                    const payPalLink = document.querySelector( '[data-paypal-button]' );
+                const getPartnerLinkAjaxRequest = async () => {
+                    // Request partner obboarding link.
+                    fetch(ajaxurl + `?action=give_paypal_commerce_get_partner_url&countryCode=${countryCode}&mode=${mode}&accountType=${connectionAccountType ?? 'EXPRESS_CHECKOUT'}`)
+                        .then(response => response.json())
+                        .then(function (res) {
+                            if (true === res.success) {
+                                const payPalLink = document.querySelector('[data-paypal-button]');
 
-                                    // Dynamically set callback function name.
-                                    payPalLink.setAttribute(
-                                        'data-paypal-onboard-complete',
-                                        'live' === mode
-                                            ? 'giveLivePayPalOnBoardedCallback'
-                                            : 'giveSandboxPayPalOnBoardedCallback'
-                                    );
+                                // Dynamically set callback function name.
+                                payPalLink.setAttribute(
+                                    'data-paypal-onboard-complete',
+                                    'live' === mode
+                                        ? 'giveLivePayPalOnBoardedCallback'
+                                        : 'giveSandboxPayPalOnBoardedCallback'
+                                );
 
-                                    // Set PayPal button link (Partener link).
-                                    payPalLink.href = `${ res.data.partnerLink }&displayMode=minibrowser`;
+                                // Set PayPal button link (Partener link).
+                                payPalLink.href = `${res.data.partnerLink}&displayMode=minibrowser`;
 
-                                    payPalLink.click();
+                                payPalLink.click();
+                            }
+
+                            buttonState.enable();
+                        })
+                };
+                const getHelpMessageAjaxRequest = async () => {
+                    fetch(ajaxurl + '?action=give_paypal_commerce_onboarding_trouble_notice')
+                        .then(response => response.json())
+                        .then(function (res) {
+                            if (true === res.success) {
+                                function createElementFromHTML(htmlString) {
+                                    const div = document.createElement('div');
+                                    div.innerHTML = htmlString.trim();
+                                    return div.firstChild;
                                 }
 
-                                buttonState.enable();
-                            } )
-                            // Request troubleshooting help message.
-                            .then( function() {
-                                fetch( ajaxurl + '?action=give_paypal_commerce_onboarding_trouble_notice' )
-                                    .then( response => response.json() )
-                                    .then( function( res ) {
-                                        if ( true === res.success ) {
-                                            function createElementFromHTML( htmlString ) {
-                                                const div = document.createElement( 'div' );
-                                                div.innerHTML = htmlString.trim();
-                                                return div.firstChild;
-                                            }
-
-                                            const buttonContainer = container.$el_container.querySelector( '.connect-button-wrap' );
-                                            buttonContainer.append( createElementFromHTML( res.data ) );
-                                        }
-                                    } );
-                            } );
-                    }
-                };
+                                const buttonContainer = container.$el_container.querySelector('.connect-button-wrap');
+                                buttonContainer.append(createElementFromHTML(res.data));
+                            }
+                        });
+                }
 
                 // eslint-disable-next-line no-undef
                 const modalBody  =  `
@@ -235,20 +232,23 @@ window.addEventListener( 'DOMContentLoaded', function() {
                                 paypalErrorQuickHelp && paypalErrorQuickHelp.remove();
                             }
                         },
-                        successConfirm: () => {
-                            const radioField = document.querySelector('input[name="paypal_donations_connection_account_type"]:checked');
-                                                    radioField && ( connectionAccountType = radioField.value );
+                        successConfirm: async ({skipConnectionAccountTypeChecking = false}) => {
+                            if(! skipConnectionAccountTypeChecking){
+                                const radioField = document.querySelector('input[name="paypal_donations_connection_account_type"]:checked');
+                                radioField && ( connectionAccountType = radioField.value );
 
-                                                    // Modal will only open when admin available for both conneciton account types.
-                            // So we only need to validate if admin selected any account type or not.
-                            canOptInForAdvancedCardProcessing =   givePayPalCommerce.accountTypes.includes( connectionAccountType );
+                                // Modal will only open when admin available for both conneciton account types.
+                                // So we only need to validate if admin selected any account type or not.
+                                canOptInForAdvancedCardProcessing =   givePayPalCommerce.accountTypes.includes( connectionAccountType );
 
-                            // Exit if admin available for both conneciton account types but did not select any.
-                            if(! canOptInForAdvancedCardProcessing){
-                                return;
+                                // Exit if admin available for both conneciton account types but did not select any.
+                                if(! canOptInForAdvancedCardProcessing){
+                                    return;
+                                }
                             }
 
-                                                    ajaxRequest();
+                                                    await getPartnerLinkAjaxRequest();
+                            await getHelpMessageAjaxRequest();
                         }
                 });
 
@@ -263,7 +263,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
                 if( givePayPalCommerce.countriesAvailableForAdvanceConnection.includes( countryCode ) ) {
                     modal.render();
                 } else{
-                    ajaxRequest();
+                    modal.config.successConfirm({skipConnectionAccountTypeChecking: true});
                 }
 
                 return false;
