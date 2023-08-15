@@ -16,7 +16,7 @@ use Give\Framework\TemplateTags\DonationTemplateTags;
 class GenerateConfirmationPageReceipt
 {
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function __invoke(DonationReceipt $receipt): DonationReceipt
     {
@@ -30,8 +30,8 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @since 0.4.0 skip fields with non-existing meta
-     * @since 0.1.0
+     * @since 3.0.0 skip fields with non-existing meta
+     * @since 3.0.0
      */
     protected function getCustomFields(Donation $donation): array
     {
@@ -73,7 +73,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @return void
      */
@@ -118,7 +118,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @return void
      */
@@ -147,8 +147,8 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @since 0.7.0 added comment field
-     * @since 0.1.0
+     * @since 3.0.0 added comment field
+     * @since 3.0.0
      *
      * @return void
      */
@@ -188,7 +188,7 @@ class GenerateConfirmationPageReceipt
 
     /**
      * @since 0.3.3 update subscription amount label with frequency
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @return void
      */
@@ -234,7 +234,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     private function fillSettings(DonationReceipt $receipt)
     {
@@ -255,7 +255,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @param  int  $formId
      * @return DonationForm|null
@@ -270,8 +270,8 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @since 0.6.0 added backwards compatability for v2 forms tags
-     * @since 0.1.0
+     * @since 3.0.0 added backwards compatability for v2 forms tags
+     * @since 3.0.0
      */
     protected function getHeading(DonationReceipt $receipt, DonationForm $donationForm = null): string
     {
@@ -288,8 +288,8 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @since 0.6.0 added backwards compatability for v2 forms tags
-     * @since 0.1.0
+     * @since 3.0.0 added backwards compatability for v2 forms tags
+     * @since 3.0.0
      */
     protected function getDescription(DonationReceipt $receipt, DonationForm $donationForm = null): string
     {
@@ -309,7 +309,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @since 0.6.0
+     * @since 3.0.0
      */
     protected function transformV2FormTags(string $content, Donation $donation): string
     {

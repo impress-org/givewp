@@ -8,12 +8,12 @@ use Give\FormBuilder\FormBuilderRouteBuilder;
  * Since our form builder exists inside a WP admin page, it comes with a lot of baggage that we don't need.
  * This removes the unnecessary scripts before the page is loaded.
  *
- * @since 0.1.0
+ * @since 3.0.0
  */
 class DequeueAdminScriptsInFormBuilder
 {
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @return void
      */
@@ -35,7 +35,7 @@ class DequeueAdminScriptsInFormBuilder
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @return bool
      */

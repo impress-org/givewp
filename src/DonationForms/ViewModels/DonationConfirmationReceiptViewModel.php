@@ -12,7 +12,7 @@ use Give\Framework\Receipts\DonationReceiptBuilder;
 use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 class DonationConfirmationReceiptViewModel
 {
@@ -24,7 +24,7 @@ class DonationConfirmationReceiptViewModel
     public $donation;
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function __construct(Donation $donation)
     {
@@ -32,7 +32,7 @@ class DonationConfirmationReceiptViewModel
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function getDonationForm(): DonationForm
     {
@@ -40,7 +40,7 @@ class DonationConfirmationReceiptViewModel
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function getReceipt(): DonationReceipt
     {
@@ -50,7 +50,7 @@ class DonationConfirmationReceiptViewModel
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function exports(): array
     {
@@ -60,7 +60,7 @@ class DonationConfirmationReceiptViewModel
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function formExports(): array
     {
@@ -82,7 +82,7 @@ class DonationConfirmationReceiptViewModel
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function render(): string
     {
@@ -134,7 +134,7 @@ class DonationConfirmationReceiptViewModel
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function enqueueGlobalStyles(string $primaryColor, string $secondaryColor)
     {
@@ -162,7 +162,7 @@ class DonationConfirmationReceiptViewModel
     /**
      * Loads scripts in order: [Registrars, Designs, App]
      *
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @return void
      */

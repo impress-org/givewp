@@ -4,7 +4,7 @@ namespace Give\FormBuilder\EmailPreview\Routes;
 
 class RegisterEmailPreviewRoutes {
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public function __invoke()
     {

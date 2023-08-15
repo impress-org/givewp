@@ -4,7 +4,7 @@ import {setCurrentStep} from '@givewp/forms/app/form/MultiStepForm/store/reducer
 import {useDonationFormMultiStepStateDispatch} from '@givewp/forms/app/form/MultiStepForm/store';
 
 /**
- * @since 0.4.0
+ * @since 3.0.0
  */
 export default function HeaderStep() {
     const dispatchMultiStep = useDonationFormMultiStepStateDispatch();

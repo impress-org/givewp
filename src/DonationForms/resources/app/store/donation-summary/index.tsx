@@ -12,7 +12,7 @@ export type DonationTotals = {[key: string]: number};
 export type DonationSummaryItems = {[key: string]: DonationSummaryLineItem};
 
 /**
- * @since 0.4.0
+ * @since 3.0.0
  */
 export type DonationSummaryLineItem = {
     id: string;
@@ -30,7 +30,7 @@ type PropTypes = {
 };
 
 /**
- * @since 0.4.0
+ * @since 3.0.0
  */
 const DonationSummaryProvider = ({initialState = {items: {}, totals: {}}, children}: PropTypes) => {
     const [state, dispatch] = useImmerReducer(reducer, initialState);

@@ -5,12 +5,12 @@ namespace Give\FormBuilder\EmailPreview\Actions;
 /**
  * Apply preview template tags to email message.
  *
- * @since 0.4.0
+ * @since 3.0.0
  */
 class GetEmailNotificationByType
 {
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      *
      * @param $type
      *

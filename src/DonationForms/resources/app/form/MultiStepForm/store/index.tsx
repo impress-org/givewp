@@ -19,7 +19,7 @@ type PropTypes = {
 };
 
 /**
- * @since 0.4.0
+ * @since 3.0.0
  */
 const DonationFormMultiStepStateProvider = ({initialState, children}: PropTypes) => {
     const [state, dispatch] = useReducer(reducer, initialState);

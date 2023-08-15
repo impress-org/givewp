@@ -1,7 +1,7 @@
 /**
  * Builds the expected registration options from the Field API validation rules
  *
- * @since 0.1.0
+ * @since 3.0.0
  */
 import {RegisterOptions} from 'react-hook-form';
 

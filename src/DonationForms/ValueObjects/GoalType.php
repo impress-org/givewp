@@ -5,7 +5,7 @@ namespace Give\DonationForms\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  *
  * @method static GoalType AMOUNT()
  * @method static GoalType DONATIONS()

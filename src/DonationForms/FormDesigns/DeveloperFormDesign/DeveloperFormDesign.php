@@ -5,12 +5,12 @@ namespace Give\DonationForms\FormDesigns\DeveloperFormDesign;
 use Give\Framework\FormDesigns\FormDesign;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 class DeveloperFormDesign extends FormDesign
 {
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public static function id(): string
     {
@@ -18,7 +18,7 @@ class DeveloperFormDesign extends FormDesign
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public static function name(): string
     {

@@ -5,7 +5,7 @@ namespace Give\FormBuilder\DataTransferObjects;
 use Give\FormBuilder\Actions\ConvertLegacyNotificationToEmailNotificationData;
 
 /**
- * @since 0.4.0
+ * @since 3.0.0
  */
 class EmailNotificationData
 {
@@ -25,7 +25,7 @@ class EmailNotificationData
     public $defaultValues;
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      * @param  array  $notification
      * @return EmailNotificationData
      */

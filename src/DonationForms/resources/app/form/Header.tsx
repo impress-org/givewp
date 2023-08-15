@@ -13,7 +13,7 @@ const HeaderDescriptionTemplate = withTemplateWrapper(formTemplates.layouts.head
 const GoalTemplate = withTemplateWrapper(formTemplates.layouts.goal);
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 const formatGoalAmount = (amount: number) => {
     return amountFormatter(form.currency, {
@@ -22,7 +22,7 @@ const formatGoalAmount = (amount: number) => {
 };
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 export default function Header() {
     return (

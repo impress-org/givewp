@@ -12,12 +12,12 @@ use function array_reduce;
 
 /**
  * TODO: move into donors domain
- * @since 0.1.0
+ * @since 3.0.0
  */
 class DonorDetailsController
 {
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function show(Donor $donor): string
     {
@@ -35,7 +35,7 @@ class DonorDetailsController
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @param  Donor  $donor
      *
@@ -57,7 +57,7 @@ class DonorDetailsController
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @param  DonationForm  $form
      *

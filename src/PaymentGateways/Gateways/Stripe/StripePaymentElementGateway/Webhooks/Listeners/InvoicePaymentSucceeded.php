@@ -12,7 +12,7 @@ use Stripe\Event;
 use Stripe\Invoice;
 
 /**
- * @since 0.3.0
+ * @since 3.0.0
  */
 class InvoicePaymentSucceeded
 {
@@ -25,7 +25,7 @@ class InvoicePaymentSucceeded
      *
      * @see https://stripe.com/docs/api/events/types#event_types-invoice.payment_succeeded
      *
-     * @since 0.3.0
+     * @since 3.0.0
      *
      * @return void
      * @throws \Exception
@@ -42,7 +42,7 @@ class InvoicePaymentSucceeded
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      * @throws \Exception
      */
     public function processEvent(Event $event)
@@ -74,7 +74,7 @@ class InvoicePaymentSucceeded
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      */
     protected function getSubscriptionModelDecorator(Subscription $subscription): SubscriptionModelDecorator
     {
@@ -83,7 +83,7 @@ class InvoicePaymentSucceeded
 
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      *
      * @throws Exception
      */
@@ -103,7 +103,7 @@ class InvoicePaymentSucceeded
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      * @throws \Exception
      */
     protected function cancelSubscription(SubscriptionModelDecorator $subscriptionModel)

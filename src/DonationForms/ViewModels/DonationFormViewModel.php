@@ -17,7 +17,7 @@ use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 use Give\Helpers\Hooks;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 class DonationFormViewModel
 {
@@ -41,7 +41,7 @@ class DonationFormViewModel
     private $donationFormRepository;
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function __construct(
         int $donationFormId,
@@ -55,7 +55,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function designId(): string
     {
@@ -63,7 +63,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function primaryColor(): string
     {
@@ -71,7 +71,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function secondaryColor(): string
     {
@@ -79,7 +79,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function enqueueGlobalStyles()
     {
@@ -108,7 +108,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     private function goalType(): GoalType
     {
@@ -116,7 +116,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     private function formStatsData(): array
     {
@@ -136,8 +136,8 @@ class DonationFormViewModel
     }
 
     /**
-     * @since 0.6.0 update form object data to use DonationForm Node
-     * @since 0.1.0
+     * @since 3.0.0 update form object data to use DonationForm Node
+     * @since 3.0.0
      */
     public function exports(): array
     {
@@ -188,7 +188,7 @@ class DonationFormViewModel
      * 5. Finally, call the specific WP function wp_print_footer_scripts()
      *  - This will only print the footer scripts that are enqueued within our route.
      *
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function render(bool $preview = false): string
     {
@@ -234,8 +234,8 @@ class DonationFormViewModel
     /**
      * Loads scripts in order: [Registrars, Designs, Gateways, Block]
      *
-     * @since 0.4.0 Add support for custom form extensions
-     * @since 0.1.0
+     * @since 3.0.0 Add support for custom form extensions
+     * @since 3.0.0
      *
      * @return void
      */
@@ -248,7 +248,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      *
      * @return FormDesign|null
      */
@@ -261,7 +261,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @since 0.5.0
+     * @since 3.0.0
      */
     private function enqueueRegistrars()
     {
@@ -290,7 +290,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @since 0.5.0
+     * @since 3.0.0
      */
     private function enqueueGateways(int $formId)
     {
@@ -306,7 +306,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @since 0.5.0
+     * @since 3.0.0
      */
     private function enqueueDesign(string $formDesignId)
     {
@@ -333,7 +333,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @since 0.5.0
+     * @since 3.0.0
      */
     private function enqueueFormApp()
     {

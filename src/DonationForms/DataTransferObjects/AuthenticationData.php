@@ -3,7 +3,7 @@
 namespace Give\DonationForms\DataTransferObjects;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 class AuthenticationData
 {
@@ -19,7 +19,7 @@ class AuthenticationData
     /**
      * Convert data from request into DTO
      *
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public static function fromRequest(array $request): AuthenticationData
     {

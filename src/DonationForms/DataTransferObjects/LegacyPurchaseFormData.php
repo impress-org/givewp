@@ -8,7 +8,7 @@ use Give\Donors\Models\Donor;
 /**
  * This DTO extracts the complexity of supplying an array for use in give_set_purchase_session()
  *
- * @since 0.1.0
+ * @since 3.0.0
  */
 class LegacyPurchaseFormData
 {
@@ -22,7 +22,7 @@ class LegacyPurchaseFormData
     public $donor;
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @param  array{donation: Donation, donor: Donation}  $array
      * @return LegacyPurchaseFormData
@@ -40,7 +40,7 @@ class LegacyPurchaseFormData
     /**
      * Returns shape needed for give_set_purchase_session()
      *
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function toPurchaseData(): array
     {

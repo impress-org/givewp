@@ -3,7 +3,7 @@ import type {FieldErrorProps} from '@givewp/forms/propTypes';
 /**
  * Conditionally renders a field's error message if a message is present.
  *
- * @since 0.1.0
+ * @since 3.0.0
  */
 export default function FieldError({error}: FieldErrorProps) {
     if (!error) {

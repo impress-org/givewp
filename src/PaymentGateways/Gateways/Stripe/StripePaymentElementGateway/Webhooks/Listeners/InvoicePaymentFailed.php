@@ -8,7 +8,7 @@ use Stripe\Event;
 use Stripe\Invoice;
 
 /**
- * @since 0.3.0
+ * @since 3.0.0
  */
 class InvoicePaymentFailed
 {
@@ -21,7 +21,7 @@ class InvoicePaymentFailed
      *
      * @see https://stripe.com/docs/api/events/types#event_types-invoice.payment_failed
      *
-     * @since 0.3.0
+     * @since 3.0.0
      *
      * @return void
      * @throws Exception
@@ -38,7 +38,7 @@ class InvoicePaymentFailed
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      *
      * @throws Exception
      */
@@ -67,7 +67,7 @@ class InvoicePaymentFailed
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      */
     protected function triggerLegacyFailedEmailNotificationEvent(Invoice $invoice)
     {

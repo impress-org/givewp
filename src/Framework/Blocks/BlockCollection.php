@@ -12,7 +12,7 @@ class BlockCollection implements Arrayable
     protected $blocks;
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @param  BlockModel[]  $blocks
      */
@@ -22,7 +22,7 @@ class BlockCollection implements Arrayable
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @param  BlockModel[]  $blocks
      */
@@ -32,7 +32,7 @@ class BlockCollection implements Arrayable
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public static function fromJson($blocksJson): self
     {
@@ -47,7 +47,7 @@ class BlockCollection implements Arrayable
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @return false|string
      */
@@ -57,7 +57,7 @@ class BlockCollection implements Arrayable
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function toArray(): array
     {
@@ -68,7 +68,7 @@ class BlockCollection implements Arrayable
 
     /**
      * @return BlockModel[]
-     * @since 0.1.0
+     * @since 3.0.0
      *
      */
     public function getBlocks(): array
@@ -77,7 +77,7 @@ class BlockCollection implements Arrayable
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      *
      * @return BlockModel|null
      */
@@ -98,7 +98,7 @@ class BlockCollection implements Arrayable
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      *
      * @return BlockModel|BlockCollection|null
      */
@@ -131,7 +131,7 @@ class BlockCollection implements Arrayable
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public function insertBefore(string $blockName, BlockModel $block, int $blockIndex = 0): BlockCollection
     {
@@ -150,7 +150,7 @@ class BlockCollection implements Arrayable
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public function insertAfter(string $blockName, BlockModel $block, int $blockIndex = 0): BlockCollection
     {
@@ -169,7 +169,7 @@ class BlockCollection implements Arrayable
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public function prepend(BlockModel $block): BlockCollection
     {
@@ -178,7 +178,7 @@ class BlockCollection implements Arrayable
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public function append(BlockModel $block): BlockCollection
     {

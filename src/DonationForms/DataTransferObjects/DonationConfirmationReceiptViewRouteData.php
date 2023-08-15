@@ -5,7 +5,7 @@ namespace Give\DonationForms\DataTransferObjects;
 use function strlen;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 class DonationConfirmationReceiptViewRouteData
 {
@@ -16,7 +16,7 @@ class DonationConfirmationReceiptViewRouteData
 
     /**
      *
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public static function fromRequest(array $request): DonationConfirmationReceiptViewRouteData
     {
@@ -32,7 +32,7 @@ class DonationConfirmationReceiptViewRouteData
     /**
      * The receipt ID is a md5 hash which has a 32 character length.
      *
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public static function isReceiptIdValid(string $receiptId): bool
     {

@@ -19,7 +19,7 @@ use Give\Subscriptions\Models\Subscription;
 class FormBuilderViewModel
 {
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function storageData(int $donationFormId): array
     {
@@ -71,7 +71,7 @@ class FormBuilderViewModel
     }
 
     /**
-     * @since 0.6.0
+     * @since 3.0.0
      */
     public function getEmailTemplateTags(array $tags = []): array
     {
@@ -85,7 +85,7 @@ class FormBuilderViewModel
     }
 
     /**
-     * @since 0.6.0
+     * @since 3.0.0
      */
     public function getDonationConfirmationPageTemplateTags(): array
     {
@@ -131,7 +131,7 @@ class FormBuilderViewModel
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public function jsPathFromPluginRoot(): string
     {
@@ -139,7 +139,7 @@ class FormBuilderViewModel
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public function jsPathToRegistrars(): string
     {
@@ -147,7 +147,7 @@ class FormBuilderViewModel
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public function jsDependencies(): array
     {
@@ -157,7 +157,7 @@ class FormBuilderViewModel
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public function getGateways(): array
     {
@@ -183,7 +183,7 @@ class FormBuilderViewModel
      * as not to be too confusing. This array is used to prevent the user from creating meta keys that conflict with the
      * existing meta or field names.
      *
-     * @since 0.7.0
+     * @since 3.0.0
      */
     protected function getDisallowedFieldNames(): array
     {

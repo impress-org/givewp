@@ -18,7 +18,7 @@ class SubscriptionModelDecorator {
     public $subscription;
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      */
     public function __construct(Subscription $subscription)
     {
@@ -26,7 +26,7 @@ class SubscriptionModelDecorator {
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      */
     public function shouldEndSubscription(): bool
     {
@@ -36,7 +36,7 @@ class SubscriptionModelDecorator {
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      */
     public function shouldCreateRenewal(): bool
     {
@@ -47,7 +47,7 @@ class SubscriptionModelDecorator {
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      *
      * @throws Exception
      */
@@ -92,7 +92,7 @@ class SubscriptionModelDecorator {
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      * @throws Exception
      */
     public function cancelSubscription()
@@ -101,7 +101,7 @@ class SubscriptionModelDecorator {
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      * @throws Exception
      */
     public function handleSubscriptionCompleted()

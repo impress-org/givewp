@@ -5,7 +5,7 @@ import {BlockInstance, getBlockType, getUnregisteredTypeHandlerName} from '@word
  *
  * This is used to preserve the original block type definition when persisting the blocks to the database.
  *
- * @since 0.6.0
+ * @since 3.0.0
  */
 export default function revertMissingBlocks(blocks: BlockInstance[]) {
     blocks.forEach((sectionBlock, sectionBlockIndex) => {

@@ -14,7 +14,7 @@ const {receipt} = window.givewpDonationConfirmationReceiptExports;
 /**
  * This function is used to format the amount value.  It also handles cased when there are additional details within the string.  For example "$25.00 / month"
  *
- * @since 0.3.0
+ * @since 3.0.0
  */
 const getAmountFormatted = (value) => {
     const amount = parseFloat(value);
@@ -31,7 +31,7 @@ const getAmountFormatted = (value) => {
 /**
  * Return readable value
  *
- * @since 0.1.0
+ * @since 3.0.0
  */
 const getDetailValue = (value) => {
     if (typeof value === 'string') {
@@ -48,7 +48,7 @@ const getDetailValue = (value) => {
 /**
  * Prepare detail values before render
  *
- * @since 0.1.0
+ * @since 3.0.0
  */
 const prepareDetails = (details: ReceiptDetail[]) => {
     return details?.map(({label, value}) => ({
@@ -59,7 +59,7 @@ const prepareDetails = (details: ReceiptDetail[]) => {
 
 /**
  *
- * @since 0.1.0
+ * @since 3.0.0
  */
 function DonationConfirmationReceiptApp() {
     return (

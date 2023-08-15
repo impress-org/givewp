@@ -12,7 +12,7 @@ use Give\Framework\Support\Facades\DateTime\Temporal;
 class ConvertQueryDataToDonationForm
 {
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @param  object  $queryObject
      */

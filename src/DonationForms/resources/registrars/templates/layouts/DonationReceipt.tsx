@@ -4,7 +4,7 @@ import {DonationReceiptProps} from '@givewp/forms/propTypes';
 import {Interweave} from 'interweave';
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 const SecureBadge = () => {
     return (
@@ -17,7 +17,7 @@ const SecureBadge = () => {
 
 /**
  *
- * @since 0.1.0
+ * @since 3.0.0
  */
 const Details = ({id, heading, details}: { id: string; heading: string; details: ReceiptDetail[] }) =>
     details?.length > 0 && (
@@ -36,8 +36,8 @@ const Details = ({id, heading, details}: { id: string; heading: string; details:
         </div>
     );
 /**
- * @since 0.6.0 updated to use Interweave for rich text content
- * @since 0.1.0
+ * @since 3.0.0 updated to use Interweave for rich text content
+ * @since 3.0.0
  */
 export default function DonationReceipt({
     heading,

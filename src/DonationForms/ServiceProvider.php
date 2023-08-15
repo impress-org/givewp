@@ -70,27 +70,27 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     private function registerRoutes()
     {
         /**
-         * @since 0.1.0
+         * @since 3.0.0
          */
         Route::post('donate', DonateRoute::class);
 
         /**
-         * @since 0.4.0
+         * @since 3.0.0
          */
         Route::post('validate', ValidationRoute::class);
 
         /**
-         * @since 0.4.0
+         * @since 3.0.0
          */
         Route::post('authenticate', AuthenticationRoute::class);
 
         /**
-         * @since 0.1.0
+         * @since 3.0.0
          */
         Route::get('donation-form-view', static function (array $request) {
             $routeData = DonationFormViewRouteData::fromRequest($request);
@@ -99,7 +99,7 @@ class ServiceProvider implements ServiceProviderInterface
         });
 
         /**
-         * @since 0.1.0
+         * @since 3.0.0
          */
         Route::get('donation-confirmation-receipt-view', static function (array $request) {
             $routeData = DonationConfirmationReceiptViewRouteData::fromRequest($request);
@@ -109,7 +109,7 @@ class ServiceProvider implements ServiceProviderInterface
 
 
         /**
-         * @since 0.1.0
+         * @since 3.0.0
          */
         Route::post('donation-form-view-preview', static function () {
             $requestData = (new SanitizeDonationFormPreviewRequest())($_REQUEST);
@@ -120,7 +120,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      */
     private function dispatchDonateControllerListeners()
     {
@@ -142,7 +142,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     private function registerFormDesigns()
     {
@@ -161,7 +161,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     protected function registerSingleFormPage()
     {
@@ -169,7 +169,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since 0.5.0
+     * @since 3.0.0
      */
     protected function registerShortcodes()
     {

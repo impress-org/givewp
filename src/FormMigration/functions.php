@@ -9,7 +9,7 @@ use Give\Framework\Database\DB;
  * ex: givewp_migrated_form_id($formId);
  * ex: givewp_migrated_form_id($formId, $atts['id']);
  *
- * @since 0.6.0
+ * @since 3.0.0
  *
  * @param $formId int $formId is used as an "output argument", meaning it is updated without needing to be returned.
  * @param $extraReference int[] Any additional references to update with the migrated form ID.

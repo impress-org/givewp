@@ -1,7 +1,7 @@
 import {useState} from '@wordpress/element';
 
 /**
- * @since 0.6.0
+ * @since 3.0.0
  */
 export default function usePopoverState() {
 	const [isOpen, setIsOpen] = useState<boolean>(false);

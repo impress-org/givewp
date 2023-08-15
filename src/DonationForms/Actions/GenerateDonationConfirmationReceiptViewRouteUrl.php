@@ -6,12 +6,12 @@ namespace Give\DonationForms\Actions;
 use Give\Framework\Routes\Route;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 class GenerateDonationConfirmationReceiptViewRouteUrl
 {
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function __invoke(string $receiptId): string
     {

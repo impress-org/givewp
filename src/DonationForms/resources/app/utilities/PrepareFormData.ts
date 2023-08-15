@@ -4,7 +4,7 @@ import {mapGroup, reduceGroup, walkGroup} from './groups';
 /**
  * Receives the form data as provided directly from the server and mutates it to be ready for use by the React application
  *
- * @since 0.1.0
+ * @since 3.0.0
  */
 export default function prepareFormData(form: Form) {
     form.walkNodes = walkGroupNodes.bind(form);

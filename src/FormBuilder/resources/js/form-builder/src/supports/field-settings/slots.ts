@@ -4,7 +4,7 @@ import {createSlotFill} from '@wordpress/components';
  * Slots for used within the field settings inspector controls. This allows plugins and such to add further controls to
  * the inspector sections.
  *
- * @since 0.6.0
+ * @since 3.0.0
  */
 const {Slot: FieldSettingsSlot, Fill: FieldSettingsFill} = createSlotFill('GiveWP/FieldSettings/FieldSettingSlot');
 

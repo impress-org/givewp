@@ -8,7 +8,7 @@ class AuthenticationRule implements ValidationRule
 {
 
     /**
-     * @since 0.2.0
+     * @since 3.0.0
      */
     public static function id(): string
     {
@@ -16,7 +16,7 @@ class AuthenticationRule implements ValidationRule
     }
 
     /**
-     * @since 0.2.0
+     * @since 3.0.0
      */
     public static function fromString(string $options = null): ValidationRule
     {
@@ -24,7 +24,7 @@ class AuthenticationRule implements ValidationRule
     }
 
     /**
-     * @since 0.2.0
+     * @since 3.0.0
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
     {

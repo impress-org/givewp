@@ -11,7 +11,7 @@ interface BlockPreviewProps {
 }
 
 /**
- * @since 0.5.0
+ * @since 3.0.0
  */
 export default function BlockPreview({clientId, formId, formFormat, openFormButton}: BlockPreviewProps) {
     // @ts-ignore

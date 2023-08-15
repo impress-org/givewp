@@ -10,7 +10,7 @@ use function is_numeric;
 class Max extends \Give\Vendors\StellarWP\Validation\Rules\Max
 {
     /**
-     * @since 0.2.0
+     * @since 3.0.0
      */
     public function sanitize($value)
     {
@@ -28,7 +28,7 @@ class Max extends \Give\Vendors\StellarWP\Validation\Rules\Max
     /**
      * @inheritDoc
      *
-     * @since 0.2.0
+     * @since 3.0.0
      **/
     public function __invoke($value, Closure $fail, string $key, array $values)
     {

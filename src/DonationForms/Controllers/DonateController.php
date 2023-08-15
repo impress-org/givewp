@@ -12,7 +12,7 @@ use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\PaymentGateways\Actions\GetGatewayDataFromRequest;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 class DonateController
 {
@@ -20,8 +20,8 @@ class DonateController
      * First we create a donation and/or subscription, then move on to the gateway processing
      *
      * @since 0.3.3 use gateway controllers
-     * @since 0.3.0 add support for subscriptions
-     * @since 0.1.0
+     * @since 3.0.0 add support for subscriptions
+     * @since 3.0.0
      *
      * @return void
      * @throws Exception|PaymentGatewayException
@@ -77,7 +77,7 @@ class DonateController
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @param  int|null  $userId
      * @param  string  $donorEmail

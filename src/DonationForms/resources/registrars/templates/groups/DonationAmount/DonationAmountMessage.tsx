@@ -4,7 +4,7 @@ import {isSubscriptionPeriod} from './subscriptionPeriod';
 import {isDonationTypeSubscription} from '@givewp/forms/types';
 
 /**
- * @since 0.3.0
+ * @since 3.0.0
  */
 export default function DonationAmountMessage({
     isFixedAmount,

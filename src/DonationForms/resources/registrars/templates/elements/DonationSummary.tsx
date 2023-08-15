@@ -4,7 +4,7 @@ import {isSubscriptionPeriod, SubscriptionPeriod} from '../groups/DonationAmount
 import {createInterpolateElement} from '@wordpress/element';
 
 /**
- * @since 0.4.0
+ * @since 3.0.0
  */
 const getDonationTotal = (totals: any, amount: any) =>
     Number(
@@ -18,7 +18,7 @@ const getDonationTotal = (totals: any, amount: any) =>
 
 /**
  * @since 0.3.3 update subscription frequency label
- * @since 0.1.0
+ * @since 3.0.0
  */
 export default function DonationSummary() {
     const DonationSummaryItemsTemplate = window.givewp.form.templates.layouts.donationSummaryItems;

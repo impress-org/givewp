@@ -9,7 +9,7 @@ use Give\Framework\Support\Contracts\Arrayable;
 use WP_Error;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 class DonateFormRouteData implements Arrayable
 {
@@ -41,7 +41,7 @@ class DonateFormRouteData implements Arrayable
     /**
      * Convert data from request into DTO
      *
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public static function fromRequest(array $requestData): DonateFormRouteData
     {
@@ -61,7 +61,7 @@ class DonateFormRouteData implements Arrayable
      * compares the request against the individual fields,
      * their types and validation rules.
      *
-     * @since 0.5.0 Add support for billing address field
+     * @since 3.0.0 Add support for billing address field
      * @since      0.1.0
      *
      * @throws DonationFormFieldErrorsException
@@ -98,7 +98,7 @@ class DonateFormRouteData implements Arrayable
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function getRequestData(): array
     {
@@ -110,7 +110,7 @@ class DonateFormRouteData implements Arrayable
      * and converts them into a WP_Error object that is attached to the
      * exception and delivered back to the client via JSON.
      *
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @param  array<string, string>  $errors
      *
@@ -128,7 +128,7 @@ class DonateFormRouteData implements Arrayable
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      */
     public function toArray(): array
     {

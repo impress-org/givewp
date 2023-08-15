@@ -35,8 +35,8 @@ const zeroDecimalCurrencies = [
 /**
  * Takes in an amount value in dollar units and returns the calculated cents amount
  *
- * @since 0.6.0 update conversion to round up to nearest integer
- * @since 0.3.0
+ * @since 3.0.0 update conversion to round up to nearest integer
+ * @since 3.0.0
  */
 const dollarsToCents = (amount: string, currency: string) => {
     if (zeroDecimalCurrencies.includes(currency)) {

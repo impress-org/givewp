@@ -2,7 +2,7 @@ import {__} from '@wordpress/i18n';
 import {ReactElement} from 'react';
 
 /**
- * @since 0.4.0
+ * @since 3.0.0
  */
 export type LineItem = {
     id: string;
@@ -12,7 +12,7 @@ export type LineItem = {
 };
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 const LineItem = ({id, label, value, description}: LineItem) => {
     return (

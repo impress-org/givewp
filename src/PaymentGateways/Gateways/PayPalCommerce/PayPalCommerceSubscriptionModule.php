@@ -14,7 +14,7 @@ use GiveRecurring\PaymentGateways\PayPalCommerce\Repositories\Subscription as Su
 class PayPalCommerceSubscriptionModule extends SubscriptionModule
 {
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      */
     public function createSubscription(
         Donation $donation,

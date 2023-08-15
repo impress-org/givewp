@@ -126,9 +126,9 @@ class DonateControllerData
     public $comment;
 
     /**
-     * @since 0.7.0 added support for comment property
-     * @since 0.7.0 added support for anonymous
-     * @since 0.5.0 Add support billing address field
+     * @since 3.0.0 added support for comment property
+     * @since 3.0.0 added support for anonymous
+     * @since 3.0.0 Add support billing address field
      * @since      0.1.0
      */
     public function toDonation(int $donorId): Donation
@@ -154,9 +154,9 @@ class DonateControllerData
     }
 
     /**
-     * @since 0.7.0 added support for comment property
-     * @since 0.7.0 added support for anonymous
-     * @since 0.5.0 Add support billing address field
+     * @since 3.0.0 added support for comment property
+     * @since 3.0.0 added support for anonymous
+     * @since 3.0.0 Add support billing address field
      * @since      0.3.0
      */
     public function toInitialSubscriptionDonation(int $donorId, int $subscriptionId): Donation
@@ -183,7 +183,7 @@ class DonateControllerData
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function getSuccessUrl(Donation $donation): string
     {
@@ -193,7 +193,7 @@ class DonateControllerData
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * TODO: add params to route for flash message
      */
@@ -203,7 +203,7 @@ class DonateControllerData
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function getDonationConfirmationReceiptViewRouteUrl(Donation $donation): string
     {
@@ -211,7 +211,7 @@ class DonateControllerData
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function getDonationConfirmationReceiptUrl(Donation $donation): string
     {
@@ -219,7 +219,7 @@ class DonateControllerData
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function getDonationForm(): DonationForm
     {
@@ -232,7 +232,7 @@ class DonateControllerData
      *
      * TODO: figure out a less static way of doing this
      *
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function getCustomFields(): array
     {
@@ -269,7 +269,7 @@ class DonateControllerData
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      *
      * @throws Exception
      */
@@ -296,7 +296,7 @@ class DonateControllerData
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public function getGateway(): PaymentGateway
     {
@@ -304,7 +304,7 @@ class DonateControllerData
     }
 
     /**
-     * @since 0.5.0
+     * @since 3.0.0
      */
     public function getBillingAddress(): BillingAddress
     {

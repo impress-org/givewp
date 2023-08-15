@@ -3,8 +3,8 @@ import {__} from '@wordpress/i18n';
 import CurrencyInput from 'react-currency-input-field';
 
 /**
- * @since 0.6.0 add value prop
- * @since 0.2.0
+ * @since 3.0.0 add value prop
+ * @since 3.0.0
  */
 type CustomAmountProps = {
     fieldError?: string;
@@ -16,8 +16,8 @@ type CustomAmountProps = {
 };
 
 /**
- * @since 0.6.0 remove forwardRef and use state for value instead
- * @since 0.2.0
+ * @since 3.0.0 remove forwardRef and use state for value instead
+ * @since 3.0.0
  */
 const CustomAmount = (
     {defaultValue, fieldError, currency, value, onValueChange}: CustomAmountProps

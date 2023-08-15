@@ -6,7 +6,7 @@ import './styles.scss';
 
 
 /**
- * @since 0.6.0
+ * @since 3.0.0
  */
 interface ControlForPopoverProps {
     id: string;
@@ -18,7 +18,7 @@ interface ControlForPopoverProps {
 }
 
 /**
- * @since 0.6.0
+ * @since 3.0.0
  */
 export default function ControlForPopover({id, help, heading, children, onButtonClick, isButtonActive}: ControlForPopoverProps) {
     return (

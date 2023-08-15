@@ -3,7 +3,7 @@
 namespace Give\DonationForms\DataTransferObjects;
 
 /**
- * @since 0.4.0
+ * @since 3.0.0
  */
 class UserData
 {
@@ -25,7 +25,7 @@ class UserData
     /**
      * Convert data from user into DTO
      *
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public static function fromUser(\WP_User $user): UserData
     {

@@ -5,7 +5,7 @@ import Edit from './Edit';
 import {GiveWPSupports} from '@givewp/form-builder/supports/types';
 
 /**
- * @since 0.7.0
+ * @since 3.0.0
  */
 const givewp: GiveWPSupports = {
     fieldSettings: {
@@ -27,7 +27,7 @@ const givewp: GiveWPSupports = {
 };
 
 /**
- * @since 0.7.0
+ * @since 3.0.0
  */
 const settings: FieldBlock['settings'] = {
     title: __('Donor Comments', 'give'),

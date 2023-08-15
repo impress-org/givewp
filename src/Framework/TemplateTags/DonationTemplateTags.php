@@ -17,7 +17,7 @@ class DonationTemplateTags
     protected $content;
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function __construct(Donation $donation, string $content)
     {
@@ -26,7 +26,7 @@ class DonationTemplateTags
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function getContent(): string
     {
@@ -34,7 +34,7 @@ class DonationTemplateTags
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     protected function getTags(): array
     {

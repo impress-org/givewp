@@ -2,7 +2,6 @@
 
 namespace Give\FormMigration;
 
-use Give\DonationForms\Models\DonationForm as DonationFormV3;
 use Give\DonationForms\V2\Models\DonationForm as DonationFormV2;
 use Give\FormMigration\Commands\MigrationCommand;
 use Give\FormMigration\Commands\TransferCommand;
@@ -15,7 +14,7 @@ use WP_REST_Request;
 use WP_REST_Server;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 class ServiceProvider implements ServiceProviderInterface
 {

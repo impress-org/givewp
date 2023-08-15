@@ -10,7 +10,7 @@ use Give\Donations\Models\Donation;
 class DispatchDonateControllerDonationCreatedListeners
 {
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      */
     public function __invoke(DonateControllerData $formData, Donation $donation)
     {

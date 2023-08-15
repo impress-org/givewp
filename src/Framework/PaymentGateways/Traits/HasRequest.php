@@ -9,7 +9,7 @@ trait HasRequest {
     private $request;
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      * @return mixed
      */
     public function get(string $key)
@@ -19,7 +19,7 @@ trait HasRequest {
 
     /**
      *
-     * @since 0.1.0
+     * @since 3.0.0
      * @return $this
      */
     public function request(): self

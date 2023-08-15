@@ -3,7 +3,7 @@ import {useDonationFormMultiStepState} from '@givewp/forms/app/form/MultiStepFor
 import {ReactNode} from 'react';
 
 /**
- * @since 0.4.0
+ * @since 3.0.0
  */
 export default function PreviousButton({children}: {children: ReactNode}) {
     const {currentStep} = useDonationFormMultiStepState();

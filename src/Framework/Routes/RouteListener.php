@@ -20,7 +20,7 @@ class RouteListener
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function isValid(array $request, callable $validation = null): bool
     {
@@ -33,7 +33,7 @@ class RouteListener
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function toUrl(string $originUrl, array $args = []): string
     {

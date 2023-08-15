@@ -6,7 +6,7 @@ import {__experimentalGetCoreBlocks} from '@wordpress/block-library';
  *
  * @see https://github.com/WordPress/gutenberg/tree/trunk/packages/block-library/src/missing
  *
- * @since 0.6.0
+ * @since 3.0.0
  */
 const registerMissingBlock = () => {
     //TODO: should probably replace this with a custom block
@@ -26,7 +26,7 @@ const registerMissingBlock = () => {
 const blockRegistrar = window.givewp.form.blocks;
 
 /**
- * @since 0.4.0
+ * @since 3.0.0
  */
 const supportOverrides: BlockSupports = {
     customClassName: false,
@@ -34,7 +34,7 @@ const supportOverrides: BlockSupports = {
 };
 
 /**
- * @since 0.4.0
+ * @since 3.0.0
  */
 export default function registerBlocks(): void {
     registerMissingBlock();

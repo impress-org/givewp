@@ -5,12 +5,12 @@ namespace Give\FormBuilder\EmailPreview\Actions;
 /**
  * Apply preview template tags to email message.
  *
- * @since 0.4.0
+ * @since 3.0.0
  */
 class ApplyPreviewTemplateTags
 {
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      * @param  string  $message
      * @return string
      */
@@ -24,7 +24,7 @@ class ApplyPreviewTemplateTags
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      * @return array
      */
     protected function getTags(): array
@@ -64,7 +64,7 @@ class ApplyPreviewTemplateTags
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      * @return string
      */
     protected function getEmailAccessLink(): string
@@ -77,7 +77,7 @@ class ApplyPreviewTemplateTags
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      * @return string
      */
     protected function getDonationHistoryLink(): string
@@ -90,7 +90,7 @@ class ApplyPreviewTemplateTags
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      * @return string
      */
     protected function getSiteUrlLink(): string

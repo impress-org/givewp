@@ -6,12 +6,12 @@ use Closure;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidationRule;
 
 /**
- * @since 0.5.0
+ * @since 3.0.0
  */
 class BillingAddressCityRule implements ValidationRule
 {
     /**
-     * @since 0.5.0
+     * @since 3.0.0
      */
     public static function id(): string
     {
@@ -19,7 +19,7 @@ class BillingAddressCityRule implements ValidationRule
     }
 
     /**
-     * @since 0.5.0
+     * @since 3.0.0
      */
     public static function fromString(string $options = null): ValidationRule
     {
@@ -27,7 +27,7 @@ class BillingAddressCityRule implements ValidationRule
     }
 
     /**
-     * @since 0.5.0
+     * @since 3.0.0
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
     {

@@ -12,7 +12,7 @@ class DonationFormViewController
     /**
      * This renders the donation form view.
      *
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function show(DonationFormViewRouteData $data): string
     {
@@ -31,7 +31,7 @@ class DonationFormViewController
     /**
      * This renders the donation form preview
      *
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function preview(DonationFormPreviewRouteData $data): string
     {

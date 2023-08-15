@@ -6,7 +6,7 @@ use Give\DonationForms\Properties\FormSettings;
 use Give\Framework\Blocks\BlockCollection;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 class DonationFormPreviewRouteData
 {
@@ -30,7 +30,7 @@ class DonationFormPreviewRouteData
      *
      * @param  array{form-id: string, form-settings: string, form-blocks: string}  $request
      *
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public static function fromRequest(array $request): self
     {

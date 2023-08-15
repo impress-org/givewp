@@ -11,7 +11,7 @@ use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\DataTransfe
 use Stripe\Exception\ApiErrorException;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 class StripePaymentElementGateway extends PaymentGateway
 {
@@ -51,7 +51,7 @@ class StripePaymentElementGateway extends PaymentGateway
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function enqueueScript(int $formId)
     {
@@ -67,7 +67,7 @@ class StripePaymentElementGateway extends PaymentGateway
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function formSettings(int $formId): array
     {

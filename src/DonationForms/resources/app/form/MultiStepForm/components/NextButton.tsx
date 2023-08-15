@@ -10,7 +10,7 @@ import useGetGatewayById from '@givewp/forms/app/form/MultiStepForm/hooks/useGet
 const {validateUrl} = getWindowData();
 
 /**
- * @since 0.4.0
+ * @since 3.0.0
  */
 export default function NextButton() {
     const {steps, currentStep} = useDonationFormMultiStepState();

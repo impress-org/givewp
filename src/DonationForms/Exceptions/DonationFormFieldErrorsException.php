@@ -17,7 +17,7 @@ class DonationFormFieldErrorsException extends \Exception implements LoggableExc
     protected $error;
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function __construct(WP_Error $error, Throwable $previous = null)
     {
@@ -26,7 +26,7 @@ class DonationFormFieldErrorsException extends \Exception implements LoggableExc
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function getError(): WP_Error
     {

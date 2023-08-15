@@ -36,7 +36,7 @@ class DonationReceipt implements Arrayable, Jsonable
     public $subscriptionDetails;
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function __construct(Donation $donation)
     {
@@ -50,7 +50,7 @@ class DonationReceipt implements Arrayable, Jsonable
 
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function toArray(): array
     {
@@ -64,7 +64,7 @@ class DonationReceipt implements Arrayable, Jsonable
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function toJson($options = 0): string
     {

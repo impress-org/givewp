@@ -3,7 +3,7 @@ import logo from '../images/givewp-logo.svg';
 
 /**
  *
- * @since 0.1.0
+ * @since 3.0.0
  */
 export default function Logo() {
     return <div className="givewp-form-block__logo--container">

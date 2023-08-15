@@ -3,7 +3,7 @@
 namespace Give\FormBuilder\ValueObjects;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 class FormBuilderRestRouteConfig
 {

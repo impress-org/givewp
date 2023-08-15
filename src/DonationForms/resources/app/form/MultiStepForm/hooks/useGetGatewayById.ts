@@ -2,7 +2,7 @@ import {useCallback} from 'react';
 import {useDonationFormState} from '@givewp/forms/app/store';
 
 /**
- * @since 0.4.0
+ * @since 3.0.0
  */
 export default function useGetGatewayById() {
     const {gateways} = useDonationFormState();

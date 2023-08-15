@@ -6,7 +6,7 @@ use Give\DonationForms\Routes\DonateRouteSignature;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 class DonateRouteData
 {
@@ -26,7 +26,7 @@ class DonateRouteData
     /**
      * Convert data from request into DTO
      *
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public static function fromRequest(array $request): DonateRouteData
     {
@@ -40,7 +40,7 @@ class DonateRouteData
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      *
      * @return void
      */

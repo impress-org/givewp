@@ -8,7 +8,7 @@ use Give\Framework\FormDesigns\FormDesign;
 use Give\Log\Log;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 class FormDesignRegistrar
 {
@@ -18,7 +18,7 @@ class FormDesignRegistrar
     protected $designs = [];
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function getDesigns(): array
     {
@@ -26,7 +26,7 @@ class FormDesignRegistrar
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @throws InvalidArgumentException
      */
@@ -43,7 +43,7 @@ class FormDesignRegistrar
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function hasDesign(string $id): bool
     {
@@ -51,7 +51,7 @@ class FormDesignRegistrar
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function registerDesign(string $designClass)
     {
@@ -67,7 +67,7 @@ class FormDesignRegistrar
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function unregisterDesign(string $designId)
     {
@@ -77,7 +77,7 @@ class FormDesignRegistrar
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @return void
      *

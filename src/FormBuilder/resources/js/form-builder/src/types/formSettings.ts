@@ -2,7 +2,7 @@ import {FormStatus} from "@givewp/form-builder/types/formStatus";
 import {EmailTemplateOption} from "@givewp/form-builder/types/emailTemplateOption";
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 export type FormSettings = {
     showHeader: boolean;

@@ -23,7 +23,7 @@ use Give\Helpers\Hooks;
 use Give\Log\Log;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 class DonationFormRepository
 {
@@ -33,7 +33,7 @@ class DonationFormRepository
     private $paymentGatewayRegister;
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @var string[]
      */
@@ -44,7 +44,7 @@ class DonationFormRepository
     ];
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @param  PaymentGatewayRegister  $paymentGatewayRegister
      */
@@ -56,7 +56,7 @@ class DonationFormRepository
     /**
      * Get Donation Form By ID
      *
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @return DonationForm|null
      */
@@ -69,7 +69,7 @@ class DonationFormRepository
 
     /**
      *
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @return void
      * @throws Exception|InvalidArgumentException
@@ -145,7 +145,7 @@ class DonationFormRepository
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @param  DonationForm  $donationForm
      *
@@ -210,7 +210,7 @@ class DonationFormRepository
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @throws Exception
      */
@@ -244,7 +244,7 @@ class DonationFormRepository
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @param  DonationForm  $donationForm
      *
@@ -260,7 +260,7 @@ class DonationFormRepository
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @return ModelQueryBuilder<DonationForm>
      */
@@ -318,7 +318,7 @@ class DonationFormRepository
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public function getDefaultEnabledGatewayId(int $formId): string
     {
@@ -328,7 +328,7 @@ class DonationFormRepository
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function getFormDataGateways(int $formId): array
     {
@@ -355,7 +355,7 @@ class DonationFormRepository
 
     /**
      *
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function getTotalNumberOfDonors(int $formId): int
     {
@@ -371,7 +371,7 @@ class DonationFormRepository
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function getTotalNumberOfDonations(int $formId): int
     {
@@ -383,7 +383,7 @@ class DonationFormRepository
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function getTotalRevenue(int $formId): int
     {
@@ -401,9 +401,9 @@ class DonationFormRepository
     }
 
     /**
-     * @since 0.6.0 return DonationFormNode; throw NameCollisionException
-     * @since 0.4.0 append formId to first section instead of last with multistep in mind.
-     * @since 0.1.0
+     * @since 3.0.0 return DonationFormNode; throw NameCollisionException
+     * @since 3.0.0 append formId to first section instead of last with multistep in mind.
+     * @since 3.0.0
      * @throws NameCollisionException
      */
     public function getFormSchemaFromBlocks(int $formId, BlockCollection $blocks): DonationFormNode
@@ -443,7 +443,7 @@ class DonationFormRepository
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function isLegacyForm(int $formId): bool
     {
@@ -455,7 +455,7 @@ class DonationFormRepository
     /**
      * Get gateway form settings and handle any exceptions.
      *
-     * @since 0.2.0
+     * @since 3.0.0
      */
     private function getGatewayFormSettings(int $formId, PaymentGateway $gateway): array
     {

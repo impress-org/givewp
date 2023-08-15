@@ -11,7 +11,7 @@ use Give\Framework\Models\Factories\ModelFactory;
 class DonationFormFactory extends ModelFactory
 {
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function definition(): array
     {

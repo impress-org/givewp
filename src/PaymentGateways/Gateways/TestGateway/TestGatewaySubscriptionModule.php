@@ -14,7 +14,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class TestGatewaySubscriptionModule extends SubscriptionModule implements SubscriptionAmountEditable
 {
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      */
     public function createSubscription(
         Donation $donation,
@@ -29,7 +29,7 @@ class TestGatewaySubscriptionModule extends SubscriptionModule implements Subscr
 
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      *
      * @throws Exception
      */
@@ -40,7 +40,7 @@ class TestGatewaySubscriptionModule extends SubscriptionModule implements Subscr
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      * 
      * @throws Exception
      */

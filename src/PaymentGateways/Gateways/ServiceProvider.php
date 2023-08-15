@@ -32,7 +32,7 @@ class ServiceProvider implements ServiceProviderInterface
     use HasScriptAssetFile;
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public function register()
     {
@@ -40,7 +40,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public function boot()
     {
@@ -57,7 +57,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @throws Exception
      * @throws OverflowException
@@ -126,7 +126,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
       /**
-     * @since 0.3.0
+       * @since 3.0.0
      */
     private function addStripeWebhookListeners()
     {
@@ -167,7 +167,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      */
     private function addLegacyStripeAdapter()
     {
@@ -179,7 +179,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since 0.5.0
+     * @since 3.0.0
      */
     protected function enqueueGatewayScripts()
     {

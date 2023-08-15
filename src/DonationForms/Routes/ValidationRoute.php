@@ -11,14 +11,14 @@ use Give\Log\Log;
 use WP_Error;
 
 /**
- * @since 0.4.0
+ * @since 3.0.0
  */
 class ValidationRoute
 {
     use HandleHttpResponses;
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public function __invoke(array $request): bool
     {
@@ -45,7 +45,7 @@ class ValidationRoute
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     private function logError(
         string $type,

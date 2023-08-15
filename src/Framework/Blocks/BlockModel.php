@@ -5,7 +5,7 @@ namespace Give\Framework\Blocks;
 use Give\Framework\Support\Contracts\Arrayable;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  * A structured model for a Gutenberg block.
  * Similar to WP_Block_Parser_Block, but without innerHTML or innerContent.
  * ... and without the HTML comments as structure.
@@ -50,7 +50,7 @@ class BlockModel implements Arrayable
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function hasAttribute($name): bool
     {
@@ -58,7 +58,7 @@ class BlockModel implements Arrayable
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function getAttribute($name)
     {
@@ -66,7 +66,7 @@ class BlockModel implements Arrayable
     }
 
     /**
-     * @since 0.2.0
+     * @since 3.0.0
      */
     public function getAttributes(): array
     {
@@ -74,7 +74,7 @@ class BlockModel implements Arrayable
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public function setAttribute(string $name, $value): BlockModel
     {
@@ -88,7 +88,7 @@ class BlockModel implements Arrayable
     /**
      * Returns the unqualified, or short name, of the block without the namespace.
      *
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function getShortName(): string
     {
@@ -96,7 +96,7 @@ class BlockModel implements Arrayable
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @param  array  $blockData
      * @return BlockModel
@@ -118,7 +118,7 @@ class BlockModel implements Arrayable
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function toArray(): array
     {

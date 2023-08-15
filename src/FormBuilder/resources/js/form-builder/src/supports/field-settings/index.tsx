@@ -7,7 +7,7 @@ import {AfterDisplaySettingsFill, AfterFieldSettingsFill, DisplaySettingsFill, F
 /**
  * Registers the necessary hooks for supports the field settings
  *
- * @since 0.6.0
+ * @since 3.0.0
  */
 export default function registerHooks() {
     addFilter('editor.BlockEdit', 'givewp/supports/field-settings-hoc', FieldSettingsHOC);

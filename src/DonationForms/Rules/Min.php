@@ -10,7 +10,7 @@ use function is_numeric;
 class Min extends \Give\Vendors\StellarWP\Validation\Rules\Min
 {
     /**
-     * @since 0.2.0
+     * @since 3.0.0
      */
     public function sanitize($value)
     {
@@ -28,7 +28,7 @@ class Min extends \Give\Vendors\StellarWP\Validation\Rules\Min
     /**
      * @inheritDoc
      *
-     * @since 0.2.0
+     * @since 3.0.0
      **/
     public function __invoke($value, Closure $fail, string $key, array $values)
     {

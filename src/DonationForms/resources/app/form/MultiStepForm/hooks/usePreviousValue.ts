@@ -1,7 +1,7 @@
 import {useEffect, useRef} from '@wordpress/element';
 
 /**
- * @since 0.4.0
+ * @since 3.0.0
  */
 export default function usePrevious<T>(value: T): T {
     const ref: any = useRef<T>();

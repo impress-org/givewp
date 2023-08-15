@@ -17,8 +17,8 @@ class StoreCustomFields
      * schema settings to the request.  Once a field has passed validation, we can determine
      * its storage location from the fields api.  This Action is designed to be triggered post-validation.
      *
-     * @since 0.6.0 added support for field scopes and file uploads
-     * @since 0.1.0
+     * @since 3.0.0 added support for field scopes and file uploads
+     * @since 3.0.0
      *
      * @return void
      * @throws NameCollisionException
@@ -55,7 +55,7 @@ class StoreCustomFields
     }
 
     /**
-     * @since 0.6.0
+     * @since 3.0.0
      * @return array|null
      */
     protected function handleFileUpload(File $field)
@@ -68,7 +68,7 @@ class StoreCustomFields
     }
 
     /**
-     * @since 0.6.0
+     * @since 3.0.0
      */
     protected function storeAsDonorMeta(int $donorId, string $metaKey, $value)
     {
@@ -76,7 +76,7 @@ class StoreCustomFields
     }
 
     /**
-     * @since 0.6.0
+     * @since 3.0.0
      */
     protected function storeAsDonationMeta(int $donationId, string $metaKey, $value)
     {
@@ -84,7 +84,7 @@ class StoreCustomFields
     }
 
     /**
-     * @since 0.6.0
+     * @since 3.0.0
      */
     protected function persistFieldScope(Field $field, $value, Donation $donation)
     {

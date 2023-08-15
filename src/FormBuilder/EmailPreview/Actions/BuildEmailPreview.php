@@ -5,7 +5,7 @@ namespace Give\FormBuilder\EmailPreview\Actions;
 /**
  * Build email preview.
  *
- * @since 0.4.0
+ * @since 3.0.0
  */
 class BuildEmailPreview
 {

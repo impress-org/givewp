@@ -4,7 +4,7 @@ import {__, sprintf} from '@wordpress/i18n';
 import conditionOperatorFunctions from '@givewp/forms/app/utilities/conditionOperatorFunctions';
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 const requiredMessage = sprintf(
     /* translators: base error message */
@@ -13,7 +13,7 @@ const requiredMessage = sprintf(
 );
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 export default function getJoiRulesForForm(form: Form): ObjectSchema {
     const joiRules = form.reduceNodes(
@@ -33,7 +33,7 @@ export default function getJoiRulesForForm(form: Form): ObjectSchema {
 }
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 function getJoiRulesForField(field: Field): AnySchema {
     let rules: AnySchema = convertFieldAPIRulesToJoi(field.validationRules);
@@ -46,8 +46,8 @@ function getJoiRulesForField(field: Field): AnySchema {
 }
 
 /**
- * @since 0.4.0 add support for excludeUnless rule with basic conditions; do not validate fields with no rules
- * @since 0.1.0
+ * @since 3.0.0 add support for excludeUnless rule with basic conditions; do not validate fields with no rules
+ * @since 3.0.0
  */
 function convertFieldAPIRulesToJoi(rules): AnySchema {
     let joiRules;
@@ -133,7 +133,7 @@ function convertFieldAPIRulesToJoi(rules): AnySchema {
 }
 
 /**
- * @since 0.2.0
+ * @since 3.0.0
  */
 function getJoiRulesForAmountField(rules, joiRules): AnySchema {
     if (rules.hasOwnProperty('donationType')) {

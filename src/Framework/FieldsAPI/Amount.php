@@ -38,7 +38,7 @@ class Amount extends Field
     /**
      * Set the preset donation levels. Provide levels in minor units.
      *
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function levels(int ...$levels): self
     {
@@ -48,7 +48,7 @@ class Amount extends Field
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function getLevels(): array
     {
@@ -56,7 +56,7 @@ class Amount extends Field
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function allowCustomAmount($allow = true): self
     {
@@ -66,7 +66,7 @@ class Amount extends Field
     }
 
     /**
-     * @since 0.2.0
+     * @since 3.0.0
      */
     public function allowLevels($allow = true): self
     {
@@ -76,7 +76,7 @@ class Amount extends Field
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function customAmountAllowed(): bool
     {
@@ -84,7 +84,7 @@ class Amount extends Field
     }
 
     /**
-     * @since 0.2.0
+     * @since 3.0.0
      */
     public function customAmountText(string $customAmountText): Amount
     {
@@ -94,7 +94,7 @@ class Amount extends Field
     }
 
     /**
-     * @since 0.2.0
+     * @since 3.0.0
      *
      * @param  float|int  $amount
      */
@@ -106,7 +106,7 @@ class Amount extends Field
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      */
     public function getFixedAmountValue()
     {

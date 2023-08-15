@@ -5,14 +5,14 @@ namespace Give\DonationForms\FormDesigns\MultiStepFormDesign;
 use Give\Framework\FormDesigns\FormDesign;
 
 /**
- * @since 0.4.0
+ * @since 3.0.0
  */
 class MultiStepFormDesign extends FormDesign
 {
     protected $isMultiStep = true;
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public static function id(): string
     {
@@ -20,7 +20,7 @@ class MultiStepFormDesign extends FormDesign
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public static function name(): string
     {
@@ -28,7 +28,7 @@ class MultiStepFormDesign extends FormDesign
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public function css(): string
     {
@@ -36,7 +36,7 @@ class MultiStepFormDesign extends FormDesign
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public function js(): string
     {
@@ -44,7 +44,7 @@ class MultiStepFormDesign extends FormDesign
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public function dependencies(): array
     {

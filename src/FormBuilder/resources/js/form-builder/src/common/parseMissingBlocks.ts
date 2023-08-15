@@ -8,7 +8,7 @@ import {BlockInstance, getBlockType, getUnregisteredTypeHandlerName} from '@word
  *
  * @see https://github.com/WordPress/gutenberg/tree/trunk/packages/block-library/src/missing
  *
- * @since 0.6.0
+ * @since 3.0.0
  */
 export default function parseMissingBlocks(blocks: BlockInstance[]){
     blocks.forEach((sectionBlock, sectionBlockIndex) => {

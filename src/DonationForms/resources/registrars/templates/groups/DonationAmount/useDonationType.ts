@@ -2,7 +2,7 @@ import {useEffect} from '@wordpress/element';
 import {isSubscriptionPeriod} from './subscriptionPeriod';
 
 /**
- * @since 0.3.0
+ * @since 3.0.0
  */
 export default function useDonationType() {
     const {useWatch, useFormContext} = window.givewp.form.hooks;

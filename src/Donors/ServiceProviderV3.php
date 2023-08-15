@@ -8,7 +8,7 @@ use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use Give_Donor as LegacyDonor;
 
 /**
- * @since 0.4.0
+ * @since 3.0.0
  */
 class ServiceProviderV3 implements ServiceProviderInterface
 {

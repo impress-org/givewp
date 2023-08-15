@@ -7,7 +7,7 @@ use Give\DonationForms\Routes\DonateRouteSignature;
 class GenerateDonateRouteSignatureArgs
 {
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public function __invoke(DonateRouteSignature $signature, string $signatureId): array
     {

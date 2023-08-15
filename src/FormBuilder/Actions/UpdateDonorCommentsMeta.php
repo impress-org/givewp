@@ -7,12 +7,12 @@ use Give\DonationForms\Models\DonationForm;
 /**
  * Update donor comments meta on backwards compatible form meta.
  *
- * @since 0.7.0
+ * @since 3.0.0
  */
 class UpdateDonorCommentsMeta
 {
     /**
-     * @since 0.7.0
+     * @since 3.0.0
      */
     public function __invoke(DonationForm $form)
     {

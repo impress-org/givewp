@@ -17,7 +17,7 @@ export interface Currency {
 }
 
 /**
- * @since 0.6.0
+ * @since 3.0.0
  */
 export type CurrencySwitcherSetting = {
     id: string;
@@ -158,21 +158,21 @@ export interface Group extends Node {
     /**
      * Recursively walk the group and its children for all nodes.
      *
-     * @since 0.1.0
+     * @since 3.0.0
      */
     walkNodes(callback: (node: Node) => void, filter?: (node: Node) => boolean): void;
 
     /**
      * Recursively map the group and its children for all nodes.
      *
-     * @since 0.1.0
+     * @since 3.0.0
      */
     mapNodes(callback: (node: Node) => void, filter?: (node: Node) => boolean): Node[];
 
     /**
      * Recursively walk the group and its children for all nodes and reduce to a single value.
      *
-     * @since 0.1.0
+     * @since 3.0.0
      */
     reduceNodes(
         callback: (accumulator: any, node: Node) => any,

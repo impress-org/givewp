@@ -2,12 +2,12 @@ import {useSelect} from '@wordpress/data';
 import {getWindowData} from "@givewp/form-builder/common";
 
 /**
- * @since 0.7.0
+ * @since 3.0.0
  */
 const {disallowedFieldNames} = getWindowData();
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  *
  * @returns {*}
  */
@@ -20,8 +20,8 @@ export const hasFieldNameConflict = (fieldName: string, fieldNames: string[]) =>
 };
 
 /**
- * @since 0.6.0 switch hyphens to underscores
- * @since 0.1.0
+ * @since 3.0.0 switch hyphens to underscores
+ * @since 3.0.0
  *
  * @returns {`${*}-${number|number}`}
  */
@@ -36,7 +36,7 @@ export const getFieldNameSuggestion = (name, names) => {
 };
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 export const flattenBlocks = (block) => [block, ...block.innerBlocks.flatMap(flattenBlocks)];
 
@@ -73,8 +73,8 @@ const builtInFieldNames = [
  * A hook for validating uniqueness of the 'fieldName' attribute.
  * When a conflict has been found, a new name suggestion will be generated and returned within the array
  *
- * @since 0.6.0 name issue with name uniqueness not being reliable; switch hyphens to underscores
- * @since 0.1.0
+ * @since 3.0.0 name issue with name uniqueness not being reliable; switch hyphens to underscores
+ * @since 3.0.0
  *
  * @return {function(fieldName: string): [isUnique: boolean, suggestedName: string]}
  */

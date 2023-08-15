@@ -9,12 +9,12 @@ use Give\Donations\Models\Donation;
 
 /**
  * TODO: move into donations domain
- * @since 0.1.0
+ * @since 3.0.0
  */
 class DonationDetailsController
 {
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @param  int  $donationID
      *

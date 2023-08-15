@@ -12,7 +12,7 @@ const formTemplates = window.givewp.form.templates;
 /**
  * Determine which node template to render
  *
- * @since 0.1.0
+ * @since 3.0.0
  */
 export default function SectionNode({node}: {node: Node}) {
     const showNode = useVisibilityCondition(node.visibilityConditions);

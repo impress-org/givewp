@@ -6,7 +6,7 @@ use Give\Donations\CustomFields\Controllers\DonationDetailsController;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
- * @since 0.4.0
+ * @since 3.0.0
  */
 class ServiceProviderV3 implements ServiceProviderInterface
 {

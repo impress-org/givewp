@@ -25,7 +25,7 @@ class PayPalStandardGateway extends PayPalStandard
     }
 
     /**
-     * @since 0.5.0
+     * @since 3.0.0
      */
     public function enqueueScript(int $formId)
     {

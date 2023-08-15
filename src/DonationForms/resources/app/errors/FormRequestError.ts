@@ -2,7 +2,7 @@
  * This Error adds a property of errors,
  * so we can catch a types error and loop through all the errors from the server.
  *
- * @since 0.1.0
+ * @since 3.0.0
  */
 class FormRequestError extends Error {
     public errors: Array<object>;

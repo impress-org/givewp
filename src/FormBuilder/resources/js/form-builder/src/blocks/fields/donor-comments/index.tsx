@@ -3,7 +3,7 @@ import settings from './settings';
 import {FieldBlock} from '@givewp/form-builder/types';
 
 /**
- * @since 0.7.0
+ * @since 3.0.0
  */
 const field: FieldBlock = {
     name: 'givewp/donor-comments',

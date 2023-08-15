@@ -13,7 +13,7 @@ import {DonationSummaryProvider} from '@givewp/forms/app/store/donation-summary'
 const FormSectionTemplate = withTemplateWrapper(window.givewp.form.templates.layouts.section, 'section');
 
 /**
- * @since 0.4.0
+ * @since 3.0.0
  */
 const convertSectionsToSteps = (sections: Section[], hasFirstStep: boolean) => {
     const totalSteps = hasFirstStep ? sections.length + 1 : sections.length;
@@ -53,7 +53,7 @@ const convertSectionsToSteps = (sections: Section[], hasFirstStep: boolean) => {
 };
 
 /**
- * @since 0.4.0
+ * @since 3.0.0
  */
 export default function MultiStepForm({sections, showHeader}: {sections: Section[]; showHeader?: boolean}) {
     const steps = convertSectionsToSteps(sections, showHeader);

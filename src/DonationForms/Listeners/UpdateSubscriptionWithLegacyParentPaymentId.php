@@ -4,7 +4,7 @@ namespace Give\DonationForms\Listeners;
 class UpdateSubscriptionWithLegacyParentPaymentId
 {
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      */
     public function __invoke(int $subscriptionId, int $donationId)
     {

@@ -19,8 +19,8 @@ use Stripe\PaymentIntent;
 trait StripePaymentElementRepository
 {
     /**
-     * @since 0.3.0 update params to use StripePaymentIntentData
-     * @since 0.1.0
+     * @since 3.0.0 update params to use StripePaymentIntentData
+     * @since 3.0.0
      * @throws ApiErrorException
      */
     protected function generateStripePaymentIntent(
@@ -36,7 +36,7 @@ trait StripePaymentElementRepository
     /**
      * Get or create Stripe Customer from Donation
      *
-     * @since 0.1.0
+     * @since 3.0.0
      * @throws Exception
      * @throws ApiErrorException
      */
@@ -91,7 +91,7 @@ trait StripePaymentElementRepository
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @throws InvalidPropertyName
      */
@@ -128,8 +128,8 @@ trait StripePaymentElementRepository
     }
 
     /**
-     * @since 0.6.0 no longer store the intent secret
-     * @since 0.3.0
+     * @since 3.0.0 no longer store the intent secret
+     * @since 3.0.0
      *
      * @return void
      * @throws Exception
@@ -154,7 +154,7 @@ trait StripePaymentElementRepository
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     protected function getStripePublishableKey(int $formId): string
     {
@@ -162,7 +162,7 @@ trait StripePaymentElementRepository
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     protected function getStripeConnectedAccountKey(int $formId): string
     {
@@ -170,7 +170,7 @@ trait StripePaymentElementRepository
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @return void;
      */
@@ -180,7 +180,7 @@ trait StripePaymentElementRepository
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @throws ApiErrorException
      */
@@ -196,7 +196,7 @@ trait StripePaymentElementRepository
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @throws ApiErrorException|InvalidRequestException
      */

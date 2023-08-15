@@ -8,7 +8,7 @@ import postFormData from '@givewp/forms/app/utilities/postFormData';
 import convertValuesToFormData from '@givewp/forms/app/utilities/convertValuesToFormData';
 
 /**
- * @since 0.4.0
+ * @since 3.0.0
  */
 export default async function handleValidationRequest(
     validateUrl: string,

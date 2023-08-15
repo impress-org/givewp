@@ -4,7 +4,7 @@ import useDonationType from './useDonationType';
 import DonationAmountCurrencySwitcherMessage from './DonationAmountCurrencySwitcherMessage';
 
 /**
- * @since 0.3.0
+ * @since 3.0.0
  */
 export default function DonationAmount({
     fields: {

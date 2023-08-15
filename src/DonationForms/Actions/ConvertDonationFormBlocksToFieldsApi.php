@@ -30,7 +30,7 @@ use Give\Helpers\Hooks;
 use WP_User;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 class ConvertDonationFormBlocksToFieldsApi
 {
@@ -44,10 +44,10 @@ class ConvertDonationFormBlocksToFieldsApi
     protected $currency;
 
     /**
-     * @since 0.6.0 return DonationForm Node
-     * @since 0.4.0 conditionally append blocks if block has inner blocks. Add blockIndex to inner blocks node converter.
+     * @since 3.0.0 return DonationForm Node
+     * @since 3.0.0 conditionally append blocks if block has inner blocks. Add blockIndex to inner blocks node converter.
      * @since 0.3.3 conditionally append blocks if block has inner blocks
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @throws TypeNotSupported|NameCollisionException
      */
@@ -86,7 +86,7 @@ class ConvertDonationFormBlocksToFieldsApi
 
     /**
      * @since 0.3.3 remove innerBlock appending
-     * @since 0.1.0
+     * @since 3.0.0
      */
     protected function convertTopLevelBlockToSection(BlockModel $block, int $blockIndex): Section
     {
@@ -97,7 +97,7 @@ class ConvertDonationFormBlocksToFieldsApi
 
     /**
      * @unlreased add `givewp_donation_form_block_converted_to_node` action hook
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @throws EmptyNameException|NameCollisionException
      *
@@ -119,7 +119,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @since 0.5.0 Add support to billing address field
+     * @since 3.0.0 Add support to billing address field
      * @since      0.4.0 add blockIndex for unique field names, add filter `givewp_donation_form_block_render` filters
      * @since      0.1.0
      *
@@ -246,7 +246,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     protected function createNodeFromDonorNameBlock(BlockModel $block): Node
     {
@@ -288,7 +288,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @since 0.5.0
+     * @since 3.0.0
      */
     protected function createNodeFromBillingAddressBlock(BlockModel $block): Node
     {
@@ -341,7 +341,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @since 0.2.0
+     * @since 3.0.0
      *
      * @throws NameCollisionException
      * @throws EmptyNameException
@@ -352,7 +352,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @since 0.5.0
+     * @since 3.0.0
      */
     protected function createNodeFromConsentBlock(BlockModel $block, int $blockIndex): Node
     {
@@ -360,7 +360,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     protected function mapGenericBlockAttributesToNode(Node $node, BlockModel $block): Node
     {

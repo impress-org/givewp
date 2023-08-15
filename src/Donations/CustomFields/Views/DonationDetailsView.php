@@ -7,7 +7,7 @@ use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\Types;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 class DonationDetailsView
 {
@@ -18,7 +18,7 @@ class DonationDetailsView
     protected $fields;
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @param  Donation  $donation
      * @param  array|Field[]  $fields
@@ -30,7 +30,7 @@ class DonationDetailsView
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @return string
      */
@@ -43,7 +43,7 @@ class DonationDetailsView
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @return string
      */
@@ -53,8 +53,8 @@ class DonationDetailsView
     }
 
     /**
-     * @since 0.6.0 updated to conditionally display value and label
-     * @since 0.1.0
+     * @since 3.0.0 updated to conditionally display value and label
+     * @since 3.0.0
      *
      * @return string
      */
@@ -78,8 +78,8 @@ class DonationDetailsView
     }
 
     /**
-     * @since 0.6.0 updated to format file fields
-     * @since 0.1.0
+     * @since 3.0.0 updated to format file fields
+     * @since 3.0.0
      *
      * @param  Field  $field
      *

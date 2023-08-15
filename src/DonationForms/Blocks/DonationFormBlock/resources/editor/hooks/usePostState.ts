@@ -1,7 +1,7 @@
 import {useSelect} from '@wordpress/data';
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 export default function usePostState(): { isSaving: boolean, isDisabled: boolean } {
     const isSaving = useSelect((select) => {

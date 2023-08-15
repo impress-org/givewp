@@ -33,7 +33,7 @@ class DonationAmount extends Group
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      */
     public function enableSubscriptions($enable = true): self
     {
@@ -43,7 +43,7 @@ class DonationAmount extends Group
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      */
     public function subscriptionDetailsAreFixed($fixed = true): self
     {
@@ -53,7 +53,7 @@ class DonationAmount extends Group
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      * @throws NameCollisionException
      */
     public function donationType(Field $field): self
@@ -64,7 +64,7 @@ class DonationAmount extends Group
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      * @throws NameCollisionException
      */
     public function subscriptionPeriod(Field $field): self
@@ -77,7 +77,7 @@ class DonationAmount extends Group
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      * @throws NameCollisionException
      */
     public function subscriptionFrequency(Field $field): self
@@ -90,7 +90,7 @@ class DonationAmount extends Group
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      * @throws NameCollisionException
      */
     public function subscriptionInstallments(Field $field): self

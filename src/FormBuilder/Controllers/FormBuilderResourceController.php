@@ -17,8 +17,8 @@ class FormBuilderResourceController
     /**
      * Get the form builder instance
      *
-     * @since 0.6.0 add required block validation
-     * @since 0.1.0
+     * @since 3.0.0 add required block validation
+     * @since 3.0.0
      *
      * @param  WP_REST_Request  $request
      * @return WP_Error|WP_HTTP_Response|WP_REST_Response
@@ -47,8 +47,8 @@ class FormBuilderResourceController
     /**
      * Update the form builder
      *
-     * @since 0.6.0 add required block validation
-     * @since 0.1.0
+     * @since 3.0.0 add required block validation
+     * @since 3.0.0
      *
      * @return WP_Error|WP_HTTP_Response|WP_REST_Response
      * @throws Exception
@@ -104,7 +104,7 @@ class FormBuilderResourceController
     }
 
     /**
-     * @since 0.6.0
+     * @since 3.0.0
      *
      * @return string[]
      */
@@ -119,7 +119,7 @@ class FormBuilderResourceController
     }
 
     /**
-     * @since 0.6.0
+     * @since 3.0.0
      *
      * @return WP_Error|void
      */

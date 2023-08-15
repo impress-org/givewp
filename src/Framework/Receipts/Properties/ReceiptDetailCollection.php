@@ -15,7 +15,7 @@ class ReceiptDetailCollection implements Arrayable
     protected $receiptDetails;
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @param  ReceiptDetail[]  $receiptDetails
      */
@@ -25,7 +25,7 @@ class ReceiptDetailCollection implements Arrayable
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @param  ReceiptDetail  $receiptDetail
      * @return void
@@ -36,7 +36,7 @@ class ReceiptDetailCollection implements Arrayable
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @param  ReceiptDetail[]  $receiptDetails
      * @return void
@@ -55,7 +55,7 @@ class ReceiptDetailCollection implements Arrayable
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function toArray(): array
     {

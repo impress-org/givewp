@@ -19,7 +19,7 @@ use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  *
  * @property int $id
  * @property string $title
@@ -45,7 +45,7 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
     ];
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      * @return DonationFormFactory
      */
     public static function factory(): DonationFormFactory
@@ -56,7 +56,7 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
     /**
      * Find donation form by ID
      *
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @param  int  $id
      *
@@ -68,7 +68,7 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @param  array  $attributes
      *
@@ -85,7 +85,7 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @return void
      *
@@ -101,7 +101,7 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @throws Exception
      */
@@ -111,7 +111,7 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @return ModelQueryBuilder<DonationForm>
      */
@@ -121,7 +121,7 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @param  object  $object
      */
@@ -132,8 +132,8 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
 
     /**
      *
-     * @since 0.6.0 return DonationForm node; throw NameCollisionException
-     * @since 0.1.0
+     * @since 3.0.0 return DonationForm node; throw NameCollisionException
+     * @since 3.0.0
      * @throws NameCollisionException
      */
     public function schema(): Form

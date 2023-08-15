@@ -12,7 +12,7 @@ use Give\Framework\FieldsAPI\Field;
 class StoreBackwardsCompatibleFormMeta
 {
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function __invoke(DonationForm $donationForm)
     {
@@ -22,8 +22,8 @@ class StoreBackwardsCompatibleFormMeta
     }
 
     /**
-     * @since 0.3.0 update with dynamic values from amount field
-     * @since 0.1.0
+     * @since 3.0.0 update with dynamic values from amount field
+     * @since 3.0.0
      */
     public function storeDonationLevels(DonationForm $donationForm)
     {
@@ -60,7 +60,7 @@ class StoreBackwardsCompatibleFormMeta
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function storeDonationGoal(DonationForm $donationForm)
     {
@@ -87,7 +87,7 @@ class StoreBackwardsCompatibleFormMeta
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     protected function saveSingleFormMeta($formId, $metaKey, $metaValue)
     {
@@ -95,7 +95,7 @@ class StoreBackwardsCompatibleFormMeta
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      */
     protected function storeRecurringMetaKeys(DonationForm $donationForm)
     {

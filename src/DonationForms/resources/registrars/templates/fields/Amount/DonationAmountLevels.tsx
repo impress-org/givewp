@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 
 /**
- * @since 0.2.0
+ * @since 3.0.0
  */
 type DonationAmountLevelsProps = {
     name: string;
@@ -11,8 +11,8 @@ type DonationAmountLevelsProps = {
 };
 
 /**
- * @since 0.6.0 rename to DonationAmountLevels
- * @since 0.2.0
+ * @since 3.0.0 rename to DonationAmountLevels
+ * @since 3.0.0
  */
 export default function DonationAmountLevels({
     name,

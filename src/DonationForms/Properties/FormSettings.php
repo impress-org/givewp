@@ -157,7 +157,7 @@ class FormSettings implements Arrayable, Jsonable
     public $offlineDonationsInstructions;
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public static function fromArray(array $array): self
     {
@@ -221,7 +221,7 @@ class FormSettings implements Arrayable, Jsonable
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public static function fromJson(string $json): self
     {
@@ -232,7 +232,7 @@ class FormSettings implements Arrayable, Jsonable
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function toArray(): array
     {
@@ -240,7 +240,7 @@ class FormSettings implements Arrayable, Jsonable
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function toJson($options = 0): string
     {

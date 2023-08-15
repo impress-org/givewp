@@ -4,7 +4,7 @@ import type {FieldAttributes} from './types';
 /**
  * Adds attributes to the block types that support the field settings.
  *
- * @since 0.6.0
+ * @since 3.0.0
  */
 export default function updateBlockTypes(settings) {
     const fieldSettings = normalizeFieldSettings(settings.supports.givewp?.fieldSettings);

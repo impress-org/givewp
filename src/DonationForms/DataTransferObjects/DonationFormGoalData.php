@@ -8,7 +8,7 @@ use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Support\Contracts\Arrayable;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 class DonationFormGoalData implements Arrayable
 {
@@ -34,7 +34,7 @@ class DonationFormGoalData implements Arrayable
     public $targetAmount;
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function __construct(int $formId, FormSettings $formSettings)
     {
@@ -46,7 +46,7 @@ class DonationFormGoalData implements Arrayable
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function getCurrentAmount(): int
     {
@@ -65,7 +65,7 @@ class DonationFormGoalData implements Arrayable
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function toArray(): array
     {

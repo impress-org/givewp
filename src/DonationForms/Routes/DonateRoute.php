@@ -13,7 +13,7 @@ use Give\Log\Log;
 use WP_Error;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 class DonateRoute
 {
@@ -25,7 +25,7 @@ class DonateRoute
     private $donateController;
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @param  DonateController  $donateController
      */
@@ -35,7 +35,7 @@ class DonateRoute
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @return void
      */
@@ -71,7 +71,7 @@ class DonateRoute
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      */
     private function logError(
         string $type,
