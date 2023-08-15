@@ -63,7 +63,7 @@ class PayPalStandardToDonationsMigrationGlobalBanner
         );
 
         $modalDescription = esc_html__(
-            'Migrate to PayPal Donations, which fully supports PayPal\'s latest API updates. As PayPal Standard is being deprecated, it will soon be removed from our platform.',
+            'Migrate to PayPal Donations, which fully supports PayPal\'s latest API updates. As PayPal Standard is being deprecated, it will soon be removed from our platform. PayPal Standard will continue to work a while longer, but we strongly recommend migrating to PayPal Donations as soon as you can.',
             'give'
         );
 
