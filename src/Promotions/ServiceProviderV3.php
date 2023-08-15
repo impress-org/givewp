@@ -23,7 +23,7 @@ class ServiceProviderV3 implements ServiceProviderInterface
      */
     public function boot()
     {
-        if(!get_option('givewp_next_gen_welcome_banner_dismissed')) {
+        if (!get_option('givewp_next_gen_welcome_banner_dismissed')) {
             Hooks::addAction('admin_notices', \Give\Promotions\WelcomeBanner\Actions\DisplayWelcomeBanner::class);
             Hooks::addAction('wp_ajax_givewp_next_gen_welcome_banner_dismiss', \Give\Promotions\WelcomeBanner\Actions\DismissWelcomeBanner::class);
         }

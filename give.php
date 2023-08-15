@@ -221,11 +221,10 @@ final class Give
         DonationFormsServiceProvider::class,
         FormDesignServiceProvider::class,
         FormMigrationServiceProvider::class,
-        //TODO merge this service providers
+        //TODO: merge this service provider
+        Give\PaymentGateways\Gateways\ServiceProvider::class,
+        //TODO: this was the beta welcome banner, remove this?
         Give\Promotions\ServiceProviderV3::class,
-        Give\Donations\ServiceProviderV3::class,
-        Give\Donors\ServiceProviderV3::class,
-        Give\PaymentGateways\Gateways\ServiceProvider::class
 
     ];
 

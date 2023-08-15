@@ -2,7 +2,7 @@
 
 namespace Give\Promotions\WelcomeBanner\Actions;
 
-use Give\Addon\View;
+use Give\Framework\Views\View;
 
 class DisplayWelcomeBanner
 {
