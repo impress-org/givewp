@@ -152,17 +152,20 @@ class AdminSettingFields
                 <div>
                     <h2><?php
                         esc_html_e('Accept Donations with PayPal Donations', 'give'); ?></h2>
-                    <p class="give-field-description"><?php
+                    <p class="give-field-description">
+                        <?php
                         esc_html_e(
                             'Allow your donors to give using Debit or Credit Cards directly on your website with no additional fees.',
                             'give'
-                                                      ); ?></p>
+                        );
+                        ?>
+                    </p>
                 </div>
                 <div class="paypal-logo">
-                    <img src="<?php
-                    echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/paypal-logo.svg'; ?>" width="316" height="84"
-                         alt="<?php
-                            esc_attr_e('PayPal Logo Image', 'give'); ?>">
+                    <img src="<?php echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/paypal-logo.svg'; ?>"
+                         width="316"
+                         height="84"
+                         alt="<?php esc_attr_e('PayPal Logo Image', 'give'); ?>">
                 </div>
             </div>
             <div class="feature-list">
@@ -276,13 +279,14 @@ class AdminSettingFields
             <div>
                 <p class="error-message"><?php esc_html_e('Warning, your account is not ready to accept donations.', 'give'); ?></p>
                 <p>
-                    <?php printf(
+                    <?php
+                    printf(
                         '%1$s %2$s',
                         esc_html__(
                             'There is an issue with your PayPal account that is preventing you from being able to accept donations.',
                             'give'
                         ),
-                                         $this->getAdminGuidanceNotice()
+                        $this->getAdminGuidanceNotice()
                     )
                     ?>
                 </p>
