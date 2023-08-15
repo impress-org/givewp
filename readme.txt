@@ -2,10 +2,10 @@
 Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, jason_the_adams, henryholtgeerts, kbjohnson90, alaca, benmeredithgmailcom, jonwaldstein, joshuadinh, glaubersilvawp, pauloiankoski
 Donate link: https://go.givewp.com/home
 Tags: donation, donate, recurring donations, fundraising, crowdfunding
-Requires at least: 5.0
+Requires at least: 5.9
 Tested up to: 6.3
-Requires PHP: 7.0
-Stable tag: 2.32.0
+Requires PHP: 7.2
+Stable tag: 3.0.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -258,6 +258,9 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 3.0.0: August 15th, 2023 =
+* New: GiveWP 3.0 is here! This is a major release that includes a new visual form builder and many more. Read more about it [on our website](https://go.givewp.com/corenextgen).
+
 = 2.32.0: August 11th, 2023 =
 * Feature: Scroll Stripe modal into view for Legacy + Multi-step forms
 * Feature: Added check for application/json in form headers accept

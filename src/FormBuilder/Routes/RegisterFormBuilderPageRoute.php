@@ -2,10 +2,11 @@
 
 namespace Give\FormBuilder\Routes;
 
-use Give\Addon\View;
+
 use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
 use Give\Framework\EnqueueScript;
+use Give\Framework\Views\View;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
 
