@@ -26,7 +26,7 @@ class FormFields extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 0.7.0
      */
     protected function handleDonorComments()
     {
@@ -38,7 +38,7 @@ class FormFields extends FormMigrationStep
     }
 
     /**
-     * @unreleased
+     * @since 0.7.0
      */
     protected function handleAnonymousDonations()
     {

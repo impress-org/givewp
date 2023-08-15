@@ -2,7 +2,7 @@ import {useSelect} from '@wordpress/data';
 import {getWindowData} from "@givewp/form-builder/common";
 
 /**
- * @unreleased
+ * @since 0.7.0
  */
 const {disallowedFieldNames} = getWindowData();
 

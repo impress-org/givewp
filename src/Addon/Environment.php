@@ -39,7 +39,11 @@ class Environment
      */
     public static function giveMinRequiredVersionCheck()
     {
-        return defined('GIVE_VERSION') && version_compare(GIVE_VERSION, GIVE_NEXT_GEN_MIN_GIVE_VERSION, '>=');
+        return defined('GIVE_VERSION') && version_compare(
+                GIVE_VERSION,
+                GIVE_NEXT_GEN_MIN_GIVE_VERSION,
+                '>='
+            ) && version_compare(GIVE_VERSION, '3.0.0', '<');
     }
 
     /**

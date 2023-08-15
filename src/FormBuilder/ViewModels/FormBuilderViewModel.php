@@ -183,7 +183,7 @@ class FormBuilderViewModel
      * as not to be too confusing. This array is used to prevent the user from creating meta keys that conflict with the
      * existing meta or field names.
      *
-     * @unreleased
+     * @since 0.7.0
      */
     protected function getDisallowedFieldNames(): array
     {

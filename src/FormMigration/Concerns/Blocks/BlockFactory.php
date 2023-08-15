@@ -99,7 +99,7 @@ class BlockFactory
     }
 
     /**
-     * @unreleased
+     * @since 0.7.0
      */
     public static function donorComments(): BlockModel
     {

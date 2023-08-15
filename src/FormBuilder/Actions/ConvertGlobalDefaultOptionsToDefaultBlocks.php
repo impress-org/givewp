@@ -9,12 +9,12 @@ use Give\Framework\Blocks\BlockModel;
  * In v2 forms, there was a concept of "Default Options" in global GiveWP settings.
  * In v3 forms, we have "Default Blocks" instead.  This action converts the global default options into default blocks.
  *
- * @unreleased
+ * @since 0.7.0
  */
 class ConvertGlobalDefaultOptionsToDefaultBlocks
 {
     /**
-     * @unreleased
+     * @since 0.7.0
      */
     public function __invoke(DonationForm $form)
     {
@@ -23,7 +23,7 @@ class ConvertGlobalDefaultOptionsToDefaultBlocks
     }
 
     /**
-     * @unreleased
+     * @since 0.7.0
      */
     protected function handleDonorComments(DonationForm $form)
     {
@@ -41,7 +41,7 @@ class ConvertGlobalDefaultOptionsToDefaultBlocks
     }
 
     /**
-     * @unreleased
+     * @since 0.7.0
      */
     protected function handleAnonymousDonations(DonationForm $form)
     {

@@ -19,7 +19,7 @@ class ArrayRule implements ValidationRule, ValidatesOnFrontEnd, Sanitizer
     }
 
     /**
-     * @unreleased
+     * @since 0.7.0
      */
     public static function id(): string
     {
@@ -27,7 +27,7 @@ class ArrayRule implements ValidationRule, ValidatesOnFrontEnd, Sanitizer
     }
 
     /**
-     * @unreleased
+     * @since 0.7.0
      */
     public static function fromString(string $options = null): ValidationRule
     {
@@ -35,7 +35,7 @@ class ArrayRule implements ValidationRule, ValidatesOnFrontEnd, Sanitizer
     }
 
     /**
-     * @unreleased
+     * @since 0.7.0
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
     {
@@ -45,7 +45,7 @@ class ArrayRule implements ValidationRule, ValidatesOnFrontEnd, Sanitizer
     }
 
     /**
-     * @unreleased
+     * @since 0.7.0
      */
     public function sanitize($value): string
     {
@@ -53,7 +53,7 @@ class ArrayRule implements ValidationRule, ValidatesOnFrontEnd, Sanitizer
     }
 
     /**
-     * @unreleased
+     * @since 0.7.0
      */
     public function serializeOption()
     {

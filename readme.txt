@@ -5,12 +5,21 @@ Tags: givewp, donation, donations, donation plugin, wordpress donation plugin, w
 Requires at least: 5.9
 Tested up to: 6.3
 Requires PHP: 7.2
-Stable tag: 0.6.0
+Stable tag: 0.7.0
 Requires Give: 2.32.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Create the donation form of your dreams using an easy-to-use visual donation form builder.
+
+= 0.7.0: Aug 15th, 2023 =
+* New: Added donor comments block
+* New: Added anonymous donations block
+* New: Added conditional logic block support to core blocks
+* New: Added new fields to the Fields API and their templates
+* Enhancement: Improved block/field name validation
+* Enhancement: Improved email notification design
+* Fix: Offline donation setting
 
 = 0.5.0: July 12th, 2023 =
 * Feature: Added ability to migrate forms to the visual donation form builder

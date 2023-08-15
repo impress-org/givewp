@@ -126,8 +126,8 @@ class DonateControllerData
     public $comment;
 
     /**
-     * @unreleased added support for comment property
-     * @unreleased added support for anonymous
+     * @since 0.7.0 added support for comment property
+     * @since 0.7.0 added support for anonymous
      * @since 0.5.0 Add support billing address field
      * @since      0.1.0
      */
@@ -154,8 +154,8 @@ class DonateControllerData
     }
 
     /**
-     * @unreleased added support for comment property
-     * @unreleased added support for anonymous
+     * @since 0.7.0 added support for comment property
+     * @since 0.7.0 added support for anonymous
      * @since 0.5.0 Add support billing address field
      * @since      0.3.0
      */

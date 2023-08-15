@@ -147,7 +147,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @unreleased added comment field
+     * @since 0.7.0 added comment field
      * @since 0.1.0
      *
      * @return void
