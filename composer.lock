@@ -4,6 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "2ac9280a7de695655451ea28d2960446",
     "packages": [
         {
@@ -1642,17 +1643,43 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/Dealerdirect/phpcodesniffer-composer-installer/zipball/fe390591e0241955f22eb9ba327d137e501c771c",
                 "reference": "fe390591e0241955f22eb9ba327d137e501c771c",
+=======
+    "content-hash": "826ac630b5d7b99d4c5ce670c0095200",
+    "packages": [],
+    "packages-dev": [
+        {
+            "name": "dealerdirect/phpcodesniffer-composer-installer",
+            "version": "v0.7.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Dealerdirect/phpcodesniffer-composer-installer.git",
+                "reference": "1c968e542d8843d7cd71de3c5c9c3ff3ad71a1db"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Dealerdirect/phpcodesniffer-composer-installer/zipball/1c968e542d8843d7cd71de3c5c9c3ff3ad71a1db",
+                "reference": "1c968e542d8843d7cd71de3c5c9c3ff3ad71a1db",
+>>>>>>> givewp-next-gen/master
                 "shasum": ""
             },
             "require": {
                 "composer-plugin-api": "^1.0 || ^2.0",
                 "php": ">=5.3",
+<<<<<<< HEAD
                 "squizlabs/php_codesniffer": "^2.0 || ^3.0 || ^4.0"
             },
             "require-dev": {
                 "composer/composer": "*",
                 "phpcompatibility/php-compatibility": "^9.0",
                 "sensiolabs/security-checker": "^4.1.0"
+=======
+                "squizlabs/php_codesniffer": "^2.0 || ^3.1.0 || ^4.0"
+            },
+            "require-dev": {
+                "composer/composer": "*",
+                "php-parallel-lint/php-parallel-lint": "^1.3.1",
+                "phpcompatibility/php-compatibility": "^9.0"
+>>>>>>> givewp-next-gen/master
             },
             "type": "composer-plugin",
             "extra": {
@@ -1673,6 +1700,13 @@
                     "email": "franck.nijhof@dealerdirect.com",
                     "homepage": "http://www.frenck.nl",
                     "role": "Developer / IT Manager"
+<<<<<<< HEAD
+=======
+                },
+                {
+                    "name": "Contributors",
+                    "homepage": "https://github.com/Dealerdirect/phpcodesniffer-composer-installer/graphs/contributors"
+>>>>>>> givewp-next-gen/master
                 }
             ],
             "description": "PHP_CodeSniffer Standards Composer Installer Plugin",
@@ -1684,6 +1718,10 @@
                 "codesniffer",
                 "composer",
                 "installer",
+<<<<<<< HEAD
+=======
+                "phpcbf",
+>>>>>>> givewp-next-gen/master
                 "phpcs",
                 "plugin",
                 "qa",
@@ -1698,6 +1736,7 @@
                 "issues": "https://github.com/dealerdirect/phpcodesniffer-composer-installer/issues",
                 "source": "https://github.com/dealerdirect/phpcodesniffer-composer-installer"
             },
+<<<<<<< HEAD
             "time": "2020-12-07T18:04:37+00:00"
         },
         {
@@ -1730,6 +1769,38 @@
                     "dev-master": "1.0.x-dev"
                 }
             },
+=======
+            "time": "2022-02-04T12:51:07+00:00"
+        },
+        {
+            "name": "doctrine/instantiator",
+            "version": "1.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/instantiator.git",
+                "reference": "10dcfce151b967d20fde1b34ae6640712c3891bc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/instantiator/zipball/10dcfce151b967d20fde1b34ae6640712c3891bc",
+                "reference": "10dcfce151b967d20fde1b34ae6640712c3891bc",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1 || ^8.0"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "^9",
+                "ext-pdo": "*",
+                "ext-phar": "*",
+                "phpbench/phpbench": "^0.16 || ^1",
+                "phpstan/phpstan": "^1.4",
+                "phpstan/phpstan-phpunit": "^1",
+                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.5",
+                "vimeo/psalm": "^4.22"
+            },
+            "type": "library",
+>>>>>>> givewp-next-gen/master
             "autoload": {
                 "psr-4": {
                     "Doctrine\\Instantiator\\": "src/Doctrine/Instantiator/"
@@ -1743,17 +1814,26 @@
                 {
                     "name": "Marco Pivetta",
                     "email": "ocramius@gmail.com",
+<<<<<<< HEAD
                     "homepage": "http://ocramius.github.com/"
                 }
             ],
             "description": "A small, lightweight utility to instantiate objects in PHP without invoking their constructors",
             "homepage": "https://github.com/doctrine/instantiator",
+=======
+                    "homepage": "https://ocramius.github.io/"
+                }
+            ],
+            "description": "A small, lightweight utility to instantiate objects in PHP without invoking their constructors",
+            "homepage": "https://www.doctrine-project.org/projects/instantiator.html",
+>>>>>>> givewp-next-gen/master
             "keywords": [
                 "constructor",
                 "instantiate"
             ],
             "support": {
                 "issues": "https://github.com/doctrine/instantiator/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/doctrine/instantiator/tree/master"
             },
             "time": "2015-06-14T21:17:01+00:00"
@@ -2140,6 +2220,60 @@
                 "files": [
                     "src/DeepCopy/deep_copy.php"
                 ]
+=======
+                "source": "https://github.com/doctrine/instantiator/tree/1.4.1"
+            },
+            "funding": [
+                {
+                    "url": "https://www.doctrine-project.org/sponsorship.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/phpdoctrine",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Finstantiator",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-03-03T08:28:38+00:00"
+        },
+        {
+            "name": "myclabs/deep-copy",
+            "version": "1.11.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/myclabs/DeepCopy.git",
+                "reference": "14daed4296fae74d9e3201d2c4925d1acb7aa614"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/14daed4296fae74d9e3201d2c4925d1acb7aa614",
+                "reference": "14daed4296fae74d9e3201d2c4925d1acb7aa614",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1 || ^8.0"
+            },
+            "conflict": {
+                "doctrine/collections": "<1.6.8",
+                "doctrine/common": "<2.13.3 || >=3,<3.2.2"
+            },
+            "require-dev": {
+                "doctrine/collections": "^1.6.8",
+                "doctrine/common": "^2.13.3 || ^3.2.2",
+                "phpunit/phpunit": "^7.5.20 || ^8.5.23 || ^9.5.13"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/DeepCopy/deep_copy.php"
+                ],
+                "psr-4": {
+                    "DeepCopy\\": "src/DeepCopy/"
+                }
+>>>>>>> givewp-next-gen/master
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -2155,6 +2289,7 @@
             ],
             "support": {
                 "issues": "https://github.com/myclabs/DeepCopy/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/myclabs/DeepCopy/tree/1.x"
             },
             "time": "2017-10-19T19:58:43+00:00"
@@ -2203,6 +2338,17 @@
                 "source": "https://github.com/nb/oxymel/tree/master"
             },
             "time": "2013-02-24T15:01:54+00:00"
+=======
+                "source": "https://github.com/myclabs/DeepCopy/tree/1.11.0"
+            },
+            "funding": [
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/myclabs/deep-copy",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-03-03T13:19:32+00:00"
+>>>>>>> givewp-next-gen/master
         },
         {
             "name": "phpcompatibility/php-compatibility",
@@ -2324,6 +2470,7 @@
         },
         {
             "name": "phpcompatibility/phpcompatibility-wp",
+<<<<<<< HEAD
             "version": "2.1.2",
             "source": {
                 "type": "git",
@@ -2334,6 +2481,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilityWP/zipball/a792ab623069f0ce971b2417edef8d9632e32f75",
                 "reference": "a792ab623069f0ce971b2417edef8d9632e32f75",
+=======
+            "version": "2.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPCompatibility/PHPCompatibilityWP.git",
+                "reference": "d55de55f88697b9cdb94bccf04f14eb3b11cf308"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilityWP/zipball/d55de55f88697b9cdb94bccf04f14eb3b11cf308",
+                "reference": "d55de55f88697b9cdb94bccf04f14eb3b11cf308",
+>>>>>>> givewp-next-gen/master
                 "shasum": ""
             },
             "require": {
@@ -2374,6 +2533,7 @@
                 "issues": "https://github.com/PHPCompatibility/PHPCompatibilityWP/issues",
                 "source": "https://github.com/PHPCompatibility/PHPCompatibilityWP"
             },
+<<<<<<< HEAD
             "time": "2021-07-21T11:09:57+00:00"
         },
         {
@@ -2395,18 +2555,46 @@
             },
             "require-dev": {
                 "phpunit/phpunit": "^4.6"
+=======
+            "time": "2021-12-30T16:37:40+00:00"
+        },
+        {
+            "name": "phpdocumentor/reflection-common",
+            "version": "2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpDocumentor/ReflectionCommon.git",
+                "reference": "1d01c49d4ed62f25aa84a747ad35d5a16924662b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionCommon/zipball/1d01c49d4ed62f25aa84a747ad35d5a16924662b",
+                "reference": "1d01c49d4ed62f25aa84a747ad35d5a16924662b",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2 || ^8.0"
+>>>>>>> givewp-next-gen/master
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
+<<<<<<< HEAD
                     "dev-master": "1.0.x-dev"
+=======
+                    "dev-2.x": "2.x-dev"
+>>>>>>> givewp-next-gen/master
                 }
             },
             "autoload": {
                 "psr-4": {
+<<<<<<< HEAD
                     "phpDocumentor\\Reflection\\": [
                         "src"
                     ]
+=======
+                    "phpDocumentor\\Reflection\\": "src/"
+>>>>>>> givewp-next-gen/master
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2430,6 +2618,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpDocumentor/ReflectionCommon/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/phpDocumentor/ReflectionCommon/tree/master"
             },
             "time": "2017-09-11T18:02:19+00:00"
@@ -2464,6 +2653,46 @@
                     "phpDocumentor\\Reflection\\": [
                         "src/"
                     ]
+=======
+                "source": "https://github.com/phpDocumentor/ReflectionCommon/tree/2.x"
+            },
+            "time": "2020-06-27T09:03:43+00:00"
+        },
+        {
+            "name": "phpdocumentor/reflection-docblock",
+            "version": "5.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
+                "reference": "622548b623e81ca6d78b721c5e029f4ce664f170"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/622548b623e81ca6d78b721c5e029f4ce664f170",
+                "reference": "622548b623e81ca6d78b721c5e029f4ce664f170",
+                "shasum": ""
+            },
+            "require": {
+                "ext-filter": "*",
+                "php": "^7.2 || ^8.0",
+                "phpdocumentor/reflection-common": "^2.2",
+                "phpdocumentor/type-resolver": "^1.3",
+                "webmozart/assert": "^1.9.1"
+            },
+            "require-dev": {
+                "mockery/mockery": "~1.3.2",
+                "psalm/phar": "^4.8"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "phpDocumentor\\Reflection\\": "src"
+>>>>>>> givewp-next-gen/master
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2474,11 +2703,19 @@
                 {
                     "name": "Mike van Riel",
                     "email": "me@mikevanriel.com"
+<<<<<<< HEAD
+=======
+                },
+                {
+                    "name": "Jaap van Otterdijk",
+                    "email": "account@ijaap.nl"
+>>>>>>> givewp-next-gen/master
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
             "support": {
                 "issues": "https://github.com/phpDocumentor/ReflectionDocBlock/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/phpDocumentor/ReflectionDocBlock/tree/release/3.x"
             },
             "time": "2017-11-10T14:09:06+00:00"
@@ -2504,18 +2741,53 @@
             "require-dev": {
                 "mockery/mockery": "^0.9.4",
                 "phpunit/phpunit": "^5.2||^4.8.24"
+=======
+                "source": "https://github.com/phpDocumentor/ReflectionDocBlock/tree/5.3.0"
+            },
+            "time": "2021-10-19T17:43:47+00:00"
+        },
+        {
+            "name": "phpdocumentor/type-resolver",
+            "version": "1.6.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpDocumentor/TypeResolver.git",
+                "reference": "77a32518733312af16a44300404e945338981de3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/77a32518733312af16a44300404e945338981de3",
+                "reference": "77a32518733312af16a44300404e945338981de3",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2 || ^8.0",
+                "phpdocumentor/reflection-common": "^2.0"
+            },
+            "require-dev": {
+                "ext-tokenizer": "*",
+                "psalm/phar": "^4.8"
+>>>>>>> givewp-next-gen/master
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
+<<<<<<< HEAD
                     "dev-master": "1.0.x-dev"
+=======
+                    "dev-1.x": "1.x-dev"
+>>>>>>> givewp-next-gen/master
                 }
             },
             "autoload": {
                 "psr-4": {
+<<<<<<< HEAD
                     "phpDocumentor\\Reflection\\": [
                         "src/"
                     ]
+=======
+                    "phpDocumentor\\Reflection\\": "src"
+>>>>>>> givewp-next-gen/master
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2528,11 +2800,20 @@
                     "email": "me@mikevanriel.com"
                 }
             ],
+<<<<<<< HEAD
             "support": {
                 "issues": "https://github.com/phpDocumentor/TypeResolver/issues",
                 "source": "https://github.com/phpDocumentor/TypeResolver/tree/master"
             },
             "time": "2017-07-14T14:27:02+00:00"
+=======
+            "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
+            "support": {
+                "issues": "https://github.com/phpDocumentor/TypeResolver/issues",
+                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.6.1"
+            },
+            "time": "2022-03-15T21:29:03+00:00"
+>>>>>>> givewp-next-gen/master
         },
         {
             "name": "phpspec/prophecy",
@@ -2821,6 +3102,7 @@
         },
         {
             "name": "phpunit/php-token-stream",
+<<<<<<< HEAD
             "version": "1.4.12",
             "source": {
                 "type": "git",
@@ -2831,19 +3113,42 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/1ce90ba27c42e4e44e6d8458241466380b51fa16",
                 "reference": "1ce90ba27c42e4e44e6d8458241466380b51fa16",
+=======
+            "version": "2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/php-token-stream.git",
+                "reference": "791198a2c6254db10131eecfe8c06670700904db"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/791198a2c6254db10131eecfe8c06670700904db",
+                "reference": "791198a2c6254db10131eecfe8c06670700904db",
+>>>>>>> givewp-next-gen/master
                 "shasum": ""
             },
             "require": {
                 "ext-tokenizer": "*",
+<<<<<<< HEAD
                 "php": ">=5.3.3"
             },
             "require-dev": {
                 "phpunit/phpunit": "~4.2"
+=======
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.2.4"
+>>>>>>> givewp-next-gen/master
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
+<<<<<<< HEAD
                     "dev-master": "1.4-dev"
+=======
+                    "dev-master": "2.0-dev"
+>>>>>>> givewp-next-gen/master
                 }
             },
             "autoload": {
@@ -2868,10 +3173,17 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-token-stream/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/sebastianbergmann/php-token-stream/tree/1.4"
             },
             "abandoned": true,
             "time": "2017-12-04T08:55:13+00:00"
+=======
+                "source": "https://github.com/sebastianbergmann/php-token-stream/tree/master"
+            },
+            "abandoned": true,
+            "time": "2017-11-27T05:48:46+00:00"
+>>>>>>> givewp-next-gen/master
         },
         {
             "name": "phpunit/phpunit",
@@ -3025,6 +3337,7 @@
             "time": "2017-06-30T09:13:00+00:00"
         },
         {
+<<<<<<< HEAD
             "name": "psr/log",
             "version": "1.1.4",
             "source": {
@@ -3185,6 +3498,8 @@
             "time": "2021-06-04T09:56:25+00:00"
         },
         {
+=======
+>>>>>>> givewp-next-gen/master
             "name": "sebastian/code-unit-reverse-lookup",
             "version": "1.0.2",
             "source": {
@@ -3744,6 +4059,7 @@
             "time": "2016-10-03T07:35:21+00:00"
         },
         {
+<<<<<<< HEAD
             "name": "seld/jsonlint",
             "version": "1.8.3",
             "source": {
@@ -3866,6 +4182,19 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/f268ca40d54617c6e06757f83f699775c9b3ff2e",
                 "reference": "f268ca40d54617c6e06757f83f699775c9b3ff2e",
+=======
+            "name": "squizlabs/php_codesniffer",
+            "version": "3.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
+                "reference": "1359e176e9307e906dc3d890bcc9603ff6d90619"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/1359e176e9307e906dc3d890bcc9603ff6d90619",
+                "reference": "1359e176e9307e906dc3d890bcc9603ff6d90619",
+>>>>>>> givewp-next-gen/master
                 "shasum": ""
             },
             "require": {
@@ -3908,6 +4237,7 @@
                 "source": "https://github.com/squizlabs/PHP_CodeSniffer",
                 "wiki": "https://github.com/squizlabs/PHP_CodeSniffer/wiki"
             },
+<<<<<<< HEAD
             "time": "2021-10-11T04:00:11+00:00"
         },
         {
@@ -3958,6 +4288,50 @@
                 "exclude-from-classmap": [
                     "/Tests/"
                 ]
+=======
+            "time": "2022-06-18T07:21:10+00:00"
+        },
+        {
+            "name": "symfony/polyfill-ctype",
+            "version": "v1.26.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-ctype.git",
+                "reference": "6fd1b9a79f6e3cf65f9e679b23af304cd9e010d4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/6fd1b9a79f6e3cf65f9e679b23af304cd9e010d4",
+                "reference": "6fd1b9a79f6e3cf65f9e679b23af304cd9e010d4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "provide": {
+                "ext-ctype": "*"
+            },
+            "suggest": {
+                "ext-ctype": "For best performance"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.26-dev"
+                },
+                "thanks": {
+                    "name": "symfony/polyfill",
+                    "url": "https://github.com/symfony/polyfill"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Ctype\\": ""
+                }
+>>>>>>> givewp-next-gen/master
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -3965,18 +4339,36 @@
             ],
             "authors": [
                 {
+<<<<<<< HEAD
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
+=======
+                    "name": "Gert de Pagter",
+                    "email": "BackEndTea@gmail.com"
+>>>>>>> givewp-next-gen/master
                 },
                 {
                     "name": "Symfony Community",
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
+<<<<<<< HEAD
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
             "support": {
                 "source": "https://github.com/symfony/console/tree/v3.4.47"
+=======
+            "description": "Symfony polyfill for ctype functions",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "ctype",
+                "polyfill",
+                "portable"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.26.0"
+>>>>>>> givewp-next-gen/master
             },
             "funding": [
                 {
@@ -3992,6 +4384,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2020-10-24T10:57:07+00:00"
         },
         {
@@ -4262,13 +4655,37 @@
             },
             "require": {
                 "php": "^5.5.9|>=7.0.8",
+=======
+            "time": "2022-05-24T11:49:31+00:00"
+        },
+        {
+            "name": "symfony/yaml",
+            "version": "v4.4.45",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/yaml.git",
+                "reference": "aeccc4dc52a9e634f1d1eebeb21eacfdcff1053d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/aeccc4dc52a9e634f1d1eebeb21eacfdcff1053d",
+                "reference": "aeccc4dc52a9e634f1d1eebeb21eacfdcff1053d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.3",
+>>>>>>> givewp-next-gen/master
                 "symfony/polyfill-ctype": "~1.8"
             },
             "conflict": {
                 "symfony/console": "<3.4"
             },
             "require-dev": {
+<<<<<<< HEAD
                 "symfony/console": "~3.4|~4.0"
+=======
+                "symfony/console": "^3.4|^4.0|^5.0"
+>>>>>>> givewp-next-gen/master
             },
             "suggest": {
                 "symfony/console": "For validating YAML files using the lint command"
@@ -4296,10 +4713,17 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
+<<<<<<< HEAD
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
             "support": {
                 "source": "https://github.com/symfony/yaml/tree/v3.4.47"
+=======
+            "description": "Loads and dumps YAML files",
+            "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/yaml/tree/v4.4.45"
+>>>>>>> givewp-next-gen/master
             },
             "funding": [
                 {
@@ -4315,6 +4739,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2020-10-24T10:57:07+00:00"
         },
         {
@@ -4343,6 +4768,41 @@
                 "phpunit/phpunit": "^4.8.36 || ^7.5.13"
             },
             "type": "library",
+=======
+            "time": "2022-08-02T15:47:23+00:00"
+        },
+        {
+            "name": "webmozart/assert",
+            "version": "1.11.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webmozarts/assert.git",
+                "reference": "11cb2199493b2f8a3b53e7f19068fc6aac760991"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/11cb2199493b2f8a3b53e7f19068fc6aac760991",
+                "reference": "11cb2199493b2f8a3b53e7f19068fc6aac760991",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "php": "^7.2 || ^8.0"
+            },
+            "conflict": {
+                "phpstan/phpstan": "<0.12.20",
+                "vimeo/psalm": "<4.6.1 || 4.6.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.5.13"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.10-dev"
+                }
+            },
+>>>>>>> givewp-next-gen/master
             "autoload": {
                 "psr-4": {
                     "Webmozart\\Assert\\": "src/"
@@ -4366,6 +4826,7 @@
             ],
             "support": {
                 "issues": "https://github.com/webmozarts/assert/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/webmozarts/assert/tree/1.9.1"
             },
             "time": "2020-07-08T17:02:28+00:00"
@@ -6515,6 +6976,11 @@
                 "source": "https://github.com/wp-cli/wp-config-transformer/tree/v1.2.8"
             },
             "time": "2020-11-12T08:08:10+00:00"
+=======
+                "source": "https://github.com/webmozarts/assert/tree/1.11.0"
+            },
+            "time": "2022-06-03T18:03:27+00:00"
+>>>>>>> givewp-next-gen/master
         },
         {
             "name": "wp-coding-standards/wpcs",
@@ -6631,15 +7097,23 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
+<<<<<<< HEAD
     "stability-flags": {
         "wordpress/wordpress": 20
     },
+=======
+    "stability-flags": [],
+>>>>>>> givewp-next-gen/master
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
     "platform-overrides": {
+<<<<<<< HEAD
         "php": "7.0.8"
+=======
+        "php": "7.2"
+>>>>>>> givewp-next-gen/master
     },
     "plugin-api-version": "2.3.0"
 }

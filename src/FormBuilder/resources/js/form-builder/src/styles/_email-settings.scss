@@ -1,0 +1,84 @@
+.email-settings-modal-tabs {
+    display: flex;
+    gap: var(--givewp-spacing-10);
+    height: 100%;
+
+    .components-tab-panel__tabs {
+        flex: 2;
+        border-bottom: 0;
+    }
+
+    .components-tab-panel__tab-content {
+        flex: 3;
+    }
+
+    .components-tab-panel__tabs-item {
+        &.is-active {
+            background-color: var(--givewp-grey-25);
+        }
+
+        &:after {
+            background: initial; // Remove the underline.
+        }
+    }
+
+    .components-button {
+        text-align: left;
+    }
+}
+
+.radio-control--email-options {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--givewp-spacing-2);
+}
+
+.email-template-tags {
+    height: 300px;
+    overflow: scroll;
+    border: 1px solid var(--givewp-grey-100);
+
+    scroll-snap-type: y mandatory;
+
+    & > li {
+        scroll-snap-align: start;
+    }
+
+    li {
+        padding: var(--givewp-spacing-2);
+        position: relative;
+
+        &:hover button {
+            visibility: visible;
+        }
+
+        button {
+            visibility: hidden;
+            position: absolute;
+            top: 0;
+            right: var(--givewp-spacing-2);
+        }
+    }
+
+    li:nth-child(even) {
+        background-color: var(--givewp-grey-5);
+    }
+
+    strong {
+        font-size: var(--givewp-font-size-headline-sm);
+        background-color: var(--givewp-blue-25);
+    }
+
+    p {
+        margin: 0; // Override the default margin.
+    }
+}
+
+[id^='__wp-uploader'] {
+    z-index: 9999999999;
+}
+
+.media-frame {
+    z-index: 1 !important;
+}
+
