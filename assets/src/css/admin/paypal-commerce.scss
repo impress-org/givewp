@@ -58,9 +58,10 @@
 			color: #666;
 
             span.icon{
-                position: relative;
-                top: 3px;
-                padding-right: 8px;
+				padding-right: 24px;
+				background-image: url(../images/admin/check-verified-icon.svg);
+				background-repeat: no-repeat;
+				background-position: center;
             }
 		}
 	}
