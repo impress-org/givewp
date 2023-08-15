@@ -12,5 +12,6 @@ export default function GatewayFieldNode({node}: {node: Field}) {
     const fieldProps = registerFieldAndBuildProps(node, register, errors);
     const {gateways} = useDonationFormState();
 
+    // @ts-ignore
     return <GatewayFieldTemplate key={node.name} {...fieldProps} gateways={gateways} />;
 }

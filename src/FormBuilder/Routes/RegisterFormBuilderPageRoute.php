@@ -83,7 +83,7 @@ class RegisterFormBuilderPageRoute
             '@givewp/form-builder/registrars',
             $formBuilderViewModel->jsPathToRegistrars(),
             [],
-            GIVE_NEXT_GEN_VERSION,
+            GIVE_VERSION,
             true
         );
 
@@ -114,7 +114,7 @@ class RegisterFormBuilderPageRoute
             $this->getRegisteredFormBuilderJsDependencies(
                 $formBuilderViewModel->jsDependencies()
             ),
-            GIVE_NEXT_GEN_VERSION,
+            GIVE_VERSION,
             true
         );
 

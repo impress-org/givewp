@@ -5,11 +5,13 @@ import {useSelect} from '@wordpress/data';
  */
 export default function usePostState(): { isSaving: boolean, isDisabled: boolean } {
     const isSaving = useSelect((select) => {
-        return select('core/editor').isSavingPost<boolean>()
+        // @ts-ignore
+        return select('core/editor').isSavingPost<boolean>();
     }, []);
 
     const isDisabled = useSelect((select) => {
-        return !select('core/editor').isEditedPostPublishable()
+        // @ts-ignore
+        return !select('core/editor').isEditedPostPublishable();
     }, []);
 
     return {

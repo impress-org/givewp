@@ -22,6 +22,7 @@ const registerMissingBlock = () => {
     }
 };
 
+// @ts-ignore
 const blockRegistrar = window.givewp.form.blocks;
 
 /**

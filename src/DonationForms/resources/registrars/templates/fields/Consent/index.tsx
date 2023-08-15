@@ -47,6 +47,7 @@ export default function ConsentField({
 
     return (
         <>
+            {/*// @ts-ignore*/}
             <Checkbox {...{Label, ErrorMessage, fieldError, inputProps}} value={'accepted'} />
 
             {isModalDisplay && showModal && (

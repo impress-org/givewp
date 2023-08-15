@@ -23,9 +23,7 @@ export default function Date({Label, ErrorMessage, description, dateFormat = 'yy
                 name={name}
                 render={({field: {onChange, onBlur, value, ref}}) => (
                     <DatePicker
-                        ref={(element) => {
-                            element && ref(element.input);
-                        }}
+                        ref={ref}
                         dateFormat={dateFormat}
                         selected={value && parse(value, dateFormat, new window.Date())}
                         onChange={(date) => {

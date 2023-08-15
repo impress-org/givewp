@@ -33,6 +33,7 @@ const TextContent = ({title, description, stepNumber, stepCount, isFirst, isLast
                 style={{
                     fontSize: isFirst || isLast ? '20px' : '16px',
                     margin: 'var(--givewp-spacing-3) 0' + (isFirst ? ' var(--givewp-spacing-5)' : ''),
+                    // @ts-ignore
                     textWrap: 'balance',
                 }}
             >

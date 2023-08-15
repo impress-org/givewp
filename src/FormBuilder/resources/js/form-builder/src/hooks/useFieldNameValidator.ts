@@ -79,6 +79,7 @@ const builtInFieldNames = [
  * @return {function(fieldName: string): [isUnique: boolean, suggestedName: string]}
  */
 const useFieldNameValidator = () => {
+    // @ts-ignore
     const blocks = useSelect((select) => select('core/block-editor').getBlocks(), []);
 
     const fieldNames = blocks

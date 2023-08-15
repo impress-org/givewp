@@ -14,6 +14,7 @@ interface BlockPreviewProps {
  * @since 0.5.0
  */
 export default function BlockPreview({clientId, formId, formFormat, openFormButton}: BlockPreviewProps) {
+    // @ts-ignore
     const selectedBlock = useSelect((select) => select('core/block-editor').getSelectedBlock(), []);
     const isBlockSelected = selectedBlock?.clientId === clientId;
 

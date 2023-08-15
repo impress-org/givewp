@@ -269,14 +269,14 @@ class DonationFormViewModel
             'givewp-donation-form-registrars',
             GIVE_PLUGIN_URL . 'build/donationFormRegistrars.css',
             [],
-            GIVE_NEXT_GEN_VERSION
+            GIVE_VERSION
         );
 
         wp_enqueue_script(
             'givewp-donation-form-registrars',
             GIVE_PLUGIN_URL . 'build/donationFormRegistrars.js',
             $this->getScriptAssetDependencies(GIVE_PLUGIN_DIR . 'build/donationFormRegistrars.asset.php'),
-            GIVE_NEXT_GEN_VERSION,
+            GIVE_VERSION,
             true
         );
 
@@ -345,7 +345,7 @@ class DonationFormViewModel
                 $this->getScriptAssetDependencies(GIVE_PLUGIN_DIR . 'build/donationFormApp.asset.php'),
                 ['givewp-donation-form-registrars']
             ),
-            GIVE_NEXT_GEN_VERSION,
+            GIVE_VERSION,
             true
         );
 
@@ -358,7 +358,7 @@ class DonationFormViewModel
             'givewp-donation-form-embed-inside',
             GIVE_PLUGIN_URL . 'build/donationFormEmbedInside.js',
             [],
-            GIVE_NEXT_GEN_VERSION,
+            GIVE_VERSION,
             true
         );
     }

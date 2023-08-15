@@ -42,7 +42,7 @@ export default function Form({defaultValues, sections, validationSchema}: PropTy
                     <FormTemplate
                         formProps={{
                             id: 'give-next-gen',
-                            onSubmit: handleSubmit((values) =>
+                            onSubmit: handleSubmit((values: any) =>
                                 handleSubmitRequest(
                                     values,
                                     setError,

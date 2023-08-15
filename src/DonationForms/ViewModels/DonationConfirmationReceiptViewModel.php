@@ -172,7 +172,7 @@ class DonationConfirmationReceiptViewModel
             'givewp-donation-form-registrars',
             GIVE_PLUGIN_URL . 'build/donationFormRegistrars.js',
             $this->getScriptAssetDependencies(GIVE_PLUGIN_DIR . 'build/donationFormRegistrars.asset.php'),
-            GIVE_NEXT_GEN_VERSION,
+            GIVE_VERSION,
             true
         );
 
@@ -222,7 +222,7 @@ class DonationConfirmationReceiptViewModel
                 $this->getScriptAssetDependencies(GIVE_PLUGIN_DIR . 'build/donationConfirmationReceiptApp.asset.php'),
                 ['givewp-donation-form-registrars']
             ),
-            GIVE_NEXT_GEN_VERSION,
+            GIVE_VERSION,
             true
         );
 
@@ -235,7 +235,7 @@ class DonationConfirmationReceiptViewModel
             'givewp-donation-form-embed-inside',
             GIVE_PLUGIN_URL . 'build/donationFormEmbedInside.js',
             [],
-            GIVE_NEXT_GEN_VERSION,
+            GIVE_VERSION,
             true
         );
     }

@@ -28,7 +28,7 @@ defined('ABSPATH') or exit;
 define('GIVE_NEXT_GEN_NAME', 'Visual Form Builder');
 
 // Versions
-define('GIVE_NEXT_GEN_VERSION', '0.7.0');
+define('GIVE_VERSION', '0.7.0');
 define('GIVE_NEXT_GEN_MIN_GIVE_VERSION', '2.32.0');
 
 // Add-on paths

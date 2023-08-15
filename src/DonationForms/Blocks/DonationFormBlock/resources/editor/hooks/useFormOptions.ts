@@ -11,8 +11,10 @@ export default function useFormOptions(): {formOptions: Option[] | []; isResolvi
     const {forms, isResolving} = useSelect((select) => {
         return {
             forms: select('core')
+                // @ts-ignore
                 .getEntityRecords<Post[]>('postType', 'give_forms')
                 ?.filter(({excerpt}) => excerpt.rendered === '<p>[]</p>\n'),
+            // @ts-ignore
             isResolving: select('core/data').getIsResolving('core', 'getEntityRecords', ['postType', 'give_forms']),
         };
     }, []);

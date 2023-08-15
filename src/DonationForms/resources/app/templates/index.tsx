@@ -53,6 +53,7 @@ export function withTemplateWrapper<TemplateProps>(
     htmlTag: keyof JSX.IntrinsicElements = 'div',
     name?: string
 ): FC<TemplateProps> {
+    // @ts-ignore
     const {nodeType, type} = findTemplateKeys(Template);
 
     return (props: TemplateProps) => (

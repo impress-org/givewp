@@ -7,7 +7,9 @@ import {Fragment, useState} from 'react';
 import {BlockInstance} from '@wordpress/blocks';
 import {FieldBlock} from '@givewp/form-builder/types';
 import BlockTypesList from '@givewp/form-builder/components/forks/BlockTypesList';
-import blockRegistrar from '@givewp/form-builder/common/registrars/blocks';
+
+// @ts-ignore
+const blockRegistrar = window.givewp.form.blocks;
 
 type SearchBlock = {
     id: string;
@@ -76,6 +78,7 @@ const FieldTypesList = () => {
     );
 
     const sidebarBlocks = Object.values(blocksBySection)
+        // @ts-ignore
         .filter((section) => section.blocks.length)
         .map(({name, label, blocks}, index) => {
             return (

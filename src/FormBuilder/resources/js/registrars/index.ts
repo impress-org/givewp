@@ -28,5 +28,6 @@ window.givewp.form.blocks = new BlockRegistrar();
 
 // register core blocks
 [...sectionBlocks, ...elementBlocks, ...fieldBlocks].forEach(({name, settings}) => {
+    // @ts-ignore
     window.givewp.form.blocks.register(name, settings);
 });

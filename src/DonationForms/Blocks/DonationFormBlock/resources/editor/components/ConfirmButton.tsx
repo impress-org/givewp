@@ -2,6 +2,7 @@ import {__} from '@wordpress/i18n';
 import usePostState from '../hooks/usePostState';
 import {dispatch} from '@wordpress/data';
 
+// @ts-ignore
 const savePost = () => dispatch('core/editor').savePost();
 
 export default function ConfirmButton({formId, enablePreview}) {

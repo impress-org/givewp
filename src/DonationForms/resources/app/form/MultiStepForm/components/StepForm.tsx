@@ -50,7 +50,7 @@ export default function StepForm({
                 <MultiStepFormTemplate
                     formProps={{
                         id: 'givewp-donation-form',
-                        onSubmit: handleSubmit((values) =>
+                        onSubmit: handleSubmit((values: any) =>
                             handleSubmitRequest(
                                 values,
                                 setError,
