@@ -17,7 +17,19 @@
     "paths": {
       "@givewp/components": ["./src/Views/Components/index.js"],
       "@givewp/components/*": ["./src/Views/Components/*"],
-      "@givewp/promotions/*": ["./src/Promotions/sharedResources/*"]
+      "@givewp/promotions/*": ["./src/Promotions/sharedResources/*"],
+       "@givewp/forms/types": [
+            "./src/DonationForms/resources/types.ts"
+        ],
+        "@givewp/forms/propTypes": [
+            "./src/DonationForms/resources/propTypes.ts"
+        ],
+        "@givewp/forms/app/*": [
+            "./src/DonationForms/resources/app/*"
+        ],
+        "@givewp/form-builder/*": [
+            "./src/FormBuilder/resources/js/form-builder/src/*"
+        ],
     }
   },
   "include": [

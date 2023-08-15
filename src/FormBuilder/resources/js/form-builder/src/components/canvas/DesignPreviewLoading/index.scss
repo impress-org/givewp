@@ -1,0 +1,17 @@
+.givewp__component {
+    &--DesignPreviewLoading {
+
+        position: absolute;
+        margin-top: -48px;
+
+        width: 100%;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+
+        svg {
+            width: 32px;
+            height: 32px;
+        }
+    }
+}
