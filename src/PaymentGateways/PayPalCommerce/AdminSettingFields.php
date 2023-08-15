@@ -136,12 +136,7 @@ class AdminSettingFields
 
         echo $this->getPayPalConnectionSettingView($paypalSandboxSetting);
 
-        if (
-            give(MerchantDetail::class)->accountIsReady
-            && ! give_is_gateway_active(PayPalCommerce::id())
-        ) {
-            echo give(PayPalDonationsSettingPageBanner::class)->render();
-        }
+        echo $this->getBanner();
     }
 
     /**
@@ -161,13 +156,13 @@ class AdminSettingFields
                         esc_html_e(
                             'Allow your donors to give using Debit or Credit Cards directly on your website with no additional fees.',
                             'give'
-                        ); ?></p>
+                                                      ); ?></p>
                 </div>
                 <div class="paypal-logo">
                     <img src="<?php
                     echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/paypal-logo.svg'; ?>" width="316" height="84"
                          alt="<?php
-                         esc_attr_e('PayPal Logo Image', 'give'); ?>">
+                            esc_attr_e('PayPal Logo Image', 'give'); ?>">
                 </div>
             </div>
             <div class="feature-list">
@@ -272,7 +267,7 @@ class AdminSettingFields
      *
      * @since 2.9.6
      */
-    private function printErrors( MerchantDetails $merchantDetailsRepository )
+    private function printErrors(MerchantDetails $merchantDetailsRepository)
     {
         $accountErrors = $merchantDetailsRepository->getAccountErrors();
 
@@ -287,7 +282,7 @@ class AdminSettingFields
                             'There is an issue with your PayPal account that is preventing you from being able to accept donations.',
                             'give'
                         ),
-                        $this->getAdminGuidanceNotice()
+                                         $this->getAdminGuidanceNotice()
                     )
                     ?>
                 </p>
@@ -423,7 +418,7 @@ class AdminSettingFields
                                     <i class="fab fa-paypal"></i>&nbsp;&nbsp;
                                     <?php echo $paypalSetting->connectButtonLabel; ?>
                                 </button>
-                                <?php if ('live' === $paypalSetting->mode): ?>
+                                <?php if ('live' === $paypalSetting->mode) : ?>
                                     <span class="tooltip">
                                         <span class="left-arrow"></span>
                                         <?php esc_html_e('Click to get started!', 'give'); ?>
@@ -481,6 +476,31 @@ class AdminSettingFields
                         <?php $this->printErrors($mechantDetailsRepository); ?>
                     </div>
                 </div>
+            </td>
+        </tr>
+        <?php
+        return ob_get_clean();
+    }
+
+    /**
+     * @unreleased
+     */
+    private function getBanner(): string
+    {
+        ob_start();
+
+        if (
+            give(MerchantDetail::class)->accountIsReady
+            && ! give_is_gateway_active(PayPalCommerce::id())
+        ) {
+            return '';
+        }
+        ?>
+        <tr>
+            <th scope="row" class="titledesc">
+            </th>
+            <td class="give-forminp">
+                <?php echo give(PayPalDonationsSettingPageBanner::class)->render(); ?>
             </td>
         </tr>
         <?php
