@@ -171,7 +171,7 @@ class GenerateConfirmationPageReceipt
                 )
             );
         }
-      
+
         if ($receipt->donation->anonymous) {
             $receipt->additionalDetails->addDetail(
                 new ReceiptDetail(
@@ -252,6 +252,16 @@ class GenerateConfirmationPageReceipt
 
         $receipt->settings->addSetting('currency', $receipt->donation->amount->getCurrency()->getCode());
         $receipt->settings->addSetting('donorDashboardUrl', get_permalink(give_get_option('donor_dashboard_page')));
+
+        if (function_exists('give_pdf_receipts')) {
+            $link = sprintf(
+                '<a id="give-pdf-receipt-link" title="%3$s" href="%1$s">%2$s</a>',
+                give_pdf_receipts()->engine->get_pdf_receipt_url($receipt->donation->id),
+                give_pdf_receipts_download_pdf_text(false),
+                give_pdf_receipts_download_pdf_text(false)
+            );
+            $receipt->settings->addSetting('pdfReceiptLink', $link);
+        }
     }
 
     /**

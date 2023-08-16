@@ -19,7 +19,7 @@ const SecureBadge = () => {
  *
  * @since 3.0.0
  */
-const Details = ({id, heading, details}: { id: string; heading: string; details: ReceiptDetail[] }) =>
+const Details = ({id, heading, details}: {id: string; heading: string; details: ReceiptDetail[]}) =>
     details?.length > 0 && (
         <div className={`details details-${id}`}>
             <h3 className="headline">{heading}</h3>
@@ -43,11 +43,13 @@ export default function DonationReceipt({
     heading,
     description,
     donorDashboardUrl,
+    pdfReceiptLink,
     donorDetails,
     donationDetails,
     subscriptionDetails,
     additionalDetails,
 }: DonationReceiptProps) {
+    console.log('pdfReceiptLink: ', pdfReceiptLink);
     return (
         <article>
             <div className="receipt-header">
@@ -74,6 +76,8 @@ export default function DonationReceipt({
             </div>
 
             <div className="receipt-footer">
+                <Interweave className="receipt-pdf-link" content={pdfReceiptLink} />
+
                 <a className="donor-dashboard-link" href={donorDashboardUrl} target="_parent">
                     {__('Go to my Donor Dashboard', 'give')}
                     <i className="fas fa-long-arrow-alt-right"></i>
