@@ -1,7 +1,7 @@
 import {__} from "@wordpress/i18n";
 
 /**
- * @since 0.3.1
+ * @since 3.0.0
  */
 export default function DonationFormAppErrorFallback({error, resetErrorBoundary}) {
     const {useFormState, useFormContext} = window.givewp.form.hooks;

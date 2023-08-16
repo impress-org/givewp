@@ -17,7 +17,7 @@ const getDonationTotal = (totals: any, amount: any) =>
     );
 
 /**
- * @since 0.3.3 update subscription frequency label
+ * @since 3.0.0 update subscription frequency label
  * @since 3.0.0
  */
 export default function DonationSummary() {

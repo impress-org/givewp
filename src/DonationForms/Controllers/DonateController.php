@@ -19,7 +19,7 @@ class DonateController
     /**
      * First we create a donation and/or subscription, then move on to the gateway processing
      *
-     * @since 0.3.3 use gateway controllers
+     * @since 3.0.0 use gateway controllers
      * @since 3.0.0 add support for subscriptions
      * @since 3.0.0
      *
