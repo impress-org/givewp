@@ -61,7 +61,6 @@ class DonorDetailsView
     }
 
     /**
-     * @since 3.0.0 updated to conditionally display value and label
      * @since 3.0.0
      *
      * @return string
@@ -86,7 +85,6 @@ class DonorDetailsView
     }
 
     /**
-     * @since 3.0.0 updated to format file fields
      * @since 3.0.0
      *
      * @return mixed

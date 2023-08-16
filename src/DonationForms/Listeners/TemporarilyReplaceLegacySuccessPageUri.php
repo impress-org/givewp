@@ -15,8 +15,6 @@ class TemporarilyReplaceLegacySuccessPageUri
      *
      * This is a temporary solution until we can update the gateway api to support the new receipt urls.
      *
-     * @since 3.0.0 move logic to an action
-     *
      * @since 3.0.0
      *
      * @return void
