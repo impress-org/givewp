@@ -85,15 +85,15 @@ class PayPalStandardToDonationsMigrationGlobalBanner
 
         return <<<EOT
             document.addEventListener("DOMContentLoaded", () => {
-            	const dismissModalAjaxRequest = () => {
-            		wp.ajax.post({
-						'give-action': 'dismiss_notices',
-						'notice_id': '$this->bannerId',
-						'dismissible_type': 'user',
-						'dismiss_interval': 'permanent',
-						'_wpnonce': '$nonce'
-					});
-            	};
+                const dismissModalAjaxRequest = () => {
+                    wp.ajax.post({
+                        'give-action': 'dismiss_notices',
+                        'notice_id': '$this->bannerId',
+                        'dismissible_type': 'user',
+                        'dismiss_interval': 'permanent',
+                        '_wpnonce': '$nonce'
+                    });
+                };
 
                 new Give.modal.GiveConfirmModal( {
                     classes: {
@@ -114,22 +114,22 @@ class PayPalStandardToDonationsMigrationGlobalBanner
                     closeOnBgClick: true,
                     showCloseBtn: true,
                     callbacks: {
-                    	open: () => {
-							const modal = document.querySelector('.give-modal');
+                        open: () => {
+                            const modal = document.querySelector('.give-modal');
 
-							modal.querySelector('.give-popup-close-button').addEventListener('click', () => {
-								window.open('https://docs.givewp.com/paypal-migration-doc', '_blank')
-							});
+                            modal.querySelector('.give-popup-close-button').addEventListener('click', () => {
+                                window.open('https://docs.givewp.com/paypal-migration-doc', '_blank')
+                            });
 
-							modal.querySelector('.give-popup-confirm-button').addEventListener('click', () => {
-								dismissModalAjaxRequest();
-								window.location.assign('$linkToPayPalDonationsSettingPage');
-							});
-						},
-						close: () => {
-							dismissModalAjaxRequest();
-						}
-					}
+                            modal.querySelector('.give-popup-confirm-button').addEventListener('click', () => {
+                                dismissModalAjaxRequest();
+                                window.location.assign('$linkToPayPalDonationsSettingPage');
+                            });
+                        },
+                        close: () => {
+                            dismissModalAjaxRequest();
+                        }
+                    }
                 } ).render();
             });
 EOT;
