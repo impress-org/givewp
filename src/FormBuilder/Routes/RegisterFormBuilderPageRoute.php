@@ -20,7 +20,6 @@ class RegisterFormBuilderPageRoute
     /**
      * Use add_submenu_page to register page within WP admin
      *
-     * @since 3.0.0 enqueue form builder styles
      * @since 3.0.0
      *
      * @return void
@@ -63,7 +62,6 @@ class RegisterFormBuilderPageRoute
     /**
      * Render page with scripts
      *
-     * @since 3.0.0 Add support for custom form extensions
      * @since 3.0.0
      *
      * @return void

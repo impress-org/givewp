@@ -19,7 +19,6 @@ use Stripe\PaymentIntent;
 trait StripePaymentElementRepository
 {
     /**
-     * @since 3.0.0 update params to use StripePaymentIntentData
      * @since 3.0.0
      * @throws ApiErrorException
      */
@@ -128,7 +127,6 @@ trait StripePaymentElementRepository
     }
 
     /**
-     * @since 3.0.0 no longer store the intent secret
      * @since 3.0.0
      *
      * @return void

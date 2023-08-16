@@ -4,7 +4,6 @@ import type {Post} from '@wordpress/core-data/src/entity-types';
 import type {Option} from '../types';
 
 /**
- * @since 3.0.0 filter v3 forms by rendered excerpt.
  * @since 3.0.0
  */
 export default function useFormOptions(): {formOptions: Option[] | []; isResolving: boolean} {

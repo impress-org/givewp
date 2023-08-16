@@ -53,7 +53,6 @@ class DonationDetailsView
     }
 
     /**
-     * @since 3.0.0 updated to conditionally display value and label
      * @since 3.0.0
      *
      * @return string
@@ -78,7 +77,6 @@ class DonationDetailsView
     }
 
     /**
-     * @since 3.0.0 updated to format file fields
      * @since 3.0.0
      *
      * @param  Field  $field

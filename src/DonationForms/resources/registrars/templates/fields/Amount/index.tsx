@@ -7,8 +7,6 @@ import DonationAmountCurrency from './DonationAmountCurrency';
 import DonationAmountLevels from './DonationAmountLevels';
 
 /**
- * @since 3.0.0 add currency settings
- * @since 3.0.0 add display options for multi levels, fixed amount, and custom amount
  * @since 3.0.0
  */
 export default function Amount({

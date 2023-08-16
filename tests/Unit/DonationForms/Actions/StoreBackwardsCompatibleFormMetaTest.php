@@ -15,7 +15,7 @@ class StoreBackwardsCompatibleFormMetaTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function testDonationLevelMetaIsStoredOnInsert()
     {
@@ -27,7 +27,7 @@ class StoreBackwardsCompatibleFormMetaTest extends TestCase
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function testDonationLevelMetaIsStoredOnUpdate()
     {
@@ -43,7 +43,7 @@ class StoreBackwardsCompatibleFormMetaTest extends TestCase
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function testDonationGoalMetaIsStoredOnInsert()
     {
@@ -60,7 +60,7 @@ class StoreBackwardsCompatibleFormMetaTest extends TestCase
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      */
     public function testRecurringMetaIsStoredOnUpdate()
     {
@@ -113,7 +113,7 @@ class StoreBackwardsCompatibleFormMetaTest extends TestCase
     }
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      */
     public function testRecurringMetaIsStoredOnInsert()
     {
@@ -161,7 +161,7 @@ class StoreBackwardsCompatibleFormMetaTest extends TestCase
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function testDonationGoalMetaIsStoredOnUpdate()
     {
@@ -182,7 +182,7 @@ class StoreBackwardsCompatibleFormMetaTest extends TestCase
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function testDonationGoalMetaUsesGoalTypeMetaKeyAmount()
     {
@@ -195,7 +195,7 @@ class StoreBackwardsCompatibleFormMetaTest extends TestCase
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function testDonationGoalMetaUsesGoalTypeMetaKeyDonations()
     {
@@ -208,7 +208,7 @@ class StoreBackwardsCompatibleFormMetaTest extends TestCase
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function testDonationGoalMetaUsesGoalTypeMetaKeyDonors()
     {

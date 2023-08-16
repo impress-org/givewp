@@ -1,5 +1,5 @@
 import {useMemo, useState} from 'react';
-import {Tabs, TabList, Tab, TabPanels, TabPanel} from '@reach/tabs';
+import {Tab, TabList, TabPanel, Tabs} from 'react-aria-components';
 import {__, sprintf} from '@wordpress/i18n';
 
 import {MustHaveAddons} from './MustHaveAddons';
@@ -56,27 +56,27 @@ export function AddonsAdminPage({startingTab = 0}) {
                         }}
                     />
                     <TabList className={styles.tabs}>
-                        <Tab>{__('Must Have Add-ons', 'give')}</Tab>
-                        <Tab>{__('View Pricing Plans', 'give')}</Tab>
-                        <Tab>{__('Additional Add-ons', 'give')}</Tab>
-                        <Tab>{__('Get a Free Add-on!', 'give')}</Tab>
+                        <Tab id="tab-1">{__('Must Have Add-ons', 'give')}</Tab>
+                        <Tab id="tab-2">{__('View Pricing Plans', 'give')}</Tab>
+                        <Tab id="tab-3">{__('Additional Add-ons', 'give')}</Tab>
+                        <Tab id="tab-4">{__('Get a Free Add-on!', 'give')}</Tab>
                     </TabList>
                 </div>
             </div>
-            <TabPanels className={styles.container}>
-                <TabPanel>
-                    <MustHaveAddons/>
+            <div className={styles.container}>
+                <TabPanel id="tab-1">
+                    <MustHaveAddons />
                 </TabPanel>
-                <TabPanel>
-                    <PricingPlans/>
+                <TabPanel id="tab-2">
+                    <PricingPlans />
                 </TabPanel>
-                <TabPanel>
-                    <AdditionalAddons/>
+                <TabPanel id="tab-3">
+                    <AdditionalAddons />
                 </TabPanel>
-                <TabPanel>
-                    <FreeAddOnTab/>
+                <TabPanel id="tab-4">
+                    <FreeAddOnTab />
                 </TabPanel>
-            </TabPanels>
+            </div>
         </Tabs>
     );
 }

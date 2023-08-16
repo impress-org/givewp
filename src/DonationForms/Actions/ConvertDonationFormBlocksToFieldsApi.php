@@ -44,9 +44,6 @@ class ConvertDonationFormBlocksToFieldsApi
     protected $currency;
 
     /**
-     * @since 3.0.0 return DonationForm Node
-     * @since 3.0.0 conditionally append blocks if block has inner blocks. Add blockIndex to inner blocks node converter.
-     * @since 3.0.0 conditionally append blocks if block has inner blocks
      * @since 3.0.0
      *
      * @throws TypeNotSupported|NameCollisionException
@@ -85,7 +82,6 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @since 3.0.0 remove innerBlock appending
      * @since 3.0.0
      */
     protected function convertTopLevelBlockToSection(BlockModel $block, int $blockIndex): Section
@@ -119,9 +115,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @since 3.0.0 Add support to billing address field
-     * @since      0.4.0 add blockIndex for unique field names, add filter `givewp_donation_form_block_render` filters
-     * @since      0.1.0
+     * @since 3.0.0
      *
      * @return Node|null
      * @throws NameCollisionException
