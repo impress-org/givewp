@@ -90,9 +90,16 @@ class ConvertDonationFormBlocksToFieldsApi
      */
     protected function convertTopLevelBlockToSection(BlockModel $block, int $blockIndex): Section
     {
-        return Section::make($block->getShortName() . '-' . $blockIndex)
+        $node = Section::make($block->getShortName() . '-' . $blockIndex)
             ->label($block->getAttribute('title'))
             ->description($block->getAttribute('description'));
+
+        $this->blockNodeRelationships[$block->clientId] = [
+            'block' => $block,
+            'node' => $node,
+        ];
+
+        return $node;
     }
 
     /**
