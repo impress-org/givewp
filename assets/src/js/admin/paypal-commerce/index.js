@@ -115,44 +115,42 @@ window.addEventListener( 'DOMContentLoaded', function() {
                 const paypalErrorQuickHelp = document.getElementById( 'give-paypal-onboarding-trouble-notice' );
                 const getPartnerLinkAjaxRequest = async () => {
                     // Request partner obboarding link.
-                    fetch(ajaxurl + `?action=give_paypal_commerce_get_partner_url&countryCode=${countryCode}&mode=${mode}&accountType=${connectionAccountType ?? 'EXPRESS_CHECKOUT'}`)
-                        .then(response => response.json())
-                        .then(function (res) {
-                            if (true === res.success) {
-                                const payPalLink = document.querySelector('[data-paypal-button]');
+                    const response = await fetch(ajaxurl + `?action=give_paypal_commerce_get_partner_url&countryCode=${countryCode}&mode=${mode}&accountType=${connectionAccountType ?? 'EXPRESS_CHECKOUT'}`);
+                     const data =  await response.json();
 
-                                // Dynamically set callback function name.
-                                payPalLink.setAttribute(
-                                    'data-paypal-onboard-complete',
-                                    'live' === mode
-                                        ? 'giveLivePayPalOnBoardedCallback'
-                                        : 'giveSandboxPayPalOnBoardedCallback'
-                                );
+                    if (true === data.success) {
+                        const payPalLink = document.querySelector('[data-paypal-button]');
 
-                                // Set PayPal button link (Partener link).
-                                payPalLink.href = `${res.data.partnerLink}&displayMode=minibrowser`;
+                        // Dynamically set callback function name.
+                        payPalLink.setAttribute(
+                            'data-paypal-onboard-complete',
+                            'live' === mode
+                                ? 'giveLivePayPalOnBoardedCallback'
+                                : 'giveSandboxPayPalOnBoardedCallback'
+                        );
 
-                                payPalLink.click();
-                            }
+                        // Set PayPal button link (Partener link).
+                        payPalLink.href = `${data.data.partnerLink}&displayMode=minibrowser`;
 
-                            buttonState.enable();
-                        })
+                        payPalLink.click();
+                    }
+
+                    buttonState.enable();
                 };
                 const getHelpMessageAjaxRequest = async () => {
-                    fetch(ajaxurl + '?action=give_paypal_commerce_onboarding_trouble_notice')
-                        .then(response => response.json())
-                        .then(function (res) {
-                            if (true === res.success) {
-                                function createElementFromHTML(htmlString) {
-                                    const div = document.createElement('div');
-                                    div.innerHTML = htmlString.trim();
-                                    return div.firstChild;
-                                }
+                    const response = await fetch(ajaxurl + '?action=give_paypal_commerce_onboarding_trouble_notice');
+                    const data = await response.json();
 
-                                const buttonContainer = container.$el_container.querySelector('.connect-button-wrap');
-                                buttonContainer.append(createElementFromHTML(res.data));
-                            }
-                        });
+                    if (true === data.success) {
+                        function createElementFromHTML(htmlString) {
+                            const div = document.createElement('div');
+                            div.innerHTML = htmlString.trim();
+                            return div.firstChild;
+                        }
+
+                        const buttonContainer = container.$el_container.querySelector('.connect-button-wrap');
+                        buttonContainer.append(createElementFromHTML(data.data));
+                    }
                 }
 
                 // eslint-disable-next-line no-undef
@@ -248,7 +246,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
                             }
 
                                                     await getPartnerLinkAjaxRequest();
-                            await getHelpMessageAjaxRequest();
+                            getHelpMessageAjaxRequest();
                         }
                 });
 
