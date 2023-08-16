@@ -30,7 +30,6 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @since 3.0.0 skip fields with non-existing meta
      * @since 3.0.0
      */
     protected function getCustomFields(Donation $donation): array
@@ -147,7 +146,6 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @since 3.0.0 added comment field
      * @since 3.0.0
      *
      * @return void
@@ -171,7 +169,7 @@ class GenerateConfirmationPageReceipt
                 )
             );
         }
-      
+
         if ($receipt->donation->anonymous) {
             $receipt->additionalDetails->addDetail(
                 new ReceiptDetail(
@@ -187,7 +185,6 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @since 3.0.0 update subscription amount label with frequency
      * @since 3.0.0
      *
      * @return void
@@ -270,7 +267,6 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @since 3.0.0 added backwards compatability for v2 forms tags
      * @since 3.0.0
      */
     protected function getHeading(DonationReceipt $receipt, DonationForm $donationForm = null): string
@@ -288,7 +284,6 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @since 3.0.0 added backwards compatability for v2 forms tags
      * @since 3.0.0
      */
     protected function getDescription(DonationReceipt $receipt, DonationForm $donationForm = null): string

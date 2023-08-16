@@ -12,7 +12,6 @@ import BlockPreview from './components/BlockPreview';
 import './styles/index.scss';
 
 /**
- * @since 3.0.0 Render block preview in the editor.
  * @since 3.0.0
  */
 export default function Edit({clientId, attributes, setAttributes}: BlockEditProps<any>) {

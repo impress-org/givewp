@@ -132,7 +132,6 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
 
     /**
      *
-     * @since 3.0.0 return DonationForm node; throw NameCollisionException
      * @since 3.0.0
      * @throws NameCollisionException
      */

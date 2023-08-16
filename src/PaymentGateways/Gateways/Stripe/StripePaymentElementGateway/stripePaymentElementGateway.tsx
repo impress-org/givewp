@@ -35,7 +35,6 @@ const zeroDecimalCurrencies = [
 /**
  * Takes in an amount value in dollar units and returns the calculated cents amount
  *
- * @since 3.0.0 update conversion to round up to nearest integer
  * @since 3.0.0
  */
 const dollarsToCents = (amount: string, currency: string) => {
