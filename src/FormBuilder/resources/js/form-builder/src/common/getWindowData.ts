@@ -39,8 +39,19 @@ interface FormBuilderWindowData {
 /**
  * @since 3.0.0
  */
+declare const window: {
+    storageData: FormBuilderWindowData;
+    givewp: {
+        form: {
+            blocks: BlockRegistrar;
+        };
+    };
+} & Window;
+
+/**
+ * @since 3.0.0
+ */
 export default function getWindowData(): FormBuilderWindowData {
-    // @ts-ignore
     return window.storageData;
 }
 
@@ -48,7 +59,6 @@ export default function getWindowData(): FormBuilderWindowData {
  * @since 3.0.0
  */
 export function getFormBuilderWindowData(): FormBuilderWindowData {
-    // @ts-ignore
     return window.storageData;
 }
 
@@ -56,6 +66,5 @@ export function getFormBuilderWindowData(): FormBuilderWindowData {
  * @since 3.0.0
  */
 export function getBlockRegistrar(): BlockRegistrar {
-    // @ts-ignore
     return window.givewp.form.blocks;
 }
