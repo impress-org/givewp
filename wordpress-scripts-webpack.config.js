@@ -21,6 +21,7 @@ module.exports = {
             '@givewp/forms/propTypes': srcPath('DonationForms/resources/propTypes.ts'),
             '@givewp/forms/app': srcPath('DonationForms/resources/app'),
             '@givewp/form-builder': srcPath('FormBuilder/resources/js/form-builder/src'),
+            '@givewp/form-builder/registrars': srcPath('FormBuilder/resources/js/registrars/index.ts'),
         },
     },
     entry: {

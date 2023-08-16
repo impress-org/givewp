@@ -19,7 +19,7 @@ import {Markup} from 'interweave';
 import Editor from '@givewp/form-builder/settings/email/template-options/components/editor';
 import StyledPopover from '@givewp/form-builder/blocks/fields/terms-and-conditions/StyledPopover';
 import GlobalSettingsLink from '@givewp/form-builder/blocks/fields/terms-and-conditions/GlobalSettingsLink';
-import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
+import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 
 const DisplayTypeEnum = {
     SHOW_MODAL_TERMS: 'showModalTerms',
@@ -41,7 +41,7 @@ export default function Edit({
     setAttributes,
 }: BlockEditProps<any>) {
     const [showAgreementTextModal, setShowAgreementTextModal] = useState(false);
-    const globalSettings = getFormBuilderData().termsAndConditions;
+    const globalSettings = getFormBuilderWindowData().termsAndConditions;
 
     if (useGlobalSettings) {
         checkboxLabel = globalSettings.checkboxLabel;
