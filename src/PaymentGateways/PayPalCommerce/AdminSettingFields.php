@@ -495,7 +495,7 @@ class AdminSettingFields
 
         if (
             give(MerchantDetail::class)->accountIsReady
-            && ! give_is_gateway_active(PayPalCommerce::id())
+            && give_is_gateway_active(PayPalCommerce::id())
         ) {
             return '';
         }
