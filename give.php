@@ -262,8 +262,6 @@ final class Give
 
         add_action('plugins_loaded', [$this, 'init'], 0);
 
-        //Hooks::addAction('init', Language::class, 'load');
-
         register_activation_hook(GIVE_PLUGIN_FILE, [$this, 'install']);
 
         do_action('give_loaded');
