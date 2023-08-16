@@ -17,7 +17,6 @@ const getDonationTotal = (totals: any, amount: any) =>
     );
 
 /**
- * @since 0.3.3 update subscription frequency label
  * @since 3.0.0
  */
 export default function DonationSummary() {
@@ -60,7 +59,7 @@ export default function DonationSummary() {
     };
 
     const donationSummaryItems = [amountItem, frequencyItem, ...Object.values(items)];
-    
+
     const donationTotal = formatter.format(getDonationTotal(totals, amount));
 
     return <DonationSummaryItemsTemplate items={donationSummaryItems} total={donationTotal} />;

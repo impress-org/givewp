@@ -126,10 +126,7 @@ class DonateControllerData
     public $comment;
 
     /**
-     * @since 3.0.0 added support for comment property
-     * @since 3.0.0 added support for anonymous
-     * @since 3.0.0 Add support billing address field
-     * @since      0.1.0
+     * @since 3.0.0
      */
     public function toDonation(int $donorId): Donation
     {
@@ -154,10 +151,7 @@ class DonateControllerData
     }
 
     /**
-     * @since 3.0.0 added support for comment property
-     * @since 3.0.0 added support for anonymous
-     * @since 3.0.0 Add support billing address field
-     * @since      0.3.0
+     * @since 3.0.0
      */
     public function toInitialSubscriptionDonation(int $donorId, int $subscriptionId): Donation
     {

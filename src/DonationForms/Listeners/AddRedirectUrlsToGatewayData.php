@@ -12,7 +12,6 @@ class AddRedirectUrlsToGatewayData
      *
      * This is necessary so gateways can use this value in both legacy and next gen donation forms.
      *
-     * @since 3.0.0 move to an action
      * @since 3.0.0
      *
      * @return void

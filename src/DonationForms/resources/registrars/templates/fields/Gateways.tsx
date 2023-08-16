@@ -74,7 +74,6 @@ const TestModeNotice = () => {
 };
 
 /**
- * @since 3.0.0 update to support currency switcher settings and test mode notice
  * @since 3.0.0
  */
 export default function Gateways({isTestMode, defaultValue, inputProps, gateways}: GatewayFieldProps) {
@@ -141,7 +140,6 @@ export default function Gateways({isTestMode, defaultValue, inputProps, gateways
 }
 
 /**
- * @since 3.0.0 replace index prop with defaultChecked
  * @since 3.0.0
  */
 function GatewayOption({gateway, defaultChecked, inputProps}: GatewayOptionProps) {

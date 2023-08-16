@@ -46,7 +46,6 @@ function getJoiRulesForField(field: Field): AnySchema {
 }
 
 /**
- * @since 3.0.0 add support for excludeUnless rule with basic conditions; do not validate fields with no rules
  * @since 3.0.0
  */
 function convertFieldAPIRulesToJoi(rules): AnySchema {

@@ -41,7 +41,6 @@ const initialState = {
 const formSettings = {...form.settings, ...getDonationFormNodeSettings(form)};
 
 /**
- * @since 3.0.0 add DonationFormSettingsProvider
  * @since 3.0.0
  */
 function App() {

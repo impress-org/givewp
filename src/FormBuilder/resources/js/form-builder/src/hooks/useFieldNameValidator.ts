@@ -20,7 +20,6 @@ export const hasFieldNameConflict = (fieldName: string, fieldNames: string[]) =>
 };
 
 /**
- * @since 3.0.0 switch hyphens to underscores
  * @since 3.0.0
  *
  * @returns {`${*}-${number|number}`}
@@ -73,7 +72,6 @@ const builtInFieldNames = [
  * A hook for validating uniqueness of the 'fieldName' attribute.
  * When a conflict has been found, a new name suggestion will be generated and returned within the array
  *
- * @since 3.0.0 name issue with name uniqueness not being reliable; switch hyphens to underscores
  * @since 3.0.0
  *
  * @return {function(fieldName: string): [isUnique: boolean, suggestedName: string]}

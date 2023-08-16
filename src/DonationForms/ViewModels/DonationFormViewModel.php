@@ -136,7 +136,6 @@ class DonationFormViewModel
     }
 
     /**
-     * @since 3.0.0 update form object data to use DonationForm Node
      * @since 3.0.0
      */
     public function exports(): array
@@ -234,7 +233,6 @@ class DonationFormViewModel
     /**
      * Loads scripts in order: [Registrars, Designs, Gateways, Block]
      *
-     * @since 3.0.0 Add support for custom form extensions
      * @since 3.0.0
      *
      * @return void
