@@ -13,8 +13,7 @@ use Give\Framework\Routes\RouteListener;
 class BlockRenderController
 {
     /**
-     * @since 3.0.0 replace iframe with root element for react
-     * @since      0.1.0
+     * @since 3.0.0
      *
      * @return string|null
      */
@@ -90,8 +89,7 @@ class BlockRenderController
      * Load embed givewp script to resize iframe
      * @see        https://github.com/davidjbradshaw/iframe-resizer
      *
-     * @since 3.0.0 load app scripts
-     * @since      0.1.0
+     * @since 3.0.0
      */
     private function loadEmbedScript()
     {

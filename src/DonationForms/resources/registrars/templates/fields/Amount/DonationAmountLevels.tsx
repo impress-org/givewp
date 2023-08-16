@@ -11,7 +11,6 @@ type DonationAmountLevelsProps = {
 };
 
 /**
- * @since 3.0.0 rename to DonationAmountLevels
  * @since 3.0.0
  */
 export default function DonationAmountLevels({
