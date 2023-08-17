@@ -8,22 +8,85 @@ import CopyToClipboardButton from './components/copy-to-clipboard-button';
 import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
 import SendPreviewEmail from './components/send-preview-email';
 import EmailPreviewContent from './components/email-preview-content';
-import {useFormState} from '@givewp/form-builder/stores/form-state';
+import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 
 export default () => {
     const [isOpen, setOpen] = useState<boolean>(false);
+    const [emailTemplateFieldValues, setEmailTemplateFieldValues] = useState<object>({});
+
     const openModal = () => setOpen(true);
     const closeModal = () => setOpen(false);
+
+    const dispatch = useFormStateDispatch();
 
     const [selectedTab, setSelectedTab] = useState<string>();
     const {
         settings: {emailTemplateOptions},
     } = useFormState();
+
     const selectedNotificationStatus = emailTemplateOptions[selectedTab]?.status ?? 'global';
 
     const [showPreview, setShowPreview] = useState<boolean>(false);
 
-    const {emailTemplateTags, emailNotifications} = getFormBuilderData();
+    const {emailTemplateTags, emailNotifications, emailDefaultAddress} = getFormBuilderData();
+
+    const config = emailNotifications.find((config) => config.id === selectedTab);
+
+    const option = {
+        status: 'enabled',
+        email_subject: config?.defaultValues.email_subject,
+        email_header: config?.defaultValues.email_header,
+        email_message: config?.defaultValues.email_message,
+        email_content_type: config?.defaultValues.email_content_type,
+        recipient: [emailDefaultAddress],
+        ...emailTemplateOptions[selectedTab],
+    };
+
+    const cancelChanges = () => {
+        setEmailTemplateFieldValues({
+            ...option,
+        });
+
+        dispatch(
+            setFormSettings({
+                ...emailTemplateOptions,
+                [selectedTab]: emailTemplateOptions[selectedTab],
+            })
+        );
+        closeModal();
+    };
+
+    const updateEmailTemplateOptions = () => {
+        dispatch(
+            setFormSettings({
+                emailTemplateOptions: {
+                    ...emailTemplateOptions,
+                    [selectedTab]: emailTemplateFieldValues,
+                },
+            })
+        );
+
+        closeModal();
+    };
+
+    const SetFieldsButton = ({label, onClick}) => {
+        return (
+            <Button
+                variant={'secondary'}
+                onClick={onClick}
+                style={{
+                    zIndex: 11, // Above the modal header
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    padding: 'var(--givewp-spacing-4) var(--givewp-spacing-6)',
+                    margin: 'var(--givewp-spacing-4) var(--givewp-spacing-6)',
+                }}
+            >
+                {label}
+            </Button>
+        );
+    };
 
     const CloseButton = ({label, onClick}) => {
         return (
@@ -34,8 +97,8 @@ export default () => {
                     zIndex: 11, // Above the modal header
                     position: 'absolute',
                     top: 0,
-                    right: 0,
-                    padding: 'var(--givewp-spacing-4) var(--givewp-spacing-6)',
+                    right: '9rem',
+                    padding: 'var(--givewp-spacing-4) var(--givewp-spacing-12)',
                     margin: 'var(--givewp-spacing-4) var(--givewp-spacing-6)',
                 }}
             >
@@ -80,7 +143,11 @@ export default () => {
 
                     {!showPreview && (
                         <>
-                            <CloseButton label={__('Set and close', 'givewp')} onClick={closeModal} />
+                            <CloseButton label={__('Cancel', 'givewp')} onClick={cancelChanges} />
+                            <SetFieldsButton
+                                label={__('Set and close', 'givewp')}
+                                onClick={updateEmailTemplateOptions}
+                            />
                             {/* Note: I tried extracting these to a wrapper component, but that broken focus due to re-renders. */}
                             <div
                                 style={{
@@ -117,7 +184,12 @@ export default () => {
                                                 }}
                                             >
                                                 <h2 style={{margin: '0 0 .5rem 0'}}>Notification</h2>
-                                                <EmailTemplateSettings notification={tab.name} />
+                                                <EmailTemplateSettings
+                                                    emailTemplateFieldValues={emailTemplateFieldValues}
+                                                    setEmailTemplateFieldValues={setEmailTemplateFieldValues}
+                                                    config={config}
+                                                    option={option}
+                                                />
                                             </div>
                                         )}
                                     </TabPanel>
