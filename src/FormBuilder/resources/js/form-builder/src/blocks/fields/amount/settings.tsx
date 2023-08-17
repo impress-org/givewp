@@ -88,7 +88,7 @@ const settings: FieldBlock['settings'] = {
             type: 'string',
             default: recurringLengthOfTime, // ongoing
         },
-        recurringDisableOneTime: {
+        recurringDisableOneTimeDonations: {
             type: 'boolean',
             default: recurringDisableOneTimeDonations,
         },
