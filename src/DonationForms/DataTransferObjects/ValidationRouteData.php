@@ -65,9 +65,9 @@ class ValidationRouteData implements Arrayable
 
         if ($validator->fails()) {
             $this->throwDonationFormFieldErrorsException($validator->errors());
-        } else {
-            return new JsonResponse(['valid' => true]);
         }
+
+        return new JsonResponse(['valid' => true]);
     }
 
     /**
