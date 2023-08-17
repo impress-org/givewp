@@ -2,10 +2,25 @@
 
 namespace Give\FormMigration\Actions;
 
-use Give\FormMigration\Contracts\TransferAction;
-
-class TransferFormUrl extends TransferAction
+class TransferFormUrl
 {
+    protected $sourceId;
+
+    public function __construct($sourceId)
+    {
+        $this->sourceId = $sourceId;
+    }
+
+    public static function from($sourceId): TransferFormUrl
+    {
+        return new TransferFormUrl($sourceId);
+    }
+
+    public function to($destinationId)
+    {
+        $this->__invoke($destinationId);
+    }
+
     public function __invoke($destinationId)
     {
         $postName = get_post($this->sourceId)->post_name;

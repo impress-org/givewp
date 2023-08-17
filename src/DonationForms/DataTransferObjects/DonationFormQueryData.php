@@ -57,7 +57,7 @@ class DonationFormQueryData
      */
     public static function fromObject($queryObject): DonationFormQueryData
     {
-        $self = new static();
+        $self = new DonationFormQueryData();
         $self->id = (int)$queryObject->id;
         $self->title = $queryObject->title;
         $self->createdAt = Temporal::toDateTime($queryObject->createdAt);

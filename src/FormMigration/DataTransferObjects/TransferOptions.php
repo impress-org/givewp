@@ -22,18 +22,18 @@ class TransferOptions
         $this->redirect = $redirect;
     }
 
-    public static function fromRequest(WP_REST_Request $request)
+    public static function fromRequest(WP_REST_Request $request): TransferOptions
     {
-        return new static(
+        return new TransferOptions(
             $request->get_param('changeUrl'),
             $request->get_param('delete'),
             $request->get_param('redirect')
         );
     }
 
-    public static function fromArray($options)
+    public static function fromArray($options): TransferOptions
     {
-        return new static(
+        return new TransferOptions(
             $options['changeUrl'],
             $options['delete'],
             $options['redirect']

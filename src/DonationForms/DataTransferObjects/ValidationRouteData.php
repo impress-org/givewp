@@ -28,9 +28,9 @@ class ValidationRouteData implements Arrayable
      *
      * @since 3.0.0
      */
-    public static function fromRequest(array $requestData): self
+    public static function fromRequest(array $requestData): ValidationRouteData
     {
-        $self = new static();
+        $self = new ValidationRouteData();
         $self->formId = (int)$requestData['formId'];
         $self->requestData = $requestData;
 

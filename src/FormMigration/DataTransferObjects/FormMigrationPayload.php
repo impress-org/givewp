@@ -19,8 +19,8 @@ class FormMigrationPayload
         $this->formV3 = $formV3;
     }
 
-    public static function fromFormV2(DonationFormV2 $formV2)
+    public static function fromFormV2(DonationFormV2 $formV2): FormMigrationPayload
     {
-        return new static($formV2, DonationFormV3::factory()->create());
+        return new FormMigrationPayload($formV2, DonationFormV3::factory()->create());
     }
 }

@@ -29,7 +29,7 @@ class UserData
      */
     public static function fromUser(\WP_User $user): UserData
     {
-        $self = new static();
+        $self = new UserData();
 
         $self->firstName = $user->user_firstname;
         $self->lastName = $user->user_lastname;

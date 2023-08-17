@@ -23,7 +23,7 @@ class AuthenticationData
      */
     public static function fromRequest(array $request): AuthenticationData
     {
-        $self = new static();
+        $self = new AuthenticationData();
 
         $self->login = $request['login'];
         $self->password = $request['password'];

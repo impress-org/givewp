@@ -20,7 +20,7 @@ class DonationConfirmationReceiptViewRouteData
      */
     public static function fromRequest(array $request): DonationConfirmationReceiptViewRouteData
     {
-        $self = new self();
+        $self = new DonationConfirmationReceiptViewRouteData();
 
         $self->receiptId = isset($request['receipt-id']) && $self::isReceiptIdValid(
             $request['receipt-id']
