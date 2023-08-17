@@ -239,15 +239,6 @@ const Inspector = ({attributes, setAttributes}) => {
                 {!!isRecurring && (
                     <>
                         <PanelRow>
-                            <ToggleControl
-                                label={__('Disable One-Time donations', 'give')}
-                                checked={recurringDisableOneTimeDonations}
-                                onChange={() =>
-                                    setAttributes({recurringDisableOneTimeDonations: !recurringDisableOneTimeDonations})
-                                }
-                            />
-                        </PanelRow>
-                        <PanelRow>
                             <SelectControl
                                 label={__('Donation choice', 'give')}
                                 options={[
@@ -258,6 +249,19 @@ const Inspector = ({attributes, setAttributes}) => {
                                 onChange={(recurringDonationChoice) => setAttributes({recurringDonationChoice})}
                             />
                         </PanelRow>
+                        {'donor' === recurringDonationChoice && (
+                            <PanelRow>
+                                <ToggleControl
+                                    label={__('Disable One-Time donations', 'give')}
+                                    checked={recurringDisableOneTimeDonations}
+                                    onChange={() =>
+                                        setAttributes({
+                                            recurringDisableOneTimeDonations: !recurringDisableOneTimeDonations,
+                                        })
+                                    }
+                                />
+                            </PanelRow>
+                        )}
                         <PanelRow>
                             <SelectControl
                                 label={__('Billing interval', 'give')}
