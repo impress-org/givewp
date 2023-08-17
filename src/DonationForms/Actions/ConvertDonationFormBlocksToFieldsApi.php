@@ -94,10 +94,7 @@ class ConvertDonationFormBlocksToFieldsApi
             ->label($block->getAttribute('title'))
             ->description($block->getAttribute('description'));
 
-        $this->blockNodeRelationships[$block->clientId] = [
-            'block' => $block,
-            'node' => $node,
-        ];
+        $this->mapBlockToNodeRelationships($block, $node);
 
         return $node;
     }
@@ -117,10 +114,7 @@ class ConvertDonationFormBlocksToFieldsApi
         if ($node instanceof Node) {
             $node = $this->mapGenericBlockAttributesToNode($node, $block);
 
-            $this->blockNodeRelationships[$block->clientId] = [
-                'block' => $block,
-                'node' => $node,
-            ];
+            $this->mapBlockToNodeRelationships($block, $node);
 
             return $node;
         }
@@ -398,5 +392,18 @@ class ConvertDonationFormBlocksToFieldsApi
         }
 
         return $node;
+    }
+
+    /**
+     * @since 3.0.0
+     *
+     * @return void
+     */
+    private function mapBlockToNodeRelationships(BlockModel $block, Node $node)
+    {
+        $this->blockNodeRelationships[$block->clientId] = [
+            'block' => $block,
+            'node' => $node,
+        ];
     }
 }
