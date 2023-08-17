@@ -178,7 +178,7 @@ class FormSettings implements Arrayable, Jsonable
             'give'
         );
         $self->formTitle = $array['formTitle'] ?? __('Donation Form', 'give');
-        $self->donateButtonCaption = $array['donateButtonCaption'] ?? __('Donation now', 'give');
+        $self->donateButtonCaption = $array['donateButtonCaption'] ?? __('Donate now', 'give');
         $self->enableDonationGoal = $array['enableDonationGoal'] ?? false;
         $self->enableAutoClose = $array['enableAutoClose'] ?? false;
         $self->goalType = ! empty($array['goalType']) ? new GoalType($array['goalType']) : GoalType::AMOUNT();
