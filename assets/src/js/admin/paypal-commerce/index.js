@@ -98,14 +98,15 @@ window.addEventListener( 'DOMContentLoaded', function() {
                     }
                 }
                 const buttonState = {
+                    intialLabelWithIcon: null,
                     enable: () => {
                         onBoardingButton.disabled = false;
-                        evt.target.innerText = onBoardingButton.getAttribute( 'data-initial-label' );
+                        evt.target.innerHTML = buttonState.intialLabelWithIcon;
                     },
                     disable: () => {
                         // Preserve initial label.
-                        if ( ! onBoardingButton.hasAttribute( 'data-initial-label' ) ) {
-                            onBoardingButton.setAttribute( 'data-initial-label', onBoardingButton.innerText );
+                        if ( buttonState.intialLabelWithIcon === null) {
+                            buttonState.intialLabelWithIcon = evt.target.innerHTML;
                         }
 
                         onBoardingButton.disabled = true;
