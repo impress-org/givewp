@@ -2,6 +2,8 @@
 
 namespace Give\Framework\FieldsAPI;
 
+use InvalidArgumentException;
+
 /**
  * @unlreased
  */
@@ -32,6 +34,10 @@ class MultiSelect extends Field
      */
     public function fieldType(string $fieldType): MultiSelect
     {
+        if (!in_array($fieldType, ['checkbox', 'dropdown'])) {
+            throw new InvalidArgumentException(__('Field type must be either "checkbox" or "dropdown".', 'give'));
+        }
+
         $this->fieldType = $fieldType;
 
         return $this;
