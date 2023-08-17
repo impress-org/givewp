@@ -271,13 +271,16 @@ class DonationFormViewModel
             GIVE_VERSION
         );
 
+        $handle = 'givewp-donation-form-registrars';
         wp_enqueue_script(
-            'givewp-donation-form-registrars',
+            $handle,
             GIVE_PLUGIN_URL . 'build/donationFormRegistrars.js',
             $this->getScriptAssetDependencies(GIVE_PLUGIN_DIR . 'build/donationFormRegistrars.asset.php'),
             GIVE_VERSION,
             true
         );
+
+        Language::setScriptTranslations($handle);
 
         wp_add_inline_script(
             'givewp-donation-form-registrars',

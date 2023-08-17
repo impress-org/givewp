@@ -10,6 +10,7 @@ use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\Receipts\DonationReceipt;
 use Give\Framework\Receipts\DonationReceiptBuilder;
 use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
+use Give\Helpers\Language;
 
 /**
  * @since 3.0.0
@@ -92,7 +93,7 @@ class DonationConfirmationReceiptViewModel
         $donationForm = !$donationFormRepository->isLegacyForm(
             $this->donation->formId
         ) ? $this->getDonationForm() : null;
-        
+
         $formDesignId = $donationForm ? $donationForm->settings->designId : DeveloperFormDesign::id();
         $customCss = $donationForm && $donationForm->settings->customCss ? $donationForm->settings->customCss : null;
         $primaryColor = $donationForm ? $donationForm->settings->primaryColor : '#69B868';
@@ -147,7 +148,7 @@ class DonationConfirmationReceiptViewModel
             'givewp-global-form-styles',
             ":root {
             --givewp-primary-color:{$primaryColor};
-            --givewp-secondary-color:{$secondaryColor}; 
+            --givewp-secondary-color:{$secondaryColor};
             }"
         );
 
@@ -168,13 +169,17 @@ class DonationConfirmationReceiptViewModel
      */
     private function enqueueFormScripts(int $formId, string $formDesignId)
     {
+        $handle = 'givewp-donation-form-registrars';
+
         wp_enqueue_script(
-            'givewp-donation-form-registrars',
+            $handle,
             GIVE_PLUGIN_URL . 'build/donationFormRegistrars.js',
             $this->getScriptAssetDependencies(GIVE_PLUGIN_DIR . 'build/donationFormRegistrars.asset.php'),
             GIVE_VERSION,
             true
         );
+
+        Language::setScriptTranslations($handle);
 
         wp_add_inline_script(
             'givewp-donation-form-registrars',
