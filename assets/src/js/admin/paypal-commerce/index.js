@@ -79,7 +79,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
 
 	if ( onBoardingButtons.length ) {
         onBoardingButtons.forEach( function( onBoardingButton ) {
-            onBoardingButton.addEventListener( 'click', async function( evt ) {
+            onBoardingButton.addEventListener( 'click', function( evt ) {
                 evt.preventDefault();
 
                 let isAdminSelectedConnectionAccountType =  false;
