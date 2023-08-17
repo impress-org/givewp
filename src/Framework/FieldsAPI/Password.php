@@ -20,7 +20,7 @@ class Password extends Field
      *
      * @return $this
      */
-    public function storeAsDonorMeta(bool $storeAsDonorMeta = true): self
+    public function storeAsDonorMeta(bool $storeAsDonorMeta = true)
     {
         // Do not allow password fields to be stored as donor meta.
         $this->scope = null;
