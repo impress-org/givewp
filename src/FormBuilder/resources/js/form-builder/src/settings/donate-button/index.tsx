@@ -12,8 +12,8 @@ export default function DonateButton() {
         <PanelBody title={__('Donate Button', 'give')} initialOpen={false}>
             <PanelRow>
                 <TextControl
-                    label={__('Donate button caption', 'give')}
-                    help={__('Update the text inside the donate button.', 'give')}
+                    label={__('Button caption', 'give')}
+                    help={__('Enter the text you want to display on the donation button', 'give')}
                     value={donateButtonCaption}
                     onChange={(value) => dispatch(setFormSettings({donateButtonCaption: value}))}
                 />
