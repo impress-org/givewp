@@ -112,7 +112,7 @@ class ConvertDonationFormBlocksToFieldsApi
         $node = $this->createNodeFromBlockWithUniqueAttributes($block, $blockIndex);
 
         if ($node instanceof Node) {
-            $node = $this->mapGenericBlockAttributesToNode($node, $block);
+            $node = $this->mapGenericBlockAttributesToNode($block, $node);
 
             $this->mapBlockToNodeRelationships($block, $node);
 
@@ -364,7 +364,7 @@ class ConvertDonationFormBlocksToFieldsApi
     /**
      * @since 3.0.0
      */
-    protected function mapGenericBlockAttributesToNode(Node $node, BlockModel $block): Node
+    protected function mapGenericBlockAttributesToNode(BlockModel $block, Node $node): Node
     {
         if ('field' === $node->getNodeType()) {
             // Label
