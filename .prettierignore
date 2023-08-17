@@ -9,5 +9,6 @@ sample-data/*
 
 # Ignore Files
 phpcs.xml
+phpcs.xml.dist
 package-lock.json
 composer.lock

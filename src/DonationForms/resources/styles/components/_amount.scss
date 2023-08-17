@@ -1,0 +1,202 @@
+@use '../variables';
+$borderColor: #9A9A9A;
+
+.givewp-groups-donationAmount {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.givewp-fields-amount {
+    display: grid;
+    row-gap: 1rem;
+
+    &__fixed-message {
+        background-color: #DAF0E3;
+        padding: 0.5rem 1rem;
+        text-align: center;
+        border-radius: 5px;
+    }
+
+    &__currency-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+        background-color: #E9E9E9;
+        padding: 0.25rem 0.75rem;
+        border-radius: 5px;
+    }
+
+    &__currency-select {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+        background-color: #DAF0E3;
+        padding: 0.25rem 2rem 0.25rem 0.75rem;
+        border-radius: 5px;
+    }
+
+    &__input-label-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__input-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-width: 0.125rem;
+        border-style: solid;
+        border-color: $borderColor;
+        border-radius: 0.5rem;
+        padding: 1rem 0;
+
+        &.invalid {
+            border-color: red;
+        }
+
+        &:focus-within {
+            border-color: var(--givewp-primary-color);
+        }
+    }
+
+    &__input {
+        position: relative;
+        background-color: rgb(255, 255, 255);
+        font-family: inherit;
+        font-size: 1.8rem;
+        font-weight: 600;
+        line-height: normal;
+        color: rgb(51, 51, 51);
+        outline: 0;
+        border: 0;
+        width: 100%;
+        text-align: center;
+        padding: 0;
+        margin-bottom: 0;
+        background-image: none;
+        box-shadow: none;
+
+        &::placeholder {
+            opacity: 0.6;
+            font-weight: 300;
+            color: #828282;
+        }
+    }
+
+    &__levels-container {
+        display: grid;
+        grid-auto-rows: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+        inline-size: 100%;
+        list-style: none;
+
+        @media screen and (min-width: variables.$givewp-breakpoint-sm) {
+            gap: 1rem;
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    &__level {
+        list-style: none;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 0.125rem solid $borderColor;
+        border-radius: 0.5rem;
+        background-color: #fff;
+        color: #000;
+        text-align: center;
+        font-family: inherit;
+        font-weight: 500;
+        line-height: 1.2;
+        block-size: 100%;
+        font-size: 1.5rem;
+        padding: 1rem 0.5rem;
+        transition-property: background-color, color, filter, box-shadow, transform;
+        transition-duration: 200ms;
+        transition-timing-function: ease-in;
+        width: 100%;
+        margin-bottom: 0;
+        box-shadow: none;
+
+        @media screen and (min-width: variables.$givewp-breakpoint-sm) {
+            padding: 1.5rem 0.5rem;
+        }
+
+        &--selected {
+            background-color: var(--givewp-primary-color);
+            border-color: var(--givewp-primary-color);
+            color: #fff;
+        }
+    }
+}
+
+.givewp-fields-radio-subscriptionPeriod {
+    legend {
+        margin-bottom: 1rem;
+    }
+
+    .givewp-fields-radio__options {
+        padding: 4px;
+        display: flex;
+        gap: 4px;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+        margin: 0;
+        height: 50px;
+        width: 100%;
+        border: 1px solid var(--givewp-primary-color);
+        border-radius: 5px;
+
+        .givewp-fields-radio__option-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+
+        label {
+            position: absolute;
+            color: #000000;
+            margin: 0;
+        }
+
+        input[type="radio"] {
+            height: 100%;
+            border-color: transparent;
+            border-width: 1px;
+            border-style: solid;
+            border-radius: 5px;
+            width: 100%;
+            position: absolute;
+            z-index: 10;
+            margin: 0;
+
+            &:focus {
+                box-shadow: none;
+                outline: none;
+            }
+
+            &:checked {
+                background-color: var(--givewp-primary-color);
+                border-color: var(--givewp-primary-color);
+
+                + label {
+                    color: #fff;
+                    z-index: 10;
+                }
+            }
+        }
+    }
+}

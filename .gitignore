@@ -50,10 +50,12 @@ node_modules
 assets/dist/
 .storybook-static
 release
+public
+.storybook-static
+languages
 
 # Composer
 vendor
-
 # PHPCS
 .phpcs.xml
 phpcs.xml
@@ -66,3 +68,10 @@ languages/*
 build
 **/build.*
 **/build.asset.*
+# Assert directory
+assets/dist
+build
+**/build.*
+**/build.asset.*
+
+.phpunit.result.cache

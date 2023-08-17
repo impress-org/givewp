@@ -1,0 +1,106 @@
+.givewp-form-block {
+    &--container {
+        display: grid;
+        row-gap: 1rem;
+        padding: 2rem 4rem;
+        background: #f6f6f6;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    &__option {
+        height: 48px;
+    }
+
+    &__select {
+        &__input {
+            &:focus {
+                box-shadow: none !important;
+            }
+        }
+
+        &--label {
+            color: #4f4f4f;
+        }
+    }
+
+    &__logo {
+        &--container {
+            text-align: center;
+        }
+    }
+
+    &__submit-button {
+        width: 100%;
+        background-color: #27ae60;
+        color: #fff;
+        padding: 1rem;
+        border-radius: 5px;
+        font-weight: bold;
+        text-align: center;
+        outline: none;
+        border: 0;
+        transition: 0.2s;
+
+        &:disabled {
+            background-color: #e0e0e0;
+        }
+
+        &:hover:not(:disabled) {
+            cursor: pointer;
+            filter: brightness(1.2);
+        }
+
+        &--container {
+            margin-top: 1rem;
+        }
+    }
+
+    &__display-button {
+        color: #fff;
+        background: #2271b1;
+        padding: .5rem 1rem;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+    }
+}
+
+.givewp-donation-form-modal {
+    position: absolute;
+    top: 25%;
+    width: fit-content;
+    min-width: 552px;
+    height: fit-content;
+    max-height: calc(100% - 5rem);
+    padding: 0;
+    border: none;
+    overflow-y: scroll;
+    z-index: 999;
+
+    &::backdrop {
+        background-color: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(3px);
+    }
+
+    &__close {
+        border-radius: 0.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.8);
+        color: #555;
+        font-size: 1.5rem;
+        line-height: 1;
+        width: 2.5rem;
+        height: 2.5rem;
+        position: absolute;
+        top: .5rem;
+        right: .5rem;
+        cursor: pointer;
+    }
+}
+
+.components-input-control__label {
+    width: 100%;
+}
