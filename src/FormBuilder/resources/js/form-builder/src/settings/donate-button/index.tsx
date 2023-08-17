@@ -13,7 +13,7 @@ export default function DonateButton() {
             <PanelRow>
                 <TextControl
                     label={__('Button caption', 'give')}
-                    help={__('Enter the text you want to display on the donation button', 'give')}
+                    help={__('Enter the text you want to display on the donation button.', 'give')}
                     value={donateButtonCaption}
                     onChange={(value) => dispatch(setFormSettings({donateButtonCaption: value}))}
                 />
