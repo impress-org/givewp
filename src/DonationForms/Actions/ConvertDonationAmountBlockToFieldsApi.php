@@ -135,13 +135,21 @@ class ConvertDonationAmountBlockToFieldsApi
 
         $recurringBillingPeriodOptions = $block->getAttribute('recurringBillingPeriodOptions');
 
-        $options = $this->mergePeriodOptionsWithOneTime(
-            array_map(static function ($option) {
+        if (!$block->getAttribute('recurringDisableOneTimeDonations')) {
+            $options = $this->mergePeriodOptionsWithOneTime(
+                array_map(static function ($option) {
+                    $subscriptionPeriod = new SubscriptionPeriod($option);
+
+                    return new Option($subscriptionPeriod->getValue(), $subscriptionPeriod->label(0));
+                }, $recurringBillingPeriodOptions)
+            );
+        } else {
+            $options = array_map(static function ($option) {
                 $subscriptionPeriod = new SubscriptionPeriod($option);
 
                 return new Option($subscriptionPeriod->getValue(), $subscriptionPeriod->label(0));
-            }, $recurringBillingPeriodOptions)
-        );
+            }, $recurringBillingPeriodOptions);
+        }
 
         $recurringOptInDefault = $block->getAttribute('recurringOptInDefaultBillingPeriod');
 

@@ -28,6 +28,7 @@ const Edit = ({attributes, setAttributes}) => {
         recurringBillingPeriodOptions,
         recurringLengthOfTime,
         recurringOptInDefaultBillingPeriod,
+        recurringDisableOneTimeDonations,
     } = attributes;
 
     const {gateways} = getFormBuilderData();
@@ -112,13 +113,17 @@ const Edit = ({attributes, setAttributes}) => {
     };
 
     const BillingPeriodControl = ({options}) => {
+        if (!recurringDisableOneTimeDonations) {
+            options = ['one-time'].concat(options);
+        }
+
         return (
             <RadioControl
                 className={'give-billing-period-control'}
                 label={__('Billing Period', 'give')}
                 hideLabelFromVision={true}
                 selected={recurringOptInDefaultBillingPeriod ?? options[0]}
-                options={['one-time'].concat(options).map((option) => {
+                options={options.map((option) => {
                     return {
                         label: 'one-time' === option ? __('One Time', 'give') : periodLookup[option].adjective,
                         value: option,

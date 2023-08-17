@@ -41,6 +41,7 @@ const Inspector = ({attributes, setAttributes}) => {
         recurringBillingPeriodOptions,
         recurringLengthOfTime,
         recurringOptInDefaultBillingPeriod,
+        recurringDisableOneTimeDonations,
     } = attributes;
 
     const addBillingPeriodOption = useCallback(
@@ -104,6 +105,22 @@ const Inspector = ({attributes, setAttributes}) => {
         const newLevels = options.filter((option) => option.value).map((option) => option.value);
         setAttributes({levels: newLevels});
     };
+
+    const getDefaultBillingPeriodOptions = useCallback(
+        (options) => {
+            if (!recurringDisableOneTimeDonations) {
+                options = ['one-time'].concat(options);
+            }
+
+            return options.map((value) => ({
+                label: periodLookup[value].singular
+                    .toLowerCase()
+                    .replace(/\w/, (firstLetter) => firstLetter.toUpperCase()),
+                value: value,
+            }));
+        },
+        [recurringBillingPeriodOptions, recurringDisableOneTimeDonations]
+    );
 
     return (
         <InspectorControls>
@@ -209,130 +226,132 @@ const Inspector = ({attributes, setAttributes}) => {
                     ))}
 
                 {isRecurringSupported && (
-                    <PanelRow>
-                        <ToggleControl
-                            label={__('Enable recurring donation', 'give')}
-                            checked={recurringEnabled}
-                            onChange={() => setAttributes({recurringEnabled: !recurringEnabled})}
-                        />
-                    </PanelRow>
-                )}
-                {!!isRecurring && (
-                    <PanelRow>
-                        <SelectControl
-                            label={__('Donation choice', 'give')}
-                            options={[
-                                {label: __('Admin', 'give'), value: 'admin'},
-                                {label: __('Donor', 'give'), value: 'donor'},
-                            ]}
-                            value={recurringDonationChoice}
-                            onChange={(recurringDonationChoice) => setAttributes({recurringDonationChoice})}
-                        />
-                    </PanelRow>
-                )}
-                {!!isRecurring && (
-                    <PanelRow>
-                        <SelectControl
-                            label={__('Billing interval', 'give')}
-                            options={[
-                                {label: __('Every', 'give'), value: '1'},
-                                {label: __('Every 2nd', 'give'), value: '2'},
-                                {label: __('Every 3rd', 'give'), value: '3'},
-                                {label: __('Every 4th', 'give'), value: '4'},
-                                {label: __('Every 5th', 'give'), value: '5'},
-                                {label: __('Every 6th', 'give'), value: '6'},
-                            ]}
-                            value={recurringBillingInterval}
-                            onChange={(recurringBillingInterval) => setAttributes({recurringBillingInterval})}
-                        />
-                    </PanelRow>
-                )}
-                {!!isRecurring && (
-                    <PanelRow>
-                        {'admin' === recurringDonationChoice && (
-                            <SelectControl
-                                label={__('Billing period', 'give')}
-                                options={[
-                                    {label: __('Day', 'give'), value: 'day'},
-                                    {label: __('Week', 'give'), value: 'week'},
-                                    {label: __('Month', 'give'), value: 'month'},
-                                    {label: __('Quarter', 'give'), value: 'quarter'},
-                                    {label: __('Year', 'give'), value: 'year'},
-                                ]}
-                                value={recurringBillingPeriod}
-                                onChange={(recurringBillingPeriod) => setAttributes({recurringBillingPeriod})}
+                    <>
+                        <PanelRow>
+                            <ToggleControl
+                                label={__('Enable recurring donation', 'give')}
+                                checked={recurringEnabled}
+                                onChange={() => setAttributes({recurringEnabled: !recurringEnabled})}
                             />
-                        )}
-                        {'donor' === recurringDonationChoice && (
-                            <BaseControl id={'recurringBillingPeriodOptions'} label={__('Billing period', 'give')}>
-                                <div
-                                    style={{
-                                        width: '100%',
-                                        display: 'grid',
-                                        gridTemplateColumns: '1fr 1fr',
-                                    }}
-                                >
-                                    {[
+                        </PanelRow>
+                    </>
+                )}
+                {!!isRecurring && (
+                    <>
+                        <PanelRow>
+                            <ToggleControl
+                                label={__('Disable One-Time donations', 'give')}
+                                checked={recurringDisableOneTimeDonations}
+                                onChange={() =>
+                                    setAttributes({recurringDisableOneTimeDonations: !recurringDisableOneTimeDonations})
+                                }
+                            />
+                        </PanelRow>
+                        <PanelRow>
+                            <SelectControl
+                                label={__('Donation choice', 'give')}
+                                options={[
+                                    {label: __('Admin', 'give'), value: 'admin'},
+                                    {label: __('Donor', 'give'), value: 'donor'},
+                                ]}
+                                value={recurringDonationChoice}
+                                onChange={(recurringDonationChoice) => setAttributes({recurringDonationChoice})}
+                            />
+                        </PanelRow>
+                        <PanelRow>
+                            <SelectControl
+                                label={__('Billing interval', 'give')}
+                                options={[
+                                    {label: __('Every', 'give'), value: '1'},
+                                    {label: __('Every 2nd', 'give'), value: '2'},
+                                    {label: __('Every 3rd', 'give'), value: '3'},
+                                    {label: __('Every 4th', 'give'), value: '4'},
+                                    {label: __('Every 5th', 'give'), value: '5'},
+                                    {label: __('Every 6th', 'give'), value: '6'},
+                                ]}
+                                value={recurringBillingInterval}
+                                onChange={(recurringBillingInterval) => setAttributes({recurringBillingInterval})}
+                            />
+                        </PanelRow>
+                        <PanelRow>
+                            {'admin' === recurringDonationChoice && (
+                                <SelectControl
+                                    label={__('Billing period', 'give')}
+                                    options={[
                                         {label: __('Day', 'give'), value: 'day'},
                                         {label: __('Week', 'give'), value: 'week'},
                                         {label: __('Month', 'give'), value: 'month'},
                                         {label: __('Quarter', 'give'), value: 'quarter'},
                                         {label: __('Year', 'give'), value: 'year'},
-                                    ].map((option) => (
-                                        <CheckboxControl
-                                            key={option.value}
-                                            label={option.label}
-                                            checked={recurringBillingPeriodOptions.includes(option.value)}
-                                            onChange={(checked) =>
-                                                checked
-                                                    ? addBillingPeriodOption(option.value)
-                                                    : removeBillingPeriodOption(option.value)
-                                            }
-                                            disabled={
-                                                recurringBillingPeriodOptions.length === 1 &&
-                                                recurringBillingPeriodOptions.includes(option.value) // This is the last checked option.
-                                            }
-                                            //@ts-ignore
-                                            __nextHasNoMarginBottom={true}
-                                        />
-                                    ))}
-                                </div>
-                            </BaseControl>
-                        )}
-                    </PanelRow>
-                )}
-                {isRecurring && 'donor' === recurringDonationChoice && (
-                    <PanelRow>
-                        <SelectControl
-                            label={__('Default billing period', 'give')}
-                            value={recurringOptInDefaultBillingPeriod ?? 'month'}
-                            options={['one-time'].concat(recurringBillingPeriodOptions).map((value) => ({
-                                label: periodLookup[value].singular
-                                    .toLowerCase()
-                                    .replace(/\w/, (firstLetter) => firstLetter.toUpperCase()),
-                                value: value,
-                            }))}
-                            onChange={(recurringOptInDefaultBillingPeriod) =>
-                                setAttributes({recurringOptInDefaultBillingPeriod})
-                            }
-                        />
-                    </PanelRow>
-                )}
-                {isRecurring && (
-                    <PanelRow>
-                        <SelectControl
-                            label={__('Number of Payments', 'give')}
-                            //@ts-ignore
-                            options={[{label: __('Ongoing', 'give'), value: 0}].concat(
-                                [...Array(24 + 1).keys()].slice(2).map((value) => ({
-                                    label: sprintf(__('%d payments', 'give'), value),
-                                    value: value,
-                                }))
+                                    ]}
+                                    value={recurringBillingPeriod}
+                                    onChange={(recurringBillingPeriod) => setAttributes({recurringBillingPeriod})}
+                                />
                             )}
-                            value={recurringLengthOfTime}
-                            onChange={(recurringLengthOfTime) => setAttributes({recurringLengthOfTime})}
-                        />
-                    </PanelRow>
+                            {'donor' === recurringDonationChoice && (
+                                <BaseControl id={'recurringBillingPeriodOptions'} label={__('Billing period', 'give')}>
+                                    <div
+                                        style={{
+                                            width: '100%',
+                                            display: 'grid',
+                                            gridTemplateColumns: '1fr 1fr',
+                                        }}
+                                    >
+                                        {[
+                                            {label: __('Day', 'give'), value: 'day'},
+                                            {label: __('Week', 'give'), value: 'week'},
+                                            {label: __('Month', 'give'), value: 'month'},
+                                            {label: __('Quarter', 'give'), value: 'quarter'},
+                                            {label: __('Year', 'give'), value: 'year'},
+                                        ].map((option) => (
+                                            <CheckboxControl
+                                                key={option.value}
+                                                label={option.label}
+                                                checked={recurringBillingPeriodOptions.includes(option.value)}
+                                                onChange={(checked) =>
+                                                    checked
+                                                        ? addBillingPeriodOption(option.value)
+                                                        : removeBillingPeriodOption(option.value)
+                                                }
+                                                disabled={
+                                                    recurringBillingPeriodOptions.length === 1 &&
+                                                    recurringBillingPeriodOptions.includes(option.value) // This is the last checked option.
+                                                }
+                                                //@ts-ignore
+                                                __nextHasNoMarginBottom={true}
+                                            />
+                                        ))}
+                                    </div>
+                                </BaseControl>
+                            )}
+                        </PanelRow>
+                        {'donor' === recurringDonationChoice && (
+                            <PanelRow>
+                                <SelectControl
+                                    label={__('Default billing period', 'give')}
+                                    value={recurringOptInDefaultBillingPeriod ?? 'month'}
+                                    options={getDefaultBillingPeriodOptions(recurringBillingPeriodOptions)}
+                                    onChange={(recurringOptInDefaultBillingPeriod) =>
+                                        setAttributes({recurringOptInDefaultBillingPeriod})
+                                    }
+                                />
+                            </PanelRow>
+                        )}
+                        <PanelRow>
+                            <SelectControl
+                                label={__('Number of Payments', 'give')}
+                                //@ts-ignore
+                                options={[{label: __('Ongoing', 'give'), value: 0}].concat(
+                                    [...Array(24 + 1).keys()].slice(2).map((value) => ({
+                                        label: sprintf(__('%d payments', 'give'), value),
+                                        value: value,
+                                    }))
+                                )}
+                                value={recurringLengthOfTime}
+                                onChange={(recurringLengthOfTime) => setAttributes({recurringLengthOfTime})}
+                            />
+                        </PanelRow>
+                    </>
                 )}
             </PanelBody>
         </InspectorControls>
