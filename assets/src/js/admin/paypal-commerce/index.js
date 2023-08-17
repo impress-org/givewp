@@ -82,7 +82,7 @@ window.addEventListener( 'DOMContentLoaded', function() {
             onBoardingButton.addEventListener( 'click', async function( evt ) {
                 evt.preventDefault();
 
-                let canOptInForAdvancedCardProcessing  =  false;
+                let isAdminSelectedConnectionAccountType =  false;
                 let connectionAccountType = null;
                 const mode = onBoardingButton.getAttribute( 'data-mode' );
                 const countryCode = countryField.value;
@@ -133,6 +133,14 @@ window.addEventListener( 'DOMContentLoaded', function() {
                         payPalLink.href = `${data.data.partnerLink}&displayMode=minibrowser`;
 
                         payPalLink.click();
+                    } else{
+                        // Show error message.
+                        new GiveErrorAlert({
+                            modalContent: {
+                                title: __( 'Connect With PayPal', 'give'),
+                                desc: __( 'There was an issue retrieving a link to connect to PayPal. Please try again. If the issue continues please contact an administrator.', 'give'),
+                            }
+                        }).render();
                     }
 
                     buttonState.enable();
@@ -215,38 +223,37 @@ window.addEventListener( 'DOMContentLoaded', function() {
                                     })
                             },
                             close: () => {
-                                // Reset connection account type.
-                                connectionAccountType = null;
-
                                 // Remove errors.
                                 container.removeErrors();
 
                                 // Enable button if admin available for both conneciton account types but did not select any.
-                                if(!canOptInForAdvancedCardProcessing){
+                                if(!isAdminSelectedConnectionAccountType){
+                                    // Hide PayPal quick help message.
+                                    paypalErrorQuickHelp && paypalErrorQuickHelp.remove();
+
+                                    // Enable button.
                                     buttonState.enable();
                                 }
+                            },
+                            afterClose:  () => {
+                                // Get partner link, if admin selected a connection account type
+                                if(isAdminSelectedConnectionAccountType){
+                                    // Get partner link.
+                                    getPartnerLinkAjaxRequest();
+                                }
 
-                                // Hide PayPal quick help message.
-                                paypalErrorQuickHelp && paypalErrorQuickHelp.remove();
+                                // Reset property.
+                                connectionAccountType = null;
+                                isAdminSelectedConnectionAccountType = false;
                             }
                         },
-                        successConfirm: async ({skipConnectionAccountTypeChecking = false}) => {
-                            if(! skipConnectionAccountTypeChecking){
+                        successConfirm: () => {
                                 const radioField = document.querySelector('input[name="paypal_donations_connection_account_type"]:checked');
                                 radioField && ( connectionAccountType = radioField.value );
 
                                 // Modal will only open when admin available for both conneciton account types.
                                 // So we only need to validate if admin selected any account type or not.
-                                canOptInForAdvancedCardProcessing =   givePayPalCommerce.accountTypes.includes( connectionAccountType );
-
-                                // Exit if admin available for both conneciton account types but did not select any.
-                                if(! canOptInForAdvancedCardProcessing){
-                                    return;
-                                }
-                            }
-
-                                                    await getPartnerLinkAjaxRequest();
-                            getHelpMessageAjaxRequest();
+                                isAdminSelectedConnectionAccountType =   givePayPalCommerce.accountTypes.includes( connectionAccountType );
                         }
                 });
 
@@ -261,8 +268,12 @@ window.addEventListener( 'DOMContentLoaded', function() {
                 if( givePayPalCommerce.countriesAvailableForAdvanceConnection.includes( countryCode ) ) {
                     modal.render();
                 } else{
-                    modal.config.successConfirm({skipConnectionAccountTypeChecking: true});
+                    // Get partner link or onboarding link and help message.
+                    getPartnerLinkAjaxRequest();
                 }
+
+                // Get help message.
+                getHelpMessageAjaxRequest();
 
                 return false;
             } );
