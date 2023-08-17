@@ -31,6 +31,10 @@
     display: flex;
     flex-direction: column-reverse;
     gap: var(--givewp-spacing-2);
+
+    .components-radio-control__option {
+        margin: .15rem 0;
+    }
 }
 
 .email-template-tags {
