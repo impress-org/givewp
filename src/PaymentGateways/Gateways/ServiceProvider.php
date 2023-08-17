@@ -23,7 +23,6 @@ use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Li
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\PaymentIntentSucceeded;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\PaymentGateways\Gateways\TestGateway\TestGatewayOffsite;
-use Give\PaymentGateways\Gateways\TestGateway\TestGatewaySubscriptionModule;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -106,13 +105,6 @@ class ServiceProvider implements ServiceProviderInterface
          * This module will eventually live in give-recurring
          */
         if (defined('GIVE_RECURRING_VERSION') && GIVE_RECURRING_VERSION) {
-            add_filter(
-                sprintf("givewp_gateway_%s_subscription_module", TestGateway::id()),
-                static function () {
-                    return TestGatewaySubscriptionModule::class;
-                }
-            );
-
             add_filter(
                 sprintf("givewp_gateway_%s_subscription_module", PayPalCommerce::id()),
                 static function () {
