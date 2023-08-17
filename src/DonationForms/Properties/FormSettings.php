@@ -157,6 +157,12 @@ class FormSettings implements Arrayable, Jsonable
     public $offlineDonationsInstructions;
 
     /**
+     * @var string
+     */
+    public $donateButtonCaption;
+
+
+    /**
      * @since 3.0.0
      */
     public static function fromArray(array $array): self
@@ -172,9 +178,10 @@ class FormSettings implements Arrayable, Jsonable
             'give'
         );
         $self->formTitle = $array['formTitle'] ?? __('Donation Form', 'give');
+        $self->donateButtonCaption = $array['donateButtonCaption'] ?? __('Donation now', 'give');
         $self->enableDonationGoal = $array['enableDonationGoal'] ?? false;
         $self->enableAutoClose = $array['enableAutoClose'] ?? false;
-        $self->goalType = !empty($array['goalType']) ? new GoalType($array['goalType']) : GoalType::AMOUNT();
+        $self->goalType = ! empty($array['goalType']) ? new GoalType($array['goalType']) : GoalType::AMOUNT();
         $self->designId = $array['designId'] ?? ClassicFormDesign::id();
         $self->primaryColor = $array['primaryColor'] ?? '#69b86b';
         $self->secondaryColor = $array['secondaryColor'] ?? '#f49420';
@@ -194,7 +201,9 @@ class FormSettings implements Arrayable, Jsonable
             '{first_name}, your contribution means a lot and will be put to good use in making a difference. We’ve sent your donation receipt to {email}.',
             'give'
         );
-        $self->formStatus = !empty($array['formStatus']) ? new DonationFormStatus($array['formStatus']) : DonationFormStatus::DRAFT();
+        $self->formStatus = ! empty($array['formStatus']) ? new DonationFormStatus(
+            $array['formStatus']
+        ) : DonationFormStatus::DRAFT();
 
         $self->formGridCustomize = $array['formGridCustomize'] ?? false;
         $self->formGridRedirectUrl = $array['formGridRedirectUrl'] ?? '';
@@ -248,7 +257,7 @@ class FormSettings implements Arrayable, Jsonable
             array_merge(
                 $this->toArray(),
                 [
-                    'goalType' => $this->goalType ? $this->goalType->getValue() : null
+                    'goalType' => $this->goalType ? $this->goalType->getValue() : null,
                 ]
             )
         );
