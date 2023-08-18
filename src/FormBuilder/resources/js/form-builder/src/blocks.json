@@ -32,7 +32,7 @@
                     ],
                     "recurringBillingPeriod": "month",
                     "recurringBillingInterval": 1,
-                    "recurringDonationChoice": "admin",
+                    "recurringDonationChoice": "donor",
                     "recurringEnabled": false,
                     "recurringLengthOfTime": "0",
                     "recurringOptInDefaultBillingPeriod": "month",
