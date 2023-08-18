@@ -6,15 +6,18 @@ import GatewayFieldNode from '@givewp/forms/app/fields/GatewayFieldNode';
 import {elementTemplateExists, fieldTemplateExists, groupTemplateExists} from '@givewp/forms/app/templates';
 import useVisibilityCondition from '@givewp/forms/app/hooks/useVisibilityCondition';
 import {useEffect} from '@wordpress/element';
+import memoNode from '@givewp/forms/app/utilities/memoNode';
 
 const formTemplates = window.givewp.form.templates;
 
 /**
- * Determine which node template to render
+ * Determine which node template to render and apply visibility conditions. It is important the visibility conditions
+ * occur here, instead of in the more specific components, as it prevents the subsequent hooks from firing, which can
+ * cause an infinite re-render loop.
  *
  * @since 3.0.0
  */
-export default function SectionNode({node}: {node: Node}) {
+function SectionNode({node}: {node: Node}) {
     const showNode = useVisibilityCondition(node.visibilityConditions);
     const {unregister} = window.givewp.form.hooks.useFormContext();
 
@@ -53,3 +56,7 @@ export default function SectionNode({node}: {node: Node}) {
         return null;
     }
 }
+
+const MemoizedSectionNode = memoNode(SectionNode);
+
+export default MemoizedSectionNode;
