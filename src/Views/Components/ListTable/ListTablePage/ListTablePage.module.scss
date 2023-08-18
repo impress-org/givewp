@@ -85,6 +85,11 @@
     }
 }
 
+.flexRow:not(:first-child) {
+    flex: 1;
+    justify-content: flex-end;
+}
+
 .pageTitle {
     color: #424242;
     margin: 0;
