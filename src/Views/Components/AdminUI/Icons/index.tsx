@@ -6,6 +6,7 @@ import CompassIcon from './CompassIcon';
 import AlertTriangle from './AlertTriangle';
 import CheckCircle from './CheckCircle';
 import CheckVerified from './CheckVerified';
+import CubeIcon from './Cube';
 import Award from './Award';
 
 export {
@@ -17,5 +18,6 @@ export {
     AlertTriangle,
     CheckCircle,
     CheckVerified,
+    CubeIcon,
     Award,
 }
