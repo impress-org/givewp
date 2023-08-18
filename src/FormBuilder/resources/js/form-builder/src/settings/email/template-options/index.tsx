@@ -9,6 +9,10 @@ import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
 import SendPreviewEmail from './components/send-preview-email';
 import EmailPreviewContent from './components/email-preview-content';
 import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
+import {
+    CloseButton,
+    SetChangesButton,
+} from '@givewp/form-builder/settings/email/template-options/components/custom-button';
 
 export default () => {
     const [isOpen, setOpen] = useState<boolean>(false);
@@ -69,44 +73,6 @@ export default () => {
         closeModal();
     };
 
-    const SetFieldsButton = ({label, onClick}) => {
-        return (
-            <Button
-                variant={'secondary'}
-                onClick={onClick}
-                style={{
-                    zIndex: 11, // Above the modal header
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                    padding: 'var(--givewp-spacing-4) var(--givewp-spacing-6)',
-                    margin: 'var(--givewp-spacing-4) var(--givewp-spacing-6)',
-                }}
-            >
-                {label}
-            </Button>
-        );
-    };
-
-    const CloseButton = ({label, onClick}) => {
-        return (
-            <Button
-                variant={'primary'}
-                onClick={onClick}
-                style={{
-                    zIndex: 11, // Above the modal header
-                    position: 'absolute',
-                    top: 0,
-                    right: '9rem',
-                    padding: 'var(--givewp-spacing-4) var(--givewp-spacing-12)',
-                    margin: 'var(--givewp-spacing-4) var(--givewp-spacing-6)',
-                }}
-            >
-                {label}
-            </Button>
-        );
-    };
-
     return (
         <>
             <Button
@@ -144,7 +110,7 @@ export default () => {
                     {!showPreview && (
                         <>
                             <CloseButton label={__('Cancel', 'givewp')} onClick={cancelChanges} />
-                            <SetFieldsButton
+                            <SetChangesButton
                                 label={__('Set and close', 'givewp')}
                                 onClick={updateEmailTemplateOptions}
                             />
