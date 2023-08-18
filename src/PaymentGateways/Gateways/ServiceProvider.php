@@ -20,8 +20,7 @@ use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Li
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\PaymentIntentPaymentFailed;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\PaymentIntentSucceeded;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
-use Give\PaymentGateways\Gateways\TestGateway\TestGatewayOffsite;
-use Give\PaymentGateways\Gateways\TestGateway\TestGatewaySubscriptionModule;
+use Give\PaymentGateways\Gateways\TestOffsiteGateway\TestOffsiteGateway;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -50,8 +49,6 @@ class ServiceProvider implements ServiceProviderInterface
                 ]
             );
         }
-
-        $this->enqueueGatewayScripts();
     }
 
     /**
@@ -67,8 +64,8 @@ class ServiceProvider implements ServiceProviderInterface
                 $registrar->registerGateway(TestGateway::class);
             }
 
-            if (!$registrar->hasPaymentGateway(TestGatewayOffsite::id())) {
-                $registrar->registerGateway(TestGatewayOffsite::class);
+            if (!$registrar->hasPaymentGateway(TestOffsiteGateway::id())) {
+                $registrar->registerGateway(TestOffsiteGateway::class);
             }
 
             $registrar->registerGateway(StripePaymentElementGateway::class);
@@ -101,13 +98,6 @@ class ServiceProvider implements ServiceProviderInterface
          * This module will eventually live in give-recurring
          */
         if (defined('GIVE_RECURRING_VERSION') && GIVE_RECURRING_VERSION) {
-            add_filter(
-                sprintf("givewp_gateway_%s_subscription_module", TestGateway::id()),
-                static function () {
-                    return TestGatewaySubscriptionModule::class;
-                }
-            );
-
             add_filter(
                 sprintf("givewp_gateway_%s_subscription_module", PayPalCommerce::id()),
                 static function () {
@@ -171,40 +161,5 @@ class ServiceProvider implements ServiceProviderInterface
 
         $legacyStripeAdapter->addDonationDetails();
         $legacyStripeAdapter->loadLegacyStripeWebhooksAndFilters();
-    }
-
-    /**
-     * @since 3.0.0
-     */
-    protected function enqueueGatewayScripts()
-    {
-        add_action('givewp_donation_form_enqueue_test_gateway_scripts', function ($formId) {
-            $testGatewayAssets = $this->getScriptAsset(GIVE_PLUGIN_DIR . 'build/testGateway.asset.php');
-
-            wp_enqueue_script(
-                TestGateway::id(),
-                GIVE_PLUGIN_URL . 'build/testGateway.js',
-                $testGatewayAssets['dependencies'],
-                $testGatewayAssets['version'],
-                true
-            );
-        });
-
-        add_action('givewp_donation_form_enqueue_test_gateway_offsite_scripts', static function () {
-            wp_enqueue_script(
-                TestGatewayOffsite::id(),
-                GIVE_PLUGIN_URL . 'src/PaymentGateways/Gateways/TestOffsiteGateway/testOffsiteGateway.js',
-                [],
-                false,
-                true
-            );
-
-            wp_localize_script(TestGatewayOffsite::id(), 'givewpTestGatewayOffsiteData', [
-                'message' => __(
-                    'There are no fields for this gateway and you will not be charged. This payment option is only for you to test the donation experience.',
-                    'give'
-                ),
-            ]);
-        });
     }
 }

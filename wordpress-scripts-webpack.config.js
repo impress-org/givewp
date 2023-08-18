@@ -35,6 +35,7 @@ module.exports = {
             'PaymentGateways/Gateways/Stripe/StripePaymentElementGateway/stripePaymentElementGateway.tsx'
         ),
         testGateway: srcPath('PaymentGateways/Gateways/TestGateway/testGateway.tsx'),
+        testOffsiteGateway: srcPath('PaymentGateways/Gateways/TestOffsiteGateway/testOffsiteGateway.tsx'),
         payPalStandardGateway: srcPath(
             'PaymentGateways/Gateways/PayPalStandard/resources/js/payPalStandardGateway.tsx'
         ),
