@@ -13,12 +13,12 @@ class TransferDonations
         $this->sourceId = $sourceId;
     }
 
-    public static function from($sourceId): TransferDonations
+    public static function from($sourceId): self
     {
         return new TransferDonations($sourceId);
     }
 
-    public function to($destinationId)
+    public function to($destinationId): void
     {
         $this->__invoke($destinationId);
     }

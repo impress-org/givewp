@@ -11,12 +11,12 @@ class TransferFormUrl
         $this->sourceId = $sourceId;
     }
 
-    public static function from($sourceId): TransferFormUrl
+    public static function from($sourceId): self
     {
         return new TransferFormUrl($sourceId);
     }
 
-    public function to($destinationId)
+    public function to($destinationId): void
     {
         $this->__invoke($destinationId);
     }
