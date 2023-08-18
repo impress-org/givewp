@@ -18,7 +18,7 @@ class Date extends Field
     const TYPE = 'date';
 
     /** @var string */
-    protected $dateFormat = '';
+    protected $dateFormat = 'yyyy/mm/dd';
 
     /**
      * Set the date format for the element.
