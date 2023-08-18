@@ -51,7 +51,7 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
 
         $blocks = BlockCollection::make([$block]);
 
-        $formSchema = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
+        list($formSchema, $blockNodeRelationships) = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
 
         $form = new DonationFormNode('donation-form');
         $form->defaultCurrency('USD');
@@ -116,7 +116,7 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
             3
         );
 
-        $formSchema = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
+        list($formSchema, $blockNodeRelationships) = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
 
         $form = new DonationFormNode('donation-form');
         $form->defaultCurrency('USD');

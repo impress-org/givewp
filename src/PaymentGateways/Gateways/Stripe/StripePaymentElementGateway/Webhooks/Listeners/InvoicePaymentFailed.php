@@ -71,6 +71,7 @@ class InvoicePaymentFailed
      */
     protected function triggerLegacyFailedEmailNotificationEvent(Invoice $invoice)
     {
+        // @phpstan-ignore-next-line
         $subscription = give_recurring_get_subscription_by('profile', $invoice->subscription);
 
         do_action('give_donor-subscription-payment-failed_email_notification', $subscription, $invoice);
