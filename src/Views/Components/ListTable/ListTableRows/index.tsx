@@ -6,7 +6,7 @@ import TableCell from '../TableCell';
 import {BulkActionCheckbox} from '@givewp/components/ListTable/BulkActions/BulkActionCheckbox';
 import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
 
-export default function ListTableRows({columns, data, isLoading, rowActions, setUpdateErrors, parameters, singleName, rowBadge}) {
+export default function ListTableRows({columns, data, isLoading, rowActions, setUpdateErrors, parameters, singleName}) {
     const [removed, setRemoved] = useState([]);
     const [added, setAdded] = useState([]);
 
@@ -58,7 +58,6 @@ export default function ListTableRows({columns, data, isLoading, rowActions, set
             })}
         >
             <TableCell>
-                {rowBadge && rowBadge(item)}
                 <BulkActionCheckbox
                     id={item.id}
                     name={item?.donor ?? item?.title ?? item?.donorInformation}
