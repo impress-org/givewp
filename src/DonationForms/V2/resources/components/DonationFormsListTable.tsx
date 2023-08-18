@@ -2,15 +2,12 @@ import {createContext, useState, useCallback} from 'react';
 import {__, sprintf} from '@wordpress/i18n';
 import {ListTableApi, ListTablePage} from '@givewp/components';
 import {DonationFormsRowActions} from './DonationFormsRowActions';
-import MigrationBanner from './Migration';
-import MigrationSuccessDialog from './Migration/MigrationSuccessDialog';
-import TransferSuccessDialog from './Migration/TransferSuccessDialog';
+import Onboarding from './Onboarding';
 import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import Select from '@givewp/components/ListTable/Select';
 import {Interweave} from 'interweave';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
-import Toast from "@givewp/components/AdminUI/Toast";
 
 declare global {
     interface Window {
@@ -263,22 +260,7 @@ export default function DonationFormsListTable() {
                     {__('Switch to Legacy View')}
                 </button>
             </ListTablePage>
-            {!state.migrationOnboardingCompleted && state.showMigrationSuccessDialog && (
-                <MigrationSuccessDialog formId={state.formId} handleClose={closeMigrationSuccessDialog} />
-            )}
-            {state.showTransferSuccessDialog && (
-                <TransferSuccessDialog formId={state.formId} formName={state.formName}
-                                       handleClose={closeTransferSuccessDialog} />
-            )}
-            {state.showMigrationCompletedToast && (
-                <Toast
-                    type="success"
-                    autoClose={6000}
-                    handleClose={closeMigrationCompletedToast}>
-                    {sprintf(__('Migration of the form "%s" completed successfully', 'give'), state.formName)}
-                </Toast>
-            )}
-        </MigrationOnboardingContext.Provider>
+        </OnboardingContext.Provider>
     );
 }
 
