@@ -5,6 +5,7 @@ import ExitIcon from './ExitIcon';
 import CompassIcon from './CompassIcon';
 import AlertTriangle from './AlertTriangle';
 import CheckCircle from './CheckCircle';
+import CheckVerified from './CheckVerified';
 import Award from './Award';
 
 export {
@@ -15,5 +16,6 @@ export {
     CompassIcon,
     AlertTriangle,
     CheckCircle,
+    CheckVerified,
     Award,
 }
