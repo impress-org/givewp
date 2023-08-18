@@ -1,22 +1,41 @@
 .banner {
+    display: flex;
+    flex: 1;
+    align-items: center;
     background-color: var(--givewp-blue-500);
-    padding: var(--givewp-spacing-5) var(--givewp-spacing-6);
+    padding: var(--givewp-spacing-4) var(--givewp-spacing-6);
     color: #fff;
-    cursor: pointer;
     font-size: 0.875rem;
-    line-height: var(--givewp-spacing-7);
 
-    span {
-        font-weight: bold;
-        margin-right: var(--givewp-spacing-3);
-        padding: var(--givewp-spacing-1) var(--givewp-spacing-2);
-        border-radius: 0.4rem;
-        color: var(--givewp-blue-500);
-        background-color: var(--givewp-blue-25);
+    .icon,
+    .closeIcon {
+        flex: 0 0 40px;
     }
 
-    strong {
-        margin-left: var(--givewp-spacing-3);
+    .closeIcon {
+        justify-content: flex-end;
+        svg {
+            fill: #fff;
+        }
+    }
+
+    .text {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex: 1;
+        padding-right: 35px;
+    }
+
+    .button {
+        all: unset;
+        cursor: pointer;
+        justify-content: flex-end;
+        font-weight: 500;
+        padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+        border-radius: 0.5rem;
+        color: #000;
+        background-color: var(--givewp-blue-25);
     }
 }
 
