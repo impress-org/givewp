@@ -34,7 +34,7 @@ class DonationFormPreviewRouteData
      */
     public static function fromRequest(array $request): self
     {
-        $self = new static();
+        $self = new self();
 
         $self->formId = (int)$request['form-id'];
         $self->formSettings = !empty($request['form-settings']) ? FormSettings::fromJson(

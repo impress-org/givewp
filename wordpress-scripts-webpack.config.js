@@ -36,7 +36,7 @@ module.exports = {
         testGateway: srcPath('PaymentGateways/Gateways/TestGateway/testGateway.tsx'),
         testOffsiteGateway: srcPath('PaymentGateways/Gateways/TestOffsiteGateway/testOffsiteGateway.tsx'),
         payPalStandardGateway: srcPath(
-            'PaymentGateways/Gateways/PayPal/PayPalStandardGateway/payPalStandardGateway.tsx'
+            'PaymentGateways/Gateways/PayPalStandard/resources/js/payPalStandardGateway.tsx'
         ),
         payPalCommerceGateway: srcPath('PaymentGateways/Gateways/PayPalCommerce/payPalCommerceGateway.tsx'),
         classicFormDesignCss: srcPath('DonationForms/FormDesigns/ClassicFormDesign/css/main.scss'),

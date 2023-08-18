@@ -8,10 +8,8 @@ use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
-use Give\PaymentGateways\Gateways\PayPal\PayPalStandardGateway\PayPalStandardGateway;
 use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceGateway;
 use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceSubscriptionModule;
-use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\Gateways\Stripe\LegacyStripeAdapter;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\ChargeRefunded;
@@ -71,9 +69,6 @@ class ServiceProvider implements ServiceProviderInterface
             }
 
             $registrar->registerGateway(StripePaymentElementGateway::class);
-            
-            $registrar->unregisterGateway(PayPalStandard::id());
-            $registrar->registerGateway(PayPalStandardGateway::class);
 
             $registrar->unregisterGateway(PayPalCommerce::id());
             $registrar->registerGateway(PayPalCommerceGateway::class);
