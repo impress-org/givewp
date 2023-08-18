@@ -222,7 +222,8 @@ import {CSSProperties, useEffect, useState} from 'react';
         /**
          * Hosted fields are not supported for subscriptions at this time.
          */
-        const supportsHostedFields = donationType !== 'subscription';
+        const supportsHostedFields = donationType !== 'subscription'
+            && -1 !== payPalDonationsSettings.sdkOptions['components'].indexOf('hosted-fields');
 
         return (
 
