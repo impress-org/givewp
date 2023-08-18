@@ -28,7 +28,7 @@ class DonateRouteData
      *
      * @since 3.0.0
      */
-    public static function fromRequest(array $request): DonateRouteData
+    public static function fromRequest(array $request): self
     {
         $self = new self();
 

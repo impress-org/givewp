@@ -16,9 +16,9 @@ class DonationFormViewRouteData
      *
      * @since 3.0.0
      */
-    public static function fromRequest(array $request): DonationFormViewRouteData
+    public static function fromRequest(array $request): self
     {
-        $self = new DonationFormViewRouteData();
+        $self = new self();
 
         $self->formId = (int)$request['form-id'];
 

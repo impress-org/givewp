@@ -32,9 +32,9 @@ class DonationFormPreviewRouteData
      *
      * @since 3.0.0
      */
-    public static function fromRequest(array $request): DonationFormPreviewRouteData
+    public static function fromRequest(array $request): self
     {
-        $self = new DonationFormPreviewRouteData();
+        $self = new self();
 
         $self->formId = (int)$request['form-id'];
         $self->formSettings = !empty($request['form-settings']) ? FormSettings::fromJson(
