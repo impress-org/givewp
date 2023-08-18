@@ -2,6 +2,8 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceGateway;
+
 /**
  * Class DonationFormPaymentMethod
  * @package Give\PaymentGateways\PayPalCommerce
@@ -18,7 +20,7 @@ class DonationFormPaymentMethod
     public function handle()
     {
         // Exit.
-        if ( ! Utils::gatewayIsActive()) {
+        if (! Utils::gatewayIsActive()) {
             return;
         }
 
@@ -36,12 +38,15 @@ class DonationFormPaymentMethod
      */
     public function filterEnabledPayments($gateways)
     {
-        if ( ! array_key_exists(PayPalCommerce::GATEWAY_ID, $gateways)) {
+        /* @var PayPalCommerceGateway $paypalCommerce */
+        $paypalCommerce = give(PayPalCommerceGateway::class);
+
+        if (! array_key_exists($paypalCommerce->getId(), $gateways)) {
             return $gateways;
         }
 
-        if ( ! Utils::isAccountReadyToAcceptPayment()) {
-            unset($gateways[PayPalCommerce::GATEWAY_ID]);
+        if (! Utils::isAccountReadyToAcceptPayment()) {
+            unset($gateways[$paypalCommerce->getId()]);
         }
 
         return $gateways;
