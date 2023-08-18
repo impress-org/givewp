@@ -10,6 +10,11 @@ namespace Give\FormBuilder\EmailPreview\Actions;
 class BuildEmailPreview
 {
     /**
+     * @var ApplyPreviewTemplateTags
+     */
+    protected $applyPreviewTemplateTagsAction;
+
+    /**
      * @param  ApplyPreviewTemplateTags  $applyPreviewTemplateTagsAction
      */
     public function __construct(ApplyPreviewTemplateTags $applyPreviewTemplateTagsAction)

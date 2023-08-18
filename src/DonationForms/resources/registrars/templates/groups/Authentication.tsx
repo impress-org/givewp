@@ -49,7 +49,7 @@ const handleLoginPageRedirected = () => {
 handleLoginPageRedirected();
 
 interface AuthProps extends GroupProps {
-    fields: {
+    nodeComponents: {
         login: FC<FieldProps | {}>;
         password: FC<FieldProps | {}>;
     };
@@ -63,7 +63,7 @@ interface AuthProps extends GroupProps {
 }
 
 export default function Authentication({
-    fields: {login: Login, password: Password},
+    nodeComponents: {login: Login, password: Password},
     required,
     isAuthenticated,
     loginRedirect,
