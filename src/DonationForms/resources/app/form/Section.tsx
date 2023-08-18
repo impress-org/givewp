@@ -1,7 +1,7 @@
 import {withTemplateWrapper} from '@givewp/forms/app/templates';
 import SectionNode from '@givewp/forms/app/fields/SectionNode';
 import useVisibilityCondition from '@givewp/forms/app/hooks/useVisibilityCondition';
-import {Node, Field, isField, Section as SectionType} from '@givewp/forms/types';
+import {Field, isField, Section as SectionType} from '@givewp/forms/types';
 import DonationFormErrorBoundary from '@givewp/forms/app/errors/boundaries/DonationFormErrorBoundary';
 import {useEffect} from '@wordpress/element';
 
