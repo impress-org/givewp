@@ -170,7 +170,6 @@ class DonationConfirmationReceiptViewModel
     private function enqueueFormScripts(int $formId, string $formDesignId)
     {
         $handle = 'givewp-donation-form-registrars';
-
         wp_enqueue_script(
             $handle,
             GIVE_PLUGIN_URL . 'build/donationFormRegistrars.js',
