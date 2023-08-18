@@ -8,6 +8,7 @@ import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/List
 import Select from '@givewp/components/ListTable/Select';
 import {Interweave} from 'interweave';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
+import {CubeIcon} from '@givewp/components/AdminUI/Icons';
 
 declare global {
     interface Window {
@@ -205,9 +206,15 @@ export default function DonationFormsListTable() {
                 banner={Onboarding}
             >
                 {!state.showBanner && (
-                    <div>
-                        Try the new form builder button
-                    </div>
+                    <button
+                        className={styles.tryNewFormBuilderButton}
+                        onClick={() => setState(prev => ({
+                            ...prev,
+                            showFeatureNoticeDialog: true
+                        }))}
+                    >
+                        <CubeIcon /> {__('Try the new form builder', 'give')}
+                    </button>
                 )}
 
                 {!!window.GiveNextGen?.newFormUrl && (
