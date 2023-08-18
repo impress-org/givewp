@@ -9,6 +9,7 @@ use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Form\Utils as FormUtils;
+use Give\Helpers\Language;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
 
 /**
@@ -56,6 +57,8 @@ class TestGateway extends PaymentGateway
             $scriptAsset['version'],
             true
         );
+
+        Language::setScriptTranslations($this::id());
     }
 
     /**
@@ -87,7 +90,7 @@ class TestGateway extends PaymentGateway
     public function createPayment(Donation $donation, $gatewayData): GatewayCommand
     {
         $intent = $gatewayData['testGatewayIntent'] ?? 'test-gateway-intent';
-        
+
         return new PaymentComplete("test-gateway-transaction-id-{$intent}-$donation->id");
     }
 

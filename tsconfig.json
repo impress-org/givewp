@@ -40,6 +40,9 @@
       ],
       "@givewp/form-builder/*": [
         "./src/FormBuilder/resources/js/form-builder/src/*"
+      ],
+      "@givewp/form-builder/registrars/*": [
+        "./src/FormBuilder/resources/js/registrars/*"
       ]
     }
   },
