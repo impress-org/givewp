@@ -30,7 +30,7 @@
             font-weight: 700;
             align-items: center;
             padding: var(--givewp-spacing-4) var(--givewp-spacing-5);
-            background-color: var(--givewp-grey-25);
+            background-color: #fff;
             border-top-left-radius: var(--givewp-rounded-6);
             border-top-right-radius: var(--givewp-rounded-6);
             border-bottom: 1px solid var(--givewp-grey-50);
@@ -58,6 +58,7 @@
             z-index: 999;
             top: var(--givewp-spacing-4);
             right: var(--givewp-spacing-5);
+            fill: var(--givewp-grey-500);
         }
 
         .closeHeadless {
