@@ -91,7 +91,7 @@ class BlockRenderController
      *
      * @since 3.0.0
      */
-    private function loadEmbedScript()
+    protected function loadEmbedScript()
     {
         (new EnqueueScript(
             'givewp-donation-form-embed',
