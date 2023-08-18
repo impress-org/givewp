@@ -19,8 +19,10 @@ declare global {
             table: { columns: Array<object> };
             pluginUrl: string;
             showMigrationOnboarding: boolean;
+            showBanner: boolean;
             migrationOnboardingCompleted: boolean;
-            unsupportedAddons: Array<string>;
+            supportedAddons: Array<string>;
+            supportedGateways: Array<string>;
         };
 
         GiveNextGen?: {
@@ -29,10 +31,12 @@ declare global {
     }
 }
 
-interface MigrationTransferStateProps {
+interface OnboardingStateProps {
     migrationOnboardingCompleted: boolean;
+    showBanner: boolean;
     showMigrationSuccessDialog: boolean;
     showTransferSuccessDialog: boolean;
+    showFeatureNoticeDialog: boolean;
     showMigrationCompletedToast: boolean;
     formId: number | null;
     formName: string | null;
@@ -40,7 +44,7 @@ interface MigrationTransferStateProps {
 
 const API = new ListTableApi(window.GiveDonationForms);
 
-export const MigrationOnboardingContext = createContext([]);
+export const OnboardingContext = createContext([]);
 
 export const updateOnboardingOption = async optionName => fetch(window.GiveDonationForms.onboardingApiRoot, {
     method: 'POST',
@@ -198,32 +202,19 @@ const ListTableBlankSlate = (
 
 export default function DonationFormsListTable() {
 
-    const [state, setState] = useState<MigrationTransferStateProps>({
+    const [state, setState] = useState<OnboardingStateProps>({
+        showBanner: Boolean(window.GiveDonationForms.showBanner),
         migrationOnboardingCompleted: Boolean(window.GiveDonationForms.migrationOnboardingCompleted),
         showMigrationSuccessDialog: false,
         showTransferSuccessDialog: false,
+        showFeatureNoticeDialog: false,
         showMigrationCompletedToast: false,
         formId: null,
         formName: null,
     })
 
-    const closeMigrationSuccessDialog = useCallback(() => setState(prev => ({
-        ...prev,
-        showMigrationSuccessDialog: false
-    })), []);
-
-    const closeTransferSuccessDialog = useCallback(() => setState(prev => ({
-        ...prev,
-        showTransferSuccessDialog: false
-    })), []);
-
-    const closeMigrationCompletedToast = useCallback(() => setState(prev => ({
-        ...prev,
-        showMigrationCompletedToast: false
-    })), []);
-
     return (
-        <MigrationOnboardingContext.Provider value={[state, setState]}>
+        <OnboardingContext.Provider value={[state, setState]}>
             <ListTablePage
                 title={__('Donation Forms', 'give')}
                 singleName={__('donation form', 'give')}
@@ -235,6 +226,12 @@ export default function DonationFormsListTable() {
                 listTableBlankSlate={ListTableBlankSlate}
                 banner={Onboarding}
             >
+                {!state.showBanner && (
+                    <div>
+                        Try the new form builder button
+                    </div>
+                )}
+
                 {!!window.GiveNextGen?.newFormUrl && (
                     <a href={window.GiveNextGen.newFormUrl} className={styles.addFormButton}>
                         {__('Add Next Gen Form', 'give')}
