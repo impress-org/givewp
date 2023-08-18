@@ -68,6 +68,7 @@ use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\ValidationRules\ValidationRulesServiceProvider;
 use Give\Framework\WordPressShims\ServiceProvider as WordPressShimsServiceProvider;
+use Give\Helpers\Language;
 use Give\LegacySubscriptions\ServiceProvider as LegacySubscriptionsServiceProvider;
 use Give\License\LicenseServiceProvider;
 use Give\Log\LogServiceProvider;
@@ -361,6 +362,7 @@ final class Give
     /**
      * Loads the plugin language files.
      *
+     * @unreleased Use Language class
      * @since  1.0
      * @access public
      *
@@ -368,17 +370,7 @@ final class Give
      */
     public function load_textdomain()
     {
-        // Set filter for Give's languages directory
-        $give_lang_dir = dirname(plugin_basename(GIVE_PLUGIN_FILE)) . '/languages/';
-        $give_lang_dir = apply_filters('give_languages_directory', $give_lang_dir);
-
-        // Traditional WordPress plugin locale filter.
-        $locale = is_admin() && function_exists('get_user_locale') ? get_user_locale() : get_locale();
-        $locale = apply_filters('plugin_locale', $locale, 'give');
-
-        unload_textdomain('give');
-        load_textdomain('give', WP_LANG_DIR . '/give/give-' . $locale . '.mo');
-        load_plugin_textdomain('give', false, $give_lang_dir);
+        Language::load();
     }
 
     /**
