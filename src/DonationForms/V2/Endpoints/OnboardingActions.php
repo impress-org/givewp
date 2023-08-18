@@ -36,6 +36,7 @@ class OnboardingActions extends Endpoint
                         'required' => true,
                         'enum' => [
                             'show_migration_onboarding',
+                            'show_onboarding_banner',
                             'migration_onboarding_completed',
                             'transfer_onboarding_completed',
                         ],
