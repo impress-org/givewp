@@ -48,7 +48,6 @@ export default function DonationReceipt({
     subscriptionDetails,
     additionalDetails,
 }: DonationReceiptProps) {
-    console.log('pdfReceiptLink: ', pdfReceiptLink);
     return (
         <article>
             <div className="receipt-header">
