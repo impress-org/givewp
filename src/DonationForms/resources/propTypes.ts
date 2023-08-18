@@ -95,7 +95,7 @@ export interface DonationAmountProps extends GroupProps {
         subscriptionPeriod: FC<FieldProps | {}>;
         subscriptionInstallments: FC<FieldProps | {}>;
     };
-    fieldProps: {
+    nodeProps: {
         amount: AmountProps;
         donationType: FieldProps;
         currency: FieldProps;
