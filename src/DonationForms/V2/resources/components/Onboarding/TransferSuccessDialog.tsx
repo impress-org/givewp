@@ -5,8 +5,7 @@ import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import Button from '@givewp/components/AdminUI/Button';
 import Input from '@givewp/components/AdminUI/Input';
 import {AlertTriangle, CheckCircle} from '@givewp/components/AdminUI/Icons';
-
-import {updateOnboardingOption} from '../DonationFormsListTable'
+import {updateOnboardingOption} from './index'
 
 import styles from './style.module.scss';
 

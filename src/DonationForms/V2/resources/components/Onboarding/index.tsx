@@ -1,11 +1,31 @@
-import {useContext} from 'react';
+import {createContext, useContext} from 'react';
 import {__, sprintf} from '@wordpress/i18n';
-import {OnboardingContext} from '../DonationFormsListTable'
 import Banner from './Banner';
 import Toast from '@givewp/components/AdminUI/Toast';
 import MigrationSuccessDialog from './MigrationSuccessDialog';
 import TransferSuccessDialog from './TransferSuccessDialog';
 import FeatureNoticeDialog from './FeatureNoticeDialog';
+export const OnboardingContext = createContext([]);
+
+export const updateOnboardingOption = async optionName => fetch(window.GiveDonationForms.onboardingApiRoot, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-WP-Nonce': window.GiveDonationForms.apiNonce
+    },
+    body: JSON.stringify({option: optionName})
+})
+
+export interface OnboardingStateProps {
+    migrationOnboardingCompleted: boolean;
+    showBanner: boolean;
+    showMigrationSuccessDialog: boolean;
+    showTransferSuccessDialog: boolean;
+    showFeatureNoticeDialog: boolean;
+    showMigrationCompletedToast: boolean;
+    formId: number | null;
+    formName: string | null;
+}
 
 export default function Onboarding() {
     const [state, setState] = useContext(OnboardingContext);

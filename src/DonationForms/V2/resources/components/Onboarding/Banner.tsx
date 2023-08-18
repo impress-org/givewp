@@ -2,7 +2,7 @@ import {useContext} from 'react';
 import {__} from '@wordpress/i18n';
 import {ExitIcon, StarsIcon} from '@givewp/components/AdminUI/Icons';
 import styles from './style.module.scss';
-import {OnboardingContext, updateOnboardingOption} from '../DonationFormsListTable';
+import {OnboardingContext, updateOnboardingOption} from './index';
 
 export default function Banner() {
 

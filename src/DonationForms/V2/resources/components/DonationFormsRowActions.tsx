@@ -4,10 +4,8 @@ import RowAction from '@givewp/components/ListTable/RowAction';
 import ListTableApi from '@givewp/components/ListTable/api';
 import {useContext} from 'react';
 import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
-import {OnboardingContext} from './DonationFormsListTable';
 import {Interweave} from 'interweave';
-
-import {updateOnboardingOption} from './DonationFormsListTable'
+import {OnboardingContext, updateOnboardingOption} from './Onboarding';
 
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 

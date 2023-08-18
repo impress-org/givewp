@@ -1,8 +1,8 @@
-import {createContext, useState} from 'react';
+import {useState} from 'react';
 import {__} from '@wordpress/i18n';
 import {ListTableApi, ListTablePage} from '@givewp/components';
 import {DonationFormsRowActions} from './DonationFormsRowActions';
-import Onboarding from './Onboarding';
+import Onboarding, {OnboardingContext, OnboardingStateProps} from './Onboarding';
 import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import Select from '@givewp/components/ListTable/Select';
@@ -31,29 +31,7 @@ declare global {
     }
 }
 
-interface OnboardingStateProps {
-    migrationOnboardingCompleted: boolean;
-    showBanner: boolean;
-    showMigrationSuccessDialog: boolean;
-    showTransferSuccessDialog: boolean;
-    showFeatureNoticeDialog: boolean;
-    showMigrationCompletedToast: boolean;
-    formId: number | null;
-    formName: string | null;
-}
-
 const API = new ListTableApi(window.GiveDonationForms);
-
-export const OnboardingContext = createContext([]);
-
-export const updateOnboardingOption = async optionName => fetch(window.GiveDonationForms.onboardingApiRoot, {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'X-WP-Nonce': window.GiveDonationForms.apiNonce
-    },
-    body: JSON.stringify({option: optionName})
-})
 
 const donationStatus = [
     {
