@@ -9,3 +9,5 @@ on:
 jobs:
     build:
         uses: impress-org/givewp-github-actions/.github/workflows/php-compatibility.yml@master
+        with:
+            test_versions: "[ '7.2', '8.0' ]"

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Give\Framework\FieldsAPI;
 
-class Consent extends field
+class Consent extends Field
 {
     use Concerns\HasLabel;
-    
+
     protected $useGlobalSettings;
     protected $checkboxLabel;
     protected $displayType;
