@@ -15,6 +15,21 @@ class PayPalCommerceGateway extends PayPalCommerce
     use HasScriptAssetFile;
 
     /**
+     * This function uses to render the credit card form for v2 donation forms.
+     *
+     * @unreleased
+     *
+     * @param int $formId
+     * @param array $args
+     *
+     * @return string
+     */
+    public function getLegacyFormFieldMarkup(int $formId, array $args): string
+    {
+        return parent::getLegacyFormFieldMarkup($formId, $args);
+    }
+
+    /**
      * @since 3.0.0
      */
     public function enqueueScript(int $formId)
