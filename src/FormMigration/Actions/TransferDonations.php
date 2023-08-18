@@ -2,12 +2,27 @@
 
 namespace Give\FormMigration\Actions;
 
-use Give\FormMigration\Contracts\TransferAction;
 use Give\Framework\Database\DB;
-use Give\Framework\Exceptions\Primitives\Exception;
 
-class TransferDonations extends TransferAction
+class TransferDonations
 {
+    protected $sourceId;
+
+    public function __construct($sourceId)
+    {
+        $this->sourceId = $sourceId;
+    }
+
+    public static function from($sourceId): self
+    {
+        return new TransferDonations($sourceId);
+    }
+
+    public function to($destinationId): void
+    {
+        $this->__invoke($destinationId);
+    }
+
     public function __invoke($destinationId)
     {
         DB::table('give_donationmeta')

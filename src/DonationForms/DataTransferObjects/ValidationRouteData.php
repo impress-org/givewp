@@ -30,7 +30,7 @@ class ValidationRouteData implements Arrayable
      */
     public static function fromRequest(array $requestData): self
     {
-        $self = new static();
+        $self = new self();
         $self->formId = (int)$requestData['formId'];
         $self->requestData = $requestData;
 
@@ -65,9 +65,9 @@ class ValidationRouteData implements Arrayable
 
         if ($validator->fails()) {
             $this->throwDonationFormFieldErrorsException($validator->errors());
-        } else {
-            return new JsonResponse(['valid' => true]);
         }
+
+        return new JsonResponse(['valid' => true]);
     }
 
     /**

@@ -30,6 +30,7 @@ class PayPalCommerceSubscriptionModule extends SubscriptionModule
     public function cancelSubscription(Subscription $subscription)
     {
         try {
+            // @phpstan-ignore-next-line
             give(SubscriptionRepository::class)
                 ->updateStatus($subscription->gatewaySubscriptionId, 'cancel');
 

@@ -21,9 +21,9 @@ class AuthenticationData
      *
      * @since 3.0.0
      */
-    public static function fromRequest(array $request): AuthenticationData
+    public static function fromRequest(array $request): self
     {
-        $self = new static();
+        $self = new self();
 
         $self->login = $request['login'];
         $self->password = $request['password'];

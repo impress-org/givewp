@@ -7,7 +7,7 @@ import DonationAmountCurrencySwitcherMessage from './DonationAmountCurrencySwitc
  * @since 3.0.0
  */
 export default function DonationAmount({
-    fields: {
+    nodeComponents: {
         amount: AmountField,
         donationType: DonationTypeField,
         currency: CurrencyField,
@@ -15,7 +15,7 @@ export default function DonationAmount({
         subscriptionInstallments: SubscriptionInstallmentsField,
         subscriptionFrequency: SubscriptionFrequencyField,
     },
-    fieldProps: {amount: amountProps},
+    nodeProps: {amount: amountProps},
     subscriptionsEnabled,
     subscriptionDetailsAreFixed,
 }: DonationAmountProps) {

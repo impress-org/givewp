@@ -27,7 +27,7 @@ class LegacyPurchaseFormData
      * @param  array{donation: Donation, donor: Donation}  $array
      * @return LegacyPurchaseFormData
      */
-    public static function fromArray(array $array): LegacyPurchaseFormData
+    public static function fromArray(array $array): self
     {
         $self = new self();
 
