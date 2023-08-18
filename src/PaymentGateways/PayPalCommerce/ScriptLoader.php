@@ -211,8 +211,7 @@ EOT;
                     esc_html__('Donation Processing...', 'give'),
                     esc_html__('Checking donation status with PayPal.', 'give'),
                     esc_html__('This will only take a second!', 'give')
-                ),
-                'paymentFieldType' => give_get_option('paypal_payment_field_type', 'auto'),
+                )
             ]
         );
     }
