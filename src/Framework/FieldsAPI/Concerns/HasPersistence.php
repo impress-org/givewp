@@ -103,7 +103,7 @@ trait HasPersistence
      * @since 2.28.0 added types
      * @since 2.10.2
      */
-    public function storeAsDonorMeta(bool $storeAsDonorMeta = true): self
+    public function storeAsDonorMeta(bool $storeAsDonorMeta = true)
     {
         $this->scope = $storeAsDonorMeta
             ? PersistenceScope::donor()
