@@ -1,4 +1,5 @@
 @use '../variables';
+
 $borderColor: #9A9A9A;
 
 .givewp-groups-donationAmount {
@@ -49,6 +50,7 @@ $borderColor: #9A9A9A;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        background: var(--givewp-shades-white);
         border-width: 0.125rem;
         border-style: solid;
         border-color: $borderColor;
