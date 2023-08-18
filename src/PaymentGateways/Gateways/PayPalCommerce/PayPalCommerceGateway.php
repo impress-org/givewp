@@ -32,14 +32,16 @@ class PayPalCommerceGateway extends PayPalCommerce
 
     public function formSettings(int $formId): array
     {
-        /* @var MerchantDetail $merchant */
+        /* @var MerchantDetail $merchantDetailModel */
         $merchantDetailModel = give(MerchantDetail::class);
+
+        /* @var MerchantDetails $merchantDetailRepository */
         $merchantDetailRepository = give(MerchantDetails::class);
 
         return [
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'donationFormId' => $formId,
-            'donationFormNonce' => wp_create_nonce( "give_donation_form_nonce_{$formId}" ),
+            'donationFormNonce' => wp_create_nonce("give_donation_form_nonce_{$formId}"),
             'sdkOptions' => [
                 // data-namespace is required for multiple PayPal SDKs to load in harmony.
                 'data-namespace' => 'givewp/paypal-commerce',
