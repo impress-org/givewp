@@ -2,8 +2,10 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceGateway;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
+use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 use Give_Admin_Settings;
 
 /**
@@ -15,22 +17,23 @@ use Give_Admin_Settings;
 class ScriptLoader
 {
     /**
-     * @since 2.9.0
+     * @unreleased
      *
-     * @var MerchantDetails
+     * @var PayPalCommerceGateway
      */
-    private $merchantRepository;
+    private $payPalCommerceGateway;
 
     /**
      * ScriptLoader constructor.
      *
+     * @unreleased Remove $merchantRepository parameter and add $payPalCommerceGateway parameter.
      * @since 2.9.0
      *
-     * @param MerchantDetails $merchantRepository
+     * @param PayPalCommerceGateway $payPalCommerceGateway
      */
-    public function __construct(MerchantDetails $merchantRepository)
+    public function __construct(PayPalCommerceGateway $payPalCommerceGateway)
     {
-        $this->merchantRepository = $merchantRepository;
+        $this->payPalCommerceGateway = $payPalCommerceGateway;
     }
 
     /**
@@ -142,22 +145,10 @@ EOT;
             return;
         }
 
-        /* @var MerchantDetail $merchant */
-        $merchant = give(MerchantDetail::class);
-
-        $scriptId = 'give-paypal-commerce-js';
-        $paymentFieldType = give_get_option('paypal_payment_field_type', 'auto');
-
-        // Add hosted fields if payment field type is auto.
-        $paymentComponents[] = 'buttons';
-        if( 'auto' === $paymentFieldType ) {
-            $paymentComponents[] = 'hosted-fields';
-        }
-        
-        $clientToken = '';
-        try{
-            $clientToken = $this->merchantRepository->getClientToken();
-        } catch ( \Exception $exception ) {
+        try {
+            $formSettings = $this->payPalCommerceGateway->formSettings(FrontendFormTemplateUtils::getFormId());
+            $paypalSDKOptions = $formSettings['sdkOptions'];
+        } catch (\Exception $e) {
             give_set_error(
                 'give-paypal-commerce-client-token-error',
                 sprintf(
@@ -165,28 +156,33 @@ EOT;
                         'Unable to load PayPal Commerce client token. Please try again later. Error: %1$s',
                         'give'
                     ),
-                    $exception->getMessage()
+                    $e->getMessage()
                 )
             );
+            return;
         }
 
+        /* @var MerchantDetail $merchant */
+        $merchant = give(MerchantDetail::class);
+
         /**
-         * List of PayPal query parameters: https://developer.paypal.com/docs/checkout/reference/customize-sdk/#query-parameters
          * @since 2.27.1 Removed locale query parameter.
          */
         $payPalSdkQueryParameters = [
-            'client-id' => $merchant->clientId,
-            'merchant-id' => $merchant->merchantIdInPayPal,
-            'components' => implode(',', $paymentComponents),
+            'client-id' => $paypalSDKOptions['client-id'],
+            'merchant-id' => $paypalSDKOptions['merchant-id'],
+            'components' => $paypalSDKOptions['components'],
             'disable-funding' => 'credit',
             'vault' => true,
             'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
-            'data-client-token' => $clientToken,
+            'data-client-token' => $paypalSDKOptions['data-client-token'],
         ];
 
-        if (give_is_setting_enabled(give_get_option('paypal_commerce_accept_venmo', 'disabled'))) {
-            $payPalSdkQueryParameters['enable-funding'] = 'venmo';
+        if (array_key_exists('enable-funding', $paypalSDKOptions) && $paypalSDKOptions['enable-funding']) {
+            $payPalSdkQueryParameters['enable-funding'] = $paypalSDKOptions['enable-funding'];
         }
+
+        $scriptId = 'give-paypal-commerce-js';
 
         wp_enqueue_script(
             $scriptId,
@@ -231,7 +227,7 @@ EOT;
                     esc_html__('Checking donation status with PayPal.', 'give'),
                     esc_html__('This will only take a second!', 'give')
                 ),
-                'paymentFieldType' => $paymentFieldType,
+                'paymentFieldType' => give_get_option('paypal_payment_field_type', 'auto'),
             ]
         );
     }
