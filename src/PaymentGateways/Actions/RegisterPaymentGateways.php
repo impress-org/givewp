@@ -42,7 +42,6 @@ class RegisterPaymentGateways
         //TestGateway::class,
         //TestGatewayOffsite::class,
         PayPalStandard::class,
-        PayPalCommerce::class,
     ];
 
     /**

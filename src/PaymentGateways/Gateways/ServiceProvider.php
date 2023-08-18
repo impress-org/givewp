@@ -74,11 +74,10 @@ class ServiceProvider implements ServiceProviderInterface
             }
 
             $registrar->registerGateway(StripePaymentElementGateway::class);
-            
+
             $registrar->unregisterGateway(PayPalStandard::id());
             $registrar->registerGateway(PayPalStandardGateway::class);
 
-            $registrar->unregisterGateway(PayPalCommerce::id());
             $registrar->registerGateway(PayPalCommerceGateway::class);
         });
 
