@@ -43,9 +43,9 @@ class DonateFormRouteData implements Arrayable
      *
      * @since 3.0.0
      */
-    public static function fromRequest(array $requestData): DonateFormRouteData
+    public static function fromRequest(array $requestData): self
     {
-        $self = new static();
+        $self = new self();
         $self->formId = (int)$requestData['formId'];
         $self->gatewayId = $requestData['gatewayId'];
         $self->originUrl = $requestData['originUrl'];
