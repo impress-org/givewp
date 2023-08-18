@@ -14,7 +14,6 @@ const {
     recurringBillingPeriodOptions,
     recurringLengthOfTime,
     recurringEnabled,
-    recurringDisableOneTimeDonations,
     customAmountMin,
     customAmount,
     setPrice,
@@ -87,10 +86,6 @@ const settings: FieldBlock['settings'] = {
         recurringLengthOfTime: {
             type: 'string',
             default: recurringLengthOfTime, // ongoing
-        },
-        recurringDisableOneTimeDonations: {
-            type: 'boolean',
-            default: recurringDisableOneTimeDonations,
         },
     },
     edit: Edit,

@@ -28,7 +28,6 @@ const Edit = ({attributes, setAttributes}) => {
         recurringBillingPeriodOptions,
         recurringLengthOfTime,
         recurringOptInDefaultBillingPeriod,
-        recurringDisableOneTimeDonations,
     } = attributes;
 
     const {gateways} = getFormBuilderData();
@@ -113,10 +112,6 @@ const Edit = ({attributes, setAttributes}) => {
     };
 
     const BillingPeriodControl = ({options}) => {
-        if (!recurringDisableOneTimeDonations) {
-            options = ['one-time'].concat(options);
-        }
-
         return (
             <RadioControl
                 className={'give-billing-period-control'}

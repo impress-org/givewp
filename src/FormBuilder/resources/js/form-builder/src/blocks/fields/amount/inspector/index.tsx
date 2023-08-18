@@ -16,6 +16,7 @@ import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
 import {useCallback, useState} from '@wordpress/element';
 import Options from '@givewp/form-builder/components/OptionsPanel';
 import {OptionProps} from '@givewp/form-builder/components/OptionsPanel/types';
+import {useEffect} from 'react';
 
 const compareBillingPeriods = (val1: string, val2: string): number => {
     const index1 = Object.keys(periodLookup).indexOf(val1);
@@ -41,8 +42,21 @@ const Inspector = ({attributes, setAttributes}) => {
         recurringBillingPeriodOptions,
         recurringLengthOfTime,
         recurringOptInDefaultBillingPeriod,
-        recurringDisableOneTimeDonations,
     } = attributes;
+
+    useEffect(() => {
+        // recurringBillingPeriodOptions are meant to be selected by the donor so there should always be at least two options.
+        // If there is only one recurring billing period option, add 'one-time' to the options as a fallback.
+        if (recurringBillingPeriodOptions.length === 1 && !recurringBillingPeriodOptions.includes('one-time')) {
+            const options = Array.from(new Set(recurringBillingPeriodOptions.concat(['one-time'])));
+
+            options.sort(compareBillingPeriods);
+
+            setAttributes({
+                recurringBillingPeriodOptions: options,
+            });
+        }
+    }, [recurringBillingPeriodOptions]);
 
     const addBillingPeriodOption = useCallback(
         (value) => {
@@ -105,22 +119,6 @@ const Inspector = ({attributes, setAttributes}) => {
         const newLevels = options.filter((option) => option.value).map((option) => option.value);
         setAttributes({levels: newLevels});
     };
-
-    const getDefaultBillingPeriodOptions = useCallback(
-        (options) => {
-            if (!recurringDisableOneTimeDonations) {
-                options = ['one-time'].concat(options);
-            }
-
-            return options.map((value) => ({
-                label: periodLookup[value].singular
-                    .toLowerCase()
-                    .replace(/\w/, (firstLetter) => firstLetter.toUpperCase()),
-                value: value,
-            }));
-        },
-        [recurringBillingPeriodOptions, recurringDisableOneTimeDonations]
-    );
 
     return (
         <InspectorControls>
@@ -226,15 +224,13 @@ const Inspector = ({attributes, setAttributes}) => {
                     ))}
 
                 {isRecurringSupported && (
-                    <>
-                        <PanelRow>
-                            <ToggleControl
-                                label={__('Enable recurring donation', 'give')}
-                                checked={recurringEnabled}
-                                onChange={() => setAttributes({recurringEnabled: !recurringEnabled})}
-                            />
-                        </PanelRow>
-                    </>
+                    <PanelRow>
+                        <ToggleControl
+                            label={__('Enable recurring donation', 'give')}
+                            checked={recurringEnabled}
+                            onChange={() => setAttributes({recurringEnabled: !recurringEnabled})}
+                        />
+                    </PanelRow>
                 )}
                 {!!isRecurring && (
                     <>
@@ -249,19 +245,6 @@ const Inspector = ({attributes, setAttributes}) => {
                                 onChange={(recurringDonationChoice) => setAttributes({recurringDonationChoice})}
                             />
                         </PanelRow>
-                        {'donor' === recurringDonationChoice && (
-                            <PanelRow>
-                                <ToggleControl
-                                    label={__('Disable One-Time donations', 'give')}
-                                    checked={recurringDisableOneTimeDonations}
-                                    onChange={() =>
-                                        setAttributes({
-                                            recurringDisableOneTimeDonations: !recurringDisableOneTimeDonations,
-                                        })
-                                    }
-                                />
-                            </PanelRow>
-                        )}
                         <PanelRow>
                             <SelectControl
                                 label={__('Billing interval', 'give')}
@@ -293,7 +276,14 @@ const Inspector = ({attributes, setAttributes}) => {
                                 />
                             )}
                             {'donor' === recurringDonationChoice && (
-                                <BaseControl id={'recurringBillingPeriodOptions'} label={__('Billing period', 'give')}>
+                                <BaseControl
+                                    id={'recurringBillingPeriodOptions'}
+                                    label={__('Billing period', 'give')}
+                                    help={__(
+                                        'Select the billing period options you want donors to choose from. There must always be at least two enabled.',
+                                        'give'
+                                    )}
+                                >
                                     <div
                                         style={{
                                             width: '100%',
@@ -302,6 +292,7 @@ const Inspector = ({attributes, setAttributes}) => {
                                         }}
                                     >
                                         {[
+                                            {label: __('One Time', 'give'), value: 'one-time'},
                                             {label: __('Day', 'give'), value: 'day'},
                                             {label: __('Week', 'give'), value: 'week'},
                                             {label: __('Month', 'give'), value: 'month'},
@@ -318,7 +309,8 @@ const Inspector = ({attributes, setAttributes}) => {
                                                         : removeBillingPeriodOption(option.value)
                                                 }
                                                 disabled={
-                                                    recurringBillingPeriodOptions.length === 1 &&
+                                                    // There must always be at least two recurring billing period options.
+                                                    recurringBillingPeriodOptions.length <= 2 &&
                                                     recurringBillingPeriodOptions.includes(option.value) // This is the last checked option.
                                                 }
                                                 //@ts-ignore
@@ -334,7 +326,12 @@ const Inspector = ({attributes, setAttributes}) => {
                                 <SelectControl
                                     label={__('Default billing period', 'give')}
                                     value={recurringOptInDefaultBillingPeriod ?? 'month'}
-                                    options={getDefaultBillingPeriodOptions(recurringBillingPeriodOptions)}
+                                    options={recurringBillingPeriodOptions.map((value) => ({
+                                        label: periodLookup[value].singular
+                                            .toLowerCase()
+                                            .replace(/\w/, (firstLetter) => firstLetter.toUpperCase()),
+                                        value: value,
+                                    }))}
                                     onChange={(recurringOptInDefaultBillingPeriod) =>
                                         setAttributes({recurringOptInDefaultBillingPeriod})
                                     }
