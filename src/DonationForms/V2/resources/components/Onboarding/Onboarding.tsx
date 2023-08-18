@@ -56,7 +56,7 @@ export default function Onboarding({handleClose}: OnboardingProps) {
                 {__('This section highlights a list of add-ons that are not supported with v3 forms yet. Take note of these add-ons before making your migration to v3 forms.', 'give')}
 
                 <div className={styles.addonsContainer}>
-                    {window.GiveDonationForms.unsupportedAddons.map(addon => <div className={styles.addon} key={addon}>
+                    {window.GiveDonationForms.supportedAddons.map(addon => <div className={styles.addon} key={addon}>
                         <MinusIcon />{addon}
                     </div>)}
                 </div>
