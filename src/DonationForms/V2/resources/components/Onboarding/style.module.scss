@@ -65,12 +65,13 @@
     margin-bottom: var(--givewp-spacing-5);
 }
 
-.addonsContainer {
+.itemsContainer {
     display: flex;
     flex-wrap: wrap;
     margin-top: var(--givewp-spacing-3);
+    margin-bottom: var(--givewp-spacing-3);
 
-    .addon {
+    .item {
         display: flex;
         flex-basis: 50%;
         margin-bottom: var(--givewp-spacing-2);
