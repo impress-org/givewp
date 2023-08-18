@@ -13,8 +13,8 @@ interface TestOffsiteGateway extends Gateway {
 const testOffsiteGateway: TestOffsiteGateway = {
     id: 'test-offsite-gateway',
     Fields() {
-        return testOffsiteGateway.settings.message;
-    },
+        return <span>{testOffsiteGateway.settings.message}</span>;
+    }
 };
 
 window.givewp.gateways.register(testOffsiteGateway);
