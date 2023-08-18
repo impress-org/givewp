@@ -148,6 +148,9 @@ EOT;
         try {
             $formSettings = $this->payPalCommerceGateway->formSettings(FrontendFormTemplateUtils::getFormId());
             $paypalSDKOptions = $formSettings['sdkOptions'];
+
+            // Remove v3 donation form related param.
+            unset($paypalSDKOptions['data-namespace']);
         } catch (\Exception $e) {
             give_set_error(
                 'give-paypal-commerce-client-token-error',
@@ -164,23 +167,6 @@ EOT;
 
         /* @var MerchantDetail $merchant */
         $merchant = give(MerchantDetail::class);
-
-        /**
-         * @since 2.27.1 Removed locale query parameter.
-         */
-        $payPalSdkQueryParameters = [
-            'client-id' => $paypalSDKOptions['client-id'],
-            'merchant-id' => $paypalSDKOptions['merchant-id'],
-            'components' => $paypalSDKOptions['components'],
-            'disable-funding' => 'credit',
-            'vault' => true,
-            'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
-            'data-client-token' => $paypalSDKOptions['data-client-token'],
-        ];
-
-        if (array_key_exists('enable-funding', $paypalSDKOptions) && $paypalSDKOptions['enable-funding']) {
-            $payPalSdkQueryParameters['enable-funding'] = $paypalSDKOptions['enable-funding'];
-        }
 
         $scriptId = 'give-paypal-commerce-js';
 
@@ -219,7 +205,7 @@ EOT;
                 'hostedCardFieldStyles' => apply_filters('give_paypal_commerce_hosted_field_style', []),
                 'supportsCustomPayments' => $merchant->supportsCustomPayments ? 1 : '',
                 'separatorLabel' => esc_html__('Or pay with card', 'give'),
-                'payPalSdkQueryParameters' => $payPalSdkQueryParameters,
+                'payPalSdkQueryParameters' => $paypalSDKOptions,
                 'textForOverlayScreen' => sprintf(
                     '<h3>%1$s</h3><p>%2$s</p><p>%3$s</p>',
                     esc_html__('Donation Processing...', 'give'),
