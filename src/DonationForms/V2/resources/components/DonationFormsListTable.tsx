@@ -1,5 +1,5 @@
-import {createContext, useState, useCallback} from 'react';
-import {__, sprintf} from '@wordpress/i18n';
+import {createContext, useState} from 'react';
+import {__} from '@wordpress/i18n';
 import {ListTableApi, ListTablePage} from '@givewp/components';
 import {DonationFormsRowActions} from './DonationFormsRowActions';
 import Onboarding from './Onboarding';
@@ -89,18 +89,6 @@ const donationFormsFilters: Array<FilterConfig> = [
         options: donationStatus,
     },
 ];
-
-const v2FormBadge = item => {
-    if (item.v2form) {
-        return <div className={styles.v2Badge}>
-            <svg width="4" height="4" viewBox="0 0 4 4" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="2" cy="2" r="2" fill="#2B13BF" />
-            </svg>
-            V2
-        </div>;
-    }
-    return null;
-}
 
 const donationFormsBulkActions: Array<BulkActionsConfig> = [
     {
@@ -245,8 +233,7 @@ export default function DonationFormsListTable() {
                 apiSettings={window.GiveDonationForms}
                 filterSettings={donationFormsFilters}
                 listTableBlankSlate={ListTableBlankSlate}
-                banner={MigrationBanner}
-                rowBadge={v2FormBadge}
+                banner={Onboarding}
             >
                 {!!window.GiveNextGen?.newFormUrl && (
                     <a href={window.GiveNextGen.newFormUrl} className={styles.addFormButton}>
