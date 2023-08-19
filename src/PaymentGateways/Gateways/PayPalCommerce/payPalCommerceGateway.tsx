@@ -69,6 +69,8 @@ import {CSSProperties, useEffect, useState} from 'react';
         formData.append('give-form-id', payPalDonationsSettings.donationFormId);
         formData.append('give-form-hash', payPalDonationsSettings.donationFormNonce);
 
+        formData.append('give_payment_mode', 'paypal-commerce');
+
         formData.append('give-amount', amount);
 
         formData.append('give-recurring-period', subscriptionPeriod);
