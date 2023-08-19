@@ -82,7 +82,14 @@ class ServiceProvider implements ServiceProviderInterface
 
 
         add_filter("givewp_create_payment_gateway_data_" . PayPalCommerceGateway::id(), function ($gatewayData) {
-            $gatewayData['payPalOrderId'] = $gatewayData['payPalOrderId'] ?? give_clean($_POST['payPalOrderId']);
+            $gatewayData['payPalOrderId'] = $gatewayData['payPalOrderId']
+                ?? give_clean($_POST['gatewayData']['payPalOrderId']);
+            return $gatewayData;
+        });
+
+        add_filter('givewp_create_subscription_gateway_data_' . PayPalCommerceGateway::id(), function ($gatewayData) {
+            $gatewayData['payPalSubscriptionId'] = $gatewayData['payPalSubscriptionId']
+                ?? give_clean($_POST['gatewayData']['payPalSubscriptionId']);
             return $gatewayData;
         });
 
