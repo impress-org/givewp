@@ -72,10 +72,10 @@ class PayPalCommerceGateway extends PayPalCommerce
         /* @var MerchantDetails $merchantDetailRepository */
         $merchantDetailRepository = give(MerchantDetails::class);
 
-        // Add hosted fields if payment field type is auto.
+        // Add hosted fields if payment field type is auto and connect account type supports custom payments.
         $paymentFieldType = give_get_option('paypal_payment_field_type', 'auto');
         $paymentComponents[] = 'buttons';
-        if ('auto' === $paymentFieldType) {
+        if ('auto' === $paymentFieldType && $merchantDetailModel->supportsCustomPayments) {
             $paymentComponents[] = 'hosted-fields';
         }
 
