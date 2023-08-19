@@ -49,8 +49,7 @@ class ServiceProvider implements ServiceProviderInterface
         } catch (Exception $e) {
             Log::error('Error Registering Gateways', [
                     'message' => $e->getMessage()
-                ]
-            );
+                ]);
         }
 
         $this->enqueueGatewayScripts();
@@ -82,17 +81,17 @@ class ServiceProvider implements ServiceProviderInterface
         });
 
 
-        add_filter("givewp_create_payment_gateway_data_" . PayPalCommerce::id(), function ($gatewayData) {
+        add_filter("givewp_create_payment_gateway_data_" . PayPalCommerceGateway::id(), function ($gatewayData) {
             $gatewayData['payPalOrderId'] = $gatewayData['payPalOrderId'] ?? give_clean($_POST['payPalOrderId']);
             return $gatewayData;
         });
 
-        add_filter('give_recurring_modify_donation_data', function($recurringData) {
+        add_filter('give_recurring_modify_donation_data', function ($recurringData) {
             /**
              * PayPal Donations/Commerce (NextGen)
              * Optionally account for the period, frequency, and times values being passed via post data.
              */
-            if(isset($_GET['action']) && 'give_paypal_commerce_create_plan_id' == $_GET['action']) {
+            if (isset($_GET['action']) && 'give_paypal_commerce_create_plan_id' == $_GET['action']) {
                 $recurringData['period'] = $recurringData['period'] ?: $recurringData['post_data']['period'];
                 $recurringData['frequency'] = $recurringData['frequency'] ?: $recurringData['post_data']['frequency'];
                 $recurringData['times'] = $recurringData['times'] ?: $recurringData['post_data']['times'];
