@@ -219,11 +219,15 @@ import {CSSProperties, useEffect, useState} from 'react';
             cardholderName = _cardholderName ?? cardholderDefault;
         });
 
+        // Do not render hosted fields if disabled in admin settings.
+        if( -1 === payPalDonationsSettings.sdkOptions['components'].indexOf('hosted-fields') ){
+                        return;
+        }
+
         /**
          * Hosted fields are not supported for subscriptions at this time.
          */
-        const supportsHostedFields = donationType !== 'subscription'
-            && -1 !== payPalDonationsSettings.sdkOptions['components'].indexOf('hosted-fields');
+        const supportsHostedFields = donationType !== 'subscription';
 
         return (
 
