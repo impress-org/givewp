@@ -205,7 +205,10 @@ export default function DonationFormsListTable() {
                 listTableBlankSlate={ListTableBlankSlate}
                 banner={Onboarding}
             >
-                {!state.showBanner && <TryNewFormBuilderButton />}
+                {!state.showBanner && <TryNewFormBuilderButton showModal={() => setState(prev => ({
+                    ...prev,
+                    showFeatureNoticeDialog: true
+                }))} />}
 
                 {!!window.GiveNextGen?.newFormUrl && (
                     <a href={window.GiveNextGen.newFormUrl} className={styles.addFormButton}>

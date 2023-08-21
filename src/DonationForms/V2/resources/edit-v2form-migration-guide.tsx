@@ -1,8 +1,7 @@
 import {StrictMode} from 'react';
 import ReactDOM from 'react-dom';
 import MigrationGuideBox from './components/Onboarding/Components/MigrationGuideBox';
-
-console.log('MigrationGuideBox', MigrationGuideBox);
+import './colors.scss';
 
 ReactDOM.render(
     <StrictMode>

@@ -121,10 +121,18 @@ class DonationFormsAdminPage
      */
     public function loadEditFormScripts()
     {
+        $data = [
+            'supportedAddons' => $this->getSupportedAddons(),
+            'supportedGateways' => $this->getSupportedGateways(),
+        ];
+
         EnqueueScript::make('give-edit-v2form-migration-guide', 'assets/dist/js/give-edit-v2form-migration-guide.js')
             ->loadInFooter()
             ->registerTranslations()
+            ->registerLocalizeData('GiveDonationForms', $data)
             ->enqueue();
+
+        wp_enqueue_style('givewp-design-system-foundation');
     }
 
     /**
@@ -232,6 +240,13 @@ class DonationFormsAdminPage
         return isset($_GET['page']) && $_GET['page'] === 'give-forms';
     }
 
+    /**
+     * Helper function to determine if current page is the edit v2 form page
+     *
+     * @unreleased
+     *
+     * @return bool
+     */
     public static function isEditV2FormPage(): bool
     {
         if (isset($_GET['action'], $_GET['post']) && $_GET['action'] === 'edit') {
