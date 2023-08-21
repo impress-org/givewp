@@ -1,16 +1,116 @@
+import {useEffect, useState} from 'react';
+import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
+import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 import {BaseControl, Button, RadioControl, SelectControl, TextControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import Editor from './components/editor';
 import DeleteButton from '@givewp/form-builder/blocks/fields/amount/inspector/delete-button';
 
-const EmailTemplateSettings = ({setEmailTemplateFieldValues, emailTemplateFieldValues, option, config}) => {
+import {
+    CloseButton,
+    SetChangesButton,
+} from '@givewp/form-builder/settings/email/template-options/components/custom-button';
+
+type EmailTemplateFieldValues = {
+    id: string;
+    status: string;
+    email_subject: string;
+    email_header: string;
+    email_message: string;
+    email_content_type: string;
+    recipient: string[];
+};
+
+const EmailTemplateSettings = ({notification, closeModal}) => {
+    const [emailTemplateFieldValues, setEmailTemplateFieldValues] = useState<EmailTemplateFieldValues>({
+        id: '',
+        status: '',
+        email_subject: '',
+        email_header: '',
+        email_message: '',
+        email_content_type: '',
+        recipient: [''],
+    });
+
+    const dispatch = useFormStateDispatch();
+    const {emailNotifications, emailDefaultAddress} = getFormBuilderData();
+
+    const {
+        settings: {emailTemplateOptions},
+    } = useFormState();
+
+    const config = emailNotifications.find((config) => config.id === notification);
+
+    const option = {
+        status: config.defaultValues.notification ?? 'global',
+        email_subject: config.defaultValues.email_subject,
+        email_header: config.defaultValues.email_header,
+        email_message: config.defaultValues.email_message,
+        email_content_type: config.defaultValues.email_content_type,
+        recipient: [emailDefaultAddress],
+        ...emailTemplateOptions[notification],
+    };
+
     const recipients = option.recipient ?? [''];
 
-    const updateEmailTemplateFields = (property, value) => {
+    useEffect(() => {
         setEmailTemplateFieldValues({
             ...option,
-            [property]: value,
         });
+    }, []);
+
+    const updateEmailTemplateField = (property, value) => {
+        setEmailTemplateFieldValues((prevValues) => {
+            return {
+                ...prevValues,
+                [property]: value,
+            };
+        });
+    };
+
+    const cancelChanges = () => {
+        closeModal();
+        setEmailTemplateFieldValues({
+            ...option,
+        });
+
+        dispatch(
+            setFormSettings({
+                emailTemplateOptions: {
+                    ...emailTemplateOptions,
+                    [notification]: option,
+                },
+            })
+        );
+    };
+
+    const setEmailTemplateOption = () => {
+        closeModal();
+        dispatch(
+            setFormSettings({
+                emailTemplateOptions: {
+                    ...emailTemplateOptions,
+                    [notification]: {
+                        ...option,
+                        ...emailTemplateFieldValues,
+                    },
+                },
+            })
+        );
+    };
+
+    const setEmailTemplateStatus = (property, value) => {
+        dispatch(
+            setFormSettings({
+                emailTemplateOptions: {
+                    ...emailTemplateOptions,
+                    [notification]: {
+                        ...option,
+                        [property]: value,
+                    },
+                },
+            })
+        );
     };
 
     return (
@@ -22,6 +122,9 @@ const EmailTemplateSettings = ({setEmailTemplateFieldValues, emailTemplateFieldV
                 marginBottom: '20px', // Prevent clipping
             }}
         >
+            <CloseButton label={__('Cancel', 'givewp')} onClick={cancelChanges} />
+            <SetChangesButton label={__('Set and close', 'givewp')} onClick={setEmailTemplateOption} />
+
             <RadioControl
                 className="radio-control--email-options"
                 label={__('Email options', 'givewp')}
@@ -30,9 +133,9 @@ const EmailTemplateSettings = ({setEmailTemplateFieldValues, emailTemplateFieldV
                     'Global options are set in GiveWP settings. You may override them for this form here',
                     'givewp'
                 )}
-                selected={emailTemplateFieldValues.status ?? 'global'}
-                options={option?.statusOptions}
-                onChange={(value) => updateEmailTemplateFields('status', value)}
+                selected={option?.status ?? 'global'}
+                options={config.statusOptions}
+                onChange={(value) => setEmailTemplateStatus('status', value)}
             />
 
             {'enabled' === option.status && (
@@ -40,28 +143,28 @@ const EmailTemplateSettings = ({setEmailTemplateFieldValues, emailTemplateFieldV
                     <TextControl
                         label={__('Email Subject', 'givewp')}
                         help={__('Enter the email subject line', 'givewp')}
-                        onChange={(value) => updateEmailTemplateFields('email_subject', value)}
+                        onChange={(value) => updateEmailTemplateField('email_subject', value)}
                         value={emailTemplateFieldValues.email_subject || config.defaultValues.email_subject}
                     />
 
                     <TextControl
                         label={__('Email Header', 'givewp')}
                         help={__('Enter the email header that appears at the top of the email', 'givewp')}
-                        onChange={(value) => updateEmailTemplateFields('email_header', value)}
+                        onChange={(value) => updateEmailTemplateField('email_header', value)}
                         // @ts-ignore
                         value={emailTemplateFieldValues.email_header || config.defaultValues.email_header}
                     />
 
                     <Editor
                         value={
-                            emailTemplateFieldValues?.email_message?.replace(/\n/g, '<br />') ||
+                            emailTemplateFieldValues?.email_message.replace(/\n/g, '<br />') ||
                             config.defaultValues.email_message
                         }
-                        onChange={(value) => updateEmailTemplateFields('email_message', value)}
+                        onChange={(value) => updateEmailTemplateField('email_message', value)}
                     />
 
                     <SelectControl
-                        onChange={(value) => updateEmailTemplateFields('email_content_type', value)}
+                        onChange={(value) => updateEmailTemplateField('email_content_type', value)}
                         label={__('Email content type', 'givewp')}
                         help={__('Choose email type', 'givewp')}
                         value={emailTemplateFieldValues.email_content_type || config.defaultValues.email_content_type}
@@ -97,13 +200,13 @@ const EmailTemplateSettings = ({setEmailTemplateFieldValues, emailTemplateFieldV
                                                 onChange={(value) => {
                                                     const newRecipients = [...recipients];
                                                     newRecipients[index] = value;
-                                                    updateEmailTemplateFields('recipient', newRecipients);
+                                                    updateEmailTemplateField('recipient', newRecipients);
                                                 }}
                                             />
                                             <DeleteButton
                                                 onClick={() => {
                                                     recipients.splice(index, 1);
-                                                    updateEmailTemplateFields('recipient', recipients.slice());
+                                                    updateEmailTemplateField('recipient', recipients.slice());
                                                 }}
                                             />
                                         </li>
@@ -111,7 +214,7 @@ const EmailTemplateSettings = ({setEmailTemplateFieldValues, emailTemplateFieldV
                                 })}
                                 <Button
                                     variant={'tertiary'}
-                                    onClick={() => updateEmailTemplateFields('recipient', [...recipients, ''])}
+                                    onClick={() => updateEmailTemplateField('recipient', [...recipients, ''])}
                                 >
                                     Add email
                                 </Button>

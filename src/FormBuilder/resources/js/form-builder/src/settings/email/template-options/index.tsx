@@ -8,70 +8,24 @@ import CopyToClipboardButton from './components/copy-to-clipboard-button';
 import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
 import SendPreviewEmail from './components/send-preview-email';
 import EmailPreviewContent from './components/email-preview-content';
-import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
-import {
-    CloseButton,
-    SetChangesButton,
-} from '@givewp/form-builder/settings/email/template-options/components/custom-button';
+import {useFormState} from '@givewp/form-builder/stores/form-state';
+import {CloseButton} from '@givewp/form-builder/settings/email/template-options/components/custom-button';
 
 export default () => {
     const [isOpen, setOpen] = useState<boolean>(false);
-    const [emailTemplateFieldValues, setEmailTemplateFieldValues] = useState<object>({});
-
-    const openModal = () => setOpen(true);
-    const closeModal = () => setOpen(false);
-
-    const dispatch = useFormStateDispatch();
-
+    const [showPreview, setShowPreview] = useState<boolean>(false);
     const [selectedTab, setSelectedTab] = useState<string>();
+
     const {
         settings: {emailTemplateOptions},
     } = useFormState();
 
+    const {emailTemplateTags, emailNotifications} = getFormBuilderData();
+
     const selectedNotificationStatus = emailTemplateOptions[selectedTab]?.status ?? 'global';
 
-    const [showPreview, setShowPreview] = useState<boolean>(false);
-
-    const {emailTemplateTags, emailNotifications, emailDefaultAddress} = getFormBuilderData();
-
-    const config = emailNotifications.find((config) => config.id === selectedTab);
-
-    const option = {
-        status: 'enabled',
-        email_subject: config?.defaultValues.email_subject,
-        email_header: config?.defaultValues.email_header,
-        email_message: config?.defaultValues.email_message,
-        email_content_type: config?.defaultValues.email_content_type,
-        recipient: [emailDefaultAddress],
-        ...emailTemplateOptions[selectedTab],
-    };
-
-    const cancelChanges = () => {
-        setEmailTemplateFieldValues({
-            ...option,
-        });
-
-        dispatch(
-            setFormSettings({
-                ...emailTemplateOptions,
-                [selectedTab]: emailTemplateOptions[selectedTab],
-            })
-        );
-        closeModal();
-    };
-
-    const updateEmailTemplateOptions = () => {
-        dispatch(
-            setFormSettings({
-                emailTemplateOptions: {
-                    ...emailTemplateOptions,
-                    [selectedTab]: emailTemplateFieldValues,
-                },
-            })
-        );
-
-        closeModal();
-    };
+    const openModal = () => setOpen(true);
+    const closeModal = () => setOpen(false);
 
     return (
         <>
@@ -109,11 +63,6 @@ export default () => {
 
                     {!showPreview && (
                         <>
-                            <CloseButton label={__('Cancel', 'givewp')} onClick={cancelChanges} />
-                            <SetChangesButton
-                                label={__('Set and close', 'givewp')}
-                                onClick={updateEmailTemplateOptions}
-                            />
                             {/* Note: I tried extracting these to a wrapper component, but that broken focus due to re-renders. */}
                             <div
                                 style={{
@@ -151,10 +100,8 @@ export default () => {
                                             >
                                                 <h2 style={{margin: '0 0 .5rem 0'}}>Notification</h2>
                                                 <EmailTemplateSettings
-                                                    emailTemplateFieldValues={emailTemplateFieldValues}
-                                                    setEmailTemplateFieldValues={setEmailTemplateFieldValues}
-                                                    config={config}
-                                                    option={option}
+                                                    closeModal={closeModal}
+                                                    notification={tab.name}
                                                 />
                                             </div>
                                         )}
