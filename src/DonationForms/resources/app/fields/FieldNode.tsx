@@ -3,7 +3,7 @@ import {useTemplateWrapper} from '../templates';
 import registerFieldAndBuildProps from '../utilities/registerFieldAndBuildProps';
 import type {FieldProps} from '@givewp/forms/propTypes';
 import memoNode from '@givewp/forms/app/utilities/memoNode';
-import {useEffect} from 'react';
+import {useEffect} from '@wordpress/element';
 
 const formTemplates = window.givewp.form.templates;
 
