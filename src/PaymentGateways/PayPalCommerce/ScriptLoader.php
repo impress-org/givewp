@@ -133,6 +133,7 @@ EOT;
     /**
      * Load public assets.
      *
+     * @since 2.32.0 Handle exception if client token is not generated.
      * @since 2.9.0
      */
     public function loadPublicAssets()
@@ -143,7 +144,31 @@ EOT;
 
         /* @var MerchantDetail $merchant */
         $merchant = give(MerchantDetail::class);
+
         $scriptId = 'give-paypal-commerce-js';
+        $paymentFieldType = give_get_option('paypal_payment_field_type', 'auto');
+
+        // Add hosted fields if payment field type is auto.
+        $paymentComponents[] = 'buttons';
+        if( 'auto' === $paymentFieldType ) {
+            $paymentComponents[] = 'hosted-fields';
+        }
+        
+        $clientToken = '';
+        try{
+            $clientToken = $this->merchantRepository->getClientToken();
+        } catch ( \Exception $exception ) {
+            give_set_error(
+                'give-paypal-commerce-client-token-error',
+                sprintf(
+                    esc_html__(
+                        'Unable to load PayPal Commerce client token. Please try again later. Error: %1$s',
+                        'give'
+                    ),
+                    $exception->getMessage()
+                )
+            );
+        }
 
         /**
          * List of PayPal query parameters: https://developer.paypal.com/docs/checkout/reference/customize-sdk/#query-parameters
@@ -152,11 +177,11 @@ EOT;
         $payPalSdkQueryParameters = [
             'client-id' => $merchant->clientId,
             'merchant-id' => $merchant->merchantIdInPayPal,
-            'components' => 'hosted-fields,buttons',
+            'components' => implode(',', $paymentComponents),
             'disable-funding' => 'credit',
             'vault' => true,
             'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
-            'data-client-token' => $this->merchantRepository->getClientToken(),
+            'data-client-token' => $clientToken,
         ];
 
         if (give_is_setting_enabled(give_get_option('paypal_commerce_accept_venmo', 'disabled'))) {
@@ -206,6 +231,7 @@ EOT;
                     esc_html__('Checking donation status with PayPal.', 'give'),
                     esc_html__('This will only take a second!', 'give')
                 ),
+                'paymentFieldType' => $paymentFieldType,
             ]
         );
     }
@@ -213,7 +239,7 @@ EOT;
     /**
      * Get PayPal partner js url.
      *
-     * @unreleased sandbox PayPal partner js loads slow. So we are using live url for now.
+     * @since 2.30.0 sandbox PayPal partner js loads slow. So we are using live url for now.
      * @since 2.9.0
      *
      * @return string

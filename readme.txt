@@ -3,9 +3,9 @@ Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman
 Donate link: https://go.givewp.com/home
 Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 5.0
-Tested up to: 6.2
+Tested up to: 6.3
 Requires PHP: 7.0
-Stable tag: 2.29.2
+Stable tag: 2.32.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -258,6 +258,29 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+= 2.32.0: August 11th, 2023 =
+* Feature: Scroll Stripe modal into view for Legacy + Multi-step forms
+* Feature: Added check for application/json in form headers accept 
+* Feature: Added a `$nodeNameCollision` property on `NameCollisionException` for flexibility in throwing exception messages 
+* Feature: Added a file validation rule for validating file uploads 
+* Feature: Added a `@wordpress/scripts` build process for building forms in GiveWP 3.0
+* Feature: Added persistence scoping to Fields
+* Feature: Added WordPressLibraries to manage WP_Background_Process more efficiently and address potential conflicts with other plugins 
+* Feature: Added the hasDescription concern to Fields API 
+* Enhancement: Use PayPal client to handle API requests to avoid issues with expired merchant tokens 
+* Fix: Increase specificity when hiding the Form Token Field label 
+
+= 2.31.0: July 21st, 2023 =
+* Feature: New banner added to the plugin page for annual summer discounts
+
+= 2.30.0: July 12th, 2023 =
+* Feature: Attributes of the [give_donor_wall] shortcode can now be filtered.
+* Feature: Added state label and list of states for the v3 form billing address block. Existing functionality is not modified.
+* Fix: Empty excerpt fields for v3 forms no longer display as [] on the Form Grid.
+* Refactor: Updated the gateway adapter for v3 forms.
+* Refactor: Updated legacy donation form block title with a (v2) suffix.
+* Refactor: The v2 Donation Form block now supports v3 forms.
+
 = 2.29.2: June 29th, 2023 =
 * Enhancement: PayPal Donations now has separate buttons to connect to PayPal Live and PayPal Sandbox.
 * Fix: Form Field Manager conditional radio and checkbox fields that are not visible no longer prevent donation submission.

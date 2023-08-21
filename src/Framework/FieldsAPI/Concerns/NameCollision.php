@@ -26,14 +26,15 @@ trait NameCollision
     }
 
     /**
+     * @since 2.32.0 add existing and incoming nodes to exception
      * @since 2.10.2
      *
      * @throws NameCollisionException
      */
     public function checkNameCollision(Node $node)
     {
-        if ($this->getNodeByName($node->getName())) {
-            throw new NameCollisionException($node->getName());
+        if ($existingNode = $this->getNodeByName($node->getName())) {
+            throw new NameCollisionException($node->getName(), $existingNode, $node);
         }
     }
 }

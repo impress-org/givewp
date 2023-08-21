@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n'
-import { registerBlockType } from '@wordpress/blocks';
+import {__} from '@wordpress/i18n';
+import {registerBlockType} from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -14,25 +14,25 @@ import GiveForm from './edit/block';
 
 /**
  * Register Block
-*/
+ */
 
-export default registerBlockType( 'give/donation-form', {
+export default registerBlockType('give/donation-form', {
+    title: __('Donation Form (v2)', 'give'),
+    description: __(
+        "The GiveWP Donation Form block inserts an existing donation form into the page. Each donation form's presentation can be customized below.",
+        'give'
+    ),
+    category: 'give',
+    icon: <GiveIcon color="grey" />,
+    keywords: [__('donation', 'give')],
+    supports: {
+        html: false,
+    },
+    attributes: blockAttributes,
+    edit: GiveForm,
 
-	title: __( 'Donation Form', 'give' ),
-	description: __( 'The GiveWP Donation Form block inserts an existing donation form into the page. Each donation form\'s presentation can be customized below.', 'give' ),
-	category: 'give',
-	icon: <GiveIcon color="grey" />,
-	keywords: [
-		__( 'donation', 'give' ),
-	],
-	supports: {
-		html: false,
-	},
-	attributes: blockAttributes,
-	edit: GiveForm,
-
-	save: () => {
-		// Server side rendering via shortcode
-		return null;
-	},
-} );
+    save: () => {
+        // Server side rendering via shortcode
+        return null;
+    },
+});

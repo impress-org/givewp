@@ -29,16 +29,16 @@ class Test_Gateways extends Give_Unit_Test_Case {
 	 * Test payment gateways.
 	 */
 	public function test_payment_gateways() {
-		$out = give_get_payment_gateways();
-		$this->assertArrayHasKey( 'paypal', $out );
-		$this->assertArrayHasKey( 'manual', $out );
+        $out = give_get_payment_gateways();
+        $this->assertArrayHasKey('paypal', $out);
+        $this->assertArrayHasKey('manual', $out);
 
-		$this->assertEquals( 'PayPal Standard', $out['paypal']['admin_label'] );
-		$this->assertEquals( 'PayPal', $out['paypal']['checkout_label'] );
+        $this->assertEquals('PayPal Standard *(v2)', $out['paypal']['admin_label']);
+        $this->assertEquals('PayPal', $out['paypal']['checkout_label']);
 
-		$this->assertEquals( 'Test Donation', $out['manual']['admin_label'] );
-		$this->assertEquals( 'Test Donation', $out['manual']['checkout_label'] );
-	}
+        $this->assertEquals('Test Donation *(v2)', $out['manual']['admin_label']);
+        $this->assertEquals('Test Donation', $out['manual']['checkout_label']);
+    }
 
 	/**
 	 * Test enabled gateways.
@@ -54,73 +54,71 @@ class Test_Gateways extends Give_Unit_Test_Case {
 		$this->assertArrayNotHasKey( 'paypal', $default_gateways ); // But, not PayPal (it's not enabled by default).
 
 		// Enable PayPal Standard.
-		$options['gateways']['paypal'] = 1;
-		update_option( 'give_settings', array_merge( $give_options, $options ) );
-		$default_gateways = give_get_enabled_payment_gateways();
-		$this->assertArrayHasKey( 'paypal', $default_gateways );
+        $options['gateways']['paypal'] = 1;
+        update_option('give_settings', array_merge($give_options, $options));
+        $default_gateways = give_get_enabled_payment_gateways();
+        $this->assertArrayHasKey('paypal', $default_gateways);
 
-		// Change back to default.
-		update_option( 'give_settings', $give_options );
+        // Change back to default.
+        update_option('give_settings', $give_options);
+    }
 
-	}
+    /**
+     * Test give_is_gateway_active
+     */
+    public function test_is_gateway_active()
+    {
+        $this->assertFalse(give_is_gateway_active('paypal'));
+    }
 
-	/**
-	 * Test give_is_gateway_active
-	 */
-	public function test_is_gateway_active() {
-		$this->assertFalse( give_is_gateway_active( 'paypal' ) );
-	}
+    /**
+     * Test give_get_default_gateway.
+     */
+    public function test_default_gateway()
+    {
+        // Manual aka "Test Payment" is default.
+        $this->assertEquals('manual', give_get_default_gateway($this->_simple_form->ID));
+    }
 
-	/**
-	 * Test give_get_default_gateway.
-	 */
-	public function test_default_gateway() {
+    /**
+     * Test give_get_gateway_admin_label
+     */
+    public function test_get_gateway_admin_label()
+    {
+        $this->assertEquals('PayPal Standard *(v2)', give_get_gateway_admin_label('paypal'));
+        $this->assertEquals('Test Donation *(v2)', give_get_gateway_admin_label('manual'));
+    }
 
-		// Manual aka "Test Payment" is default.
-		$this->assertEquals( 'manual', give_get_default_gateway( $this->_simple_form->ID ) );
+    /**
+     * Test give_get_gateway_checkout_label
+     */
+    public function test_get_gateway_checkout_label()
+    {
+        $this->assertEquals('PayPal', give_get_gateway_checkout_label('paypal'));
+        $this->assertEquals('Test Donation', give_get_gateway_checkout_label('manual'));
+    }
 
-	}
+    /**
+     * Test give_get_chosen_gateway
+     */
+    public function test_chosen_gateway()
+    {
+        $this->assertEquals('manual', give_get_chosen_gateway($this->_simple_form->ID));
+    }
 
-	/**
-	 * Test give_get_gateway_admin_label
-	 */
-	public function test_get_gateway_admin_label() {
+    /**
+     * Test give_no_gateway_error.
+     *
+     * @since 2.0.7 gateway setting can be empty array but if fetch it via give function than default payment gateways will return,
+     *              check this add_filter( 'give_get_option_gateways', '__give_validate_active_gateways', 10, 1 );
+     */
+    public function test_no_gateway_error()
+    {
+        $give_options = give_get_settings();
 
-		$this->assertEquals( 'PayPal Standard', give_get_gateway_admin_label( 'paypal' ) );
-		$this->assertEquals( 'Test Donation', give_get_gateway_admin_label( 'manual' ) );
+        give_update_option('gateways', array());
 
-	}
-
-	/**
-	 * Test give_get_gateway_checkout_label
-	 */
-	public function test_get_gateway_checkout_label() {
-
-		$this->assertEquals( 'PayPal', give_get_gateway_checkout_label( 'paypal' ) );
-		$this->assertEquals( 'Test Donation', give_get_gateway_checkout_label( 'manual' ) );
-
-	}
-
-	/**
-	 * Test give_get_chosen_gateway
-	 */
-	public function test_chosen_gateway() {
-		$this->assertEquals( 'manual', give_get_chosen_gateway( $this->_simple_form->ID ) );
-	}
-
-	/**
-	 * Test give_no_gateway_error.
-	 *
-	 * @since 2.0.7 gateway setting can be empty array but if fetch it via give function than default payment gateways will return,
-	 *              check this add_filter( 'give_get_option_gateways', '__give_validate_active_gateways', 10, 1 );
-	 */
-	public function test_no_gateway_error() {
-
-		$give_options = give_get_settings();
-
-		give_update_option( 'gateways', array() );
-
-		give_no_gateway_error();
+        give_no_gateway_error();
 
 		$errors = (array) give_get_errors();
 
