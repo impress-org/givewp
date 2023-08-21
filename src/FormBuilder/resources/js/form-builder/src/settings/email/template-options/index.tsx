@@ -1,28 +1,29 @@
-import {Button, Modal} from "@wordpress/components";
-import {edit} from "@wordpress/icons";
-import {__} from "@wordpress/i18n";
-import {useState} from "react";
-import TabPanel from "@givewp/form-builder/components/sidebar/TabPanel";
-import EmailTemplateSettings from "./settings";
-import CopyToClipboardButton from "./components/copy-to-clipboard-button";
-import {getFormBuilderData} from "@givewp/form-builder/common/getWindowData";
-import SendPreviewEmail from "./components/send-preview-email";
-import EmailPreviewContent   from "./components/email-preview-content";
-import {useFormState} from "@givewp/form-builder/stores/form-state";
+import {Button, Modal} from '@wordpress/components';
+import {edit} from '@wordpress/icons';
+import {__} from '@wordpress/i18n';
+import {useState} from 'react';
+import TabPanel from '@givewp/form-builder/components/sidebar/TabPanel';
+import EmailTemplateSettings from './settings';
+import CopyToClipboardButton from './components/copy-to-clipboard-button';
+import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
+import SendPreviewEmail from './components/send-preview-email';
+import EmailPreviewContent from './components/email-preview-content';
+import {useFormState} from '@givewp/form-builder/stores/form-state';
 
 export default () => {
+    const [isOpen, setOpen] = useState<boolean>(false);
+    const openModal = () => setOpen(true);
+    const closeModal = () => setOpen(false);
 
-    const [ isOpen, setOpen ] = useState<boolean>( false );
-    const openModal = () => setOpen( true );
-    const closeModal = () => setOpen( false );
-
-    const [ selectedTab, setSelectedTab ] = useState<string>();
-    const {settings: {emailTemplateOptions}} = useFormState();
+    const [selectedTab, setSelectedTab] = useState<string>();
+    const {
+        settings: {emailTemplateOptions},
+    } = useFormState();
     const selectedNotificationStatus = emailTemplateOptions[selectedTab]?.status ?? 'global';
 
-    const [ showPreview, setShowPreview ] = useState<boolean>( false );
+    const [showPreview, setShowPreview] = useState<boolean>(false);
 
-    const {emailTemplateTags, emailNotifications} = getFormBuilderData();
+    const {emailTemplateTags, emailNotifications} = getFormBuilderWindowData();
 
     const CloseButton = ({label, onClick}) => {
         return (
@@ -40,21 +41,22 @@ export default () => {
             >
                 {label}
             </Button>
-        )
-    }
+        );
+    };
 
     return (
         <>
-            <Button icon={edit} onClick={ openModal } variant={'secondary'} style={{width:'100%', justifyContent:'center'}}>
-                { __( 'Customize email templates', 'givewp' ) }
+            <Button
+                icon={edit}
+                onClick={openModal}
+                variant={'secondary'}
+                style={{width: '100%', justifyContent: 'center'}}
+            >
+                {__('Customize email templates', 'givewp')}
             </Button>
             {isOpen && (
                 <Modal
-                    title={
-                        showPreview
-                            ? __('Preview Email', 'give')
-                            : __('Email Settings', 'give')
-                    }
+                    title={showPreview ? __('Preview Email', 'give') : __('Email Settings', 'give')}
                     onRequestClose={closeModal}
                     isDismissible={false}
                     shouldCloseOnClickOutside={false}
@@ -68,12 +70,11 @@ export default () => {
                 >
                     {showPreview && (
                         <>
-                            <EmailPreviewContent
-                                emailType={selectedTab}
-                            />
+                            <EmailPreviewContent emailType={selectedTab} />
                             <CloseButton
                                 label={__('Back to email settings', 'givewp')}
-                                onClick={() => setShowPreview(false)} />
+                                onClick={() => setShowPreview(false)}
+                            />
                         </>
                     )}
 
@@ -109,7 +110,10 @@ export default () => {
                                                     height: '100%',
                                                     overflowX: 'hidden',
                                                     overflowY: 'auto',
-                                                    padding: selectedNotificationStatus === 'global' ? '16px 20px' : '0 20px', // Adjust for scrollbar
+                                                    padding:
+                                                        selectedNotificationStatus === 'global'
+                                                            ? '16px 20px'
+                                                            : '0 20px', // Adjust for scrollbar
                                                 }}
                                             >
                                                 <h2 style={{margin: '0 0 .5rem 0'}}>Notification</h2>
@@ -130,11 +134,8 @@ export default () => {
                                 >
                                     <div style={{flex: 1}}>
                                         <h2 style={{margin: 0}}>{__('Preview email', 'givewp')}</h2>
-                                        <p style={{fontSize: '0.75rem', color:'rgb(117,117,117)'}}>
-                                            {__(
-                                                'Preview the email message in your browser',
-                                                'givewp'
-                                            )}
+                                        <p style={{fontSize: '0.75rem', color: 'rgb(117,117,117)'}}>
+                                            {__('Preview the email message in your browser', 'givewp')}
                                         </p>
                                         <Button
                                             variant={'secondary'}
@@ -157,9 +158,17 @@ export default () => {
                                         </p>
                                         <ul className={'email-template-tags'}>
                                             {emailTemplateTags.map((tag) => (
-                                                <li key={tag.tag} >
-                                                    <strong style={{display:'inline-block', marginBottom:'0.5rem', fontSize:'.813rem'}}>{'{' + tag.tag + '}'}</strong>
-                                                    <p style={{fontSize:'.75rem'}}>{tag.desc}</p>
+                                                <li key={tag.tag}>
+                                                    <strong
+                                                        style={{
+                                                            display: 'inline-block',
+                                                            marginBottom: '0.5rem',
+                                                            fontSize: '.813rem',
+                                                        }}
+                                                    >
+                                                        {'{' + tag.tag + '}'}
+                                                    </strong>
+                                                    <p style={{fontSize: '.75rem'}}>{tag.desc}</p>
                                                     <CopyToClipboardButton text={'{' + tag.tag + '}'} />
                                                 </li>
                                             ))}
@@ -169,9 +178,8 @@ export default () => {
                             </div>
                         </>
                     )}
-
                 </Modal>
             )}
         </>
-    )
-}
+    );
+};

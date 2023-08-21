@@ -3,24 +3,23 @@
  * @link https://wordpress.stackexchange.com/a/382291
  */
 
-import React, { useState, useEffect } from 'react'
-import _ from 'lodash'
-import {Button, TextControl} from "@wordpress/components";
-import {upload} from "@wordpress/icons";
-import {__} from "@wordpress/i18n";
+import React from 'react';
+import _ from 'lodash';
+import {Button, TextControl} from '@wordpress/components';
+import {upload} from '@wordpress/icons';
+import {__} from '@wordpress/i18n';
 
 export default ({value, onChange}) => {
-
     // The media library uses Backbone.js, which can conflict with lodash.
     _.noConflict();
     let frame;
 
     const openMediaLibrary = (event) => {
-        event.preventDefault()
+        event.preventDefault();
 
         if (frame) {
-            frame.open()
-            return
+            frame.open();
+            return;
         }
 
         frame = window.wp.media({
@@ -29,10 +28,9 @@ export default ({value, onChange}) => {
                 text: __('Use this media', 'givewp'),
             },
             multiple: false, // Set to true to allow multiple files to be selected
-        })
+        });
 
-        frame.on( 'select', function() {
-
+        frame.on('select', function () {
             // Get media attachment details from the frame state
             var attachment = frame.state().get('selection').first().toJSON();
 

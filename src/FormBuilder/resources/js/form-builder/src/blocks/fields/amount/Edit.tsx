@@ -9,7 +9,7 @@ import {createInterpolateElement} from '@wordpress/element';
 import {BaseControl, RadioControl} from '@wordpress/components';
 import Notice from './notice';
 
-import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
+import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 
 const Edit = ({attributes, setAttributes}) => {
     const {
@@ -30,7 +30,7 @@ const Edit = ({attributes, setAttributes}) => {
         recurringOptInDefaultBillingPeriod,
     } = attributes;
 
-    const {gateways} = getFormBuilderData();
+    const {gateways} = getFormBuilderWindowData();
 
     const isRecurringSupported = gateways.some((gateway) => gateway.enabled && gateway.supportsSubscriptions);
     const isRecurring = isRecurringSupported && recurringEnabled;
