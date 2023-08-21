@@ -52,11 +52,11 @@ export interface PhoneProps extends Omit<FieldHasDescriptionProps, 'placeholder'
 export interface ElementProps extends Element {}
 
 export interface GroupProps extends Group {
-    fields: {
+    nodeComponents: {
         [key: string]: FC<FieldProps>;
     };
 
-    fieldProps: {
+    nodeProps: {
         [key: string]: FieldProps;
     };
 }
@@ -66,7 +66,7 @@ export interface HtmlProps extends ElementProps {
 }
 
 export interface NameProps extends GroupProps {
-    fields: {
+    nodeComponents: {
         honorific?: FC<SelectableFieldProps | {}>;
         firstName: FC<FieldProps | {}>;
         lastName: FC<FieldProps | {}>;
@@ -75,7 +75,7 @@ export interface NameProps extends GroupProps {
 
 export interface BillingAddressProps extends GroupProps {
     groupLabel: string;
-    fields: {
+    nodeComponents: {
         country: FC<Partial<SelectableFieldProps> | {}>;
         address1: FC<FieldProps | {}>;
         address2: FC<FieldProps | {}>;
@@ -87,7 +87,7 @@ export interface BillingAddressProps extends GroupProps {
 }
 
 export interface DonationAmountProps extends GroupProps {
-    fields: {
+    nodeComponents: {
         amount: FC<Partial<AmountProps> | {}>;
         donationType: FC<FieldProps | {}>;
         currency: FC<FieldProps | {}>;
@@ -95,7 +95,7 @@ export interface DonationAmountProps extends GroupProps {
         subscriptionPeriod: FC<FieldProps | {}>;
         subscriptionInstallments: FC<FieldProps | {}>;
     };
-    fieldProps: {
+    nodeProps: {
         amount: AmountProps;
         donationType: FieldProps;
         currency: FieldProps;

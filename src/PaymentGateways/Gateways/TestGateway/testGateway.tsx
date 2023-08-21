@@ -46,5 +46,4 @@ const gateway: Gateway = {
     },
 };
 
-// @ts-ignore
 window.givewp.gateways.register(gateway);

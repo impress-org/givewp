@@ -15,6 +15,7 @@ use Give\Framework\FormDesigns\FormDesign;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 use Give\Helpers\Hooks;
+use Give\Helpers\Language;
 
 /**
  * @since 3.0.0
@@ -270,13 +271,16 @@ class DonationFormViewModel
             GIVE_VERSION
         );
 
+        $handle = 'givewp-donation-form-registrars';
         wp_enqueue_script(
-            'givewp-donation-form-registrars',
+            $handle,
             GIVE_PLUGIN_URL . 'build/donationFormRegistrars.js',
             $this->getScriptAssetDependencies(GIVE_PLUGIN_DIR . 'build/donationFormRegistrars.asset.php'),
             GIVE_VERSION,
             true
         );
+
+        Language::setScriptTranslations($handle);
 
         wp_add_inline_script(
             'givewp-donation-form-registrars',
@@ -304,6 +308,7 @@ class DonationFormViewModel
     }
 
     /**
+     * @unreleased Set script translations
      * @since 3.0.0
      */
     private function enqueueDesign(string $formDesignId)
@@ -317,8 +322,9 @@ class DonationFormViewModel
             }
 
             if ($design->js()) {
+                $handle = 'givewp-form-design-' . $design::id();
                 wp_enqueue_script(
-                    'givewp-form-design-' . $design::id(),
+                    $handle,
                     $design->js(),
                     array_merge(
                         $design->dependencies(),
@@ -326,6 +332,8 @@ class DonationFormViewModel
                     ),
                     true
                 );
+
+                Language::setScriptTranslations($handle);
             }
         }
     }

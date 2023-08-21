@@ -21,6 +21,7 @@ module.exports = {
             '@givewp/forms/propTypes': srcPath('DonationForms/resources/propTypes.ts'),
             '@givewp/forms/app': srcPath('DonationForms/resources/app'),
             '@givewp/form-builder': srcPath('FormBuilder/resources/js/form-builder/src'),
+            '@givewp/form-builder/registrars': srcPath('FormBuilder/resources/js/registrars/index.ts'),
         },
     },
     entry: {
@@ -34,8 +35,9 @@ module.exports = {
             'PaymentGateways/Gateways/Stripe/StripePaymentElementGateway/stripePaymentElementGateway.tsx'
         ),
         testGateway: srcPath('PaymentGateways/Gateways/TestGateway/testGateway.tsx'),
+        testOffsiteGateway: srcPath('PaymentGateways/Gateways/TestOffsiteGateway/testOffsiteGateway.tsx'),
         payPalStandardGateway: srcPath(
-            'PaymentGateways/Gateways/PayPal/PayPalStandardGateway/payPalStandardGateway.tsx'
+            'PaymentGateways/Gateways/PayPalStandard/resources/js/payPalStandardGateway.tsx'
         ),
         payPalCommerceGateway: srcPath('PaymentGateways/Gateways/PayPalCommerce/payPalCommerceGateway.tsx'),
         classicFormDesignCss: srcPath('DonationForms/FormDesigns/ClassicFormDesign/css/main.scss'),
