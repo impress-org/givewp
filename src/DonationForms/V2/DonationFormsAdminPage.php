@@ -4,6 +4,7 @@ namespace Give\DonationForms\V2;
 
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\Helpers\EnqueueScript;
+use WP_Post;
 use WP_REST_Request;
 
 /**
@@ -113,6 +114,20 @@ class DonationFormsAdminPage
     }
 
     /**
+     * Load scripts for the edit v2 form page
+     *
+     * @unreleased
+     * @return void
+     */
+    public function loadEditFormScripts()
+    {
+        EnqueueScript::make('give-edit-v2form-migration-guide', 'assets/dist/js/give-edit-v2form-migration-guide.js')
+            ->loadInFooter()
+            ->registerTranslations()
+            ->enqueue();
+    }
+
+    /**
      * Get first page of results from REST API to display as initial table data
      *
      * @since 2.20.0
@@ -162,6 +177,22 @@ class DonationFormsAdminPage
     }
 
     /**
+     * Render the migration guide box on the old edit donation form page
+     *
+     * @unreleased
+     *
+     * @param WP_Post $post
+     *
+     * @return void
+     */
+    public function renderMigrationGuideBox(WP_Post $post)
+    {
+        if ($post->post_type === 'give_forms') {  // todo include is form migrated check (&& ! give_is_form_migrated($post->ID))
+            echo '<div id="give-admin-edit-v2form-migration-guide-box"></div>';
+        }
+    }
+
+    /**
      * Display a button on the old donation forms table that switches to the React view
      *
      * @since 2.20.0
@@ -199,6 +230,15 @@ class DonationFormsAdminPage
     public static function isShowing(): bool
     {
         return isset($_GET['page']) && $_GET['page'] === 'give-forms';
+    }
+
+    public static function isEditV2FormPage(): bool
+    {
+        if (isset($_GET['action'], $_GET['post']) && $_GET['action'] === 'edit') {
+            return ! get_post_meta((int)$_GET['post'], 'formBuilderFields');
+        }
+
+        return false;
     }
 
     /**

@@ -1,6 +1,6 @@
 import {createContext, useContext} from 'react';
 import {__, sprintf} from '@wordpress/i18n';
-import Banner from './Banner';
+import Banner from './Components/Banner';
 import Toast from '@givewp/components/AdminUI/Toast';
 import {MigrationSuccessDialog, TransferSuccessDialog, FeatureNoticeDialog} from './Dialogs';
 export const OnboardingContext = createContext([]);

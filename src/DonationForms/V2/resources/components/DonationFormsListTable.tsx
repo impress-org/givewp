@@ -8,7 +8,7 @@ import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/List
 import Select from '@givewp/components/ListTable/Select';
 import {Interweave} from 'interweave';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
-import TryNewFormBuilderButton from './Onboarding/TryNewFormBuilderButton';
+import TryNewFormBuilderButton from './Onboarding/Components/TryNewFormBuilderButton';
 
 declare global {
     interface Window {

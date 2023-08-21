@@ -1,8 +1,8 @@
 import {useContext} from 'react';
 import {__} from '@wordpress/i18n';
 import {ExitIcon, StarsIcon} from '@givewp/components/AdminUI/Icons';
-import {OnboardingContext, updateOnboardingOption} from './index';
-import styles from './style.module.scss';
+import {OnboardingContext, updateOnboardingOption} from '../index';
+import styles from '../style.module.scss';
 
 export default function Banner() {
 

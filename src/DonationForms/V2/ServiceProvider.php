@@ -39,8 +39,14 @@ class ServiceProvider implements ServiceProviderInterface
             Hooks::addAction('admin_menu', DonationFormsAdminPage::class, 'register', 0);
             Hooks::addAction('admin_menu', DonationFormsAdminPage::class, 'highlightAllFormsMenuItem');
 
+            Hooks::addAction('submitpost_box', DonationFormsAdminPage::class, 'renderMigrationGuideBox');
+
             if (DonationFormsAdminPage::isShowing()) {
                 Hooks::addAction('admin_enqueue_scripts', DonationFormsAdminPage::class, 'loadScripts');
+            }
+
+            if (DonationFormsAdminPage::isEditV2FormPage()) {
+                Hooks::addAction('admin_enqueue_scripts', DonationFormsAdminPage::class, 'loadEditFormScripts');
             }
         }
         elseif(DonationFormsAdminPage::isShowingLegacyPage())
