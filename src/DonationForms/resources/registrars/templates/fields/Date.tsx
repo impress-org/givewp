@@ -26,9 +26,7 @@ export default function Date({Label, ErrorMessage, description, dateFormat = 'yy
                         ref={ref}
                         dateFormat={dateFormat}
                         selected={value && parse(value, dateFormat, new window.Date())}
-                        onChange={(date) => {
-                            onChange(format(date, dateFormat));
-                        }}
+                        onChange={(date) => onChange(date ? format(date, dateFormat) : '')}
                         onBlur={onBlur}
                     />
                 )}
