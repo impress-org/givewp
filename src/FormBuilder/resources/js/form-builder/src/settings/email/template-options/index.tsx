@@ -20,7 +20,7 @@ export default () => {
         settings: {emailTemplateOptions},
     } = useFormState();
 
-    const {emailTemplateTags, emailNotifications} = getFormBuilderData();
+    const {emailTemplateTags, emailNotifications, emailDefaultAddress} = getFormBuilderData();
 
     const selectedNotificationStatus = emailTemplateOptions[selectedTab]?.status ?? 'global';
 
@@ -131,7 +131,10 @@ export default () => {
                                         </Button>
                                     </div>
                                     <div style={{flex: 1}}>
-                                        <SendPreviewEmail emailType={selectedTab} />
+                                        <SendPreviewEmail
+                                            defaultEmailAddress={emailDefaultAddress}
+                                            emailType={selectedTab}
+                                        />
                                     </div>
                                     <div style={{flex: 3}}>
                                         <h2 style={{margin: 0}}>{__('Template tags', 'givewp')}</h2>
