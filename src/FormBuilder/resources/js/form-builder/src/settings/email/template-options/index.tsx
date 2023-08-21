@@ -144,15 +144,7 @@ export default () => {
                                         <ul className={'email-template-tags'}>
                                             {emailTemplateTags.map((tag) => (
                                                 <li key={tag.tag}>
-                                                    <strong
-                                                        style={{
-                                                            display: 'inline-block',
-                                                            marginBottom: '0.5rem',
-                                                            fontSize: '.813rem',
-                                                        }}
-                                                    >
-                                                        {'{' + tag.tag + '}'}
-                                                    </strong>
+                                                    <strong>{'{' + tag.tag + '}'}</strong>
                                                     <p style={{fontSize: '.75rem'}}>{tag.desc}</p>
                                                     <CopyToClipboardButton text={'{' + tag.tag + '}'} />
                                                 </li>
