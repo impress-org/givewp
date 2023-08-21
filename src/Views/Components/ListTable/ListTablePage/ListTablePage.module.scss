@@ -163,24 +163,6 @@
     }
 }
 
-.tryNewFormBuilderButton {
-    all: unset;
-    display: flex;
-    cursor: pointer;
-    justify-content: center;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    border-radius: 16px;
-    border: solid 1px #f29718;
-    color: #f29718;
-    font-weight: 600;
-    background-color: #fffaf2;
-
-    svg {
-        margin-right: 10px;
-    }
-}
-
 #searchContainer {
     display: flex;
     flex-wrap: wrap;

@@ -5,7 +5,7 @@ import ButtonGroup from '@givewp/components/AdminUI/ButtonGroup';
 import Button from '@givewp/components/AdminUI/Button';
 import {Award} from '@givewp/components/AdminUI/Icons';
 
-import styles from './style.module.scss';
+import styles from '../style.module.scss';
 
 export default function MigrationSuccessDialog({handleClose, formId}) {
     return (

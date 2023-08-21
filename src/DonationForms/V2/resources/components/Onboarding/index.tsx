@@ -2,9 +2,7 @@ import {createContext, useContext} from 'react';
 import {__, sprintf} from '@wordpress/i18n';
 import Banner from './Banner';
 import Toast from '@givewp/components/AdminUI/Toast';
-import MigrationSuccessDialog from './MigrationSuccessDialog';
-import TransferSuccessDialog from './TransferSuccessDialog';
-import FeatureNoticeDialog from './FeatureNoticeDialog';
+import {MigrationSuccessDialog, TransferSuccessDialog, FeatureNoticeDialog} from './Dialogs';
 export const OnboardingContext = createContext([]);
 
 export const updateOnboardingOption = async optionName => fetch(window.GiveDonationForms.onboardingApiRoot, {

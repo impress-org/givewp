@@ -103,26 +103,21 @@
     }
 }
 
-.indicator {
-    padding: 0;
-    margin-top: var(--givewp-spacing-3);
-    list-style: none;
+.tryNewFormBuilderButton {
+    all: unset;
     display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.stepIndicator {
-    display: block;
     cursor: pointer;
-    margin: var(--givewp-spacing-1);
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background-color: var(--givewp-grey-50);
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 16px;
+    border: solid 1px #f29718;
+    color: #f29718;
+    font-weight: 600;
+    background-color: #fffaf2;
 
-    &.active {
-        background-color: var(--wp-blue-blue-50);
+    svg {
+        margin-right: 10px;
     }
 }
 
