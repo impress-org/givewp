@@ -6,11 +6,6 @@ import {__} from '@wordpress/i18n';
 import Editor from './components/editor';
 import DeleteButton from '@givewp/form-builder/blocks/fields/amount/inspector/delete-button';
 
-import {
-    CloseButton,
-    SetChangesButton,
-} from '@givewp/form-builder/settings/email/template-options/components/custom-button';
-
 type EmailTemplateFieldValues = {
     id: string;
     status: string;
@@ -122,8 +117,36 @@ const EmailTemplateSettings = ({notification, closeModal}) => {
                 marginBottom: '20px', // Prevent clipping
             }}
         >
-            <CloseButton label={__('Cancel', 'givewp')} onClick={cancelChanges} />
-            <SetChangesButton label={__('Set and close', 'givewp')} onClick={setEmailTemplateOption} />
+            <div
+                style={{
+                    zIndex: 11, // Above the modal header
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    display: 'flex',
+                    gap: '1rem',
+                    margin: 'var(--givewp-spacing-4) var(--givewp-spacing-6)',
+                }}
+            >
+                <Button
+                    style={{
+                        padding: 'var(--givewp-spacing-4) var(--givewp-spacing-12)',
+                    }}
+                    variant={'secondary'}
+                    onClick={cancelChanges}
+                >
+                    {__('Cancel', 'givewp')}
+                </Button>
+                <Button
+                    style={{
+                        padding: 'var(--givewp-spacing-4) var(--givewp-spacing-8)',
+                    }}
+                    variant={'primary'}
+                    onClick={setEmailTemplateOption}
+                >
+                    {__('Set and close', 'givewp')}
+                </Button>
+            </div>
 
             <RadioControl
                 className="radio-control--email-options"

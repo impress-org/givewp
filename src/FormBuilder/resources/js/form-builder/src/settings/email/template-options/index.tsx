@@ -9,7 +9,6 @@ import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
 import SendPreviewEmail from './components/send-preview-email';
 import EmailPreviewContent from './components/email-preview-content';
 import {useFormState} from '@givewp/form-builder/stores/form-state';
-import {CloseButton} from '@givewp/form-builder/settings/email/template-options/components/custom-button';
 
 export default () => {
     const [isOpen, setOpen] = useState<boolean>(false);
@@ -54,10 +53,20 @@ export default () => {
                     {showPreview && (
                         <>
                             <EmailPreviewContent emailType={selectedTab} />
-                            <CloseButton
-                                label={__('Back to email settings', 'givewp')}
+                            <Button
+                                style={{
+                                    zIndex: 11, // Above the modal header
+                                    position: 'absolute',
+                                    top: 0,
+                                    right: 0,
+                                    margin: 'var(--givewp-spacing-5) var(--givewp-spacing-8)',
+                                    padding: 'var(--givewp-spacing-4) var(--givewp-spacing-12)',
+                                }}
+                                variant={'primary'}
                                 onClick={() => setShowPreview(false)}
-                            />
+                            >
+                                {__('Back to email settings', 'givewp')}
+                            </Button>
                         </>
                     )}
 
