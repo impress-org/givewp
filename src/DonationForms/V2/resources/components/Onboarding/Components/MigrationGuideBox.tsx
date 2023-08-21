@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {createPortal} from 'react-dom';
 import {__} from '@wordpress/i18n';
 import {FeatureNoticeDialog} from '../Dialogs';
@@ -6,13 +6,26 @@ import TryNewFormBuilderButton from './TryNewFormBuilderButton';
 import Button from '@givewp/components/AdminUI/Button';
 import styles from '../style.module.scss';
 
+const portalContainer = document.createElement('div');
 
 export default function MigrationGuideBox() {
 
     const [showDialog, setShowDialog] = useState(false);
 
+    useEffect(() => {
+        const container = document.querySelector('.wp-heading-inline');
+        container.parentNode.insertBefore(portalContainer, container.nextSibling);
+    }, [portalContainer]);
+
+    const HeaderButton = () => createPortal(
+        <TryNewFormBuilderButton showModal={() => setShowDialog(true)} />,
+        portalContainer
+    );
+
     return (
         <>
+            <HeaderButton />
+
             <div className={styles.migrationGuideBox}>
                 <div className={styles.migrationGuideTitle}>
                     {__('Migration Guide', 'give')}
@@ -36,8 +49,6 @@ export default function MigrationGuideBox() {
             {showDialog && (
                 <FeatureNoticeDialog handleClose={() => setShowDialog(false)} />
             )}
-
-            {createPortal(<TryNewFormBuilderButton showModal={() => setShowDialog(true)} />, document.querySelector('.wp-heading-inline'))}
         </>
     )
 }
