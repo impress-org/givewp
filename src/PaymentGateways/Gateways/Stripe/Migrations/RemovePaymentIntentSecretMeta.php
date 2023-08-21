@@ -46,5 +46,13 @@ class RemovePaymentIntentSecretMeta extends Migration
             ['meta_key' => '_give_stripe_payment_intent_client_secret'],
             ['%s']
         );
+
+        $commentsTable = DB::prefix('give_comments');
+        DB::query(
+            DB::prepare(
+                "DELETE FROM {$commentsTable} WHERE comment_type = 'donation' AND comment_content LIKE %s",
+                'Stripe Payment Intent Client Secret:%'
+            )
+        );
     }
 }

@@ -72,11 +72,6 @@ class CreatePaymentIntent
             'content' => sprintf(__('Stripe Charge/Payment Intent ID: %s', 'give'), $intent->id())
         ]);
 
-        DonationNote::create([
-            'donationId' => $donation->id,
-            'content' => sprintf(__('Stripe Payment Intent Client Secret: %s', 'give'), $intent->clientSecret())
-        ]);
-
         if ('requires_action' === $intent->status()) {
             DonationNote::create([
                 'donationId' => $donation->id,
