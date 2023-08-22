@@ -81,7 +81,12 @@ const columnFilters: Array<ColumnFilterConfig> = [
             if (!item?.migrated) {
                 return (
                     <div className={styles.migratedForm}>
-                        <CubeIcon />
+                        <div className={styles.tooltipContainer}>
+                            <CubeIcon />
+                            <div className={styles.tooltip}>
+                                {__('This icon indicates that this is an upgraded form, which uses the new form builder', 'give')}
+                            </div>
+                        </div>
                         <Interweave attributes={{className: 'interweave'}} content={item?.title} />
                     </div>
                 );
