@@ -60,12 +60,12 @@ export default () => {
                                     top: 0,
                                     right: 0,
                                     margin: 'var(--givewp-spacing-5) var(--givewp-spacing-8)',
-                                    padding: 'var(--givewp-spacing-4) var(--givewp-spacing-12)',
+                                    padding: 'var(--givewp-spacing-4) var(--givewp-spacing-8)',
                                 }}
-                                variant={'primary'}
+                                variant={'secondary'}
                                 onClick={() => setShowPreview(false)}
                             >
-                                {__('Back to email settings', 'givewp')}
+                                {__('Back to template settings', 'givewp')}
                             </Button>
                         </>
                     )}
@@ -107,7 +107,7 @@ export default () => {
                                                             : '0 20px', // Adjust for scrollbar
                                                 }}
                                             >
-                                                <h2 style={{margin: '0 0 .5rem 0'}}>Notification</h2>
+                                                <h2 style={{margin: '0 0 .5rem 0'}}>{__('Notification', 'give')}</h2>
                                                 <EmailTemplateSettings
                                                     closeModal={closeModal}
                                                     notification={tab.name}

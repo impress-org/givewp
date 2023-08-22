@@ -240,7 +240,7 @@ const EmailTemplateSettings = ({notification, closeModal}) => {
                                     variant={'tertiary'}
                                     onClick={() => updateEmailTemplateField('recipient', [...recipients, ''])}
                                 >
-                                    Add email
+                                    {__('Add email', 'give')}
                                 </Button>
                             </BaseControl>
                         </>
