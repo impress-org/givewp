@@ -162,6 +162,7 @@ import {CSSProperties, useEffect, useState} from 'react';
 
     const FormFieldsProvider = ({children}) => {
         const {useWatch} = window.givewp.form.hooks;
+
         amount = useWatch({name: 'amount'});
         firstName = useWatch({name: 'firstName'});
         lastName = useWatch({name: 'lastName'});
@@ -179,13 +180,24 @@ import {CSSProperties, useEffect, useState} from 'react';
         const {useWatch, useFormState} = window.givewp.form.hooks;
         const currency = useWatch({name: 'currency'});
         const donationType = useWatch({name: 'donationType'});
-
         const {isSubmitting, isSubmitSuccessful} = useFormState();
+        const {useFormContext} = window.givewp.form.hooks;
+        const {trigger} = useFormContext();
 
         const props = {
             style: buttonsStyle,
             disabled: isSubmitting || isSubmitSuccessful,
             forceReRender: debounce(() => [amount, firstName, lastName, email, currency], 500),
+            onClick: async (data, actions) => {
+                // Validate the form before proceeding.
+                const result = await trigger();
+
+                if(result === true){
+                    return actions.resolve();
+                }
+
+                return actions.reject();
+            },
             onApprove: async (data, actions) => {
 
                 if(donationType === 'subscription') {
