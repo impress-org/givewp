@@ -19,19 +19,17 @@ const formTemplates = window.givewp.form.templates;
  */
 function SectionNode({node}: {node: Node}) {
     const showNode = useVisibilityCondition(node.visibilityConditions);
-    const {unregister, setValue} = window.givewp.form.hooks.useFormContext();
+    const {unregister} = window.givewp.form.hooks.useFormContext();
 
     useEffect(() => {
         if (showNode) {
-            if (isField(node) && node.defaultValue !== undefined) {
-                setValue(node.name, node.defaultValue);
-            }
-
             return;
         }
 
         if (isField(node)) {
-            unregister(node.name);
+            unregister(node.name, {
+                keepDefaultValue: true,
+            });
         }
 
         if (isGroup(node)) {
