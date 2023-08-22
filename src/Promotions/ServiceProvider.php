@@ -11,6 +11,8 @@ use Give\Promotions\InPluginUpsells\LegacyFormEditor;
 use Give\Promotions\InPluginUpsells\PaymentGateways;
 use Give\Promotions\InPluginUpsells\SaleBanners;
 use Give\Promotions\InPluginUpsells\SummerSalesBanner;
+use Give\Promotions\WelcomeBanner\Actions\DismissWelcomeBanner;
+use Give\Promotions\WelcomeBanner\Actions\DisplayWelcomeBanner;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderContract;
 
 class ServiceProvider implements ServiceProviderContract
@@ -77,6 +79,11 @@ class ServiceProvider implements ServiceProviderContract
                 LegacyFormEditor::class,
                 'renderDonationOptionsRecurringRecommendation'
             );
+        }
+
+        if (DisplayWelcomeBanner::isShowing()) {
+            Hooks::addAction('admin_notices', DisplayWelcomeBanner::class);
+            Hooks::addAction('wp_ajax_givewp_next_gen_welcome_banner_dismiss', DismissWelcomeBanner::class);
         }
     }
 
