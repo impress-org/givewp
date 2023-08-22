@@ -5,8 +5,8 @@ import LevelButton from './level-buttons';
 import Inspector from './inspector';
 import periodLookup from './period-lookup';
 import {CurrencyControl, formatCurrencyAmount} from '../../../common/currency';
-import {createInterpolateElement} from '@wordpress/element';
 import {BaseControl, RadioControl} from '@wordpress/components';
+import {OneTimeAmountMessage, RecurringAmountMessage} from '@givewp/forms/shared/AmountMessages';
 import Notice from './notice';
 
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
@@ -15,12 +15,9 @@ const Edit = ({attributes, setAttributes}) => {
     const {
         label = __('Donation Amount', 'give'),
         levels,
-        defaultLevel,
         priceOption,
         setPrice,
         customAmount,
-        customAmountMin,
-        customAmountMax,
         recurringEnabled,
         recurringDonationChoice,
         recurringBillingInterval,
@@ -43,7 +40,7 @@ const Edit = ({attributes, setAttributes}) => {
 
     const DonationLevels = () => (
         <LevelGrid>
-            {levels.map((level, index) => {
+            {levels.map((level: string, index: number) => {
                 const levelAmount = formatCurrencyAmount(level);
 
                 return <LevelButton key={index}>{levelAmount}</LevelButton>;
@@ -57,58 +54,25 @@ const Edit = ({attributes, setAttributes}) => {
 
     const FixedPriceMessage = () => (
         <Notice>
-            {createInterpolateElement(__('This donation is set to <amount/> for this form.', 'give'), {
-                amount: <strong>{amountFormatted}</strong>,
-            })}
+            <OneTimeAmountMessage amount={amountFormatted} />
         </Notice>
     );
-
-    const RecurringPeriod = ({count}) => {
-        const interval = count ?? recurringBillingInterval;
-
-        const singular = !isRecurringDonor
-            ? periodLookup[recurringBillingPeriod].singular
-            : periodLookup[recurringOptInDefaultBillingPeriod ?? 'month'].singular;
-
-        const plural = !isRecurringDonor
-            ? periodLookup[recurringBillingPeriod].plural
-            : periodLookup[recurringOptInDefaultBillingPeriod ?? 'month'].plural;
-
-        return (
-            <strong>
-                {1 === interval && <>{singular}</>}
-                {1 !== interval && (
-                    <>
-                        {interval} {plural}
-                    </>
-                )}
-            </strong>
-        );
-    };
 
     const FixedRecurringMessage = () => {
         const installments = parseInt(recurringLengthOfTime);
         const frequency = parseInt(recurringBillingInterval);
 
-        const translatableString = !installments
-            ? __('This donation <amount /> every <period />.', 'give')
-            : __('This donation <amount /> every <period /> for <count /> <payments />.', 'give');
-
-        const message = createInterpolateElement(translatableString, {
-            amount:
-                isFixedAmount && !customAmount ? (
-                    <span>
-                        is <strong>{amountFormatted}</strong>
-                    </span>
-                ) : (
-                    <span>occurs</span>
-                ),
-            period: <RecurringPeriod count={frequency} />,
-            count: <strong>{installments}</strong>,
-            payments: <strong>payments</strong>,
-        });
-
-        return <Notice>{message}</Notice>;
+        return (
+            <Notice>
+                <RecurringAmountMessage
+                    isFixedAmount={isFixedAmount}
+                    fixedAmount={amountFormatted}
+                    period={recurringBillingPeriod}
+                    frequency={frequency}
+                    installments={installments}
+                />
+            </Notice>
+        );
     };
 
     const BillingPeriodControl = ({options}) => {
