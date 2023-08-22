@@ -126,7 +126,23 @@ class DonationFormsAdminPage
             'supportedGateways' => $this->getSupportedGateways(),
         ];
 
-        EnqueueScript::make('give-edit-v2form-migration-guide', 'assets/dist/js/give-edit-v2form-migration-guide.js')
+        EnqueueScript::make('give-edit-v2form', 'assets/dist/js/give-edit-v2form.js')
+            ->loadInFooter()
+            ->registerTranslations()
+            ->registerLocalizeData('GiveDonationForms', $data)
+            ->enqueue();
+
+        wp_enqueue_style('givewp-design-system-foundation');
+    }
+
+    public function loadAddFormScripts()
+    {
+        $data = [
+            'supportedAddons' => $this->getSupportedAddons(),
+            'supportedGateways' => $this->getSupportedGateways(),
+        ];
+
+        EnqueueScript::make('give-add-v2form', 'assets/dist/js/give-add-v2form.js')
             ->loadInFooter()
             ->registerTranslations()
             ->registerLocalizeData('GiveDonationForms', $data)
@@ -196,7 +212,7 @@ class DonationFormsAdminPage
     public function renderMigrationGuideBox(WP_Post $post)
     {
         if ($post->post_type === 'give_forms') {  // todo include is form migrated check (&& ! give_is_form_migrated($post->ID))
-            echo '<div id="give-admin-edit-v2form-migration-guide-box"></div>';
+            echo '<div id="give-admin-edit-v2form"></div>';
         }
     }
 
@@ -247,13 +263,21 @@ class DonationFormsAdminPage
      *
      * @return bool
      */
-    public static function isEditV2FormPage(): bool
+    public static function isShowingEditV2FormPage(): bool
     {
-        if (isset($_GET['action'], $_GET['post']) && $_GET['action'] === 'edit') {
-            return ! get_post_meta((int)$_GET['post'], 'formBuilderFields');
-        }
+        return ! isset($_GET['page']) && isset($_GET['action']) && $_GET['action'] === 'edit';
+    }
 
-        return false;
+    /**
+     * Helper function to determine if current page is the add v2 form page
+     *
+     * @unreleased
+     *
+     * @return bool
+     */
+    public static function isShowingAddV2FormPage(): bool
+    {
+        return ! isset($_GET['page']) && isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms';
     }
 
     /**
