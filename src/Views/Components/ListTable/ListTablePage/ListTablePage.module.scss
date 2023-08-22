@@ -169,6 +169,16 @@
     transform: translate(-50%, 0);
 }
 
+.migratedForm {
+    display: flex;
+    align-items: center;
+
+    svg {
+        margin-right: 5px;
+        fill: #3A21D9;
+    }
+}
+
 #searchContainer {
     display: flex;
     flex-wrap: wrap;
