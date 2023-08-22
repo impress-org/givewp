@@ -468,16 +468,6 @@ class AdminSettingFields
                                     </button>
                                 </span>
                             </div>
-                            <div class="api-access-feature-list-wrap">
-                                <p><?php esc_html_e('APIs Connected:', 'give'); ?></p>
-                                <ul>
-                                    <li><?php esc_html_e('Payments', 'give'); ?></li>
-                                    <?php if ($paypalSetting->isRecurringAddonActive) : ?>
-                                        <li><?php esc_html_e('Subscriptions', 'give'); ?></li>
-                                    <?php endif; ?>
-                                    <li><?php esc_html_e('Refunds', 'give'); ?></li>
-                                </ul>
-                            </div>
                         </div>
                         <?php $this->printErrors($mechantDetailsRepository); ?>
                     </div>
