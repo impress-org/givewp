@@ -34,7 +34,9 @@ function SectionNode({node}: {node: Node}) {
 
         if (isGroup(node)) {
             node.walkNodes((node) => {
-                unregister(node.name);
+                unregister(node.name, {
+                    keepDefaultValue: true,
+                });
             }, isField);
         }
     }, [showNode, unregister]);
