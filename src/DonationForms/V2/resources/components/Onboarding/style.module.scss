@@ -13,6 +13,7 @@
     }
 
     .closeIcon {
+        cursor: pointer;
         justify-content: flex-end;
         svg {
             fill: #fff;
@@ -113,12 +114,21 @@
     border-radius: 16px;
     border: solid 1px #f29718;
     color: #f29718;
-    font-weight: 600;
+    font-weight: 500;
+    font-family: 'Open Sans', sans-serif;
     background-color: #fffaf2;
+    font-size: 16px;
 
     svg {
         margin-right: 10px;
     }
+}
+
+.tryNewFormBuilderBtnContainer {
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    transform: translate(-50%, 0);
 }
 
 .formName {
