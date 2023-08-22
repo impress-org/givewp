@@ -2,6 +2,7 @@ import {useState} from 'react';
 import {__} from '@wordpress/i18n';
 import FormBuilderButtonPortal from './FormBuilderButtonPortal';
 import Button from '@givewp/components/AdminUI/Button';
+import {CompassIcon} from '@givewp/components/AdminUI/Icons';
 import styles from '../style.module.scss';
 
 export default function EditForm() {
@@ -17,6 +18,7 @@ export default function EditForm() {
 
             <div className={styles.migrationGuideBox}>
                 <div className={styles.migrationGuideTitle}>
+                    <CompassIcon />
                     {__('Migration Guide', 'give')}
                 </div>
 
