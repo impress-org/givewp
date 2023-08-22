@@ -20,7 +20,8 @@ const CopyToClipboardButton = ({text}) => {
                 alignItems: 'center',
                 gap: '0.25rem',
                 height: 'fit-content',
-                paddingBlock: '0.6rem',
+                paddingBlock: '0.5rem',
+                fontSize: '12px',
             }}
             variant={'tertiary'}
             onClick={setCopied}

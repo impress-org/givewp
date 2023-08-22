@@ -72,17 +72,8 @@ export default () => {
 
                     {!showPreview && (
                         <>
-                            {/* Note: I tried extracting these to a wrapper component, but that broken focus due to re-renders. */}
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    gap: 'var(--givewp-spacing-10)',
-                                    height: '100%',
-                                    overflow: 'hidden',
-                                    flex: 1,
-                                }}
-                            >
-                                <div style={{flex: '2'}}>
+                            <div className={'email-settings'}>
+                                <div className={'email-settings-col-left'}>
                                     <TabPanel
                                         className={'email-settings-modal-tabs'}
                                         orientation={'vertical' as 'horizontal' | 'vertical' | 'both'}
@@ -97,17 +88,15 @@ export default () => {
                                     >
                                         {(tab) => (
                                             <div
+                                                className={'email-settings-template-wrapper'}
                                                 style={{
-                                                    height: '100%',
-                                                    overflowX: 'hidden',
-                                                    overflowY: 'auto',
                                                     padding:
                                                         selectedNotificationStatus === 'global'
                                                             ? '16px 20px'
                                                             : '0 20px', // Adjust for scrollbar
                                                 }}
                                             >
-                                                <h2 style={{margin: '0 0 .5rem 0'}}>{__('Notification', 'give')}</h2>
+                                                <h2 className={'email-settings-header'}>{__('Notification')}</h2>
                                                 <EmailTemplateSettings
                                                     closeModal={closeModal}
                                                     notification={tab.name}
@@ -117,18 +106,14 @@ export default () => {
                                     </TabPanel>
                                 </div>
                                 <div
+                                    className={'email-settings-col-right'}
                                     style={{
-                                        flex: '1',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        gap: 'var(--givewp-spacing-6)',
-                                        paddingRight: '10px', // Adjust for overflow
                                         visibility: 'enabled' === selectedNotificationStatus ? 'visible' : 'hidden',
                                     }}
                                 >
-                                    <div style={{flex: 0.5}}>
-                                        <h2 style={{margin: 0}}>{__('Preview email', 'givewp')}</h2>
-                                        <p style={{fontSize: '0.75rem', color: 'rgb(117,117,117)'}}>
+                                    <div>
+                                        <h2 className={'email-settings-header'}>{__('Preview email', 'givewp')}</h2>
+                                        <p className={'email-settings-description'}>
                                             {__('Preview the email message in your browser', 'givewp')}
                                         </p>
                                         <Button
@@ -139,21 +124,21 @@ export default () => {
                                             {__('Preview email', 'givewp')}
                                         </Button>
                                     </div>
-                                    <div style={{flex: 1}}>
+                                    <div>
                                         <SendPreviewEmail
                                             defaultEmailAddress={emailDefaultAddress}
                                             emailType={selectedTab}
                                         />
                                     </div>
-                                    <div style={{flex: 3}}>
-                                        <h2 style={{margin: 0}}>{__('Template tags', 'givewp')}</h2>
-                                        <p>
+                                    <div>
+                                        <h2 className={'email-settings-header'}>{__('Template tags', 'givewp')}</h2>
+                                        <p className={'email-settings-description'}>
                                             {__(
                                                 'Available template tags for this email. HTML is accepted. See our documentation for examples of how to use custom meta email tags to output additional donor or donation information in your GiveWP emails',
                                                 'givewp'
                                             )}
                                         </p>
-                                        <ul className={'email-template-tags'}>
+                                        <ul className={'email-settings-template-tags'}>
                                             {emailTemplateTags.map((tag) => (
                                                 <li key={tag.tag}>
                                                     <strong>{'{' + tag.tag + '}'}</strong>

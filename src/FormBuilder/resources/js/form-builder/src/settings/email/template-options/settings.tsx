@@ -2,9 +2,11 @@ import {useEffect, useState} from 'react';
 import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
 import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 import {BaseControl, Button, RadioControl, SelectControl, TextControl} from '@wordpress/components';
+import {Icon as WPIcon, plus} from '@wordpress/icons';
+
 import {__} from '@wordpress/i18n';
 import Editor from './components/editor';
-import DeleteButton from '@givewp/form-builder/blocks/fields/amount/inspector/delete-button';
+import TrashIcon from '@givewp/form-builder/settings/email/template-options/components/TrashIcon';
 
 type EmailTemplateFieldValues = {
     id: string;
@@ -110,25 +112,8 @@ const EmailTemplateSettings = ({notification, closeModal}) => {
     };
 
     return (
-        <div
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 'var(--givewp-spacing-6)',
-                marginBottom: '20px', // Prevent clipping
-            }}
-        >
-            <div
-                style={{
-                    zIndex: 11, // Above the modal header
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                    display: 'flex',
-                    gap: '1rem',
-                    margin: 'var(--givewp-spacing-4) var(--givewp-spacing-6)',
-                }}
-            >
+        <div className={'email-settings-template-container'}>
+            <div className={'email-settings-template-container-actions'}>
                 <Button
                     style={{
                         padding: 'var(--givewp-spacing-4) var(--givewp-spacing-12)',
@@ -188,6 +173,7 @@ const EmailTemplateSettings = ({notification, closeModal}) => {
                     />
 
                     <SelectControl
+                        className={'select-control--email-options'}
                         onChange={(value) => updateEmailTemplateField('email_content_type', value)}
                         label={__('Email content type', 'givewp')}
                         help={__('Choose email type', 'givewp')}
@@ -199,22 +185,18 @@ const EmailTemplateSettings = ({notification, closeModal}) => {
                     />
 
                     {config.supportsRecipients && (
-                        <>
-                            <BaseControl
-                                id={'give-email-template-recipient'}
-                                label={__('Email', 'givewp')}
-                                help={__('Enter the email address that should receive a notification.', 'givewp')}
-                            >
+                        <div className={'email-settings-template-recipient'}>
+                            <div>
+                                <h2 className={'email-settings-header'}>{__('Email recipient', 'givewp')}</h2>
+                                <p className={'email-settings-description'}>
+                                    {__('Email address that should receive a notification', 'givewp')}
+                                </p>
+                            </div>
+                            <BaseControl id={'give-email-template-recipient'} label={__('Email', 'givewp')}>
                                 {recipients.map((recipientEmail, index) => {
                                     return (
                                         <li
                                             key={'level-option-inspector-' + index}
-                                            style={{
-                                                display: 'flex',
-                                                gap: '16px',
-                                                justifyContent: 'space-between',
-                                                alignItems: 'flex-end',
-                                            }}
                                             className={'givewp-donation-level-control'}
                                         >
                                             <TextControl
@@ -227,23 +209,29 @@ const EmailTemplateSettings = ({notification, closeModal}) => {
                                                     updateEmailTemplateField('recipient', newRecipients);
                                                 }}
                                             />
-                                            <DeleteButton
+
+                                            <Button
+                                                className={'email-settings-template-recipient-delete'}
                                                 onClick={() => {
                                                     recipients.splice(index, 1);
                                                     updateEmailTemplateField('recipient', recipients.slice());
                                                 }}
-                                            />
+                                            >
+                                                <TrashIcon />
+                                            </Button>
                                         </li>
                                     );
                                 })}
+
                                 <Button
-                                    variant={'tertiary'}
+                                    style={{width: '100%', justifyContent: 'center', gap: '.25rem'}}
+                                    variant={'secondary'}
                                     onClick={() => updateEmailTemplateField('recipient', [...recipients, ''])}
                                 >
-                                    {__('Add email', 'give')}
+                                    <WPIcon size={17} icon={plus} /> {__('Add email', 'give')}
                                 </Button>
                             </BaseControl>
-                        </>
+                        </div>
                     )}
                     {!config.supportsRecipients && (
                         <TextControl

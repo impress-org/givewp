@@ -35,12 +35,30 @@
     .components-radio-control__option {
         margin: .15rem 0;
     }
+
+    .components-base-control__help {
+        margin: 0;
+    }
 }
 
-.email-template-tags {
+.select-control--email-options {
+    .components-input-control__label {
+        color: rgb(60, 67, 74);
+        font-size: 0.813rem;
+    }
+
+    .components-base-control__help {
+        color: var(--givewp-grey-500, #737373);
+        font-size: 0.75rem;
+        margin: 0;
+    }
+}
+
+.email-settings-template-tags {
     height: 25rem;
     overflow: scroll;
     border: 1px solid var(--givewp-grey-100);
+    border-radius: 2px;
 
     scroll-snap-type: y mandatory;
 
@@ -70,10 +88,11 @@
     }
 
     strong {
-        font-size: var(--givewp-font-size-headline-sm);
+        font-size: 13px;
         background-color: var(--givewp-blue-25);
         display: inline-block;
         margin-bottom: var(--givewp-spacing-3);
+        line-height: 1.137rem;
     }
 
     p {
@@ -89,3 +108,83 @@
     z-index: 1 !important;
 }
 
+.email-settings {
+    display: flex;
+    gap: var(--givewp-spacing-10);
+    height: 100%;
+    overflow: hidden;
+    flex: 1;
+}
+
+.email-settings-template-wrapper {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.email-settings-template-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-6);
+    margin-bottom: 20px;
+
+    li {
+        display: flex;
+        gap: 1rem;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+}
+
+.email-settings-template-container-actions {
+    z-index: 11;
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    gap: 1rem;
+    margin: var(--givewp-spacing-4) var(--givewp-spacing-6);
+}
+
+.email-settings-header {
+    font-size: .875rem;
+    line-height: 1.25rem;
+    margin: 0 0 0.5rem 0;
+}
+
+.email-settings-description {
+    color: var(--givewp-gery-500, #737373);
+    font-size: 0.75rem;
+    line-height: 1.5;
+    margin: 0 0 .5rem 0;
+}
+
+.email-settings-col-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-10);
+    padding-right: 10px;
+}
+
+.email-settings-col-left {
+    flex: 2;
+}
+
+.email-settings-template-recipient {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-3);
+}
+
+.email-settings-template-recipient-delete {
+    svg {
+        stroke: var(--givewp-grey-500);
+        fill: var(--givewp-grey-500);
+
+        :hover {
+            fill: var(--givewp-red-500);
+            stroke: var(--givewp-red-500);
+        }
+    }
+}
