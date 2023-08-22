@@ -1,30 +1,19 @@
-import {useEffect, useState} from 'react';
-import {createPortal} from 'react-dom';
+import {useState} from 'react';
 import {__} from '@wordpress/i18n';
-import {FeatureNoticeDialog} from '../Dialogs';
-import TryNewFormBuilderButton from './TryNewFormBuilderButton';
+import FormBuilderButtonPortal from './FormBuilderButtonPortal';
 import Button from '@givewp/components/AdminUI/Button';
 import styles from '../style.module.scss';
 
-const portalContainer = document.createElement('div');
-
-export default function MigrationGuideBox() {
+export default function EditForm() {
 
     const [showDialog, setShowDialog] = useState(false);
 
-    useEffect(() => {
-        const container = document.querySelector('.wp-heading-inline');
-        container.parentNode.insertBefore(portalContainer, container.nextSibling);
-    }, [portalContainer]);
-
-    const HeaderButton = () => createPortal(
-        <TryNewFormBuilderButton showModal={() => setShowDialog(true)} />,
-        portalContainer
-    );
-
     return (
         <>
-            <HeaderButton />
+            <FormBuilderButtonPortal
+                showDialog={showDialog}
+                setShowDialog={setShowDialog}
+            />
 
             <div className={styles.migrationGuideBox}>
                 <div className={styles.migrationGuideTitle}>
@@ -45,10 +34,6 @@ export default function MigrationGuideBox() {
                     {__('Upgrade this form', 'give')}
                 </Button>
             </div>
-
-            {showDialog && (
-                <FeatureNoticeDialog handleClose={() => setShowDialog(false)} />
-            )}
         </>
     )
 }

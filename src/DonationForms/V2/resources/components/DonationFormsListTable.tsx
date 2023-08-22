@@ -8,7 +8,7 @@ import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/List
 import Select from '@givewp/components/ListTable/Select';
 import {Interweave} from 'interweave';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
-import TryNewFormBuilderButton from './Onboarding/Components/TryNewFormBuilderButton';
+import FormBuilderButton from './Onboarding/Components/FormBuilderButton';
 
 declare global {
     interface Window {
@@ -205,15 +205,15 @@ export default function DonationFormsListTable() {
                 listTableBlankSlate={ListTableBlankSlate}
                 banner={Onboarding}
             >
-                {!state.showBanner && <TryNewFormBuilderButton showModal={() => setState(prev => ({
-                    ...prev,
-                    showFeatureNoticeDialog: true
-                }))} />}
-
-                {!!window.GiveNextGen?.newFormUrl && (
-                    <a href={window.GiveNextGen.newFormUrl} className={styles.addFormButton}>
-                        {__('Add Next Gen Form', 'give')}
-                    </a>
+                {!state.showBanner && (
+                    <div className={styles.tryNewFormBuilderBtnContainer}>
+                        <FormBuilderButton
+                            showModal={() => setState(prev => ({
+                                ...prev,
+                                showFeatureNoticeDialog: true
+                            }))}
+                        />
+                    </div>
                 )}
                 <a href={'post-new.php?post_type=give_forms'} className={styles.addFormButton}>
                     {__('Add Form', 'give')}
