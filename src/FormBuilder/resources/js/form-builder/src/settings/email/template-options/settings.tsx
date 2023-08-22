@@ -19,7 +19,7 @@ type EmailTemplateFieldValues = {
 const EmailTemplateSettings = ({notification, closeModal}) => {
     const [emailTemplateFieldValues, setEmailTemplateFieldValues] = useState<EmailTemplateFieldValues>({
         id: '',
-        status: '',
+        status: 'customize',
         email_subject: '',
         email_header: '',
         email_message: '',
@@ -95,6 +95,7 @@ const EmailTemplateSettings = ({notification, closeModal}) => {
     };
 
     const setEmailTemplateStatus = (property, value) => {
+        updateEmailTemplateField('status', value);
         dispatch(
             setFormSettings({
                 emailTemplateOptions: {
