@@ -74,7 +74,7 @@ export default function DonationReceipt({
             </div>
 
             <div className="receipt-footer">
-                {pdfReceiptLink && <Interweave className="receipt-pdf-link" content={pdfReceiptLink} />}
+                {pdfReceiptLink && <Interweave content={pdfReceiptLink} />}
 
                 <a className="donor-dashboard-link" href={donorDashboardUrl} target="_parent">
                     {__('Go to my Donor Dashboard', 'give')}

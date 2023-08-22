@@ -173,10 +173,36 @@
     .receipt-footer {
         display: flex;
         justify-content: space-between;
+        flex-direction: column;
         align-items: center;
         margin-block-start: 2rem;
         padding-block-end: fn.scaleBetween(1.5rem, 3.625rem);
         padding-inline: fn.scaleBetween(1.25rem, 4.25rem);
+
+
+        #give-pdf-receipt-link,
+        #give-pdf-receipt-link:visited {
+            display: flex;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            width: fit-content;
+            border: thin solid var(--givewp-primary-color);
+            color: var(--givewp-primary-color);
+            padding: 1.2rem;
+            margin-bottom: 2rem;
+            border-radius: 0.2rem;
+
+            &::before {
+                display: inline-block;
+                content: '\f1c1';
+                font-family: 'Font Awesome 6 Free';
+                font-weight: 900;
+                font-size: 1.625rem;
+                line-height: 1;
+                margin-right: 0.5rem;
+            }
+        }
 
         .donor-dashboard-link {
             color: var(--givewp-primary-color);
@@ -194,24 +220,6 @@
             font-size: inherit;
             padding-block: 0.75rem;
             padding-inline: 1.6875rem;
-        }
-    }
-
-    #give-pdf-receipt-link,
-    #give-pdf-receipt-link:visited {
-        display: flex;
-        column-gap: 0.9375rem;
-        align-items: center;
-        text-decoration: none;
-        color: var(--givewp-primary-color);
-
-        &::after {
-            display: inline-block;
-            content: '\f1c1';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            font-size: 1.625rem;
-            line-height: 1;
         }
     }
 }
