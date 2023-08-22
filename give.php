@@ -92,7 +92,7 @@ use Give\VendorOverrides\FieldConditions\FieldConditionsServiceProvider;
 use Give\VendorOverrides\Validation\ValidationServiceProvider;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -104,34 +104,34 @@ if (!defined('ABSPATH')) {
  * @since 2.8.0 build in a service container
  * @since 1.0
  *
- * @property-read Give_API $api
- * @property-read Give_Async_Process $async_process
- * @property-read Give_Comment $comment
- * @property-read Give_DB_Donor_Meta $donor_meta
- * @property-read Give_Emails $emails
- * @property-read Give_Email_Template_Tags $email_tags
- * @property-read Give_DB_Form_Meta $form_meta
- * @property-read Give_Admin_Settings $give_settings
- * @property-read Give_HTML_Elements $html
- * @property-read Give_Logging $logs
- * @property-read Give_Notices $notices
- * @property-read Give_DB_Payment_Meta $payment_meta
- * @property-read Give_Roles $roles
- * @property-read FormRoute $routeForm
- * @property-read Templates $templates
- * @property-read Give_Scripts $scripts
- * @property-read Give_DB_Sequential_Ordering $sequential_donation_db
- * @property-read Give_Sequential_Donation_Number $seq_donation_number
- * @property-read Give_Session $session
- * @property-read Give_DB_Sessions $session_db
- * @property-read Give_Tooltips $tooltips
- * @property-read PaymentGatewayRegister $gateways
- * @property-read DonationRepository $donations
- * @property-read DonorRepositoryProxy $donors
- * @property-read SubscriptionRepository $subscriptions
- * @property-read DonationFormsRepository $donationForms
- * @property-read Profile $donorDashboard
- * @property-read TabsRegister $donorDashboardTabs
+ * @property-read Give_API                            $api
+ * @property-read Give_Async_Process                  $async_process
+ * @property-read Give_Comment                        $comment
+ * @property-read Give_DB_Donor_Meta                  $donor_meta
+ * @property-read Give_Emails                         $emails
+ * @property-read Give_Email_Template_Tags            $email_tags
+ * @property-read Give_DB_Form_Meta                   $form_meta
+ * @property-read Give_Admin_Settings                 $give_settings
+ * @property-read Give_HTML_Elements                  $html
+ * @property-read Give_Logging                        $logs
+ * @property-read Give_Notices                        $notices
+ * @property-read Give_DB_Payment_Meta                $payment_meta
+ * @property-read Give_Roles                          $roles
+ * @property-read FormRoute                           $routeForm
+ * @property-read Templates                           $templates
+ * @property-read Give_Scripts                        $scripts
+ * @property-read Give_DB_Sequential_Ordering         $sequential_donation_db
+ * @property-read Give_Sequential_Donation_Number     $seq_donation_number
+ * @property-read Give_Session                        $session
+ * @property-read Give_DB_Sessions                    $session_db
+ * @property-read Give_Tooltips                       $tooltips
+ * @property-read PaymentGatewayRegister              $gateways
+ * @property-read DonationRepository                  $donations
+ * @property-read DonorRepositoryProxy                $donors
+ * @property-read SubscriptionRepository              $subscriptions
+ * @property-read DonationFormsRepository             $donationForms
+ * @property-read Profile                             $donorDashboard
+ * @property-read TabsRegister                        $donorDashboardTabs
  * @property-read Give_Recurring_DB_Subscription_Meta $subscription_meta
  *
  * @mixin Container
@@ -176,7 +176,7 @@ final class Give
     private $container;
 
     /**
-     * @since 2.25.0 added HttpServiceProvider
+     * @since      2.25.0 added HttpServiceProvider
      * @since      2.19.6 added Donors, Donations, and Subscriptions
      * @since      2.8.0
      *
@@ -223,8 +223,6 @@ final class Give
         FormMigrationServiceProvider::class,
         //TODO: merge this service provider
         Give\PaymentGateways\Gateways\ServiceProvider::class,
-        //TODO: this was the beta welcome banner, remove this?
-        Give\Promotions\ServiceProviderV3::class,
 
     ];
 
@@ -328,32 +326,32 @@ final class Give
     private function setup_constants()
     {
         // Plugin version.
-        if (!defined('GIVE_VERSION')) {
+        if ( ! defined('GIVE_VERSION')) {
             define('GIVE_VERSION', '3.0.0');
         }
 
         // Plugin Root File.
-        if (!defined('GIVE_PLUGIN_FILE')) {
+        if ( ! defined('GIVE_PLUGIN_FILE')) {
             define('GIVE_PLUGIN_FILE', __FILE__);
         }
 
         // Plugin Folder Path.
-        if (!defined('GIVE_PLUGIN_DIR')) {
+        if ( ! defined('GIVE_PLUGIN_DIR')) {
             define('GIVE_PLUGIN_DIR', plugin_dir_path(GIVE_PLUGIN_FILE));
         }
 
         // Plugin Folder URL.
-        if (!defined('GIVE_PLUGIN_URL')) {
+        if ( ! defined('GIVE_PLUGIN_URL')) {
             define('GIVE_PLUGIN_URL', plugin_dir_url(GIVE_PLUGIN_FILE));
         }
 
         // Plugin Basename aka: "give/give.php".
-        if (!defined('GIVE_PLUGIN_BASENAME')) {
+        if ( ! defined('GIVE_PLUGIN_BASENAME')) {
             define('GIVE_PLUGIN_BASENAME', plugin_basename(GIVE_PLUGIN_FILE));
         }
 
         // Make sure CAL_GREGORIAN is defined.
-        if (!defined('CAL_GREGORIAN')) {
+        if ( ! defined('CAL_GREGORIAN')) {
             define('CAL_GREGORIAN', 1);
         }
     }
@@ -437,7 +435,7 @@ final class Give
         $providers = [];
 
         foreach ($this->serviceProviders as $serviceProvider) {
-            if (!is_subclass_of($serviceProvider, ServiceProvider::class)) {
+            if ( ! is_subclass_of($serviceProvider, ServiceProvider::class)) {
                 throw new InvalidArgumentException(
                     "$serviceProvider class must implement the ServiceProvider interface"
                 );
@@ -535,8 +533,8 @@ final class Give
  *
  * Example: <?php $give = Give(); ?>
  *
- * @since 2.8.0 add parameter for quick retrieval from container
- * @since 1.0
+ * @since    2.8.0 add parameter for quick retrieval from container
+ * @since    1.0
  *
  * @template T
  *
