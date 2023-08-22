@@ -4,11 +4,12 @@ import {ListTableApi, ListTablePage} from '@givewp/components';
 import {DonationFormsRowActions} from './DonationFormsRowActions';
 import Onboarding, {OnboardingContext, OnboardingStateProps} from './Onboarding';
 import styles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
-import {BulkActionsConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
+import {BulkActionsConfig, ColumnFilterConfig, FilterConfig} from '@givewp/components/ListTable/ListTablePage';
 import Select from '@givewp/components/ListTable/Select';
 import {Interweave} from 'interweave';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import FormBuilderButton from './Onboarding/Components/FormBuilderButton';
+import {CubeIcon} from '@givewp/components/AdminUI/Icons';
 
 declare global {
     interface Window {
@@ -71,6 +72,24 @@ const donationFormsFilters: Array<FilterConfig> = [
         ariaLabel: __('Filter donation forms by status', 'give'),
         options: donationStatus,
     },
+];
+
+const columnFilters: Array<ColumnFilterConfig> = [
+    {
+        column: 'title',
+        filter: item => {
+            if (!item?.migrated) {
+                return (
+                    <div className={styles.migratedForm}>
+                        <CubeIcon />
+                        <Interweave attributes={{className: 'interweave'}} content={item?.title} />
+                    </div>
+                );
+            }
+
+            return <Interweave attributes={{className: 'interweave'}} content={item?.title} />;
+        },
+    }
 ];
 
 const donationFormsBulkActions: Array<BulkActionsConfig> = [
@@ -198,6 +217,7 @@ export default function DonationFormsListTable() {
                 apiSettings={window.GiveDonationForms}
                 filterSettings={donationFormsFilters}
                 listTableBlankSlate={ListTableBlankSlate}
+                columnFilters={columnFilters}
                 banner={Onboarding}
             >
                 {!state.showBanner && (
