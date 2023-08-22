@@ -184,12 +184,7 @@ export default function DonationFormsListTable() {
     const [state, setState] = useState<OnboardingStateProps>({
         showBanner: Boolean(window.GiveDonationForms.showBanner),
         migrationOnboardingCompleted: Boolean(window.GiveDonationForms.migrationOnboardingCompleted),
-        showMigrationSuccessDialog: false,
-        showTransferSuccessDialog: false,
-        showFeatureNoticeDialog: false,
-        showMigrationCompletedToast: false,
-        formId: null,
-        formName: null,
+        showFeatureNoticeDialog: false
     })
 
     return (

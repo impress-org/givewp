@@ -68,51 +68,6 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                         hiddenText={item?.name}
                     />
                     <RowAction href={item.permalink} displayText={__('View', 'give')} hiddenText={item?.name} />
-                    {item.migrate && (
-                        <RowAction
-                            onClick={addRow(async (id) => {
-                                const response = await fetchAndUpdateErrors(parameters, '/migrate', id, 'POST');
-
-                                if (!OnboardingState.migrationOnboardingCompleted) {
-                                    updateOnboardingOption('migration_onboarding_completed').then((data) => {
-                                        setOnboardingState(prev => ({
-                                            ...prev,
-                                            showMigrationSuccessDialog: true,
-                                            formId: response.successes[0]
-                                        }))
-                                    })
-                                } else {
-                                    setOnboardingState(prev => ({
-                                        ...prev,
-                                        formName: item?.name,
-                                        showMigrationCompletedToast: true
-                                    }))
-                                }
-
-                                return response
-                            })}
-                            actionId={item.id}
-                            displayText={__('Migrate', 'give')}
-                            hiddenText={item?.name}
-                        />
-                    )}
-                    {item.transfer && (
-                        <RowAction
-                            onClick={addRow(async (id) => {
-                                setOnboardingState(prev => ({
-                                    ...prev,
-                                    showTransferSuccessDialog: true,
-                                    formName: item?.name,
-                                    formId: id
-                                }))
-
-                                return await fetchAndUpdateErrors(parameters, '/transfer', id, 'POST')
-                            })}
-                            actionId={item.id}
-                            displayText={__('Transfer', 'give')}
-                            hiddenText={item?.name}
-                        />
-                    )}
                     <RowAction
                         onClick={addRow(async (id) => await fetchAndUpdateErrors(parameters, '/duplicate', id, 'POST'))}
                         actionId={item.id}
