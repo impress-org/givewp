@@ -15,7 +15,7 @@ export default function FormBuilderButtonPortal({showDialog, setShowDialog}) {
 
     const ButtonPortal = () => createPortal(
         <div className={styles.tryNewFormBuilderBtnContainer}>
-            <FormBuilderButton showModal={() => setShowDialog(true)} />
+            <FormBuilderButton onClick={() => setShowDialog(true)} />
         </div>,
         portalContainer
     );

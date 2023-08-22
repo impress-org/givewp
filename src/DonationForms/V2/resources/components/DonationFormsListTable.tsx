@@ -208,7 +208,7 @@ export default function DonationFormsListTable() {
                 {!state.showBanner && (
                     <div className={styles.tryNewFormBuilderBtnContainer}>
                         <FormBuilderButton
-                            showModal={() => setState(prev => ({
+                            onClick={() => setState(prev => ({
                                 ...prev,
                                 showFeatureNoticeDialog: true
                             }))}
