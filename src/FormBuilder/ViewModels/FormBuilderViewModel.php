@@ -56,7 +56,7 @@ class FormBuilderViewModel
                 'isInstalled' => defined('GIVE_RECURRING_VERSION'),
             ],
             'formFieldManagerData' => [
-                'isInstalled' => defined('GIVE_FFM_VERSION') ? GIVE_FFM_VERSION : null,
+                'isInstalled' => defined('GIVE_FFM_VERSION'),
             ],
             'emailTemplateTags' => $this->getEmailTemplateTags(),
             'emailNotifications' => array_map(static function ($notification) {
