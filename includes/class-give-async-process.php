@@ -10,6 +10,8 @@
  * @package  Give/Classes
  * @category Class
  * @author   GiveWP
+ *
+ * @since 2.32.0 updated to extend WPAsyncRequest
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
