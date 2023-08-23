@@ -44,12 +44,12 @@ export default ({emailType, defaultEmailAddress}) => {
 
     return (
         <>
-            <h2 className={'email-settings-header'}>{__('Send a test email', 'givewp')}</h2>
-            <p className={'email-settings-description'}>
+            <h2 className={'email-settings__header'}>{__('Send a test email', 'givewp')}</h2>
+            <p className={'email-settings__description'}>
                 {__('Specify below the email address you want to send a test email to', 'givewp')}
             </p>
             {defaultEmailAddress !== null && <TextControl onChange={setEmailAddress} value={emailAddress} />}
-            <Button variant={'secondary'} onClick={sendTestEmail} style={{width: '100%', justifyContent: 'center'}}>
+            <Button className={'email-settings-email-btn'} variant={'secondary'} onClick={sendTestEmail}>
                 {__('Send test email', 'givewp')}
             </Button>
         </>

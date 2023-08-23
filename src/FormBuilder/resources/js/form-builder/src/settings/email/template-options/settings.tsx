@@ -112,21 +112,17 @@ const EmailTemplateSettings = ({notification, closeModal}) => {
     };
 
     return (
-        <div className={'email-settings-template-container'}>
-            <div className={'email-settings-template-container-actions'}>
+        <div className={'email-settings-template__container'}>
+            <div className={'email-settings-template__actions'}>
                 <Button
-                    style={{
-                        padding: 'var(--givewp-spacing-4) var(--givewp-spacing-12)',
-                    }}
+                    className={'email-settings-template__actions-cancel'}
                     variant={'secondary'}
                     onClick={cancelChanges}
                 >
                     {__('Cancel', 'givewp')}
                 </Button>
                 <Button
-                    style={{
-                        padding: 'var(--givewp-spacing-4) var(--givewp-spacing-8)',
-                    }}
+                    className={'email-settings-template__actions-set'}
                     variant={'primary'}
                     onClick={setEmailTemplateOption}
                 >
@@ -184,10 +180,10 @@ const EmailTemplateSettings = ({notification, closeModal}) => {
                     />
 
                     {config.supportsRecipients && (
-                        <div className={'email-settings-template-recipient'}>
+                        <div className={'email-settings-template__recipient'}>
                             <div>
-                                <h2 className={'email-settings-header'}>{__('Email recipient', 'givewp')}</h2>
-                                <p className={'email-settings-description'}>
+                                <h2 className={'email-settings__header'}>{__('Email recipient', 'givewp')}</h2>
+                                <p className={'email-settings__description'}>
                                     {__('Email address that should receive a notification', 'givewp')}
                                 </p>
                             </div>
@@ -196,10 +192,9 @@ const EmailTemplateSettings = ({notification, closeModal}) => {
                                     return (
                                         <li
                                             key={'level-option-inspector-' + index}
-                                            className={'givewp-donation-level-control'}
+                                            className={'base-control--email-options'}
                                         >
                                             <TextControl
-                                                label={__('Donation amount level', 'give')}
                                                 hideLabelFromVision
                                                 value={recipientEmail}
                                                 onChange={(value) => {
@@ -210,7 +205,7 @@ const EmailTemplateSettings = ({notification, closeModal}) => {
                                             />
 
                                             <Button
-                                                className={'email-settings-template-recipient-delete'}
+                                                className={'email-settings-template__recipient-delete'}
                                                 onClick={() => {
                                                     recipients.splice(index, 1);
                                                     updateEmailTemplateField('recipient', recipients.slice());
@@ -223,7 +218,7 @@ const EmailTemplateSettings = ({notification, closeModal}) => {
                                 })}
 
                                 <Button
-                                    style={{width: '100%', justifyContent: 'center', gap: '.25rem'}}
+                                    style={{height: '2.5rem', width: '100%', justifyContent: 'center', gap: '.25rem'}}
                                     variant={'secondary'}
                                     onClick={() => updateEmailTemplateField('recipient', [...recipients, ''])}
                                 >

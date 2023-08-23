@@ -73,7 +73,7 @@ export default () => {
                     {!showPreview && (
                         <>
                             <div className={'email-settings'}>
-                                <div className={'email-settings-col-left'}>
+                                <div className={'email-settings__col-left'}>
                                     <TabPanel
                                         className={'email-settings-modal-tabs'}
                                         orientation={'vertical' as 'horizontal' | 'vertical' | 'both'}
@@ -88,7 +88,7 @@ export default () => {
                                     >
                                         {(tab) => (
                                             <div
-                                                className={'email-settings-template-wrapper'}
+                                                className={'email-settings-template'}
                                                 style={{
                                                     padding:
                                                         selectedNotificationStatus === 'global'
@@ -96,7 +96,7 @@ export default () => {
                                                             : '0 20px', // Adjust for scrollbar
                                                 }}
                                             >
-                                                <h2 className={'email-settings-header'}>{__('Notification')}</h2>
+                                                <h2 className={'email-settings__header'}>{__('Notification')}</h2>
                                                 <EmailTemplateSettings
                                                     closeModal={closeModal}
                                                     notification={tab.name}
@@ -106,19 +106,19 @@ export default () => {
                                     </TabPanel>
                                 </div>
                                 <div
-                                    className={'email-settings-col-right'}
+                                    className={'email-settings__col-right'}
                                     style={{
                                         visibility: 'enabled' === selectedNotificationStatus ? 'visible' : 'hidden',
                                     }}
                                 >
                                     <div>
-                                        <h2 className={'email-settings-header'}>{__('Preview email', 'givewp')}</h2>
-                                        <p className={'email-settings-description'}>
+                                        <h2 className={'email-settings__header'}>{__('Preview email', 'givewp')}</h2>
+                                        <p className={'email-settings__description'}>
                                             {__('Preview the email message in your browser', 'givewp')}
                                         </p>
                                         <Button
+                                            className={'email-settings-email-btn'}
                                             variant={'secondary'}
-                                            style={{width: '100%', justifyContent: 'center'}}
                                             onClick={() => setShowPreview(true)}
                                         >
                                             {__('Preview email', 'givewp')}
@@ -131,8 +131,8 @@ export default () => {
                                         />
                                     </div>
                                     <div>
-                                        <h2 className={'email-settings-header'}>{__('Template tags', 'givewp')}</h2>
-                                        <p className={'email-settings-description'}>
+                                        <h2 className={'email-settings__header'}>{__('Template tags', 'givewp')}</h2>
+                                        <p className={'email-settings__description'}>
                                             {__(
                                                 'Available template tags for this email. HTML is accepted. See our documentation for examples of how to use custom meta email tags to output additional donor or donation information in your GiveWP emails',
                                                 'givewp'
