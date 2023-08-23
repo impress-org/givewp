@@ -1,6 +1,7 @@
 import {__} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
 import {Notice, PanelBody, ToggleControl} from '@wordpress/components';
+import {createInterpolateElement} from '@wordpress/element';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 
 const MOCK = {
@@ -11,25 +12,35 @@ const MOCK = {
     },
 };
 
-export default function StripeAccounts({attributes: {stripeAccounts}, setAttributes}) {
+export default function StripeAccount({attributes, setAttributes}) {
+    const {stripeAccount}: {stripeAccount: StripeAccountProps} = attributes;
     const {gatewaySettingsUrl} = getFormBuilderWindowData();
 
     const handleSetAttributes = (newAttributes: any) => {
         setAttributes({
-            stripeAccounts: {
-                ...stripeAccounts,
+            stripeAccount: {
+                ...stripeAccount,
                 ...newAttributes,
             },
         });
     };
+
+    const hasDefaultAccount = stripeAccount.useGlobalDefault && MOCK.default;
+    const hasDefaultAccountMessage = createInterpolateElement(
+        __('All donations are processed through the default account set in the <a>Global settings</a>.', 'give'),
+        {
+            a: <a href={`${gatewaySettingsUrl}&section=stripe-settings&group=accounts`} />,
+        }
+    );
 
     return (
         <InspectorControls>
             <PanelBody title={__('Stripe Account', 'give')} initialOpen={true}>
                 <ToggleControl
                     label={__('Use global default', 'give')}
-                    checked={stripeAccounts.useGlobalDefault}
+                    checked={stripeAccount.useGlobalDefault}
                     onChange={(value) => handleSetAttributes({useGlobalDefault: value})}
+                    help={hasDefaultAccount && hasDefaultAccountMessage}
                 />
                 {!MOCK.default && (
                     <Notice
@@ -51,3 +62,8 @@ export default function StripeAccounts({attributes: {stripeAccounts}, setAttribu
         </InspectorControls>
     );
 }
+
+type StripeAccountProps = {
+    useGlobalDefault: boolean;
+    accountId?: number;
+};

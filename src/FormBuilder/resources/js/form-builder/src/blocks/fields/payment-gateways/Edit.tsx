@@ -2,7 +2,7 @@ import {ReactNode} from 'react';
 import {BlockEditProps} from '@wordpress/blocks';
 import {useEffect} from '@wordpress/element';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
-import StripeAccounts from '@givewp/form-builder/blocks/fields/payment-gateways/StripeAccounts';
+import StripeAccount from '@givewp/form-builder/blocks/fields/payment-gateways/StripeAccount';
 
 const GatewayItem = ({label, icon}: {label: string; icon: ReactNode}) => {
     return (
@@ -24,15 +24,15 @@ export default function Edit(props: BlockEditProps<any>) {
     const {gateways} = getFormBuilderWindowData();
 
     useEffect(() => {
-        if (!attributes.stripeAccounts) {
-            setAttributes({stripeAccounts: {useGlobalDefault: true}});
+        if (!attributes.stripeAccount) {
+            setAttributes({stripeAccount: {useGlobalDefault: true}});
         }
     }, []);
 
     return (
         <>
             {gateways.some((gateway) => gateway.id === 'stripe_payment_element' && gateway.enabled) &&
-                attributes.stripeAccounts && <StripeAccounts {...props} />}
+                attributes.stripeAccount && <StripeAccount {...props} />}
 
             <div
                 style={{

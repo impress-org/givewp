@@ -13,7 +13,7 @@ const settings: FieldBlock['settings'] = {
     },
     attributes: {
         lock: {remove: true},
-        stripeAccounts: {
+        stripeAccount: {
             type: 'object',
             default: {
                 useGlobalDefault: true,
