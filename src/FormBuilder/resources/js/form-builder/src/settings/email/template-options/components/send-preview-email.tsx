@@ -2,7 +2,7 @@ import {useState} from 'react';
 import {useFormState} from '@givewp/form-builder/stores/form-state';
 import {Button, TextControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
-import {getStorageData} from '@givewp/form-builder/common/getWindowData';
+import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 
 export default ({emailType, defaultEmailAddress}) => {
     const [emailAddress, setEmailAddress] = useState<string>(defaultEmailAddress);
@@ -11,7 +11,7 @@ export default ({emailType, defaultEmailAddress}) => {
         settings: {emailTemplateOptions, emailTemplate, emailLogo, emailFromName, emailFromEmail},
     } = useFormState();
 
-    const {formId, emailPreviewURL} = getStorageData();
+    const {formId, emailPreviewURL, nonce} = getFormBuilderWindowData();
 
     const sendTestEmail = () => {
         // @ts-ignore

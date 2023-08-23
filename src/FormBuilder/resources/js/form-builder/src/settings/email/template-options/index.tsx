@@ -5,7 +5,6 @@ import {useState} from 'react';
 import TabPanel from '@givewp/form-builder/components/sidebar/TabPanel';
 import EmailTemplateSettings from './settings';
 import CopyToClipboardButton from './components/copy-to-clipboard-button';
-
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import SendPreviewEmail from './components/send-preview-email';
 import EmailPreviewContent from './components/email-preview-content';
