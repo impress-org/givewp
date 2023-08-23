@@ -16,7 +16,7 @@ use Give\Framework\Database\DB;
  *
  * @return void Note: $formId is an "output argument" - not a return value.
  */
-function give_redirect_form_id(&$formId, &...$extraReference) {
+function _give_redirect_form_id(&$formId, &...$extraReference) {
     global $wpdb;
 
     $formId = absint(DB::get_var(
@@ -40,7 +40,7 @@ function give_redirect_form_id(&$formId, &...$extraReference) {
  *
  * @return bool
  */
-function give_is_form_migrated($formId) {
+function _give_is_form_migrated($formId) {
     global $wpdb;
 
     return (bool) DB::get_var(
@@ -63,7 +63,7 @@ function give_is_form_migrated($formId) {
  *
  * @return bool
  */
-function give_is_form_donations_transferred($formId) {
+function _give_is_form_donations_transferred($formId) {
     global $wpdb;
 
     return (bool) DB::get_var(
