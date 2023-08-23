@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import cx from 'classnames';
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
+import {Interweave} from 'interweave';
 import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import Button from '@givewp/components/AdminUI/Button';
 import Input from '@givewp/components/AdminUI/Input';
@@ -21,16 +22,12 @@ interface DialogStateProps {
 interface ConfirmDialogStateProps {
     input: string;
     delete: boolean;
-    changeUrl: boolean;
-    redirect: boolean;
 }
 
 function Confirmation({handleTransferConfirmation}) {
     const [state, setState] = useState<ConfirmDialogStateProps>({
         input: '',
         delete: false,
-        changeUrl: false,
-        redirect: false
     });
 
     function handleInputChange(e) {
@@ -46,11 +43,11 @@ function Confirmation({handleTransferConfirmation}) {
     return (
         <>
             <div className={styles.title}>
-                {__('Transferring donation data to associated v3 forms', 'give')}
+                {__('Transferring donation data to the upgraded form', 'give')}
             </div>
 
             <div>
-                {__('Type', 'give')} <strong>transfer</strong> {__('to confirm transfer of donation data for the form selected', 'give')}
+                <Interweave content={__('Type <strong>transfer</strong> to confirm transfer of donation data for the form selected. This means all blocks, shortcodes, and the form URL will automatically redirect to the upgraded form.', 'give')} />
             </div>
 
             <br />
@@ -66,26 +63,10 @@ function Confirmation({handleTransferConfirmation}) {
 
             <div className={styles.checkbox}>
                 <Input
-                    label={__('Delete the v2 form after transfer', 'give')}
+                    label={__('Delete the existing form after transfer', 'give')}
                     type="checkbox"
                     checked={state.delete}
                     onChange={e => handleCheckboxChange(e, 'delete')}
-                />
-            </div>
-            <div className={styles.checkbox}>
-                <Input
-                    label={__('Change the form URL to point to the v3 form', 'give')}
-                    type="checkbox"
-                    checked={state.changeUrl}
-                    onChange={e => handleCheckboxChange(e, 'changeUrl')}
-                />
-            </div>
-            <div className={styles.checkbox}>
-                <Input
-                    label={__('Redirect v2 form shortcodes and blocks to v3.', 'give')}
-                    type="checkbox"
-                    checked={state.redirect}
-                    onChange={e => handleCheckboxChange(e, 'redirect')}
                 />
             </div>
 
@@ -97,8 +78,6 @@ function Confirmation({handleTransferConfirmation}) {
                 style={{width: '100%'}}
                 onClick={() => handleTransferConfirmation({
                     delete: state.delete,
-                    changeUrl: state.changeUrl,
-                    redirect: state.redirect
                 })}
             >
                 {__('Yes, proceed', 'give')}
@@ -141,12 +120,11 @@ export default function TransferSuccessDialog({handleClose, formName, formId}) {
     const Notice = () => (
         <>
             <div className={styles.title}>
-                {__('Transferring donation data is not reversible', 'give')}
+                {__('Transferring donation data cannot be undone', 'give')}
             </div>
 
             <div>
-                {__('Transferring donations involves moving all donations from the v2 form', 'give')} <span
-                className={styles.formName}>[{formName}]</span> {__('to the v3 form, leaving no donations associated with the v2 form after the transfer.', 'give')}
+                <Interweave content={__(sprintf( 'Transferring donations involves moving all donations from the existing form %s to the upgraded form, leaving no donations associated with the existing form after the transfer.', `<span class="${styles.formName}">[${formName}]</span>`), 'give')} />
             </div>
 
             <br /><br />
@@ -175,14 +153,14 @@ export default function TransferSuccessDialog({handleClose, formName, formId}) {
             </div>
 
             <div className={styles.center}>
-                {__('Your donation data was successfully transferred to the new v3 form created.', 'give')}
+                {__('Your donation data was successfully transferred to the upgraded form.', 'give')}
             </div>
 
             <br /><br />
 
             <Button
                 size="large"
-                onClick={() => window.location.reload()}
+                onClick={() => window.location.href = 'edit.php?post_type=give_forms&page=give-forms'}
                 style={{width: '100%'}}
             >
                 {__('Go back to your donation form list', 'give')}
