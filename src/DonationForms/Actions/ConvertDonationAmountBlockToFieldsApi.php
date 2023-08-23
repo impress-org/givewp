@@ -22,6 +22,7 @@ use Give\Framework\FieldsAPI\Option;
 use Give\Framework\FieldsAPI\Radio;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 
+
 class ConvertDonationAmountBlockToFieldsApi
 {
 
@@ -55,9 +56,7 @@ class ConvertDonationAmountBlockToFieldsApi
 
             /** @var Amount $amountNode */
             $amountNode = $group->getNodeByName('amount');
-            $defaultLevel = (float)$block->getAttribute('defaultLevel') > 0 ? (float)$block->getAttribute(
-                'defaultLevel'
-            ) : 10;
+            $defaultLevel = (float)$block->getAttribute('defaultLevel') > 0 ? (float)$block->getAttribute('defaultLevel') : 10;
             $amountNode
                 ->label($block->getAttribute('label'))
                 ->levels(...array_map('absint', $block->getAttribute('levels')))
@@ -134,26 +133,27 @@ class ConvertDonationAmountBlockToFieldsApi
                 ->rules(new SubscriptionPeriodRule());
         }
 
-        if (count($block->getAttribute('recurringBillingPeriodOptions')) > 1) {
-            $recurringBillingPeriodOptions = $block->getAttribute('recurringBillingPeriodOptions');
-        } else {
-            $recurringBillingPeriodOptions = array_merge(['one-time'],
-                $block->getAttribute('recurringBillingPeriodOptions'));
-        }
+        $recurringBillingPeriodOptions = $block->getAttribute('recurringBillingPeriodOptions');
 
-        $options = array_map(static function ($option) {
-            if (SubscriptionPeriod::isValid($option)) {
+        if (!$block->getAttribute('recurringDisableOneTimeDonations')) {
+            $options = $this->mergePeriodOptionsWithOneTime(
+                array_map(static function ($option) {
+                    $subscriptionPeriod = new SubscriptionPeriod($option);
+
+                    return new Option($subscriptionPeriod->getValue(), $subscriptionPeriod->label(0));
+                }, $recurringBillingPeriodOptions)
+            );
+        } else {
+            $options = array_map(static function ($option) {
                 $subscriptionPeriod = new SubscriptionPeriod($option);
 
                 return new Option($subscriptionPeriod->getValue(), $subscriptionPeriod->label(0));
-            }
-
-            return new Option($option, $option === 'one-time' ? __('One Time', 'give') : ucfirst($option));
-        }, $recurringBillingPeriodOptions);
+            }, $recurringBillingPeriodOptions);
+        }
 
         $recurringOptInDefault = $block->getAttribute('recurringOptInDefaultBillingPeriod');
 
-        if (!empty($recurringOptInDefault) && SubscriptionPeriod::isValid($recurringOptInDefault)) {
+        if (!empty($recurringOptInDefault) && $recurringOptInDefault !== 'one-time') {
             $subscriptionPeriod = new SubscriptionPeriod($recurringOptInDefault);
 
             $defaultValue = $subscriptionPeriod->getValue();
@@ -166,5 +166,15 @@ class ConvertDonationAmountBlockToFieldsApi
             ->label(__('Choose your donation frequency', 'give'))
             ->options(...$options)
             ->rules(new SubscriptionPeriodRule());
+    }
+
+    /**
+     * @since 3.0.0
+     */
+    protected function mergePeriodOptionsWithOneTime(array $options): array
+    {
+        return array_merge([
+            new Option('one-time', __('One Time', 'give'))
+        ], $options);
     }
 }

@@ -28,7 +28,6 @@
                     "customAmount": "true",
                     "customAmountMin": 1,
                     "recurringBillingPeriodOptions": [
-                        "one-time",
                         "month"
                     ],
                     "recurringBillingPeriod": "month",
@@ -37,6 +36,7 @@
                     "recurringEnabled": false,
                     "recurringLengthOfTime": "0",
                     "recurringOptInDefaultBillingPeriod": "month",
+                    "recurringDisableOneTimeDonations": false,
                     "lock": {
                         "remove": true
                     }
