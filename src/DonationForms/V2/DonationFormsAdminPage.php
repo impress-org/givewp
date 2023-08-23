@@ -348,7 +348,7 @@ class DonationFormsAdminPage
     public function getSupportedGateways(): array
     {
         $supportedGateways = [
-            'Authorize.net' => '', // todo add check
+            'Authorize.net' => class_exists('Give_Authorize'),
             'PayPal Standard' => true,
             'PayPal Donations' => true,
             'Stripe Elements' => true, // todo add check
