@@ -247,10 +247,7 @@ import {CSSProperties, useEffect, useState} from 'react';
 
         return (
 
-                <PayPalHostedFieldsProvider
-                    notEligibleError={<div>Your account is not eligible</div>}
-                    createOrder={createOrderHandler}
-                >
+                <PayPalHostedFieldsProvider createOrder={createOrderHandler}>
                     <div>
                     <Divider label={__('Or pay with card', 'give')} style={{padding: '30px 0'}} />
 
