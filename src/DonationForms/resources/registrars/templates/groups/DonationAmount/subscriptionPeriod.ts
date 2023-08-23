@@ -1,4 +1,4 @@
-import {__} from '@wordpress/i18n';
+import { __ } from "@wordpress/i18n";
 
 /**
  * @since 3.0.0
@@ -50,7 +50,7 @@ const subscriptionPeriodLabelLookup = {
 /**
  * @since 3.0.0
  */
-export type subscriptionPeriod = keyof typeof subscriptionPeriodLabelLookup;
+type subscriptionPeriod = keyof typeof subscriptionPeriodLabelLookup;
 
 /**
  * @since 3.0.0
