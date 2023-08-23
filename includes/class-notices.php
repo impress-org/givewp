@@ -285,7 +285,6 @@ class Give_Notices {
 	/**
 	 * Render give frontend notices.
 	 *
-     * @since 2.32.0 Display registered error on donation form.
 	 * @since  1.8.9
 	 * @access public
 	 *
@@ -296,13 +295,8 @@ class Give_Notices {
 
 		$request_form_id = isset( $_REQUEST['form-id'] ) ? absint( $_REQUEST['form-id'] ) : 0;
 
-		// Sanity checks first:
-        // - Ensure that gateway returned errors display on the appropriate form.
-        // - Error should not display on AJAX request.
-		if (
-            isset( $_POST['give_ajax'] )
-            || ( $request_form_id && $request_form_id !== $form_id )
-        ) {
+		// Sanity checks first: Ensure that gateway returned errors display on the appropriate form.
+		if ( ! isset( $_POST['give_ajax'] ) && $request_form_id !== $form_id ) {
 			return;
 		}
 

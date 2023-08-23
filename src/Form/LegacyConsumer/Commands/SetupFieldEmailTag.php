@@ -4,6 +4,7 @@ namespace Give\Form\LegacyConsumer\Commands;
 
 use Give\Framework\FieldsAPI\Concerns\HasEmailTag;
 use Give\Framework\FieldsAPI\Concerns\HasLabel;
+use Give\Framework\FieldsAPI\Concerns\StoreAsMeta;
 use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\Group;
 
@@ -37,7 +38,7 @@ class SetupFieldEmailTag
      */
     public function register(Field $field)
     {
-        /** @var Field|HasLabel|HasEmailTag $field */
+        /** @var Field|HasLabel|HasEmailTag|StoreAsMeta $field */
         give_add_email_tag(
             [
                 'tag' => $field->getEmailTag() ?: $field->getName(), // The tag name.

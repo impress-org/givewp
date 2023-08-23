@@ -61,8 +61,3 @@ phpcs.xml
 # POT File
 languages/*
 !languages/README.md
-
-# @wordpress/scripts build directory
-build
-**/build.*
-**/build.asset.*

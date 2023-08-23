@@ -11,7 +11,6 @@ trait HandleHttpResponses
     /**
      * Handle Response
      *
-     * @since 2.32.0 added check for responding with json
      * @since 2.27.0 add support for json content-type
      * @since 2.18.0
      *
@@ -20,7 +19,7 @@ trait HandleHttpResponses
     public function handleResponse($type)
     {
         if ($type instanceof RedirectResponse) {
-            if ($this->wantsJson()) {
+            if (isset($_SERVER['CONTENT_TYPE']) && str_contains($_SERVER['CONTENT_TYPE'], "application/json")) {
                 wp_send_json([
                     'type' => 'redirect',
                     'data' => [
@@ -60,21 +59,5 @@ trait HandleHttpResponses
 
         give_set_error('PaymentGatewayException', $message);
         give_send_back_to_checkout();
-    }
-
-    /**
-     * This checks the server headers for 'application/json' to determine if it should respond with json.
-     *
-     * @since 2.32.0
-     *
-     * @return bool
-     */
-    protected function wantsJson(): bool
-    {
-        if (isset($_SERVER['HTTP_ACCEPT']) && str_contains($_SERVER['HTTP_ACCEPT'], 'application/json')) {
-            return true;
-        }
-
-        return isset($_SERVER['CONTENT_TYPE']) && str_contains($_SERVER['CONTENT_TYPE'], 'application/json');
     }
 }

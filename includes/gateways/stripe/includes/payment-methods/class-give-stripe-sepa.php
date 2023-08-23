@@ -155,15 +155,14 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 		}
 
 		/**
-         * This function will be used for donation processing.
-         *
-         * @unreleased no longer store the intent secret in the database
-         * @since  2.6.1
-         *
-         * @param array $donation_data List of donation data.
-         *
-         * @return void
-         */
+		 * This function will be used for donation processing.
+		 *
+		 * @param array $donation_data List of donation data.
+		 *
+		 * @return void
+		 * @since  2.6.1
+		 * @access public
+		 */
 		public function process_payment( $donation_data ) {
 
 			// Bailout, if the current gateway and the posted gateway mismatched.
@@ -288,6 +287,11 @@ if ( ! class_exists( 'Give_Stripe_Sepa' ) ) {
 					$intent = $this->payment_intent->create( $intent_args );
 
 					if ( ! empty( $intent->status ) && 'processing' === $intent->status ) {
+
+						// Save Payment Intent Client Secret to donation note and DB.
+						give_insert_payment_note( $donation_id, 'Stripe Payment Intent Client Secret: ' . $intent->client_secret );
+						give_update_meta( $donation_id, '_give_stripe_payment_intent_client_secret', $intent->client_secret );
+
 						// Set Payment Intent ID as transaction ID for the donation.
 						give_set_payment_transaction_id( $donation_id, $intent->id );
 						give_insert_payment_note( $donation_id, 'Stripe Charge/Payment Intent ID: ' . $intent->id );

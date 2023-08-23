@@ -63,7 +63,6 @@ class WebhookChecker
     /**
      * Checks whether the webhook configuration has changed. If it has, then update the webhook with PayPal.
      *
-     * @since 2.32.0 Remove second argument from updateWebhook function.
      * @since 2.9.0
      */
     public function checkWebhookCriteria()
@@ -95,7 +94,7 @@ class WebhookChecker
         // Update the webhook if the return url or events have changed
         if ($webhookUrl !== $webhookConfig->returnUrl || $hasMissingEvents) {
             try {
-                $this->webhooksRepository->updateWebhook($webhookConfig->id);
+                $this->webhooksRepository->updateWebhook($this->merchantDetails->accessToken, $webhookConfig->id);
 
                 $webhookConfig->returnUrl = $webhookUrl;
                 $webhookConfig->events = $registeredEvents;

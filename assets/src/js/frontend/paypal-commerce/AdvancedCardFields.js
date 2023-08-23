@@ -53,9 +53,7 @@ class AdvancedCardFields extends PaymentMethod {
 	 * @return {boolean} Return boolean value whether we can render card fields or not.
 	 */
 	static canShow() {
-		return paypal?.HostedFields?.isEligible() === true
-            && '1' === window.givePayPalCommerce.supportsCustomPayments
-            && 'auto' === givePayPalCommerce.paymentFieldType;
+		return paypal.HostedFields.isEligible() === true && !! window.givePayPalCommerce.supportsCustomPayments;
 	}
 
 	/**
@@ -511,10 +509,8 @@ class AdvancedCardFields extends PaymentMethod {
 			this.hostedCardFieldsContainers[ key ].parentElement.style.display = canHideParentContainer ? 'none' : 'block';
 		}
 
-        // Hide separator only if custom card is not available for subscription.
-        if (this.customCardFields.separator) {
-            this.customCardFields.separator.style.display = canHideParentContainer ? 'none' : 'flex';
-        }
+		// Hide separator only if custom card is not available for subscription.
+		this.customCardFields.separator.style.display = canHideParentContainer ? 'none' : 'flex';
 	}
 
 	/**
