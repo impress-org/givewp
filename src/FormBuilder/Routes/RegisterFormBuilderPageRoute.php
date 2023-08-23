@@ -122,6 +122,12 @@ class RegisterFormBuilderPageRoute
             'autoStartTour' => !get_user_meta(get_current_user_id(), 'givewp-form-builder-tour-completed', true),
         ]);
 
+        $migratedFormId = give_get_meta($donationFormId, 'migratedFormId', true);
+        wp_localize_script('@givewp/form-builder/script', 'migrationOnboardingData', [
+            'isMigratedForm' => (bool) $migratedFormId,
+            'showMigrationOnboarding' => (bool) $migratedFormId && !get_user_meta(get_current_user_id(), 'givewp-form-builder-migration-onboarding-completed', true)
+        ]);
+
         View::render('FormBuilder.admin-form-builder');
     }
 
