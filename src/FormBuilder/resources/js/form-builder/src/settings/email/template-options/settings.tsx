@@ -48,7 +48,7 @@ const EmailTemplateSettings = ({notification, closeModal}) => {
         ...emailTemplateOptions[notification],
     };
 
-    const recipients = option.recipient ?? [''];
+    const recipients = emailTemplateFieldValues.recipient ?? [''];
 
     useEffect(() => {
         setEmailTemplateFieldValues({
@@ -207,6 +207,7 @@ const EmailTemplateSettings = ({notification, closeModal}) => {
                                             <Button
                                                 className={'email-settings-template__recipient-delete'}
                                                 onClick={() => {
+                                                    console.log(recipientEmail);
                                                     recipients.splice(index, 1);
                                                     updateEmailTemplateField('recipient', recipients.slice());
                                                 }}
