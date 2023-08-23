@@ -2,10 +2,11 @@ import {Field} from '@givewp/forms/types';
 import {useTemplateWrapper} from '../templates';
 import registerFieldAndBuildProps from '../utilities/registerFieldAndBuildProps';
 import type {FieldProps} from '@givewp/forms/propTypes';
+import memoNode from '@givewp/forms/app/utilities/memoNode';
 
 const formTemplates = window.givewp.form.templates;
 
-export default function FieldNode({node}: {node: Field}) {
+function FieldNode({node}: {node: Field}) {
     const {register} = window.givewp.form.hooks.useFormContext();
     const {errors} = window.givewp.form.hooks.useFormState();
     const Field =
@@ -16,3 +17,7 @@ export default function FieldNode({node}: {node: Field}) {
 
     return <Field key={node.name} {...fieldProps} />;
 }
+
+const MemoizedFieldNode = memoNode(FieldNode);
+
+export default MemoizedFieldNode;

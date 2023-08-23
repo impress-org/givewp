@@ -13,6 +13,9 @@ parameters:
         - vendor/vendor-prefixed/
     scanFiles:
         - vendor/wordpress/wordpress/src/wp-includes/compat.php
+        - vendor/php-stubs/wp-cli-stubs/wp-cli-stubs.php
+        - vendor/php-stubs/wp-cli-stubs/wp-cli-commands-stubs.php
+        - vendor/php-stubs/wp-cli-stubs/wp-cli-i18n-stubs.php
     excludePaths:
         analyse:
             - src/LegacySubscriptions/includes/ # Scan but do not analyse

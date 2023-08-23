@@ -61,7 +61,7 @@ export default function Edit({
                     placeholder={lastNamePlaceholder}
                     required={requireLastName}
                     className={`${requireLastName ? 'give-is-required' : ''}`}
-                    value={firstNamePlaceholder}
+                    value={lastNamePlaceholder}
                     onChange={null}
                     readOnly
                 />

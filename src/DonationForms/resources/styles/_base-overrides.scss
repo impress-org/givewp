@@ -3,43 +3,44 @@
 :root,
 [data-theme=light],
 [data-theme=dark] {
-  // pico variables
-  --font-size: 16px;
-  --typography-spacing-vertical: 1rem;
+    // pico variables
+    --font-size: 16px;
+    --typography-spacing-vertical: 1rem;
+    --background-color: transparent;
 
-  // map pico variables to givewp variables
-  --primary: var(--givewp-primary-color);
-  --primary-hover: var(--givewp-primary-color);
-  --primary-focus: var(--givewp-primary-color);
+    // map pico variables to givewp variables
+    --primary: var(--givewp-primary-color);
+    --primary-hover: var(--givewp-primary-color);
+    --primary-focus: var(--givewp-primary-color);
 
-  --secondary: var(--givewp-secondary-color);
-  --secondary-hover: var(--givewp-secondary-color);
-  --secondary-focus: var(--givewp-secondary-color);
+    --secondary: var(--givewp-secondary-color);
+    --secondary-hover: var(--givewp-secondary-color);
+    --secondary-focus: var(--givewp-secondary-color);
 
-  // custom givewp variables
-  --givewp-breakpoint-xs: variables.$givewp-breakpoint-xs;
-  --givewp-breakpoint-sm: variables.$givewp-breakpoint-sm;
-  --givewp-breakpoint-md: variables.$givewp-breakpoint-md;
-  --givewp-breakpoint-lg: variables.$givewp-breakpoint-lg;
-  --givewp-breakpoint-xl: variables.$givewp-breakpoint-xl;
+    // custom givewp variables
+    --givewp-breakpoint-xs: variables.$givewp-breakpoint-xs;
+    --givewp-breakpoint-sm: variables.$givewp-breakpoint-sm;
+    --givewp-breakpoint-md: variables.$givewp-breakpoint-md;
+    --givewp-breakpoint-lg: variables.$givewp-breakpoint-lg;
+    --givewp-breakpoint-xl: variables.$givewp-breakpoint-xl;
 }
 
 // remove the green checkbox in inputs
 input[aria-invalid="false"],
 textarea[aria-invalid="false"] {
-  &:not([type="checkbox"]) {
-    background-image: none;
-  }
+    &:not([type="checkbox"]) {
+        background-image: none;
+    }
 }
 
 input, select, textarea {
-  margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  --typography-spacing-vertical: 1rem;
+    --typography-spacing-vertical: 1rem;
 }
 
 pre {
-  white-space: break-spaces;
+    white-space: break-spaces;
 }

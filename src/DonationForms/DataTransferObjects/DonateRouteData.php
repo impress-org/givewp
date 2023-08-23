@@ -28,9 +28,9 @@ class DonateRouteData
      *
      * @since 3.0.0
      */
-    public static function fromRequest(array $request): DonateRouteData
+    public static function fromRequest(array $request): self
     {
-        $self = new static();
+        $self = new self();
 
         $self->routeSignature = $request['givewp-route-signature'];
         $self->routeSignatureId = $request['givewp-route-signature-id'];

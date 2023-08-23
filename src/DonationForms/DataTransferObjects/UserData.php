@@ -27,9 +27,9 @@ class UserData
      *
      * @since 3.0.0
      */
-    public static function fromUser(\WP_User $user): UserData
+    public static function fromUser(\WP_User $user): self
     {
-        $self = new static();
+        $self = new self();
 
         $self->firstName = $user->user_firstname;
         $self->lastName = $user->user_lastname;
