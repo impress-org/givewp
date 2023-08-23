@@ -182,21 +182,34 @@ import {CSSProperties, useEffect, useState} from 'react';
         const donationType = useWatch({name: 'donationType'});
         const {isSubmitting, isSubmitSuccessful} = useFormState();
         const {useFormContext} = window.givewp.form.hooks;
-        const {trigger} = useFormContext();
+        const {trigger, setError} = useFormContext();
+        const gateway = window.givewp.gateways.get('paypal-commerce');
 
         const props = {
             style: buttonsStyle,
             disabled: isSubmitting || isSubmitSuccessful,
             forceReRender: debounce(() => [amount, firstName, lastName, email, currency], 500),
             onClick: async (data, actions) => {
-                // Validate the form before proceeding.
-                const result = await trigger();
+                // Validate whether payment gateway support subscriptions.
+                if (donationType === 'subscription' && !gateway.supportsSubscriptions) {
+                    setError('FORM_ERROR', {
+                        message: __(
+                            'This payment gateway does not support recurring payments, please try selecting another payment gateway.',
+                            'give'
+                        ),
+                    });
 
-                if(result === true){
-                    return actions.resolve();
+                    return actions.reject();
+
                 }
 
-                return actions.reject();
+                // Validate the form values before proceeding.
+                const result = await trigger();
+                if(result === false){
+                    return actions.reject();
+                }
+
+                return actions.resolve();
             },
             onApprove: async (data, actions) => {
 
