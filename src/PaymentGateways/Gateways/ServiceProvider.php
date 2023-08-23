@@ -99,18 +99,6 @@ class ServiceProvider implements ServiceProviderInterface
             return $recurringData;
         });
 
-        /**
-         * This module will eventually live in give-recurring
-         */
-        if (defined('GIVE_RECURRING_VERSION') && GIVE_RECURRING_VERSION) {
-            add_filter(
-                sprintf("givewp_gateway_%s_subscription_module", PayPalCommerce::id()),
-                static function () {
-                    return PayPalCommerceSubscriptionModule::class;
-                }
-            );
-        }
-
         $this->addLegacyStripeAdapter();
         $this->addStripeWebhookListeners();
     }
