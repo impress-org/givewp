@@ -19,12 +19,8 @@ const Edit = ({attributes, setAttributes}) => {
         priceOption,
         setPrice,
         customAmount,
-        customAmountMin,
-        customAmountMax,
         recurringEnabled,
-        recurringDonationChoice,
         recurringBillingInterval,
-        recurringBillingPeriod,
         recurringBillingPeriodOptions,
         recurringLengthOfTime,
         recurringOptInDefaultBillingPeriod,
@@ -37,8 +33,8 @@ const Edit = ({attributes, setAttributes}) => {
     const isRecurring = isRecurringSupported && recurringEnabled;
     const isMultiLevel = priceOption === 'multi';
     const isFixedAmount = priceOption === 'set';
-    const isRecurringAdmin = isRecurring && 'admin' === recurringDonationChoice;
-    const isRecurringDonor = isRecurring && 'donor' === recurringDonationChoice;
+    const isRecurringDonor = isRecurring && (recurringBillingPeriodOptions.length > 1 || recurringEnableOneTimeDonations);
+    const isRecurringAdmin = isRecurring && !isRecurringDonor;
 
     const amountFormatted = formatCurrencyAmount(setPrice.toString());
 
@@ -65,6 +61,7 @@ const Edit = ({attributes, setAttributes}) => {
     );
 
     const RecurringPeriod = ({count}) => {
+        const recurringBillingPeriod = recurringBillingPeriodOptions[0];
         const interval = count ?? recurringBillingInterval;
 
         const singular = !isRecurringDonor

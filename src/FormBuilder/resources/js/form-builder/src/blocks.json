@@ -30,9 +30,7 @@
                     "recurringBillingPeriodOptions": [
                         "month"
                     ],
-                    "recurringBillingPeriod": "month",
                     "recurringBillingInterval": 1,
-                    "recurringDonationChoice": "donor",
                     "recurringEnabled": false,
                     "recurringLengthOfTime": "0",
                     "recurringOptInDefaultBillingPeriod": "month",

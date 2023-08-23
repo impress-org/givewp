@@ -103,9 +103,12 @@ class ConvertDonationAmountBlockToFieldsApi
                 ->defaultValue($lengthOfTime)
                 ->rules(new SubscriptionInstallmentsRule());
 
+            $recurringBillingPeriodOptions = $block->getAttribute('recurringBillingPeriodOptions');
+            $subscriptionDetailsAreFixed = count($recurringBillingPeriodOptions) === 1 && !$block->getAttribute('recurringEnableOneTimeDonations');
+
             $amountField
                 ->enableSubscriptions()
-                ->subscriptionDetailsAreFixed($block->getAttribute('recurringDonationChoice') === 'admin')
+                ->subscriptionDetailsAreFixed($subscriptionDetailsAreFixed)
                 ->donationType($donationType)
                 ->subscriptionPeriod($subscriptionPeriod)
                 ->subscriptionFrequency($subscriptionFrequency)
@@ -122,18 +125,19 @@ class ConvertDonationAmountBlockToFieldsApi
      */
     protected function getRecurringAmountPeriodField(BlockModel $block): Field
     {
-        $donationChoice = $block->getAttribute('recurringDonationChoice');
+        $recurringBillingPeriodOptions = $block->getAttribute('recurringBillingPeriodOptions');
+        $subscriptionDetailsAreFixed = count($recurringBillingPeriodOptions) === 1 && !$block->getAttribute('recurringEnableOneTimeDonations');
 
         // if admin - fields are all hidden
-        if ($donationChoice === 'admin') {
-            $recurringBillingPeriod = new SubscriptionPeriod($block->getAttribute('recurringBillingPeriod'));
+        if ($subscriptionDetailsAreFixed) {
+            $fixedBillingPeriod = $recurringBillingPeriodOptions[0];
+
+            $subscriptionPeriodDefaultValue = SubscriptionPeriod::isValid($fixedBillingPeriod) ? (new SubscriptionPeriod($fixedBillingPeriod))->getValue() : SubscriptionPeriod::MONTH()->getValue();
 
             return Hidden::make('subscriptionPeriod')
-                ->defaultValue($recurringBillingPeriod->getValue())
-                ->rules(new SubscriptionPeriodRule());
+                    ->defaultValue($subscriptionPeriodDefaultValue)
+                    ->rules(new SubscriptionPeriodRule());
         }
-
-        $recurringBillingPeriodOptions = $block->getAttribute('recurringBillingPeriodOptions');
 
         if ($block->getAttribute('recurringEnableOneTimeDonations')) {
             $recurringBillingPeriodOptions = array_merge(['one-time'], $recurringBillingPeriodOptions);
