@@ -237,7 +237,6 @@ import {CSSProperties, useEffect, useState} from 'react';
         const {useWatch} = window.givewp.form.hooks;
         const firstName = useWatch({name: 'firstName'});
         const lastName = useWatch({name: 'lastName'});
-        const donationType = useWatch({name: 'donationType'});
 
         const cardholderDefault = [firstName ?? '', lastName ?? ''].filter((x) => x).join(' ');
         const [_cardholderName, setCardholderName] = useState(null);
@@ -246,23 +245,13 @@ import {CSSProperties, useEffect, useState} from 'react';
             cardholderName = _cardholderName ?? cardholderDefault;
         });
 
-        // Do not render hosted fields if disabled in admin settings.
-        if( -1 === payPalDonationsSettings.sdkOptions['components'].indexOf('hosted-fields') ){
-                        return;
-        }
-
-        /**
-         * Hosted fields are not supported for subscriptions at this time.
-         */
-        const supportsHostedFields = donationType !== 'subscription';
-
         return (
 
                 <PayPalHostedFieldsProvider
                     notEligibleError={<div>Your account is not eligible</div>}
                     createOrder={createOrderHandler}
                 >
-                    <div style={{ display: supportsHostedFields ? 'initial' : 'none'}}>
+                    <div>
                     <Divider label={__('Or pay with card', 'give')} style={{padding: '30px 0'}} />
 
                     <TextControl
@@ -323,14 +312,24 @@ import {CSSProperties, useEffect, useState} from 'react';
         const {useWatch} = window.givewp.form.hooks;
         const currency = useWatch({name: 'currency'});
         const donationType = useWatch({name: 'donationType'});
-
         const [{options}, dispatch] = usePayPalScriptReducer();
-
         useEffect(() => {
+            const isSubscription = donationType === 'subscription';
+
+            // New paypal script options.
+           const  paypalScriptOptions = {...payPalDonationsSettings.sdkOptions};
+
+            // Remove hosted fields from components if subscription.
+            if( isSubscription  && -1 !== paypalScriptOptions.components.indexOf('hosted-fields') ){
+                paypalScriptOptions.components = paypalScriptOptions.components.split(',')
+                    .filter((component) => component !== 'hosted-fields')
+                    .join(',');
+            }
+
             dispatch({
                 type: 'resetOptions',
                 value: {
-                    ...options,
+                    ...paypalScriptOptions,
                     currency: currency,
                     vault: donationType === 'subscription',
                     intent: donationType === 'subscription' ? 'subscription' : 'capture',
@@ -341,7 +340,7 @@ import {CSSProperties, useEffect, useState} from 'react';
         return (
             <>
                 <SmartButtonsContainer />
-                <HostedFieldsContainer />
+                { -1 !== options.components.indexOf('hosted-fields')  && <HostedFieldsContainer /> }
             </>
         );
     }
@@ -422,11 +421,23 @@ import {CSSProperties, useEffect, useState} from 'react';
             }
         },
         Fields() {
+            const {useWatch} = window.givewp.form.hooks;
+            const donationType = useWatch({name: 'donationType'});
+            const isSubscription = donationType === 'subscription';
+            let paypalScriptOptions = {...payPalDonationsSettings.sdkOptions};
+
+            // Remove hosted fields from components if subscription.
+            if( isSubscription  && -1 !== paypalScriptOptions.components.indexOf('hosted-fields') ){
+                paypalScriptOptions.components = paypalScriptOptions.components.split(',')
+                    .filter((component) => component !== 'hosted-fields')
+                    .join(',');
+            }
+
             return (
                 <FormFieldsProvider>
                     <PayPalScriptProvider
                         deferLoading={true}
-                        options={payPalDonationsSettings.sdkOptions}
+                        options={paypalScriptOptions}
                     >
                         <PaymentMethodsWrapper />
                     </PayPalScriptProvider>
