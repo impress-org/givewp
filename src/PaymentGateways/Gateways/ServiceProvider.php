@@ -9,7 +9,6 @@ use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
 use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceGateway;
-use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceSubscriptionModule;
 use Give\PaymentGateways\Gateways\Stripe\LegacyStripeAdapter;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\ChargeRefunded;
@@ -21,7 +20,6 @@ use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Li
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\PaymentIntentSucceeded;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\PaymentGateways\Gateways\TestOffsiteGateway\TestOffsiteGateway;
-use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 class ServiceProvider implements ServiceProviderInterface
