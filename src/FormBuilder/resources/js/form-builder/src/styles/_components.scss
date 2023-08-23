@@ -155,6 +155,29 @@ This creates a consistent separator between the tabs and the rest of the sidebar
     padding-right: 16px;
 }
 
+.components-panel__body .components-notice {
+    color: var(--givewp-grey-700);
+    font-size: 0.75rem;
+    line-height: 1rem;
+    margin-left: 0;
+    margin-right: 0;
+    padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+
+    .components-notice__content {
+        margin: 0;
+    }
+
+    h4 {
+        color: var(--givewp-grey-900);
+        margin: 0 0 var(--givewp-spacing-2);
+    }
+
+    .components-notice__action.is-link {
+        color: var(--givewp-grey-900);
+        margin-left: 0;
+    }
+}
+
 .givewp-donation-level-control .components-base-control,
 .givewp-donation-level-control .components-base-control__field {
     margin-bottom: 0;

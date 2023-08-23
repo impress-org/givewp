@@ -32,9 +32,7 @@ export default function Edit(props: BlockEditProps<any>) {
     return (
         <>
             {gateways.some((gateway) => gateway.id === 'stripe_payment_element' && gateway.enabled) &&
-                attributes.stripeAccounts && (
-                    <StripeAccounts attributes={attributes} setAttributes={setAttributes} gateways={gateways} />
-                )}
+                attributes.stripeAccounts && <StripeAccounts {...props} />}
 
             <div
                 style={{
