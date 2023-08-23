@@ -150,14 +150,6 @@ class FormActions extends Endpoint
                     !empty($form) ? $successes[] = $id : $errors[] = $id;
                 }
                 break;
-
-            case 'migrate':
-
-                break;
-
-            case 'transfer':
-
-                break;
         }
 
         return new WP_REST_Response(array('errors' => $errors, 'successes' => $successes));

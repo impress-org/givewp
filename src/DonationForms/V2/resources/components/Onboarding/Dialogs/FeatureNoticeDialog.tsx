@@ -5,8 +5,13 @@ import Button from '@givewp/components/AdminUI/Button';
 import styles from '../style.module.scss';
 
 
-export default function FeatureNoticeDialog({handleClose}) {
+export default function FeatureNoticeDialog({isUpgrading, handleClose}) {
     const {supportedAddons, supportedGateways} = window.GiveDonationForms;
+
+    const handleUpgrade = () => {
+        // todo migrate the v2 form to v3
+        // redirect to the form builder
+    }
 
     return (
         <ModalDialog
@@ -49,13 +54,23 @@ export default function FeatureNoticeDialog({handleClose}) {
                     </>
                 )}
 
-                <Button
-                    size="large"
-                    onClick={() => window.location.href = 'edit.php?post_type=give_forms&page=givewp-form-builder'}
-                    style={{width: '100%'}}
-                >
-                    {__('Proceed with the new form builder', 'give')}
-                </Button>
+                {isUpgrading ? (
+                    <Button
+                        size="large"
+                        onClick={handleUpgrade}
+                        style={{width: '100%'}}
+                    >
+                        {__('Proceed with upgrade', 'give')}
+                    </Button>
+                ) : (
+                    <Button
+                        size="large"
+                        onClick={() => window.location.href = 'edit.php?post_type=give_forms&page=givewp-form-builder'}
+                        style={{width: '100%'}}
+                    >
+                        {__('Proceed with the new form builder', 'give')}
+                    </Button>
+                )}
 
                 <br />
 

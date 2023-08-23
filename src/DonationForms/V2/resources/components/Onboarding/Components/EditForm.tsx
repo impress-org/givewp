@@ -14,6 +14,7 @@ export default function EditForm() {
             <FormBuilderButtonPortal
                 showDialog={showDialog}
                 setShowDialog={setShowDialog}
+                isUpgrading={true}
             />
 
             <div className={styles.migrationGuideBox}>
