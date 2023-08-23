@@ -7,28 +7,24 @@
 
 .additional-fields-upgrade-link {
     display: flex;
-    padding: 12px 10px;
+    padding: 0.75rem 0.625rem;
     justify-content: center;
     align-items: center;
     margin: 0 0 8px 0;
     border-radius: 5px;
     background: var(--givewp-primary-main-700, #5BA65E);
-    font-size: 12px;
+    font-size: 0.75rem;
     font-style: normal;
     font-weight: 400;
-    line-height: 16px;
+    line-height: 1rem;
     text-decoration: none;
-    color: var(--givewp-shades-white);
+    color: var(--givewp-shades-white, #ffffff);
     border: 1px solid var(--givewp-primary-main-700, #5BA65E);
 }
 
-.additional-fields-upgrade-link:hover {
-    color: var(--givewp-shades-white);
-    background: var(--givewp-primary-main-700, #5BA65E);
-
-    //Hover effect?
-    //color: var(--givewp-primary-main-700, #5BA65E);
-    //background: var(--givewp-shades-white);
+.additional-fields-upgrade-link:hover, .additional-fields-upgrade-link:active {
+    color: var(--givewp-shades-white, #ffffff);
+    background: var(--givewp-green-600, #2D802F);
 }
 
 .additional-fields-locked-icons {
