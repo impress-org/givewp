@@ -19,10 +19,12 @@
     text-decoration: none;
     color: var(--givewp-shades-white, #ffffff);
     border: 1px solid var(--givewp-primary-main-700, #5BA65E);
+
+    &:hover, &:active {
+        color: var(--givewp-shades-white, #ffffff) !important;
+        background: var(--givewp-green-600, #2D802F) !important;
+    }
 }
 
-.block-editor-inserter__panel-content-link:hover, .block-editor-inserter__panel-content-link:active {
-    color: var(--givewp-shades-white, #ffffff) !important;
-    background: var(--givewp-green-600, #2D802F) !important;
-}
+
 
