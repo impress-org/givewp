@@ -308,11 +308,11 @@ import {CSSProperties, useEffect, useState} from 'react';
     };
 
     function PaymentMethodsWrapper() {
-
         const {useWatch} = window.givewp.form.hooks;
         const currency = useWatch({name: 'currency'});
         const donationType = useWatch({name: 'donationType'});
         const [{options}, dispatch] = usePayPalScriptReducer();
+
         useEffect(() => {
             const isSubscription = donationType === 'subscription';
 
