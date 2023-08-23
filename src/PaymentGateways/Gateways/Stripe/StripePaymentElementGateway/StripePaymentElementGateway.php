@@ -1,0 +1,153 @@
+<?php
+
+namespace Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway;
+
+use Give\Donations\Models\Donation;
+use Give\Framework\PaymentGateways\Commands\GatewayCommand;
+use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
+use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\DataTransferObjects\StripeGatewayData;
+use Stripe\Exception\ApiErrorException;
+
+/**
+ * @since 3.0.0
+ */
+class StripePaymentElementGateway extends PaymentGateway
+{
+    use StripePaymentElementRepository;
+    use HasScriptAssetFile;
+
+    /**
+     * @inheritDoc
+     */
+    public static function id(): string
+    {
+        return 'stripe_payment_element';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getId(): string
+    {
+        return self::id();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getName(): string
+    {
+        return __('Stripe - Payment Element', 'give');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPaymentMethodLabel(): string
+    {
+        return __('Stripe Payment Element', 'give');
+    }
+
+    /**
+     * @since 3.0.0
+     */
+    public function enqueueScript(int $formId)
+    {
+        $assets = $this->getScriptAsset(GIVE_PLUGIN_DIR . 'build/stripePaymentElementGateway.asset.php');
+
+        wp_enqueue_script(
+            self::id(),
+            GIVE_PLUGIN_URL . 'build/stripePaymentElementGateway.js',
+            $assets['dependencies'],
+            $assets['version'],
+            true
+        );
+    }
+
+    /**
+     * @since 3.0.0
+     */
+    public function formSettings(int $formId): array
+    {
+        $this->setUpStripeAppInfo($formId);
+
+        $stripePublishableKey = $this->getStripePublishableKey($formId);
+        $stripeConnectedAccountKey = $this->getStripeConnectedAccountKey($formId);
+
+        return [
+            'stripeKey' => $stripePublishableKey,
+            'stripeConnectedAccountId' => $stripeConnectedAccountKey,
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     * @throws ApiErrorException
+     */
+    public function createPayment(Donation $donation, $gatewayData): GatewayCommand
+    {
+        /**
+         * Initialize the Stripe SDK using Stripe::setAppInfo()
+         */
+        $this->setUpStripeAppInfo($donation->formId);
+
+        /**
+         * Get data from client request
+         */
+        $stripeGatewayData = StripeGatewayData::fromRequest($gatewayData);
+
+        /**
+         * Get or create a Stripe customer
+         */
+        $customer = $this->getOrCreateStripeCustomerFromDonation(
+            $stripeGatewayData->stripeConnectedAccountId,
+            $donation
+        );
+
+
+        /**
+         * Setup Stripe Payment Intent args
+         */
+        $intentData = $this->getPaymentIntentDataFromDonation(
+            $donation,
+            $customer
+        );
+
+        /**
+         * Generate Payment Intent
+         */
+        $intent = $this->generateStripePaymentIntent(
+            $stripeGatewayData->stripeConnectedAccountId,
+            $intentData
+        );
+
+        /**
+         * Update Donation Meta
+         */
+        $this->updateDonationMetaFromPaymentIntent($donation, $intent);
+
+        /**
+         * Return response to client.
+         * 'clientSecret' is required to confirm payment intent on client side.
+         * 'returnUrl' is required to redirect user to success page.
+         */
+        return new RespondToBrowser([
+            'clientSecret' => $intent->client_secret,
+            'returnUrl' => $stripeGatewayData->successUrl,
+            'billingDetails' => [
+                'name' => trim("$donation->firstName $donation->lastName"),
+                'email' => $donation->email
+            ],
+        ]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function refundDonation(Donation $donation)
+    {
+        // TODO: Implement refundDonation() method.
+    }
+}

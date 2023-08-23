@@ -1,0 +1,11 @@
+.wp-toolbar:not(.interface-interface-skeleton__html-container),
+#adminmenumain,
+#wpadminbar {
+    display: none;
+}
+
+/* Prevent classic admin theme layout issues */
+html :where(.wp-block) {
+    margin: 0;
+    max-width: unset;
+}

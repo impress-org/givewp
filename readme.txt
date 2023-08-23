@@ -2,10 +2,10 @@
 Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, jason_the_adams, henryholtgeerts, kbjohnson90, alaca, benmeredithgmailcom, jonwaldstein, joshuadinh, glaubersilvawp, pauloiankoski
 Donate link: https://go.givewp.com/home
 Tags: donation, donate, recurring donations, fundraising, crowdfunding
-Requires at least: 5.0
-Tested up to: 6.2
-Requires PHP: 7.0
-Stable tag: 2.31.0
+Requires at least: 6.0
+Tested up to: 6.3
+Requires PHP: 7.2
+Stable tag: 3.0.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -59,13 +59,13 @@ Find out more:
 With more than 100,000+ active installs of GiveWP, we hear more and more success stories from nonprofit organizations. Causes are using GiveWP to raise millions of dollars per year. Check out some of our GiveWP Stories and Case Studies for details about their success.
 
 * [The City Mission used GiveWP](https://go.givewp.com/cmstory) for Giving Tuesday and a competition fundraiser with a neighboring organization, where they raised $45K in 16 hours.
-* [A local neighborhood watch program](https://go.givewp.com/memstory) switched from using GoFundMe to GiveWP and raised $40,000 in five days for a memorial fundraiser. 
-* [Fans of Ivan the Gorilla have kept his memory alive](https://go.givewp.com/readivan) by fundraising for a conservancy program in his name. 
-* [A hospital raised money](https://go.givewp.com/twiststory) through a community-wide virtual dance party during the pandemic. 
+* [A local neighborhood watch program](https://go.givewp.com/memstory) switched from using GoFundMe to GiveWP and raised $40,000 in five days for a memorial fundraiser.
+* [Fans of Ivan the Gorilla have kept his memory alive](https://go.givewp.com/readivan) by fundraising for a conservancy program in his name.
+* [A hospital raised money](https://go.givewp.com/twiststory) through a community-wide virtual dance party during the pandemic.
 
 In addition to nonprofit organizations, GiveWP is widely used for individual or creative purposes. We’ve seen tip jars for blogs or musicians, live streams, and more. Our [Donation Upsells for WooCommerce Add-on](https://go.givewp.com/wooread) is even used in some eCommerce stores to collect donations for a cause, or ask for tips in the cart or checkout.
 
-We’ve even seen GiveWP used to collect gifts for birthdays and weddings! 
+We’ve even seen GiveWP used to collect gifts for birthdays and weddings!
 
 === 💝 Simple and Pain-Free Giving ===
 
@@ -89,14 +89,14 @@ GiveWP comes with several payment gateway options:
 
 * **Stripe Donations** -- Our Stripe integration allows you to accept credit card donations on your website. There is a small 2% fee associated with these donations. Want no additional fees? Upgrade to our Stripe Premium add-on to start accepting [Stripe Donations](https://go.givewp.com/addon-stripe).
 * **PayPal Donations** -- Allow worldwide donations with PayPal Donations. No additional fees applied.
-* **Venmo Donations** -- Give donors the option to pay through Venmo with their account balance or connected bank account. 
+* **Venmo Donations** -- Give donors the option to pay through Venmo with their account balance or connected bank account.
 * **Offline Donations** -- Enable your donors to send checks or physical donations with an offline gateway with instructions.
 * **Test Gateway** -- use the Test Gateway to see exactly how your donors will walk through the donation process.
 * **And many more Gateways** - View additional payment gateways on our website. These include Authorize.net, Bitpay, Square, Razorpay, Paytm, and more.
 
 === ⚙️ Extend GiveWP with Powerful Add-ons ===
 
-GiveWP's goal is to "Democratize Generosity." We want to make it easy for *everyone* to raise funds online. 
+GiveWP's goal is to "Democratize Generosity." We want to make it easy for *everyone* to raise funds online.
 
 In addition to our free donation plugin, we have [premium GiveWP add-ons](https://go.givewp.com/addons "View all of GiveWP's Premium Add-ons") available to extend the functionality of GiveWP. Ultimately, these tools allow you to raise more money and give you a better relationship with your donors.
 
@@ -128,10 +128,10 @@ Are you a developer? GiveWP is built with best practices and easy to extend and 
 * [Site Redesigns Without Donation Data Loss](https://go.givewp.com/datalossdoc)
 * [Handling Custom CSS in WordPress](https://go.givewp.com/cssdoc)
 
-=== 🚀 Join the Journey to Create the Next Generation of WordPress Donation Forms === 
-Team Give has been working hard for the past several years on updating how donation forms are created. The user experience is going to change for the better, but we want your help shaping what that means! 
+=== 🚀 Join the Journey to Create the Next Generation of WordPress Donation Forms ===
+Team Give has been working hard for the past several years on updating how donation forms are created. The user experience is going to change for the better, but we want your help shaping what that means!
 
-Help us test our new visual form builder with the GiveWP 3.0 Feature plugin. The Feaure Plugin (or GiveWP 3.0 Beta) is meant to be used alongside GiveWP core on a staging or local environment. We are looking specifically at the form builder with this beta test and would love for all GiveWP users to give it a try. All feedback is welcome! [Download the beta plugin directly on WordPress](https://go.givewp.com/corewppg) or through your admin dashboard plugins area. 
+Help us test our new visual form builder with the GiveWP 3.0 Feature plugin. The Feaure Plugin (or GiveWP 3.0 Beta) is meant to be used alongside GiveWP core on a staging or local environment. We are looking specifically at the form builder with this beta test and would love for all GiveWP users to give it a try. All feedback is welcome! [Download the beta plugin directly on WordPress](https://go.givewp.com/corewppg) or through your admin dashboard plugins area.
 
 Learn more about how we're creating the next generation of WordPress donation forms, [directly on our website](https://go.givewp.com/corenextgen).
 
@@ -203,7 +203,7 @@ We work hard to the best support possible for GiveWP. The [WordPress.org Support
 
 = Do you have any demos? =
 
-Yes! We have several live examples of GiveWP and the wide variety of form options you can use with GiveWP. Check out our [live demo](https://go.givewp.com/demosite), where you can see what your donors would see. 
+Yes! We have several live examples of GiveWP and the wide variety of form options you can use with GiveWP. Check out our [live demo](https://go.givewp.com/demosite), where you can see what your donors would see.
 
 GiveWP Plus, Pro, and Agency Plan customers will also get a free 30-minute website audit with our Customer Success Team after they purchase. In this meeting, we’ll cover everything you need to know about GiveWP to fit your needs.
 
@@ -215,7 +215,7 @@ Yes! We have two different types of studies that highlight nonprofits in differe
 
 = How is GiveWP better than a simple PayPal donate button? =
 
-PayPal donate buttons take your users off-site, which can cause you to lose some in the process. With GiveWP, your donors can stay on-site and you get the benefit of gathering donor data, viewing free fundraising reports, and creating unlimited donation forms. On the other hand, you can always use GiveWP as a simple customized PayPal donate button if you prefer. 
+PayPal donate buttons take your users off-site, which can cause you to lose some in the process. With GiveWP, your donors can stay on-site and you get the benefit of gathering donor data, viewing free fundraising reports, and creating unlimited donation forms. On the other hand, you can always use GiveWP as a simple customized PayPal donate button if you prefer.
 
 = How is GiveWP better than a form plugin for accepting donations through WordPress? =
 
@@ -258,6 +258,22 @@ The 2% fee on Stripe donations only applies to donations taken via our free Stri
 8. GiveWP has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 3.0.0: August 15th, 2023 =
+* New: GiveWP 3.0 is here! This is a major release that includes a new visual form builder and many more. Read more about it [on our website](https://go.givewp.com/corenextgen).
+
+= 2.32.0: August 11th, 2023 =
+* Feature: Scroll Stripe modal into view for Legacy + Multi-step forms
+* Feature: Added check for application/json in form headers accept
+* Feature: Added a `$nodeNameCollision` property on `NameCollisionException` for flexibility in throwing exception messages
+* Feature: Added a file validation rule for validating file uploads
+* Feature: Added a `@wordpress/scripts` build process for building forms in GiveWP 3.0
+* Feature: Added persistence scoping to Fields
+* Feature: Added WordPressLibraries to manage WP_Background_Process more efficiently and address potential conflicts with other plugins
+* Feature: Added the hasDescription concern to Fields API
+* Enhancement: Use PayPal client to handle API requests to avoid issues with expired merchant tokens
+* Fix: Increase specificity when hiding the Form Token Field label
+
 = 2.31.0: July 21st, 2023 =
 * Feature: New banner added to the plugin page for annual summer discounts
 

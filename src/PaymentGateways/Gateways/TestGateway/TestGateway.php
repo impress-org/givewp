@@ -2,17 +2,14 @@
 
 namespace Give\PaymentGateways\Gateways\TestGateway;
 
-use Exception;
 use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
-use Give\Framework\PaymentGateways\Commands\SubscriptionComplete;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Helpers\Form\Utils as FormUtils;
+use Give\Helpers\Language;
 use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
-use Give\Subscriptions\Models\Subscription;
-use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
  * Class TestGateway
@@ -49,10 +46,17 @@ class TestGateway extends PaymentGateway
      */
     public function enqueueScript(int $formId)
     {
-        // This is temporary action to enqueue gateway scripts in the GiveWP 3.0 feature plugin.
-        // Eventually, these scripts will be moved to the GiveWP core plugin.
-        // TODO: enqueue scripts for 3.0 when feature plugin is merged into GiveWP
-        do_action('givewp_donation_form_enqueue_test_gateway_scripts');
+        $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/testGateway.asset.php');
+
+        wp_enqueue_script(
+            $this::id(),
+            GIVE_PLUGIN_URL . 'build/testGateway.js',
+            $scriptAsset['dependencies'],
+            $scriptAsset['version'],
+            true
+        );
+
+        Language::setScriptTranslations($this::id());
     }
 
     /**
@@ -84,36 +88,8 @@ class TestGateway extends PaymentGateway
     public function createPayment(Donation $donation, $gatewayData): GatewayCommand
     {
         $intent = $gatewayData['testGatewayIntent'] ?? 'test-gateway-intent';
-        
+
         return new PaymentComplete("test-gateway-transaction-id-{$intent}-$donation->id");
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @since 2.23.0
-     */
-    public function createSubscription(
-        Donation $donation,
-        Subscription $subscription,
-        $gatewayData
-    ): GatewayCommand {
-        return new SubscriptionComplete(
-            "test-gateway-transaction-id-$donation->id",
-            "test-gateway-subscription-id-$subscription->id"
-        );
-    }
-
-    /**
-     * @since 2.23.0
-     *
-     * @inheritDoc
-     * @throws Exception
-     */
-    public function cancelSubscription(Subscription $subscription)
-    {
-        $subscription->status = SubscriptionStatus::CANCELLED();
-        $subscription->save();
     }
 
     /**

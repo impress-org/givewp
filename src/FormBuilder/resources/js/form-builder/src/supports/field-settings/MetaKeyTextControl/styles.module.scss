@@ -1,0 +1,43 @@
+.textControl label {
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 0;
+}
+
+.button {
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.popover {
+    display: flex;
+    gap: var(--givewp-spacing-2);
+    width: 21.5rem;
+    padding: var(--givewp-spacing-4);
+
+    h3, p {
+        margin: 0;
+    }
+
+    &Contents {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-2);
+    }
+}
+
+.popoverButtons {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--givewp-spacing-2);
+    margin-top: var(--givewp-spacing-2);
+
+    button {
+        width: 100%;
+        justify-content: center;
+    }
+}

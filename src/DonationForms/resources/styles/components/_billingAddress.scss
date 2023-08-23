@@ -1,0 +1,44 @@
+.givewp-groups-billingAddress {
+    legend {
+        width: 100%;
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+
+    fieldset {
+        display: grid;
+        grid-template-areas:
+        "country country"
+        "address1 address1"
+        "address2 address2"
+        "city state"
+        "zip zip";
+        grid-auto-columns: 1fr;
+        gap: 1rem;
+
+        .givewp-fields-select-country {
+            grid-area: country;
+        }
+
+        .givewp-fields-text-address1 {
+            grid-area: address1;
+        }
+
+        .givewp-fields-text-address2 {
+            grid-area: address2;
+        }
+
+        .givewp-fields-text-city {
+            grid-area: city;
+        }
+
+        .givewp-fields-text-state {
+            grid-area: state;
+        }
+
+        .givewp-fields-text-zip {
+            grid-area: zip;
+        }
+    }
+}

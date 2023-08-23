@@ -1,0 +1,26 @@
+input[name=gatewayId] {
+  + label::after {
+    font-family: "Font Awesome 6 Free";
+    position: absolute;
+    inset-inline-end: 0;
+    content: "\f4be";
+    color: #c1c1c1;
+    font-size: 1.5em;
+    block-size: 1em;
+    font-weight: 900;
+    transform: translateY(-0.15em);
+  }
+
+  &[value=paypal] + label::after {
+    font-family: "Font Awesome 6 Brands";
+    content: "\f1ed";
+  }
+
+  &[value^=test] + label::after {
+    content: "\f7d9";
+  }
+
+  &[value*="card"], &[value*="stripe"] + label::after {
+    content: "\f09d";
+  }
+}

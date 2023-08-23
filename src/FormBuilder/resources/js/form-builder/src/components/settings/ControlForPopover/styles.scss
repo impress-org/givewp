@@ -1,0 +1,11 @@
+.givewp-control-popover-setting-button {
+  transition: all 0.2s;
+  &:hover, &--active {
+    background-color: #3D5A66;
+    color: #fff;
+    &:not([aria-disabled=true]):active {
+      background-color: #3D5A66;
+      color: #fff;
+    }
+  }
+}

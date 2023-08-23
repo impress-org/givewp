@@ -6,9 +6,9 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 2.31.0
- * Requires at least: 5.0
- * Requires PHP: 7.0
+ * Version: 3.0.0
+ * Requires at least: 6.0
+ * Requires PHP: 7.2
  * Text Domain: give
  * Domain Path: /languages
  *
@@ -43,8 +43,9 @@
  */
 
 use Give\Container\Container;
+use Give\DonationForms\ServiceProvider as DonationFormsServiceProvider;
 use Give\DonationForms\V2\Repositories\DonationFormsRepository;
-use Give\DonationForms\V2\ServiceProvider as DonationFormsServiceProvider;
+use Give\DonationForms\V2\ServiceProvider as DonationFormsServiceProviderV2;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ServiceProvider as DonationServiceProvider;
 use Give\DonationSummary\ServiceProvider as DonationSummaryServiceProvider;
@@ -55,15 +56,19 @@ use Give\Donors\Repositories\DonorRepositoryProxy;
 use Give\Donors\ServiceProvider as DonorsServiceProvider;
 use Give\Form\LegacyConsumer\ServiceProvider as FormLegacyConsumerServiceProvider;
 use Give\Form\Templates;
+use Give\FormBuilder\ServiceProvider as FormBuilderServiceProvider;
+use Give\FormMigration\ServiceProvider as FormMigrationServiceProvider;
 use Give\Framework\Database\ServiceProvider as DatabaseServiceProvider;
 use Give\Framework\DesignSystem\DesignSystemServiceProvider;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Exceptions\UncaughtExceptionLogger;
+use Give\Framework\FormDesigns\ServiceProvider as FormDesignServiceProvider;
 use Give\Framework\Http\ServiceProvider as HttpServiceProvider;
 use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\ValidationRules\ValidationRulesServiceProvider;
 use Give\Framework\WordPressShims\ServiceProvider as WordPressShimsServiceProvider;
+use Give\Helpers\Language;
 use Give\LegacySubscriptions\ServiceProvider as LegacySubscriptionsServiceProvider;
 use Give\License\LicenseServiceProvider;
 use Give\Log\LogServiceProvider;
@@ -202,7 +207,7 @@ final class Give
         DonationServiceProvider::class,
         DonorsServiceProvider::class,
         SubscriptionServiceProvider::class,
-        DonationFormsServiceProvider::class,
+        DonationFormsServiceProviderV2::class,
         PromotionsServiceProvider::class,
         LegacySubscriptionsServiceProvider::class,
         WordPressShimsServiceProvider::class,
@@ -213,6 +218,15 @@ final class Give
         HttpServiceProvider::class,
         DesignSystemServiceProvider::class,
         FieldConditionsServiceProvider::class,
+        FormBuilderServiceProvider::class,
+        DonationFormsServiceProvider::class,
+        FormDesignServiceProvider::class,
+        FormMigrationServiceProvider::class,
+        //TODO: merge this service provider
+        Give\PaymentGateways\Gateways\ServiceProvider::class,
+        //TODO: this was the beta welcome banner, remove this?
+        Give\Promotions\ServiceProviderV3::class,
+
     ];
 
     /**
@@ -316,7 +330,7 @@ final class Give
     {
         // Plugin version.
         if (!defined('GIVE_VERSION')) {
-            define('GIVE_VERSION', '2.31.0');
+            define('GIVE_VERSION', '3.0.0');
         }
 
         // Plugin Root File.
@@ -348,6 +362,7 @@ final class Give
     /**
      * Loads the plugin language files.
      *
+     * @unreleased Use Language class
      * @since  1.0
      * @access public
      *
@@ -355,17 +370,7 @@ final class Give
      */
     public function load_textdomain()
     {
-        // Set filter for Give's languages directory
-        $give_lang_dir = dirname(plugin_basename(GIVE_PLUGIN_FILE)) . '/languages/';
-        $give_lang_dir = apply_filters('give_languages_directory', $give_lang_dir);
-
-        // Traditional WordPress plugin locale filter.
-        $locale = is_admin() && function_exists('get_user_locale') ? get_user_locale() : get_locale();
-        $locale = apply_filters('plugin_locale', $locale, 'give');
-
-        unload_textdomain('give');
-        load_textdomain('give', WP_LANG_DIR . '/give/give-' . $locale . '.mo');
-        load_plugin_textdomain('give', false, $give_lang_dir);
+        Language::load();
     }
 
     /**

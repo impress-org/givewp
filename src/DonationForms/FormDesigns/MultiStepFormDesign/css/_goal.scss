@@ -1,0 +1,12 @@
+// sharing styles from classic design for now
+@import '../../ClassicFormDesign/css/_variables.scss';
+@import '../../ClassicFormDesign/css/_stats.scss';
+@import '../../ClassicFormDesign/css/_goal.scss';
+
+.givewp-form-goal-progress {
+  padding: 1.25rem;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  border-radius: 0;
+  background-color: #fff;
+}
