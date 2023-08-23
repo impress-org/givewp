@@ -1,6 +1,6 @@
 import {__} from '@wordpress/i18n';
 import './styles.scss';
-import LockedIcons, {LockIcon} from './LockedFields';
+import LockedFields, {LockIcon} from './LockedFields';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 
 export default function AdditionalFields() {
@@ -29,7 +29,7 @@ export default function AdditionalFields() {
                 >
                     {__('Upgrade to unlock additional fields', 'give')}
                 </a>
-                <LockedIcons />
+                <LockedFields />
             </div>
         </>
     );
