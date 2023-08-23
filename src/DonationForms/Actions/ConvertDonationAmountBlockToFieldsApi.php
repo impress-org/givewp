@@ -135,21 +135,19 @@ class ConvertDonationAmountBlockToFieldsApi
 
         $recurringBillingPeriodOptions = $block->getAttribute('recurringBillingPeriodOptions');
 
-        if (!$block->getAttribute('recurringDisableOneTimeDonations')) {
-            $options = $this->mergePeriodOptionsWithOneTime(
-                array_map(static function ($option) {
-                    $subscriptionPeriod = new SubscriptionPeriod($option);
+        if ($block->getAttribute('recurringEnableOneTimeDonations')) {
+            $recurringBillingPeriodOptions = array_merge(['one-time'], $recurringBillingPeriodOptions);
+        }
 
-                    return new Option($subscriptionPeriod->getValue(), $subscriptionPeriod->label(0));
-                }, $recurringBillingPeriodOptions)
-            );
-        } else {
-            $options = array_map(static function ($option) {
+        $options = array_map(static function ($option) {
+            if (SubscriptionPeriod::isValid($option)) {
                 $subscriptionPeriod = new SubscriptionPeriod($option);
 
                 return new Option($subscriptionPeriod->getValue(), $subscriptionPeriod->label(0));
-            }, $recurringBillingPeriodOptions);
-        }
+            }
+
+            return new Option($option, $option === 'one-time' ? __('One Time', 'give') : ucfirst($option));
+        }, $recurringBillingPeriodOptions);
 
         $recurringOptInDefault = $block->getAttribute('recurringOptInDefaultBillingPeriod');
 
@@ -166,15 +164,5 @@ class ConvertDonationAmountBlockToFieldsApi
             ->label(__('Choose your donation frequency', 'give'))
             ->options(...$options)
             ->rules(new SubscriptionPeriodRule());
-    }
-
-    /**
-     * @since 3.0.0
-     */
-    protected function mergePeriodOptionsWithOneTime(array $options): array
-    {
-        return array_merge([
-            new Option('one-time', __('One Time', 'give'))
-        ], $options);
     }
 }

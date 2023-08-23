@@ -41,7 +41,7 @@ const Inspector = ({attributes, setAttributes}) => {
         recurringBillingPeriodOptions,
         recurringLengthOfTime,
         recurringOptInDefaultBillingPeriod,
-        recurringDisableOneTimeDonations,
+        recurringEnableOneTimeDonations = true,
     } = attributes;
 
     const addBillingPeriodOption = useCallback(
@@ -108,7 +108,7 @@ const Inspector = ({attributes, setAttributes}) => {
 
     const getDefaultBillingPeriodOptions = useCallback(
         (options) => {
-            if (!recurringDisableOneTimeDonations) {
+            if (recurringEnableOneTimeDonations) {
                 options = ['one-time'].concat(options);
             }
 
@@ -119,7 +119,7 @@ const Inspector = ({attributes, setAttributes}) => {
                 value: value,
             }));
         },
-        [recurringBillingPeriodOptions, recurringDisableOneTimeDonations]
+        [recurringBillingPeriodOptions, recurringEnableOneTimeDonations]
     );
 
     return (
@@ -252,13 +252,13 @@ const Inspector = ({attributes, setAttributes}) => {
                         {'donor' === recurringDonationChoice && (
                             <PanelRow>
                                 <ToggleControl
-                                    label={__('Disable One-Time donations', 'give')}
-                                    checked={recurringDisableOneTimeDonations}
-                                    onChange={() =>
+                                    label={__('Enable one-time donation', 'give')}
+                                    checked={recurringEnableOneTimeDonations}
+                                    onChange={() => {
                                         setAttributes({
-                                            recurringDisableOneTimeDonations: !recurringDisableOneTimeDonations,
-                                        })
-                                    }
+                                            recurringEnableOneTimeDonations: !recurringEnableOneTimeDonations,
+                                        });
+                                    }}
                                 />
                             </PanelRow>
                         )}

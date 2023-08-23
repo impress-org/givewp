@@ -28,7 +28,7 @@ const Edit = ({attributes, setAttributes}) => {
         recurringBillingPeriodOptions,
         recurringLengthOfTime,
         recurringOptInDefaultBillingPeriod,
-        recurringDisableOneTimeDonations,
+        recurringEnableOneTimeDonations,
     } = attributes;
 
     const {gateways} = getFormBuilderData();
@@ -113,7 +113,7 @@ const Edit = ({attributes, setAttributes}) => {
     };
 
     const BillingPeriodControl = ({options}) => {
-        if (!recurringDisableOneTimeDonations) {
+        if (recurringEnableOneTimeDonations) {
             options = ['one-time'].concat(options);
         }
 

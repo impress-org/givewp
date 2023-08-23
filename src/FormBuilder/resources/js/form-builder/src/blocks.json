@@ -36,7 +36,7 @@
                     "recurringEnabled": false,
                     "recurringLengthOfTime": "0",
                     "recurringOptInDefaultBillingPeriod": "month",
-                    "recurringDisableOneTimeDonations": false,
+                    "recurringEnableOneTimeDonations": true,
                     "lock": {
                         "remove": true
                     }
