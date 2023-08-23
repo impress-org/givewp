@@ -188,3 +188,12 @@
         }
     }
 }
+
+.components-modal__content {
+    display: flex;
+
+    > div {
+        width: 100%;
+    }
+}
+
