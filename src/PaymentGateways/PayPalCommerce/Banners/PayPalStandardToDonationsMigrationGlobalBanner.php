@@ -58,7 +58,7 @@ class PayPalStandardToDonationsMigrationGlobalBanner
         $modalTitle = $this->getIcon() . "&nbsp;&nbsp;$modalTitle";
 
         $modalSubHeading = esc_html__(
-            'Paypal Standard is no longer supported by PayPal',
+            'PayPal Standard is no longer supported by PayPal',
             'give'
         );
 
