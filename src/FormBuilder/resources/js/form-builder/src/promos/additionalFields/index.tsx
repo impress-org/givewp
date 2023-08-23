@@ -1,9 +1,10 @@
 import React, {useEffect} from 'react';
-import ReactDOM from 'react-dom';
+import {unmountComponentAtNode} from 'react-dom';
 import {__} from '@wordpress/i18n';
 import LockedFieldBlocks, {LockIcon} from './LockedFieldBlocks';
 import './styles.scss';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
+import {render} from '@wordpress/element';
 
 /**
  * @unreleased
@@ -52,10 +53,10 @@ export default function AdditionalFieldsPanel() {
             const portalElement = document.createElement('div');
             blockList.appendChild(portalElement);
 
-            ReactDOM.render(<AdditionalFields />, portalElement);
+            render(<AdditionalFields />, portalElement);
 
             return () => {
-                ReactDOM.unmountComponentAtNode(portalElement);
+                unmountComponentAtNode(portalElement);
                 blockList.removeChild(portalElement);
             };
         }
