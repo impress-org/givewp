@@ -28,6 +28,7 @@ export default function Onboarding() {
 
             {state.showFeatureNoticeDialog && (
                 <FeatureNoticeDialog
+                    isUpgrading={false}
                     handleClose={() => setState(prev => ({
                         ...prev,
                         showFeatureNoticeDialog: false
