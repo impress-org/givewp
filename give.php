@@ -533,7 +533,7 @@ final class Give
             add_action('admin_notices', function() {
                 Give()->notices->register_notice([
                     'id' => 'give-visual-donation-form-builder-feature-plugin-deactivated',
-                    'description' => __('The Visual Donation Form Builder is now available with GiveWP v3 and the feature plugin has been deactivated.', 'give'),
+                    'description' => __('The Visual Form Builder Beta plugin is no longer needed, since that functionality has been included in the version of GiveWP you are using. To prevent conflicts, the Beta plugin has been deactivated. You can safely delete that plugin.', 'give'),
                     'type' => 'info',
                 ]);
             });
