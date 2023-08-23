@@ -1,9 +1,15 @@
 import {__} from '@wordpress/i18n';
 import BlockListTree from './panels/BlockListTree';
 import {__experimentalLibrary as Library} from '@wordpress/block-editor';
+import AdditionalFields from '@givewp/form-builder/promos/additionalFields';
 
 const BlockListInserter = () => {
-    return <Library showInserterHelpPanel={false} />;
+    return (
+        <>
+            <Library showInserterHelpPanel={false} />;
+            <AdditionalFields />
+        </>
+    );
 };
 
 type PropTypes = {
