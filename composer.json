@@ -30,7 +30,8 @@
         "wp-cli/wp-cli-bundle": "^2.5",
         "yoast/phpunit-polyfills": "^1.0",
         "wordpress/wordpress": "dev-trunk",
-        "squizlabs/php_codesniffer": "^3.5"
+        "squizlabs/php_codesniffer": "^3.5",
+        "php-stubs/wp-cli-stubs": "^2.8"
     },
     "keywords": [
         "wordpress",

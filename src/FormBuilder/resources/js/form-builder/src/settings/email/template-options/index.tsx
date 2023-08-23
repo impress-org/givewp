@@ -5,7 +5,8 @@ import {useState} from 'react';
 import TabPanel from '@givewp/form-builder/components/sidebar/TabPanel';
 import EmailTemplateSettings from './settings';
 import CopyToClipboardButton from './components/copy-to-clipboard-button';
-import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
+
+import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import SendPreviewEmail from './components/send-preview-email';
 import EmailPreviewContent from './components/email-preview-content';
 import {useFormState} from '@givewp/form-builder/stores/form-state';
@@ -19,7 +20,7 @@ export default () => {
         settings: {emailTemplateOptions},
     } = useFormState();
 
-    const {emailTemplateTags, emailNotifications, emailDefaultAddress} = getFormBuilderData();
+    const {emailTemplateTags, emailNotifications, emailDefaultAddress} = getFormBuilderWindowData();
 
     const selectedNotificationStatus = emailTemplateOptions[selectedTab]?.status ?? 'global';
 

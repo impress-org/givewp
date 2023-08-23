@@ -20,8 +20,7 @@ export default ({emailType, defaultEmailAddress}) => {
                 // @ts-ignore
                 url: emailPreviewURL + '/send',
                 headers: {
-                    // @ts-ignore
-                    'X-WP-Nonce': window.storageData.nonce,
+                    'X-WP-Nonce': nonce,
                 },
                 data: {
                     form_id: formId,

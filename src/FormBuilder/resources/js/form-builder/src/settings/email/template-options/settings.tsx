@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
+import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-builder/stores/form-state';
 import {BaseControl, Button, RadioControl, SelectControl, TextControl} from '@wordpress/components';
 import {Icon as WPIcon, plus} from '@wordpress/icons';
@@ -29,8 +29,8 @@ const EmailTemplateSettings = ({notification, closeModal}) => {
         recipient: [''],
     });
 
+    const {emailNotifications, emailDefaultAddress} = getFormBuilderWindowData();
     const dispatch = useFormStateDispatch();
-    const {emailNotifications, emailDefaultAddress} = getFormBuilderData();
 
     const {
         settings: {emailTemplateOptions},
@@ -133,7 +133,6 @@ const EmailTemplateSettings = ({notification, closeModal}) => {
                     {__('Set and close', 'givewp')}
                 </Button>
             </div>
-
             <RadioControl
                 className="radio-control--email-options"
                 label={__('Email options', 'givewp')}

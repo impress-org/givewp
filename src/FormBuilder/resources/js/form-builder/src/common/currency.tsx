@@ -1,9 +1,10 @@
 import CurrencyInput, {CurrencyInputProps, formatValue} from 'react-currency-input-field';
 import {BaseControl} from '@wordpress/components';
 import {useInstanceId} from '@wordpress/compose';
+import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 
 const formatCurrencyAmount = (amount: string) => {
-    const {currency = 'USD'} = window?.storageData ?? {};
+    const {currency = 'USD'} = getFormBuilderWindowData();
 
     return formatValue({
         value: amount,
@@ -22,7 +23,7 @@ interface CurrencyControlProps extends CurrencyInputProps {
 }
 
 const CurrencyControl = ({label, help, hideLabelFromVision, ...rest}: CurrencyControlProps) => {
-    const {currency = 'USD'} = window?.storageData ?? {};
+    const {currency = 'USD'} = getFormBuilderWindowData();
     // simplified implementation of useBaseControlProps()
     const uniqueId = useInstanceId(BaseControl, 'wp-components-base-control');
 

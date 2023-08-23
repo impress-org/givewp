@@ -1,18 +1,18 @@
-import {useEffect, useState} from "react";
-import {useFormState} from "@givewp/form-builder/stores/form-state";
-import {getStorageData} from "@givewp/form-builder/common/getWindowData";
-import {__} from "@wordpress/i18n";
+import {useEffect, useState} from 'react';
+import {useFormState} from '@givewp/form-builder/stores/form-state';
+import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
+import {__} from '@wordpress/i18n';
 
 const EmailPreviewContent = ({emailType}) => {
+    const [previewHtml, setPreviewHtml] = useState<string>(null);
 
-    const [ previewHtml, setPreviewHtml ] = useState<string>(null);
+    const {
+        settings: {emailTemplateOptions, emailTemplate, emailLogo, emailFromName, emailFromEmail},
+    } = useFormState();
 
-    const {settings: {emailTemplateOptions, emailTemplate, emailLogo, emailFromName, emailFromEmail}} = useFormState();
-
-    const {formId, nonce, emailPreviewURL} = getStorageData()
+    const {formId, nonce, emailPreviewURL} = getFormBuilderWindowData();
 
     useEffect(() => {
-
         // @ts-ignore
         jQuery
             .post({
@@ -29,31 +29,32 @@ const EmailPreviewContent = ({emailType}) => {
                     email_logo: emailLogo,
                     email_from_name: emailFromName,
                     email_from_email: emailFromEmail,
-                    ...emailTemplateOptions[emailType]
+                    ...emailTemplateOptions[emailType],
                 },
             })
             .then((response) => {
-                setPreviewHtml(response)
+                setPreviewHtml(response);
             })
             .fail((error) => {
-                setPreviewHtml('Error loading preview.')
+                setPreviewHtml('Error loading preview.');
             });
     }, []);
 
-    return previewHtml
-        ? <iframe
-            srcDoc={previewHtml}
-            style={{width:'100%',height:'100%',border:'none'}}
-        />
-        : <div style={{
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-        }}>
+    return previewHtml ? (
+        <iframe srcDoc={previewHtml} style={{width: '100%', height: '100%', border: 'none'}} />
+    ) : (
+        <div
+            style={{
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
+        >
             {__('Generating preview...', 'give')}
-        </div>;
-}
+        </div>
+    );
+};
 
 export default EmailPreviewContent;
