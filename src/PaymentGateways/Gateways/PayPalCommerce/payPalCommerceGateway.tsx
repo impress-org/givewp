@@ -7,7 +7,7 @@ import {
     usePayPalScriptReducer,
 } from '@paypal/react-paypal-js';
 import type {Gateway} from '@givewp/forms/types';
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import {debounce} from 'react-ace/lib/editorOptions';
 import {Flex, TextControl} from '@wordpress/components';
 import {CSSProperties, useEffect, useState} from 'react';
@@ -369,23 +369,57 @@ import {CSSProperties, useEffect, useState} from 'react';
                 throw new Error('Invalid hosted fields');
             }
 
-            return hostedField.cardFields
-                .submit({cardholderName: cardholderName})
-                .then(async (data) => {
-                    await fetch(
-                        `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_approve_order&order=` +
-                            data.orderId,
-                        {
-                            method: 'POST',
-                            body: getFormData(),
-                        }
-                    );
-                    return {...data, payPalOrderId: data.orderId};
-                })
-                .catch((err) => {
-                    console.log('paypal commerce error', err);
-                    throw new Error('paypal commerce error');
-                });
+            const approorderCallback = async (data) => {
+                await fetch(
+                    `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_approve_order&order=` +
+                    data.orderId,
+                    {
+                        method: 'POST',
+                        body: getFormData(),
+                    }
+                );
+                return {...data, payPalOrderId: data.orderId};
+            };
+
+            try{
+                const result = await hostedField.cardFields
+                    .submit({
+                        // Trigger 3D Secure authentication
+                        contingencies: [ 'SCA_WHEN_REQUIRED' ],
+                        cardholderName: cardholderName
+                    });
+
+
+                if (
+                    ! result // Check whether get result from paypal gateway server.
+                    || (
+                        [ 'NO', 'POSSIBLE' ].includes( result.liabilityShift ) // Check whether card required 3D secure validation.
+                        && !  (result.liabilityShifted && 'POSSIBLE' === result.liabilityShift) // Check whether card passed 3D secure validation.
+                    )
+                ) {
+                    throw new Error(__(
+                        'There was a problem authenticating your payment method. Please try again. If the problem persists, please try another payment method.',
+                        'give'
+                    ));
+                }
+
+                return await approorderCallback(result);
+            } catch (err) {
+                console.log('paypal donations error', err);
+
+                // Handle PayPal error.
+                const isPayPalDonationError = err.hasOwnProperty('details');
+                if( isPayPalDonationError ){
+                                        throw new Error(err.details[0].description);
+                }
+
+                throw new Error(
+                    sprintf(
+                        __('Paypal Donations Error: %s', 'give'),
+                        err.message
+                    )
+                );
+            }
         },
         Fields() {
             return (
