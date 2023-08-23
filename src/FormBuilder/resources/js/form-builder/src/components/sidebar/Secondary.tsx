@@ -6,7 +6,7 @@ import AdditionalFields from '@givewp/form-builder/promos/additionalFields';
 const BlockListInserter = () => {
     return (
         <>
-            <Library showInserterHelpPanel={false} />;
+            <Library showInserterHelpPanel={false} />
             <AdditionalFields />
         </>
     );
