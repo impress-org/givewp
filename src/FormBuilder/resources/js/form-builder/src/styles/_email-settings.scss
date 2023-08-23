@@ -48,7 +48,7 @@
     }
 
     .components-base-control__help {
-        color: var(--givewp-grey-500, #737373);
+        color: var(--givewp-grey-500);
         font-size: 0.75rem;
         margin: 0;
     }
@@ -153,7 +153,7 @@
 }
 
 .email-settings-description {
-    color: var(--givewp-gery-500, #737373);
+    color: var(--givewp-grey-500);
     font-size: 0.75rem;
     line-height: 1.5;
     margin: 0 0 .5rem 0;
