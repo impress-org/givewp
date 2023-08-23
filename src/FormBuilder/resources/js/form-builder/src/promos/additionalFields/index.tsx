@@ -22,7 +22,11 @@ export default function AdditionalFields() {
             </div>
 
             <div className="block-editor-inserter__panel-content">
-                <a className={'additional-fields-upgrade-link'} href={''}>
+                <a
+                    className={'additional-fields-upgrade-link'}
+                    href="https://docs.givewp.com/vb-upgrade-recurring"
+                    target="_blank"
+                >
                     {__('Upgrade to unlock additional fields', 'give')}
                 </a>
                 <LockedIcons />
