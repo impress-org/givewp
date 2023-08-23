@@ -194,8 +194,9 @@
             margin-bottom: 1.75rem;
             border-radius: 0.2rem;
             border: thin solid var(--givewp-primary-color);
-            background-color: var(--givewp-primary-color);
-            color: #fff;
+            background-color: #fff;
+            color: var(--givewp-primary-color);
+
 
             &::before {
                 display: inline-block;
@@ -209,8 +210,8 @@
         }
 
         #give-pdf-receipt-link:hover {
-            background-color: #fff;
-            color: var(--givewp-primary-color);
+            background-color: var(--givewp-primary-color);
+            color: #fff;
         }
 
         .donor-dashboard-link {
