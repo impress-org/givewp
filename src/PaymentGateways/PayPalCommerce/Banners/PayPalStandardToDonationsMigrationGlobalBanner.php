@@ -130,8 +130,8 @@ class PayPalStandardToDonationsMigrationGlobalBanner
                                 window.open('https://docs.givewp.com/paypal-migration-doc', '_blank')
                             });
 
-                            modal.querySelector('.give-popup-confirm-button').addEventListener('click', () => {
-                                dismissModalAjaxRequest();
+                            modal.querySelector('.give-popup-confirm-button').addEventListener('click', async () => {
+                                await dismissModalAjaxRequest();
                                 window.location.assign('$linkToPayPalDonationsSettingPage');
                             });
                         },
