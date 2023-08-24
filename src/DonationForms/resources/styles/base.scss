@@ -4,15 +4,6 @@
     @import "pico";
 }
 
-@layer base-components {
-  @import "components/gateways";
-  @import "components/amount";
-  @import "components/donation-summary";
-  @import "components/receipt";
-  @import "components/pagination";
-  @import "components/billingAddress";
-}
-
 @layer base-elements {
     @import "elements/header";
     @import "elements/form";
@@ -20,6 +11,15 @@
     @import "elements/groups";
     @import "elements/fields";
     @import "elements/multi-step-form";
+}
+
+@layer base-components {
+    @import "components/gateways";
+    @import "components/amount";
+    @import "components/donation-summary";
+    @import "components/receipt";
+    @import "components/pagination";
+    @import "components/billingAddress";
 }
 
 @layer base-overrides {
