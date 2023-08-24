@@ -62,5 +62,10 @@ export default function DonationSummary() {
 
     const donationTotal = formatter.format(getDonationTotal(totals, amount));
 
-    return <DonationSummaryItemsTemplate items={donationSummaryItems} total={donationTotal} />;
+    return (
+        <>
+            <legend>Donation Summary</legend>
+            <DonationSummaryItemsTemplate items={donationSummaryItems} total={donationTotal} />
+        </>
+    );
 }
