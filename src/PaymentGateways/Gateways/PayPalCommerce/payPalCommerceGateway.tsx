@@ -196,8 +196,16 @@ import {CSSProperties, useEffect, useState} from 'react';
                         message: __(
                             'This payment gateway does not support recurring payments, please try selecting another payment gateway.',
                             'give'
-                        ),
-                    });
+                        )
+                    },
+                        {shouldFocus: true}
+                    );
+
+                    // Scroll to the top of the form.
+                    // Add this moment we do not have a way to scroll to the error message.
+                    // In the future we can add a way to scroll to the error message and remove this code.
+                    document.querySelector('#give-next-gen button[type="submit"]')
+                        .scrollIntoView({behavior: 'smooth'});
 
                     return actions.reject();
 
