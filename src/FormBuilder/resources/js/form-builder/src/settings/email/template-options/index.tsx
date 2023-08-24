@@ -65,7 +65,7 @@ export default () => {
                         <>
                             <EmailPreviewContent emailType={selectedTab} />
                             <Button
-                                className={'email-settings-preview-back-btn'}
+                                className={'email-preview-back-btn'}
                                 variant={'secondary'}
                                 onClick={() => setShowPreview(false)}
                             >
@@ -76,6 +76,9 @@ export default () => {
 
                     {!showPreview && (
                         <>
+                            <Button className={'email-settings-close-btn'} variant={'secondary'} onClick={closeModal}>
+                                {__('Close', 'givewp')}
+                            </Button>
                             <div className={'email-settings'}>
                                 <div className={'email-settings__col-left'}>
                                     <TabPanel

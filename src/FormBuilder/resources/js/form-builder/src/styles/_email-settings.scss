@@ -96,6 +96,17 @@
         justify-content: center;
     }
 
+    &-close-btn {
+        z-index: 11;
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: flex;
+        gap: var(--givewp-spacing-3);
+        margin: var(--givewp-spacing-4) var(--givewp-spacing-6);
+        padding: var(--givewp-spacing-4) var(--givewp-spacing-12);
+    }
+
     &__header {
         font-size: .875rem;
         line-height: 1.25rem;
@@ -170,24 +181,6 @@
             gap: 1rem;
             justify-content: space-between;
             align-items: flex-end;
-        }
-    }
-
-    &__actions {
-        z-index: 11;
-        position: absolute;
-        top: 0;
-        right: 0;
-        display: flex;
-        gap: var(--givewp-spacing-3);
-        margin: var(--givewp-spacing-4) var(--givewp-spacing-6);
-
-        &-set {
-            padding: var(--givewp-spacing-4) var(--givewp-spacing-8);
-        }
-
-        &-cancel {
-            padding: var(--givewp-spacing-4) var(--givewp-spacing-12);
         }
     }
 
