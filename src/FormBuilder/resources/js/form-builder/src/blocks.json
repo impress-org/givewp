@@ -25,7 +25,7 @@
                     "defaultLevel": "10",
                     "priceOption": "multi",
                     "setPrice": 25,
-                    "customAmount": "true",
+                    "customAmount": true,
                     "customAmountMin": 1,
                     "recurringBillingPeriodOptions": [
                         "month"
