@@ -5,14 +5,6 @@ import {createInterpolateElement} from '@wordpress/element';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {useEffect} from 'react';
 
-const MOCK = {
-    default: null,
-    accounts: {
-        '1': __('Account 1', 'give'),
-        '2': __('Account 2', 'give'),
-    },
-};
-
 export default function Stripe({attributes, setAttributes}: {attributes: StripeProps; setAttributes: ({}) => void}) {
     useEffect(() => {
         if (Object.keys(attributes).length === 0) {
@@ -23,14 +15,15 @@ export default function Stripe({attributes, setAttributes}: {attributes: StripeP
         }
     }, []);
 
-    const {gatewaySettingsUrl} = getFormBuilderWindowData();
+    const {gatewaysGlobalSettings, gatewaySettingsUrl} = getFormBuilderWindowData();
+    const stripeGlobalSettings: StripeGlobalSettingsProps = gatewaysGlobalSettings?.stripe_payment_element ?? {};
 
     const textWithLinkToStripeSettings = (textTemplate: string) =>
         createInterpolateElement(textTemplate, {
             a: <a href={`${gatewaySettingsUrl}&section=stripe-settings&group=accounts`} />,
         });
 
-    const hasGlobalDefault = MOCK.default;
+    const hasGlobalDefault = stripeGlobalSettings.default;
     const hasPerFormDefault = attributes.accountId;
     const showGlobalDefaultNotice =
         (attributes.useGlobalDefault && !hasGlobalDefault) || (!attributes.useGlobalDefault && !hasPerFormDefault);
@@ -52,9 +45,9 @@ export default function Stripe({attributes, setAttributes}: {attributes: StripeP
 
     const selectAccountOptions = [
         {label: __('Select', 'give'), value: ''},
-        ...Object.keys(MOCK.accounts).map((accountId) => ({
-            label: MOCK.accounts[accountId],
-            value: accountId,
+        ...Object.keys(stripeGlobalSettings.accounts).map((accountId) => ({
+            label: stripeGlobalSettings.accounts[accountId].account_name,
+            value: stripeGlobalSettings.accounts[accountId].account_id,
         })),
     ];
 
@@ -100,4 +93,14 @@ export default function Stripe({attributes, setAttributes}: {attributes: StripeP
 type StripeProps = {
     useGlobalDefault: boolean;
     accountId?: string;
+};
+
+type StripeGlobalSettingsProps = {
+    default: string;
+    accounts: {
+        [key: string]: {
+            account_id: string;
+            account_name: string;
+        };
+    };
 };
