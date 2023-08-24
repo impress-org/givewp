@@ -171,7 +171,6 @@ class ConvertDonationFormBlocksToFieldsApi
 
                 return PaymentGateways::make( 'gatewayId' )
                     ->testMode(give_is_test_mode())
-                    ->gatewaysSettings($block->getAttribute('gatewaysSettings'))
                     ->rules(new GatewayRule())
                     ->required()
                     ->defaultValue($defaultGatewayId);

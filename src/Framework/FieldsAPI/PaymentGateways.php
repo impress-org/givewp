@@ -13,13 +13,6 @@ class PaymentGateways extends Field {
      */
     public $isTestMode;
 
-    /**
-     * @since 3.0.0
-     *
-     * @type array
-     */
-    public $gatewaysSettings;
-
     const TYPE = 'gateways';
 
     /**
@@ -27,16 +20,6 @@ class PaymentGateways extends Field {
      */
     public function testMode( bool $isTestMode = true ): PaymentGateways {
         $this->isTestMode = $isTestMode;
-
-        return $this;
-    }
-
-    /**
-     * @since 3.0.0
-     */
-    public function gatewaysSettings(array $gatewaysSettings): PaymentGateways
-    {
-        $this->gatewaysSettings = $gatewaysSettings;
 
         return $this;
     }
