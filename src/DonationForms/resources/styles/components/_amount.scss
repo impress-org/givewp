@@ -4,7 +4,7 @@ $borderColor: #9A9A9A;
 
 .givewp-groups-donationAmount {
     display: grid;
-    gap: 1.5rem;
+    gap: var(--givewp-spacing-8);
 }
 
 .givewp-fields-amount {
@@ -12,8 +12,18 @@ $borderColor: #9A9A9A;
     row-gap: 1rem;
 
     &__fixed-message {
-        background-color: #DAF0E3;
-        padding: 0.5rem 1rem;
+        background-color: var(--givewp-grey-25);
+
+        // TODO: Replace with oklch when oklch(from) is supported
+        //@supports (background-color: oklch(from var(--givewp-primary-color) 98% 5% h)) {
+        //    background-color: oklch(from var(--givewp-primary-color) 98% 5% h);
+        //}
+
+        @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white)) {
+            background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white);
+        }
+
+        padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
         text-align: center;
         border-radius: 5px;
     }
@@ -24,7 +34,7 @@ $borderColor: #9A9A9A;
         justify-content: space-between;
         gap: 0.5rem;
         font-size: 0.8rem;
-        background-color: #E9E9E9;
+        background-color: var(--givewp-grey-50);
         padding: 0.25rem 0.75rem;
         border-radius: 5px;
     }
@@ -35,9 +45,12 @@ $borderColor: #9A9A9A;
         justify-content: space-between;
         gap: 0.5rem;
         font-size: 0.8rem;
-        background-color: #DAF0E3;
         padding: 0.25rem 2rem 0.25rem 0.75rem;
         border-radius: 5px;
+
+        @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white)) {
+            background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white);
+        }
     }
 
     &__input-label-container {
@@ -141,14 +154,18 @@ $borderColor: #9A9A9A;
 }
 
 .givewp-fields-radio-subscriptionPeriod {
+    & > fieldset {
+        margin: 0;
+    }
+
     legend {
         margin-bottom: 1rem;
     }
 
     .givewp-fields-radio__options {
-        padding: 4px;
         display: flex;
-        gap: 4px;
+        padding: var(--givewp-spacing-1);
+        gap: var(--givewp-spacing-1);
         flex-direction: row;
         justify-content: space-evenly;
         align-items: center;
@@ -156,7 +173,7 @@ $borderColor: #9A9A9A;
         height: 50px;
         width: 100%;
         border: 1px solid var(--givewp-primary-color);
-        border-radius: 5px;
+        border-radius: var(--givewp-rounded-4);
 
         .givewp-fields-radio__option-container {
             position: relative;
@@ -179,7 +196,7 @@ $borderColor: #9A9A9A;
             border-color: transparent;
             border-width: 1px;
             border-style: solid;
-            border-radius: 5px;
+            border-radius: var(--givewp-rounded-2);
             width: 100%;
             position: absolute;
             z-index: 10;
