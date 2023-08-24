@@ -1,15 +1,17 @@
-@import 'variables';
-@import 'utilities';
-@import 'header';
-@import 'stats';
-@import 'goal';
-@import 'inputs';
-@import 'sections';
-@import 'layouts';
-@import 'gateways';
-@import 'receipt';
+@layer classic-form-design {
+    @import 'variables';
+    @import 'utilities';
+    @import 'header';
+    @import 'stats';
+    @import 'goal';
+    @import 'inputs';
+    @import 'sections';
+    @import 'layouts';
+    @import 'gateways';
+    @import 'receipt';
 
-body,
-.givewp-donation-form {
-    font-family: 'system-ui', sans-serif;
+    body,
+    .givewp-donation-form {
+        font-family: 'system-ui', sans-serif;
+    }
 }
