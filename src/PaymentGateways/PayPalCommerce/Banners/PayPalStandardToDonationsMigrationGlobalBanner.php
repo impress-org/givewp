@@ -31,8 +31,13 @@ class PayPalStandardToDonationsMigrationGlobalBanner
         }
 
         add_action('admin_enqueue_scripts', function () {
-            if (give_is_gateway_active(PayPalStandard::id())) {
-                wp_add_inline_script('give-admin-scripts', $this->getModalScript());
+            $isGivePage = ( isset($_GET['page']) && 'give-forms' === $_GET['page'] )
+            || ( isset($_GET['post_type']) && 'give_forms' === $_GET['post_type'] );
+
+            if ($isGivePage && give_is_gateway_active(PayPalStandard::id())) {
+                add_action('admin_footer', function () {
+                    wp_print_inline_script_tag($this->getModalScript());
+                });
             }
         });
     }
@@ -84,15 +89,19 @@ class PayPalStandardToDonationsMigrationGlobalBanner
         );
 
         return <<<EOT
-            document.addEventListener("DOMContentLoaded", () => {
-                const dismissModalAjaxRequest = () => {
-                    wp.ajax.post({
-                        'give-action': 'dismiss_notices',
-                        'notice_id': '$this->bannerId',
-                        'dismissible_type': 'user',
-                        'dismiss_interval': 'permanent',
-                        '_wpnonce': '$nonce'
-                    });
+            const givePayPalStandardToDonationsMigrationGlobalBanner = () => {
+                const dismissModalAjaxRequest = async () => {
+                    const formData = new FormData();
+                    formData.append('give-action', 'dismiss_notices');
+                    formData.append('notice_id', '$this->bannerId');
+                    formData.append('dismissible_type', 'user');
+                    formData.append('dismiss_interval', 'permanent');
+                    formData.append('_wpnonce', '$nonce');
+
+                    await fetch(ajaxurl, {
+                        method: 'POST',
+                        body: formData,
+                    })
                 };
 
                 new Give.modal.GiveConfirmModal( {
@@ -131,7 +140,9 @@ class PayPalStandardToDonationsMigrationGlobalBanner
                         }
                     }
                 } ).render();
-            });
+            };
+
+            givePayPalStandardToDonationsMigrationGlobalBanner();
 EOT;
     }
 

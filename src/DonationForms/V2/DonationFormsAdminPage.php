@@ -73,6 +73,8 @@ class DonationFormsAdminPage
 
     /**
      * Load scripts
+     *
+     * @unreleased Set admin script and style dependencies to display PayPal Standard to Donations Migration banner.
      */
     public function loadScripts()
     {
@@ -87,6 +89,7 @@ class DonationFormsAdminPage
         ];
 
         EnqueueScript::make('give-admin-donation-forms', 'assets/dist/js/give-admin-donation-forms.js')
+            ->dependencies(['give-admin-scripts'])
             ->loadInFooter()
             ->registerTranslations()
             ->registerLocalizeData('GiveDonationForms', $data)->enqueue();
@@ -94,7 +97,7 @@ class DonationFormsAdminPage
         wp_enqueue_style(
             'give-admin-ui-font',
             'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400..700&display=swap',
-            [],
+            ['give-admin-styles'],
             null
         );
     }
