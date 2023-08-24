@@ -46,6 +46,7 @@ $borderColor: #9A9A9A;
         gap: 0.5rem;
         font-size: 0.8rem;
         padding: 0.25rem 2rem 0.25rem 0.75rem;
+        background-color: var(--givewp-grey-50);
         border-radius: 5px;
 
         @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white)) {
