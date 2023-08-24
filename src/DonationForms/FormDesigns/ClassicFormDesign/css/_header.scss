@@ -10,12 +10,12 @@
         display: grid;
         justify-items: center;
         row-gap: 1.5rem;
-        padding: 3rem;
+        padding: var(--givewp-spacing-6);
         color: #fff;
         text-align: center;
 
         @media screen and (min-width: $desktopMinWidth) {
-            padding: 3rem;
+            padding: var(--givewp-spacing-10) var(--givewp-spacing-20);
         }
 
         + .givewp-layouts-form {
@@ -51,7 +51,6 @@
         font-size: fn.scaleBetween(1.125rem, 1.25rem);
         line-height: 1.45;
         margin: 0 auto;
-        max-inline-size: 42ch;
         color: currentColor;
     }
 }

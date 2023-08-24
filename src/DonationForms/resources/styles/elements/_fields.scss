@@ -3,3 +3,23 @@
         margin-left: calc(1.25em + 0.375em);
     }
 }
+
+.givewp-fields-amount {
+
+}
+
+.givewp-fields {
+    legend {
+        font-size: var(--givewp-font-size-paragraph-lg);
+        font-weight: 500;
+        line-height: 1.5;
+        color: var(--givewp-grey-900);
+    }
+
+    label > span {
+        font-size: var(--givewp-font-size-paragraph-lg);
+        font-weight: 500;
+        line-height: 1.5;
+        color: var(--givewp-grey-900);
+    }
+}
