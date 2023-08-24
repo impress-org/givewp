@@ -13,11 +13,9 @@ const settings: FieldBlock['settings'] = {
     },
     attributes: {
         lock: {remove: true},
-        stripeAccount: {
+        gatewaysSettings: {
             type: 'object',
-            default: {
-                useGlobalDefault: true,
-            },
+            default: {},
         },
     },
     edit: Edit,

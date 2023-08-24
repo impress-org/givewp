@@ -1,8 +1,7 @@
 import {ReactNode} from 'react';
 import {BlockEditProps} from '@wordpress/blocks';
-import {useEffect} from '@wordpress/element';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
-import StripeAccount from '@givewp/form-builder/blocks/fields/payment-gateways/StripeAccount';
+import PerFormSettings from '@givewp/form-builder/blocks/fields/payment-gateways/PerFormSettings';
 
 const GatewayItem = ({label, icon}: {label: string; icon: ReactNode}) => {
     return (
@@ -20,20 +19,11 @@ const GatewayItem = ({label, icon}: {label: string; icon: ReactNode}) => {
 };
 
 export default function Edit(props: BlockEditProps<any>) {
-    const {attributes, setAttributes} = props;
     const {gateways} = getFormBuilderWindowData();
-
-    useEffect(() => {
-        if (!attributes.stripeAccount) {
-            setAttributes({stripeAccount: {useGlobalDefault: true}});
-        }
-    }, []);
 
     return (
         <>
-            {gateways.some((gateway) => gateway.id === 'stripe_payment_element' && gateway.enabled) &&
-                attributes.stripeAccount && <StripeAccount {...props} />}
-
+            <PerFormSettings {...props} />
             <div
                 style={{
                     fontSize: '16px',
