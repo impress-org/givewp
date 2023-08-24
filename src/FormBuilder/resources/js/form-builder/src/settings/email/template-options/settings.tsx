@@ -48,13 +48,13 @@ const EmailTemplateSettings = ({notification, closeModal}) => {
         ...emailTemplateOptions[notification],
     };
 
-    const recipients = emailTemplateFieldValues.recipient ?? [''];
-
     useEffect(() => {
         setEmailTemplateFieldValues({
             ...option,
         });
     }, []);
+
+    const recipients = [...emailTemplateFieldValues.recipient];
 
     const updateEmailTemplateField = (property, value) => {
         setEmailTemplateFieldValues((prevValues) => {
@@ -70,15 +70,6 @@ const EmailTemplateSettings = ({notification, closeModal}) => {
         setEmailTemplateFieldValues({
             ...option,
         });
-
-        dispatch(
-            setFormSettings({
-                emailTemplateOptions: {
-                    ...emailTemplateOptions,
-                    [notification]: option,
-                },
-            })
-        );
     };
 
     const setEmailTemplateOption = () => {
@@ -207,7 +198,6 @@ const EmailTemplateSettings = ({notification, closeModal}) => {
                                             <Button
                                                 className={'email-settings-template__recipient-delete'}
                                                 onClick={() => {
-                                                    console.log(recipientEmail);
                                                     recipients.splice(index, 1);
                                                     updateEmailTemplateField('recipient', recipients.slice());
                                                 }}
@@ -223,7 +213,7 @@ const EmailTemplateSettings = ({notification, closeModal}) => {
                                     variant={'secondary'}
                                     onClick={() => updateEmailTemplateField('recipient', [...recipients, ''])}
                                 >
-                                    <WPIcon size={17} icon={plus} /> {__('Add email', 'give')}
+                                    <WPIcon size={17} icon={plus} /> {__('Add email', 'givewp')}
                                 </Button>
                             </BaseControl>
                         </div>

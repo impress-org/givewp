@@ -9,6 +9,7 @@ import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowDat
 import SendPreviewEmail from './components/send-preview-email';
 import EmailPreviewContent from './components/email-preview-content';
 import {useFormState} from '@givewp/form-builder/stores/form-state';
+import {createInterpolateElement} from '@wordpress/element';
 
 export default () => {
     const [isOpen, setOpen] = useState<boolean>(false);
@@ -26,6 +27,16 @@ export default () => {
     const openModal = () => setOpen(true);
     const closeModal = () => setOpen(false);
 
+    const templateTagsDescription = createInterpolateElement(
+        __(
+            'Available template tags for this email. HTML is accepted. <a>See our documentation</a> for examples of how to use custom meta email tags to output additional donor or donation information in your GiveWP emails',
+            'givewp'
+        ),
+        {
+            a: <a href="https://make.wordpress.org" target="_blank" />,
+        }
+    );
+
     return (
         <>
             <Button
@@ -38,7 +49,7 @@ export default () => {
             </Button>
             {isOpen && (
                 <Modal
-                    title={showPreview ? __('Preview Email', 'give') : __('Email Settings', 'give')}
+                    title={showPreview ? __('Preview Email', 'givewp') : __('Email Settings', 'give')}
                     onRequestClose={closeModal}
                     isDismissible={false}
                     shouldCloseOnClickOutside={false}
@@ -132,12 +143,7 @@ export default () => {
                                     </div>
                                     <div>
                                         <h2 className={'email-settings__header'}>{__('Template tags', 'givewp')}</h2>
-                                        <p className={'email-settings__description'}>
-                                            {__(
-                                                'Available template tags for this email. HTML is accepted. See our documentation for examples of how to use custom meta email tags to output additional donor or donation information in your GiveWP emails',
-                                                'givewp'
-                                            )}
-                                        </p>
+                                        <p className={'email-settings__description'}>{templateTagsDescription}</p>
                                         <ul className={'email-settings-template-tags'}>
                                             {emailTemplateTags.map((tag) => (
                                                 <li key={tag.tag}>
