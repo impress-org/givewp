@@ -3,7 +3,11 @@ import {useFormState} from '@givewp/form-builder/stores/form-state';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {__} from '@wordpress/i18n';
 
-const EmailPreviewContent = ({emailType}) => {
+type EmailPreviewContentProps = {
+    emailType: string;
+};
+
+const EmailPreviewContent = ({emailType}: EmailPreviewContentProps) => {
     const [previewHtml, setPreviewHtml] = useState<string>(null);
 
     const {

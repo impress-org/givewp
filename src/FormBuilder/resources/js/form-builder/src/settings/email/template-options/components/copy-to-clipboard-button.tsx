@@ -3,10 +3,13 @@ import {__} from '@wordpress/i18n';
 import {Button} from '@wordpress/components';
 import {copy, Icon} from '@wordpress/icons';
 
-const CopyToClipboardButton = ({text}) => {
+type CopyClipboardButtonProps = {text: string};
+
+const CopyToClipboardButton = ({text}: CopyClipboardButtonProps) => {
     const [isCopied, setCopied] = useClipboard(text, {
         successDuration: 1000,
     });
+
     const label = isCopied ? __('Copied!', 'givewp') : __('Copy tag', 'givewp');
 
     const CopyIcon = ({size}) => {

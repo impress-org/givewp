@@ -18,7 +18,12 @@ type EmailTemplateFieldValues = {
     recipient: string[];
 };
 
-const EmailTemplateSettings = ({notification, closeModal}) => {
+type EmailTemplateSettingsProps = {
+    notification: string;
+    closeModal: () => void;
+};
+
+const EmailTemplateSettings = ({notification, closeModal}: EmailTemplateSettingsProps) => {
     const [emailTemplateFieldValues, setEmailTemplateFieldValues] = useState<EmailTemplateFieldValues>({
         id: '',
         status: 'customize',

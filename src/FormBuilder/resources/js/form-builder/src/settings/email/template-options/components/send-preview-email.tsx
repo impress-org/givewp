@@ -4,7 +4,12 @@ import {Button, TextControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 
-export default ({emailType, defaultEmailAddress}) => {
+type SendPreviewEmailProps = {
+    emailType: string;
+    defaultEmailAddress: string;
+};
+
+export default ({emailType, defaultEmailAddress}: SendPreviewEmailProps) => {
     const [emailAddress, setEmailAddress] = useState<string>(defaultEmailAddress);
 
     const {
