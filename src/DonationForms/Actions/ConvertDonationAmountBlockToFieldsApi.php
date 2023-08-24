@@ -104,7 +104,7 @@ class ConvertDonationAmountBlockToFieldsApi
                 ->rules(new SubscriptionInstallmentsRule());
 
             $recurringBillingPeriodOptions = $block->getAttribute('recurringBillingPeriodOptions');
-            $subscriptionDetailsAreFixed = count($recurringBillingPeriodOptions) === 1 && !$block->getAttribute('recurringEnableOneTimeDonations');
+            $subscriptionDetailsAreFixed = count($recurringBillingPeriodOptions) === 1 && $block->getAttribute('recurringEnableOneTimeDonations') === false;
 
             $amountField
                 ->enableSubscriptions()
@@ -126,7 +126,7 @@ class ConvertDonationAmountBlockToFieldsApi
     protected function getRecurringAmountPeriodField(BlockModel $block): Field
     {
         $recurringBillingPeriodOptions = $block->getAttribute('recurringBillingPeriodOptions');
-        $subscriptionDetailsAreFixed = count($recurringBillingPeriodOptions) === 1 && !$block->getAttribute('recurringEnableOneTimeDonations');
+        $subscriptionDetailsAreFixed = count($recurringBillingPeriodOptions) === 1 && $block->getAttribute('recurringEnableOneTimeDonations') === false;
 
         // if admin - fields are all hidden
         if ($subscriptionDetailsAreFixed) {

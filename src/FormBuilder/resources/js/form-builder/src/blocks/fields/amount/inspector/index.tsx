@@ -16,7 +16,9 @@ import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowDat
 import {useCallback, useState} from '@wordpress/element';
 import Options from '@givewp/form-builder/components/OptionsPanel';
 import {OptionProps} from '@givewp/form-builder/components/OptionsPanel/types';
-import { useEffect } from "react";
+import {useEffect} from 'react';
+import {DonationAmountAttributes} from '@givewp/form-builder/blocks/fields/amount/types';
+import {subscriptionPeriod} from '@givewp/forms/registrars/templates/groups/DonationAmount/subscriptionPeriod';
 
 const compareBillingPeriods = (val1: string, val2: string): number => {
     const index1 = Object.keys(periodLookup).indexOf(val1);
@@ -25,22 +27,34 @@ const compareBillingPeriods = (val1: string, val2: string): number => {
     return index1 - index2;
 };
 
-interface DonationAmountAttributes {
+type billingPeriodControlOption = {
     label: string;
-    levels: string[];
-    defaultLevel: number;
-    priceOption: string;
-    setPrice: number;
-    customAmount: boolean;
-    customAmountMin: number;
-    customAmountMax: number;
-    recurringEnabled: boolean;
-    recurringBillingInterval: string;
-    recurringBillingPeriodOptions: string[];
-    recurringLengthOfTime: string;
-    recurringOptInDefaultBillingPeriod: string;
-    recurringEnableOneTimeDonations: boolean
-}
+    value: subscriptionPeriod;
+};
+
+const billingPeriodControlOptions: billingPeriodControlOption[] = [
+    {label: __('Daily', 'give'), value: 'day'},
+    {label: __('Weekly', 'give'), value: 'week'},
+    {label: __('Monthly', 'give'), value: 'month'},
+    {label: __('Quarterly', 'give'), value: 'quarter'},
+    {label: __('Yearly', 'give'), value: 'year'},
+];
+
+const billingIntervalControlOptions = [
+    {label: __('Every', 'give'), value: '1'},
+    {label: __('Every 2nd', 'give'), value: '2'},
+    {label: __('Every 3rd', 'give'), value: '3'},
+    {label: __('Every 4th', 'give'), value: '4'},
+    {label: __('Every 5th', 'give'), value: '5'},
+    {label: __('Every 6th', 'give'), value: '6'},
+];
+
+const numberOfDonationsControlOptions = [{label: __('Ongoing', 'give'), value: '0'}].concat(
+    [...Array(24 + 1).keys()].slice(2).map((value) => ({
+        label: sprintf(__('%d donations', 'give'), value),
+        value: value.toString(),
+    }))
+);
 
 const Inspector = ({attributes, setAttributes}) => {
     const {
@@ -63,7 +77,10 @@ const Inspector = ({attributes, setAttributes}) => {
     const shouldShowDefaultBillingPeriod = recurringBillingPeriodOptions.length > 1 || recurringEnableOneTimeDonations;
 
     useEffect(() => {
-        if (!recurringBillingPeriodOptions.includes(recurringOptInDefaultBillingPeriod)){
+        // update recurringOptInDefaultBillingPeriod based on the available options
+        if (recurringOptInDefaultBillingPeriod === 'one-time' && !recurringEnableOneTimeDonations) {
+            setAttributes({recurringOptInDefaultBillingPeriod: recurringBillingPeriodOptions[0]});
+        } else if (!['one-time'].concat(recurringBillingPeriodOptions).includes(recurringOptInDefaultBillingPeriod)) {
             setAttributes({recurringOptInDefaultBillingPeriod: recurringBillingPeriodOptions[0]});
         }
     }, [recurringBillingPeriodOptions, recurringEnableOneTimeDonations]);
@@ -119,6 +136,7 @@ const Inspector = ({attributes, setAttributes}) => {
         }
 
         const checkedLevel = options.filter((option) => option.checked);
+
         if (!!checkedLevel && checkedLevel.length === 1) {
             setAttributes({defaultLevel: checkedLevel[0].value});
         } else if (options.length > 0) {
@@ -218,6 +236,7 @@ const Inspector = ({attributes, setAttributes}) => {
                     />
                 </PanelBody>
             )}
+
             <PanelBody title={__('Recurring Donations', 'give')} initialOpen={false}>
                 {!isRecurringSupported &&
                     (recurringAddonData.isInstalled ? (
@@ -275,22 +294,7 @@ const Inspector = ({attributes, setAttributes}) => {
                             />
                         </PanelRow>
                         <PanelRow>
-                            <SelectControl
-                                label={__('Billing interval', 'give')}
-                                options={[
-                                    {label: __('Every', 'give'), value: '1'},
-                                    {label: __('Every 2nd', 'give'), value: '2'},
-                                    {label: __('Every 3rd', 'give'), value: '3'},
-                                    {label: __('Every 4th', 'give'), value: '4'},
-                                    {label: __('Every 5th', 'give'), value: '5'},
-                                    {label: __('Every 6th', 'give'), value: '6'},
-                                ]}
-                                value={recurringBillingInterval}
-                                onChange={(recurringBillingInterval) => setAttributes({recurringBillingInterval})}
-                            />
-                        </PanelRow>
-                        <PanelRow>
-                            <BaseControl id={'recurringBillingPeriodOptions'} label={__('Billing period', 'give')}>
+                            <BaseControl id={'recurringBillingPeriodOptions'} label={__('Frequency', 'give')}>
                                 <div
                                     style={{
                                         width: '100%',
@@ -298,13 +302,7 @@ const Inspector = ({attributes, setAttributes}) => {
                                         gridTemplateColumns: '1fr 1fr',
                                     }}
                                 >
-                                    {[
-                                        {label: __('Day', 'give'), value: 'day'},
-                                        {label: __('Week', 'give'), value: 'week'},
-                                        {label: __('Month', 'give'), value: 'month'},
-                                        {label: __('Quarter', 'give'), value: 'quarter'},
-                                        {label: __('Year', 'give'), value: 'year'},
-                                    ].map((option) => (
+                                    {billingPeriodControlOptions.map((option) => (
                                         <CheckboxControl
                                             key={option.value}
                                             label={option.label}
@@ -318,7 +316,6 @@ const Inspector = ({attributes, setAttributes}) => {
                                                 recurringBillingPeriodOptions.length === 1 &&
                                                 recurringBillingPeriodOptions.includes(option.value) // This is the last checked option.
                                             }
-                                            //@ts-ignore
                                             __nextHasNoMarginBottom={true}
                                         />
                                     ))}
@@ -328,8 +325,13 @@ const Inspector = ({attributes, setAttributes}) => {
                         {shouldShowDefaultBillingPeriod && (
                             <PanelRow>
                                 <SelectControl
-                                    label={__('Default billing period', 'give')}
-                                    value={recurringOptInDefaultBillingPeriod ?? (recurringEnableOneTimeDonations ? 'one-time' : recurringBillingPeriodOptions[0])}
+                                    label={__('Default Frequency', 'give')}
+                                    value={
+                                        recurringOptInDefaultBillingPeriod ??
+                                        (recurringEnableOneTimeDonations
+                                            ? 'one-time'
+                                            : recurringBillingPeriodOptions[0])
+                                    }
                                     options={getDefaultBillingPeriodOptions(recurringBillingPeriodOptions)}
                                     onChange={(recurringOptInDefaultBillingPeriod: string) =>
                                         setAttributes({recurringOptInDefaultBillingPeriod})
@@ -339,16 +341,20 @@ const Inspector = ({attributes, setAttributes}) => {
                         )}
                         <PanelRow>
                             <SelectControl
-                                label={__('Number of Payments', 'give')}
-                                //@ts-ignore
-                                options={[{label: __('Ongoing', 'give'), value: 0}].concat(
-                                    [...Array(24 + 1).keys()].slice(2).map((value) => ({
-                                        label: sprintf(__('%d payments', 'give'), value),
-                                        value: value,
-                                    }))
-                                )}
+                                label={__('Interval', 'give')}
+                                options={billingIntervalControlOptions}
+                                value={recurringBillingInterval}
+                                onChange={(recurringBillingInterval: string) =>
+                                    setAttributes({recurringBillingInterval})
+                                }
+                            />
+                        </PanelRow>
+                        <PanelRow>
+                            <SelectControl
+                                label={__('Number of Donations', 'give')}
+                                options={numberOfDonationsControlOptions}
                                 value={recurringLengthOfTime}
-                                onChange={(recurringLengthOfTime) => setAttributes({recurringLengthOfTime})}
+                                onChange={(recurringLengthOfTime: string) => setAttributes({recurringLengthOfTime})}
                             />
                         </PanelRow>
                     </>
