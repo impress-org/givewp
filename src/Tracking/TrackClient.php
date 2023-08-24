@@ -55,7 +55,8 @@ class TrackClient
             return new WP_Error('invalid-telemetry-request', 'Pass valid track id and tracked data to TrackClient');
         }
 
-        $default_request_args = [
+        return true;
+        /*$default_request_args = [
             'headers' => [
                 'content-type:' => 'application/json',
                 'Authorization' => 'Bearer ' . $this->telemetryAccessDetails->getAccessTokenOptionValue(),
@@ -68,7 +69,7 @@ class TrackClient
             'data_format' => 'body',
         ];
 
-        return wp_remote_post($this->getApiUrl($id), wp_parse_args($requestArgs, $default_request_args));
+        return wp_remote_post($this->getApiUrl($id), wp_parse_args($requestArgs, $default_request_args));*/
     }
 
     /**

@@ -42,8 +42,10 @@ class Track
      */
     public static function checkEnvironment()
     {
+        return true;
+
         // Track data only if website is in production mode.
-        if (function_exists('wp_get_environment_type') && wp_get_environment_type() !== 'production') {
+        /*if (function_exists('wp_get_environment_type') && wp_get_environment_type() !== 'production') {
             return false;
         }
 
@@ -52,6 +54,6 @@ class Track
             return false;
         }
 
-        return true;
+        return true;*/
     }
 }

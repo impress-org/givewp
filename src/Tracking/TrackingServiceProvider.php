@@ -2,6 +2,7 @@
 
 namespace Give\Tracking;
 
+use Give\Helpers\Form\Utils;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider;
 use Give\Tracking\Events\DonationFormsTracking;
@@ -36,11 +37,13 @@ class TrackingServiceProvider implements ServiceProvider
     {
         $isTrackingEnabled = Track::isTrackingEnabled();
 
+        //Hooks::addAction('init', TrackJob::class, 'send');
+
         if ($isTrackingEnabled) {
             Hooks::addAction(TrackJobScheduler::CRON_JOB_HOOK_NAME, TrackJob::class, 'send');
         }
 
-        if (is_admin()) {
+        if (is_admin() || Utils::isFormBuilderRequest()) {
             if ($isTrackingEnabled) {
                 $this->registerTrackEvents();
                 Hooks::addAction('shutdown', TrackJobScheduler::class, 'schedule', 999);
@@ -81,6 +84,8 @@ class TrackingServiceProvider implements ServiceProvider
      */
     private function registerTrackEvents()
     {
+        Hooks::addAction('givewp_form_builder_updated', EditedDonationFormsTracking::class,
+            'formBuilderUpdatedHookHandler');
         Hooks::addAction('save_post_give_forms', EditedDonationFormsTracking::class, 'savePostHookHandler');
         Hooks::addAction('save_post_give_payment', DonationFormsTracking::class, 'record');
         Hooks::addAction('save_post_give_payment', DonationMetricsTracking::class, 'record');

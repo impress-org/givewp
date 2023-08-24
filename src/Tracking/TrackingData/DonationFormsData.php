@@ -2,9 +2,11 @@
 
 namespace Give\Tracking\TrackingData;
 
+use Give\DonationForms\Models\DonationForm;
 use Give\Framework\Database\DB;
 use Give\Helpers\ArrayDataSet;
 use Give\Helpers\Form\Template;
+use Give\Helpers\Form\Utils;
 use Give\Tracking\Contracts\TrackData;
 use Give\Tracking\Helpers\DonationStatuses;
 use Give\Tracking\Repositories\TrackEvents;
@@ -70,20 +72,24 @@ class DonationFormsData implements TrackData
         $data = [];
 
         foreach ($this->formIds as $formId) {
-            $formTemplate = Template::getActiveID($formId);
+            if (Utils::isV3Form($formId)) {
+                $form = DonationForm::find($formId);
+            } else {
+                $formTemplate = Template::getActiveID($formId);
 
-            $temp = [
-                'form_id' => (int)$formId,
-                'form_url' => untrailingslashit(get_permalink($formId)),
-                'form_name' => get_post_field('post_name', $formId, 'db'),
-                'form_type' => give()->form_meta->get_meta($formId, '_give_price_option', true),
-                'form_template' => ! $formTemplate || 'legacy' === $formTemplate ? 'legacy' : $formTemplate,
-                'donor_count' => $this->formDonorCounts[$formId],
-                'revenue' => $this->formRevenues[$formId],
-            ];
+                $temp = [
+                    'form_id' => (int)$formId,
+                    'form_url' => untrailingslashit(get_permalink($formId)),
+                    'form_name' => get_post_field('post_name', $formId, 'db'),
+                    'form_type' => give()->form_meta->get_meta($formId, '_give_price_option', true),
+                    'form_template' => ! $formTemplate || 'legacy' === $formTemplate ? 'legacy' : $formTemplate,
+                    'donor_count' => $this->formDonorCounts[$formId],
+                    'revenue' => $this->formRevenues[$formId],
+                ];
 
-            $this->addAddonsInformation($temp, $formId);
-            $data[] = $temp;
+                $this->addAddonsInformation($temp, $formId);
+                $data[] = $temp;
+            }
         }
 
         return $data;
