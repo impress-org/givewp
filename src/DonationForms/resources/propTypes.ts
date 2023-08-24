@@ -17,6 +17,7 @@ export type GatewayOptionProps = {
     inputProps: UseFormRegisterReturn;
     gateway: Gateway;
     defaultChecked: boolean;
+    isActive: boolean;
 };
 
 export interface SelectableFieldProps extends FieldProps {

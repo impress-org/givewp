@@ -1,192 +1,82 @@
 .givewp-fields-gateways {
-
-    .givewp-test-mode-notice {
-        display: flex;
-        justify-content: left;
-        align-items: center;
-        width: 100%;
-        padding: 0.75rem 1rem;
-        gap: 1rem;
-        margin-bottom: 2.5rem;
-        border-radius: 0.25rem;
-        border-top: 1px solid var(--orange-400, #F29718);
-        border-right: 1px solid var(--orange-400, #F29718);
-        border-bottom: 1px solid var(--orange-400, #F29718);
-        border-left: 4px solid var(--orange-400, #F29718);
-        background: var(--shades-white, #FFF);
-
-        svg {
-            width: 1.5rem;
-            height: 1.5rem;
-            flex-shrink: 0;
-        }
-
-        p {
-            margin: 0;
-            line-height: 1.25rem;
-            color: var(--grey-900, #0E0E0E);
-            font-size: 0.875rem;
-            font-style: normal;
-            font-weight: 400;
-        }
-    }
-
-    ul {
+    &__list {
         display: flex;
         flex-direction: column;
-        gap: 0.9375rem;
+        gap: var(--givewp-spacing-2);
         list-style: none;
     }
 
-    li {
-        --tab-radio-diameter: 1.25rem;
-        --tab-radio-border-size: 0.0625rem;
-        --tab-block-padding: 1.375rem;
-        --tab-block-size: calc(var(--tab-block-padding) * 2 + var(--tab-radio-diameter));
-        --tab-inline-padding: 1.375rem;
-        --tab-transition: 0.2s ease-in-out;
-        position: relative;
-        -webkit-padding-before: var(--tab-block-size);
-        padding-block-start: var(--tab-block-size);
-        background-color: #fafafa;
+    &__gateway {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-1);
+
+        background-color: var(--givewp-shades-white);
         transition: background-color var(--tab-transition);
-        border-radius: 0.25rem;
+        border-radius: var(--givewp-rounded-4);
+        border-color: var(--givewp-grey-400);
         list-style: none;
         margin: 0;
-    }
 
-    label {
-        color: #444;
-        list-style: none;
-        --tab-radio-diameter: 1.25rem;
-        --tab-radio-border-size: 0.0625rem;
-        --tab-block-padding: 1.375rem;
-        --tab-block-size: calc(var(--tab-block-padding) * 2 + var(--tab-radio-diameter));
-        --tab-inline-padding: 1.375rem;
-        --tab-transition: 0.2s ease-in-out;
-        box-sizing: inherit;
-        cursor: pointer;
-        --font-size: 1em;
-        --line-height: 1.25;
-        --block-size: calc(var(--font-size) * var(--line-height));
-        position: absolute;
-        inset-inline-start: calc(var(--tab-inline-padding) + var(--tab-radio-diameter) + 0.5rem);
-        inset-inline-end: var(--tab-inline-padding);
-        inset-block-start: calc((var(--tab-radio-diameter) - var(--block-size)) / 2 + var(--tab-block-padding));
-        font-weight: bold;
-        font-size: var(--font-size)/var(--line-height);
-        font-family: var(--givewp-primary-color);
-        line-height: var(--line-height);
-    }
+        label {
+            display: flex;
+            gap: var(--givewp-spacing-4);
+            align-items: flex-end;
+            padding: var(--givewp-spacing-6) var(--givewp-spacing-4);
+            border-style: solid;
+            border-width: 1px;
+            border-color: inherit;
+            border-radius: var(--givewp-rounded-4);
+        }
 
-    input[type="radio"] {
-        list-style: none;
-        --tab-radio-diameter: 1.25rem;
-        --tab-radio-border-size: 0.0625rem;
-        --tab-block-padding: 1.375rem;
-        --tab-block-size: calc(var(--tab-block-padding) * 2 + var(--tab-radio-diameter));
-        --tab-inline-padding: 1.375rem;
-        --tab-transition: 0.2s ease-in-out;
-        box-sizing: inherit;
-        cursor: pointer;
-        border-start-start-radius: inherit;
-        border-start-end-radius: inherit;
-        border-end-start-radius: inherit;
-        border-end-end-radius: inherit;
-        position: absolute;
-        inset-block-start: 0;
-        inset-inline: 0;
-        block-size: var(--tab-block-size);
-        inline-size: 100%;
-        margin: 0;
-        border-width: 0.0625rem;
-        border-style: solid;
-        appearance: none;
-        font-size: 1rem;
-        transition: border-color var(--tab-transition);
-        border-color: #000;
-        z-index: 10;
-        background-color: transparent;
-        box-shadow: none;
-
-        &:hover,
-        &:focus,
-        &:active {
-            --background-color: transparent;
+        &--active {
             border-color: var(--givewp-primary-color);
-            outline: 0;
         }
 
-        &:not(:checked) {
-            ~ .givewp-fields-payment-gateway {
-                display: none;
-            }
+        &__fields {
+            display: none;
+            border-style: solid;
+            border-width: 1px;
+            border-color: inherit;
+            padding: var(--givewp-spacing-6) var(--givewp-spacing-12);
+            border-radius: var(--givewp-rounded-4);
+            font-size: var(--givewp-font-weight-paragraph-md);
         }
 
-        &:checked {
-            border-end-start-radius: 0;
-            border-end-end-radius: 0;
-
-            ~ .givewp-fields-payment-gateway {
-                display: block;
-            }
+        &--active &__fields {
+            display: block;
         }
-
-        &:before, &:after {
-            content: "";
-            position: absolute;
-            inset-block: 0;
-            inset-inline-start: 0;
-            margin-block: auto;
-            block-size: var(--diameter);
-            inline-size: var(--diameter);
-            border-radius: 9999px;
-        }
-
-        &:checked::after {
-            opacity: 1;
-        }
-
-        &:before {
-            --diameter: var(--tab-radio-diameter);
-            -webkit-margin-start: var(--tab-block-padding);
-            margin-inline-start: var(--tab-block-padding);
-            border: var(--tab-radio-border-size) solid #b4b9be;
-            box-shadow: inset 0 0.0625em 0.125em rgb(0 0 0 / 25%);
-        }
-
-        &:after {
-            --diameter: calc(var(--tab-radio-diameter) * 0.4);
-            -webkit-margin-start: calc((var(--tab-radio-diameter) - var(--diameter)) / 2 + var(--tab-block-padding));
-            margin-inline-start: calc((var(--tab-radio-diameter) - var(--diameter)) / 2 + var(--tab-block-padding));
-            background-color: var(--givewp-primary-color);
-            opacity: 0;
-            transition: opacity var(--tab-transition);
-        }
-    }
-
-    .givewp-fields-payment-gateway {
-        font-family: var(--givewp-primary-font, inherit), sans-serif;
-        color: rgb(68, 68, 68);
-        list-style: none;
-        --tab-radio-diameter: 1.25rem;
-        --tab-radio-border-size: 0.0625rem;
-        --tab-block-padding: 1.375rem;
-        --tab-block-size: calc(var(--tab-block-padding) * 2 + var(--tab-radio-diameter));
-        --tab-inline-padding: 1.375rem;
-        --tab-transition: 0.2s ease-in-out;
-        box-sizing: inherit;
-        inline-size: 100%;
-        border-block-width: 0px 0.0625rem;
-        border-inline: 0.0625rem solid rgb(221, 221, 221);
-        border-block-end-style: solid;
-        border-block-end-color: rgb(221, 221, 221);
-        padding-block: 2rem;
-        padding-inline: 1.375rem;
-        font-size: 0.9375rem;
-        line-height: 1.5;
-        border-end-start-radius: inherit;
-        border-end-end-radius: inherit;
-        border-color: rgb(0, 0, 0);
     }
 }
+
+.givewp-test-mode-notice {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    border-radius: 0.25rem;
+    border-top: 1px solid var(--orange-400, #F29718);
+    border-right: 1px solid var(--orange-400, #F29718);
+    border-bottom: 1px solid var(--orange-400, #F29718);
+    border-left: 4px solid var(--orange-400, #F29718);
+    background: var(--shades-white, #FFF);
+
+    svg {
+        width: 1.5rem;
+        height: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    p {
+        margin: 0;
+        line-height: 1.25rem;
+        color: var(--grey-900, #0E0E0E);
+        font-size: 0.875rem;
+        font-style: normal;
+        font-weight: 400;
+    }
+}
+

@@ -33,7 +33,7 @@
 
     &__option-container {
         display: flex;
-        align-items: center;
+        align-items: flex-end;
         gap: var(--givewp-spacing-2);
     }
 }

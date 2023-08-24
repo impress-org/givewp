@@ -2,8 +2,8 @@ import {ErrorMessage} from '@hookform/error-message';
 import type {GatewayFieldProps, GatewayOptionProps} from '@givewp/forms/propTypes';
 import {ErrorBoundary} from 'react-error-boundary';
 import {__, sprintf} from '@wordpress/i18n';
-import {useEffect, useMemo} from 'react';
-import {createInterpolateElement} from '@wordpress/element';
+import {createInterpolateElement, useEffect, useMemo} from '@wordpress/element';
+import cx from 'classnames';
 
 /**
  * @since 3.0.0
@@ -49,7 +49,7 @@ function GatewayFieldsErrorFallback({error, resetErrorBoundary}) {
  */
 const TestModeNotice = () => {
     return (
-        <div className={'givewp-test-mode-notice'}>
+        <div className="givewp-test-mode-notice">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path
                     fillRule="evenodd"
@@ -83,6 +83,7 @@ export default function Gateways({isTestMode, defaultValue, inputProps, gateways
     const {currencySwitcherSettings} = useDonationFormSettings();
 
     const currency = useWatch({name: 'currency'});
+    const activeGatewayId = useWatch({name: 'gatewayId'});
 
     // filter gateway options if currency switcher settings are present
     const gatewayOptions = useMemo(() => {
@@ -115,13 +116,14 @@ export default function Gateways({isTestMode, defaultValue, inputProps, gateways
             {gatewayOptions.length > 0 ? (
                 <>
                     {isTestMode && <TestModeNotice />}
-                    <ul style={{listStyleType: 'none', padding: 0}}>
+                    <ul className="givewp-fields-gateways__list" style={{listStyleType: 'none', padding: 0}}>
                         {gatewayOptions.map((gateway, index) => (
                             <GatewayOption
                                 gateway={gateway}
                                 defaultChecked={gateway.id === defaultValue}
                                 key={gateway.id}
                                 inputProps={inputProps}
+                                isActive={gateway.id === activeGatewayId}
                             />
                         ))}
                     </ul>
@@ -142,12 +144,24 @@ export default function Gateways({isTestMode, defaultValue, inputProps, gateways
 /**
  * @since 3.0.0
  */
-function GatewayOption({gateway, defaultChecked, inputProps}: GatewayOptionProps) {
+function GatewayOption({gateway, defaultChecked, inputProps, isActive}: GatewayOptionProps) {
+    const className = cx('givewp-fields-gateways__gateway', {
+        'givewp-fields-gateways__gateway--active': isActive,
+    });
+
     return (
-        <li>
-            <input type="radio" value={gateway.id} id={gateway.id} defaultChecked={defaultChecked} {...inputProps} />
-            <label htmlFor={gateway.id}> {sprintf(__('Donate with %s', 'give'), gateway.label)}</label>
-            <div className="givewp-fields-payment-gateway">
+        <li className={className}>
+            <label>
+                <input
+                    type="radio"
+                    value={gateway.id}
+                    id={gateway.id}
+                    defaultChecked={defaultChecked}
+                    {...inputProps}
+                />
+                <span>{sprintf(__('Donate with %s', 'give'), gateway.label)}</span>
+            </label>
+            <div className="givewp-fields-gateways__gateway__fields">
                 <ErrorBoundary
                     FallbackComponent={GatewayFieldsErrorFallback}
                     onReset={() => {
