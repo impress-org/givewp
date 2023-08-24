@@ -1,14 +1,14 @@
 import {__} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
-import {Notice, PanelBody, ToggleControl} from '@wordpress/components';
+import {Notice, PanelBody, SelectControl, ToggleControl} from '@wordpress/components';
 import {createInterpolateElement} from '@wordpress/element';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 
 const MOCK = {
     default: null,
     accounts: {
-        1: __('Account 1', 'give'),
-        2: __('Account 2', 'give'),
+        '1': __('Account 1', 'give'),
+        '2': __('Account 2', 'give'),
     },
 };
 
@@ -25,13 +25,26 @@ export default function StripeAccount({attributes, setAttributes}) {
         });
     };
 
-    const hasGlobalDefault = MOCK.default;
-    const useGlobalDefaultHelper = createInterpolateElement(
-        __('All donations are processed through the default account set in the <a>Global settings</a>.', 'give'),
-        {
+    const textWithLinkToStripeSettings = (textTemplate: string) =>
+        createInterpolateElement(textTemplate, {
             a: <a href={`${gatewaySettingsUrl}&section=stripe-settings&group=accounts`} />,
-        }
+        });
+
+    const hasGlobalDefault = MOCK.default;
+    const hasPerFormDefault = stripeAccount.accountId;
+    const useGlobalDefaultHelper = textWithLinkToStripeSettings(
+        __('All donations are processed through the default account set in the <a>Global settings</a>.', 'give')
     );
+    const selectAccountHelper = textWithLinkToStripeSettings(
+        __(
+            'Select an account you would like to use to process donations for this form. You can also add another account in <a>Global settings</a>.',
+            'give'
+        )
+    );
+    const selectAccountOptions = Object.keys(MOCK.accounts).map((accountId) => ({
+        label: MOCK.accounts[accountId],
+        value: accountId,
+    }));
 
     return (
         <InspectorControls>
@@ -42,7 +55,16 @@ export default function StripeAccount({attributes, setAttributes}) {
                     onChange={(value) => handleSetAttributes({useGlobalDefault: value})}
                     help={hasGlobalDefault && useGlobalDefaultHelper}
                 />
-                {!hasGlobalDefault && (
+                {!stripeAccount.useGlobalDefault && (
+                    <SelectControl
+                        label={__('Choose Account', 'give')}
+                        value={stripeAccount.accountId}
+                        options={selectAccountOptions}
+                        onChange={(value: string) => handleSetAttributes({accountId: value})}
+                        help={selectAccountHelper}
+                    />
+                )}
+                {!hasGlobalDefault && !hasPerFormDefault && (
                     <Notice
                         isDismissible={false}
                         status="warning"
@@ -65,5 +87,5 @@ export default function StripeAccount({attributes, setAttributes}) {
 
 type StripeAccountProps = {
     useGlobalDefault: boolean;
-    accountId?: number;
+    accountId?: string;
 };
