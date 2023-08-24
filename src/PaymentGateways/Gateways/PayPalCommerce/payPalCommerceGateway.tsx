@@ -182,7 +182,7 @@ import {CSSProperties, useEffect, useState} from 'react';
         const donationType = useWatch({name: 'donationType'});
         const {isSubmitting, isSubmitSuccessful} = useFormState();
         const {useFormContext} = window.givewp.form.hooks;
-        const {trigger, setError} = useFormContext();
+        const {getFieldState, setFocus, getValues, formState: {errors}, trigger, setError} = useFormContext();
         const gateway = window.givewp.gateways.get('paypal-commerce');
 
         const props = {
@@ -206,6 +206,12 @@ import {CSSProperties, useEffect, useState} from 'react';
                 // Validate the form values before proceeding.
                 const result = await trigger();
                 if(result === false){
+                    // Set focus on first invalid field.
+                                       for (const fieldName in getValues()) {
+                        if(getFieldState(fieldName).invalid){
+                            setFocus(fieldName);
+                        }
+                                       }
                     return actions.reject();
                 }
 
