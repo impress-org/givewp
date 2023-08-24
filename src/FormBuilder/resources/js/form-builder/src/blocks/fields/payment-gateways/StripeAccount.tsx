@@ -25,8 +25,8 @@ export default function StripeAccount({attributes, setAttributes}) {
         });
     };
 
-    const hasDefaultAccount = stripeAccount.useGlobalDefault && MOCK.default;
-    const hasDefaultAccountMessage = createInterpolateElement(
+    const hasGlobalDefault = MOCK.default;
+    const useGlobalDefaultHelper = createInterpolateElement(
         __('All donations are processed through the default account set in the <a>Global settings</a>.', 'give'),
         {
             a: <a href={`${gatewaySettingsUrl}&section=stripe-settings&group=accounts`} />,
@@ -40,9 +40,9 @@ export default function StripeAccount({attributes, setAttributes}) {
                     label={__('Use global default', 'give')}
                     checked={stripeAccount.useGlobalDefault}
                     onChange={(value) => handleSetAttributes({useGlobalDefault: value})}
-                    help={hasDefaultAccount && hasDefaultAccountMessage}
+                    help={hasGlobalDefault && useGlobalDefaultHelper}
                 />
-                {!MOCK.default && (
+                {!hasGlobalDefault && (
                     <Notice
                         isDismissible={false}
                         status="warning"
