@@ -12,8 +12,12 @@ import {render} from '@wordpress/element';
 function AdditionalFields() {
     return (
         <>
-            <div className="block-editor-inserter__panel-header">
-                <h2 className="block-editor-inserter__panel-title block-editor-inserter__panel-additional-fields-header">
+            <div className={'block-editor-inserter__panel-header'}>
+                <h2
+                    className={
+                        'block-editor-inserter__panel-title block-editor-inserter__panel-additional-fields-header'
+                    }
+                >
                     {__('Additional Fields', 'give')}
                     <LockIcon />
                 </h2>
@@ -22,8 +26,8 @@ function AdditionalFields() {
             <div className="block-editor-inserter__panel-content">
                 <a
                     className={'block-editor-inserter__panel-content-link'}
-                    href="https://docs.givewp.com/vb-upgrade-recurring"
-                    target="_blank"
+                    href={'https://docs.givewp.com/vb-add-fields'}
+                    target={'_blank'}
                 >
                     {__('Upgrade to unlock additional fields', 'give')}
                 </a>
