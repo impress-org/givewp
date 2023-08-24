@@ -39,16 +39,25 @@ export default function StripeAccount({attributes, setAttributes}) {
     const useGlobalDefaultHelper = textWithLinkToStripeSettings(
         __('All donations are processed through the default account set in the <a>Global settings</a>.', 'give')
     );
-    const selectAccountHelper = textWithLinkToStripeSettings(
-        __(
-            'Select an account you would like to use to process donations for this form. You can also add another account in <a>Global settings</a>.',
-            'give'
-        )
-    );
-    const selectAccountOptions = Object.keys(MOCK.accounts).map((accountId) => ({
-        label: MOCK.accounts[accountId],
-        value: accountId,
-    }));
+    const selectAccountHelper = (() => {
+        const sharedText = __('Select an account you would like to use to process donations for this form.', 'give');
+
+        if (showGlobalDefaultNotice) {
+            return <>{sharedText}</>;
+        }
+
+        return textWithLinkToStripeSettings(
+            sharedText + ' ' + __('You can also add another account in <a>Global settings</a>.', 'give')
+        );
+    })();
+
+    const selectAccountOptions = [
+        {label: __('Select', 'give'), value: ''},
+        ...Object.keys(MOCK.accounts).map((accountId) => ({
+            label: MOCK.accounts[accountId],
+            value: accountId,
+        })),
+    ];
 
     return (
         <InspectorControls>
@@ -57,7 +66,7 @@ export default function StripeAccount({attributes, setAttributes}) {
                     label={__('Use global default', 'give')}
                     checked={stripeAccount.useGlobalDefault}
                     onChange={(value) => handleSetAttributes({useGlobalDefault: value})}
-                    help={hasGlobalDefault && useGlobalDefaultHelper}
+                    help={useGlobalDefaultHelper}
                 />
                 {!stripeAccount.useGlobalDefault && (
                     <SelectControl
