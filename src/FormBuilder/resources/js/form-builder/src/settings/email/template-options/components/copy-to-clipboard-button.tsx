@@ -17,18 +17,7 @@ const CopyToClipboardButton = ({text}: CopyClipboardButtonProps) => {
     };
 
     return (
-        <Button
-            style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.25rem',
-                height: 'fit-content',
-                paddingBlock: '0.5rem',
-                fontSize: '12px',
-            }}
-            variant={'tertiary'}
-            onClick={setCopied}
-        >
+        <Button className={'email-settings-template-tags__copy-btn'} variant={'tertiary'} onClick={setCopied}>
             <CopyIcon size={15} />
             {label}
         </Button>

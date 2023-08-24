@@ -47,6 +47,28 @@
     }
 }
 
+.email-preview-back-btn {
+    z-index: 11; /* Above the modal header */
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: var(--givewp-spacing-5) var(--givewp-spacing-8);
+    padding: var(--givewp-spacing-4) var(--givewp-spacing-8);
+}
+
+.email-settings-preview-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.email-settings-preview-generating {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .email-settings {
     display: flex;
@@ -185,6 +207,13 @@
             }
         }
     }
+
+    &-add-email {
+        height: 2.5rem;
+        width: 100%;
+        justify-content: center;
+        gap: .25rem;
+    }
 }
 
 .email-settings-template-tags {
@@ -192,8 +221,16 @@
     overflow: scroll;
     border: 1px solid var(--givewp-grey-100);
     border-radius: 2px;
-
     scroll-snap-type: y mandatory;
+
+    &__copy-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        height: fit-content;
+        padding-block: 0.5rem;
+        font-size: 12px;
+    }
 
     & > li {
         scroll-snap-align: start;

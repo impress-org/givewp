@@ -65,14 +65,7 @@ export default () => {
                         <>
                             <EmailPreviewContent emailType={selectedTab} />
                             <Button
-                                style={{
-                                    zIndex: 11, // Above the modal header
-                                    position: 'absolute',
-                                    top: 0,
-                                    right: 0,
-                                    margin: 'var(--givewp-spacing-5) var(--givewp-spacing-8)',
-                                    padding: 'var(--givewp-spacing-4) var(--givewp-spacing-8)',
-                                }}
+                                className={'email-settings-preview-back-btn'}
                                 variant={'secondary'}
                                 onClick={() => setShowPreview(false)}
                             >

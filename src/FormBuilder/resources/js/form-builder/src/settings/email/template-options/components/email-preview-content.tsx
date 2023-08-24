@@ -45,19 +45,13 @@ const EmailPreviewContent = ({emailType}: EmailPreviewContentProps) => {
     }, []);
 
     return previewHtml ? (
-        <iframe srcDoc={previewHtml} style={{width: '100%', height: '100%', border: 'none'}} />
+        <iframe
+            srcDoc={previewHtml}
+            className={'email-settings-preview-iframe'}
+            style={{width: '100%', height: '100%', border: 'none'}}
+        />
     ) : (
-        <div
-            style={{
-                width: '100%',
-                height: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}
-        >
-            {__('Generating preview...', 'give')}
-        </div>
+        <div className={'email-settings-preview-generating'}>{__('Generating preview...', 'give')}</div>
     );
 };
 

@@ -214,7 +214,7 @@ const EmailTemplateSettings = ({notification, closeModal}: EmailTemplateSettings
                                 })}
 
                                 <Button
-                                    style={{height: '2.5rem', width: '100%', justifyContent: 'center', gap: '.25rem'}}
+                                    className={'email-settings-template-add-email'}
                                     variant={'secondary'}
                                     onClick={() => updateEmailTemplateField('recipient', [...recipients, ''])}
                                 >
