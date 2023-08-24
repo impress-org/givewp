@@ -22,6 +22,11 @@
         color: var(--givewp-grey-500);
         font-size: 0.75rem;
         margin: 0;
+
+    }
+
+    .components-input-control__container {
+        min-height: 2.25rem !important;
     }
 }
 
