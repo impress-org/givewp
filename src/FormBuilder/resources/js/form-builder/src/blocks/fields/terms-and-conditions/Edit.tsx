@@ -225,9 +225,9 @@ type CheckboxPlaceholderProps = {
 
 function CheckboxPlaceholder({label, linkText, isFormDisplay, agreementText}: CheckboxPlaceholderProps) {
     return (
-        <div className={'give-terms-and-conditions'}>
+        <div className={'givewp-terms-and-conditions'}>
             <div
-                className={'give-terms-and-conditions-container'}
+                className={'givewp-terms-and-conditions-container'}
                 style={{
                     display: isFormDisplay ? 'block' : 'inline-flex',
                 }}
@@ -235,13 +235,13 @@ function CheckboxPlaceholder({label, linkText, isFormDisplay, agreementText}: Ch
                 <CheckboxControl label={label} onChange={null} disabled={true} />
 
                 {isFormDisplay && (
-                    <div className={'give-terms-and-conditions-container__form-display'}>
+                    <div className={'givewp-terms-and-conditions-container__form-display'}>
                         <Markup content={agreementText} />
                     </div>
                 )}
 
                 {!isFormDisplay && (
-                    <div className={'give-terms-and-conditions-container__link-display'}>{linkText}</div>
+                    <div className={'givewp-terms-and-conditions-container__link-display'}>{linkText}</div>
                 )}
             </div>
         </div>
