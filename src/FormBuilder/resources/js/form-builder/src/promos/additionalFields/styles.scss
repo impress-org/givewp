@@ -17,7 +17,7 @@
     font-weight: 400;
     line-height: 1rem;
     text-decoration: none;
-    color: var(--givewp-shades-white, #ffffff);
+    color: var(--givewp-shades-white, #ffffff) !important;
     border: 1px solid var(--givewp-primary-main-700, #5BA65E);
 
     &:hover, &:active {
