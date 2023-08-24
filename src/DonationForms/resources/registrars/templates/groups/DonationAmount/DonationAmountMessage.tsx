@@ -1,5 +1,4 @@
-import FixedAmountMessage from './FixedAmountMessage';
-import FixedAmountSubscriptionMessage from './FixedAmountRecurringMessage';
+import {OneTimeAmountMessage, RecurringAmountMessage} from '@givewp/forms/shared/AmountMessages';
 import {isSubscriptionPeriod} from './subscriptionPeriod';
 import {isDonationTypeSubscription} from '@givewp/forms/types';
 
@@ -30,17 +29,21 @@ export default function DonationAmountMessage({
     return (
         <>
             {isFixedAmount && !displayFixedAmountSubscriptionMessage && (
-                <FixedAmountMessage amount={fixedAmountFormatted} />
+                <div className="givewp-fields-amount__fixed-message">
+                    <OneTimeAmountMessage amount={fixedAmountFormatted} />
+                </div>
             )}
 
             {displayFixedAmountSubscriptionMessage && (
-                <FixedAmountSubscriptionMessage
-                    isFixedAmount={isFixedAmount}
-                    fixedAmount={fixedAmountFormatted}
-                    period={subscriptionPeriod}
-                    frequency={subscriptionFrequency}
-                    installments={subscriptionInstallments}
-                />
+                <div className="givewp-fields-amount__fixed-message">
+                    <RecurringAmountMessage
+                        isFixedAmount={isFixedAmount}
+                        fixedAmount={fixedAmountFormatted}
+                        period={subscriptionPeriod}
+                        frequency={subscriptionFrequency}
+                        installments={subscriptionInstallments}
+                    />
+                </div>
             )}
         </>
     );

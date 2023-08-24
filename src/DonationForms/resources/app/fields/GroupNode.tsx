@@ -1,32 +1,39 @@
-import {Field, Group, isField} from '@givewp/forms/types';
+import {Node, Group, isField, isGroup} from '@givewp/forms/types';
 import {useTemplateWrapper} from '../templates';
 import type {GroupProps} from '@givewp/forms/propTypes';
-import FieldNode from '@givewp/forms/app/fields/FieldNode';
+import {memo, useEffect} from '@wordpress/element';
+import SectionNode from './SectionNode';
+import useVisibilityCondition from '@givewp/forms/app/hooks/useVisibilityCondition';
+import memoNode from '@givewp/forms/app/utilities/memoNode';
 
 const formTemplates = window.givewp.form.templates;
 
-export default function GroupNode({node}: {node: Group}) {
+/**
+ * Renders a group node and its children. At this point, group nodes are not generic, and are only used for specific
+ * subtypes of group fields, such as the Name field. The nodes are grouped by component and props, and then passed to
+ * the group template component. This way the group template controls how the nodes are rendered, and can choose to
+ * manipulate or override props.
+ *
+ * @since 3.0.0
+ */
+function GroupNode({node}: { node: Group }) {
     const Group = useTemplateWrapper<GroupProps>(formTemplates.groups[node.type], 'div', node.name);
 
-    const fields = node.reduceNodes(
-        (fields, field: Field) => {
-            fields[field.name] = (props: Field) => <FieldNode node={{...field, ...props}} />;
+    const nodeComponents = node.reduceNodes((nodes, node: Node) => {
+        nodes[node.name] = (props: Node) => <SectionNode node={{...node, ...props}} />;
 
-            return fields;
-        },
-        {},
-        isField
-    );
+        return nodes;
+    }, {});
 
-    const fieldProps = node.reduceNodes(
-        (fields, field: Field) => {
-            fields[field.name] = field;
+    const nodeProps = node.reduceNodes((nodes, node: Node) => {
+        nodes[node.name] = node;
 
-            return fields;
-        },
-        {},
-        isField
-    );
+        return nodes;
+    }, {});
 
-    return <Group key={node.name} fields={fields} fieldProps={fieldProps} {...node} />;
+    return <Group key={node.name} nodeComponents={nodeComponents} nodeProps={nodeProps} {...node} />;
 }
+
+const MemoizedGroupNode = memoNode(GroupNode);
+
+export default MemoizedGroupNode;

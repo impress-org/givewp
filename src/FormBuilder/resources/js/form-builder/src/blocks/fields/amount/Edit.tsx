@@ -5,17 +5,16 @@ import LevelButton from './level-buttons';
 import Inspector from './inspector';
 import periodLookup from './period-lookup';
 import {CurrencyControl, formatCurrencyAmount} from '../../../common/currency';
-import {createInterpolateElement} from '@wordpress/element';
 import {BaseControl, RadioControl} from '@wordpress/components';
+import {OneTimeAmountMessage, RecurringAmountMessage} from '@givewp/forms/shared/AmountMessages';
 import Notice from './notice';
 
-import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
+import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 
 const Edit = ({attributes, setAttributes}) => {
     const {
         label = __('Donation Amount', 'give'),
         levels,
-        defaultLevel,
         priceOption,
         setPrice,
         customAmount,
@@ -27,20 +26,21 @@ const Edit = ({attributes, setAttributes}) => {
         recurringEnableOneTimeDonations,
     } = attributes;
 
-    const {gateways} = getFormBuilderData();
+    const {gateways} = getFormBuilderWindowData();
 
     const isRecurringSupported = gateways.some((gateway) => gateway.enabled && gateway.supportsSubscriptions);
     const isRecurring = isRecurringSupported && recurringEnabled;
     const isMultiLevel = priceOption === 'multi';
     const isFixedAmount = priceOption === 'set';
-    const isRecurringDonor = isRecurring && (recurringBillingPeriodOptions.length > 1 || recurringEnableOneTimeDonations);
+    const isRecurringDonor =
+        isRecurring && (recurringBillingPeriodOptions.length > 1 || recurringEnableOneTimeDonations);
     const isRecurringAdmin = isRecurring && !isRecurringDonor;
 
     const amountFormatted = formatCurrencyAmount(setPrice.toString());
 
     const DonationLevels = () => (
         <LevelGrid>
-            {levels.map((level, index) => {
+            {levels.map((level: string, index: number) => {
                 const levelAmount = formatCurrencyAmount(level);
 
                 return <LevelButton key={index}>{levelAmount}</LevelButton>;
@@ -54,9 +54,7 @@ const Edit = ({attributes, setAttributes}) => {
 
     const FixedPriceMessage = () => (
         <Notice>
-            {createInterpolateElement(__('This donation is set to <amount/> for this form.', 'give'), {
-                amount: <strong>{amountFormatted}</strong>,
-            })}
+            <OneTimeAmountMessage amount={amountFormatted} />
         </Notice>
     );
 
@@ -88,25 +86,17 @@ const Edit = ({attributes, setAttributes}) => {
         const installments = parseInt(recurringLengthOfTime);
         const frequency = parseInt(recurringBillingInterval);
 
-        const translatableString = !installments
-            ? __('This donation <amount /> every <period />.', 'give')
-            : __('This donation <amount /> every <period /> for <count /> <payments />.', 'give');
-
-        const message = createInterpolateElement(translatableString, {
-            amount:
-                isFixedAmount && !customAmount ? (
-                    <span>
-                        is <strong>{amountFormatted}</strong>
-                    </span>
-                ) : (
-                    <span>occurs</span>
-                ),
-            period: <RecurringPeriod count={frequency} />,
-            count: <strong>{installments}</strong>,
-            payments: <strong>payments</strong>,
-        });
-
-        return <Notice>{message}</Notice>;
+        return (
+            <Notice>
+                <RecurringAmountMessage
+                    isFixedAmount={isFixedAmount}
+                    fixedAmount={amountFormatted}
+                    period={recurringBillingPeriodOptions[0]}
+                    frequency={frequency}
+                    installments={installments}
+                />
+            </Notice>
+        );
     };
 
     const BillingPeriodControl = ({options}) => {

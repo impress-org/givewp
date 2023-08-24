@@ -12,7 +12,7 @@ import {InspectorControls} from '@wordpress/block-editor';
 import {CurrencyControl, formatCurrencyAmount} from '@givewp/form-builder/common/currency';
 import periodLookup from '../period-lookup';
 import RecurringDonationsPromo from '@givewp/form-builder/promos/recurring-donations';
-import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
+import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {useCallback, useState} from '@wordpress/element';
 import Options from '@givewp/form-builder/components/OptionsPanel';
 import {OptionProps} from '@givewp/form-builder/components/OptionsPanel/types';
@@ -96,7 +96,7 @@ const Inspector = ({attributes, setAttributes}) => {
         [recurringBillingPeriodOptions]
     );
 
-    const {gateways, recurringAddonData, gatewaySettingsUrl} = getFormBuilderData();
+    const {gateways, recurringAddonData, gatewaySettingsUrl} = getFormBuilderWindowData();
     const enabledGateways = gateways.filter((gateway) => gateway.enabled);
     const recurringGateways = gateways.filter((gateway) => gateway.supportsSubscriptions);
     const isRecurringSupported = enabledGateways.some((gateway) => gateway.supportsSubscriptions);

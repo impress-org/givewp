@@ -1,12 +1,24 @@
 import {createInterpolateElement} from '@wordpress/element';
 import {__} from '@wordpress/i18n';
-import type {subscriptionPeriod} from './subscriptionPeriod';
-import {SubscriptionPeriod} from './subscriptionPeriod';
+import {subscriptionPeriod, SubscriptionPeriod} from "../registrars/templates/groups/DonationAmount/subscriptionPeriod";
 
 /**
+ * Returns the donor-facing message for a fixed amount donation.
+ *
  * @since 3.0.0
  */
-export default function FixedAmountRecurringMessage({
+export function OneTimeAmountMessage({amount}: {amount: string}) {
+    return createInterpolateElement(__('This donation is <amount/>', 'give'), {
+        amount: <strong>{amount}</strong>,
+    });
+}
+
+/**
+ * Returns the donor-facing message for a recurring donation.
+ *
+ * @since 3.0.0
+ */
+export function RecurringAmountMessage({
     isFixedAmount,
     fixedAmount,
     period,
@@ -23,20 +35,18 @@ export default function FixedAmountRecurringMessage({
 
     const translatableString = !installments
         ? __('This donation <amount /> every <period />.', 'give')
-        : __('This donation <amount /> every <period /> for <count /> <payments />.', 'give');
+        : __('This donation <amount /> every <period /> for <count /> <donations />.', 'give');
 
-    const message = createInterpolateElement(translatableString, {
+    return createInterpolateElement(translatableString, {
         amount: isFixedAmount ? (
             <span>
                 {__('is', 'give')} <strong>{fixedAmount}</strong>
             </span>
         ) : (
-            <span>{__('occurs', 'give')}</span>
+            <span>{__('repeats', 'give')}</span>
         ),
         period: <strong>{subscriptionPeriod.label().get(frequency)}</strong>,
         count: <strong>{installments}</strong>,
-        payments: <strong>{__('payments', 'give')}</strong>,
+        donations: <strong>{__('donations', 'give')}</strong>,
     });
-
-    return <div className="givewp-fields-amount__fixed-message">{message}</div>;
 }

@@ -3,42 +3,45 @@
 namespace Give\PaymentGateways\Gateways\PayPalStandard;
 
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Http\Response\Types\RedirectResponse;
 use Give\Framework\PaymentGateways\Commands\RedirectOffsite;
 use Give\Framework\PaymentGateways\PaymentGateway;
-use Give\Helpers\Call;
+use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
+use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 use Give\PaymentGateways\Gateways\PayPalStandard\Actions\CreatePayPalStandardPaymentURL;
-use Give\PaymentGateways\Gateways\PayPalStandard\Actions\GenerateDonationFailedPageUrl;
-use Give\PaymentGateways\Gateways\PayPalStandard\Actions\GenerateDonationReceiptPageUrl;
 use Give\PaymentGateways\Gateways\PayPalStandard\Controllers\PayPalStandardWebhook;
 use Give\PaymentGateways\Gateways\PayPalStandard\Views\PayPalStandardBillingFields;
-use Give_Payment;
 
 /**
+ * @since 3.0.0 added support for Give 3.0 forms
  * @since 2.19.0
  */
 class PayPalStandard extends PaymentGateway
 {
+    use HandleHttpResponses;
+    use HasScriptAssetFile;
+
     public $routeMethods = [
         'handleIpnNotification',
     ];
 
     public $secureRouteMethods = [
         'handleSuccessPaymentReturn',
-        'handleFailedPaymentReturn',
+        'handleCancelledPaymentReturn',
     ];
 
     /**
-     * @inheritDoc
+     * @since 2.19.0
      */
     public function getLegacyFormFieldMarkup(int $formId, array $args): string
     {
-        return Call::invoke(PayPalStandardBillingFields::class, $formId);
+        return (new PayPalStandardBillingFields())($formId);
     }
 
     /**
-     * @inheritDoc
+     * @since 2.19.0
      */
     public static function id(): string
     {
@@ -46,7 +49,7 @@ class PayPalStandard extends PaymentGateway
     }
 
     /**
-     * @inerhitDoc
+     * @since 2.19.0
      */
     public function getId(): string
     {
@@ -54,15 +57,15 @@ class PayPalStandard extends PaymentGateway
     }
 
     /**
-     * @inheritDoc
+     * @since 2.19.0
      */
     public function getName(): string
     {
-        return esc_html__('PayPal Standard', 'give');
+        return __('PayPal Standard', 'give');
     }
 
     /**
-     * @inheritDoc
+     * @since 2.19.0
      */
     public function getPaymentMethodLabel(): string
     {
@@ -70,23 +73,62 @@ class PayPalStandard extends PaymentGateway
     }
 
     /**
-     * @inheritDoc
+     * @since 3.0.0
+     */
+    public function formSettings(int $formId): array
+    {
+        return [
+            'fields' => [
+                'heading' => __('Make your donation quickly and securely with PayPal', 'give'),
+                'subheading' => __('How it works', 'give'),
+                'body' => __(
+                    'You will be redirected to PayPal to complete your donation with your debit card, credit card, or with your PayPal account. Once complete, you will be redirected back to this site to view your receipt.',
+                    'give'
+                ),
+            ]
+        ];
+    }
+
+    /**
+     * @since 3.0.0
+     */
+    public function enqueueScript(int $formId)
+    {
+        $assets = $this->getScriptAsset(GIVE_PLUGIN_DIR . 'build/payPalStandardGateway.asset.php');
+
+        wp_enqueue_script(
+            self::id(),
+            GIVE_PLUGIN_URL . 'build/payPalStandardGateway.js',
+            $assets['dependencies'],
+            $assets['version'],
+            true
+        );
+    }
+
+    /**
+     * @since 3.0.0 update to add `givewp-return-url` to the query params
+     * @since 2.19.0
      */
     public function createPayment(Donation $donation, $gatewayData = []): RedirectOffsite
     {
         return new RedirectOffsite(
-            Call::invoke(
-                CreatePayPalStandardPaymentURL::class,
+            (new CreatePayPalStandardPaymentURL())(
                 $donation,
                 $this->generateSecureGatewayRouteUrl(
                     'handleSuccessPaymentReturn',
                     $donation->id,
-                    ['donation-id' => $donation->id]
+                    [
+                        'donation-id' => $donation->id,
+                        'givewp-return-url' => $gatewayData['successUrl']
+                    ]
                 ),
                 $this->generateSecureGatewayRouteUrl(
-                    'handleFailedPaymentReturn',
+                    'handleCancelledPaymentReturn',
                     $donation->id,
-                    ['donation-id' => $donation->id]
+                    [
+                        'donation-id' => $donation->id,
+                        'givewp-return-url' => $gatewayData['cancelUrl']
+                    ]
                 ),
                 $this->generateGatewayRouteUrl(
                     'handleIpnNotification'
@@ -98,49 +140,31 @@ class PayPalStandard extends PaymentGateway
     /**
      * Handle payment redirect after successful payment on PayPal standard.
      *
+     * @since 3.0.0 update to use the $gatewayParams return url
      * @since 2.19.0
      * @since 2.19.4 Only pending PayPal Standard donation set to processing.
-     * @since 2.19.6 1. Do not set donation to "processing"
-     *             2. Add "payment-confirmation" param to receipt page url
-     *
-     * @param array $queryParams Query params in gateway route. {
-     *
-     * @type string "donation-id" Donation id.
-     *
-     * }
+     * @since 2.19.6 1. Do not set donation to "processing" 2. Add "payment-confirmation" param to receipt page url
      */
     protected function handleSuccessPaymentReturn(array $queryParams): RedirectResponse
     {
-        $donationId = (int)$queryParams['donation-id'];
-
-        return new RedirectResponse(
-            esc_url_raw(
-                add_query_arg(
-                    ['payment-confirmation' => self::id()],
-                    Call::invoke(GenerateDonationReceiptPageUrl::class, $donationId)
-                )
-            )
-        );
+        return new RedirectResponse(esc_url_raw($queryParams['givewp-return-url']));
     }
 
     /**
-     * Handle payment redirect after failed payment on PayPal standard.
+     * This method is called when the user cancels the payment on PayPal.
      *
-     * @since 2.19.0
-     *
-     * @param array $queryParams Query params in gateway route. {
-     *
-     * @type string "donation-id" Donation id.
-     *
-     * }
+     * @since 3.0.0
      */
-    protected function handleFailedPaymentReturn(array $queryParams): RedirectResponse
+    protected function handleCancelledPaymentReturn(array $queryParams): RedirectResponse
     {
         $donationId = (int)$queryParams['donation-id'];
-        $payment = new Give_Payment($donationId);
-        $payment->update_status('failed');
 
-        return new RedirectResponse(Call::invoke(GenerateDonationFailedPageUrl::class, $donationId));
+        /** @var Donation $donation */
+        $donation = Donation::find($donationId);
+        $donation->status = DonationStatus::CANCELLED();
+        $donation->save();
+
+        return new RedirectResponse(esc_url_raw($queryParams['givewp-return-url']));
     }
 
     /**
@@ -157,10 +181,8 @@ class PayPalStandard extends PaymentGateway
      * This function returns payment gateway settings.
      *
      * @since 2.19.0
-     *
-     * @return array
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         $setting = [
             // Section 2: PayPal Standard.

@@ -4,9 +4,9 @@ import {setFormSettings, useFormState, useFormStateDispatch} from '@givewp/form-
 import PopoverContentWithTemplateTags from '@givewp/form-builder/components/settings/PopoverContentWithTemplateTags';
 import usePopoverState from '@givewp/form-builder/hooks/usePopoverState';
 import ControlForPopover from '@givewp/form-builder/components/settings/ControlForPopover';
-import {getFormBuilderData} from '@givewp/form-builder/common/getWindowData';
+import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 
-const {donationConfirmationTemplateTags} = getFormBuilderData();
+const {donationConfirmationTemplateTags} = getFormBuilderWindowData();
 
 const DonationConfirmation = () => {
     const {

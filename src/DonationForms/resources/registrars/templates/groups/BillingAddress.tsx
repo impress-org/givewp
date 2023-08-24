@@ -3,7 +3,6 @@ import {FC, useEffect, useState} from 'react';
 import {__} from '@wordpress/i18n';
 import {ErrorMessage} from '@hookform/error-message';
 import {useCallback} from '@wordpress/element';
-import Label from '@givewp/form-builder/blocks/fields/settings/Label';
 
 /**
  * @since 3.0.0
@@ -203,7 +202,7 @@ function StateFieldContainer({
  */
 export default function BillingAddress({
     groupLabel,
-    fields: {country: Country, address1: Address1, address2: Address2, city: City, state, zip: Zip},
+    nodeComponents: {country: Country, address1: Address1, address2: Address2, city: City, state, zip: Zip},
     apiUrl,
 }: BillingAddressProps) {
     // these are necessary to set the required indicator on the city and zip field labels

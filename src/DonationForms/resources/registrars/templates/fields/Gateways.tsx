@@ -1,7 +1,7 @@
 import {ErrorMessage} from '@hookform/error-message';
 import type {GatewayFieldProps, GatewayOptionProps} from '@givewp/forms/propTypes';
 import {ErrorBoundary} from 'react-error-boundary';
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import {useEffect, useMemo} from 'react';
 import {createInterpolateElement} from '@wordpress/element';
 
@@ -146,7 +146,7 @@ function GatewayOption({gateway, defaultChecked, inputProps}: GatewayOptionProps
     return (
         <li>
             <input type="radio" value={gateway.id} id={gateway.id} defaultChecked={defaultChecked} {...inputProps} />
-            <label htmlFor={gateway.id}> Donate with {gateway.label}</label>
+            <label htmlFor={gateway.id}> {sprintf(__('Donate with %s', 'give'), gateway.label)}</label>
             <div className="givewp-fields-payment-gateway">
                 <ErrorBoundary
                     FallbackComponent={GatewayFieldsErrorFallback}

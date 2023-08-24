@@ -68,11 +68,13 @@ use Give\Framework\Migrations\MigrationsServiceProvider;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\ValidationRules\ValidationRulesServiceProvider;
 use Give\Framework\WordPressShims\ServiceProvider as WordPressShimsServiceProvider;
+use Give\Helpers\Language;
 use Give\LegacySubscriptions\ServiceProvider as LegacySubscriptionsServiceProvider;
 use Give\License\LicenseServiceProvider;
 use Give\Log\LogServiceProvider;
 use Give\MigrationLog\MigrationLogServiceProvider;
 use Give\MultiFormGoals\ServiceProvider as MultiFormGoalsServiceProvider;
+use Give\PaymentGateways\Gateways\TestOffsiteGateway\TestOffsiteGateway;
 use Give\PaymentGateways\ServiceProvider as PaymentGatewaysServiceProvider;
 use Give\Promotions\ServiceProvider as PromotionsServiceProvider;
 use Give\Revenue\RevenueServiceProvider;
@@ -256,6 +258,8 @@ final class Give
     {
         $this->setup_constants();
 
+        $this->disableVisualDonationFormBuilderFeaturePlugin();
+
         // Add compatibility notice for recurring and stripe support with Give 2.5.0.
         add_action('admin_notices', [$this, 'display_old_recurring_compatibility_notice']);
 
@@ -361,6 +365,7 @@ final class Give
     /**
      * Loads the plugin language files.
      *
+     * @unreleased Use Language class
      * @since  1.0
      * @access public
      *
@@ -368,17 +373,7 @@ final class Give
      */
     public function load_textdomain()
     {
-        // Set filter for Give's languages directory
-        $give_lang_dir = dirname(plugin_basename(GIVE_PLUGIN_FILE)) . '/languages/';
-        $give_lang_dir = apply_filters('give_languages_directory', $give_lang_dir);
-
-        // Traditional WordPress plugin locale filter.
-        $locale = is_admin() && function_exists('get_user_locale') ? get_user_locale() : get_locale();
-        $locale = apply_filters('plugin_locale', $locale, 'give');
-
-        unload_textdomain('give');
-        load_textdomain('give', WP_LANG_DIR . '/give/give-' . $locale . '.mo');
-        load_plugin_textdomain('give', false, $give_lang_dir);
+        Language::load();
     }
 
     /**
@@ -522,6 +517,27 @@ final class Give
     {
         $handler = new UncaughtExceptionLogger();
         $handler->setupExceptionHandler();
+    }
+
+    protected function disableVisualDonationFormBuilderFeaturePlugin()
+    {
+        // Include plugin.php to use is_plugin_active() below.
+        include_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+        // Prevent fatal error due to a renamed class.
+        class_alias(TestOffsiteGateway::class, 'Give\PaymentGateways\Gateways\TestGateway\TestGatewayOffsite', true);
+
+        if ( is_plugin_active('givewp-next-gen/give-visual-form-builder.php' )) {
+            deactivate_plugins(['givewp-next-gen/give-visual-form-builder.php']);
+
+            add_action('admin_notices', function() {
+                Give()->notices->register_notice([
+                    'id' => 'give-visual-donation-form-builder-feature-plugin-deactivated',
+                    'description' => __('The Visual Form Builder Beta plugin is no longer needed, since the form builder is included in your current version of GiveWP. To prevent conflicts, the Beta plugin has been deactivated and can be safely deleted.', 'give'),
+                    'type' => 'info',
+                ]);
+            });
+        }
     }
 }
 
