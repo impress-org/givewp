@@ -32,7 +32,7 @@ export default function Goal(props: GoalProps) {
     const {targetAmountFormatted, totalRevenueFormatted, totalCountValue, totalCountLabel} = props;
 
     return (
-        <div style={{width: '100%'}}>
+        <div className="givewp-layouts-goal__container">
             <FormStats
                 totalRevenue={totalRevenueFormatted}
                 goalTargetAmount={targetAmountFormatted}
