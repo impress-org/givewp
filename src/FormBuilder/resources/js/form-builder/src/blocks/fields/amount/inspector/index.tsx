@@ -123,7 +123,7 @@ const Inspector = ({attributes, setAttributes}) => {
         levels.map((level) => ({
             label: formatCurrencyAmount(level),
             value: level,
-            checked: defaultLevel === Number(level),
+            checked: defaultLevel === level,
         }))
     );
 

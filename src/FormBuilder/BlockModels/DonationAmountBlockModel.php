@@ -56,8 +56,10 @@ class DonationAmountBlockModel {
 
     /**
      * @unreleased
+     *
+     * @return string|null
      */
-    public function getDefaultLevel(): string
+    public function getDefaultLevel()
     {
         return $this->block->getAttribute('defaultLevel');
     }
