@@ -234,7 +234,12 @@ function CheckboxPlaceholder({label, linkText, isFormDisplay, agreementText}: Ch
                     border: 'none',
                 }}
             >
-                <CheckboxControl label={label} onChange={null} disabled={true} />
+                <CheckboxControl
+                    className={'give-terms-and-conditions-control'}
+                    label={label}
+                    onChange={null}
+                    disabled={true}
+                />
 
                 {isFormDisplay && (
                     <div
