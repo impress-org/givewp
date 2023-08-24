@@ -20,7 +20,7 @@ import Editor from '@givewp/form-builder/settings/email/template-options/compone
 import StyledPopover from '@givewp/form-builder/blocks/fields/terms-and-conditions/StyledPopover';
 import GlobalSettingsLink from '@givewp/form-builder/blocks/fields/terms-and-conditions/GlobalSettingsLink';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
-import './_terms-and-conditions.scss';
+import './index.scss';
 
 const DisplayTypeEnum = {
     SHOW_MODAL_TERMS: 'showModalTerms',
@@ -227,6 +227,7 @@ function CheckboxPlaceholder({label, linkText, isFormDisplay, agreementText}: Ch
     return (
         <div className={'give-terms-and-conditions'}>
             <div
+                className={'give-terms-and-conditions-container'}
                 style={{
                     display: isFormDisplay ? 'block' : 'inline-flex',
                 }}
@@ -234,12 +235,14 @@ function CheckboxPlaceholder({label, linkText, isFormDisplay, agreementText}: Ch
                 <CheckboxControl label={label} onChange={null} disabled={true} />
 
                 {isFormDisplay && (
-                    <div className={'give-terms-and-conditions__form-display'}>
+                    <div className={'give-terms-and-conditions-container__form-display'}>
                         <Markup content={agreementText} />
                     </div>
                 )}
 
-                {!isFormDisplay && <div className={'give-terms-and-conditions__link-display'}>{linkText}</div>}
+                {!isFormDisplay && (
+                    <div className={'give-terms-and-conditions-container__link-display'}>{linkText}</div>
+                )}
             </div>
         </div>
     );
