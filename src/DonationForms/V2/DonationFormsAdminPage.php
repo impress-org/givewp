@@ -28,11 +28,16 @@ class DonationFormsAdminPage
      * @var string
      */
     private $onboardingApiRoot;
+    /**
+     * @var string
+     */
+    protected $migrationApiRoot;
 
     public function __construct()
     {
         $this->apiRoot = esc_url_raw(rest_url('give-api/v2/admin/forms'));
         $this->onboardingApiRoot = esc_url_raw(rest_url('give-api/v2/admin/onboarding/options'));
+        $this->migrationApiRoot = esc_url_raw(rest_url('give-api/v2/admin/forms/migrate'));
         $this->apiNonce = wp_create_nonce('wp_rest');
         $this->adminUrl = admin_url();
     }
@@ -124,6 +129,8 @@ class DonationFormsAdminPage
         $data = [
             'supportedAddons' => $this->getSupportedAddons(),
             'supportedGateways' => $this->getSupportedGateways(),
+            'migrationApiRoot' => $this->migrationApiRoot,
+            'apiNonce' => $this->apiNonce,
         ];
 
         EnqueueScript::make('give-edit-v2form', 'assets/dist/js/give-edit-v2form.js')

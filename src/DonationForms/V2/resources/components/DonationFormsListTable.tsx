@@ -16,6 +16,7 @@ declare global {
         GiveDonationForms: {
             apiNonce: string;
             onboardingApiRoot: string;
+            migrationApiRoot: string;
             apiRoot: string;
             authors: Array<{ id: string | number; name: string }>;
             table: { columns: Array<object> };

@@ -6,11 +6,29 @@ import styles from '../style.module.scss';
 
 
 export default function FeatureNoticeDialog({isUpgrading, handleClose}) {
-    const {supportedAddons, supportedGateways} = window.GiveDonationForms;
+    const {supportedAddons, supportedGateways, migrationApiRoot, apiNonce} = window.GiveDonationForms;
 
-    const handleUpgrade = () => {
-        // todo migrate the v2 form to v3
-        // redirect to the form builder
+    // @ts-ignore
+    console.log(isUpgrading, window.give_vars.post_id)
+
+    const handleUpgrade = async () => {
+
+        // @ts-ignore
+        const response = await fetch(migrationApiRoot + '/' + window.give_vars.post_id, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-WP-Nonce': apiNonce,
+            },
+        });
+
+        const data = await response.json();
+
+        if(response.ok) {
+            window.location = data.redirect;
+        } else {
+            alert('Error migrating form');
+        }
     }
 
     return (
