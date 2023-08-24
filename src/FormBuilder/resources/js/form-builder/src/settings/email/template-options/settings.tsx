@@ -9,10 +9,9 @@ import TrashIcon from '@givewp/form-builder/settings/email/template-options/comp
 
 type EmailTemplateSettingsProps = {
     notification: string;
-    closeModal: () => void;
 };
 
-const EmailTemplateSettings = ({notification, closeModal}: EmailTemplateSettingsProps) => {
+const EmailTemplateSettings = ({notification}: EmailTemplateSettingsProps) => {
     const dispatch = useFormStateDispatch();
     const {
         settings: {emailTemplateOptions},
@@ -122,7 +121,7 @@ const EmailTemplateSettings = ({notification, closeModal}: EmailTemplateSettings
                                             />
 
                                             <Button
-                                                className={'email-settings-template__recipient-delete'}
+                                                className={'email-settings-template__recipient-delete-btn'}
                                                 onClick={() => {
                                                     recipients.splice(index, 1);
                                                     updateEmailTemplateOption('recipient', recipients.slice());
@@ -135,7 +134,7 @@ const EmailTemplateSettings = ({notification, closeModal}: EmailTemplateSettings
                                 })}
 
                                 <Button
-                                    className={'email-settings-template-add-email'}
+                                    className={'email-settings-template__recipient-add-email-btn'}
                                     variant={'secondary'}
                                     onClick={() => updateEmailTemplateOption('recipient', [...recipients, ''])}
                                 >

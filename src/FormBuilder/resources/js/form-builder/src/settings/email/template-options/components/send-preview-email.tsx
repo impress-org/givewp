@@ -54,7 +54,7 @@ export default ({emailType, defaultEmailAddress}: SendPreviewEmailProps) => {
                 {__('Specify below the email address you want to send a test email to', 'givewp')}
             </p>
             {defaultEmailAddress !== null && <TextControl onChange={setEmailAddress} value={emailAddress} />}
-            <Button className={'email-settings-email-btn'} variant={'secondary'} onClick={sendTestEmail}>
+            <Button className={'email-settings__email-btn'} variant={'secondary'} onClick={sendTestEmail}>
                 {__('Send test email', 'givewp')}
             </Button>
         </>

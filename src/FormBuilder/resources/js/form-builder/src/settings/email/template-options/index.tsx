@@ -65,7 +65,7 @@ export default () => {
                         <>
                             <EmailPreviewContent emailType={selectedTab} />
                             <Button
-                                className={'email-preview-back-btn'}
+                                className={'email-preview__back-btn'}
                                 variant={'secondary'}
                                 onClick={() => setShowPreview(false)}
                             >
@@ -76,10 +76,14 @@ export default () => {
 
                     {!showPreview && (
                         <>
-                            <Button className={'email-settings-close-btn'} variant={'secondary'} onClick={closeModal}>
-                                {__('Close', 'givewp')}
-                            </Button>
                             <div className={'email-settings'}>
+                                <Button
+                                    className={'email-settings__close-btn'}
+                                    variant={'secondary'}
+                                    onClick={closeModal}
+                                >
+                                    {__('Close', 'givewp')}
+                                </Button>
                                 <div className={'email-settings__col-left'}>
                                     <TabPanel
                                         className={'email-settings-modal-tabs'}
@@ -104,10 +108,7 @@ export default () => {
                                                 }}
                                             >
                                                 <h2 className={'email-settings__header'}>{__('Notification')}</h2>
-                                                <EmailTemplateSettings
-                                                    closeModal={closeModal}
-                                                    notification={tab.name}
-                                                />
+                                                <EmailTemplateSettings notification={tab.name} />
                                             </div>
                                         )}
                                     </TabPanel>
@@ -124,7 +125,7 @@ export default () => {
                                             {__('Preview the email message in your browser', 'givewp')}
                                         </p>
                                         <Button
-                                            className={'email-settings-email-btn'}
+                                            className={'email-settings__email-btn'}
                                             variant={'secondary'}
                                             onClick={() => setShowPreview(true)}
                                         >

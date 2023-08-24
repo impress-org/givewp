@@ -90,13 +90,13 @@
         border-radius: 2px;
     }
 
-    &-email-btn {
+    &__email-btn {
         height: 2.5rem;
         width: 100%;
         justify-content: center;
     }
 
-    &-close-btn {
+    &__close-btn {
         z-index: 11;
         position: absolute;
         top: 0;
@@ -189,7 +189,7 @@
         flex-direction: column;
         gap: var(--givewp-spacing-3);
 
-        &-delete {
+        &-delete-btn {
             padding: 0;
 
             svg {
@@ -204,13 +204,13 @@
                 }
             }
         }
-    }
-
-    &-add-email {
-        height: 2.5rem;
-        width: 100%;
-        justify-content: center;
-        gap: .25rem;
+        
+        &-add-email-btn {
+            height: 2.5rem;
+            width: 100%;
+            justify-content: center;
+            gap: .25rem;
+        }
     }
 }
 
