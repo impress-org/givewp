@@ -157,14 +157,17 @@ This creates a consistent separator between the tabs and the rest of the sidebar
 
 .components-panel__body .components-notice {
     color: var(--givewp-grey-700);
-    font-size: 0.75rem;
-    line-height: 1rem;
     margin-left: 0;
     margin-right: 0;
     padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
 
     .components-notice__content {
         margin: 0;
+
+        * {
+            font-size: 0.75rem;
+            line-height: 1rem;
+        }
     }
 
     h4 {

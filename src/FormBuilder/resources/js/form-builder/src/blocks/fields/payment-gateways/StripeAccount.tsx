@@ -32,6 +32,10 @@ export default function StripeAccount({attributes, setAttributes}) {
 
     const hasGlobalDefault = MOCK.default;
     const hasPerFormDefault = stripeAccount.accountId;
+    const showGlobalDefaultNotice =
+        (stripeAccount.useGlobalDefault && !hasGlobalDefault) ||
+        (!stripeAccount.useGlobalDefault && !hasPerFormDefault);
+
     const useGlobalDefaultHelper = textWithLinkToStripeSettings(
         __('All donations are processed through the default account set in the <a>Global settings</a>.', 'give')
     );
@@ -64,7 +68,7 @@ export default function StripeAccount({attributes, setAttributes}) {
                         help={selectAccountHelper}
                     />
                 )}
-                {!hasGlobalDefault && !hasPerFormDefault && (
+                {showGlobalDefaultNotice && (
                     <Notice
                         isDismissible={false}
                         status="warning"
