@@ -74,6 +74,16 @@ class DonationFormsData implements TrackData
         foreach ($this->formIds as $formId) {
             if (Utils::isV3Form($formId)) {
                 $form = DonationForm::find($formId);
+
+                $temp = [
+                    'form_id' => $formId,
+                    'form_url' => untrailingslashit(get_permalink($formId)),
+                    'form_name' => get_post_field('post_name', $formId, 'db'),
+                    'form_type' => give()->form_meta->get_meta($formId, '_give_price_option', true),
+                    'form_template' => $form->settings->designId,
+                    'donor_count' => $this->formDonorCounts[$formId],
+                    'revenue' => $this->formRevenues[$formId],
+                ];
             } else {
                 $formTemplate = Template::getActiveID($formId);
 
@@ -86,10 +96,9 @@ class DonationFormsData implements TrackData
                     'donor_count' => $this->formDonorCounts[$formId],
                     'revenue' => $this->formRevenues[$formId],
                 ];
-
-                $this->addAddonsInformation($temp, $formId);
-                $data[] = $temp;
             }
+            $this->addAddonsInformation($temp, $formId);
+            $data[] = $temp;
         }
 
         return $data;
