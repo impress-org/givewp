@@ -180,6 +180,11 @@ trait StripePaymentElementRepository
             return $defaultAccountId;
         }
 
+        $allStripeAccounts = array_keys(give_stripe_get_all_accounts());
+        if (!in_array($stripeSettings['accountId'], $allStripeAccounts)) {
+            return $defaultAccountId;
+        }
+
         return $stripeSettings['accountId'];
     }
 
