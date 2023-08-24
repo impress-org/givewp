@@ -168,20 +168,22 @@ trait StripePaymentElementRepository
         $defaultAccountId = give_stripe_get_connected_account_id($formId);
 
         $form = DonationForm::find($formId);
+        if (!$form || !$form->blocks) {
+            return $defaultAccountId;
+        }
+
         $paymentGatewaysBlock = $form->blocks->findByName('givewp/payment-gateways');
+        $gatewaySettings = $paymentGatewaysBlock->getAttribute('gatewaysSettings') ?? [];
+        $stripeSettings = $gatewaySettings['stripe_payment_element'] ?? null;
 
-        if (!$paymentGatewaysBlock) {
+        if (is_null($stripeSettings) || $stripeSettings['useGlobalDefault'] || is_null(
+                $stripeSettings['accountId'] ?? null
+            )) {
             return $defaultAccountId;
         }
 
-        $gatewaySettings = $paymentGatewaysBlock->getAttribute('gatewaysSettings');
-        $stripeSettings = $gatewaySettings['stripe_payment_element'];
-        if (!$stripeSettings || $stripeSettings['useGlobalDefault'] || !$stripeSettings['accountId']) {
-            return $defaultAccountId;
-        }
-
-        $allStripeAccounts = array_keys(give_stripe_get_all_accounts());
-        if (!in_array($stripeSettings['accountId'], $allStripeAccounts)) {
+        $allStripeAccounts = give_stripe_get_all_accounts();
+        if (!array_key_exists($stripeSettings['accountId'], $allStripeAccounts)) {
             return $defaultAccountId;
         }
 
