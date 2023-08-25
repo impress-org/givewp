@@ -11,8 +11,8 @@ use Give\Promotions\InPluginUpsells\LegacyFormEditor;
 use Give\Promotions\InPluginUpsells\PaymentGateways;
 use Give\Promotions\InPluginUpsells\SaleBanners;
 use Give\Promotions\InPluginUpsells\SummerSalesBanner;
-use Give\Promotions\WelcomeBanner\Actions\DismissWelcomeBanner;
-use Give\Promotions\WelcomeBanner\Actions\DisplayWelcomeBanner;
+use Give\Promotions\WelcomeBanner\Endpoints\DismissWelcomeBannerRoute;
+use Give\Promotions\WelcomeBanner\NextGenWelcomeBanner;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderContract;
 
 class ServiceProvider implements ServiceProviderContract
@@ -49,6 +49,7 @@ class ServiceProvider implements ServiceProviderContract
         Hooks::addAction('admin_menu', AddonsAdminPage::class, 'register', 70);
         Hooks::addAction('rest_api_init', HideSaleBannerRoute::class, 'registerRoute');
         Hooks::addAction('rest_api_init', ProductRecommendationsRoute::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', DismissWelcomeBannerRoute::class, 'registerRoute');
 
         if (AddonsAdminPage::isShowing()) {
             Hooks::addAction('admin_enqueue_scripts', AddonsAdminPage::class, 'loadScripts');
@@ -81,9 +82,9 @@ class ServiceProvider implements ServiceProviderContract
             );
         }
 
-        if (DisplayWelcomeBanner::isShowing()) {
-            Hooks::addAction('admin_notices', DisplayWelcomeBanner::class);
-            Hooks::addAction('wp_ajax_givewp_next_gen_welcome_banner_dismiss', DismissWelcomeBanner::class);
+        if (NextGenWelcomeBanner::isShowing()) {
+            Hooks::addAction('admin_notices', NextGenWelcomeBanner::class, 'render');
+            Hooks::addAction('admin_enqueue_scripts', NextGenWelcomeBanner::class, 'loadScripts');
         }
     }
 
