@@ -60,6 +60,7 @@ class TestDonationReceipt extends TestCase
         $receipt = new DonationReceipt($donation);
         $receipt->settings->addSetting('currency', $receipt->donation->amount->getCurrency()->getCode());
         $receipt->settings->addSetting('donorDashboardUrl', get_permalink(give_get_option('donor_dashboard_page')));
+        $receipt->settings->addSetting('pdfReceiptLink', '');
         $receipt->donorDetails->addDetails($donorDetails->getDetails());
         $receipt->donationDetails->addDetails($donationDetails->getDetails());
 
@@ -69,6 +70,7 @@ class TestDonationReceipt extends TestCase
                 'settings' => [
                     'currency' => $receipt->donation->amount->getCurrency()->getCode(),
                     'donorDashboardUrl' => get_permalink(give_get_option('donor_dashboard_page')),
+                    'pdfReceiptLink' => '',
                 ],
                 'donorDetails' => $donorDetails->toArray(),
                 'donationDetails' => $donationDetails->toArray(),
