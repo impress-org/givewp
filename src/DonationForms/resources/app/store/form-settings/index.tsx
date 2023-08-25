@@ -9,6 +9,7 @@ type PropTypes = {
         [key: string]: unknown;
         currencySwitcherSettings?: CurrencySwitcherSetting[];
         currencySwitcherMessage?: string;
+        donateButtonCaption: string;
     };
     children: ReactNode;
 };
@@ -17,11 +18,7 @@ type PropTypes = {
  * @since 3.0.0
  */
 const DonationFormSettingsProvider = ({value, children}: PropTypes) => {
-    return (
-        <StoreContext.Provider value={value}>
-            {children}
-        </StoreContext.Provider>
-    );
+    return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;
 };
 
 const useDonationFormSettings = () => useContext<PropTypes['value']>(StoreContext);
