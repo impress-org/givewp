@@ -145,7 +145,9 @@ export default function Gateways({isTestMode, defaultValue, inputProps, gateways
  * @since 3.0.0
  */
 function GatewayOption({gateway, defaultChecked, inputProps, isActive}: GatewayOptionProps) {
+    const gatewayClass = `givewp-fields-gateways__gateway--${gateway.id}`;
     const className = cx('givewp-fields-gateways__gateway', {
+        [gatewayClass]: true,
         'givewp-fields-gateways__gateway--active': isActive,
     });
 

@@ -4,11 +4,7 @@ const SectionHeader = ({name, label, description}: {name: string; label?: string
     return label.length > 0 || description.length > 0 ? (
         <div className="givewp-layouts-section__fieldset__legend">
             {label.length > 0 && <legend id={name}>{label}</legend>}
-            {description.length > 0 && (
-                <p>
-                    <em>{description}</em>
-                </p>
-            )}
+            {description.length > 0 && <p>{description}</p>}
         </div>
     ) : (
         <></>

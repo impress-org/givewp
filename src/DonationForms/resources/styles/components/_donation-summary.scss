@@ -23,6 +23,7 @@
             display: flex;
             flex-direction: row;
             justify-content: space-between;
+            align-items: flex-end;
             padding: var(--givewp-spacing-4) 0;
             margin: 0;
 
@@ -53,7 +54,14 @@
             &--total {
                 border-top: solid 1px var(--givewp-grey-100);
                 padding: var(--givewp-spacing-5) 0 0 0;
+            }
+
+            &--total &__label, &--total &__value {
                 font-weight: 600;
+            }
+
+            &--total &__value {
+                font-size: var(--givewp-font-size-headline-lg);
             }
         }
     }

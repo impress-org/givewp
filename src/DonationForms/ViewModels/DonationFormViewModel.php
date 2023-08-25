@@ -129,8 +129,8 @@ class DonationFormViewModel
             'totalCountValue' => $goalType->isDonors() ?
                 $this->donationFormRepository->getTotalNumberOfDonors($this->donationFormId) :
                 $this->donationFormRepository->getTotalNumberOfDonations($this->donationFormId),
-            'totalCountLabel' => $goalType->isDonors() ? __('donors', 'give') : __(
-                'donations',
+            'totalCountLabel' => $goalType->isDonors() ? __('Donors', 'give') : __(
+                'Donations',
                 'give'
             ),
         ];

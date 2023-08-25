@@ -38,13 +38,27 @@
             border-style: solid;
             border-width: 1px;
             border-color: inherit;
-            padding: var(--givewp-spacing-6) var(--givewp-spacing-12);
+            padding: var(--givewp-spacing-8) var(--givewp-spacing-12);
             border-radius: var(--givewp-rounded-4);
             font-size: var(--givewp-font-weight-paragraph-md);
         }
 
         &--active &__fields {
             display: block;
+        }
+
+        &--test-gateway {
+            .no-fields {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: var(--givewp-spacing-4);
+            }
+
+            p {
+                margin: 0;
+            }
         }
     }
 }

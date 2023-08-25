@@ -15,6 +15,7 @@
 
 @layer base-components {
     @import "components/gateways";
+    @import "components/goal";
     @import "components/amount";
     @import "components/donation-summary";
     @import "components/receipt";
