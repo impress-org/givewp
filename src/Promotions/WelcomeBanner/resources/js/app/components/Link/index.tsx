@@ -15,7 +15,12 @@ export function InternalLink({children, href}: LinkProps) {
 
 export function ExternalLink({children, href}: LinkProps) {
     return (
-        <a href={href} className={'givewp-welcome-banner-link givewp-welcome-banner-link--external'}>
+        <a
+            href={href}
+            className={'givewp-welcome-banner-link givewp-welcome-banner-link--external'}
+            target={'_blank'}
+            rel="noopener noreferrer"
+        >
             {children}
         </a>
     );
