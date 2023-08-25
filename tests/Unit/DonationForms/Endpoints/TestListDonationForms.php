@@ -108,16 +108,11 @@ class TestListDonationForms extends TestCase
             foreach ( $columns as $column ) {
                 $expectedItem[$column::getId()] = $column->getCellValue($donationForm);
             }
-            $v2form = defined('GIVE_NEXT_GEN_VERSION') && ! get_post_meta($donationForm->id, 'formBuilderFields');
-            $canMigrate = $v2form && ! give_is_form_migrated($donationForm->id); // @phpstan-ignore
-            $canTransfer = $v2form && ! $canMigrate && ! give_is_form_donations_transferred($donationForm->id); // @phpstan-ignore
 
             $expectedItem['name'] = $donationForm->title;
             $expectedItem['edit'] = get_edit_post_link($donationForm->id, 'edit');
             $expectedItem['permalink'] = get_permalink($donationForm->id);
-            $expectedItem['migrate'] = $canMigrate;
-            $expectedItem['transfer'] = $canTransfer;
-            $expectedItem['v2form'] = $v2form;
+            $expectedItem['migrated'] = (bool)give_get_meta($donationForm->id, 'migratedFormId');;
             $expectedItems[] = $expectedItem;
         }
 
