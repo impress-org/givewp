@@ -20,7 +20,7 @@ export default function UpgradeSuccessDialog({handleClose}: OnboardingProps) {
         >
             <>
                 <div className={styles.imageContainer}>
-                    <img src={getImage('step1.jpg')} alt={__('Upgraded form', 'give')} />
+                    <img src={getImage('form.jpg')} alt={__('Upgraded form', 'give')} />
                 </div>
 
                 <div className={styles.title}>
@@ -36,7 +36,7 @@ export default function UpgradeSuccessDialog({handleClose}: OnboardingProps) {
                         size="large"
                         onClick={handleClose}
                     >
-                        {__('Close', 'give')}
+                        {__('Got it', 'give')}
                     </Button>
                 </ButtonGroup>
             </>
