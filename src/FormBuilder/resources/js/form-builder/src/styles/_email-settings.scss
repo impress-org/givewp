@@ -52,7 +52,7 @@
     }
 }
 
-.email-preview-back-btn {
+.email-preview__back-btn {
     z-index: 11; /* Above the modal header */
     position: absolute;
     top: 0;
@@ -204,7 +204,7 @@
                 }
             }
         }
-        
+
         &-add-email-btn {
             height: 2.5rem;
             width: 100%;
