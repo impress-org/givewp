@@ -20,7 +20,7 @@ class FunctionsTest extends TestCase
 
         $formId = $donationFormV2->id;
 
-        give_redirect_form_id($formId);
+        _give_redirect_form_id($formId);
 
         $this->assertEquals($donationFormV3->id, $formId);
     }
@@ -34,7 +34,7 @@ class FunctionsTest extends TestCase
         $formId = $donationFormV2->id;
         $atts['id'] = $donationFormV2->id;
 
-        give_redirect_form_id($formId, $atts['id']);
+        _give_redirect_form_id($formId, $atts['id']);
 
         $this->assertEquals($donationFormV3->id, $formId);
         $this->assertEquals($donationFormV3->id, $atts['id']);
@@ -46,14 +46,14 @@ class FunctionsTest extends TestCase
         $donationFormV3 = DonationForm::factory()->create();
         give_update_meta($donationFormV3->id, 'migratedFormId', $donationFormV2->id);
 
-        $this->assertTrue(give_is_form_migrated($donationFormV2->id));
+        $this->assertTrue(_give_is_form_migrated($donationFormV2->id));
     }
 
     public function testIsFormNotMigrated()
     {
         $donationFormV2 = $this->createSimpleDonationForm();
 
-        $this->assertFalse(give_is_form_migrated($donationFormV2->id));
+        $this->assertFalse(_give_is_form_migrated($donationFormV2->id));
     }
 
     public function testIsFormDonationsTransferred()
@@ -62,13 +62,13 @@ class FunctionsTest extends TestCase
         $donationFormV3 = DonationForm::factory()->create();
         give_update_meta($donationFormV3->id, 'transferredFormId', $donationFormV2->id);
 
-        $this->assertTrue(give_is_form_donations_transferred($donationFormV2->id));
+        $this->assertTrue(_give_is_form_donations_transferred($donationFormV2->id));
     }
 
     public function testIsFormDonationsNotTransferred()
     {
         $donationFormV2 = $this->createSimpleDonationForm();
 
-        $this->assertFalse(give_is_form_donations_transferred($donationFormV2->id));
+        $this->assertFalse(_give_is_form_donations_transferred($donationFormV2->id));
     }
 }
