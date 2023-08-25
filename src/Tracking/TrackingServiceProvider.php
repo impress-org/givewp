@@ -82,7 +82,7 @@ class TrackingServiceProvider implements ServiceProvider
      *
      * 'give_send_tracking_data' action hook that will be triggered track routine cron job.
      *
-     * @unreleased Add telemetry support for v3 forms
+     * @unreleased Add support for v3 forms
      * @since 2.10.0
      */
     private function registerTrackEvents()

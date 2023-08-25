@@ -60,7 +60,7 @@ class DonationFormsData implements TrackData
     /**
      * Get forms data.
      *
-     * @unreleased Add telemetry support for v3 forms
+     * @unreleased Add support for v3 forms
      * @since 2.10.0
      * @return array
      */
