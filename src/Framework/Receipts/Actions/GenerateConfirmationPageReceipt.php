@@ -249,6 +249,11 @@ class GenerateConfirmationPageReceipt
 
         $receipt->settings->addSetting('currency', $receipt->donation->amount->getCurrency()->getCode());
         $receipt->settings->addSetting('donorDashboardUrl', get_permalink(give_get_option('donor_dashboard_page')));
+
+        $receipt->settings->addSetting(
+            'pdfReceiptLink',
+            apply_filters('givewp_confirmation_page_receipt_settings_pdfReceiptLink', '', $receipt)
+        );
     }
 
     /**

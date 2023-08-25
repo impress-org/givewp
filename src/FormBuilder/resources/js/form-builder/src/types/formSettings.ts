@@ -1,5 +1,5 @@
-import {FormStatus} from "@givewp/form-builder/types/formStatus";
-import {EmailTemplateOption} from "@givewp/form-builder/types/emailTemplateOption";
+import {FormStatus} from '@givewp/form-builder/types/formStatus';
+import {EmailTemplateOption} from '@givewp/form-builder/types/emailTemplateOption';
 
 /**
  * @since 3.0.0
@@ -36,4 +36,5 @@ export type FormSettings = {
     formGridHideDocumentationLink: boolean;
     offlineDonationsCustomize: boolean;
     offlineDonationsInstructions: string;
+    donateButtonCaption: string;
 };
