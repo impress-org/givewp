@@ -2,7 +2,7 @@
 
 namespace Give\DonationForms\ViewModels;
 
-use Give\DonationForms\FormDesigns\DeveloperFormDesign\DeveloperFormDesign;
+use Give\DonationForms\FormDesigns\ClassicFormDesign\ClassicFormDesign;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\Donations\Models\Donation;
@@ -94,7 +94,7 @@ class DonationConfirmationReceiptViewModel
             $this->donation->formId
         ) ? $this->getDonationForm() : null;
 
-        $formDesignId = $donationForm ? $donationForm->settings->designId : DeveloperFormDesign::id();
+        $formDesignId = $donationForm ? $donationForm->settings->designId : ClassicFormDesign::id();
         $customCss = $donationForm && $donationForm->settings->customCss ? $donationForm->settings->customCss : null;
         $primaryColor = $donationForm ? $donationForm->settings->primaryColor : '#69B868';
         $secondaryColor = $donationForm ? $donationForm->settings->secondaryColor : '#000000';
