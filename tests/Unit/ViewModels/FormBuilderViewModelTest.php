@@ -60,6 +60,7 @@ class FormBuilderViewModelTest extends TestCase
                     'rewriteSlug' => get_post_type_object('give_forms')->rewrite['slug'],
                 ],
                 'gateways' => $viewModel->getGateways(),
+                'gatewaysGlobalSettings' => $viewModel->getGatewaysGlobalSettings(),
                 'gatewaySettingsUrl' => admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways'),
                 'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
                 'recurringAddonData' => [

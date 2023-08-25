@@ -182,7 +182,7 @@ class FormBuilderViewModel
     /**
      * @since 3.0.0
      */
-    protected function getGatewaysGlobalSettings(): array
+    public function getGatewaysGlobalSettings(): array
     {
         return [
             'stripe_payment_element' => [
