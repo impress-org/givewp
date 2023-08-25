@@ -65,11 +65,9 @@ $borderColor: #9A9A9A;
         align-items: center;
         justify-content: space-between;
         background: var(--givewp-shades-white);
-        border-width: 0.125rem;
-        border-style: solid;
-        border-color: $borderColor;
-        border-radius: 0.5rem;
-        padding: 1rem 0;
+        border: solid 1px var(--givewp-grey-400);
+        border-radius: var(--givewp-rounded-4);
+        padding: var(--givewp-spacing-4) 0;
 
         &.invalid {
             border-color: red;
@@ -81,26 +79,23 @@ $borderColor: #9A9A9A;
     }
 
     &__input {
-        position: relative;
+        height: fit-content;
         background-color: rgb(255, 255, 255);
-        font-family: inherit;
-        font-size: 1.8rem;
-        font-weight: 600;
-        line-height: normal;
-        color: rgb(51, 51, 51);
-        outline: 0;
-        border: 0;
+        font-size: var(--givewp-font-size-headline-md);
+        font-weight: normal;
+        line-height: 1.5;
+        color: var(--givewp-grey-900);
+        border: none;
+        outline: none;
+        box-shadow: none;
         width: 100%;
         text-align: center;
         padding: 0;
-        margin-bottom: 0;
-        background-image: none;
-        box-shadow: none;
 
         &::placeholder {
             opacity: 0.6;
             font-weight: 300;
-            color: #828282;
+            color: var(--givewp-grey-400);
         }
     }
 
@@ -124,17 +119,16 @@ $borderColor: #9A9A9A;
         display: flex;
         justify-content: center;
         align-items: center;
-        border: 0.125rem solid $borderColor;
+        border: 1px solid $borderColor;
         border-radius: 0.5rem;
         background-color: #fff;
-        color: #000;
-        text-align: center;
-        font-family: inherit;
+        font-size: 1.125rem;
         font-weight: 500;
+        color: var(--givewp-grey-900);
+        text-align: center;
         line-height: 1.2;
         block-size: 100%;
-        font-size: 1.5rem;
-        padding: 1rem 0.5rem;
+        padding: var(--givewp-spacing-3);
         transition-property: background-color, color, filter, box-shadow, transform;
         transition-duration: 200ms;
         transition-timing-function: ease-in;
@@ -143,7 +137,7 @@ $borderColor: #9A9A9A;
         box-shadow: none;
 
         @media screen and (min-width: variables.$givewp-breakpoint-sm) {
-            padding: 1.5rem 0.5rem;
+            padding: var(--givewp-spacing-4);
         }
 
         &--selected {

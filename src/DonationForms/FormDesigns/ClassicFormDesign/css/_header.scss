@@ -5,11 +5,12 @@
         width: 100%;
         border-top-left-radius: 0.5rem;
         border-top-right-radius: 0.5rem;
-        box-shadow: rgb(0 0 0 / 30%) 0 0.125rem 0.3125rem;
+        box-shadow: var(--givewp-shadow-xs);
         background-color: var(--givewp-primary-color);
-        display: grid;
-        justify-items: center;
-        row-gap: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--givewp-spacing-6);
         padding: var(--givewp-spacing-6);
         color: #fff;
         text-align: center;
@@ -30,21 +31,8 @@
         font-size: fn.scaleBetween(1.75rem, 2.1875rem);
         font-weight: 600;
         line-height: 1.2;
-        text-shadow: 0 0.07em 0.14em rgba(0, 0, 0, 0.15);
         color: currentColor;
-
-        &::after {
-            position: absolute;
-            content: '';
-            display: block;
-            border-radius: 9999px;
-            inline-size: 4.375rem;
-            block-size: 0.3125rem;
-            background-color: #fff;
-            inset-inline-start: 50%;
-            inset-block-start: calc(100% + 1.25rem);
-            transform: translate(-50%);
-        }
+        margin: 0;
     }
 
     &-headerDescription p {
@@ -56,16 +44,15 @@
 }
 
 .givewp-form-secure-badge {
-    display: inline-flex;
-    column-gap: 0.5rem;
+    display: flex;
+    gap: var(--givewp-spacing-2);
     align-items: center;
-    padding-block: 0.5rem;
-    padding-inline: 0.9rem;
-    border-radius: 9999px;
-    background-color: #fff;
-    box-shadow: 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.25);
-    color: #333;
-    font-size: 0.9rem;
+    width: fit-content;
+    padding: var(--givewp-spacing-1) var(--givewp-spacing-4);
+    border-radius: var(--givewp-rounded-full);
+    background-color: var(--givewp-shades-white);
+    color: var(--givewp-grey-900);
+    font-size: 0.875rem;
     font-weight: 500;
-    line-height: 1;
+    line-height: 1.43;
 }

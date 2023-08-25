@@ -64,7 +64,7 @@ export default function DonationSummary() {
 
     return (
         <>
-            <legend>Donation Summary</legend>
+            <h2 className="givewp-elements-donationSummary__header">Donation Summary</h2>
             <DonationSummaryItemsTemplate items={donationSummaryItems} total={donationTotal} />
         </>
     );
