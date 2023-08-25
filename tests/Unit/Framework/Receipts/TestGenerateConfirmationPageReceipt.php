@@ -101,6 +101,7 @@ class TestGenerateConfirmationPageReceipt extends TestCase
             'description' => $description,
             'currency' => $receipt->donation->amount->getCurrency()->getCode(),
             'donorDashboardUrl' => get_permalink(give_get_option('donor_dashboard_page')),
+            'pdfReceiptLink' => '',
         ];
 
         $this->assertSame(
@@ -232,6 +233,7 @@ class TestGenerateConfirmationPageReceipt extends TestCase
             'description' => $description,
             'currency' => $receipt->donation->amount->getCurrency()->getCode(),
             'donorDashboardUrl' => get_permalink(give_get_option('donor_dashboard_page')),
+            'pdfReceiptLink' => '',
         ];
 
         $this->assertSame(
