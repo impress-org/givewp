@@ -1,0 +1,30 @@
+.givewp-welcome-banner-link {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 0;
+    gap: .5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 2px;
+    border: solid 1px var(--givewp-green-500);
+    text-decoration: none;
+
+    &--external {
+        background-color: var(--givewp-shades-white);
+        color: var(--givewp-green-600);
+
+        &:hover {
+            color: var(--givewp-green-600);
+        }
+    }
+
+    &--internal {
+        background-color: var(--givewp-green-500);
+        color: var(--givewp-shades-white);
+
+        &:hover {
+            color: var(--givewp-shades-white);
+        }
+    }
+}

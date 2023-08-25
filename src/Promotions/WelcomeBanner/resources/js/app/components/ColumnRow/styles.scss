@@ -1,0 +1,24 @@
+.givewp-welcome-banner-col-row {
+    align-self: stretch;
+
+    > span {
+        display: flex;
+        align-items: center;
+        align-self: flex-start;
+        gap: var(--givewp-spacing-2);
+    }
+
+    h2 {
+        margin: var(--givewp-spacing-3) 0;
+    }
+
+    > p {
+        align-self: stretch;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        letter-spacing: normal;
+        text-align: left;
+        color: var(--givewp-grey-900);
+        margin-top: 0;
+    }
+}

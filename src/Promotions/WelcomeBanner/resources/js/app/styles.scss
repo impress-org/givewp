@@ -1,0 +1,97 @@
+.givewp-welcome-banner {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: auto;
+    width: auto;
+    gap: 1rem;
+    margin: 1.5rem 0 1.625rem;
+    padding: 1.5rem 3rem 2.25rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: solid 1px var(--givewp-green-800);
+    background-color: var(--givewp-shades-white);
+    box-sizing: border-box;
+
+    &__dismiss {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+
+        button {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        svg {
+            cursor: pointer;
+        }
+    }
+
+    &__content {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: var(--givewp-spacing-18);
+    }
+}
+
+.givewp-welcome-banner__col-left {
+    flex: .55;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--givewp-spacing-8);
+    align-self: stretch;
+}
+
+.givewp-welcome-banner__col-right {
+    flex: 1;
+
+    > h2 {
+        font-size: 1rem;
+        font-weight: bold;
+        line-height: 1.4;
+        margin-top: 0;
+        padding: .215rem 0;
+        letter-spacing: normal;
+        text-align: left;
+    }
+
+    &-container {
+        flex: 1;
+        height: 100%;
+        display: flex;
+        align-self: stretch;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1.375rem;
+    }
+}
+
+.givewp-welcome-banner-col-header {
+    > h1 {
+        margin: 0;
+        padding: 0;
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.4;
+        letter-spacing: normal;
+        text-align: left;
+        color: var(--givep-grey-900);
+    }
+
+    > p {
+        align-self: stretch;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        letter-spacing: normal;
+        text-align: left;
+        color: var(--givewp-grey-900);
+    }
+}
+
