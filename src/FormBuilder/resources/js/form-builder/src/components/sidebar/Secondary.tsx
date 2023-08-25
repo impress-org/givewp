@@ -9,10 +9,10 @@ const BlockListInserter = () => {
     const isPrimaryBlockList = !!selectedBlock && selectedBlock.name !== 'givewp/section';
 
     return (
-        <>
+        <div>
             <Library showInserterHelpPanel={false} />
             {isPrimaryBlockList && <AdditionalFieldsPanel />}
-        </>
+        </div>
     );
 };
 

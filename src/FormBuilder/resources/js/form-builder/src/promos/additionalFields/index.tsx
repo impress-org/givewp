@@ -1,15 +1,12 @@
-import React, {useEffect} from 'react';
-import {unmountComponentAtNode} from 'react-dom';
+import React from 'react';
 import {__} from '@wordpress/i18n';
 import LockedFieldBlocks, {LockIcon} from './LockedFieldBlocks';
 import './styles.scss';
-import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
-import {render} from '@wordpress/element';
 
 /**
  * @unreleased
  */
-function AdditionalFields() {
+export default function AdditionalFieldsPanel() {
     return (
         <>
             <div className={'block-editor-inserter__panel-header'}>
@@ -35,36 +32,4 @@ function AdditionalFields() {
             </div>
         </>
     );
-}
-
-/**
- * @unreleased
- */
-export default function AdditionalFieldsPanel() {
-    const {
-        formFieldManagerData: {isInstalled},
-    } = getFormBuilderWindowData();
-
-    if (isInstalled) {
-        return null;
-    }
-
-    // Render AdditionalFields panel inside the block list to avoid scrollbar inconsistencies.
-    useEffect(() => {
-        const blockList = document.querySelector('.block-editor-inserter__block-list');
-
-        if (blockList) {
-            const portalElement = document.createElement('div');
-            blockList.appendChild(portalElement);
-
-            render(<AdditionalFields />, portalElement);
-
-            return () => {
-                unmountComponentAtNode(portalElement);
-                blockList.removeChild(portalElement);
-            };
-        }
-    }, []);
-
-    return null;
 }
