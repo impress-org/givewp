@@ -4,13 +4,12 @@ import {format, parse} from 'date-fns';
 import {DateProps} from '@givewp/forms/propTypes';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from '../styles.module.scss';
-import {Controller} from 'react-hook-form';
 
 export default function Date({Label, ErrorMessage, description, dateFormat = 'yyyy/mm/dd', inputProps}: DateProps) {
-    const {useFormContext} = window.givewp.form.hooks;
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
-    const {name} = inputProps;
-    const {control} = useFormContext();
+    const {useFormContext, useWatch} = window.givewp.form.hooks;
+    const {setValue} = useFormContext();
+    const value = useWatch({name: inputProps.name});
 
     dateFormat = dateFormat.replace('mm', 'MM');
 
@@ -18,18 +17,11 @@ export default function Date({Label, ErrorMessage, description, dateFormat = 'yy
         <label className={styles.dateField}>
             <Label />
             {description && <FieldDescription description={description} />}
-            <Controller
-                control={control}
-                name={name}
-                render={({field: {onChange, onBlur, value, ref}}) => (
-                    <DatePicker
-                        ref={ref}
-                        dateFormat={dateFormat}
-                        selected={value && parse(value, dateFormat, new window.Date())}
-                        onChange={(date) => onChange(date ? format(date, dateFormat) : '')}
-                        onBlur={onBlur}
-                    />
-                )}
+            <input type="hidden" {...inputProps} />
+            <DatePicker
+                dateFormat={dateFormat}
+                selected={value ? parse(value, dateFormat, new window.Date()) : null}
+                onChange={(date) => setValue(inputProps.name, date ? format(date, dateFormat) : '')}
             />
 
             <ErrorMessage />
