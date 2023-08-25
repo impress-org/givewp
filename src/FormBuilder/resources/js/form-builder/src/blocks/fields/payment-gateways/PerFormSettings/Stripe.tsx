@@ -26,7 +26,7 @@ export default function Stripe({attributes, setAttributes}: {attributes: StripeP
     const hasGlobalDefault = stripeGlobalSettings.default;
     const hasPerFormDefault = attributes.accountId;
     const showGlobalDefaultNotice =
-        (attributes.useGlobalDefault && !hasGlobalDefault) || (!attributes.useGlobalDefault && !hasPerFormDefault);
+        !hasGlobalDefault && (attributes.useGlobalDefault || (!attributes.useGlobalDefault && !hasPerFormDefault));
 
     const useGlobalDefaultHelper = textWithLinkToStripeSettings(
         __('All donations are processed through the default account set in the <a>Global settings</a>.', 'give')
