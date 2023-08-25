@@ -168,6 +168,7 @@ $borderColor: #9A9A9A;
         display: flex;
         padding: var(--givewp-spacing-1);
         gap: var(--givewp-spacing-1);
+        grid-auto-rows: 1fr;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
@@ -176,22 +177,19 @@ $borderColor: #9A9A9A;
         border: 1px solid var(--givewp-primary-color);
         border-radius: var(--givewp-rounded-4);
 
-        //@media screen and (max-width: variables.$givewp-breakpoint-md) {
-        //    &:has(> :nth-child(4)) {
-        //        flex-wrap: wrap;
-        //
-        //        .givewp-fields-radio__option-container {
-        //            width: 50%;
-        //        }
-        //    }
-        //}
+        @media screen and (max-width: variables.$givewp-breakpoint-md) {
+            &:has(> :nth-child(4)) {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
 
         .givewp-fields-radio__option-container {
             display: flex;
             align-items: center;
             justify-content: center;
+            text-align: center;
             width: 100%;
-            padding: var(--givewp-spacing-2) 0;
             margin: 0;
             border-radius: var(--givewp-rounded-2);
             transition: background-color 100ms ease-in-out;
@@ -206,6 +204,9 @@ $borderColor: #9A9A9A;
         }
 
         label {
+            width: 100%;
+            padding: var(--givewp-spacing-2) 0;
+            cursor: pointer;
             margin: 0;
         }
 
