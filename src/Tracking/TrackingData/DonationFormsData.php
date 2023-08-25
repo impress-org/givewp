@@ -80,7 +80,7 @@ class DonationFormsData implements TrackData
                     'form_url' => untrailingslashit(get_permalink($formId)),
                     'form_name' => get_post_field('post_name', $formId, 'db'),
                     'form_type' => give()->form_meta->get_meta($formId, '_give_price_option', true),
-                    'form_template' => $form->settings->designId,
+                    'form_template' => $form->settings->designId . ' (V3)',
                     'donor_count' => $this->formDonorCounts[$formId],
                     'revenue' => $this->formRevenues[$formId],
                 ];
