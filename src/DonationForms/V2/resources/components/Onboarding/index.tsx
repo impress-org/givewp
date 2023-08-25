@@ -1,6 +1,6 @@
 import {createContext, useContext} from 'react';
 import Banner from './Components/Banner';
-import {FeatureNoticeDialog} from './Dialogs';
+import {FeatureNoticeDialog, UpgradeSuccessDialog} from './Dialogs';
 
 export const OnboardingContext = createContext([]);
 
