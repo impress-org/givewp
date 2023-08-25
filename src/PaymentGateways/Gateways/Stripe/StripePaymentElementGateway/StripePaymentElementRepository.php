@@ -2,7 +2,6 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway;
 
-use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
@@ -165,29 +164,7 @@ trait StripePaymentElementRepository
      */
     protected function getStripeConnectedAccountKey(int $formId): string
     {
-        $defaultAccountId = give_stripe_get_connected_account_id($formId);
-
-        $form = DonationForm::find($formId);
-        if (!$form || !$form->blocks) {
-            return $defaultAccountId;
-        }
-
-        $paymentGatewaysBlock = $form->blocks->findByName('givewp/payment-gateways');
-        $gatewaySettings = $paymentGatewaysBlock->getAttribute('gatewaysSettings') ?? [];
-        $stripeSettings = $gatewaySettings['stripe_payment_element'] ?? null;
-
-        if (is_null($stripeSettings) || $stripeSettings['useGlobalDefault'] || is_null(
-                $stripeSettings['accountId'] ?? null
-            )) {
-            return $defaultAccountId;
-        }
-
-        $allStripeAccounts = give_stripe_get_all_accounts();
-        if (!array_key_exists($stripeSettings['accountId'], $allStripeAccounts)) {
-            return $defaultAccountId;
-        }
-
-        return $stripeSettings['accountId'];
+        return give_stripe_get_connected_account_id($formId);
     }
 
     /**
