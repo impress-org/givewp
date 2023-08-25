@@ -25,6 +25,7 @@ export default function AdditionalFieldsPanel() {
                     className={'block-editor-inserter__panel-content-link'}
                     href={'https://docs.givewp.com/vb-add-fields'}
                     target={'_blank'}
+                    rel="noopener noreferrer"
                 >
                     {__('Upgrade to unlock additional fields', 'give')}
                 </a>
