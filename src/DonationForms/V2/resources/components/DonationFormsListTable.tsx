@@ -79,7 +79,7 @@ const columnFilters: Array<ColumnFilterConfig> = [
     {
         column: 'title',
         filter: item => {
-            if (!item?.migrated) {
+            if (item?.migrated) {
                 return (
                     <div className={styles.migratedForm}>
                         <div className={styles.tooltipContainer}>
