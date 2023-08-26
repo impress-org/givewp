@@ -2,24 +2,24 @@
 
 namespace Give\Promotions\WelcomeBanner\Endpoints;
 
+use Give\API\RestRoute;
+use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
-class DismissWelcomeBannerRoute
+class DismissWelcomeBannerRoute implements RestRoute
 {
-
-
     /**
      * @var string
      * @unreleased
      */
-    protected $endpoint = 'admin/welcome-banner';
+    protected $endpoint = 'welcome-banner/dismiss';
 
     /**
      * @inheritDoc
      * @unreleased
      */
-    public function registerRoute()
+    public function registerRoute(): void
     {
         register_rest_route(
             'give-api/v2',
@@ -28,7 +28,7 @@ class DismissWelcomeBannerRoute
                 [
                     'methods' => 'POST',
                     'callback' => [$this, 'handleRequest'],
-                    'permission_callback' => 'is_user_logged_in',
+                    'permission_callback' => [$this, 'permissionsCheck'],
                     'args' => [
                         'action' => [
                             'type' => 'string',
@@ -64,7 +64,7 @@ class DismissWelcomeBannerRoute
      * @return int
      * @unreleased
      */
-    public function authorizationStatusCode()
+    public function authorizationStatusCode(): int
     {
         if (is_user_logged_in()) {
             return 403;
@@ -79,7 +79,7 @@ class DismissWelcomeBannerRoute
      * @return WP_REST_Response
      * @unreleased
      */
-    public function handleRequest(WP_REST_Request $request)
+    public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
         update_option($request->get_param('action'), time());
 
