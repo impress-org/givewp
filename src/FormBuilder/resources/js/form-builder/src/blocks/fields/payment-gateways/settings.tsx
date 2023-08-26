@@ -13,10 +13,6 @@ const settings: FieldBlock['settings'] = {
     },
     attributes: {
         lock: {remove: true},
-        gatewaysSettings: {
-            type: 'object',
-            default: {},
-        },
     },
     edit: Edit,
     icon: Icon,

@@ -11,6 +11,7 @@ use Give\Helpers\Hooks;
 use Give\Log\Log;
 use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceGateway;
 use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceSubscriptionModule;
+use Give\PaymentGateways\Gateways\Stripe\Actions\EnqueueStripeFormBuilderScripts;
 use Give\PaymentGateways\Gateways\Stripe\Actions\UpdateStripeFormBuilderSettingsMeta;
 use Give\PaymentGateways\Gateways\Stripe\LegacyStripeAdapter;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
@@ -170,6 +171,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function addStripeFormBuilderHooks()
     {
+        Hooks::addAction('givewp_form_builder_enqueue_scripts', EnqueueStripeFormBuilderScripts::class);
         add_action('givewp_form_builder_updated', static function (DonationForm $form) {
             give(UpdateStripeFormBuilderSettingsMeta::class)->__invoke($form);
         });
