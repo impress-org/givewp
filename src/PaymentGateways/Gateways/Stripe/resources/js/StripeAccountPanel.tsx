@@ -3,6 +3,7 @@ import {InspectorControls} from '@wordpress/block-editor';
 import {Notice, PanelBody, SelectControl, ToggleControl} from '@wordpress/components';
 import {createInterpolateElement} from '@wordpress/element';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
+import './styles.scss';
 
 export default function StripeAccountPanel({
     attributes,
@@ -50,7 +51,11 @@ export default function StripeAccountPanel({
 
     return (
         <InspectorControls>
-            <PanelBody title={__('Stripe Account', 'give')} initialOpen={true}>
+            <PanelBody
+                title={__('Stripe Account', 'give')}
+                className="givewp-stripe-payment-element__panel"
+                initialOpen={true}
+            >
                 <ToggleControl
                     label={__('Use global default', 'give')}
                     checked={attributes.stripeUseGlobalDefault}
