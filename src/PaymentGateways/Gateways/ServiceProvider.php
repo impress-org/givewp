@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\Gateways;
 
+use Give\DonationForms\Models\DonationForm;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Exceptions\OverflowException;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
@@ -10,6 +11,7 @@ use Give\Helpers\Hooks;
 use Give\Log\Log;
 use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceGateway;
 use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceSubscriptionModule;
+use Give\PaymentGateways\Gateways\Stripe\Actions\UpdateStripeFormBuilderSettingsMeta;
 use Give\PaymentGateways\Gateways\Stripe\LegacyStripeAdapter;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\ChargeRefunded;
@@ -74,7 +76,6 @@ class ServiceProvider implements ServiceProviderInterface
             $registrar->registerGateway(PayPalCommerceGateway::class);
         });
 
-
         add_filter("givewp_create_payment_gateway_data_" . PayPalCommerce::id(), function ($gatewayData) {
             $gatewayData['payPalOrderId'] = $gatewayData['payPalOrderId'] ?? give_clean($_POST['payPalOrderId']);
             return $gatewayData;
@@ -108,6 +109,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         $this->addLegacyStripeAdapter();
         $this->addStripeWebhookListeners();
+        $this->addStripeFormBuilderHooks();
     }
 
       /**
@@ -161,5 +163,15 @@ class ServiceProvider implements ServiceProviderInterface
 
         $legacyStripeAdapter->addDonationDetails();
         $legacyStripeAdapter->loadLegacyStripeWebhooksAndFilters();
+    }
+
+    /**
+     * @since 3.0.0
+     */
+    private function addStripeFormBuilderHooks()
+    {
+        add_action('givewp_form_builder_updated', static function (DonationForm $form) {
+            give(UpdateStripeFormBuilderSettingsMeta::class)->__invoke($form);
+        });
     }
 }

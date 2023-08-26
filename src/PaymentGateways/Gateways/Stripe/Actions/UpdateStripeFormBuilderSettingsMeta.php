@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\FormBuilder\Actions;
+namespace Give\PaymentGateways\Gateways\Stripe\Actions;
 
 use Give\DonationForms\Models\DonationForm;
 
@@ -9,7 +9,7 @@ use Give\DonationForms\Models\DonationForm;
  *
  * @since 3.0.0
  */
-class UpdateStripeSettingsMeta
+class UpdateStripeFormBuilderSettingsMeta
 {
     /**
      * @since 3.0.0
