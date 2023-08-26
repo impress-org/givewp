@@ -6,6 +6,7 @@ type windowData = {
     assets: string;
     action: string;
     nonce: string;
+    root: string;
 };
 
 declare const window: {

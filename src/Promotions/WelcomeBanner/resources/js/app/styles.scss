@@ -32,10 +32,12 @@
     }
 
     &__content {
+        flex: 1;
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
         gap: var(--givewp-spacing-18);
+        width: 100%;
     }
 }
 
@@ -45,12 +47,16 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-between;
-    gap: var(--givewp-spacing-8);
+    gap: var(--givewp-spacing-10);
     align-self: stretch;
 }
 
 .givewp-welcome-banner__col-right {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+
 
     > h2 {
         font-size: 1rem;
@@ -64,12 +70,11 @@
 
     &-container {
         flex: 1;
-        height: 100%;
         display: flex;
-        align-self: stretch;
-        align-items: flex-start;
         justify-content: space-between;
+        flex-wrap: wrap;
         gap: 1.375rem;
+        height: 100%;
     }
 }
 
