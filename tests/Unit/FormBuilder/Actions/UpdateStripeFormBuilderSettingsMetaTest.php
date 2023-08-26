@@ -6,15 +6,14 @@ use Closure;
 use Exception;
 use Faker\Factory;
 use Give\DonationForms\Models\DonationForm;
-use Give\FormBuilder\Actions\UpdateStripeSettingsMeta;
-use Give\Framework\Blocks\BlockModel;
+use Give\PaymentGateways\Gateways\Stripe\Actions\UpdateStripeFormBuilderSettingsMeta;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use ReflectionClass;
 use ReflectionException;
 
-class UpdateStripeSettingsMetaTest extends TestCase
+class UpdateStripeFormBuilderSettingsMetaTest extends TestCase
 {
 
     use RefreshDatabase;
@@ -36,7 +35,7 @@ class UpdateStripeSettingsMetaTest extends TestCase
         $form->blocks->remove('givewp/payment-gateways');
         $form->save();
 
-        (new UpdateStripeSettingsMeta())($form);
+        (new UpdateStripeFormBuilderSettingsMeta())($form);
 
         $expected = [
             'perFormAccounts' => '',
@@ -58,17 +57,12 @@ class UpdateStripeSettingsMetaTest extends TestCase
     public function testDonationFormWithInvalidStripAttributesDoesNotUpdateMeta()
     {
         $form = DonationForm::factory()->create();
-        $form->blocks->remove('givewp/payment-gateways');
-        $form->blocks->insertAfter('givewp/donation-summary', BlockModel::make([
-            'name' => 'givewp/payment-gateways',
-            'attributes' => [
-                'stripeUseGlobalDefault' => 'invalid-value',
-                'stripeAccountId' => 123,
-            ],
-        ]));
+        $block = $form->blocks->findByName('givewp/payment-gateways');
+        $block->setAttribute('stripeUseGlobalDefault', 'invalid-value');
+        $block->setAttribute('stripeAccountId', 123);
         $form->save();
 
-        (new UpdateStripeSettingsMeta())($form);
+        (new UpdateStripeFormBuilderSettingsMeta())($form);
 
         $expected = [
             'perFormAccounts' => '',
@@ -90,17 +84,12 @@ class UpdateStripeSettingsMetaTest extends TestCase
     public function testDonationFormWithValidStripeAttributesDoesUpdateMeta()
     {
         $form = DonationForm::factory()->create();
-        $form->blocks->remove('givewp/payment-gateways');
-        $form->blocks->insertAfter('givewp/donation-summary', BlockModel::make([
-            'name' => 'givewp/payment-gateways',
-            'attributes' => [
-                'stripeUseGlobalDefault' => false,
-                'stripeAccountId' => 'acct_123456789012345',
-            ],
-        ]));
+        $block = $form->blocks->findByName('givewp/payment-gateways');
+        $block->setAttribute('stripeUseGlobalDefault', false);
+        $block->setAttribute('stripeAccountId', 'acct_123456789012345');
         $form->save();
 
-        (new UpdateStripeSettingsMeta())($form);
+        (new UpdateStripeFormBuilderSettingsMeta())($form);
 
         $expected = [
             'perFormAccounts' => 'enabled',
@@ -127,7 +116,7 @@ class UpdateStripeSettingsMetaTest extends TestCase
         $form->save();
         $getStripeConnectedAccountKey = $this->getReflectedMethod();
 
-        (new UpdateStripeSettingsMeta())($form);
+        (new UpdateStripeFormBuilderSettingsMeta())($form);
 
         $expected = (give_stripe_get_default_account())['account_id'];
         $actual = $getStripeConnectedAccountKey($form->id);
@@ -146,16 +135,11 @@ class UpdateStripeSettingsMetaTest extends TestCase
         $getStripeConnectedAccountKey = $this->getReflectedMethod();
 
         $form = DonationForm::factory()->create();
-        $form->blocks->remove('givewp/payment-gateways');
-        $form->blocks->insertAfter('givewp/donation-summary', BlockModel::make([
-            'name' => 'givewp/payment-gateways',
-            'attributes' => [
-                'stripeUseGlobalDefault' => true,
-            ],
-        ]));
+        $block = $form->blocks->findByName('givewp/payment-gateways');
+        $block->setAttribute('stripeUseGlobalDefault', true);
         $form->save();
 
-        (new UpdateStripeSettingsMeta())($form);
+        (new UpdateStripeFormBuilderSettingsMeta())($form);
 
         $expected = (give_stripe_get_default_account())['account_id'];
         $actual = $getStripeConnectedAccountKey($form->id);
@@ -174,17 +158,12 @@ class UpdateStripeSettingsMetaTest extends TestCase
         $getStripeConnectedAccountKey = $this->getReflectedMethod();
 
         $form = DonationForm::factory()->create();
-        $form->blocks->remove('givewp/payment-gateways');
-        $form->blocks->insertAfter('givewp/donation-summary', BlockModel::make([
-            'name' => 'givewp/payment-gateways',
-            'attributes' => [
-                'stripeUseGlobalDefault' => false,
-                'stripeAccountId' => '',
-            ],
-        ]));
+        $block = $form->blocks->findByName('givewp/payment-gateways');
+        $block->setAttribute('stripeUseGlobalDefault', false);
+        $block->setAttribute('stripeAccountId', '');
         $form->save();
 
-        (new UpdateStripeSettingsMeta())($form);
+        (new UpdateStripeFormBuilderSettingsMeta())($form);
 
         $expected = '';
         $actual = $getStripeConnectedAccountKey($form->id);
@@ -203,17 +182,12 @@ class UpdateStripeSettingsMetaTest extends TestCase
         $getStripeConnectedAccountKey = $this->getReflectedMethod();
 
         $form = DonationForm::factory()->create();
-        $form->blocks->remove('givewp/payment-gateways');
-        $form->blocks->insertAfter('givewp/donation-summary', BlockModel::make([
-            'name' => 'givewp/payment-gateways',
-            'attributes' => [
-                'stripeUseGlobalDefault' => false,
-                'stripeAccountId' => 'invalid-account-id',
-            ],
-        ]));
+        $block = $form->blocks->findByName('givewp/payment-gateways');
+        $block->setAttribute('stripeUseGlobalDefault', false);
+        $block->setAttribute('stripeAccountId', 'invalid-account-id');
         $form->save();
 
-        (new UpdateStripeSettingsMeta())($form);
+        (new UpdateStripeFormBuilderSettingsMeta())($form);
 
         $expected = '';
         $actual = $getStripeConnectedAccountKey($form->id);
@@ -234,17 +208,12 @@ class UpdateStripeSettingsMetaTest extends TestCase
         $allAccounts = array_keys(give_stripe_get_all_accounts());
         $selectedAccount = end($allAccounts);
         $form = DonationForm::factory()->create();
-        $form->blocks->remove('givewp/payment-gateways');
-        $form->blocks->insertAfter('givewp/donation-summary', BlockModel::make([
-            'name' => 'givewp/payment-gateways',
-            'attributes' => [
-                'stripeUseGlobalDefault' => false,
-                'stripeAccountId' => $selectedAccount,
-            ],
-        ]));
+        $block = $form->blocks->findByName('givewp/payment-gateways');
+        $block->setAttribute('stripeUseGlobalDefault', false);
+        $block->setAttribute('stripeAccountId', $selectedAccount);
         $form->save();
 
-        (new UpdateStripeSettingsMeta())($form);
+        (new UpdateStripeFormBuilderSettingsMeta())($form);
 
         $expected = $selectedAccount;
         $actual = $getStripeConnectedAccountKey($form->id);
