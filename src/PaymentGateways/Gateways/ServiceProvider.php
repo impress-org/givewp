@@ -2,7 +2,6 @@
 
 namespace Give\PaymentGateways\Gateways;
 
-use Give\DonationForms\Models\DonationForm;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Exceptions\OverflowException;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
@@ -11,6 +10,7 @@ use Give\Helpers\Hooks;
 use Give\Log\Log;
 use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceGateway;
 use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceSubscriptionModule;
+use Give\PaymentGateways\Gateways\Stripe\Actions\AddStripeAttributesToNewForms;
 use Give\PaymentGateways\Gateways\Stripe\Actions\EnqueueStripeFormBuilderScripts;
 use Give\PaymentGateways\Gateways\Stripe\Actions\UpdateStripeFormBuilderSettingsMeta;
 use Give\PaymentGateways\Gateways\Stripe\LegacyStripeAdapter;
@@ -172,8 +172,7 @@ class ServiceProvider implements ServiceProviderInterface
     private function addStripeFormBuilderHooks()
     {
         Hooks::addAction('givewp_form_builder_enqueue_scripts', EnqueueStripeFormBuilderScripts::class);
-        add_action('givewp_form_builder_updated', static function (DonationForm $form) {
-            give(UpdateStripeFormBuilderSettingsMeta::class)->__invoke($form);
-        });
+        Hooks::addAction('givewp_form_builder_new_form', AddStripeAttributesToNewForms::class);
+        Hooks::addAction('givewp_form_builder_updated', UpdateStripeFormBuilderSettingsMeta::class);
     }
 }
