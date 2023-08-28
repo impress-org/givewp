@@ -5,6 +5,7 @@ import AdditionalFieldsPanel from '@givewp/form-builder/promos/additionalFields'
 import {useSelect} from '@wordpress/data';
 
 const BlockListInserter = () => {
+    // @ts-ignore
     const selectedBlock = useSelect((select) => select('core/block-editor').getSelectedBlock(), []);
     const isPrimaryBlockList = !!selectedBlock && selectedBlock.name !== 'givewp/section';
 
