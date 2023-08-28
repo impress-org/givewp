@@ -1,4 +1,4 @@
-.wrapper {
+.givewp-modal-wrapper {
     position: fixed;
     display: flex;
     top: 0;
@@ -10,10 +10,10 @@
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(2px);
-    z-index: 999;
+    z-index: 99999999999999;
     animation: appear 112ms ease-in 0s;
 
-    .dialog {
+    .givewp-modal-dialog {
         position: relative;
         font-family: 'Open Sans', sans-serif;
         max-width: 35rem;
@@ -23,7 +23,7 @@
         box-shadow: 0 0.25rem 0.5rem 0 rgba(14, 14, 14, 0.15);
         animation: appear 112ms ease-in 0s;
 
-        .header {
+        .givewp-modal-header {
             display: flex;
             align-self: stretch;
             font-size: 1rem;
@@ -36,22 +36,22 @@
             border-bottom: 1px solid var(--givewp-grey-50);
         }
 
-        .iconHeader {
+        .givewp-modal-icon-header {
             margin-right: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .iconCenter {
+        .givewp-modal-icon-center {
             display: flex;
             flex: 1;
             justify-content: center;
             padding-top: var(--givewp-spacing-5);
         }
 
-        .close,
-        .closeHeadless {
+        .givewp-modal-close,
+        .givewp-modal-close-headless {
             all: unset;
             position: absolute;
             cursor: pointer;
@@ -61,7 +61,7 @@
             fill: var(--givewp-grey-500);
         }
 
-        .closeHeadless {
+        .givewp-modal-close-headless {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -70,7 +70,7 @@
             border-radius: 50%;
         }
 
-        .content {
+        .givewp-modal-content {
             font-size: 0.875rem;
             padding: var(--givewp-spacing-5);
         }
@@ -91,7 +91,7 @@
 }
 
 @media screen and (max-width: 782px) {
-    .dialog {
+    .givewp-modal-dialog {
         position: sticky;
         max-width: 100% !important;
     }

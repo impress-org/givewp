@@ -1,14 +1,11 @@
 import {forwardRef, MouseEventHandler, ReactNode} from 'react';
-
 import cx from 'classnames';
-
-import styles from './style.module.scss';
+import './style.scss';
 
 /**
  *
  * @unreleased
  */
-
 export type ButtonProps = {
     variant?: 'primary' | 'secondary' | 'danger';
     size?: 'small' | 'large';
@@ -25,7 +22,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             ref={ref}
             disabled={disabled}
             type={type}
-            className={cx(styles.button, styles[variant], styles[size])}
+            className={cx('givewp-button', variant, size)}
             {...props}
         >
             {children}

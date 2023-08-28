@@ -1,6 +1,6 @@
 import {ChangeEventHandler, forwardRef} from 'react';
 
-import styles from './style.module.scss';
+import './style.scss';
 
 interface InputProps {
     name?: string;
@@ -23,7 +23,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                 name={name}
                 aria-label={name}
                 placeholder={placeholder}
-                className={styles.input}
+                className="givewp-input"
                 onChange={onChange}
                 disabled={disabled}
                 value={value}
@@ -33,7 +33,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
         if (label) {
             return (
-                <label className={styles.label}>
+                <label className="label">
                     {Input()}
                     {label}
                 </label>

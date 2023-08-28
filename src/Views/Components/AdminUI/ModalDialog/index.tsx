@@ -2,7 +2,7 @@ import {MouseEventHandler, useCallback, useEffect} from 'react';
 import {createPortal} from 'react-dom';
 import {__} from '@wordpress/i18n';
 import {ExitIcon} from '@givewp/components/AdminUI/Icons';
-import styles from './style.module.scss';
+import './style.scss';
 
 export interface ModalProps {
     children: JSX.Element | JSX.Element[];
@@ -44,16 +44,16 @@ export default function Modal
     if (!isOpen) return null;
 
     return createPortal(
-        <div className={styles.wrapper}>
+        <div className="givewp-modal-wrapper">
             <div
                 role="dialog"
                 aria-label={title}
-                className={styles.dialog}
+                className="givewp-modal-dialog"
             >
                 {showHeader ? (
-                    <div className={styles.header}>
+                    <div className="givewp-modal-header">
                         {icon && (
-                            <div className={styles.iconHeader}>
+                            <div className="givewp-modal-icon-header">
                                 {icon}
                             </div>
                         )}
@@ -61,7 +61,7 @@ export default function Modal
                         {showCloseIcon && handleClose && (
                             <button
                                 aria-label={__('Close dialog', 'give')}
-                                className={styles.close}
+                                className="givewp-modal-close"
                                 onClick={handleClose}
                             >
                                 <ExitIcon aria-label={__('Close dialog icon', 'give')} />
@@ -73,21 +73,21 @@ export default function Modal
                         {showCloseIcon && handleClose && (
                             <button
                                 aria-label={__('Close dialog', 'give')}
-                                className={styles.closeHeadless}
+                                className="givewp-modal-close-headless"
                                 onClick={handleClose}
                             >
                                 <ExitIcon aria-label={__('Close dialog icon', 'give')} />
                             </button>
                         )}
                         {icon && (
-                            <div className={styles.iconCenter}>
+                            <div className="givewp-modal-icon-center">
                                 {icon}
                             </div>
                         )}
                     </>
                 )}
 
-                <div className={styles.content}>
+                <div className="givewp-modal-content">
                     {children}
                 </div>
             </div>
