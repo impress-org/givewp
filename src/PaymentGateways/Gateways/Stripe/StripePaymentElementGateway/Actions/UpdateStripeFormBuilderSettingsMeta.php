@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\PaymentGateways\Gateways\Stripe\Actions;
+namespace Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Actions;
 
 use Give\DonationForms\Models\DonationForm;
 

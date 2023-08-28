@@ -1,12 +1,12 @@
 <?php
 
-namespace Give\Tests\Unit\FormBuilder\Actions;
+namespace Give\Tests\Unit\PaymentGateways\Stripe\StripePaymentElementGateway\Actions;
 
 use Closure;
 use Exception;
 use Faker\Factory;
 use Give\DonationForms\Models\DonationForm;
-use Give\PaymentGateways\Gateways\Stripe\Actions\UpdateStripeFormBuilderSettingsMeta;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Actions\UpdateStripeFormBuilderSettingsMeta;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
