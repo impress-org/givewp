@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {GiveIcon} from '../components/icons';
 import {drawerRight, listView, moreVertical, plus} from '@wordpress/icons';
-import {setFormSettings, useFormState, useFormStateDispatch} from '../stores/form-state';
+import {setFormSettings, useFormState, useFormStateDispatch, setTransferState} from '../stores/form-state';
 import {RichText} from '@wordpress/block-editor';
 import {Button, Dropdown, MenuGroup, MenuItem} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
@@ -40,7 +40,7 @@ const HeaderContainer = ({
     toggleShowSidebar,
     onSaveNotice,
 }) => {
-    const {blocks, settings: formSettings, isDirty} = useFormState();
+    const {blocks, settings: formSettings, isDirty, transfer} = useFormState();
 
     const {formTitle} = formSettings;
     const dispatch = useFormStateDispatch();
@@ -155,6 +155,16 @@ const HeaderContainer = ({
                                     >
                                         {__('Show Guided Tour', 'give')}
                                     </MenuItem>
+                                    {!transfer.showNotice && (
+                                        <MenuItem
+                                            onClick={() => {
+                                                dispatch(setTransferState({showModal: true}));
+                                                onClose();
+                                            }}
+                                        >
+                                            {__('Transfer Donation Data', 'give')}
+                                        </MenuItem>
+                                    )}
                                 </MenuGroup>
                             </div>
                         )}
