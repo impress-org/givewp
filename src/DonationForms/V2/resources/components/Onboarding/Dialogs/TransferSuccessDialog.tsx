@@ -6,7 +6,6 @@ import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import Button from '@givewp/components/AdminUI/Button';
 import Input from '@givewp/components/AdminUI/Input';
 import {AlertTriangle, CheckCircle} from '@givewp/components/AdminUI/Icons';
-import {updateOnboardingOption} from '../index'
 
 import styles from '../style.module.scss';
 
@@ -114,7 +113,7 @@ export default function TransferSuccessDialog({handleClose, formName, formId}) {
             }))
         })
 
-        updateOnboardingOption('transfer_onboarding_completed')
+       // updateOnboardingOption('transfer_onboarding_completed')
     }
 
     const Notice = () => (

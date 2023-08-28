@@ -73,5 +73,9 @@ class ServiceProvider implements ServiceProviderInterface
         add_action('wp_ajax_givewp_tour_completed', static function () {
             add_user_meta(get_current_user_id(), 'givewp-form-builder-tour-completed', time(), true);
         });
+
+        add_action('wp_ajax_givewp_migration_onboarding_completed', static function () {
+            add_user_meta(get_current_user_id(), 'givewp-form-builder-migration-onboarding-completed', time(), true);
+        });
     }
 }

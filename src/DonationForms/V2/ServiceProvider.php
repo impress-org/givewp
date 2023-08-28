@@ -55,5 +55,9 @@ class ServiceProvider implements ServiceProviderInterface
         if (DonationFormsAdminPage::isShowingAddV2FormPage()) {
             Hooks::addAction('admin_enqueue_scripts', DonationFormsAdminPage::class, 'loadAddFormScripts');
         }
+
+        add_action('wp_ajax_givewp_show_onboarding_banner', static function () {
+            add_user_meta(get_current_user_id(), 'givewp-show-onboarding-banner', time(), true);
+        });
     }
 }

@@ -1,16 +1,22 @@
-import {useContext, useEffect} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {useDispatch} from '@wordpress/data';
 import {ShepherdTour, ShepherdTourContext} from 'react-shepherd';
 import options from './options';
 import steps from './steps';
 
 import 'shepherd.js/dist/css/shepherd.css';
+import {__} from "@wordpress/i18n";
 
 declare global {
     interface Window {
         onboardingTourData?: {
             actionUrl: string;
             autoStartTour: boolean;
+        };
+        migrationOnboardingData?: {
+            actionUrl: string;
+            migrationOnboardingCompleted: boolean;
+            isMigratedForm: boolean;
         };
     }
 }
@@ -28,7 +34,7 @@ function TourEffectsAndEvents() {
             selectBlock(amountBlockId).then(() => console.log('Amount block selected'));
         }
 
-        document.addEventListener('selectAmountBlock', selectAmountBlockCallback );
+        document.addEventListener('selectAmountBlock', selectAmountBlockCallback);
 
         return () => {
             window.removeEventListener('selectAmountBlock', selectAmountBlockCallback);
@@ -39,7 +45,7 @@ function TourEffectsAndEvents() {
 
         const clickExitTourCallback = (event) => {
             var element = event.target as Element;
-            if(tour.isActive() && element.classList.contains('js-exit-tour')){
+            if (tour.isActive() && element.classList.contains('js-exit-tour')) {
                 tour.complete();
             }
         }
@@ -56,14 +62,18 @@ function TourEffectsAndEvents() {
             fetch(window.onboardingTourData.actionUrl, {method: 'POST'})
         }
 
-        tour.on('complete', onTourComplete );
+        tour.on('complete', onTourComplete);
 
         return () => {
-            tour.off('complete', onTourComplete );
+            tour.off('complete', onTourComplete);
         }
     }, [])
 
     useEffect(() => {
+        if (window.migrationOnboardingData.migrationOnboardingCompleted) {
+            tour.removeStep('upgrade')
+        }
+
         window.onboardingTourData.autoStartTour && ( tour.isActive() || tour.start() );
     }, [])
 

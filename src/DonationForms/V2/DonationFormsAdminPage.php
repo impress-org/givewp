@@ -27,7 +27,7 @@ class DonationFormsAdminPage
     /**
      * @var string
      */
-    private $onboardingApiRoot;
+    private $bannerActionUrl;
     /**
      * @var string
      */
@@ -36,7 +36,7 @@ class DonationFormsAdminPage
     public function __construct()
     {
         $this->apiRoot = esc_url_raw(rest_url('give-api/v2/admin/forms'));
-        $this->onboardingApiRoot = esc_url_raw(rest_url('give-api/v2/admin/onboarding/options'));
+        $this->bannerActionUrl = admin_url('admin-ajax.php?action=givewp_show_onboarding_banner');
         $this->migrationApiRoot = esc_url_raw(rest_url('give-api/v2/admin/forms/migrate'));
         $this->apiNonce = wp_create_nonce('wp_rest');
         $this->adminUrl = admin_url();
@@ -89,16 +89,14 @@ class DonationFormsAdminPage
     {
         $data = [
             'apiRoot' => $this->apiRoot,
-            'onboardingApiRoot' => $this->onboardingApiRoot,
+            'bannerActionUrl' => $this->bannerActionUrl,
             'apiNonce' => $this->apiNonce,
             'preload' => $this->preloadDonationForms(),
             'authors' => $this->getAuthors(),
             'table' => give(DonationFormsListTable::class)->toArray(),
             'adminUrl' => $this->adminUrl,
             'pluginUrl' => GIVE_PLUGIN_URL,
-            'showMigrationOnboarding' => ! give_get_option('show_migration_onboarding'),
-            'showBanner' => ! give_get_option('show_onboarding_banner'),
-            'migrationOnboardingCompleted' => give_get_option('migration_onboarding_completed'),
+            'showBanner' => ! get_user_meta(get_current_user_id(), 'givewp-show-onboarding-banner', true),
             'supportedAddons' => $this->getSupportedAddons(),
             'supportedGateways' => $this->getSupportedGateways(),
         ];

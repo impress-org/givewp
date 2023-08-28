@@ -15,15 +15,13 @@ declare global {
     interface Window {
         GiveDonationForms: {
             apiNonce: string;
-            onboardingApiRoot: string;
+            bannerActionUrl: string;
             migrationApiRoot: string;
             apiRoot: string;
             authors: Array<{ id: string | number; name: string }>;
             table: { columns: Array<object> };
             pluginUrl: string;
-            showMigrationOnboarding: boolean;
             showBanner: boolean;
-            migrationOnboardingCompleted: boolean;
             supportedAddons: Array<string>;
             supportedGateways: Array<string>;
         };
@@ -208,7 +206,6 @@ export default function DonationFormsListTable() {
 
     const [state, setState] = useState<OnboardingStateProps>({
         showBanner: Boolean(window.GiveDonationForms.showBanner),
-        migrationOnboardingCompleted: Boolean(window.GiveDonationForms.migrationOnboardingCompleted),
         showFeatureNoticeDialog: false
     })
 

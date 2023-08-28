@@ -4,17 +4,7 @@ import {FeatureNoticeDialog} from './Dialogs';
 
 export const OnboardingContext = createContext([]);
 
-export const updateOnboardingOption = async optionName => fetch(window.GiveDonationForms.onboardingApiRoot, {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'X-WP-Nonce': window.GiveDonationForms.apiNonce
-    },
-    body: JSON.stringify({option: optionName})
-})
-
 export interface OnboardingStateProps {
-    migrationOnboardingCompleted: boolean;
     showBanner: boolean;
     showFeatureNoticeDialog: boolean;
 }

@@ -5,7 +5,7 @@ import ListTableApi from '@givewp/components/ListTable/api';
 import {useContext} from 'react';
 import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
 import {Interweave} from 'interweave';
-import {OnboardingContext, updateOnboardingOption} from './Onboarding';
+import {OnboardingContext} from './Onboarding';
 
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 

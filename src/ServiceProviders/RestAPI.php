@@ -19,7 +19,6 @@ use Give\API\Endpoints\Reports\TotalIncome;
 use Give\API\Endpoints\Reports\TotalRefunds;
 use Give\API\RestRoute;
 use Give\DonationForms\V2\Endpoints\FormActions;
-use Give\DonationForms\V2\Endpoints\OnboardingActions;
 use Give\DonationForms\V2\Endpoints\ListDonationForms;
 use Give\DonationForms\V2\Endpoints\SwitchDonationFormView;
 use Give\Donations\Endpoints\DonationActions;
@@ -63,7 +62,6 @@ class RestAPI implements ServiceProvider
         SubscriptionActions::class,
         DeleteDonor::class,
         FormActions::class,
-        OnboardingActions::class,
         GetMigrations::class,
         RunMigration::class,
     ];

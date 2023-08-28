@@ -1,7 +1,7 @@
 import {useContext} from 'react';
 import {__} from '@wordpress/i18n';
 import {ExitIcon, StarsIcon} from '@givewp/components/AdminUI/Icons';
-import {OnboardingContext, updateOnboardingOption} from '../index';
+import {OnboardingContext} from '../index';
 import styles from '../style.module.scss';
 
 export default function Banner() {
@@ -14,7 +14,7 @@ export default function Banner() {
     }));
 
     const handleClose = () => {
-        updateOnboardingOption('show_onboarding_banner')
+        fetch(window.GiveDonationForms.bannerActionUrl, {method: 'POST'})
             .then(() => setState(prev => ({
                 ...prev,
                 showBanner: false
