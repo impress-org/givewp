@@ -7,10 +7,6 @@ import styles from '../style.module.scss';
 
 export default function FeatureNoticeDialog({isUpgrading, handleClose}) {
     const {supportedAddons, supportedGateways, migrationApiRoot, apiNonce} = window.GiveDonationForms;
-
-    // @ts-ignore
-    console.log(isUpgrading, window.give_vars.post_id)
-
     const handleUpgrade = async () => {
 
         // @ts-ignore
