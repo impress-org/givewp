@@ -2,7 +2,6 @@ import {__} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
 import {Notice, PanelBody, SelectControl, ToggleControl} from '@wordpress/components';
 import {createInterpolateElement} from '@wordpress/element';
-import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import './styles.scss';
 
 export default function StripeAccountPanel({
@@ -12,15 +11,15 @@ export default function StripeAccountPanel({
     attributes: StripeProps;
     setAttributes: ({}) => void;
 }) {
-    const {gatewaysGlobalSettings, gatewaySettingsUrl} = getFormBuilderWindowData();
-    const stripeGlobalSettings: StripeGlobalSettingsProps = gatewaysGlobalSettings?.stripe_payment_element ?? {};
+    // @ts-ignore
+    const stripeGlobalSettings: StripeGlobalSettingsProps = window.stripePaymentElementGatewaySettings;
 
     const textWithLinkToStripeSettings = (textTemplate: string) =>
         createInterpolateElement(textTemplate, {
-            a: <a href={`${gatewaySettingsUrl}&section=stripe-settings&group=accounts`} />,
+            a: <a href={stripeGlobalSettings.stripeSettingsUrl} />,
         });
 
-    const hasGlobalDefault = stripeGlobalSettings.default;
+    const hasGlobalDefault = stripeGlobalSettings.defaultAccount;
     const hasPerFormDefault = attributes.stripeAccountId;
     const showGlobalDefaultNotice =
         !hasGlobalDefault &&
@@ -43,9 +42,9 @@ export default function StripeAccountPanel({
 
     const selectAccountOptions = [
         {label: __('Select', 'give'), value: ''},
-        ...Object.keys(stripeGlobalSettings.accounts).map((accountId) => ({
-            label: stripeGlobalSettings.accounts[accountId].account_name,
-            value: stripeGlobalSettings.accounts[accountId].account_id,
+        ...Object.keys(stripeGlobalSettings.allAccounts).map((accountId) => ({
+            label: stripeGlobalSettings.allAccounts[accountId].account_name,
+            value: stripeGlobalSettings.allAccounts[accountId].account_id,
         })),
     ];
 
@@ -78,7 +77,7 @@ export default function StripeAccountPanel({
                         actions={[
                             {
                                 label: __('Connect a Stripe account', 'give'),
-                                url: `${gatewaySettingsUrl}&section=stripe-settings&group=accounts`,
+                                url: stripeGlobalSettings.stripeSettingsUrl,
                                 variant: 'link',
                             },
                         ]}
@@ -98,11 +97,12 @@ type StripeProps = {
 };
 
 type StripeGlobalSettingsProps = {
-    default: string;
-    accounts: {
+    defaultAccount: string;
+    allAccounts: {
         [key: string]: {
             account_id: string;
             account_name: string;
         };
     };
+    stripeSettingsUrl: string;
 };

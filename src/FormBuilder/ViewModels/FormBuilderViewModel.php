@@ -50,7 +50,6 @@ class FormBuilderViewModel
                 'rewriteSlug' => get_post_type_object('give_forms')->rewrite['slug'],
             ],
             'gateways' => $this->getGateways(),
-            'gatewaysGlobalSettings' => $this->getGatewaysGlobalSettings(),
             'gatewaySettingsUrl' => admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways'),
             'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
             'recurringAddonData' => [
@@ -177,19 +176,6 @@ class FormBuilderViewModel
         }, give(PaymentGatewayRegister::class)->getPaymentGateways(3));
 
         return array_values($builderPaymentGatewayData);
-    }
-
-    /**
-     * @since 3.0.0
-     */
-    public function getGatewaysGlobalSettings(): array
-    {
-        return [
-            'stripe_payment_element' => [
-                'default' => (bool)give_stripe_get_default_account(),
-                'accounts' => give_stripe_get_all_accounts(),
-            ]
-        ];
     }
 
     /**

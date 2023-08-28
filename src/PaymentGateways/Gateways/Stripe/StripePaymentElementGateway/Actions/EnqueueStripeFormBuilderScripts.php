@@ -27,6 +27,18 @@ class EnqueueStripeFormBuilderScripts
             true
         );
 
+        wp_localize_script(
+            'givewp-stripe-payment-element-form-builder',
+            'stripePaymentElementGatewaySettings',
+            [
+                'defaultAccount' => (bool)give_stripe_get_default_account(),
+                'allAccounts' => give_stripe_get_all_accounts(),
+                'stripeSettingsUrl' => admin_url(
+                    'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=stripe-settings&group=accounts'
+                ),
+            ]
+        );
+
         wp_enqueue_style(
             'givewp-stripe-payment-element-form-builder',
             GIVE_PLUGIN_URL . 'build/stripePaymentElementFormBuilder.css'
