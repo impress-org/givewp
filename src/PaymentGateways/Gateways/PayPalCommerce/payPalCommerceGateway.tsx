@@ -379,7 +379,7 @@ import {CSSProperties, useEffect, useState} from 'react';
                 throw new Error('Invalid hosted fields');
             }
 
-            const approorderCallback = async (data) => {
+            const approveOrderCallback = async (data) => {
                 await fetch(
                     `${payPalDonationsSettings.ajaxUrl}?action=give_paypal_commerce_approve_order&order=` +
                     data.orderId,
@@ -413,7 +413,7 @@ import {CSSProperties, useEffect, useState} from 'react';
                     ));
                 }
 
-                return await approorderCallback(result);
+                return await approveOrderCallback(result);
             } catch (err) {
                 console.log('paypal donations error', err);
 
