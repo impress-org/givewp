@@ -55,6 +55,10 @@ const donationStatus = [
         value: 'trash',
         text: __('Trash', 'give'),
     },
+    {
+        value: 'upgraded',
+        text: __('Upgraded', 'give'),
+    },
 ];
 
 const donationFormsFilters: Array<FilterConfig> = [
