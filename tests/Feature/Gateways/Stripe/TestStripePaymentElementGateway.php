@@ -25,7 +25,7 @@ class TestStripePaymentElementGateway extends TestCase
     use RefreshDatabase;
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @throws ApiErrorException
      * @throws Exception
@@ -56,7 +56,7 @@ class TestStripePaymentElementGateway extends TestCase
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @throws \Give\Framework\Exceptions\Primitives\Exception
      * @throws PaymentGatewayException
@@ -146,7 +146,7 @@ class TestStripePaymentElementGateway extends TestCase
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     protected function getMockGateway(array $methods = [])
     {
@@ -167,7 +167,7 @@ class TestStripePaymentElementGateway extends TestCase
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     protected function getMockIntent(Money $amount, string $stripePublishableKey): PaymentIntent
     {

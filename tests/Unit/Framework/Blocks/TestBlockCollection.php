@@ -7,7 +7,7 @@ use Give\Framework\Blocks\BlockModel;
 use Give\Tests\TestCase;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 class TestBlockCollection extends TestCase
 {
@@ -15,7 +15,7 @@ class TestBlockCollection extends TestCase
     protected $blockCollection;
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      *
      * @return void
      */
@@ -37,9 +37,9 @@ class TestBlockCollection extends TestCase
     }
 
     /**
-     * @return void
-     * @since 0.1.0
+     * @since 3.0.0
      *
+     * @return void
      */
     public function testMakesCollectionFromArray()
     {
@@ -52,7 +52,7 @@ class TestBlockCollection extends TestCase
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @return void
      */
@@ -64,7 +64,7 @@ class TestBlockCollection extends TestCase
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @return void
      */
@@ -83,7 +83,7 @@ class TestBlockCollection extends TestCase
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public function testInsertBeforeAddsNewBlockBeforeReference()
     {
@@ -103,7 +103,7 @@ class TestBlockCollection extends TestCase
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public function testInsertAfterAddsNewBlockAfterReference()
     {
@@ -123,7 +123,7 @@ class TestBlockCollection extends TestCase
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public function testPrependAddsNewBlockAsFirstChild()
     {
@@ -138,7 +138,7 @@ class TestBlockCollection extends TestCase
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      */
     public function testAppendAddsNewBlockAsLastChild()
     {
