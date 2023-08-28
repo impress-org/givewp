@@ -38,8 +38,6 @@ class TrackingServiceProvider implements ServiceProvider
     {
         $isTrackingEnabled = Track::isTrackingEnabled();
 
-        Hooks::addAction('init', TrackJob::class, 'send');
-
         if ($isTrackingEnabled) {
             Hooks::addAction(TrackJobScheduler::CRON_JOB_HOOK_NAME, TrackJob::class, 'send');
         }
