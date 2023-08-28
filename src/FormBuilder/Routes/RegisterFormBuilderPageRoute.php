@@ -127,14 +127,15 @@ class RegisterFormBuilderPageRoute
         $transferredFormId = (bool) give_get_meta($donationFormId, 'transferredFormId', true);
 
         wp_localize_script('@givewp/form-builder/script', 'migrationOnboardingData', [
+            'pluginUrl' => GIVE_PLUGIN_URL,
             'formId' => $donationFormId,
-            'onboardingActionUrl' => admin_url('admin-ajax.php?action=givewp_migration_onboarding_completed'),
+            'migrationActionUrl' => admin_url('admin-ajax.php?action=givewp_migration_hide_notice'),
             'transferActionUrl' => admin_url('admin-ajax.php?action=givewp_transfer_hide_notice'),
             'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/forms')),
             'apiNonce' => wp_create_nonce('wp_rest'),
             'isMigratedForm' => $migratedFormId,
             'isTransferredForm' => $transferredFormId,
-            'migrationOnboardingCompleted' => $migratedFormId && get_user_meta(get_current_user_id(), 'givewp-form-builder-migration-onboarding-completed', true),
+            'showUpgradeDialog' => $migratedFormId && !(bool)give_get_meta($donationFormId, 'givewp-form-builder-migration-hide-notice', true),
             'transferShowNotice' => $migratedFormId && !$transferredFormId && !(bool)give_get_meta($donationFormId, 'givewp-form-builder-transfer-hide-notice', true),
         ]);
 
