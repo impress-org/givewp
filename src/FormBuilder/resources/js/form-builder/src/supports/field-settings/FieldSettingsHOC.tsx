@@ -61,7 +61,7 @@ const generateEmailTag = (fieldName, storeAsDonorMeta) => {
 function FieldSettingsEdit({attributes, setAttributes, fieldSettings}) {
     const validateFieldName = useFieldNameValidator();
     const [hasFieldNameAttribute, setHasFieldNameAttribute] = useState(attributes.hasOwnProperty('fieldName'));
-    const [isNewField] = useState(hasFieldNameAttribute);
+    const [isNewField] = useState(!hasFieldNameAttribute);
 
     const updateFieldName = useCallback(
         (newFieldName = null, bumpUniqueness = false) => {

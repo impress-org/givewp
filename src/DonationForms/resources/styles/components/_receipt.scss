@@ -176,45 +176,54 @@
     .receipt-footer {
         display: flex;
         justify-content: space-between;
+        flex-direction: column;
         align-items: center;
         margin-block-start: 2rem;
         padding-block-end: 1.5rem;
         padding-inline: 1.25rem;
 
-        .donor-dashboard-link {
+        #give-pdf-receipt-link,
+        #give-pdf-receipt-link:visited {
+            display: flex;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            width: fit-content;
+            padding: 0.75rem 2rem 0.75rem 2rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.75rem;
+            border-radius: 0.2rem;
+            border: thin solid var(--givewp-primary-color);
+            background-color: #fff;
             color: var(--givewp-primary-color);
 
-            > i {
-                margin-inline-start: 0.25rem;
-                transform: translateY(0.18em);
-                font-size: 1.5rem;
-                text-decoration: none;
-                line-height: 0.5;
+
+            &::before {
+                display: inline-block;
+                content: '\f1c1';
+                font-family: 'Font Awesome 6 Free';
+                font-weight: 900;
+                font-size: 1.25rem;
+                line-height: 1;
+                margin-right: 0.5rem;
             }
+        }
+
+        #give-pdf-receipt-link:hover {
+            background-color: var(--givewp-primary-color);
+            color: #fff;
+        }
+
+        .donor-dashboard-link {
+            color: var(--givewp-primary-color);
+            text-decoration: underline;
+            font-weight: 400;
         }
 
         .download-btn {
             font-size: inherit;
             padding-block: 0.75rem;
             padding-inline: 1.6875rem;
-        }
-    }
-
-    #give-pdf-receipt-link,
-    #give-pdf-receipt-link:visited {
-        display: flex;
-        column-gap: 0.9375rem;
-        align-items: center;
-        text-decoration: none;
-        color: #fff;
-
-        &::after {
-            display: inline-block;
-            content: '\f1c1';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            font-size: 1.625rem;
-            line-height: 1;
         }
     }
 }
