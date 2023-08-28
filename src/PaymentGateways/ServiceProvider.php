@@ -15,6 +15,8 @@ use Give\PaymentGateways\Gateways\Stripe\Controllers\UpdateStatementDescriptorAj
 use Give\PaymentGateways\Gateways\Stripe\Migrations\AddMissingTransactionIdForUncompletedDonations;
 use Give\PaymentGateways\Gateways\Stripe\Migrations\AddStatementDescriptorToStripeAccounts;
 use Give\PaymentGateways\Gateways\Stripe\Migrations\RemovePaymentIntentSecretMeta;
+use Give\PaymentGateways\PayPalCommerce\Banners\GatewaySettingPageBanner;
+use Give\PaymentGateways\PayPalCommerce\Banners\PayPalStandardToDonationsMigrationGlobalBanner;
 use Give\PaymentGateways\PayPalCommerce\Migrations\RegisterPayPalDonationsRefreshTokenCronJobByMode;
 use Give\PaymentGateways\PayPalCommerce\Migrations\RemoveLogWithCardInfo;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -66,6 +68,8 @@ class ServiceProvider implements ServiceProviderInterface
          */
         Hooks::addAction('wp_footer', CheckoutGateway::class, 'maybeHandleRedirect', 99999);
         Hooks::addAction('give_embed_footer', CheckoutGateway::class, 'maybeHandleRedirect', 99999);
+
+        $this->registerPayPalDonationsMigrationBanners();
     }
 
     /**
@@ -81,5 +85,21 @@ class ServiceProvider implements ServiceProviderInterface
             RemovePaymentIntentSecretMeta::class,
             RegisterPayPalDonationsRefreshTokenCronJobByMode::class,
         ]);
+    }
+
+    /**
+     * This method registers the banners.
+     * @unreleased
+     * @return void
+     */
+    private function registerPayPalDonationsMigrationBanners()
+    {
+        if (! is_admin()) {
+            return;
+        }
+
+        // Banner for the migration from PayPal Standard to PayPal Donations.
+        give(GatewaySettingPageBanner::class)->setupHook();
+        give(PayPalStandardToDonationsMigrationGlobalBanner::class)->setHook();
     }
 }
