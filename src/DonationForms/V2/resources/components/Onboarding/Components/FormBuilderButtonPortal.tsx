@@ -15,7 +15,10 @@ export default function FormBuilderButtonPortal({isUpgrading = false, showDialog
 
     const ButtonPortal = () => createPortal(
         <div className={styles.tryNewFormBuilderBtnContainer}>
-            <FormBuilderButton onClick={() => setShowDialog(true)} />
+            <FormBuilderButton onClick={() => setShowDialog({
+                show: true,
+                upgrading: false
+            })} />
         </div>,
         portalContainer
     );

@@ -7,14 +7,17 @@ import styles from '../style.module.scss';
 
 export default function EditForm() {
 
-    const [showDialog, setShowDialog] = useState(false);
+    const [state, setState] = useState({
+        show: false,
+        upgrading: false
+    });
 
     return (
         <>
             <FormBuilderButtonPortal
-                showDialog={showDialog}
-                setShowDialog={setShowDialog}
-                isUpgrading={true}
+                showDialog={state.show}
+                setShowDialog={setState}
+                isUpgrading={state.upgrading}
             />
 
             <div className={styles.migrationGuideBox}>
@@ -30,7 +33,10 @@ export default function EditForm() {
                 <Button
                     onClick={(e) => {
                         e.preventDefault();
-                        setShowDialog(true);
+                        setState({
+                            upgrading: true,
+                            show: true
+                        });
                     }}
                     style={{width: '100%'}}
                 >
