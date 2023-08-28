@@ -19,16 +19,6 @@ export default Object.values(compose(
     }),
 )([
     {
-        id: 'upgrade',
-        title: __('Your form has been upgraded', 'give'),
-        text: __('Make sure to check the settings for each section and block, and maybe even run some test donations to ensure your new form is good to go.', 'give'),
-        when: {
-            show: function () {
-                fetch(window.migrationOnboardingData.onboardingActionUrl, {method: 'POST'})
-            }
-        }
-    },
-    {
         id: 'welcome',
         title: __('Welcome to the visual donation form builder!', 'give'),
         text: __('The following is a quick (less than a minute) tour of the visual donation form builder, to introduce the tools for creating engaging donation forms.', 'give'),
