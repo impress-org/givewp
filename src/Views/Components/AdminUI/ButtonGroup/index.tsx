@@ -1,5 +1,5 @@
 import cx from 'classnames';
-import styles from './style.module.scss';
+import './style.scss';
 
 interface ButtonGroupProps {
     children: JSX.Element | JSX.Element[];
@@ -8,7 +8,7 @@ interface ButtonGroupProps {
 
 export default function ButtonGroup({children, align = 'left'}: ButtonGroupProps) {
     return (
-        <div className={cx(styles.group, styles[align])}>
+        <div className={cx('givewp-button-group', align)}>
             {children}
         </div>
     );
