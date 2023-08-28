@@ -15,7 +15,12 @@ class AddStripeAttributesToNewForms
     {
         $block = $form->blocks->findByName('givewp/payment-gateways');
         if ($block) {
-            $block->setAttribute('stripeUseGlobalDefault', true);
+            $enabledGateways = array_keys(give_get_option('gateways'));
+            $stripeEnabled = in_array('stripe_payment_element', $enabledGateways, true);
+
+            if ($stripeEnabled) {
+                $block->setAttribute('stripeUseGlobalDefault', true);
+            }
         }
     }
 }
