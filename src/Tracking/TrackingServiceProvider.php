@@ -32,7 +32,7 @@ class TrackingServiceProvider implements ServiceProvider
     /**
      * @inheritdoc
      *
-     * @unreleased Register hooks if request is made by form builder
+     * @unreleased Enable tracking if request is made by form builder
      */
     public function boot()
     {
