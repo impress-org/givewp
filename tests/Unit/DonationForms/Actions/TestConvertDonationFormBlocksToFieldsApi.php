@@ -18,7 +18,7 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
     use RefreshDatabase;
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      *
      * @return void
      * @throws Exception
@@ -51,7 +51,7 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
 
         $blocks = BlockCollection::make([$block]);
 
-        $formSchema = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
+        list($formSchema, $blockNodeRelationships) = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
 
         $form = new DonationFormNode('donation-form');
         $form->defaultCurrency('USD');
@@ -70,7 +70,7 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
     }
 
     /**
-     * @since 0.4.0
+     * @since 3.0.0
      *
      * @return void
      * @throws Exception
@@ -116,7 +116,7 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
             3
         );
 
-        $formSchema = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
+        list($formSchema, $blockNodeRelationships) = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
 
         $form = new DonationFormNode('donation-form');
         $form->defaultCurrency('USD');

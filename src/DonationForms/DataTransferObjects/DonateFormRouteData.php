@@ -5,6 +5,7 @@ namespace Give\DonationForms\DataTransferObjects;
 use Give\DonationForms\Exceptions\DonationFormFieldErrorsException;
 use Give\DonationForms\Models\DonationForm;
 use Give\Framework\FieldsAPI\Actions\CreateValidatorFromForm;
+use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
 use Give\Framework\Support\Contracts\Arrayable;
 use WP_Error;
 
@@ -43,13 +44,13 @@ class DonateFormRouteData implements Arrayable
      *
      * @since 3.0.0
      */
-    public static function fromRequest(array $requestData): DonateFormRouteData
+    public static function fromRequest(array $requestData): self
     {
-        $self = new static();
+        $self = new self();
         $self->formId = (int)$requestData['formId'];
         $self->gatewayId = $requestData['gatewayId'];
         $self->originUrl = $requestData['originUrl'];
-        $self->isEmbed = $requestData['isEmbed'];
+        $self->isEmbed = filter_var($requestData['isEmbed'], FILTER_VALIDATE_BOOLEAN);
         $self->embedId = $self->isEmbed ? $requestData['embedId'] : null;
         $self->requestData = $requestData;
 
@@ -63,7 +64,7 @@ class DonateFormRouteData implements Arrayable
      *
      * @since 3.0.0
      *
-     * @throws DonationFormFieldErrorsException
+     * @throws DonationFormFieldErrorsException|NameCollisionException
      */
     public function validated(): DonateControllerData
     {

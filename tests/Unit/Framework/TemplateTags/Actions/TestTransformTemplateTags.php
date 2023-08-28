@@ -8,7 +8,7 @@ use Give\Tests\TestCase;
 class TestTransformTemplateTags extends TestCase {
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      * @return void
      */
     public function testShouldTransformTemplateTags() {

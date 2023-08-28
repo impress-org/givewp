@@ -23,7 +23,7 @@ class FormBuilderViewModelTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      *
      * @return void
      * @throws Exception

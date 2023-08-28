@@ -14,6 +14,7 @@ use Give\PaymentGateways\Gateways\Stripe\CheckoutGateway;
 use Give\PaymentGateways\Gateways\Stripe\Controllers\UpdateStatementDescriptorAjaxRequestController;
 use Give\PaymentGateways\Gateways\Stripe\Migrations\AddMissingTransactionIdForUncompletedDonations;
 use Give\PaymentGateways\Gateways\Stripe\Migrations\AddStatementDescriptorToStripeAccounts;
+use Give\PaymentGateways\Gateways\Stripe\Migrations\RemovePaymentIntentSecretMeta;
 use Give\PaymentGateways\PayPalCommerce\Migrations\RegisterPayPalDonationsRefreshTokenCronJobByMode;
 use Give\PaymentGateways\PayPalCommerce\Migrations\RemoveLogWithCardInfo;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -68,6 +69,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @unreleased add RemovePaymentIntentSecretMeta migration
      * @since 2.19.6
      */
     private function registerMigrations()
@@ -76,7 +78,8 @@ class ServiceProvider implements ServiceProviderInterface
             AddStatementDescriptorToStripeAccounts::class,
             AddMissingTransactionIdForUncompletedDonations::class,
             RemoveLogWithCardInfo::class,
-            RegisterPayPalDonationsRefreshTokenCronJobByMode::class
+            RemovePaymentIntentSecretMeta::class,
+            RegisterPayPalDonationsRefreshTokenCronJobByMode::class,
         ]);
     }
 }

@@ -7,9 +7,10 @@ import {Fragment, useState} from 'react';
 import {BlockInstance} from '@wordpress/blocks';
 import {FieldBlock} from '@givewp/form-builder/types';
 import BlockTypesList from '@givewp/form-builder/components/forks/BlockTypesList';
+import {getBlockRegistrar} from '@givewp/form-builder/common/getWindowData';
 
 // @ts-ignore
-const blockRegistrar = window.givewp.form.blocks;
+const blockRegistrar = getBlockRegistrar();
 
 type SearchBlock = {
     id: string;

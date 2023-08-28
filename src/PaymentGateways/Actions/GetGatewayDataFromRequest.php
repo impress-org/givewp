@@ -12,25 +12,16 @@ class GetGatewayDataFromRequest
      * In order for the $gatewayData to be automatically accessible the data will need to come in
      * through a specific key called `gatewayData`.
      *
+     * @since 3.0.0 Updated logic to support all native content types.
      * @since 2.22.0
      */
     public function __invoke(): array
     {
         $gatewayData = [];
 
-        if (!isset($_SERVER['CONTENT_TYPE'])) {
-            return $gatewayData;
-        }
-
-        $contentType = $_SERVER['CONTENT_TYPE'];
-
-        // this content type is typically used throughout legacy with jQuery and wp-ajax
-        if (($contentType === "application/x-www-form-urlencoded") && isset($_REQUEST['gatewayData'])) {
+        if (isset($_REQUEST['gatewayData'])) {
             $gatewayData = give_clean($_REQUEST['gatewayData']);
-        }
-
-        // this content type is typically used with the fetch api and our custom routes
-        if ($contentType === "application/json") {
+        } else if ($this->requestIsJson()) {
             $requestData = file_get_contents('php://input');
             $requestData = json_decode($requestData, true);
 
@@ -40,5 +31,15 @@ class GetGatewayDataFromRequest
         }
 
         return $gatewayData;
+    }
+
+     /**
+     * This checks the server content type for 'application/json' to determine if it is a json request.
+     *
+     * @since 3.0.0
+     */
+    protected function requestIsJson(): bool
+    {
+        return isset($_SERVER['CONTENT_TYPE']) && str_contains($_SERVER['CONTENT_TYPE'], 'application/json');
     }
 }

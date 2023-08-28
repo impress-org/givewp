@@ -1,5 +1,5 @@
 import type {FC} from 'react';
-import {FormSettings} from "@givewp/form-builder/types";
+import {FormSettings} from '@givewp/form-builder/types';
 
 /**
  * Used for a single currency. The amount is an integer in the smallest unit of the currency.
@@ -57,6 +57,7 @@ export interface DonationConfirmationReceiptServerExports {
             description: string;
             currency: string;
             donorDashboardUrl: string;
+            pdfReceiptLink: string;
         };
         donorDetails: ReceiptDetail[];
         donationDetails: ReceiptDetail[];

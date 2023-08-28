@@ -105,9 +105,9 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
      *
      * @throws Exception
      */
-    public function delete()
+    public function delete(): bool
     {
-        give(DonationFormRepository::class)->delete($this);
+        return give(DonationFormRepository::class)->delete($this);
     }
 
     /**
