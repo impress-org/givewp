@@ -88,17 +88,21 @@ function Confirmation({handleTransferConfirmation}) {
 export default function TransferSuccessDialog() {
     const {transfer, settings} = useFormState();
     const dispatch = useFormStateDispatch();
-    const [state, setState] = useState<DialogStateProps>({
+
+    const initialState: DialogStateProps = {
         isOpen: transfer.showModal,
         step: 0,
         showHeader: true,
         showCloseIcon: true,
         dialogTitle: __('Transfer existing donation data', 'give'),
         dialogIcon: <AlertTriangle />
-    });
+    }
+
+    const [state, setState] = useState<DialogStateProps>(initialState);
 
     function handleClose() {
         dispatch(setTransferState({showModal: false}))
+        setState(initialState);
     }
 
     function handleTransferConfirmation(params) {
@@ -130,7 +134,7 @@ export default function TransferSuccessDialog() {
 
             <div>
                 <Interweave
-                    content={__(sprintf('Transferring donations involves moving all donations from the existing form %s to the upgraded form, leaving no donations associated with the existing form after the transfer.', `<span class="dialog-form-name">[${settings.formTitle}]</span>`), 'give')} />
+                    content={__(sprintf('Transferring donations involves moving all donations from the existing form %s to the upgraded form, leaving no donations associated with the existing form after the transfer.', `<span class="givewp-dialog-form-name">[${settings.formTitle}]</span>`), 'give')} />
             </div>
 
             <br /><br />
