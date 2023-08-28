@@ -3,6 +3,7 @@
 namespace Give\FormBuilder\BlockModels;
 
 use Give\Framework\Blocks\BlockModel;
+use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 
 /**
  * This is a decorator for the Block Model block "givewp/donation-amount".
@@ -36,6 +37,16 @@ class DonationAmountBlockModel {
     public function hasAttribute($name): bool
     {
         return $this->block->hasAttribute($name);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function setAttribute(string $name, $value): self
+    {
+        $this->block->setAttribute($name, $value);
+
+        return $this;
     }
 
     /**
@@ -118,6 +129,59 @@ class DonationAmountBlockModel {
     public function isRecurringEnabled(): bool
     {
         return $this->block->getAttribute('recurringEnabled') === true;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function setRecurringEnabled(bool $enabled = true): self
+    {
+        return $this->setAttribute('recurringEnabled', $enabled);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function setRecurringEnableOneTimeDonations(bool $enabled = true): self
+    {
+        return $this->setAttribute('recurringEnableOneTimeDonations', $enabled);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function setRecurringBillingInterval(int $interval): self
+    {
+        return $this->setAttribute('recurringBillingInterval', $interval);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function setRecurringLengthOfTime(int $lengthOfTime): self
+    {
+        return $this->setAttribute('recurringLengthOfTime', $lengthOfTime);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function setRecurringBillingPeriodOptions(SubscriptionPeriod ...$options): self
+    {
+        return $this->setAttribute(
+            'recurringBillingPeriodOptions',
+            array_map(static function (SubscriptionPeriod $option) {
+                return $option->getValue();
+            }, $options)
+        );
+    }
+
+    /**
+     * @unreleased
+     */
+    public function setRecurringOptInDefaultBillingPeriod(SubscriptionPeriod $period): self
+    {
+        return $this->setAttribute('recurringOptInDefaultBillingPeriod', $period->getValue());
     }
 
     /**
