@@ -1,11 +1,10 @@
-import {useContext, useEffect, useState} from 'react';
+import {useContext, useEffect} from 'react';
 import {useDispatch} from '@wordpress/data';
 import {ShepherdTour, ShepherdTourContext} from 'react-shepherd';
 import options from './options';
 import steps from './steps';
 
 import 'shepherd.js/dist/css/shepherd.css';
-import {__} from "@wordpress/i18n";
 
 declare global {
     interface Window {
@@ -14,9 +13,13 @@ declare global {
             autoStartTour: boolean;
         };
         migrationOnboardingData?: {
+            formId: number;
+            apiRoot: string;
+            apiNonce: string;
             actionUrl: string;
             migrationOnboardingCompleted: boolean;
             isMigratedForm: boolean;
+            isTransferred: boolean;
         };
     }
 }
