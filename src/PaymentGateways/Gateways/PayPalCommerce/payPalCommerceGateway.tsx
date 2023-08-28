@@ -63,6 +63,27 @@ import {CSSProperties, useEffect, useState} from 'react';
         lineHeight: '1.2',
     } as CSSProperties;
 
+    /**
+     * Get PayPal script options.
+     *
+     * This function return the paypal script options on basis of context.
+     *  - If donation type is subscription then remove hosted fields from components.
+     *
+     *  @return {object} PayPal script options.
+     */
+    const getPayPalScriptOptions = ({isSubscription}) => {
+        let paypalScriptOptions = {...payPalDonationsSettings.sdkOptions};
+
+        // Remove hosted fields from components if subscription.
+        if( isSubscription  && -1 !== paypalScriptOptions.components.indexOf('hosted-fields') ){
+            paypalScriptOptions.components = paypalScriptOptions.components.split(',')
+                .filter((component) => component !== 'hosted-fields')
+                .join(',');
+        }
+
+        return paypalScriptOptions;
+    }
+
     const getFormData = () => {
         const formData = new FormData();
 
@@ -327,20 +348,10 @@ import {CSSProperties, useEffect, useState} from 'react';
         useEffect(() => {
             const isSubscription = donationType === 'subscription';
 
-            // New paypal script options.
-           const  paypalScriptOptions = {...payPalDonationsSettings.sdkOptions};
-
-            // Remove hosted fields from components if subscription.
-            if( isSubscription  && -1 !== paypalScriptOptions.components.indexOf('hosted-fields') ){
-                paypalScriptOptions.components = paypalScriptOptions.components.split(',')
-                    .filter((component) => component !== 'hosted-fields')
-                    .join(',');
-            }
-
             dispatch({
                 type: 'resetOptions',
                 value: {
-                    ...paypalScriptOptions,
+                    ...getPayPalScriptOptions({isSubscription}),
                     currency: currency,
                     vault: donationType === 'subscription',
                     intent: donationType === 'subscription' ? 'subscription' : 'capture',
@@ -435,20 +446,12 @@ import {CSSProperties, useEffect, useState} from 'react';
             const {useWatch} = window.givewp.form.hooks;
             const donationType = useWatch({name: 'donationType'});
             const isSubscription = donationType === 'subscription';
-            let paypalScriptOptions = {...payPalDonationsSettings.sdkOptions};
-
-            // Remove hosted fields from components if subscription.
-            if( isSubscription  && -1 !== paypalScriptOptions.components.indexOf('hosted-fields') ){
-                paypalScriptOptions.components = paypalScriptOptions.components.split(',')
-                    .filter((component) => component !== 'hosted-fields')
-                    .join(',');
-            }
 
             return (
                 <FormFieldsProvider>
                     <PayPalScriptProvider
                         deferLoading={true}
-                        options={paypalScriptOptions}
+                        options={getPayPalScriptOptions({isSubscription})}
                     >
                         <PaymentMethodsWrapper />
                     </PayPalScriptProvider>
