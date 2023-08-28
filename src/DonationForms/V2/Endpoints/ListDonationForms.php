@@ -206,7 +206,7 @@ class ListDonationForms extends Endpoint
 
         // Status
         if ($status === 'any') {
-            $query->whereIn('post_status', ['publish', 'draft', 'pending', 'private']);
+            $query->whereIn('post_status', ['publish', 'draft', 'pending', 'private', 'upgraded']);
         } else {
             $query->where('post_status', $status);
         }

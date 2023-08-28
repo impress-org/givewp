@@ -4,6 +4,7 @@ namespace Give\FormMigration\DataTransferObjects;
 
 use Give\DonationForms\Models\DonationForm as DonationFormV3;
 use Give\DonationForms\V2\Models\DonationForm as DonationFormV2;
+use Give\DonationForms\ValueObjects\DonationFormStatus;
 
 class FormMigrationPayload
 {
@@ -21,6 +22,6 @@ class FormMigrationPayload
 
     public static function fromFormV2(DonationFormV2 $formV2): self
     {
-        return new self($formV2, DonationFormV3::factory()->create());
+        return new self($formV2, DonationFormV3::factory()->create(['status' => DonationFormStatus::UPGRADED()]));
     }
 }
