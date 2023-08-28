@@ -19,6 +19,7 @@ export default function Date({Label, ErrorMessage, description, dateFormat = 'yy
             {description && <FieldDescription description={description} />}
             <input type="hidden" {...inputProps} />
             <DatePicker
+                ariaInvalid={fieldError ? 'true' : 'false'}
                 dateFormat={dateFormat}
                 selected={value ? parse(value, dateFormat, new window.Date()) : null}
                 onChange={(date) => setValue(inputProps.name, date ? format(date, dateFormat) : '')}
