@@ -1,0 +1,36 @@
+@import '@givewp/components/AdminUI/ModalDialog/style.scss';
+@import '@givewp/components/AdminUI/Button/style.scss';
+@import '@givewp/components/AdminUI/Input/style.scss';
+
+.givewp-dialog-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    margin-bottom: var(--givewp-spacing-3);
+    display: flex;
+    align-items: center;
+
+    svg {
+        margin-right: var(--givewp-spacing-2);
+    }
+
+    &:not(:first-child)  {
+        margin-top: var(--givewp-spacing-5);
+    }
+}
+
+.givewp-dialog-center {
+    text-align: center;
+    justify-content: center;
+}
+
+.givewp-dialog-info {
+    margin-bottom: var(--givewp-spacing-5);
+}
+
+.givewp-dialog-form-name {
+    color: #459948;
+}
+
+.givewp-dialog-checkbox {
+    padding-bottom: 5px;
+}
