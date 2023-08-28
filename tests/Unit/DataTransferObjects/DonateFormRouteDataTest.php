@@ -147,6 +147,7 @@ class DonateFormRouteDataTest extends TestCase
                           "250",
                           "500"
                         ],
+                        "defaultLevel": "100",
                         "priceOption": "multi",
                         "setPrice": "100",
                         "customAmount": "true",
