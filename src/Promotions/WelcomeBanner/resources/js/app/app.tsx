@@ -8,6 +8,9 @@ import ColumnRow from './components/ColumnRow';
 import dismissWelcomeBanner from './utils/requests';
 import getWindowData from '../index';
 
+/**
+ * @unreleased
+ */
 export default function App() {
     const {assets} = getWindowData();
 
@@ -50,7 +53,9 @@ export default function App() {
                             <h2>{__('Create a donation form', 'givewp')}</h2>
                         </span>
                         <p>{__('This is powered by the new Visual Donation Form Builder', 'givewp')}</p>
-                        <InternalLink href={''}>{__('Try the new form builder', 'givewp')}</InternalLink>
+                        <InternalLink href={'/wp-admin/edit.php?post_type=give_forms&page=givewp-form-builder'}>
+                            {__('Try the new form builder', 'givewp')}
+                        </InternalLink>
                     </ColumnRow>
 
                     <ColumnRow>
@@ -61,7 +66,9 @@ export default function App() {
                                 'givewp'
                             )}
                         </p>
-                        <ExternalLink href={''}>{__('Read documentation', 'givewp')}</ExternalLink>
+                        <ExternalLink href={'https://docs.givewp.com/welcome-docs'}>
+                            {__('Read documentation', 'givewp')}
+                        </ExternalLink>
                     </ColumnRow>
                 </section>
 
@@ -75,7 +82,7 @@ export default function App() {
                                 'givewp'
                             )}
                         >
-                            <VideoPlayer src={null} fallbackImage={`${assets}/design-mode.min.png`} />
+                            <VideoPlayer src={`${assets}/`} fallbackImage={`${assets}/design-mode.min.png`} />
                         </SpotLight>
 
                         <SpotLight
@@ -86,7 +93,7 @@ export default function App() {
                             )}
                         >
                             <VideoPlayer
-                                src={`${assets}/custom-paragraph.mp4`}
+                                src={`${assets}/custom-fields.mp4`}
                                 fallbackImage={`${assets}/custom-fields.min.png`}
                             />
                         </SpotLight>
