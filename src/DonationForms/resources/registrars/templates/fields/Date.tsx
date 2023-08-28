@@ -5,7 +5,14 @@ import {DateProps} from '@givewp/forms/propTypes';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from '../styles.module.scss';
 
-export default function Date({Label, ErrorMessage, description, dateFormat = 'yyyy/mm/dd', inputProps}: DateProps) {
+export default function Date({
+    Label,
+    ErrorMessage,
+    description,
+    dateFormat = 'yyyy/mm/dd',
+    fieldError,
+    inputProps,
+}: DateProps) {
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
     const {useFormContext, useWatch} = window.givewp.form.hooks;
     const {setValue} = useFormContext();
