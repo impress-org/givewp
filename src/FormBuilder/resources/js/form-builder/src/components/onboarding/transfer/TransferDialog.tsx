@@ -112,7 +112,7 @@ export default function TransferSuccessDialog() {
                 'Content-Type': 'application/json',
                 'X-WP-Nonce': window.migrationOnboardingData.apiNonce
             },
-            body: JSON.stringify({...params, formId: window.migrationOnboardingData.formId})
+            body: JSON.stringify({...params, formId: window.migrationOnboardingData.isMigratedForm})
         }).then((response) => {
             setState(prev => ({
                 ...prev,
@@ -122,6 +122,8 @@ export default function TransferSuccessDialog() {
                 dialogIcon: response.ok ? <CheckCircle /> : <AlertTriangle />
             }))
         })
+
+        fetch(window.migrationOnboardingData.transferActionUrl + `&formId=${window.migrationOnboardingData.formId}`, {method: 'POST'})
     }
 
     const Notice = () => (
