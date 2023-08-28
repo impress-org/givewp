@@ -13,13 +13,13 @@ use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Tests\TestCase;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 class DonateFormRouteDataTest extends TestCase
 {
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function testValidatedShouldReturnValidatedData()
     {
@@ -92,7 +92,7 @@ class DonateFormRouteDataTest extends TestCase
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function testValidatedShouldReturnValidatedDataWithSubscriptionData()
     {
