@@ -48,6 +48,7 @@ const HeaderContainer = ({
 
     const isDraftDisabled = ( isSaving || !isDirty ) && 'draft' === formSettings.formStatus;
     const isPublishDisabled = ( isSaving || !isDirty ) && 'publish' === formSettings.formStatus;
+    const {isMigratedForm, isTransferredForm} = window.migrationOnboardingData;
 
     const onSave = (formStatus: FormStatus) => {
         setSaving(formStatus);
@@ -155,7 +156,7 @@ const HeaderContainer = ({
                                     >
                                         {__('Show Guided Tour', 'give')}
                                     </MenuItem>
-                                    {!transfer.showNotice && !window.migrationOnboardingData.isTransferredForm && (
+                                    {isMigratedForm && !isTransferredForm && !transfer.showNotice && (
                                         <MenuItem
                                             onClick={() => {
                                                 dispatch(setTransferState({showModal: true}));
