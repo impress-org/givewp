@@ -25,10 +25,10 @@ export default function StripeAccountPanel({
         !hasGlobalDefault &&
         (attributes.stripeUseGlobalDefault || (!attributes.stripeUseGlobalDefault && !hasPerFormDefault));
 
-    const useGlobalDefaultHelper = textWithLinkToStripeSettings(
+    const stripeUseGlobalDefaultHelper = textWithLinkToStripeSettings(
         __('All donations are processed through the default account set in the <a>Global settings</a>.', 'give')
     );
-    const selectAccountHelper = (() => {
+    const stripeAccountIdHelper = (() => {
         const sharedText = __('Select an account you would like to use to process donations for this form.', 'give');
 
         if (showGlobalDefaultNotice) {
@@ -59,7 +59,7 @@ export default function StripeAccountPanel({
                     label={__('Use global default', 'give')}
                     checked={attributes.stripeUseGlobalDefault}
                     onChange={(value) => setAttributes({stripeUseGlobalDefault: value})}
-                    help={useGlobalDefaultHelper}
+                    help={stripeUseGlobalDefaultHelper}
                 />
                 {!attributes.stripeUseGlobalDefault && (
                     <SelectControl
@@ -67,7 +67,7 @@ export default function StripeAccountPanel({
                         value={attributes.stripeAccountId}
                         options={selectAccountOptions}
                         onChange={(value: string) => setAttributes({stripeAccountId: value})}
-                        help={selectAccountHelper}
+                        help={stripeAccountIdHelper}
                     />
                 )}
                 {showGlobalDefaultNotice && (
