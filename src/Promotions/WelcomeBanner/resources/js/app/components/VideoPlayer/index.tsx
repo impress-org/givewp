@@ -7,6 +7,9 @@ type VideoPlayerProps = {
     fallbackImage: string;
 };
 
+/**
+ * @unreleased
+ */
 export default function VideoPlayer({src, fallbackImage}: VideoPlayerProps) {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -23,7 +26,12 @@ export default function VideoPlayer({src, fallbackImage}: VideoPlayerProps) {
         }
     };
 
-    const isFallbackImage = src === null || src === undefined || src === '' || isPlaying === null;
+    const isFallbackImage =
+        src === null ||
+        src === undefined ||
+        src === '' ||
+        isPlaying === null ||
+        (!src.endsWith('.mp4') && !src.endsWith('.mov'));
 
     return (
         <div className={'givewp-welcome-banner-video'}>
