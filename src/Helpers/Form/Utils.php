@@ -250,14 +250,4 @@ class Utils
     {
         return (bool)give()->form_meta->get_meta($formId, 'formBuilderSettings', true);
     }
-
-    /**
-     * @unreleased
-     */
-    public static function isFormBuilderRequest(): bool
-    {
-        return (isset($_POST['blocks']) && strpos($_POST['blocks'],
-                    'givewp') !== false) && (isset($_POST['settings']) && strpos($_POST['settings'],
-                    'formTitle') !== false);
-    }
 }
