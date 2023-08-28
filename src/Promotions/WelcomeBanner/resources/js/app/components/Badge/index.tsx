@@ -8,6 +8,9 @@ type BadgeProps = {
     alt: string;
 };
 
+/**
+ * @unreleased
+ */
 export default function Badge({variant, caption, iconSrc, alt}: BadgeProps) {
     return (
         <div

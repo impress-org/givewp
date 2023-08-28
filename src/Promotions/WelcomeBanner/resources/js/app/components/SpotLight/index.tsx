@@ -6,6 +6,9 @@ type SpotLightProps = {
     children: any;
 };
 
+/**
+ * @unreleased
+ */
 export default function SpotLight({title, description, children}: SpotLightProps) {
     return (
         <div className={'givewp-welcome-banner-spotlight-wrapper'}>
