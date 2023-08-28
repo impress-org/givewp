@@ -18,7 +18,7 @@ const initialState = {
         ...initialFormSettings,
     },
     transfer: {
-        showNotice: !Boolean(window.migrationOnboardingData.isTransferredForm),
+        showNotice: Boolean(window.migrationOnboardingData.transferShowNotice),
         showModal: false,
     }
 };

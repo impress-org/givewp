@@ -58,6 +58,8 @@ export default function Notice() {
     const {transfer} = useFormState();
     const dispatch = useFormStateDispatch();
 
+    const {transferActionUrl, formId} = window.migrationOnboardingData;
+
     if (!transfer.showNotice) {
         return null;
     }
@@ -83,7 +85,10 @@ export default function Notice() {
             <div style={closeIconContainerStyles}>
                 <ExitIcon
                     style={closeIconStyles}
-                    onClick={() => dispatch(setTransferState({showNotice: false}))}
+                    onClick={() => {
+                        dispatch(setTransferState({showNotice: false}))
+                        fetch(transferActionUrl + `&formId=${formId}`, {method: 'POST'})
+                    }}
                 />
             </div>
         </div>

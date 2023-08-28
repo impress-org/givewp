@@ -24,7 +24,7 @@ export default Object.values(compose(
         text: __('Make sure to check the settings for each section and block, and maybe even run some test donations to ensure your new form is good to go.', 'give'),
         when: {
             show: function () {
-                fetch(window.migrationOnboardingData.actionUrl, {method: 'POST'})
+                fetch(window.migrationOnboardingData.onboardingActionUrl, {method: 'POST'})
             }
         }
     },

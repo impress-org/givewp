@@ -16,8 +16,10 @@ declare global {
             formId: number;
             apiRoot: string;
             apiNonce: string;
-            actionUrl: string;
+            onboardingActionUrl: string;
+            transferActionUrl: string;
             migrationOnboardingCompleted: boolean;
+            transferShowNotice: boolean;
             isMigratedForm: boolean;
             isTransferredForm: boolean;
         };
