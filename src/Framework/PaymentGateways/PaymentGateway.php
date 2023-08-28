@@ -191,7 +191,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * @unreleased Return synchronizeSubscription() instead nothing
+     * @since 2.33.0 Return synchronizeSubscription() instead nothing
      * @since      2.21.2
      * @inheritDoc
      * @throws Exception

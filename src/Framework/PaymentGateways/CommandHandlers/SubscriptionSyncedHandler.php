@@ -10,12 +10,12 @@ use Give\Framework\PaymentGateways\Commands\SubscriptionSynced;
 use function Give\Framework\Http\Response\response;
 
 /**
- * @unreleased
+ * @since 2.33.0
  */
 class SubscriptionSyncedHandler
 {
     /**
-     * @unreleased
+     * @since 2.33.0
      *
      * @throws Exception
      */
@@ -53,7 +53,7 @@ class SubscriptionSyncedHandler
     }
 
     /**
-     * @unreleased
+     * @since 2.33.0
      */
     private function getTransactionData(Donation $donation): array
     {

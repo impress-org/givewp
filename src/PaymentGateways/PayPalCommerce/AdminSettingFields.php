@@ -487,7 +487,7 @@ class AdminSettingFields
     }
 
     /**
-     * @unreleased
+     * @since 2.33.0
      */
     private function getBanner(): string
     {

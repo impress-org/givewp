@@ -6,40 +6,40 @@ use Give\Donations\Models\Donation;
 use Give\Subscriptions\Models\Subscription;
 
 /**
- * @unreleased
+ * @since 2.33.0
  */
 class SubscriptionSynced implements GatewayCommand
 {
     /**
-     * @unreleased
+     * @since 2.33.0
      *
      * @var Subscription
      */
     public $subscription;
 
     /**
-     * @unreleased
+     * @since 2.33.0
      *
      * @var array
      */
     public $missingDonations;
 
     /**
-     * @unreleased
+     * @since 2.33.0
      *
      * @var array
      */
     public $presentDonations;
 
     /**
-     * @unreleased
+     * @since 2.33.0
      *
      * @var string
      */
     public $notice;
 
     /**
-     * @unreleased
+     * @since 2.33.0
      *
      * @param Subscription $subscription     Do not save the subscription, just return it so the API can see what's dirty
      * @param Donation[]   $missingDonations The missing donations added to the subscription

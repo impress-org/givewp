@@ -60,7 +60,7 @@ class GatewaySubscriptionController
     }
 
     /**
-     * @unreleased
+     * @since 2.33.0
      */
     public function synchronizeSubscription(Subscription $subscription)
     {

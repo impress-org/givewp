@@ -5,12 +5,12 @@ namespace Give\PaymentGateways\PayPalCommerce\Banners;
 /**
  * Class GatewaySettingPageBanner
  *
- * @unreleased
+ * @since 2.33.0
  */
 class PayPalDonationsSettingPageBanner
 {
     /**
-     * @unreleased
+     * @since 2.33.0
      */
     public function render(): string
     {

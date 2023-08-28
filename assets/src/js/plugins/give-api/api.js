@@ -187,7 +187,7 @@ const Give = {
 		/**
 		 * Get global param
 		 *
-		 * @unreleased  Return default value of global param if param not found.
+		 * @since 2.33.0  Return default value of global param if param not found.
 		 * @since 2.2.4
 		 *
 		 * @return {object} WordPress localized global param.

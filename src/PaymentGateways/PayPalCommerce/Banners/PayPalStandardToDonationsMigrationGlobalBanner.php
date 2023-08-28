@@ -9,18 +9,18 @@ use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
  *
  * Note: This class uses notice api to disable the banner for the user.
  *
- * @unreleased
+ * @since 2.33.0
  */
 class PayPalStandardToDonationsMigrationGlobalBanner
 {
     /**
-     * @unreleased
+     * @since 2.33.0
      * @var string
      */
     private $bannerId = 'PayPalStandardToDonationsMigrationGlobalBanner';
 
     /**
-     * @unreleased
+     * @since 2.33.0
      * @return void
      */
     public function setHook()
@@ -45,7 +45,7 @@ class PayPalStandardToDonationsMigrationGlobalBanner
     /**
      * Render the banner.
      *
-     * @unreleased
+     * @since 2.33.0
      */
     public function getModalScript(): string
     {
@@ -147,7 +147,7 @@ EOT;
     }
 
     /**
-     * @unreleased
+     * @since 2.33.0
      * @return string
      */
     private function getIcon(): string
@@ -158,7 +158,7 @@ EOT;
     }
 
     /**
-     * @unreleased
+     * @since 2.33.0
      * @return bool
      */
     private function isBannerDisabledForUser(): bool

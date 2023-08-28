@@ -7,13 +7,13 @@ namespace Give\PaymentGateways\PayPalCommerce\Banners;
  *
  * This class is used to render banner on gateway settings page.
  *
- * @unreleased
+ * @since 2.33.0
  */
 class GatewaySettingPageBanner
 {
     /**
      * Setup hook.
-     * @unreleased
+     * @since 2.33.0
      * @return void
      */
     public function setupHook()
@@ -24,7 +24,7 @@ class GatewaySettingPageBanner
 
     /**
      * Render banner.
-     * @unreleased
+     * @since 2.33.0
      * @return void
      */
     public function render()

@@ -73,7 +73,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased add RemovePaymentIntentSecretMeta migration
+     * @since 2.33.0 add RemovePaymentIntentSecretMeta migration
      * @since 2.19.6
      */
     private function registerMigrations()
@@ -89,7 +89,7 @@ class ServiceProvider implements ServiceProviderInterface
 
     /**
      * This method registers the banners.
-     * @unreleased
+     * @since 2.33.0
      * @return void
      */
     private function registerPayPalDonationsMigrationBanners()

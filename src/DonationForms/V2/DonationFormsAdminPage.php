@@ -74,7 +74,7 @@ class DonationFormsAdminPage
     /**
      * Load scripts
      *
-     * @unreleased Set admin script and style dependencies to display PayPal Standard to Donations Migration banner.
+     * @since 2.33.0 Set admin script and style dependencies to display PayPal Standard to Donations Migration banner.
      */
     public function loadScripts()
     {
