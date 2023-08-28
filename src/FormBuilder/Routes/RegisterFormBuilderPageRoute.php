@@ -125,7 +125,10 @@ class RegisterFormBuilderPageRoute
 
         $migratedFormId = (bool)give_get_meta($donationFormId, 'migratedFormId', true);
         wp_localize_script('@givewp/form-builder/script', 'migrationOnboardingData', [
+            'formId' => $donationFormId,
             'actionUrl' => admin_url('admin-ajax.php?action=givewp_migration_onboarding_completed'),
+            'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/forms')),
+            'apiNonce' => wp_create_nonce('wp_rest'),
             'isMigratedForm' => $migratedFormId,
             'isTransferredForm' => (bool) give_get_meta($donationFormId, 'transferredFormId', true),
             'migrationOnboardingCompleted' => $migratedFormId && get_user_meta(get_current_user_id(), 'givewp-form-builder-migration-onboarding-completed', true),
