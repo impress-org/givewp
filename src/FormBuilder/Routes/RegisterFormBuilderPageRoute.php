@@ -130,7 +130,7 @@ class RegisterFormBuilderPageRoute
             'apiRoot' => esc_url_raw(rest_url('give-api/v2/admin/forms')),
             'apiNonce' => wp_create_nonce('wp_rest'),
             'isMigratedForm' => $migratedFormId,
-            'isTransferredForm' => (bool) give_get_meta($donationFormId, 'transferredFormId', true),
+            'isTransferredForm' => true, //(bool) give_get_meta($donationFormId, 'transferredFormId', true),
             'migrationOnboardingCompleted' => $migratedFormId && get_user_meta(get_current_user_id(), 'givewp-form-builder-migration-onboarding-completed', true),
         ]);
 

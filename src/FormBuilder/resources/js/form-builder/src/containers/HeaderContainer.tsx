@@ -155,7 +155,7 @@ const HeaderContainer = ({
                                     >
                                         {__('Show Guided Tour', 'give')}
                                     </MenuItem>
-                                    {!transfer.showNotice && (
+                                    {!transfer.showNotice && !window.migrationOnboardingData.isTransferredForm && (
                                         <MenuItem
                                             onClick={() => {
                                                 dispatch(setTransferState({showModal: true}));

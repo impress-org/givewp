@@ -19,7 +19,7 @@ declare global {
             actionUrl: string;
             migrationOnboardingCompleted: boolean;
             isMigratedForm: boolean;
-            isTransferred: boolean;
+            isTransferredForm: boolean;
         };
     }
 }
