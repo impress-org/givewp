@@ -90,7 +90,7 @@ export default function TransferSuccessDialog() {
     const dispatch = useFormStateDispatch();
 
     const initialState: DialogStateProps = {
-        isOpen: transfer.showModal,
+        isOpen: transfer.showTransferModal,
         step: 0,
         showHeader: true,
         showCloseIcon: true,
@@ -101,7 +101,7 @@ export default function TransferSuccessDialog() {
     const [state, setState] = useState<DialogStateProps>(initialState);
 
     function handleClose() {
-        dispatch(setTransferState({showModal: false}))
+        dispatch(setTransferState({showTransferModal: false}))
         setState(initialState);
     }
 
@@ -211,13 +211,13 @@ export default function TransferSuccessDialog() {
         }
     }
 
-    if (!transfer.showModal) {
+    if (!transfer.showTransferModal) {
         return null;
     }
 
     return (
         <ModalDialog
-            isOpen={transfer.showModal}
+            isOpen={transfer.showTransferModal}
             icon={state.dialogIcon}
             showHeader={state.showHeader}
             showCloseIcon={state.showCloseIcon}

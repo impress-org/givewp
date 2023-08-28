@@ -54,7 +54,7 @@ const closeIconStyles = {
 } as CSSProperties;
 
 
-export default function Notice() {
+export default function TransferNotice() {
     const {transfer} = useFormState();
     const dispatch = useFormStateDispatch();
 
@@ -77,7 +77,7 @@ export default function Notice() {
             <div>
                 <button
                     style={buttonStyles}
-                    onClick={() => dispatch(setTransferState({showModal: true}))}
+                    onClick={() => dispatch(setTransferState({showTransferModal: true}))}
                 >
                     {__('Transfer data', 'give')}
                 </button>

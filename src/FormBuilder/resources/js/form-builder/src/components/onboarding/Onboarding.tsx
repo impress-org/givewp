@@ -13,12 +13,13 @@ declare global {
             autoStartTour: boolean;
         };
         migrationOnboardingData?: {
+            pluginUrl: string;
             formId: number;
             apiRoot: string;
             apiNonce: string;
-            onboardingActionUrl: string;
+            migrationActionUrl: string;
             transferActionUrl: string;
-            migrationOnboardingCompleted: boolean;
+            showUpgradeDialog: boolean;
             transferShowNotice: boolean;
             isMigratedForm: boolean;
             isTransferredForm: boolean;
@@ -75,10 +76,6 @@ function TourEffectsAndEvents() {
     }, [])
 
     useEffect(() => {
-        if (window.migrationOnboardingData.migrationOnboardingCompleted) {
-            tour.removeStep('upgrade')
-        }
-
         window.onboardingTourData.autoStartTour && ( tour.isActive() || tour.start() );
     }, [])
 

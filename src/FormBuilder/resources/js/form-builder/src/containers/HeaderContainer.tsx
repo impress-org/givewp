@@ -159,7 +159,7 @@ const HeaderContainer = ({
                                     {isMigratedForm && !isTransferredForm && !transfer.showNotice && (
                                         <MenuItem
                                             onClick={() => {
-                                                dispatch(setTransferState({showModal: true}));
+                                                dispatch(setTransferState({showTransferModal: true}));
                                                 onClose();
                                             }}
                                         >

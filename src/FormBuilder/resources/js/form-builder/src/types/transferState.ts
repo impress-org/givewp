@@ -1,4 +1,5 @@
 export type TransferState = {
     showNotice: boolean;
-    showModal: boolean;
+    showTransferModal: boolean;
+    showUpgradeModal: boolean;
 };
