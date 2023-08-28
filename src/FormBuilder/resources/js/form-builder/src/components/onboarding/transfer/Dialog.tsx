@@ -121,8 +121,6 @@ export default function TransferSuccessDialog() {
                 step: response.ok ? 2 : 3,
                 dialogIcon: response.ok ? <CheckCircle /> : <AlertTriangle />
             }))
-
-            response.ok && dispatch(setTransferState({showModal: false, showNotice: false}))
         })
     }
 
