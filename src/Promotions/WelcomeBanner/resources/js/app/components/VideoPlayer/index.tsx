@@ -26,7 +26,7 @@ export default function VideoPlayer({src, fallbackImage}: VideoPlayerProps) {
         }
     };
 
-    const isFallbackImage =
+    const useFallbackImage =
         src === null ||
         src === undefined ||
         src === '' ||
@@ -36,7 +36,7 @@ export default function VideoPlayer({src, fallbackImage}: VideoPlayerProps) {
     return (
         <div className={'givewp-welcome-banner-video'}>
             <div className={'givewp-welcome-banner-video-container'}>
-                {isFallbackImage ? (
+                {useFallbackImage ? (
                     <div className={'givewp-welcome-banner-video-fallback'}>
                         <img className={'givewp-welcome-banner-video-fallback__image'} src={fallbackImage} alt={'/'} />
                     </div>
@@ -44,7 +44,7 @@ export default function VideoPlayer({src, fallbackImage}: VideoPlayerProps) {
                     <video ref={videoRef} src={src} />
                 )}
 
-                {!isFallbackImage && (
+                {!useFallbackImage && (
                     <button className="play-button" onClick={togglePlay}>
                         {isPlaying ? (
                             <img src={`${assets}/pause-icon.svg`} alt="Pause" />
