@@ -19,9 +19,6 @@ class UpdateStripeFormBuilderSettingsMeta
     {
         $paymentGatewaysBlock = $form->blocks->findByName('givewp/payment-gateways');
         if (!$paymentGatewaysBlock) {
-            give()->form_meta->delete_meta($form->id, 'give_stripe_per_form_accounts');
-            give()->form_meta->delete_meta($form->id, '_give_stripe_default_account');
-
             return;
         }
 
