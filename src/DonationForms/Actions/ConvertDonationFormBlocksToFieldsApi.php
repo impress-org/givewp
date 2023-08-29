@@ -8,6 +8,7 @@ use Give\DonationForms\Rules\BillingAddressCityRule;
 use Give\DonationForms\Rules\BillingAddressStateRule;
 use Give\DonationForms\Rules\BillingAddressZipRule;
 use Give\DonationForms\Rules\GatewayRule;
+use Give\FormBuilder\BlockModels\DonationAmountBlockModel;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
 use Give\Framework\FieldsAPI\Authentication;
@@ -167,9 +168,9 @@ class ConvertDonationFormBlocksToFieldsApi
                     });
 
             case "givewp/payment-gateways":
-                $defaultGatewayId = give( DonationFormRepository::class )->getDefaultEnabledGatewayId( $this->formId );
+                $defaultGatewayId = give(DonationFormRepository::class)->getDefaultEnabledGatewayId($this->formId);
 
-                return PaymentGateways::make( 'gatewayId' )
+                return PaymentGateways::make('gatewayId')
                     ->testMode(give_is_test_mode())
                     ->rules(new GatewayRule())
                     ->required()
@@ -206,7 +207,7 @@ class ConvertDonationFormBlocksToFieldsApi
                     ->loginConfirmation($block->getAttribute('loginConfirmation'))
                     ->tapNode('login', function ($field) use ($block) {
                         if ($block->getAttribute('required')) {
-                            if ( ! is_user_logged_in()) {
+                            if (!is_user_logged_in()) {
                                 $field->required();
                             }
 
@@ -350,7 +351,8 @@ class ConvertDonationFormBlocksToFieldsApi
      */
     protected function createNodeFromAmountBlock(BlockModel $block): Node
     {
-        return (new ConvertDonationAmountBlockToFieldsApi())($block, $this->currency);
+        $donationAmountBlockModel = new DonationAmountBlockModel($block);
+        return (new ConvertDonationAmountBlockToFieldsApi())($donationAmountBlockModel, $this->currency);
     }
 
     /**

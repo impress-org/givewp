@@ -13,13 +13,13 @@ use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Tests\TestCase;
 
 /**
- * @since 0.1.0
+ * @since 3.0.0
  */
 class DonateFormRouteDataTest extends TestCase
 {
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function testValidatedShouldReturnValidatedData()
     {
@@ -92,7 +92,7 @@ class DonateFormRouteDataTest extends TestCase
     }
 
     /**
-     * @since 0.1.0
+     * @since 3.0.0
      */
     public function testValidatedShouldReturnValidatedDataWithSubscriptionData()
     {
@@ -147,6 +147,7 @@ class DonateFormRouteDataTest extends TestCase
                           "250",
                           "500"
                         ],
+                        "defaultLevel": "100",
                         "priceOption": "multi",
                         "setPrice": "100",
                         "customAmount": "true",
