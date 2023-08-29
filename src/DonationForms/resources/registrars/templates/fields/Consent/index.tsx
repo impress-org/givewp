@@ -17,6 +17,7 @@ export default function ConsentField({
     modalHeading,
     modalAcceptanceText,
     agreementText,
+    Label: LabelWithRequired,
 }: ConsentProps) {
     const [showModal, setShowModal] = useState<boolean>(false);
     const {useFormContext} = window.givewp.form.hooks;
@@ -38,7 +39,8 @@ export default function ConsentField({
 
     const Label = () => (
         <>
-            <span>{checkboxLabel}</span>&nbsp;
+            <LabelWithRequired />
+            &nbsp;
             {!isFormDisplay && (
                 <ShowTerms openTerms={openTerms} displayType={displayType} linkText={linkText} linkUrl={linkUrl} />
             )}

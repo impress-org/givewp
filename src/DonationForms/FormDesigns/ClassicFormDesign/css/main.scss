@@ -1,4 +1,4 @@
-@layer classic-form-design {
+@layer form-design {
     @import 'variables';
     @import 'utilities';
     @import 'header';
@@ -6,7 +6,6 @@
     @import 'sections';
     @import 'layouts';
     @import 'gateways';
-    @import 'receipt';
 
     body,
     .givewp-donation-form {

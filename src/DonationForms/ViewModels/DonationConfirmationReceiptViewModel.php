@@ -6,6 +6,7 @@ use Give\DonationForms\FormDesigns\ClassicFormDesign\ClassicFormDesign;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\Donations\Models\Donation;
+use Give\Framework\DesignSystem\Actions\RegisterDesignSystemStyles;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\Receipts\DonationReceipt;
 use Give\Framework\Receipts\DonationReceiptBuilder;
@@ -139,6 +140,9 @@ class DonationConfirmationReceiptViewModel
      */
     public function enqueueGlobalStyles(string $primaryColor, string $secondaryColor)
     {
+        (new RegisterDesignSystemStyles())();
+        wp_enqueue_style('givewp-design-system-foundation');
+
         wp_register_style(
             'givewp-global-form-styles',
             GIVE_PLUGIN_URL . 'src/DonationForm/resources/styles/global.css'

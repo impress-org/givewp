@@ -136,11 +136,13 @@ export interface FormProps {
 
 export interface FieldErrorProps {
     error: string;
+    name: string;
 }
 
 export interface FieldLabelProps {
     label: string;
     required: boolean;
+    as?: string | FC | null;
 }
 
 export enum GoalType {

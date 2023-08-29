@@ -11,7 +11,7 @@
     max-width: min(100%,51.5rem);
     margin: 0 auto;
     background: #fff;
-    box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.3);
+    box-shadow: var(--givewp-shadow-sm);
 
    @media screen and  (min-width: map-get(variables.$breakpoints, "md")) {
        border-radius: 0.5rem;

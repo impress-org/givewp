@@ -1,0 +1,11 @@
+.givewp-layouts-multiStepForm {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-10);
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-10);
+    }
+}

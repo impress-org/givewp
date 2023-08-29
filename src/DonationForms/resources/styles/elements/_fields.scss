@@ -16,11 +16,32 @@
         color: var(--givewp-grey-900);
     }
 
-    label > span {
+    label {
         font-size: var(--givewp-font-size-paragraph-lg);
         font-weight: 500;
         line-height: 1.5;
         color: var(--givewp-grey-900);
+
+        &:has(> input[type="checkbox"]) {
+            display: flex;
+            gap: var(--givewp-spacing-2);
+            align-items: center;
+        }
+    }
+}
+
+.givewp-field-required {
+    color: var(--givewp-red-500);
+}
+
+.givewp-field-error-message {
+    margin-top: var(--givewp-spacing-1);
+
+    > * {
+        font-size: 0.875rem;
+        color: var(--givewp-red-500);
+        font-weight: normal;
+        margin: 0;
     }
 }
 

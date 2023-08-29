@@ -18,6 +18,11 @@
     --secondary-hover: var(--givewp-secondary-color);
     --secondary-focus: var(--givewp-secondary-color);
 
+    --border-color: var(--givewp-grey-400);
+    --form-element-invalid-active-border-color: var(--givewp-red-400);
+    --form-element-invalid-border-color: var(--givewp-red-500);
+    --form-element-invalid-focus-color: var(--givewp-red-50);
+
     // custom givewp variables
     --givewp-breakpoint-xs: variables.$givewp-breakpoint-xs;
     --givewp-breakpoint-sm: variables.$givewp-breakpoint-sm;
@@ -48,4 +53,16 @@ pre {
 
 label, fieldset {
     margin: 0;
+}
+
+:where(input, select, textarea):not([type=checkbox], [type=radio], [type=date], [type=datetime-local], [type=month], [type=time], [type=week])[aria-invalid=false] {
+    background-image: var(--icon-chevron);
+}
+
+:where(input, select, textarea)[aria-invalid=false] {
+    --border-color: var(--givewp-grey-400);
+}
+
+input[type="file"] {
+    padding: 0;
 }

@@ -1,6 +1,7 @@
 .givewp-layouts-goal {
     width: 100%;
     background-color: var(--givewp-shades-white);
+    border: solid 1px var(--givewp-grey-100);
     border-radius: var(--givewp-rounded-4);
 
     &__stats-panel {
@@ -22,6 +23,7 @@
 
             &:nth-child(2) {
                 border: solid 1px var(--givewp-grey-100);
+                border-top: none;
             }
         }
 
@@ -71,6 +73,7 @@
             &[value]::-webkit-progress-value {
                 position: absolute;
                 border-radius: var(--givewp-rounded-full);
+                background-color: var(--secondary);
                 background-image: linear-gradient(
                                 to bottom,
                                 rgba(0, 0, 0, 0),

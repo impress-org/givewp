@@ -26,11 +26,9 @@ export default function MultiStepForm({
                 </div>
             )}
 
-            <section className="givewp-layouts givewp-layouts-section">
-                {previousButton}
-                {nextButton}
-                {submitButton}
-            </section>
+            {previousButton}
+            {nextButton}
+            {submitButton}
         </form>
     );
 }

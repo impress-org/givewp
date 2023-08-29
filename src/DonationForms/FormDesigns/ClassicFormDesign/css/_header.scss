@@ -24,23 +24,6 @@
             border-top-left-radius: 0;
         }
     }
-
-    &-headerTitle h2 {
-        position: relative;
-        margin-block-end: 1rem;
-        font-size: fn.scaleBetween(1.75rem, 2.1875rem);
-        font-weight: 600;
-        line-height: 1.2;
-        color: currentColor;
-        margin: 0;
-    }
-
-    &-headerDescription p {
-        font-size: fn.scaleBetween(1.125rem, 1.25rem);
-        line-height: 1.45;
-        margin: 0 auto;
-        color: currentColor;
-    }
 }
 
 .givewp-form-secure-badge {

@@ -1,5 +1,8 @@
-@import 'animation';
-@import 'form';
-@import 'sections';
-@import 'header';
-@import 'preview';
+@layer form-design {
+    @import 'animation';
+    @import 'form';
+    @import 'layouts';
+    @import 'sections';
+    @import 'header';
+    @import 'preview';
+}
