@@ -1,4 +1,5 @@
 import {createHigherOrderComponent} from '@wordpress/compose';
+import {useEffect} from '@wordpress/element';
 import {addFilter} from '@wordpress/hooks';
 import StripeAccountPanel from './StripeAccountPanel';
 
@@ -8,7 +9,7 @@ function addAttribute(settings, name) {
             ...settings.attributes,
             stripeUseGlobalDefault: {
                 type: 'boolean',
-                default: 'true',
+                default: true,
             },
             stripeAccountId: {
                 type: 'string',
@@ -28,6 +29,15 @@ addFilter(
 
 const withInspectorControls = createHigherOrderComponent(( BlockEdit ) => {
     return ( props ) => {
+        useEffect(() => {
+            if (!props.attributes.hasOwnProperty('stripeUseGlobalDefault')) {
+                props.setAttributes({
+                    stripeUseGlobalDefault: true,
+                    stripeAccountId: '',
+                });
+            }
+        }, []);
+
         if ( props.name === 'givewp/payment-gateways' ) {
             return (
                 <>
