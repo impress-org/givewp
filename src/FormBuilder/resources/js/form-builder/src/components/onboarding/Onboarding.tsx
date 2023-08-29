@@ -1,4 +1,5 @@
 import {useContext, useEffect} from 'react';
+import {useFormState} from '@givewp/form-builder/stores/form-state';
 import {useDispatch} from '@wordpress/data';
 import {ShepherdTour, ShepherdTourContext} from 'react-shepherd';
 import options from './options';
@@ -76,13 +77,19 @@ function TourEffectsAndEvents() {
     }, [])
 
     useEffect(() => {
-        window.onboardingTourData.autoStartTour && ( tour.isActive() || tour.start() );
+        window.onboardingTourData.autoStartTour && (tour.isActive() || tour.start());
     }, [])
 
     return <></>
 }
 
 const Onboarding = () => {
+    const {transfer} = useFormState();
+
+    if (transfer.showUpgradeModal) {
+        return null;
+    }
+
     return <ShepherdTour steps={steps} tourOptions={options}>
         <TourEffectsAndEvents />
     </ShepherdTour>
