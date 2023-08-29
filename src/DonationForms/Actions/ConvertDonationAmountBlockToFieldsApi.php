@@ -10,7 +10,7 @@ use Give\DonationForms\Rules\SubscriptionFrequencyRule;
 use Give\DonationForms\Rules\SubscriptionInstallmentsRule;
 use Give\DonationForms\Rules\SubscriptionPeriodRule;
 use Give\Donations\ValueObjects\DonationType;
-use Give\Framework\Blocks\BlockModel;
+use Give\FormBuilder\BlockModels\DonationAmountBlockModel;
 use Give\Framework\FieldsAPI\Amount;
 use Give\Framework\FieldsAPI\DonationAmount;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
@@ -32,19 +32,19 @@ class ConvertDonationAmountBlockToFieldsApi
      * @throws EmptyNameException
      * @throws NameCollisionException
      */
-    public function __invoke(BlockModel $block, string $currency): DonationAmount
+    public function __invoke(DonationAmountBlockModel $block, string $currency): DonationAmount
     {
         $amountField = DonationAmount::make('donationAmount')->tap(function (Group $group) use ($block, $currency) {
             $amountRules = ['required', 'numeric'];
 
-            if (!$block->getAttribute('customAmount') &&
-                $block->getAttribute('priceOption') === 'set') {
-                $size = $block->getAttribute('setPrice');
+            if (!$block->isCustomAmountEnabled() &&
+                $block->getPriceOption() === 'set') {
+                $size = $block->getSetPrice();
 
                 $amountRules[] = new Size($size);
             }
 
-            if ($block->getAttribute('customAmount')) {
+            if ($block->isCustomAmountEnabled()) {
                 if ($block->hasAttribute('customAmountMin')) {
                     $amountRules[] = new Min($block->getAttribute('customAmountMin'));
                 }
@@ -56,16 +56,16 @@ class ConvertDonationAmountBlockToFieldsApi
 
             /** @var Amount $amountNode */
             $amountNode = $group->getNodeByName('amount');
-            $defaultLevel = (float)$block->getAttribute('defaultLevel') > 0 ? (float)$block->getAttribute('defaultLevel') : 10;
+            $defaultLevel = (float)$block->getDefaultLevel() > 0 ? (float)$block->getDefaultLevel() : 10;
             $amountNode
-                ->label($block->getAttribute('label'))
-                ->levels(...array_map('absint', $block->getAttribute('levels')))
-                ->allowLevels($block->getAttribute('priceOption') === 'multi')
-                ->allowCustomAmount($block->getAttribute('customAmount'))
-                ->fixedAmountValue($block->getAttribute('setPrice'))
+                ->label($block->getLabel())
+                ->levels(...$block->getLevels())
+                ->allowLevels($block->getPriceOption() === 'multi')
+                ->allowCustomAmount($block->isCustomAmountEnabled())
+                ->fixedAmountValue($block->getSetPrice())
                 ->defaultValue(
-                    $block->getAttribute('priceOption') === 'set' ?
-                        $block->getAttribute('setPrice') : $defaultLevel
+                    $block->getPriceOption() === 'set' ?
+                        $block->getSetPrice() : $defaultLevel
                 )
                 ->rules(...$amountRules);
 
@@ -76,7 +76,7 @@ class ConvertDonationAmountBlockToFieldsApi
                 ->rules('required', 'currency');
         });
 
-        if (!$block->getAttribute('recurringEnabled')) {
+        if (!$block->isRecurringEnabled()) {
             $donationType = Hidden::make('donationType')
                 ->defaultValue(DonationType::SINGLE()->getValue())
                 ->rules(new DonationTypeRule());
@@ -92,20 +92,17 @@ class ConvertDonationAmountBlockToFieldsApi
                 ->defaultValue($donationTypeDefault)
                 ->rules(new DonationTypeRule());
 
-            $billingInterval = (int)$block->getAttribute('recurringBillingInterval');
-            $lengthOfTime = (int)$block->getAttribute('recurringLengthOfTime');
-
             $subscriptionFrequency = Hidden::make('subscriptionFrequency')
-                ->defaultValue($billingInterval)
+                ->defaultValue($block->getRecurringBillingInterval())
                 ->rules(new SubscriptionFrequencyRule());
 
             $subscriptionInstallments = Hidden::make('subscriptionInstallments')
-                ->defaultValue($lengthOfTime)
+                ->defaultValue($block->getRecurringLengthOfTime())
                 ->rules(new SubscriptionInstallmentsRule());
 
             $amountField
                 ->enableSubscriptions()
-                ->subscriptionDetailsAreFixed($block->getAttribute('recurringDonationChoice') === 'admin')
+                ->subscriptionDetailsAreFixed($block->isRecurringFixed())
                 ->donationType($donationType)
                 ->subscriptionPeriod($subscriptionPeriod)
                 ->subscriptionFrequency($subscriptionFrequency)
@@ -120,32 +117,40 @@ class ConvertDonationAmountBlockToFieldsApi
      *
      * @throws EmptyNameException
      */
-    protected function getRecurringAmountPeriodField(BlockModel $block): Field
+    protected function getRecurringAmountPeriodField(DonationAmountBlockModel $block): Field
     {
-        $donationChoice = $block->getAttribute('recurringDonationChoice');
+        $recurringBillingPeriodOptions = $block->getRecurringBillingPeriodOptions();
 
-        // if admin - fields are all hidden
-        if ($donationChoice === 'admin') {
-            $recurringBillingPeriod = new SubscriptionPeriod($block->getAttribute('recurringBillingPeriod'));
+        // if recurring is fixed - fields are all hidden
+        if ($block->isRecurringFixed()) {
+            $fixedBillingPeriod = $recurringBillingPeriodOptions[0];
+
+            $subscriptionPeriodDefaultValue = SubscriptionPeriod::isValid(
+                $fixedBillingPeriod
+            ) ? (new SubscriptionPeriod($fixedBillingPeriod))->getValue() : SubscriptionPeriod::MONTH()->getValue();
 
             return Hidden::make('subscriptionPeriod')
-                ->defaultValue($recurringBillingPeriod->getValue())
+                ->defaultValue($subscriptionPeriodDefaultValue)
                 ->rules(new SubscriptionPeriodRule());
         }
 
-        $recurringBillingPeriodOptions = $block->getAttribute('recurringBillingPeriodOptions');
+        if ($block->isRecurringEnableOneTimeDonations()) {
+            $recurringBillingPeriodOptions = array_merge(['one-time'], $recurringBillingPeriodOptions);
+        }
 
-        $options = $this->mergePeriodOptionsWithOneTime(
-            array_map(static function ($option) {
+        $options = array_map(static function ($option) {
+            if (SubscriptionPeriod::isValid($option)) {
                 $subscriptionPeriod = new SubscriptionPeriod($option);
 
                 return new Option($subscriptionPeriod->getValue(), $subscriptionPeriod->label(0));
-            }, $recurringBillingPeriodOptions)
-        );
+            }
 
-        $recurringOptInDefault = $block->getAttribute('recurringOptInDefaultBillingPeriod');
+            return new Option($option, $option === 'one-time' ? __('One Time', 'give') : ucfirst($option));
+        }, $recurringBillingPeriodOptions);
 
-        if (!empty($recurringOptInDefault) && $recurringOptInDefault !== 'one-time') {
+        $recurringOptInDefault = $block->getRecurringOptInDefaultBillingPeriod();
+
+        if (SubscriptionPeriod::isValid($recurringOptInDefault)) {
             $subscriptionPeriod = new SubscriptionPeriod($recurringOptInDefault);
 
             $defaultValue = $subscriptionPeriod->getValue();
@@ -158,15 +163,5 @@ class ConvertDonationAmountBlockToFieldsApi
             ->label(__('Choose your donation frequency', 'give'))
             ->options(...$options)
             ->rules(new SubscriptionPeriodRule());
-    }
-
-    /**
-     * @since 3.0.0
-     */
-    protected function mergePeriodOptionsWithOneTime(array $options): array
-    {
-        return array_merge([
-            new Option('one-time', __('One Time', 'give'))
-        ], $options);
     }
 }
