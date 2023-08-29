@@ -31,6 +31,7 @@ class ServiceProvider implements ServiceProviderInterface
                 Steps\FormTemplate\SequoiaTemplateSettings::class,
                 Steps\FormTemplate\LegacyTemplateSettings::class,
                 Steps\DonationOptions::class,
+                Steps\RecurringDonationOptions::class,
                 Steps\FormFields::class,
                 Steps\FormFields\LoginRegistration::class,
                 Steps\FormFields\CompanyDonations::class,
@@ -38,7 +39,8 @@ class ServiceProvider implements ServiceProviderInterface
                 Steps\TermsAndConditions::class,
                 Steps\FormGrid::class,
                 Steps\OfflineDonations::class,
-                Steps\EmailSettings::class,
+                // TODO: this step was causing errors, so I commented it out
+                //Steps\EmailSettings::class,
             ]);
         });
     }
