@@ -11,8 +11,7 @@ export default function StripeAccountPanel({
     attributes: StripeProps;
     setAttributes: ({}) => void;
 }) {
-    // @ts-ignore
-    const stripeGlobalSettings: StripeGlobalSettingsProps = window.stripePaymentElementGatewaySettings;
+    const stripeGlobalSettings = window.stripePaymentElementGatewaySettings;
 
     const textWithLinkToStripeSettings = (textTemplate: string) =>
         createInterpolateElement(textTemplate, {
@@ -106,3 +105,7 @@ type StripeGlobalSettingsProps = {
     };
     stripeSettingsUrl: string;
 };
+
+declare const window: {
+    stripePaymentElementGatewaySettings: StripeGlobalSettingsProps;
+} & Window;
