@@ -38,6 +38,9 @@
       "@givewp/forms/app/*": [
         "./src/DonationForms/resources/app/*"
       ],
+      "@givewp/forms/registrars/*": [
+        "./src/DonationForms/resources/registrars/*"
+      ],
       "@givewp/forms/shared/*": [
           "./src/DonationForms/resources/shared/*"
       ],

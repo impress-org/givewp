@@ -22,7 +22,7 @@ class InvoicePaymentFailedTest extends TestCase
     use RefreshDatabase, HasMockStripeAccounts;
 
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      *
      * @throws Exception
      */
