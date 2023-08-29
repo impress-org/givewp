@@ -7,7 +7,7 @@ import Feedback from '@givewp/form-builder/feedback';
 import {BlockInstance} from '@wordpress/blocks';
 import './App.scss';
 import FormBuilderErrorBoundary from '@givewp/form-builder/errors/FormBuilderErrorBounday';
-import {TransferNotice, TransferDialog, UpgradeDialog} from '@givewp/form-builder/components/onboarding/transfer';
+import Transfer from '@givewp/form-builder/components/onboarding/transfer';
 
 const {blocks: initialBlocks, formSettings: initialFormSettings} = Storage.load();
 
@@ -39,9 +39,7 @@ export default function App() {
                 <ShortcutProvider>
                     <BlockEditorContainer />
                     <Feedback />
-                    <TransferNotice />
-                    <TransferDialog />
-                    <UpgradeDialog />
+                    <Transfer />
                 </ShortcutProvider>
             </FormStateProvider>
         </FormBuilderErrorBoundary>
