@@ -73,17 +73,17 @@ class DonationFormsData implements TrackData
         $data = [];
 
         foreach ($this->formIds as $formId) {
-                $temp = [
-                    'form_id' => (int)$formId,
-                    'form_url' => untrailingslashit(get_permalink($formId)),
-                    'form_name' => get_post_field('post_name', $formId, 'db'),
-                    'form_type' => give()->form_meta->get_meta($formId, '_give_price_option', true),
-                    'form_template' => $this->getFormTemplate($formId),
-                    'donor_count' => $this->formDonorCounts[$formId],
-                    'revenue' => $this->formRevenues[$formId],
-                ];
-                $this->addAddonsInformation($temp, $formId);
-                $data[] = $temp;
+            $temp = [
+                'form_id' => (int)$formId,
+                'form_url' => untrailingslashit(get_permalink($formId)),
+                'form_name' => get_post_field('post_name', $formId, 'db'),
+                'form_type' => give()->form_meta->get_meta($formId, '_give_price_option', true),
+                'form_template' => $this->getFormTemplate($formId),
+                'donor_count' => $this->formDonorCounts[$formId],
+                'revenue' => $this->formRevenues[$formId],
+            ];
+            $this->addAddonsInformation($temp, $formId);
+            $data[] = $temp;
         }
 
         return $data;
