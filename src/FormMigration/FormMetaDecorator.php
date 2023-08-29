@@ -44,7 +44,7 @@ class FormMetaDecorator extends FormModelDecorator
 
     public function isUserLoginRequired(): bool
     {
-        return ! $this->isGuestDonationsEnabled();
+        return !$this->isGuestDonationsEnabled();
     }
 
     public function isGuestDonationsEnabled(): bool
@@ -98,7 +98,7 @@ class FormMetaDecorator extends FormModelDecorator
 
     public function getDonationGoalType(): GoalType
     {
-        switch(give_get_form_goal_format($this->form->id)) {
+        switch (give_get_form_goal_format($this->form->id)) {
             case 'donors':
                 return GoalType::DONORS();
             case 'donation': // @note v2: Singular
@@ -121,13 +121,13 @@ class FormMetaDecorator extends FormModelDecorator
     public function isAutoClosedEnabled()
     {
         return give_is_setting_enabled(
-            give_get_meta( $this->form->id, '_give_close_form_when_goal_achieved', true, 'disabled' )
+            give_get_meta($this->form->id, '_give_close_form_when_goal_achieved', true, 'disabled')
         );
     }
 
     public function getGoalAchievedMessage()
     {
-        return give_get_meta( $this->form->id, '_give_form_goal_achieved_message', true );
+        return give_get_meta($this->form->id, '_give_form_goal_achieved_message', true);
     }
 
     public function isTermsEnabled()
@@ -138,22 +138,27 @@ class FormMetaDecorator extends FormModelDecorator
     public function getTermsAgreementLabel()
     {
         // @note Forked from give/includes/forms/template.php:1845
-        return ( $label = give_get_meta( $this->form->id, '_give_agree_label', true ) )
-            ? stripslashes( $label )
-            : esc_html__( 'Agree to Terms?', 'give' );
+        return ($label = give_get_meta($this->form->id, '_give_agree_label', true))
+            ? stripslashes($label)
+            : esc_html__('Agree to Terms?', 'give');
     }
 
     public function getTermsAgreementText()
     {
-        return give_get_meta( $this->form->id, '_give_agree_text', true );
+        return give_get_meta($this->form->id, '_give_agree_text', true);
     }
 
     public function isOfflineDonationsCustomized()
     {
         return give_is_setting_enabled(
-            give_get_meta( $this->form->id, '_give_customize_offline_donations', true ),
+            give_get_meta($this->form->id, '_give_customize_offline_donations', true),
             'custom'
         );
+    }
+
+    public function isRecurringDonationsEnabled()
+    {
+        return give_is_form_recurring($this->form->id);
     }
 
     public function isOfflineDonationsBillingFieldEnabled()

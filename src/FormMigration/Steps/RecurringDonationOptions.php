@@ -8,6 +8,11 @@ use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 
 class RecurringDonationOptions extends FormMigrationStep
 {
+    public function canHandle(): bool
+    {
+        return $this->formV2->isRecurringDonationsEnabled();
+    }
+
     public function process()
     {
         /** @var DonationAmountBlockModel $amountBlock */
@@ -24,8 +29,6 @@ class RecurringDonationOptions extends FormMigrationStep
         } elseif ('yes_admin' === $_give_recurring) {
             $amountBlock->setRecurringEnabled();
             $amountBlock->setRecurringEnableOneTimeDonations(false);
-        } else {
-            return;
         }
 
         // 'donors_choice', 'admin_choice', 'custom' (The "Donor's Choice" option allows the donor to select the time period (commonly also referred as the "frequency") of their subscription. The "Preset Period" option provides only the selected period for the donor's subscription.)
