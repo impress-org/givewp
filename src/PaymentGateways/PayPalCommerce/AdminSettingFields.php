@@ -451,9 +451,17 @@ class AdminSettingFields
                                 <span class="give-field-description">
                                     <i class="fa fa-check"></i>
                                     <?php
+                                    if ($merchantDetail->accountIsReady) {
+                                        $connectedAccountTypeMessage = $merchantDetail->supportsCustomPayments
+                                            ? esc_html__('Connected as Advanced for payments as', 'give')
+                                            : esc_html__('Connected as Standard for payments as', 'give');
+                                    } else {
+                                        $connectedAccountTypeMessage = esc_html__('Connected for payments as', 'give');
+                                    }
+
                                     printf(
                                         '%1$s <span class="paypal-account-email">%2$s</span>',
-                                        esc_html__('Connected for payments as', 'give'),
+                                        $connectedAccountTypeMessage,
                                         $merchantDetail->merchantId
                                     );
                                     ?>
@@ -465,16 +473,6 @@ class AdminSettingFields
                                         <?php esc_html_e('Disconnect', 'give'); ?>
                                     </button>
                                 </span>
-                            </div>
-                            <div class="api-access-feature-list-wrap">
-                                <p><?php esc_html_e('APIs Connected:', 'give'); ?></p>
-                                <ul>
-                                    <li><?php esc_html_e('Payments', 'give'); ?></li>
-                                    <?php if ($paypalSetting->isRecurringAddonActive) : ?>
-                                        <li><?php esc_html_e('Subscriptions', 'give'); ?></li>
-                                    <?php endif; ?>
-                                    <li><?php esc_html_e('Refunds', 'give'); ?></li>
-                                </ul>
                             </div>
                         </div>
                         <?php $this->printErrors($mechantDetailsRepository); ?>
