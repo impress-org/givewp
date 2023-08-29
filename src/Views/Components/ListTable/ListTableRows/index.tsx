@@ -5,7 +5,6 @@ import {useEffect, useState} from 'react';
 import TableCell from '../TableCell';
 import {BulkActionCheckbox} from '@givewp/components/ListTable/BulkActions/BulkActionCheckbox';
 import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
-import {Interweave} from "interweave";
 
 export default function ListTableRows({columns, data, isLoading, rowActions, setUpdateErrors, parameters, singleName, columnFilters}) {
     const [removed, setRemoved] = useState([]);
