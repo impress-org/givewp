@@ -47,7 +47,7 @@ class DonationFormsData implements TrackData
     {
         $this->setFormIds();
 
-        if ( ! $this->formIds) {
+        if (! $this->formIds) {
             return [];
         }
 
@@ -66,40 +66,24 @@ class DonationFormsData implements TrackData
      */
     protected function getData()
     {
-        if ( ! $this->formIds) {
+        if (! $this->formIds) {
             return [];
         }
 
         $data = [];
 
         foreach ($this->formIds as $formId) {
-            if (Utils::isV3Form($formId)) {
-                $form = DonationForm::find($formId);
-
-                $temp = [
-                    'form_id' => $formId,
-                    'form_url' => untrailingslashit(get_permalink($formId)),
-                    'form_name' => get_post_field('post_name', $formId, 'db'),
-                    'form_type' => give()->form_meta->get_meta($formId, '_give_price_option', true),
-                    'form_template' => $form->settings->designId . ' (V3)',
-                    'donor_count' => $this->formDonorCounts[$formId],
-                    'revenue' => $this->formRevenues[$formId],
-                ];
-            } else {
-                $formTemplate = Template::getActiveID($formId);
-
                 $temp = [
                     'form_id' => (int)$formId,
                     'form_url' => untrailingslashit(get_permalink($formId)),
                     'form_name' => get_post_field('post_name', $formId, 'db'),
                     'form_type' => give()->form_meta->get_meta($formId, '_give_price_option', true),
-                    'form_template' => ! $formTemplate || 'legacy' === $formTemplate ? 'legacy' : $formTemplate,
+                    'form_template' => $this->getFormTemplate($formId),
                     'donor_count' => $this->formDonorCounts[$formId],
                     'revenue' => $this->formRevenues[$formId],
                 ];
-            }
-            $this->addAddonsInformation($temp, $formId);
-            $data[] = $temp;
+                $this->addAddonsInformation($temp, $formId);
+                $data[] = $temp;
         }
 
         return $data;
@@ -255,5 +239,25 @@ class DonationFormsData implements TrackData
                 ),
             ]
         );
+    }
+
+    /**
+     * This function is used to get the form template.
+     *
+     * @unreleased
+     */
+    private function getFormTemplate(int $formId): string
+    {
+        if (Utils::isV3Form($formId)) {
+            /* @var DonationForm $form */
+            $form = DonationForm::find($formId);
+
+            return $form->settings->designId . ' (V3)';
+        }
+
+        $formTemplate = Template::getActiveID($formId);
+        return ( ! $formTemplate || 'legacy' === $formTemplate )
+            ? 'legacy'
+            : $formTemplate;
     }
 }
