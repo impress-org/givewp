@@ -68,6 +68,7 @@ class ListDonationForms extends Endpoint
                             'auto-draft',
                             'inherit',
                             'any',
+                            'upgraded',
                         ],
                     ],
                     'search' => [
