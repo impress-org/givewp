@@ -187,12 +187,15 @@ const Give = {
 		/**
 		 * Get global param
 		 *
+		 * @since 2.33.0  Return default value of global param if param not found.
 		 * @since 2.2.4
 		 *
 		 * @return {object} WordPress localized global param.
 		 */
-		getGlobal: function() {
-			return ( 'undefined' === typeof give_global_vars ) ? give_vars : give_global_vars;
+		getGlobal: function () {
+			return ('undefined' === typeof give_global_vars)
+				? (window.give_vars || {})
+				: (window.give_global_vars || {});
 		},
 
 		/**

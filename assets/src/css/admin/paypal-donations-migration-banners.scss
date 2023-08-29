@@ -1,0 +1,74 @@
+/**
+ * PayPal Donations Migration Banners
+ * --------------------------------------------------
+ */
+
+// Banners.
+.give-paypal-migration-banner{
+    padding: 8px 14px;
+    border-style: solid;
+    border-width: 1px;
+
+    // Common styles.
+    .message{
+        font-size: 15px;
+
+        .label{
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        a{
+            text-decoration: underline;
+            font-weight: 600;
+        }
+
+        .icon, .label{
+            margin-right: 10px;
+        }
+    }
+
+    // Banner for gateways setting page.
+    &.gateway-settiing-page{
+        background-color: #F29718;
+        border-color: #E48100;
+
+        .message{
+            color: white;
+
+            a{
+                color: white;
+            }
+
+            .label{
+                text-transform: uppercase;
+                color: #F29718;
+                background-color: white;
+                padding: 3px 7px;
+            }
+        }
+    }
+
+    // Banner for PayPal Donations setting page.
+    &.paypal-donations-setting-page{
+        background-color: #FFF0A6;
+        color: #594B05;
+        border-color: #ffea82;
+
+        .icon{
+            vertical-align: middle;
+                    background: url(../images/admin/alert-triangle.svg) no-repeat center center;
+            padding-right: 16px;
+        }
+
+        a{
+            color: #594B05;
+        }
+    }
+}
+
+.give-paypal-standard-to-donations-migration-banner{
+        p, strong{
+            font-size: 15px
+        }
+}

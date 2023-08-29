@@ -8,7 +8,7 @@ use Give\Framework\Migrations\Contracts\Migration;
 /**
  * Removes the secret meta that was unnecessarily stored in the database for donations.
  *
- * @unreleased
+ * @since 2.33.0
  */
 class RemovePaymentIntentSecretMeta extends Migration
 {

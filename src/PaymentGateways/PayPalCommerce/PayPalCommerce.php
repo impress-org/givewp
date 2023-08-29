@@ -105,7 +105,7 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
-     * @unreleased Register new payment field type setting.
+     * @since 2.33.0 Register new payment field type setting.
      * @since 2.27.3 Enable Venmo payment method by default.
      * @since 2.16.2 Add setting "Transaction type".
      */
@@ -161,7 +161,7 @@ class PayPalCommerce extends PaymentGateway
                 'id' => 'paypal_commerce_accept_venmo',
                 'type' => 'radio_inline',
                 'desc' => esc_html__(
-                    'Displays a button allowing Donors to pay with Venmo (a PayPal Company). Donations still come into your PayPal account and are subject to normal PayPal transaction fees.',
+                    'Displays a button allowing Donors to pay with Venmo (US-only). Donations still come into your PayPal account and are subject to normal PayPal transaction fees.',
                     'give'
                 ),
                 'default' => 'enabled',

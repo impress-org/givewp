@@ -2,6 +2,7 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Give\PaymentGateways\PayPalCommerce\Banners\PayPalDonationsSettingPageBanner;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Settings;
@@ -132,7 +133,10 @@ class AdminSettingFields
             'give'
         );
         $paypalSandboxSetting->isRecurringAddonActive = $isRecurringAddonActive;
+
         echo $this->getPayPalConnectionSettingView($paypalSandboxSetting);
+
+        echo $this->getBanner();
     }
 
     /**
@@ -158,7 +162,9 @@ class AdminSettingFields
                     </p>
                 </div>
                 <div class="paypal-logo">
-                    <img src="<?php echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/paypal-logo.svg'; ?>" width="316" height="84"
+                    <img src="<?php echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/paypal-logo.svg'; ?>"
+                         width="316"
+                         height="84"
                          alt="<?php esc_attr_e('PayPal Logo Image', 'give'); ?>">
                 </div>
             </div>
@@ -472,6 +478,31 @@ class AdminSettingFields
                         <?php $this->printErrors($mechantDetailsRepository); ?>
                     </div>
                 </div>
+            </td>
+        </tr>
+        <?php
+        return ob_get_clean();
+    }
+
+    /**
+     * @since 2.33.0
+     */
+    private function getBanner(): string
+    {
+        ob_start();
+
+        if (
+            give(MerchantDetail::class)->accountIsReady
+            && give_is_gateway_active(PayPalCommerce::id())
+        ) {
+            return '';
+        }
+        ?>
+        <tr>
+            <th scope="row" class="titledesc">
+            </th>
+            <td class="give-forminp">
+                <?php echo give(PayPalDonationsSettingPageBanner::class)->render(); ?>
             </td>
         </tr>
         <?php
