@@ -105,8 +105,7 @@ class TrackingServiceProvider implements ServiceProvider
      */
     private function registerTrackEvents()
     {
-        Hooks::addAction('givewp_form_builder_updated', EditedDonationFormsTracking::class,
-            'formBuilderUpdatedHookHandler');
+        Hooks::addAction('givewp_form_builder_updated', EditedDonationFormsTracking::class, 'formBuilderUpdatedHookHandler');
         Hooks::addAction('save_post_give_forms', EditedDonationFormsTracking::class, 'savePostHookHandler');
         Hooks::addAction('save_post_give_payment', DonationFormsTracking::class, 'record');
         Hooks::addAction('save_post_give_payment', DonationMetricsTracking::class, 'record');
