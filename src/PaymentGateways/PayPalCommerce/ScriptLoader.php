@@ -144,9 +144,17 @@ EOT;
 
         /* @var MerchantDetail $merchant */
         $merchant = give(MerchantDetail::class);
-        $scriptId = 'give-paypal-commerce-js';
-        $clientToken = '';
 
+        $scriptId = 'give-paypal-commerce-js';
+        $paymentFieldType = give_get_option('paypal_payment_field_type', 'auto');
+
+        // Add hosted fields if payment field type is auto.
+        $paymentComponents[] = 'buttons';
+        if( 'auto' === $paymentFieldType ) {
+            $paymentComponents[] = 'hosted-fields';
+        }
+        
+        $clientToken = '';
         try{
             $clientToken = $this->merchantRepository->getClientToken();
         } catch ( \Exception $exception ) {
@@ -169,7 +177,7 @@ EOT;
         $payPalSdkQueryParameters = [
             'client-id' => $merchant->clientId,
             'merchant-id' => $merchant->merchantIdInPayPal,
-            'components' => 'hosted-fields,buttons',
+            'components' => implode(',', $paymentComponents),
             'disable-funding' => 'credit',
             'vault' => true,
             'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
@@ -223,6 +231,7 @@ EOT;
                     esc_html__('Checking donation status with PayPal.', 'give'),
                     esc_html__('This will only take a second!', 'give')
                 ),
+                'paymentFieldType' => $paymentFieldType,
             ]
         );
     }

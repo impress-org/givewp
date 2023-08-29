@@ -27,6 +27,7 @@ class CreatePaymentIntent
     }
 
     /**
+     * @since 2.33.0 no longer store the payment intent secret
      * @since 2.19.0
      *
      * @throws InvalidPropertyName
@@ -70,17 +71,6 @@ class CreatePaymentIntent
             'donationId' => $donation->id,
             'content' => sprintf(__('Stripe Charge/Payment Intent ID: %s', 'give'), $intent->id())
         ]);
-
-        DonationNote::create([
-            'donationId' => $donation->id,
-            'content' => sprintf(__('Stripe Payment Intent Client Secret: %s', 'give'), $intent->clientSecret())
-        ]);
-
-        give_update_meta(
-            $donation->id,
-            '_give_stripe_payment_intent_client_secret',
-            $intent->clientSecret()
-        );
 
         if ('requires_action' === $intent->status()) {
             DonationNote::create([
