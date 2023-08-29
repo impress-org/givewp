@@ -13,14 +13,14 @@
         font-size: var(--givewp-font-size-paragraph-lg);
         font-weight: 500;
         line-height: 1.5;
-        color: var(--givewp-grey-900);
+        color: var(--givewp-grey-700);
     }
 
     label {
         font-size: var(--givewp-font-size-paragraph-lg);
         font-weight: 500;
         line-height: 1.5;
-        color: var(--givewp-grey-900);
+        color: var(--givewp-grey-700);
 
         &:has(> input[type="checkbox"]) {
             display: flex;
@@ -45,6 +45,30 @@
     }
 }
 
+.givewp-fields-consent {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-2);
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-4);
+        line-height: 150%;
+        max-height: 17.5rem;
+        min-height: 6.5rem;
+        overflow-y: auto;
+        border: 1px solid var(--givewp-grey-200);
+        border-radius: var(--givewp-rounded-4);
+        padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+        background: var(--givewp-shades-white);
+
+        > * {
+            margin: 0;
+        }
+    }
+}
+
 .givewp-fields-radio {
     &__options {
         display: flex;
@@ -56,6 +80,10 @@
         display: flex;
         align-items: flex-end;
         gap: var(--givewp-spacing-2);
+    }
+
+    label {
+        font-weight: 400;
     }
 }
 
@@ -77,7 +105,7 @@ input[type="checkbox"], input[type="radio"] {
 
     &:focus {
         border-color: var(--givewp-primary-color);
-        box-shadow: 0 0 3px var(--givewp-primary-color);
+        box-shadow: 0 0 0 var(--outline-width) var(--form-element-focus-color);
     }
 
     &[aria-invalid="false"] {
@@ -86,6 +114,12 @@ input[type="checkbox"], input[type="radio"] {
 
     &[aria-invalid="true"] {
         --border-color: var(--form-element-invalid-border-color);
+    }
+}
+
+select {
+    &:focus {
+        box-shadow: 0 0 0 var(--outline-width) var(--form-element-focus-color);
     }
 }
 

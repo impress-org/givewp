@@ -30,6 +30,7 @@ export default function getJoiRulesForForm(form: Form): ObjectSchema {
         'string.base': requiredMessage,
         'string.empty': requiredMessage,
         'any.required': requiredMessage,
+        'number.base': requiredMessage,
     });
 }
 

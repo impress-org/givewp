@@ -57,20 +57,8 @@ export default function ConsentField({
             )}
 
             {isFormDisplay && (
-                <div
-                    style={{
-                        marginTop: '1rem',
-                        lineHeight: '150%',
-                        maxHeight: '17.5rem',
-                        minHeight: '6.5rem',
-                        overflowY: 'scroll',
-                        border: '1px solid var(--givewp-grey-200, #BFBFBF)',
-                        borderRadius: 5,
-                        padding: '.5rem 1rem',
-                        background: 'var(--givewp-shades-white, #fff)',
-                    }}
-                >
-                    <Markup content={agreementText} />
+                <div className="givewp-fields-consent__container">
+                    <Markup content={agreementText} noWrap />
                 </div>
             )}
         </>

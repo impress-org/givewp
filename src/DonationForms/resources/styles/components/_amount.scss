@@ -63,6 +63,10 @@ $borderColor: #9A9A9A;
         }
     }
 
+    &__input-label {
+        color: var(--givewp-grey-900);
+    }
+
     &__input-label-container {
         display: flex;
         align-items: center;
@@ -154,14 +158,20 @@ $borderColor: #9A9A9A;
             color: #fff;
         }
     }
+
+    .givewp-field-error-message {
+        margin: 0;
+    }
 }
 
 .givewp-fields-radio-subscriptionPeriod {
-    & > fieldset {
-        display: flex;
-        flex-direction: column;
-        gap: var(--givewp-spacing-2);
-        margin: 0;
+    legend {
+        color: var(--givewp-grey-900);
+
+        /**
+         * Applying the margin here as the parent, a fieldset, cannot be a flexbox
+         */
+        margin-bottom: var(--givewp-spacing-2);
     }
 
     .givewp-fields-radio__options {

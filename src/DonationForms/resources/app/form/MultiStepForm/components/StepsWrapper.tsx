@@ -21,9 +21,7 @@ export default function StepsWrapper({children}: { children: ReactNode }) {
         <div className="givewp-donation-form__steps">
             <div className="givewp-donation-form__steps-header">
                 <div className="givewp-donation-form__steps-header-previous">
-                    <PreviousButton>
-                        <i className="fas fa-chevron-left"></i>
-                    </PreviousButton>
+                    <PreviousButton>{__('Previous', 'give')}</PreviousButton>
                 </div>
                 <div className="givewp-donation-form__steps-header-title">
                     <StepsWrapperTitle />

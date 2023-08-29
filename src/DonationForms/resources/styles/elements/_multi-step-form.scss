@@ -1,98 +1,98 @@
 .givewp-donation-form {
-  &__steps {
-    padding: 0;
-    border-radius: 6px;
-    color: #696969;
-    display: flex;
-    flex-direction: column;
-    background-color: #fff;
-    width: 100%;
-    overflow: hidden;
-    position: relative;
+    &__steps {
+        padding: 0;
+        border-radius: 6px;
+        color: #696969;
+        display: flex;
+        flex-direction: column;
+        background-color: #fff;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
 
-    &-header {
-      position: relative;
-      display: grid;
-      align-items: center;
-      grid-template-columns: 10% 1fr 10%;
-      width: 100%;
-      background: #fbfbfb;
-      border-bottom: 1px solid #f2f2f2;
-      z-index: 99;
+        &-header {
+            position: relative;
+            display: grid;
+            align-items: center;
+            grid-template-columns: 10% 1fr 10%;
+            width: 100%;
+            background: #fbfbfb;
+            border-bottom: 1px solid #f2f2f2;
+            z-index: 99;
 
-      button, p {
-        margin-bottom: 0;
-      }
+            button,
+            p {
+                margin-bottom: 0;
+            }
+        }
+
+        &-header-title {
+            position: absolute;
+            width: 80%;
+            text-align: center;
+            z-index: -1;
+            text-overflow: ellipsis;
+            margin-left: 10%;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+
+        &-header-title-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--givewp-grey-900);
+            font-weight: 600;
+        }
+
+        &-header-previous-button {
+            padding: 0 20px;
+            height: 50px;
+            background-image: var(--givewp-icon-arrow-left);
+            background-color: transparent;
+            background-position: center;
+            border: none;
+            color: transparent;
+            font-size: 12px;
+            border-radius: 6px 0 0 0;
+            overflow: hidden;
+            cursor: pointer;
+
+            &:focus {
+                box-shadow: none;
+            }
+        }
+
+        &-body {
+            padding: 2rem 2rem 0 2rem;
+        }
+
+        &-footer-secure {
+            display: flex;
+            width: 100%;
+            height: 50px;
+            background: #fbfbfb;
+            color: #989898;
+            border-top: 1px solid #f2f2f2;
+            align-items: center;
+            justify-content: center;
+            column-gap: 0.5rem;
+            padding: 1rem;
+        }
+
+        &-footer-secure-icon,
+        &-footer-secure-text {
+            font-size: 12px;
+        }
     }
 
-    &-header-title {
-      position: absolute;
-      width: 80%;
-      text-align: center;
-      z-index: -1;
-      text-overflow: ellipsis;
-      margin-left: 10%;
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
+    &__step {
+        &--hidden {
+            display: none;
+        }
+
+        &--visible {
+            visibility: visible;
+        }
     }
-
-    &-header-title-text {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    &-header-previous-button {
-      padding: 0 20px;
-      height: 50px;
-      background: none;
-      border: none;
-      color: #424242;
-      font-size: 12px;
-      border-radius: 6px 0 0 0;
-      overflow: hidden;
-      cursor: pointer;
-
-      &:focus {
-        box-shadow: none;
-      }
-
-      &:hover {
-        outline: none;
-        background: rgba(0, 0, 0, 0.04);
-        box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.09487);
-      }
-    }
-
-    &-body {
-      padding: 2rem 2rem 0 2rem;
-    }
-
-    &-footer-secure {
-      display: flex;
-      width: 100%;
-      height: 50px;
-      background: #fbfbfb;
-      color: #989898;
-      border-top: 1px solid #f2f2f2;
-      align-items: center;
-      justify-content: center;
-      column-gap: 0.5rem;
-      padding: 1rem;
-    }
-
-    &-footer-secure-icon, &-footer-secure-text {
-      font-size: 12px;
-    }
-  }
-
-  &__step {
-    &--hidden {
-      display: none;
-    }
-
-    &--visible {
-      visibility: visible;
-    }
-  }
 }

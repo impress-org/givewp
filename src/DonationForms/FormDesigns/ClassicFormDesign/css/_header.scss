@@ -24,6 +24,10 @@
             border-top-left-radius: 0;
         }
     }
+
+    &-headerTitle h2, &-headerDescription {
+        color: var(--givewp-shades-white);
+    }
 }
 
 .givewp-form-secure-badge {
