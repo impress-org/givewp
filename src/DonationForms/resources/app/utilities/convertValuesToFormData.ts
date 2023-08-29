@@ -6,7 +6,7 @@ export default function convertValuesToFormData(values: object): FormData {
     for (const valueKey in values) {
         const value = values[valueKey];
 
-        if (value === 'object') {
+        if (value !== null && value === 'object') {
             for (const objKey in value) {
                 formData.append(`${valueKey}[${objKey}]`, value[objKey]);
             }
