@@ -15,8 +15,8 @@ class RecurringDonationOptions extends FormMigrationStep
 
     public function process()
     {
-        /** @var DonationAmountBlockModel $amountBlock */
-        $amountBlock = $this->fieldBlocks->findByName('givewp/donation-amount');
+        $block = $this->fieldBlocks->findByName('givewp/donation-amount');
+        $amountBlock = new DonationAmountBlockModel($block);
 
         // Recurring Donations = 'no', 'yes_donor', 'yes_admin'
         $_give_recurring = $this->getMetaV2('_give_recurring');
@@ -52,9 +52,17 @@ class RecurringDonationOptions extends FormMigrationStep
             if ($_give_checkbox_default === 'yes'){
                 $defaultPeriod = SubscriptionPeriod::isValid($_give_period_default_donor_choice) ? new SubscriptionPeriod($_give_period_default_donor_choice) : SubscriptionPeriod::MONTH();
                 $amountBlock->setRecurringOptInDefaultBillingPeriod($defaultPeriod);
+            } elseif ($amountBlock->isRecurringEnableOneTimeDonations()) {
+                $amountBlock->setAttribute('recurringOptInDefaultBillingPeriod', 'one-time');
             }
         } elseif ($_give_period_functionality === 'admin_choice' && SubscriptionPeriod::isValid($_give_period)) {
             $amountBlock->setRecurringBillingPeriodOptions(new SubscriptionPeriod($_give_period));
+
+            if ($_give_checkbox_default === 'yes') {
+                $amountBlock->setRecurringOptInDefaultBillingPeriod(new SubscriptionPeriod($_give_period));
+            } elseif ($amountBlock->isRecurringEnableOneTimeDonations()) {
+                $amountBlock->setAttribute('recurringOptInDefaultBillingPeriod', 'one-time');
+            }
         }
 
         if (!empty($_give_period_interval)){
