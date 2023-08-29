@@ -4,7 +4,7 @@ namespace Give\Tests\Feature\Gateways\Stripe\TestTraits;
 
 trait HasMockStripeAccounts {
     /**
-     * @since 0.3.0
+     * @since 3.0.0
      */
     public function addMockStripeAccounts()
     {
