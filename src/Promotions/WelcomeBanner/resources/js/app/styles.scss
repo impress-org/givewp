@@ -14,7 +14,7 @@
     background-color: var(--givewp-shades-white);
     box-sizing: border-box;
 
-    &__dismiss-section {
+    &__dismiss-container {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -31,7 +31,7 @@
         }
     }
 
-    &__content-section {
+    &__content-container {
         flex: 1;
         display: flex;
         align-items: flex-start;

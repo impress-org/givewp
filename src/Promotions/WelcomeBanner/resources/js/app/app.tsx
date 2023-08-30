@@ -14,7 +14,7 @@ export default function App() {
 
     return (
         <div className={'givewp-welcome-banner'}>
-            <div className={'givewp-welcome-banner__dismiss-section'}>
+            <div className={'givewp-welcome-banner__dismiss-container'}>
                 <Badge
                     variant={'primary'}
                     caption={__('UPDATED', 'givewp')}
@@ -26,7 +26,7 @@ export default function App() {
                 </button>
             </div>
 
-            <div className={'givewp-welcome-banner__content-section'}>
+            <div className={'givewp-welcome-banner__content-container'}>
                 <LeftContentSection assets={assets} />
                 <RightContentSection assets={assets} />
             </div>

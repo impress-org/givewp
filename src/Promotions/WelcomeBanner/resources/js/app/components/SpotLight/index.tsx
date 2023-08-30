@@ -11,9 +11,9 @@ type SpotLightProps = {
  */
 export default function SpotLight({title, description, children}: SpotLightProps) {
     return (
-        <div className={'givewp-welcome-banner-spotlight-wrapper'}>
+        <div className={'givewp-welcome-banner-spotlight-container'}>
             {children}
-            <div className={'givewp-welcome-banner-spotlight-wrapper__information'}>
+            <div className={'givewp-welcome-banner-spotlight-container__details'}>
                 <h2>{title}</h2>
                 <p>{description}</p>
             </div>

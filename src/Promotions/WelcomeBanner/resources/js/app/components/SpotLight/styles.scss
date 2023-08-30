@@ -1,4 +1,4 @@
-.givewp-welcome-banner-spotlight-wrapper {
+.givewp-welcome-banner-spotlight-container {
     box-sizing: border-box;
     position: relative;
     flex: 1;
@@ -12,7 +12,7 @@
     background-color: var(--givewp-blue-25);
     padding: var(--givewp-spacing-3);
 
-    &__information {
+    &__details {
         > h2 {
             font-size: 0.875rem;
             font-weight: bold;

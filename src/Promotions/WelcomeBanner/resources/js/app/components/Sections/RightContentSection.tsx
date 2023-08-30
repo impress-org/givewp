@@ -14,7 +14,7 @@ export default function RightContentSection({assets}: RightContentSectionProps) 
     return (
         <section className={'givewp-welcome-banner-right-content'}>
             <h2>{__('Spotlight on awesome features', 'givewp')}</h2>
-            <div className={'givewp-welcome-banner-right-content__section'}>
+            <div className={'givewp-welcome-banner-right-content__media-container'}>
                 <SpotLight
                     title={__('Design mode', 'givewp')}
                     description={__(
