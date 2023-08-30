@@ -44,6 +44,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 					1
 				);
 				add_action( 'give_save_settings_give_settings', [ $this, 'validate_settngs' ] );
+                add_filter( "give_admin_settings_sanitize_option_donor_default_user_role", [$this, 'sanitize_option_donor_default_user_role']);
 			}
 
 			parent::__construct();
@@ -354,6 +355,19 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 				give_update_option( 'akismet_spam_protection', 'disabled' );
 			}
 		}
+
+        public function sanitize_option_donor_default_user_role($value) {
+            $baseRole = ( ( $give_donor = wp_roles()->is_role( 'give_donor' ) ) && ! empty( $give_donor ) ? 'give_donor' : 'subscriber' );
+            $defaultUserRoles = (array) give_get_option( 'donor_default_user_role', get_option( 'default_role', $baseRole ) );
+            if(!current_user_can('administrator')){
+                if('administrator' === $value) {
+                    if(!in_array('administrator', $defaultUserRoles)) {
+                        $value = $baseRole;
+                    }
+                }
+            }
+            return $value;
+        }
 	}
 
 endif;
