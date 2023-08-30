@@ -10,7 +10,8 @@ use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
  *
  * @unreleased
  */
-class DonationAmountBlockModel {
+class DonationAmountBlockModel
+{
     /**
      * @var BlockModel
      */
@@ -19,7 +20,8 @@ class DonationAmountBlockModel {
     /**
      * @unreleased
      */
-    public function __construct(BlockModel $block) {
+    public function __construct(BlockModel $block)
+    {
         $this->block = $block;
     }
 
@@ -80,7 +82,9 @@ class DonationAmountBlockModel {
      */
     public function isRecurringFixed(): bool
     {
-        return count($this->block->getAttribute('recurringBillingPeriodOptions')) === 1 && $this->block->getAttribute('recurringEnableOneTimeDonations') === false;
+        return count($this->block->getAttribute('recurringBillingPeriodOptions')) === 1 && $this->block->getAttribute(
+                'recurringEnableOneTimeDonations'
+            ) === false;
     }
 
     /**
@@ -170,9 +174,11 @@ class DonationAmountBlockModel {
     {
         return $this->setAttribute(
             'recurringBillingPeriodOptions',
-            array_map(static function (SubscriptionPeriod $option) {
-                return $option->getValue();
-            }, $options)
+            array_values(
+                array_map(static function (SubscriptionPeriod $option) {
+                    return $option->getValue();
+                }, $options)
+            )
         );
     }
 
