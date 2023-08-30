@@ -1,5 +1,28 @@
-.givewp-welcome-banner-col-row {
+.givewp-welcome-banner-row {
     width: 100%;
+
+    &__header {
+        > h1 {
+            margin: 0;
+            padding: 0;
+            font-size: 1.25rem;
+            font-weight: bold;
+            line-height: 1.4;
+            letter-spacing: normal;
+            text-align: left;
+            color: var(--givep-grey-900);
+        }
+
+        > p {
+            align-self: stretch;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            letter-spacing: normal;
+            text-align: left;
+            color: var(--givewp-grey-900);
+            margin-bottom: 0;
+        }
+    }
 
     > span {
         display: flex;
